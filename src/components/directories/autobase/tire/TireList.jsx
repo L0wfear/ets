@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
 import TireFormWrap from 'components/directories/autobase/tire/TireForm/TireFormWrap';
@@ -8,11 +8,13 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'tire';
 
-@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.tire}` })
 @staticProps({
   entity: 'autobase_tire',
@@ -30,7 +32,7 @@ class TireList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     this.props.tireGetAndSetInStore();
@@ -40,28 +42,27 @@ class TireList extends ElementsList {
     this.props.autobaseResetSetTire();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }
 
     this.setState(changeState);
-  }
+  };
 
   handleClickClone = async (id) => {
-    console.log(id)
     try {
       await this.props.autobaseCloneTire(id);
       this.init();
     } catch (e) {
       console.warn(e); //eslint-disable-line
     }
-  }
+  };
 
   getAdditionalProps() {
     return {
@@ -77,11 +78,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       tireList: getAutobaseState(state).tireList,
+      userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      tireGetAndSetInStore: () => (
+    (dispatch) => ({
+      tireGetAndSetInStore: () =>
         dispatch(
           autobaseActions.tireGetAndSetInStore(
             {},
@@ -89,33 +91,21 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      autobaseResetSetTire: () => (
+        ),
+      autobaseResetSetTire: () =>
+        dispatch(autobaseActions.autobaseResetSetTire()),
+      autobaseCloneTire: (tireId) =>
         dispatch(
-          autobaseActions.autobaseResetSetTire(),
-        )
-      ),
-      autobaseCloneTire: tireId => (
+          autobaseActions.autobaseCloneTire(tireId, {
+            page: loadingPageName,
+          }),
+        ),
+      autobaseRemoveTire: (id) =>
         dispatch(
-          autobaseActions.autobaseCloneTire(
-            tireId,
-            {
-              page: loadingPageName,
-            }
-          ),
-        )
-      ),
-      autobaseRemoveTire: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveTire(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveTire(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(TireList);

@@ -19,26 +19,40 @@ import {
 
 import Title from 'components/reports/common/Title';
 import { filterFunction } from 'components/ui/tableNew/utils';
-import { IDataTableColSchema, IDataTableSelectedRow, IDataTableColFilter } from 'components/ui/table/@types/schema.h';
+import {
+  IDataTableColSchema,
+  IDataTableSelectedRow,
+  IDataTableColFilter,
+} from 'components/ui/table/@types/schema.h';
 import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
-import { IPropsReportContainer, IStateReportContainer } from 'components/reports/common/@types/ReportContainer.h';
+import {
+  IPropsReportContainer,
+  IStateReportContainer,
+} from 'components/reports/common/@types/ReportContainer.h';
 import { IPropsReportHeaderCommon } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import { ReportDataPromise, IReportTableMeta } from 'components/reports/redux-main/modules/@types/report.h';
+import {
+  ReportDataPromise,
+  IReportTableMeta,
+} from 'components/reports/redux-main/modules/@types/report.h';
 
 import Preloader from 'components/ui/new/preloader/Preloader';
-import { getServerErrorNotification, noItemsInfoNotification } from 'utils/notifications';
+import {
+  getServerErrorNotification,
+  noItemsInfoNotification,
+} from 'utils/notifications';
 import * as reportActionCreators from 'components/reports/redux-main/modules/report';
 import DataTable from 'components/ui/table/DataTable';
 import DataTableNew from 'components/ui/tableNew/DataTable';
 
-import {
-  EtsPageWrap,
-} from 'global-styled/global-styled';
+import { EtsPageWrap } from 'global-styled/global-styled';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
 
-class ReportContainer extends React.Component<IPropsReportContainer, IStateReportContainer> {
+class ReportContainer extends React.Component<
+  IPropsReportContainer,
+  IStateReportContainer
+> {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,7 +61,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       fetchedByMoveDownButton: false,
       exportFetching: false,
       selectedRow: null,
-      filterValues: {},
+      filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
       lastSearchObject: queryString.parse(this.props.location.search),
     };
@@ -56,7 +70,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   componentDidMount() {
     // Так как стор один на все отчёты, необходимо его чистить в начале.
     this.props.setInitialState();
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
 
     if (Object.keys(searchObject).length > 0) {
@@ -71,9 +87,14 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     }
   }
 
-  static getDerivedStateFromProps(nextProps: IPropsReportContainer, prevState: IStateReportContainer) {
+  static getDerivedStateFromProps(
+    nextProps: IPropsReportContainer,
+    prevState: IStateReportContainer,
+  ) {
     const { lastSearchObject } = prevState;
-    const { location: { search: search_next } } = nextProps;
+    const {
+      location: { search: search_next },
+    } = nextProps;
 
     const searchNextxObject = queryString.parse(search_next);
 
@@ -89,8 +110,12 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
   }
 
   componentDidUpdate(prevProps) {
-    const { location: { search } } = prevProps;
-    const { location: { search: search_next } } = this.props;
+    const {
+      location: { search },
+    } = prevProps;
+    const {
+      location: { search: search_next },
+    } = this.props;
 
     const searchObject = queryString.parse(search);
     const searchNextxObject = queryString.parse(search_next);
@@ -118,20 +143,26 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       try {
         const { notUseServerSummerTable } = this.props;
 
-        const data = await this.props.getReportData(this.props.serviceName, payload, '', { ...this.state, notUseServerSummerTable });
+        const data = await this.props.getReportData(
+          this.props.serviceName,
+          payload,
+          '',
+          { ...this.state, notUseServerSummerTable },
+        );
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
         if (this.state.fetchedByMoveDownButton && !notUseServerSummerTable) {
-          const prevFields = get(this.props.prevTableMetaInfo, 'fields', []) || [];
+          const prevFields =
+            get(this.props.prevTableMetaInfo, 'fields', []) || [];
 
           this.props.setSummaryTableData({
             summaryList: [this.state.selectedRow],
-            summaryMeta: {...this.props.prevMeta},
+            summaryMeta: { ...this.props.prevMeta },
             summaryTableMetaInfo: [...prevFields],
           });
           this.setState({
             fetchedByMoveDownButton: false,
-              selectedRow: null,
+            selectedRow: null,
           });
         } else if (hasSummaryLevel && !notUseServerSummerTable) {
           const summaryQuery = {
@@ -157,7 +188,11 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         resolve(data);
       } catch (errorData) {
         if (!errorData.errorIsShow) {
-          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+          global.NOTIFICATION_SYSTEM.notify(
+            getServerErrorNotification(
+              `${this.props.serviceUrl}: ${errorData.error_text}`,
+            ),
+          );
         }
         reject({ ...errorData, errorIsShow: true });
       }
@@ -169,13 +204,19 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       this.props.getTableMetaInfo(this.props.serviceName);
     } catch (errorData) {
       if (!errorData.errorIsShow) {
-        global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
+        global.NOTIFICATION_SYSTEM.notify(
+          getServerErrorNotification(
+            `${this.props.serviceUrl}: ${errorData.error_text}`,
+          ),
+        );
       }
     }
   }
 
   handleReportSubmit = async (headerData: object) => {
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
 
     try {
@@ -205,7 +246,9 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
          * Сделано синхронно, чтобы на момент изменения просов с урлом стейт был уже обновлён.
          */
         this.setState(() => {
-          this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(query)}`);
+          this.props.history.push(
+            `${this.props.reportUrl}?${queryString.stringify(query)}`,
+          );
 
           return {
             fetchedBySubmitButton: true,
@@ -232,13 +275,19 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         return;
       }
 
-      this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(newQuery)}`);
+      this.props.history.push(
+        `${this.props.reportUrl}?${queryString.stringify(newQuery)}`,
+      );
     } catch (errorData) {
-        if (!errorData.errorIsShow) {
-          global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`${this.props.serviceUrl}: ${errorData.error_text}`));
-        }
+      if (!errorData.errorIsShow) {
+        global.NOTIFICATION_SYSTEM.notify(
+          getServerErrorNotification(
+            `${this.props.serviceUrl}: ${errorData.error_text}`,
+          ),
+        );
+      }
     }
-  }
+  };
 
   externalFilter = (filterValues: any) => {
     this.setState({ filterValues });
@@ -263,7 +312,7 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
         });
       }
     }
-  }
+  };
 
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
     const moveDownIsPermitted = 'lower' in this.props.meta.levels;
@@ -274,11 +323,13 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const lowerLevel = this.props.meta.levels.lower.level;
     const lowerLevelFilters = this.props.meta.levels.lower.filter;
     const lowerLevelSelectors = this.props.meta.levels.lower.filter
-      .map((selector) => ({[selector]: selectedRow.props.data[selector] }))
+      .map((selector) => ({ [selector]: selectedRow.props.data[selector] }))
       .reduce((prev, next) => ({ ...prev, ...next }));
 
     const currentLevelFilters = this.props.meta.levels.current.filter;
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
 
     const query = {
@@ -291,23 +342,22 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
     const filteredQuery = omit(query, filterDifference);
 
     this.setState((prevState) => {
-      this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`);
+      this.props.history.push(
+        `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
+      );
 
       return {
         fetchedByMoveDownButton: true,
         selectedRow: selectedRow.props.data,
       };
     });
-
-  }
+  };
 
   handleMoveUp = () => {
     const higherLevel = this.props.meta.levels.higher.level;
     const currentLevelSelectors = this.props.meta.levels.current.filter;
     const {
-      location: {
-        search,
-      },
+      location: { search },
     } = this.props;
     const searchObject = queryString.parse(search);
 
@@ -318,71 +368,82 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 
     const filteredQuery = omit(query, currentLevelSelectors);
 
-    this.props.history.push(`${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`);
-  }
+    this.props.history.push(
+      `${this.props.reportUrl}?${queryString.stringify(filteredQuery)}`,
+    );
+  };
 
   handleReportPrint = async () => {
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
     this.setState({ exportFetching: true });
 
     let payload: any = {
-      rows: [
-        ...this.props.list,
-      ],
+      rows: [...this.props.list],
     };
 
     if (this.props.notUseServerSummerTable) {
       payload = {
         rows: {
-          report: [
-            ...this.props.list,
-          ],
-          summary: [
-            ...this.props.summaryList,
-          ],
+          report: [...this.props.list],
+          summary: [...this.props.summaryList],
         },
       };
     }
 
     try {
-      await this.props.exportByPostData(
-        payload,
-        searchObject,
-      );
+      await this.props.exportByPostData(payload, searchObject);
     } catch (e) {
       console.warn(e); // tslint:disable-line
     }
 
     this.setState({ exportFetching: false });
-  }
+  };
 
-  makeTableSchema(schemaMakers = {}, additionalSchemaMakers, tableMetaInfo: IReportTableMeta, forWhat) {
+  makeTableSchema(
+    schemaMakers = {},
+    additionalSchemaMakers,
+    tableMetaInfo: IReportTableMeta,
+    forWhat,
+  ) {
     const fields = get(tableMetaInfo, 'fields', []) || [];
-    const cols = fields.reduce((tableMeta, field) => {
-      const [[fieldName, { name: displayName, is_row }]] = Object.entries(field);
+    const cols = fields
+      .reduce((tableMeta, field) => {
+        const [[fieldName, { name: displayName, is_row }]] = Object.entries(
+          field,
+        );
 
-      if (!is_row) {
-        let initialSchema: IDataTableColSchema;
+        if (!is_row) {
+          let initialSchema: IDataTableColSchema;
 
-        initialSchema = {
-          name: fieldName,
-          displayName,
-          filter: {
-            type: 'multiselect',
-            options: undefined,
-          },
-        };
-        if (forWhat === 'mainList' && this.props.data.result) {
-          (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(this.props.data.result.rows.map(({ [fieldName]: value }: any) => ({ value, label: value })), 'value').filter(({ value }) => Boolean(value));
+          initialSchema = {
+            name: fieldName,
+            displayName,
+            filter: {
+              type: 'multiselect',
+              options: undefined,
+            },
+          };
+          if (forWhat === 'mainList' && this.props.data.result) {
+            (initialSchema.filter as IDataTableColFilter).options = uniqBy<
+              IReactSelectOption
+            >(
+              this.props.data.result.rows.map(
+                ({ [fieldName]: value }: any) => ({ value, label: value }),
+              ),
+              'value',
+            ).filter(({ value }) => Boolean(value));
+          }
+
+          const renderer = schemaMakers[fieldName] || identity;
+          tableMeta.push(renderer(initialSchema, this.props));
         }
 
-        const renderer = schemaMakers[fieldName] || identity;
-        tableMeta.push(renderer(initialSchema, this.props));
-      }
-
-      return tableMeta;
-    }, []).concat(...additionalSchemaMakers);
+        return tableMeta;
+      }, [])
+      .concat(...additionalSchemaMakers);
 
     return { cols };
   }
@@ -399,57 +460,62 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       location: { search },
     } = this.props;
 
-    const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props.headerComponent;
+    const Header: React.ComponentClass<IPropsReportHeaderCommon> = this.props
+      .headerComponent;
 
-    const tableMeta = this.makeTableSchema(schemaMakers, additionalSchemaMakers, tableMetaInfo, 'mainList');
-    const summaryTableMeta = this.makeTableSchema({}, [], { fields: summaryTableMetaInfo }, 'summaryList');
+    const tableMeta = this.makeTableSchema(
+      schemaMakers,
+      additionalSchemaMakers,
+      tableMetaInfo,
+      'mainList',
+    );
+    const summaryTableMeta = this.makeTableSchema(
+      {},
+      [],
+      { fields: summaryTableMetaInfo },
+      'summaryList',
+    );
 
     const moveUpIsPermitted = 'higher' in this.props.meta.levels;
     const isListEmpty = this.props.list.length === 0;
 
-    const preloader = (
-      (
-        this.props.reportMetaFetching ||
-        this.props.reportDataFetching ||
-        this.state.exportFetching
-      ) &&
-      <Preloader typePreloader="mainpage"/>
-    );
-    const moveUpButton = (
-      moveUpIsPermitted &&
-      <Button bsSize="small" onClick={this.handleMoveUp}>На уровень выше</Button>
+    const preloader = (this.props.reportMetaFetching ||
+      this.props.reportDataFetching ||
+      this.state.exportFetching) && <Preloader typePreloader="mainpage" />;
+    const moveUpButton = moveUpIsPermitted && (
+      <Button bsSize="small" onClick={this.handleMoveUp}>
+        На уровень выше
+      </Button>
     );
 
-    const isSummaryEnable = (
-      'summary' in this.props.meta.levels &&
-      this.props.summaryList.length > 0
-    );
+    const isSummaryEnable =
+      'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
 
-    const summaryTable = (isSummaryEnable && (
-      this.props.notUseServerSummerTable ?
-      <DataTableNew
-        title={'Итого'}
-        tableMeta={summaryTableMeta}
-        data={this.props.summaryList}
-        enableSort={false}
-        enumerated={enumerated}
-        uniqName={this.state.uniqName}
-        noFilter
-      />
-      :
-      <Table
-        className="data-other"
-        title={'Итого'}
-        tableMeta={summaryTableMeta}
-        results={this.props.summaryList}
-        renderers={this.props.summaryRenderes || {}}
-        onRowSelected={undefined}
-        enumerated={enumerated}
-        enableSort={false}
-        noFilter
-      />
-    )
-    );
+    const summaryTable =
+      isSummaryEnable &&
+      (this.props.notUseServerSummerTable ? (
+        <DataTableNew
+          title={'Итого'}
+          tableMeta={summaryTableMeta}
+          data={this.props.summaryList}
+          enableSort={false}
+          enumerated={enumerated}
+          uniqName={this.state.uniqName}
+          noFilter
+        />
+      ) : (
+        <Table
+          className="data-other"
+          title={'Итого'}
+          tableMeta={summaryTableMeta}
+          results={this.props.summaryList}
+          renderers={this.props.summaryRenderes || {}}
+          onRowSelected={undefined}
+          enumerated={enumerated}
+          enableSort={false}
+          noFilter
+        />
+      ));
 
     /**
      * Через специальный для каждого хедера колбэк обрабатываются параметры урла,
@@ -464,13 +530,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
       ...this.props.meta,
     };
 
-    const title = isEmpty(mergedTableMetaInfo.name) ?
+    const title = isEmpty(mergedTableMetaInfo.name) ? (
       this.props.title
-      :
+    ) : (
       <Title
         text={mergedTableMetaInfo.name}
         hint={mergedTableMetaInfo.description}
-      />;
+      />
+    );
+    console.log(this.state.filterValues);
 
     return (
       <EtsPageWrap inheritDisplay>
@@ -494,15 +562,15 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
           needMyFilter={!this.props.notUseServerSummerTable}
           filterValues={this.state.filterValues}
           useServerFilter
-          {...this.props.tableProps}
-        >
+          {...this.props.tableProps}>
           <Button
             bsSize="small"
             disabled={isListEmpty}
-            onClick={this.handleReportPrint}
-          ><Glyphicon glyph="download-alt" /></Button>
+            onClick={this.handleReportPrint}>
+            <Glyphicon glyph="download-alt" />
+          </Button>
           {moveUpButton}
-        </ Table>
+        </Table>
         {summaryTable}
         {preloader}
       </EtsPageWrap>
@@ -513,7 +581,8 @@ class ReportContainer extends React.Component<IPropsReportContainer, IStateRepor
 const mapStateToProps = (state) => ({
   ...state.reports,
 });
-const mapDispatchToProps = (dispatch) => bindActionCreators<any, any>(reportActionCreators, dispatch);
+const mapDispatchToProps = (dispatch) =>
+  bindActionCreators<any, any>(reportActionCreators, dispatch);
 
 export default compose<IPropsReportContainer, any>(
   withRouter,

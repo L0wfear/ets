@@ -28,6 +28,6 @@ class SspList extends React.Component<PropsSspList, StateSspList> {
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(SspList);

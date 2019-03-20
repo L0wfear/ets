@@ -5,6 +5,7 @@ import SecondMenuItem from 'components/new/ui/app_header/desktop/left/page_menu/
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { withRouterMatchUrl, isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
+import { compose } from 'recompose';
 
 class MainMenuItem extends React.Component<any, any> {
   node = React.createRef<any>();
@@ -130,4 +131,7 @@ class MainMenuItem extends React.Component<any, any> {
   }
 }
 
-export default showHeaderMenu(withRouterMatchUrl(MainMenuItem));
+export default compose< any, any>(
+  withRouterMatchUrl,
+  showHeaderMenu,
+)(MainMenuItem);

@@ -1,8 +1,5 @@
 import Model from './Model';
 
-const MAP_INITIAL_CENTER = [-399.43090337943863, -8521.192605428025];
-const MAP_INITIAL_ZOOM = 3;
-
 /**
  * Пользователь
  * @extends Model
@@ -20,6 +17,7 @@ export default class User extends Model {
       login: 'string',
       role: 'string',
       permissions: 'array',
+      permissionsSet: 'set',
       user_id: 'integer',
       structures: 'array',
       structure_id: 'integer',
@@ -29,15 +27,12 @@ export default class User extends Model {
       okrug_id: 'integer',
       okrug_name: 'string',
       stableRedirect: 'string',
+      isGlavControl: 'boolean',
     };
   }
 
   constructor(user = {}) {
     super();
-
-    if (user === null) {
-      user = {};
-    }
 
     this.company_id = user.company_id;
     this.company_name = user.company_name;
@@ -55,18 +50,10 @@ export default class User extends Model {
     this.map_config = user.map_config || {};
     this.fio = user.fio;
     this.permissions = user.permissions || [];
+    this.permissionsSet = user.permissionsSet || new Set();
     this.okrug_id = user.okrug_id;
     this.okrug_name = user.okrug_name;
     this.stableRedirect = user.stableRedirect || '/login';
-  }
-
-  getCompanyMapConfig = () => {
-    if (this.map_config && this.map_config.zoom && this.map_config.coordinates) {
-      return this.map_config;
-    }
-    return {
-      coordinates: MAP_INITIAL_CENTER,
-      zoom: MAP_INITIAL_ZOOM,
-    };
+    this.isGlavControl = user.isGlavControl || false;
   }
 }

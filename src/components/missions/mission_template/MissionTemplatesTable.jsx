@@ -2,12 +2,9 @@ import React from 'react';
 import Table from 'components/ui/table/DataTable';
 import { get } from 'lodash';
 
-const forColumnLabelFunction = for_column => for_column ? 'Да' : 'Нет';
+const forColumnLabelFunction = (for_column) => (for_column ? 'Да' : 'Нет');
 
-export const getTableMeta = ({
-  structures = [],
-  govNumberFilter = [],
-}) => {
+export const getTableMeta = ({ structures = [], govNumberFilter = [] }) => {
   const tableMeta = {
     cols: [
       {
@@ -33,7 +30,10 @@ export const getTableMeta = ({
         type: 'number',
         filter: {
           type: 'multiselect',
-          options: govNumberFilter.map(car => ({ label: car.gov_number, value: car.asuods_id })),
+          options: govNumberFilter.map((car) => ({
+            label: car.gov_number,
+            value: car.asuods_id,
+          })),
         },
         cssClassName: 'width120',
       },
@@ -114,9 +114,15 @@ export const getTableMeta = ({
 };
 
 const renderers = {
-  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-  car_ids: ({ rowData }) => <div>{get(rowData, 'car_gov_numbers_text') || '-'}</div>,
-  car_type_names: ({ rowData }) => <div>{get(rowData, 'car_type_names_text') || '-'}</div>,
+  structure_id: ({ rowData }) => (
+    <div>{get(rowData, 'structure_name') || '-'}</div>
+  ),
+  car_ids: ({ rowData }) => (
+    <div>{get(rowData, 'car_gov_numbers_text') || '-'}</div>
+  ),
+  car_type_names: ({ rowData }) => (
+    <div>{get(rowData, 'car_type_names_text') || '-'}</div>
+  ),
   for_column: ({ data }) => <div>{forColumnLabelFunction(data)}</div>,
 };
 

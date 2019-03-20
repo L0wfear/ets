@@ -1,14 +1,16 @@
-import { GeozoneBridgesService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
 
 export const registryKey = 'BridgesList';
 
-export const config: TypeConfigData = {
-  Service: GeozoneBridgesService,
+export const config: TypeConfigData<Bridges> = {
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetBridges'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobBridges'],
+  },
   registryKey,
   header: {
     title: 'Справочник мостов',

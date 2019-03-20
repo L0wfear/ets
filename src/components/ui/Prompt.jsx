@@ -2,6 +2,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';
@@ -20,7 +21,11 @@ class Prompt extends React.Component {
   }
 
   showConfirm = ({
-    title, body, bsSize = 'small', defaultState = {}, checkOnOk = () => true,
+    title,
+    body,
+    bsSize = 'small',
+    defaultState = {},
+    checkOnOk = () => true,
   }) => {
     const promise = new Promise((res, rej) => {
       this.setState({
@@ -35,42 +40,42 @@ class Prompt extends React.Component {
       });
     });
     return promise;
-  }
+  };
 
   hide = () => {
     this.setState({ isVisible: false });
-  }
+  };
 
   ok = () => {
     if (this.state.checkOnOk(this)) {
       this.state.res(this.state);
       this.hide();
     }
-  }
+  };
 
   cancel = () => {
     this.state.rej();
     this.hide();
-  }
+  };
 
   render() {
     return (
-      <Modal
+      <EtsModal
         show={this.state.isVisible}
         bsSize={this.state.bsSize}
-        id="delete-form"
-      >
-        <Modal.Header>
-          {this.state.title}
-        </Modal.Header>
+        deepLvl={65}
+        id="delete-form">
+        <Modal.Header>{this.state.title}</Modal.Header>
         <Modal.Body>
-          {typeof this.state.body === 'function' ? this.state.body(this) : this.state.body}
+          {typeof this.state.body === 'function'
+            ? this.state.body(this)
+            : this.state.body}
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.ok}>Ок</Button>
           <Button onClick={this.cancel}>Отмена</Button>
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }

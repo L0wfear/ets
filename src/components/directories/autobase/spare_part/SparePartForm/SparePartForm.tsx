@@ -8,7 +8,6 @@ import sparePartPermissions from 'components/directories/autobase/spare_part/con
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { sparePartFormSchema } from 'components/directories/autobase/spare_part/SparePartForm/spare-part-from-schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -47,14 +46,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
 
     this.setState({ sparePartGroupOptions: data.map(defaultSelectListMapper) });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -73,7 +65,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-spare-part" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-spare-part" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -86,7 +78,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 error={errors.spare_part_group_id}
                 options={sparePartGroupOptions}
                 value={state.spare_part_group_id}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="spare_part_group_id"
                 disabled={!isPermitted}
               />
@@ -95,7 +87,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 label="Подгруппа"
                 value={state.name}
                 error={errors.name}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="name"
                 disabled={!isPermitted}
               />
@@ -104,7 +96,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 label="Номер поставки"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="number"
                 disabled={!isPermitted}
               />
@@ -114,7 +106,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 error={errors.measure_unit_id}
                 options={measureUnitOptions}
                 value={state.measure_unit_id}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="measure_unit_id"
                 disabled={!isPermitted}
               />
@@ -123,7 +115,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 label="Количество"
                 value={state.quantity}
                 error={errors.quantity}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="quantity"
                 disabled={!isPermitted}
               />
@@ -133,7 +125,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 date={state.supplied_at}
                 time={false}
                 error={errors.supplied_at}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="supplied_at"
                 disabled={!isPermitted}
               />
@@ -150,7 +142,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
             <DivNone />
           )
         }
-        <Button onClick={this.handleHide}>Отменить</Button>
+        <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
         </Modal.Footer>
       </Modal>
     );
@@ -161,22 +153,6 @@ export default compose<PropsSparePart, OwnSparePartProps>(
   connect<StatePropsSparePart, DispatchPropsSparePart, OwnSparePartProps, ReduxState>(
     null,
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateSparePart(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateSparePart(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       autobaseGetSetMeasureUnit: () => (
         dispatch(
           autobaseActions.autobaseGetMeasureUnit(
@@ -197,6 +173,8 @@ export default compose<PropsSparePart, OwnSparePartProps>(
   ),
   withForm<PropsSparePartWithForm, SparePart>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateSparePart,
+    updateAction: autobaseActions.autobaseUpdateSparePart,
     mergeElement: (props) => {
       return getDefaultSparePartElement(props.element);
     },

@@ -28,6 +28,6 @@ class FuelingWaterList extends React.Component<PropsFuelingWaterList, StateFueli
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(FuelingWaterList);

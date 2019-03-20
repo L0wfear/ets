@@ -5,7 +5,7 @@ import SimpleLinkA from 'components/new/ui/simple_a/link';
 export const AppHeaderNav = styled.nav`
   display: flex;
   justify-content: space-between;
-  z-index: 1;
+  z-index: 100;
   background-color: #292929;
 `;
 
@@ -17,13 +17,13 @@ export const DefaultFirstDt = styled.div<{ active?: boolean }>`
   font-weight: 400;
   white-space: nowrap;
   cursor: pointer;
-  color: ${({ active }) => active ? 'back' : 'white'};
+  color: ${({ active }) => (active ? 'back' : 'white')};
   position: relative;
-  background-color: ${({ active }) => active ? '#e7e7e7' : 'initial'};
+  background-color: ${({ active }) => (active ? '#e7e7e7' : 'initial')};
   text-decoration: none;
 
   :hover {
-    background-color: ${({ active }) => active ? '#e7e7e7' : '#4c4c4c'};
+    background-color: ${({ active }) => (active ? '#e7e7e7' : '#4c4c4c')};
   }
 `;
 

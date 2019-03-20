@@ -2,10 +2,13 @@ import { parseFilename } from 'utils/content-disposition';
 import { hasWarningNotification } from 'utils/notifications';
 
 function urlencode(jsonObject) {
-  return Object.keys(jsonObject).map(k => `${k}=${encodeURIComponent(jsonObject[k])}`).join('&');
+  return Object.keys(jsonObject)
+    .map((k) => `${k}=${encodeURIComponent(jsonObject[k])}`)
+    .join('&');
 }
 
-function httpMethodBlob(url, data, method) {
+function httpMethodBlob(urlOwn, data, method) {
+  let url = urlOwn;
   const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
 
   const options = {
@@ -22,28 +25,27 @@ function httpMethodBlob(url, data, method) {
     url = `${url}?${urlencode(data)}`;
   }
 
-  return fetch(url, options)
-    .then(async (r) => {
-      const contentDisposition = r.headers.get('Content-Disposition');
-      const defaultResult = {
-        blob: null,
-        fileName: null,
-      };
+  return fetch(url, options).then(async (r) => {
+    const contentDisposition = r.headers.get('Content-Disposition');
+    const defaultResult = {
+      blob: null,
+      fileName: null,
+    };
 
-      if (contentDisposition === null) {
-        const response = await r.json();
-        hasWarningNotification(response);
-        return defaultResult;
-      }
+    if (contentDisposition === null) {
+      const response = await r.json();
+      hasWarningNotification(response);
+      return defaultResult;
+    }
 
-      const blob = await r.blob();
-      const fileName = parseFilename(contentDisposition);
+    const blob = await r.blob();
+    const fileName = parseFilename(contentDisposition);
 
-      return {
-        blob,
-        fileName,
-      };
-    });
+    return {
+      blob,
+      fileName,
+    };
+  });
 }
 
 export const getBlob = async (url, data) => {

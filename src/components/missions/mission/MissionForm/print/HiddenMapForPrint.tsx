@@ -2,7 +2,7 @@ import * as React from 'react';
 import RouteInfoMap from 'components/new/pages/routes_list/route-info/map/RouteInfoMap';
 import { DivNone } from 'global-styled/global-styled';
 import { AbsoluteHiddenOverflow } from 'components/missions/mission/MissionForm/print/styled/styled';
-import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 interface IPropsHiddenMapForPrint {
   route: Route;

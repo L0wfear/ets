@@ -1,4 +1,4 @@
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import ElementsList from 'components/ElementsList';
@@ -9,11 +9,13 @@ import { connect } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'battery-registry';
 
-@connectToStores(['session'])
 @exportable({ entity: `autobase/${AUTOBASE.batteryRegistry}` })
 @staticProps({
   entity: 'autobase_battery',
@@ -31,7 +33,7 @@ class BatteryRegList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   init() {
     this.props.batteryRegistryGetAndSetInStore();
@@ -41,18 +43,18 @@ class BatteryRegList extends ElementsList {
     this.props.autobaseResetSetBatteryRegistry();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
@@ -67,11 +69,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       batteryRegistryList: getAutobaseState(state).batteryRegistryList,
+      userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      batteryRegistryGetAndSetInStore: () => (
+    (dispatch) => ({
+      batteryRegistryGetAndSetInStore: () =>
         dispatch(
           autobaseActions.batteryRegistryGetAndSetInStore(
             {},
@@ -79,23 +82,15 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      autobaseResetSetBatteryRegistry: () => (
+        ),
+      autobaseResetSetBatteryRegistry: () =>
+        dispatch(autobaseActions.autobaseResetSetBatteryRegistry()),
+      autobaseRemoveBatteryRegistry: (id) =>
         dispatch(
-          autobaseActions.autobaseResetSetBatteryRegistry(),
-        )
-      ),
-      autobaseRemoveBatteryRegistry: id => (
-        dispatch(
-          autobaseActions.autobaseRemoveBatteryRegistry(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          autobaseActions.autobaseRemoveBatteryRegistry(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(BatteryRegList);

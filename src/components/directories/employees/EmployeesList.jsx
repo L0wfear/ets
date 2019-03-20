@@ -1,6 +1,6 @@
 import * as queryString from 'query-string';
 
-import { connectToStores, staticProps, exportable } from 'utils/decorators';
+import { staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import EmployeeFormWrap from 'components/directories/employees/EmployeeForm/EmployeeFormWrap';
 import EmployeesTable from 'components/directories/employees/EmployeesTable';
@@ -10,11 +10,13 @@ import { connect } from 'react-redux';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { getEmployeeState } from 'redux-main/reducers/selectors';
+import {
+  getEmployeeState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 
 const loadingPageName = 'employees';
 
-@connectToStores(['session'])
 @exportable({ entity: 'employee' })
 @staticProps({
   entity: 'employee',
@@ -34,12 +36,14 @@ class EmployeesList extends ElementsList {
     } catch (e) {
       //
     }
-  }
+  };
 
   async init() {
     const { employeeIndex } = await this.props.employeeGetAndSetInStore();
 
-    const { location: { search } } = this.props;
+    const {
+      location: { search },
+    } = this.props;
     const searchObject = queryString.parse(search);
 
     if (searchObject.employee_id) {
@@ -60,22 +64,37 @@ class EmployeesList extends ElementsList {
     this.props.employeeEmployeeResetSetEmployee();
   }
 
-  onFormHide = (isSubmited) => {
+  onFormHide = (isSubmitted) => {
     const changeState = {
       showForm: false,
     };
 
-    if (isSubmited) {
+    if (isSubmitted) {
       this.init();
       changeState.selectedElement = null;
     }
 
     this.setState(changeState);
-  }
+  };
 
   getAdditionalFormProps() {
     return {
       loadingPageName,
+    };
+  }
+
+  getBasicProps() {
+    const { listName } = this.constructor;
+
+    return {
+      data: this.props[listName],
+      entity: this.entity,
+      filterValues: {
+        active: {
+          type: 'multiselect',
+          value: [1],
+        },
+      },
     };
   }
 }
@@ -86,11 +105,12 @@ export default compose(
     typePreloader: 'mainpage',
   }),
   connect(
-    state => ({
+    (state) => ({
       employeeList: getEmployeeState(state).employeeList,
+      userData: getSessionState(state).userData,
     }),
-    dispatch => ({
-      employeeGetAndSetInStore: () => (
+    (dispatch) => ({
+      employeeGetAndSetInStore: () =>
         dispatch(
           employeeActions.employeeGetAndSetInStore(
             {},
@@ -98,23 +118,15 @@ export default compose(
               page: loadingPageName,
             },
           ),
-        )
-      ),
-      employeeEmployeeResetSetEmployee: () => (
+        ),
+      employeeEmployeeResetSetEmployee: () =>
+        dispatch(employeeActions.employeeEmployeeResetSetEmployee()),
+      employeeRemoveEmployee: (id) =>
         dispatch(
-          employeeActions.employeeEmployeeResetSetEmployee(),
-        )
-      ),
-      employeeRemoveEmployee: id => (
-        dispatch(
-          employeeActions.employeeRemoveEmployee(
-            id,
-            {
-              page: loadingPageName,
-            },
-          ),
-        )
-      ),
+          employeeActions.employeeRemoveEmployee(id, {
+            page: loadingPageName,
+          }),
+        ),
     }),
   ),
 )(EmployeesList);

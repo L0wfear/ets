@@ -1,14 +1,10 @@
 import { SparePart, MeasureUnit, SparePartGroup } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import {
-  AutobaseCreateSparePart,
-  AutobaseUpdateSparePart,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part/@types';
 import { GetMeasureUnit } from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit/@types';
 import { GetSparePartGroup } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsSparePartFormWrap = {
   showForm: boolean;
@@ -22,15 +18,13 @@ export type PropsSparePartFormWrap = {
 
 export type StatePropsSparePart = {};
 export type DispatchPropsSparePart = {
-  createAction: AutobaseCreateSparePart;
-  updateAction: AutobaseUpdateSparePart;
   autobaseGetSetMeasureUnit: GetMeasureUnit;
   autobaseGetSetSparePartGroup: GetSparePartGroup;
 };
 export type OwnSparePartProps = {
   element: SparePart | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 
@@ -47,6 +41,6 @@ export type PropsSparePart = OutputWithFormProps<
   any
 >;
 export type StateSparePart = {
-  measureUnitOptions: DefaultSelectListMapper<MeasureUnit['id'], MeasureUnit['name'], MeasureUnit>;
-  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup['id'], SparePartGroup['name'], SparePartGroup>;
+  measureUnitOptions: DefaultSelectListMapper<MeasureUnit>;
+  sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup>;
 };

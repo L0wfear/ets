@@ -5,11 +5,29 @@ const MISSIONS = createPath('MISSIONS');
 
 export const MISSIONS_SET_DATA = MISSIONS`SET_DATA`;
 
-const initialState: IStateMissions = {
+export const initialMissionsState: IStateMissions = {
   missionTemplateList: [],
+  carForMissionTemplateList: [],
+  carForMissionTemplateIndex: {},
+
+  dutyMissionTemplateList: [],
+
+  dutyMissionData: {
+    dutyMissionList: [],
+    dependeceOrder: null,
+    dependeceTechnicalOperation: null,
+    availableMissionsToBind: [],
+    total_count: 0,
+  },
+  missionData: {
+    list: [],
+    dependeceOrder: null,
+    dependeceTechnicalOperation: null,
+    total_count: 0,
+  },
 };
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialMissionsState, { type, payload }) => {
   switch (type) {
     case MISSIONS_SET_DATA: {
       return {

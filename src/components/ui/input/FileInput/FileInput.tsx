@@ -24,7 +24,7 @@ const FileListItem: React.FunctionComponent<any> = ({
       bsClass="close"
       bsSize="xsmall"
       onClick={onFileRemove}
-      boundKeys={[index]}
+      boundKeys={index}
       disabled={disabled}
     ><span>×</span>
     </Button>

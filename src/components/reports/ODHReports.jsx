@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import * as PropTypes from 'prop-types';
 import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
@@ -8,14 +9,12 @@ import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Field from 'components/ui/Field';
 import connectToStores from 'flummox/connect';
 
-import {
-  EtsPageWrap,
-} from 'global-styled/global-styled';
+import { EtsPageWrap } from 'global-styled/global-styled';
 
 class ODHReports extends Component {
   static contextTypes = {
-    flux: React.PropTypes.object,
-  }
+    flux: PropTypes.object,
+  };
 
   constructor(props) {
     super(props);
@@ -36,7 +35,10 @@ class ODHReports extends Component {
 
   render() {
     const { typesList = [] } = this.props;
-    const TYPES = typesList.map(({ asuods_id, full_name }) => ({ label: full_name, value: asuods_id }));
+    const TYPES = typesList.map(({ asuods_id, full_name }) => ({
+      label: full_name,
+      value: asuods_id,
+    }));
 
     return (
       <EtsPageWrap inheritDisplay>
@@ -46,7 +48,6 @@ class ODHReports extends Component {
 
         <Row>
           <Col md={12}>
-
             <div className="panel panel-default">
               <div className="panel-heading">Генерация отчетов</div>
               <div className="panel-body odh-generation">
@@ -55,10 +56,16 @@ class ODHReports extends Component {
                     <label>Период</label>
                     <Row>
                       <Col md={6}>
-                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker
+                          date={new Date()}
+                          onChange={this.handleChange.bind(this, 'date_start')}
+                        />
                       </Col>
                       <Col md={6}>
-                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker
+                          date={new Date()}
+                          onChange={this.handleChange.bind(this, 'date_start')}
+                        />
                       </Col>
                     </Row>
                   </Col>
@@ -68,7 +75,10 @@ class ODHReports extends Component {
                       label="Типы ТС"
                       options={TYPES}
                       value={null}
-                      onChange={this.handleChange.bind(this, 'responsible_person_id')}
+                      onChange={this.handleChange.bind(
+                        this,
+                        'responsible_person_id',
+                      )}
                     />
                   </Col>
                   <Col md={2}>
@@ -76,7 +86,10 @@ class ODHReports extends Component {
                       type="string"
                       label="Норма, ПМ"
                       value={null}
-                      onChange={this.handleChange.bind(this, 'responsible_person_id')}
+                      onChange={this.handleChange.bind(
+                        this,
+                        'responsible_person_id',
+                      )}
                     />
                   </Col>
                   <Col md={2}>
@@ -84,7 +97,10 @@ class ODHReports extends Component {
                       type="string"
                       label="ТУ"
                       value={null}
-                      onChange={this.handleChange.bind(this, 'responsible_person_id')}
+                      onChange={this.handleChange.bind(
+                        this,
+                        'responsible_person_id',
+                      )}
                     />
                   </Col>
                   <Col md={2}>
@@ -102,10 +118,16 @@ class ODHReports extends Component {
                     <label>Период</label>
                     <Row>
                       <Col md={6}>
-                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker
+                          date={new Date()}
+                          onChange={this.handleChange.bind(this, 'date_start')}
+                        />
                       </Col>
                       <Col md={6}>
-                        <DatePicker date={new Date()} onChange={this.handleChange.bind(this, 'date_start')} />
+                        <DatePicker
+                          date={new Date()}
+                          onChange={this.handleChange.bind(this, 'date_start')}
+                        />
                       </Col>
                     </Row>
                   </Col>
@@ -118,10 +140,8 @@ class ODHReports extends Component {
                 </Row>
               </div>
             </div>
-
           </Col>
         </Row>
-
       </EtsPageWrap>
     );
   }

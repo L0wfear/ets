@@ -3,7 +3,10 @@ import { withProps } from 'recompose';
 import * as moment from 'moment';
 
 import { IReportProps } from 'components/reports/@types/common.h';
-import { ISchemaMaker, IDataTableColSchema } from 'components/ui/table/@types/schema.h';
+import {
+  ISchemaMaker,
+  IDataTableColSchema,
+} from 'components/ui/table/@types/schema.h';
 
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
@@ -15,12 +18,10 @@ const reportUrl = 'long-repair';
 const serviceName = 'LongRepair';
 
 const testEndRepairWithLongTime20 = (lineData) => {
-  const {
-    fact_date_start,
-    fact_date_end,
-  } = lineData;
+  const { fact_date_start, fact_date_end } = lineData;
 
-  const ansTest = moment(fact_date_end).diff(moment(fact_date_start), 'days') > 20;
+  const ansTest =
+    moment(fact_date_end).diff(moment(fact_date_start), 'days') > 20;
 
   return ansTest;
 };
@@ -33,8 +34,14 @@ const testEndRepairWithFactMorePlan = (lineData) => {
     plan_date_end,
   } = lineData;
 
-  const factDiff = moment(fact_date_end).diff(moment(fact_date_start), 'minutes');
-  const planDiff = moment(plan_date_end).diff(moment(plan_date_start), 'minutes');
+  const factDiff = moment(fact_date_end).diff(
+    moment(fact_date_start),
+    'minutes',
+  );
+  const planDiff = moment(plan_date_end).diff(
+    moment(plan_date_start),
+    'minutes',
+  );
 
   const ansTest = factDiff > planDiff;
 
@@ -42,10 +49,7 @@ const testEndRepairWithFactMorePlan = (lineData) => {
 };
 
 const testEndRepairWithLongTime20NotEndFact = (lineData) => {
-  const {
-    fact_date_start,
-    fact_date_end,
-  } = lineData;
+  const { fact_date_start, fact_date_end } = lineData;
 
   if (fact_date_end) {
     return false;
@@ -69,7 +73,10 @@ const testEndRepairWithFactMorePlanNotEndFact = (lineData) => {
   }
 
   const factDiff = moment().diff(moment(fact_date_start), 'minutes');
-  const planDiff = moment(plan_date_end).diff(moment(plan_date_start), 'minutes');
+  const planDiff = moment(plan_date_end).diff(
+    moment(plan_date_start),
+    'minutes',
+  );
 
   const ansTest = factDiff > planDiff;
 
@@ -112,20 +119,38 @@ const additionalSchemaMakers: IDataTableColSchema[] = [
       type: 'select',
       filterFunction(value, lineData) {
         switch (value) {
-          case 1: return true;
-          case 2: return testEndRepairWithLongTime20(lineData);
-          case 3: return testEndRepairWithFactMorePlan(lineData);
-          case 4: return testEndRepairWithLongTime20NotEndFact(lineData);
-          case 5: return testEndRepairWithFactMorePlanNotEndFact(lineData);
-          default: return true;
+          case 1:
+            return true;
+          case 2:
+            return testEndRepairWithLongTime20(lineData);
+          case 3:
+            return testEndRepairWithFactMorePlan(lineData);
+          case 4:
+            return testEndRepairWithLongTime20NotEndFact(lineData);
+          case 5:
+            return testEndRepairWithFactMorePlanNotEndFact(lineData);
+          default:
+            return true;
         }
-     },
-     options: [
-       { value: 1, label: 'Все типы'},
-       { value: 2, label: 'Ремонт завершен, длительность ремонта более 20 дней'},
-       { value: 3, label: 'Ремонт завершен, фактическая длительность больше плановой'},
-       { value: 4, label: 'Ремонт не завершен, длительность ремонта более 20 дней'},
-       { value: 5, label: 'Ремонт не завершен, фактическая длительность больше плановой'},
+      },
+      options: [
+        { value: 1, label: 'Все типы' },
+        {
+          value: 2,
+          label: 'Ремонт завершен, длительность ремонта более 20 дней',
+        },
+        {
+          value: 3,
+          label: 'Ремонт завершен, фактическая длительность больше плановой',
+        },
+        {
+          value: 4,
+          label: 'Ремонт не завершен, длительность ремонта более 20 дней',
+        },
+        {
+          value: 5,
+          label: 'Ремонт не завершен, фактическая длительность больше плановой',
+        },
       ],
     },
   },
@@ -139,13 +164,17 @@ const renderers = {
 };
 
 const tableProps = {
-  filterValues: {
-    'additionalFilter#1': 1,
+  filterValuesRaw: {
+    'additionalFilter#1': {
+      type: 'select',
+      value: 1,
+    },
   },
 };
 
 const reportProps: IReportProps = {
-  title: 'Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне',
+  title:
+    'Отчет по транспортным средствам, простаивающим длительное время в ремонтной зоне',
   serviceName,
   reportUrl,
   serviceUrl,

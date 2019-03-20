@@ -28,6 +28,6 @@ class MspList extends React.Component<PropsMspList, StateMspList> {
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(MspList);

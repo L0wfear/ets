@@ -1,7 +1,7 @@
 import ApiServiceFactory from './ApiServiceFactory';
-import config from '../config';
+import config from 'config';
 
-const conf: any = config;
+const conf = config;
 
 const ETS_API_FACTORY = new ApiServiceFactory({
   apiUrl: conf.backend,

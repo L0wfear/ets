@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import TemplateDashboard from 'components/new/ui/template/dashboard/TemplateDashboard';
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
@@ -7,9 +7,9 @@ const Component = React.lazy(() => (
 ));
 
 export default (props) => (
-      <ErrorBoundaryRegistry>
-        <React.Suspense fallback={<LoadingComponent />}>
-          <Component {...props}/>
-        </React.Suspense>
-      </ErrorBoundaryRegistry>
+  <ErrorBoundaryRegistry>
+    <React.Suspense fallback={<TemplateDashboard />}>
+      <Component {...props}/>
+    </React.Suspense>
+  </ErrorBoundaryRegistry>
 );

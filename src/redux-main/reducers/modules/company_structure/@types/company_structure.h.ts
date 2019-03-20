@@ -13,6 +13,9 @@ export type CompanyStructureLinear = {
   note: string | null;
   parent_id: number | null;
   type: number | null;
+  type_display: string | null;
+  carpool_ids: [],
+  carpool_names: [],
 };
 
 export type companyStructureDescendantsByUser = CompanyStructureLinear | CompanyStructure;

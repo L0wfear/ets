@@ -1,18 +1,28 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import _ from 'lodash';
+import { cloneDeep } from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import CheckableElementsList from 'components/CheckableElementsList';
 import { connectToStores, staticProps } from 'utils/decorators';
 import permissions from 'components/missions/mission_template/config-data/permissions';
 import permissions_mission from 'components/missions/mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import MissionTemplateFormWrap from 'components/missions/mission_template/MissionTemplateFormWrap';
+import MissionsCreationFormWrap from 'components/missions/mission_template/MissionsCreationFormWrap';
+import MissionTemplateFormLazy from 'components/missions/mission_template/form/template';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
 import { getWarningNotification } from 'utils/notifications';
+import { connect } from 'react-redux';
+import {
+  getSessionState,
+  getMissionsState,
+} from 'redux-main/reducers/selectors';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+const loadingPageName = 'mission_template';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -32,17 +42,17 @@ const getMissionList = (checkedItems, selectedItem) => {
   };
 };
 
-const ButtonCreateMissionsByTemplates = enhanceWithPermissions({
-  permission: permissions_mission.create,
+const ButtonCreateMissionsByTemplates = withRequirePermissionsNew({
+  permissions: permissions_mission.create,
 })(Button);
-const ButtonCopyTemplateMission = enhanceWithPermissions({
-  permission: permissions.create,
+const ButtonCopyTemplateMission = withRequirePermissionsNew({
+  permissions: permissions.create,
 })(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'mission_template',
-  listName: 'missionTemplatesList',
+  listName: 'missionTemplateList',
   permissions,
   tableComponent: MissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE', 'CHECK'],
@@ -100,34 +110,33 @@ class MissionTemplatesJournal extends CheckableElementsList {
       }
 
       try {
-        await Promise.all(
-          checkedMissions.map(mission => (
-            this.context.flux.getActions('missions').removeMissionTemplate(mission.id)
-          )),
-        );
+        await this.props.actionRemoveMissionTemplates(checkedMissions);
       } catch (e) {
-        //
+        console.warn(e); // eslint-disable-line
       }
 
-      this.loadMissionTemplate();
+      this.loadMissionTemplateData();
       this.setState({
         checkedElements: {},
         selectedElement: null,
       });
     }
+  };
+
+  loadMissionTemplateData() {
+    this.props.actionGetAndSetInStoreMissionTemplate();
+    this.context.flux.getActions('missions').getMissionTemplatesCars();
   }
 
-  loadMissionTemplate(payload) {
-    this.context.flux.getActions('missions').getMissionTemplates(payload);
+  componentWillUnmount() {
+    this.props.actionResetMissionTemplate();
   }
 
   init() {
     const { flux } = this.context;
-    const { payload = {} } = this.props;
-    this.loadMissionTemplate(payload);
+    this.loadMissionTemplateData();
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux.getActions('objects').getCars();
-    flux.getActions('missions').getMissionTemplatesCars();
   }
 
   /**
@@ -135,12 +144,14 @@ class MissionTemplatesJournal extends CheckableElementsList {
    */
   showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
-  }
+  };
 
   createMissions = () => {
     const { checkedElements } = this.state;
     const allCheckedMissionInArr = Object.values(checkedElements);
-    const hasMissionForColumn = allCheckedMissionInArr.some(mission => mission.for_column);
+    const hasMissionForColumn = allCheckedMissionInArr.some(
+      (mission) => mission.for_column,
+    );
 
     if (hasMissionForColumn && allCheckedMissionInArr.length > 1) {
       global.NOTIFICATION_SYSTEM.notify(
@@ -154,7 +165,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         formType: 'MissionsCreationForm',
       });
     }
-  }
+  };
 
   /**
    * @override
@@ -165,18 +176,20 @@ class MissionTemplatesJournal extends CheckableElementsList {
       selectedElement: null,
       formType: 'ViewForm',
     });
-  }
+  };
 
   copyElement = () => {
-    const copiedElement = _.cloneDeep(this.state.selectedElement);
-    delete copiedElement.id;
-    delete copiedElement.name;
-    this.setState({
-      showForm: true,
-      formType: 'ViewForm',
-      selectedElement: _.cloneDeep(copiedElement),
+    this.setState(({ selectedElement }) => {
+      const copiedElement = cloneDeep(selectedElement);
+      delete copiedElement.id;
+      delete copiedElement.name;
+      return {
+        showForm: true,
+        formType: 'ViewForm',
+        selectedElement: copiedElement,
+      };
     });
-  }
+  };
 
   onFormHide = (clearCheckedElements) => {
     this.setState(({ checkedElements }) => ({
@@ -185,31 +198,62 @@ class MissionTemplatesJournal extends CheckableElementsList {
       formType: 'ViewForm',
       checkedElements: clearCheckedElements ? {} : checkedElements,
     }));
-  }
+  };
+
+  onFormHideCreateTemplate = (isSubmitted, result) => {
+    if (isSubmitted) {
+      console.info(result); //DITETS-4857 добавил в CAR_OPTIONS, CAR_TYP_OPTIONS для фильтрац по ТС
+      this.loadMissionTemplateData();
+    }
+
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: {},
+    });
+  };
 
   getForms = () => {
-    const missions = getMissionList(this.state.checkedElements, this.state.selectedElement);
+    const missions = getMissionList(
+      this.state.checkedElements,
+      this.state.selectedElement,
+    );
     const { carsIndex = {} } = this.props;
 
     return [
-      <MissionTemplateFormWrap
+      <MissionTemplateFormLazy
+        key="template_form"
+        onFormHide={this.onFormHideCreateTemplate}
+        showForm={
+          this.state.showForm && this.state.formType !== 'MissionsCreationForm'
+        }
+        element={this.state.selectedElement}
+        page={loadingPageName}
+      />,
+      <MissionsCreationFormWrap
         key="form"
         onFormHide={this.onFormHide}
-        showForm={this.state.showForm}
+        showForm={
+          this.state.showForm && this.state.formType === 'MissionsCreationForm'
+        }
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={missions}
         _carsIndex={carsIndex}
       />,
     ];
-  }
+  };
 
   canCreateMission = () => {
     const { checkedElements = {} } = this.state;
     const missions = Object.values(checkedElements);
 
-    return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
-  }
+    return (
+      missions.length
+      && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
+    );
+  };
 
   getButtons = () => {
     const buttons = super.getButtons();
@@ -220,8 +264,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         id="create-missions-by-template"
         bsSize="small"
         onClick={this.createMissions}
-        disabled={!this.canCreateMission()}
-      >
+        disabled={!this.canCreateMission()}>
         Сформировать децентрализованное задание
       </ButtonCreateMissionsByTemplates>,
       <ButtonCopyTemplateMission
@@ -229,8 +272,7 @@ class MissionTemplatesJournal extends CheckableElementsList {
         id="copy-template"
         bsSize="small"
         onClick={this.copyElement}
-        disabled={this.state.selectedElement === null}
-      >
+        disabled={this.state.selectedElement === null}>
         <Glyphicon glyph="copy" />
         Копировать
       </ButtonCopyTemplateMission>,
@@ -238,22 +280,62 @@ class MissionTemplatesJournal extends CheckableElementsList {
     buttons.push(...additionalButtons);
 
     return buttons;
+  };
+
+  getAdditionalFormProps() {
+    return {
+      page: loadingPageName,
+    };
   }
 
   getAdditionalProps = () => {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const technicalOperationIdsList = this.props.technicalOperationsList.map(item => item.id);
+    const { listName } = this.constructor;
+    const listData = this.props[listName];
 
-    const missionTemplatesList = this.props.missionTemplatesList
-      .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
+    const {
+      technicalOperationsMap,
+      userData: { structures },
+    } = this.props;
 
     return {
       structures,
       noHeader: this.props.renderOnly,
-      noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий' : null,
-      data: missionTemplatesList,
+      noDataMessage: this.props.payload.faxogramm_id
+        ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий'
+        : null,
+      data: listData.filter(({ technical_operation_id }) =>
+        technicalOperationsMap.has(technical_operation_id),
+      ),
     };
-  }
+  };
 }
 
-export default compose()(MissionTemplatesJournal);
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    (state) => ({
+      missionTemplateList: getMissionsState(state).missionTemplateList,
+      userData: getSessionState(state).userData,
+    }),
+    (dispatch) => ({
+      actionGetAndSetInStoreMissionTemplate: () =>
+        dispatch(
+          missionsActions.actionGetAndSetInStoreMissionTemplate(
+            {},
+            { page: loadingPageName },
+          ),
+        ),
+      actionRemoveMissionTemplates: (missionTemplateArr) =>
+        dispatch(
+          missionsActions.actionRemoveMissionTemplates(missionTemplateArr, {
+            page: loadingPageName,
+          }),
+        ),
+      actionResetMissionTemplate: () =>
+        dispatch(missionsActions.actionResetMissionTemplate()),
+    }),
+  ),
+)(MissionTemplatesJournal);

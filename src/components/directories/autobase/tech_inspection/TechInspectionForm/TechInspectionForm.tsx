@@ -8,7 +8,6 @@ import techInspectionPermissions from 'components/directories/autobase/tech_insp
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { techInspectionFormSchema } from 'components/directories/autobase/tech_inspection/TechInspectionForm/tech_inspection_shema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultTechInspectionElement } from 'components/directories/autobase/tech_inspection/TechInspectionForm/utils';
@@ -27,9 +26,13 @@ import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/auto
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
-import { getSessionState } from 'redux-main/reducers/selectors/index';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import EtsModal from 'components/new/ui/modal/Modal';
 
-class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateTechInspection> {
+class TechInspectionForm extends React.PureComponent<
+  PropsTechInspection,
+  StateTechInspection
+> {
   state = {
     carListOptions: [],
   };
@@ -42,7 +45,8 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
     }
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+    const { data } = await this.props.autobaseGetSetCar({}, { page, path });
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -56,33 +60,22 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
+
   handleChangeIsActiveToTrue = () => {
     if (!this.props.formState.is_allowed) {
       this.props.handleChange({
         is_allowed: true,
       });
     }
-  }
+  };
   handleChangeIsActiveToFalse = () => {
     if (this.props.formState.is_allowed) {
       this.props.handleChange({
         is_allowed: false,
       });
     }
-  }
-  handleChangeBoolean = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+  };
+
   render() {
     const {
       formState: state,
@@ -91,32 +84,34 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
       page,
       path,
     } = this.props;
-    const {
-      carListOptions,
-    } = this.state;
+    const { carListOptions } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const ownIsPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
-    const isPermitted = (
-      ownIsPermitted
-      && (
-        isNullOrUndefined(state.company_id)
-        || state.company_id === this.props.userCompanyId
-      )
-    );
+    const isPermitted =
+      ownIsPermitted &&
+      (isNullOrUndefined(state.company_id) ||
+        state.company_id === this.props.userCompanyId);
 
     return (
-      <Modal id="modal-tech-inspection" show onHide={this.handleHide} backdrop="static">
+      <EtsModal
+        id="modal-tech-inspection"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              {IS_CREATING && !car_id &&
+              {IS_CREATING && !car_id && (
                 <ExtField
                   id="car_id"
                   type="select"
@@ -125,20 +120,20 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                   error={errors.car_id}
                   options={carListOptions}
                   emptyValue={null}
-                  onChange={this.handleChange}
+                  onChange={this.props.handleChange}
                   boundKeys="car_id"
                   clearable={false}
                   disabled={!isPermitted}
                   modalKey={path}
                 />
-              }
+              )}
               <ExtField
                 id="reg_number"
                 type="string"
                 label="Номер диагностической карты/Талона ГТО"
                 value={state.reg_number}
                 error={errors.reg_number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="reg_number"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -150,7 +145,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 date={state.date_end}
                 time={false}
                 error={errors.date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -161,7 +156,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 label="Место выдачи"
                 value={state.tech_operator}
                 error={errors.tech_operator}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="tech_operator"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -173,7 +168,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 date={state.date_start}
                 time={false}
                 error={errors.date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -208,7 +203,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 label="Примечание"
                 value={state.note}
                 error={errors.note}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -219,7 +214,7 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
                 multiple
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -228,55 +223,40 @@ class TechInspectionForm extends React.PureComponent<PropsTechInspection, StateT
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
 
 export default compose<PropsTechInspection, OwnTechInspectionProps>(
-  connect<StatePropsTechInspection, DispatchPropsTechInspection, OwnTechInspectionProps, ReduxState>(
+  connect<
+    StatePropsTechInspection,
+    DispatchPropsTechInspection,
+    OwnTechInspectionProps,
+    ReduxState
+  >(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTechInspection(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTechInspection(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetCar: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
-        )
-      ),
+    (dispatch: any) => ({
+      autobaseGetSetCar: (...arg) =>
+        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
     }),
   ),
   withForm<PropsTechInspectionWithForm, TechInspection>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTechInspection,
+    updateAction: autobaseActions.autobaseUpdateTechInspection,
     mergeElement: (props) => {
       return getDefaultTechInspectionElement(props.element);
     },

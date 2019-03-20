@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable';
-import DateFormatter from 'components/ui/DateFormatter';
 
 const tableMeta = {
   cols: [
@@ -18,7 +17,10 @@ const tableMeta = {
       type: 'text',
       filter: {
         type: 'multiselect',
-        labelFunction: source => +source ? 'Справочник показателей норм на содержание ОДХ' : 'Реестр ОДХ',
+        labelFunction: (source) =>
+          +source
+            ? 'Справочник показателей норм на содержание ОДХ'
+            : 'Реестр ОДХ',
       },
     },
     {
@@ -39,7 +41,12 @@ const tableMeta = {
 
 const EfficiencyTable = (props) => {
   const renderers = {
-    source: ({ data }) => +data ? <div>Справочник показателей норм на содержание ОДХ</div> : <div>Реестр ОДХ</div>,
+    source: ({ data }) =>
+      +data ? (
+        <div>Справочник показателей норм на содержание ОДХ</div>
+      ) : (
+        <div>Реестр ОДХ</div>
+      ),
   };
 
   return (

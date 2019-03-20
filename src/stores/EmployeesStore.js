@@ -7,16 +7,26 @@ export default class EmployeeStore extends Store {
 
     const employeesActions = flux.getActions('employees');
     this.register(employeesActions.getEmployees, this.handleGetEmployees);
-    this.register(employeesActions.getEmployeeBindedToCar, this.handleGetEmployeeBindedToCar);
-    this.register(employeesActions.getEmployeeOnCarList, this.handleGetEmployeeOnCarList);
-    this.register(employeesActions.getWaybillDrivers, this.handleGetWaybillDrivers);
+    this.register(
+      employeesActions.getEmployeeBindedToCar,
+      this.handleGetEmployeeBindedToCar,
+    );
+    this.register(
+      employeesActions.getEmployeeOnCarList,
+      this.handleGetEmployeeOnCarList,
+    );
+    this.register(
+      employeesActions.getWaybillDrivers,
+      this.handleGetWaybillDrivers,
+    );
     this.register(employeesActions.getDrivers, this.handleGetDrivers);
     this.register(employeesActions.getForemans, this.handleGetForemans);
 
     this.state = {
       employeesList: [],
       employeesIndex: {},
-      employeesBindedoOCarList: [],
+      employeesBindedoOnCarList: [],
+      uniqEmployeesBindedoOnCarList: [],
       employeeOnCarList: [],
       driversList: [],
       foremanList: [],
@@ -25,7 +35,7 @@ export default class EmployeeStore extends Store {
   }
 
   handleGetEmployees({ result }) {
-    const data = result.map(empl => ({
+    const data = result.map((empl) => ({
       ...empl,
       active: !!empl.active,
     }));
@@ -38,12 +48,28 @@ export default class EmployeeStore extends Store {
 
   handleGetEmployeeBindedToCar(result) {
     this.setState({
-      employeesBindedoOCarList: result,
+      employeesBindedoOnCarList: result,
+      uniqEmployeesBindedoOnCarList: Object.values(
+        result.reduce((newObj, partialEmployee) => {
+          if (!newObj[partialEmployee.employee_id]) {
+            newObj[partialEmployee.employee_id] = partialEmployee;
+          } else if (partialEmployee.binding_type === 'primary') {
+            newObj[partialEmployee.employee_id] = partialEmployee;
+          }
+
+          return newObj;
+        }, {}),
+      ),
     });
   }
 
   handleGetEmployeeOnCarList({ result }) {
-    this.setState({ employeeOnCarList: result.map((row, index) => ({ ...row, _uniq_field: index + 1 })) });
+    this.setState({
+      employeeOnCarList: result.map((row, index) => ({
+        ...row,
+        _uniq_field: index + 1,
+      })),
+    });
   }
 
   handleGetDrivers({ result }) {

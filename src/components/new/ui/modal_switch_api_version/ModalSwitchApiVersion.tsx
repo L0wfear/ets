@@ -30,63 +30,88 @@ const defaultNonVersionoption = {
   label: 'Без версии',
 };
 
-class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
+const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
+
+class ModalSwitchApiVersion extends React.PureComponent<
+  PropsModalSwitchApiVersion,
+  StateModalSwitchApiVersion
+> {
   state = {
-    serviceValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.backend], null),
-    tracksCachingValue: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], null),
+    serviceValue: get(
+      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      [config.backend],
+      null,
+    ),
+    tracksCachingValue:
+      get(
+        JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+        [keyTracksCachingForTest],
+        null,
+      ) ||
+      get(
+        JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+        [config.tracksCaching],
+        null,
+      ),
   };
 
   refresh = () => {
     global.window.location.reload();
-  }
+  };
 
-  handleChangeService = (serviceValue: OneOptionInStateModalSwitchApiVersion['value']) => {
+  handleChangeService = (
+    serviceValue: OneOptionInStateModalSwitchApiVersion['value'],
+  ) => {
     let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
     if (!versions) {
       versions = {};
     }
-    versions[config.backend] = serviceValue === -1 ? '' : serviceValue.toString();
+    versions[config.backend] =
+      serviceValue === -1 || !serviceValue ? '' : serviceValue.toString();
     localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
     this.setState({
-      serviceValue: serviceValue === -1 ? '' : serviceValue,
+      serviceValue: serviceValue === -1 || !serviceValue ? '' : serviceValue,
     });
-  }
+  };
 
-  handleChangeTracksCaching = (tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value']) => {
+  handleChangeTracksCaching = (
+    tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value'],
+  ) => {
     let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
 
     if (!versions) {
       versions = {};
     }
-    versions[config.tracksCaching] = tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
+    versions[keyTracksCachingForTest] =
+      tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
     localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
     this.setState({
       tracksCachingValue: tracksCachingValue === -1 ? '' : tracksCachingValue,
     });
-  }
+  };
 
-  makeOptionsFromAppConfigApiVersions = (
-    memoize(
-      (api_versions: InitialStateSession['appConfig']['api_versions']) => ([
-        defaultNonVersionoption,
-        ...api_versions.map((version) => ({
-          value: version.toString(),
-          label: version,
-        })),
-      ]),
-    )
+  makeOptionsFromAppConfigApiVersions = memoize(
+    (api_versions: InitialStateSession['appConfig']['api_versions']) => [
+      defaultNonVersionoption,
+      ...api_versions.map((version) => ({
+        value: version.toString(),
+        label: version,
+      })),
+    ],
   );
 
-  makeOptionsFromAppTracksCachingConfigApiVersions = (
-    memoize(
-      (api_versions: InitialStateSession['appConfigTracksCaching']['api_versions'], api_version_stable: InitialStateSession['appConfigTracksCaching']['api_version_stable']) => (
-        api_versions.map((version) => ({
-          value: version.toString(),
-          label: `${version}${version === api_version_stable ? ' (стабильная)' : ''}`,
-        }),
-      )),
-    )
+  makeOptionsFromAppTracksCachingConfigApiVersions = memoize(
+    (
+      api_versions: InitialStateSession['appConfigTracksCaching']['api_versions'],
+      api_version_stable: InitialStateSession['appConfigTracksCaching']['api_version_stable'],
+    ) =>
+      api_versions.map((version) => ({
+        value: version.toString(),
+        label: `${version}${
+          version === api_version_stable ? ' (стабильная)' : ''
+        }`,
+      })),
   );
 
   render() {
@@ -108,11 +133,18 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     );
 
     return (
-      <Modal id="modal-battery-brand" show onHide={this.props.onHide} backdrop="static">
+      <Modal
+        id="modal-battery-brand"
+        show
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Изменить версию API</Modal.Title>
         </Modal.Header>
-        <ModalBodyPreloader page={modalKey} path="none" typePreloader="mainpage">
+        <ModalBodyPreloader
+          page={modalKey}
+          path="none"
+          typePreloader="mainpage">
           <Row>
             <Col md={12}>
               <ExtField
@@ -150,9 +182,12 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   }
 }
 
-export default connect<StatePropsModalSwitchApiVersion, DispatchPropsModalSwitchApiVersion, OwnPropsModalSwitchApiVersion, ReduxState>(
-  (state) => ({
-    appConfig: getSessionState(state).appConfig,
-    appConfigTracksCaching: getSessionState(state).appConfigTracksCaching,
-  }),
-)(ModalSwitchApiVersion);
+export default connect<
+  StatePropsModalSwitchApiVersion,
+  DispatchPropsModalSwitchApiVersion,
+  OwnPropsModalSwitchApiVersion,
+  ReduxState
+>((state) => ({
+  appConfig: getSessionState(state).appConfig,
+  appConfigTracksCaching: getSessionState(state).appConfigTracksCaching,
+}))(ModalSwitchApiVersion);

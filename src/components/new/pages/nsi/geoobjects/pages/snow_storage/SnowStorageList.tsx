@@ -28,6 +28,6 @@ class SnowStorageList extends React.Component<PropsSnowStorageList, StateSnowSto
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(SnowStorageList);

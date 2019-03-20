@@ -2,9 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 
@@ -24,17 +22,17 @@ const makePermissionOnCheck = (config, props) => {
 
   const permissionsOnCheck = config.permissions || props.permissions;
 
-  return isArray(permissionsOnCheck) ? permissionsOnCheck : [permissionsOnCheck];
+  return isArray(permissionsOnCheck)
+    ? permissionsOnCheck
+    : [permissionsOnCheck];
 };
 
 const checkOnisPermitted = (config, props, permissionsSet) => {
   const permissionsOnCheck = makePermissionOnCheck(config, props);
 
-  if (config.every) {
-    return permissionsOnCheck.some((permission) => !permissionsSet.has(permission));
-  }
-
-  return permissionsOnCheck.some((permission) => permissionsSet.has(permission));
+  return permissionsOnCheck.some((permission) =>
+    permission ? permissionsSet.has(permission) : true,
+  );
 };
 
 type StateProps = {
@@ -45,19 +43,18 @@ type OwnerProps<P> = P & {
   [key: string]: any;
 };
 
-type PropsRequirePermissions<P> = (
-  StateProps &
-  OwnerProps<P>
-);
+type PropsRequirePermissions<P> = StateProps & OwnerProps<P>;
 
-const withRequirePermissionsNew = <P extends {}, O = {}>(config: TypeConfig = {}) => (Component: React.ClassType<P & O, any, any>) => (
-  connect<StateProps, {}, OwnerProps<P>, ReduxState>(
-    (state) => ({
-      permissionsSet: state.session.userData.permissionsSet,
-    }),
-  )
-  (
-    class RequirePermissions extends React.Component<PropsRequirePermissions<P>, {}> {
+const withRequirePermissionsNew = <P extends {}, O = {}>(
+  config: TypeConfig = {},
+) => (Component: React.ClassType<P & O, any, any>) =>
+  connect<StateProps, {}, OwnerProps<P>, ReduxState>((state) => ({
+    permissionsSet: state.session.userData.permissionsSet,
+  }))(
+    class RequirePermissions extends React.Component<
+      PropsRequirePermissions<P>,
+      {}
+    > {
       state = {};
       static getDerivedStateFromProps(nextProps, prevState) {
         if (config.withIsPermittedProps) {
@@ -79,19 +76,13 @@ const withRequirePermissionsNew = <P extends {}, O = {}>(config: TypeConfig = {}
         const isPermitted = checkOnisPermitted(config, props, permissionsSet);
         const newProps = { ...props };
 
-        return (
-          config.withIsPermittedProps || isPermitted ?
-            (
-              <Component { ...newProps } {...this.state} />
-            )
-          :
-            (
-              <DivNone />
-            )
+        return config.withIsPermittedProps || isPermitted ? (
+          <Component {...newProps} {...this.state} />
+        ) : (
+          <DivNone />
         );
       }
     },
-  )
-);
+  );
 
 export default withRequirePermissionsNew;

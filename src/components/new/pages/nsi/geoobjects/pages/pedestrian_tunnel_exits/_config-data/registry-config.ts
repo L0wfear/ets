@@ -1,14 +1,16 @@
-import { GeozonePedestrianTunnelExitsService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/@types';
 
 export const registryKey = 'PedestrianTunnelExitsList';
 
-export const config: TypeConfigData = {
-  Service: GeozonePedestrianTunnelExitsService,
+export const config: TypeConfigData<PedestrianTunnelExits> = {
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetPedestrianTunnelExits'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobPedestrianTunnelExits'],
+  },
   registryKey,
   header: {
     title: 'Справочник выходов из пешеходных тоннелей',

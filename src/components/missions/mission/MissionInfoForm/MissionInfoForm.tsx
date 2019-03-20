@@ -15,7 +15,10 @@ import {
 
 import { diffDates } from 'utils/dates';
 import { makeTitle } from 'components/missions/mission/MissionInfoForm/utils/format';
-import { mapDispatchToProps } from 'components/missions/mission/MissionInfoForm/utils/redux-func';
+import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
+import { loadTrackCaching } from 'redux-main/trash-actions/uniq/promise';
+import { loadCarGpsCode } from 'redux-main/trash-actions/car/car';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
 
 import {
   FormContainer,
@@ -28,16 +31,17 @@ import InfoTableData from 'components/missions/mission/MissionInfoForm/form-comp
 import MissionInfoTableContainer from 'components/missions/mission/MissionInfoForm/form-components/table-continer/MissionInfoTableContainer';
 
 import {
+  DispatchPropsMissionInfoForm,
   PropsMissionInfoForm,
   StateMissionInfoForm,
 } from 'components/missions/mission/MissionInfoForm/MissionInfoForm.h';
-import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { ReduxState } from 'redux-main/@types/state';
 
 /**
  * Карточка информации о задании
  */
-class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissionInfoForm> {
+class MissionInfoForm extends React.Component<PropsMissionInfoForm, StateMissionInfoForm> {
   constructor(props) {
     super(props);
 
@@ -97,7 +101,10 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
         element,
       } = this.props;
 
-      this.props.routesLoadRouteById(element.route_data.id).then(({ payload: { route_data } }) => {
+      this.props.actionLoadRouteById(
+        element.route_data.id,
+        { page: 'any', path: 'missionInfoForm' },
+      ).then((route_data) => {
         switch (element.route_data.type) {
           case routeTypesBySlug.dt.key: return this.loadPolys(route_data, 'dt');
           case routeTypesBySlug.odh.key: return this.loadPolys(route_data, 'odh');
@@ -317,9 +324,54 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
   }
 }
 
-export default connect<any, any, any, ReduxState>(
+export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
   (state) => ({
     company_id: state.session.userData.company_id,
   }),
-  mapDispatchToProps,
+  (dispatch: any) => ({
+    loadGeozones: (serverName, company_id) => (
+      dispatch(
+        loadGeozones(
+          'none',
+          serverName,
+          {
+            promise: true,
+            page: 'any',
+            path: 'missionInfoForm',
+          },
+          company_id,
+        ),
+      )
+    ),
+    actionLoadRouteById: (...arg) => (
+      dispatch(
+        routesActions.actionLoadRouteById(...arg),
+      )
+    ),
+    loadTrackCaching: (props) => (
+      dispatch({
+        type: '',
+        payload: loadTrackCaching(props),
+        meta: {
+          page: 'any',
+          path: 'missionInfoForm',
+        },
+      })
+    ),
+    loadCarGpsCode: ({ asuods_id, date_start }) => (
+      dispatch(
+        loadCarGpsCode(
+          'none',
+          {
+            asuods_id,
+            date_start,
+          },
+          {
+            page: 'any',
+            path: 'missionInfoForm',
+          },
+        ),
+      )
+    ),
+  }),
 )(MissionInfoForm);

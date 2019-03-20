@@ -15,18 +15,6 @@ export default class RoutesActions extends Actions {
     return RouteService.get(payload).then(({ result = [] }) => result);
   }
 
-  async getRoutesByDutyMissionId(id, isTemplate) {
-    const payload = isTemplate ? { duty_mission_template_id: id } : { duty_mission_id: id };
-
-    if (!id) {
-      delete payload.duty_mission_id;
-      delete payload.duty_mission_template_id;
-    }
-
-    const response = await RouteService.get(payload);
-    return response.result || [];
-  }
-
   async getRoutesByMissionId(id, isTemplate) {
     const payload = isTemplate ? { mission_template_id: id } : { mission_id: id };
 

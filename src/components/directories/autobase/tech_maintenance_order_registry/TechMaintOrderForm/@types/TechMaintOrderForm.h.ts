@@ -1,15 +1,11 @@
 import { TechMaintOrder, IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-// import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-
-import {
-  AutobaseCreateTechMaintOrder,
-  AutobaseUpdateTechMaintOrder,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_order/@types';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { HandleThunkActionCreator } from 'react-redux';
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTechMaintOrderFormWrap = {
   showForm: boolean;
@@ -28,17 +24,15 @@ export type StatePropsTechMaintOrder = {
   specialModelList: IStateSomeUniq['specialModelList'];
 };
 export type DispatchPropsTechMaintOrder = {
-  createAction: AutobaseCreateTechMaintOrder;
-  updateAction: AutobaseUpdateTechMaintOrder;
   techMaintTypeGetAndSetInStore: () => any;
   measureUnitRunGetAndSetInStore: (tech_maintenance_type_id: TechMaintOrder['tech_maintenance_type_id']) => any;
-  actionGetAndSetInStoreSpecialModel: () => any;
+  actionGetAndSetInStoreSpecialModel: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreSpecialModel>;
 };
 export type OwnTechMaintOrderProps = {
   element: TechMaintOrder | null;
   handleHide: OnFormHideType
   car_id: number;
-  page?: string;
+  page: string;
   path?: string;
 };
 
@@ -54,6 +48,6 @@ export type PropsTechMaintOrder = OutputWithFormProps<
   [ TechMaintOrder ],
   any
 >;
-//  carListOptions: DefaultSelectListMapper<Car['asuods_id'], Car['gov_number'], Car>;
+
 export type StateTechMaintOrder = {
 };

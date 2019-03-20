@@ -3,19 +3,19 @@ import * as PropTypes from 'prop-types';
 
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import {
-  cloneDeep,
-  each,
-  find,
-} from 'lodash';
+import { cloneDeep, find } from 'lodash';
 import ElementsList from 'components/ElementsList';
-import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
+import {
+  ButtonCreateNew,
+  ButtonReadNew,
+  ButtonDeleteNew,
+} from 'components/ui/buttons/CRUD';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
  * @extends React.Component
  */
-export default class CheckableElementsList extends ElementsList {
+class CheckableElementsList extends ElementsList {
   static get propTypes() {
     return {
       onListStateChange: PropTypes.func,
@@ -40,7 +40,7 @@ export default class CheckableElementsList extends ElementsList {
       selectedElement: null,
       checkedElements: clearCheckedElements ? {} : this.state.checkedElements,
     });
-  }
+  };
 
   /**
    * Возвращает props, которые будут переданы в компонент Table списка
@@ -64,12 +64,17 @@ export default class CheckableElementsList extends ElementsList {
     const tableProps = super.getTableProps();
     const operations = ['delete'];
     const check = this.constructor.operations.includes('CHECK');
-    const entity = this.constructor.entity;
-    const gp = p => this.context.flux.getStore('session').getPermission(p);
+    const { entity } = this.constructor;
 
-    const noPermission = !check && operations.every((o) => !gp(`${entity}.${o}`));
+    const noPermission
+      = !check
+      && operations.every(
+        (o) => !this.props.userData.permissionsSet.has(`${entity}.${o}`),
+      );
     return noPermission
-      ? Object.assign(tableProps, this.getCheckedProps(), { multiSelection: false })
+      ? Object.assign(tableProps, this.getCheckedProps(), {
+        multiSelection: false,
+      })
       : Object.assign(tableProps, this.getCheckedProps());
   }
 
@@ -121,7 +126,9 @@ export default class CheckableElementsList extends ElementsList {
     }
     if (this.props.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}><Glyphicon glyph="download-alt" /></Button>,
+        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}>
+          <Glyphicon glyph="download-alt" />
+        </Button>,
       );
     }
     return buttons;
@@ -161,10 +168,21 @@ export default class CheckableElementsList extends ElementsList {
         return;
       }
 
-      const removeCallback = this.removeElementCallback || (() => {});
-      each(this.state.checkedElements, (element) => {
-        this.removeElementAction(element[this.selectField], removeCallback);
-      });
+      try {
+        await Promise.all(
+          Object.values(this.state.checkedElements).map((element) => {
+            return this.removeElementAction(
+              element[this.selectField],
+              () => {},
+            );
+          }),
+        );
+      } catch (error) {
+        console.error(error);
+      }
+      if (this.removeElementCallback) {
+        this.removeElementCallback();
+      }
       this.setState({
         checkedElements: {},
         selectedElement: null,
@@ -172,7 +190,7 @@ export default class CheckableElementsList extends ElementsList {
     } else {
       this.removeElement();
     }
-  }
+  };
 
   /**
    * Выбирает/снимает выбор со всех элементов
@@ -184,7 +202,7 @@ export default class CheckableElementsList extends ElementsList {
     checkedElements = state ? rows : {};
 
     this.setState({ checkedElements }, this.stateChangeCallback.bind(this));
-  }
+  };
 
   /**
    * Выбирает/снимает выбор с элемента
@@ -194,15 +212,21 @@ export default class CheckableElementsList extends ElementsList {
   checkElement = (id, state) => {
     const elements = cloneDeep(this.state.checkedElements);
     if (state) {
-      const checkedElement = find(this.state.elementsList, e => e[this.selectField] === parseInt(id, 10));
+      const checkedElement = find(
+        this.state.elementsList,
+        (e) => e[this.selectField] === parseInt(id, 10),
+      );
       if (checkedElement) {
         elements[parseInt(id, 10)] = checkedElement;
       }
     } else {
       delete elements[id];
     }
-    this.setState({ checkedElements: elements }, this.stateChangeCallback.bind(this));
-  }
+    this.setState(
+      { checkedElements: elements },
+      this.stateChangeCallback.bind(this),
+    );
+  };
 
   /**
    * Передает state в другой компонент
@@ -212,5 +236,7 @@ export default class CheckableElementsList extends ElementsList {
     if (typeof this.props.onListStateChange === 'function') {
       this.props.onListStateChange(this.state);
     }
-  }
+  };
 }
+
+export default CheckableElementsList;

@@ -1,44 +1,46 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
-import { Route } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
+import { HandleThunkActionCreator } from 'react-redux';
 
 export type PropsRouteFormWrap = InputRouteFormProps & {
   showForm: boolean;
 };
 
 export type StateRouteFormProps = {
-  userStructureId: InitialStateSession['userData']['structure_id'],
-  userStructureName: InitialStateSession['userData']['structure_name'],
+  userStructureId: InitialStateSession['userData']['structure_id'];
+  userStructureName: InitialStateSession['userData']['structure_name'];
 };
 
 export type DispatchRouteFormProps = {
-  validateRoute: (formState: FormStateRouteForm) => Promise<any>;
-  createAction: (formState: FormStateRouteForm, isTemplate: boolean) => Promise<any>;
-  updateAction: (formState: FormStateRouteForm) => Promise<any>;
-  loadGeozones: (serverName: string, company_id?: number | null) => any,
+  actionValidateRoute: HandleThunkActionCreator<
+    typeof routesActions.actionValidateRoute
+  >;
+  loadGeozones: (serverName: string, company_id?: number | null) => any;
 };
 
 export type InputRouteFormProps = {
   handleHide: (hasSubmtit: boolean, route?: any) => any;
   page: string;
-  element: Route;
+  element: Partial<Route> | null;
   routesMapNameId?: Map<string, number>;
   fromMission?: boolean;
+  fromMissionTemplate?: boolean;
   fromOrder?: boolean;
   missionAvailableRouteTypes?: string[];
   hasMissionStructureId?: boolean;
+  deepLvl?: number;
 };
 
 export type OwnRouteFormProps = InputRouteFormProps & {
   isPermittedToShowBridge: boolean;
 };
 
-export type PropsRouteWithForm = (
-  StateRouteFormProps
-  & DispatchRouteFormProps
-  & OwnRouteFormProps
-);
+export type PropsRouteWithForm = StateRouteFormProps &
+  DispatchRouteFormProps &
+  OwnRouteFormProps;
 
 export type FormStateRouteForm = Route & {
   normatives: any[];
@@ -49,10 +51,7 @@ export type FormStateRouteForm = Route & {
 export type PropsRouteForm = OutputWithFormProps<
   PropsRouteWithForm,
   FormStateRouteForm,
-  [
-    FormStateRouteForm,
-    boolean?
-  ],
+  [FormStateRouteForm, boolean?],
   any
 >;
 

@@ -28,9 +28,14 @@ import { DivNone } from 'global-styled/global-styled';
 import BatteryToVehicleBlockComponent from 'components/directories/autobase/battery_registry/BatteryRegistryForm/vehicle-block/BatteryToVehicleBlock';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 
-const BatteryVehicleBlock: any = onChangeWithKeys(BatteryToVehicleBlockComponent);
+const BatteryVehicleBlock: any = onChangeWithKeys(
+  BatteryToVehicleBlockComponent,
+);
 
-class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, StateBatteryRegistry> {
+class BatteryRegistryForm extends React.PureComponent<
+  PropsBatteryRegistry,
+  StateBatteryRegistry
+> {
   state = {
     canSave: true,
     batteryBrandOptions: [],
@@ -40,7 +45,9 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
     this.loadBatteryBrand();
   }
   async loadBatteryBrand() {
-    const { payload: { data } } = await this.props.autobaseGetSetBatteryBrand();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetSetBatteryBrand();
 
     this.setState({
       batteryBrandOptions: data.map(({ id, name, ...other }) => ({
@@ -54,43 +61,36 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
+
   handleChangeBrandId = (name, value, option) => {
     this.props.handleChange({
       [name]: value,
       brand_name: get(option, ['batteryBrand', 'brand_name'], null),
     });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
-  handleBatteryToCarValidity = ({ isValidInput }) => (
-    this.setState({ canSave: isValidInput })
-  )
+  };
+
+  handleBatteryToCarValidity = ({ isValidInput }) =>
+    this.setState({ canSave: isValidInput });
   render() {
-    const {
-      formState: state,
-      formErrors: errors,
-      page,
-      path,
-    } = this.props;
-    const {
-      batteryBrandOptions,
-    } = this.state;
+    const { formState: state, formErrors: errors, page, path } = this.props;
+    const { batteryBrandOptions } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-registry" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-battery-registry"
+        show
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
@@ -122,7 +122,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 label={'Серийный номер'}
                 value={state.serial_number}
                 error={errors.serial_number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="serial_number"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -133,7 +133,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 label="Срок службы, мес."
                 value={state.lifetime_months}
                 error={errors.lifetime_months}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="lifetime_months"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -145,7 +145,7 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 date={state.released_at}
                 time={false}
                 error={errors.released_at}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="released_at"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -158,37 +158,41 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
                 disabled
                 modalKey={page}
               />
-              {!IS_CREATING &&
+              {!IS_CREATING && (
                 <Col md={12}>
-                  <h4>Транспортное средство, на котором установлен аккумулятор</h4>
-                  <BatteryVehicleBlock
-                    id="files"
-                    onChange={this.handleChange}
-                    boundKeys="battery_to_car"
-                    inputList={state.battery_to_car || []}
-                    onValidation={this.handleBatteryToCarValidity}
-                    batteryId={state.id}
-                    selectField="customId"
-                    modalKey={page}
-                    page={page}
-                    path={path}
-                    isPermitted={isPermitted}
-                  />
+                  <Row>
+                    <h4>
+                      Транспортное средство, на котором установлен аккумулятор
+                    </h4>
+                    <BatteryVehicleBlock
+                      id="files"
+                      onChange={this.props.handleChange}
+                      boundKeys="battery_to_car"
+                      inputList={state.battery_to_car || []}
+                      onValidation={this.handleBatteryToCarValidity}
+                      batteryId={state.id}
+                      selectField="customId"
+                      modalKey={page}
+                      page={page}
+                      path={path}
+                      isPermitted={isPermitted}
+                    />
+                  </Row>
                 </Col>
-              }
+              )}
             </Col>
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
       </Modal>
     );
@@ -196,37 +200,24 @@ class BatteryRegistryForm extends React.PureComponent<PropsBatteryRegistry, Stat
 }
 
 export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
-  connect<StatePropsBatteryRegistry, DispatchPropsBatteryRegistry, OwnBatteryRegistryProps, ReduxState>(
+  connect<
+    StatePropsBatteryRegistry,
+    DispatchPropsBatteryRegistry,
+    OwnBatteryRegistryProps,
+    ReduxState
+  >(
     null,
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
+      autobaseGetSetBatteryBrand: () =>
         dispatch(
-          autobaseActions.autobaseCreateBatteryRegistry(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateBatteryRegistry(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetBatteryBrand: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetBatteryBrand(
-            {},
-            { page, path },
-          ),
-        )
-      ),
+          autobaseActions.autobaseGetSetBatteryBrand({}, { page, path }),
+        ),
     }),
   ),
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateBatteryRegistry,
+    updateAction: autobaseActions.autobaseUpdateBatteryRegistry,
     mergeElement: (props) => {
       return getDefaultBatteryRegistryElement(props.element);
     },

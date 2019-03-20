@@ -17,147 +17,128 @@ import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 
 const TYPE_CODE = {
-  carITR: [
-    'insurance_policy',
-    'tech_maintenance',
-    'repair',
-  ],
+  carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
   carT: ['tech_inspection'],
   med: ['medical_certificate'],
 };
 
-const LinkA = ({ linkText, handleClick }) =>
-  <a style={{ marginLeft: 5, cursor: 'pointer' }} onClick={handleClick}>{linkText || 'перейти'}</a>;
+const LinkA = ({ linkText, handleClick }) => (
+  <a style={{ marginLeft: 5, cursor: 'pointer' }} onClick={handleClick}>
+    {linkText || 'перейти'}
+  </a>
+);
 
-const MainVehicleDesc = ({ linkText, textInfo, handleClick }) =>
+const MainVehicleDesc = ({ linkText, textInfo, handleClick }) => (
   <div>
-    <b>Совет:</b> пройдите по ссылке ниже,
-    чтобы посмотреть карточку ТС и добавить информацию <span>{textInfo}</span> прямо сейчас
-    <LinkA
-      linkText={linkText}
-      handleClick={handleClick}
-    />
-  </div>;
+    <b>Совет:</b> пройдите по ссылке ниже, чтобы посмотреть карточку ТС и
+    добавить информацию <span>{textInfo}</span> прямо сейчас
+    <LinkA linkText={linkText} handleClick={handleClick} />
+  </div>
+);
 
 const MainEmployeeDesc = ({ linkText, handleClick }) => (
   <div>
-    <b>Совет:</b> пройдите по ссылке ниже,
-    чтобы посмотреть карточку водителя и добавить информацию по медицинской справке прямо сейчас
-    <LinkA
-      linkText={linkText}
-      handleClick={handleClick}
-    />
+    <b>Совет:</b> пройдите по ссылке ниже, чтобы посмотреть карточку водителя и
+    добавить информацию по медицинской справке прямо сейчас
+    <LinkA linkText={linkText} handleClick={handleClick} />
   </div>
 );
 
 const insurance_policy = withRequirePermissionsNew({
   withIsPermittedProps: true,
   permissions: carPermissions.list,
-})(({
-  gov_number,
-  car_id,
-  handleClick,
-  isPermitted,
-}) => (
+})(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}
     textInfo="по страхованию"
-    handleClick={() => handleClick(
-      'cars',
-      {
-        asuods_id: car_id,
-        active_tab: CAR_TAB_INDEX.insurance_policy,
-      },
-      isPermitted,
-    )}
+    handleClick={() =>
+      handleClick(
+        'cars',
+        {
+          asuods_id: car_id,
+          active_tab: CAR_TAB_INDEX.insurance_policy,
+        },
+        isPermitted,
+      )
+    }
   />
 ));
 
 const tech_inspection = withRequirePermissionsNew({
   withIsPermittedProps: true,
   permissions: carPermissions.list,
-})(({
-  tech_inspection_reg_number,
-  car_id,
-  handleClick,
-  isPermitted,
-}) => (
+})(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={tech_inspection_reg_number}
     textInfo="о государственном техосмотре"
-    handleClick={() => handleClick(
-      'cars',
-      {
-        asuods_id: car_id,
-        active_tab: CAR_TAB_INDEX.tech_inspection,
-      },
-      isPermitted,
-    )}
-  />
-));
-
-const tech_maintenance = withRequirePermissionsNew({
-  withIsPermittedProps: true,
-  permissions: carPermissions.list,
-})(({
-  gov_number,
-  car_id,
-  handleClick,
-  isPermitted,
-}) => (
-  <MainVehicleDesc
-    linkText={gov_number}
-    textInfo="о техническом обслуживании"
-    handleClick={() => handleClick(
-      'cars',
-      {
-        asuods_id: car_id,
-        active_tab: CAR_TAB_INDEX.tech_inspection,
-      },
-      isPermitted,
-    )}
-  />
-));
-
-const repair = withRequirePermissionsNew({
-  withIsPermittedProps: true,
-  permissions: carPermissions.list,
-})(
-  ({
-    gov_number, car_id, handleClick, isPermitted,
-  }) => (
-    <MainVehicleDesc
-      linkText={gov_number}
-      textInfo="о ремонте"
-      handleClick={() => handleClick(
+    handleClick={() =>
+      handleClick(
         'cars',
         {
           asuods_id: car_id,
           active_tab: CAR_TAB_INDEX.tech_inspection,
         },
         isPermitted,
-      )}
-    />
-  ),
-);
+      )
+    }
+  />
+));
+
+const tech_maintenance = withRequirePermissionsNew({
+  withIsPermittedProps: true,
+  permissions: carPermissions.list,
+})(({ gov_number, car_id, handleClick, isPermitted }) => (
+  <MainVehicleDesc
+    linkText={gov_number}
+    textInfo="о техническом обслуживании"
+    handleClick={() =>
+      handleClick(
+        'cars',
+        {
+          asuods_id: car_id,
+          active_tab: CAR_TAB_INDEX.tech_inspection,
+        },
+        isPermitted,
+      )
+    }
+  />
+));
+
+const repair = withRequirePermissionsNew({
+  withIsPermittedProps: true,
+  permissions: carPermissions.list,
+})(({ gov_number, car_id, handleClick, isPermitted }) => (
+  <MainVehicleDesc
+    linkText={gov_number}
+    textInfo="о ремонте"
+    handleClick={() =>
+      handleClick(
+        'cars',
+        {
+          asuods_id: car_id,
+          active_tab: CAR_TAB_INDEX.tech_inspection,
+        },
+        isPermitted,
+      )
+    }
+  />
+));
 
 const medical_certificate = withRequirePermissionsNew({
   withIsPermittedProps: true,
   permissions: employeePermissions.list,
-})(({
-  employee_fio,
-  employee_id,
-  handleClick,
-  isPermitted,
-}) => (
+})(({ employee_fio, employee_id, handleClick, isPermitted }) => (
   <MainEmployeeDesc
     linkText={employee_fio}
-    handleClick={() => handleClick(
-      'employees', {
-        employee_id,
-      },
-      isPermitted,
-    )}
+    handleClick={() =>
+      handleClick(
+        'employees',
+        {
+          employee_id,
+        },
+        isPermitted,
+      )
+    }
   />
 ));
 
@@ -171,11 +152,17 @@ const notificationComponents = {
 class UserNotificationForm extends Form {
   handleClick = (pathComponent, query, isPermitted) => {
     if (isPermitted) {
-      this.props.history.push(`/${pathComponent}?${queryString.stringify(query)}`);
+      this.props.history.push(
+        `/${pathComponent}?${queryString.stringify(query)}`,
+      );
     } else {
-      global.NOTIFICATION_SYSTEM.notify('У вас нет прав для просмотра этой страницы', 'warning', 'tr')
+      global.NOTIFICATION_SYSTEM.notify(
+        'У вас нет прав для просмотра этой страницы',
+        'warning',
+        'tr',
+      );
     }
-  }
+  };
 
   getDataForUserNotification(type, state) {
     if (TYPE_CODE.carITR.includes(type)) {
@@ -207,7 +194,6 @@ class UserNotificationForm extends Form {
       return {};
     }
 
-    console.log(type)
     console.warn('addTypeDate in userNotificationForm'); // eslint-disable-line
     return {};
   }
@@ -221,7 +207,10 @@ class UserNotificationForm extends Form {
     }
 
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal
+        show={this.props.show}
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header closeButton>
           <div style={{ fontWeight: 'bold' }}>
             <span>{state.title}</span>
@@ -232,9 +221,7 @@ class UserNotificationForm extends Form {
         </Modal.Header>
         <ModalBody>
           <Row>
-            <Col md={12}>
-              {state.description}
-            </Col>
+            <Col md={12}>{state.description}</Col>
             <Col md={12} style={{ marginTop: 10 }}>
               <NotificationDesc
                 {...this.getDataForUserNotification(state.type_code, state)}
@@ -249,6 +236,4 @@ class UserNotificationForm extends Form {
   }
 }
 
-export default connect(
-  getUserNotificationsState,
-)(UserNotificationForm);
+export default connect(getUserNotificationsState)(UserNotificationForm);

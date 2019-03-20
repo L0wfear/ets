@@ -1,8 +1,9 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { Bridges, CreateBridges, UpdateBridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
+import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { DispatchProp } from 'react-redux';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsBridgesFormWrap = {
   showForm: boolean;
@@ -10,21 +11,18 @@ export type PropsBridgesFormWrap = {
   onFormHide: OnFormHideType
 
   registryKey?: string;
-  page?: string;
+  page: string;
   path?: string;
 };
 
 export type StatePropsBridgesForm = {
   userData: InitialStateSession['userData'];
 };
-export type DispatchPropsBridgesForm = {
-  createAction: CreateBridges;
-  updateAction: UpdateBridges;
-};
+export type DispatchPropsBridgesForm = DispatchProp;
 export type OwnPropsBridgesForm = {
   element: Bridges | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 

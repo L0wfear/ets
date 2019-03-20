@@ -20,26 +20,30 @@ export const isFourDigitGovNumberRegexp = /\d{4}/;
  * a === 1 || b === 1 || c === 1 // true
  * isEqualOr([1, 2, 3], 1) // true
  */
-export const isEqualOr = (values = [], matchValue) => includes(values, matchValue);
+export const isEqualOr = (values = [], matchValue) =>
+  includes(values, matchValue);
 
 /**
  * Example:
  * a === 1 && b === 1 && c === 1 // false
  * isEqualAnd([1, 2, 3], 1) // false
  */
-export const isEqualAnd = (values = [], matchValue) => every(values, matchValue);
+export const isEqualAnd = (values = [], matchValue) =>
+  every(values, matchValue);
 /**
  * Example:
  * a !== 1 || b !== 1 || c !== 1 // true
  * isNotEqualOr([1, 2, 3], 1) // true
  */
-export const isNotEqualOr = (values = [], matchValue) => !isEqualAnd(values, matchValue);
+export const isNotEqualOr = (values = [], matchValue) =>
+  !isEqualAnd(values, matchValue);
 /**
  * Example:
  * a !== 1 && b !== 1 && c !== 1 // false
  * isNotEqualAnd([1, 2, 3], 1) // false
  */
-export const isNotEqualAnd = (values = [], matchValue) => !isEqualOr(values, matchValue);
+export const isNotEqualAnd = (values = [], matchValue) =>
+  !isEqualOr(values, matchValue);
 
 /**
  * Стандартная проверка на null/undefined в js
@@ -93,22 +97,22 @@ export function saveData(blob, fileName) {
     a.click();
     document.body.removeChild(a);
 
-    setTimeout(() => (
-      window.URL.revokeObjectURL(url)
-    ), 1000);
+    setTimeout(() => window.URL.revokeObjectURL(url), 1000);
   }
 }
 
 function get_browser() {
   const ua = navigator.userAgent;
   let tem;
-  let M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+  let M =
+    ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) ||
+    [];
 
   if (/trident/i.test(M[1])) {
     tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
     return {
       name: 'IE',
-      version: (tem[1] || ''),
+      version: tem[1] || '',
     };
   }
   if (M[1] === 'Chrome') {
@@ -137,7 +141,9 @@ function get_browser() {
  * @param  {[type]} blob [description]
  */
 export function printData(blob) {
-  const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+  const url = window.URL.createObjectURL(
+    new Blob([blob], { type: 'application/pdf' }),
+  );
   const iframe = document.createElement('iframe');
   document.body.appendChild(iframe);
   iframe.classList.add('none');
@@ -202,9 +208,16 @@ export function resizeBase64(base64) {
     image.onload = () => {
       canvas.width = image.width;
       canvas.height = image.height;
-      ctx.drawImage(image,
-        0, 0, image.width, image.height,
-        0, 0, canvas.width, canvas.height,
+      ctx.drawImage(
+        image,
+        0,
+        0,
+        image.width,
+        image.height,
+        0,
+        0,
+        canvas.width,
+        canvas.height,
       );
       res(canvas.toDataURL('image/png'));
     };
@@ -246,4 +259,35 @@ export function fromIterableListToArray(itetableList) {
   return array;
 }
 
-export const isFourDigitGovNumber = (number) => isFourDigitGovNumberRegexp.test(number);
+export const isFourDigitGovNumber = (number) =>
+  isFourDigitGovNumberRegexp.test(number);
+
+/**
+ * detect IE
+ * returns version of IE or false, if browser is not Internet Explorer
+ */
+export function detectIE() {
+  const ua = window.navigator.userAgent;
+
+  const msie = ua.indexOf('MSIE ');
+  if (msie > 0) {
+    // IE 10 or older => return version number
+    return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+  }
+
+  const trident = ua.indexOf('Trident/');
+  if (trident > 0) {
+    // IE 11 => return version number
+    const rv = ua.indexOf('rv:');
+    return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+  }
+
+  const edge = ua.indexOf('Edge/');
+  if (edge > 0) {
+    // Edge (IE 12+) => return version number
+    return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+  }
+
+  // other browser
+  return false;
+}

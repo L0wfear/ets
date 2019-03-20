@@ -10,7 +10,6 @@ import tireModelPermissions from 'components/directories/autobase/tire_model/con
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { tireModelFormSchema } from 'components/directories/autobase/tire_model/TireModelForm/tire_model_form_schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -33,15 +32,6 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 class TireModelForm extends React.PureComponent<PropsTireModel, StateTireModel> {
   componentDidMount() {
     this.props.tireManufacturerGetAndSetInStore();
-  }
-
-  handleChange = (name: keyof TireModel, value: any) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
   }
 
   makeOptionFromTireManufacturerList = (
@@ -67,7 +57,7 @@ class TireModelForm extends React.PureComponent<PropsTireModel, StateTireModel> 
     const tireManufacturerOptions = this.makeOptionFromTireManufacturerList(tireManufacturerList);
 
     return (
-      <Modal id="modal-tire-model" show onHide={this.handleHide} backdrop="static">
+      <Modal id="modal-tire-model" show onHide={this.props.hideWithoutChanges} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
@@ -81,7 +71,7 @@ class TireModelForm extends React.PureComponent<PropsTireModel, StateTireModel> 
                 value={state.name}
                 error={errors.name}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="name"
                 modalKey={path}
               />
@@ -95,7 +85,7 @@ class TireModelForm extends React.PureComponent<PropsTireModel, StateTireModel> 
                 value={state.tire_manufacturer_id}
                 error={errors.tire_manufacturer_id}
                 disabled={!isPermitted}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="tire_manufacturer_id"
                 clearable={false}
                 modalKey={path}
@@ -125,22 +115,6 @@ export default compose<PropsTireModel, OwnTireModelProps>(
       tireManufacturerList: getAutobaseState(state).tireManufacturerList,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseCreateTireModel(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateTireModel(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
       tireManufacturerGetAndSetInStore: () => (
         dispatch(
           autobaseActions.tireManufacturerGetAndSetInStore(
@@ -153,6 +127,8 @@ export default compose<PropsTireModel, OwnTireModelProps>(
   ),
   withForm<PropsTireModelWithForm, TireModel>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateTireModel,
+    updateAction: autobaseActions.autobaseUpdateTireModel,
     mergeElement: (props) => {
       return getDefaultTireModelElement(props.element);
     },

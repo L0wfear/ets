@@ -8,7 +8,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 
 import ModalBody from 'components/ui/Modal';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { makeCarOptionLabel } from '../mission/MissionForm/utils';
+import { makeCarOptionLabel } from 'components/missions/mission/MissionForm/utils';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { cloneDeep } from 'lodash';
 
@@ -41,7 +41,7 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
       await this.props.handleSubmit();
       this.props.hideColumnAssignmentMissionTemplate();
     } catch (e) {
-      console.log(e); // tslint:disable-line
+      console.log(e); // tslint:disable-line:no-console
       this.setState({ showBackButton: true });
     }
   }

@@ -2,6 +2,7 @@ import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
+import { isArray } from 'highcharts';
 
 export const waybillSchema = {
   properties: [
@@ -46,7 +47,12 @@ export const waybillSchema = {
       title: 'Топливо.Выезд',
       type: 'number',
       float: 3,
-      required: true,
+    },
+    {
+      key: 'equipment_fuel_type',
+      title: 'Тип топлива',
+      type: 'valueOfArray',
+      required: false,
     },
     {
       key: 'equipment_fuel_start',
@@ -59,7 +65,6 @@ export const waybillSchema = {
       key: 'fuel_type',
       title: 'Топливо.Тип',
       type: 'string',
-      required: true,
     },
     {
       key: 'fuel_to_give',
@@ -94,7 +99,6 @@ export const waybillSchema = {
       title: 'Счетчик моточасов оборудования.Выезд',
       type: 'number',
       integer: true,
-      required: false,
     },
     {
       key: 'distance',
@@ -127,9 +131,33 @@ export const waybillSchema = {
       required: false,
       type: 'number',
     },
+    {
+      key: 'fuel_method',
+      title: 'Способ заправки',
+      required: false,
+      type: 'string',
+    },
+    {
+      key: 'fuel_card_id',
+      title: 'Топливная карта',
+      required: false, // dependencies valid
+      type: 'string',
+    },
+    {
+      key: 'equipment_fuel_method',
+      title: 'Способ заправки',
+      required: false,
+      type: 'string',
+    },
+    {
+      key: 'equipment_fuel_card_id',
+      title: 'Топливная карта',
+      required: false, // dependencies valid
+      type: 'string',
+    },
   ],
   dependencies: {
-    'plan_departure_date': [
+    plan_departure_date: [
       {
         validator: (value, { status }) => {
           // а надо ли?
@@ -137,7 +165,10 @@ export const waybillSchema = {
             return false;
           }
 
-          if (diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0) { // уже не работает
+          if (
+            diffDates(getDateWithMoscowTz(), moment('2018-11-10T00:00:00')) < 0
+          ) {
+            // уже не работает
             return '';
           }
           if (moment(new Date()).diff(moment(value), 'minutes') > 5) {
@@ -148,7 +179,7 @@ export const waybillSchema = {
         },
       },
     ],
-    'odometr_start': [
+    odometr_start: [
       {
         validator: (value, formData) => {
           if (!hasMotohours(formData.gov_number) && isEmpty(value)) {
@@ -158,7 +189,7 @@ export const waybillSchema = {
         },
       },
     ],
-    'motohours_start': [
+    motohours_start: [
       {
         validator: (value, formData) => {
           if (hasMotohours(formData.gov_number) && isEmpty(value)) {
@@ -168,7 +199,21 @@ export const waybillSchema = {
         },
       },
     ],
-    'plan_arrival_date': [
+    motohours_equip_start: [
+      {
+        validator: (value, formData) => {
+          if (
+            formData.equipment_fuel
+            && (!formData.status || formData.status === 'draft')
+            && isEmpty(value)
+          ) {
+            return 'Поле "Счетчик моточасов оборудования.Выезд" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    plan_arrival_date: [
       {
         type: 'gt',
         field: 'plan_departure_date',
@@ -177,7 +222,12 @@ export const waybillSchema = {
     downtime_hours_work: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value
+            && parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Работа" должно быть меньше 1000';
           }
           return false;
@@ -187,7 +237,12 @@ export const waybillSchema = {
     downtime_hours_duty: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value
+            && parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Дежурство" должно быть меньше 1000';
           }
           return false;
@@ -197,7 +252,12 @@ export const waybillSchema = {
     downtime_hours_dinner: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value
+            && parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Обед" должно быть меньше 1000';
           }
           return false;
@@ -207,10 +267,97 @@ export const waybillSchema = {
     downtime_hours_repair: [
       {
         validator: (value) => {
-          if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
+          if (
+            value
+            && parseFloat(value)
+              .toFixed(1)
+              .match(/^\d{4,}/)
+          ) {
             return 'Поле "Ремонт" должно быть меньше 1000';
           }
           return false;
+        },
+      },
+    ],
+    fuel_method: [
+      {
+        validator: (value, formData) => {
+          if (!value && (!formData.status || formData.status === 'draft')) {
+            return 'Поле "Способ заправки" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    equipment_fuel_method: [
+      {
+        validator: (value, formData) => {
+          if (
+            !value
+            && formData.equipment_fuel
+            && (formData.status === 'draft' || !formData.status)
+          ) {
+            return 'Поле "Способ заправки" должно быть заполнено';
+          }
+          return false;
+        },
+      },
+    ],
+    fuel_type: [
+      {
+        validator: (value, { status }) => {
+          if ((status === 'draft' || !status) && !value) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    equipment_fuel_type: [
+      {
+        validator: (value, { equipment_fuel, status }) => {
+          if (equipment_fuel && (status === 'draft' || !status) && !value) {
+            return 'Поле "Тип топлива" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    fuel_start: [
+      {
+        validator: (value, { status }) => {
+          if ((status === 'draft' || !status) && (!value && value !== 0)) {
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    equipment_fuel_start: [
+      {
+        validator: (value, { status, equipment_fuel }) => {
+          if (
+            equipment_fuel
+            && (status === 'draft' || !status)
+            && (!value && value !== 0)
+          ) {
+            return 'Поле "Выезд, л" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    equipment_fact_fuel_end: [
+      {
+        validator: (value, { status, equipment_fuel }) => {
+          if (equipment_fuel && status === 'active' && !value) {
+            return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
+        },
+      },
+    ],
+    fact_fuel_end: [
+      {
+        validator: (value, { status, equipment_fuel }) => {
+          if (equipment_fuel && status === 'active' && !value) {
+            return 'Поле "Возврат фактический, л" должно быть заполнено';
+          }
         },
       },
     ],
@@ -265,6 +412,13 @@ const closingProperties = [
     required: false,
   },
   {
+    key: 'equipment_fact_fuel_end',
+    title: 'Топливо.Возврат фактический',
+    type: 'number',
+    float: 3,
+    min: 0,
+  },
+  {
     key: 'odometr_end',
     title: 'Одометр. Возвращение в гараж, км',
     type: 'number',
@@ -299,29 +453,34 @@ const closingProperties = [
     required: false,
     maxLength: 200,
   },
+  {
+    key: 'equipment_tax_data',
+    title: 'Расчет топлива по норме для оборудования',
+    type: 'array',
+  },
 ];
 
 const closingDependencies = {
   ...waybillSchema.dependencies,
-  'motohours_end': [
+  motohours_end: [
     {
       type: 'gte',
       field: 'motohours_start',
     },
   ],
-  'motohours_equip_end': [
+  motohours_equip_end: [
     {
       type: 'gte',
       field: 'motohours_equip_start',
     },
   ],
-  'odometr_end': [
+  odometr_end: [
     {
       type: 'gte',
       field: 'odometr_start',
     },
   ],
-  'fact_departure_date': [
+  fact_departure_date: [
     {
       validator(value, { status }) {
         const IS_ACTIVE = status && status === 'active';
@@ -335,14 +494,17 @@ const closingDependencies = {
     },
     {
       validator(value, { plan_departure_date }) {
-        if (value && moment(value).diff(moment(plan_departure_date), 'minutes') < 0) {
+        if (
+          value
+          && moment(value).diff(moment(plan_departure_date), 'minutes') < 0
+        ) {
           return '"Выезд факт." должно быть не раньше "Выезда план."';
         }
         return false;
       },
     },
   ],
-  'fact_arrival_date': [
+  fact_arrival_date: [
     {
       validator(value, { status }) {
         const IS_ACTIVE = status && status === 'active';
@@ -356,7 +518,11 @@ const closingDependencies = {
     },
     {
       validator(value, { fact_departure_date }) {
-        if (value && fact_departure_date && moment(value).diff(moment(fact_departure_date), 'minutes') <= 0) {
+        if (
+          value
+          && fact_departure_date
+          && moment(value).diff(moment(fact_departure_date), 'minutes') <= 0
+        ) {
           return '"Возвращение факт." должно быть позже "Выезд факт."';
         }
         return false;
@@ -364,20 +530,45 @@ const closingDependencies = {
     },
     {
       validator(value, { plan_arrival_date }) {
-        if (value && plan_arrival_date && moment(value).diff(moment(plan_arrival_date), 'minutes') > 180) {
+        if (
+          value
+          && plan_arrival_date
+          && moment(value).diff(moment(plan_arrival_date), 'minutes') > 180
+        ) {
           return 'Время, указанное в поле "Возвращение факт" не может превышать время в поле "Возвращение план" больше чем на 3 часа';
         }
         return false;
       },
     },
   ],
-  'distance': [
+  distance: [
     {
       validator: (value, formData) => {
-        if (Math.abs((parseFloat(formData.odometr_diff || formData.motohours_diff || 0) - parseFloat(value || 0)) / 100) > 0.1) {
+        const abs = Math.abs(
+          parseFloat(formData.odometr_diff || formData.motohours_diff || 0)
+            - parseFloat(value || 0),
+        );
+        if (abs / 100 > 0.1) {
           return 'Расхождение в показателях пробега';
         }
         return false;
+      },
+    },
+  ],
+  equipment_tax_data: [
+    {
+      validator: (value, { equipment_fuel, hasEquipmentFuelRates }) => {
+        if (
+          equipment_fuel
+          && hasEquipmentFuelRates
+          && (!isArray(value)
+            || !value.filter(
+              ({ FACT_VALUE, OPERATION }) =>
+                (FACT_VALUE || FACT_VALUE === 0) && OPERATION,
+            ).length)
+        ) {
+          return 'В Поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
+        }
       },
     },
   ],

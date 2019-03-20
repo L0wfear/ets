@@ -139,16 +139,3 @@ export interface IUserNotification extends IResponseRowObject<number> {
   additional_info: string;
   gov_number: string;
 }
-
-export interface IAppConfig {
-  defaults: ETSCore.Types.IStringKeyHashTable<string>;
-  enums: ETSCore.Types.IStringKeyHashTable<string>;
-  summer_start: [
-    /*month*/number,
-    /*day*/number
-  ];
-  summer_end: [
-    /*month*/number,
-    /*day*/number
-  ];
-}

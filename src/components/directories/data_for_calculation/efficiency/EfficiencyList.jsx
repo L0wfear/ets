@@ -3,6 +3,9 @@ import EfficiencyFormWrap from 'components/directories/data_for_calculation/effi
 import EfficiencyTable from 'components/directories/data_for_calculation/efficiency/EfficiencyTable';
 import { connectToStores, staticProps } from 'utils/decorators';
 import permissions from 'components/directories/data_for_calculation/efficiency/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 @connectToStores(['odh', 'objects'])
 @staticProps({
@@ -13,8 +16,7 @@ import permissions from 'components/directories/data_for_calculation/efficiency/
   formComponent: EfficiencyFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-export default class EfficiencyList extends ElementsList {
-
+class EfficiencyList extends ElementsList {
   constructor(props, context) {
     super(props);
 
@@ -25,5 +27,10 @@ export default class EfficiencyList extends ElementsList {
     const { flux } = this.context;
     flux.getActions('odh').getEfficiency();
   }
-
 }
+
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(EfficiencyList);

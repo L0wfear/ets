@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connectToStores } from 'utils/decorators';
 import { withRouter } from 'react-router-dom';
 
 import CompanyOptionsNew from 'components/new/ui/app_header/desktop/right/change_role/CompanyOptionsNew';
@@ -7,8 +6,11 @@ import { ChangeRoleContainer, CompanyOptionsNewContainer } from 'components/new/
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['session'])
 class ChangeRole extends React.Component<any, {}> {
   node = React.createRef<any>();
 
@@ -42,12 +44,10 @@ class ChangeRole extends React.Component<any, {}> {
   render() {
     const {
       isGlavControl,
-      location,
+      match,
     } = this.props;
 
-    const show = isGlavControl && location.pathname !== '/change-company';
-
-    return show
+    return isGlavControl && match.url !== '/change-company'
       ? (
         <ChangeRoleContainer ref={this.node}>
           <span>Текущая организация:</span>
@@ -62,4 +62,11 @@ class ChangeRole extends React.Component<any, {}> {
   }
 }
 
-export default withRouter(ChangeRole);
+export default compose<any, any>(
+  withRouter,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      isGlavControl: getSessionState(state).userData.isGlavControl,
+    }),
+  ),
+)(ChangeRole);

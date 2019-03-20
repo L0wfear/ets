@@ -6,35 +6,35 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { PropsTechInspectionFormWrap } from 'components/directories/autobase/tech_inspection/TechInspectionForm/@types/TechInspectionForm.h';
 
-const TechInspectionFrom = React.lazy(() => (
-  import(/* webpackChunkName: "tech_inspection_form" */ 'components/directories/autobase/tech_inspection/TechInspectionForm/TechInspectionForm')
-));
+const TechInspectionFrom = React.lazy(() =>
+  import(/* webpackChunkName: "tech_inspection_form" */ 'components/directories/autobase/tech_inspection/TechInspectionForm/TechInspectionForm'),
+);
 
-class TechInspectionFormWrap extends React.Component<PropsTechInspectionFormWrap, {}> {
+class TechInspectionFormWrap extends React.Component<
+  PropsTechInspectionFormWrap,
+  {}
+> {
   render() {
     const { showForm, ...props } = this.props;
     const page = props.loadingPageName || props.page;
     const path = `${props.path ? `${props.path}-` : ''}insurance-policy-form`;
 
-    return showForm ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <TechInspectionFrom
-              element={props.element}
-              handleHide={props.onFormHide}
-              car_id={props.car_id}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
+    return showForm ? (
+      <ErrorBoundaryForm>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <TechInspectionFrom
+            element={props.element}
+            handleHide={props.onFormHide}
+            car_id={props.car_id}
+            deepLvl={this.props.deepLvl}
+            page={page}
+            path={path}
+          />
+        </React.Suspense>
+      </ErrorBoundaryForm>
+    ) : (
+      <DivNone />
+    );
   }
 }
 

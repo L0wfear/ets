@@ -2,15 +2,15 @@ export type MissionTemplate = {
   car_gov_numbers: string[];
   car_gov_numbers_text: string;
   car_ids: number[];
-  car_type_id: number[];
-  car_type_name: string[];
+  car_type_ids: number[];
+  car_type_names: string[];
   car_type_name_text: string;
   comment: string;
   company_id: number;
   date_create: string;
   description: string;
   for_column: boolean;
-  id: number;
+  id: number | null;
   is_actual: boolean;
   is_cleaning_norm: boolean[];
   kind_task_ids: number[];
@@ -29,5 +29,3 @@ export type MissionTemplate = {
   type_oper_id: number;
   work_class_id: number;
 };
-
-export type GetCompanyStructureLinear = () => Promise<any>;

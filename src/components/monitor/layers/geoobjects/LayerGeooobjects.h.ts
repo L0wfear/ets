@@ -1,13 +1,13 @@
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
-export type PropsLayerGeooobjects= {
-  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
-  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
-  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
-  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
+export type PropsLayerGeooobjects = {
+  addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
+  removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
+  addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
+  removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
+  getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+  setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer;
   geoobjects: any;
   SHOW_GEOOBJECTS: boolean;
   companiesIndex: TypeCompaniesIndex;
@@ -29,12 +29,11 @@ export type TypeGeoobjects = {
   [serverName: string]: TypeGeoObjectData;
 };
 
-export type StateLayerGeooobjects= {
-};
+export type StateLayerGeooobjects = {};
 
 export namespace LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
-    addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
+    addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource;
     companiesIndex?: TypeCompaniesIndex;
   };
 
@@ -42,10 +41,11 @@ export namespace LayerGeoobjectsUtilsTypes {
     removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource;
   };
 
-  type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
-    getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-    companiesIndex?: TypeCompaniesIndex;
-  };
+  type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps &
+    checkShowFalseFuncThisProps & {
+      getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById;
+      companiesIndex?: TypeCompaniesIndex;
+    };
 
   export type renderGeoobjectsFunc = (
     geoobjects: TypeGeoobjects,
@@ -86,14 +86,15 @@ export namespace LayerGeoobjectsUtilsTypes {
   ) => TypeGeoobjects;
 
   type DiffAns = {
-    hasDiff: boolean,
-    changedGeoobjects: TypeGeoobjects,
+    hasDiff: boolean;
+    changedGeoobjects: TypeGeoobjects;
   };
 
   export type checkShowStatusFunc = (
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
+    oldShow: boolean,
     stateData: TypeGeoObjectData,
   ) => DiffAns;
 
@@ -108,15 +109,16 @@ export namespace LayerGeoobjectsUtilsTypes {
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
+    oldShow: boolean,
     stateData: TypeGeoObjectData,
   ) => {
-    checkShowStatus: DiffAns,
-    checkData: DiffAns,
+    checkShowStatus: DiffAns;
+    checkData: DiffAns;
   };
 
   type DiffAnsForClass = {
-    hasDiff: boolean,
-    diffGeoobjects: TypeGeoobjects,
+    hasDiff: boolean;
+    diffGeoobjects: TypeGeoobjects;
   };
 
   export type diffInputPropsFunc = (
@@ -129,6 +131,7 @@ export namespace LayerGeoobjectsUtilsTypes {
     serverName: string,
     data: TypeGeoObjectData,
     show: boolean,
+    oldShow: boolean,
     stateData: TypeGeoObjectData,
   ) => DiffAnsForClass;
 

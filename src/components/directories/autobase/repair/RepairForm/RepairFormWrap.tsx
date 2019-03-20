@@ -6,9 +6,9 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { PropsRepairFormWrap } from 'components/directories/autobase/repair/RepairForm/@types/Repair.h';
 
-const RepareFrom = React.lazy(() => (
-  import(/* webpackChunkName: "repare_form" */ 'components/directories/autobase/repair/RepairForm/RepairForm')
-));
+const RepareFrom = React.lazy(() =>
+  import(/* webpackChunkName: "repare_form" */ 'components/directories/autobase/repair/RepairForm/RepairForm'),
+);
 
 class RepareFormWrap extends React.Component<PropsRepairFormWrap, {}> {
   render() {
@@ -16,25 +16,22 @@ class RepareFormWrap extends React.Component<PropsRepairFormWrap, {}> {
     const page = props.loadingPageName || props.page;
     const path = `${props.path ? `${props.path}-` : ''}repare-form`;
 
-    return showForm ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <RepareFrom
-              element={props.element}
-              handleHide={props.onFormHide}
-              car_id={props.car_id}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
+    return showForm ? (
+      <ErrorBoundaryForm>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <RepareFrom
+            element={props.element}
+            handleHide={props.onFormHide}
+            car_id={props.car_id}
+            deepLvl={this.props.deepLvl}
+            page={page}
+            path={path}
+          />
+        </React.Suspense>
+      </ErrorBoundaryForm>
+    ) : (
+      <DivNone />
+    );
   }
 }
 

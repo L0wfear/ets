@@ -118,11 +118,11 @@ class Paginator extends React.Component<PropsPaginator, StatePaginator> {
     return Math.ceil(this.props.total_count / paginator.perPage) > 1
       ? (
         <EtsPaginatorContainer>
-            <ButtonFirst registryKey={registryKey} />
-            <ButtonPrev registryKey={registryKey}/>
-            { arrayForButton.map(this.renderMainButton) }
-            <ButtonNext registryKey={registryKey} />
-            <ButtonLast registryKey={registryKey} />
+          <ButtonFirst registryKey={registryKey} />
+          <ButtonPrev registryKey={registryKey}/>
+          { arrayForButton.map(this.renderMainButton) }
+          <ButtonNext registryKey={registryKey} />
+          <ButtonLast registryKey={registryKey} />
         </EtsPaginatorContainer>
       )
       : (

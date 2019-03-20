@@ -45,13 +45,9 @@ export type OneCarData = {
   type_name: string | void;
 };
 
-export type CarActualAsuodsIdIndexType = {
-  [asuods_id: string]: OneCarData,
-};
+export type CarActualAsuodsIdIndexType = Record<OneCarData['asuods_id'], OneCarData>;
 
-export type CarActualGpsNumberIndexType = {
-  [gps_code: string]: OneCarData,
-};
+export type CarActualGpsNumberIndexType = Record<OneCarData['gps_code'], OneCarData>;
 
 export type LoadCarActualIndexPromise = {
   carActualAsuodsIdIndex: CarActualAsuodsIdIndexType;

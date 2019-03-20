@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  sessionSetData,
-} from 'redux-main/reducers/modules/session/actions-session';
+import { sessionCahngeCompanyOnAnother } from 'redux-main/reducers/modules/session/actions-session';
 
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { withRouter } from 'react-router-dom';
-import { connectToStores, FluxContext } from 'utils/decorators';
 
 import {
   DivNone,
@@ -17,82 +14,83 @@ import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 import { isNull } from 'util';
 import { BackToGorodContainer } from 'components/new/ui/app_header/desktop/right/back_to_gorod/styled';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-/* tslint:disable */
-const BackToGorod = compose<any, any>(
-  withRouter,
-  connect< any, any, any, ReduxState>(
-    null,
-    (dispatch) => ({
-      sessionSetData: (props) => dispatch(sessionSetData(props)),
-    }),
-  ),
-)(
-  @connectToStores(['session'])
-  @FluxContext
-  class extends React.Component<any, any> {
-    context!: ETSCore.LegacyContext;
-    node = React.createRef<any>();
+class BackToGorod extends React.Component<any, any> {
+  context!: ETSCore.LegacyContext;
+  node = React.createRef<any>();
 
-    getSnapshotBeforeUpdate(prevProps) {
-      if (prevProps.width < this.props.width) {
-        const { current } = this.node;
-        if (current) {
-          return current.offsetWidth;
-        }
-      }
-      return null;
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-      if (snapshot !== null) {
-        const { current } = this.node;
-        if (current && this.props.changeStaticWidth) {
-          this.props.changeStaticWidth(current.offsetWidth - snapshot);
-        }
-      }
-    }
-
-    componentDidMount() {
+  getSnapshotBeforeUpdate(prevProps) {
+    if (prevProps.width < this.props.width) {
       const { current } = this.node;
-
-      if (current && this.props.changeStaticWidth) {
-        this.props.changeStaticWidth(current.offsetWidth);
+      if (current) {
+        return current.offsetWidth;
       }
     }
+    return null;
+  }
 
-    handleSelect = () => {
-      this.context.flux.getActions('session').cahngeCompanyOnAnother(null)
-        .then(({ payload, token }) => {
-          this.props.sessionSetData({
-            currentUser: payload,
-            session: token,
-          });
-
-          this.props.history.push('/change-company')
-        })
-    }
-
-    render() {
-      const {
-        isGlavControl,
-        currentUser,
-      } = this.props;
-
-      const show = isGlavControl && !isNull(currentUser.company_id);
-
-      return show
-        ? (
-          <BackToGorodContainer ref={this.node} id="button-back-to-city" onClick={this.handleSelect} title="Возврат на уровень города">
-            <Glyphicon glyph="arrow-left"/>
-          </BackToGorodContainer>
-        )
-        : (
-          <DivNone />
-        );
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (snapshot !== null) {
+      const { current } = this.node;
+      if (current && this.props.changeStaticWidth) {
+        this.props.changeStaticWidth(current.offsetWidth - snapshot);
+      }
     }
   }
-);
-/* tslint:enable */
 
-export default BackToGorod;
+  componentDidMount() {
+    const { current } = this.node;
+
+    if (current && this.props.changeStaticWidth) {
+      this.props.changeStaticWidth(current.offsetWidth);
+    }
+  }
+
+  handleSelect = async () => {
+    try {
+      await this.props.sessionCahngeCompanyOnAnother(null);
+
+      this.props.history.push('/change-company');
+    } catch (e) {
+      console.warn(e); // tslint:disable-line
+    }
+  }
+
+  render() {
+    const {
+      userData,
+    } = this.props;
+
+    const show = userData.isGlavControl && !isNull(userData.company_id);
+
+    return show
+      ? (
+        <BackToGorodContainer ref={this.node} id="button-back-to-city" onClick={this.handleSelect} title="Возврат на уровень города">
+          <Glyphicon glyph="arrow-left"/>
+        </BackToGorodContainer>
+      )
+      : (
+        <DivNone />
+      );
+  }
+}
+
+export default compose<any, any>(
+  withRouter,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      userData: getSessionState(state).userData,
+    }),
+    (dispatch) => ({
+      sessionCahngeCompanyOnAnother: (company_id) => (
+        dispatch(
+          sessionCahngeCompanyOnAnother(
+            company_id,
+            { page: 'main' },
+          ),
+        )
+      ),
+    }),
+  ),
+)(BackToGorod);

@@ -15,44 +15,50 @@ import permissions_mission_template from 'components/missions/mission_template/c
 import permissions_duty_mission_template from 'components/missions/duty_mission_template/config-data/permissions';
 
 import { TypeDownload } from 'components/directories/order/constant-order';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { getBlobOrder } from 'components/directories/order/utils-order';
 
 const marginLeft = { marginLeft: 10 };
 
-const Button = enhanceWithPermissions({})(BootstrapButton);
+const Button = withRequirePermissionsNew({})(BootstrapButton);
 const title: any = <Glyphicon glyph="download-alt" />;
 
 const OrderTableChilrend: React.FunctionComponent<any> = (props) => (
-  <div>
+  <>
     <Button
-      permission={permissions_mission_template.create}
+      permissions={permissions_mission_template.create}
       disabled={props.disabledTemplateMission}
-      onClick={props.handleClickOnCMTemplate}
-    >
+      onClick={props.handleClickOnCMTemplate}>
       {'Создать задание по шаблону'}
     </Button>
     <Button
-      permission={permissions_duty_mission_template.create}
+      permissions={permissions_duty_mission_template.create}
       disabled={props.disabledTemplateDutyMission}
-      onClick={props.handleClickOnCDMTemplate}
-    >
+      onClick={props.handleClickOnCDMTemplate}>
       {'Создать наряд-задание по шаблону'}
     </Button>
-    <span style={marginLeft} >
-      <DropdownButton disabled={props.disabledButtonsMenu} onSelect={props.selectDownload} pullRight title={title} id="bg-nested-dropdown">
+    <span style={marginLeft}>
+      <DropdownButton
+        disabled={props.disabledButtonsMenu}
+        onSelect={props.selectDownload}
+        pullRight
+        title={title}
+        id="bg-nested-dropdown">
         <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
-        <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
+        <MenuItem eventKey={TypeDownload.new}>
+          Расшифровка централизованного задания
+        </MenuItem>
       </DropdownButton>
     </span>
-  </div>
+  </>
 );
 
 const mapStateToProps = (state) => ({
   selectedElementOrder: state.order.selectedElementOrder,
 
   disabledTemplateMission: state.order.disabledOrderButton.templateMission,
-  disabledTemplateDutyMission: state.order.disabledOrderButton.templateDutyMission,
+  disabledTemplateDutyMission:
+    state.order.disabledOrderButton.templateDutyMission,
 });
 const mapDispatchToProps = (dispatch) => ({
   ...bindActionCreators(
@@ -64,14 +70,21 @@ const mapDispatchToProps = (dispatch) => ({
   ),
 });
 
-const mergeProps = (stateProps, dispatchProps, { order_mission_source_id: mission_source_id }) => ({
+const mergeProps = (
+  stateProps,
+  dispatchProps,
+  { order_mission_source_id: mission_source_id },
+) => ({
   disabledButtonsMenu: !stateProps.selectedElementOrder,
   disabledTemplateMission: stateProps.disabledTemplateMission,
   disabledTemplateDutyMission: stateProps.disabledTemplateDutyMission,
 
-  handleClickOnCMTemplate: () => dispatchProps.setMInMissionTemplateData({ mission_source_id }),
-  handleClickOnCDMTemplate: () => dispatchProps.setDMInMissionTemplateData({ mission_source_id }),
-  selectDownload: (eventName) => getBlobOrder(stateProps.selectedElementOrder, eventName),
+  handleClickOnCMTemplate: () =>
+    dispatchProps.setMInMissionTemplateData({ mission_source_id }),
+  handleClickOnCDMTemplate: () =>
+    dispatchProps.setDMInMissionTemplateData({ mission_source_id }),
+  selectDownload: (eventName) =>
+    getBlobOrder(stateProps.selectedElementOrder, eventName),
 });
 
 export default connect(

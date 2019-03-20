@@ -30,21 +30,23 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
       callback: this.context.flux.getActions('repair').programRegistryPost,
       outFormState: { ...this.state.formState },
     };
-    this.props.defSendFromState(payload).then(({ result: { rows: [createdPr] } }) => {
-      this.props.setNewSelectedElement(createdPr);
+    this.props
+      .defSendFromState(payload)
+      .then(({ result: { rows: [createdPr] } }) => {
+        this.props.setNewSelectedElement(createdPr);
 
-      this.setState({
-        saveButtonLabel: 'Сохранить',
-        saveButtonEnability: true,
-      });
-    })
+        this.setState({
+          saveButtonLabel: 'Сохранить',
+          saveButtonEnability: true,
+        });
+      })
       .catch(() => {
         this.setState({
           saveButtonLabel: 'Сохранить',
           saveButtonEnability: true,
         });
       });
-  }
+  };
 
   validate = (state, errors) => this.props.validate(state, errors);
 
@@ -52,12 +54,15 @@ class ProgramRegistryFormCreateWrap extends FormWrap {
     const { entity, isPermitted = false } = this.props;
     const { saveButtonEnability = true, formErrors } = this.state;
 
-    const stateCanSave = Object.entries(formErrors).reduce((boolean, [key, oneError]) => {
-      if (firstStepFields.includes(key)) {
-        return boolean && !oneError;
-      }
-      return boolean;
-    }, true);
+    const stateCanSave = Object.entries(formErrors).reduce(
+      (boolean, [key, oneError]) => {
+        if (firstStepFields.includes(key)) {
+          return boolean && !oneError;
+        }
+        return boolean;
+      },
+      true,
+    );
 
     const canSave = isPermitted && stateCanSave && saveButtonEnability;
 

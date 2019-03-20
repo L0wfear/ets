@@ -10,40 +10,63 @@ import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_co
 import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const Button = enhanceWithPermissions(BootstrapButton);
 
-export const ButtonChangeStatus = ({ permissions, onClick, disabled, buttonName }) =>
-  <Button bsSize="small" onClick={onClick} permissions={permissions} disabled={disabled}>
+export const ButtonChangeStatus = ({
+  permissions,
+  onClick,
+  disabled,
+  buttonName,
+}) => (
+  <Button
+    bsSize="small"
+    onClick={onClick}
+    permissions={permissions}
+    disabled={disabled}>
     {buttonName}
   </Button>
-;
+);
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
-    return `Вы уверены, что хотите удалить выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
+    return `Вы уверены, что хотите удалить выбранн${
+      countCheckedElement === 1 ? 'ое' : 'ые'
+    } замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
   },
   reject(countCheckedElement) {
-    return `Вы уверены, что хотите отклонить выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
+    return `Вы уверены, что хотите отклонить выбранн${
+      countCheckedElement === 1 ? 'ое' : 'ые'
+    } замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
   },
   fix(countCheckedElement) {
-    return `Вы уверены, что хотите перевести выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'} в статус "Исправлено"?`;
+    return `Вы уверены, что хотите перевести выбранн${
+      countCheckedElement === 1 ? 'ое' : 'ые'
+    } замечани${countCheckedElement === 1 ? 'е' : 'я'} в статус "Исправлено"?`;
   },
 };
 
 const notifyTexts = {
   remove(countCheckedElement) {
-    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'} удал${countCheckedElement === 1 ? 'ено' : 'ены'}`;
+    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${
+      countCheckedElement === 1 ? 'е' : 'я'
+    } удал${countCheckedElement === 1 ? 'ено' : 'ены'}`;
   },
   reject(countCheckedElement) {
-    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'} отклон${countCheckedElement === 1 ? 'ено' : 'ены'}`;
+    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${
+      countCheckedElement === 1 ? 'е' : 'я'
+    } отклон${countCheckedElement === 1 ? 'ено' : 'ены'}`;
   },
   fix(countCheckedElement) {
-    return `У выбранн${countCheckedElement === 1 ? 'ого' : 'ых'} замечани${countCheckedElement === 1 ? 'я' : 'ий'} изменён статус на "Исправлено"`;
+    return `У выбранн${countCheckedElement === 1 ? 'ого' : 'ых'} замечани${
+      countCheckedElement === 1 ? 'я' : 'ий'
+    } изменён статус на "Исправлено"`;
   },
 };
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @staticProps({
   entity: 'repair_program_version',
   permissions,
@@ -55,22 +78,24 @@ const notifyTexts = {
 class ProgramRemarkList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
-    const {
-      program_version_id,
-    } = props;
+    const { program_version_id } = props;
 
-    this.updateAction = context.flux.getActions('repair').getRepairListByType.bind(this, 'programRemarkRegistry', { program_version_id });
+    this.updateAction = context.flux
+      .getActions('repair')
+      .getRepairListByType.bind(this, 'programRemarkRegistry', {
+        program_version_id,
+      });
     this.rejectRemarksAction = context.flux.getActions('repair').rejectRemarks;
     this.fixRemarksAction = context.flux.getActions('repair').fixRemarks;
   }
 
   removeElementAction = (id) => {
-    const {
-      program_version_id,
-    } = this.props;
+    const { program_version_id } = this.props;
 
-    return this.context.flux.getActions('repair').removeProgramRemark(id, { program_version_id });
-  }
+    return this.context.flux
+      .getActions('repair')
+      .removeProgramRemark(id, { program_version_id });
+  };
 
   removeCheckedElements = () => {
     this.defActionFunc({
@@ -79,7 +104,7 @@ class ProgramRemarkList extends CheckableElementsList {
       callBackForOneElement: this.removeElement,
       notifyText: notifyTexts.remove,
     });
-  }
+  };
   /**
    * @override
    */
@@ -88,15 +113,16 @@ class ProgramRemarkList extends CheckableElementsList {
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
-    .then(() =>
-      this.removeElementAction(this.state.selectedElement[this.selectField])
-        .then(() => {
+      .then(() =>
+        this.removeElementAction(
+          this.state.selectedElement[this.selectField],
+        ).then(() => {
           this.setState({ selectedElement: null });
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
-        })
-    )
-    .catch(() => {});
-  }
+        }),
+      )
+      .catch(() => {});
+  };
 
   rejectRemarksCheckedElements = () => {
     this.defActionFunc({
@@ -105,21 +131,22 @@ class ProgramRemarkList extends CheckableElementsList {
       callBackForOneElement: this.rejectRemarksElement,
       notifyText: notifyTexts.reject,
     });
-  }
+  };
   rejectRemarksElement = () => {
     return confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.reject(1),
     })
-    .then(() =>
-      this.rejectRemarksAction(this.state.selectedElement[this.selectField])
-        .then(() => {
+      .then(() =>
+        this.rejectRemarksAction(
+          this.state.selectedElement[this.selectField],
+        ).then(() => {
           this.setState({ selectedElement: null });
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.reject(1));
-        })
-    )
-    .catch(() => {});
-  }
+        }),
+      )
+      .catch(() => {});
+  };
 
   fixRemarksCheckedElements = () => {
     this.defActionFunc({
@@ -128,21 +155,22 @@ class ProgramRemarkList extends CheckableElementsList {
       callBackForOneElement: this.fixRemarksElement,
       notifyText: notifyTexts.fix,
     });
-  }
+  };
   fixRemarksElement = () => {
     return confirmDialog({
       title: 'Внимание',
       body: bodyConfirmDialogs.fix(1),
     })
-    .then(() =>
-      this.fixRemarksAction(this.state.selectedElement[this.selectField])
-        .then(() => {
+      .then(() =>
+        this.fixRemarksAction(
+          this.state.selectedElement[this.selectField],
+        ).then(() => {
           this.setState({ selectedElement: null });
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.fix(1));
-        })
-    )
-    .catch(() => {});
-  }
+        }),
+      )
+      .catch(() => {});
+  };
 
   defActionFunc = ({
     bodyConfirmDialog,
@@ -160,53 +188,60 @@ class ProgramRemarkList extends CheckableElementsList {
         title: 'Внимание',
         body: bodyConfirmDialog(countCheckEl),
       })
-      .then(() => {
-        Promise.all(checkElList.map((el) => callbackForCheckedElement(el[this.selectField])))
         .then(() => {
-          this.updateAction();
-          global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
-        });
-        this.setState({
-          checkedElements: {},
-          selectedElement: null,
-        });
-      })
-      .catch(() => {});
+          Promise.all(
+            checkElList.map((el) =>
+              callbackForCheckedElement(el[this.selectField]),
+            ),
+          ).then(() => {
+            this.updateAction();
+            global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
+          });
+          this.setState({
+            checkedElements: {},
+            selectedElement: null,
+          });
+        })
+        .catch(() => {});
     } else {
       callBackForOneElement().then(() => this.updateAction());
     }
-  }
-
+  };
 
   /**
    * @override
    */
   getButtons = () => {
     const entity = this.constructor.entity;
-    const {
-      program_version_status,
-    } = this.props;
+    const { program_version_status } = this.props;
 
     const buttons = [
       <ButtonDelete
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete() || program_version_status !== 'sent_on_review'}
+        disabled={
+          this.checkDisabledDelete()
+          || program_version_status !== 'sent_on_review'
+        }
         permissions={['repair_program_version.review']}
       />,
       <ButtonChangeStatus
         buttonName={'Отклонено'}
         key={1}
         onClick={this.rejectRemarksCheckedElements}
-        disabled={this.checkDisabledDelete() || program_version_status !== 'rejected'}
+        disabled={
+          this.checkDisabledDelete() || program_version_status !== 'rejected'
+        }
         permissions={[`${entity}.update`]}
       />,
       <ButtonChangeStatus
         buttonName={'Исправлено'}
         key={2}
         onClick={this.fixRemarksCheckedElements}
-        disabled={this.checkDisabledDelete() || program_version_status !== 'rejected'}
+        disabled={
+          this.checkDisabledDelete() || program_version_status !== 'rejected'
+        }
         permissions={[`${entity}.update`]}
       />,
       <ButtonCreate
@@ -219,10 +254,14 @@ class ProgramRemarkList extends CheckableElementsList {
     ];
 
     return buttons;
-  }
+  };
 
   init() {
-    this.context.flux.getActions('repair').getRepairListByType('programRemarkRegistry', { program_version_id: this.props.program_version_id });
+    this.context.flux
+      .getActions('repair')
+      .getRepairListByType('programRemarkRegistry', {
+        program_version_id: this.props.program_version_id,
+      });
   }
 
   getAdditionalProps = () => ({
@@ -230,4 +269,8 @@ class ProgramRemarkList extends CheckableElementsList {
   });
 }
 
-export default compose()(ProgramRemarkList);
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(ProgramRemarkList);

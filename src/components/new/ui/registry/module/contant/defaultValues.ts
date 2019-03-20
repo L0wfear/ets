@@ -1,7 +1,9 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 const registryDefaultObj: OneRegistryData = {
-  Service: null,
+  Service: {
+    get: null,
+  },
   filter: {
     fields: [],
     isOpen: false,

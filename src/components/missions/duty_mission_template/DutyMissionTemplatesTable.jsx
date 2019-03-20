@@ -54,16 +54,19 @@ export const getTableMeta = ({
         },
       },
       {
-        name: 'brigade_employee_id_list',
+        name: 'brigade_employee_id_list_id',
         displayName: 'Бригада',
         type: 'string',
         filter: {
           type: 'multiselect',
           someInRowValue: true,
-          options: uniqBy(employeesList.map(({ id }) => ({
-            value: id,
-            label: employeeFIOLabelFunction(employeesIndex, id),
-          })), 'value'),
+          options: uniqBy(
+            employeesList.map(({ id }) => ({
+              value: id,
+              label: employeeFIOLabelFunction(employeesIndex, id),
+            })),
+            'value',
+          ),
         },
       },
       {
@@ -90,17 +93,13 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export const getRenderers = (props) => ({
-  brigade_employee_id_list: ({ data, rowData }) => (
-    <div>
-      {
-        data.map((id) => (
-          get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
-        )).join(', ')
-      }
-    </div>
+export const getRenderers = () => ({
+  brigade_employee_id_list_id: ({ rowData }) => (
+    <div>{rowData.brigade_employee_id_list_fio.join(', ')}</div>
   ),
-  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  structure_id: ({ rowData }) => (
+    <div>{get(rowData, 'structure_name') || '-'}</div>
+  ),
 });
 
 const DataTable = (props) => (

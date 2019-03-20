@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/@types';
 import {
   promiseGetPedestrianTunnelExits,
+  promiseLoadPFPedestrianTunnelExits,
   promiseCreatePedestrianTunnelExits,
   promiseUpdatePedestrianTunnelExits,
   promiseRemovePedestrianTunnelExits,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetPedestrianTunnelExits: any = (pedestrianTunnelExitsList: PedestrianTunnelExits[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetPedestrianTunnelExits: any = () => (dispatch) => (
     actionSetPedestrianTunnelExits([]),
   )
 );
-export const actionGetGetPedestrianTunnelExits: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobPedestrianTunnelExits: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetPedestrianTunnelExits(payload),
+    payload: promiseLoadPFPedestrianTunnelExits(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetPedestrianTunnelExits: any = (payloadOwn = {}, { page, path }: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetPedestrianTunnelExits(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStorePedestrianTunnelExits: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetPedestrianTunnelExits(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemovePedestrianTunnelExits: any = (id, { page, path }: { pag
 export default {
   actionSetPedestrianTunnelExits,
   geoobjectResetSetPedestrianTunnelExits,
+  actionGetBlobPedestrianTunnelExits,
   actionGetGetPedestrianTunnelExits,
   actionGetAndSetInStorePedestrianTunnelExits,
   actionCreatePedestrianTunnelExits,

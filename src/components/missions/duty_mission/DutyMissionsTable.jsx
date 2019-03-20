@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { DUTY_MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
 import { uniqBy } from 'lodash';
@@ -36,7 +36,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(DUTY_MISSION_STATUS_LABELS).map((key) => ({ label: DUTY_MISSION_STATUS_LABELS[key], value: key })),
+          options: Object.keys(DUTY_MISSION_STATUS_LABELS).map((key) => ({
+            label: DUTY_MISSION_STATUS_LABELS[key],
+            value: key,
+          })),
         },
         cssClassName: 'width120',
       },
@@ -67,7 +70,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
+          options: missionSourcesList.map((missionSource) => ({
+            value: missionSource.id,
+            label: missionSource.name,
+          })),
         },
         cssClassName: 'width120',
       },
@@ -80,7 +86,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
+          options: technicalOperationsList.map((operation) => ({
+            value: operation.id,
+            label: operation.name,
+          })),
         },
       },
       {
@@ -90,7 +99,15 @@ export const getTableMeta = ({
         display: false,
         filter: {
           type: 'multiselect',
-          options: uniqBy(municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })), 'value'),
+          options: uniqBy(
+            municipalFacilityList.map(
+              ({ municipal_facility_id, municipal_facility_name }) => ({
+                value: municipal_facility_id,
+                label: municipal_facility_name,
+              }),
+            ),
+            'value',
+          ),
         },
       },
       {
@@ -132,7 +149,9 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: technicalOperationsObjectsList.map(({ id: value, short_name: label }) => ({ value, label })),
+          options: technicalOperationsObjectsList.map(
+            ({ id: value, short_name: label }) => ({ value, label }),
+          ),
         },
       },
       {
@@ -142,7 +161,10 @@ export const getTableMeta = ({
         filter: {
           type: 'multiselect',
           serverFieldName: 'foreman_id',
-          options: foremanList.map(({ fio, id }) => ({ value: id, label: fio })),
+          options: foremanList.map(({ fio, id }) => ({
+            value: id,
+            label: fio,
+          })),
         },
       },
       {
@@ -161,7 +183,10 @@ export const getTableMeta = ({
         filter: {
           type: 'multiselect',
           serverFieldName: 'car_mission_id',
-          options: carDutyMissionList.map(({ id, car_mission_name }) => ({ value: id, label: car_mission_name })),
+          options: carDutyMissionList.map(({ id, car_mission_name }) => ({
+            value: id,
+            label: car_mission_name,
+          })),
         },
       },
       {
@@ -174,7 +199,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
         },
         display: structures.length,
       },
@@ -184,10 +212,12 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [{
-            value: 0,
-            label: 'Да',
-          }],
+          options: [
+            {
+              value: 0,
+              label: 'Да',
+            },
+          ],
         },
         display: false,
       },
@@ -203,8 +233,12 @@ export default (props) => {
     plan_date_start: ({ data }) => <DateFormatter date={data} time />,
     plan_date_end: ({ data }) => <DateFormatter date={data} time />,
     structure_id: ({ rowData }) => <div>{rowData.structure_name}</div>,
-    mission_source_id: ({ rowData }) => <div>{rowData.mission_source_name}</div>,
-    technical_operation_id: ({ rowData }) => <div>{rowData.technical_operation_name}</div>,
+    mission_source_id: ({ rowData }) => (
+      <div>{rowData.mission_source_name}</div>
+    ),
+    technical_operation_id: ({ rowData }) => (
+      <div>{rowData.technical_operation_name}</div>
+    ),
     object_type_id: ({ rowData }) => <div>{rowData.object_type_name}</div>,
   };
 

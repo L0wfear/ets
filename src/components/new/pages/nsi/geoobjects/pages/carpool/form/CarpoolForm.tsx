@@ -32,9 +32,6 @@ import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors/index';
 
 class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm> {
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
     const {
       formState: state,
@@ -48,7 +45,7 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
     // const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-carpool" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal id="modal-carpool" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -102,27 +99,11 @@ export default compose<PropsCarpoolForm, OwnPropsCarpoolForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateCarpool(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateCarpool(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsCarpoolFormWithForm, Carpool>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateCarpool,
+    updateAction: geoobjectActions.actionUpdateCarpool,
     mergeElement: (props) => {
       return getDefaultCarpoolElement(props.element);
     },

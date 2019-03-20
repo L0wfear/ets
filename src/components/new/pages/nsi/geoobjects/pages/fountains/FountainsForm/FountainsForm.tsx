@@ -24,10 +24,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
-import {
-  FlexContainer,
-  Flex,
-} from 'global-styled/global-styled';
+import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
@@ -37,44 +34,47 @@ import SimplePhoneA from 'components/new/ui/simple_a/phone';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
 
-class FountainsForm extends React.PureComponent<PropsFountainsForm, StateFountainsForm> {
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+class FountainsForm extends React.PureComponent<
+  PropsFountainsForm,
+  StateFountainsForm
+> {
   render() {
-    const {
-      formState: state,
-      page,
-      path,
-    } = this.props;
+    const { formState: state, page, path } = this.props;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-fountains" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-fountains"
+        show
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {
-                this.props.userData.isKgh || this.props.userData.isOkrug
-                  ? (
-                    <ExtField
-                      type="string"
-                      value={state.company_name || '-'}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
-                      readOnly
-                    />
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+                <ExtField
+                  type="string"
+                  value={state.company_name || '-'}
+                  label={
+                    this.props.userData.isKgh
+                      ? 'Наименование ГБУ:'
+                      : 'Учреждение:'
+                  }
+                  readOnly
+                />
+              ) : (
+                <DivNone />
+              )}
               <ExtField
                 type="string"
                 value={state.name}
@@ -131,7 +131,12 @@ class FountainsForm extends React.PureComponent<PropsFountainsForm, StateFountai
               />
               <ExtField
                 type="string"
-                value={<SimpleLinkA href={`//${state.balance_holder_web_site}`} title={state.balance_holder_web_site} />}
+                value={
+                  <SimpleLinkA
+                    href={`//${state.balance_holder_web_site}`}
+                    title={state.balance_holder_web_site}
+                  />
+                }
                 label="Сайт балансодержателя:"
                 readOnly
               />
@@ -143,35 +148,36 @@ class FountainsForm extends React.PureComponent<PropsFountainsForm, StateFountai
               />
               <ExtField
                 type="string"
-                value={<SimplePhoneA phone={state.operation_organization_phone} />}
+                value={
+                  <SimplePhoneA phone={state.operation_organization_phone} />
+                }
                 label="Телефон эксплуатирующей организации:"
                 readOnly
               />
               <ExtField
                 type="string"
-                value={<SimpleEmailA email={state.operation_organization_email} />}
+                value={
+                  <SimpleEmailA email={state.operation_organization_email} />
+                }
                 label="Электронная почта эксплуатирующей организации:"
                 readOnly
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
-              <MapGeoobjectWrap
-                geoobjectData={state}
-                entity={'fountains'}
-              />
+              <MapGeoobjectWrap geoobjectData={state} entity={'fountains'} />
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          !isPermitted && false // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted && false ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
       </Modal>
     );
@@ -179,31 +185,18 @@ class FountainsForm extends React.PureComponent<PropsFountainsForm, StateFountai
 }
 
 export default compose<PropsFountainsForm, OwnPropsFountainsForm>(
-  connect<StatePropsFountainsForm, DispatchPropsFountainsForm, OwnPropsFountainsForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateFountains(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateFountains(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
-  ),
+  connect<
+    StatePropsFountainsForm,
+    DispatchPropsFountainsForm,
+    OwnPropsFountainsForm,
+    ReduxState
+  >((state) => ({
+    userData: getSessionState(state).userData,
+  })),
   withForm<PropsFountainsFormWithForm, Fountains>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateFountains,
+    updateAction: geoobjectActions.actionUpdateFountains,
     mergeElement: (props) => {
       return getDefaultFountainsFormElement(props.element);
     },

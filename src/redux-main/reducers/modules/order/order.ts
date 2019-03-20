@@ -1,6 +1,6 @@
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { diffDates } from 'utils/dates';
-import { getMElement, getDMElement, getMissionTemplateData } from 'redux-main/reducers/modules/order/utils';
+import { getMElement, getMissionTemplateData } from 'redux-main/reducers/modules/order/utils';
 import {
   SET_ORDERS,
   SET_SELECTED_ELEMENT_ORDER,
@@ -15,8 +15,9 @@ import {
   RESET_ORDER,
 } from 'redux-main/reducers/modules/order/action-order';
 import { isString } from 'util';
+import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
 
-const initialState = {
+const initialState: IStateOrder = {
   OrdersList: [],
   HistoryOrderDataList: [],
   selectedElementOrder: null,
@@ -169,15 +170,11 @@ export default function(state = initialState, { type, payload }) {
       };
     }
     case SET_DUTY_MISSION_DATA: {
-      const dmElement = getDMElement(state, payload);
-
       return {
         ...state,
         dutyMissionData: {
           showForm: true,
-          order: state.selectedElementOrder,
-          dmElement,
-          initDutyMission: { ...dmElement },
+          dmElement: payload.partialDutyMission,
         },
       };
     }

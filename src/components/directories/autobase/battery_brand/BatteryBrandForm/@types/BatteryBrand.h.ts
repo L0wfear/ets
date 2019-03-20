@@ -1,13 +1,9 @@
 import { BatteryBrand, BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import {
-  AutobaseCreateBatteryBrand,
-  AutobaseUpdateBatteryBrand,
-} from 'redux-main/reducers/modules/autobase/actions_by_type/battery_brand/@types';
 import { GetBatteryManufacturer } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_manufacturer/@types';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
+export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsBatteryBrandFormWrap = {
   showForm: boolean;
@@ -21,14 +17,12 @@ export type PropsBatteryBrandFormWrap = {
 
 export type StatePropsBatteryBrand = {};
 export type DispatchPropsBatteryBrand = {
-  createAction: AutobaseCreateBatteryBrand;
-  updateAction: AutobaseUpdateBatteryBrand;
   autobaseGetSetBatteryManufacturer: GetBatteryManufacturer;
 };
 export type OwnBatteryBrandProps = {
   element: BatteryBrand | null;
   handleHide: OnFormHideType
-  page?: string;
+  page: string;
   path?: string;
 };
 
@@ -45,5 +39,5 @@ export type PropsBatteryBrand = OutputWithFormProps<
   any
 >;
 export type StateBatteryBrand = {
-  batteryManufacturerOptions: DefaultSelectListMapper<BatteryManufacturer['id'], BatteryManufacturer['name'], BatteryManufacturer>;
+  batteryManufacturerOptions: DefaultSelectListMapper<BatteryManufacturer>;
 };

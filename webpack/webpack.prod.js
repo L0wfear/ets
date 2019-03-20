@@ -43,43 +43,46 @@ module.exports = {
       {
         test: /\.(jsx|js|ts|tsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            babelrc: false,
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  targets: {
-                    'chrome': '47',
-                    'firefox': '42',
-                    'ie': '11',
+        use: [
+          "thread-loader",
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              babelrc: false,
+              presets: [
+                [
+                  '@babel/preset-env',
+                  {
+                    targets: {
+                      'chrome': '47',
+                      'firefox': '42',
+                      'ie': '11',
+                    },
+                    useBuiltIns: 'usage',
                   },
-                  useBuiltIns: 'usage',
-                },
+                ],
+                '@babel/preset-typescript',
+                '@babel/preset-react',
               ],
-              '@babel/preset-typescript',
-              '@babel/preset-react',
-            ],
-            plugins: [
-              [
-                '@babel/plugin-proposal-decorators',
-                {
-                  legacy: true,
-                },
+              plugins: [
+                [
+                  '@babel/plugin-proposal-decorators',
+                  {
+                    legacy: true,
+                  },
+                ],
+                [
+                  '@babel/plugin-proposal-class-properties',
+                  {
+                    loose: true,
+                  },
+                ],
+                '@babel/plugin-syntax-dynamic-import',
               ],
-              [
-                '@babel/plugin-proposal-class-properties',
-                {
-                  loose: true,
-                },
-              ],
-              '@babel/plugin-syntax-dynamic-import',
-            ],
+            },
           },
-        },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -164,12 +167,11 @@ module.exports = {
       // both options are optional
       filename: "[name].css",
     }),
-    new CleanWebpackPlugin(
-      path.join(__dirname, '..', 'dist'),
-      {
-        root: path.join(__dirname, '..'),
-      },
-    ),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: [
+        path.join(__dirname, '..', 'dist'),
+      ],
+    }),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, '..', 'src', 'assets', 'fonts'),

@@ -18,49 +18,56 @@ type TypeCarsSensors = {
   };
 };
 
-export const getMaxSpeeds = (missions) => (
+export const getMaxSpeeds = (missions) =>
   missions.length
-  ? (
-    missions.reduce((maxSpeeds, mission) => {
-      const { speed_limits } = mission;
-      maxSpeeds.mkad_speed_lim = Math.min(speed_limits.mkad_speed_lim, maxSpeeds.mkad_speed_lim);
-      maxSpeeds.speed_lim = Math.min(speed_limits.speed_lim, maxSpeeds.speed_lim);
-      return maxSpeeds;
-    }, { mkad_speed_lim: missions[0].speed_limits.mkad_speed_lim, speed_lim: missions[0].speed_limits.speed_lim })
-  )
-  : (
-    { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed }
-  )
-);
+    ? missions.reduce(
+        (maxSpeeds, mission) => {
+          const { speed_limits } = mission;
+          maxSpeeds.mkad_speed_lim = Math.min(
+            speed_limits.mkad_speed_lim,
+            maxSpeeds.mkad_speed_lim,
+          );
+          maxSpeeds.speed_lim = Math.min(
+            speed_limits.speed_lim,
+            maxSpeeds.speed_lim,
+          );
+          return maxSpeeds;
+        },
+        {
+          mkad_speed_lim: missions[0].speed_limits.mkad_speed_lim,
+          speed_lim: missions[0].speed_limits.speed_lim,
+        },
+      )
+    : { mkad_speed_lim: initialMaxSpeed, speed_lim: initialMaxSpeed };
 
-export const checkOnMkad = ({ coords_msk }, odh_mkad) => (
-  Object.values(odh_mkad).some(({  shape: { coordinates, type } }) => {
+export const checkOnMkad = ({ coords_msk }, odh_mkad) =>
+  Object.values(odh_mkad).some(({ shape: { coordinates, type } }) => {
     if (type === 'Polygon') {
-      return coordinates.some((polygon) => (
-        insider(coords_msk, polygon)
-      ));
+      return coordinates.some((polygon) => insider(coords_msk, polygon));
     }
 
     if (type === 'MultiPolygon') {
-      return coordinates.some((mpolygon) => (
-        mpolygon.some((polygon) => (
-          insider(coords_msk, polygon)
-        ))
-      ));
+      return coordinates.some((mpolygon) =>
+        mpolygon.some((polygon) => insider(coords_msk, polygon)),
+      );
     }
 
     return false;
-  })
-);
+  });
 
-export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, parkings }, odh_mkad) => {
+export const checkAndModifyTrack = (
+  { track: track_old, cars_sensors, events, parkings },
+  odh_mkad,
+) => {
   let isCorssingMKAD = false;
   let indexLevel = 0;
   let indexEquipment = 0;
 
-  const front_cars_sensors_level = Object.entries(cars_sensors as TypeCarsSensors).reduce((newObj, [key, sensor]) => {
+  const front_cars_sensors_level = Object.entries(
+    cars_sensors as TypeCarsSensors,
+  ).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'level') {
-      newObj[key] = {
+      (newObj[key] = {
         name: `ДУТ №${indexLevel + 1}`,
         connectNulls: false,
         sensor,
@@ -69,17 +76,19 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
         index: indexLevel,
         color: sensorsMapOptions(indexLevel).color,
         show: false,
-      },
-      indexLevel += 1;
+      }),
+        (indexLevel += 1);
     }
 
     return newObj;
   }, {});
 
-  const front_cars_sensors_equipment = Object.entries(cars_sensors as TypeCarsSensors).reduce((newObj, [key, sensor]) => {
+  const front_cars_sensors_equipment = Object.entries(
+    cars_sensors as TypeCarsSensors,
+  ).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'equipment') {
       newObj[key] = {
-        name: `ДУТ №${indexEquipment + 1} - ${sensor.type_name || '---'}`,
+        name: `Датчик №${indexEquipment + 1} - ${sensor.type_name || '---'}`,
         connectNulls: false,
         sensor,
         data: [],
@@ -106,28 +115,38 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
     if (point.sensors && point.sensors.level) {
       const { sensors: { level = [] } = {} } = point;
       level.forEach((sensorData) => {
-        front_cars_sensors_level[sensorData.sensor_id].data.push([point.timestamp, sensorData.val]);
-        front_cars_sensors_level[sensorData.sensor_id].raw_data.push([point.timestamp, sensorData.raw]);
+        front_cars_sensors_level[sensorData.sensor_id].data.push([
+          point.timestamp,
+          sensorData.val,
+        ]);
+        front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
+          point.timestamp,
+          sensorData.raw,
+        ]);
       });
     }
 
     const { sensors: { equipment = [] } = {} } = point;
 
-    const equipmentObj = equipment.reduce((newObj, { sensor_id, ...sensorData }) => ({
-      ...newObj,
-      [sensor_id]: {
-        ...sensorData,
-      },
-    }), {});
+    const equipmentObj = equipment.reduce(
+      (newObj, { sensor_id, ...sensorData }) => ({
+        ...newObj,
+        [sensor_id]: {
+          ...sensorData,
+        },
+      }),
+      {},
+    );
 
-    Object.entries(front_cars_sensors_equipment as TypeFrontCarsSensorsEquipment)
-      .forEach(([key, value]) => {
-        value.data.push([
-          point.timestamp,
-          equipmentObj[key] && equipmentObj[key].val || null,
-          point.checkCoordsMsk.onMkad,
-        ]);
-      });
+    Object.entries(
+      front_cars_sensors_equipment as TypeFrontCarsSensorsEquipment,
+    ).forEach(([key, value]) => {
+      value.data.push([
+        point.timestamp,
+        (equipmentObj[key] && equipmentObj[key].val) || null,
+        point.checkCoordsMsk.onMkad,
+      ]);
+    });
 
     return point;
   });
@@ -138,32 +157,23 @@ export const checkAndModifyTrack = ({ track: track_old, cars_sensors, events, pa
         ...eventData.map((event) => {
           return {
             ...event,
-            start_coords: [
-              event.start_lon,
-              event.start_lat,
-            ],
-            start_coords_msk: [
-              event.start_y_msk,
-              event.start_x_msk,
-            ],
-            end_coords: [
-              event.finish_lon,
-              event.finish_lat,
-            ],
-            end_coords_msk: [
-              event.finish_y_msk,
-              event.finish_x_msk,
-            ],
-            date: `${makeDate(event.started_at_msk)} ${makeTime(event.started_at_msk, true)}`,
+            start_coords: [event.start_lon, event.start_lat],
+            start_coords_msk: [event.start_y_msk, event.start_x_msk],
+            end_coords: [event.finish_lon, event.finish_lat],
+            end_coords_msk: [event.finish_y_msk, event.finish_x_msk],
+            date: `${makeDate(event.started_at_msk)} ${makeTime(
+              event.started_at_msk,
+              true,
+            )}`,
             type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
-            value: `${Math.abs(event.event_val)} л`,
+            value: `${Math.abs(Number(event.event_val.toFixed(2)))} л`,
           };
         }),
       );
 
       return newArr;
     }, [])
-    .sort((a, b) => (a.start_point.timestamp - b.start_point.timestamp));
+    .sort((a, b) => a.start_point.timestamp - b.start_point.timestamp);
 
   const front_parkings = parkings.map((parking) => ({
     ...parking,

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Table from 'components/ui/table/DataTable';
 
 const tableMeta = {
@@ -87,7 +87,8 @@ const tableMeta = {
     },
     {
       name: 'uncategorized_highway',
-      displayName: 'Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")',
+      displayName:
+        'Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")',
       type: 'number',
       filter: false,
     },
@@ -99,7 +100,8 @@ const tableMeta = {
     },
     {
       name: 'uncategorized_odhs_other',
-      displayName: 'ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы',
+      displayName:
+        'ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы',
       type: 'number',
       filter: false,
     },

@@ -20,30 +20,27 @@ import {
   DispatchPropsCarInOveral,
   OwnPropsCarInOveral,
 } from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/CarInWorkOverall.h';
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import { DivNone } from 'global-styled/global-styled';
 import { compose } from 'recompose';
-import { getDashboardState, getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getDashboardState,
+  getSessionState,
+} from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
-import { FluxContext } from 'utils/decorators';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import * as Raven from 'raven-js';
+
 import { loadCarActualIndex } from 'redux-main/trash-actions/car';
-import {
-  MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
-} from 'components/monitor/redux-main/models/monitor-page';
+import { MONITOR_PAGE_SET_CAR_ACTUAL_INDEX } from 'components/monitor/redux-main/models/monitor-page';
 
-@FluxContext
-class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarInWorkOverall> {
-
+class CarInWorkOverall extends React.Component<
+  PropsCarInWorkOverall,
+  StateCarInWorkOverall
+> {
   constructor(props, context) {
     super(props);
-    const {
-      token,
-      points_ws,
-    } = props;
+    const { token, points_ws } = props;
 
     const wsUrl = `${points_ws}?token=${token}`;
     const ws = new ReconnectingWebSocket(wsUrl, null);
@@ -54,7 +51,11 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
       };
       ws.onclose = (event) => {
         if (event.code === 1006) {
-          Raven.captureException(new Error('1006: A connection was closed abnormally (that is, with no close frame being sent). A low level WebSocket error.'));
+          Raven.captureException(
+            new Error(
+              '1006: A connection was closed abnormally (that is, with no close frame being sent). A low level WebSocket error.',
+            ),
+          );
         }
         // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
       };
@@ -84,44 +85,45 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
   }
 
   handleUpdateTs = (data) => {
-
     const carsTrackState = {
       ...this.state.carsTrackState,
       ...data,
     };
-    const {
-      carActualGpsNumberIndex,
-    } = this.props;
+    const { carActualGpsNumberIndex } = this.props;
 
-    const countNotInTouch = Object.values(carsTrackState).reduce((count: number, value: any) => {
-      if (value.status === 4 && carActualGpsNumberIndex[value.id]) {
-        count++;
-      }
-      return count;
-    }, 0);
+    const countNotInTouch = Object.values(carsTrackState).reduce(
+      (count: number, value: any) => {
+        if (value.status === 4 && carActualGpsNumberIndex[value.id]) {
+          count++;
+        }
+        return count;
+      },
+      0,
+    );
 
     this.setState({
       carsTrackState,
       countNotInTouch,
     });
-  }
+  };
 
-  handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
+  handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({
+    currentTarget: {
+      dataset: { path },
+    },
+  }) => {
     const index = Number.parseInt((path as string).split('/').slice(-1)[0], 0);
     this.props.setInfoData(this.props.items[index]);
-  }
+  };
 
   render() {
-    const {
-      items,
-    } = this.props;
-    const {
-      countNotInTouch,
-    } = this.state;
+    const { items } = this.props;
+    const { countNotInTouch } = this.state;
 
     const customItem = {
       title: `ТС, не передающие сигнал: ${countNotInTouch}`,
-      tooltip: 'Общее количество ТС организации, не передающие данные с БНСО (более 1 часа)',
+      tooltip:
+        'Общее количество ТС организации, не передающие данные с БНСО (более 1 часа)',
     };
 
     items.splice(2, 1, customItem);
@@ -136,23 +138,18 @@ class CarInWorkOverall extends React.Component<PropsCarInWorkOverall, StateCarIn
           classNameContainer="line_data"
           addIndex={0}
         />
-        {
-          collapsetItems.length ?
-          (
-            <CollapseButton >
-              <List
-                items={collapsetItems}
-                handleClick={this.handleClickMission}
-                addIndex={counttoFirstShow}
-                classNameContainer="line_data"
-              />
-            </CollapseButton>
-          )
-          :
-          (
-            <DivNone />
-          )
-        }
+        {collapsetItems.length ? (
+          <CollapseButton>
+            <List
+              items={collapsetItems}
+              handleClick={this.handleClickMission}
+              addIndex={counttoFirstShow}
+              classNameContainer="line_data"
+            />
+          </CollapseButton>
+        ) : (
+          <DivNone />
+        )}
       </div>
     );
   }
@@ -164,7 +161,12 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
     loadData: dashboardLoadCarInWorkOverall,
     InfoComponent: CarInWorkOverallInfo,
   }),
-  connect<StatePropsCarInOveral, DispatchPropsCarInOveral, OwnPropsCarInOveral, ReduxState>(
+  connect<
+    StatePropsCarInOveral,
+    DispatchPropsCarInOveral,
+    OwnPropsCarInOveral,
+    ReduxState
+  >(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
       token: getSessionState(state).token,
@@ -172,16 +174,10 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
       carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
     }),
     (dispatch) => ({
-      setInfoData: (infoData) => (
-        dispatch(
-          dashboardSetInfoDataInCarInWorkOverall(infoData),
-        )
-      ),
-      loadCarActualIndex: () => (
-        dispatch(
-          loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX),
-        )
-      ),
+      setInfoData: (infoData) =>
+        dispatch(dashboardSetInfoDataInCarInWorkOverall(infoData)),
+      loadCarActualIndex: () =>
+        dispatch(loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX)),
     }),
   ),
 )(CarInWorkOverall);

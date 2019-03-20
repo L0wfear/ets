@@ -47,12 +47,10 @@ const getRenders = (props) => {
     date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
     date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
     structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    brigade_employee_id_list: ({ data, rowData }) => (
+    brigade_employee_id_list_id: ({ data, rowData }) => (
       <div>
         {
-          data.map((id) => (
-            get(rowData, ['brigadeEmployeeIdIndex', id, 'employee_fio'], '-')
-          )).join(', ')
+          rowData.brigade_employee_id_list_fio.join(', ')
         }
       </div>
     ),

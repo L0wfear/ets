@@ -38,7 +38,6 @@ const DtCoverageReportTable = (props) => {
     percentage_one_passes: floatFixed1Percentage,
   };
 
-  console.log(props.selectField)
   return (
     <Table
       title="Отчет по посещению ДТ"

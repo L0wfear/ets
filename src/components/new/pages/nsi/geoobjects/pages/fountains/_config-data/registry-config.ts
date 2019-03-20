@@ -1,14 +1,16 @@
-import { GeozoneFountainsService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
 
 export const registryKey = 'FountainsList';
 
-export const config: TypeConfigData = {
-  Service: GeozoneFountainsService,
+export const config: TypeConfigData<Fountains> = {
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetFountains'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobFountains'],
+  },
   registryKey,
   header: {
     title: 'Справочник фонтанов',

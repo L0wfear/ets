@@ -8,15 +8,20 @@ import {
 import { isEmpty } from 'utils/functions';
 
 function getFuelOperations(payload = {}) {
-  return FuelOperationsService.get(payload).then(r => ({ result: r.result.rows }));
+  return FuelOperationsService.get(payload).then((r) => ({
+    result: r.result.rows,
+  }));
 }
 
 function getFuelRates(payload = {}) {
-  return FuelConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
+  return FuelConsumptionRateService.get(payload).then((r) => ({
+    result: r.result.rows,
+  }));
 }
 
 export default class FuelRateActions extends Actions {
   getFuelRates() {
+    // -
     return getFuelRates();
   }
 
@@ -67,7 +72,7 @@ export default class FuelRateActions extends Actions {
     payload.order_date = createValidDate(payload.order_date);
 
     return FuelConsumptionRateService.put(payload, getFuelRates, 'json');
-  } 
+  }
 
   deleteFuelRate(id) {
     const payload = {

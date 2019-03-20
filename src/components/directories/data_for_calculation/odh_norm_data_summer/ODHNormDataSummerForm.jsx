@@ -10,21 +10,33 @@ import Form from 'components/compositions/Form';
 import { connectToStores } from 'utils/decorators';
 
 @connectToStores(['objects', 'odh'])
-export default class ODHNormDataSummerForm extends Form {
-
+class ODHNormDataSummerForm extends Form {
   render() {
     const state = this.props.formState;
     const errors = this.props.formErrors;
     const { technicalOperationsList, odhNormList } = this.props;
     const IS_CREATING = !state.id;
-    const title = IS_CREATING ? 'Добавление показателя нормы по содержанию ОДХ (лето)' : 'Изменение показателя нормы по содержанию ОДХ (лето)';
-    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({ value: id, label: name }));
-    const ODH_STANDARDS = odhNormList.map(({ id, standard }) => ({ value: id, label: standard }));
+    const title = IS_CREATING
+      ? 'Добавление показателя нормы по содержанию ОДХ (лето)'
+      : 'Изменение показателя нормы по содержанию ОДХ (лето)';
+    const TECH_OPERATIONS = technicalOperationsList.map(({ id, name }) => ({
+      value: id,
+      label: name,
+    }));
+    const ODH_STANDARDS = odhNormList.map(({ id, standard }) => ({
+      value: id,
+      label: standard,
+    }));
 
     return (
-      <Modal id="modal-odh-norm-data-summer" show={this.props.show} onHide={this.props.onHide} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-odh-norm-data-summer"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBody>
           <Row>
@@ -37,7 +49,10 @@ export default class ODHNormDataSummerForm extends Form {
                   disabled={false}
                   options={TECH_OPERATIONS}
                   value={state.technical_operation_id}
-                  onChange={this.handleChange.bind(this, 'technical_operation_id')}
+                  onChange={this.handleChange.bind(
+                    this,
+                    'technical_operation_id',
+                  )}
                 />
               </Div>
               <Div>
@@ -166,8 +181,14 @@ export default class ODHNormDataSummerForm extends Form {
                     label='Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")'
                     value={state.uncategorized_highway}
                     error={errors.uncategorized_highway}
-                    wrapStyle={{ display: 'table-cell', 'verticalAlign' : 'bottom' }}
-                    onChange={this.handleChange.bind(this, 'uncategorized_highway')}
+                    wrapStyle={{
+                      display: 'table-cell',
+                      verticalAlign: 'bottom',
+                    }}
+                    onChange={this.handleChange.bind(
+                      this,
+                      'uncategorized_highway',
+                    )}
                   />
                 </Col>
                 <Col md={4} style={{ height: '100%', display: 'table' }}>
@@ -176,8 +197,14 @@ export default class ODHNormDataSummerForm extends Form {
                     label="ОДХ внутри Садового кольца"
                     value={state.uncategorized_odhs_center}
                     error={errors.uncategorized_odhs_center}
-                    wrapStyle={{ display: 'table-cell', 'verticalAlign' : 'bottom' }}
-                    onChange={this.handleChange.bind(this, 'uncategorized_odhs_center')}
+                    wrapStyle={{
+                      display: 'table-cell',
+                      verticalAlign: 'bottom',
+                    }}
+                    onChange={this.handleChange.bind(
+                      this,
+                      'uncategorized_odhs_center',
+                    )}
                   />
                 </Col>
                 <Col md={4} style={{ height: '100%', display: 'table' }}>
@@ -186,19 +213,30 @@ export default class ODHNormDataSummerForm extends Form {
                     label="ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы"
                     value={state.uncategorized_odhs_other}
                     error={errors.uncategorized_odhs_other}
-                    wrapStyle={{ display: 'table-cell', 'verticalAlign' : 'bottom' }}
-                    onChange={this.handleChange.bind(this, 'uncategorized_odhs_other')}
+                    wrapStyle={{
+                      display: 'table-cell',
+                      verticalAlign: 'bottom',
+                    }}
+                    onChange={this.handleChange.bind(
+                      this,
+                      'uncategorized_odhs_other',
+                    )}
                   />
                 </Col>
               </Row>
             </Col>
           </Row>
-
         </ModalBody>
         <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.handleSubmit.bind(this)}>Сохранить</Button>
+          <Button
+            disabled={!this.props.canSave}
+            onClick={this.handleSubmit.bind(this)}>
+            Сохранить
+          </Button>
         </Modal.Footer>
       </Modal>
     );
   }
 }
+
+export default ODHNormDataSummerForm;

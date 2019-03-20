@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import { Row } from 'react-bootstrap';
 
-export const RouteInfoContainerDiv = styled.div`
+export const RouteInfoContainerDiv = styled(Row)`
   margin: 10px 0px;
 `;
 
-export const RouteNameDiv = styled.div<{ none?: boolean }>`
-  display: ${({ none }) => none ? 'none' : 'initial'}
+export const RouteName = styled.div<{ isDisplay?: boolean }>`
+  margin-bottom: 10px;
+  display: ${({ isDisplay }) => !isDisplay ? 'none' : 'initial'}
 `;

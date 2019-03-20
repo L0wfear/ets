@@ -5,6 +5,8 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
 import { compose } from 'recompose';
+import { connect, DispatchProp } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
 
 type FormErrorType<F> = {
   [K in keyof F]?: string | null;
@@ -12,6 +14,8 @@ type FormErrorType<F> = {
 
 type ConfigWithForm<P, F, S> = {
   uniqField: keyof F;
+  createAction?: any;
+  updateAction?: any;
   mergeElement?: (props: P) => F;
   canSave?: (state: S, props: P) => boolean;
   validate?: (formState: F, props: P) => FormErrorType<F>;
@@ -24,9 +28,11 @@ type ConfigWithForm<P, F, S> = {
 
 type WithFormConfigProps = {
   element: any,
-  handleHide?: <A>(isSubmited: boolean, result?: A) => any;
-  createAction?: <T extends any[], A extends any>(...arg: T) => A;
-  updateAction?: <T extends any[], A extends any>(...arg: T) => A;
+  handleHide?: <A>(isSubmitted: boolean, result?: A) => any;
+  readOnly?: boolean;
+
+  page: string;
+  path?: string;
 };
 
 type WithFormState<F> = {
@@ -39,12 +45,13 @@ type WithFormState<F> = {
   };
 };
 
-type WithFormProps<P> = P & {
+type WithFormProps<P> = P & DispatchProp & {
   isPermittedToUpdate: boolean;
   isPermittedToCreate: boolean;
 };
 
 type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
+type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
 type FormWithDefaultSubmit = () => void;
 
@@ -54,8 +61,10 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
   & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'canSave' | 'validate' | 'schema'>
   & {
     handleChange: FormWithHandleChange<F>;
+    handleChangeBoolean: FormWithHandleChangeBoolean<F>;
     submitAction: FormWithSubmitAction<T, A>;
     defaultSubmit: FormWithDefaultSubmit;
+    hideWithoutChanges: (...arg: any[]) => void;
   }
 );
 
@@ -71,6 +80,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       withIsPermittedProps: true,
       permissionName: 'isPermittedToCreate',
     }),
+    connect<{}, DispatchProp, any, ReduxState>(
+      null,
+    ),
   )(
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F>> {
       constructor(props) {
@@ -105,6 +117,23 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           }),
         };
       }
+
+      componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+          this.setState((oldState) => {
+            const formErrors = this.validate(oldState.formState);
+
+            return {
+              formErrors,
+              canSave: this.canSave({
+                ...oldState,
+                formErrors,
+              }),
+            };
+          });
+        }
+      }
+
       validate = (formState: F) => {
         if (isFunction(config.validate)) {
           return config.validate(formState, this.props);
@@ -119,6 +148,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
         return Object.values(state.formErrors).every((error) => !error);
       }
+      handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
+        this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
+      }
       handleChange: FormWithHandleChange<F> = (objChangeOrName, newRawValue) => {
         const objChangeItareble = !isString(objChangeOrName)
           ? objChangeOrName
@@ -126,58 +158,57 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [objChangeOrName]: get(newRawValue, ['target', 'value'], newRawValue),
           };
 
-        const { propertiesByKey } = this.state;
-        const formState = { ...this.state.formState };
+        this.setState(({ propertiesByKey, formState }) => {
+          Object.entries(objChangeItareble).forEach(([key, value]) => {
+            let newValue = value;
+            if (key in propertiesByKey) {
+              switch (propertiesByKey[key].type) {
+                case 'number':
+                  const valueNumberString: number | string = (value as number | string);
 
-        Object.entries(objChangeItareble).forEach(([key, value]) => {
-          let newValue = value;
-          if (key in propertiesByKey) {
-            switch (propertiesByKey[key].type) {
-              case 'number':
-                const valueNumberString: number | string = (value as number | string);
-
-                if (valueNumberString || valueNumberString === 0) {
-                  const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
-                  if (!isNaN(Number(valueReplaced))) {
-                    if (valueReplaced.match(/^.\d*$/)) {
-                      newValue = `0${valueReplaced}`;
+                  if (valueNumberString || valueNumberString === 0) {
+                    const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
+                    if (!isNaN(Number(valueReplaced))) {
+                      if (valueReplaced.match(/^.\d*$/)) {
+                        newValue = `0${valueReplaced}`;
+                      }
+                      newValue = valueReplaced;
+                    } else {
+                      newValue = valueReplaced;
                     }
-                    newValue = valueReplaced;
                   } else {
-                    newValue = valueReplaced;
+                    newValue = null;
                   }
-                } else {
-                  newValue = null;
-                }
-                break;
-              case 'boolean':
-                newValue = value;
-                break;
-              case 'string':
-              case 'date':
-              case 'datetime':
-              default:
-              newValue = Boolean(value) || value === 0 ? value : null;
+                  break;
+                case 'boolean':
+                  newValue = value;
+                  break;
+                case 'string':
+                case 'date':
+                case 'datetime':
+                default:
+                newValue = Boolean(value) || value === 0 ? value : null;
+              }
             }
-          }
-          formState[key] = newValue;
+            formState[key] = newValue;
 
-          console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line
-        });
+            console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
+          });
 
-        const formErrors = this.validate(formState);
-        const newState = {
-          formState,
-          formErrors,
-          canSave: this.state.canSave,
-        };
+          const formErrors = this.validate(formState);
+          const newState = {
+            formState,
+            formErrors,
+            canSave: this.state.canSave,
+          };
 
-        this.setState({
-          ...newState,
-          canSave: this.canSave({
-            ...this.state,
+          return {
             ...newState,
-          }),
+            canSave: this.canSave({
+              ...this.state,
+              ...newState,
+            }),
+          };
         });
       }
       submitAction = async <T extends any[], A extends any>(...payload: T) => {
@@ -186,13 +217,21 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [config.uniqField]: uniqValue,
           },
         } = this.state;
+        const {
+          page,
+          path,
+        } = this.props;
 
         let result = null;
 
         if (!uniqValue) {
-          if (isFunction(this.props.createAction)) {
+          const {
+            createAction,
+          } = config;
+
+          if (isFunction(createAction)) {
             try {
-              result = await this.props.createAction<T, A>(...payload);
+              result = await this.props.dispatch(createAction(...payload, { page, path }));
               global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line
@@ -202,9 +241,13 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             throw new Error('Определи функцию createAction в конфиге withForm');
           }
         } else {
-          if (isFunction(this.props.updateAction)) {
+          const {
+            updateAction,
+          } = config;
+
+          if (isFunction(updateAction)) {
             try {
-              result = await this.props.updateAction<T, A>(...payload);
+              result = await this.props.dispatch(updateAction(...payload, { page, path }));
               global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line
@@ -241,17 +284,25 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         return result;
       }
 
+      hideWithoutChanges = () => {
+        this.props.handleHide(false);
+      }
+
       render() {
         return (
           <Component
             {...this.props}
+            isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
+            isPermittedToUpdate={this.props.isPermittedToCreate && !this.props.readOnly}
             formState={this.state.formState}
             originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}
             canSave={this.state.canSave}
             handleChange={this.handleChange}
+            handleChangeBoolean={this.handleChangeBoolean}
             submitAction={this.submitAction}
             defaultSubmit={this.defaultSubmit}
+            hideWithoutChanges={this.hideWithoutChanges}
           />
         );
       }

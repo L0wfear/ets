@@ -6,6 +6,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import { fetchTrack, fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import { DivNone } from 'global-styled/global-styled';
+import { CarInfoButtonsRow } from './styled/index';
 
 type PropsCarTabMenu = {
   fetchMissionsData: any;
@@ -16,10 +17,6 @@ type PropsCarTabMenu = {
   map: ol.Map;
 
   centerOn: any;
-};
-
-type StateCarTabMenu = {
-  selectedTab: number;
 };
 
 const CarAttributeInformation = React.lazy(() => (
@@ -34,104 +31,79 @@ const CarTrackInformation = React.lazy(() => (
   import(/* webpackChunkName: "car_track_information" */ 'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation')
 ));
 
-class CarTabMenu extends React.Component<PropsCarTabMenu, StateCarTabMenu> {
-  state = {
-    selectedTab: 1,
-  };
+const CarTabMenu: React.FC<PropsCarTabMenu> = (props) => {
+  const {
+    asuods_id,
+    odh_mkad,
+    gps_code,
+  } = props;
 
-  componentDidMount() {
-    if (this.props.asuods_id) {
-      this.props.fetchMissionsData({
-        asuods_id: this.props.asuods_id,
-        gps_code: this.props.gps_code,
-      });
-      if (this.props.odh_mkad !== -1) {
-        this.props.fetchTrack({
-          asuods_id: this.props.asuods_id,
-          gps_code: this.props.gps_code,
+  const [tabNum, setTabNum] = React.useState(1);
+  React.useEffect(
+    () => {
+      if (asuods_id && odh_mkad !== -1) {
+        props.fetchMissionsData({
+          asuods_id,
+          gps_code,
         });
-      }
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    const { asuods_id, odh_mkad, gps_code } = this.props;
-    if (asuods_id !== prevProps.asuods_id) {
-      this.props.fetchMissionsData({
-        asuods_id,
-        gps_code,
-      });
-
-      if (odh_mkad !== -1) {
-        this.props.fetchTrack({
+        props.fetchTrack({
           asuods_id,
           gps_code,
         });
       }
-    } else if (odh_mkad !== prevProps.odh_mkad) {
-      this.props.fetchTrack({
-        asuods_id,
-        gps_code,
-      });
-    }
-  }
+    },
+    [asuods_id, odh_mkad],
+  );
 
-  handleClick: any = ({ target: { dataset: { number } } }) => {
-    const selectedTab = Number(number);
-    if (selectedTab !== this.state.selectedTab) {
-      this.setState({ selectedTab });
-    }
-  }
+  const handleSelectInfo = React.useCallback<React.MouseEventHandler<Button>>(() => setTabNum(1), []);
+  const handleSelectChart = React.useCallback<React.MouseEventHandler<Button>>(() => setTabNum(2), []);
+  const handleSelectTrack = React.useCallback<React.MouseEventHandler<Button>>(() => setTabNum(3), []);
 
-  render() {
-    const { selectedTab } = this.state;
-
-    return (
-      <div>
-        <div className="car_info-buttons_row">
-          <Button data-number="1" active={selectedTab === 1} onClick={this.handleClick} >Информация</Button>
-          <Button data-number="2" active={selectedTab === 2} onClick={this.handleClick} >Графики</Button>
-          <Button data-number="3" active={selectedTab === 3} onClick={this.handleClick} >Трекинг</Button>
-        </div>
-        <div>
-          {
-            selectedTab === 1
-            ? (
-              <React.Suspense fallback={<LoadingComponent />}>
-                <CarAttributeInformation map={this.props.map} />
-              </React.Suspense>
-            )
-            : (
-              <DivNone />
-            )
-          }
-          {
-            selectedTab === 2
-            ? (
-              <React.Suspense fallback={<LoadingComponent />}>
-                <CarChartsInformation centerOn={this.props.centerOn} />
-              </React.Suspense>
-            )
-            : (
-              <DivNone />
-            )
-          }
-          {
-            selectedTab === 3
-            ? (
-              <React.Suspense fallback={<LoadingComponent />}>
-                <CarTrackInformation map={this.props.map} />
-              </React.Suspense>
-            )
-            : (
-              <DivNone />
-            )
-          }
-        </div>
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <CarInfoButtonsRow>
+        <Button active={tabNum === 1} onClick={handleSelectInfo}>Информация</Button>
+        <Button active={tabNum === 2} onClick={handleSelectChart}>Графики</Button>
+        <Button active={tabNum === 3} onClick={handleSelectTrack}>Трекинг</Button>
+      </CarInfoButtonsRow>
+      <>
+        {
+          tabNum === 1
+          ? (
+            <React.Suspense fallback={<LoadingComponent />}>
+              <CarAttributeInformation map={props.map} />
+            </React.Suspense>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        {
+          tabNum === 2
+          ? (
+            <React.Suspense fallback={<LoadingComponent />}>
+              <CarChartsInformation centerOn={props.centerOn} />
+            </React.Suspense>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        {
+          tabNum === 3
+          ? (
+            <React.Suspense fallback={<LoadingComponent />}>
+              <CarTrackInformation map={props.map} />
+            </React.Suspense>
+          )
+          : (
+            <DivNone />
+          )
+        }
+      </>
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => ({
   odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,

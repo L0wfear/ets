@@ -5,7 +5,6 @@ export default class LoadingStore extends Store {
   constructor(flux) {
     super();
 
-    const sessionActions = flux.getActions('session');
     const repairActions = flux.getActions('repair');
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
@@ -16,9 +15,8 @@ export default class LoadingStore extends Store {
     const routesActions = flux.getActions('routes');
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
-    this.reg(false,
-      sessionActions.cahngeCompanyOnAnother,
-
+    this.reg(
+      false,
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,
       repairActions.contractor,
@@ -64,7 +62,6 @@ export default class LoadingStore extends Store {
       objectsActions.getCleaningRate,
       objectsActions.getUserActionLog,
       objectsActions.getMedicalStats,
-      objectsActions.getCompanies,
       objectsActions.createMaintenanceWork,
       objectsActions.updateMaintenanceWork,
 
@@ -83,29 +80,16 @@ export default class LoadingStore extends Store {
       missionsActons.createMission,
       missionsActons.removeMission,
       missionsActons.updateMission,
-      missionsActons.getMissionTemplates,
       missionsActons.printMissionTemplate,
-      missionsActons.createMissionTemplate,
-      missionsActons.removeMissionTemplate,
       missionsActons.createMissions,
-      missionsActons.getDutyMissions,
       missionsActons.getCarDutyMissions,
-      missionsActons.createDutyMission,
-      missionsActons.updateDutyMission,
-      missionsActons.removeDutyMission,
-      missionsActons.getDutyMissionTemplates,
-      missionsActons.createDutyMissionTemplate,
-      missionsActons.updateDutyMissionTemplate,
-      missionsActons.removeDutyMissionTemplate,
       missionsActons.printMission,
-      missionsActons.printDutyMission,
       missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
 
       routesActions.getRouteById,
       routesActions.getRoutesBySomeData,
       routesActions.getRoutesByMissionId,
-      routesActions.getRoutesByDutyMissionId,
 
       technicalOperationsActions.getTechnicalOperations,
       technicalOperationsActions.getTechnicalOperationsWithBrigades,
@@ -115,11 +99,9 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationRelations,
 
       carActions.updateCarAdditionalInfo,
-      carActions.getDataByNormNormatives);
-
-    this.reg(true,
-      missionsActons.getMissionsByCarAndDates,
     );
+
+    this.reg(true, missionsActons.getMissionsByCarAndDates);
 
     this.state = {
       operationsCount: 0,
@@ -128,10 +110,14 @@ export default class LoadingStore extends Store {
   }
 
   reg(lazy, ...actions) {
-    actions.forEach(action => this.registerAsync(action,
-      () => this.inc(action, lazy),
-      () => this.dec(lazy),
-      () => this.dec(lazy)));
+    actions.forEach((action) =>
+      this.registerAsync(
+        action,
+        () => this.inc(action, lazy),
+        () => this.dec(lazy),
+        () => this.dec(lazy),
+      ),
+    );
   }
 
   inc(action, lazy) {

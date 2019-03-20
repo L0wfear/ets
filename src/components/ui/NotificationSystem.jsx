@@ -46,9 +46,12 @@ class AppNotificationSystem extends React.Component {
 
   render() {
     return (
-      <NotificationSystem ref={node => (this._notificationSystem = node)} />
+      <NotificationSystem ref={(node) => (this._notificationSystem = node)} />
     );
   }
 }
 
-global.NOTIFICATION_SYSTEM = render(<AppNotificationSystem />, document.getElementById('notifications'));
+global.NOTIFICATION_SYSTEM = render(
+  <AppNotificationSystem />,
+  document.getElementById('notifications'),
+);

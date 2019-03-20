@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
-import { ThunkDispatch } from 'redux-thunk';
 
 import {
   StateNotifiactionOrders,
@@ -69,7 +68,7 @@ export default connect<StatePropsNotifiactionOrders, DispatchPropsNotifiactionOr
   (state) => ({
     orderNotReadList: getUserNotificationsState(state).orderNotReadList,
   }),
-  (dispatch: ThunkDispatch<ReduxState, {}, any>) => ({
+  (dispatch: any) => ({
     setMakeReadOrderNotification: (id) => (
       dispatch(
         setMakeReadOrderNotification(id),

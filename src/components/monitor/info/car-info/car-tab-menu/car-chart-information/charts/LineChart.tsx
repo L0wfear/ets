@@ -4,7 +4,7 @@ import * as Highcharts from 'highcharts/highstock';
 import { makeTime, makeDate } from 'utils/dates';
 
 type PropsLineChart = {
-  data: any[],
+  data: Highcharts.SeriesOptionsType[],
   onClick: any;
   name: string;
   showX: boolean;
@@ -44,9 +44,10 @@ class LineChart extends React.Component<PropsLineChart, StateLineChart> {
 
       legend: {
         enabled: true,
-        align: 'bottom',
+        align: 'left',
         layout: 'vertical',
         verticalAlign: 'top',
+        floating: true,
         y: 220,
       },
 
@@ -97,10 +98,10 @@ class LineChart extends React.Component<PropsLineChart, StateLineChart> {
       },
 
       tooltip: {
-        formatter: this.props.showX ? function() {
+        formatter: this.props.showX ? function(tooltip?: Highcharts.TooltipFormatterContextObject | any) {
           let s = `<b>${makeDate(new Date(this.x * 1000))} ${makeTime(new Date(this.x * 1000))}</b>`;
 
-          this.points.forEach((point) => {
+          tooltip.chart.hoverPoints.forEach((point) => {
             s += `<br/><span style="color: ${point.color}">\u25CF</span> ${point.series.name}: ${parseFloat(point.y).toFixed(3)}`;
           });
 

@@ -1,13 +1,17 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import requireAuth from 'utils/auth';
 
 import MainApp from 'components/MainApp';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { compose } from 'recompose';
+import { MapEtsProvider } from './new/ui/map/context/MapetsContext';
+import EtsGlobalStyle from 'global-styled';
 
-class MainAppWrap extends React.Component <any, any> {
-  context!: ETSCore.LegacyContext;
-
+class MainAppWrap extends React.Component<any, any> {
   static get contextTypes() {
     return {
       flux: PropTypes.object.isRequired,
@@ -15,27 +19,43 @@ class MainAppWrap extends React.Component <any, any> {
   }
 
   render() {
-    const {
-      flux,
-    } = this.context;
+    const { hasValidToken, userData, ...props } = this.props;
 
     const {
       match: { url },
-    } = this.props;
+    } = props;
 
-    const permittedPath = requireAuth(flux, url);
+    const permittedPath = requireAuth(userData.permissionsSet, url);
 
-    if (!flux.getStore('session').isLoggedIn()) {
+    if (!hasValidToken) {
+      // нет токена
       return <Redirect to="/login" />;
     } else if (url !== permittedPath) {
+      // запрашиваемый урл не разрешён
       return <Redirect to={permittedPath} />;
     }
-    if (url === '/change-company' && !flux.getStore('session').state.isGlavControl) {
-      return <Redirect to={requireAuth(flux, '/monitor')} />;
+    if (url === '/change-company' && !userData.isGlavControl) {
+      // для главконтроля
+      return <Redirect to={requireAuth(userData.permissionsSet, '/monitor')} />;
     }
 
-    return <MainApp {...this.props} />;
+    return (
+      <MapEtsProvider>
+        <EtsGlobalStyle />
+        <MainApp {...props} />
+      </MapEtsProvider>
+    );
   }
 }
 
-export default (props) => <MainAppWrap {...props} />;
+export default compose(
+  withRouter,
+  connect<any, any, any, any, ReduxState>(
+    (state) => ({
+      hasValidToken: Boolean(getSessionState(state).token),
+      userData: getSessionState(state).userData,
+    }),
+    null,
+    null,
+  ),
+)(MainAppWrap);

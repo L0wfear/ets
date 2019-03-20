@@ -8,8 +8,7 @@ import {
 export const getCompanyStructure = (payload = {}) => (
   CompanyStructureService.get({ ...payload })
     .catch((error) => {
-      // tslint:disable-next-line
-      console.log(error);
+      console.log(error); // tslint:disable-line:no-console
     })
     .then((ans) => {
       const data = get(ans, ['result'], []);

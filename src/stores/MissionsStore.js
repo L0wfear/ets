@@ -1,5 +1,5 @@
 import { Store } from 'flummox';
-import _ from 'lodash';
+import { get, find } from 'lodash';
 import { getToday9am, getTomorrow9am, getDateWithMoscowTz } from 'utils/dates';
 
 class MissionsStore extends Store {
@@ -8,65 +8,52 @@ class MissionsStore extends Store {
 
     const missionsActons = flux.getActions('missions');
     this.register(missionsActons.getMissions, this.handleGetMissions);
-    this.register(missionsActons.getMissionSources, this.handleGetMissionSources);
-    this.register(missionsActons.getMissionTemplates, this.handleGetMissionTemplates);
-    this.register(missionsActons.getMissionTemplatesCars, this.handleGetMissionTemplatesCars);
-    this.register(missionsActons.createMissionTemplate, this.handleGetMissionTemplates);
-    this.register(missionsActons.updateMissionTemplate, this.handleGetMissionTemplates);
-    this.register(missionsActons.getMissionReportByODHs, this.handleGetMissionReportByODHs);
-    this.register(missionsActons.getMissionReportByPoints, this.handleGetMissionReportByPoints);
-    this.register(missionsActons.getMissionReportByDTs, this.handleGetMissionReportByDTs);
-    this.register(missionsActons.getDutyMissions, this.handleGetDutyMissions);
-    this.register(missionsActons.getCarDutyMissions, this.handleGetCarDutyMissions);
-    this.register(missionsActons.createDutyMission, this.handleGetDutyMissions);
-    this.register(missionsActons.updateDutyMission, this.handleGetDutyMissions);
-    this.register(missionsActons.removeDutyMission, this.handleGetDutyMissions);
-    this.register(missionsActons.getDutyMissionTemplates, this.handleGetDutyMissionTemplates);
-    this.register(missionsActons.getCleaningMunicipalFacilityAllList, this.handleGetCleaningMunicipalFacilityAllList);
+    this.register(
+      missionsActons.getMissionSources,
+      this.handleGetMissionSources,
+    );
+    this.register(
+      missionsActons.getMissionTemplatesCars,
+      this.handleGetMissionTemplatesCars,
+    );
+    this.register(
+      missionsActons.getCarDutyMissions,
+      this.handleGetCarDutyMissions,
+    );
+    this.register(
+      missionsActons.getCleaningMunicipalFacilityAllList,
+      this.handleGetCleaningMunicipalFacilityAllList,
+    );
 
     this.state = {
       missionsList: [],
       missionSourcesList: [],
-      missionTemplatesList: [],
-      selectedReportData: [],
-      selectedReportDataODHS: [],
-      dutyMissionsList: [],
       carDutyMissionList: [],
-      dutyMissionTemplatesList: [],
       municipalFacilityList: [],
       missionsTotalCount: 0,
-      dutyMissionsTotalCount: 0,
       govNumberFilter: [],
     };
   }
 
-  handleGetCleaningMunicipalFacilityAllList({ result: { rows: municipalFacilityList = [] } }) {
+  handleGetCleaningMunicipalFacilityAllList({
+    result: { rows: municipalFacilityList = [] },
+  }) {
     this.setState({ municipalFacilityList });
   }
 
   handleGetMissions(missions) {
-    if (!missions.result.meta) return;
-    this.setState({ missionsList: missions.result.rows, missionsTotalCount: missions.result.meta.total_count });
+    this.setState({
+      missionsList: get(missions, 'result.rows', []),
+      missionsTotalCount: get(missions, 'result.meta.total_count', 0),
+    });
   }
 
   handleGetMissionSources({ result: { rows: missionSourcesList } }) {
     this.setState({ missionSourcesList });
   }
 
-  handleGetMissionTemplates(missionTemplate) {
-    this.setState({ missionTemplatesList: missionTemplate.result });
-  }
   handleGetMissionTemplatesCars(govNumbers) {
     this.setState({ govNumberFilter: govNumbers.result.rows });
-  }
-
-  handleGetDutyMissions(dutyMissions) {
-    if (!dutyMissions.result.meta) return;
-    this.setState({ dutyMissionsList: dutyMissions.result.rows, dutyMissionsTotalCount: dutyMissions.result.meta.total_count });
-  }
-
-  handleGetDutyMissionTemplates(dutyMissionTemplates) {
-    this.setState({ dutyMissionTemplatesList: dutyMissionTemplates.result });
   }
 
   handleGetCarDutyMissions(carDutyMissions) {
@@ -74,36 +61,18 @@ class MissionsStore extends Store {
   }
 
   getMissionSourceById(id) {
-    return _.find(this.state.missionSourcesList, ms => ms.id === id) || {};
-  }
-
-  handleGetMissionReportByODHs(index) {
-    // TODO убрать добавку route_check_unit
-    const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataODHS = missionReport.report_by_obj;
-    _.each(selectedReportDataODHS, r => (r.route_check_unit = missionReport.route_check_unit));
-    this.setState({ selectedReportDataODHS });
-  }
-
-  handleGetMissionReportByPoints(index) {
-    const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataPoints = missionReport.report_by_point;
-    this.setState({ selectedReportDataPoints });
-  }
-
-  handleGetMissionReportByDTs(index) {
-    // TODO убрать добавку route_check_unit
-    const missionReport = this.state.selectedReportData[index];
-    const selectedReportDataDTS = missionReport.report_by_dt;
-    _.each(selectedReportDataDTS, r => (r.route_check_unit = missionReport.route_check_unit));
-    this.setState({ selectedReportDataDTS });
+    return find(this.state.missionSourcesList, (ms) => ms.id === id) || {};
   }
 }
 
 export default MissionsStore;
 
-export function getDefaultMission(date_start = getDateWithMoscowTz(), date_end = getTomorrow9am()) {
-  return {  // Если будете исправлять, проверте типизацию
+export function getDefaultMission(
+  date_start = getDateWithMoscowTz(),
+  date_end = getTomorrow9am(),
+) {
+  return {
+    // Если будете исправлять, проверте типизацию
     description: '',
     date_start,
     date_end,
@@ -125,14 +94,6 @@ export function getDefaultDutyMission() {
     comment: '',
     car_mission_id: 0,
     is_new: true,
-  };
-}
-
-export function getDefaultDutyMissionTemplate() {
-  return {
-    date_create: getDateWithMoscowTz(),
-    is_new: true,
-    brigade_employee_id_list: [],
   };
 }
 
@@ -163,24 +124,30 @@ export function getDefaultMissionsCreationTemplate(missionsObj, for_column) {
     return {
       date_start: getDateWithMoscowTz(),
       date_end: getTomorrow9am(),
-      assign_to_waybill: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
-        newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
-          newObjCarId[car_id] = 'assign_to_new_draft';
+      assign_to_waybill: Object.entries(missionsObj).reduce(
+        (newObj, [id, { car_ids }]) => {
+          newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+            newObjCarId[car_id] = 'assign_to_new_draft';
 
-          return newObjCarId;
-        }, {});
+            return newObjCarId;
+          }, {});
 
-        return newObj;
-      }, {}),
-      norm_id: Object.entries(missionsObj).reduce((newObj, [id, { car_ids }]) => {
-        newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
-          newObjCarId[car_id] = null;
+          return newObj;
+        },
+        {},
+      ),
+      norm_id: Object.entries(missionsObj).reduce(
+        (newObj, [id, { car_ids }]) => {
+          newObj[id] = car_ids.reduce((newObjCarId, car_id) => {
+            newObjCarId[car_id] = null;
 
-          return newObjCarId;
-        }, {});
+            return newObjCarId;
+          }, {});
 
-        return newObj;
-      }, {}),
+          return newObj;
+        },
+        {},
+      ),
       mission_source_id: 3,
       passes_count: 1,
       is_new: true,

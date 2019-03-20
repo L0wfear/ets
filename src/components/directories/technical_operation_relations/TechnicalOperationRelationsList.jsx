@@ -9,21 +9,22 @@ import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import ChangeRouteForm from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteForm';
 import permissions from 'components/directories/technical_operation_relations/config-data/permissions';
 import permissionsCar from 'components/directories/autobase/cars/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsRoutes } from 'components/directories/technical_operation_relations/helpData';
-import {
-  ButtonUpdateRoute,
-} from 'components/new/pages/routes_list/buttons/buttons';
+import { ButtonUpdateRoute } from 'components/new/pages/routes_list/buttons/buttons';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-const ButtonChangeCarData = enhanceWithPermissions({
-  permission: permissionsCar.update,
+const ButtonChangeCarData = withRequirePermissionsNew({
+  permissions: permissionsCar.update,
 })(Button);
 
 const loadingPage = 'technical_operation_relations';
 
 @withRouter
-@connectToStores(['objects', 'session'])
+@connectToStores(['objects'])
 @staticProps({
   entity: 'technical_operation_relations',
   permissions,
@@ -65,25 +66,22 @@ class TechnicalOperationRelationsList extends ElementsList {
       && municipal_facility_id
       && route_types
       && func_type_id
-      && (
-        technical_operation_id !== prevProps.technical_operation_id
+      && (technical_operation_id !== prevProps.technical_operation_id
         || municipal_facility_id !== prevProps.municipal_facility_id
         || route_types !== prevProps.route_types
-        || func_type_id !== prevProps.func_type_id
-      )
+        || func_type_id !== prevProps.func_type_id)
     ) {
       this.getData(this.props);
     }
   }
 
   refreshList = () => {
-    const {
-      selectedElement,
-      showRouteChangeForm,
-    } = this.state;
+    const { selectedElement, showRouteChangeForm } = this.state;
 
     this.getData(this.props).then(({ result }) => {
-      const selectedElement_new = result.find(({ car_id }) => car_id === selectedElement.car_id);
+      const selectedElement_new = result.find(
+        ({ car_id }) => car_id === selectedElement.car_id,
+      );
       if (selectedElement_new) {
         if (showRouteChangeForm) {
           this.setState({
@@ -94,10 +92,12 @@ class TechnicalOperationRelationsList extends ElementsList {
         }
       }
     });
-  }
+  };
 
   getData(props) {
-    return this.context.flux.getActions('technicalOperation').getTechnicalOperationRelations(props)
+    return this.context.flux
+      .getActions('technicalOperation')
+      .getTechnicalOperationRelations(props)
       .then(({ result }) => {
         const options = makeOptions({
           data: result,
@@ -114,47 +114,54 @@ class TechnicalOperationRelationsList extends ElementsList {
     const carElement = this.props.carsIndex[this.state.selectedElement.car_id];
 
     if (!carElement) {
-      console.error(`Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`); // eslint-disable-line
+      console.error(
+        `Нет ТС с asuods_id = ${this.state.selectedElement.car_id}`,
+      ); // eslint-disable-line
     } else {
       this.setState({
         showCarForm: true,
         carElement,
       });
     }
-  }
+  };
 
-  onCarFormHide = () => (
+  onCarFormHide = () =>
     this.setState({
       carElement: null,
       showCarForm: false,
-    })
-  );
+    });
 
-  handleChangeRoutes = () => (
-    this.setState(selectedElement => ({
+  handleChangeRoutes = () =>
+    this.setState(({ selectedElement }) => ({
       routesData: selectedElement.routes,
       showRouteChangeForm: true,
-    }))
-  );
+    }));
 
-  onRouteFormHide = () => (
+  onRouteFormHide = () =>
     this.setState({
       routesData: [],
       showRouteChangeForm: false,
-    })
-  );
+    });
 
   getButtons() {
     return [
-      <ButtonChangeCarData key="change-driver" onClick={this.handleChangeDriver} disabled={!this.state.selectedElement}>{'Изменить водителей'}</ButtonChangeCarData>,
-      <ButtonUpdateRoute key="change-routes" onClick={this.handleChangeRoutes} disabled={!this.state.selectedElement}>{'Изменить маршрут'}</ButtonUpdateRoute>,
+      <ButtonChangeCarData
+        key="change-driver"
+        onClick={this.handleChangeDriver}
+        disabled={!this.state.selectedElement}>
+        Изменить водителей
+      </ButtonChangeCarData>,
+      <ButtonUpdateRoute
+        key="change-routes"
+        onClick={this.handleChangeRoutes}
+        disabled={!this.state.selectedElement}>
+        Изменить маршрут
+      </ButtonUpdateRoute>,
     ];
   }
 
   getAdditionalProps() {
-    const {
-      ROUTES_OPTIONS = [],
-    } = this.state;
+    const { ROUTES_OPTIONS = [] } = this.state;
 
     return {
       ROUTES_OPTIONS,
@@ -173,6 +180,7 @@ class TechnicalOperationRelationsList extends ElementsList {
         flux={this.context.flux}
         refreshList={this.refreshList}
         {...this.props}
+        deepLvl={1}
         page={loadingPage}
         path="сarFormWrap"
       />,
@@ -186,9 +194,14 @@ class TechnicalOperationRelationsList extends ElementsList {
         refreshList={this.refreshList}
         page={loadingPage}
         path="changeRouteForm"
+        deepLvl={1}
       />,
     ];
   }
 }
 
-export default TechnicalOperationRelationsList;
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(TechnicalOperationRelationsList);

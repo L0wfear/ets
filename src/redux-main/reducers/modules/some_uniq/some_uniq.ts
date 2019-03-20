@@ -7,6 +7,20 @@ export const SOME_UNIQ_SET_DATA = SOME_UNIQ`SET_DATA`;
 
 const initialState: IStateSomeUniq = {
   specialModelList: [],
+  modelsList: [],
+  technicalOperationRegistryList: [],
+  technicalOperationRegistryForMissionList: [],
+  technicalOperationRegistryForDutyMissionList: [],
+  municipalFacilityList: [],
+  municipalFacilityForMissionList: [],
+  municipalFacilityForDutyMissionList: [],
+  missionSource: {
+    list: [],
+    order_mission_source_id: null,
+  },
+  maintenanceWorkList: [],
+  cleanCategoriesList: [],
+  missionCancelReasonsList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

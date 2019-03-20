@@ -1,0 +1,23 @@
+import styled from 'styled-components';
+import * as Col from 'react-bootstrap/lib/Col';
+
+export const ColStartDatePicker = styled(Col)`
+  &&& {
+    @media (min-width: 992px) {
+      width: 49%;
+    }
+  }
+`;
+export const ColDividerDatePicker = styled(Col)`
+  &&& {
+    visibility: hidden;
+    @media (min-width: 992px) {
+      visibility: initial;
+      width: 2%;
+      margin: 0;
+      padding: 8px 0 0 0;
+      display: block;
+    }
+  }
+`;
+export const ColEndDatePicker = styled(ColStartDatePicker)``;

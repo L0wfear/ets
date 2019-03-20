@@ -1,18 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Div from 'components/ui/Div';
 import FormWrap from 'components/compositions/FormWrap';
 import { technicalOperationSchema } from 'models/TechOperationModel';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import BaseTechnicalOperationForm from 'components/directories/technical_operation/TechnicalOperationForm';
 
-const TechnicalOperationForm = enhanceWithPermissions(BaseTechnicalOperationForm);
+const TechnicalOperationForm = enhanceWithPermissions(
+  BaseTechnicalOperationForm,
+);
 
 export default class TechnicalOperationFormWrap extends FormWrap {
   constructor(props, context) {
     super(props);
 
     this.schema = technicalOperationSchema;
-    this.updateAction = context.flux.getActions('technicalOperation').updateTechnicalOperation;
+    this.updateAction = context.flux.getActions(
+      'technicalOperation',
+    ).updateTechnicalOperation;
   }
 
   render() {

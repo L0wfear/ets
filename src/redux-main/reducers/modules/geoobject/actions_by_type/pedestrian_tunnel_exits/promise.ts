@@ -1,8 +1,7 @@
 import {
   gormostCreateByType,
   gormostRemoveByType,
-} from 'redux-main/reducers/modules/geoobject/promises';
-import {
+  promiseGormostLoadPFByType,
   gormostLoadByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { pedestrian_tunnel_exits } from 'redux-main/reducers/modules/geoobject/constants';
@@ -10,6 +9,7 @@ import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/act
 import { GeozonePedestrianTunnelExitsService } from 'api/Services';
 
 export const promiseGetPedestrianTunnelExits = gormostLoadByType(pedestrian_tunnel_exits);
+export const promiseLoadPFPedestrianTunnelExits = promiseGormostLoadPFByType(pedestrian_tunnel_exits);
 export const promiseCreatePedestrianTunnelExits = gormostCreateByType(pedestrian_tunnel_exits);
 export const promiseUpdatePedestrianTunnelExits = (formState: PedestrianTunnelExits) => {
   const payload = {

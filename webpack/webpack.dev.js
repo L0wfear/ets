@@ -44,45 +44,40 @@ module.exports = {
       {
         test: /\.(jsx|js|ts|tsx)$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            cacheDirectory: true,
-            babelrc: false,
-            presets: [
-              [
-                '@babel/preset-env',
-                {
-                  targets: {
-                    'chrome': '47',
-                    'firefox': '42',
-                    'ie': '11',
+        use: [
+          "thread-loader",
+          {
+            loader: 'babel-loader',
+            options: {
+              cacheDirectory: true,
+              babelrc: false,
+              presets: [
+                [
+                  '@babel/preset-env',
+                ],
+                '@babel/preset-typescript',
+                '@babel/preset-react',
+              ],
+              plugins: [
+                [
+                  '@babel/plugin-proposal-decorators',
+                  {
+                    legacy: true,
                   },
-                  useBuiltIns: 'usage',
-                },
+                ],
+                [
+                  '@babel/plugin-proposal-class-properties',
+                  {
+                    loose: true,
+                  },
+                ],
+                'babel-plugin-styled-components',
+                '@babel/plugin-syntax-dynamic-import',
+                'react-hot-loader/babel',
               ],
-              '@babel/preset-typescript',
-              '@babel/preset-react',
-            ],
-            plugins: [
-              [
-                '@babel/plugin-proposal-decorators',
-                {
-                  legacy: true,
-                },
-              ],
-              [
-                '@babel/plugin-proposal-class-properties',
-                {
-                  loose: true,
-                },
-              ],
-              'babel-plugin-styled-components',
-              '@babel/plugin-syntax-dynamic-import',
-              'react-hot-loader/babel',
-            ],
+            },
           },
-        },
+        ],
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/,
@@ -158,6 +153,9 @@ module.exports = {
       '.tsx',
     ],
     modules: [__dirname, 'src', 'node_modules'],
+    alias: {
+      'react-dom': '@hot-loader/react-dom',
+    },
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),

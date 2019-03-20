@@ -1,8 +1,7 @@
 import {
   gormostCreateByType,
   gormostRemoveByType,
-} from 'redux-main/reducers/modules/geoobject/promises';
-import {
+  promiseGormostLoadPFByType,
   gormostLoadByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { bridges } from 'redux-main/reducers/modules/geoobject/constants';
@@ -10,6 +9,7 @@ import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/b
 import { GeozoneBridgesService } from 'api/Services';
 
 export const promiseGetBridges = gormostLoadByType(bridges);
+export const promiseLoadPFBridges = promiseGormostLoadPFByType(bridges);
 export const promiseCreateBridges = gormostCreateByType(bridges);
 export const promiseUpdateBridges = (formState: Bridges) => {
   const payload = {

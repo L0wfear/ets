@@ -54,6 +54,7 @@ export default class FuelOperationForm extends Form {
               <label>Без учета пробега</label>
               <input
                 type="checkbox"
+                readOnly
                 style={{ marginLeft: '10px' }}
                 checked={!!state.is_excluding_mileage}
                 onClick={this.handleChange.bind(this, 'is_excluding_mileage', !state.is_excluding_mileage)}
@@ -63,7 +64,9 @@ export default class FuelOperationForm extends Form {
             <Col md={12}>
               <label>Для спецоборудования</label>
               <input
+                value={false}
                 type="checkbox"
+                readOnly
                 style={{ marginLeft: '10px' }}
                 checked={!!state.equipment}
                 onClick={this.handleChange.bind(this, 'equipment', !state.equipment)}

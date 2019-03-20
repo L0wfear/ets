@@ -42,6 +42,9 @@ export const getVectorObject = (type, points, meta = { loading: true } as TypeMe
   };
 };
 
+/**
+ * @todo move on company store (actionGetAndSetInStoreCompany)
+ */
 export const getCompany = (type, meta = { loading: true } as TypeMeta) => ({
   type,
   payload: loadCompany(),

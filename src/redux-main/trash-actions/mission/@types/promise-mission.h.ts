@@ -64,4 +64,3 @@ export interface MissionDataType {
 }
 
 export type MissionType = any;
-export type DutyMissionType = any;

@@ -10,8 +10,14 @@ export default class RepairStore extends Store {
     this.register(repairActions.getObjectProperty, this.handleGetList);
     this.register(repairActions.setActiveList, this.handleChangeListActive);
 
-    this.register(repairActions.getDataAboutObjectById, this.handlerGetDataAboutObjectById);
-    this.register(repairActions.cleartDataAboutObjectById, this.handlerGetDataAboutObjectById);
+    this.register(
+      repairActions.getDataAboutObjectById,
+      this.handlerGetDataAboutObjectById,
+    );
+    this.register(
+      repairActions.cleartDataAboutObjectById,
+      this.handlerGetDataAboutObjectById,
+    );
 
     this.state = {
       ...this.getDefaultStateList(),
@@ -26,11 +32,17 @@ export default class RepairStore extends Store {
   }
 
   getDefaultStateList() {
-    return Object.keys(REPAIR).reduce((obj, type) => ({ ...obj, [`${type}List`]: [] }), {});
+    return Object.keys(REPAIR).reduce(
+      (obj, type) => ({ ...obj, [`${type}List`]: [] }),
+      {},
+    );
   }
 
   getDefaultOptionsIndex() {
-    return Object.keys(REPAIR).reduce((obj, type) => ({ ...obj, [`${type}Options`]: [] }), {});
+    return Object.keys(REPAIR).reduce(
+      (obj, type) => ({ ...obj, [`${type}Options`]: [] }),
+      {},
+    );
   }
 
   handleChangeListActive({ listName, listNameTrue }) {
@@ -63,7 +75,7 @@ export default class RepairStore extends Store {
   defaultData = ({ result = [] }) => {
     const { rows = [], extra = false } = result;
     return { rows, extra };
-  }
+  };
 
   makeExtra(extra, name) {
     if (!Object.values(extra)[0]) return undefined;

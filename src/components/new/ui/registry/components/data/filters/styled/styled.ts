@@ -12,6 +12,7 @@ export const EtsFilterCntainer = styled.div`
 `;
 
 export const PanelWrap = styled(Panel)`
+  z-index: 2;
   &.panel-default {
     border-color: rgba(0, 0, 0, 0);
     margin: 0;

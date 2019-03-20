@@ -12,3 +12,5 @@ export const constantColor = {
   navbarHeight: '64px',
   navbarPaddingA: '22px',
 };
+
+export const mobiSize = 768;

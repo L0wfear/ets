@@ -1,14 +1,16 @@
-import { GeozoneMspService } from 'api/Services';
-
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/msp/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
+import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
 
 export const registryKey = 'MspList';
 
-export const config: TypeConfigData = {
-  Service: GeozoneMspService,
+export const config: TypeConfigData<Msp> = {
+  Service: {
+    getActionPath: ['geoobjectActions', 'actionGetGetMsp'],
+    getBlobActionPath: ['geoobjectActions', 'actionGetBlobMsp'],
+  },
   registryKey,
   header: {
     title: 'Справочник МСП',

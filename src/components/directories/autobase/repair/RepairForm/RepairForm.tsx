@@ -8,7 +8,6 @@ import repairPermissions from 'components/directories/autobase/repair/config-dat
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { repairFormSchema } from 'components/directories/autobase/repair/RepairForm/repairFrom_schema';
-import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -30,17 +29,20 @@ import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/ui/input/fields';
 import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
     carListOptions: [],
     repairCompanyOptions: [],
     repairTypeOptions: [],
-    statusOptions: Object.entries(AUTOBASE_REPAIR_STATUS).filter(([, value]) => !value.disabled).map(([key, value]) => ({
-      value: key,
-      label: value.name,
-      rowData: null,
-    })),
+    statusOptions: Object.entries(AUTOBASE_REPAIR_STATUS)
+      .filter(([, value]) => !value.disabled)
+      .map(([key, value]) => ({
+        value: key,
+        label: value.name,
+        rowData: null,
+      })),
   };
 
   componentDidMount() {
@@ -55,17 +57,23 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
     }
   }
   async loadRepairCompany() {
-    const { payload: { data } } = await this.props.autobaseGetRepairCompany();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetRepairCompany();
 
     this.setState({ repairCompanyOptions: data.map(defaultSelectListMapper) });
   }
   async loadRepairType() {
-    const { payload: { data } } = await this.props.autobaseGetRepairType();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetRepairType();
 
     this.setState({ repairTypeOptions: data.map(defaultSelectListMapper) });
   }
   async loadCars() {
-    const { payload: { data } } = await this.props.autobaseGetSetCar();
+    const { page, path } = this.props;
+
+    const { data } = await this.props.autobaseGetSetCar({}, { page, path });
 
     this.setState({
       carListOptions: data.map(({ asuods_id, gov_number, ...other }) => ({
@@ -79,14 +87,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
     const {
       formState: state,
@@ -95,33 +96,35 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       page,
       path,
     } = this.props;
-    const {
-      carListOptions,
-    } = this.state;
+    const { carListOptions } = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const ownIsPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
-    const isPermitted = (
-      ownIsPermitted
-      && (
-        isNullOrUndefined(state.company_id)
-        || state.can_edit
-        || state.company_id === this.props.userCompanyId
-      )
-    );
+    const isPermitted =
+      ownIsPermitted &&
+      (isNullOrUndefined(state.company_id) ||
+        state.can_edit ||
+        state.company_id === this.props.userCompanyId);
 
     return (
-      <Modal id="modal-repair" show onHide={this.handleHide} backdrop="static">
+      <EtsModal
+        id="modal-repair"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-              {IS_CREATING && !car_id &&
+              {IS_CREATING && !car_id && (
                 <ExtField
                   id="car_id"
                   type="select"
@@ -130,13 +133,13 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   error={errors.car_id}
                   options={carListOptions}
                   emptyValue={null}
-                  onChange={this.handleChange}
+                  onChange={this.props.handleChange}
                   boundKeys="car_id"
                   clearable={false}
                   disabled={!isPermitted}
                   modalKey={path}
                 />
-              }
+              )}
               <ExtField
                 id="repair_company_id"
                 type="select"
@@ -145,7 +148,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 error={errors.repair_company_id}
                 options={this.state.repairCompanyOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="repair_company_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -159,7 +162,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 error={errors.repair_type_id}
                 options={this.state.repairTypeOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="repair_type_id"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -170,7 +173,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Номер документа"
                 value={state.number}
                 error={errors.number}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="number"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -182,7 +185,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.plan_date_start}
                 time={false}
                 error={errors.plan_date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="plan_date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -194,7 +197,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.plan_date_end}
                 time={false}
                 error={errors.plan_date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="plan_date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -206,7 +209,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.fact_date_start}
                 time={false}
                 error={errors.fact_date_start}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fact_date_start"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -218,7 +221,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 date={state.fact_date_end}
                 time={false}
                 error={errors.fact_date_end}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="fact_date_end"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -229,7 +232,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Описание неисправности"
                 value={state.description}
                 error={errors.description}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="description"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -240,7 +243,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Примечание"
                 value={state.note}
                 error={errors.note}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="note"
                 disabled={!isPermitted}
                 modalKey={path}
@@ -250,42 +253,41 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 label="Файл"
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={path}
               />
-              {
-                state.fact_date_start && state.fact_date_end &&
-                  <ExtField
-                    id="status"
-                    type="select"
-                    label="Итог проведенного ремонта"
-                    value={state.status}
-                    error={errors.status}
-                    options={this.state.statusOptions}
-                    emptyValue={null}
-                    onChange={this.handleChange}
-                    boundKeys="status"
-                    disabled={!isPermitted}
-                    modalKey={path}
-                  />
-              }
+              {state.fact_date_start && state.fact_date_end && (
+                <ExtField
+                  id="status"
+                  type="select"
+                  label="Итог проведенного ремонта"
+                  value={state.status}
+                  error={errors.status}
+                  options={this.state.statusOptions}
+                  emptyValue={null}
+                  onChange={this.props.handleChange}
+                  boundKeys="status"
+                  disabled={!isPermitted}
+                  modalKey={path}
+                />
+              )}
             </Col>
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
@@ -295,51 +297,21 @@ export default compose<PropsRepair, OwnRepairProps>(
     (state) => ({
       userCompanyId: getSessionState(state).userData.company_id,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
+    (dispatch: any, { page, path }) => ({
+      autobaseGetSetCar: (...arg) =>
+        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
+      autobaseGetRepairCompany: () =>
         dispatch(
-          autobaseActions.autobaseCreateRepair(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          autobaseActions.autobaseUpdateRepair(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetCar: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetRepairCompany: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRepairCompany(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetRepairType: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRepairType(
-            {},
-            { page, path },
-          ),
-        )
-      ),
+          autobaseActions.autobaseGetSetRepairCompany({}, { page, path }),
+        ),
+      autobaseGetRepairType: () =>
+        dispatch(autobaseActions.autobaseGetSetRepairType({}, { page, path })),
     }),
   ),
   withForm<PropsRepairWithForm, Repair>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRepair,
+    updateAction: autobaseActions.autobaseUpdateRepair,
     mergeElement: (props) => {
       return getDefaultRepairElement(props.element);
     },

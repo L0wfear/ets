@@ -1,10 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import {
-  cloneDeep,
-  omit,
-} from 'lodash';
+import { cloneDeep, omit } from 'lodash';
 
 import { validateField } from 'utils/validate/validateField';
 import { FluxContext } from 'utils/decorators';
@@ -44,20 +41,26 @@ class FormWrap extends React.Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    if (props.showForm && (props.showForm !== this.props.showForm)) {
+  // prettier-ignore
+  componentWillReceiveProps(props) { // eslint-disable-line
+    if (props.showForm && props.showForm !== this.props.showForm) {
       let element = {};
       if (props.element !== null) {
         element = cloneDeep(props.element);
       } else {
-        element = !isEmpty(this.defaultElement) ? cloneDeep(this.defaultElement) : {};
+        element = !isEmpty(this.defaultElement)
+          ? cloneDeep(this.defaultElement)
+          : {};
       }
       const formErrors = this.validate(element, {});
 
       this.setState({
         formState: element,
         formErrors,
-        canSave: Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true),
+        canSave: Object.values(formErrors).reduce(
+          (boolean, oneError) => boolean && !oneError,
+          true,
+        ),
       });
     }
     this.inheritedComponentWillReceiveProps(props);
@@ -71,16 +74,25 @@ class FormWrap extends React.Component {
     const schema = this.schema;
     const formState = { ...state };
 
-    return schema.properties.reduce((formErrors, prop) => {
-      const { key } = prop;
-      formErrors[key] = validateField(prop, formState[key], formState, this.schema, this.props);
-      return formErrors;
-    },
-    { ...errors },);
-  }
+    return schema.properties.reduce(
+      (formErrors, prop) => {
+        const { key } = prop;
+        formErrors[key] = validateField(
+          prop,
+          formState[key],
+          formState,
+          this.schema,
+          this.props,
+        );
+        return formErrors;
+      },
+      { ...errors },
+    );
+  };
 
   handleFormStateChange = (field, e) => {
-    const value = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    const value
+      = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
     const newState = {};
@@ -90,7 +102,10 @@ class FormWrap extends React.Component {
 
     formErrors = this.validate(formState, formErrors);
 
-    newState.canSave = Object.values(formErrors).reduce((boolean, oneError) => boolean && !oneError, true);
+    newState.canSave = Object.values(formErrors).reduce(
+      (boolean, oneError) => boolean && !oneError,
+      true,
+    );
 
     newState.formState = formState;
     newState.formErrors = formErrors;
@@ -98,18 +113,22 @@ class FormWrap extends React.Component {
     this.setState(newState);
 
     return newState;
-  }
+  };
 
   nullValueForField = (field, value) => {
     const { schema = {} } = this;
     const { properties = [] } = schema;
-    const fieldsType = properties.reduce((obj, val) => Object.assign(obj, { [val.key]: val.type }), {});
+    const fieldsType = properties.reduce(
+      (obj, val) => Object.assign(obj, { [val.key]: val.type }),
+      {},
+    );
 
     switch (fieldsType[field]) {
       case 'string':
       case 'date':
         return '';
-      case 'number': return null;
+      case 'number':
+        return null;
       default:
         if (typeof value === 'string') {
           if (isNaN(+value)) return '';
@@ -123,7 +142,7 @@ class FormWrap extends React.Component {
         }
         return 'say_Frontend';
     }
-  }
+  };
 
   // отправка формы
   handleFormSubmit = async () => {
@@ -139,7 +158,10 @@ class FormWrap extends React.Component {
     if (this.schema) {
       this.schema.properties.forEach((p) => {
         if (p.type === 'number' && p.float) {
-          formState[p.key] = !isNaN(formState[p.key]) && formState[p.key] !== null ? parseFloat(formState[p.key]) : null;
+          formState[p.key]
+            = !isNaN(formState[p.key]) && formState[p.key] !== null
+              ? parseFloat(formState[p.key])
+              : null;
         }
         if (p.type === 'number' && p.integer) {
           const parsedValue = parseInt(formState[p.key], 10);
@@ -147,7 +169,9 @@ class FormWrap extends React.Component {
         }
 
         if (typeof p.isSubmitted === 'function') {
-          formState = p.isSubmitted(formState) ? formState : omit(formState, p.key);
+          formState = p.isSubmitted(formState)
+            ? formState
+            : omit(formState, p.key);
         }
       });
     }
@@ -207,13 +231,14 @@ class FormWrap extends React.Component {
         throw new Error('Update action called but not specified');
       }
       // в случае успешного обновления выдаем всплывающее окно
-      if (!this.preventDefaultNotification) global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
+      if (!this.preventDefaultNotification)
+        global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
     }
     // закрываем форму только в случае отсутствия исключительных ситуаций
     if (typeof this.props.onFormHide === 'function' && result !== 'isError') {
       this.props.onFormHide(result);
     }
-  }
+  };
 
   render() {
     return (

@@ -11,13 +11,7 @@ import Preloader from 'components/ui/new/preloader/Preloader';
 import Div from 'components/ui/Div';
 
 function StringField(props) {
-  const {
-    error,
-    label = '',
-    modalKey,
-    isLoading,
-    ...mainProps
-  } = props;
+  const { error, label = '', modalKey, isLoading, ...mainProps } = props;
   const {
     readOnly = false,
     disabled = false,
@@ -29,14 +23,20 @@ function StringField(props) {
   let { value } = props;
 
   const inputClassName = cx({ 'has-error': error });
-  const id = props.id ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label` : undefined;
+  const id = props.id
+    ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
+    : undefined;
 
   if (isLoading) {
     return (
       <Div hidden={hidden}>
-        <label style={{ paddingTop: 5 }}>{label}</label>
-)
-<br />
+        {typeof label === 'string' && (
+          <label style={{ paddingTop: 5 }} id={id}>
+            {label}
+          </label>
+        )}
+        )
+        <br />
         <Preloader typePreloader="field" />
       </Div>
     );
@@ -47,31 +47,57 @@ function StringField(props) {
   }
   const showError = typeof error === 'boolean' ? error : true;
 
-  return !readOnly
-    ? <Div hidden={hidden} style={wrapStyle || {}}>
+  return !readOnly ? (
+    <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
-        {label && <label className="control-label"><span>{label}</span></label>}
-        <FormControl type="text" disabled={disabled} className={inputClassName} {...mainProps} id={id} value={value} />
+        {typeof label === 'string' && (
+          <label className="control-label" id={id}>
+            <span>{label}</span>
+          </label>
+        )}
+        <FormControl
+          type="text"
+          disabled={disabled}
+          className={inputClassName}
+          {...mainProps}
+          id={id}
+          value={value}
+        />
       </div>
-      {showError && <Div hidden={!error} className="error">{error}</Div>}
+      {showError && (
+        <Div hidden={!error} className="error">
+          {error}
+        </Div>
+      )}
     </Div>
-    : <Div hidden={hidden} className={className}>
+  ) : (
+    <Div hidden={hidden} className={className}>
       <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
       {!inline && <br />}
       <span id={id}>{value}</span>
-    </Div>;
+    </Div>
+  );
 }
 
 function TextAreaField(props) {
   const {
- error, label = '', readOnly = false, disabled = false, hidden, rows = 5, textAreaStyle = {}, modalKey 
-} = props;
+    error,
+    label = '',
+    readOnly = false,
+    disabled = false,
+    hidden,
+    rows = 5,
+    textAreaStyle = {},
+    modalKey,
+  } = props;
   let { value } = props;
   if (value === undefined || value === null) {
     value = '';
   }
 
-  const id = props.id ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label` : undefined;
+  const id = props.id
+    ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
+    : undefined;
 
   const wrapperClassName = cx({
     'textarea-field': true,
@@ -90,14 +116,14 @@ function TextAreaField(props) {
         onChange={props.onChange}
         value={value}
       />
-      <Div hidden={!error} className="error">{error}</Div>
+      <Div hidden={!error} className="error">
+        {error}
+      </Div>
     </Div>
   );
 }
 
-
 export default class Field extends React.Component {
-
   static get propTypes() {
     return {
       value: PropTypes.any,
@@ -113,7 +139,7 @@ export default class Field extends React.Component {
 
   onChange = (...args) => {
     this.props.onChange(this.props.key, ...args);
-  }
+  };
 
   renderBoolean() {
     const {
@@ -122,7 +148,9 @@ export default class Field extends React.Component {
       modalKey,
     } = this.props;
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+    const id = this.props.id
+      ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label`
+      : undefined;
 
     return (
       <Div hidden={this.props.hidden} className={className}>
@@ -140,9 +168,7 @@ export default class Field extends React.Component {
   }
 
   renderNumber() {
-    const {
- error, modalKey, showRedBorder, ...mainProps 
-} = this.props;
+    const { error, modalKey, showRedBorder, ...mainProps } = this.props;
 
     const inputClassName = cx({ 'has-error': error || showRedBorder });
     let { value } = this.props;
@@ -151,35 +177,58 @@ export default class Field extends React.Component {
       value = '';
     }
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+    const id = this.props.id
+      ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label`
+      : undefined;
 
     return (
       <Div hidden={this.props.hidden}>
         <div className="form-group">
-          <label className="control-label"><span>{this.props.label}</span></label>
-          <FormControl lang="en" type="number" className={inputClassName} {...mainProps} id={id} value={value} />
+          <label className="control-label">
+            <span>{this.props.label}</span>
+          </label>
+          <FormControl
+            lang="en"
+            type="number"
+            className={inputClassName}
+            {...mainProps}
+            id={id}
+            value={value}
+          />
         </div>
-        <Div hidden={!error} className="error">{error}</Div>
+        <Div hidden={!error} className="error">
+          {error}
+        </Div>
       </Div>
     );
   }
 
   renderDate() {
-    const {
- label, error, modalKey, ...props 
-} = this.props;
-    const {
- readOnly = false, date, value, className = '' 
-} = this.props;
+    const { label, error, modalKey, ...props } = this.props;
+    const { date, value, className = '' } = this.props;
 
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+    const id = this.props.id
+      ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label`
+      : undefined;
 
     const dateClassName = cx({ 'has-error': error });
     return (
-      <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
-        { typeof label === 'string' && <label style={{ minHeight: 15 }}>{label}</label> }
-        <DatePicker {...props} id={id} date={date || value} className={dateClassName} />
-        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
+      <Div
+        hidden={this.props.hidden}
+        className={className}
+        style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
+        {typeof label === 'string' && (
+          <label style={{ minHeight: 15 }}>{label}</label>
+        )}
+        <DatePicker
+          {...props}
+          id={id}
+          date={date || value}
+          className={dateClassName}
+        />
+        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
+          {error}
+        </Div>
       </Div>
     );
   }
@@ -188,34 +237,46 @@ export default class Field extends React.Component {
     const { label = '', ...props } = this.props;
     const { error, modalKey } = this.props;
     const errorClassName = cx({ 'has-error': error });
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+    const id = this.props.id
+      ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label`
+      : undefined;
 
     return (
       <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
-        <label htmlFor=" " id={id} style={{ minHeight: 15 }}>{label}</label>
-        <FileInput
-          {...props}
-          errorClassName={errorClassName}
-        />
-        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
+        <label htmlFor=" " id={id} style={{ minHeight: 15 }}>
+          {label}
+        </label>
+        <FileInput {...props} errorClassName={errorClassName} />
+        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
+          {error}
+        </Div>
       </Div>
     );
   }
 
   renderSelect() {
     const { label = '', ...props } = this.props;
-    const {
- error, className = '', readOnly = false, modalKey 
-} = this.props;
+    const { error, className = '', readOnly = false, modalKey } = this.props;
 
     const selectClassName = cx({ 'has-error': error });
-    const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label` : undefined;
+    const id = this.props.id
+      ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-label`
+      : undefined;
 
     return (
-      <Div hidden={this.props.hidden} className={className} style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
-        { typeof label === 'string' && <label id={id}>{label}</label> }
-        <ReactSelect {...props} disabled={readOnly || this.props.disabled} className={selectClassName} />
-        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>{error}</Div>
+      <Div
+        hidden={this.props.hidden}
+        className={className}
+        style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
+        {typeof label === 'string' && <label id={id}>{label}</label>}
+        <ReactSelect
+          {...props}
+          disabled={readOnly || this.props.disabled}
+          className={selectClassName}
+        />
+        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
+          {error}
+        </Div>
       </Div>
     );
   }

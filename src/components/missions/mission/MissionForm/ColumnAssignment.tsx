@@ -10,21 +10,26 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import ModalBody from 'components/ui/Modal';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { makeCarOptionLabel } from './utils';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 type ColumnAssignmentProps = {
-  formState: any,
-  hideColumnAssignment: () => void,
-  ASSIGN_OPTIONS: any[],
-  handleChange: (key: string, data: any) => void,
-  handleSubmit: () => Promise<any>,
-  carsList: Car[],
+  formState: any;
+  hideColumnAssignment: () => void;
+  ASSIGN_OPTIONS: any[];
+  handleChange: (key: string, data: any) => void;
+  handleSubmit: () => Promise<any>;
+  carsList: Car[];
   show: boolean;
+  deepLvl: number;
 };
 type ColumnAssignmentState = {
-  showBackButton: boolean,
+  showBackButton: boolean;
 };
 
-class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssignmentState> {
+class ColumnAssignment extends React.Component<
+  ColumnAssignmentProps,
+  ColumnAssignmentState
+> {
   state = {
     showBackButton: false,
   };
@@ -35,14 +40,18 @@ class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssi
     } catch (e) {
       this.setState({ showBackButton: true });
     }
-  }
+  };
 
   handleChange = (index, value) => {
-    const { formState: { assign_to_waybill: [...assign_to_waybill] } } = this.props;
+    const {
+      formState: {
+        assign_to_waybill: [...assign_to_waybill],
+      },
+    } = this.props;
     assign_to_waybill[index] = value;
 
     this.props.handleChange('assign_to_waybill', assign_to_waybill);
-  }
+  };
 
   render() {
     if (!this.props.show) {
@@ -52,7 +61,11 @@ class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssi
     const car_ids = get(this.props.formState, 'car_id', []);
 
     return (
-      <Modal id="modal-column-assignment" show onHide={this.props.hideColumnAssignment}>
+      <EtsModal
+        id="modal-column-assignment"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideColumnAssignment}>
         <Modal.Header closeButton>
           <Modal.Title>Прикрепление заданий к ПЛ</Modal.Title>
         </Modal.Header>
@@ -62,43 +75,49 @@ class ColumnAssignment extends React.Component<ColumnAssignmentProps, ColumnAssi
               <label>Транспортное средство</label>
             </Col>
           </Row>
-          {
-            car_ids.map((car_id, index) => (
-              <Row key={car_id}>
-                <Col md={6}>
-                  <ExtField
-                    id={`car-number-${index}`}
-                    type="string"
-                    value={makeCarOptionLabel(this.props.carsList.find(({ asuods_id }) => asuods_id === car_id))}
-                    readOnly
-                  />
-                </Col>
-                <Col md={6}>
-                  <ExtField
-                    id={`assign-to-waybill-${index}`}
-                    type="select"
-                    options={this.props.ASSIGN_OPTIONS}
-                    value={this.props.formState.assign_to_waybill[index]}
-                    clearable={false}
-                    onChange={this.handleChange}
-                    boundKeys={[index]}
-                  />
-                </Col>
-              </Row>
-            ))
-          }
+          {car_ids.map((car_id, index) => (
+            <Row key={car_id}>
+              <Col md={6}>
+                <ExtField
+                  id={`car-number-${index}`}
+                  type="string"
+                  value={makeCarOptionLabel(
+                    this.props.carsList.find(
+                      ({ asuods_id }) => asuods_id === car_id,
+                    ),
+                  )}
+                  readOnly
+                />
+              </Col>
+              <Col md={6}>
+                <ExtField
+                  id={`assign-to-waybill-${index}`}
+                  type="select"
+                  options={this.props.ASSIGN_OPTIONS}
+                  value={this.props.formState.assign_to_waybill[index]}
+                  clearable={false}
+                  onChange={this.handleChange}
+                  boundKeys={index}
+                />
+              </Col>
+            </Row>
+          ))}
         </ModalBody>
         <Modal.Footer>
           <div className="pr-object-data">
             <div>
-            {
-              this.state.showBackButton && <Button id="m-back" onClick={this.props.hideColumnAssignment}>Назад</Button>
-            }
+              {this.state.showBackButton && (
+                <Button id="m-back" onClick={this.props.hideColumnAssignment}>
+                  Назад
+                </Button>
+              )}
             </div>
-            <Button id="m-submit" onClick={this.handleSubmit}>Сохранить</Button>
+            <Button id="m-submit" onClick={this.handleSubmit}>
+              Сохранить
+            </Button>
           </div>
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }

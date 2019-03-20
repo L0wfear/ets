@@ -6,7 +6,9 @@ import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { get } from 'lodash';
 import { missionsStatusBySlag } from 'components/waybill/constant/table';
 
-const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(([value, label]) => ({ value, label }));
+const ALL_MISSIONS_STATUS_OPTIONS = Object.entries(missionsStatusBySlag).map(
+  ([value, label]) => ({ value, label }),
+);
 
 const cache = {
   example: {
@@ -52,7 +54,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(WAYBILL_STATUSES).map(key => ({ label: WAYBILL_STATUSES[key], value: key })),
+          options: Object.keys(WAYBILL_STATUSES).map((key) => ({
+            label: WAYBILL_STATUSES[key],
+            value: key,
+          })),
         },
       },
       {
@@ -86,7 +91,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: driversList.map((e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
+          options: driversList.map((e) => ({
+            label: employeeFIOLabelFunction(employeesIndex, e.id),
+            value: e.id,
+          })),
         },
       },
       {
@@ -99,7 +107,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: carsFilterList.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsFilterList.map((car) => ({
+            label: car.gov_number,
+            value: car.asuods_id,
+          })),
         },
       },
       {
@@ -139,7 +150,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: workModeOptions.map(({ name, label }) => ({ value: name, label })),
+          options: workModeOptions.map(({ name, label }) => ({
+            value: name,
+            label,
+          })),
         },
       },
       {
@@ -175,7 +189,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({
+            label: employeeFIOLabelFunction(employeesIndex, e.id),
+            value: e.id,
+          })),
         },
       },
       {
@@ -187,7 +204,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({
+            label: employeeFIOLabelFunction(employeesIndex, e.id),
+            value: e.id,
+          })),
         },
       },
       {
@@ -199,7 +219,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: getOptions('employeesList', employeesList, (e) => ({ label: employeeFIOLabelFunction(employeesIndex, e.id), value: e.id })),
+          options: getOptions('employeesList', employeesList, (e) => ({
+            label: employeeFIOLabelFunction(employeesIndex, e.id),
+            value: e.id,
+          })),
         },
       },
       {
@@ -290,7 +313,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
         },
         display: structures.length,
       },
@@ -323,20 +349,44 @@ export const getTableMeta = ({
 
 export default (props) => {
   const renderers = {
-    status: ({ data }) => <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>,
-    responsible_person_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
-    driver_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
-    created_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
-    activated_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
-    closed_by_employee_id: ({ data }) => <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>,
+    status: ({ data }) => (
+      <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>
+    ),
+    responsible_person_id: ({ data }) => (
+      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
+    ),
+    driver_id: ({ data }) => (
+      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
+    ),
+    created_by_employee_id: ({ data }) => (
+      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
+    ),
+    activated_by_employee_id: ({ data }) => (
+      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
+    ),
+    closed_by_employee_id: ({ data }) => (
+      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
+    ),
     date_create: ({ data }) => <DateFormatter date={data} time />,
     closing_date: ({ data }) => <DateFormatter date={data} time />,
     plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
     fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
-    all_missions_status: ({ data }) => <div>{get(missionsStatusBySlag, data, '')}</div>,
-    structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name', '')}</div>,
-    comment: ({ data }) => <div>{data ? data.split('\n').map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>) : data}</div>,
+    all_missions_status: ({ data }) => (
+      <div>{get(missionsStatusBySlag, data, '')}</div>
+    ),
+    structure_id: ({ rowData }) => (
+      <div>{get(rowData, 'structure_name', '')}</div>
+    ),
+    comment: ({ data }) => (
+      <div>
+        {data
+          ? data
+            .split('\n')
+            .map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>)
+          : data}
+      </div>
+    ),
     car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '-')}</div>,
   };
 

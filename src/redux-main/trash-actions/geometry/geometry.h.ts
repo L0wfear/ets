@@ -7,9 +7,7 @@ export interface GeozonesDataByIndex {
   [key: string]: any;
 }
 
-export interface LoadGeozonesPromise {
-  [type_geoobject: string]: GeozonesDataByIndex;
-}
+export type LoadGeozonesPromise = Record<GeozonesDataByIndex['type_geoobject'], GeozonesDataByIndex>;
 
 export type AnsLoadGeozonesFunc = {
   type: string,

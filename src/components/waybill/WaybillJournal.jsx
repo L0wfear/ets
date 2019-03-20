@@ -1,14 +1,21 @@
 import React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import { get } from 'lodash';
-import { ButtonCreateNew, ButtonReadNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
+import {
+  ButtonCreateNew,
+  ButtonReadNew,
+  ButtonDeleteNew,
+} from 'components/ui/buttons/CRUD';
 
-import { getServerSortingField, extractTableMeta, toServerFilteringObject } from 'components/ui/table/utils';
+import {
+  getServerSortingField,
+  extractTableMeta,
+  toServerFilteringObject,
+} from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import CheckableElementsList from 'components/CheckableElementsList';
 import Paginator from 'components/ui/new/paginator/Paginator';
@@ -20,8 +27,11 @@ import WaybillPrintForm from 'components/waybill/WaybillPrintForm';
 import WaybillsTable, { getTableMeta } from 'components/waybill/WaybillsTable';
 import permissions from 'components/waybill/config-data/permissions';
 import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
+import { DropdownWrap } from './styled';
 
-@connectToStores(['waybills', 'objects', 'employees', 'session'])
+@connectToStores(['waybills', 'objects', 'employees'])
 @staticProps({
   entity: 'waybill',
   permissions,
@@ -36,7 +46,9 @@ class WaybillJournal extends CheckableElementsList {
   constructor(props, context) {
     super(props);
 
-    this.removeElementAction = context.flux.getActions('waybills').deleteWaybill;
+    this.removeElementAction = context.flux.getActions(
+      'waybills',
+    ).deleteWaybill;
     this.removeElementCallback = this.removeElementCallback.bind(this);
 
     this.state = Object.assign(this.state, {
@@ -56,9 +68,10 @@ class WaybillJournal extends CheckableElementsList {
     flux.getActions('objects').getWorkMode();
 
     this.setState({
-      readPermission: [permissions.read, permissions.departure_and_arrival_values].some(pName => (
-        flux.getStore('session').state.userPermissions.includes(pName)
-      )),
+      readPermission: [
+        permissions.read,
+        permissions.departure_and_arrival_values,
+      ].some((pName) => this.props.userData.permissionsSet.has(pName)),
     });
   }
 
@@ -80,38 +93,39 @@ class WaybillJournal extends CheckableElementsList {
       this.updateList();
       this.changeWaybillListAction();
     }
-  }
+  };
 
   updateList = async (state = this.state) => {
     const filter = toServerFilteringObject(state.filter, this.tableMeta);
 
     const pageOffset = state.page * MAX_ITEMS_PER_PAGE;
-    const waybills = await this.context.flux.getActions('waybills').getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, filter);
+    const waybills = await this.context.flux
+      .getActions('waybills')
+      .getWaybills(MAX_ITEMS_PER_PAGE, pageOffset, state.sortBy, filter);
 
     const { total_count } = waybills;
     const resultCount = waybills.result.length;
 
     if (resultCount === 0 && total_count > 0) {
-      this.setState({ page: (Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1) });
+      this.setState({ page: Math.ceil(total_count / MAX_ITEMS_PER_PAGE) - 1 });
     }
-  }
+  };
 
-  showPrintForm = showPrintForm => this.setState({ showPrintForm });
+  showPrintForm = (showPrintForm) => this.setState({ showPrintForm });
 
-  changeFilter = filter => this.setState({ filter });
+  changeFilter = (filter) => this.setState({ filter });
 
-  changeSort = (field, direction) => (
+  changeSort = (field, direction) =>
     this.setState({
       sortBy: getServerSortingField(
         field,
         direction,
         get(this.tableMeta, [field, 'sort', 'serverFieldName']),
       ),
-    })
-  )
+    });
 
   getAdditionalProps = () => {
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
+    const { structures } = this.props.userData;
 
     return {
       structures,
@@ -122,7 +136,7 @@ class WaybillJournal extends CheckableElementsList {
       useServerFilter: true,
       useServerSort: true,
     };
-  }
+  };
 
   printData = (action, state) => action(state, this.state.filter);
 
@@ -150,7 +164,10 @@ class WaybillJournal extends CheckableElementsList {
           key="button-read"
           buttonName="Просмотреть"
           onClick={this.showForm}
-          permissions={[this.permissions.read, this.permissions.departure_and_arrival_values]}
+          permissions={[
+            this.permissions.read,
+            this.permissions.departure_and_arrival_values,
+          ]}
           disabled={this.checkDisabledRead()}
         />,
       );
@@ -175,21 +192,23 @@ class WaybillJournal extends CheckableElementsList {
     }
 
     buttons.push(
-      <ButtonToolbar key="print-waybil-group" className="waybill-button-toolbar">
-        <Dropdown id="dropdown-print" pullRight>
-          <Dropdown.Toggle noCaret bsSize="small">
-            <Glyphicon glyph="download-alt" />
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <MenuItem eventKey={1} onSelect={this.showPrintForm}>Журнал путевых листов (ТМФ №8)</MenuItem>
-            <MenuItem eventKey={2} onSelect={this.showPrintForm}>Отчет по выработке ТС</MenuItem>
-          </Dropdown.Menu>
-        </Dropdown>
-      </ButtonToolbar>,
+      <DropdownWrap id="dropdown-print" pullRight>
+        <Dropdown.Toggle noCaret bsSize="small">
+          <Glyphicon glyph="download-alt" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
+          <MenuItem eventKey={1} onSelect={this.showPrintForm}>
+            Журнал путевых листов (ТМФ №8)
+          </MenuItem>
+          <MenuItem eventKey={2} onSelect={this.showPrintForm}>
+            Отчет по выработке ТС
+          </MenuItem>
+        </Dropdown.Menu>
+      </DropdownWrap>,
     );
 
     return buttons;
-  }
+  };
 
   onHideWaybillPrintForm = () => this.setState({ showPrintForm: false });
 
@@ -209,27 +228,40 @@ class WaybillJournal extends CheckableElementsList {
     );
 
     return forms;
-  }
+  };
 
   // call create/update/delete waybill
   changeWaybillListAction = () => {
     const { flux } = this.context;
     flux.getActions('objects').getSomeCars('WaybillCarService');
-  }
+  };
 
-  formCallback = async () => {
+  formCallback = async (flags) => {
+    const showWaybillFormWrap = get(flags, 'showWaybillFormWrap', false);
     await this.updateList(this.state);
     this.changeWaybillListAction();
-    this.onFormHide();
-  }
+    if (!showWaybillFormWrap) {
+      this.onFormHide();
+    }
+  };
 
   additionalRender = () => {
     const additionalRender = [
-      <Paginator key="pagination" currentPage={this.state.page} maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)} setPage={page => this.setState({ page })} firstLastButtons />,
+      <Paginator
+        key="pagination"
+        currentPage={this.state.page}
+        maxPage={Math.ceil(this.props.waybillstotalCount / MAX_ITEMS_PER_PAGE)}
+        setPage={(page) => this.setState({ page })}
+        firstLastButtons
+      />,
     ];
 
     return additionalRender;
-  }
+  };
 }
 
-export default compose()(WaybillJournal);
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(WaybillJournal);

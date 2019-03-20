@@ -28,6 +28,6 @@ class BridgesList extends React.Component<PropsBridgesList, StateBridgesList> {
   }
 }
 
-export default withRegistry(
+export default withRegistry<any>(
   config,
 )(BridgesList);

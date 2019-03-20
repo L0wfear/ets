@@ -3,11 +3,11 @@ import * as Collapse from 'react-bootstrap/lib/Collapse';
 import { DivNone } from 'global-styled/global-styled';
 import { isObject } from 'util';
 import { withRouterMatchUrl, showHeaderMenu, isActivemenu } from 'components/new/ui/app_header/utils';
-import { DivDivider, LinkSecontLvl } from 'components/new/ui/app_header/styled';
+import { DivDivider, LinkSecontLvl, LinkNoHashSecontLvl } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
 import { SecondMenuContainerMobi, DefaultSecondLvlMenuMobi } from 'components/new/ui/app_header/mobi/styled';
-import { LinkNoHashSecontLvl } from '../styled/index';
+import { compose } from 'recompose';
 
 class OneMenu extends React.Component<any, any> {
   state = {
@@ -112,6 +112,9 @@ class OneMenu extends React.Component<any, any> {
   }
 }
 
-const OneMenuWrap = showHeaderMenu(withRouterMatchUrl(OneMenu));
+const OneMenuWrap = compose<any, any>(
+  withRouterMatchUrl,
+  showHeaderMenu,
+)(OneMenu);
 
 export default OneMenuWrap;

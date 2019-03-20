@@ -8,10 +8,14 @@ import { IStateOldReport } from 'components/coverage_reports/redux-main/modules/
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
-import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/routes.h';
+import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateGeoobject } from 'redux-main/reducers/modules/geoobject/@types/geoobject.h';
+import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { IStateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
+import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
+import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -27,8 +31,14 @@ export interface ReduxState {
   some_uniq: IStateSomeUniq;
   geoobject: IStateGeoobject;
   missions: IStateMissions;
+  company: IStateCompany;
+
+  order: IStateOrder; // partial
 
   monitorPage: any;
   loading: any;
   etsLoading: any;
+  fuelRates: IStateFuelRates;
+  maintenanceRate: IStateMaintenanceRate;
+  [key: string]: any;
 }

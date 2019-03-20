@@ -5,8 +5,10 @@ import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTab
 import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch';
 import permissions from 'components/program_registry/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['repair', 'session'])
+@connectToStores(['repair'])
 @exportable({ entity: `repair/${REPAIR.programRegistry}` })
 @staticProps({
   entity: 'repair_program',
@@ -20,7 +22,9 @@ import { compose } from 'recompose';
 class ProgramRegistryList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
-    this.removeElementAction = context.flux.getActions('repair').removeProgramRegistry;
+    this.removeElementAction = context.flux.getActions(
+      'repair',
+    ).removeProgramRegistry;
   }
 
   /**
@@ -38,7 +42,10 @@ class ProgramRegistryList extends CheckableElementsList {
     const id = props && props.data ? props.data[this.selectField] : null;
 
     if (props.fromKey) {
-      const selectedElement = find(this.state.elementsList, el => el[this.selectField] === id);
+      const selectedElement = find(
+        this.state.elementsList,
+        (el) => el[this.selectField] === id,
+      );
       if (selectedElement) {
         this.setState({ selectedElement });
       }
@@ -48,19 +55,25 @@ class ProgramRegistryList extends CheckableElementsList {
     this.clicks += 1;
 
     if (this.clicks === 1) {
-      const selectedElement = this.state.elementsList.find((el) => el[this.selectField] === id);
+      const selectedElement = this.state.elementsList.find(
+        (el) => el[this.selectField] === id,
+      );
       this.setState({ selectedElement });
       setTimeout(() => {
         // В случае если за DOUBLECLICK_TIMEOUT (мс) кликнули по одному и тому же элементу больше 1 раза
         if (this.clicks !== 1) {
-          if (this.state.selectedElement && id === this.state.selectedElement[this.selectField] && this.state.readPermission) {
+          if (
+            this.state.selectedElement
+            && id === this.state.selectedElement[this.selectField]
+            && this.state.readPermission
+          ) {
             onDoubleClick.call(this);
           }
         }
         this.clicks = 0;
       }, DOUBLECLICK_TIMEOUT);
     }
-  }
+  };
 
   init() {
     const { flux } = this.context;
@@ -68,4 +81,8 @@ class ProgramRegistryList extends CheckableElementsList {
     flux.getActions('repair').getRepairListByType('programRegistry');
   }
 }
-export default compose()(ProgramRegistryList);
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(ProgramRegistryList);

@@ -1,4 +1,3 @@
-
 /**
  * При разработке не имеем доступ к протоколу, хосту и всему прочему, если не хардкод
  */
@@ -45,13 +44,17 @@ const DOC_URL = {
 
 const config = {
   develop: {
-    ws: `${WS_PROTO}//ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
+    ws: `${WS_PROTO}//ets${
+      STAND !== 'prod' ? '-test' : ''
+    }.mos.ru/services/stream`,
     images: 'https://ets.mos.ru/ets/data/images/',
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    ws: `${WS_PROTO}//ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
+    ws: `${WS_PROTO}//ets${
+      STAND !== 'prod' ? '-test' : ''
+    }.mos.ru/services/stream`,
     images: `${PROTO}//ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin[process.env.STAND],
     admin: ADMIN_URL.origin[process.env.STAND],
@@ -99,7 +102,9 @@ const configs = {
   admin: config.develop.admin,
   backend: STANDS.develop.dev,
   notification_ws: notification_config.develop.dev,
-  tracksCaching: `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`,
+  tracksCaching: `https://psd.mos.ru/tracks-caching${
+    STAND !== 'prod' ? '-dev' : ''
+  }`,
 };
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
@@ -109,7 +114,9 @@ try {
   configs.docs = config[pathToConfig].docs;
   configs.admin = config[pathToConfig].admin;
   configs.backend = STANDS[pathToConfig][STAND] || STANDS[pathToConfig].dev;
-  configs.notification_ws = notification_config[pathToConfig][STAND] || notification_config[pathToConfig].dev;
+  configs.notification_ws =
+    notification_config[pathToConfig][STAND] ||
+    notification_config[pathToConfig].dev;
 } catch (e) {
   // tslint:disable-next-line
   console.warn(e);

@@ -1,12 +1,5 @@
 import { Actions } from 'flummox';
-import {
-  get,
-  keyBy,
-  clone,
-  cloneDeep,
-  keys,
-  omit,
-} from 'lodash';
+import { clone, cloneDeep } from 'lodash';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
@@ -15,39 +8,41 @@ import {
   MissionArchiveService,
   MissionReassignationService,
   MissionSourceService,
-  MissionTemplateService,
   MissionTemplateCarService,
   DutyMissionService,
-  DutyMissionArchiveService,
-  DutyMissionTemplateService,
   MissionPrintService,
   MissionTemplatePrintService,
-  DutyMissionPrintService,
   MissionDataService,
   CarDutyMissionService,
   Cleaning,
 } from 'api/missions';
 
-import {
-  WaybillService,
-} from 'api/Services';
-import { isArray } from 'util';
+import { WaybillService } from 'api/Services';
 
-export const parseFilterObject = filter => (
-  Object.entries(flattenObject(filter)).reduce((newFilter, [key, { value }]) => ({
-    ...newFilter,
-    [Array.isArray(value) ? `${key}__in` : key]: value,
-  }),
-  {})
-);
+export const parseFilterObject = (filter) =>
+  Object.entries(flattenObject(filter)).reduce(
+    (newFilter, [key, { value }]) => ({
+      ...newFilter,
+      [Array.isArray(value) ? `${key}__in` : key]: value,
+    }),
+    {},
+  );
 
 // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
 // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-const getMissionFilterStatus = waybillStatus => waybillStatus ? undefined : 'not_assigned';
+const getMissionFilterStatus = (waybillStatus) =>
+  waybillStatus ? undefined : 'not_assigned';
 export default class MissionsActions extends Actions {
   /* ---------- MISSION ---------- */
 
-  getMissions(technical_operation_id, limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
+  getMissions(
+    technical_operation_id,
+    limit = MAX_ITEMS_PER_PAGE,
+    offset = 0,
+    sort_by = ['number:desc'],
+    filter = {},
+    is_archive = false,
+  ) {
     const filterValues = parseFilterObject(filter);
 
     const payload = {
@@ -82,7 +77,13 @@ export default class MissionsActions extends Actions {
     return MissionReassignationService.put(payload, false, 'json');
   }
 
-  getMissionsByCarAndDates(car_id, date_from, date_to, waybillStatus, waybill_id) {
+  getMissionsByCarAndDates(
+    car_id,
+    date_from,
+    date_to,
+    waybillStatus,
+    waybill_id,
+  ) {
     const payload = {};
 
     const status = getMissionFilterStatus(waybillStatus);
@@ -129,7 +130,8 @@ export default class MissionsActions extends Actions {
     payload.date_end = createValidDateTime(payload.date_end);
     payload.hidden = false;
 
-    if (typeof payload.assign_to_waybill === 'undefined') payload.assign_to_waybill = 'not_assign';
+    if (typeof payload.assign_to_waybill === 'undefined')
+      payload.assign_to_waybill = 'not_assign';
     if (!defaultAssign) payload.assign_to_waybill = 'not_assign';
 
     if (mission.is_column) {
@@ -186,50 +188,36 @@ export default class MissionsActions extends Actions {
   }
 
   getMissionData(mission_id) {
-    return MissionDataService.path(mission_id).get().then((ans) => {
-      const {
-        result: {
-          report_data: {
-            entries,
+    return MissionDataService.path(mission_id)
+      .get()
+      .then((ans) => {
+        const {
+          result: {
+            report_data: { entries },
           },
-        },
-      } = ans;
-      if (entries) {
-        ans.result.report_data.entries.forEach((data, i) => { data.customId = i + 1; });
-      }
-      // todo
-      // убрать
-      // для гибридной карты
-      return ans;
-    });
+        } = ans;
+        if (entries) {
+          ans.result.report_data.entries.forEach((data, i) => {
+            data.customId = i + 1;
+          });
+        }
+        // todo
+        // убрать
+        // для гибридной карты
+        return ans;
+      });
   }
-
 
   /* ---------- MISSION TEMPLATES ---------- */
-
-
-  getMissionTemplates(payload = {}) {
-    return MissionTemplateService.get(payload);
-  }
-
   getMissionTemplatesCars(payload = {}) {
     return MissionTemplateCarService.get(payload);
   }
 
-  createMissionTemplate(missionTemplate) {
-    const payload = clone(missionTemplate);
-    payload.created_at = createValidDate(payload.created_at);
-    payload.norm_id = isArray(payload.norm_id) ? payload.norm_id[0] : payload.norm_id;
-
-    delete payload.company_id;
-    delete payload.number;
-
-    return MissionTemplateService.post(payload, null, 'json');
-  }
-
   createMissions(missionTemplates, missionsCreationTemplate) {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
-    const date_start = createValidDateTime(missionsCreationTemplateCopy.date_start);
+    const date_start = createValidDateTime(
+      missionsCreationTemplateCopy.date_start,
+    );
     const date_end = createValidDateTime(missionsCreationTemplateCopy.date_end);
 
     const queries = Object.entries(missionTemplates).map(([id, query]) => {
@@ -245,7 +233,8 @@ export default class MissionsActions extends Actions {
                 date_start,
                 date_end,
                 norm_id: missionsCreationTemplateCopy.norm_id[id][car_id],
-                assign_to_waybill: missionsCreationTemplateCopy.assign_to_waybill[id][car_id],
+                assign_to_waybill:
+                  missionsCreationTemplateCopy.assign_to_waybill[id][car_id],
               };
 
               delete payloadMission.car_ids;
@@ -267,17 +256,23 @@ export default class MissionsActions extends Actions {
       payload.date_start = date_start;
       payload.date_end = date_end;
       [payload.car_id] = query.car_ids;
-      payload.mission_source_id = missionsCreationTemplateCopy.mission_source_id;
-      payload.assign_to_waybill = missionsCreationTemplateCopy.assign_to_waybill;
+      payload.mission_source_id
+        = missionsCreationTemplateCopy.mission_source_id;
+      payload.assign_to_waybill
+        = missionsCreationTemplateCopy.assign_to_waybill;
       payload.hidden = true;
       if (!isEmpty(missionsCreationTemplateCopy.passes_count)) {
-        payload.passes_count = parseInt(missionsCreationTemplateCopy.passes_count, 10);
+        payload.passes_count = parseInt(
+          missionsCreationTemplateCopy.passes_count,
+          10,
+        );
       }
       if (!isEmpty(missionsCreationTemplateCopy.faxogramm_id)) {
         payload.faxogramm_id = missionsCreationTemplateCopy.faxogramm_id;
       }
       payload.template_id = payload.id;
-      payload.norm_id = missionsCreationTemplateCopy.norm_id[id][payload.car_id];
+      payload.norm_id
+        = missionsCreationTemplateCopy.norm_id[id][payload.car_id];
 
       delete payload.company_id;
       delete payload.id;
@@ -292,101 +287,11 @@ export default class MissionsActions extends Actions {
     return Promise.all(queries);
   }
 
-  removeMissionTemplate(id) {
-    const payload = { id };
-    return MissionTemplateService.delete(payload, false, 'json');
-  }
-
-  updateMissionTemplate(missionTemplate) {
-    const payload = cloneDeep(missionTemplate);
-    payload.created_at = createValidDate(payload.created_at);
-
-    delete payload.number;
-    delete payload.company_id;
-
-    return MissionTemplateService.put(payload, null, 'json');
-  }
-
   printMissionTemplate(data) {
     const payload = cloneDeep(data);
 
     return MissionTemplatePrintService.postBlob(payload);
   }
-
-
-  /* ---------- MISSION DUTY ---------- */
-
-
-  getDutyMissions(limit = MAX_ITEMS_PER_PAGE, offset = 0, sort_by = ['number:desc'], filter = {}, is_archive = false) {
-    const filterValues = parseFilterObject(filter);
-    const payload = {
-      limit,
-      offset,
-      sort_by,
-      filter: JSON.stringify(filterValues),
-      is_archive,
-    };
-
-    return DutyMissionService.get(payload).then(({ result }) => ({
-      result: {
-        ...result,
-        rows: result.rows.map((empl) => {
-          const brigade_employee_id_list = get(empl, 'brigade_employee_id_list', []) || [];
-          empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
-          empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
-
-          return empl;
-        }),
-      },
-    }));
-  }
-
-  createDutyMission(mission) {
-    const payload = cloneDeep(mission);
-    payload.plan_date_start = createValidDateTime(payload.plan_date_start);
-    payload.plan_date_end = createValidDateTime(payload.plan_date_end);
-    payload.fact_date_start = createValidDateTime(payload.fact_date_start);
-    payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-    delete payload.brigadeEmployeeIdIndex;
-
-    return DutyMissionService.post(payload, false, 'json');
-  }
-
-  updateDutyMission(mission) {
-    const payload = cloneDeep(mission);
-    delete payload.number;
-    delete payload.technical_operation_name;
-    delete payload.route_name;
-    delete payload.foreman_fio;
-    delete payload.car_mission_name;
-    delete payload.brigadeEmployeeIdIndex;
-
-    payload.plan_date_start = createValidDateTime(payload.plan_date_start);
-    payload.plan_date_end = createValidDateTime(payload.plan_date_end);
-    payload.fact_date_start = createValidDateTime(payload.fact_date_start);
-    payload.fact_date_end = createValidDateTime(payload.fact_date_end);
-
-    return DutyMissionService.put(payload, false, 'json');
-  }
-
-  changeArchiveDutuMissionStatus(id, is_archive) {
-    const payload = {
-      is_archive,
-    };
-
-    return DutyMissionArchiveService.path(id).put(payload, false, 'json');
-  }
-
-  removeDutyMission(id) {
-    const payload = { id };
-    return DutyMissionService.delete(payload, false, 'json');
-  }
-
-  printDutyMission(duty_mission_id) {
-    const payload = { duty_mission_id };
-    return DutyMissionPrintService.getBlob(payload);
-  }
-
 
   /* ---------- MISSION DUTY TEMPLATES ---------- */
 
@@ -394,91 +299,53 @@ export default class MissionsActions extends Actions {
     return CarDutyMissionService.get();
   }
 
-  getDutyMissionTemplates(data = {}) {
-    const payload = {};
-    if (data && data.order_id) { // 11
-      payload.order_id = data.order_id;
-    }
-
-    return DutyMissionTemplateService.get(payload).then(({ result }) => ({
-      result: result.map((empl) => {
-        const brigade_employee_id_list = get(empl, 'brigade_employee_id_list', []) || [];
-        empl.brigadeEmployeeIdIndex = keyBy(brigade_employee_id_list, 'employee_id');
-        empl.brigade_employee_id_list = brigade_employee_id_list.map(({ employee_id }) => employee_id);
-
-        return empl;
-      }),
-    }));
-  }
-
-  createDutyMissionTemplate(mainMissionData) {
-    const payload = cloneDeep(mainMissionData);
-    payload.created_at = createValidDate(payload.created_at);
-    delete payload.brigadeEmployeeIdIndex;
-
-    return DutyMissionTemplateService.post(payload, false, 'json');
-  }
-
-  updateDutyMissionTemplate(mission) {
-    const payload = cloneDeep(mission);
-    payload.created_at = createValidDate(payload.created_at);
-
-    delete payload.brigadeEmployeeIdIndex;
-    delete payload.number;
-    delete payload.technical_operation_name;
-    delete payload.route_name;
-    return DutyMissionTemplateService.put(payload, false, 'json');
-  }
-
-  removeDutyMissionTemplate(id) {
-    const payload = { id };
-    return DutyMissionTemplateService.delete(payload, false, 'json');
-  }
-
   createDutyMissions(dutyMissionTemplates, dutyMissionsCreationTemplate) {
-    const dutyMissionsCreationTemplateCopy = clone(dutyMissionsCreationTemplate);
-    const date_start = createValidDateTime(dutyMissionsCreationTemplateCopy.date_start);
-    const date_end = createValidDateTime(dutyMissionsCreationTemplateCopy.date_end);
-    const queries = Object.keys(dutyMissionTemplates).map(key => dutyMissionTemplates[key]).map(({ brigadeEmployeeIdIndex, ...query }) => {
-      const payload = cloneDeep(query);
+    const dutyMissionsCreationTemplateCopy = clone(
+      dutyMissionsCreationTemplate,
+    );
+    const date_start = createValidDateTime(
+      dutyMissionsCreationTemplateCopy.date_start,
+    );
+    const date_end = createValidDateTime(
+      dutyMissionsCreationTemplateCopy.date_end,
+    );
+    const queries = Object.keys(dutyMissionTemplates)
+      .map((key) => dutyMissionTemplates[key])
+      .map(({ brigadeEmployeeIdIndex, ...query }) => {
+        const payload = cloneDeep(query);
 
-      payload.status = 'not_assigned';
-      payload.plan_date_start = date_start;
-      payload.plan_date_end = date_end;
-      payload.fact_date_start = date_start;
-      payload.fact_date_end = date_end;
-      payload.mission_source_id = dutyMissionsCreationTemplateCopy.mission_source_id;
+        payload.status = 'not_assigned';
+        payload.plan_date_start = date_start;
+        payload.plan_date_end = date_end;
+        payload.fact_date_start = date_start;
+        payload.fact_date_end = date_end;
+        payload.mission_source_id
+          = dutyMissionsCreationTemplateCopy.mission_source_id;
+        payload.brigade_employee_id_list = [
+          ...payload.brigade_employee_id_list_id,
+        ];
 
-      if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
-        payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
-      }
-      payload.template_id = payload.id;
+        if (!isEmpty(dutyMissionsCreationTemplateCopy.faxogramm_id)) {
+          payload.faxogramm_id = dutyMissionsCreationTemplateCopy.faxogramm_id;
+        }
+        payload.template_id = payload.id;
 
-      delete payload.company_id;
-      delete payload.id;
-      delete payload.number;
-      delete payload.technical_operation_name;
-      delete payload.route_name;
+        delete payload.company_id;
+        delete payload.id;
+        delete payload.number;
+        delete payload.technical_operation_name;
+        delete payload.route_name;
 
-      return DutyMissionService.post(payload, false, 'json');
-    });
+        delete payload.brigadeEmployeeIdIndex;
+        delete payload.brigade_employee_id_list_fio;
+        delete payload.brigade_employee_id_list_id;
+
+        return DutyMissionService.post(payload, false, 'json');
+      });
     return Promise.all(queries);
   }
 
-
   /* ---------- MISSION REPORTS ---------- */
-
-  getMissionReportByODHs(index) {
-    return index;
-  }
-
-  getMissionReportByPoints(index) {
-    return index;
-  }
-
-  getMissionReportByDTs(index) {
-    return index;
-  }
 
   getCleaningOneNorm(outerData) {
     const payload = {
@@ -498,8 +365,15 @@ export default class MissionsActions extends Actions {
       delete payload.kind_task_ids;
     }
 
-    return Cleaning.path('one_norm').get(payload, false, 'json')
-      .then(({ result: { rows: [normData] } }) => normData);
+    return Cleaning.path('one_norm')
+      .get(payload, false, 'json')
+      .then(
+        ({
+          result: {
+            rows: [normData],
+          },
+        }) => normData,
+      );
   }
 
   getCleaningByType({ type, payload: outerPyload }) {

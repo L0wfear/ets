@@ -6,35 +6,35 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { PropsRoadAccidentFormWrap } from 'components/directories/autobase/road_accident/RoadAccidentForm/@types/RoadAccident.h';
 
-const RoadAccidentFrom = React.lazy(() => (
-  import(/* webpackChunkName: "road_accident_form" */ 'components/directories/autobase/road_accident/RoadAccidentForm/RoadAccidentForm')
-));
+const RoadAccidentFrom = React.lazy(() =>
+  import(/* webpackChunkName: "road_accident_form" */ 'components/directories/autobase/road_accident/RoadAccidentForm/RoadAccidentForm'),
+);
 
-class RoadAccidentFormWrap extends React.Component<PropsRoadAccidentFormWrap, {}> {
+class RoadAccidentFormWrap extends React.Component<
+  PropsRoadAccidentFormWrap,
+  {}
+> {
   render() {
     const { showForm, ...props } = this.props;
     const page = props.loadingPageName || props.page;
     const path = `${props.path ? `${props.path}-` : ''}insurance-policy-form`;
 
-    return showForm ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <RoadAccidentFrom
-              element={props.element}
-              handleHide={props.onFormHide}
-              car_id={props.car_id}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
+    return showForm ? (
+      <ErrorBoundaryForm>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <RoadAccidentFrom
+            element={props.element}
+            handleHide={props.onFormHide}
+            car_id={props.car_id}
+            deepLvl={this.props.deepLvl}
+            page={page}
+            path={path}
+          />
+        </React.Suspense>
+      </ErrorBoundaryForm>
+    ) : (
+      <DivNone />
+    );
   }
 }
 

@@ -17,7 +17,7 @@ type PropsCarMissions = {
 
 type StateCarMissions = {
   selectedMissionIdToShowMain: number | void;
-  selectedMissionIdToShowInfo
+  selectedMissionIdToShowInfo;
   missionToShow: any;
   missionToShowInfo: any;
 };
@@ -31,7 +31,10 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
   };
 
   showMissionInfoForm = (id) => {
-    this.setState({ selectedMissionIdToShowInfo: id, selectedMissionIdToShowMain: null });
+    this.setState({
+      selectedMissionIdToShowInfo: id,
+      selectedMissionIdToShowMain: null,
+    });
     this.props.loadMissionDataById(id).then(({ payload: { mission_data } }) => {
       if (id === this.state.selectedMissionIdToShowInfo) {
         if (mission_data) {
@@ -39,15 +42,17 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
             missionToShowInfo: mission_data,
           });
         } else {
-          // tslint:disable-next-line
-          console.log('not_find_mission_data');
+          console.log('not_find_mission_data'); // tslint:disable-line:no-console
           this.setState({ selectedMissionIdToShowInfo: null });
         }
       }
     });
-  }
+  };
   showMissionForm = (id) => {
-    this.setState({ selectedMissionIdToShowMain: id, selectedMissionIdToShowInfo: null });
+    this.setState({
+      selectedMissionIdToShowMain: id,
+      selectedMissionIdToShowInfo: null,
+    });
     this.props.loadMissionById(id).then(({ payload: { mission } }) => {
       if (id === this.state.selectedMissionIdToShowMain) {
         if (mission) {
@@ -55,30 +60,24 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
             missionToShow: mission,
           });
         } else {
-          // tslint:disable-next-line
-          console.log('not_find_mission');
+          console.log('not_find_mission'); // tslint:disable-line:no-console
           this.setState({ selectedMissionIdToShowMain: null });
         }
       }
     });
-  }
-  hideMain = () => (
+  };
+  hideMain = () =>
     this.setState({
       selectedMissionIdToShowMain: null,
       missionToShow: null,
-    })
-  )
-  hideInfo = () => (
+    });
+  hideInfo = () =>
     this.setState({
       selectedMissionIdToShowInfo: null,
       missionToShowInfo: null,
-    })
-  )
+    });
   render() {
-    const {
-      missionToShow,
-      missionToShowInfo,
-    } = this.state;
+    const { missionToShow, missionToShowInfo } = this.state;
 
     return (
       <div className="car_info_block column tab-data">
@@ -93,10 +92,13 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           onFormHide={this.hideMain}
           showForm={!!missionToShow && !!this.state.selectedMissionIdToShowMain}
           element={missionToShow}
+          deepLvl={1}
         />
         <MissionInfoFormWrap
           onFormHide={this.hideInfo}
-          showForm={!!missionToShowInfo && !!this.state.selectedMissionIdToShowInfo}
+          showForm={
+            !!missionToShowInfo && !!this.state.selectedMissionIdToShowInfo
+          }
           element={missionToShowInfo}
           fromMonitor
         />

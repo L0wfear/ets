@@ -35,8 +35,9 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
     class PreloaderWrap extends React.Component<PropsPreloaderWrap, {}> {
       render() {
         const { isLoading, dispatch, page, path, typePreloader, ...props } = this.props;
+
         return (
-          <div className="shadow">
+          <>
             {
               isLoading ?
               (
@@ -48,7 +49,7 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
               )
             }
             <Component {...props} />
-          </div>
+          </>
         );
       }
     },

@@ -6,7 +6,11 @@ import Div from 'components/ui/Div';
 
 const HeaderCell = ({ renderer, children, value, className }) => {
   if (typeof renderer === 'function') {
-    return <th className={cx('ets-table-header-cell', className)}>{renderer(value)}</th>;
+    return (
+      <th className={cx('ets-table-header-cell', className)}>
+        {renderer(value)}
+      </th>
+    );
   }
   return <th className={cx('ets-table-header-cell', className)}>{children}</th>;
 };
@@ -34,7 +38,7 @@ export default class Table extends React.Component {
 
   static defaultProps = {
     headerRenderers: {},
-  }
+  };
 
   constructor(props) {
     super(props);
@@ -84,7 +88,15 @@ export default class Table extends React.Component {
       <tr className="ets-table-header">
         {this.props.columnCaptions.map((o, i) => {
           const renderer = this.props.headerRenderers[this.props.tableCols[i]];
-          return <HeaderCell key={i} className={o.cssClassName} renderer={renderer} value={o.value}>{o.value}</HeaderCell>;
+          return (
+            <HeaderCell
+              key={i}
+              className={o.cssClassName}
+              renderer={renderer}
+              value={o.value}>
+              {o.value}
+            </HeaderCell>
+          );
         })}
       </tr>
     );
@@ -100,7 +112,9 @@ export default class Table extends React.Component {
         cells={o}
         index={i}
         tableCols={this.props.tableCols}
-        selected={o.ID ? this.state.selectedRow === o.ID : this.state.selectedRow === i}
+        selected={
+          o.ID ? this.state.selectedRow === o.ID : this.state.selectedRow === i
+        }
         handleClick={this.onRowClick.bind(this)}
       />
     ));
@@ -132,7 +146,11 @@ const Row = (props) => {
       if (renderers[col] === undefined) {
         cells.push(<td key={cells.length}>{v}</td>);
       } else {
-        cells.push(<td key={cells.length}>{renderers[col](v, props.cells, props.index)}</td>);
+        cells.push(
+          <td key={cells.length}>
+            {renderers[col](v, props.cells, props.index)}
+          </td>,
+        );
       }
     });
   } else {
@@ -149,11 +167,19 @@ const Row = (props) => {
 
   const cn = `ets-table-row${props.selected ? ' selected' : ''}`;
 
-  return <tr className={cn} onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>{cells}</tr>;
+  return (
+    <tr
+      className={cn}
+      onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>
+      {cells}
+    </tr>
+  );
 };
 
 const PageLink = (props) => (
-  <span className="table-page-link" onClick={props.handleClick.bind(this, props.pageNum)}>
+  <span
+    className="table-page-link"
+    onClick={props.handleClick.bind(this, props.pageNum)}>
     {props.children}
   </span>
 );
@@ -163,35 +189,59 @@ const Pager = (props) => {
 
   if (props.currentPage > 1) {
     if (props.currentPage > 2) {
-      links.push(<PageLink key={links.length} handleClick={props.handleClick} pageNum={1}>-</PageLink>);
+      links.push(
+        <PageLink
+          key={links.length}
+          handleClick={props.handleClick}
+          pageNum={1}>
+          -
+        </PageLink>,
+      );
       links.push(' ');
     }
-    links.push(<PageLink key={links.length} handleClick={props.handleClick} pageNum={props.currentPage - 1}>‹</PageLink>);
+    links.push(
+      <PageLink
+        key={links.length}
+        handleClick={props.handleClick}
+        pageNum={props.currentPage - 1}>
+        ‹
+      </PageLink>,
+    );
     links.push(' ');
   }
 
-  links.push(<span key={links.length} className="table-current-page">
-Страница
-    {props.currentPage}
-    {' '}
-из
-    {props.numPages}
-  </span>);
+  links.push(
+    <span key={links.length} className="table-current-page">
+      Страница
+      {props.currentPage} из
+      {props.numPages}
+    </span>,
+  );
 
   if (props.currentPage < props.numPages) {
     links.push(' ');
-    links.push(<PageLink key={links.length} handleClick={props.handleClick} pageNum={props.currentPage + 1}>›</PageLink>);
+    links.push(
+      <PageLink
+        key={links.length}
+        handleClick={props.handleClick}
+        pageNum={props.currentPage + 1}>
+        ›
+      </PageLink>,
+    );
     if (props.currentPage < props.numPages - 1) {
       links.push(' ');
-      links.push(<PageLink key={links.length} handleClick={props.handleClick} pageNum={props.numPages}>»</PageLink>);
+      links.push(
+        <PageLink
+          key={links.length}
+          handleClick={props.handleClick}
+          pageNum={props.numPages}>
+          »
+        </PageLink>,
+      );
     }
   }
 
-  return (
-    <div className="pagination">
-      {links}
-    </div>
-  );
+  return <div className="pagination">{links}</div>;
 };
 
 Pager.propTypes = {

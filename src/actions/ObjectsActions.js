@@ -1,10 +1,7 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import { createValidDateTime } from 'utils/dates';
-import {
-  clone,
-  get,
-} from 'lodash';
+import { get } from 'lodash';
 import {
   OrderService,
   WorkKindsService,
@@ -12,9 +9,7 @@ import {
   WaybillCarService,
   MissionCarService,
   TypesService,
-  TypesAttr,
   ModelsService,
-  CompanyService,
   ConfigService,
   MaterialConsumptionRateService,
   CleanCategoriesService,
@@ -27,20 +22,15 @@ import {
   ConfigTrackService,
 } from 'api/Services';
 
-import {
-  MedicalStatsService,
-  SensorTypeService,
-} from 'api/nsi';
+import { MedicalStatsService, SensorTypeService } from 'api/nsi';
 
 function getMaterialConsumptionRates(payload = {}) {
-  return MaterialConsumptionRateService.get(payload).then(r => ({ result: r.result.rows }));
+  return MaterialConsumptionRateService.get(payload).then((r) => ({
+    result: r.result.rows,
+  }));
 }
 
 export default class ObjectsActions extends Actions {
-  getTypesAttr(payload = {}) {
-    return TypesAttr.get(payload);
-  }
-
   getCars(technical_operation_id) {
     const payload = {};
     if (!isEmpty(technical_operation_id)) {
@@ -48,18 +38,22 @@ export default class ObjectsActions extends Actions {
     } else {
       delete payload.technical_operation_id;
     }
-    return CarService.get(payload).then(r => ({ result: r.result.rows }));
+    return CarService.get(payload).then((r) => ({ result: r.result.rows }));
   }
 
   getSomeCars(serviceType) {
     const payload = {};
     switch (serviceType) {
       case 'WaybillCarService':
-        return WaybillCarService.get(payload).then(r => ({ result: r.result }));
+        return WaybillCarService.get(payload).then((r) => ({
+          result: r.result,
+        }));
       case 'MissionCarService':
-        return MissionCarService.get(payload).then(r => ({ result: r.result }));
+        return MissionCarService.get(payload).then((r) => ({
+          result: r.result,
+        }));
       default:
-        return CarService.get(payload).then(r => ({ result: r.result.rows }));
+        return CarService.get(payload).then((r) => ({ result: r.result.rows }));
     }
   }
 
@@ -73,16 +67,7 @@ export default class ObjectsActions extends Actions {
   }
 
   getSensorTypes() {
-    return SensorTypeService.get().then(r => ({ result: r.result.rows }));
-  }
-
-  getCompanies() {
-    return CompanyService.get();
-  }
-
-  updateCompanies(formState) {
-    const payload = clone(formState);
-    return CompanyService.path(formState.company_id).put(payload, this.getCompanies, 'json');
+    return SensorTypeService.get().then((r) => ({ result: r.result.rows }));
   }
 
   getWorkKinds() {
@@ -111,16 +96,28 @@ export default class ObjectsActions extends Actions {
 
   createMaterialConsumptionRate(formState) {
     const payload = { ...formState };
-    return MaterialConsumptionRateService.post(payload, getMaterialConsumptionRates, 'json');
+    return MaterialConsumptionRateService.post(
+      payload,
+      getMaterialConsumptionRates,
+      'json',
+    );
   }
 
   updateMaterialConsumptionRate(formState) {
     const payload = { ...formState };
-    return MaterialConsumptionRateService.path(formState.id).put(payload, getMaterialConsumptionRates, 'json');
+    return MaterialConsumptionRateService.path(formState.id).put(
+      payload,
+      getMaterialConsumptionRates,
+      'json',
+    );
   }
 
   deleteMaterialConsumptionRate(id) {
-    return MaterialConsumptionRateService.path(id).delete({}, getMaterialConsumptionRates, 'json');
+    return MaterialConsumptionRateService.path(id).delete(
+      {},
+      getMaterialConsumptionRates,
+      'json',
+    );
   }
 
   getCleanCategories() {
@@ -133,16 +130,28 @@ export default class ObjectsActions extends Actions {
 
   createMaintenanceWork(formState) {
     const payload = { ...formState };
-    return MaintenanceWorkService.post(payload, this.getMaintenanceWork, 'json');
+    return MaintenanceWorkService.post(
+      payload,
+      this.getMaintenanceWork,
+      'json',
+    );
   }
 
   updateMaintenanceWork(formState) {
     const payload = { ...formState };
-    return MaintenanceWorkService.path(formState.id).put(payload, this.getMaintenanceWork, 'json');
+    return MaintenanceWorkService.path(formState.id).put(
+      payload,
+      this.getMaintenanceWork,
+      'json',
+    );
   }
 
   deleteMaintenanceWork(id) {
-    return MaintenanceWorkService.path(id).delete({}, this.getMaintenanceWork, 'json');
+    return MaintenanceWorkService.path(id).delete(
+      {},
+      this.getMaintenanceWork,
+      'json',
+    );
   }
 
   getCleaningRate(type) {
@@ -155,7 +164,11 @@ export default class ObjectsActions extends Actions {
       ...formState,
       type,
     };
-    return CleaningRateService.post(payload, this.getCleaningRate.bind(this, type), 'json');
+    return CleaningRateService.post(
+      payload,
+      this.getCleaningRate.bind(this, type),
+      'json',
+    );
   }
 
   updateCleaningRate(type, formState) {
@@ -163,11 +176,19 @@ export default class ObjectsActions extends Actions {
       ...formState,
       type,
     };
-    return CleaningRateService.path(formState.id).put(payload, this.getCleaningRate.bind(this, type), 'json');
+    return CleaningRateService.path(formState.id).put(
+      payload,
+      this.getCleaningRate.bind(this, type),
+      'json',
+    );
   }
 
   deleteCleaningRate(type, id) {
-    return CleaningRateService.path(id).delete({}, this.getCleaningRate.bind(this, type), 'json');
+    return CleaningRateService.path(id).delete(
+      {},
+      this.getCleaningRate.bind(this, type),
+      'json',
+    );
   }
 
   getMaintenanceRate(type) {
@@ -180,7 +201,11 @@ export default class ObjectsActions extends Actions {
       ...formState,
       type,
     };
-    return MaintenanceRateService.post(payload, this.getMaintenanceRate.bind(this, type), 'json');
+    return MaintenanceRateService.post(
+      payload,
+      this.getMaintenanceRate.bind(this, type),
+      'json',
+    );
   }
 
   updateMaintenanceRate(type, formState) {
@@ -188,11 +213,19 @@ export default class ObjectsActions extends Actions {
       ...formState,
       type,
     };
-    return MaintenanceRateService.path(formState.id).put(payload, this.getMaintenanceRate.bind(this, type), 'json');
+    return MaintenanceRateService.path(formState.id).put(
+      payload,
+      this.getMaintenanceRate.bind(this, type),
+      'json',
+    );
   }
 
   deleteMaintenanceRate(type, id) {
-    return MaintenanceRateService.path(id).delete({}, this.getMaintenanceRate.bind(this, type), 'json');
+    return MaintenanceRateService.path(id).delete(
+      {},
+      this.getMaintenanceRate.bind(this, type),
+      'json',
+    );
   }
 
   getUserActionLog(p = {}) {
@@ -200,13 +233,13 @@ export default class ObjectsActions extends Actions {
       date_start: createValidDateTime(p.date_start),
       date_end: createValidDateTime(p.date_end),
     };
-    return UserActionLogService.get(payload).then(response => (
+    return UserActionLogService.get(payload).then((response) =>
       get(response, ['result', 'rows'], []).map((d) => {
         d.front_entity_number = d.entity_number;
 
         return d;
-      })
-    ));
+      }),
+    );
   }
 
   getMedicalStats(p = {}) {

@@ -50,9 +50,8 @@ export const LiRouteName = styled.li<{ active: boolean }>`
 
 export const RouteTreeContainer = styled.div`
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
   padding: 0 15px;
-
 `;
 
 export const RouteTreeH4 = styled.h4`

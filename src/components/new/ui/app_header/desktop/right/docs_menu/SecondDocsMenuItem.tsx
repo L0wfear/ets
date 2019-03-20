@@ -5,6 +5,7 @@ import * as ClickOutHandler from 'react-onclickout';
 import { DivNone } from 'global-styled/global-styled';
 import { showHeaderMenu } from 'components/new/ui/app_header/utils';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
+import { compose } from 'recompose';
 
 class SecondDocsMenuItem extends React.Component<any, any> {
   state = {
@@ -102,6 +103,8 @@ class SecondDocsMenuItem extends React.Component<any, any> {
   }
 }
 
-const SecondDocsMenuItemWrap = showHeaderMenu(SecondDocsMenuItem);
+const SecondDocsMenuItemWrap = compose<any, any>(
+  showHeaderMenu,
+)(SecondDocsMenuItem);
 
 export default SecondDocsMenuItemWrap;

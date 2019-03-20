@@ -15,13 +15,14 @@ import insurancePolicy from 'components/directories/autobase/insurance_policy/co
 import repair from 'components/directories/autobase/repair/config-data';
 import repairCompany from 'components/directories/autobase/repair_company/config-data';
 import roadAccident from 'components/directories/autobase/road_accident/config-data';
+import fuelCards from 'components/directories/autobase/fuel_cards/config-data';
 
 import carsList from 'components/directories/autobase/cars/config-data';
 
 const children = {
+  carsList,
   carFuncTypes,
   typesAttr,
-  carsList,
   batteryRegistry,
   batteryBrand,
   batteryManufacturer,
@@ -34,6 +35,7 @@ const children = {
   repair,
   repairCompany,
   roadAccident,
+  fuelCards,
 };
 
 export default {

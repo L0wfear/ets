@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getUserNotificationInfo } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+import { ThunkDispatch } from 'redux-thunk';
 
 import {
   StateNotificationBadge,
@@ -43,7 +44,7 @@ class NotificationBadge extends React.PureComponent<PropsNotificationBadge, Stat
 
 export default connect<StatePropsNotificationBadge, DispatchPropsNotificationBadge, OwnPropsNotificationBadge, ReduxState>(
   getUserNotificationsState,
-  (dispatch) => ({
+  (dispatch: ThunkDispatch<ReduxState, {}, any>) => ({
     getUserNotificationInfo: () => (
       dispatch(
         getUserNotificationInfo(),

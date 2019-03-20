@@ -1,6 +1,4 @@
-import * as React from 'react';
 import { getChildrenData } from 'utils/routes/getChildrenData';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import master from 'components/new/pages/doc_header/master/_config-data/index';
 import dispatcher from 'components/new/pages/doc_header/dispatcher/_config-data/index';
@@ -17,7 +15,7 @@ const children = {
 };
 
 export default {
-  title: <Glyphicon glyph="book" />,
+  title: 'Руководства',
   children,
   ...getChildrenData(children),
 };

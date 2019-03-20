@@ -1,26 +1,19 @@
 import { Actions } from 'flummox';
 import { get } from 'lodash';
-import {
-  makeUnixTime, createValidDate,
-} from 'utils/dates';
+import { makeUnixTime, createValidDate } from 'utils/dates';
 import { packObjectData } from 'api/utils';
-import {
-  CarDrivers,
-  CarService,
-  InfoService,
-  AutoBase,
-} from 'api/Services';
+import { CarDrivers, CarService, InfoService, AutoBase } from 'api/Services';
 import config from 'config';
 
 const updateCarInfo = async (id = null, payload, serviceName) => {
   if (id === null) {
-    await AutoBase
-      .path(serviceName)
-      .post(payload, false, 'json');
+    await AutoBase.path(serviceName).post(payload, false, 'json');
   } else {
-    await AutoBase
-      .path(`${serviceName}/${id}`)
-      .put({ id, ...payload }, false, 'json');
+    await AutoBase.path(`${serviceName}/${id}`).put(
+      { id, ...payload },
+      false,
+      'json',
+    );
   }
 };
 
@@ -47,11 +40,17 @@ export default class CarActions extends Actions {
       garage_number,
       company_structure_id,
       is_common: is_common ? 1 : 0,
-      fuel_correction_rate: fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(2) : null,
+      fuel_correction_rate: fuel_correction_rate
+        ? parseFloat(fuel_correction_rate).toFixed(2)
+        : null,
     };
 
     return Promise.all([
-      CarService.put(payload, () => CarService.get().then(r => ({ result: r.result.rows })), 'json'),
+      CarService.put(
+        payload,
+        () => CarService.get().then((r) => ({ result: r.result.rows })),
+        'json',
+      ),
       this.updateCarRegisterInfo({
         car_id,
         ...packObjectData('register', restPayload),
@@ -65,7 +64,10 @@ export default class CarActions extends Actions {
           return this.updateCarPassportInfo({
             car_id,
             type: passport_type.toUpperCase(),
-            ...packObjectData(`passport_${passport_type.toLowerCase()}`, restPayload),
+            ...packObjectData(
+              `passport_${passport_type.toLowerCase()}`,
+              restPayload,
+            ),
             id: passport_id,
           });
         }
@@ -75,30 +77,22 @@ export default class CarActions extends Actions {
   }
 
   getCarRegisterInfo(car_id) {
-    return AutoBase
-      .path('car_registration_registry')
+    return AutoBase.path('car_registration_registry')
       .get({ car_id })
-      .then(data => get(data, ['result', 'rows'], [{ disabled: true }])[0]);
+      .then((data) => get(data, ['result', 'rows'], [{ disabled: true }])[0]);
   }
 
   getCarPassportRegistryInfo(car_id) {
-    return AutoBase
-      .path('car_passport_registry')
+    return AutoBase.path('car_passport_registry')
       .get({ car_id })
-      .then(data => get(data, ['result', 'rows'], [{ disabled: true }])[0]);
+      .then((data) => get(data, ['result', 'rows'], [{ disabled: true }])[0]);
   }
 
   getCarDriversInfo(car_id) {
-    return CarDrivers
-      .get({ car_id });
+    return CarDrivers.get({ car_id });
   }
 
-  updateCarRegisterInfo({
-    id,
-    certificate_number,
-    given_at,
-    ...restPayload
-  }) {
+  updateCarRegisterInfo({ id, certificate_number, given_at, ...restPayload }) {
     const payload = {
       certificate_number,
       given_at: createValidDate(given_at),
@@ -107,18 +101,17 @@ export default class CarActions extends Actions {
     return updateCarInfo(id, payload, 'car_registration_registry');
   }
 
-  updateCarPassportInfo({
-    id,
-    type,
-    given_at,
-    ...restPayload
-  }) {
+  updateCarPassportInfo({ id, type, given_at, ...restPayload }) {
     const payload = {
       ...restPayload,
       given_at: createValidDate(given_at),
       type,
     };
-    return updateCarInfo(id, payload, `car_passport_${type.toLowerCase()}_registry`);
+    return updateCarInfo(
+      id,
+      payload,
+      `car_passport_${type.toLowerCase()}_registry`,
+    );
   }
 
   updateCarDriversInfo({ car_id, ...restData }) {
@@ -134,11 +127,25 @@ export default class CarActions extends Actions {
   }
 
   getInfoFromCar(gps_code, from_dt, to_dt) {
+    let version = get(
+      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      [config.tracksCaching],
+      '',
+    );
+    const test_version = get(
+      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      [`TEST::${config.tracksCaching}`],
+      '',
+    );
+
+    if (test_version) {
+      version = test_version;
+    }
     const payload = {
       gps_code,
       from_dt: makeUnixTime(from_dt),
       to_dt: makeUnixTime(to_dt),
-      version: get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], ''),
+      version,
     };
 
     return InfoService.get(payload);

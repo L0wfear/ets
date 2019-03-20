@@ -1,4 +1,5 @@
 import * as React from 'react';
+import EtsModal from 'components/new/ui/modal/Modal';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
@@ -8,7 +9,7 @@ import roadAccidentPermissions from 'components/directories/autobase/road_accide
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/directories/autobase/road_accident/RoadAccidentForm/roadAccident-schema';
-import { get } from 'lodash';
+
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
@@ -30,7 +31,10 @@ import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
 
-class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadAccident> {
+class RoadAccidentForm extends React.PureComponent<
+  PropsRoadAccident,
+  StateRoadAccident
+> {
   state = {
     roadAccidentCauseOptions: [],
     driversOptions: [],
@@ -41,12 +45,18 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
     this.loadDriverOptions();
   }
   async loadRoadAccidentCauseOptions() {
-    const { payload: { data } } = await this.props.autobaseGetAccidentCause();
+    const {
+      payload: { data },
+    } = await this.props.autobaseGetAccidentCause();
 
-    this.setState({ roadAccidentCauseOptions: data.map(defaultSelectListMapper) });
+    this.setState({
+      roadAccidentCauseOptions: data.map(defaultSelectListMapper),
+    });
   }
   async loadDriverOptions() {
-    const { payload: { data } } = await this.props.employeeDriverGetSetDriver();
+    const {
+      payload: { data },
+    } = await this.props.employeeDriverGetSetDriver();
 
     this.setState({
       driversOptions: data.map((driver) => ({
@@ -56,58 +66,45 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
       })),
     });
   }
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleChangeBoolean = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'checked']),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
+
   render() {
-    const {
-      formState: state,
-      formErrors: errors,
-      page,
-      path,
-    } = this.props;
-    const {
-    } = this.state;
+    const { formState: state, formErrors: errors, page, path } = this.props;
+    const {} = this.state;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const ownIsPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const ownIsPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
-    const isPermitted = (
-      ownIsPermitted
-      && (
-        isNullOrUndefined(state.company_id)
-        || state.company_id === this.props.userCompanyId
-      )
-    );
+    const isPermitted =
+      ownIsPermitted &&
+      (isNullOrUndefined(state.company_id) ||
+        state.company_id === this.props.userCompanyId);
+    console.log(this.props);
+
     return (
-
-      <Modal id="modal-insurance-policy" show onHide={this.handleHide} backdrop="static">
+      <EtsModal
+        id="modal-insurance-policy"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
-            <ExtField
+              <ExtField
                 id="accident_date"
                 type="date"
                 label="Дата"
                 date={state.accident_date}
                 time={false}
                 error={errors.accident_date}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="accident_date"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -120,7 +117,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 error={errors.driver_id}
                 options={this.state.driversOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="driver_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -134,7 +131,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 error={errors.cause_id}
                 options={this.state.roadAccidentCauseOptions}
                 emptyValue={null}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="cause_id"
                 clearable={false}
                 disabled={!isPermitted}
@@ -146,7 +143,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Место ДТП"
                 value={state.accident_place}
                 error={errors.accident_place}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="accident_place"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -157,7 +154,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Виновность"
                 value={state.is_guilty}
                 error={errors.is_guilty}
-                onChange={this.handleChangeBoolean}
+                onChange={this.props.handleChangeBoolean}
                 boundKeys="is_guilty"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -168,7 +165,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Стоимость ущерба, руб."
                 value={state.damage_price}
                 error={errors.damage_price}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="damage_price"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -179,7 +176,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 label="Примечание"
                 value={state.comment}
                 error={errors.comment}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="comment"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -190,7 +187,7 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
                 multiple
                 value={state.files}
                 error={errors.files}
-                onChange={this.handleChange}
+                onChange={this.props.handleChange}
                 boundKeys="files"
                 disabled={!isPermitted}
                 modalKey={page}
@@ -199,63 +196,46 @@ class RoadAccidentForm extends React.PureComponent<PropsRoadAccident, StateRoadA
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-      </Modal>
+      </EtsModal>
     );
   }
 }
 
 export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
-  connect<StatePropsRoadAccident, DispatchPropsRoadAccident, OwnRoadAccidentProps, ReduxState>(
+  connect<
+    StatePropsRoadAccident,
+    DispatchPropsRoadAccident,
+    OwnRoadAccidentProps,
+    ReduxState
+  >(
     (state) => ({
       userCompanyId: state.session.userData.company_id,
     }),
     (dispatch, { page, path }) => ({
-      createAction: (formState) => (
+      autobaseGetAccidentCause: () =>
         dispatch(
-          autobaseActions.autobaseCreateRoadAccident(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
+          autobaseActions.autobaseGetSetRoadAccidentCause({}, { page, path }),
+        ),
+      employeeDriverGetSetDriver: () =>
         dispatch(
-          autobaseActions.autobaseUpdateRoadAccident(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetAccidentCause: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRoadAccidentCause(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      employeeDriverGetSetDriver: () => (
-        dispatch(
-          employeeActions.employeeDriverGetSetDriver(
-            {},
-            { page, path },
-          ),
-        )
-      ),
+          employeeActions.employeeDriverGetSetDriver({}, { page, path }),
+        ),
     }),
   ),
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
+    createAction: autobaseActions.autobaseCreateRoadAccident,
+    updateAction: autobaseActions.autobaseUpdateRoadAccident,
     mergeElement: (props) => {
       return getDefaultRoadAccidentElement(props.element);
     },

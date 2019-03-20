@@ -25,10 +25,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
-import {
-  FlexContainer,
-  Flex,
-} from 'global-styled/global-styled';
+import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { isNumber } from 'util';
 
@@ -37,48 +34,43 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
 
 class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
-  handleChange = (name, value) => {
-    this.props.handleChange({
-      [name]: get(value, ['target', 'value'], value),
-    });
-  }
-  handleHide = () => {
-    this.props.handleHide(false);
-  }
   render() {
-    const {
-      formState: state,
-      page,
-      path,
-    } = this.props;
+    const { formState: state, page, path } = this.props;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-ssp" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <Modal
+        id="modal-ssp"
+        show
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {
-                this.props.userData.isKgh || this.props.userData.isOkrug
-                  ? (
-                    <ExtField
-                      type="string"
-                      value={state.company_name || '-'}
-                      label={this.props.userData.isKgh ? 'Наименование ГБУ:' : 'Учреждение:'}
-                      readOnly
-                    />
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+                <ExtField
+                  type="string"
+                  value={state.company_name || '-'}
+                  label={
+                    this.props.userData.isKgh
+                      ? 'Наименование ГБУ:'
+                      : 'Учреждение:'
+                  }
+                  readOnly
+                />
+              ) : (
+                <DivNone />
+              )}
               <ExtField
                 type="string"
                 value={state.name}
@@ -99,35 +91,42 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
               />
               <ExtField
                 type="string"
-                value={isNumber(state.productivity) ? parseFloat(state.productivity.toString()).toFixed(2) : ''}
+                value={
+                  isNumber(state.productivity)
+                    ? parseFloat(state.productivity.toString()).toFixed(2)
+                    : ''
+                }
                 label="Производительность (куб. м в сутки):"
                 readOnly
               />
               <ExtField
                 type="string"
-                value={get(YES_NO_SELECT_OPTIONS_INT.find(({ value }) => value === state.is_mobile), 'label', '-')}
+                value={get(
+                  YES_NO_SELECT_OPTIONS_INT.find(
+                    ({ value }) => value === state.is_mobile,
+                  ),
+                  'label',
+                  '-',
+                )}
                 label="Мобильность:"
                 readOnly
               />
             </Flex>
             <Flex grow={2} shrink={2} basis={600}>
-              <MapGeoobjectWrap
-                geoobjectData={state}
-                entity="ssp"
-              />
+              <MapGeoobjectWrap geoobjectData={state} entity="ssp" />
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          !isPermitted && false // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
+          {isPermitted && false ? ( // либо обновление, либо создание
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.props.defaultSubmit}>
+              Сохранить
+            </Button>
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
       </Modal>
     );
@@ -139,27 +138,11 @@ export default compose<PropsSspForm, OwnPropsSspForm>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
-    (dispatch, { page, path }) => ({
-      createAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionCreateSsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          geoobjectActions.actionUpdateSsp(
-            formState,
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withForm<PropsSspFormWithForm, Ssp>({
     uniqField: 'id',
+    createAction: geoobjectActions.actionCreateSsp,
+    updateAction: geoobjectActions.actionUpdateSsp,
     mergeElement: (props) => {
       return getDefaultSspFormElement(props.element);
     },

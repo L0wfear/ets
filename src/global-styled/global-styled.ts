@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export type EtsPageWrapProps = {
-  inheritDisplay ?: boolean;
+  inheritDisplay?: boolean;
   autoHeight?: boolean;
 };
 
@@ -18,23 +18,42 @@ export const DivRed = styled.div`
 `;
 
 export const EtsPageWrap = styled.div<EtsPageWrapProps>`
-  padding: 20px;
-  display: ${({ inheritDisplay }) => inheritDisplay ? 'inherit' : 'flex'};
-  flex-direction: column;
-  align-items: stretch;
+  position: relative;
+  height: 100%;
+
+  padding: 15px;
 
   &:focus {
-    outline:0px !important;
-    -webkit-appearance:none;
+    outline: 0px !important;
+    -webkit-appearance: none;
   }
 `;
 
 export const FlexContainer = styled.div<{ isWrap?: boolean }>`
   display: flex;
-  flex-wrap: ${({ isWrap }) => isWrap ? 'wrap' : 'initial'};
+  flex-wrap: ${({ isWrap }) => (isWrap ? 'wrap' : 'initial')};
 `;
 
-export const Flex = styled.div<{ grow?: number; shrink?: number; basis?: number, none?: boolean }>`
-  flex: ${({ grow }) => grow || 0} ${({ shrink }) => shrink || 0} ${({ basis }) => basis || 0}px;
-  display: ${({ none }) => none ? 'none' : 'initial'};
+export const Flex = styled.div<{
+  grow?: number;
+  shrink?: number;
+  basis?: number;
+  none?: boolean;
+}>`
+  flex: ${({ grow }) => grow || 0} ${({ shrink }) => shrink || 0}
+    ${({ basis }) => basis || 0}px;
+  display: ${({ none }) => (none ? 'none' : 'initial')};
+`;
+
+export const BorderDash = styled.div<{
+  width?: number;
+  borderStyle?: string;
+  color?: string;
+}>`
+  border: ${(props) => {
+    props.width;
+    const { width = 1, borderStyle = 'solid', color = 'black' } = props;
+
+    return `${width}px ${borderStyle} ${color}`;
+  }};
 `;

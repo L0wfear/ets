@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as BootstrapButton from 'react-bootstrap/lib/Button';
 
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-const Button = enhanceWithPermissions({})(BootstrapButton);
+const Button = withRequirePermissionsNew({})(BootstrapButton);
 
 export const ColOrderAssignmentHeaderTitleContainer = styled(Col)`
   display: flex;

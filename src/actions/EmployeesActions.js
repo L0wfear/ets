@@ -10,14 +10,21 @@ import {
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 
-const makeFilesToFrontendAll = rows => rows.map(({ files = [], ...other }) => ({
-  ...other,
-  driver_license_files: files.filter(file => file.kind === 'driver_license'),
-  medical_certificate_files: files.filter(file => file.kind === 'medical_certificate'),
-}));
+const makeFilesToFrontendAll = (rows) =>
+  rows.map(({ files = [], ...other }) => ({
+    ...other,
+    driver_license_files: files.filter(
+      (file) => file.kind === 'driver_license',
+    ),
+    medical_certificate_files: files.filter(
+      (file) => file.kind === 'medical_certificate',
+    ),
+  }));
 
 function getEmployees(payload = {}) {
-  return EmployeeService.get(payload).then(r => ({ result: makeFilesToFrontendAll(r.result.rows) }));
+  return EmployeeService.get(payload).then((r) => ({
+    result: makeFilesToFrontendAll(r.result.rows),
+  }));
 }
 
 export default class EmployeesActions extends Actions {
@@ -29,7 +36,9 @@ export default class EmployeesActions extends Actions {
   }
 
   async getEmployeeBindedToCar(asuods_id) {
-    return EmployeeBindedToCarService.path(asuods_id).get({}).then(({ result: { rows } }) => rows);
+    return EmployeeBindedToCarService.path(asuods_id)
+      .get({})
+      .then(({ result: { rows } }) => rows);
   }
 
   getEmployeeOnCarList(props) {
@@ -37,7 +46,9 @@ export default class EmployeesActions extends Actions {
       ...props,
     };
 
-    return EmployeeOnCarService.get(payload).then(({ result: { rows } }) => ({ result: rows }));
+    return EmployeeOnCarService.get(payload).then(({ result: { rows } }) => ({
+      result: rows,
+    }));
   }
 
   getDrivers() {
@@ -49,16 +60,21 @@ export default class EmployeesActions extends Actions {
   }
 
   getLastBrigade(id) {
-    return LastBrigadeService.path(id).get().then(({ result: { last_brigade, last_brigade_fios } }) => (
-      last_brigade
-        ? last_brigade.filter(item => !!item).map((empId, index) => ({ id: Number(empId), full_name: last_brigade_fios[index] }))
-        : []
-    ));
+    return LastBrigadeService.path(id)
+      .get()
+      .then(({ result: { last_brigade, last_brigade_fios } }) =>
+        last_brigade
+          ? last_brigade
+            .filter((item) => !!item)
+            .map((empId, index) => ({
+              id: Number(empId),
+              full_name: last_brigade_fios[index],
+            }))
+          : [],
+      );
   }
 
-  getWaybillDrivers({
-    type = 'before', date_from, date_to, ...restPayload
-  }) {
+  getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {
     const opts = {
       ...restPayload,
       date_from: createValidDateTime(date_from),

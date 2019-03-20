@@ -20,14 +20,12 @@
 
 html, body {
   height: 100%;
-  overflow: hidden;
   color: #000;
 }
 .app {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden;
 }
 
 .app-content-absolute {
@@ -173,16 +171,6 @@ html, body {
 
   >div {
     margin: 5px;
-  }
-}
-
-.car_info-buttons_row {
-  display: flex;
-  >button {
-    flex: 1 1 auto;
-    &:nth-child(2) {
-      margin: 0px 5px;
-    }
   }
 }
 
@@ -614,7 +602,12 @@ body.application {
                 position: absolute;
                 display: flex;
                 align-items: baseline;
-                transform: translate(-100%, -50%);
+                &.show_tc {
+                  transform: translate(-130%, -50%);
+                }
+                &.remove {
+                  transform: translate(-110%, -50%);
+                }
                 background-color: white;
                 padding: 5px;
                 cursor: pointer;
@@ -851,20 +844,20 @@ body.application {
 .some-header {
   font-size: 18px;
   line-height: 40px;
+  z-index: 2;
 }
 
 
 .waybills-buttons {
-  float:right;
-  button {
-    margin-left:10px;
-  }
-}
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: baseline;
 
-.waybill-button-toolbar {
-  margin-left: 5px;
-  position: relative;
-  bottom: -11px;
+  >* {
+    margin-left: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 .mission-reject-info-modal {
@@ -942,6 +935,10 @@ body.application {
   font-size: 24px;
 }
 
+.pagination {
+  z-index: 0;
+  margin: 20px 0 0 0 !important;
+}
 .pagination-control {
   background: #4C4C4C !important;
   color: white !important;
@@ -1009,6 +1006,7 @@ body.application {
   top: 25px;
   left: calc(50% - 250px);
   max-width: 514px;
+  z-index: 10;
 
   .date-divider {
     margin-left: 10px;
@@ -1025,7 +1023,7 @@ body.application {
 }
 
 .column-control-container {
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   top: 0;
 
@@ -1182,10 +1180,6 @@ div.none {
   outline: none !important;
 }
 
-.waybills-buttons > div {
-  display: inline-block;
-}
-
 .inline-block {
   display: inline-block;
 }
@@ -1317,7 +1311,7 @@ div.none {
 
 .datepicker-range {
   display: flex;
-  
+  z-index: 10;
   .date-divider {
     display: inline-block;
     margin-left: 10px;
@@ -1527,6 +1521,7 @@ div.none {
   position: absolute;
   top: 25px;
   left: 520px;
+  z-index: 0;
   button {
     width: 54px;
   }
@@ -1685,4 +1680,19 @@ div.car-movement-time-report {
 }
 .rw-calendar-popup .rw-popup-transition {
   padding: 0!important;
+}
+
+.data-table .griddle th,
+.ets_table_wrap th {
+  z-index: 1;
+  position: relative;
+}
+
+.headerRow{
+  z-index: 20;
+  position: relative;
+}
+
+.taxi-calc-block .ets-table{
+  margin-bottom: 15px;
 }

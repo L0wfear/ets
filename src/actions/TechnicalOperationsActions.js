@@ -6,16 +6,24 @@ import {
   TechnicalOperationTypesService,
   TechnicalOperationRegistryService,
 } from 'api/Services';
-import {
-  Cleaning,
-} from 'api/missions';
+import { Cleaning } from 'api/missions';
 
 function getTechnicalOperations(payload = {}) {
-  return TechnicalOperationRegistryService.get(payload).then(r => ({ result: r.result.rows }));
+  return TechnicalOperationRegistryService.get(payload).then((r) => ({
+    result: r.result.rows,
+  }));
 }
 
 function getTechnicalOperationsRegistry(payload = {}) {
-  return Cleaning.path('norm_registry').get(payload).then(r => ({ result: r.result.rows }));
+  return Cleaning.path('norm_registry')
+    .get(payload)
+    .then((r) => ({
+      result: r.result.rows.map((rowData, index) => {
+        rowData.front_custom_id = index + 1;
+
+        return rowData;
+      }),
+    }));
 }
 
 export default class TechnicalOperationsActions extends Actions {
@@ -43,7 +51,9 @@ export default class TechnicalOperationsActions extends Actions {
       route_types: props.route_types,
       func_type_id: props.func_type_id,
     };
-    return TechnicalOperationRelationsService.get(payload).then(({ result: { rows } }) => ({ result: rows }));
+    return TechnicalOperationRelationsService.get(payload).then(
+      ({ result: { rows } }) => ({ result: rows }),
+    );
   }
 
   getTechnicalOperations(data) {
@@ -87,7 +97,10 @@ export default class TechnicalOperationsActions extends Actions {
     delete payload.check_type_name;
     delete payload.object_name;
     delete payload.object_text;
+    delete payload.front_custom_id;
 
-    return Cleaning.path('norm_registry').path(data.id).put(payload, getTechnicalOperationsRegistry, 'json');
+    return Cleaning.path('norm_registry')
+      .path(data.id)
+      .put(payload, getTechnicalOperationsRegistry, 'json');
   }
 }

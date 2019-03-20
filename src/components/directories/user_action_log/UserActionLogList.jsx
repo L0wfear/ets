@@ -5,8 +5,11 @@ import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getToday2359, createValidDateTime } from 'utils/dates';
 import UserActionLogTable from 'components/directories/user_action_log/UserActionLogTable';
 import permissions from 'components/directories/user_action_log/config-data/permissions';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
-@connectToStores(['objects', 'session'])
+@connectToStores(['objects'])
 @exportable({ entity: 'user_action_log' })
 @staticProps({
   entity: 'user_action_log',
@@ -15,7 +18,7 @@ import permissions from 'components/directories/user_action_log/config-data/perm
   tableComponent: UserActionLogTable,
   operations: ['LIST'],
 })
-export default class UserActionLogList extends ElementsList {
+class UserActionLogList extends ElementsList {
   init() {
     const state = {
       date_start: getToday0am(),
@@ -25,7 +28,10 @@ export default class UserActionLogList extends ElementsList {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.date_start !== prevState.date_start || this.state.date_end !== prevState.date_end) {
+    if (
+      this.state.date_start !== prevState.date_start
+      || this.state.date_end !== prevState.date_end
+    ) {
       this.exportPayload = {
         date_start: createValidDateTime(this.state.date_start),
         date_end: createValidDateTime(this.state.date_end),
@@ -43,13 +49,25 @@ export default class UserActionLogList extends ElementsList {
     return (
       <div className="log-interval-picker">
         <div className="inline-block faxogramms-date">
-          <Datepicker date={date_start} onChange={v => this.setState({ date_start: v })} />
+          <Datepicker
+            date={date_start}
+            onChange={(v) => this.setState({ date_start: v })}
+          />
         </div>
         <div className="date-divider">—</div>
         <div className="inline-block">
-          <Datepicker date={date_end} onChange={v => this.setState({ date_end: v })} />
+          <Datepicker
+            date={date_end}
+            onChange={(v) => this.setState({ date_end: v })}
+          />
         </div>
       </div>
     );
   }
 }
+
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(UserActionLogList);

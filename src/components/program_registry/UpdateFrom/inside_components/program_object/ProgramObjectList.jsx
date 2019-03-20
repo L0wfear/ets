@@ -2,26 +2,36 @@ import * as React from 'react';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import CheckableElementsList from 'components/CheckableElementsList';
-import { ButtonCreate, ButtonRead, ButtonDelete } from 'components/ui/buttons/CRUD';
+import {
+  ButtonCreate,
+  ButtonRead,
+  ButtonDelete,
+} from 'components/ui/buttons/CRUD';
 
 import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
 import ProgramObjectFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
 import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
-    return `Вы уверены, что хотите удалить выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
+    return `Вы уверены, что хотите удалить выбранн${
+      countCheckedElement === 1 ? 'ое' : 'ые'
+    } замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
   },
 };
 
 const notifyTexts = {
   remove(countCheckedElement) {
-    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${countCheckedElement === 1 ? 'е' : 'я'} удал${countCheckedElement === 1 ? 'ено' : 'ены'}`;
+    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${
+      countCheckedElement === 1 ? 'е' : 'я'
+    } удал${countCheckedElement === 1 ? 'ено' : 'ены'}`;
   },
 };
 
-@connectToStores(['repair', 'objects', 'session'])
+@connectToStores(['repair', 'objects'])
 @staticProps({
   entity: 'repair_program_version',
   permissions,
@@ -33,11 +43,11 @@ const notifyTexts = {
 class ProgramRemarkList extends CheckableElementsList {
   constructor(props, context) {
     super(props);
-    const {
-      program_version_id,
-    } = props;
+    const { program_version_id } = props;
 
-    this.updateAction = context.flux.getActions('repair').getRepairListByType.bind(this, 'objects', { program_version_id });
+    this.updateAction = context.flux
+      .getActions('repair')
+      .getRepairListByType.bind(this, 'objects', { program_version_id });
   }
 
   componentDidUpdate(prevProps) {
@@ -49,7 +59,10 @@ class ProgramRemarkList extends CheckableElementsList {
     }
   }
 
-  removeElementAction = id => this.context.flux.getActions('repair').removeProgramRemark(id, { program_version_id: this.props.program_version_id });
+  removeElementAction = (id) =>
+    this.context.flux.getActions('repair').removeProgramRemark(id, {
+      program_version_id: this.props.program_version_id,
+    });
 
   removeCheckedElements = () => {
     this.defActionFunc({
@@ -58,7 +71,7 @@ class ProgramRemarkList extends CheckableElementsList {
       callBackForOneElement: this.removeElement,
       notifyText: notifyTexts.remove,
     });
-  }
+  };
   /**
    * @override
    */
@@ -67,14 +80,15 @@ class ProgramRemarkList extends CheckableElementsList {
       title: 'Внимание',
       body: bodyConfirmDialogs.remove(1),
     })
-    .then(() =>
-      this.removeElementAction(this.state.selectedElement[this.selectField])
-        .then(() => {
+      .then(() =>
+        this.removeElementAction(
+          this.state.selectedElement[this.selectField],
+        ).then(() => {
           this.setState({ selectedElement: null });
           global.NOTIFICATION_SYSTEM.notify(notifyTexts.remove(1));
-        })
-    )
-    .catch(() => {});
+        }),
+      )
+      .catch(() => {});
 
   defActionFunc = ({
     bodyConfirmDialog,
@@ -82,9 +96,7 @@ class ProgramRemarkList extends CheckableElementsList {
     callBackForOneElement,
     notifyText,
   }) => {
-    const {
-      checkedElements = {},
-    } = this.state;
+    const { checkedElements = {} } = this.state;
 
     const checkElList = Object.values(checkedElements);
     const countCheckEl = checkElList.length;
@@ -94,30 +106,29 @@ class ProgramRemarkList extends CheckableElementsList {
         title: 'Внимание',
         body: bodyConfirmDialog(countCheckEl),
       })
-      .then(() => {
-        Promise.all(checkElList.map((el) => callbackForCheckedElement(el[this.selectField])))
         .then(() => {
-          this.updateAction();
-          global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
-        });
+          Promise.all(
+            checkElList.map((el) =>
+              callbackForCheckedElement(el[this.selectField]),
+            ),
+          ).then(() => {
+            this.updateAction();
+            global.NOTIFICATION_SYSTEM.notify(notifyText(countCheckEl));
+          });
 
-        this.setState({
-          checkedElements: {},
-          selectedElement: null,
-        });
-      })
-      .catch(() => {});
+          this.setState({
+            checkedElements: {},
+            selectedElement: null,
+          });
+        })
+        .catch(() => {});
     } else {
       callBackForOneElement().then(() => this.updateAction());
     }
-  }
+  };
 
   createDT = () => {
-    const {
-      program_version_id,
-      contract_number,
-      contractor_id,
-    } = this.props;
+    const { program_version_id, contract_number, contractor_id } = this.props;
 
     this.setState({
       ...this.state,
@@ -135,7 +146,7 @@ class ProgramRemarkList extends CheckableElementsList {
         },
       },
     });
-  }
+  };
   createODH = () => {
     const {
       program_version_id,
@@ -157,7 +168,7 @@ class ProgramRemarkList extends CheckableElementsList {
         repair_type_name,
       },
     });
-  }
+  };
 
   /**
    * @override
@@ -172,14 +183,21 @@ class ProgramRemarkList extends CheckableElementsList {
       isPermittedByStatus,
     } = this.props;
 
-    const slugTypeObjectPr = (technicalOperationsObjectsList.find(({ id }) => id === object_type_id) || {}).slug;
+    const slugTypeObjectPr = (
+      technicalOperationsObjectsList.find(({ id }) => id === object_type_id)
+      || {}
+    ).slug;
 
     const buttons = [
       <ButtonDelete
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
-        disabled={this.checkDisabledDelete() || program_version_status === 'accepted' || !isPermittedByStatus}
+        disabled={
+          this.checkDisabledDelete()
+          || program_version_status === 'accepted'
+          || !isPermittedByStatus
+        }
         permissions={[`${entity}.delete`]}
       />,
       <ButtonRead
@@ -198,8 +216,12 @@ class ProgramRemarkList extends CheckableElementsList {
           key={2}
           onClick={this.createDT}
           permissions={[`${entity}.update`]}
-          disabled={program_version_status === 'accepted' || repair_type_name !== 'Капитальный' || !isPermittedByStatus}
-        />
+          disabled={
+            program_version_status === 'accepted'
+            || repair_type_name !== 'Капитальный'
+            || !isPermittedByStatus
+          }
+        />,
       );
     }
     if (slugTypeObjectPr === 'odh') {
@@ -208,31 +230,38 @@ class ProgramRemarkList extends CheckableElementsList {
           buttonName={'Добавить ОДХ'}
           key={3}
           onClick={this.createODH}
-          disabled={program_version_status === 'accepted' || !isPermittedByStatus}
+          disabled={
+            program_version_status === 'accepted' || !isPermittedByStatus
+          }
           permissions={[`${entity}.false`]}
-        />
+        />,
       );
     }
 
     return buttons;
-  }
+  };
 
   init(needVersionUpdate) {
     this.props.updateObjectData(needVersionUpdate);
-    this.context.flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.context.flux
+      .getActions('technicalOperation')
+      .getTechnicalOperationsObjects();
   }
 
-  getAdditionalProps = () => (
-    {
-      displayTable: true,
-    }
-  )
+  getAdditionalProps = () => ({
+    displayTable: true,
+  });
 
   changeVersionWithObject = ({ program_version_id, object_id }) => {
-    this.props.changeVersion(program_version_id)
+    this.props
+      .changeVersion(program_version_id)
       .then(() => this.props.updateObjectData(false))
-      .then(() => this.setNewSelectedElement(this.props.objectsList.find(({ id }) => id === object_id)))
-  }
+      .then(() =>
+        this.setNewSelectedElement(
+          this.props.objectsList.find(({ id }) => id === object_id),
+        ),
+      );
+  };
 
   /**
    * @override
@@ -259,11 +288,15 @@ class ProgramRemarkList extends CheckableElementsList {
         permissions={[`${this.entity}.read`]}
         changeVersionWithObject={this.changeVersionWithObject}
         {...this.props}
-      />
+      />,
     );
 
     return forms;
   }
 }
 
-export default compose()(ProgramRemarkList);
+export default compose(
+  connect((state) => ({
+    userData: getSessionState(state).userData,
+  })),
+)(ProgramRemarkList);

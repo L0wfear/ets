@@ -6,26 +6,35 @@ import { connectToStores, staticProps } from 'utils/decorators';
 
 import permissions from 'components/missions/duty_mission_template/config-data/permissions';
 import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
-import enhanceWithPermissions from 'components/util/RequirePermissionsNew';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import DutyMissionTemplateFormWrap from 'components/missions/duty_mission_template/DutyMissionTemplateFormWrap';
+import DutyMissionsCreationFormWrap from 'components/missions/duty_mission_template/DutyMissionsCreationFormWrap';
 import DutyMissionTemplatesTable from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import {
+  getSessionState,
+  getMissionsState,
+} from 'redux-main/reducers/selectors';
+import DutyMissionTemplateFormLazy from 'components/missions/duty_mission_template/form/template';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
-const ButtonCreateDutyMissionByTemplate = enhanceWithPermissions({
-  permission: permissions_duty_mission.create,
+const loadingPageName = 'duty_mission_template';
+
+const ButtonCreateDutyMissionByTemplate = withRequirePermissionsNew({
+  permissions: permissions_duty_mission.create,
 })(Button);
 
 @connectToStores(['missions', 'objects', 'employees'])
 @staticProps({
   entity: 'duty_mission_template',
   permissions,
-  listName: 'dutyMissionTemplatesList',
+  listName: 'dutyMissionTemplateList',
   tableComponent: DutyMissionTemplatesTable,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class DutyMissionTemplatesJournal extends CheckableElementsList {
-
   constructor(props) {
     super(props);
 
@@ -34,25 +43,46 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       listData: [],
     });
   }
-  removeElementAction = id => this.context.flux.getActions('missions').removeDutyMissionTemplate(id).then(this.updateTable);
 
-  init() {
+  removeElementAction = (id) => {
+    try {
+      this.props.actionRemoveDutyMissionTemplate(
+        { id },
+        { page: loadingPageName },
+      );
+    } catch (error) {
+      console.warn(error); // eslint-disable-line
+      return;
+    }
+    this.updateTable();
+  };
+
+  async init() {
     const { flux } = this.context;
 
-    flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('missions').getMissionSources();
-    flux.getActions('employees').getEmployees().then(this.updateTable);
+    await Promise.all([
+      flux.getActions('technicalOperation').getTechnicalOperations(),
+      flux.getActions('missions').getMissionSources(),
+      flux.getActions('employees').getEmployees(),
+    ]);
+
+    this.updateTable();
+  }
+
+  componentWillUnmount() {
+    this.props.actionResetDutyMissionTemplate();
   }
 
   updateTable = () => {
-    const { flux } = this.context;
-
-    return flux.getActions('missions').getDutyMissionTemplates();
-  }
+    this.props.actionGetAndSetInStoreDutyMissionTemplate(
+      {},
+      { page: loadingPageName },
+    );
+  };
 
   showForm = () => {
     this.setState({ showForm: true, formType: 'ViewForm' });
-  }
+  };
 
   createDutyMissions = () =>
     this.setState({ showForm: true, formType: 'MissionsCreationForm' });
@@ -66,16 +96,47 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
       selectedElement: null,
       formType: 'ViewForm',
     });
-  }
+  };
+
+  onFormHide = (clearCheckedElements) => {
+    this.setState(({ checkedElements }) => ({
+      showForm: false,
+      selectedElement: null,
+      checkedElements: clearCheckedElements ? {} : checkedElements,
+      formType: 'ViewForm',
+    }));
+  };
+
+  onDutyMissionTemplateFormHide = (isSubmitted) => {
+    if (isSubmitted) {
+      this.updateTable();
+    }
+
+    this.setState({
+      showForm: false,
+      selectedElement: null,
+      formType: 'ViewForm',
+      checkedElements: {},
+    });
+  };
 
   getForms = () => {
     const { employeesIndex = {} } = this.props;
 
     return [
-      <DutyMissionTemplateFormWrap
-        key={'form'}
-        onFormHide={this.onFormHide.bind(this)}
-        showForm={this.state.showForm}
+      <DutyMissionTemplateFormLazy
+        key="form_create_duty_mission_template"
+        element={this.state.selectedElement}
+        showForm={this.state.showForm && this.state.formType === 'ViewForm'}
+        onFormHide={this.onDutyMissionTemplateFormHide}
+        page={loadingPageName}
+      />,
+      <DutyMissionsCreationFormWrap
+        key="form_create_duty_mission"
+        onFormHide={this.onFormHide}
+        showForm={
+          this.state.showForm && this.state.formType === 'MissionsCreationForm'
+        }
         element={this.state.selectedElement}
         formType={this.state.formType}
         missions={this.state.checkedElements}
@@ -83,14 +144,17 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
         _employeesIndex={employeesIndex}
       />,
     ];
-  }
+  };
 
   canCreateMission = () => {
     const { checkedElements = {} } = this.state;
     const missions = Object.values(checkedElements);
 
-    return missions.length && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3));
-  }
+    return (
+      missions.length
+      && !missions.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
+    );
+  };
 
   /**
    * @override
@@ -100,33 +164,64 @@ class DutyMissionTemplatesJournal extends CheckableElementsList {
     // TODO отображение Сформировать наряд-задание в зависимости от прав
     buttons.push(
       <ButtonCreateDutyMissionByTemplate
-        key={'create-duty-mission-by-template'}
+        key="create-duty-mission-by-template"
         bsSize="small"
         onClick={this.createDutyMissions}
-        disabled={!this.canCreateMission()}
-      >
+        disabled={!this.canCreateMission()}>
         Сформировать наряд-задание
-      </ButtonCreateDutyMissionByTemplate>
+      </ButtonCreateDutyMissionByTemplate>,
     );
 
     return buttons;
+  };
+
+  getAdditionalFormProps() {
+    return {
+      page: loadingPageName,
+    };
   }
 
   getAdditionalProps = () => {
-    const listName = this.constructor.listName;
+    const { listName } = this.constructor;
     const listData = this.props[listName];
 
-    const { structures } = this.context.flux.getStore('session').getCurrentUser();
-    const technicalOperationIdsList = this.props.technicalOperationsList.map((item) => item.id);
-
-    const dutyMissionTemplatesList = listData
-      .filter(mission => technicalOperationIdsList.includes(mission.technical_operation_id));
+    const {
+      technicalOperationsMap,
+      userData: { structures },
+    } = this.props;
 
     return {
       structures,
-      data: dutyMissionTemplatesList,
+      data: listData.filter(({ technical_operation_id }) =>
+        technicalOperationsMap.has(technical_operation_id),
+      ),
     };
-  }
+  };
 }
 
-export default compose()(DutyMissionTemplatesJournal);
+export default compose(
+  withPreloader({
+    page: loadingPageName,
+    typePreloader: 'mainpage',
+  }),
+  connect(
+    (state) => ({
+      dutyMissionTemplateList: getMissionsState(state).dutyMissionTemplateList,
+      userData: getSessionState(state).userData,
+    }),
+    (dispatch) => ({
+      actionGetAndSetInStoreDutyMissionTemplate: (...arg) =>
+        dispatch(
+          missionsActions.actionGetAndSetInStoreDutyMissionTemplate(...arg),
+        ),
+      actionRemoveDutyMissionTemplate: (missionTemplate) =>
+        dispatch(
+          missionsActions.actionRemoveDutyMissionTemplate(missionTemplate, {
+            page: loadingPageName,
+          }),
+        ),
+      actionResetDutyMissionTemplate: () =>
+        dispatch(missionsActions.actionResetDutyMissionTemplate()),
+    }),
+  ),
+)(DutyMissionTemplatesJournal);

@@ -4,7 +4,8 @@ import { createValidDate, createValidDateTime } from 'utils/dates';
 import { Repair, ObjectProperty } from 'api/Services';
 import REPAIR from 'constants/repair';
 
-const parsePutPath = (entity, method, formState, idKey = 'id') => `${entity}/${method === 'put' ? formState[idKey] : ''}`;
+const parsePutPath = (entity, method, formState, idKey = 'id') =>
+  `${entity}/${method === 'put' ? formState[idKey] : ''}`;
 
 export default class RepairActions extends Actions {
   async getRepairListByType(type, data, other) {
@@ -48,11 +49,13 @@ export default class RepairActions extends Actions {
   getObjectVersions(id) {
     const { objects } = REPAIR;
 
-    return Repair.path(`${objects}/${id}/program_versions`).get({}, false, 'json').then(({ result: { rows } }) => rows);
+    return Repair.path(`${objects}/${id}/program_versions`)
+      .get({}, false, 'json')
+      .then(({ result: { rows } }) => rows);
   }
 
   cleartDataAboutObjectById() {
-    return new Promise(res => res({ resolve: { rows: [] } }));
+    return new Promise((res) => res({ resolve: { rows: [] } }));
   }
 
   postDataToUpdateObjectPercent(formState) {
@@ -149,7 +152,12 @@ export default class RepairActions extends Actions {
     const payload = {
       ...formState,
     };
-    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+    [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+      'fact_date_end',
+    ].forEach((key) => {
       if (payload[key]) {
         payload[key] = createValidDate(payload[key]);
       }
@@ -157,11 +165,7 @@ export default class RepairActions extends Actions {
     const { programRegistry } = REPAIR;
 
     const path = parsePutPath(programRegistry, 'post', formState);
-    const ans = await Repair.path(path).post(
-      payload,
-      false,
-      'json',
-    );
+    const ans = await Repair.path(path).post(payload, false, 'json');
     // Для обновления таблицы
     // Не в callback, потому что нужен новый id, а не весь список
     this.getRepairListByType('programRegistry');
@@ -182,7 +186,12 @@ export default class RepairActions extends Actions {
     const payload = {
       ...formState,
     };
-    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+    [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+      'fact_date_end',
+    ].forEach((key) => {
       if (payload[key]) {
         payload[key] = createValidDate(payload[key]);
       }
@@ -214,7 +223,12 @@ export default class RepairActions extends Actions {
     const payload = {
       ...formState,
     };
-    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+    [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+      'fact_date_end',
+    ].forEach((key) => {
       if (payload[key]) {
         payload[key] = createValidDate(payload[key]);
       }
@@ -251,7 +265,12 @@ export default class RepairActions extends Actions {
       ...formState,
     };
 
-    ['plan_date_start', 'plan_date_end', 'fact_date_start', 'fact_date_end'].forEach((key) => {
+    [
+      'plan_date_start',
+      'plan_date_end',
+      'fact_date_start',
+      'fact_date_end',
+    ].forEach((key) => {
       if (payload[key]) {
         payload[key] = createValidDate(payload[key]);
       }
@@ -271,15 +290,15 @@ export default class RepairActions extends Actions {
       ...formState,
     };
     const { programRemark } = REPAIR;
-    const {
-      program_version_id,
-    } = formState;
+    const { program_version_id } = formState;
 
     const path = parsePutPath(programRemark, method, formState);
 
     return Repair.path(path)[method](
       payload,
-      this.getRepairListByType.bind(null, 'programRemarkRegistry', { program_version_id }),
+      this.getRepairListByType.bind(null, 'programRemarkRegistry', {
+        program_version_id,
+      }),
       'json',
     );
   }
@@ -287,31 +306,19 @@ export default class RepairActions extends Actions {
   removeProgramRemark(id) {
     const { programRemark } = REPAIR;
 
-    return Repair.path(`${programRemark}/${id}`).delete(
-      {},
-      false,
-      'json',
-    );
+    return Repair.path(`${programRemark}/${id}`).delete({}, false, 'json');
   }
 
   rejectRemarks(id) {
     const { programRemark } = REPAIR;
 
-    return Repair.path(`${programRemark}/${id}/reject`).put(
-      {},
-      false,
-      'json',
-    );
+    return Repair.path(`${programRemark}/${id}/reject`).put({}, false, 'json');
   }
 
   fixRemarks(id) {
     const { programRemark } = REPAIR;
 
-    return Repair.path(`${programRemark}/${id}/fix`).put(
-      {},
-      false,
-      'json',
-    );
+    return Repair.path(`${programRemark}/${id}/fix`).put({}, false, 'json');
   }
 
   /* DITETS-2388 */
@@ -327,9 +334,7 @@ export default class RepairActions extends Actions {
     delete payload.draw_object_list;
 
     const { objects } = REPAIR;
-    const {
-      program_version_id,
-    } = formState;
+    const { program_version_id } = formState;
 
     const path = parsePutPath(objects, method, formState);
 
@@ -343,10 +348,6 @@ export default class RepairActions extends Actions {
   removeProgramObject(id) {
     const { objects } = REPAIR;
 
-    return Repair.path(`${objects}/${id}`).delete(
-      {},
-      false,
-      'json',
-    );
+    return Repair.path(`${objects}/${id}`).delete({}, false, 'json');
   }
 }

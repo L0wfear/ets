@@ -42,11 +42,10 @@ import { resetCachedDataForRoute } from 'components/new/pages/routes_list/form/i
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { polyState } from 'constants/polygons';
-import {
-  routesCreateRoute,
-  routesUpdateRoute,
-  routesValidateRoute,
-} from 'redux-main/reducers/modules/routes/routes/actions';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import routesActions from 'redux-main/reducers/modules/routes/actions';
+import { getDefaultRouteElement } from './utils';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 const path = 'routeForm';
 
@@ -58,35 +57,41 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
   async componentDidMount() {
     if (this.props.isPermittedToShowBridge) {
       const { serverName } = GEOOBJECTS_OBJ.bridges;
-      const { payload: { [serverName]: data } } = await this.props.loadGeozones(serverName);
+      const {
+        payload: { [serverName]: data },
+      } = await this.props.loadGeozones(serverName);
 
       this.setState({
-        bridges: Object.entries(data).reduce((newBridges: ModifyBridgesForRoute, [key, value]) => ({
-          ...newBridges,
-          [key]: {
-            ...value,
-            state: polyState.ENABLE,
-          },
-        }), {}),
+        bridges: Object.entries(data).reduce(
+          (newBridges: ModifyBridgesForRoute, [key, value]) => ({
+            ...newBridges,
+            [key]: {
+              ...value,
+              state: polyState.ENABLE,
+            },
+          }),
+          {},
+        ),
       });
     }
   }
   handleHide = () => {
     this.props.handleHide(false);
     resetCachedDataForRoute();
-  }
+  };
 
   checkRoute = async () => {
-    const {
-      formState,
-    } = this.props;
+    const { formState } = this.props;
 
     if (!formState.input_lines.length) {
       this.props.handleChange({
         draw_object_list: [],
       });
     } else {
-      const { payload: { route_validate } } = await this.props.validateRoute(formState);
+      const route_validate = await this.props.actionValidateRoute(formState, {
+        page: this.props.page,
+        path,
+      });
 
       this.props.handleChange({
         draw_object_list: route_validate.odh_validate_result
@@ -99,7 +104,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
           })),
       });
     }
-  }
+  };
 
   handleSaveAsTemplate = async () => {
     const result = await this.props.submitAction(this.props.formState, true);
@@ -112,7 +117,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         }
       }
     }
-  }
+  };
   handleSubmitForMission = async () => {
     const result = await this.props.submitAction(this.props.formState, false);
     if (result) {
@@ -123,17 +128,13 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         }
       }
     }
-  }
+  };
 
   render() {
     const {
       formErrors,
       formState,
-      formState: {
-        technical_operation_id,
-        municipal_facility_id,
-        type,
-      },
+      formState: { technical_operation_id, municipal_facility_id, type },
       canSave,
       page,
       fromMission,
@@ -142,11 +143,21 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
     const IS_CREATING = !formState.id;
 
-    const title = !IS_CREATING ? 'Изменение маршрута' : 'Создание нового маршрута';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const title = !IS_CREATING
+      ? 'Изменение маршрута'
+      : 'Создание нового маршрута';
+    const isPermitted = !IS_CREATING
+      ? this.props.isPermittedToUpdate
+      : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-route" show onHide={this.handleHide} bsSize="large" backdrop="static">
+      <EtsModal
+        id="modal-route"
+        show
+        deepLvl={this.props.deepLvl}
+        onHide={this.props.hideWithoutChanges}
+        bsSize="large"
+        backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -167,10 +178,9 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
             <FieldTechnicalOperation
               value={technical_operation_id}
               name={formState.technical_operation_name}
-              disabled={!isPermitted || fromMission || !IS_CREATING}
+              disabled={!isPermitted || fromMission}
               error={formErrors.technical_operation_id}
               onChange={this.props.handleChange}
-
               page={page}
               path={path}
             />
@@ -179,33 +189,32 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               value={municipal_facility_id}
               name={formState.municipal_facility_name}
               normatives={formState.normatives}
-              disabled={!isPermitted || fromMission || !IS_CREATING || !technical_operation_id}
+              disabled={!isPermitted || fromMission || !technical_operation_id}
               onChange={this.props.handleChange}
               clearable={false}
               missionAvailableRouteTypes={this.props.missionAvailableRouteTypes}
-
               page={page}
               path={path}
             />
             <FieldStructure
               value={formState.structure_id}
               name={formState.structure_name}
-              disabled={!isPermitted || hasMissionStructureId && !!formState.structure_id}
+              disabled={
+                !isPermitted ||
+                (hasMissionStructureId && !!formState.structure_id)
+              }
               error={formErrors.structure_id}
               onChange={this.props.handleChange}
-
               page={page}
               path={path}
             />
             <FieldType
               value={type}
-              disabled={!isPermitted || !IS_CREATING || !municipal_facility_id}
+              disabled={!isPermitted || !municipal_facility_id}
               error={formErrors.type}
               onChange={this.props.handleChange}
               available_route_types={formState.available_route_types}
-
               fromMission={fromMission}
-
               page={page}
               path={path}
             />
@@ -222,7 +231,6 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               onChange={this.props.handleChange}
               checkRoute={this.checkRoute}
               bridges={this.state.bridges}
-
               isPermitted={isPermitted}
               page={page}
               path={path}
@@ -231,29 +239,32 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         </ModalBodyPreloader>
 
         <Modal.Footer>
-        {
-          isPermitted
-          ? (
+          {isPermitted ? (
             <>
-              <Button id="route-submit-tempalte" disabled={!canSave} onClick={this.handleSaveAsTemplate}>Сохранить как шаблон</Button>
-              {
-                this.props.fromMission
-                  ? (
-                    <Button id="route-submit" disabled={!canSave} onClick={this.handleSubmitForMission}>Создать</Button>
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              <Button
+                id="route-submit-tempalte"
+                disabled={!canSave}
+                onClick={this.handleSaveAsTemplate}>
+                {this.props.fromMission && !this.props.fromMissionTemplate
+                  ? 'Сохранить как шаблон'
+                  : 'Сохранить'}
+              </Button>
+              {this.props.fromMission && !this.props.fromMissionTemplate ? (
+                <Button
+                  id="route-submit"
+                  disabled={!canSave}
+                  onClick={this.handleSubmitForMission}>
+                  Создать
+                </Button>
+              ) : (
+                <DivNone />
+              )}
             </>
-          )
-          : (
+          ) : (
             <DivNone />
-          )
-        }
+          )}
         </Modal.Footer>
-
-      </Modal>
+      </EtsModal>
     );
   }
 }
@@ -264,54 +275,46 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
     withIsPermittedProps: true,
     permissionName: 'isPermittedToShowBridge',
   }),
-  connect<StateRouteFormProps, DispatchRouteFormProps, OwnRouteFormProps, ReduxState>(
+  connect<
+    StateRouteFormProps,
+    DispatchRouteFormProps,
+    OwnRouteFormProps,
+    ReduxState
+  >(
     (state) => ({
-      userStructureId: state.session.userData.structure_id,
-      userStructureName: state.session.userData.structure_name,
+      userStructureId: getSessionState(state).userData.structure_id,
+      userStructureName: getSessionState(state).userData.structure_name,
     }),
-    (dispatch, { page }) => ({
-      validateRoute: (formState) => (
+    (dispatch: any, { page }) => ({
+      actionValidateRoute: (...arg) =>
+        dispatch(routesActions.actionValidateRoute(...arg)),
+      loadGeozones: (serverName) =>
         dispatch(
-          routesValidateRoute(formState, { page, path }),
-        )
-      ),
-      createAction: (formState, isTemplate = false) => (
-        dispatch(
-          routesCreateRoute(formState, isTemplate, { page, path }),
-        )
-      ),
-      updateAction: (formState) => (
-        dispatch(
-          routesUpdateRoute(formState, { page, path }),
-        )
-      ),
-      loadGeozones: (serverName) => (
-        dispatch(
-          loadGeozones(
-            'none',
-            serverName,
-            {
-              promise: true,
-              page,
-              path,
-            },
-          ),
-        )
-      ),
+          loadGeozones('none', serverName, {
+            promise: true,
+            page,
+            path,
+          }),
+        ),
     }),
   ),
   withForm<PropsRouteWithForm, FormStateRouteForm>({
     uniqField: 'id',
+    createAction: routesActions.actionCreateRoute,
+    updateAction: routesActions.actionUpdateRoute,
     mergeElement: (props) => {
-      const {
-        element,
-      } = props;
+      const { element } = props;
 
       return {
-        ...props.element,
+        ...getDefaultRouteElement(props.element),
         structure_id: element.structure_id || props.userStructureId,
-        structure_name: element.structure_name || element.structure_id ? null : props.userStructureName,
-        draw_object_list : isArray(props.element.draw_object_list) ? props.element.draw_object_list : [],
+        structure_name:
+          element.structure_name || element.structure_id
+            ? null
+            : props.userStructureName,
+        draw_object_list: isArray(props.element.draw_object_list)
+          ? props.element.draw_object_list
+          : [],
         normatives: [],
         available_route_types: [],
       };

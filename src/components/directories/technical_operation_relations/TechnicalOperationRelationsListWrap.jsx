@@ -6,9 +6,16 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { FluxContext } from 'utils/decorators';
 import { makeOptions } from 'components/ui/input/makeOptions';
-import { customOptionsTechnicalOperation, customOptionsMunicipalFacility, customOptionsFuncType } from 'components/directories/technical_operation_relations/helpData';
+import {
+  customOptionsTechnicalOperation,
+  customOptionsMunicipalFacility,
+  customOptionsFuncType,
+} from 'components/directories/technical_operation_relations/helpData';
 import TechnicalOperationRelationsList from 'components/directories/technical_operation_relations/TechnicalOperationRelationsList';
-import { TechnicalOperationRelationsListWrapContainer, TechnicalOperationRelationsListContainer } from './styled';
+import {
+  TechnicalOperationRelationsListWrapContainer,
+  TechnicalOperationRelationsListContainer,
+} from './styled';
 
 @FluxContext
 class TechnicalOperationRelationsListWrap extends React.Component {
@@ -24,14 +31,17 @@ class TechnicalOperationRelationsListWrap extends React.Component {
   };
 
   componentDidMount() {
-    this.context.flux.getActions('technicalOperation').getTechnicalOperations().then(({ result }) => {
-      const options = makeOptions({
-        data: result,
-        options: customOptionsTechnicalOperation,
-      });
+    this.context.flux
+      .getActions('technicalOperation')
+      .getTechnicalOperations()
+      .then(({ result }) => {
+        const options = makeOptions({
+          data: result,
+          options: customOptionsTechnicalOperation,
+        });
 
-      this.setState({ ...options });
-    });
+        this.setState({ ...options });
+      });
   }
 
   getMunicipalFacilityOptions(norm_ids) {
@@ -42,7 +52,9 @@ class TechnicalOperationRelationsListWrap extends React.Component {
         norm_ids: norm_ids.join(','),
       };
 
-      this.context.flux.getActions('missions').getCleaningMunicipalFacilityList(payload)
+      this.context.flux
+        .getActions('missions')
+        .getCleaningMunicipalFacilityList(payload)
         .then(({ municipal_facility_list }) => {
           const changesState = {
             MUNICIPAL_FACILITY_OPTIONS: this.state.MUNICIPAL_FACILITY_OPTIONS,
@@ -57,9 +69,14 @@ class TechnicalOperationRelationsListWrap extends React.Component {
           changesState.MUNICIPAL_FACILITY_OPTIONS = MUNICIPAL_FACILITY_OPTIONS;
 
           if (changesState.MUNICIPAL_FACILITY_OPTIONS.length === 1) {
-            changesState.municipal_facility_id = changesState.MUNICIPAL_FACILITY_OPTIONS[0].value;
+            changesState.municipal_facility_id
+              = changesState.MUNICIPAL_FACILITY_OPTIONS[0].value;
 
-            this.getFuncTypes(changesState.MUNICIPAL_FACILITY_OPTIONS[0].normatives.map(({ id }) => id).join(','));
+            this.getFuncTypes(
+              changesState.MUNICIPAL_FACILITY_OPTIONS[0].normatives
+                .map(({ id }) => id)
+                .join(','),
+            );
           }
           this.setState({ ...changesState });
         });
@@ -70,7 +87,9 @@ class TechnicalOperationRelationsListWrap extends React.Component {
 
   getFuncTypes(norm_ids) {
     if (norm_ids) {
-      this.context.flux.getActions('technicalOperation').getTechOperationsByNormIds({ norm_ids })
+      this.context.flux
+        .getActions('technicalOperation')
+        .getTechOperationsByNormIds({ norm_ids })
         .then(({ result }) => {
           const changesState = {
             ROUTE_TYPES: this.state.ROUTE_TYPES,
@@ -79,10 +98,7 @@ class TechnicalOperationRelationsListWrap extends React.Component {
             func_type_id: null,
           };
 
-          const {
-            FUNC_TYPE_OPTIONS,
-            ROUTE_TYPES,
-          } = makeOptions({
+          const { FUNC_TYPE_OPTIONS, ROUTE_TYPES } = makeOptions({
             data: result,
             options: customOptionsFuncType,
           });
@@ -91,7 +107,9 @@ class TechnicalOperationRelationsListWrap extends React.Component {
           changesState.FUNC_TYPE_OPTIONS = FUNC_TYPE_OPTIONS;
 
           if (changesState.ROUTE_TYPES.length === 1) {
-            changesState.route_types = changesState.ROUTE_TYPES.map(({ value }) => value);
+            changesState.route_types = changesState.ROUTE_TYPES.map(
+              ({ value }) => value,
+            );
           }
           if (changesState.FUNC_TYPE_OPTIONS.length === 1) {
             changesState.func_type_id = changesState.FUNC_TYPE_OPTIONS[0].value;
@@ -125,7 +143,7 @@ class TechnicalOperationRelationsListWrap extends React.Component {
         func_type_id: null,
       });
     }
-  }
+  };
 
   handleChangeMunicipalFacility = (municipal_facility_id, allValue) => {
     if (municipal_facility_id !== this.state.municipal_facility_id) {
@@ -138,19 +156,19 @@ class TechnicalOperationRelationsListWrap extends React.Component {
         func_type_id: null,
       });
     }
-  }
+  };
 
   handleChangeRouteType = (route_types) => {
     if (route_types !== this.state.route_types) {
       this.setState({ route_types });
     }
-  }
+  };
 
   handleChangeFuncTypeId = (func_type_id) => {
     if (func_type_id !== this.state.func_type_id) {
       this.setState({ func_type_id });
     }
-  }
+  };
 
   render() {
     const {
@@ -204,7 +222,11 @@ class TechnicalOperationRelationsListWrap extends React.Component {
                 value={route_types}
                 onChange={this.handleChangeRouteType}
                 disabled={!this.state.ROUTE_TYPES.length}
-                error={this.state.ROUTE_TYPES.length && !route_types.length ? 'Поле "Тип объекта" должно быть заполнено' : ''}
+                error={
+                  this.state.ROUTE_TYPES.length && !route_types.length
+                    ? 'Поле "Тип объекта" должно быть заполнено'
+                    : ''
+                }
                 clearable={false}
               />
             </Col>
@@ -223,18 +245,17 @@ class TechnicalOperationRelationsListWrap extends React.Component {
           </Col>
         </Row>
         <TechnicalOperationRelationsListContainer>
-          {
-            technical_operation_id && municipal_facility_id && route_types.length && func_type_id
-              ? (
-                <TechnicalOperationRelationsList
-                  technical_operation_id={technical_operation_id}
-                  municipal_facility_id={municipal_facility_id}
-                  route_types={route_types}
-                  func_type_id={func_type_id}
-                />
-              )
-              : null
-          }
+          {technical_operation_id
+          && municipal_facility_id
+          && route_types.length
+          && func_type_id ? (
+              <TechnicalOperationRelationsList
+                technical_operation_id={technical_operation_id}
+                municipal_facility_id={municipal_facility_id}
+                route_types={route_types}
+                func_type_id={func_type_id}
+              />
+            ) : null}
         </TechnicalOperationRelationsListContainer>
       </TechnicalOperationRelationsListWrapContainer>
     );

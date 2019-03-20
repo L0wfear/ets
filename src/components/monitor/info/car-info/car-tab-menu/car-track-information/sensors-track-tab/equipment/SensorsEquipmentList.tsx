@@ -7,9 +7,7 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import { compose } from 'recompose';
 import { carInfoToggleSensorShow } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import { DivNone } from 'global-styled/global-styled';
 import { sensorTrackColor } from 'constants/sensors';
 import { ColorSensorDiv } from 'components/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/styled';
 
@@ -39,96 +37,95 @@ const getRightRus = (count) => {
   return 'датчиков';
 };
 
-const SensorsEquipmentList: React.FunctionComponent<PropsSensorsEquipmentList> = (props) => {
+const SensorsEquipmentList: React.FunctionComponent<
+  PropsSensorsEquipmentList
+> = (props) => {
   const { track } = props;
   const sensors_equipment = Object.entries(props.front_cars_sensors_equipment);
 
-  const disabledByKey = sensors_equipment.reduce((newObj, [key, data]) => ({
-    ...newObj,
-    [key]: data.data.length === 0 || !data.data.some(([t, value]) => !!value),
-  }), {});
+  const disabledByKey = sensors_equipment.reduce(
+    (newObj, [key, data]) => ({
+      ...newObj,
+      [key]: data.data.length === 0 || !data.data.some(([t, value]) => !!value),
+    }),
+    {},
+  );
 
-  const hasSomeData = sensors_equipment.some(([, { show }]) => show);
-
+  const hasSomeData = sensors_equipment.find(([, { show }]) => show);
+  console.log(sensors_equipment, hasSomeData);
   return (
     <div className="sensors-list">
-      {
-        !track || Array.isArray(track) && track.length === 0 ?
-        (
-          <div>{NO_DATA_TEXT}</div>
-        )
-        :
-        (
-          sensors_equipment.length === 0 ?
-          (
-            <div>{NO_SENSORS_EQUIPMENT_TEXT}</div>
-          )
-          :
-          (
-            <div>
-              {
-                sensors_equipment.map(([key, data], index) => {
-                  const disabled = disabledByKey[key];
+      {!track || (Array.isArray(track) && track.length === 0) ? (
+        <div>{NO_DATA_TEXT}</div>
+      ) : sensors_equipment.length === 0 ? (
+        <div>{NO_SENSORS_EQUIPMENT_TEXT}</div>
+      ) : (
+        <div>
+          {sensors_equipment.map(([key, data], index) => {
+            const disabled = disabledByKey[key];
 
-                  return (
-                    <div className={cx('sensor-option', { disabled })} data-key={key} key={key} onClick={props.toggleSensorOnMap}>
-                      <input readOnly disabled={disabled} type="checkbox" checked={data.show} />
-                      <span>{` Датчик №${index + 1} - ${data.sensor.type_name} `}</span>
-                      {
-                        disabled ?
-                          <span> (Нет данных)</span>
-                        :
-                          ( <DivNone /> )
-                      }
-                    </div>
-                  );
-                })
-              }
-              {
-                !hasSomeData ?
-                (
-                  <div className="car_info-sensors_legend" >
-                  {
-                    [['zero'], ...sensors_equipment].map(([key], index) => (
-                      <div key={`sensor_option_${key}`} className="sensors_legeng_option">
-                        <ColorSensorDiv color={sensorTrackColor[index]}></ColorSensorDiv>
-                        <div>{`${index} ${getRightRus(index)} в работе`}</div>
-                      </div>
-                    ))
-                  }
-                  </div>
-                )
-                :
-                ( <div className="none" />)
-              }
+            return (
+              <div
+                className={cx('sensor-option', { disabled })}
+                data-key={key}
+                key={key}
+                onClick={props.toggleSensorOnMap}>
+                <input
+                  readOnly
+                  disabled={disabled}
+                  type="checkbox"
+                  checked={data.show}
+                />
+                <span>{` Датчик №${index + 1} - ${
+                  data.sensor.type_name
+                } `}</span>
+                {disabled ? <span> (Нет данных)</span> : <DivNone />}
+              </div>
+            );
+          })}
+          {hasSomeData ? (
+            <div className="car_info-sensors_legend">
+              {[['zero'], ...sensors_equipment].map(([key], index) => (
+                <div
+                  key={`sensor_option_${key}`}
+                  className="sensors_legeng_option">
+                  <ColorSensorDiv color={sensorTrackColor[index]} />
+                  <div>{`${index} ${getRightRus(index)} в работе`}</div>
+                </div>
+              ))}
             </div>
-
-          )
-        )
-      }
+          ) : (
+            <div className="none" />
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
 const mapStateToProps = (state) => ({
   track: state.monitorPage.carInfo.trackCaching.track,
-  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
+  front_cars_sensors_equipment:
+    state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
 });
 const mergedProps = (stateProps, { dispatch }) => ({
   ...stateProps,
-  toggleSensorOnMap: ({ currentTarget: { dataset: { key } } }) => {
-    const { front_cars_sensors_equipment: { [key]: sensorData } } = stateProps;
+  toggleSensorOnMap: ({
+    currentTarget: {
+      dataset: { key },
+    },
+  }) => {
+    const {
+      front_cars_sensors_equipment: { [key]: sensorData },
+    } = stateProps;
     let canChange = false;
 
-    canChange = sensorData.data.length > 0 && sensorData.data.some(([t, value]) => !!value);
+    canChange =
+      sensorData.data.length > 0 &&
+      sensorData.data.some(([t, value]) => !!value);
 
     if (canChange) {
-      dispatch(
-        carInfoToggleSensorShow(
-          'equipment',
-          key,
-        ),
-      );
+      dispatch(carInfoToggleSensorShow('equipment', key));
     }
   },
 });

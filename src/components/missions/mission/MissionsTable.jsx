@@ -18,6 +18,7 @@ export const getTableMeta = ({
   technicalOperationsList = [],
   municipalFacilityList = [],
   technicalOperationsObjectsList = [],
+  missionCancelReasonsList = [],
 } = {}) => {
   const tableMeta = {
     cols: [
@@ -27,7 +28,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: Object.keys(MISSION_STATUS_LABELS).map((key) => ({ label: MISSION_STATUS_LABELS[key], value: key })),
+          options: Object.keys(MISSION_STATUS_LABELS).map((key) => ({
+            label: MISSION_STATUS_LABELS[key],
+            value: key,
+          })),
         },
         cssClassName: 'width120',
       },
@@ -85,7 +89,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: missionSourcesList.map(missionSource => ({ value: missionSource.id, label: missionSource.name })),
+          options: missionSourcesList.map((missionSource) => ({
+            value: missionSource.id,
+            label: missionSource.name,
+          })),
         },
         cssClassName: 'width150',
       },
@@ -114,7 +121,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: carsFilterList.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
+          options: carsFilterList.map((car) => ({
+            label: car.gov_number,
+            value: car.asuods_id,
+          })),
         },
         cssClassName: 'width120',
       },
@@ -127,7 +137,13 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: uniqBy(carsFilterList.map((car) => ({ label: car.type_name, value: car.type_id })), 'value'),
+          options: uniqBy(
+            carsFilterList.map((car) => ({
+              label: car.type_name,
+              value: car.type_id,
+            })),
+            'value',
+          ),
         },
         cssClassName: 'width120',
       },
@@ -148,7 +164,9 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: technicalOperationsObjectsList.map(({ id: value, short_name: label }) => ({ value, label })),
+          options: technicalOperationsObjectsList.map(
+            ({ id: value, short_name: label }) => ({ value, label }),
+          ),
         },
       },
       {
@@ -169,7 +187,10 @@ export const getTableMeta = ({
         },
         filter: {
           type: 'multiselect',
-          options: technicalOperationsList.map(operation => ({ value: operation.id, label: operation.name })),
+          options: technicalOperationsList.map((operation) => ({
+            value: operation.id,
+            label: operation.name,
+          })),
         },
       },
       {
@@ -179,7 +200,15 @@ export const getTableMeta = ({
         display: false,
         filter: {
           type: 'multiselect',
-          options: uniqBy(municipalFacilityList.map(({ municipal_facility_id, municipal_facility_name }) => ({ value: municipal_facility_id, label: municipal_facility_name })), 'value'),
+          options: uniqBy(
+            municipalFacilityList.map(
+              ({ municipal_facility_id, municipal_facility_name }) => ({
+                value: municipal_facility_id,
+                label: municipal_facility_name,
+              }),
+            ),
+            'value',
+          ),
         },
       },
       {
@@ -187,6 +216,21 @@ export const getTableMeta = ({
         displayName: 'Элемент',
         type: 'number',
         filter: false,
+      },
+      {
+        name: 'reason_id',
+        displayName: 'Причина',
+        type: 'number',
+        sort: {
+          serverFieldName: 'reason_name',
+        },
+        filter: {
+          type: 'multiselect',
+          options: missionCancelReasonsList.map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
+        },
       },
       {
         name: 'comment',
@@ -207,7 +251,10 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: structures.map(({ id, name }) => ({ value: id, label: name })),
+          options: structures.map(({ id, name }) => ({
+            value: id,
+            label: name,
+          })),
         },
         display: structures.length,
       },
@@ -217,10 +264,12 @@ export const getTableMeta = ({
         type: 'string',
         filter: {
           type: 'multiselect',
-          options: [{
-            value: 0,
-            label: 'Да',
-          }],
+          options: [
+            {
+              value: 0,
+              label: 'Да',
+            },
+          ],
         },
         display: false,
       },
@@ -230,18 +279,22 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-
 export default (props) => {
   const renderers = {
-    current_percentage: ({ data }) => <span>{data !== null ? Math.floor(data) : '-'}</span>,
+    current_percentage: ({ data }) => (
+      <span>{data !== null ? Math.floor(data) : '-'}</span>
+    ),
     column_id: ({ data }) => <span>{data || '-'}</span>,
-    mission_source_id: ({ rowData }) => <span>{rowData.mission_source_name}</span>,
+    mission_source_id: ({ rowData }) => (
+      <span>{rowData.mission_source_name}</span>
+    ),
     status: ({ data }) => <div>{MISSION_STATUS_LABELS[data]}</div>,
     date_start: ({ data }) => <DateFormatter date={data} time />,
     date_end: ({ data }) => <DateFormatter date={data} time />,
     id: ({ data, rowData }) => {
       if (rowData.status === 'not_assigned') return <div>Нет данных</div>;
-      const className = Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
+      const className
+        = Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
 
       return (
         <div className={className} style={{ width: '100%', heigth: '100%' }}>
@@ -254,8 +307,13 @@ export default (props) => {
     structure_id: ({ rowData }) => <div>{rowData.structure_name}</div>,
     car_id: ({ rowData }) => <div>{rowData.car_gov_number}</div>,
     type_id: ({ rowData }) => <div>{rowData.type_name}</div>,
-    object_type_id: ({ rowData: { object_type_name } }) => <div>{object_type_name}</div>,
-    technical_operation_id: ({ rowData }) => <div>{rowData.technical_operation_name}</div>,
+    object_type_id: ({ rowData: { object_type_name } }) => (
+      <div>{object_type_name}</div>
+    ),
+    technical_operation_id: ({ rowData }) => (
+      <div>{rowData.technical_operation_name}</div>
+    ),
+    reason_id: ({ rowData }) => <div>{rowData.reason_name}</div>,
   };
 
   return (

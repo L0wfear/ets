@@ -2,10 +2,12 @@ import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actio
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 import {
   promiseGetCarpool,
+  promiseLoadPFCarpool,
   promiseCreateCarpool,
   promiseUpdateCarpool,
   promiseRemoveCarpool,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export const actionSetCarpool = (carpoolList: Carpool[]) => (dispatch) => (
   dispatch(
@@ -19,19 +21,33 @@ export const geoobjectResetSetCarpool = () => (dispatch) => (
     actionSetCarpool([]),
   )
 );
-export const actionGetGetCarpool: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
+export const actionGetBlobCarpool: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
+  const { payload } = await dispatch({
     type: 'none',
-    payload: promiseGetCarpool(payload),
+    payload: promiseLoadPFCarpool(payloadOwn),
+    meta: {
+      promise: true,
+      ...meta,
+    },
+  });
+
+  return payload;
+};
+export const actionGetGetCarpool: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+  const { payload } = await dispatch({
+    type: 'none',
+    payload: promiseGetCarpool(payloadOwn),
     meta: {
       promise: true,
       page,
       path,
     },
-  })
-);
+  });
+
+  return payload;
+};
 export const actionGetAndSetInStoreCarpool: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+  const { data } = await dispatch(
     actionGetGetCarpool(payload, { page, path }),
   );
 
@@ -84,6 +100,7 @@ export const actionRemoveCarpool = (id, { page, path }: { page: string; path?: s
 export default {
   actionSetCarpool,
   geoobjectResetSetCarpool,
+  actionGetBlobCarpool,
   actionGetGetCarpool,
   actionGetAndSetInStoreCarpool,
   actionCreateCarpool,

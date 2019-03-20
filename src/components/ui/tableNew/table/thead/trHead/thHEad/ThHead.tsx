@@ -2,6 +2,9 @@ import * as React from 'react';
 import Div from 'components/ui/Div';
 import * as cx from 'classnames';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+
+const EtsTheadThL: any = EtsTheadTh;
 
 class ThHead extends React.Component<any, any> {
   handleClick = (e) => {
@@ -23,7 +26,7 @@ class ThHead extends React.Component<any, any> {
     );
 
     return (
-      <th className={thClassName} data-title={thData.name} onClick={this.handleClick}>
+      <EtsTheadThL canClick className={thClassName} data-title={thData.name} onClick={this.handleClick}>
         <Div className={'th-container'} >
           <Div>
             <Div>{thData.displayName}</Div>
@@ -34,7 +37,7 @@ class ThHead extends React.Component<any, any> {
             </Div>
           }
         </Div>
-      </th>
+      </EtsTheadThL>
     );
   }
 }

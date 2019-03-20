@@ -9,11 +9,13 @@ export type ButtonContinueInspectAutobaseDispatchProps = {
 export type ButtonContinueInspectAutobaseOwnProps = {
 };
 
+export type ButtonContinueInspectAutobaseMergedProps = (
+  ButtonContinueInspectAutobaseStateProps
+  & ButtonContinueInspectAutobaseDispatchProps
+  & ButtonContinueInspectAutobaseOwnProps
+);
+
 export type ButtonContinueInspectAutobaseProps = (
-  (
-    ButtonContinueInspectAutobaseStateProps
-    & ButtonContinueInspectAutobaseDispatchProps
-    & ButtonContinueInspectAutobaseOwnProps
-  )
+  ButtonContinueInspectAutobaseMergedProps
   & WithSearchProps
 );

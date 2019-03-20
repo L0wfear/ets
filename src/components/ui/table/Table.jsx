@@ -3,16 +3,21 @@ import * as PropTypes from 'prop-types';
 import _ from 'lodash';
 import cx from 'classnames';
 import Div from 'components/ui/Div';
+import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 
 const HeaderCell = ({ renderer, children, value, className }) => {
   if (typeof renderer === 'function') {
     return (
-      <th className={cx('ets-table-header-cell', className)}>
+      <EtsTheadTh canClick className={cx('ets-table-header-cell', className)}>
         {renderer(value)}
-      </th>
+      </EtsTheadTh>
     );
   }
-  return <th className={cx('ets-table-header-cell', className)}>{children}</th>;
+  return (
+    <EtsTheadTh canClick className={cx('ets-table-header-cell', className)}>
+      {children}
+    </EtsTheadTh>
+  );
 };
 
 HeaderCell.propTypes = {

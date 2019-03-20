@@ -1,6 +1,11 @@
 import * as React from 'react';
 import * as Table from 'react-bootstrap/lib/Table';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import {
+  EtsTheadTh,
+} from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+
+const EtsTheadThL: any = EtsTheadTh;
 
 class TablePrev extends React.Component<any, any> {
   handleChange = (numRow, field, value) => {
@@ -71,7 +76,7 @@ class TablePrev extends React.Component<any, any> {
               <tr>
                 {
                   headerData.map(({ title: titleTH }, i) => (
-                    <th key={i} style={{ textAlign: 'center' }}>{titleTH}</th>
+                    <EtsTheadThL canClick key={i}>{titleTH}</EtsTheadThL>
                   ))
                 }
               </tr>

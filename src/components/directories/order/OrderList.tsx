@@ -20,10 +20,10 @@ import OrderAssignmentsList from 'components/directories/order/order_assignment/
 import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
 import Paginator from 'components/directories/order/Paginator';
 
-import {
-  EtsPageWrap,
-} from 'global-styled/global-styled';
+import { EtsPageWrap } from 'global-styled/global-styled';
 import { isString } from 'util';
+
+import { sessionSetAppConfig } from 'redux-main/reducers/modules/session/action_get_config';
 
 require('components/directories/order/Order.scss');
 
@@ -32,15 +32,18 @@ class OrderList extends React.Component<any, any> {
   context: any;
 
   componentDidUpdate(prevProps) {
-    if (prevProps.configDateStart !== this.props.configDateStart ) {
-      prevProps.getOrders({date_start: this.props.configDateStart, date_end: this.props.configDateEnd});
+    if (prevProps.configDateStart !== this.props.configDateStart) {
+      prevProps.getOrders({
+        date_start: this.props.configDateStart,
+        date_end: this.props.configDateEnd,
+      });
     }
   }
   componentDidMount() {
     const { flux } = this.context;
     flux.getActions('employees').getEmployees({ active: true });
     flux.getActions('objects').getCars();
-
+    this.props.sessionSetAppConfig();
     const {
       location: { search },
     } = this.props;
@@ -63,10 +66,13 @@ class OrderList extends React.Component<any, any> {
       haveMax: !outerIdFax,
     };
 
-    this.props.getOrders(newPartPageOptions)
+    this.props
+      .getOrders(newPartPageOptions)
       .then(({ payload: { OrdersList } }) => {
         if (!isNaN(outerIdFax)) {
-          const selectedElementOrder = OrdersList.find(({ id }) => id === outerIdFax);
+          const selectedElementOrder = OrdersList.find(
+            ({ id }) => id === outerIdFax,
+          );
 
           if (selectedElementOrder) {
             this.props.setSelectedElementOrder(selectedElementOrder);
@@ -110,6 +116,7 @@ const mapDispatchToProps = (dispatch) => ({
       getOrders,
       resetOrder,
       setSelectedElementOrder,
+      sessionSetAppConfig,
     },
     dispatch,
   ),

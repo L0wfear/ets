@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
 import { isNumber, isArray } from 'util';
 
@@ -23,6 +23,7 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -130,7 +131,7 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
-    if (props.isPermitted) {
+    if (props.isPermitted && props.buttons.includes(buttonsTypes.read)) {
       if (props.handleDoubleClickOnRow) {
         props.handleDoubleClickOnRow(
           props.rowData,
@@ -170,6 +171,7 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
       permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       userData: getSessionState(state).userData,
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
+      buttons: getHeaderData(state.registry, registryKey).buttons,
     }),
     (dispatch, { registryKey }) => ({
       registryHandleClickOnRow: (rowData) => (

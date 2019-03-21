@@ -12,12 +12,18 @@ export const config: TypeConfigData<EdcRequest> = {
       typeAns: 'result',
       userServerFilters: true,
     },
+    getOneData: {
+      entity: 'edc_layer_request',
+      typeAns: 'result.0',
+    },
   },
   registryKey,
   header: {
     title: 'Реестр заявок',
     buttons: [
       buttonsTypes.filter,
+      buttonsTypes.createMissionByEdcReques,
+      buttonsTypes.createDutyMissionByEdcReques,
     ],
   },
   filter: {

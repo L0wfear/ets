@@ -1,4 +1,4 @@
-import { ButtonTypes } from 'components/new/ui/registry/contants/buttonsTypes';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 export type PropsRegistryWrap = {
@@ -11,7 +11,7 @@ export type StateRegistryWrap = {
 };
 
 export type ButtonDefineType = {
-  type: ButtonTypes;
+  type: keyof typeof buttonsTypes;
 } | string;
 
 export type TypeOneDisplayIf = 'isKgh' | 'isOkrug' | 'lenghtOptionMoreOne' | false;

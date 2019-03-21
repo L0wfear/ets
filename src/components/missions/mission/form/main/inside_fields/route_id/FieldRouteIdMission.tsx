@@ -368,6 +368,8 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       MISSION_IS_ORDER_SOURCE,
       dependeceTechnicalOperation,
       for_column,
+      request_id,
+      edcRequest,
     } = this.props;
 
     const {
@@ -388,7 +390,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
               type="select"
               id="route_id"
               modalKey={page}
-              label="Маршрут"
+              label={`Маршрут ${request_id ? `(адрес в заявке: ${get(edcRequest, 'house_address', '')})` : ''}`}
               error={error}
               options={ROUTE_OPTIONS}
               value={value}
@@ -480,6 +482,7 @@ export default connect<StatePropsFieldRouteIdMission, DispatchPropsFieldRouteIdM
     routesList: getRoutesState(state).routesList,
     municipalFacilityForMissionList: getSomeUniqState(state).municipalFacilityForMissionList,
     dependeceTechnicalOperation: getMissionsState(state).missionData.dependeceTechnicalOperation,
+    edcRequest: getMissionsState(state).missionData.edcRequest,
   }),
   (dispatch: any) => ({
     actionLoadRouteById: (...arg) => (

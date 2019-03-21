@@ -23,6 +23,7 @@ import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/
 import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { get } from 'lodash';
+import edcRequestActions from '../../edc_request/edc_request_actions';
 
 const actionSetDutyMissionPartialData = (partialDutyMissionData: Partial<IStateMissions['dutyMissionData']>): ThunkAction<IStateMissions['dutyMissionData'], ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const newDutyMissionData = {
@@ -120,6 +121,34 @@ const actionGetAndSetInStoreAvalilableMissionsToBind = (payloadOwn: GetMissionPa
   );
 
   return response;
+};
+
+type ActionSetDependenceEdcRequestForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>, ReduxState, {}, AnyAction>;
+const actionSetDependenceEdcRequestForDutyMission = (edcRequest: IStateMissions['dutyMissionData']['edcRequest']): ActionSetDependenceEdcRequestForMission => (
+  (dispatch, getState) => {
+    const missionData = dispatch(
+      actionSetDutyMissionPartialData({
+        ...getMissionsState(getState()).missionData,
+        edcRequest,
+      }),
+    );
+
+    return missionData;
+  }
+);
+
+const loadEdcRequiedByIdForDutyMission = (id: number, meta: LoadingMeta) => async (dispatch) => {
+  const edcRequest = await dispatch(
+    edcRequestActions.actionLoadEdcRequestById(id, meta),
+  );
+
+  dispatch(
+    actionSetDependenceEdcRequestForDutyMission(
+      edcRequest,
+    ),
+  );
+
+  return edcRequest;
 };
 
 type ActionSetDependenceOrderDataForDutyMissionAction = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>, ReduxState, {}, AnyAction>;
@@ -230,4 +259,6 @@ export default {
   actionUpdateDutyMission,
   actionRemoveDutyMissions,
   actionRemoveDutyMission,
+  actionSetDependenceEdcRequestForDutyMission,
+  loadEdcRequiedByIdForDutyMission,
 };

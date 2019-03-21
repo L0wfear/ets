@@ -44,7 +44,6 @@ import FieldDatesDutyMission from './inside_fields/dates/FieldDatesDutyMission';
 import FieldStructureDutyMission from './inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import FieldMissionSourceDutyMission from './inside_fields/mission_source_id/FieldMissionSourceDutyMission';
 import { isOrderSource } from 'components/missions/utils/utils';
 import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
 import FieldRouteIdDutyMission from './inside_fields/route_id/FieldRouteIdDutyMission';
@@ -61,6 +60,8 @@ import {
 } from 'utils/dates';
 import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMission';
 import EtsModal from 'components/new/ui/modal/Modal';
+import FieldMissionSourceMission from 'components/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
+import FieldEdcRequestData from 'components/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -89,7 +90,12 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   }
 
   componentDidMount() {
-    const { page, path, formState: state, dependeceOrder } = this.props;
+    const {
+      page, path,
+      formState: state,
+      dependeceOrder,
+      edcRequest,
+    } = this.props;
 
     const {
       isPermitted,
@@ -100,22 +106,31 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
 
     this.props.employeeGetAndSetInStore({}, { page, path });
 
-    if (
-      isPermitted &&
-      DUTY_MISSION_IS_ORDER_SOURCE &&
-      !DUTY_MISSION_IS_DISPLAY
-    ) {
-      if (!dependeceOrder) {
-        this.props.actionLoadOrderAndTechnicalOperationByIdForDutyMission(
-          state.faxogramm_id,
-          state.order_operation_id,
+    if (isPermitted) {
+      if (
+        DUTY_MISSION_IS_ORDER_SOURCE &&
+        !DUTY_MISSION_IS_DISPLAY
+      ) {
+        if (!dependeceOrder) {
+          this.props.actionLoadOrderAndTechnicalOperationByIdForDutyMission(
+            state.faxogramm_id,
+            state.order_operation_id,
+            { page, path },
+          );
+        }
+        if (IS_CREATING) {
+          this.checkOnMosckowTime();
+        }
+      }
+
+      if (state.request_id && !edcRequest || (edcRequest && edcRequest.id !== state.request_id)) {
+        this.props.loadEdcRequiedByIdForDutyMission(
+          state.request_id,
           { page, path },
         );
       }
-      if (IS_CREATING) {
-        this.checkOnMosckowTime();
-      }
     }
+
   }
 
   async checkOnMosckowTime() {
@@ -273,20 +288,26 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
               />
             </Col>
             <Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 6}>
-              <FieldMissionSourceDutyMission
+              <FieldMissionSourceMission
                 value={state.mission_source_id}
                 name={state.mission_source_name}
                 error={errors.mission_source_id}
                 disabled={
-                  !isPermitted ||
-                  DUTY_MISSION_IS_DISPLAY ||
-                  DUTY_MISSION_IS_ORDER_SOURCE
+                  !isPermitted
+                  || DUTY_MISSION_IS_DISPLAY
+                  || DUTY_MISSION_IS_ORDER_SOURCE
+                  || state.request_id
                 }
                 isPermitted={
                   isPermitted &&
                   !DUTY_MISSION_IS_DISPLAY &&
-                  !DUTY_MISSION_IS_ORDER_SOURCE
+                  !DUTY_MISSION_IS_ORDER_SOURCE &&
+                  Boolean(state.request_id)
                 }
+
+                request_id={state.request_id}
+                request_number={state.request_number}
+
                 onChange={this.props.handleChange}
                 page={page}
                 path={path}
@@ -412,6 +433,11 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
               />
             </Col>
           </Row>
+          <Row>
+            <Col md={12}>
+              <FieldEdcRequestData request_id={state.request_id} edcRequest={this.props.edcRequest} />
+            </Col>
+          </Row>
           <FieldRouteIdDutyMission
             error={errors.route_id}
             value={state.route_id}
@@ -420,6 +446,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             municipal_facility_name={state.municipal_facility_name}
             technical_operation_id={state.technical_operation_id}
             technical_operation_name={state.technical_operation_name}
+            request_id={state.request_id}
             DUTY_MISSION_IS_ORDER_SOURCE={DUTY_MISSION_IS_ORDER_SOURCE}
             disabled={!isPermitted || DUTY_MISSION_IS_DISPLAY}
             isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
@@ -506,6 +533,7 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
     ReduxState
   >(
     (state) => ({
+      edcRequest: getMissionsState(state).dutyMissionData.edcRequest,
       dependeceOrder: getMissionsState(state).dutyMissionData.dependeceOrder,
       dependeceTechnicalOperation: getMissionsState(state).dutyMissionData
         .dependeceTechnicalOperation,
@@ -532,6 +560,11 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
         dispatch(
           missionsActions.actionSetDependenceOrderDataForDutyMission(...arg),
         ),
+      loadEdcRequiedByIdForDutyMission: (...arg) => (
+        dispatch(
+          missionsActions.loadEdcRequiedByIdForDutyMission(...arg),
+        )
+      ),
     }),
   ),
   withForm<PropsDutyMissionWithForm, DutyMission>({

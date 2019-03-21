@@ -25,6 +25,7 @@ export type StatePropsMission = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
+  edcRequest: IStateMissions['missionData']['edcRequest'];
   waybillData: IStateMissions['missionData']['waybillData'];
   dependeceOrder: IStateMissions['missionData']['dependeceOrder'];
   dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
@@ -34,6 +35,7 @@ export type DispatchPropsMission = {
   actionPrintFormMission: HandleThunkActionCreator<typeof missionsActions.actionPrintFormMission>;
   actionLoadOrderAndTechnicalOperationByIdForMission: HandleThunkActionCreator<typeof missionsActions.actionLoadOrderAndTechnicalOperationByIdForMission>;
   actionLoadWaybillDataByIdForMission: HandleThunkActionCreator<typeof missionsActions.actionLoadWaybillDataByIdForMission>;
+  loadEdcRequiedByIdForMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForMission>;
 };
 export type OwnMissionProps = {
   element: Partial<Mission> | null;

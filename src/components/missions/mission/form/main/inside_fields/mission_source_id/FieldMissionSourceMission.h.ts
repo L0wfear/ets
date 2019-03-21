@@ -21,6 +21,9 @@ export type OwnPropsFieldMissionSourceMission = {
   error: string | void;
   onChange: (obj: Partial<Mission>) => void;
 
+  request_id?: Mission['request_id'];
+  request_number?: Mission['request_number'];
+
   page: string;
   path: string;
 };

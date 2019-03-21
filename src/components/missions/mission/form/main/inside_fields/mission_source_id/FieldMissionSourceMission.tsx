@@ -16,6 +16,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { makeOptionsByMissionSourceForMission } from './makeOptions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types/index';
 import { isOrderSource } from 'components/missions/utils/utils';
+import { Row, Col } from 'react-bootstrap';
 
 class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSourceMission, StateFieldMissionSourceMission> {
   state = {
@@ -41,23 +42,38 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
     } = this;
 
     const {
+      request_id,
+      request_number,
+    } = props;
+
+    const {
       MISSION_SOURCE_OPTIONS,
     } = this.state;
 
     return (
-      <>
-        <ExtField
-          id="mission-source-id"
-          type="select"
-          modalKey={props.page}
-          label="Источник получения задания"
-          error={props.error}
-          disabled={props.disabled}
-          options={MISSION_SOURCE_OPTIONS}
-          value={props.value}
-          onChange={this.handleChange}
-        />
-      </>
+      <Row>
+        <Col md={request_id ? 6 : 12}>
+          <ExtField
+            id="mission-source-id"
+            type="select"
+            modalKey={props.page}
+            label="Источник получения задания"
+            error={props.error}
+            disabled={props.disabled}
+            options={MISSION_SOURCE_OPTIONS}
+            value={props.value}
+            onChange={this.handleChange}
+          />
+        </Col>
+        <Col md={request_id ? 6 : 0}>
+          <ExtField
+            type="string"
+            label="Номер заявки"
+            value={request_number}
+            disabled
+          />
+        </Col>
+      </Row>
     );
   }
 }

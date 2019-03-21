@@ -12,7 +12,7 @@ export interface OneRegistryData {
   Service: any;
   header?: {
     title?: any;
-    buttons?: [];
+    buttons?: string[];
   };
   list: {
     data: {

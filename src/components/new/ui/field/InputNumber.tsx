@@ -12,6 +12,7 @@ type PropsInputNumber = {
   label?: string;
   noShowLabel?: boolean;
   onChange: any;
+  disabled?: boolean;
 };
 
 class InputNumber extends React.PureComponent<PropsInputNumber, {}> {

@@ -15,6 +15,7 @@ export const withSpecificPermissions = (user) => {
   }
 
   // permissions.push(...getFullAccess('inspect.autobase'));
+  permissions.push(...getFullAccess('edc_request'));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {

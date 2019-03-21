@@ -22,6 +22,7 @@ type PropsMultiselectRegestryFilter = {
     valueKey: string;
     labelKey?: string;
     options?: any;
+    disabled?: boolean;
   };
   formatedTitle: string;
   filterValuesObj: any;
@@ -103,6 +104,7 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
             options={state.options}
             multi
             onChange={this.handleChange}
+            disabled={this.props.filterData.disabled}
           />
         </EtsFilterInputContainer>
       </EtsFilter>

@@ -13,6 +13,7 @@ type PropsInputDate = {
   noShowLabel?: boolean;
   time?: boolean;
   onChange: any;
+  disabled?: boolean;
 };
 
 class InputDate extends React.PureComponent<PropsInputDate, {}> {
@@ -47,6 +48,7 @@ class InputDate extends React.PureComponent<PropsInputDate, {}> {
               date={value}
               time={Boolean(mainProps.time)}
               onChange={mainProps.onChange}
+              disabled={mainProps.disabled}
             />
           </InputContainer>
           {

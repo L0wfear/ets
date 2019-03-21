@@ -36,6 +36,7 @@ export type OneFilterType<F> = {
   | 'advanced-date';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];
+  disabled?: boolean;
 };
 
 export type TypeFields<F extends any> = {

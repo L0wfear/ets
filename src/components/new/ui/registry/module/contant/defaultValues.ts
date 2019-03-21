@@ -1,4 +1,5 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 
 const registryDefaultObj: OneRegistryData = {
   Service: {
@@ -37,7 +38,7 @@ const registryDefaultObj: OneRegistryData = {
     },
     paginator: {
       currentPage: 0,
-      perPage: 15,
+      perPage: MAX_ITEMS_PER_PAGE,
     },
     processed: {
       filterValues: {},

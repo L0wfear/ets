@@ -23,6 +23,7 @@ type PropsAdvancedNumberFilter = {
     title: string;
     valueKey: string;
     labelKey?: string;
+    disabled?: boolean;
   };
   filterValuesObj: any;
   formatedTitle: string;
@@ -122,6 +123,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
                 options={state.optionsType}
                 onChange={this.handleChangeType}
                 clearable={false}
+                disabled={this.props.filterData.disabled}
               />
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
@@ -130,6 +132,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
                 onChange={this.handleChangeFirst}
                 noShowLabel
                 noShowError
+                disabled={this.props.filterData.disabled}
               />
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
@@ -142,6 +145,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
                 onChange={this.handleChangeSecond}
                 noShowLabel
                 noShowError
+                disabled={this.props.filterData.disabled}
               />
             )
             : (

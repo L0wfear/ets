@@ -17,12 +17,14 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import InputDate from 'components/new/ui/field/InputDate';
+import { createValidDate } from 'utils/dates';
 
 type PropsAdvancedDateFilter = {
   filterData: {
     title: string;
     valueKey: string;
     labelKey?: string;
+    disabled?: boolean;
   };
   filterValuesObj: any;
   formatedTitle: string;
@@ -95,11 +97,11 @@ class AdvancedDateFilter extends React.Component<PropsAdvancedDateFilter, StateA
   }
 
   handleChangeFirst = (value) => {
-    this.handleChange(value, 0);
+    this.handleChange(value ? createValidDate(value) : null, 0);
   }
 
   handleChangeSecond = (value) => {
-    this.handleChange(value, 1);
+    this.handleChange(value ? createValidDate(value) : null, 1);
   }
 
   render() {
@@ -120,6 +122,7 @@ class AdvancedDateFilter extends React.Component<PropsAdvancedDateFilter, StateA
                 options={state.optionsType}
                 onChange={this.handleChangeType}
                 clearable={false}
+                disabled={this.props.filterData.disabled}
               />
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
@@ -128,6 +131,7 @@ class AdvancedDateFilter extends React.Component<PropsAdvancedDateFilter, StateA
                 onChange={this.handleChangeFirst}
                 noShowLabel
                 noShowError
+                disabled={this.props.filterData.disabled}
               />
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
@@ -140,6 +144,7 @@ class AdvancedDateFilter extends React.Component<PropsAdvancedDateFilter, StateA
                 onChange={this.handleChangeSecond}
                 noShowLabel
                 noShowError
+                disabled={this.props.filterData.disabled}
               />
             )
             : (

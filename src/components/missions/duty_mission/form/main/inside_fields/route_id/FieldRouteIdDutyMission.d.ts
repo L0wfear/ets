@@ -11,6 +11,7 @@ export type StatePropsFieldRouteIdDutyMission = {
   routesList: IStateRoutes['routesList'];
   municipalFacilityForDutyMissionList: IStateSomeUniq['municipalFacilityForDutyMissionList'];
   dependeceTechnicalOperation: IStateMissions['dutyMissionData']['dependeceTechnicalOperation'];
+  edcRequest: IStateMissions['dutyMissionData']['edcRequest'];
 };
 export type DispatchPropsFieldRouteIdDutyMission = {
   actionLoadRouteById: HandleThunkActionCreator<
@@ -31,6 +32,7 @@ export type OwnPropsFieldRouteIdDutyMission = {
   municipal_facility_name: DutyMission['municipal_facility_name'];
   technical_operation_id: DutyMission['technical_operation_id'];
   technical_operation_name: DutyMission['technical_operation_name'];
+  request_id?: DutyMission['request_id'];
 
   DUTY_MISSION_IS_ORDER_SOURCE: boolean;
 

@@ -29,6 +29,7 @@ export type StatePropsDutyMission = {
     typeof getSessionStructuresParams
   >['STRUCTURE_FIELD_VIEW'];
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
+  edcRequest: IStateMissions['dutyMissionData']['edcRequest'];
   dependeceOrder: IStateMissions['dutyMissionData']['dependeceOrder'];
   dependeceTechnicalOperation: IStateMissions['dutyMissionData']['dependeceTechnicalOperation'];
 };
@@ -39,6 +40,7 @@ export type DispatchPropsDutyMission = {
   actionPrintFormDutyMission: HandleThunkActionCreator<typeof missionsActions.actionPrintFormDutyMission>;
   actionLoadOrderAndTechnicalOperationByIdForDutyMission: HandleThunkActionCreator<typeof missionsActions.actionLoadOrderAndTechnicalOperationByIdForDutyMission>;
   actionSetDependenceOrderDataForDutyMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceOrderDataForDutyMission>;
+  loadEdcRequiedByIdForDutyMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForDutyMission>;
 };
 export type OwnDutyMissionProps = {
   element: Partial<DutyMission> | null;

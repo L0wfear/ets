@@ -465,6 +465,36 @@ export const actionUnselectSelectedRowToShow: any = (registryKey: string, allRes
   }
 };
 
+export const registryLoadOneData: any = (registryKey, id) => async (dispatch, getState) => {
+  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const getOneData = get(registryData, 'Service.getOneData', null);
+
+  if (getOneData) {
+    const result = await etsLoadingCounter(
+      dispatch,
+      getJSON(
+        `${configStand.backend}/${getOneData.entity}`,
+        { id },
+      ),
+      { page: registryKey },
+    );
+
+    const response = get(
+      result,
+      get(getOneData, 'typeAns', 'result.rows.0'),
+      null,
+    );
+
+    dispatch(
+      registrySetSelectedRowToShowInForm(registryKey, response),
+    );
+
+    return response;
+  }
+
+  return null;
+};
+
 export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
   if (isSubmitted) {
     dispatch(

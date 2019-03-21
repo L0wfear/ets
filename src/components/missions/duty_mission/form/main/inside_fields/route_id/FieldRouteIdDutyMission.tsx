@@ -295,6 +295,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<
       structure_id,
       DUTY_MISSION_IS_ORDER_SOURCE,
       dependeceTechnicalOperation,
+      request_id,
+      edcRequest,
     } = this.props;
 
     const {
@@ -315,7 +317,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
               type="select"
               id="route_id"
               modalKey={page}
-              label="Маршрут"
+              label={`Маршрут ${request_id ? `(адрес в заявке: ${get(edcRequest, 'house_address', '')})` : ''}`}
               error={error}
               options={ROUTE_OPTIONS}
               value={value}
@@ -385,6 +387,7 @@ export default connect<
       .municipalFacilityForDutyMissionList,
     dependeceTechnicalOperation: getMissionsState(state).dutyMissionData
       .dependeceTechnicalOperation,
+    edcRequest: getMissionsState(state).dutyMissionData.edcRequest,
   }),
   (dispatch: any, { page, path }) => ({
     actionLoadRouteById: (...arg) =>

@@ -22,6 +22,10 @@ type getRootRegistryFunc = (
   registryKey: string,
 ) => OneRegistryData;
 
+export const getServiceData: any = (registryState, registryKey) => (
+  (registryState[registryKey] || registryDefaultObj).Service
+);
+
 export const getHeaderData: getHeaderDataFunc = (registryState, registryKey) => (
   (registryState[registryKey] || registryDefaultObj).header
 );

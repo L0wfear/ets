@@ -14,6 +14,8 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
+import EdcRequestFormLazy from 'components/new/pages/edc_request/form';
+
 const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {
   React.useEffect(
     () => {
@@ -28,9 +30,8 @@ const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {
 
   return (
       <>
-      <Registry
-        registryKey={registryKey}
-      />
+      <Registry registryKey={registryKey} />
+      <EdcRequestFormLazy registryKey={registryKey} />
     </>
   );
 };

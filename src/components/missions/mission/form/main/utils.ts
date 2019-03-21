@@ -55,6 +55,8 @@ export const makeDefaultMission = (...arg: any[]): Mission => ({
   order_operation_id: null,
   order_status: '',
   passes_count: 1,
+  request_id: null,
+  request_number: '',
   route_id: null,
   route_name: '',
   status: '', // @todo

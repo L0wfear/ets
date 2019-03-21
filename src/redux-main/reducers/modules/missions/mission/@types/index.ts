@@ -44,6 +44,8 @@ export type Mission = {
   order_operation_id: number | null;
   order_status: string;
   passes_count: number | null;
+  request_id?: number;
+  request_number?: string;
   route_id: number | null;
   route_name: string;
   status: string; // @todo

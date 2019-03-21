@@ -24,7 +24,7 @@ import LoginPageWrap from 'components/login/LoginPageWrap';
 import MainAppWrap from 'components/MainAppWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { sessionSetTracksCachingConfig } from 'redux-main/reducers/modules/session/actions-session';
+import { sessionSetTracksCachingConfig, sessionSetAppConfig } from 'redux-main/reducers/modules/session/actions-session';
 
 class App extends React.Component <any, any> {
 
@@ -67,7 +67,12 @@ class App extends React.Component <any, any> {
     return AuthCheckService.get()
           .then(() => (
             Promise.all([
-              flux.getActions('objects').getConfig(),
+              flux.getActions('objects').getConfig().then((config) => (
+                new Promise(async (res) => {
+                  await this.props.sessionSetAppConfig(config);
+                  res(true);
+                })
+              )),
               flux.getActions('objects').getTrackConfig()
                 .then((trackConfig) => (
                   this.props.sessionSetTracksCachingConfig(trackConfig)
@@ -119,6 +124,11 @@ export default compose<any, any>(
           sessionSetTracksCachingConfig(
             appTrackConfig,
           ),
+        )
+      ),
+      sessionSetAppConfig: (...arg) => (
+        dispatch(
+          sessionSetAppConfig(...arg),
         )
       ),
     }),

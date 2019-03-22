@@ -15,14 +15,10 @@ import {
   HrLine,
   TpMessangeContainer,
 } from 'components/new/pages/login/styled/styled';
-import SnowStorm from 'react-snowstorm';
-import { DivNone } from 'global-styled/global-styled';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { sessionLogin } from 'redux-main/reducers/modules/session/actions-session';
-
-const STAND = process.env.STAND;
 
 class LoginPage extends React.PureComponent<any, any> {
   state = {
@@ -69,7 +65,6 @@ class LoginPage extends React.PureComponent<any, any> {
 
     return (
       <LoginPageContainer>
-        {STAND === 'dev' ? <SnowStorm followMouse={false} /> : <DivNone />}
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
             <LoginPageFormContainer>

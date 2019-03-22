@@ -59,6 +59,9 @@ export type TypeFields<F extends any> = {
   title: string;
   width?: number;
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+} | {
+  key: 'checkbox';
+  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 };
 
 export type TypeConfigData<F extends any> = {

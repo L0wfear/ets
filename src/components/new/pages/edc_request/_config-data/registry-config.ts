@@ -77,6 +77,9 @@ export const config: TypeConfigData<EdcRequest> = {
     meta: {
       fields: [
         {
+          key: 'checkbox',
+        },
+        {
           key: 'enumerated',
           title: '№',
         },

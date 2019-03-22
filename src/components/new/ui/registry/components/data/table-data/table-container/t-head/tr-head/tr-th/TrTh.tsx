@@ -1,18 +1,22 @@
 import * as React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { getListData, getRootRegistry } from 'components/new/ui/registry/module/selectors-registry';
 
 import {
-  registryTriggerOnChangeSelectedField,
+  registryTriggerOnChangeSelectedField, registryGlobalCheck,
 } from 'components/new/ui/registry/module/actions-registy';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import { ExtField } from 'components/ui/new/field/ExtField';
+import { isAllChecked } from 'components/new/ui/registry/module/check_funk';
 
 type PropsTrTh = {
   registryKey: string;
   colData: any;
   formatedTitle: string;
   registryTriggerOnChangeSelectedField: any;
+  registryGlobalCheck: any;
+  allIsChecked: boolean;
   sort: {
     field: string;
     reverse: boolean;
@@ -50,19 +54,57 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
     }
   }
 
+  handleClickGlobalCheckbox = () => {
+    this.props.registryGlobalCheck();
+  };
+
   render() {
     const {
       colData,
       formatedTitle,
     } = this.props;
 
+    if (colData.key === 'checkbox') {
+      return (
+        <EtsTheadTh
+          canClick={true}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          onClick={this.handleClickGlobalCheckbox}
+          width={30}
+        >
+          <ExtField
+            type="boolean"
+            error={false}
+            label={false}
+            value={this.props.allIsChecked}
+            checkboxStyle={false}
+          />
+        </EtsTheadTh>
+      );
+    }
+
+    if (colData.key === 'enumerated') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          onClick={this.handleClickGlobalCheckbox}
+          width={30}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
     return (
       <EtsTheadTh
-        canClick={colData.key !== 'enumerated'}
+        canClick
         rowSpan={colData.rowSpan}
         colSpan={colData.colSpan}
         onClick={this.handleClick}
-        width={colData.key === 'enumerated' ? 30 : colData.width}
+        width={colData.width}
       >
         {formatedTitle}
         <Glyphicon glyph={getGlyphName(this.props)} />
@@ -73,6 +115,7 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
 
 const mapStateToProps = (state, { registryKey }) => ({
   sort: getListData(state.registry, registryKey).processed.sort,
+  allIsChecked: isAllChecked(getRootRegistry(state.registry, registryKey)),
 });
 
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
@@ -82,6 +125,11 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
         registryKey,
         key,
       ),
+    )
+  ),
+  registryGlobalCheck: () => (
+    dispatch(
+      registryGlobalCheck(registryKey),
     )
   ),
 });

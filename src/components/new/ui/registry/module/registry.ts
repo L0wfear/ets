@@ -36,7 +36,6 @@ export interface OneRegistryData {
       fieldsInDeepArr: any[],
       rowFields: any[],
       treeFields: object,
-      noEnumerated?: boolean;
     },
     paginator?: {
       currentPage?: number;

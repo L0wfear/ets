@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import { isNumber, isArray } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
+import TrTdCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdCheckbox';
 import TrTdEnumerated from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdEnumerated';
 import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
@@ -46,6 +47,17 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       rowData,
       registryKey,
     } = props;
+
+    if (key === 'checkbox') {
+      return (
+        <TrTdCheckbox
+          key={key}
+          indexRow={props.indexRow}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
 
     if (key === 'enumerated') {
       return (

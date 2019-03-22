@@ -15,6 +15,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import EdcRequestFormLazy from 'components/new/pages/edc_request/form';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {
   React.useEffect(
@@ -37,6 +38,10 @@ const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {
 };
 
 export default compose<EdcRequestListProps, EdcRequestListOwnProps>(
+  withPreloader({
+    page: config.registryKey,
+    typePreloader: 'mainpage',
+  }),
   connect<EdcRequestListStateProps, EdcRequestListDispatchProps, EdcRequestListOwnProps, EdcRequestListMergedProps, ReduxState>(
     null,
     (dispatch: any) => ({

@@ -34,7 +34,6 @@ class Thead extends React.Component<PropsThead, StateThead> {
 
 export default connect<StatePropsThead, DispatchPropsThead, OwnPropsThead, ReduxState>(
   (state, { registryKey }) => ({
-    noEnumerated: getListData(state.registry, registryKey).meta.noEnumerated,
     fieldsInDeepArr: getListData(state.registry, registryKey).meta.fieldsInDeepArr,
   }),
 )(Thead);

@@ -24,6 +24,7 @@ import { getBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
+import { isNullOrUndefined } from 'util';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -99,7 +100,8 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
     const typeAns =  get(getRegistryData, 'typeAns', 'result.rows');
 
     processResponse(result);
-    arrayRaw = get(result, typeAns, []);
+    const uniqKey: any = get(list, 'data.uniqKey', null);
+    arrayRaw = get(result, typeAns, []).filter((data) => !isNullOrUndefined(data[uniqKey]));
     if (getRegistryData.userServerFilters) {
       total_count =  get(result, 'total_count', 0);
     } else {
@@ -141,6 +143,10 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
 };
 
 export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage = 0) => (dispatch, getState) => {
+  dispatch(
+    registryResetGlobalCheck(registryKey),
+  );
+
   const { registry: { [registryKey]: registryData } } = getState();
   const getRegistryData = get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null);
 
@@ -210,6 +216,10 @@ export const registryChangeFilterRawValues = (registryKey, valueKey, type, value
 };
 
 export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) => {
+  dispatch(
+    registryResetGlobalCheck(registryKey),
+  );
+
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
   const filter = {
@@ -256,6 +266,10 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
 };
 
 export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
+  dispatch(
+    registryResetGlobalCheck(registryKey),
+  );
+
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
   const filter = get(registyData, 'filter', {});
@@ -345,6 +359,10 @@ export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState)
 };
 
 export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {
+  dispatch(
+    registryResetGlobalCheck(registryKey),
+  );
+
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
   const filter = get(registyData, 'filter', {});
@@ -396,6 +414,95 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
       registryLoadDataByKey(registryKey),
     );
   }
+};
+
+export const registryCheckLine: any = (registryKey, rowData) => (dispatch, getState) => {
+  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const list: any = get(registryData, 'list', null);
+  const uniqKey: any = get(list, 'data.uniqKey', null);
+  const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
+
+  const checkedRowsNew = { ...checkedRowsCurrent };
+
+  if (!checkedRowsNew[rowData[uniqKey]]) {
+    checkedRowsNew[rowData[uniqKey]] = rowData;
+  } else {
+    delete checkedRowsNew[rowData[uniqKey]];
+  }
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          checkedRows: checkedRowsNew,
+        },
+      },
+    ),
+  );
+};
+
+export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) => {
+  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const getRegistryData = get(registryData, 'Service.getRegistryData', null);
+  const list: any = get(registryData, 'list', null);
+  const uniqKey: any = get(list, 'data.uniqKey', null);
+  const offset: any = get(list, 'paginator.currentPage', 0);
+  const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
+  const processedArray: any = get(list, 'processed.processedArray', {}) || {};
+
+  let checkedRowsNew = {};
+  let checkArray = processedArray;
+
+  if (!getRegistryData.userServerFilters) {
+    checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
+  }
+
+  if (Object.keys(checkedRowsCurrent).length === checkArray.length) {
+    checkedRowsNew = {};
+  } else {
+    checkedRowsNew = checkArray.reduce((newObj, oneData) => {
+      newObj[oneData[uniqKey]] = oneData;
+
+      return newObj;
+    }, {});
+  }
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          checkedRows: checkedRowsNew,
+        },
+      },
+    ),
+  );
+};
+
+export const registryResetGlobalCheck: any = (registryKey) => (dispatch, getState) => {
+  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const list: any = get(registryData, 'list', null);
+  const checkedRows: any = get(list, 'data.checkedRows', {});
+
+  if (Object.keys(checkedRows).length) {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          data: {
+            ...list.data,
+            checkedRows: {},
+          },
+        },
+      ),
+    );
+      }
 };
 
 export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {

@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { TitleForm } from './styled/ViewInspectAutobaseStyled';
-import { Button, Row, Col, Glyphicon } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import IAVisibleWarning from './vsible_warning/IAVisibleWarning';
+import IAVisibleWarning from 'components/new/pages/inspection/autobase/components/vsible_warning/IAVisibleWarning';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
@@ -13,6 +13,8 @@ import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobase
 import { Reducer } from 'redux';
 import { inspectAutobaeSchema } from './inspect_autobase_schema';
 import { validate } from 'components/ui/form/new/validate';
+import ViewAddInspectEmployee from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
+import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 
 type InitialState = {
   selectedInspectAutobase: InspectAutobase,
@@ -101,10 +103,6 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
     props.isPermitted
     && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
   );
-  const isPermittedChangeCloseParams = (
-    props.isPermitted
-    && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-  );
 
   const onChangeData = React.useCallback(
     (data) => {
@@ -170,6 +168,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               data={state.selectedInspectAutobase.data}
               errors={state.errors}
               isPermitted={isPermittedChangeListParams}
+              filedToCheck={filedToCheck}
             />
           </BoxContainer>
           <Row>
@@ -197,99 +196,14 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
             </Col>
           </Row>
         </Col>
-        {
-          props.type !== INSPECT_AUTOBASE_TYPE_FORM.list
-            ? (
-              <Col md={6} sm={6}>
-                <Row>
-                  <Col md={12}>
-                    <ExtField
-                      type="date"
-                      label="Срок, до которого необходимо устранить недостатки"
-                      time={false}
-                      date={null}
-                      onChange={(date) => alert(date)}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={12}>
-                    <h4>Члены комиссии:</h4>
-                    {
-                      [
-                        { fio: 'Фамилия имя отчество', position: 'должность', clearable: false },
-                        { fio: 'Фамилия имя отчество можно удалить', position: 'должность', clearable: true },
-                      ].map((employeeData) => (
-                        <Col md={12}>
-                          <span>{employeeData.fio}, {employeeData.position}</span>
-                          {
-                            employeeData.clearable && isPermittedChangeCloseParams
-                              ? (
-                                <>
-                                  &nbsp;<Button onClick={() => { alert('удаление'); } }><Glyphicon glyph="remove"/></Button>
-                                </>
-                              )
-                              : (
-                                <DivNone />
-                              )
-                          }
-                        </Col>
-                      ))
-                    }
-                    {
-                      isPermittedChangeCloseParams
-                        ? (
-                          <Col md={12}>
-                            <Button onClick={() => { alert('добавить провещяющего'); } }><Glyphicon glyph="plus"/>&nbsp;Добавить провещяющего</Button>
-                          </Col>
-                        )
-                        : (
-                          <DivNone />
-                        )
-                    }
-                  </Col>
-                  <Col md={12}>
-                    <h4>{`От ГБУ "-":`}</h4>
-                    {
-                      [
-                        { fio: 'Фамилия имя отчество', position: 'должность', clearable: false },
-                        { fio: 'Фамилия имя отчество можно удалить', position: 'должность', clearable: true },
-                      ].map((employeeData) => (
-                        <Col md={12}>
-                          <span>{employeeData.fio}, {employeeData.position}</span>
-                          {
-                            employeeData.clearable && isPermittedChangeCloseParams
-                              ? (
-                                <>
-                                  &nbsp;<Button onClick={() => { alert('удаление'); } }><Glyphicon glyph="remove"/></Button>
-                                </>
-                              )
-                              : (
-                                <DivNone />
-                              )
-                          }
-                        </Col>
-                      ))
-                    }
-                    {
-                      isPermittedChangeCloseParams
-                        ? (
-                          <Col md={12}>
-                            <Button onClick={() => { alert('добавить провещяющего'); } }><Glyphicon glyph="plus"/>&nbsp;Добавить провещяющего</Button>
-                          </Col>
-                        )
-                        : (
-                          <DivNone />
-                        )
-                    }
-                  </Col>
-                </Row>
-              </Col>
-            )
-            : (
-              <DivNone />
-            )
-        }
+        <ViewAddInspectEmployee
+          type={props.type}
+          isPermitted={props.isPermitted}
+          canAddMembers={true}
+          canAddCompanyAgent={true}
+          canRemoveEmployee={true}
+        >
+        </ViewAddInspectEmployee>
         <Col md={12} sm={12}>
           <FooterEnd>
             <ViewInspectAutobaseButtonSubmit

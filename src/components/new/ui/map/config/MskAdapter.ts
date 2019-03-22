@@ -8,7 +8,7 @@ import EverGisTokenService from 'api/map/EverGisTokenService';
 import MapServerConfig from 'components/new/ui/map/config/MapServerConfig';
 
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile';
+const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/egko_122018/MapServer/tile';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;

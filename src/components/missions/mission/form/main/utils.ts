@@ -50,6 +50,7 @@ export const makeDefaultMission = (...arg: any[]): Mission => ({
   object_type_id: null,
   object_type_name: '',
   operation_num_execution: null,
+  faxogramm_id: null,
   order_id: null,
   order_number: null,
   order_operation_id: null,

@@ -39,6 +39,7 @@ export type Mission = {
   object_type_id: number | null;
   object_type_name: string;
   operation_num_execution: null
+  faxogramm_id?: number; // legacy
   order_id: number | null;
   order_number: string | null;
   order_operation_id: number | null;

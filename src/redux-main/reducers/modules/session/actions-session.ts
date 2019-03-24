@@ -19,6 +19,13 @@ export const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('fountains'));
   }
 
+  permissions.push(...getFullAccess('docs_close_waybill'));
+  permissions.push(...getFullAccess('docs_create_mission'));
+  permissions.push(...getFullAccess('docs_close_mission'));
+  permissions.push(...getFullAccess('docs_issue_a_waybill'));
+  permissions.push(...getFullAccess('docs_create_mission_by_order'));
+  permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
+
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
       permissions.push(

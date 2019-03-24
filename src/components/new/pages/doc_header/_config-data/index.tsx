@@ -2,11 +2,17 @@ import * as React from 'react';
 import { getChildrenData } from 'utils/routes/getChildrenData';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
-import master from 'components/new/pages/doc_header/master/_config-data/index';
-import dispatcher from 'components/new/pages/doc_header/dispatcher/_config-data/index';
-import okrug from 'components/new/pages/doc_header/okrug/_config-data/index';
-import common from 'components/new/pages/doc_header/common/_config-data/index';
-import techMaintenance from 'components/new/pages/doc_header/tech-maintenance/_config-data/index';
+import master from 'components/new/pages/doc_header/00-master/_config-data';
+import dispatcher from 'components/new/pages/doc_header/01-dispatcher/_config-data';
+import okrug from 'components/new/pages/doc_header/02-okrug/_config-data';
+import common from 'components/new/pages/doc_header/03-common/_config-data';
+import techMaintenance from 'components/new/pages/doc_header/04-tech-maintenance/_config-data';
+import closeWaybill from 'components/new/pages/doc_header/05-close_waybill/_config-data';
+import createMission from 'components/new/pages/doc_header/06-create_mission/_config-data';
+import closeMission from 'components/new/pages/doc_header/07-close_mission/_config-data';
+import issueAWaybill from 'components/new/pages/doc_header/08-issue_a_waybill/_config-data';
+import createMissionByOrder from 'components/new/pages/doc_header/09-create_mission_by_order/_config-data';
+import issueAWaybillWithoutMission from 'components/new/pages/doc_header/10-issue_a_waybill_without_mission/_config-data';
 
 const children = {
   master,
@@ -14,6 +20,12 @@ const children = {
   okrug,
   common,
   techMaintenance,
+  closeWaybill,
+  createMission,
+  closeMission,
+  issueAWaybill,
+  createMissionByOrder,
+  issueAWaybillWithoutMission,
 };
 
 export default {

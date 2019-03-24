@@ -1010,9 +1010,8 @@ class WaybillForm extends Form {
           return;
         }
       }
-
-      this.handleChange('equipment_fuel', false);
     }
+    this.handleChange('equipment_fuel', false);
   };
   rejectMissionHandler = (rejectMissionList) => {
     let rejectMissionSubmitError = false;

@@ -419,7 +419,11 @@ export const waybillSchema = {
     equipment_fact_fuel_end: [
       {
         validator: (value, { status, equipment_fuel }) => {
-          if (equipment_fuel && status === 'active' && !value) {
+          if (
+            equipment_fuel
+            && status === 'active'
+            && (!value && value !== 0)
+          ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
         },
@@ -428,7 +432,11 @@ export const waybillSchema = {
     fact_fuel_end: [
       {
         validator: (value, { status, equipment_fuel }) => {
-          if (equipment_fuel && status === 'active' && !value) {
+          if (
+            equipment_fuel
+            && status === 'active'
+            && (!value && value !== 0)
+          ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
         },

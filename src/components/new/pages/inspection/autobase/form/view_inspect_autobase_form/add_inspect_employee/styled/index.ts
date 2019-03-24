@@ -11,7 +11,7 @@ export const FieldWrap = styled.div`
 
 export const ShowBlockWrapper = styled.div`
   border: solid 3px ${constantColor.colorLightGray};
-  background-color: #f8f8f8;
+  background-color: ${constantColor.colorLightGray};
   padding: 15px;
   border-radius: 3px;
   margin: 10px 0px;
@@ -24,12 +24,54 @@ export const ShowBlockWrapper = styled.div`
     opacity: 1;
     color: ${constantColor.colorGray};
     position: absolute;
-    top: 0px;
-    right: 2px;
+    top: 2px;
+    right: 6px;
     left: unset;
-    &:hover {
+    padding: 5px 10px;
+    &:hover, &:focus {
       color: black!important;
       background: transparent!important;
     }
   }
+`;
+
+export const EmpInfo = styled.div`
+  display: block;
+  max-width: 350px;
+`;
+
+export const EmpRow = styled.div<{
+  highlight?: boolean;
+}>`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 400px;
+  margin-bottom: 10px;
+  ${
+    ({highlight}) => {
+      if ( highlight ) {
+        return `
+          &:hover {
+            ${EmpInfo} {
+              color: red;
+            }
+          }
+        `;
+      }
+    }
+  }
+  button.close {
+    opacity: 1;
+    color: ${constantColor.colorGray};
+    padding: 5px 10px;
+    &:hover, &:focus {
+      color: black!important;
+      background: transparent!important;
+    }
+  }
+`;
+
+export const ViewInspectSingleBlock = styled.div`
+  margin-bottom: 20px;
 `;

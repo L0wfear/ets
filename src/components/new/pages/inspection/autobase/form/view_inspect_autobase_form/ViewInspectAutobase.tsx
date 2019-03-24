@@ -202,6 +202,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
           canAddMembers={true}
           canAddCompanyAgent={true}
           canRemoveEmployee={true}
+          selectedInspectAutobase={state.selectedInspectAutobase}
         >
         </ViewAddInspectEmployee>
         <Col md={12} sm={12}>

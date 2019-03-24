@@ -6,7 +6,7 @@ export const constantColor = {
   colorBadge: '#4b4b4b',
   colorButton: '#4c4c4c',
   colorGray: '#9b9b9b',
-  colorLightGray: '#f8f8f8',
+  colorLightGray: '#e7e7e7',
   colorYellow: '#c0e1f6',
   colorPink: 'pink',
   colorLightPink: '#ffaabb',

@@ -25,6 +25,17 @@ export type InitialStateSession = {
     isGlavControl: boolean;
     companies: OneSessionCompany[] | null;
     company_name: string | null;
+    fio: string | null;
+    default_path: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    login: string | null;
+    middle_name: string | null;
+    okrug_id: string | number | null;
+    okrug_name: string | null;
+    role: string | null;
+    stableRedirect: string | null;
+    user_id: number | null;
   };
   token: string | null;
   appConfig: {

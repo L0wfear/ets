@@ -1,10 +1,7 @@
 const fixedValidators = [
   {
     name: 'required',
-    validator(config, value, data) {
-      if (config.required && config.required !== true) {
-        if (data[config.required] == null) return undefined;
-      }
+    validator(config, value) {
       return config.required && !value && value !== 0
         ? `Поле "${config.title || config.key}" должно быть заполнено`
         : undefined;

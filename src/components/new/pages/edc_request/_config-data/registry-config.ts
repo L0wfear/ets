@@ -8,12 +8,12 @@ export const registryKey = 'EdcRequest';
 export const config: TypeConfigData<EdcRequest> = {
   Service: {
     getRegistryData: {
-      entity: 'edc_layer_request',
+      entity: 'edc_request',
       typeAns: 'result',
       userServerFilters: true,
     },
     getOneData: {
-      entity: 'edc_layer_request',
+      entity: 'edc_request',
       typeAns: 'result.0',
     },
   },
@@ -32,7 +32,11 @@ export const config: TypeConfigData<EdcRequest> = {
         valueKey: 'status_id',
         type: 'multiselect',
         title: 'Статус',
-        disabled: true,
+        getRegistryData: {
+          entity: 'edc/status',
+          valueKey: 'edc_id',
+          labelKey: 'name',
+        },
       },
       {
         valueKey: 'request_id',
@@ -48,19 +52,33 @@ export const config: TypeConfigData<EdcRequest> = {
         valueKey: 'defect_category_id',
         type: 'multiselect',
         title: 'Категория',
-        disabled: true,
+        getRegistryData: {
+          entity: 'edc/defect_category',
+          typeAns: 'result',
+          valueKey: 'defect_category_id',
+          labelKey: 'deffect_category_name',
+        },
       },
       {
         valueKey: 'defect_id',
         type: 'multiselect',
         title: 'Дефект',
-        disabled: true,
+        getRegistryData: {
+          entity: 'edc/defect',
+          typeAns: 'result',
+          valueKey: 'defect_id',
+          labelKey: 'defect_name',
+        },
       },
       {
         valueKey: 'emergency_id',
         type: 'multiselect',
         title: 'Срочность',
-        disabled: true,
+        getRegistryData: {
+          entity: 'edc/emergency',
+          valueKey: 'edc_id',
+          labelKey: 'name',
+        },
       },
       {
         valueKey: 'peredano_v_ppoz',
@@ -97,7 +115,7 @@ export const config: TypeConfigData<EdcRequest> = {
           format: 'datetime',
         },
         {
-          key: 'defect_category_name',
+          key: 'deffect_category_name',
           title: 'Категория',
         },
         {
@@ -151,12 +169,10 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'desired_time_from',
           title: 'Желательное время с:',
-          format: 'datetime',
         },
         {
           key: 'desired_time_to',
           title: 'Желательное время по:',
-          format: 'datetime',
         },
         {
           key: 'desired_date',

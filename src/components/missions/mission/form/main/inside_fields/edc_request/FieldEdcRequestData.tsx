@@ -26,7 +26,7 @@ const FieldEdcRequestData: React.FC<PropsFieldEdcRequestData> = (props) => {
             <ExtField
               type="string"
               label="Категория дефекта"
-              value={edcRequest.defect_category_name}
+              value={edcRequest.deffect_category_name}
               disabled
             />
           </Col>

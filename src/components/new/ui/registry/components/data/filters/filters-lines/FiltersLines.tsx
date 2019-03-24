@@ -15,6 +15,7 @@ import { isArray } from 'util';
 import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
 
 type PropsFiltersLines = {
+  wasFirstOpen: boolean;
   registryKey: string;
   fileds: any[];
   userData: InitialStateSession['userData'];
@@ -60,6 +61,7 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
             <MultiselectRegestryFilter
               formatedTitle={formatedTitle}
               filterData={otherFilterData}
+              wasFirstOpen={this.props.wasFirstOpen}
               registryKey={registryKey}
               onChange={this.handleChange}
             />

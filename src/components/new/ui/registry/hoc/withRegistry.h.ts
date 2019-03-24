@@ -29,15 +29,26 @@ export type FilterOptionType<F> = {
 
 export type OneFilterType<F> = {
   valueKey: keyof F;
-  labelKey?: string;
   title: string | DisplayIfTitle[];
-  type: 'multiselect'
-  | 'advanced-number'
-  | 'advanced-date';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];
   disabled?: boolean;
-};
+} & (
+  {
+    type: 'advanced-number'
+    | 'advanced-date';
+  }| {
+    type: 'multiselect';
+    labelKey?: string;
+    options?: FilterOptionType<F>[];
+    getRegistryData?: {
+      entity?: string;
+      typeAns?: 'result.rows' | 'result',
+      valueKey?: string;
+      labelKey?: string;
+    }
+  }
+);
 
 export type TypeFields<F extends any> = {
   key: keyof F;

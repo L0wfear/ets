@@ -326,5 +326,5 @@ export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 
 export const EdcRequestService = ETS_API_FACTORY.createApiServiceAdapter(
-  'edc_layer_request',
+  'edc_request',
 );

@@ -8,6 +8,7 @@ import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/fi
 import { registryApplyRawFilters } from 'components/new/ui/registry/module/actions-registy';
 
 type PropsFilters = {
+  wasFirstOpen: boolean;
   registryKey: string;
   hanleClickApplyRawFilters: any;
 };
@@ -21,7 +22,7 @@ class Filters extends React.Component<PropsFilters, StateFilters> {
     return (
       <EtsFilterCntainer onSubmit={this.props.hanleClickApplyRawFilters}>
         <ButtonsLine registryKey={registryKey} />
-        <FiltersLines registryKey={registryKey} />
+        <FiltersLines registryKey={registryKey} wasFirstOpen={this.props.wasFirstOpen} />
       </EtsFilterCntainer>
     );
   }

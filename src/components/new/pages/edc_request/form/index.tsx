@@ -10,7 +10,7 @@ import { get } from 'lodash';
 import { edc_form_permitted_type } from '../_config-data/contants';
 import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { diffDates, getDateWithMoscowTz } from 'utils/dates';
+import { diffDates, getDateWithMoscowTz, createValidDateTime, makeDataFromRaw, isValidDate } from 'utils/dates';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -33,27 +33,53 @@ type EdcRequestFormLazy = (
   } & WithSearchProps
 );
 
+const getDatesEdcRequest = (edc_request: EdcRequest) => {
+  const ans = {
+    desired_date_from: null,
+    desired_date_to: null,
+  };
+
+  const {
+    desired_time_from,
+    desired_time_to,
+    desired_date,
+  } = edc_request;
+  const triggerOnHasDesiredDates = (
+    desired_date
+    && desired_time_from
+    && desired_time_to
+  );
+
+  if (triggerOnHasDesiredDates) {
+    const desired_date_from = createValidDateTime(makeDataFromRaw(desired_date, desired_time_from));
+    const desired_date_to = createValidDateTime(makeDataFromRaw(desired_date, desired_time_to));
+
+    const triggerOnSetDates = (
+      isValidDate(desired_date_to)
+      && isValidDate(desired_date_from)
+      && diffDates(desired_date_to, desired_date_from) > 0
+      && diffDates(desired_date_from, getDateWithMoscowTz()) > 0
+    );
+    if (triggerOnSetDates) {
+      ans.desired_date_from = desired_date_from;
+      ans.desired_date_to = desired_date_to;
+    }
+  }
+
+  return ans;
+};
+
 const getDefaultMissionByEdcRequest = memoizeOne(
   (edc_request: EdcRequest): Partial<Mission> => {
+    const edc_dates = getDatesEdcRequest(edc_request);
+
     const mission: Partial<Mission> = {
       request_id: edc_request.id,
       request_number: edc_request.request_number,
       mission_source_id: 5, // заявка
+      date_start: edc_dates.desired_date_from || null,
+      date_end: edc_dates.desired_date_to || null,
     };
-    const {
-      desired_time_from,
-      desired_time_to,
-    } = edc_request;
-    const triggerOnSetDates = (
-      desired_time_from
-      && desired_time_to
-      && diffDates(desired_time_to, desired_time_from) > 0
-      && diffDates(desired_time_from, getDateWithMoscowTz()) > 0
-    );
-    if (triggerOnSetDates) {
-      mission.date_start = desired_time_from;
-      mission.date_end = desired_time_to;
-    }
 
     return mission;
   },
@@ -61,27 +87,17 @@ const getDefaultMissionByEdcRequest = memoizeOne(
 
 const getDefaultDutyMissionByEdcRequest = memoizeOne(
   (edc_request: EdcRequest): Partial<DutyMission> => {
-    const mission: Partial<DutyMission> = {
+    const edc_dates = getDatesEdcRequest(edc_request);
+
+    const dutyMission: Partial<DutyMission> = {
       request_id: edc_request.id,
       request_number: edc_request.request_number,
       mission_source_id: 5, // заявка
+      plan_date_start: edc_dates.desired_date_from || null,
+      plan_date_end: edc_dates.desired_date_to || null,
     };
-    const {
-      desired_time_from,
-      desired_time_to,
-    } = edc_request;
-    const triggerOnSetDates = (
-      desired_time_from
-      && desired_time_to
-      && diffDates(desired_time_to, desired_time_from) > 0
-      && diffDates(desired_time_from, getDateWithMoscowTz()) > 0
-    );
-    if (triggerOnSetDates) {
-      mission.plan_date_start = desired_time_from;
-      mission.plan_date_end = desired_time_to;
-    }
 
-    return mission;
+    return dutyMission;
   },
 );
 

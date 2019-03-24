@@ -19,7 +19,6 @@ export type EdcRequest = {
   declarant_jur_id: number;
   declarant_name: string;
   defect_category_id: number;
-  defect_category_name: string;
   defect_id: number;
   defect_name: string;
   deffect_category_name: string;

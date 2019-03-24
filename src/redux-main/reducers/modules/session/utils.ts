@@ -13,12 +13,18 @@ export const withSpecificPermissions = (user) => {
     permissions.push(...getFullAccess('pedestrian_tunnel_exits'));
     permissions.push(...getFullAccess('fountains'));
   }
+  /* docs */
+  permissions.push(...getFullAccess('docs_close_waybill'));
+  permissions.push(...getFullAccess('docs_create_mission'));
+  permissions.push(...getFullAccess('docs_close_mission'));
+  permissions.push(...getFullAccess('docs_issue_a_waybill'));
+  permissions.push(...getFullAccess('docs_create_mission_by_order'));
+  permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
+  /* end docs */
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
-      permissions.push(
-        permission.replace(/^pgm\./, 'pgm_store.'),
-      );
+      permissions.push(permission.replace(/^pgm\./, 'pgm_store.'));
     }
   });
 
@@ -39,12 +45,17 @@ export const makeUserData = (userDataRaw) => {
   userData.permissionsSet = new Set(userData.permissions);
 
   userData.isOkrug = userData.okrug_id !== null;
-  userData.isKgh = userData.permissionsSet.has('common.nsi_company_column_show');
+  userData.isKgh = userData.permissionsSet.has(
+    'common.nsi_company_column_show',
+  );
   userData.isGlavControl = userData.permissionsSet.has('role.change');
 
   const default_path = userData.default_path;
 
-  userData.stableRedirect = requireAuth(userData.permissionsSet, `/${default_path}`);
+  userData.stableRedirect = requireAuth(
+    userData.permissionsSet,
+    `/${default_path}`,
+  );
 
   return userData;
 };

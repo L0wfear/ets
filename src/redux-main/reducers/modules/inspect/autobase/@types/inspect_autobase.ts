@@ -1,5 +1,6 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
+import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
 
 export type InspectionTypes = 'autobase' | 'pgm_base' | 'cars_condition';
 
@@ -55,6 +56,9 @@ export type InspectAutobase = {
   open_employee_id: number | null;
   status: 'conducting' | 'completed';
   status_text: 'Проводится';
+  agent_from_gbu?: ViewAddInspectEmployeeInitialState['agent_from_gbu'];
+  commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
+  resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
 };
 
 export type IStateInspectAutobase = {

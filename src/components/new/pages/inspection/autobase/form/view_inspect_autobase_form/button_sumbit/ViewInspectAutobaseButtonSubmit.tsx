@@ -57,7 +57,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     [selectedInspectAutobase, canSave],
   );
 
-  const handleCloseAndAutobaseAct = React.useCallback(
+  const handleCloseAndAutobaseAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
         await props.actionCloseInspectAutobase(

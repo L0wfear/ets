@@ -21,6 +21,7 @@ import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_typ
 import { STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT_AUTOBASE_COMPLETED } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_constants';
 import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { diffDatesByDays, getDateWithMoscowTz } from 'utils/dates';
+import { createValidDateTime } from 'utils/dates';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobse(getState());
@@ -223,15 +224,26 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
 
 const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const data = cloneDeep(inspectAutobase.data);
-
+  const {
+    agent_from_gbu,
+    commission_members,
+    resolve_to,
+  } = inspectAutobase;
   delete data.files;
   delete data.photos_of_supporting_documents;
-  delete data.photos_of_supporting_documents;
+  delete data.photos_defect;
+
+  const payload = {
+    data,
+    agent_from_gbu,
+    commission_members,
+    resolve_to: createValidDateTime(resolve_to),
+  };
 
   const result = await dispatch(
     actionCloseInspect(
       inspectAutobase.id,
-      data,
+      payload,
       'autobase',
       meta,
     ),

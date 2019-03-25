@@ -31,6 +31,11 @@ export type ViewAddInspectEmployeeProps = {
   canRemoveEmployee: boolean;
   userData: InitialStateSession['userData'];
   selectedInspectAutobase: InspectAutobase;
+  setComissionAndMembers: (
+    agent_from_gbu: ViewAddInspectEmployeeInitialState['agent_from_gbu'],
+    commission_members: ViewAddInspectEmployeeInitialState['commission_members'],
+    resolve_to: ViewAddInspectEmployeeInitialState['resolve_to'],
+  ) => any;
 };
 
 type MembersInspElem = {
@@ -43,7 +48,6 @@ type MembersInspElem = {
 export type ViewAddInspectEmployeeInitialState = {
   resolve_to: any | null; // устранить до? date or string
   commission_members: MembersInspElem[] | null; // члены комиссии
-  companyAgentList: MembersInspElem[] | null; // члены комиссии от компании, в данной реализации, можно добавить только 1го
   member_fio: string | null;
   member_position: string | null;
   agent_from_gbu_position: string | null;
@@ -65,9 +69,8 @@ export type ViewAddInspectEmployeeInitialState = {
   showAgentAdd: boolean; // Показывать блок с добавлением членов гбу
 };
 
-const initialState: ViewAddInspectEmployeeInitialState = {
+export const viewAddInspectEmployeeInitialState: ViewAddInspectEmployeeInitialState = {
   commission_members: [],
-  companyAgentList: null,
   member_fio: null,
   member_position: null,
   agent_from_gbu_position: null,
@@ -257,7 +260,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
   const {type, userData} = props;
   const [state, dispatch] = React.useReducer<Reducer<ViewAddInspectEmployeeInitialState, any>>(
     reducer,
-    initialState,
+    viewAddInspectEmployeeInitialState,
   );
 
   const isPermittedChangeCloseParams = (
@@ -314,6 +317,23 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
       );
     },
     [],
+  );
+
+  // Для синхронизации с родительским компонентом
+  React.useEffect(
+    () => {
+      const {
+        agent_from_gbu,
+        commission_members,
+        resolve_to,
+      } = state;
+      props.setComissionAndMembers(
+        agent_from_gbu,
+        commission_members,
+        resolve_to,
+      );
+    },
+    [state.agent_from_gbu, state.commission_members, state.resolve_to],
   );
 
   const newMember = {

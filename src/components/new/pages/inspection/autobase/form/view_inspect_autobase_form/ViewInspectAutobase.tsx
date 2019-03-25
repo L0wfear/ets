@@ -13,7 +13,7 @@ import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobase
 import { Reducer } from 'redux';
 import { inspectAutobaeSchema } from './inspect_autobase_schema';
 import { validate } from 'components/ui/form/new/validate';
-import ViewAddInspectEmployee from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
+import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 
 type InitialState = {
@@ -21,6 +21,9 @@ type InitialState = {
   errors: Partial<Record<keyof InspectAutobase['data'], string>>;
   canSave: boolean;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  agent_from_gbu?: ViewAddInspectEmployeeInitialState['agent_from_gbu'];
+  commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
+  resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
 };
 
 const initialState: InitialState = {
@@ -28,10 +31,14 @@ const initialState: InitialState = {
   errors: {},
   canSave: false,
   type: 'list',
+  agent_from_gbu: viewAddInspectEmployeeInitialState.agent_from_gbu,
+  commission_members: viewAddInspectEmployeeInitialState.commission_members,
+  resolve_to: viewAddInspectEmployeeInitialState.resolve_to,
 };
 
 const CHANGE_DATA = 'CHANGE_DATA';
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
+const SET_COMISSION_AND_MEMBERS = 'SET_COMISSION_AND_MEMBERS';
 
 const actionChangeSelectedInspectAutobaseData = (data: InspectAutobase['data']) => ({
   type: CHANGE_DATA,
@@ -47,6 +54,18 @@ const actionSetSelectedInspectAutobaseData = (selectedInspectAutobase: InitialSt
     type,
   },
 });
+
+const actionSetComissionAndMembers = (
+  data: {
+    agent_from_gbu: InitialState['agent_from_gbu'];
+    commission_members: InitialState['commission_members'];
+    resolve_to: InitialState['resolve_to'];
+  }) => ({
+    type: SET_COMISSION_AND_MEMBERS,
+    payload: {
+      data,
+    },
+  });
 
 const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
@@ -75,6 +94,23 @@ const reducer = (state: InitialState, { type, payload }) => {
         selectedInspectAutobase,
         errors,
         canSave: Object.values(errors).every((error) => !error),
+      };
+    }
+    case SET_COMISSION_AND_MEMBERS: {
+      const {
+        commission_members,
+        agent_from_gbu,
+        resolve_to,
+      } = payload.data;
+      const selectedInspectAutobase = {
+        ...state.selectedInspectAutobase,
+        commission_members,
+        agent_from_gbu,
+        resolve_to,
+      };
+      return {
+        ...state,
+        selectedInspectAutobase,
       };
     }
     default: return state;
@@ -132,6 +168,19 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
   const closeWithoutChanges = React.useCallback(
     () => props.handleHide(false),
     [],
+  );
+
+  const setComissionAndMembers = React.useCallback(
+    (agent_from_gbu, commission_members, resolve_to) => {
+      dispatch(
+        actionSetComissionAndMembers({
+          agent_from_gbu,
+          commission_members,
+          resolve_to,
+        }),
+      );
+    },
+    [state.agent_from_gbu, state.commission_members, state.resolve_to],
   );
 
   return state.selectedInspectAutobase
@@ -203,6 +252,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
           canAddCompanyAgent={true}
           canRemoveEmployee={true}
           selectedInspectAutobase={state.selectedInspectAutobase}
+          setComissionAndMembers={setComissionAndMembers}
         >
         </ViewAddInspectEmployee>
         <Col md={12} sm={12}>
@@ -211,7 +261,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               canSave={state.canSave}
               type={props.type}
               handleHide={props.handleHide}
-              selectedInspectAutobase={props.selectedInspectAutobase}
+              selectedInspectAutobase={state.selectedInspectAutobase}
               loadingPage={props.page}
             />
             <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>

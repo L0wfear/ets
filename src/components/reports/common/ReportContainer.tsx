@@ -45,6 +45,7 @@ import DataTable from 'components/ui/table/DataTable';
 import DataTableNew from 'components/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
+import { isArray } from 'util';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -141,13 +142,13 @@ class ReportContainer extends React.Component<
 
     return new Promise(async (resolve, reject) => {
       try {
-        const { notUseServerSummerTable } = this.props;
+        const { notUseServerSummerTable, tableProps: { reportKey } } = this.props;
 
         const data = await this.props.getReportData(
           this.props.serviceName,
           payload,
           '',
-          { ...this.state, notUseServerSummerTable },
+          { ...this.state, notUseServerSummerTable, reportKey },
         );
         const hasSummaryLevel = 'summary' in data.result.meta.levels;
 
@@ -294,17 +295,31 @@ class ReportContainer extends React.Component<
 
     if (this.props.notUseServerSummerTable) {
       const { data: old_data } = this.props;
-      const rows = get(old_data, ['result', 'rows'], null);
-      if (rows) {
-        const list = filterFunction(rows, { filterValues });
+      let rows = get(old_data, ['result', 'rows'], null);
+      const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
+      if (deepArr) {
+        rows = rows.reduce((newArr: any[], blockData) => {
+          newArr.push(...blockData.rows);
 
+          return newArr;
+        }, []);
+      }
+
+      if (rows) {
         const data = {
           ...old_data,
           result: {
             ...old_data.result,
-            rows: [...list],
           },
         };
+        if (deepArr) {
+          data.result.rows = data.result.rows.map((blockData) => ({
+            ...blockData,
+            rows: filterFunction(blockData.rows, { filterValues }),
+          })).filter((blockData) => blockData.rows.length);
+        } else {
+          data.result.rows = filterFunction(rows, { filterValues });
+        }
 
         this.props.setReportDataWithSummerData({
           data,
@@ -411,7 +426,7 @@ class ReportContainer extends React.Component<
     const fields = get(tableMetaInfo, 'fields', []) || [];
     const cols = fields
       .reduce((tableMeta, field) => {
-        const [[fieldName, { name: displayName, is_row }]] = Object.entries(
+        const [[fieldName, { name: displayName, is_row, display = true }]] = Object.entries(
           field,
         );
 
@@ -421,6 +436,7 @@ class ReportContainer extends React.Component<
           initialSchema = {
             name: fieldName,
             displayName,
+            display,
             filter: {
               type: 'multiselect',
               options: undefined,
@@ -451,6 +467,7 @@ class ReportContainer extends React.Component<
   render() {
     const {
       enumerated = false,
+      enumeratedChildren = false,
       enableSort = true,
       initialSort = false,
       schemaMakers,
@@ -492,18 +509,17 @@ class ReportContainer extends React.Component<
       'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
 
     const summaryTable =
-      isSummaryEnable &&
       (this.props.notUseServerSummerTable ? (
         <DataTableNew
-          title={'Итого'}
+          title={this.props.summaryTitle || 'Итого'}
           tableMeta={summaryTableMeta}
           data={this.props.summaryList}
           enableSort={false}
-          enumerated={enumerated}
+          enumerated={enumerated && enumeratedChildren}
           uniqName={this.state.uniqName}
           noFilter
         />
-      ) : (
+      ) : ( isSummaryEnable &&
         <Table
           className="data-other"
           title={'Итого'}

@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
 import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isArray } from 'util';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
 
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -143,7 +144,30 @@ class SimpleGriddle extends React.Component<any, any> {
       currentPage={this.props.currentPage}
       resultsPerPage={this.state.resultsPerPage}
     />
-  )
+  );
+
+  reduceTbodyTrFuelCardsReport = (objData: { array: any[], index: number }, rowData, indexArr) => {
+    objData.array.push(
+      <TrTableFuelCardsReport
+        key={rowData._uniq_field}
+        columns={this.props.columns}
+        rowData={rowData}
+        index={objData.index}
+        rowMetadata={this.props.rowMetadata}
+        handleClickTbodyTr={this.handleClickTbodyTr}
+        onRowDoubleClick={this.onRowDoubleClick}
+        columnMetadata={this.props.columnMetadata}
+        rowNumberOffset={this.props.rowNumberOffset}
+        handleRowCheck={this.props.handleRowCheck}
+        selectField={this.props.selectField}
+        currentPage={this.props.currentPage}
+        resultsPerPage={this.state.resultsPerPage}
+      />,
+    );
+    objData.index = objData.index + rowData.rows.length;
+
+    return objData;
+  }
 
   onRowDoubleClick: any = (rowData, index) => {
     const { onRowDoubleClick } = this.props;
@@ -243,6 +267,18 @@ class SimpleGriddle extends React.Component<any, any> {
       shortResult,
     } = this.state;
 
+    let theadTrData = null;
+    let tbodyData = null;
+    const deepArr = shortResult.some(({ rows }) => isArray(rows));
+
+    if (deepArr) {
+      theadTrData = this.props.columns.map(this.mapTheadTrTh);
+      tbodyData = shortResult.reduce(this.reduceTbodyTrFuelCardsReport, { array: [], index: 0 }).array;
+    } else {
+      theadTrData = this.props.columns.map(this.mapTheadTrTh);
+      tbodyData = shortResult.map(this.mapTbodyTr);
+    }
+
     return (
       <div className="griddle simple-griddle">
         <div className="griddle-container">
@@ -251,19 +287,18 @@ class SimpleGriddle extends React.Component<any, any> {
               <table>
                 <thead>
                   <tr>
-                    { this.props.columns.map(this.mapTheadTrTh) }
+                    { theadTrData }
                   </tr>
                 </thead>
                 <tbody>
                   {
-                    !shortResult.length ?
-                    (
+                    !shortResult.length
+                    ? (
                       <tr>
                         <td colSpan={99999}>{this.props.noDataMessage}</td>
                       </tr>
                     )
-                    :
-                    shortResult.map(this.mapTbodyTr)
+                    : tbodyData
                   }
                 </tbody>
               </table>

@@ -1,4 +1,5 @@
-import { groupBy } from 'lodash';
+import { get, groupBy } from 'lodash';
+import { isArray } from 'highcharts';
 
 export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
 export const removeRedundantNumbers = (rowValue) => Math.round(rowValue * 1000) / 1000;
@@ -10,19 +11,26 @@ export const openFields = (fields) => fields.map((meta) => {
   };
 });
 
-export const getInitialDataForReduce = (rowCol) =>
-  rowCol.sections.reduce((newwArr, oneSection) => {
-    if (oneSection.visible) {
-      newwArr.push({
-        ...oneSection,
-        displayName: oneSection.name,
-        children: [],
-        fields: oneSection.fields || [],
-      });
-    }
+export const getInitialDataForReduce = (rowCol) => {
+  return rowCol
+    ? (
+      rowCol.sections.reduce((newwArr, oneSection) => {
+        if (oneSection.visible) {
+          newwArr.push({
+            ...oneSection,
+            displayName: oneSection.name,
+            children: [],
+            fields: oneSection.fields || [],
+          });
+        }
 
-    return newwArr;
-  }, []);
+        return newwArr;
+      }, [])
+    )
+    : (
+      null
+    );
+};
 
 export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCols, aggr_fields, filedsRule) => {
   if (col) {
@@ -77,17 +85,62 @@ const makeRowsWithNoneStructure = (rows, colMeta) =>
 
 export const makeDataForSummerTable = (data, { uniqName }) => {
   if (data.result.meta.level === 'company') {
+    let rows = get(data, 'result.rows', []);
     const {
       result: {
-        rows,
         meta: {
           summary: {
             fields,
+            with_summary_data,
             aggr_fields,
           },
         },
       },
     } = data;
+
+    const deepArr = rows.some((blockData) => isArray(blockData.rows));
+    if (deepArr) {
+      rows = rows.reduce((newArr: any[], blockData) => {
+        newArr.push(...blockData.rows);
+
+        return newArr;
+      }, []);
+    }
+
+    if (with_summary_data) {
+      if (rows.length) {
+        const cols_wsd = openFields(fields);
+        const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);
+
+        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, []).map((child, index) => {
+          child[uniqName] = index + 1;
+
+          return child;
+        });
+
+        children.push(({
+          [cols_wsd[0].keyName]: 'Итого',
+          [uniqName]: 'summary',
+          noIndexRow: true,
+          ...aggr_fields.reduce((newObj, keyName) => {
+            newObj[keyName] = children.reduce((summ, row) => summ + row[keyName], 0);
+            return newObj;
+          }, {}),
+          _fix_bottom: true,
+        }));
+
+        return children;
+      }
+      return [
+        {
+          displayName: 'Нет данных',
+          toggle: true,
+          allRow: true,
+          showChildren: true,
+          children: [],
+        },
+      ];
+    }
 
     const _uniq_field = uniqName;
     const _uniq_field_father = `${uniqName}_father`;

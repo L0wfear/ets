@@ -29,6 +29,7 @@ const reportProps: IReportProps = {
   title: 'Отчёт по топливу',
   serviceName,
   enumerated: true,
+  enumeratedChildren: true,
   tableProps,
   reportUrl,
   serviceUrl,

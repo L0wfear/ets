@@ -89,3 +89,7 @@ export const CarsCountDeviation = ETS_API_FACTORY.createApiServiceAdapter(
 export const CarsTravelTimeReport = ETS_API_FACTORY.createApiServiceAdapter(
   'cars_travel_time',
 );
+
+export const FuelCardsReportService = ETS_API_FACTORY.createApiServiceAdapter(
+  'fuel_cards_report',
+);

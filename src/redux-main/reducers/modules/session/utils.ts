@@ -22,8 +22,9 @@ export const withSpecificPermissions = (user) => {
   permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
   /* end docs */
 
-  // permissions.push(...getFullAccess('inspect.autobase'));
+  permissions.push(...getFullAccess('inspect.autobase'));
   permissions.push(...getFullAccess('edc_request'));
+  permissions.push(...getFullAccess('fuel_cards_report'));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {

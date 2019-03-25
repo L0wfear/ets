@@ -7,6 +7,7 @@ import _ from 'lodash';
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
+import { isArray } from 'util';
 
 class FilterRow extends React.Component {
   static get propTypes() {
@@ -72,9 +73,22 @@ class FilterRow extends React.Component {
         || type === 'multiselect'
         || type === 'advanced-select-like'
       ) {
-        let options
-          = availableOptions
-          || _(tableData)
+        let options = availableOptions;
+        let tableDataForOption = tableData || [];
+
+        if (!options || !options.length) {
+          const deepArr = tableDataForOption.some(({ rows }) => isArray(rows));
+          if (deepArr) {
+            tableDataForOption = tableDataForOption.reduce(
+              (newArr, { rows }) => {
+                newArr.push(...rows);
+
+                return newArr;
+              },
+              [],
+            );
+          }
+          options = _(tableDataForOption)
             .uniqBy(name)
             .map((d) => ({
               value: typeof d[name] === 'boolean' ? +d[name] : d[name],
@@ -82,6 +96,7 @@ class FilterRow extends React.Component {
             }))
             .filter((d) => d.label !== null)
             .value();
+        }
 
         if (options.length && Array.isArray(options[0].value)) {
           options = options.reduce((newOptions, option) => {

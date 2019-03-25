@@ -24,6 +24,7 @@ import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 import { isString } from 'util';
+import { sessionSetAppConfig } from 'redux-main/reducers/modules/session/actions-session';
 
 require('components/directories/order/Order.scss');
 
@@ -44,6 +45,9 @@ class OrderList extends React.Component<any, any> {
     flux.getActions('missions').getMissionSources().then(({ order_mission_source_id }) => this.setState({ order_mission_source_id }));
     flux.getActions('employees').getEmployees({ active: true });
     flux.getActions('objects').getCars();
+    flux.getActions('objects').getConfig().then((appConfig) => {
+      this.props.sessionSetAppConfig(appConfig);
+    })
 
     const {
       location: { search },
@@ -114,6 +118,7 @@ const mapDispatchToProps = (dispatch) => ({
       getOrders,
       resetOrder,
       setSelectedElementOrder,
+      sessionSetAppConfig,
     },
     dispatch,
   ),

@@ -7,6 +7,7 @@ import { validate } from 'components/ui/form/new/validate';
 import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
+import { createValidDateTime, createValidDate } from 'utils/dates';
 
 type FormErrorType<F> = {
   [K in keyof F]?: string | null;
@@ -193,7 +194,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
                   break;
                 case 'string':
                 case 'date':
+                  newValue = createValidDate(value);
+                  break;
                 case 'datetime':
+                  newValue = createValidDateTime(value);
+                  break;
                 default:
                 newValue = Boolean(value) || value === 0 ? value : null;
               }

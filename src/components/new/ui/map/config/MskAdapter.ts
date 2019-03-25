@@ -2,17 +2,17 @@ import Tile from 'ol/layer/Tile';
 import TileImage from 'ol/source/TileImage';
 import TileGrid from 'ol/tilegrid/TileGrid';
 import Projection from 'ol/proj/Projection';
-
-import { debounce } from 'lodash';
-import EverGisTokenService from 'api/map/EverGisTokenService';
 import MapServerConfig from 'components/new/ui/map/config/MapServerConfig';
 
+// import { debounce } from 'lodash';
+// import EverGisTokenService from 'api/map/EverGisTokenService';
+
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//gisoiv.mos.ru/IntegrationGIS/SpatialProcessor/IIS/egko/MapServer/tile';
+const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/egko_122018/MapServer/tile';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
-let evergisTokenService = null;
+// let evergisTokenService = null;
 
 export function projectToPixel(map, coordinates) {
   let x;
@@ -69,6 +69,7 @@ for (let i = 0, till = MapServerConfig.tileInfo.lods.length; i < till; i++) {
 }
 
 function tileUrl(tileCoord) {
+  /*
   if (!evergisTokenService) {
     evergisTokenService = new EverGisTokenService();
   }
@@ -76,6 +77,12 @@ function tileUrl(tileCoord) {
   const x = tileCoord[1];
   const y = -tileCoord[2] - 1;
   return `${TILES_URL}/${z}/${y}/${x}?_sb=${evergisTokenService.getToken()}`;
+  */
+
+  const z = tileCoord[0];
+  const x = tileCoord[1];
+  const y = -tileCoord[2] - 1;
+  return `${TILES_URL}/${z}/${y}/${x}`;
 }
 
 const ArcGisSource = new TileImage({
@@ -94,13 +101,14 @@ ArcGisSource.on('tileloadstart', () => {
   // any
 });
 
+/*
 function onErrorsLimitCallback() {
   // tslint:disable-next-line
   console.error('EVERGIS TOKEN ATTEMPTS LIMIT EXCEEDED');
 }
 
 ArcGisSource.on('tileloaderror', () => {
-  const onErrorsLimit = debounce(onErrorsLimitCallback, 1000);
+  // const onErrorsLimit = debounce(onErrorsLimitCallback, 1000);
 
   // TODO идентифицировать ошибку конкретно токена
   if (!evergisTokenService.isFetchingToken() && !evergisTokenService.attemptsLimitExceeded()) {
@@ -111,6 +119,7 @@ ArcGisSource.on('tileloaderror', () => {
     onErrorsLimit();
   }
 });
+*/
 
 export const ArcGisLayer = new Tile({
   source: ArcGisSource,

@@ -61,6 +61,7 @@ export type EdcRequest = {
   rejection_reason_name: string;
   request_id: number;
   request_number: string;
+  request_send_at: string;
   rework: boolean;
   root_id: number;
   source: string;

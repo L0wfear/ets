@@ -17,6 +17,7 @@ import { makeOptionsByMissionSourceForMission } from './makeOptions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types/index';
 import { isOrderSource } from 'components/missions/utils/utils';
 import { Row, Col } from 'react-bootstrap';
+import { DivNone } from 'global-styled/global-styled';
 
 class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSourceMission, StateFieldMissionSourceMission> {
   state = {
@@ -66,12 +67,20 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
           />
         </Col>
         <Col md={request_id ? 6 : 0}>
-          <ExtField
-            type="string"
-            label="Номер заявки"
-            value={request_number}
-            disabled
-          />
+          {
+            request_id
+              ? (
+                <ExtField
+                  type="string"
+                  label="Номер заявки"
+                  value={request_number}
+                  disabled
+                />
+              )
+              : (
+                <DivNone />
+              )
+          }
         </Col>
       </Row>
     );

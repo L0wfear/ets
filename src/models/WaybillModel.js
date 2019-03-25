@@ -2,6 +2,8 @@ import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
+import { getTrailers } from 'components/waybill/utils';
+import { get } from 'lodash';
 
 export const waybillSchema = {
   properties: [
@@ -209,6 +211,28 @@ export const waybillSchema = {
         validator: (value) => {
           if (value && parseFloat(value).toFixed(1).match(/^\d{4,}/)) {
             return 'Поле "Ремонт" должно быть меньше 1000';
+          }
+          return false;
+        },
+      },
+    ],
+    trailer_id: [
+      {
+        validator: (
+          value,
+          { structure_id, status },
+          { isPermittedByKey, carsList },
+        ) => {
+          const getTrailersByStructId = getTrailers(structure_id, null);
+          const TRAILERS = getTrailersByStructId(carsList);
+          const correctTrailer = TRAILERS.find(elem => elem.value === value);
+          const fieldDisabled = get(isPermittedByKey, 'update', false);
+          const IS_CREATING = status;
+          const IS_DRAFT = status && status === 'draft';
+          const fieldNotHidden = !(IS_CREATING || IS_DRAFT);
+
+          if (value && !fieldDisabled && !correctTrailer && fieldNotHidden) {
+            return 'В данный момент выбранный прицеп не подходят для заполнения';
           }
           return false;
         },

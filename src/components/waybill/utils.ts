@@ -44,8 +44,8 @@ const carFilter = (structure_id, car_id) => R.pipe(
 );
 // todo вернуть интерфейс
 //  R.filter<IVehicle>((c) => c.is_trailer),
-const trailerFilter = (structure_id) => R.pipe(
-  vehicleFilter(structure_id, null),
+const trailerFilter = (structure_id, trailer_id) => R.pipe(
+  vehicleFilter(structure_id, trailer_id),
   R.filter<any>((c) => c.is_trailer),
 );
 
@@ -62,8 +62,8 @@ export const getCars = (structure_id, car_id) => R.pipe(
   vehicleMapper,
 );
 
-export const getTrailers = (structure_id) => R.pipe(
-  trailerFilter(structure_id),
+export const getTrailers = (structure_id, trailer_id) => R.pipe(
+  trailerFilter(structure_id, trailer_id),
   vehicleMapper,
 );
 

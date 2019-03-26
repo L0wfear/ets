@@ -88,10 +88,10 @@ export const promiseCloseInspection = async (id: number, data: InspectAutobase['
   return inspectAutobase;
 };
 
-export const promiseGetBlobActInspection = async (id: number) => {
+export const promiseGetBlobActInspection = async (inspection_id: number) => {
   let response = { blob: null };
   try {
-    response = await InspectionActService.path(id).getBlob({});
+    response = await InspectionActService.getBlob({ inspection_id });
   } catch (error) {
     console.error(error); // tslint:disable-line
   }

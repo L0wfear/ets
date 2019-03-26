@@ -13,10 +13,12 @@ import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@t
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
+import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { isBoolean } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import ViewInspectAutobaseWrap from './view_inspect_autobase_form';
+import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import { defaultInspectAutobaseData, makeFilesForFront } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 
 const loadingPage = 'InspectionAutobaseForm';
 const registryKey = 'inspectAutobase';
@@ -67,6 +69,25 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
       props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
+
+      if (isBoolean(isSubmitted) && isSubmitted) {
+        const { payload } = await props.registryLoadDataByKey(registryKey);
+        const array = get(payload, `list.data.array`, []);
+
+        const inspectAutobaseListNew = array.map((inspectAutobase: InspectAutobase) => {
+          inspectAutobase.data = {
+            ...(inspectAutobase.data || defaultInspectAutobaseData),
+            ...makeFilesForFront(inspectAutobase),
+          };
+
+          delete inspectAutobase.data.files;
+
+          return inspectAutobase;
+        }).sort((a, b) => a.id - b.id);
+
+        props.actionSetInspectAutobaseInspectAutobaseList(inspectAutobaseListNew);
+      }
+
       props.setParams({
         id: '',
         type: '',
@@ -129,6 +150,16 @@ export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnPro
       actionUnselectSelectedRowToShow: (...arg) => (
         dispatch(
           actionUnselectSelectedRowToShow(...arg),
+        )
+      ),
+      registryLoadDataByKey: (...arg) => (
+        dispatch(
+          registryLoadDataByKey(...arg),
+        )
+      ),
+      actionSetInspectAutobaseInspectAutobaseList: (...arg) => (
+        dispatch(
+          inspectionAutobaseActions.actionSetInspectAutobaseInspectAutobaseList(...arg),
         )
       ),
     }),

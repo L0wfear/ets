@@ -2,7 +2,8 @@ import { IStateInspectAutobase } from 'redux-main/reducers/modules/inspect/autob
 import { HandleThunkActionCreator } from 'react-redux';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
-import { actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
+import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
+import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 
 export type InspectionAutobaseFormStateProps = {
   inspectAutobaseList: IStateInspectAutobase['inspectAutobaseList'];
@@ -10,6 +11,8 @@ export type InspectionAutobaseFormStateProps = {
 export type InspectionAutobaseFormDispatchProps = {
   actionGetInspectAutobaseById: HandleThunkActionCreator<typeof inspectionActions.actionGetInspectAutobaseById>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
+  actionSetInspectAutobaseInspectAutobaseList: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionSetInspectAutobaseInspectAutobaseList>;
 };
 export type InspectionAutobaseFormOwnProps = {
   loadingPage: string;

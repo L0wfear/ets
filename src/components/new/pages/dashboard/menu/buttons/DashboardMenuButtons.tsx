@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 
-import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
+import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
 
 import {
   dashboardLoadDependentDataByWaybillDraft,
@@ -32,10 +32,9 @@ import {
 import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/missions/mission/form/main';
 
-class DashboardMenuButtons extends React.Component<
-  PropsDashboardMenuButtons,
-  StateDashboardMenuButtons
-> {
+const WaybillFormWrap: any = WaybillFormWrapTSX;
+
+class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, StateDashboardMenuButtons> {
   state = {
     showWaybillForm: false,
     showMissionForm: false,

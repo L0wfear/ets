@@ -17,7 +17,7 @@ import {
 import { makeDate } from 'utils/dates';
 import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
-import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
+import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
 
 import {
   PropsWaybillCompletedInfo,
@@ -28,10 +28,9 @@ import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/c
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-class WaybillCompletedInfo extends React.PureComponent<
-  PropsWaybillCompletedInfo,
-  StateWaybillCompletedInfo
-> {
+const WaybillFormWrap: any = WaybillFormWrapTSX;
+
+class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo, StateWaybillCompletedInfo> {
   state = {
     showWaybillFormWrap: false,
     elementWaybillFormWrap: null,

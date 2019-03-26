@@ -14,6 +14,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { connect } from 'react-redux';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
+import connectToStores from 'flummox/connect';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -711,4 +712,4 @@ class WaybillFormWrap extends FormWrap {
 export default connect((state) => ({
   currentUser: state.session.userData,
   fuelCardsList: getAutobaseState(state).fuelCardsList,
-}))(WaybillFormWrap);
+}))(connectToStores(WaybillFormWrap, ['objects']));

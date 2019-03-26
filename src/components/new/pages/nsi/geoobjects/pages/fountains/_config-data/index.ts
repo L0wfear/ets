@@ -5,6 +5,7 @@ export default {
   path: '/fountains',
   routePath: '/fountains/:id?',
   title: 'Справочник фонтанов',
+  isNewRegistry: true,
   entyity: 'fountains',
   noDotList: false,
   component,

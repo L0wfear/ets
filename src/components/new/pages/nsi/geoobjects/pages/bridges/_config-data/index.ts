@@ -5,6 +5,7 @@ export default {
   path: '/bridges',
   routePath: '/bridges/:id?',
   title: 'Справочник мостов',
+  isNewRegistry: true,
   entyity: 'bridges',
   noDotList: false,
   component,

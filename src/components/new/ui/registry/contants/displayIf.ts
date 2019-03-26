@@ -7,6 +7,6 @@ type DisplayIfContantType = {
 export const displayIfContant: DisplayIfContantType = {
   isKgh: 'isKgh',
   isOkrug: 'isOkrug',
-  lenghtOptionMoreOne: 'lenghtOptionMoreOne',
+  lenghtStructureMoreOne: 'lenghtStructureMoreOne',
   false: false,
 };

@@ -5,6 +5,7 @@ export default {
   path: '/pedestrian_tunnels',
   routePath: '/pedestrian_tunnels/:id?',
   title: 'Справочник пешеходных тоннелей',
+  isNewRegistry: true,
   entyity: 'pedestrian_tunnels',
   noDotList: false,
   component,

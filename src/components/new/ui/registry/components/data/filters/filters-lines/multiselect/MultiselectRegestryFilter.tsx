@@ -115,8 +115,8 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
     return null;
   }
 
-  async componentDidUpdate(prevProps) {
-    if (!prevProps.wasFirstOpen && this.props.wasFirstOpen) {
+  async componentDidUpdate(prevProps, prevState) {
+    if (!prevProps.wasFirstOpen && this.props.wasFirstOpen || prevState.array !== this.state.array && this.props.wasFirstOpen) {
       const getRegistryData = get(this.props.filterData, 'getRegistryData', null);
 
       if (getRegistryData) {
@@ -151,11 +151,24 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
           throw new Error(`опередели valueKey в ${this.props.registryKey}/${this.props.filterData.valueKey}`);
         }
 
-        const options = makeOptionsFromArray(
+        let options = makeOptionsFromArray(
           result,
           valueKey,
           labelKey,
         );
+
+        if (getRegistryData.mergeWithArray) {
+          const dataInArray = this.props.array.reduce((newObj, { [this.props.filterData.valueKey]: uniqKeyArray }) => {
+            uniqKeyArray.forEach((uniqValue) => {
+              if (uniqValue) {
+                newObj[uniqValue] = true;
+              }
+            });
+
+            return newObj;
+          }, {});
+          options = options.filter(({ value }) => value in dataInArray);
+        }
 
         this.setState({
           options,
@@ -183,17 +196,27 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
       },
     } = props;
 
+    const emptyList = !state.options.length;
+
     return (
       <EtsFilter noneClick={this.state.isLoading}>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
           <ReactSelect
-            placeholder={this.state.isLoading ? 'Загрузка...' : undefined}
+            placeholder={
+              this.state.isLoading
+                ? 'Загрузка...'
+                : (
+                  emptyList
+                    ? 'Список пуст'
+                    : undefined
+                )
+            }
             value={value}
             options={state.options}
             multi
             onChange={this.handleChange}
-            disabled={this.props.filterData.disabled || this.state.disabled}
+            disabled={this.props.filterData.disabled || this.state.disabled || emptyList}
           />
           {
             this.state.isLoading

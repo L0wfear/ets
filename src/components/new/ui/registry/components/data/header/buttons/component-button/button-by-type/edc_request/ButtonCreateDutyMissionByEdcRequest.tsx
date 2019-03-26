@@ -15,28 +15,28 @@ import { get } from 'lodash';
 import dutyMssionPermissions from 'components/missions/duty_mission/config-data/permissions';
 import { edc_form_permitted_type } from 'components/new/pages/edc_request/_config-data/contants';
 
-type ButtonCreateDutyMissionByEdcRequesStateProps = {
+type ButtonCreateDutyMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
-type ButtonCreateDutyMissionByEdcRequesDispatchProps = {
+type ButtonCreateDutyMissionByEdcRequestDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonCreateDutyMissionByEdcRequesOwnProps = {
+type ButtonCreateDutyMissionByEdcRequestOwnProps = {
   registryKey: string;
 };
-type ButtonCreateDutyMissionByEdcRequesMergeProps = (
-  ButtonCreateDutyMissionByEdcRequesStateProps
-  & ButtonCreateDutyMissionByEdcRequesDispatchProps
-  & ButtonCreateDutyMissionByEdcRequesOwnProps
+type ButtonCreateDutyMissionByEdcRequestMergeProps = (
+  ButtonCreateDutyMissionByEdcRequestStateProps
+  & ButtonCreateDutyMissionByEdcRequestDispatchProps
+  & ButtonCreateDutyMissionByEdcRequestOwnProps
 );
 
-type ButtonCreateDutyMissionByEdcRequesProps = (
-  ButtonCreateDutyMissionByEdcRequesMergeProps
+type ButtonCreateDutyMissionByEdcRequestProps = (
+  ButtonCreateDutyMissionByEdcRequestMergeProps
   & WithSearchProps
 );
 
-class ButtonCreateDutyMissionByEdcReques extends React.Component<ButtonCreateDutyMissionByEdcRequesProps, {}> {
+class ButtonCreateDutyMissionByEdcRequest extends React.Component<ButtonCreateDutyMissionByEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
@@ -56,11 +56,11 @@ class ButtonCreateDutyMissionByEdcReques extends React.Component<ButtonCreateDut
   }
 }
 
-export default compose<ButtonCreateDutyMissionByEdcRequesProps, ButtonCreateDutyMissionByEdcRequesOwnProps>(
+export default compose<ButtonCreateDutyMissionByEdcRequestProps, ButtonCreateDutyMissionByEdcRequestOwnProps>(
   withRequirePermissionsNew({
     permissions: dutyMssionPermissions.update,
   }),
-  connect<ButtonCreateDutyMissionByEdcRequesStateProps, ButtonCreateDutyMissionByEdcRequesDispatchProps, ButtonCreateDutyMissionByEdcRequesOwnProps, ButtonCreateDutyMissionByEdcRequesMergeProps, ReduxState>(
+  connect<ButtonCreateDutyMissionByEdcRequestStateProps, ButtonCreateDutyMissionByEdcRequestDispatchProps, ButtonCreateDutyMissionByEdcRequestOwnProps, ButtonCreateDutyMissionByEdcRequestMergeProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
@@ -78,4 +78,4 @@ export default compose<ButtonCreateDutyMissionByEdcRequesProps, ButtonCreateDuty
     },
   ),
   withSearch,
-)(ButtonCreateDutyMissionByEdcReques);
+)(ButtonCreateDutyMissionByEdcRequest);

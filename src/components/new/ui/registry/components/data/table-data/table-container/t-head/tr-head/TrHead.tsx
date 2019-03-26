@@ -14,6 +14,7 @@ import {
   PropsTrHead,
   StateTrHead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
   mapThDataRow = (colData) => {
@@ -29,6 +30,9 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
           return titleSomeValue.title;
         }
         if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
+          return titleSomeValue.title;
+        }
+        if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return titleSomeValue.title;
         }
 
@@ -57,6 +61,7 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
 
 export default connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, ReduxState>(
   (state) => ({
+    STRUCTURES: getSessionStructuresOptions(state),
     userData: getSessionState(state).userData,
   }),
 )(TrHead);

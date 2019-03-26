@@ -9,6 +9,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { isNullOrUndefined } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -59,9 +60,15 @@ export const withFormRegistrySearch = (Component) => (
     ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, ...props}) => {
       const [element, setElement] = React.useState(null);
       const uniqKeyValue = getNumberValueFromSerch(props.params[uniqKey]);
+      const type = props.params.type;
 
       React.useEffect(
         () => {
+          if (props.params[uniqKey] === buttonsTypes.create) {
+            setElement({});
+            return;
+          }
+
           if (!isNullOrUndefined(uniqKeyValue) && array.length) {
             const newElement = array.find((item) => item[uniqKey] === uniqKeyValue);
             if (newElement) {
@@ -84,15 +91,15 @@ export const withFormRegistrySearch = (Component) => (
             setElement(null);
           }
         },
-        [uniqKeyValue, array],
+        [props.params[uniqKey], uniqKeyValue, array],
       );
       const handleHide = React.useCallback(
         (isSubmitted: boolean, response?: any) => {
-          registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
-
+          setElement(null);
           props.setParams({
             [uniqKey]: null,
           });
+          registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
         },
         [uniqKey],
       );
@@ -101,6 +108,7 @@ export const withFormRegistrySearch = (Component) => (
         ? (
           <Component
             {...props}
+            type={type}
             element={element}
             onFormHide={handleHide}
           />

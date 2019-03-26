@@ -5,6 +5,7 @@ export default {
   path: '/car-func-types',
   routePath: '/car-func-types/:asuods_id?',
   title: 'Типы техники',
+  isNewRegistry: true,
   entyity: 'type',
   noDotList: false,
   component,

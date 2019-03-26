@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isArray } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { diffDates } from 'utils/dates';
 
@@ -68,7 +68,12 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
           const valueKey = valueKeyType.replace(/__in$/, '');
 
           switch (fieldsAsObj[valueKey]) {
-            case 'multiselect': return !value.includes(row[valueKey]);
+            case 'multiselect': {
+              if (isArray(row[valueKey])) {
+                return value.every((oneValue) => !row[valueKey].includes(oneValue));
+              }
+              return !value.includes(row[valueKey]);
+            }
             default: throw new Error('non define filter by type');
           }
         }

@@ -5,6 +5,7 @@ export default {
   path: '/edc_request',
   routePath: '/edc_request/:id?/:type?',
   title: 'Заявки',
+  isNewRegistry: true,
   entyity: 'edc_request',
   noDotList: false,
   component,

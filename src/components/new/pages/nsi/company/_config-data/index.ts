@@ -5,6 +5,7 @@ export default {
   path: '/companies', // /company
   routePath: '/companies/:company_id?',
   title: 'Реестр организаций',
+  isNewRegistry: true,
   entyity: 'company',
   noDotList: false,
   component,

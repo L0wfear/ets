@@ -5,13 +5,15 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 import ButtonExport from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonExport';
 import ButtonToggleFilter from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonToggleFilter';
+import ButtonCreate from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonCreate';
 import ButtonRead from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonRead';
-import ButtonCreateMissionByEdcReques from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonCreateMissionByEdcReques';
-import ButtonCreateDutyMissionByEdcReques from './button-by-type/ButtonCreateDutyMissionByEdcReques';
+import ButtonRemove from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonRemove';
+import ButtonCreateMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateMissionByEdcRequest';
+import ButtonCreateDutyMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateDutyMissionByEdcRequest';
+import ButtonCreateDutyMission from './button-by-type/duty_mission_template/ButtonCreateDutyMission';
 
 type PropsComponentButton = {
   type: string;
-  data: any;
   registryKey: string;
 };
 
@@ -31,20 +33,37 @@ class ComponentButton extends React.Component<PropsComponentButton, {}> {
       );
     }
 
+    if (type === buttonsTypes.create) {
+      return (
+        <ButtonCreate registryKey={this.props.registryKey} />
+      );
+    }
+
     if (type === buttonsTypes.read) {
       return (
         <ButtonRead registryKey={this.props.registryKey} />
       );
     }
 
+    if (type === buttonsTypes.remove) {
+      return (
+        <ButtonRemove registryKey={this.props.registryKey} />
+      );
+    }
+
+    if (type === buttonsTypes.duty_missions_by_templates) {
+      return (
+        <ButtonCreateDutyMission registryKey={this.props.registryKey} />
+      );
+    }
     if (type === buttonsTypes.createMissionByEdcReques) {
       return (
-        <ButtonCreateMissionByEdcReques registryKey={this.props.registryKey} />
+        <ButtonCreateMissionByEdcRequest registryKey={this.props.registryKey} />
       );
     }
     if (type === buttonsTypes.createDutyMissionByEdcReques) {
       return (
-        <ButtonCreateDutyMissionByEdcReques registryKey={this.props.registryKey} />
+        <ButtonCreateDutyMissionByEdcRequest registryKey={this.props.registryKey} />
       );
     }
 

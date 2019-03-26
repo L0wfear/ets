@@ -4,6 +4,7 @@ import component from 'components/new/pages/nsi/geoobjects/pages/carpool/_config
 export default {
   path: '/carpool',
   routePath: '/carpool/:id?',
+  isNewRegistry: true,
   title: 'Справочник Автобаз',
   entyity: 'carpool',
   noDotList: false,

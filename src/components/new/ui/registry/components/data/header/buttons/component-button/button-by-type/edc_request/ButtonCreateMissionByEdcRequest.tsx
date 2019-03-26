@@ -15,26 +15,26 @@ import { get } from 'lodash';
 import missionPermissions from 'components/missions/mission/config-data/permissions';
 import { edc_form_permitted_type } from 'components/new/pages/edc_request/_config-data/contants';
 
-type ButtonCreateMissionByEdcRequesStateProps = {
+type ButtonCreateMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
-type ButtonCreateMissionByEdcRequesDispatchProps = {
+type ButtonCreateMissionByEdcRequestDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonCreateMissionByEdcRequesOwnProps = {
+type ButtonCreateMissionByEdcRequestOwnProps = {
   registryKey: string;
 };
-type ButtonCreateMissionByEdcRequesMergeProps = {};
+type ButtonCreateMissionByEdcRequestMergeProps = {};
 
-type ButtonCreateMissionByEdcRequesProps = (
-  ButtonCreateMissionByEdcRequesStateProps
-  & ButtonCreateMissionByEdcRequesDispatchProps
-  & ButtonCreateMissionByEdcRequesOwnProps
-  & ButtonCreateMissionByEdcRequesMergeProps
+type ButtonCreateMissionByEdcRequestProps = (
+  ButtonCreateMissionByEdcRequestStateProps
+  & ButtonCreateMissionByEdcRequestDispatchProps
+  & ButtonCreateMissionByEdcRequestOwnProps
+  & ButtonCreateMissionByEdcRequestMergeProps
 ) & WithSearchProps;
 
-class ButtonCreateMissionByEdcReques extends React.Component<ButtonCreateMissionByEdcRequesProps, {}> {
+class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissionByEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
@@ -54,11 +54,11 @@ class ButtonCreateMissionByEdcReques extends React.Component<ButtonCreateMission
   }
 }
 
-export default compose<ButtonCreateMissionByEdcRequesProps, ButtonCreateMissionByEdcRequesOwnProps>(
+export default compose<ButtonCreateMissionByEdcRequestProps, ButtonCreateMissionByEdcRequestOwnProps>(
   withRequirePermissionsNew({
     permissions: missionPermissions.update,
   }),
-  connect<ButtonCreateMissionByEdcRequesStateProps, ButtonCreateMissionByEdcRequesDispatchProps, ButtonCreateMissionByEdcRequesOwnProps, ButtonCreateMissionByEdcRequesMergeProps, ReduxState>(
+  connect<ButtonCreateMissionByEdcRequestStateProps, ButtonCreateMissionByEdcRequestDispatchProps, ButtonCreateMissionByEdcRequestOwnProps, ButtonCreateMissionByEdcRequestMergeProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
@@ -76,4 +76,4 @@ export default compose<ButtonCreateMissionByEdcRequesProps, ButtonCreateMissionB
     },
   ),
   withSearch,
-)(ButtonCreateMissionByEdcReques);
+)(ButtonCreateMissionByEdcRequest);

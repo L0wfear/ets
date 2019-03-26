@@ -13,6 +13,7 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { isArray } from 'util';
 import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 type PropsFiltersLines = {
   wasFirstOpen: boolean;
@@ -20,6 +21,7 @@ type PropsFiltersLines = {
   fileds: any[];
   userData: InitialStateSession['userData'];
   onChangeFilterRawValue: (valueKey: string, type: string, value: any) => any;
+  STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
 };
 
 type StateFiltersLines = {
@@ -43,6 +45,10 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
           return titleSomeValue.title;
         }
         if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
+          return titleSomeValue.title;
+        }
+
+        if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return titleSomeValue.title;
         }
 
@@ -110,6 +116,7 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
 }
 
 const mapStateToProps = (state, { registryKey }) => ({
+  STRUCTURES: getSessionStructuresOptions(state),
   userData: getSessionState(state).userData,
   fileds: getFilterData(state.registry, registryKey).fields,
 });

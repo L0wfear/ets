@@ -14,8 +14,8 @@ type StateButtons = {
 };
 
 class Buttons extends React.Component<PropsButtons, StateButtons> {
-  renderButton = ({ type, ...data }) => (
-    <ComponentButton key={type} type={type} data={data} registryKey={this.props.registryKey} />
+  renderButton = (type) => (
+    <ComponentButton key={type} type={type} registryKey={this.props.registryKey} />
   )
 
   render() {

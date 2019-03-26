@@ -88,3 +88,9 @@ export const DivDivider = styled.div`
   background-color: #e5e5e5;
   cursor: default;
 `;
+
+export const MenuTitleContainer = styled.div`
+  display: flex;
+  width: 100%;
+  align-items: center;
+`;

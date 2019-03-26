@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as Collapse from 'react-bootstrap/lib/Collapse';
-import { DivNone } from 'global-styled/global-styled';
+import { DivNone, MarkNewRegistry } from 'global-styled/global-styled';
 import { isObject } from 'util';
 import { withRouterMatchUrl, showHeaderMenu, isActivemenu } from 'components/new/ui/app_header/utils';
-import { DivDivider, LinkSecontLvl, LinkNoHashSecontLvl } from 'components/new/ui/app_header/styled';
+import { DivDivider, LinkSecontLvl, LinkNoHashSecontLvl, MenuTitleContainer } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
 import { SecondMenuContainerMobi, DefaultSecondLvlMenuMobi } from 'components/new/ui/app_header/mobi/styled';
@@ -60,7 +60,10 @@ class OneMenu extends React.Component<any, any> {
       return (
         <LinkNoHashSecontLvl id={`link-${key}`} href={data.path}>
           <DefaultSecondLvlMenuMobi>
-            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+            <MenuTitleContainer>
+              { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+              {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
+            </MenuTitleContainer>
           </DefaultSecondLvlMenuMobi>
         </LinkNoHashSecontLvl>
       );
@@ -69,7 +72,10 @@ class OneMenu extends React.Component<any, any> {
     return (
       <LinkSecontLvl id={`link-${key}`} to={`${data.path || ''}`} onClick={this.handleMiddlewareClick}>
         <DefaultSecondLvlMenuMobi>
-          <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+          <MenuTitleContainer>
+            { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+            {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
+          </MenuTitleContainer>
         </DefaultSecondLvlMenuMobi>
       </LinkSecontLvl>
     );

@@ -1,4 +1,3 @@
-import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 export type PropsRegistryWrap = {
@@ -10,11 +9,14 @@ export type StateRegistryWrap = {
 
 };
 
-export type ButtonDefineType = {
-  type: keyof typeof buttonsTypes;
-} | string;
+export type ButtonDefineType = string[];
 
-export type TypeOneDisplayIf = 'isKgh' | 'isOkrug' | 'lenghtOptionMoreOne' | false;
+export type TypeOneDisplayIf = (
+  'isKgh'
+  | 'isOkrug'
+  | 'lenghtStructureMoreOne'
+  | false
+);
 
 export type DisplayIfTitle = {
   displayIf: TypeOneDisplayIf | TypeOneDisplayIf[];
@@ -46,6 +48,7 @@ export type OneFilterType<F> = {
       typeAns?: 'result.rows' | 'result',
       valueKey?: string;
       labelKey?: string;
+      mergeWithArray?: boolean;
     }
   }
 );
@@ -54,6 +57,7 @@ export type TypeFields<F extends any> = {
   key: keyof F;
   title: string | DisplayIfTitle[];
   width?: number;
+  dashIfEmpty?: boolean;
   format?: (
     'date'
     | 'datetime'
@@ -62,6 +66,7 @@ export type TypeFields<F extends any> = {
     | 'toFixed1'
     | 'toFixed2'
     | 'toFixed3'
+    | 'array'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   childrenFields?: TypeFields<F>[];
@@ -88,7 +93,7 @@ export type TypeConfigData<F extends any> = {
   registryKey: string;
   header: {
     title: string;
-    buttons?: ButtonDefineType[],
+    buttons?: ButtonDefineType,
   },
   filter?: {
     isOpen?: boolean;
@@ -114,7 +119,7 @@ export type TypeConfigData<F extends any> = {
         field?: keyof F;
         reverse?: boolean
       };
-      filterValues: object;
+      filterValues?: object;
       total_count?: number;
     },
     paginator?: {

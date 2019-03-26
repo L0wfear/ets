@@ -6,5 +6,4 @@ export const MapEtsContainer = styled.div<{ width?: string, height?: string }>`
   height: ${({ height }) => height ? height : '500px'};
 
   border: 1px solid #ccc;
-  margin-right: 10px;
 `;

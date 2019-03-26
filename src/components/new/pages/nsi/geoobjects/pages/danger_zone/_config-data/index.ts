@@ -5,6 +5,7 @@ export default {
   path: '/danger_zone',
   routePath: '/danger_zone/:id?',
   title: 'Справочник особо опасных мест',
+  isNewRegistry: true,
   entyity: 'danger_zone',
   noDotList: false,
   component,

@@ -90,7 +90,6 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
           canClick={false}
           rowSpan={colData.rowSpan}
           colSpan={colData.colSpan}
-          onClick={this.handleClickGlobalCheckbox}
           width={30}
         >
           {formatedTitle}

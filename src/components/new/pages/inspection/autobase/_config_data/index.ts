@@ -5,6 +5,7 @@ export default {
   path: '/inspection/autobase',
   routePath: '/inspection/autobase/:id?/:type?',
   title: 'Обустройство автобаз',
+  isNewRegistry: true,
   entyity: 'inspect.autobase',
   noDotList: true,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,

@@ -11,7 +11,7 @@ import { createValidDateTime } from 'utils/dates';
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { DutyMissionArchiveService } from 'api/missions';
 
-const getFrontDutyMission = (dutyMissionRaw: any) => {
+export const getFrontDutyMission = (dutyMissionRaw: any) => {
   const dutyMission: DutyMission = { ...dutyMissionRaw };
 
   const brigade_employee_id_list = get(dutyMissionRaw, 'brigade_employee_id_list', []) || [];

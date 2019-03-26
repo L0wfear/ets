@@ -5,6 +5,7 @@ export default {
   path: '/pgm_store',
   routePath: '/pgm_store/:id?',
   title: 'Справочник пунктов отпуска ПГМ',
+  isNewRegistry: true,
   entyity: 'pgm',
   noDotList: false,
   component,

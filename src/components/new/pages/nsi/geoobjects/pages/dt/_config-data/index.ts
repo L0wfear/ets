@@ -5,6 +5,7 @@ export default {
   path: '/dt',
   routePath: '/dt/:yard_id?',
   title: 'Справочник ДТ',
+  isNewRegistry: true,
   entyity: 'type',
   noDotList: false,
   component,

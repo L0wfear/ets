@@ -5,6 +5,7 @@ export default {
   path: '/snow_storage',
   routePath: '/snow_storage/:id?',
   title: 'Справочник пунктов временного складирования снега',
+  isNewRegistry: true,
   entyity: 'snow_storage',
   noDotList: false,
   component,

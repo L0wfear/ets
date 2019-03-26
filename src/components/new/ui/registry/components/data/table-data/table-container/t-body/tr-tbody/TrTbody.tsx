@@ -25,6 +25,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -40,7 +41,7 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, title, format }, index) => {
+  renderRow = ({ key, title, format, dashIfEmpty }, index) => {
     const { props } = this;
 
     const {
@@ -81,6 +82,9 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
         if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
           return true;
         }
+        if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
+          return true;
+        }
 
         return filtredTitle;
       }, null);
@@ -114,6 +118,13 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       if (format === 'toFixed3') {
         value = isNumber(value) ? parseFloat(value.toString()).toFixed(2) : '';
       }
+      if (format === 'array') {
+        value = isArray(value) ? value.join(', ') : '';
+      }
+    }
+
+    if (dashIfEmpty) {
+      value = !value && value !== 0 ? '-' : value;
     }
 
     return (
@@ -152,9 +163,6 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
         this.props.setParams({
           [this.props.uniqKey]: get(props.rowData, this.props.uniqKey, null),
         });
-        this.props.registryHandleDoubleClickOnRow(
-          props.rowData,
-        );
       }
     }
   }
@@ -178,6 +186,7 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 export default compose<PropsTrTbody, OwnPropsTrTbody>(
   connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, {}, ReduxState>(
     (state, { registryKey }) => ({
+      STRUCTURES: getSessionStructuresOptions(state),
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       rowFields: getListData(state.registry, registryKey).meta.rowFields,
       permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
@@ -189,14 +198,6 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
       registryHandleClickOnRow: (rowData) => (
         dispatch(
           registrySelectRow(
-            registryKey,
-            rowData,
-          ),
-        )
-      ),
-      registryHandleDoubleClickOnRow: (rowData) => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(
             registryKey,
             rowData,
           ),

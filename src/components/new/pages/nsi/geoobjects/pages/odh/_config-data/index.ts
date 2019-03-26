@@ -5,6 +5,7 @@ export default {
   path: '/odh',
   routePath: '/odh/:id?',
   title: 'Справочник ОДХ',
+  isNewRegistry: true,
   entyity: 'type',
   noDotList: false,
   component,

@@ -5,6 +5,7 @@ export default {
   path: '/fueling-water',
   routePath: '/fueling-water/:id?',
   title: 'Справочник баз гидрантов',
+  isNewRegistry: true,
   entyity: 'fueling_water',
   noDotList: false,
   component,

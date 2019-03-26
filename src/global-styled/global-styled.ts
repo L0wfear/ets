@@ -17,6 +17,16 @@ export const DivRed = styled.div`
   color: red;
 `;
 
+export const MarkNewRegistry = styled.div`
+  width: 5px;
+  height: 5px;
+  background-color: #7fc650;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+`;
+
 export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   position: relative;
   height: 100%;

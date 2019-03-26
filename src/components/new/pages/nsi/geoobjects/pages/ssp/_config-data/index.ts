@@ -5,6 +5,7 @@ export default {
   path: '/ssp',
   routePath: '/ssp/:id?',
   title: 'Справочник ССП',
+  isNewRegistry: true,
   entyity: 'type',
   noDotList: false,
   component,

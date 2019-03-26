@@ -31,6 +31,7 @@ const renderRoutes = (newRoutesArr, data) => {
 const getRouters = () => (
   <Switch>
     { Object.values(routerAndPermission).reduce(renderRoutes, []) }
+    <Redirect from="/duty-mission-templates-journal" to="duty_mission_templates" />
     <Redirect to="/monitor" />
   </Switch>
 );

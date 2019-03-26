@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DefaultFirstLvlMenu, LinkFirstLvl, LinkNoHashFirstLvl, DefaultFirstDt } from 'components/new/ui/app_header/styled';
-import { DivNone } from 'global-styled/global-styled';
+import { DefaultFirstLvlMenu, LinkFirstLvl, LinkNoHashFirstLvl, DefaultFirstDt, MenuTitleContainer } from 'components/new/ui/app_header/styled';
+import { DivNone, MarkNewRegistry } from 'global-styled/global-styled';
 import SecondMenuItem from 'components/new/ui/app_header/desktop/left/page_menu/SecondMenuItem';
 import { SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
 import * as ClickOutHandler from 'react-onclickout';
@@ -56,7 +56,10 @@ class MainMenuItem extends React.Component<any, any> {
       return (
         <LinkNoHashFirstLvl id={`link-${key}`} href={data.path}>
           <DefaultFirstLvlMenu>
-            <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+            <MenuTitleContainer>
+              { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+              {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
+            </MenuTitleContainer>
           </DefaultFirstLvlMenu>
         </LinkNoHashFirstLvl>
       );
@@ -65,7 +68,10 @@ class MainMenuItem extends React.Component<any, any> {
     return (
       <LinkFirstLvl id={`link-${key}`} to={`${data.path || ''}`}>
         <DefaultFirstLvlMenu>
-          <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
+          <MenuTitleContainer>
+            { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+            {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
+          </MenuTitleContainer>
         </DefaultFirstLvlMenu>
       </LinkFirstLvl>
     );

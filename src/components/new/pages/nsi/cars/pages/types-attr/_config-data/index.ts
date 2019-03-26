@@ -5,6 +5,7 @@ export default {
   path: '/types-attr',
   routePath: '/types-attr/:id?',
   title: 'Таблица нормативных скоростей и ширин',
+  isNewRegistry: true,
   entyity: 'types_attr',
   noDotList: false,
   component,

@@ -5,6 +5,7 @@ export default {
   path: '/pedestrian_tunnel_exits',
   routePath: '/pedestrian_tunnel_exits/:id?',
   title: 'Справочник выходов из пешеходных тоннелей',
+  isNewRegistry: true,
   entyity: 'pedestrian_tunnel_exits',
   noDotList: false,
   component,

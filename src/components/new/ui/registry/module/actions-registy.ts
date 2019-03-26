@@ -18,13 +18,14 @@ import {
   mergeHeader,
   mergeList,
 } from 'components/new/ui/registry/module/utils/merge';
-import { getJSON } from 'api/adapter';
+import { getJSON, deleteJSON } from 'api/adapter';
 import configStand from 'config';
 import { getBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { isNullOrUndefined } from 'util';
+import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -102,6 +103,12 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
     processResponse(result);
     const uniqKey: any = get(list, 'data.uniqKey', null);
     arrayRaw = get(result, typeAns, []).filter((data) => !isNullOrUndefined(data[uniqKey]));
+    switch (getRegistryData.format) {
+      case 'dutyMissionTemplate': {
+        arrayRaw = arrayRaw.map(getFrontDutyMission);
+        break;
+      }
+    }
     if (getRegistryData.userServerFilters) {
       total_count =  get(result, 'total_count', 0);
     } else {
@@ -600,6 +607,66 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
   }
 
   return null;
+};
+
+export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch, getState) => {
+  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const removeOneData = get(registryData, 'Service.removeOneData', null);
+  debugger;
+
+  const list: any = get(registryData, 'list', null);
+  const uniqKey: string = get(list, 'data.uniqKey', null);
+  const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
+  const selectedRowCurrent: any = get(list, 'data.selectedRow', {});
+
+  const itemToRemove = checkedRowsCurrent;
+
+  if (!Object.values(itemToRemove).length) {
+    itemToRemove[uniqKey] = selectedRowCurrent;
+  }
+
+  dispatch(
+    actionUnselectSelectedRowToShow(registryKey, true),
+  );
+
+  try {
+    Promise.all(
+      Object.values(itemToRemove).map(async ({ [uniqKey]: uniqKeyValue }: any) => {
+        let path = `${configStand.backend}/${removeOneData.entity}`;
+        const payload: any = {};
+
+        if (removeOneData.uniqKeyLikeQueryString) {
+          payload[uniqKey] = uniqKeyValue;
+        } else {
+          path = `${path}/${uniqKeyValue}`;
+        }
+
+        let response = null;
+
+        try {
+          response = await etsLoadingCounter(
+            dispatch,
+            deleteJSON(
+              path,
+              payload,
+              'json',
+            ),
+            { page: registryKey },
+          );
+          processResponse(response);
+        } catch (error) {
+          console.error(error); //tslint:disable-line
+        }
+
+        return response;
+      }),
+    );
+    global.NOTIFICATION_SYSTEM.notify('Выбранные записи успешно удалены', 'success');
+  } catch (error) {
+    global.NOTIFICATION_SYSTEM.notify('При удалении произошли ошибки', 'warning');
+  }
+
+  return true;
 };
 
 export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {

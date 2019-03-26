@@ -5,6 +5,7 @@ export default {
   path: '/msp',
   routePath: '/msp/:id?',
   title: 'Справочник МСП',
+  isNewRegistry: true,
   entyity: 'type',
   noDotList: false,
   component,

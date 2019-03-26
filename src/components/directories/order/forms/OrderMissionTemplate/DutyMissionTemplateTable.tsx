@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { get, uniqBy } from 'lodash';
 
 import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
 import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 
-import { getTableMeta as getMissionTempalteTableMeta } from 'components/missions/duty_mission_template/DutyMissionTemplatesTable';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
+import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -30,13 +30,81 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
           type: 'datetime',
         },
       },
-      ...getMissionTempalteTableMeta(props).cols.map(({ name, displayName, type, display: displayOuter, filter }: any) => ({
-        name,
-        displayName,
-        type,
-        filter,
-        display: typeof displayOuter === 'boolean' ? displayOuter : true,
-      })),
+      {
+        name: 'number',
+        displayName: 'Номер',
+        type: 'number',
+        cssClassName: 'width60',
+        filter: {
+          type: 'advanced-number',
+        },
+      },
+      {
+        name: 'route_name',
+        displayName: 'Маршрут',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'technical_operation_name',
+        displayName: 'Технологическая операция',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'municipal_facility_name',
+        displayName: 'Элемент',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'foreman_fio',
+        displayName: 'Бригадир',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+        },
+      },
+      {
+        name: 'brigade_employee_id_list_id',
+        displayName: 'Бригада',
+        type: 'string',
+        filter: {
+          type: 'multiselect',
+          someInRowValue: true,
+          options: uniqBy(
+            props.employeesList.map(({ id }) => ({
+              value: id,
+              label: employeeFIOLabelFunction(props.employeesIndex, id),
+            })),
+            'value',
+          ),
+        },
+      },
+      {
+        name: 'structure_id',
+        displayName: 'Подразделение',
+        cssClassName: 'width80',
+        type: 'number',
+        filter: {
+          type: 'multiselect',
+          byLabel: 'structure_name',
+        },
+        display: props.structures.length,
+      },
+      {
+        name: 'comment',
+        displayName: 'Комментарий',
+        type: 'string',
+        filter: false,
+        cssClassName: 'width300',
+      },
     ],
   };
   return meta;

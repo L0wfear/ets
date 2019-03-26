@@ -12,12 +12,12 @@ import {
 } from 'redux-main/reducers/modules/order/action-order';
 
 import permissions_mission_template from 'components/missions/mission_template/config-data/permissions';
-import permissions_duty_mission_template from 'components/missions/duty_mission_template/config-data/permissions';
 
 import { TypeDownload } from 'components/directories/order/constant-order';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { getBlobOrder } from 'components/directories/order/utils-order';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import dutyMissionTemplatePermissions from 'components/new/pages/missions/duty_mission_template/_config-data/permissions';
 
 const marginLeft = { marginLeft: 10 };
 
@@ -33,7 +33,7 @@ const OrderTableChilrend: React.FunctionComponent<any> = (props) => (
       {'Создать задание по шаблону'}
     </Button>
     <Button
-      permissions={permissions_duty_mission_template.create}
+      permissions={dutyMissionTemplatePermissions.create}
       disabled={props.disabledTemplateDutyMission}
       onClick={props.handleClickOnCDMTemplate}>
       {'Создать наряд-задание по шаблону'}

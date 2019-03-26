@@ -10,8 +10,8 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import dutyMissionPermissions from 'components/missions/duty_mission_template/config-data/permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import dutyMissionTemplatePermissions from 'components/new/pages/missions/duty_mission_template/_config-data/permissions';
 
 type ButtonCreateDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -64,7 +64,7 @@ const ButtonCreateDutyMission: React.FC<ButtonCreateDutyMissionProps> = (props) 
 
 export default compose<ButtonCreateDutyMissionProps, ButtonCreateDutyMissionOwnProps>(
   withRequirePermissionsNew({
-    permissions: dutyMissionPermissions.create,
+    permissions: dutyMissionTemplatePermissions.create,
   }),
   connect<ButtonCreateDutyMissionStateProps, ButtonCreateDutyMissionDispatchProps, ButtonCreateDutyMissionOwnProps, ButtonCreateDutyMissionMergeProps, ReduxState>(
     (state, { registryKey }) => ({

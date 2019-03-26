@@ -38,7 +38,7 @@ export const actionUpdateInspect = (id: number, data: any, files: any[], type: T
   return result;
 };
 
-export const actionCloseInspect = (id: number, data: any, type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const actionCloseInspect = (id: number, payload: any, type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseCloseInspection(

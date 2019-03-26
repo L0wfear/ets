@@ -12,4 +12,5 @@ export const EtsTable = styled.table`
   border-collapse: separate;
   table-layout: auto !important;
   border: 1px solid #c1c1c1;
+  width: 100%;
 `;

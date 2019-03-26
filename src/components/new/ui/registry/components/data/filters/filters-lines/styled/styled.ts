@@ -1,29 +1,25 @@
 import styled from 'styled-components';
-import * as Row from 'react-bootstrap/lib/Row';
-import { Col } from 'react-bootstrap';
 
-export const EtsFilterContainer = styled(Col).attrs({
-  lg: 3,
-  md: 4,
-  sm: 6,
-})``;
-
-export const EtsFiltersLines = styled(Row)`
+export const EtsFilterContainer = styled.div`
+  padding: 0 15px;
   @media screen and (min-width: 1200px) {
-    ${EtsFilterContainer}:nth-child(4n + 1) {
-      clear: left;
-    }
+    width: 25%;
   }
   @media screen and (max-width: 1200px) and (min-width: 992px) {
-    ${EtsFilterContainer}:nth-child(3n + 1) {
-      clear: left;
-    }
+    width: 33%;
   }
-  @media screen and (max-width: 992px) {
-    ${EtsFilterContainer}:nth-child(2n + 1) {
-      clear: left;
-    }
+  @media screen and (max-width: 992px) and (min-width: 768px) {
+    width: 50%;
   }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
+
+export const EtsFiltersLines = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
 `;
 
 export const EtsFilter = styled.label<{ noneClick?: boolean }>`

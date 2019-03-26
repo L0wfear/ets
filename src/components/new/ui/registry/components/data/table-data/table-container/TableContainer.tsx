@@ -32,7 +32,7 @@ class TableContainer extends React.Component<PropsTableContainer, StateTableCont
 
     return (
       <EtsTableWrap className="ets_table_wrap">
-        <EtsTable className="ets_table" bordered condensed>
+        <EtsTable>
           <Thead registryKey={registryKey} />
           <Tbody
             registryKey={registryKey}

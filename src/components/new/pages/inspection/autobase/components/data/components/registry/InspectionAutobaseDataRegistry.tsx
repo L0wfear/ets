@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BoxContainerRegistry } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { compose } from 'recompose';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { InspectionAutobaseDataRegistryProps, InspectionAutobaseDataRegistryOwnProps, InspectionAutobaseDataRegistryDispatchProps, InspectionAutobaseDataRegistryStateProps, InspectionAutobaseDataRegistryMergeProps } from './@types/InspectionAutobaseDataRegistry';
 import { ReduxState } from 'redux-main/@types/state';
@@ -40,7 +40,7 @@ const InspectionAutobaseDataRegistry: React.FC<InspectionAutobaseDataRegistryPro
 export default compose<InspectionAutobaseDataRegistryProps, InspectionAutobaseDataRegistryOwnProps>(
   connect<InspectionAutobaseDataRegistryStateProps, InspectionAutobaseDataRegistryDispatchProps, InspectionAutobaseDataRegistryOwnProps, InspectionAutobaseDataRegistryMergeProps, ReduxState>(
     (state) => ({
-      inspectAutobaseList: getInspectAutobse(state).inspectAutobaseList,
+      inspectAutobaseList: getInspectAutobase(state).inspectAutobaseList,
     }),
     (dispatch: any) => ({
       registryAddInitialData: (config) => (

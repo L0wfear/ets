@@ -17,10 +17,7 @@ type PropsTableContainer = {
 
 type StateTableContainer = {};
 
-class TableContainer extends React.Component<
-  PropsTableContainer,
-  StateTableContainer
-> {
+class TableContainer extends React.Component<PropsTableContainer, StateTableContainer> {
   componentDidMount() {
     setStickyThead('.ets_table_wrap', true);
   }

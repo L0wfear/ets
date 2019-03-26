@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { InspectionAutobaseSelectCarpoolProps, InspectionAutobaseSelectCarpoolStateProps, InspectionAutobaseSelectCarpoolDispatchProps, InspectionAutobaseSelectCarpoolOwnProps } from './@types/InspectionAutobaseSelectCarpool';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { SelectField, SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
@@ -160,8 +160,8 @@ export default compose<InspectionAutobaseSelectCarpoolProps, InspectionAutobaseS
   withSearch,
   connect<InspectionAutobaseSelectCarpoolStateProps, InspectionAutobaseSelectCarpoolDispatchProps, InspectionAutobaseSelectCarpoolOwnProps, ReduxState>(
     (state) => ({
-      companyList: getInspectAutobse(state).companyList,
-      carpoolList: getInspectAutobse(state).carpoolList,
+      companyList: getInspectAutobase(state).companyList,
+      carpoolList: getInspectAutobase(state).carpoolList,
     }),
     (dispatch: any) => ({
       actionGetAndSetInStoreCompany: (...arg) => (

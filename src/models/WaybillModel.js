@@ -419,7 +419,11 @@ export const waybillSchema = {
     equipment_fact_fuel_end: [
       {
         validator: (value, { status, equipment_fuel }) => {
-          if (equipment_fuel && status === 'active' && !value) {
+          if (
+            equipment_fuel
+            && status === 'active'
+            && (!value && value !== 0)
+          ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
         },
@@ -428,7 +432,11 @@ export const waybillSchema = {
     fact_fuel_end: [
       {
         validator: (value, { status, equipment_fuel }) => {
-          if (equipment_fuel && status === 'active' && !value) {
+          if (
+            equipment_fuel
+            && status === 'active'
+            && (!value && value !== 0)
+          ) {
             return 'Поле "Возврат фактический, л" должно быть заполнено';
           }
         },
@@ -517,21 +525,18 @@ const closingProperties = [
     title: 'Одометр. Возвращение в гараж, км',
     type: 'number',
     integer: true,
-    required: 'odometr_start',
   },
   {
     key: 'motohours_end',
     title: 'Счетчик моточасов.Возвращение в гараж, м/ч',
     type: 'number',
     integer: true,
-    required: 'motohours_start',
   },
   {
     key: 'motohours_equip_end',
     title: 'Счетчик моточасов оборудования. Возвращение в гараж, м/ч',
     type: 'number',
     integer: true,
-    required: 'motohours_equip_start',
   },
   {
     key: 'consumption',
@@ -556,22 +561,51 @@ const closingProperties = [
 
 const closingDependencies = {
   ...waybillSchema.dependencies,
+  odometr_end: [
+    {
+      validator(value, { odometr_start, gov_number }) {
+        const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+        if (CAR_HAS_ODOMETER) {
+          if (odometr_start && !value) {
+            return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
+          }
+          if (value && value < odometr_start) {
+            return '"Одометр. Возвращение в гараж, км" должно быть не меньше значения "Одометр.Выезд"';
+          }
+        }
+        return false;
+      },
+    },
+  ],
   motohours_end: [
     {
-      type: 'gte',
-      field: 'motohours_start',
+      validator(value, { motohours_start, gov_number }) {
+        const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
+        if (!CAR_HAS_ODOMETER) {
+          if (motohours_start && !value) {
+            return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
+          }
+          if (value && value < motohours_start) {
+            return '"Счетчик моточасов.Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов.Выезд"';
+          }
+        }
+        return false;
+      },
     },
   ],
   motohours_equip_end: [
     {
-      type: 'gte',
-      field: 'motohours_equip_start',
-    },
-  ],
-  odometr_end: [
-    {
-      type: 'gte',
-      field: 'odometr_start',
+      validator(value, { motohours_equip_start, equipment_fuel }) {
+        if (equipment_fuel) {
+          if (motohours_equip_start && !value) {
+            return 'Поле "Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть заполнено';
+          }
+          if (value && value < motohours_equip_start) {
+            return '"Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть не меньше значения "Счетчик моточасов оборудования.Выезд"';
+          }
+        }
+        return false;
+      },
     },
   ],
   fact_departure_date: [

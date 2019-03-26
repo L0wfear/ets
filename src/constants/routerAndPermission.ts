@@ -10,6 +10,7 @@ import changeCompany from 'components/new/ui/app_header/desktop/right/change_rol
 
 import dashboard from 'components/new/pages/dashboard/config-data';
 import inspection from 'components/new/pages/inspection/_config_data';
+import edcRequest from 'components/new/pages/edc_request/_config-data';
 import routeList from 'components/new/pages/routes_list/config-data';
 import config from 'config';
 
@@ -20,6 +21,7 @@ const routerAndPermission = {
   inspection,
   waybillJournal,
   missions,
+  edcRequest,
   nsi,
   reports,
   routeList,

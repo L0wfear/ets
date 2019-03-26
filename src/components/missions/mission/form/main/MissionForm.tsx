@@ -50,6 +50,7 @@ import {
   DisplayFlexAlignCenter,
   BtnPart,
 } from 'global-styled/global-styled';
+import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData';
 
 const smallPrintMapKey = 'smallPrintMapKey';
 
@@ -162,6 +163,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       formState: state,
       dependeceOrder,
       waybillData,
+      edcRequest,
     } = this.props;
 
     const {
@@ -178,9 +180,16 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         );
       }
 
-      if (state.waybill_id && !waybillData) {
+      if (state.waybill_id && !waybillData || (waybillData && waybillData.id !== state.waybill_id)) {
         this.props.actionLoadWaybillDataByIdForMission(
           state.waybill_id,
+          { page, path },
+        );
+      }
+
+      if (state.request_id && !edcRequest || (edcRequest && edcRequest.id !== state.request_id)) {
+        this.props.loadEdcRequiedByIdForMission(
+          state.request_id,
           { page, path },
         );
       }
@@ -431,11 +440,15 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                         || IS_POST_CREATING_ASSIGNED
                         || IS_DISPLAY
                         || MISSION_IS_ORDER_SOURCE
+                        || state.request_id
                       }
                       isPermitted={
                         isPermitted
                         && !MISSION_IS_ORDER_SOURCE
                       }
+
+                      request_id={state.request_id}
+                      request_number={state.request_number}
                       onChange={this.props.handleChange}
                       page={page}
                       path={path}
@@ -467,6 +480,11 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       )
                   }
                 </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col md={12}>
+                <FieldEdcRequestData request_id={state.request_id} edcRequest={this.props.edcRequest} />
               </Col>
             </Row>
             <Row>
@@ -610,6 +628,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                   technical_operation_id={state.technical_operation_id}
                   technical_operation_name={state.technical_operation_name}
                   for_column={state.for_column}
+
+                  request_id={state.request_id}
                   MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}
                   disabled={
                     !isPermitted
@@ -754,6 +774,7 @@ export default compose<PropsMissionForm, OwnMissionProps>(
       userStructureName: getSessionState(state).userData.structure_name,
       ...getSessionStructuresParams(state),
       order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
+      edcRequest: getMissionsState(state).missionData.edcRequest,
       waybillData: getMissionsState(state).missionData.waybillData,
       dependeceOrder: getMissionsState(state).missionData.dependeceOrder,
       dependeceTechnicalOperation: getMissionsState(state).missionData.dependeceTechnicalOperation,
@@ -766,6 +787,11 @@ export default compose<PropsMissionForm, OwnMissionProps>(
           missionsActions.actionLoadWaybillDataByIdForMission(...arg),
         );
       },
+      loadEdcRequiedByIdForMission: (...arg) => (
+        dispatch(
+          missionsActions.loadEdcRequiedByIdForMission(...arg),
+        )
+      ),
     }),
   ),
   withMapInConsumer(),

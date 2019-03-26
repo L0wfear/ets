@@ -17,10 +17,24 @@ type PropsFiltersWrap = {
 };
 
 type StateFiltersWrap = {
-
+  wasFirstOpen: boolean;
 };
 
 class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
+  state = {
+    wasFirstOpen: this.props.isOpen,
+  };
+
+  static getDerivedStateFromProps(nextProps: PropsFiltersWrap, prevState: StateFiltersWrap) {
+    if (!prevState.wasFirstOpen && nextProps.isOpen) {
+      return {
+        wasFirstOpen: true,
+      };
+    }
+
+    return null;
+  }
+
   handleToggle = () => {
     // toggle
   }
@@ -32,7 +46,7 @@ class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
       <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
         <Panel.Collapse>
           <PanelBodyWrap>
-            <Filters registryKey={registryKey} />
+            <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
           </PanelBodyWrap>
         </Panel.Collapse>
       </PanelWrap>

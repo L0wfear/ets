@@ -8,6 +8,7 @@ export interface StatePropsTrTbody {
   rowFields: OneRegistryData['list']['meta']['rowFields'];
   permissions: OneRegistryData['list']['permissions']['read'][];
   userData: InitialStateSession['userData'];
+  buttons: OneRegistryData['header']['buttons'];
 }
 
 export type DipatchPropsTrTbody = {

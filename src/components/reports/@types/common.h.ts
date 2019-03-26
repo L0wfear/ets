@@ -5,8 +5,10 @@ export interface IReportProps {
   serviceName: string;
   serviceUrl: string;
   reportUrl: string;
+  summaryTitle?: string;
   tableProps?: any;
   enumerated?: boolean;
+  enumeratedChildren?: boolean;
   initialSort?: string | boolean;
   enableSort?: boolean;
   headerComponent: any;

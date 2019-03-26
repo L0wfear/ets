@@ -4,7 +4,7 @@ import { ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutobaseStateProps, 
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
@@ -38,7 +38,7 @@ export default compose<ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutoba
   }),
   connect<ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps, {}, ReduxState>(
     (state) => ({
-      lastConductingInspect: getInspectAutobse(state).lastConductingInspect,
+      lastConductingInspect: getInspectAutobase(state).lastConductingInspect,
     }),
     null,
     null,

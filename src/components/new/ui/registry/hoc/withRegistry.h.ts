@@ -1,4 +1,4 @@
-import { ButtonTypes } from 'components/new/ui/registry/contants/buttonsTypes';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 export type PropsRegistryWrap = {
@@ -11,7 +11,7 @@ export type StateRegistryWrap = {
 };
 
 export type ButtonDefineType = {
-  type: ButtonTypes;
+  type: keyof typeof buttonsTypes;
 } | string;
 
 export type TypeOneDisplayIf = 'isKgh' | 'isOkrug' | 'lenghtOptionMoreOne' | false;
@@ -29,14 +29,26 @@ export type FilterOptionType<F> = {
 
 export type OneFilterType<F> = {
   valueKey: keyof F;
-  labelKey?: string;
   title: string | DisplayIfTitle[];
-  type: 'multiselect'
-  | 'advanced-number'
-  | 'advanced-date';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];
-};
+  disabled?: boolean;
+} & (
+  {
+    type: 'advanced-number'
+    | 'advanced-date';
+  }| {
+    type: 'multiselect';
+    labelKey?: string;
+    options?: FilterOptionType<F>[];
+    getRegistryData?: {
+      entity?: string;
+      typeAns?: 'result.rows' | 'result',
+      valueKey?: string;
+      labelKey?: string;
+    }
+  }
+);
 
 export type TypeFields<F extends any> = {
   key: keyof F;
@@ -57,6 +69,9 @@ export type TypeFields<F extends any> = {
   key: 'enumerated';
   title: string;
   width?: number;
+  displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+} | {
+  key: 'checkbox';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 };
 

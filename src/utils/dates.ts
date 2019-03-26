@@ -202,6 +202,22 @@ export function getTomorrow0am() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0);
 }
 
+export function makeDataFromRaw(date: string, time?: string, seconds?: string) {
+  const [day, month, year] = date.split('.');
+
+  let datetime = `${year}-${month}-${day}`;
+
+  if (time) {
+    datetime = `${datetime}T${time}:${seconds ? seconds : '00'}`;
+  }
+
+  return datetime;
+}
+
+export function isValidDate(date) {
+  return moment(date).isValid();
+}
+
 export function getDatesByShift() {
   const now = new Date();
   if (now.getHours() > 18) {

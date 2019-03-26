@@ -39,11 +39,14 @@ export type Mission = {
   object_type_id: number | null;
   object_type_name: string;
   operation_num_execution: null
+  faxogramm_id?: number; // legacy
   order_id: number | null;
   order_number: string | null;
   order_operation_id: number | null;
   order_status: string;
   passes_count: number | null;
+  request_id?: number;
+  request_number?: string;
   route_id: number | null;
   route_name: string;
   status: string; // @todo

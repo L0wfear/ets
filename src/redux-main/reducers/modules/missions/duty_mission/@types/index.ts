@@ -38,6 +38,8 @@ export type DutyMission = {
   order_status: string | null;
   plan_date_end: string | null;
   plan_date_start: string | null;
+  request_id?: number;
+  request_number?: string;
   route_id: number | null;
   route_name: string;
   status: keyof typeof DUTY_MISSION_STATUS_LABELS;

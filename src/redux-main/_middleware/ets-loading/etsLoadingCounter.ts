@@ -31,4 +31,12 @@ const etsLoadingCounter = async <PromiseAns>(dispatch: any, promise: Promise<Pro
   return response;
 };
 
+export const actionFetchWithCount: any = (promise: Promise<any>, meta: LoadingMeta) => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promise,
+    meta,
+  );
+};
+
 export default etsLoadingCounter;

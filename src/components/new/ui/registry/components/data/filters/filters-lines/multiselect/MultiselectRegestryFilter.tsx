@@ -13,8 +13,16 @@ import {
   EtsFilter,
   EtsFilterTitle,
   EtsFilterInputContainer,
+  EtsPreloaderFieldContainer,
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
+
+import { get } from 'lodash';
+import { getJSON } from 'api/adapter';
+import configStand from 'config';
+import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import Preloader from 'components/ui/new/preloader/Preloader';
+import { DivNone } from 'global-styled/global-styled';
 
 type PropsMultiselectRegestryFilter = {
   filterData: {
@@ -22,7 +30,12 @@ type PropsMultiselectRegestryFilter = {
     valueKey: string;
     labelKey?: string;
     options?: any;
+    disabled?: boolean;
+    getRegistryData: any;
   };
+  registryKey: string;
+  actionFetchWithCount: any;
+  wasFirstOpen: boolean;
   formatedTitle: string;
   filterValuesObj: any;
   array: any[];
@@ -36,23 +49,31 @@ type StateMultiselectRegestryFilter = {
     valueKey: string;
     labelKey?: string;
     options?: any;
+    disabled?: boolean;
+    getRegistryData: any;
   };
   options: any[];
+  disabled: boolean;
+  isLoading: boolean;
 };
+
+const makeOptionsFromArray = (array: any[], valueKey: string, labelKey?: string) => (
+  uniqBy(
+    array,
+    valueKey,
+  ).reduce((newArr, { [valueKey]: value, [labelKey || valueKey]: label }) => {
+    if (value && label) {
+      newArr.push({ value, label });
+    }
+
+    return newArr;
+  }, [])
+);
 
 const makeOptions = (props: PropsMultiselectRegestryFilter) => (
   props.filterData.options
   || (
-    uniqBy(
-      props.array,
-      props.filterData.valueKey,
-    ).reduce((newArr, { [props.filterData.valueKey]: value, [props.filterData.labelKey || props.filterData.valueKey]: label }) => {
-      if (value && label) {
-        newArr.push({ value, label });
-      }
-
-      return newArr;
-    }, [])
+    makeOptionsFromArray(props.array, props.filterData.valueKey, props.filterData.labelKey)
   )
 );
 
@@ -61,20 +82,88 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
     array: this.props.array,
     filterData: this.props.filterData,
     options: makeOptions(this.props),
+    disabled: this.props.wasFirstOpen,
+    isLoading: Boolean(get(this.props.filterData, 'getRegistryData', false)),
   };
 
   static getDerivedStateFromProps(nextProps: PropsMultiselectRegestryFilter, prevState: StateMultiselectRegestryFilter) {
     const { array, filterData } = nextProps;
 
     if (array !== prevState.array || filterData !== prevState.filterData) {
-      return {
+      const changeObj: Partial<StateMultiselectRegestryFilter> = {
         array,
         filterData,
-        options: makeOptions(nextProps),
       };
+      const getRegistryData = get(nextProps.filterData, 'getRegistryData', null);
+      if (!getRegistryData) {
+        changeObj.options = makeOptions(nextProps);
+      }
+
+      return changeObj;
+    }
+
+    if (nextProps.wasFirstOpen && prevState.disabled) {
+      const getRegistryData = get(nextProps.filterData, 'getRegistryData', null);
+
+      if (!getRegistryData) {
+        return {
+          disabled: false,
+        };
+      }
     }
 
     return null;
+  }
+
+  async componentDidUpdate(prevProps) {
+    if (!prevProps.wasFirstOpen && this.props.wasFirstOpen) {
+      const getRegistryData = get(this.props.filterData, 'getRegistryData', null);
+
+      if (getRegistryData) {
+        let response = null;
+        try {
+          response = await this.props.actionFetchWithCount(
+            getJSON(
+              `${configStand.backend}/${getRegistryData.entity}`,
+              {},
+            ),
+            { page: '' },
+          );
+        } catch (error) {
+          console.error(error); // tslint:disable-line:no-console
+
+          this.setState({
+            isLoading: false,
+          });
+          return;
+        }
+
+        const result = get(
+          response,
+          get(getRegistryData, 'typeAns', 'result.rows'),
+          [],
+        );
+
+        const valueKey = get(getRegistryData, 'valueKey', null);
+        const labelKey = get(getRegistryData, 'labelKey', valueKey);
+
+        if (!valueKey) {
+          throw new Error(`опередели valueKey в ${this.props.registryKey}/${this.props.filterData.valueKey}`);
+        }
+
+        const options = makeOptionsFromArray(
+          result,
+          valueKey,
+          labelKey,
+        );
+
+        this.setState({
+          options,
+          isLoading: false,
+          disabled: false,
+        });
+      }
+    }
   }
 
   handleChange = (value, options) => {
@@ -95,15 +184,28 @@ class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestry
     } = props;
 
     return (
-      <EtsFilter>
+      <EtsFilter noneClick={this.state.isLoading}>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
           <ReactSelect
+            placeholder={this.state.isLoading ? 'Загрузка...' : undefined}
             value={value}
             options={state.options}
             multi
             onChange={this.handleChange}
+            disabled={this.props.filterData.disabled || this.state.disabled}
           />
+          {
+            this.state.isLoading
+              ? (
+                <EtsPreloaderFieldContainer>
+                  <Preloader typePreloader="field" />
+                </EtsPreloaderFieldContainer>
+              )
+              : (
+                <DivNone />
+              )
+          }
         </EtsFilterInputContainer>
       </EtsFilter>
     );
@@ -117,4 +219,11 @@ const mapStateToProps = (state, { registryKey, filterData }) => ({
 
 export default connect<any, any, any, ReduxState>(
   mapStateToProps,
+  (dispatch: any) => ({
+    actionFetchWithCount: (...arg) => (
+      dispatch(
+        actionFetchWithCount(...arg),
+      )
+    ),
+  }),
 )(MultiselectRegestryFilter);

@@ -65,11 +65,14 @@ class Paginator extends React.Component<PropsPaginator, StatePaginator> {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    /*
     if (this.state.processedArray !== prevState.processedArray || this.state.perPage !== prevState.perPage) {
       if (this.props.paginator.currentPage !== 0) {
         this.props.registryChangeDataPaginatorCurrentPage(0);
       }
     }
+
+    */
   }
 
   handleButtonClick: any = ({ currentTarget: { dataset: { index } } }) => {

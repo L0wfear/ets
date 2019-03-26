@@ -160,6 +160,7 @@ export default class Filter extends React.Component {
 
       return (
         <FilterRow
+          reportKey={this.props.reportKey}
           tableData={tableData}
           entity={this.props.entity}
           key={i}

@@ -5,7 +5,7 @@ import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled
 import { getDateWithMoscowTz, makeDate, makeTime } from 'utils/dates';
 import ButtonCreateInspectAutobase from 'components/new/pages/inspection/autobase/components/data/components/action_menu/components/button_inspect_autobase/ButtonCreateInspectAutobase';
 import ButtonContinueInspectAutobase from 'components/new/pages/inspection/autobase/components/data/components/action_menu/components/button_inspect_autobase/ButtonContinueInspectAutobase';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { DispatchProp, connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
@@ -153,8 +153,8 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
 export default compose<InspectionAutobaseDataActionMenuProps, InspectionAutobaseDataActionMenuOwnProps>(
   connect<InspectionAutobaseDataActionMenuStateProps, DispatchProp, InspectionAutobaseDataActionMenuOwnProps, any, ReduxState>(
     (state) => ({
-      lastConductingInspect: getInspectAutobse(state).lastConductingInspect,
-      lastCompletedInspect: getInspectAutobse(state).lastCompletedInspect,
+      lastConductingInspect: getInspectAutobase(state).lastConductingInspect,
+      lastCompletedInspect: getInspectAutobase(state).lastCompletedInspect,
     }),
     null,
     null,

@@ -78,6 +78,7 @@ export const setMissionData = () => (dispatch, getState) => {
     selectedElementAssignment: selectedAssignment,
   } = getOrderState(getState());
 
+  partialMission.faxogramm_id = selectedOrder.id;  // legacy
   partialMission.order_id = selectedOrder.id;
   partialMission.norm_id = selectedAssignment.norm_id;
   partialMission.norm_ids = [selectedAssignment.norm_id];
@@ -119,7 +120,7 @@ export const setDutyMissionData = (): ThunkAction<any, ReduxState, {}, AnyAction
     selectedElementAssignment: selectedAssignment,
   } = getOrderState(getState());
 
-  partialDutyMission.faxogramm_id = selectedOrder.id;
+  partialDutyMission.faxogramm_id = selectedOrder.id;  // legacy
   partialDutyMission.norm_id = selectedAssignment.norm_id;
   partialDutyMission.plan_date_start = selectedAssignment.date_from || selectedOrder.order_date;
   partialDutyMission.plan_date_end = selectedAssignment.date_to || selectedOrder.order_date_to;

@@ -26,10 +26,12 @@ export const EtsFiltersLines = styled(Row)`
   }
 `;
 
-export const EtsFilter = styled.label`
+export const EtsFilter = styled.label<{ noneClick?: boolean }>`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  pointer-events: ${({ noneClick }) => noneClick ? 'none' : 'all'};
 `;
 
 export const EtsFilterTitle = styled.span`
@@ -40,6 +42,18 @@ export const EtsFilterTitle = styled.span`
 
 export const EtsFilterInputContainer = styled.div`
   font-weight: initial;
+  position: relative;
+`;
+
+export const EtsPreloaderFieldContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  padding: 4px;
+  background: rgba(1, 1, 1, 0.1);
+  display: flex;
+  justify-content: center;
 `;
 
 export const EtsFilterInputAdvacedContainer = styled(EtsFilterInputContainer)`

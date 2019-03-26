@@ -8,6 +8,7 @@ import {
   OrderTechnicalOperation,
 } from 'redux-main/reducers/modules/order/@types';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { EdcRequest } from '../../edc_request/@types';
 
 export type IStateMissions = {
   missionTemplateList: MissionTemplate[];
@@ -18,6 +19,7 @@ export type IStateMissions = {
   dutyMissionData: {
     dutyMissionList: DutyMission[],
     availableMissionsToBind: Mission[];
+    edcRequest: EdcRequest;
     dependeceOrder: Order;
     dependeceTechnicalOperation: OrderTechnicalOperation;
     total_count: number;
@@ -27,6 +29,7 @@ export type IStateMissions = {
     waybillData: Waybill;
     dependeceOrder: Order;
     dependeceTechnicalOperation: OrderTechnicalOperation;
+    edcRequest: EdcRequest;
     carsList: Car[];
     carsIndex: Record<Car['asuods_id'], Car>;
     total_count: number;

@@ -13,6 +13,7 @@ export type StatePropsFieldRouteIdMission = {
   routesList: IStateRoutes['routesList'];
   municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList'];
   dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
+  edcRequest: IStateMissions['missionData']['edcRequest'];
 };
 export type DispatchPropsFieldRouteIdMission = {
   actionLoadRouteById: HandleThunkActionCreator<typeof routesActions.actionLoadRouteById>;
@@ -28,6 +29,7 @@ export type OwnPropsFieldRouteIdMission = {
   technical_operation_id: Mission['technical_operation_id'];
   technical_operation_name: Mission['technical_operation_name'];
   for_column: Mission['for_column'];
+  request_id?: Mission['request_id'];
 
   MISSION_IS_ORDER_SOURCE: boolean;
 

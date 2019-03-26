@@ -5,7 +5,7 @@ import { prop, indexBy } from 'ramda';
 import { mapKeys, get, isEmpty, identity, sortBy } from 'lodash';
 
 import { IDataTableSchema, IExtractedDataTableSchema, IDataTableColSchema, ISchemaMaker } from 'components/ui/table/@types/schema.h';
-import { isString } from 'util';
+import { isString, isArray } from 'util';
 import { diffDates } from 'utils/dates';
 
 export function extractTableMeta(columnMeta: IDataTableSchema): IExtractedDataTableSchema {
@@ -195,6 +195,15 @@ export const sortData = (data, { initialSort, initialSortAscending, ...other }) 
 );
 
 export const makeData = (data, prevProps, nextProps) => {
+  const deepArr = data.some(({ rows }) => isArray(rows));
+
+  if (deepArr) {
+    return data.map((dataBlock) => ({
+        ...dataBlock,
+        rows: makeData(dataBlock.rows, prevProps, nextProps),
+    }));
+  }
+
   let returnData = data;
 
   const { tableMeta: { cols = [] } = {} } = nextProps;

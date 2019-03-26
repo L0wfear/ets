@@ -31,7 +31,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import FieldDatesDutyMission from 'components/missions/duty_mission/form/main/inside_fields/dates/FieldDatesDutyMission';
-import FieldMissionSourceDutyMission from 'components/missions/duty_mission/form/main/inside_fields/mission_source_id/FieldMissionSourceDutyMission';
+import FieldMissionSourceMission from 'components/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 
 /**
  * Форма шаблона наряд-заданий
@@ -117,7 +117,7 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
             />
           </Col>
           <Col md={12}>
-            <FieldMissionSourceDutyMission
+            <FieldMissionSourceMission
               value={state.mission_source_id}
               name={state.mission_source_name}
               error={errors.mission_source_id}

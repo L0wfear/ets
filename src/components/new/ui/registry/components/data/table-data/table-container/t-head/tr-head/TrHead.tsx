@@ -36,7 +36,7 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
       }, null);
     }
 
-    if (!formatedTitle) {
+    if (!formatedTitle && colData.key !== 'checkbox') {
       return null;
     }
 

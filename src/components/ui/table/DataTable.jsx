@@ -27,6 +27,7 @@ import Div from 'components/ui/Div';
 import Paginator from 'components/ui/new/paginator/Paginator';
 import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
+import { isArray } from 'util';
 
 export default class DataTable extends React.Component {
   /**
@@ -734,6 +735,27 @@ export default class DataTable extends React.Component {
     onRowSelected,
     highlight = [],
   ) {
+    const deepArr = data.some(({ rows }) => isArray(rows));
+
+    if (deepArr) {
+      return data
+        .map((blockData) => ({
+          ...blockData,
+          rows: blockData.rows
+            .map(this.processEmptyCols.bind(this, tableCols))
+            .map(this.processHighlighted.bind(this, highlight))
+            .map(
+              this.processSelected.bind(
+                this,
+                selected,
+                selectField,
+                onRowSelected,
+              ),
+            )
+            .filter(this.shouldBeRendered),
+        }))
+        .filter(({ rows }) => rows.length);
+    }
     return data
       .map(this.processEmptyCols.bind(this, tableCols))
       .map(this.processHighlighted.bind(this, highlight))
@@ -891,6 +913,7 @@ export default class DataTable extends React.Component {
               options={tableMetaCols.filter((el) => el.filter !== false)}
               tableData={this.props.results}
               entity={this.props.entity}
+              reportKey={this.props.reportKey}
               loadDependecyData={this.props.loadDependecyData}
             />
           )}
@@ -918,6 +941,7 @@ export default class DataTable extends React.Component {
           serverPagination={serverPagination}
           currentPage={this.state.currentPage}
           globalCheckHandler={this.globalCheckHandler}
+          reportKey={this.props.reportKey}
         />
         {serverPagination ? (
           <div />

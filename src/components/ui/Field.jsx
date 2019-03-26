@@ -10,6 +10,8 @@ import Preloader from 'components/ui/new/preloader/Preloader';
 
 import Div from 'components/ui/Div';
 
+const checkboxStyle = { fontSize: '20px', margin: '5px' };
+
 function StringField(props) {
   const { error, label = '', modalKey, isLoading, ...mainProps } = props;
   const {
@@ -161,7 +163,7 @@ export default class Field extends React.Component {
           <input
             id={id}
             type="checkbox"
-            style={{ fontSize: '20px', margin: '5px' }}
+            style={this.props.checkboxStyle ? checkboxStyle : undefined}
             checked={this.props.value}
             onChange={this.props.onChange}
             disabled={this.props.disabled}

@@ -2,7 +2,6 @@ import { DispatchProp } from 'react-redux';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 export interface StatePropsThead {
-  noEnumerated: OneRegistryData['list']['meta']['noEnumerated'];
   fieldsInDeepArr: OneRegistryData['list']['meta']['fieldsInDeepArr'];
 }
 

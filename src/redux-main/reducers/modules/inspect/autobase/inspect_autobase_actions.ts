@@ -7,7 +7,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateInspectAutobase, InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { cloneDeep } from 'lodash';
 import { INSPECT_AUTOBASE, initialStateInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase';
 import { actionLoadCompany } from 'redux-main/reducers/modules/company/actions';
@@ -24,7 +24,7 @@ import { diffDatesByDays, getDateWithMoscowTz } from 'utils/dates';
 import { createValidDateTime } from 'utils/dates';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
-  const stateInspectAutobaseOld = getInspectAutobse(getState());
+  const stateInspectAutobaseOld = getInspectAutobase(getState());
 
   const stateInspectAutobase = {
     ...stateInspectAutobaseOld,
@@ -125,7 +125,7 @@ const actionGetInspectAutobaseById = (id: Parameters<typeof promiseGetInspectAut
 };
 
 export const actionPushDataInInspectAutobaseList = (inspectionAutobase: InspectAutobase): ThunkAction<InspectAutobase[], ReduxState, {}, AnyAction> => (dispatch, getState) => {
-  const { inspectAutobaseList } = getInspectAutobse(getState());
+  const { inspectAutobaseList } = getInspectAutobase(getState());
 
   const indexInArrayItem = inspectAutobaseList.findIndex(({ id }) => id === inspectionAutobase.id);
 

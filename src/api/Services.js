@@ -321,6 +321,13 @@ export const MissionCancelReasonsService = ETS_API_FACTORY.createApiServiceAdapt
 export const InspectionService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection',
 );
+export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/act',
+);
 export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspect/registry',
+);
+
+export const EdcRequestService = ETS_API_FACTORY.createApiServiceAdapter(
+  'edc_request',
 );

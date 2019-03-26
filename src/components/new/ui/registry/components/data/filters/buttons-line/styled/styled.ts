@@ -5,7 +5,7 @@ export const EtsFiltersButtonsLine = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 5px;
+  margin: 0 5px;
 `;
 
 export const EtsFiltersCloseContainer = styled.div`

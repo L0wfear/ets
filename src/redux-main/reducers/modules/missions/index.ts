@@ -15,12 +15,14 @@ export const initialMissionsState: IStateMissions = {
   dutyMissionData: {
     dutyMissionList: [],
     dependeceOrder: null,
+    edcRequest: null,
     dependeceTechnicalOperation: null,
     availableMissionsToBind: [],
     total_count: 0,
   },
   missionData: {
     list: [],
+    edcRequest: null,
     waybillData: null,
     dependeceOrder: null,
     dependeceTechnicalOperation: null,

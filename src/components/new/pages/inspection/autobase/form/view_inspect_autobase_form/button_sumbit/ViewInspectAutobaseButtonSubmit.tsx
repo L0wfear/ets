@@ -6,10 +6,13 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { compose } from 'recompose';
+import { saveData } from 'utils/functions';
+import { get } from 'lodash';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
   actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionUpdateInspectAutobase>;
   actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionCloseInspectAutobase>;
+  actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
 };
 
 type ViewInspectAutobaseButtonSubmitOwnProps = {
@@ -45,13 +48,16 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
   const handleGetAutobaseAct = React.useCallback(
     async () => {
       if (canSave) {
-        global.NOTIFICATION_SYSTEM.notify('акты не реализованы', 'error');
-        /*
-        await props.actionGetActInspectAutobase(
-          selectedInspectAutobase,
+        const response = await props.actionGetBlobActInspect(
+          selectedInspectAutobase.id,
           { page: props.loadingPage },
         );
-        */
+
+        const blob = get(response, 'blob', null);
+        const fileName = get(response, 'fileName', '');
+        if (blob) {
+          saveData(blob, fileName);
+        }
       }
     },
     [selectedInspectAutobase, canSave],
@@ -94,6 +100,11 @@ export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobase
       actionCloseInspectAutobase: (...arg) => (
         dispatch(
           inspectionActions.actionCloseInspectAutobase(...arg),
+        )
+      ),
+      actionGetBlobActInspect: (...arg) => (
+        dispatch(
+          inspectionActions.actionGetBlobActInspect(...arg),
         )
       ),
     }),

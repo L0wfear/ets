@@ -1453,6 +1453,7 @@ div.none {
   justify-content: space-between;
   line-height: 30px;
   color: white;
+  z-index: 100;
 
   >div {
     flex: 1 1 0;

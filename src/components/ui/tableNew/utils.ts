@@ -208,7 +208,7 @@ export const sortData = (data, props) => {
 };
 
 export const makeData = (props) => {
-  const ans = { data: hideChildren([...props.data], props) };
+  const ans = { data: hideChildren([...props.data].filter(({ _fix_bottom }) => !_fix_bottom), props) };
 
   if (props.activeFilter) {
     ans.data = filterData(ans.data, props);
@@ -218,7 +218,10 @@ export const makeData = (props) => {
     ans.data = sortData(ans.data, props);
   }
 
-  return showChildren(ans.data);
+  return [
+    ...showChildren(ans.data),
+    ...props.data.filter(({ _fix_bottom }) => _fix_bottom),
+  ];
 };
 
 export const makeTableMeta = (tableMeta, props) => {

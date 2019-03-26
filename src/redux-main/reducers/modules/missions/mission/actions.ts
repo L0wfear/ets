@@ -28,6 +28,7 @@ import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/acti
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { get } from 'lodash';
+import edcRequestActions from '../../edc_request/edc_request_actions';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (
   dispatch,
@@ -236,6 +237,20 @@ const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['
   }
 );
 
+type ActionSetDependenceEdcRequestForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+const actionSetDependenceEdcRequestForMission = (edcRequest: IStateMissions['missionData']['edcRequest']): ActionSetDependenceEdcRequestForMission => (
+  (dispatch, getState) => {
+    const missionData = dispatch(
+      actionSetMissionPartialData({
+        ...getMissionsState(getState()).missionData,
+        edcRequest,
+      }),
+    );
+
+    return missionData;
+  }
+);
+
 type ActionSetDependenceWaybillDataForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
 const actionSetDependenceWaybillDataForMission = (waybillData: IStateMissions['missionData']['waybillData']): ActionSetDependenceWaybillDataForMission => (
   (dispatch, getState) => {
@@ -249,6 +264,20 @@ const actionSetDependenceWaybillDataForMission = (waybillData: IStateMissions['m
     return missionData;
   }
 );
+
+const loadEdcRequiedByIdForMission = (id: number, meta: LoadingMeta) => async (dispatch) => {
+  const edcRequest = await dispatch(
+    edcRequestActions.actionLoadEdcRequestById(id, meta),
+  );
+
+  dispatch(
+    actionSetDependenceEdcRequestForMission(
+      edcRequest,
+    ),
+  );
+
+  return edcRequest;
+};
 
 const actionLoadWaybillDataByIdForMission = (
   waybill_id: number,
@@ -400,6 +429,8 @@ export default {
   actionGetMissionById,
   actionGetAndSetInStoreMission,
   actionSetDependenceOrderDataForMission,
+  actionSetDependenceEdcRequestForMission,
+  loadEdcRequiedByIdForMission,
   actionLoadWaybillDataByIdForMission,
   actionSetDependenceWaybillDataForMission,
   actionLoadOrderAndTechnicalOperationByIdForMission,

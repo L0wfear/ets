@@ -44,6 +44,8 @@ export const makeDefaultDutyMission = (): DutyMission => ({
   order_status: '',
   plan_date_end: createValidDateTime(getTomorrow9am()),
   plan_date_start: createValidDateTime(getToday9am()),
+  request_id: null,
+  request_number: '',
   route_id: null,
   route_name: '',
   status: DUTY_MISSION_STATUS.not_assigned,

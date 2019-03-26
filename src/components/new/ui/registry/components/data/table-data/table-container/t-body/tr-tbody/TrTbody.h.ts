@@ -2,8 +2,6 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
-import { HandleThunkActionCreator } from 'react-redux';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 
 export interface StatePropsTrTbody {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;

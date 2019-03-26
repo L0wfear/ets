@@ -5,7 +5,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 import { InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormMergeProps, InspectionAutobaseFormStateProps } from 'components/new/pages/inspection/autobase/form/@types/InspectionAutobaseForm';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { PopupBottomForm, HiddenPageEtsContainer } from './styled/InspectionAutobaseFormStyled';
@@ -42,7 +42,7 @@ const checkSearchState = (searchState, setDataInSearch, selectedInspectAutobase)
 const inspectionAutobaseListDidUpdate = async (props: InspectionAutobaseFormProps, inspectAutobaseId: InspectAutobase['id'], selectedInspectAutobase: InspectAutobase, setSelectedInspectAutobase: React.Dispatch<InspectAutobase>, handleCloseForm: (isSubmitted: boolean) => void) => {
   const currentSelectedId = get(selectedInspectAutobase, 'id', null);
 
-  if (inspectAutobaseId && currentSelectedId !== inspectAutobaseId) {
+  if (inspectAutobaseId && (currentSelectedId !== inspectAutobaseId)) {
     const selectedInspectAutobaseNew = await getSelectedInspectAutobase(props, inspectAutobaseId);
 
     if (selectedInspectAutobaseNew) {
@@ -67,11 +67,11 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
       props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
-      setSelectedInspectAutobase(null);
       props.setParams({
         id: '',
         type: '',
       });
+      setSelectedInspectAutobase(null);
     },
     [props.match.url,  props.location.search],
   );
@@ -118,7 +118,7 @@ export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnPro
   }),
   connect<InspectionAutobaseFormStateProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormMergeProps, ReduxState>(
     (state) => ({
-      inspectAutobaseList: getInspectAutobse(state).inspectAutobaseList,
+      inspectAutobaseList: getInspectAutobase(state).inspectAutobaseList,
     }),
     (dispatch: any) => ({
       actionGetInspectAutobaseById: (...arg) => (

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
-import { getInspectAutobse } from 'redux-main/reducers/selectors';
+import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
@@ -40,7 +40,7 @@ export default compose<ButtonContinueInspectAutobaseProps, ButtonContinueInspect
   }),
   connect<ButtonContinueInspectAutobaseStateProps, ButtonContinueInspectAutobaseDispatchProps, ButtonContinueInspectAutobaseOwnProps, ButtonContinueInspectAutobaseMergedProps, ReduxState>(
     (state) => ({
-      lastConductingInspect: getInspectAutobse(state).lastConductingInspect,
+      lastConductingInspect: getInspectAutobase(state).lastConductingInspect,
     }),
     null,
     null,

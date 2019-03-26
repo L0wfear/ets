@@ -7,7 +7,7 @@ export {
 
 export {
   getInspect,
-  getInspectAutobse,
+  getInspectAutobase,
 } from 'redux-main/reducers/modules/inspect/@selectors/inspect_selectors';
 
 export const getUserNotificationsState = (state: ReduxState) => (

@@ -4,9 +4,26 @@ import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { promiseCloseInspection, promiseUpdateInspection } from './inspect_promise';
+import { promiseGetBlobActInspection, promiseCloseInspection, promiseUpdateInspection } from './inspect_promise';
+import { TypeOfInspect } from './@types/inspect_reducer';
 
-export const actionUpdateInspect = (id: number, data: any, files: any[], type: 'autobase', meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const actionGetBlobActInspect = (id: number, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    promiseGetBlobActInspection(
+      id,
+    ),
+    meta,
+  );
+
+  if (!result.blob) {
+    global.NOTIFICATION_SYSTEM.notify('Ошибка формирования акта', 'error', 'tr');
+  }
+
+  return result;
+};
+
+export const actionUpdateInspect = (id: number, data: any, files: any[], type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseUpdateInspection(
@@ -21,7 +38,7 @@ export const actionUpdateInspect = (id: number, data: any, files: any[], type: '
   return result;
 };
 
-export const actionCloseInspect = (id: number, data: any, type: 'autobase', meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const actionCloseInspect = (id: number, data: any, type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseCloseInspection(
@@ -36,6 +53,7 @@ export const actionCloseInspect = (id: number, data: any, type: 'autobase', meta
 };
 
 const inspectionActions = {
+  actionGetBlobActInspect,
   ...inspectionAutobaseActions,
 };
 

@@ -1,9 +1,10 @@
-import { InspectRegistryService, InspectionService } from "api/Services";
+import { InspectRegistryService, InspectionService, InspectionActService } from "api/Services";
 import {
   get,
   keyBy,
 } from 'lodash';
-import { InspectionTypes, InspectAutobase } from "./autobase/@types/inspect_autobase";
+import { InspectAutobase } from "./autobase/@types/inspect_autobase";
+import { TypeOfInspect } from "./@types/inspect_reducer";
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -29,7 +30,7 @@ export const promiseGetInspectRegistry = async <T>(payload: object) => {
   };
 };
 
-export const promiseGetInspectionByIdType = async (id: number, type: InspectionTypes) => {
+export const promiseGetInspectionByIdType = async (id: number, type: TypeOfInspect) => {
   let response = null;
   try {
     response = await InspectRegistryService.path(id).get(
@@ -56,7 +57,7 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
   return inspectAutobase;
 };
 
-export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: InspectionTypes) => {
+export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect) => {
   const response = await InspectRegistryService.path(id).put(
     {
       data,
@@ -72,7 +73,7 @@ export const promiseUpdateInspection = async (id: number, data: InspectAutobase[
   return inspectAutobase;
 };
 
-export const promiseCloseInspection = async (id: number, data: InspectAutobase['data'], type: InspectionTypes) => {
+export const promiseCloseInspection = async (id: number, data: InspectAutobase['data'], type: TypeOfInspect) => {
   const response = await InspectionService.path(id).path('close').put(
     {
       type,
@@ -85,4 +86,15 @@ export const promiseCloseInspection = async (id: number, data: InspectAutobase['
   const inspectAutobase = get(response, 'result.rows.0', null);
 
   return inspectAutobase;
+};
+
+export const promiseGetBlobActInspection = async (id: number) => {
+  let response = { blob: null };
+  try {
+    response = await InspectionActService.path(id).getBlob({});
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  return response;
 };

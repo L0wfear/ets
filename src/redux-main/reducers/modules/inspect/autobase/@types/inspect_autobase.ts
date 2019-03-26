@@ -1,8 +1,6 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 
-export type InspectionTypes = 'autobase' | 'pgm_base' | 'cars_condition';
-
 type InspectAutobaseData = {
   is_under_construction: boolean;
   is_less_than_two_entrances: boolean;

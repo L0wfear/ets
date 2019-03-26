@@ -54,7 +54,7 @@ export const EmpRow = styled.div<{
         return `
           &:hover {
             ${EmpInfo} {
-              color: red;
+              text-decoration: underline;
             }
           }
         `;

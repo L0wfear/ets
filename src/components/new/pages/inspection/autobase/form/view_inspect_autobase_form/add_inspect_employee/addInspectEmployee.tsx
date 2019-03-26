@@ -188,7 +188,7 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
       };
     }
 
-    case CHANGE_DATA_RESOLVE_TO: { // <<< логика описанна на стр 15, п. 11, добавить через схему
+    case CHANGE_DATA_RESOLVE_TO: {
       return {
         ...state,
         resolve_to: payload.data,
@@ -315,6 +315,15 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
         },
         true),
       );
+      if ( props.type === INSPECT_AUTOBASE_TYPE_FORM.closed || props.type === INSPECT_AUTOBASE_TYPE_FORM.list ) {
+        dispatch(
+          actionChangeData({
+            resolve_to: props.selectedInspectAutobase.resolve_to,
+            commission_members: props.selectedInspectAutobase.commission_members,
+            agent_from_gbu: props.selectedInspectAutobase.agent_from_gbu,
+          }),
+        );
+      }
     },
     [],
   );
@@ -343,6 +352,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
   };
 
   const showAgentFromGbu = (state.agent_from_gbu.fio && state.agent_from_gbu.position);
+  const resolveToIsDisabled = (type === INSPECT_AUTOBASE_TYPE_FORM.closed);
 
   // tslint:disable-next-line:no-console
   console.log('render into state', { state, props, });
@@ -361,6 +371,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 onChange={onChangeData}
                 error={state.errors.resolve_to}
                 boundKeys="resolve_to"
+                disabled={resolveToIsDisabled}
               />
             </Col>
           </Row>

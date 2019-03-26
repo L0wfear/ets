@@ -8,7 +8,8 @@ import MapServerConfig from 'components/new/ui/map/config/MapServerConfig';
 // import EverGisTokenService from 'api/map/EverGisTokenService';
 
 const FULL_EXTENT = MapServerConfig.fullExtent;
-const TILES_URL = '//apieatlas.mos.ru/arcgis/rest/services/egko_122018/MapServer/tile';
+const TILES_URL =
+  '//apieatlas.mos.ru/arcgis/rest/services/egko_122018/MapServer/tile';
 const TILE_SIZE = MapServerConfig.tileInfo.rows;
 const ORIGIN = MapServerConfig.tileInfo.origin;
 const DEVICE_PIXEL_RATIO = window.devicePixelRatio;
@@ -31,7 +32,10 @@ export function projectToPixel(map, coordinates) {
 
   const coords = map.getPixelFromCoordinate([x, y]);
 
-  return { x: coords[0] * DEVICE_PIXEL_RATIO, y: coords[1] * DEVICE_PIXEL_RATIO };
+  return {
+    x: coords[0] * DEVICE_PIXEL_RATIO,
+    y: coords[1] * DEVICE_PIXEL_RATIO,
+  };
 }
 
 export function projectToPixelNew(map, coordinates) {
@@ -54,7 +58,12 @@ export function projectToPixelNew(map, coordinates) {
   return { x: coords[0], y: coords[1] };
 }
 
-export const EXTENT: [number, number, number, number] = [FULL_EXTENT.xmin, FULL_EXTENT.ymin, FULL_EXTENT.xmax, FULL_EXTENT.ymax];
+export const EXTENT: [number, number, number, number] = [
+  FULL_EXTENT.xmin,
+  FULL_EXTENT.ymin,
+  FULL_EXTENT.xmax,
+  FULL_EXTENT.ymax,
+];
 export const PROJECTION = new Projection({
   code: 'MSK77',
   units: 'pixels',
@@ -94,7 +103,7 @@ const ArcGisSource = new TileImage({
     resolutions: RESOLUTIONS,
     tileSize: TILE_SIZE,
   }),
-    // tilePixelRatio: 2,
+  // tilePixelRatio: 2,
 });
 
 ArcGisSource.on('tileloadstart', () => {

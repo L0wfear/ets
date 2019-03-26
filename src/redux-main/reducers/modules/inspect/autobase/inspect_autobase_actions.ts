@@ -257,6 +257,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
 };
 
 const inspectionAutobaseActions = {
+  actionSetInspectAutobaseInspectAutobaseList,
   actionCompanySetNewData,
   actionGetAndSetInStoreCompany,
   actionGetAndSetInStoreCarpool,

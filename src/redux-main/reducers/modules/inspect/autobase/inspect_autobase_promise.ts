@@ -6,7 +6,7 @@ import {
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { get, keyBy } from 'lodash';
 
-const defaultInspectAutobaseData: InspectAutobase['data'] = {
+export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   is_under_construction: false,
   is_less_than_two_entrances: false,
   absence_of_a_shield_with_a_scheme_of_movement: false,
@@ -42,7 +42,7 @@ const defaultInspectAutobaseData: InspectAutobase['data'] = {
   photos_defect: [],
 };
 
-const makeFilesForFront = (data: InspectAutobase) => {
+export const makeFilesForFront = (data: InspectAutobase) => {
   const files = get(data, 'files', []);
 
   return {

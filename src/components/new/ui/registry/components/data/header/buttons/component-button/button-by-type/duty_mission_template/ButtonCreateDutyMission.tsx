@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -58,10 +57,10 @@ const ButtonCreateDutyMission: React.FC<ButtonCreateDutyMissionProps> = (props) 
 
   return (
       <Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={disabled}>
-        <Glyphicon glyph="remove" /> Сформировать наряд-задание
+        Сформировать наряд-задание
       </Button>
   );
-}
+};
 
 export default compose<ButtonCreateDutyMissionProps, ButtonCreateDutyMissionOwnProps>(
   withRequirePermissionsNew({

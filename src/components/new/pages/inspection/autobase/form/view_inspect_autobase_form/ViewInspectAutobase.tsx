@@ -21,7 +21,7 @@ type InitialState = {
   errors: Partial<Record<keyof InspectAutobase['data'], string>>;
   canSave: boolean;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
-  agent_from_gbu?: ViewAddInspectEmployeeInitialState['agent_from_gbu'];
+  agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
   commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
   resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
 };
@@ -31,7 +31,7 @@ const initialState: InitialState = {
   errors: {},
   canSave: false,
   type: 'list',
-  agent_from_gbu: viewAddInspectEmployeeInitialState.agent_from_gbu,
+  agents_from_gbu: viewAddInspectEmployeeInitialState.agents_from_gbu,
   commission_members: viewAddInspectEmployeeInitialState.commission_members,
   resolve_to: viewAddInspectEmployeeInitialState.resolve_to,
 };
@@ -57,7 +57,7 @@ const actionSetSelectedInspectAutobaseData = (selectedInspectAutobase: InitialSt
 
 const actionSetComissionAndMembers = (
   data: {
-    agent_from_gbu: InitialState['agent_from_gbu'];
+    agents_from_gbu: InitialState['agents_from_gbu'];
     commission_members: InitialState['commission_members'];
     resolve_to: InitialState['resolve_to'];
   }) => ({
@@ -99,13 +99,13 @@ const reducer = (state: InitialState, { type, payload }) => {
     case SET_COMISSION_AND_MEMBERS: {
       const {
         commission_members,
-        agent_from_gbu,
+        agents_from_gbu,
         resolve_to,
       } = payload.data;
       const selectedInspectAutobase = {
         ...state.selectedInspectAutobase,
         commission_members,
-        agent_from_gbu,
+        agents_from_gbu,
         resolve_to,
       };
       return {
@@ -171,16 +171,16 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
   );
 
   const setComissionAndMembers = React.useCallback(
-    (agent_from_gbu, commission_members, resolve_to) => {
+    (agents_from_gbu, commission_members, resolve_to) => {
       dispatch(
         actionSetComissionAndMembers({
-          agent_from_gbu,
+          agents_from_gbu,
           commission_members,
           resolve_to,
         }),
       );
     },
-    [state.agent_from_gbu, state.commission_members, state.resolve_to],
+    [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
   return state.selectedInspectAutobase

@@ -78,7 +78,7 @@ export const promiseCloseInspection = async (
     id: number,
     payload: {
       data: InspectAutobase['data'];
-      agent_from_gbu: ViewAddInspectEmployeeInitialState['agent_from_gbu'];
+      agents_from_gbu: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
       commission_members: ViewAddInspectEmployeeInitialState['commission_members'];
       resolve_to: ViewAddInspectEmployeeInitialState['resolve_to'];
     },
@@ -87,7 +87,7 @@ export const promiseCloseInspection = async (
 
   const {
     data,
-    agent_from_gbu,
+    agents_from_gbu,
     commission_members,
     resolve_to,
   } = payload;
@@ -96,7 +96,7 @@ export const promiseCloseInspection = async (
     {
       type,
       data,
-      agent_from_gbu,
+      agents_from_gbu,
       commission_members,
       resolve_to,
     },

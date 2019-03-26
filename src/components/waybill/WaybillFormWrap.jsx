@@ -13,6 +13,7 @@ import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { connect } from 'react-redux';
+import connectToStores from 'flummox/connect';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -709,4 +710,4 @@ class WaybillFormWrap extends FormWrap {
 
 export default connect((state) => ({
   currentUser: state.session.userData,
-}))(WaybillFormWrap);
+}))(connectToStores(WaybillFormWrap, ['objects']));

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/DataTable';
-import ElementsList from 'components/ElementsList';
 import { sortFunc } from 'components/reports/operational/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/reports/operational/mission/utils/main';
 import { compose } from 'recompose';
@@ -156,7 +155,7 @@ const MissionReportByODHTable = (props) => {
 
 const emptyArr = [];
 
-class MissionReportByODH extends ElementsList {
+class MissionReportByODH extends React.Component {
   static get propTypes() {
     return {
       onElementChange: PropTypes.func,
@@ -167,13 +166,19 @@ class MissionReportByODH extends ElementsList {
     super(props);
 
     this.selectField = props.selectField || 'obj_id';
-    this.mainListName = 'selectedReportDataODHS';
+
+    this.state = {
+      selectedElement: null,
+    };
   }
 
   componentDidMount() {}
 
   selectElement = (el) => {
-    this.onRowClick(el);
+    const {
+      props: { data },
+    } = el;
+    this.setState({ selectedElement: data });
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }
@@ -186,7 +191,7 @@ class MissionReportByODH extends ElementsList {
         onRowSelected={this.selectElement}
         selected={this.state.selectedElement}
         selectField={this.selectField}
-        data={this.props[this.mainListName] || emptyArr}
+        data={this.props.selectedReportDataODHS || emptyArr}
         {...this.props}
       />
     );

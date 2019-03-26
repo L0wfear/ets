@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/DataTable';
-import ElementsList from 'components/ElementsList';
 import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
@@ -50,7 +49,7 @@ const MissionReportByPointsTable = (props) => {
   );
 };
 
-class MissionReportByPoints extends ElementsList {
+class MissionReportByPoints extends React.Component {
   static get propTypes() {
     return {
       renderOnly: PropTypes.bool,
@@ -64,13 +63,19 @@ class MissionReportByPoints extends ElementsList {
     super(props);
 
     this.selectField = props.selectField || 'frontId';
-    this.mainListName = 'selectedReportDataPoints';
+
+    this.state = {
+      selectedElement: null,
+    };
   }
 
   componentDidMount() {}
 
   selectElement = (el) => {
-    this.onRowClick(el);
+    const {
+      props: { data },
+    } = el;
+    this.setState({ selectedElement: data });
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }

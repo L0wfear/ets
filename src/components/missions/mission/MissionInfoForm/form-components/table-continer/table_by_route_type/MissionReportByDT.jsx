@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/ui/table/DataTable';
-import ElementsList from 'components/ElementsList';
 import { sortFunc } from 'components/reports/operational/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/reports/operational/mission/utils/main';
 import { compose } from 'recompose';
@@ -157,7 +156,7 @@ const MissionReportByDTTable = (props) => {
   );
 };
 
-class MissionReportByDT extends ElementsList {
+class MissionReportByDT extends React.Component {
   static get propTypes() {
     return {
       onElementChange: PropTypes.func,
@@ -168,13 +167,17 @@ class MissionReportByDT extends ElementsList {
     super(props);
 
     this.selectField = props.selectField || 'dt_id';
-    this.mainListName = 'selectedReportDataDTS';
+
+    this.state = {
+      selectedElement: null,
+    };
   }
 
-  componentDidMount() {}
-
   selectElement = (el) => {
-    this.onRowClick(el);
+    const {
+      props: { data },
+    } = el;
+    this.setState({ selectedElement: data });
     if (typeof this.props.onElementChange === 'function') {
       this.props.onElementChange(el.props.data[this.selectField]);
     }

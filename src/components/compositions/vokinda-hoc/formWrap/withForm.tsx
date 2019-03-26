@@ -189,10 +189,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
                     newValue = null;
                   }
                   break;
+                case 'string':
                 case 'boolean':
                   newValue = value;
                   break;
-                case 'string':
                 case 'date':
                   newValue = createValidDate(value);
                   break;

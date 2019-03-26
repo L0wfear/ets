@@ -7,6 +7,8 @@ import {
 import { isNumber } from 'util';
 import { routeTypesByKey } from 'constants/route';
 
+import { get } from 'lodash';
+
 export const routeFormSchema: SchemaType<
   FormStateRouteForm,
   PropsRouteWithForm
@@ -79,9 +81,12 @@ export const routeFormSchema: SchemaType<
           !value.length &&
           type !== 'mixed'
         ) {
-          return `Поле "Список выбранных ${
-            routeTypesByKey[type].title
-          }" должно быть заполнено`;
+          const title = get(routeTypesByKey, `${type}.title`, null);
+          if (title) {
+            return `Поле "Список выбранных "${
+                title
+              }" должно быть заполнено`;
+          }
         }
 
         return '';
@@ -92,9 +97,12 @@ export const routeFormSchema: SchemaType<
         const { object_list, type } = formState;
 
         if (type && !object_list.length && !value.length) {
-          return `Поле "Список выбранных ${
-            routeTypesByKey[type].title
-          }" должно быть заполнено, либо построен маршрут вручную`;
+          const title = get(routeTypesByKey, `${type}.title`, null);
+          if (title) {
+            return `Поле "Список выбранных "${
+                title
+              }" должно быть заполнено, либо построен маршрут вручную`;
+          }
         }
 
         return '';

@@ -10,7 +10,7 @@ import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-co
 import { dashboardSetInfoDataInWaybillClosed } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
-import WaybillFormWrap from 'components/waybill/WaybillFormWrap';
+import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
 
 import {
   PropsWaybillClosedInfo,
@@ -18,6 +18,8 @@ import {
 } from 'components/new/pages/dashboard/menu/cards/waybill-closed/info/WaybillClosedInfo.h';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
+
+const WaybillFormWrap: any = WaybillFormWrapTSX;
 
 class WaybillClosedInfo extends React.Component<PropsWaybillClosedInfo, StateWaybillClosedInfo> {
   state = {

@@ -5,7 +5,6 @@ export const EtsFiltersButtonsLine = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0 5px;
 `;
 
 export const EtsFiltersCloseContainer = styled.div`
@@ -14,6 +13,7 @@ export const EtsFiltersCloseContainer = styled.div`
   color: #444;
   transition: color 0.2s;
 
+  padding: 5px;
   :hover {
     color: red;
   }

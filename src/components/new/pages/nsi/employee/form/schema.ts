@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsEmployee } from 'components/directories/employees/EmployeeForm/@types/EmployeeForm.h';
+import { PropsEmployee } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isEmpty } from 'utils/functions';
 

@@ -63,6 +63,10 @@ export const YES_NO_SELECT_OPTIONS_BOOL = [
   { label: 'Да', value: true },
   { label: 'Нет', value: false },
 ];
+export const YES_NO_SELECT_OPTIONS_BOOL_STRING = [
+  { value: 'TRUE', label: 'Нет' },
+  { value: 'False', label: 'Да' },
+];
 export const YES_NO_SELECT_OPTIONS_INT = [
   { label: 'Да', value: 1 },
   { label: 'Нет', value: 0 },
@@ -74,4 +78,9 @@ export const IS_NOT_SELECT_OPTIONS_INT = [
 export const READ_NOT_SELECT_OPTIONS_INT = [
   { label: 'Прочитано', value: 1 },
   { label: 'Не прочитано', value: 0 },
+];
+
+export const WORK_NOT_SELECT_OPTIONS = [
+  { value: true, label: 'Работает' },
+  { value: false, label: 'Не работает' },
 ];

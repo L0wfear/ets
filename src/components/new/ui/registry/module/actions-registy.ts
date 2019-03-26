@@ -26,6 +26,7 @@ import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { isNullOrUndefined } from 'util';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
+import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -98,17 +99,23 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
       ),
       { page: registryKey },
     );
-    const typeAns =  get(getRegistryData, 'typeAns', 'result.rows');
+    const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
 
     processResponse(result);
     const uniqKey: any = get(list, 'data.uniqKey', null);
     arrayRaw = get(result, typeAns, []).filter((data) => !isNullOrUndefined(data[uniqKey]));
+
     switch (getRegistryData.format) {
       case 'dutyMissionTemplate': {
         arrayRaw = arrayRaw.map(getFrontDutyMission);
         break;
       }
+      case 'employee': {
+        arrayRaw = arrayRaw.map(getFrontEmployee);
+        break;
+      }
     }
+
     if (getRegistryData.userServerFilters) {
       total_count =  get(result, 'total_count', 0);
     } else {
@@ -128,6 +135,17 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
 
   if (list) {
     const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+    let processedArray = array;
+    let processedTotalCount = array.length;
+
+    if (!getRegistryData.userServerFilters) {
+      const processed: any = get(list, 'processed', {}) || {};
+      const fields: any = get(registryData, 'filter.fields', []);
+
+      processedArray = makeProcessedArray(array, processed, fields);
+      processedTotalCount = processedArray.length;
+    }
+
     return dispatch(
       registryChangeListData(
         registryKey,
@@ -140,8 +158,8 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
           },
           processed: {
             ...list.processed,
-            processedArray: array,
-            total_count: getRegistryData.userServerFilters ? total_count : array.length,
+            processedArray,
+            total_count: processedTotalCount,
           },
         },
       ),
@@ -593,11 +611,22 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
       { page: registryKey },
     );
 
-    const response = get(
+    let response = get(
       result,
       get(getOneData, 'typeAns', 'result.rows.0'),
       null,
     );
+
+    switch (getOneData.format) {
+      case 'dutyMissionTemplate': {
+        response = getFrontDutyMission(response);
+        break;
+      }
+      case 'employee': {
+        response = getFrontEmployee(response);
+        break;
+      }
+    }
 
     dispatch(
       registrySetSelectedRowToShowInForm(registryKey, response),
@@ -612,7 +641,6 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
 export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch, getState) => {
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const removeOneData = get(registryData, 'Service.removeOneData', null);
-  debugger;
 
   const list: any = get(registryData, 'list', null);
   const uniqKey: string = get(list, 'data.uniqKey', null);

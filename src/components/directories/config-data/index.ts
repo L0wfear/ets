@@ -1,6 +1,5 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-import employees from 'components/directories/employees/config-data';
 import employeeOnCar from 'components/directories/employee_on_car/config-data';
 import order from 'components/directories/order/config-data';
 import technicalOperation from 'components/directories/technical_operation/config-data';
@@ -15,8 +14,10 @@ import medicalStats from 'components/directories/medical_stats/config-data';
 import companyStructure from 'components/directories/company_structure/config-data';
 import userActionLog from 'components/directories/user_action_log/config-data';
 
+import employeesList from 'components/new/pages/nsi/employee/_config-data';
+
 const children = {
-  employees,
+  employeesList,
   employeeOnCar,
   order,
   technicalOperation,

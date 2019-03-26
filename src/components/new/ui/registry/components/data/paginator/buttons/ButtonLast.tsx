@@ -36,7 +36,7 @@ class ButtonLast extends React.Component<PropsButtonLast, StatePaginator> {
 
 const mapStateToProps = (state, { registryKey }) => {
   const {
-    data: { total_count },
+    processed: { total_count },
     paginator,
   } = getListData(state.registry, registryKey);
 

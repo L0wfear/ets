@@ -19,7 +19,7 @@ export const createEmployee = employeeCreateEmployee;
 export const updateEmployee = employeeUpdateEmployee;
 export const removeEmployee = employeeDeleteEmployee;
 
-const makeFilesToFrontendAll = (row) => {
+export const getFrontEmployee = (row) => {
   const files = get(row, 'files', []);
 
   row.driver_license_files = files.filter((file) => file.kind === 'driver_license');
@@ -45,7 +45,7 @@ const makeFilesToBackendOne = (formState: Employee) => {
 
 export const getSetEmployee = async (...payload) => {
   const { data: rawData } = await getEmployee(...payload);
-  const data = rawData.map(makeFilesToFrontendAll);
+  const data = rawData.map(getFrontEmployee);
 
   return {
     data,

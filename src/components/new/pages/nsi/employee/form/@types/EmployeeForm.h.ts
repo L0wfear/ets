@@ -11,7 +11,7 @@ import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autoba
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type PropsEmployeeFormWrap = {
+export type PropsEmployeeFormLazy = {
   showForm: boolean;
   element: Employee | null;
   onFormHide: OnFormHideType

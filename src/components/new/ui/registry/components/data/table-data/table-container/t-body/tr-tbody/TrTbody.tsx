@@ -121,6 +121,9 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       if (format === 'array') {
         value = isArray(value) ? value.join(', ') : '';
       }
+      if (format === 'workOrNot') {
+        value = value ? 'Работает' : 'Не работает';
+      }
     }
 
     if (dashIfEmpty) {

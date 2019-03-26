@@ -49,6 +49,10 @@ export type OneFilterType<F> = {
       valueKey?: string;
       labelKey?: string;
       mergeWithArray?: boolean;
+      format?: (
+        'dutyMissionTemplate'
+        | 'employee'
+      );
     }
   }
 );
@@ -67,6 +71,7 @@ export type TypeFields<F extends any> = {
     | 'toFixed2'
     | 'toFixed3'
     | 'array'
+    | 'workOrNot'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   childrenFields?: TypeFields<F>[];

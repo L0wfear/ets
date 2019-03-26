@@ -4,24 +4,25 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { PropsEmployeeFormWrap } from 'components/directories/employees/EmployeeForm/@types/EmployeeForm.h';
+import { PropsEmployeeFormLazy } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
+import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const EmployeeFrom = React.lazy(() => (
-  import(/* webpackChunkName: "employee_form" */ 'components/directories/employees/EmployeeForm/EmployeeForm')
+  import(/* webpackChunkName: "employee_form" */ 'components/new/pages/nsi/employee/form/EmployeeForm')
 ));
 
-class EmployeeFormWrap extends React.Component<PropsEmployeeFormWrap, {}> {
+class EmployeeFormLazy extends React.Component<PropsEmployeeFormLazy, {}> {
   render() {
-    const { showForm, ...props } = this.props;
+    const { element, ...props } = this.props;
     const page = props.loadingPageName || props.page;
     const path = `${props.path ? `${props.path}-` : ''}employee-form`;
 
-    return showForm ?
+    return element ?
       (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
             <EmployeeFrom
-              element={props.element}
+              element={element}
               handleHide={props.onFormHide}
 
               page={page}
@@ -37,4 +38,4 @@ class EmployeeFormWrap extends React.Component<PropsEmployeeFormWrap, {}> {
   }
 }
 
-export default EmployeeFormWrap;
+export default withFormRegistrySearch(EmployeeFormLazy);

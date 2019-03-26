@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
-import { getListData, getServiceData } from 'components/new/ui/registry/module/selectors-registry';
+import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { isNullOrUndefined } from 'util';
@@ -30,6 +30,8 @@ export const withFormRegistrySearch = (Component) => (
       (state, { registryKey }) => ({
         getOneData: getServiceData(state.registry, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
+        buttons: getHeaderData(state.registry, registryKey).buttons,
+        data: getListData(state.registry, registryKey).data,
         uniqKey: getListData(state.registry, registryKey).data.uniqKey,
         permissions: getPermissionsCreateReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       }),
@@ -64,8 +66,14 @@ export const withFormRegistrySearch = (Component) => (
 
       React.useEffect(
         () => {
-          if (props.params[uniqKey] === buttonsTypes.create) {
-            setElement({});
+          if (props.params[uniqKey] === buttonsTypes.create && props.buttons.length) {
+            if (props.buttons.includes(buttonsTypes.create)) {
+              setElement({});
+            } else {
+              props.setParams({
+                [uniqKey]: null,
+              });
+            }
             return;
           }
 

@@ -130,15 +130,7 @@ const medical_certificate = withRequirePermissionsNew({
 })(({ employee_fio, employee_id, handleClick, isPermitted }) => (
   <MainEmployeeDesc
     linkText={employee_fio}
-    handleClick={() =>
-      handleClick(
-        'employees',
-        {
-          employee_id,
-        },
-        isPermitted,
-      )
-    }
+    handleClick={() => handleClick(`employees/${employee_id}`, {}, isPermitted)}
   />
 ));
 

@@ -5,16 +5,15 @@ import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
-import employeePermissions from 'components/directories/employees/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { employeeFormSchema } from 'components/directories/employees/EmployeeForm/employeeFrom-schema';
+import { employeeFormSchema } from 'components/new/pages/nsi/employee/form/schema';
 import { get } from 'lodash';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
-import { getDefaultEmployeeElement, filterCars } from 'components/directories/employees/EmployeeForm/utils';
+import { getDefaultEmployeeElement, filterCars } from 'components/new/pages/nsi/employee/form/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -25,10 +24,11 @@ import {
   StatePropsEmployee,
   DispatchPropsEmployee,
   PropsEmployeeWithForm,
-} from 'components/directories/employees/EmployeeForm/@types/EmployeeForm.h';
+} from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DivNone } from 'global-styled/global-styled';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import employeePermissions from '../_config-data/permissions';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   state = {

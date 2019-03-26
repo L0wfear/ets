@@ -225,7 +225,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
 const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const data = cloneDeep(inspectAutobase.data);
   const {
-    agent_from_gbu,
+    agents_from_gbu,
     commission_members,
     resolve_to,
   } = inspectAutobase;
@@ -235,7 +235,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
 
   const payload = {
     data,
-    agent_from_gbu,
+    agents_from_gbu,
     commission_members,
     resolve_to: createValidDateTime(resolve_to),
   };

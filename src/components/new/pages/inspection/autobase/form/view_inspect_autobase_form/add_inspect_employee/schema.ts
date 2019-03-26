@@ -7,7 +7,7 @@ export const addInspectEmployeeSchema: SchemaType<Partial<ViewAddInspectEmployee
       key: 'resolve_to',
       title: 'Срок, до которого необходимо устранить недостатки',
       type: 'date',
-      required: false, // вынести в dependencies:
+      required: true,
     },
     {
       key: 'member_fio',

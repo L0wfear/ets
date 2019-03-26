@@ -54,7 +54,7 @@ export type InspectAutobase = {
   open_employee_id: number | null;
   status: 'conducting' | 'completed';
   status_text: 'Проводится';
-  agent_from_gbu?: ViewAddInspectEmployeeInitialState['agent_from_gbu'];
+  agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
   commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
   resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
 };

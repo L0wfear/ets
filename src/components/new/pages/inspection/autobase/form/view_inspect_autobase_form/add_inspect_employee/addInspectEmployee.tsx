@@ -32,13 +32,13 @@ export type ViewAddInspectEmployeeProps = {
   userData: InitialStateSession['userData'];
   selectedInspectAutobase: InspectAutobase;
   setComissionAndMembers: (
-    agent_from_gbu: ViewAddInspectEmployeeInitialState['agent_from_gbu'],
+    agents_from_gbu: ViewAddInspectEmployeeInitialState['agents_from_gbu'],
     commission_members: ViewAddInspectEmployeeInitialState['commission_members'],
     resolve_to: ViewAddInspectEmployeeInitialState['resolve_to'],
   ) => any;
 };
 
-type MembersInspElem = {
+type MembersComissionInspElem = {
   fio: string;
   position: string;
   clearable: boolean;
@@ -47,15 +47,12 @@ type MembersInspElem = {
 
 export type ViewAddInspectEmployeeInitialState = {
   resolve_to: any | null; // устранить до? date or string
-  commission_members: MembersInspElem[] | null; // члены комиссии
+  commission_members: MembersComissionInspElem[] | null; // члены комиссии
   member_fio: string | null;
   member_position: string | null;
   agent_from_gbu_position: string | null;
   agent_from_gbu_fio: string | null;
-  agent_from_gbu: {
-    position: string | null;
-    fio: string | null;
-  },
+  agents_from_gbu: MembersComissionInspElem[] | null,
   errors: {
     resolve_to?: string | null;
     member_fio?: string | null;
@@ -75,10 +72,7 @@ export const viewAddInspectEmployeeInitialState: ViewAddInspectEmployeeInitialSt
   member_position: null,
   agent_from_gbu_position: null,
   agent_from_gbu_fio: null,
-  agent_from_gbu: {
-    position: null,
-    fio: null,
-  },
+  agents_from_gbu: [],
   errors: {
     resolve_to: null,
     member_fio: null,
@@ -115,6 +109,7 @@ const CHANGE_DATA_RESOLVE_TO = 'CHANGE_DATA_RESOLVE_TO';
 const CHANGE_DATA = 'CHANGE_DATA';
 
 const ADD_DATA_AGENT = 'ADD_DATA_AGENT';
+const REMOVE_DATA_AGENT = 'REMOVE_DATA_AGENT';
 const SHOW_AGENT_ADD = 'SHOW_AGENT_ADD';
 
 const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) => {
@@ -123,11 +118,11 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
       const commission_members =  [
         ...state.commission_members,
       ];
-
+      const newId = Math.max.apply(Math, commission_members.map((o) => o.id)) + 1; // воизбежание коллизий
       const newMember = {
         ...payload.data,
         id: commission_members.length
-          ? commission_members.length
+          ? newId
           : 0,
       };
 
@@ -163,17 +158,38 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
         commission_members,
       };
     }
-
-    case ADD_DATA_AGENT: {
-      const agent_from_gbu = {
-        fio: state.agent_from_gbu_fio,
-        position: state.agent_from_gbu_position,
-      };
+    case REMOVE_DATA_AGENT: {
+      const agentId = get(payload, 'data.id', null);
+      const agents_from_gbu = state.agents_from_gbu.filter((agent) => agent.id !== agentId);
 
       return {
         ...state,
-        ...closedAgentInitState,
-        agent_from_gbu,
+        agents_from_gbu,
+      };
+    }
+    case ADD_DATA_AGENT: {
+      const agents_from_gbu =  [
+        ...state.agents_from_gbu,
+      ];
+
+      const newAgent = {
+        ...payload.data,
+        id: agents_from_gbu.length
+          ? agents_from_gbu.length
+          : 0,
+      };
+
+      let agentInitState = null;
+      if ( payload.setClosedAgentInitState ) {
+        agentInitState = {
+          ...closedAgentInitState,
+        };
+      }
+
+      return {
+        ...state,
+        ...agentInitState,
+        agents_from_gbu: [...agents_from_gbu, newAgent],
       };
     }
     case SHOW_AGENT_ADD: {
@@ -188,7 +204,7 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
       };
     }
 
-    case CHANGE_DATA_RESOLVE_TO: { // <<< логика описанна на стр 15, п. 11, добавить через схему
+    case CHANGE_DATA_RESOLVE_TO: {
       return {
         ...state,
         resolve_to: payload.data,
@@ -217,7 +233,7 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
 };
 
 // ---- members ----
-const actionAddMembers = (data: MembersInspElem, setClosedMemberInitState: boolean) => ({
+const actionAddMembers = (data: MembersComissionInspElem, setClosedMemberInitState: boolean) => ({
   type: ADD_DATA_MEMBERS,
   payload: {
     data,
@@ -230,7 +246,7 @@ const actionShowMembersAdd = (data: boolean) => ({
     data,
   },
 });
-const actionRemoveMembers = (data: MembersInspElem) => ({
+const actionRemoveMembers = (data: MembersComissionInspElem) => ({
   type: REMOVE_DATA_MEMBERS,
   payload: {
     data,
@@ -238,12 +254,21 @@ const actionRemoveMembers = (data: MembersInspElem) => ({
 });
 
 // ---- agent ----
-const actionAddAgent = () => ({
+const actionAddAgent = (data: MembersComissionInspElem, setClosedAgentInitState: boolean) => ({
   type: ADD_DATA_AGENT,
-  payload: {},
+  payload: {
+    data,
+    setClosedAgentInitState,
+  },
 });
 const actionShowAgentAdd = (data: boolean) => ({
   type: SHOW_AGENT_ADD,
+  payload: {
+    data,
+  },
+});
+const actionRemoveAgents = (data: MembersComissionInspElem) => ({
+  type: REMOVE_DATA_AGENT,
   payload: {
     data,
   },
@@ -315,6 +340,15 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
         },
         true),
       );
+      if ( props.type === INSPECT_AUTOBASE_TYPE_FORM.closed || props.type === INSPECT_AUTOBASE_TYPE_FORM.list ) {
+        dispatch(
+          actionChangeData({
+            resolve_to: props.selectedInspectAutobase.resolve_to,
+            commission_members: props.selectedInspectAutobase.commission_members,
+            agents_from_gbu: props.selectedInspectAutobase.agents_from_gbu,
+          }),
+        );
+      }
     },
     [],
   );
@@ -323,17 +357,17 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
   React.useEffect(
     () => {
       const {
-        agent_from_gbu,
+        agents_from_gbu,
         commission_members,
         resolve_to,
       } = state;
       props.setComissionAndMembers(
-        agent_from_gbu,
+        agents_from_gbu,
         commission_members,
         resolve_to,
       );
     },
-    [state.agent_from_gbu, state.commission_members, state.resolve_to],
+    [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
   const newMember = {
@@ -342,7 +376,14 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
     clearable: true,
   };
 
-  const showAgentFromGbu = (state.agent_from_gbu.fio && state.agent_from_gbu.position);
+  const newAgent = {
+    fio: state.agent_from_gbu_fio,
+    position: state.agent_from_gbu_position,
+    clearable: true,
+  };
+
+  // const showAgentFromGbu = (state.agents_from_gbu.fio && state.agents_from_gbu.position);
+  const resolveToIsDisabled = (type === INSPECT_AUTOBASE_TYPE_FORM.closed);
 
   // tslint:disable-next-line:no-console
   console.log('render into state', { state, props, });
@@ -361,6 +402,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 onChange={onChangeData}
                 error={state.errors.resolve_to}
                 boundKeys="resolve_to"
+                disabled={resolveToIsDisabled}
               />
             </Col>
           </Row>
@@ -470,14 +512,31 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                   От ГБУ:&nbsp;{`${props.selectedInspectAutobase.company_name}`}
                 </h4>
                 {
-                  <Col md={12}>
-                    <EmpRow>
-                      <EmpInfo hidden={!showAgentFromGbu}>
-                        {state.agent_from_gbu.fio},&nbsp;
-                        {state.agent_from_gbu.position}
-                      </EmpInfo>
-                    </EmpRow>
-                  </Col>
+                  state.agents_from_gbu.map((employeeData) => (
+                    <Row>
+                      <Col md={12}>
+                        <EmpRow highlight={employeeData.clearable}>
+                          <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>
+                          {
+                            employeeData.clearable && isPermittedChangeCloseParams
+                              ? (
+                                <>
+                                  &nbsp;
+                                  <Button disabled={!props.canRemoveEmployee} className="close" onClick={() => { dispatch(actionRemoveAgents(employeeData)); } }>
+                                    <span aria-hidden="true">
+                                      ×
+                                    </span>
+                                  </Button>
+                                </>
+                              )
+                              : (
+                                <DivNone />
+                              )
+                          }
+                        </EmpRow>
+                      </Col>
+                    </Row>
+                  ))
                 }
                 {
                   state.showAgentAdd ? (
@@ -510,7 +569,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                           </Col>
                         </Row>
                         <Div>
-                          <Button disabled={!state.canSaveAgent} onClick={ () => dispatch(actionAddAgent()) }>
+                          <Button disabled={!state.canSaveAgent} onClick={ () => dispatch(actionAddAgent(newAgent, true)) }>
                             Сохранить
                           </Button>
                         </Div>
@@ -535,11 +594,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                             onClick={ () => dispatch(actionShowAgentAdd(true)) }>
                             <Glyphicon glyph="plus"/>
                             &nbsp;
-                            {
-                              state.agent_from_gbu.fio && state.agent_from_gbu.position
-                              ? 'Изменить представителя ГБУ'
-                              : 'Добавить представителя ГБУ'
-                            }
+                            Добавить представителя ГБУ
                           </Button>
                         </Col>
                       </Row>

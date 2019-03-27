@@ -11,7 +11,7 @@ const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent
 const meta: IDataTableSchema = {
   cols: [
     {
-      name: 'order_info',
+      name: 'instruction',
       displayName: 'Дополнительная информация',
       type: 'string',
       filter: false,
@@ -21,7 +21,7 @@ const meta: IDataTableSchema = {
 export const tableMeta = () => meta;
 
 const Table: React.FunctionComponent<any> = (props) => {
-  const { dataSource: { order_info = '' } } = props;
+  const { dataSource: { instruction = '' } } = props;
 
   return (
     <DataTable
@@ -31,7 +31,7 @@ const Table: React.FunctionComponent<any> = (props) => {
       tableMeta={tableMeta()}
       className="order"
       initialSort="id"
-      results={[{ id: 0, order_info }]}
+      results={[{ id: 0, instruction }]}
     />
   );
 };

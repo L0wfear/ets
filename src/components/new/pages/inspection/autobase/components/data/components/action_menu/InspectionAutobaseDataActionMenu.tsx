@@ -39,7 +39,7 @@ const STATUS = {
 
 const getLabel = (status: number) => {
   switch (status) {
-    case STATUS.noToday: return 'На текущий день инспекция не создана';
+    case STATUS.noToday: return 'На текущий день проверка не создана';
     case STATUS.conditionLast: return STATUS_TITLE_BY_SLUG[STATUS_INSPECT_AUTOBASE_CONDITING];
     case STATUS.completedLast: return STATUS_TITLE_BY_SLUG[STATUS_INSPECT_AUTOBASE_COMPLETED];
   }
@@ -78,7 +78,7 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
       <h4>
         <Row>
           <Col md={6} sm={6}>
-            Информация о текущей инспекции
+            Информация о текущей проверке
           </Col>
           <Col md={6} sm={6}>
             {makeDate(getDateWithMoscowTz())}
@@ -88,7 +88,7 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
       <Row>
         <InspectInfo>
           <LineData>
-            Статус инспекции: <StatusLabel>{getLabel(status)}</StatusLabel>
+            Статус проверки: <StatusLabel>{getLabel(status)}</StatusLabel>
           </LineData>
           <LineData>
             &nbsp;

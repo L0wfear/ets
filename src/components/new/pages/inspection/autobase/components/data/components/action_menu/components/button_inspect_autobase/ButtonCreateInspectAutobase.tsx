@@ -40,7 +40,7 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
 
   return (
     <BigPaddingButton onClick={handleClickCreateInspectAutobase}>
-      Открыть инспекцию и перейти к заполнению карточки
+      Открыть проверку и перейти к заполнению карточки
     </BigPaddingButton>
   );
 };

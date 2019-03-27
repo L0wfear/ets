@@ -1041,6 +1041,7 @@ class WaybillForm extends Form {
       .getLastClosedWaybill(car_id);
 
     const closedEquipmentData = getClosedEquipmentData(lastCarUsedWaybill);
+    closedEquipmentData.equipment_fuel = true;
     this.handleMultipleChange(closedEquipmentData);
   };
 

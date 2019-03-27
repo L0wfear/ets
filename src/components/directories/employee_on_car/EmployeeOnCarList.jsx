@@ -3,19 +3,19 @@ import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import EmployeeOnCarTable from 'components/directories/employee_on_car/table/EmployeeOnCarTable';
 import { customOptionsTableFromMainResult } from 'components/directories/employee_on_car/table/helpData';
-import permissions from 'components/directories/employees/config-data/permissions';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import permissionsCar from 'components/directories/autobase/cars/config-data/permissions';
 import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
+import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 @connectToStores(['employees', 'objects'])
 @exportable({ entity: 'employee_on_car' })
 @staticProps({
   entity: 'employee_on_car',
-  permissions,
+  permissions: employeePermissions,
   listName: 'employeeOnCarList',
   tableComponent: EmployeeOnCarTable,
   selectField: '_uniq_field',

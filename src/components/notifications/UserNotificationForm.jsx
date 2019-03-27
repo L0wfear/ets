@@ -12,9 +12,10 @@ import Form from 'components/compositions/Form';
 import { CAR_TAB_INDEX } from 'components/directories/autobase/cars/CarForm';
 
 import carPermissions from 'components/directories/autobase/cars/config-data/permissions';
-import employeePermissions from 'components/directories/employees/config-data/permissions';
+
 import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
+import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],

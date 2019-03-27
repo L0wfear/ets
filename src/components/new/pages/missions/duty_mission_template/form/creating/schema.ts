@@ -11,6 +11,18 @@ export const dutyDutyMissionTemplateCreatingFormSchema: SchemaType<Partial<Pick<
       type: 'valueOfArray',
       required: true,
     },
+    {
+      key: 'plan_date_start',
+      title: 'Время выполнения.C',
+      type: 'datetime',
+      required: true,
+    },
+    {
+      key: 'plan_date_end',
+      title: 'Время выполнения.По',
+      type: 'datetime',
+      required: true,
+    },
   ],
   dependencies: {
     plan_date_start: [

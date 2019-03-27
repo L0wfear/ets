@@ -6,6 +6,7 @@ export type GetDefaultPgmStoreElement = (PgmStore: PgmStore | null) => PgmStore;
 export const defaultPgmStore: PgmStore = {
   address: '',
   company_name: '',
+  company_id: null,
   id: null,
   liquid_pgm_volume: null,
   name: '',

@@ -1,6 +1,7 @@
 export type PgmStore = {
   address: string;
   company_name: string;
+  company_id: number | null;
   id: number | null;
   liquid_pgm_volume: number | null
   name: string;

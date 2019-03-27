@@ -1,5 +1,3 @@
-/*
-
 export const STATUS_INSPECT_PGM_BASE_CONDITING = 'conducting';
 export const STATUS_INSPECT_PGM_BASE_COMPLETED = 'completed';
 
@@ -12,5 +10,3 @@ export const STATUS_TITLE_BY_SLUG = {
   [STATUS_INSPECT_PGM_BASE_CONDITING]: 'Проводится',
   [STATUS_INSPECT_PGM_BASE_COMPLETED]: 'Завершена',
 };
-
-*/

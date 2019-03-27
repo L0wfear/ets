@@ -9,7 +9,13 @@ export const INSPECT_PGM_BASE = {
 };
 
 export const initialStateInspectPgmBase: IStateInspectPgmBase = {
+  companyList: [],
+  okrugList: [],
+  pgmBaseList: [],
+  carpoolList: [],
   inspectPgmBaseList: [],
+  lastConductingInspect: null,
+  lastCompletedInspect: null,
 };
 
 const inspectPgmBase: Reducer<IStateInspectPgmBase> = (state = initialStateInspectPgmBase, { type, payload }) => {

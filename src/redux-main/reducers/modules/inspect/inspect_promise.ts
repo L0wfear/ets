@@ -10,7 +10,7 @@ import { TypeOfInspect } from "./@types/inspect_reducer";
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
   company_id: number;
-  type: 'autobase';
+  type: 'autobase' | 'pgm_base';
 };
 
 export const promiseGetInspectRegistry = async <T>(payload: object) => {

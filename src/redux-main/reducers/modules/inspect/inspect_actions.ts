@@ -1,4 +1,5 @@
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
@@ -55,6 +56,7 @@ export const actionCloseInspect = (id: number, payload: any, type: TypeOfInspect
 const inspectionActions = {
   actionGetBlobActInspect,
   ...inspectionAutobaseActions,
+  ...inspectionPgmBaseActions,
 };
 
 export default inspectionActions;

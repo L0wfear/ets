@@ -4,6 +4,7 @@ export type Company = {
   has_remote_checkup: boolean;
   id: number | null;
   okrug_name: string;
+  okrug_id: number;
   rgb_color: string;
   short_name: string;
 };

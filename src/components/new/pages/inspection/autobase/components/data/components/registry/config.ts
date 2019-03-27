@@ -51,7 +51,7 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
         {
           valueKey: 'status_text',
           type: 'multiselect',
-          title: 'Статус инспекции',
+          title: 'Статус проверки',
         },
         {
           valueKey: 'company_name',
@@ -93,7 +93,7 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
           },
           {
             key: 'status_text',
-            title: 'Статус инспекции',
+            title: 'Статус проверки',
             width: 300,
           },
           {

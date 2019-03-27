@@ -141,7 +141,8 @@ class ReportContainer extends React.Component<
 
     return new Promise(async (resolve, reject) => {
       try {
-        const { notUseServerSummerTable, tableProps: { reportKey } } = this.props;
+        const { notUseServerSummerTable } = this.props;
+        const reportKey = get(this.props, 'tableProps.reportKey', null);
 
         const data = await this.props.getReportData(
           this.props.serviceName,

@@ -16,25 +16,25 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
     {
       key: 'fact_date_start',
       title: 'Фактическая дата начала',
-      type: 'date',
+      type: 'datetime',
       required: false,
     },
     {
       key: 'fact_date_end',
       title: 'Фактическая дата окнчания',
-      type: 'date',
+      type: 'datetime',
       required: false,
     },
     {
       key: 'plan_date_start',
       title: 'Плановая дата начала',
-      type: 'date',
+      type: 'datetime',
       required: true,
     },
     {
       key: 'plan_date_end',
       title: 'Плановая дата окончания',
-      type: 'date',
+      type: 'datetime',
       required: true,
     },
     {

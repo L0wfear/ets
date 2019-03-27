@@ -9,6 +9,7 @@ export const config: TypeConfigData<TypesAttr> = {
   Service: {
     getRegistryData: {
       entity: 'types_attr',
+      format: 'typesAttr',
     },
   },
   registryKey,

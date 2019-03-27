@@ -404,6 +404,7 @@ export type TypesAttr = {
   end_date: string | null;
   equip_width: number | null;
   full_name: string;
+  id: number;
   is_check_gov_number: number | null;
   mkad_speed_lim: number | null;
   object_type_id: number | null;

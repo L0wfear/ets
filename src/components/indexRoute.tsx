@@ -33,6 +33,7 @@ const getRouters = () => (
     { Object.values(routerAndPermission).reduce(renderRoutes, []) }
     <Redirect from="/duty-mission-templates-journal" to="/missions/duty_mission_templates" />
     <Redirect from="/employees" to="/nsi/employees" />
+    <Redirect from="/types-attr" to="/types_attr" />
     <Redirect to="/monitor" />
   </Switch>
 );

@@ -20,7 +20,6 @@ import {
 import Title from 'components/reports/common/Title';
 import { filterFunction } from 'components/ui/tableNew/utils';
 import {
-  IDataTableColSchema,
   IDataTableSelectedRow,
   IDataTableColFilter,
 } from 'components/ui/table/@types/schema.h';
@@ -426,31 +425,35 @@ class ReportContainer extends React.Component<
     const fields = get(tableMetaInfo, 'fields', []) || [];
     const cols = fields
       .reduce((tableMeta, field) => {
-        const [[fieldName, { name: displayName, is_row, display = true }]] = Object.entries(
+        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true }]] = Object.entries(
           field,
         );
 
         if (!is_row) {
-          let initialSchema: IDataTableColSchema;
+          let initialSchema: any;
 
           initialSchema = {
             name: fieldName,
             displayName,
             display,
-            filter: {
-              type: 'multiselect',
-              options: undefined,
-            },
           };
-          if (forWhat === 'mainList' && this.props.data.result) {
-            (initialSchema.filter as IDataTableColFilter).options = uniqBy<
-              IReactSelectOption
-            >(
-              this.props.data.result.rows.map(
-                ({ [fieldName]: value }: any) => ({ value, label: value }),
-              ),
-              'value',
-            ).filter(({ value }) => Boolean(value));
+          if (filter) {
+            initialSchema.filter = {
+              type,
+            };
+            if (type === 'multiselect') {
+              initialSchema.options = undefined;
+              if (forWhat === 'mainList' && this.props.data.result && type === 'multiselect') {
+                (initialSchema.filter as IDataTableColFilter).options = uniqBy<IReactSelectOption>(
+                  this.props.data.result.rows.map(
+                    ({ [fieldName]: value }: any) => ({ value, label: value }),
+                  ),
+                  'value',
+                ).filter(({ value }) => Boolean(value));
+              }
+            }
+          } else {
+            initialSchema.filter = false;
           }
 
           const renderer = schemaMakers[fieldName] || identity;

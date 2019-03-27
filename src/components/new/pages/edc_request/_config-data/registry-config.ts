@@ -22,8 +22,11 @@ export const config: TypeConfigData<EdcRequest> = {
     title: 'Реестр заявок',
     buttons: [
       buttonsTypes.filter,
-      buttonsTypes.createMissionByEdcReques,
-      buttonsTypes.createDutyMissionByEdcReques,
+      buttonsTypes.edc_request_create_mission,
+      buttonsTypes.edc_request_create_duty_mission,
+      buttonsTypes.edc_request_cancel,
+      buttonsTypes.edc_request_reject,
+      buttonsTypes.edc_request_close,
     ],
   },
   filter: {
@@ -94,9 +97,6 @@ export const config: TypeConfigData<EdcRequest> = {
     },
     meta: {
       fields: [
-        {
-          key: 'checkbox',
-        },
         {
           key: 'enumerated',
           title: '№',

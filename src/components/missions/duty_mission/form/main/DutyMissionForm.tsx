@@ -503,7 +503,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         </ModalBodyPreloader>
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
-            <>
+            <div>
               <Button
                 onClick={this.handleGetPrintForm}
                 disabled={!this.props.canSave}>
@@ -515,7 +515,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </Button>
-            </>
+            </div>
           ) : (
             <DivNone />
           )}

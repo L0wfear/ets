@@ -1,6 +1,9 @@
 import { getToday0am, getToday2359 } from 'utils/dates';
 import { diffDates } from 'utils/dates';
-import { getMElement, getMissionTemplateData } from 'redux-main/reducers/modules/order/utils';
+import {
+  getMElement,
+  getMissionTemplateData,
+} from 'redux-main/reducers/modules/order/utils';
 import {
   SET_ORDERS,
   SET_SELECTED_ELEMENT_ORDER,
@@ -78,25 +81,26 @@ export default function(state = initialState, { type, payload }) {
       const { technical_operations } = selectedElementOrder_sseo;
 
       const disabledOrderButton = {
-        templateMission: status === 'suspended'
-          || status === 'cancelled'
-          || diffDates(new Date(), selectedElementOrder_sseo.order_date_to, 'minutes') > 0
-          || !technical_operations.some(({ num_exec }) => num_exec > 0),
+        templateMission:
+          status === 'suspended' ||
+          status === 'cancelled' ||
+          diffDates(
+            new Date(),
+            selectedElementOrder_sseo.order_date_to,
+            'minutes',
+          ) > 0 ||
+          !technical_operations.some(({ num_exec }) => num_exec > 0),
         templateDutyMission: false,
       };
 
-      disabledOrderButton.templateDutyMission = (
-        disabledOrderButton.templateMission
-        || !(
-          technical_operations.some(({ num_exec, work_type_name }) => (
-            (num_exec > 0)
-            && (
-              work_type_name === 'Ручные'
-              || work_type_name === 'Комбинированный'
-            )
-          ))
-        )
-      );
+      disabledOrderButton.templateDutyMission =
+        disabledOrderButton.templateMission ||
+        !technical_operations.some(
+          ({ num_exec, work_type_name }) =>
+            num_exec > 0 &&
+            (work_type_name === 'Ручные' ||
+              work_type_name === 'Комбинированный'),
+        );
 
       return {
         ...state,
@@ -111,14 +115,13 @@ export default function(state = initialState, { type, payload }) {
       };
     }
     case SET_SELECTED_ELEMENT_ASSIGNMENT: {
-      const { selectedElementOrder: { order_date_to, status: order_status } } = state;
+      const {
+        selectedElementOrder: { order_date_to, status: order_status },
+      } = state;
 
       const {
         selectedElementAssignment,
-        selectedElementAssignment: {
-          work_type_name,
-          num_exec,
-        },
+        selectedElementAssignment: { work_type_name, num_exec },
       } = payload;
       const dateTo = selectedElementAssignment.date_to || order_date_to;
 
@@ -126,26 +129,23 @@ export default function(state = initialState, { type, payload }) {
         ...state,
         selectedElementAssignment,
         disabledAssignmentButton: {
-          mission: !num_exec
-            || diffDates(new Date(), dateTo) > 0
-            || order_status === 'cancelled'
-            || order_status === 'suspended'
-            || (
-              isString(work_type_name) && work_type_name.match(/^Ручн*/)
-            ),
-          dutyMission: order_status === 'suspended'
-            || !(
-              (
-                work_type_name === null
-                || (
-                  isString(work_type_name) && work_type_name.match(/^Ручн*/)
-                )
-                || work_type_name === 'Комбинированный'
-              )
-              && num_exec > 0
-            )
-            || (num_exec <= 0 && order_status === 'partially_cancelled')
-            || diffDates(new Date(), dateTo) > 0,
+          mission:
+            !num_exec ||
+            diffDates(new Date(), dateTo) > 0 ||
+            order_status === 'cancelled' ||
+            order_status === 'suspended' ||
+            (isString(work_type_name) && work_type_name.match(/^Ручн*/)),
+          dutyMission:
+            order_status === 'cancelled' ||
+            order_status === 'suspended' ||
+            !(
+              (work_type_name === null ||
+                (isString(work_type_name) && work_type_name.match(/^Ручн*/)) ||
+                work_type_name === 'Комбинированный') &&
+              num_exec > 0
+            ) ||
+            (num_exec <= 0 && order_status === 'partially_cancelled') ||
+            diffDates(new Date(), dateTo) > 0,
         },
       };
     }

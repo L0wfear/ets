@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -15,30 +14,30 @@ import { get } from 'lodash';
 import missionPermissions from 'components/missions/mission/config-data/permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
-type ButtonCreateMissionByEdcRequestStateProps = {
+type ButtonCancelEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
-type ButtonCreateMissionByEdcRequestDispatchProps = {
+type ButtonCancelEdcRequestDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonCreateMissionByEdcRequestOwnProps = {
+type ButtonCancelEdcRequestOwnProps = {
   registryKey: string;
 };
-type ButtonCreateMissionByEdcRequestMergeProps = {};
+type ButtonCancelEdcRequestMergeProps = {};
 
-type ButtonCreateMissionByEdcRequestProps = (
-  ButtonCreateMissionByEdcRequestStateProps
-  & ButtonCreateMissionByEdcRequestDispatchProps
-  & ButtonCreateMissionByEdcRequestOwnProps
-  & ButtonCreateMissionByEdcRequestMergeProps
+type ButtonCancelEdcRequestProps = (
+  ButtonCancelEdcRequestStateProps
+  & ButtonCancelEdcRequestDispatchProps
+  & ButtonCancelEdcRequestOwnProps
+  & ButtonCancelEdcRequestMergeProps
 ) & WithSearchProps;
 
-class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissionByEdcRequestProps, {}> {
+class ButtonCancelEdcRequest extends React.Component<ButtonCancelEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
-      type: buttonsTypes.edc_request_create_mission,
+      type: buttonsTypes.edc_request_cancel,
     }),
     this.props.registrySetSelectedRowToShowInForm();
   }
@@ -46,21 +45,21 @@ class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissio
   render() {
     const { props } = this;
 
-    const can_create_mission = get(props.selectedRow, 'can_create_mission', false);
+    const can_cancel = get(props.selectedRow, 'can_cancel', false);
 
     return (
-      <Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_mission}>
-        <Glyphicon glyph="plus" /> Создать децентрализованное задание
+      <Button id="open-cancel_edc_request--form" bsSize="small" onClick={this.handleClick} disabled={!can_cancel}>
+        Отменить
       </Button>
     );
   }
 }
 
-export default compose<ButtonCreateMissionByEdcRequestProps, ButtonCreateMissionByEdcRequestOwnProps>(
+export default compose<ButtonCancelEdcRequestProps, ButtonCancelEdcRequestOwnProps>(
   withRequirePermissionsNew({
     permissions: missionPermissions.update,
   }),
-  connect<ButtonCreateMissionByEdcRequestStateProps, ButtonCreateMissionByEdcRequestDispatchProps, ButtonCreateMissionByEdcRequestOwnProps, ButtonCreateMissionByEdcRequestMergeProps, ReduxState>(
+  connect<ButtonCancelEdcRequestStateProps, ButtonCancelEdcRequestDispatchProps, ButtonCancelEdcRequestOwnProps, ButtonCancelEdcRequestMergeProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
@@ -78,4 +77,4 @@ export default compose<ButtonCreateMissionByEdcRequestProps, ButtonCreateMission
     },
   ),
   withSearch,
-)(ButtonCreateMissionByEdcRequest);
+)(ButtonCancelEdcRequest);

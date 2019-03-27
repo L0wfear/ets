@@ -331,3 +331,12 @@ export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
 export const EdcRequestService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc_request',
 );
+export const EdcRequestChangeStatusService = ETS_API_FACTORY.createApiServiceAdapter(
+  'edc/request',
+);
+export const EdcRefusalReasonService = ETS_API_FACTORY.createApiServiceAdapter(
+  'edc/refusal_reason',
+);
+export const EdcRejectionReasonService = ETS_API_FACTORY.createApiServiceAdapter(
+  'edc/rejection_reason',
+);

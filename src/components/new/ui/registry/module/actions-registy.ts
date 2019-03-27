@@ -698,16 +698,16 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
 };
 
 export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
-  if (isSubmitted) {
-    dispatch(
-      registryLoadDataByKey(registryKey),
-    );
-  }
-
   dispatch(
     actionUnselectSelectedRowToShow(
       registryKey,
       isSubmitted,
     ),
   );
+
+  if (isSubmitted) {
+    dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+  }
 };

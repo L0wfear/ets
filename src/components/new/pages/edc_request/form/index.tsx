@@ -7,7 +7,6 @@ import MissionFormLazy from 'components/missions/mission/form/main';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
-import { edc_form_permitted_type } from '../_config-data/contants';
 import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { diffDates, getDateWithMoscowTz, createValidDateTime, makeDataFromRaw, isValidDate } from 'utils/dates';
@@ -17,6 +16,11 @@ import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import memoizeOne from 'memoize-one';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { edc_form_permitted_type_reverse } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/constant';
+import EdcRequestCancelFormLazy from './cancel';
+import { EdcRequestCancel } from './cancel/@types/EdcRequestCancel';
+import EdcRequestRejectFormLazy from './reject';
 
 type EdcRequestFormLazyDispatchProps = {
   actionSetDependenceEdcRequestForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceEdcRequestForMission>;
@@ -101,6 +105,14 @@ const getDefaultDutyMissionByEdcRequest = memoizeOne(
   },
 );
 
+const getDefaultEdcRequestCancelElement = memoizeOne(
+  (edc_request: EdcRequest): Partial<EdcRequestCancel> => {
+    return {
+      id: edc_request.id,
+    };
+  },
+);
+
 const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
   const type = get(props.match, 'params.type', null);
 
@@ -109,16 +121,16 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
 
   React.useEffect(
     () => {
-      if (!edc_form_permitted_type[type]) {
+      if (!edc_form_permitted_type_reverse[type]) {
         props.onFormHide(false);
       }
       if (props.element) {
-        if (type === edc_form_permitted_type.mission) {
+        if (type === buttonsTypes.edc_request_create_mission) {
           props.actionSetDependenceEdcRequestForMission(
             props.element,
           );
         }
-        if (type === edc_form_permitted_type.duty_mission) {
+        if (type === buttonsTypes.edc_request_create_duty_mission) {
           props.actionSetDependenceEdcRequestForDutyMission(
             props.element,
           );
@@ -134,7 +146,7 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
     );
   }
 
-  if (type === edc_form_permitted_type.mission) {
+  if (type === buttonsTypes.edc_request_create_mission) {
     return (
       <MissionFormLazy
         showForm
@@ -147,11 +159,39 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
     );
   }
 
-  if (type === edc_form_permitted_type.duty_mission) {
+  if (type === buttonsTypes.edc_request_create_duty_mission) {
     return (
       <DutyMissionFormLazy
         showForm
         element={getDefaultDutyMissionByEdcRequest(props.element)}
+        onFormHide={props.onFormHide}
+
+        page={page}
+        path={path}
+      />
+    );
+  }
+
+  if (type === buttonsTypes.edc_request_cancel) {
+    return (
+      <EdcRequestCancelFormLazy
+        showForm
+        element={getDefaultEdcRequestCancelElement(props.element)}
+        edcReques={props.element}
+        onFormHide={props.onFormHide}
+
+        page={page}
+        path={path}
+      />
+    );
+  }
+
+  if (type === buttonsTypes.edc_request_reject) {
+    return (
+      <EdcRequestRejectFormLazy
+        showForm
+        element={getDefaultEdcRequestCancelElement(props.element)}
+        edcReques={props.element}
         onFormHide={props.onFormHide}
 
         page={page}

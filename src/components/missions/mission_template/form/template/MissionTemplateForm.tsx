@@ -79,28 +79,34 @@ class MissionTemplateForm extends React.PureComponent<
     );
     printData(blob);
   }
-  handlePrint: any = (mapKey: string) => {
+  handlePrint: any = async (mapKey: string) => {
     const { formState: state } = this.props;
 
-    const data = {
-      template_id: state.id,
-      size: '',
-      image: null,
-    };
+    const result = await this.props.submitAction(state);
 
-    if (mapKey === printMapKeyBig) {
-      data.size = 'a3';
-    }
-    if (mapKey === printMapKeySmall) {
-      data.size = 'a4';
-    }
+    if (result) {
+      this.props.handleChange(result);
 
-    this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
-      if (image) {
-        data.image = image;
-        this.printMissionTemplate(data);
+      const data = {
+        template_id: result.id,
+        size: '',
+        image: null,
+      };
+
+      if (mapKey === printMapKeyBig) {
+        data.size = 'a3';
       }
-    });
+      if (mapKey === printMapKeySmall) {
+        data.size = 'a4';
+      }
+
+      this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
+        if (image) {
+          data.image = image;
+          this.printMissionTemplate(data);
+        }
+      });
+    }
   };
 
   render() {
@@ -287,25 +293,21 @@ class MissionTemplateForm extends React.PureComponent<
           {isPermitted ? ( // либо обновление, либо создание
             <DisplayFlexAlignCenter>
               <BtnGroupWrapper>
-                {!IS_CREATING ? (
-                  <BtnPart>
-                    <Dropdown
-                      id="mission_template-print-dropdown"
-                      dropup
-                      onSelect={this.handlePrint}
-                      disabled={!this.props.canSave}>
-                      <Dropdown.Toggle>
-                        <Glyphicon id="m-print" glyph="print" />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
-                        <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </BtnPart>
-                ) : (
-                  <BtnPart></BtnPart>
-                )}
+                <BtnPart>
+                  <Dropdown
+                    id="mission_template-print-dropdown"
+                    dropup
+                    onSelect={this.handlePrint}
+                    disabled={!this.props.canSave}>
+                    <Dropdown.Toggle>
+                      <Glyphicon id="m-print" glyph="print" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
+                      <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </BtnPart>
                 <BtnPart>
                   <Button
                     disabled={!this.props.canSave}

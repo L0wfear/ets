@@ -124,6 +124,11 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
       fieldsToChange.equipment_fuel_method = 'naliv';
     }
 
+    if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
+      fieldsToChange.motohours_equip_start
+        = lastCarUsedWaybill.motohours_equip_end;
+    }
+
     fieldsToChange.equipment_fuel_type = lastCarUsedWaybill.equipment_fuel_type;
 
     fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
@@ -746,10 +751,6 @@ class WaybillForm extends Form {
       }
       if (isNotNull(lastCarUsedWaybill.motohours_end)) {
         fieldsToChange.motohours_start = lastCarUsedWaybill.motohours_end;
-      }
-      if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
-        fieldsToChange.motohours_equip_start
-          = lastCarUsedWaybill.motohours_equip_end;
       }
       if (isNotNull(lastCarUsedWaybill.fuel_type)) {
         fieldsToChange.fuel_type = lastCarUsedWaybill.fuel_type;

@@ -272,6 +272,7 @@ class ReportContainer extends React.Component<
        * Соотвественно новый запрос на сервер будет игнорирован.
        */
       if (isEqual(searchObject, newQuery)) {
+        this.getReportData(newQuery);
         return;
       }
 

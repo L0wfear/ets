@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { constantColor } from 'global-styled/global-constants';
 
-export const EtsTrTbody = styled.tr<{ enable: boolean, selected: boolean, rowData: object }>`
+export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean }>`
   &&& {
     cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
     pointer-events: ${({ enable }) => enable ? 'all' : 'none'};

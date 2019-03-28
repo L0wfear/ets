@@ -69,6 +69,7 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
       permissions,
       data: {
         uniqKey: 'id',
+        fixedWidth: true,
       },
       processed: {
         filterValues: {},
@@ -83,7 +84,7 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
             key: 'date_start',
             title: 'Дата начала испекции',
             format: 'date',
-            width: 200,
+            width: 250,
           },
           {
             key: 'date_end',
@@ -94,11 +95,12 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
           {
             key: 'status_text',
             title: 'Статус проверки',
-            width: 300,
+            width: 200,
           },
           {
             key: 'company_name',
             title: 'Организация',
+            width: 500,
           },
           {
             key: 'base_address',

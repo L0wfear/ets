@@ -113,6 +113,7 @@ export type TypeConfigData<F extends any> = {
   };
   list?: {
     data?: {
+      fixedWidth?: boolean;
       uniqKey?: string;
       array?: F[];
       total_count?: number;

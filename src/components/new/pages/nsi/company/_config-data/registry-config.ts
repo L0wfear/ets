@@ -40,6 +40,7 @@ export const config: TypeConfigData<Company> = {
     permissions,
     data: {
       uniqKey: 'company_id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -50,6 +51,7 @@ export const config: TypeConfigData<Company> = {
         {
           key: 'short_name',
           title: 'Полное наименование',
+          width: 300,
         },
         {
           key: 'has_remote_checkup',

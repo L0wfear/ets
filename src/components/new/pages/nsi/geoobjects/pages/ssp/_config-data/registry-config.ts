@@ -71,6 +71,7 @@ export const config: TypeConfigData<Ssp> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -95,11 +96,12 @@ export const config: TypeConfigData<Ssp> = {
         {
           key: 'name',
           title: 'Полное наименование',
+          width: 200,
         },
         {
           key: 'shortname',
           title: 'Краткое наименование',
-          width: 300,
+          width: 200,
         },
         {
           key: 'address',
@@ -110,7 +112,7 @@ export const config: TypeConfigData<Ssp> = {
           key: 'productivity',
           title: 'Производительность (куб. м в сутки)',
           format: 'toFixed2',
-          width: 200,
+          width: 300,
         },
         {
           key: 'is_mobile',

@@ -7,10 +7,10 @@ export const EtsTableWrap = styled.div`
   height: calc(100vh - 270px);
 `;
 
-export const EtsTable = styled.table`
+export const EtsTable = styled.table<{ fixedWidth: boolean }>`
   margin: 0;
   border-collapse: separate;
-  table-layout: auto !important;
+  table-layout: ${({ fixedWidth }) => fixedWidth ? 'fixed' : 'auto'};
   border: 1px solid #c1c1c1;
   width: 100%;
 `;

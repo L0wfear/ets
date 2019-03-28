@@ -54,6 +54,7 @@ export const config: TypeConfigData<SnowStorage> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -78,11 +79,12 @@ export const config: TypeConfigData<SnowStorage> = {
         {
           key: 'name',
           title: 'Наименование',
+          width: 150,
         },
         {
           key: 'address',
           title: 'Адрес',
-          width: 600,
+          width: 150,
         },
       ],
     },

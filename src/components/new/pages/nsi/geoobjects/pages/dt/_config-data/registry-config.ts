@@ -74,6 +74,7 @@ export const config: TypeConfigData<Dt> = {
     permissions,
     data: {
       uniqKey: 'yard_id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -98,18 +99,18 @@ export const config: TypeConfigData<Dt> = {
         {
           key: 'yard_id',
           title: 'Идентификатор (ID)',
-          width: 160,
+          width: 200,
         },
         {
           key: 'object_address',
           title: 'Название ДТ',
-          width: 300,
+          width: 200,
         },
         {
           key: 'total_area',
           title: 'Общая площадь (кв.м.)',
           format: 'toFixed2',
-          width: 200,
+          width: 150,
         },
         {
           key: 'clean_area',
@@ -121,11 +122,12 @@ export const config: TypeConfigData<Dt> = {
           key: 'auto_area',
           title: 'Площадь механизированной уборки (кв.м.)',
           format: 'toFixed2',
-          width: 200,
+          width: 250,
         },
         {
           key: 'company_structure_name',
           title: 'Подразделение',
+          width: 150,
         },
       ],
     },

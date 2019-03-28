@@ -21,6 +21,7 @@ const registryDefaultObj: OneRegistryData = {
       uniqKey: 'id',
       selectedRow: null,
       checkedRows: {},
+      fixedWidth: false,
     },
     permissions: {
       list: false,

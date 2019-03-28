@@ -94,6 +94,7 @@ export const config: TypeConfigData<EdcRequest> = {
     permissions: edcRequestPermissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -108,11 +109,13 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'request_number',
           title: 'Заявка №',
+          width: 150,
         },
         {
           key: 'create_date',
           title: 'Дата',
           format: 'datetime',
+          width: 150,
         },
         {
           key: 'deffect_category_name',
@@ -129,10 +132,12 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'mission_numbers_text',
           title: 'Задание №',
+          width: 150,
         },
         {
           key: 'duty_mission_numbers_text',
           title: 'Наряд-задание №',
+          width: 200,
         },
         {
           key: 'ods',
@@ -141,6 +146,7 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'address_name',
           title: 'Адрес',
+          width: 300,
         },
         {
           key: 'district_name',
@@ -157,10 +163,12 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'main_phone',
           title: 'Осн.телефон',
+          width: 200,
         },
         {
           key: 'additional_phone',
           title: 'Доп.телефон',
+          width: 200,
         },
         {
           key: 'name',
@@ -169,10 +177,12 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'desired_time_from',
           title: 'Желательное время с:',
+          width: 200,
         },
         {
           key: 'desired_time_to',
           title: 'Желательное время по:',
+          width: 200,
         },
         {
           key: 'desired_date',
@@ -181,6 +191,7 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'request_send_at',
           title: 'Передано в ППОЗ',
+          width: 200,
         },
       ],
     },

@@ -10,23 +10,25 @@ import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } fro
 import { getInspectionAutobaseDataRegistryConfig } from './config';
 import IADRegistryTriggerOnRead from './components/IADRegistryTriggerOnRead';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 const registryKey = 'inspectAutobase';
 
 const InspectionAutobaseDataRegistry: React.FC<InspectionAutobaseDataRegistryProps> = (props) => {
+  const carpoolId = getNumberValueFromSerch(props.searchState.carpoolId);
+
   React.useEffect(
     () => {
-      props.registryAddInitialData(
-        getInspectionAutobaseDataRegistryConfig(props),
-      );
-
-      props.registryLoadDataByKey(registryKey);
-
-      return () => {
+      if (carpoolId) {
+        props.registryAddInitialData(
+          getInspectionAutobaseDataRegistryConfig(carpoolId),
+        );
+        props.registryLoadDataByKey(registryKey);
+      } else {
         props.registryRemoveData(registryKey);
-      };
+      }
     },
-    [props.searchState],
+    [carpoolId],
   );
 
   return (

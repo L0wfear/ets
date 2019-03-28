@@ -19,6 +19,7 @@ const InspectionAutobaseData: React.FC<InspectionAutobaseDataProps> = (props) =>
   React.useEffect(
     () => {
       if (carpoolId) {
+        // @todo убрать
         props.actionGetAndSetInStoreInspectAutobase(
           { carpoolId },
           { page: props.loadingPage },

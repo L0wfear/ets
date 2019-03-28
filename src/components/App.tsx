@@ -25,6 +25,7 @@ import MainAppWrap from 'components/MainAppWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { sessionSetTracksCachingConfig, sessionSetAppConfig } from 'redux-main/reducers/modules/session/actions-session';
+import { TRACK_CONFIG_INITIAL } from 'redux-main/reducers/modules/session/session';
 
 class App extends React.Component <any, any> {
 
@@ -74,6 +75,10 @@ class App extends React.Component <any, any> {
                 })
               )),
               flux.getActions('objects').getTrackConfig()
+                .catch((error) => {
+                  console.error(error); //tslint:disable-line
+                  return TRACK_CONFIG_INITIAL;
+                })
                 .then((trackConfig) => (
                   this.props.sessionSetTracksCachingConfig(trackConfig)
                 )),

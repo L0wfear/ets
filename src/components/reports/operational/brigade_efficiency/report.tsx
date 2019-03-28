@@ -32,14 +32,17 @@ class BrigadeEfficiencyReport extends React.Component<PropsBrigadeEfficiencyRepo
       dutyMissionSelectedItem: null,
     };
   }
-  handleDutyNumberLinkClick = async (dutyNumber) => {
+  handleDutyNumberLinkClick = async ({ rowData: { id } }) => {
     try {
       const dutyMission = await this.props.actionGetDutyMissionById(
-        dutyNumber,
+        id,
         { page: 'order' },
       );
 
-      if (!dutyMission) { return; }
+      if (!dutyMission) {
+        global.NOTIFICATION_SYSTEM.notify('Наряд-задание не найдено', 'info');
+        return;
+      }
 
       this.setState({
         dutyMissionFormVisibility: true,

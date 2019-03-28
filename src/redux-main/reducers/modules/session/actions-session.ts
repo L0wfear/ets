@@ -26,7 +26,7 @@ export const sessionGetTracksCachingAppConfig = () => ({
   payload: ConfigTrackService.get()
     .catch((errorData) => {
       // tslint:disable-next-line
-      console.warn(errorData);
+      console.error(errorData);
 
       return TRACK_CONFIG_INITIAL;
     })

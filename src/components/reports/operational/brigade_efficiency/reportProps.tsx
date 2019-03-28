@@ -26,7 +26,7 @@ export const renderers = (onDutyNumberLinkClick) => ({
     <DutyNumberLink
       dutyNumber={meta.data}
       onClick={onDutyNumberLinkClick}
-      bindOnClick={meta.data}
+      bindOnClick={meta}
     />,
 });
 

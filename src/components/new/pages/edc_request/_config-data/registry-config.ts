@@ -57,9 +57,8 @@ export const config: TypeConfigData<EdcRequest> = {
         title: 'Категория',
         getRegistryData: {
           entity: 'edc/defect_category',
-          typeAns: 'result',
-          valueKey: 'defect_category_id',
-          labelKey: 'deffect_category_name',
+          valueKey: 'edc_id',
+          labelKey: 'name',
         },
       },
       {
@@ -68,9 +67,8 @@ export const config: TypeConfigData<EdcRequest> = {
         title: 'Дефект',
         getRegistryData: {
           entity: 'edc/defect',
-          typeAns: 'result',
-          valueKey: 'defect_id',
-          labelKey: 'defect_name',
+          valueKey: 'edc_id',
+          labelKey: 'name',
         },
       },
       {
@@ -105,6 +103,7 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'status_name',
           title: 'Статус',
+          width: 100,
         },
         {
           key: 'request_number',
@@ -120,14 +119,17 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'deffect_category_name',
           title: 'Категория',
+          width: 200,
         },
         {
           key: 'defect_name',
           title: 'Дефект',
+          width: 200,
         },
         {
           key: 'emergency_name',
           title: 'Срочность',
+          width: 150,
         },
         {
           key: 'mission_numbers_text',
@@ -142,6 +144,7 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'ods',
           title: 'ОДС',
+          width: 100,
         },
         {
           key: 'address_name',
@@ -151,14 +154,17 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'district_name',
           title: 'Район',
+          width: 100,
         },
         {
           key: 'okrug_name',
           title: 'Округ',
+          width: 100,
         },
         {
           key: 'contractor_name',
           title: 'Организация',
+          width: 200,
         },
         {
           key: 'main_phone',
@@ -173,6 +179,7 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'name',
           title: 'Контактное лицо',
+          width: 200,
         },
         {
           key: 'desired_time_from',
@@ -187,6 +194,7 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'desired_date',
           title: 'Желательная дата',
+          width: 200,
         },
         {
           key: 'request_send_at',

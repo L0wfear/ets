@@ -36,6 +36,7 @@ export type DispatchPropsMission = {
   actionLoadOrderAndTechnicalOperationByIdForMission: HandleThunkActionCreator<typeof missionsActions.actionLoadOrderAndTechnicalOperationByIdForMission>;
   actionLoadWaybillDataByIdForMission: HandleThunkActionCreator<typeof missionsActions.actionLoadWaybillDataByIdForMission>;
   loadEdcRequiedByIdForMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForMission>;
+  actionReseSetDependenceMissionDataForMissionForm: HandleThunkActionCreator<typeof missionsActions.actionReseSetDependenceMissionDataForMissionForm>;
 };
 export type OwnMissionProps = {
   element: Partial<Mission> | null;

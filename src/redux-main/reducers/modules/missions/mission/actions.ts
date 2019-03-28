@@ -417,6 +417,25 @@ const actionRemoveMission: any = (
   return payload;
 };
 
+type ActionReseSetDependenceMissionDataForMissionForm = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+const actionReseSetDependenceMissionDataForMissionForm = (): ActionReseSetDependenceMissionDataForMissionForm => (
+  (dispatch, getState) => {
+    const missionData = dispatch(
+      actionSetMissionPartialData({
+        ...getMissionsState(getState()).missionData,
+        waybillData: initialMissionsState.missionData.waybillData,
+        dependeceOrder: initialMissionsState.missionData.dependeceOrder,
+        dependeceTechnicalOperation: initialMissionsState.missionData.dependeceTechnicalOperation,
+        edcRequest: initialMissionsState.missionData.edcRequest,
+        carsList: initialMissionsState.missionData.carsList,
+        carsIndex: initialMissionsState.missionData.carsIndex,
+      }),
+    );
+
+    return missionData;
+  }
+);
+
 export default {
   actionSetMissionPartialData,
   actionSetCarsMission,
@@ -439,4 +458,5 @@ export default {
   actionUpdateMission,
   actionRemoveMissions,
   actionRemoveMission,
+  actionReseSetDependenceMissionDataForMissionForm,
 };

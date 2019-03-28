@@ -243,6 +243,22 @@ const actionRemoveDutyMission: any = (dutyDutyMissionOld: Pick<DutyMission, 'id'
   return payload;
 };
 
+type ActionReseSetDependenceMissionDataForDutyMissionForm = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>, ReduxState, {}, AnyAction>;
+const actionReseSetDependenceMissionDataForDutyMissionForm = (): ActionReseSetDependenceMissionDataForDutyMissionForm => (
+  (dispatch, getState) => {
+    const missionData = dispatch(
+      actionSetDutyMissionPartialData({
+        ...getMissionsState(getState()).dutyMissionData,
+        dependeceOrder: initialMissionsState.missionData.dependeceOrder,
+        dependeceTechnicalOperation: initialMissionsState.missionData.dependeceTechnicalOperation,
+        edcRequest: initialMissionsState.missionData.edcRequest,
+      }),
+    );
+
+    return missionData;
+  }
+);
+
 export default {
   actionSetDutyMissionPartialData,
   actionResetDutyMission,
@@ -261,4 +277,5 @@ export default {
   actionRemoveDutyMission,
   actionSetDependenceEdcRequestForDutyMission,
   loadEdcRequiedByIdForDutyMission,
+  actionReseSetDependenceMissionDataForDutyMissionForm,
 };

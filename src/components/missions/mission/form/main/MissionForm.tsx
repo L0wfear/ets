@@ -180,14 +180,14 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         );
       }
 
-      if ((state.waybill_id && state.waybill_id !== -1) && !waybillData || (waybillData && waybillData.id !== state.waybill_id)) {
+      if ((state.waybill_id && state.waybill_id !== -1) && !waybillData || (waybillData && waybillData.id && waybillData.id !== state.waybill_id)) {
         this.props.actionLoadWaybillDataByIdForMission(
           state.waybill_id,
           { page, path },
         );
       }
 
-      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id !== state.request_id)) {
+      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
         this.props.loadEdcRequiedByIdForMission(
           state.request_id,
           { page, path },
@@ -223,6 +223,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         autoDismiss: 0,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.actionReseSetDependenceMissionDataForMissionForm();
   }
 
   handleChangeAssignToWaybill = (value) => {
@@ -790,6 +794,11 @@ export default compose<PropsMissionForm, OwnMissionProps>(
       loadEdcRequiedByIdForMission: (...arg) => (
         dispatch(
           missionsActions.loadEdcRequiedByIdForMission(...arg),
+        )
+      ),
+      actionReseSetDependenceMissionDataForMissionForm: (...arg) => (
+        dispatch(
+          missionsActions.actionReseSetDependenceMissionDataForMissionForm(...arg),
         )
       ),
     }),

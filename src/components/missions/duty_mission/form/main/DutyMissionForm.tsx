@@ -123,7 +123,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         }
       }
 
-      if (state.request_id && !edcRequest || (edcRequest && edcRequest.id !== state.request_id)) {
+      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
         this.props.loadEdcRequiedByIdForDutyMission(
           state.request_id,
           { page, path },
@@ -170,6 +170,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         this.props.actionSetDependenceOrderDataForDutyMission(null, null);
       }
     }
+
+    this.props.actionReseSetDependenceMissionDataForDutyMissionForm();
   }
 
   handleGetPrintForm = async () => {
@@ -563,6 +565,11 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
       loadEdcRequiedByIdForDutyMission: (...arg) => (
         dispatch(
           missionsActions.loadEdcRequiedByIdForDutyMission(...arg),
+        )
+      ),
+      actionReseSetDependenceMissionDataForDutyMissionForm: (...arg) => (
+        dispatch(
+          missionsActions.actionReseSetDependenceMissionDataForDutyMissionForm(...arg),
         )
       ),
     }),

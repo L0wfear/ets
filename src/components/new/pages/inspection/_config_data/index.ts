@@ -7,7 +7,7 @@ const children = {
 };
 
 export default {
-  title: 'Инспекционная деятельность',
+  title: 'Мониторинговая деятельность',
   path: '/inspection',
   children,
   ...getChildrenData(children),

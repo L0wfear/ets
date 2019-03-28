@@ -113,7 +113,7 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
 
   return (
     <HiddenPageEtsContainer>
-      <PopupBottomForm show={Boolean(selectedInspectAutobase)}>
+      <PopupBottomForm show={Boolean(selectedInspectAutobase) && Boolean(inspectAutobaseId)}>
       {
           inspectAutobaseId && selectedInspectAutobase
             ? (

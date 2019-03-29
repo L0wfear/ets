@@ -5,7 +5,7 @@ import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled
 import { getDateWithMoscowTz, makeDate, makeTime } from 'utils/dates';
 import ButtonCreateInspectAutobase from 'components/new/pages/inspection/autobase/components/data/components/action_menu/components/button_inspect_autobase/ButtonCreateInspectAutobase';
 import ButtonContinueInspectAutobase from 'components/new/pages/inspection/autobase/components/data/components/action_menu/components/button_inspect_autobase/ButtonContinueInspectAutobase';
-import { getInspectAutobase } from 'redux-main/reducers/selectors';
+import { getRegistryState } from 'redux-main/reducers/selectors';
 import { DispatchProp, connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
@@ -14,6 +14,8 @@ import { STATUS_TITLE_BY_SLUG, STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT
 import { DivNone } from 'global-styled/global-styled';
 import ButtonCloseInspectAutobase from './components/button_inspect_autobase/ButtonCloseInspectAutobase';
 import { get } from 'lodash';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { getLastConductingInspect, geLastCompletedInspect } from '../../../../@selectors';
 
 type InspectionAutobaseDataActionMenuStateProps = {
   lastConductingInspect: IStateInspectAutobase['lastConductingInspect'];
@@ -23,6 +25,7 @@ type InspectionAutobaseDataActionMenuStateProps = {
 type InspectionAutobaseDataActionMenuDispatchProps = DispatchProp;
 type InspectionAutobaseDataActionMenuOwnProps = {
   loadingPage: string;
+  loadRegistryData: () => Promise<void>;
 };
 
 type InspectionAutobaseDataActionMenuProps = (
@@ -94,10 +97,11 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
             &nbsp;
           </LineData>
           {
-            status === STATUS.noToday && !lastConductingInspect && !lastCompletedInspect
+            true || status === STATUS.noToday && !lastConductingInspect && !lastCompletedInspect
               ? (
                 <LineData>
                   <ButtonCreateInspectAutobase
+                    loadRegistryData={props.loadRegistryData}
                     loadingPage={props.loadingPage}
                   />
                 </LineData>
@@ -119,8 +123,8 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
                     </div>
                   </LineData>
                   <LineDataButtonLine>
-                    <ButtonContinueInspectAutobase />
-                    <ButtonCloseInspectAutobase />
+                    <ButtonContinueInspectAutobase loadingPage={props.loadingPage} />
+                    <ButtonCloseInspectAutobase loadingPage={props.loadingPage} />
                     <span>* При завершении проверки карточку базы нельзя будет отредактировать</span>
                   </LineDataButtonLine>
                 </>
@@ -152,9 +156,9 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
 
 export default compose<InspectionAutobaseDataActionMenuProps, InspectionAutobaseDataActionMenuOwnProps>(
   connect<InspectionAutobaseDataActionMenuStateProps, DispatchProp, InspectionAutobaseDataActionMenuOwnProps, any, ReduxState>(
-    (state) => ({
-      lastConductingInspect: getInspectAutobase(state).lastConductingInspect,
-      lastCompletedInspect: getInspectAutobase(state).lastCompletedInspect,
+    (state, { loadingPage }) => ({
+      lastConductingInspect: getLastConductingInspect(getListData(getRegistryState(state), loadingPage)),
+      lastCompletedInspect: geLastCompletedInspect(getListData(getRegistryState(state), loadingPage)),
     }),
     null,
     null,

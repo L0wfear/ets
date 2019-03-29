@@ -21,19 +21,25 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
     async () => {
       const carpoolId = getNumberValueFromSerch(searchState.carpoolId);
       const companyId = getNumberValueFromSerch(searchState.companyId);
+      try {
+        const inspectAutobase = await props.actionCreateInspectAutobase(
+          {
+            carpoolId,
+            companyId,
+          },
+          { page: loadingPage },
+        );
 
-      const inspectAutobase = await props.actionCreateInspectAutobase(
-        {
-          carpoolId,
-          companyId,
-        },
-        { page: loadingPage },
-      );
-
-      props.setParams({
-        id: inspectAutobase.id,
-        type: INSPECT_AUTOBASE_TYPE_FORM.list,
-      });
+        props.setParams({
+          id: inspectAutobase.id,
+          type: INSPECT_AUTOBASE_TYPE_FORM.list,
+        });
+      } catch (error) {
+        await props.loadRegistryData();
+        props.setParams({
+          type: INSPECT_AUTOBASE_TYPE_FORM.list,
+        });
+      }
     },
     [props.match.url, props.location.search],
   );

@@ -4,11 +4,13 @@ import { ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutobaseStateProps, 
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
-import { getInspectAutobase } from 'redux-main/reducers/selectors';
+import { getRegistryState } from 'redux-main/reducers/selectors';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { getLastConductingInspect } from 'components/new/pages/inspection/autobase/@selectors';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (props) => {
   const { lastConductingInspect } = props;
@@ -37,8 +39,8 @@ export default compose<ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutoba
     permissions: inspectAutobasePermissions.update,
   }),
   connect<ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps, {}, ReduxState>(
-    (state) => ({
-      lastConductingInspect: getInspectAutobase(state).lastConductingInspect,
+    (state, { loadingPage }) => ({
+      lastConductingInspect: getLastConductingInspect(getListData(getRegistryState(state), loadingPage)),
     }),
     null,
     null,

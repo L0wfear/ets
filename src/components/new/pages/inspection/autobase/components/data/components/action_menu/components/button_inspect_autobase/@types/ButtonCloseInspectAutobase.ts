@@ -8,6 +8,7 @@ export type ButtonCloseInspectAutobaseStateProps = {
 export type ButtonCloseInspectAutobaseDispatchProps = DispatchProp;
 
 export type ButtonCloseInspectAutobaseOwnProps = {
+  loadingPage: string;
 };
 
 export type ButtonCloseInspectAutobaseProps = (

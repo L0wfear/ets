@@ -9,6 +9,7 @@ export type ButtonCreateInspectAutobaseDispatchProps = {
 };
 export type ButtonCreateInspectAutobaseOwnProps = {
   loadingPage: string;
+  loadRegistryData: () => Promise<void>;
 };
 
 export type ButtonCreateInspectAutobaseProps = (

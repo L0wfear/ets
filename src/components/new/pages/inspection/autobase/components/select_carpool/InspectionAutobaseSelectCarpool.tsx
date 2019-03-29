@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { compose } from 'recompose';
 import { InspectionAutobaseSelectCarpoolProps, InspectionAutobaseSelectCarpoolStateProps, InspectionAutobaseSelectCarpoolDispatchProps, InspectionAutobaseSelectCarpoolOwnProps } from './@types/InspectionAutobaseSelectCarpool';
 import { ReduxState } from 'redux-main/@types/state';
@@ -116,43 +116,45 @@ const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolP
   );
 
   return (
-    <Col md={12}>
-      <InstectionBlockSelect>
-        <SelectLabel md={1} sm={1}>
+    <Row>
+      <Col md={12}>
+        <InstectionBlockSelect>
+          <SelectLabel md={1} sm={1}>
+              <h5>
+                Организация
+              </h5>
+            </SelectLabel>
+            <SelectField md={4} sm={6}>
+              <ExtField
+                type="select"
+                label={false}
+                value={companyId}
+                options={COMPANY_OPTIONS}
+                onChange={setCompanyId}
+                clearable={false}
+              />
+            </SelectField>
+        </InstectionBlockSelect>
+        <InstectionBlockSelect>
+          <SelectLabel md={1} sm={1}>
             <h5>
-              Организация
+              Автобаза
             </h5>
           </SelectLabel>
           <SelectField md={4} sm={6}>
             <ExtField
               type="select"
+              value={carpoolId}
+              disabled={!companyId}
               label={false}
-              value={companyId}
-              options={COMPANY_OPTIONS}
-              onChange={setCompanyId}
+              options={CARPOOL_OPTIONS}
+              onChange={setCarpoolId}
               clearable={false}
             />
           </SelectField>
-      </InstectionBlockSelect>
-      <InstectionBlockSelect>
-        <SelectLabel md={1} sm={1}>
-          <h5>
-            Автобаза
-          </h5>
-        </SelectLabel>
-        <SelectField md={4} sm={6}>
-          <ExtField
-            type="select"
-            value={carpoolId}
-            disabled={!companyId}
-            label={false}
-            options={CARPOOL_OPTIONS}
-            onChange={setCarpoolId}
-            clearable={false}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
-    </Col>
+        </InstectionBlockSelect>
+      </Col>
+    </Row>
   );
 };
 

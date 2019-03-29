@@ -96,7 +96,7 @@ export default function(state = initialState, { type, payload }) {
         !technical_operations.some(
           ({ num_exec, work_type_name }) =>
             num_exec > 0 &&
-            (work_type_name === 'Ручные' ||
+            (work_type_name.match(/^Ручн*/) ||
               work_type_name === 'Комбинированный'),
         );
 

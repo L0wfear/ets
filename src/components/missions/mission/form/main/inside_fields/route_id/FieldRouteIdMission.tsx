@@ -229,10 +229,14 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     } = this.props;
 
     if (mission_id) {
+      const payload: any = {};
+      if (this.props.IS_TEMPLATE) {
+        payload.mission_template_id = mission_id;
+      } else {
+        payload.mission_id = mission_id;
+      }
       return this.props.actionLoadAndSetInStoreRoutes(
-        {
-          mission_id,
-        },
+        payload,
         { page, path },
       );
     }

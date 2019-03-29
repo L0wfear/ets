@@ -32,6 +32,7 @@ export type OwnPropsFieldRouteIdMission = {
   request_id?: Mission['request_id'];
 
   MISSION_IS_ORDER_SOURCE: boolean;
+  IS_TEMPLATE?: boolean;
 
   isPermitted: boolean;
   disabled: boolean;

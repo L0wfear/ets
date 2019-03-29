@@ -42,12 +42,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
         route_id !== prevProps.route_id);
 
     if (triggerOnUpdate) {
-      const hasAllData =
-        datetime && technical_operation_id && municipal_facility_id && route_id;
-
-      if (hasAllData) {
-        this.updateNormId();
-      }
+      this.updateNormId();
     }
   }
 
@@ -62,8 +57,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
       path,
     } = this.props;
 
-    const hasAllData =
-      datetime && technical_operation_id && municipal_facility_id && route_id;
+    const hasAllData = datetime && technical_operation_id && municipal_facility_id && route_id;
 
     if (hasAllData) {
       const route_data = await this.props.actionLoadRouteById(route_id, {

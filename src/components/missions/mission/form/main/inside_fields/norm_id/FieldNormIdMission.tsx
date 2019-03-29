@@ -43,12 +43,7 @@ class FieldNormIdMission extends React.PureComponent<
     );
 
     if (triggerOnUpdate) {
-      const hasAllData =
-        datetime && technical_operation_id && municipal_facility_id && route_id && type_ids.length;
-
-      if (hasAllData) {
-        this.updateNormId();
-      }
+      this.updateNormId();
     }
 
     if (MISSION_IS_ORDER_SOURCE && !disabled && type_ids !== prevProps.type_ids) {

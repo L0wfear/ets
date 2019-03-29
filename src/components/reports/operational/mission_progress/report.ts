@@ -15,7 +15,7 @@ const renderers = {};
 const tableProps = {};
 
 const reportProps: IReportProps = {
-  title: 'Отчет по уборке территорий',
+  title: 'Отчет посещения ОДХ и ДТ',
   serviceName,
   enumerated: true,
   tableProps,

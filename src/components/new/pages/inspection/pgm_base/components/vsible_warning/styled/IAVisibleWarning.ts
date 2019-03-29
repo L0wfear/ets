@@ -5,6 +5,12 @@ export const IAVisibleWarningInputContainer = styled.div<{ sub?: number }>`
   &&& {
     input[type="checkbox"] {
       margin-left: 0 !important;
+      margin-right: 10px;
     }
   }
+`;
+
+export const SubHeader = styled.div`
+  font-size: 16px;
+  margin: 10px 0px;
 `;

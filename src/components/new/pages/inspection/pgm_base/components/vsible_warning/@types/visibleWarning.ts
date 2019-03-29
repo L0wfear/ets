@@ -10,5 +10,8 @@ export type SingleFiled = {
         value: string | number;
         label: string;
     }[];
+    readOnly?: boolean | null;
+    inline?: boolean | null;
+    sub_header?: string | null;
 };
 export type FiledToCheck = SingleFiled[];

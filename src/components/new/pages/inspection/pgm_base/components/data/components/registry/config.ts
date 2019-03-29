@@ -15,14 +15,14 @@ export const getInspectionPgmBaseDataRegistryConfig = (props: InspectionPgmBaseD
         entity: 'inspect/registry',
         payload: {
           base_id: getNumberValueFromSerch(props.searchState.pgmBaseId),
-          type: 'pgmBase',
+          type: 'pgm_base',
         },
       },
       getBlobData: {
         entity: 'inspect/registry',
         payload: {
           base_id: getNumberValueFromSerch(props.searchState.pgmBaseId),
-          type: 'pgmBase',
+          type: 'pgm_base',
           format: 'xls',
         },
       },
@@ -105,9 +105,8 @@ export const getInspectionPgmBaseDataRegistryConfig = (props: InspectionPgmBaseD
       meta: {
         fields: [
           {
-            key: 'row_number',
-            title: '№ п/п',
-            width: 100,
+            key: 'enumerated',
+            title: '№',
           },
           {
             key: 'date_start',
@@ -157,6 +156,7 @@ export const getInspectionPgmBaseDataRegistryConfig = (props: InspectionPgmBaseD
           {
             key: 'pgm_volume_sum',
             title: 'Наличие ПГМ в емкостях',
+            format: 'boolean',
             width: 200,
           },
         ],

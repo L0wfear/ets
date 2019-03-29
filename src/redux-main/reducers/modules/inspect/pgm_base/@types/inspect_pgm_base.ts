@@ -3,37 +3,52 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/add_inspect_employee/addInspectEmployee';
 
 type InspectPgmBaseData = {
-  is_under_construction: boolean;
-  is_less_than_two_entrances: boolean;
-  absence_of_a_shield_with_a_scheme_of_movement: boolean;
-  is_road_signs: boolean;
-  lack_of_fire_fighting_equipment: boolean;
-  no_fencing: boolean;
-  fencing_in_poor_condition: boolean;
-  is_not_protected: boolean;
-  protection_is_carried: boolean;
-  lack_of_video_surveillance: boolean;
-  is_hard_surface: boolean;
-  surface_in_poor_condition: boolean;
-  surface_area_of_destruction: number | null;
-  presence_of_pits_potholes: boolean;
-  lack_of_lighting: boolean;
-  cnt_defective_light: number | null;
-  lack_control_room: boolean;
-  lack_repair_areas: boolean;
-  cnt_repair_posts: number | null;
-  repair_posts_in_poor_condition: boolean;
-  lack_of_storage_facilities: boolean;
-  lack_of_a_canopy_for_pgm: boolean;
-  lack_of_washing: boolean;
-  lack_of_recreation: boolean;
-  lack_of_domestic: boolean;
-  domestic_in_poor_condition: boolean;
-  lack_of_water_supply: boolean;
-  lack_of_sanitation: boolean;
-  lack_of_toilets: boolean;
-  lack_shower_cabins: boolean;
-  files: any[];
+  address_base: string;
+  balance_holder_base: string | null;
+  head_balance_holder_base_fio: string;
+  head_balance_holder_base_tel: string | null;
+  operating_base: number | null;
+  head_operating_base_fio: string;
+  head_operating_base_tel: string | null;
+  head_balance_holder_base: {
+    tel: string | null;
+    fio: string | null;
+  }
+  head_operating_base: {
+    tel: string | null;
+    fio: string | null;
+  }
+  lack_traffic_scheme_at_entrance: boolean | null;
+  type_of_base_coverage: string;
+  access_roads_in_poor_condition: boolean | null;
+  lack_of_lighting: boolean | null;
+  lack_of_personal_protection: boolean | null;
+  lack_of_records_in_training_logs: boolean | null;
+  lack_of_technical_passport: boolean | null;
+  lack_of_documents_on_pgm: boolean | null;
+  lack_of_documents_etc: string | null;
+  lack_of_shower: boolean | null;
+  lack_of_changing_rooms: boolean | null;
+  lack_of_rest_rooms: boolean | null;
+  lack_of_information_stands: boolean | null;
+  lack_of_loading_unloading_mechanisms: boolean | null;
+  lack_of_ramps_stairs: boolean | null;
+
+  lack_of_height_restriction_sign: boolean | null;
+  type_coverage_in_hangar: string;
+  lack_of_lighting_in_hangars: boolean | null;
+  lack_of_schema_slinging: boolean | null;
+  lack_of_wooden_pallets: boolean | null;
+  hangar_is_not_sealed: boolean | null;
+  pgm_in_hangars: number | null;
+  insufficient_availability_of_wooden_pallets: boolean | null;
+  lack_of_shelter_for_solid_pgm: boolean | null;
+  pgm_on_open_area: number | null;
+
+  equipment_and_piping_in_poor_condition: boolean | null;
+  containers_in_poor_condition: boolean | null;
+
+  files: any[]; // может не надо
   photos_of_supporting_documents: any[],
   photos_defect: any[],
 };

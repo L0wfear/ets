@@ -54,7 +54,7 @@ const ViewInspectPgmBaseWrap: React.FC<ViewInspectPgmBaseWrapProps> = (props) =>
           type={inspectPgmBaseType}
           handleHide={props.onFormHide}
           isPermitted={props.isPermitted}
-
+          pgmBaseList={props.pgmBaseList}
           page={props.loadingPage}
         />
       )

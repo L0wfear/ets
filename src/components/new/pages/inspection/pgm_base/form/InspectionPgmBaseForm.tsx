@@ -28,8 +28,22 @@ const getSelectedInspectPgmBase = async (props: InspectionPgmBaseFormProps, insp
     inspectPgmBaseId,
     { page: props.loadingPage },
   );
+  const selectedPgmBase = props.pgmBaseList.find((elem) => parseInt(get(props, 'searchState.pgmBaseId', null), 10) === get(elem, 'id'));
 
-  return selectedInspectPgmBaseNew;
+  const selectedInspectPgmBaseNewAdd = {
+    ...selectedInspectPgmBaseNew,
+    data: {
+      ...selectedInspectPgmBaseNew.data,
+      address_base: `${selectedPgmBase.address} (${selectedPgmBase.pgm_stores_type_name})`,
+      balance_holder_base: selectedPgmBase.company_name,
+      operating_base: selectedPgmBase.company_name,
+    },
+  };
+  // <<< data here
+  // tslint:disable-next-line:no-console
+  console.log('<<< data here selectedInspectPgmBaseNew === ', {selectedInspectPgmBaseNewAdd, props, } );
+
+  return selectedInspectPgmBaseNewAdd;
 };
 
 const checkSearchState = (searchState, setDataInSearch, selectedInspectPgmBase) => {
@@ -121,6 +135,7 @@ const InspectionPgmBaseList: React.FC<InspectionPgmBaseFormProps> = (props) => {
                 selectedInspectPgmBase={selectedInspectPgmBase}
                 onFormHide={handleCloseForm}
                 loadingPage={props.loadingPage}
+                pgmBaseList={props.pgmBaseList}
               />
             )
             : (
@@ -140,6 +155,7 @@ export default compose<InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps
   connect<InspectionPgmBaseFormStateProps, InspectionPgmBaseFormDispatchProps, InspectionPgmBaseFormOwnProps, InspectionPgmBaseFormMergeProps, ReduxState>(
     (state) => ({
       inspectPgmBaseList: getInspectPgmBase(state).inspectPgmBaseList,
+      pgmBaseList: getInspectPgmBase(state).pgmBaseList,
     }),
     (dispatch: any) => ({
       actionGetInspectPgmBaseById: (...arg) => (

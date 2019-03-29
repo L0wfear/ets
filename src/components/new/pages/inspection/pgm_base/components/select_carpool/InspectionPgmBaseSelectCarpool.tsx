@@ -8,7 +8,6 @@ import { getInspectPgmBase } from 'redux-main/reducers/selectors';
 import { SelectField, SelectLabel, InstectionBlockSelect } from 'components/new/pages/inspection/pgm_base/components/select_carpool/styled/InspectionPgmBaseSelectCarpoolStyled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { get } from 'lodash';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 
@@ -97,12 +96,13 @@ const InspectionPgmBaseSelectCarpool: React.FC<InspectionPgmBaseSelectCarpoolPro
       const newPartialSearch: any = {
         companyId: companyIdNew,
       };
-      if (pgmBaseId && companyIdNew) {
-        const contractor_id = get(props.pgmBaseList.find(({ id }) => id === pgmBaseId), 'contractor_id', null);
-        if (!contractor_id || contractor_id !== companyIdNew) {
-          delete newPartialSearch.pgmBaseId;
-        }
-      }
+      delete newPartialSearch.pgmBaseId;
+      // if (pgmBaseId && companyIdNew) {
+      //   const contractor_id = get(props.pgmBaseList.find(({ id }) => id === pgmBaseId), 'contractor_id', null);
+      //   if (!contractor_id || contractor_id !== companyIdNew) {
+      //     delete newPartialSearch.pgmBaseId;
+      //   }
+      // }
 
       setDataInSearch(newPartialSearch);
     },
@@ -114,6 +114,8 @@ const InspectionPgmBaseSelectCarpool: React.FC<InspectionPgmBaseSelectCarpoolPro
       const newPartialSearch: any = {
         okrugId: okrugIdNew,
       };
+      delete newPartialSearch.pgmBaseId;
+      delete newPartialSearch.companyId;
       // if ((pgmBaseId || companyId) && okrugIdNew) {
       //   const contractor_id = get(props.pgmBaseList.find(({ id }) => id === pgmBaseId), 'contractor_id', null);
       //   if (!contractor_id || contractor_id !== okrugIdNew) {
@@ -202,7 +204,7 @@ const InspectionPgmBaseSelectCarpool: React.FC<InspectionPgmBaseSelectCarpoolPro
       <InstectionBlockSelect>
         <SelectLabel md={1} sm={1}>
           <h5>
-            Адрес базы ПГМ
+            Адрес и тип базы
           </h5>
         </SelectLabel>
         <SelectField md={4} sm={6}>

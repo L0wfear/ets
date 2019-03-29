@@ -1,195 +1,264 @@
 import { FiledToCheck } from "components/new/pages/inspection/pgm_base/components/vsible_warning/@types/visibleWarning";
 
-export const filedToCheck: FiledToCheck = [
+export const filedToCheckMonitoring: FiledToCheck = [
   {
-    key: 'is_under_construction',
-    title: 'Автобаза находится на стадии строительства',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'is_less_than_two_entrances',
-    title: 'Обустройство менее 2х въездов (выездов) на территорию базы',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'absence_of_a_shield_with_a_scheme_of_movement',
-    title: 'Отсутствие щита со схемой движения по территории базы',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'is_road_signs',
-    title: 'Наличие дорожных знаков на территории базы (в соответствии со схемой движения)',
-    type: 'number',
-  },
-  {
-    key: 'lack_of_fire_fighting_equipment',
-    title: 'Отсутствие противопожарного оборудования',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'no_fencing',
-    title: 'Отсутствие ограждения территории базы',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-    reset: ['fencing_in_poor_condition'],
-  },
-  {
-    key: 'fencing_in_poor_condition',
-    title: 'Ограждения территории базы в неудовлетворительном состоянии',
-    type: 'boolean',
-    sub: 20,
-    hidden: 'no_fencing',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'is_not_protected',
-    title: 'Территория базы не охраняется',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-    reset: ['protection_is_carried'],
-  },
-  {
-    key: 'protection_is_carried',
-    title: 'Охрану осуществляет',
+    key: 'address_base', // Состоит и адреса базы и типа ПГМ
+    title: 'Адрес базы:',
     type: 'string',
-    sub: 20,
-    hidden: 'is_not_protected',
+    readOnly: true,
+    inline: true,
   },
   {
-    key: 'lack_of_video_surveillance',
-    title: 'Отсутствие видеонаблюдения на базе',
+    key: 'balance_holder_base', // Организация из селекта на первом экране
+    title: 'Балансодержатель базы:',
+    type: 'string',
+    readOnly: true,
+    inline: true,
+  },
+  {
+    key: 'head_balance_holder_base_fio',
+    title: 'Руководитель балансодержателя',
+    type: 'string',
+  },
+  {
+    key: 'head_balance_holder_base_tel',
+    title: 'Телефон руководителя балансодержателя',
+    type: 'string',
+  },
+  {
+    key: 'operating_base', // Организация из селекта на первом экране
+    title: 'Организация, эксплуатирующая базу:',
+    type: 'string',
+    readOnly: true,
+    inline: true,
+  },
+  {
+    key: 'head_operating_base_fio',
+    title: 'Руководитель организации, эксплуатирующей базу',
+    type: 'string',
+  },
+  {
+    key: 'head_operating_base_tel',
+    title: 'Телефон руководителя организации, эксплуатирующей базу',
+    type: 'string',
+  },
+];
+
+export const filedToCheckFall: FiledToCheck = [
+  {
+    key: 'lack_traffic_scheme_at_entrance',
+    title: 'Отсутствие схемы движения автотранспорта при въезде на базу',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
+    sub_header: 'Общие требования',
   },
   {
-    key: 'is_hard_surface',
-    title: 'Твердое покрытие',
-    type: 'select',
-    options: [
-      { value: 'Щебень', label: 'Щебень' },
-      { value: 'Фрезерованный асфальт', label: 'Фрезерованный асфальт' },
-      { value: 'Асфальт', label: 'Асфальт' },
-      { value: 'Дорожные плиты', label: 'Дорожные плиты' },
-      { value: 'Другое', label: 'Другое' },
-    ],
+    key: 'type_of_base_coverage',
+    title: 'Вид покрытия базы',
+    type: 'string',
+    sub_header: 'Территория базы и подъездные пути',
   },
   {
-    key: 'surface_in_poor_condition',
-    title: 'Покрытие базы в неудовлетворительном состоянии',
+    key: 'access_roads_in_poor_condition',
+    title: 'Неудовлетворительное состояние подъездных путей',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'surface_area_of_destruction',
-    title: 'Площадь разрушения покрытия на базе',
-    type: 'number',
-  },
-  {
-    key: 'presence_of_pits_potholes',
-    title: 'Наличие ям, выбоин',
-    type: 'number',
   },
   {
     key: 'lack_of_lighting',
     title: 'Отсутствие освещения на базе',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
-    reset: ['cnt_defective_light'],
   },
   {
-    key: 'cnt_defective_light',
-    title: 'Количество неисправных мачт освещения',
-    type: 'number',
-    sub: 20,
-    hidden: 'lack_of_lighting',
+    key: 'lack_of_personal_protection',
+    title: 'Отсутствие спецодежды и индивидуальных средств защиты (респиратор, перчатки и т.д.)',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+    sub_header: 'Техника безопасности',
   },
   {
-    key: 'lack_control_room',
-    title: 'Отсутствие помещения для оформления путевых листов (диспетчерской)',
+    key: 'lack_of_records_in_training_logs',
+    title: 'В журнале отсутствуют записи о проведенных инструктажах',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
   {
-    key: 'lack_repair_areas',
-    title: 'Отсутствие ремонтных зон',
+    key: 'lack_of_technical_passport',
+    title: 'Отсутствие технического паспорта базы',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
-    reset: ['cnt_repair_posts', 'repair_posts_in_poor_condition'],
+    sub_header: 'Техническая документация',
   },
   {
-    key: 'cnt_repair_posts',
-    title: 'Количество постов для обслуживания, ремонта техники',
-    type: 'number',
-    sub: 20,
-    hidden: 'lack_repair_areas',
-  },
-  {
-    key: 'repair_posts_in_poor_condition',
-    title: 'Постов в неудовлетворительном состоянии',
-    type: 'number',
-    sub: 20,
-    hidden: 'lack_repair_areas',
-  },
-  {
-    key: 'lack_of_storage_facilities',
-    title: 'Отсутствие складских помещений на базе',
+    key: 'lack_of_documents_on_pgm',
+    title: 'Отсутствие документов на ПГМ, находящихся на базе',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
   {
-    key: 'lack_of_a_canopy_for_pgm',
-    title: 'Отсутствие навеса (постоянного, быстросъемного) для хранения аварийного запаса ПГМ',
+    key: 'lack_of_documents_etc',
+    title: 'Прочее',
+    type: 'string',
+  },
+  {
+    key: 'lack_of_shower',
+    title: 'Отсутствие водопровода, душа',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+    sub_header: 'Бытовые помещения',
+  },
+  {
+    key: 'lack_of_changing_rooms',
+    title: 'Отсутствие раздевалок',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
   {
-    key: 'lack_of_recreation',
-    title: 'Отсутствие зон отдыха',
+    key: 'lack_of_rest_rooms',
+    title: 'Отсутствие комнат для отдыха персонала',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
   {
-    key: 'lack_of_domestic',
-    title: 'Отсутствие бытовых помещений на базе',
+    key: 'lack_of_information_stands',
+    title: 'Отсутствие информационных стендов',
     type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-    reset: ['domestic_in_poor_condition'],
-  },
-  {
-    key: 'domestic_in_poor_condition',
-    title: 'Неудовлетворительное состояние бытовых помещений',
-    type: 'boolean',
-    sub: 20,
-    hidden: 'lack_of_domestic',
     className: 'checkbox-input flex-reverse',
   },
 
   {
-    key: 'lack_of_water_supply',
-    title: 'Отсутствие водоснабжения',
+    key: 'lack_of_loading_unloading_mechanisms',
+    title: 'Отсутствие погрузочно-разгрузочных механизмов',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
+    sub_header: 'Прочее',
   },
   {
-    key: 'lack_of_sanitation',
-    title: 'Отсутствие канализации',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'lack_of_toilets',
-    title: 'Отсутствие туалетов',
-    type: 'boolean',
-    className: 'checkbox-input flex-reverse',
-  },
-  {
-    key: 'lack_shower_cabins',
-    title: 'Отсутствие душевых кабин (в помещении/на открытой площадке)',
+    key: 'lack_of_ramps_stairs',
+    title: 'Отсутствие эстакад, лестниц',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
 ];
+
+export const filedToCheckFallHardPgm: FiledToCheck = [
+  {
+    key: 'lack_of_height_restriction_sign',
+    title: 'Отсутствие над въездными воротами знака ограничения высоты',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+    sub_header: 'Ангары для хранения твердых (комбинированных) ПГМ',
+  },
+  {
+    key: 'type_coverage_in_hangar',
+    title: 'Вид покрытия в ангаре',
+    type: 'string',
+  },
+  {
+    key: 'lack_of_lighting_in_hangars',
+    title: 'Отсутствие освещенности в ангарах',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'lack_of_schema_slinging',
+    title: 'Отсутствие схемы строповки',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'lack_of_wooden_pallets',
+    title: 'Отсутствие деревянных паллет (поддонов) для хранения ПГМ',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'hangar_is_not_sealed',
+    title: 'Ангар не герметичен',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'pgm_in_hangars',
+    title: 'Наличие ПГМ в ангарах на момент проверки (тонн)',
+    type: 'number',
+  },
+
+  {
+    key: 'insufficient_availability_of_wooden_pallets',
+    title: 'Недостаточное наличие деревянных паллет (h-10)',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+    sub_header: 'Хранение ПГМ на улице',
+  },
+  {
+    key: 'lack_of_shelter_for_solid_pgm',
+    title: 'Отсутствие укрытия мешков с твердыми ПГМ (брезент, пленка)',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'pgm_on_open_area',
+    title: 'Наличие ПГМ на открытой площадке на момент проверки (тонн)',
+    type: 'number',
+  },
+];
+
+export const filedToCheckContainersInfo: FiledToCheck = [
+  {
+    key: 'containers_counter',
+    title: 'Количество емкостей',
+    type: 'string',
+    readOnly: true,
+    inline: true,
+  },
+  {
+    key: 'summ_capacity',
+    title: 'Суммарная вместимость',
+    type: 'string',
+    readOnly: true,
+    inline: true,
+  },
+  {
+    key: 'summ_capacity',
+    title: 'Наличие ПГМ в емкостях на момент проверки(тонн)',
+    type: 'string',
+  },
+];
+
+export const filedToCheckContainersFail: FiledToCheck = [
+  {
+    key: 'equipment_and_piping_in_poor_condition',
+    title: 'Оборудование и трубопровод находятся в неуд. состоянии',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'containers_in_poor_condition',
+    title: 'Емкости находятся в неуд. состоянии (визуально)',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+];
+
+// export const filedToCheckContainersCheck: FiledToCheck = [
+//   {
+//     key: 'number',
+//     title: 'Инвентарный/порядковый номер емкости',
+//     readOnly: true,
+//     inline: true,
+//   },
+//   {
+//     key: 'containers_in_poor_condition',
+//     title: 'Емкости находятся в неуд. состоянии (визуально)',
+//     type: 'boolean',
+//     className: 'checkbox-input flex-reverse',
+//   },
+//   {
+//     key: 'containers_in_poor_condition',
+//     title: 'Дата, в которую была заполнена карточка емкости',
+//     type: 'boolean',
+//     className: 'checkbox-input flex-reverse',
+//   },
+// ];

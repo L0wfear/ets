@@ -7,6 +7,7 @@ import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_ba
 
 export type InspectionPgmBaseFormStateProps = {
   inspectPgmBaseList: IStateInspectPgmBase['inspectPgmBaseList'];
+  pgmBaseList: IStateInspectPgmBase['pgmBaseList'];
 };
 export type InspectionPgmBaseFormDispatchProps = {
   actionGetInspectPgmBaseById: HandleThunkActionCreator<typeof inspectionActions.actionGetInspectPgmBaseById>;

@@ -200,8 +200,21 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
 
   delete data.files;
   delete data.photos_of_supporting_documents;
-  delete data.photos_of_supporting_documents;
-
+  delete data.photos_defect; // <<< ХЗ
+  delete data.head_balance_holder_base_tel;
+  delete data.head_balance_holder_base_fio;
+  delete data.head_operating_base_tel;
+  delete data.head_operating_base_fio;
+  const payload = {
+    head_balance_holder_base: {
+      tel: inspectPgmBase.data.head_balance_holder_base_tel,
+      fio: inspectPgmBase.data.head_balance_holder_base_fio,
+    },
+    head_operating_base: {
+      tel: inspectPgmBase.data.head_operating_base_tel,
+      fio: inspectPgmBase.data.head_operating_base_fio,
+    },
+  };
   const inspectionPgmBase = await dispatch(
     actionUpdateInspect(
       inspectPgmBase.id,
@@ -209,6 +222,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
       makeFilesForBackend(inspectPgmBase.data),
       'pgm_base',
       meta,
+      payload,
     ),
   );
 

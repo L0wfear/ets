@@ -2,7 +2,7 @@ import * as React from 'react';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { groupBy, get } from 'lodash';
-import { IAVisibleWarningInputContainer } from './styled/IAVisibleWarning';
+import { IAVisibleWarningInputContainer, SubHeader } from './styled/IAVisibleWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { FiledToCheck } from "components/new/pages/inspection/pgm_base/components/vsible_warning/@types/visibleWarning";
 
@@ -50,6 +50,15 @@ const IAVisibleWarning: React.FC<IAVisibleWarningProps> = (props) => {
         filedToCheck.map((fieldData) => (
           <IAVisibleWarningInputContainer key={fieldData.key} sub={fieldData.sub}>
             {
+              fieldData.sub_header ? (
+                <SubHeader>
+                  {fieldData.sub_header}
+                </SubHeader>
+              ) : (
+                <DivNone />
+              )
+            }
+            {
               !fieldData.hidden || fieldData.hidden && !data[fieldData.hidden]
                 ? (
                   <ExtField
@@ -63,6 +72,8 @@ const IAVisibleWarning: React.FC<IAVisibleWarningProps> = (props) => {
                     options={fieldData.options}
                     disabled={!props.isPermitted}
                     error={props.errors[fieldData.key]}
+                    readOnly={fieldData.readOnly}
+                    inline={fieldData.inline}
                   />
                 )
                 : (

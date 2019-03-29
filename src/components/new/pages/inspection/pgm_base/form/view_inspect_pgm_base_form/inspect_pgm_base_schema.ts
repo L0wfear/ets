@@ -5,81 +5,43 @@ import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@ty
 export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: keyof typeof INSPECT_PGM_BASE_TYPE_FORM }> = {
   properties: [
     {
-      key: 'absence_of_a_shield_with_a_scheme_of_movement',
-      title: 'Технологическая операция',
-      type: 'boolean',
+      key: 'head_balance_holder_base_fio',
+      title: 'Руководитель балансодержателя',
+      type: 'string',
       required: true,
     },
     {
-      key: 'is_under_construction',
-      title: 'Автобаза находится на стадии строительства',
-      type: 'boolean',
-    },
-    {
-      key: 'is_less_than_two_entrances',
-      title: 'Обустройство менее 2х въездов (выездов) на территорию базы',
-      type: 'boolean',
-    },
-    {
-      key: 'absence_of_a_shield_with_a_scheme_of_movement',
-      title: 'Отсутствие щита со схемой движения по территории базы',
-      type: 'boolean',
-    },
-    {
-      key: 'is_road_signs',
-      title: 'Наличие дорожных знаков на территории базы (в соответствии со схемой движения)',
-      type: 'number',
-    },
-    {
-      key: 'lack_of_fire_fighting_equipment',
-      title: 'Отсутствие противопожарного оборудования',
-      type: 'boolean',
-    },
-    {
-      key: 'no_fencing',
-      title: 'Отсутствие ограждения территории базы',
-      type: 'boolean',
-    },
-    {
-      key: 'fencing_in_poor_condition',
-      title: 'Ограждения территории базы в неудовлетворительном состоянии',
-      type: 'boolean',
-    },
-    {
-      key: 'is_not_protected',
-      title: 'Территория базы не охраняется',
-      type: 'boolean',
-    },
-    {
-      key: 'protection_is_carried',
-      title: 'Охрану осуществляет',
+      key: 'head_balance_holder_base_tel',
+      title: 'Телефон руководителя балансодержателя',
       type: 'string',
     },
     {
-      key: 'lack_of_video_surveillance',
-      title: 'Отсутствие видеонаблюдения на базе',
-      type: 'boolean',
-    },
-    {
-      key: 'is_hard_surface',
-      title: 'Твердое покрытие',
-      type: 'valueOfArray',
+      key: 'head_operating_base_fio',
+      title: 'Руководитель организации, эксплуатирующей базу',
+      type: 'string',
       required: true,
     },
     {
-      key: 'surface_in_poor_condition',
-      title: 'Покрытие базы в неудовлетворительном состоянии',
+      key: 'head_operating_base_tel',
+      title: 'Телефон руководителя организации, эксплуатирующей базу',
+      type: 'string',
+    },
+    // Выявленные нарушения на базе:
+    {
+      key: 'lack_traffic_scheme_at_entrance',
+      title: 'Отсутствие схемы движения автотранспорта при въезде на базу',
       type: 'boolean',
     },
     {
-      key: 'surface_area_of_destruction',
-      title: 'Площадь разрушения покрытия на базе',
-      type: 'number',
+      key: 'type_of_base_coverage',
+      title: 'Вид покрытия базы',
+      type: 'string',
+      required: true,
     },
     {
-      key: 'presence_of_pits_potholes',
-      title: 'Наличие ям, выбоин',
-      type: 'number',
+      key: 'access_roads_in_poor_condition',
+      title: 'Неудовлетворительное состояние подъездных путей',
+      type: 'boolean',
     },
     {
       key: 'lack_of_lighting',
@@ -87,109 +49,115 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       type: 'boolean',
     },
     {
-      key: 'cnt_defective_light',
-      title: 'Количество неисправных мачт освещения',
+      key: 'lack_of_personal_protection',
+      title: 'Отсутствие спецодежды и индивидуальных средств защиты (респиратор, перчатки и т.д.)',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_records_in_training_logs',
+      title: 'В журнале отсутствуют записи о проведенных инструктажах',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_technical_passport',
+      title: 'Отсутствие технического паспорта базы',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_documents_on_pgm',
+      title: 'Отсутствие документов на ПГМ, находящихся на базе',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_documents_etc',
+      title: 'Прочее',
+      type: 'string',
+    },
+    {
+      key: 'lack_of_shower',
+      title: 'Отсутствие водопровода, душа',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_changing_rooms',
+      title: 'Отсутствие раздевалок',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_rest_rooms',
+      title: 'Отсутствие комнат для отдыха персонала',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_information_stands',
+      title: 'Отсутствие информационных стендов',
+      type: 'boolean',
+    },
+
+    {
+      key: 'lack_of_loading_unloading_mechanisms',
+      title: 'Отсутствие погрузочно-разгрузочных механизмов',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_ramps_stairs',
+      title: 'Отсутствие эстакад, лестниц',
+      type: 'boolean',
+    },
+    // Нарушения, связанные с хранением твердых ПГМ:
+    {
+      key: 'lack_of_height_restriction_sign',
+      title: 'Отсутствие над въездными воротами знака ограничения высоты',
+      type: 'boolean',
+    },
+    {
+      key: 'type_coverage_in_hangar',
+      title: 'Вид покрытия в ангаре',
+      type: 'string',
+      required: true,
+    },
+    {
+      key: 'lack_of_lighting_in_hangars',
+      title: 'Отсутствие освещенности в ангарах',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_schema_slinging',
+      title: 'Отсутствие схемы строповки',
+      type: 'boolean',
+    },
+    {
+      key: 'lack_of_wooden_pallets',
+      title: 'Отсутствие деревянных паллет (поддонов) для хранения ПГМ',
+      type: 'boolean',
+    },
+    {
+      key: 'hangar_is_not_sealed',
+      title: 'Ангар не герметичен',
+      type: 'boolean',
+    },
+    {
+      key: 'pgm_in_hangars',
+      title: 'Наличие ПГМ в ангарах на момент проверки (тонн)',
       type: 'number',
     },
+
     {
-      key: 'lack_control_room',
-      title: 'Отсутствие помещения для оформления путевых листов (диспетчерской)',
+      key: 'insufficient_availability_of_wooden_pallets',
+      title: 'Недостаточное наличие деревянных паллет (h-10)',
       type: 'boolean',
     },
     {
-      key: 'lack_repair_areas',
-      title: 'Отсутствие ремонтных зон',
+      key: 'lack_of_shelter_for_solid_pgm',
+      title: 'Отсутствие укрытия мешков с твердыми ПГМ (брезент, пленка)',
       type: 'boolean',
     },
     {
-      key: 'cnt_repair_posts',
-      title: 'Количество постов для обслуживания, ремонта техники',
+      key: 'pgm_on_open_area',
+      title: 'Наличие ПГМ на открытой площадке на момент проверки (тонн)',
       type: 'number',
-    },
-    {
-      key: 'repair_posts_in_poor_condition',
-      title: 'Постов в неудовлетворительном состоянии',
-      type: 'number',
-    },
-    {
-      key: 'lack_of_storage_facilities',
-      title: 'Отсутствие складских помещений на базе',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_of_a_canopy_for_pgm',
-      title: 'Отсутствие навеса (постоянного, быстросъемного) для хранения аварийного запаса ПГМ',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_of_recreation',
-      title: 'Отсутствие зон отдыха',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_of_domestic',
-      title: 'Отсутствие бытовых помещений на базе',
-      type: 'boolean',
-    },
-    {
-      key: 'domestic_in_poor_condition',
-      title: 'Неудовлетворительное состояние бытовых помещений',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_of_water_supply',
-      title: 'Отсутствие водоснабжения',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_of_sanitation',
-      title: 'Отсутствие канализации',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_of_toilets',
-      title: 'Отсутствие туалетов',
-      type: 'boolean',
-    },
-    {
-      key: 'lack_shower_cabins',
-      title: 'Отсутствие душевых кабин (в помещении/на открытой площадке)',
-      type: 'boolean',
     },
   ],
   dependencies: {
-    protection_is_carried: [
-      (value, { is_not_protected }, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list) {
-          if (!is_not_protected && !value) {
-            return 'Поле "Охрану осуществляет" должно быть заполнено';
-          }
-        }
-
-        return '';
-      },
-    ],
-    cnt_repair_posts: [
-      (value, { lack_repair_areas }, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list) {
-          if (!lack_repair_areas && !value) {
-            return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
-          }
-        }
-
-        return '';
-      },
-    ],
-    cnt_defective_light: [
-      (value, { lack_of_lighting }, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list) {
-          if (!lack_of_lighting && !value) {
-            return 'Поле "Количество неисправных мачт освещения" должно быть заполнено';
-          }
-        }
-
-        return '';
-      },
-    ],
   },
 };

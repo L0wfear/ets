@@ -58,12 +58,13 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
   return inspectAutobase;
 };
 
-export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect) => {
+export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect, payload: any) => {
   const response = await InspectRegistryService.path(id).put(
     {
       data,
       files,
       type,
+      ...payload,
     },
     false,
     'json',

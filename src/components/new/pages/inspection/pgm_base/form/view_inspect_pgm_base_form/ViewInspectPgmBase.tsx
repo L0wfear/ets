@@ -1,8 +1,13 @@
 import * as React from 'react';
-import { TitleForm } from './styled/ViewInspectPgmBaseStyled';
+import {
+  TitleForm,
+  CheckContainerTable,
+  CheckContainerRow,
+  CheckContainerTd,
+  ButtonBlock,
+} from './styled/ViewInspectPgmBaseStyled';
 import { Button, Row, Col } from 'react-bootstrap';
 import { BoxContainer } from 'components/new/pages/inspection/pgm_base/components/data/styled/InspectionPgmBaseData';
-import { ExtField } from 'components/ui/new/field/ExtField';
 import IAVisibleWarning from 'components/new/pages/inspection/pgm_base/components/vsible_warning/IAVisibleWarning';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
@@ -14,7 +19,15 @@ import { Reducer } from 'redux';
 import { inspectAutobaeSchema } from './inspect_pgm_base_schema';
 import { validate } from 'components/ui/form/new/validate';
 import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/add_inspect_employee/addInspectEmployee';
-import { filedToCheck } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
+import {
+  filedToCheckContainersFail,
+  filedToCheckContainersInfo,
+  filedToCheckMonitoring,
+  filedToCheckFall,
+  filedToCheckFallHardPgm,
+} from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
+import { get } from 'lodash';
+import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 type InitialState = {
   selectedInspectPgmBase: InspectPgmBase,
@@ -183,37 +196,126 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
+  const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspectPgmBase.base_id', null) === get(elem, 'id'));
+
   return state.selectedInspectPgmBase
     ? (
       <Row>
-        <Col md={12} sm={12}>
+        <Col md={6} sm={12}>
           <TitleForm>
             <h4>Мониторинг состояния баз хранения ПГМ</h4>
           </TitleForm>
-        </Col>
-        <Col md={props.type === INSPECT_PGM_BASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_PGM_BASE_TYPE_FORM.list ? 12 : 6}>
           <BoxContainer>
-            {/* Добавить тип базы, `${rowData.address} (${rowData.pgm_stores_type_name})` */}
-            <ExtField
-              type="string"
-              label="Адрес базы:"
-              value={state.selectedInspectPgmBase.base_address}
-              readOnly
-              inline
+            <IAVisibleWarning
+              onChange={onChangeData}
+              data={state.selectedInspectPgmBase.data}
+              errors={state.errors}
+              isPermitted={isPermittedChangeListParams}
+              filedToCheck={filedToCheckMonitoring}
             />
           </BoxContainer>
           <BoxContainer>
             <h4>
-              Выявленные нарушения:
+              Выявленные нарушения на базе:
             </h4>
             <IAVisibleWarning
               onChange={onChangeData}
               data={state.selectedInspectPgmBase.data}
               errors={state.errors}
               isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheck}
+              filedToCheck={filedToCheckFall}
             />
           </BoxContainer>
+          <BoxContainer>
+            <h4>
+              Нарушения, связанные с хранением твердых ПГМ:
+            </h4>
+            <IAVisibleWarning
+              onChange={onChangeData}
+              data={state.selectedInspectPgmBase.data}
+              errors={state.errors}
+              isPermitted={isPermittedChangeListParams}
+              filedToCheck={filedToCheckFallHardPgm}
+            />
+          </BoxContainer>
+        </Col>
+        <Col md={6} sm={12}>
+          <TitleForm>
+            <h4>Готовность емкостей для хранения ПГМ</h4>
+          </TitleForm>
+          <BoxContainer>
+            <IAVisibleWarning
+              onChange={onChangeData}
+              data={state.selectedInspectPgmBase.data}
+              errors={state.errors}
+              isPermitted={isPermittedChangeListParams}
+              filedToCheck={filedToCheckContainersInfo}
+            />
+          </BoxContainer>
+          <BoxContainer>
+            <h4>
+              Выявленные нарушения
+            </h4>
+            <IAVisibleWarning
+              onChange={onChangeData}
+              data={state.selectedInspectPgmBase.data}
+              errors={state.errors}
+              isPermitted={isPermittedChangeListParams}
+              filedToCheck={filedToCheckContainersFail}
+            />
+          </BoxContainer>
+          <BoxContainer>
+            <h4>
+              Проверка емкостей
+            </h4>
+            <CheckContainerTable>
+              {
+                [
+                  {
+                    number: '123123123',
+                    updated_at_date: '12.12.2019',
+                  },
+                  {
+                    number: '131231212',
+                    updated_at_date: '21.12.2019',
+                  },
+                  {
+                    number: 'sfsdf',
+                    updated_at_date: '15.12.2019',
+                  },
+                ].map((container) => (
+                  <CheckContainerRow>
+                    <CheckContainerTd>
+                      {container.number}
+                    </CheckContainerTd>
+                    <CheckContainerTd>
+                      На {container.updated_at_date}
+                    </CheckContainerTd>
+                    <CheckContainerTd>
+                      <ButtonBlock>
+                        // tslint:disable-next-line:no-console
+                        <Button bsSize="small" onClick={}>
+                          <Glyphicon glyph="pencil" />
+                        </Button>
+                        // tslint:disable-next-line:no-console
+                        <Button bsSize="small" onClick={}>
+                          <Glyphicon glyph="trash" />
+                        </Button>
+                      </ButtonBlock>
+                    </CheckContainerTd>
+                  </CheckContainerRow>
+                ))
+              }
+            </CheckContainerTable>
+            <Button
+              // tslint:disable-next-line:no-console
+              onClick={}>
+              <Glyphicon glyph="plus"/>&nbsp;Добавить
+            </Button> <br/><br/>
+          </BoxContainer>
+        </Col>
+
+        <Col md={props.type === INSPECT_PGM_BASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_PGM_BASE_TYPE_FORM.list ? 12 : 6}>
           <Row>
             <Col md={6}>
               <FileField
@@ -239,7 +341,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             </Col>
           </Row>
         </Col>
-        <ViewAddInspectEmployee
+          <ViewAddInspectEmployee
           type={props.type}
           isPermitted={props.isPermitted}
           canAddMembers={true}

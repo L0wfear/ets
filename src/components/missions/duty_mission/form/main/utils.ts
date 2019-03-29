@@ -27,6 +27,7 @@ export const makeDefaultDutyMission = (): DutyMission => ({
   foreman_id: null,
   id: null,
   is_archive: false,
+  is_cleaning_norm: false,
   is_valid_to_order_operation: null,
   mission_source_id: 3,
   mission_source_name: '',

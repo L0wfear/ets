@@ -88,11 +88,13 @@ class FieldNormIdDutyMission extends React.PureComponent<
       this.props.onChange({
         norm_id: oneNorm.norm_id,
         norm_text: oneNorm.name,
+        is_cleaning_norm: oneNorm.is_cleaning_norm,
       });
     } else if (value) {
       this.props.onChange({
         norm_id: null,
         norm_text: null,
+        is_cleaning_norm: false,
       });
     }
   }

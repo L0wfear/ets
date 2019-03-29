@@ -425,6 +425,11 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 error_fact_date_start={errors.fact_date_start}
                 fact_date_end={state.fact_date_end}
                 error_fact_date_end={errors.fact_date_end}
+
+                is_cleaning_norm={state.is_cleaning_norm}
+                object_type_name={state.object_type_name}
+                norm_id={state.norm_id}
+
                 DUTY_MISSION_IS_DISPLAY={DUTY_MISSION_IS_DISPLAY}
                 DUTY_MISSION_IS_CLOSED={DUTY_MISSION_IS_CLOSED}
                 DUTY_MISSION_IS_ASSIGNED={DUTY_MISSION_IS_ASSIGNED}

@@ -98,7 +98,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
         `${configStand.backend}/${getRegistryData.entity}`,
         payload,
       ),
-      { page: registryKey },
+      { page: registryKey, noTimout: true },
     );
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
 
@@ -141,7 +141,11 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
   }
 
   if (list) {
-    const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+    let array = arrayRaw;
+    if (!getRegistryData.userServerFilters) {
+      array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+    }
+
     let processedArray = array;
     let processedTotalCount = array.length;
 
@@ -615,7 +619,7 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
         `${configStand.backend}/${getOneData.entity}`,
         { id },
       ),
-      { page: registryKey },
+      { page: registryKey, noTimout: true },
     );
 
     let response = get(

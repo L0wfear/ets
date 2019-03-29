@@ -1005,24 +1005,6 @@ body.application {
   display: block;
 }
 
-.log-interval-picker {
-  display: flex;
-  position: absolute;
-  top: 17px;
-  left: 50%;
-  transform: translate(-50%, 0);
-  max-width: 514px;
-  z-index: 10;
-
-  .date-divider {
-    margin-left: 10px;
-    margin-right: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-}
-
 .column-control-button {
   position: relative;
   margin-left: 0 !important;
@@ -1314,18 +1296,6 @@ div.none {
   margin: 10px;
   width: 250px;
   min-height: 100px;
-}
-
-.datepicker-range {
-  display: flex;
-  z-index: 10;
-  justify-content: flex-end;
-  .date-divider {
-    display: inline-block;
-    margin-left: 10px;
-    margin-right: 10px;
-    padding-top: 8px;
-  }
 }
 
 .help-block-mission-source {

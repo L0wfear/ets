@@ -10,11 +10,8 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Div from 'components/ui/Div';
-import FieldComponent from 'components/ui/Field';
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
-import { bindable } from 'utils/decorators';
+
 import { getCurrentSeason } from 'utils/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
@@ -24,9 +21,8 @@ import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-
-const DatePickerBindable: any = bindable(DatePicker);
-const Field: any = bindable(FieldComponent);
+import { ExtField } from 'components/ui/new/field/ExtField';
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: string;
@@ -139,73 +135,68 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     const isDtGeozone = geozone_type === 'dt';
 
     return (
-      <Div>
-        <Row>
-          <Col md={3}>
-            <Field type="select"
+      <>
+        <Row className="report-page__header">
+          <Col md={2}>
+            <ExtField
+              type="select"
               label="Объекты"
               options={GEOZONE_OBJECTS}
               value={geozone_type}
               onChange={this.handleGeoObjectChange}
-              bindOnChange={'geozone_type'}
+              boundKeys="geozone_type"
               clearable={false}
               disabled={readOnly}
             />
           </Col>
           <Col md={2}>
-            <Field type="select"
+            <ExtField
+              type="select"
               label="Элемент"
               options={GEOZONE_ELEMENTS[geozone_type]}
               disabled={isDtGeozone || readOnly}
               value={element_type}
-              onChange={this.handleChangeElement}
-              bindOnChange={'element_type'}
+              onChange={this.props.handleChange}
+              boundKeys="element_type"
               clearable={false}
             />
           </Col>
-          <Col md={4}>
-            <Div><label>Период формирования</label></Div>
-            <Div className="inline-block reports-date">
-              <DatePickerBindable
-                date={date_start}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_start'}
-                disabled={readOnly}
-              />
-            </Div>
-            <Div className="inline-block reports-date">
-              <DatePickerBindable
-                date={date_end}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_end'}
-                disabled={readOnly}
-              />
-            </Div>
+          <Col md={5}>
+            <label htmlFor=" ">Период формирования</label>
+            <DatePickerRange
+              date_start_id="date_start"
+              date_start_value={date_start}
+              date_end_id="date_end"
+              date_end_value={date_end}
+
+              disabled={readOnly}
+              onChange={this.props.handleChange}
+            />
           </Col>
           <Col md={3} className={'vehicle-types-container'}>
-            <Field type="select"
+            <ExtField
+              type="select"
               label="Типы ТС"
               multi
               options={CAR_TYPES}
               value={car_func_types_groups}
               onChange={this.props.handleChange}
-              bindOnChange={'car_func_types_groups'}
+              boundKeys="car_func_types_groups"
               disabled={readOnly}
             />
           </Col>
         </Row>
-
-        <Row style={{ marginTop: 20 }}>
-          <Col md={9} />
-          <Col md={3}>
+        <Row>
+          <Col md={3} mdOffset={9}>
             <Button
+              block
               bsSize="small"
               onClick={this.handleSubmit}
               disabled={readOnly}
             >Сформировать отчет</Button>
           </Col>
         </Row>
-      </Div>
+      </>
     );
   }
 }

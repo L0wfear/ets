@@ -19,7 +19,8 @@ export const ColDividerDatePicker = styled(Col)`
       width: 2%;
       margin: 0;
       padding: 8px 0 0 0;
-      display: block;
+      display: flex;
+      justify-content: center;
     }
   }
 `;

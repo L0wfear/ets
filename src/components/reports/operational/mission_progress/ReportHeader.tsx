@@ -7,20 +7,11 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
-import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-import {
-  DisplayFlexAlignCenter,
-} from 'global-styled/global-styled';
-import {
-  ReportHeaderWrap,
-} from 'components/reports/styled';
 import Div from 'components/ui/Div';
-
-const DatePickerBindable: any = bindable(DatePicker);
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_from: string;
@@ -61,35 +52,31 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     return (
       <Row className="report-page__header">
         <Col md={12}>
-          <ReportHeaderWrap>
-            <Div className="datepicker-range-period">
-              <Div>
-                <label htmlFor=" ">Период формирования</label>
-              </Div>
-              <DisplayFlexAlignCenter>
-                <Div className="inline-block reports-date">
-                  <DatePickerBindable
-                    date={date_from}
-                    onChange={this.props.handleChange}
-                    bindOnChange={'date_from'}
-                    disabled={readOnly}
-                  />
-                </Div>
-                <Div className="inline-block reports-date">
-                  <DatePickerBindable
-                    date={date_to}
-                    onChange={this.props.handleChange}
-                    bindOnChange={'date_to'}
-                    disabled={readOnly}
-                  />
-                </Div>
-                <Button
-                  disabled={this.props.readOnly}
-                  onClick={this.handleSubmit}
-                >Сформировать отчёт</Button>
-              </DisplayFlexAlignCenter>
-            </Div>
-          </ReportHeaderWrap>
+          <Row>
+            <Col mdOffset={3} md={6}>
+              <Div><label htmlFor=" ">Период формирования</label></Div>
+            </Col>
+          </Row>
+        </Col>
+        <Col mdOffset={3} md={6}>
+          <DatePickerRange
+            date_start_id="date_from"
+            date_start_value={date_from}
+            date_end_id="date_to"
+            date_end_value={date_to}
+
+            disabled={readOnly}
+            onChange={this.props.handleChange}
+          />
+        </Col>
+        <Col md={3}>
+          <Button
+            block
+            disabled={this.props.readOnly}
+            onClick={this.handleSubmit}
+          >
+            Сформировать отчёт
+          </Button>
         </Col>
       </Row>
     );

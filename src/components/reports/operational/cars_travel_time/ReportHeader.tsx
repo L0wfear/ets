@@ -8,7 +8,6 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import {
   getYesterdayYesterday0am,
   createValidDate,
@@ -16,13 +15,9 @@ import {
   getToday0am,
   getYesterday2359,
 } from 'utils/dates';
-import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-import Div from 'components/ui/Div';
-import { ErrorDiv } from './styled';
-
-const DatePickerBindable: any = bindable(DatePicker);
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader
   extends IPropsReportHeaderCommon,
@@ -85,34 +80,33 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row className="report-page__header">
-        <Col mdOffset={4} md={4}>
-          <Div>
-            <label htmlFor=" ">Период формирования</label>
-          </Div>
-          <Div className="inline-block reports-date">
-            <DatePickerBindable
-              date={date_from}
-              time={false}
-              onChange={this.props.handleChange}
-              bindOnChange={'date_from'}
-              disabled={readOnly}
-            />
-          </Div>
-          <Div className="inline-block reports-date">
-            <DatePickerBindable
-              date={date_to}
-              time={false}
-              onChange={this.props.handleChange}
-              bindOnChange={'date_to'}
-              disabled={readOnly}
-            />
-          </Div>
-          <ErrorDiv className="error">{error}</ErrorDiv>
+        <Col md={12}>
+          <Row>
+            <Col mdOffset={3} md={6}>
+              <label htmlFor=" ">Период формирования</label>
+            </Col>
+          </Row>
         </Col>
-        <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
+        <Col mdOffset={3} md={6}>
+          <DatePickerRange
+            date_start_id="date_from"
+            date_start_value={date_from}
+            date_start_error={error}
+            date_start_time={false}
+            date_end_id="date_to"
+            date_end_value={date_to}
+            date_end_time={false}
+
+            disabled={readOnly}
+            onChange={this.props.handleChange}
+          />
+        </Col>
+        <Col md={3}>
           <Button
+            block
             disabled={this.props.readOnly || Boolean(error)}
-            onClick={this.handleSubmit}>
+            onClick={this.handleSubmit}
+          >
             Сформировать отчёт
           </Button>
         </Col>

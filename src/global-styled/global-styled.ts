@@ -38,9 +38,6 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
     outline: 0px !important;
     -webkit-appearance: none;
   }
-  .datepicker-range {
-    margin-bottom: 5px;
-  }
 `;
 
 export const FlexContainer = styled.div<{ isWrap?: boolean }>`

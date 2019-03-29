@@ -8,17 +8,12 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import Div from 'components/ui/Div';
-import FieldComponent from 'components/ui/Field';
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday859am, getYesterday9am , createValidDateTime } from 'utils/dates';
-import { bindable } from 'utils/decorators';
 import { GEOZONE_OBJECTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-
-const DatePickerBindable: any = bindable(DatePicker);
-const Field: any = bindable(FieldComponent);
+import { ExtField } from 'components/ui/new/field/ExtField';
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: Date;
@@ -62,48 +57,49 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.getState();
 
     return (
-      <Div>
-        <Row>
-          <Col md={4}>
-            <Field
-              type="select"
-              label="Объекты"
-              options={GEOZONE_OBJECTS}
-              value={geozone_type}
-              bindOnChange={'geozone_type'}
-              onChange={this.props.handleChange}
-              clearable={false}
-              disabled={readOnly}
-            />
-          </Col>
-          <Col md={4}>
-            <Div><label htmlFor=" ">Период формирования</label></Div>
-            <Div className="inline-block reports-date">
-              <DatePickerBindable
-                date={date_start}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_start'}
-                disabled={readOnly}
-              />
-            </Div>
-            <Div className="inline-block reports-date">
-              <DatePickerBindable
-                date={date_end}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_end'}
-                disabled={readOnly}
-              />
-            </Div>
-          </Col>
-          <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
-            <Button
-              bsSize="small"
-              onClick={this.handleSubmit}
-              disabled={readOnly}
-            >Сформировать отчет</Button>
-          </Col>
-        </Row>
-      </Div>
+      <Row className="report-page__header">
+        <Col md={3}>
+          <ExtField
+            type="select"
+            label="Объекты"
+            options={GEOZONE_OBJECTS}
+            value={geozone_type}
+            boundKeys="object_type"
+            onChange={this.props.handleChange}
+            clearable={false}
+            disabled={readOnly}
+          />
+        </Col>
+        <Col md={6}>
+          <Row>
+            <Col md={12}>
+              <label htmlFor=" ">Период формирования</label>
+            </Col>
+          </Row>
+          <DatePickerRange
+            date_start_id="date_start"
+            date_start_value={date_start}
+            date_end_id="date_end"
+            date_end_value={date_end}
+
+            disabled={readOnly}
+            onChange={this.props.handleChange}
+          />
+        </Col>
+        <Col md={3}>
+          <Row>
+            <Col md={12}>
+              <label htmlFor=" "> </label>
+            </Col>
+          </Row>
+          <Button
+            block
+            bsSize="small"
+            onClick={this.handleSubmit}
+            disabled={readOnly}
+          >Сформировать отчет</Button>
+        </Col>
+      </Row>
     );
   }
 }

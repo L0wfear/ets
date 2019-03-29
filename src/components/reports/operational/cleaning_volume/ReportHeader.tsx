@@ -7,15 +7,11 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Div from 'components/ui/Div';
-import { getToday0am, createValidDate } from 'utils/dates';
-import { bindable } from 'utils/decorators';
-
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 
-const DatePickerBindable: any = bindable(DatePicker);
+import { getToday0am, createValidDate } from 'utils/dates';
+
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   start_date: string;
@@ -48,18 +44,20 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row>
-        <Col mdOffset={6} md={6} className="datepicker-range">
-          <Div className="inline-block faxogramms-date">
-            <DatePickerBindable
-              date={start_date}
-              onChange={this.props.handleChange}
-              bindOnChange={'start_date'}
-              time={false}
-            />
-          </Div>
+        <Col mdOffset={6} md={3}>
+          <ExtField
+            id="start_date"
+            type="date"
+            time={false}
+            label={false}
+            date={start_date}
+            onChange={this.props.handleChange}
+            boundKeys="start_date"
+          />
         </Col>
         <Col md={3}>
           <Button
+            block
             bsSize="small"
             onClick={this.handleSubmit}
           >Сформировать отчёт</Button>

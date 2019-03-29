@@ -41,7 +41,7 @@ import { IPropsHiddenMapForPrint } from 'components/missions/mission/form/main/i
 import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 import {
   BtnGroupWrapper,
-  DisplayFlexAlignCenter,
+  DisplayFlexAlignCenterFooterForm,
   BtnPart,
 } from 'global-styled/global-styled';
 
@@ -291,7 +291,7 @@ class MissionTemplateForm extends React.PureComponent<
         </ModalBodyPreloader>
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
-            <DisplayFlexAlignCenter>
+            <DisplayFlexAlignCenterFooterForm>
               <BtnGroupWrapper>
                 <BtnPart>
                   <Dropdown
@@ -316,7 +316,7 @@ class MissionTemplateForm extends React.PureComponent<
                   </Button>
                 </BtnPart>
               </BtnGroupWrapper>
-            </DisplayFlexAlignCenter>
+            </DisplayFlexAlignCenterFooterForm>
           ) : (
             <DivNone />
           )}

@@ -128,6 +128,14 @@ export const DisplayFlexAlignCenter = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const DisplayFlexAlignCenterFooterForm = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
 export const FooterEnd = styled.div`
   display: flex;
   justify-content: flex-end;

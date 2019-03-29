@@ -47,7 +47,7 @@ import { IPropsHiddenMapForPrint } from './inside_fields/route_id/print/HiddenMa
 import { saveData, printData } from 'utils/functions';
 import {
   BtnGroupWrapper,
-  DisplayFlexAlignCenter,
+  DisplayFlexAlignCenterFooterForm,
   BtnPart,
 } from 'global-styled/global-styled';
 import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData';
@@ -699,7 +699,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
           </ModalBodyPreloader>
           <Modal.Footer>
             {isPermitted ? ( // либо обновление, либо создание
-              <DisplayFlexAlignCenter>
+              <DisplayFlexAlignCenterFooterForm>
                 {
                   !state.status && !state.waybill_id && !state.for_column || this.state.likeNewMission
                     ? (
@@ -750,7 +750,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                     </Button>
                   </BtnPart>
                 </BtnGroupWrapper>
-              </DisplayFlexAlignCenter>
+              </DisplayFlexAlignCenterFooterForm>
             ) : (
               <DivNone />
             )}

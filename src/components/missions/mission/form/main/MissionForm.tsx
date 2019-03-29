@@ -525,6 +525,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       onChange={this.props.handleChange}
 
                       car_ids={state.car_ids}
+                      for_column={state.for_column}
 
                       IS_TEMPLATE={false}
                       MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}

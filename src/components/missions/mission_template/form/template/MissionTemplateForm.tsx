@@ -205,6 +205,7 @@ class MissionTemplateForm extends React.PureComponent<
                     onChange={this.props.handleChange}
 
                     car_ids={state.car_ids}
+                    for_column={state.for_column}
 
                     IS_TEMPLATE
                     MISSION_IS_ORDER_SOURCE={false}

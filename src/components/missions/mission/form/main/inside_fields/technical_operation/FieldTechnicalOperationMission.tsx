@@ -60,11 +60,12 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
     const {
       isPermitted,
       car_ids,
+      for_column,
     } = this.props;
 
     if (isPermitted) {
       if (this.props.isPermitted && car_ids.length) {
-        this.getTechnicalOperations(car_ids);
+        this.getTechnicalOperations(car_ids, for_column);
       }
     }
   }
@@ -73,12 +74,13 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
     const {
       isPermitted,
       car_ids,
+      for_column,
     } = this.props;
 
     if (isPermitted) {
       if (car_ids !== prevProps.car_ids) {
         if (car_ids.length) {
-          this.getTechnicalOperations(car_ids);
+          this.getTechnicalOperations(car_ids, for_column);
         } else {
           this.handleChange(null);
         }
@@ -92,7 +94,7 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
     }
   }
 
-  async getTechnicalOperations(car_ids: Mission['car_ids']) {
+  async getTechnicalOperations(car_ids: Mission['car_ids'], for_column: Mission['for_column']) {
     const {
       IS_TEMPLATE,
       MISSION_IS_ORDER_SOURCE,
@@ -105,6 +107,10 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
 
     if (!MISSION_IS_ORDER_SOURCE && !IS_TEMPLATE) {
       payload.kind_task_ids = 3;
+    }
+
+    if (for_column) {
+      payload.object_id = 1; // ТО только по ОДХ
     }
 
     const { technicalOperationRegistryForMissionList } = await this.props.actionGetAndSetInStoreTechnicalOperationRegistryForMission(

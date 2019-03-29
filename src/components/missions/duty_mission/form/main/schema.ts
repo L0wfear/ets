@@ -112,7 +112,7 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
       },
     ],
     plan_date_end: [
-      (value, { plan_date_start, object_type_name }, { dependeceOrder, dependeceTechnicalOperation, is_cleaning_norm }) => {
+      (value, { plan_date_start, object_type_name, is_cleaning_norm }, { dependeceOrder, dependeceTechnicalOperation }) => {
         if (value) {
           if (dependeceOrder && dependeceTechnicalOperation) {
             const order_operation_date_from = get(

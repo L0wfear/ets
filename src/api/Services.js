@@ -327,6 +327,9 @@ export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
 export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspect/registry',
 );
+export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/container',
+);
 
 export const EdcRequestService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc_request',

@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { groupBy, get } from 'lodash';
-import { IAVisibleWarningInputContainer } from './styled/IAVisibleWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
+import { IAVisibleWarningInputContainer } from '../../autobase/components/vsible_warning/styled/IAVisibleWarning';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 
 type IAVisibleWarningProps = {
-  onChange: (data: InspectAutobase['data'] | InspectContainer['data']) => void;
-  data: InspectAutobase['data'] | InspectContainer['data'];
-  errors?: Partial<Record<keyof InspectAutobase['data'] | keyof InspectContainer['data'], string>>;
+  onChange: (data: Partial<InspectContainer>) => void;
+  data: InspectContainer;
+  errors: Partial<Record<keyof InspectContainer, string>>;
   isPermitted?: boolean;
   filedToCheck: FiledToCheck;
 };
@@ -33,14 +32,13 @@ const getValueFromEvent = (key, value, filedToCheckByKey) => {
   }
 };
 
-const IAVisibleWarning: React.FC<IAVisibleWarningProps> = (props) => {
+const IAVisibleWarningContainer: React.FC<IAVisibleWarningProps> = (props) => {
   const { data, filedToCheck } = props;
   const filedToCheckByKey: any = groupBy(filedToCheck, 'key');
 
   const handleChange = React.useCallback(
     (key, value) => {
       const changeObj = {
-        ...data,
         [key]: getValueFromEvent(key, value, filedToCheckByKey),
       };
       if (filedToCheckByKey[key][0].reset) {
@@ -71,8 +69,7 @@ const IAVisibleWarning: React.FC<IAVisibleWarningProps> = (props) => {
                     className={fieldData.className}
                     options={fieldData.options}
                     disabled={!props.isPermitted}
-                    error={get(props.errors, fieldData.key, '')}
-                    time={fieldData.time}
+                    error={props.errors[fieldData.key]}
                   />
                 )
                 : (
@@ -86,4 +83,4 @@ const IAVisibleWarning: React.FC<IAVisibleWarningProps> = (props) => {
   );
 };
 
-export default React.memo(IAVisibleWarning);
+export default React.memo(IAVisibleWarningContainer);

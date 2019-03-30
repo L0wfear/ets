@@ -5,18 +5,18 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 import { DivNone } from 'global-styled/global-styled';
 import { PropsInspectContainerFormLazy } from './@types/InspectionContainerList';
 
-const DutyMissionForm = React.lazy(() =>
+const ContainerForm = React.lazy(() =>
   import(/* webpackChunkName: "inspection_container_list_form" */ './InspectionContainerList'),
 );
 
-const DutyMissionFormLazy: React.FC<PropsInspectContainerFormLazy> = (props) => {
+const ContainerFormLazy: React.FC<PropsInspectContainerFormLazy> = (props) => {
   const page = props.loadingPageName || props.page;
   const path = `${props.path ? `${props.path}-` : ''}-form`;
 
-  return props.element ? (
+  return props.element && props.showForm ? (
     <ErrorBoundaryForm>
       <React.Suspense fallback={<LoadingComponent />}>
-        <DutyMissionForm
+        <ContainerForm
           element={props.element}
           handleHide={props.onFormHide}
           readOnly={props.readOnly}
@@ -31,4 +31,4 @@ const DutyMissionFormLazy: React.FC<PropsInspectContainerFormLazy> = (props) => 
   );
 };
 
-export default DutyMissionFormLazy;
+export default ContainerFormLazy;

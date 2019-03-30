@@ -28,6 +28,8 @@ import {
 } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { get } from 'lodash';
+import ContainerFormLazy from 'components/new/pages/inspection/container/index';
+import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 
 type InitialState = {
   selectedInspectPgmBase: InspectPgmBase,
@@ -37,6 +39,25 @@ type InitialState = {
   agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
   commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
   resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
+  containerElement: Partial<InspectContainer> | null;
+  containerElementList: Partial<InspectContainer>[] | null;
+  showDutyMissionForm: boolean;
+};
+
+const containerElementInitialState: InitialState['containerElement'] = {
+  inspection_id: null,
+  number: null,
+  capacity: null,
+  capacity_percent: null,
+  pgm_volume: null,
+  pgm_marka: null,
+  last_checked_at: null,
+  diagnostic_result: null,
+  id: null, // бэк ещё не присылает
+  data: {
+    equipment_pipeline_in_poor_condition: null,
+    control_measuring_instruments_in_poor_condition: null,
+  },
 };
 
 const initialState: InitialState = {
@@ -47,11 +68,15 @@ const initialState: InitialState = {
   agents_from_gbu: viewAddInspectEmployeeInitialState.agents_from_gbu,
   commission_members: viewAddInspectEmployeeInitialState.commission_members,
   resolve_to: viewAddInspectEmployeeInitialState.resolve_to,
+  containerElement: containerElementInitialState,
+  containerElementList: [],
+  showDutyMissionForm: false,
 };
 
 const CHANGE_DATA = 'CHANGE_DATA';
 const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
 const SET_COMISSION_AND_MEMBERS = 'SET_COMISSION_AND_MEMBERS';
+const CHANGE_STATE = 'CHANGE_STATE';
 
 const actionChangeSelectedInspectPgmBaseData = (data: InspectPgmBase['data']) => ({
   type: CHANGE_DATA,
@@ -80,16 +105,30 @@ const actionSetComissionAndMembers = (
     },
   });
 
+const actionSetState = (payload) => ({
+    type: CHANGE_STATE,
+    payload: {
+      ...payload,
+    },
+  });
+
 const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
       const errors = validate(inspectAutobaeSchema, payload.selectedInspectPgmBase.data, { type: payload.type });
 
       return {
+        ...state,
         selectedInspectPgmBase: payload.selectedInspectPgmBase,
         type: payload.type,
         errors,
         canSave: Object.values(errors).every((error) => !error),
+      };
+    }
+    case CHANGE_STATE: {
+      return {
+        ...state,
+        ...payload,
       };
     }
     case CHANGE_DATA: {
@@ -194,6 +233,17 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
       );
     },
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
+  );
+
+  const handleFormHideDutyMissionForm = React.useCallback(
+    () => {
+      dispatch(
+        actionSetState({
+          showDutyMissionForm: false,
+        }),
+      );
+    },
+    [],
   );
 
   const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspectPgmBase.base_id', null) === get(elem, 'id'));
@@ -310,10 +360,22 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                   }
                 </CheckContainerTable>
                 <Button
-                  onClick={() => alert('Добавить')}>
+                  onClick={ () => dispatch(actionSetState({showDutyMissionForm: true, })) }>
                   <Glyphicon glyph="plus"/>&nbsp;Добавить
                 </Button> <br/><br/>
+                {/* <<< Добавить то что ниже, disable, для редактирования и удаления тоже самое */}
+                {/* <Button disabled={!isPermittedChangeListParams}
+                  onClick={() => alert('Добавить')}>
+                  <Glyphicon glyph="plus"/>&nbsp;Добавить
+                </Button> <br/><br/> */}
               </BoxContainer>
+
+              <ContainerFormLazy
+                element={state.containerElement}
+                onFormHide={handleFormHideDutyMissionForm}
+                readOnly={!isPermittedChangeListParams}
+                showForm={state.showDutyMissionForm}
+              />
               <Row>
                 <Col md={6}>
                   <FileField

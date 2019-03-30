@@ -208,22 +208,24 @@ export const filedToCheckFallHardPgm: FiledToCheck = [
 export const filedToCheckContainersInfo: FiledToCheck = [
   {
     key: 'containers_counter',
-    title: 'Количество емкостей',
+    title: 'Количество емкостей:',
     type: 'string',
     readOnly: true,
     inline: true,
   },
   {
     key: 'summ_capacity',
-    title: 'Суммарная вместимость',
+    title: 'Суммарная вместимость:',
     type: 'string',
     readOnly: true,
     inline: true,
   },
   {
-    key: 'summ_capacity',
-    title: 'Наличие ПГМ в емкостях на момент проверки(тонн)',
+    key: 'pgm_volume_sum',
+    title: 'Наличие ПГМ в емкостях на момент проверки(тонн):',
     type: 'string',
+    readOnly: true,
+    inline: true,
   },
 ];
 

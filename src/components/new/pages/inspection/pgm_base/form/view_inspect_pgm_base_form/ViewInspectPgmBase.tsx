@@ -26,8 +26,8 @@ import {
   filedToCheckFall,
   filedToCheckFallHardPgm,
 } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
-import { get } from 'lodash';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import { get } from 'lodash';
 
 type InitialState = {
   selectedInspectPgmBase: InspectPgmBase,
@@ -197,6 +197,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
   );
 
   const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspectPgmBase.base_id', null) === get(elem, 'id'));
+  const selectedPgmBaseTypeIsCombinate = get(selectedPgmBase, 'pgm_stores_type_id', null) === 3 ? true : false;
 
   return state.selectedInspectPgmBase
     ? (
@@ -239,109 +240,111 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             />
           </BoxContainer>
         </Col>
-        <Col md={6} sm={12}>
-          <TitleForm>
-            <h4>Готовность емкостей для хранения ПГМ</h4>
-          </TitleForm>
-          <BoxContainer>
-            <IAVisibleWarning
-              onChange={onChangeData}
-              data={state.selectedInspectPgmBase.data}
-              errors={state.errors}
-              isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheckContainersInfo}
-            />
-          </BoxContainer>
-          <BoxContainer>
-            <h4>
-              Выявленные нарушения
-            </h4>
-            <IAVisibleWarning
-              onChange={onChangeData}
-              data={state.selectedInspectPgmBase.data}
-              errors={state.errors}
-              isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheckContainersFail}
-            />
-          </BoxContainer>
-          <BoxContainer>
-            <h4>
-              Проверка емкостей
-            </h4>
-            <CheckContainerTable>
-              {
-                [
-                  {
-                    number: '123123123',
-                    updated_at_date: '12.12.2019',
-                  },
-                  {
-                    number: '131231212',
-                    updated_at_date: '21.12.2019',
-                  },
-                  {
-                    number: 'sfsdf',
-                    updated_at_date: '15.12.2019',
-                  },
-                ].map((container) => (
-                  <CheckContainerRow>
-                    <CheckContainerTd>
-                      {container.number}
-                    </CheckContainerTd>
-                    <CheckContainerTd>
-                      На {container.updated_at_date}
-                    </CheckContainerTd>
-                    <CheckContainerTd>
-                      <ButtonBlock>
-                        // tslint:disable-next-line:no-console
-                        <Button bsSize="small" onClick={}>
-                          <Glyphicon glyph="pencil" />
-                        </Button>
-                        // tslint:disable-next-line:no-console
-                        <Button bsSize="small" onClick={}>
-                          <Glyphicon glyph="trash" />
-                        </Button>
-                      </ButtonBlock>
-                    </CheckContainerTd>
-                  </CheckContainerRow>
-                ))
-              }
-            </CheckContainerTable>
-            <Button
-              // tslint:disable-next-line:no-console
-              onClick={}>
-              <Glyphicon glyph="plus"/>&nbsp;Добавить
-            </Button> <br/><br/>
-          </BoxContainer>
-        </Col>
 
-        <Col md={props.type === INSPECT_PGM_BASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_PGM_BASE_TYPE_FORM.list ? 12 : 6}>
-          <Row>
-            <Col md={6}>
-              <FileField
-                id="file"
-                label="Фотографии подтверждающих документов"
-                multiple
-                value={state.selectedInspectPgmBase.data.photos_of_supporting_documents}
-                onChange={onChangeFile}
-                disabled={!isPermittedChangeListParams}
-                boundKeys="photos_of_supporting_documents"
-              />
+        {
+          selectedPgmBaseTypeIsCombinate ? (
+            <Col md={6} sm={12}>
+              <TitleForm>
+                <h4>Готовность емкостей для хранения ПГМ</h4>
+              </TitleForm>
+              <BoxContainer>
+                <IAVisibleWarning
+                  onChange={onChangeData}
+                  data={state.selectedInspectPgmBase.data}
+                  errors={state.errors}
+                  isPermitted={isPermittedChangeListParams}
+                  filedToCheck={filedToCheckContainersInfo}
+                />
+              </BoxContainer>
+              <BoxContainer>
+                <h4>
+                  Выявленные нарушения
+                </h4>
+                <IAVisibleWarning
+                  onChange={onChangeData}
+                  data={state.selectedInspectPgmBase.data}
+                  errors={state.errors}
+                  isPermitted={isPermittedChangeListParams}
+                  filedToCheck={filedToCheckContainersFail}
+                />
+              </BoxContainer>
+              <BoxContainer>
+                <h4>
+                  Проверка емкостей
+                </h4>
+                <CheckContainerTable>
+                  {
+                    [
+                      {
+                        number: '123123123',
+                        updated_at_date: '12.12.2019',
+                      },
+                      {
+                        number: '131231212',
+                        updated_at_date: '21.12.2019',
+                      },
+                      {
+                        number: 'sfsdf',
+                        updated_at_date: '15.12.2019',
+                      },
+                    ].map((container) => (
+                      <CheckContainerRow>
+                        <CheckContainerTd>
+                          {container.number}
+                        </CheckContainerTd>
+                        <CheckContainerTd>
+                          На {container.updated_at_date}
+                        </CheckContainerTd>
+                        <CheckContainerTd>
+                          <ButtonBlock>
+                            <Button bsSize="small" onClick={() => alert('Редактирование')}>
+                              <Glyphicon glyph="pencil" />
+                            </Button>
+                            <Button bsSize="small" onClick={() => alert('Удаление')}>
+                              <Glyphicon glyph="trash" />
+                            </Button>
+                          </ButtonBlock>
+                        </CheckContainerTd>
+                      </CheckContainerRow>
+                    ))
+                  }
+                </CheckContainerTable>
+                <Button
+                  onClick={() => alert('Добавить')}>
+                  <Glyphicon glyph="plus"/>&nbsp;Добавить
+                </Button> <br/><br/>
+              </BoxContainer>
+              <Row>
+                <Col md={6}>
+                  <FileField
+                    id="file"
+                    label="Фотографии подтверждающих документов"
+                    multiple
+                    value={state.selectedInspectPgmBase.data.photos_of_supporting_documents}
+                    onChange={onChangeFile}
+                    disabled={!isPermittedChangeListParams}
+                    boundKeys="photos_of_supporting_documents"
+                  />
+                </Col>
+                <Col md={6}>
+                  <FileField
+                    id="file"
+                    label="Фотографии дефектов"
+                    multiple
+                    value={state.selectedInspectPgmBase.data.photos_defect}
+                    onChange={onChangeFile}
+                    disabled={!isPermittedChangeListParams}
+                    boundKeys="photos_defect"
+                  />
+                </Col>
+              </Row>
             </Col>
-            <Col md={6}>
-              <FileField
-                id="file"
-                label="Фотографии дефектов"
-                multiple
-                value={state.selectedInspectPgmBase.data.photos_defect}
-                onChange={onChangeFile}
-                disabled={!isPermittedChangeListParams}
-                boundKeys="photos_defect"
-              />
-            </Col>
-          </Row>
-        </Col>
-          <ViewAddInspectEmployee
+          ) : (
+            <DivNone />
+          )
+        }
+
+        <ViewAddInspectEmployee
           type={props.type}
           isPermitted={props.isPermitted}
           canAddMembers={true}

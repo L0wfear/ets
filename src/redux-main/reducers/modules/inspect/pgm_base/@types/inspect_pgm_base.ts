@@ -2,7 +2,7 @@ import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/add_inspect_employee/addInspectEmployee';
 
-type InspectPgmBaseData = {
+export type InspectPgmBaseData = {
   address_base: string;
   balance_holder_base: string | null;
   head_balance_holder_base_fio: string;
@@ -80,6 +80,14 @@ export type InspectPgmBase = {
   pgm_into_vol: number | string | null;
   row_number: number | null;
   capacity_cnt: number | null;
+  head_balance_holder_base: {
+    tel: string | null;
+    fio: string | null;
+  }
+  head_operating_base: {
+    tel: string | null;
+    fio: string | null;
+  }
 };
 
 export type IStateInspectPgmBase = {

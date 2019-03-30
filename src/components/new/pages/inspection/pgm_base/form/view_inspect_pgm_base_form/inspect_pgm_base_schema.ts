@@ -8,7 +8,6 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       key: 'head_balance_holder_base_fio',
       title: 'Руководитель балансодержателя',
       type: 'string',
-      required: true,
     },
     {
       key: 'head_balance_holder_base_tel',
@@ -19,7 +18,6 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       key: 'head_operating_base_fio',
       title: 'Руководитель организации, эксплуатирующей базу',
       type: 'string',
-      required: true,
     },
     {
       key: 'head_operating_base_tel',
@@ -36,7 +34,6 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       key: 'type_of_base_coverage',
       title: 'Вид покрытия базы',
       type: 'string',
-      required: true,
     },
     {
       key: 'access_roads_in_poor_condition',
@@ -114,7 +111,6 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       key: 'type_coverage_in_hangar',
       title: 'Вид покрытия в ангаре',
       type: 'string',
-      required: true,
     },
     {
       key: 'lack_of_lighting_in_hangars',
@@ -159,5 +155,37 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
     },
   ],
   dependencies: {
+    head_balance_holder_base_fio: [
+      (value, formData, { type }) => {
+        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+            return 'Поле "Руководитель балансодержателя" должно быть заполнено';
+        }
+        return '';
+      },
+    ],
+    head_operating_base_fio: [
+      (value, formData, { type }) => {
+        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+            return 'Поле "Руководитель организации, эксплуатирующей базу" должно быть заполнено';
+        }
+        return '';
+      },
+    ],
+    type_of_base_coverage: [
+      (value, formData, { type }) => {
+        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+            return 'Поле "Вид покрытия базы" должно быть заполнено';
+        }
+        return '';
+      },
+    ],
+    type_coverage_in_hangar: [
+      (value, formData, { type }) => {
+        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+            return 'Поле "Вид покрытия в ангаре" должно быть заполнено';
+        }
+        return '';
+      },
+    ],
   },
 };

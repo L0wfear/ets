@@ -10,6 +10,14 @@ export const TitleForm = styled.div`
 export const CheckContainerTable = styled.div`
 `;
 
+export const CheckContainerTd = styled.div`
+  max-width: 33%;
+  width: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const CheckContainerRow = styled.div`
   display: flex;
   justify-content: space-between;
@@ -21,14 +29,14 @@ export const CheckContainerRow = styled.div`
   &:last-child {
     margin-bottom: 10px;
   }
-`;
-
-export const CheckContainerTd = styled.div`
-  max-width: 33%;
-  width: 33%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  ${CheckContainerTd}{
+    &:first-child{
+      justify-content: flex-start;
+    }
+    &:last-child{
+      justify-content: flex-end;
+    }
+  }
 `;
 
 export const ButtonBlock = styled.div`

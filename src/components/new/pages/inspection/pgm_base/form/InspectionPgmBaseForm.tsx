@@ -34,14 +34,14 @@ const getSelectedInspectPgmBase = async (props: InspectionPgmBaseFormProps, insp
     ...selectedInspectPgmBaseNew,
     data: {
       ...selectedInspectPgmBaseNew.data,
-      address_base: `${selectedPgmBase.address} (${selectedPgmBase.pgm_stores_type_name})`,
-      balance_holder_base: selectedPgmBase.company_name,
-      operating_base: selectedPgmBase.company_name,
+      address_base: `${get(selectedPgmBase, 'address', null)} (${get(selectedPgmBase, 'pgm_stores_type_name', null)})`,
+      balance_holder_base: get(selectedPgmBase, 'company_name', null),
+      operating_base: get(selectedPgmBase, 'company_name', null),
     },
   };
   // <<< data here
   // tslint:disable-next-line:no-console
-  console.log('<<< data here selectedInspectPgmBaseNew === ', {selectedInspectPgmBaseNewAdd, props, } );
+  console.log('<<< data here selectedInspectPgmBaseNew === ', {selectedInspectPgmBaseNewAdd, props, selectedPgmBase, } );
 
   return selectedInspectPgmBaseNewAdd;
 };

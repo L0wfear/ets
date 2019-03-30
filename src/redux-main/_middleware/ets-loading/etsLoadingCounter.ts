@@ -10,19 +10,22 @@ const etsLoadingCounter = async <PromiseAns>(dispatch: any, promise: Promise<Pro
       countLoad = true;
       dispatch(incLoadingCount(meta));
     }, 300);
+  } else {
+    countLoad = true;
+    dispatch(incLoadingCount(meta));
   }
 
   let response: PromiseAns = null;
 
   try {
     response = await promise;
-    if (countLoad || !meta.noTimout) {
+    if (countLoad) {
       dispatch(decLoadingCount(meta));
     } else {
       clearTimeout(interval);
     }
   } catch (error) {
-    if (countLoad || !meta.noTimout) {
+    if (countLoad) {
       dispatch(decLoadingCount(meta));
     } else {
       clearTimeout(interval);

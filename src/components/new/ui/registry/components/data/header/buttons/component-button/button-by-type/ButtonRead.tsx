@@ -15,6 +15,7 @@ import { get } from 'lodash';
 
 type ButtonReadStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonReadDispatchProps = {
@@ -48,7 +49,7 @@ const getPermissionsReadUpdate = (permission) => {
 class ButtonRead extends React.Component<ButtonReadProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
-      [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
+      [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
     }),
     this.props.registrySetSelectedRowToShowInForm();
   }
@@ -79,6 +80,7 @@ export default compose<ButtonReadProps, ButtonReadOwnProps>(
   connect<ButtonReadStateProps, ButtonReadDispatchProps, ButtonReadOwnProps, ButtonReadMergeProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any, { registryKey }) => ({

@@ -75,6 +75,7 @@ export const config: TypeConfigData<Dt> = {
     data: {
       uniqKey: 'yard_id',
       fixedWidth: true,
+      uniqKeyForParams: 'dt_id',
     },
     meta: {
       fields: [

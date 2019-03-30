@@ -55,6 +55,7 @@ export const config: TypeConfigData<Carpool> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'carpool_id',
     },
     meta: {
       fields: [

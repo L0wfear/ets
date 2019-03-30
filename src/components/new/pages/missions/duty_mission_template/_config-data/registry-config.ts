@@ -85,6 +85,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'duty_mission_template_id',
     },
     meta: {
       fields: [

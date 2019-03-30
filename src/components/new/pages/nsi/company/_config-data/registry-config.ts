@@ -41,6 +41,7 @@ export const config: TypeConfigData<Company> = {
     data: {
       uniqKey: 'company_id',
       fixedWidth: true,
+      uniqKeyForParams: 'company_id',
     },
     meta: {
       fields: [

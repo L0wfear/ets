@@ -136,6 +136,7 @@ export const config: TypeConfigData<Employee> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'employee_id',
     },
     processed: {
       sort: {

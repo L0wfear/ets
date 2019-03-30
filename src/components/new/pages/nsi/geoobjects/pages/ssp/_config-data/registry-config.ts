@@ -72,6 +72,7 @@ export const config: TypeConfigData<Ssp> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'ssp_id',
     },
     meta: {
       fields: [

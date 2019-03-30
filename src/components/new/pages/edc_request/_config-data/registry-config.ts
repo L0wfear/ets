@@ -92,6 +92,7 @@ export const config: TypeConfigData<EdcRequest> = {
     permissions: edcRequestPermissions,
     data: {
       uniqKey: 'id',
+      uniqKeyForParams: 'edc_request_id',
       fixedWidth: true,
     },
     meta: {

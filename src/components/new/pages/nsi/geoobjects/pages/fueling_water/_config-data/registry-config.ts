@@ -55,6 +55,7 @@ export const config: TypeConfigData<FuelingWater> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'fueling_water_id',
     },
     meta: {
       fields: [

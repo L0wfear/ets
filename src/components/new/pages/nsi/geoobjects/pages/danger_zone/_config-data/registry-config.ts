@@ -70,6 +70,7 @@ export const config: TypeConfigData<DangerZone> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'danger_zone_id',
     },
     meta: {
       fields: [

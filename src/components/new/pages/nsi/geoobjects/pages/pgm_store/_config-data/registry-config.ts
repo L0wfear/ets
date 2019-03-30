@@ -70,6 +70,7 @@ export const config: TypeConfigData<PgmStore> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'pgm_store_id',
     },
     meta: {
       fields: [

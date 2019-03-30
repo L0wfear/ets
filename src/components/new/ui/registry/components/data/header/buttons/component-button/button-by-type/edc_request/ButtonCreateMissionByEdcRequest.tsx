@@ -17,6 +17,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 type ButtonCreateMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonCreateMissionByEdcRequestDispatchProps = {
@@ -37,7 +38,7 @@ type ButtonCreateMissionByEdcRequestProps = (
 class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissionByEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
-      [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
+      [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_create_mission,
     }),
     this.props.registrySetSelectedRowToShowInForm();
@@ -63,6 +64,7 @@ export default compose<ButtonCreateMissionByEdcRequestProps, ButtonCreateMission
   connect<ButtonCreateMissionByEdcRequestStateProps, ButtonCreateMissionByEdcRequestDispatchProps, ButtonCreateMissionByEdcRequestOwnProps, ButtonCreateMissionByEdcRequestMergeProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any, { registryKey }) => ({

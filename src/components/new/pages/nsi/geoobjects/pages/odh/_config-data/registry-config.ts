@@ -115,6 +115,7 @@ export const config: TypeConfigData<Odh> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'odh_id',
     },
     meta: {
       fields: [

@@ -16,6 +16,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 type ButtonRejectEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonRejectEdcRequestDispatchProps = {
@@ -36,7 +37,7 @@ type ButtonRejectEdcRequestProps = (
 class ButtonRejectEdcRequest extends React.Component<ButtonRejectEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
-      [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
+      [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_reject,
     }),
     this.props.registrySetSelectedRowToShowInForm();
@@ -62,6 +63,7 @@ export default compose<ButtonRejectEdcRequestProps, ButtonRejectEdcRequestOwnPro
   connect<ButtonRejectEdcRequestStateProps, ButtonRejectEdcRequestDispatchProps, ButtonRejectEdcRequestOwnProps, ButtonRejectEdcRequestMergeProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any, { registryKey }) => ({

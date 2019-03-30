@@ -65,6 +65,7 @@ export const config: TypeConfigData<Msp> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'msp_id',
     },
     meta: {
       fields: [

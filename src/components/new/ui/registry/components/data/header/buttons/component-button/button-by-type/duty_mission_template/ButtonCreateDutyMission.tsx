@@ -14,7 +14,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import dutyMissionTemplatePermissions from 'components/new/pages/missions/duty_mission_template/_config-data/permissions';
 
 type ButtonCreateDutyMissionStateProps = {
-  uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   checkedRows: OneRegistryData['list']['data']['checkedRows'];
 };
 type ButtonCreateDutyMissionDispatchProps = {
@@ -48,7 +48,7 @@ const ButtonCreateDutyMission: React.FC<ButtonCreateDutyMissionProps> = (props) 
       );
 
       props.setParams({
-        [props.uniqKey]: buttonsTypes.create,
+        [props.uniqKeyForParams]: buttonsTypes.create,
         type: buttonsTypes.duty_missions_by_templates,
       });
     },
@@ -68,7 +68,7 @@ export default compose<ButtonCreateDutyMissionProps, ButtonCreateDutyMissionOwnP
   }),
   connect<ButtonCreateDutyMissionStateProps, ButtonCreateDutyMissionDispatchProps, ButtonCreateDutyMissionOwnProps, ButtonCreateDutyMissionMergeProps, ReduxState>(
     (state, { registryKey }) => ({
-      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,
     }),
     (dispatch: any) => ({

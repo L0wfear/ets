@@ -19,6 +19,7 @@ export interface OneRegistryData {
       array: any[];
       total_count?: number;
       uniqKey?: string;
+      uniqKeyForParams?: string;
       selectedRow?: object | null;
       selectedRowToShow?: object | null;
       checkedRows?: object | null;

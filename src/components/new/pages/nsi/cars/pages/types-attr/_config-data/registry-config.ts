@@ -44,6 +44,7 @@ export const config: TypeConfigData<TypesAttr> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'types_attr_id',
     },
     meta: {
       fields: [

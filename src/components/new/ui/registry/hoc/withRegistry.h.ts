@@ -74,6 +74,8 @@ export type TypeFields<F extends any> = {
     | 'workOrNot'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+} | {
+  title: string;
   childrenFields?: TypeFields<F>[];
 } | {
   key: 'enumerated';
@@ -115,6 +117,7 @@ export type TypeConfigData<F extends any> = {
     data?: {
       fixedWidth?: boolean;
       uniqKey?: string;
+      uniqKeyForParams: string;
       array?: F[];
       total_count?: number;
     },

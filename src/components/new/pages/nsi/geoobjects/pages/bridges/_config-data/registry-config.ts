@@ -65,6 +65,7 @@ export const config: TypeConfigData<Bridges> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'bridge_id',
     },
     meta: {
       fields: [

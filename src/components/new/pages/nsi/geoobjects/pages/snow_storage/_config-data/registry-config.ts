@@ -55,6 +55,7 @@ export const config: TypeConfigData<SnowStorage> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'snow_storage_id',
     },
     meta: {
       fields: [

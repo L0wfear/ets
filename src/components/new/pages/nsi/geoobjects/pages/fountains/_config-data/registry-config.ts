@@ -105,6 +105,7 @@ export const config: TypeConfigData<Fountains> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'fountain_id',
     },
     meta: {
       fields: [

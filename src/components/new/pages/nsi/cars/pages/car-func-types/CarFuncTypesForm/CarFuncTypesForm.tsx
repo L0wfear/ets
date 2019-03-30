@@ -62,6 +62,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
                 onChange={this.props.handleChange}
                 boundKeys="avg_work_hours"
                 error={errors.avg_work_hours}
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

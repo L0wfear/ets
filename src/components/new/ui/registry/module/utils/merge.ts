@@ -102,6 +102,17 @@ export const mergeListData = (data: OneRegistryData['list']['data']) => (
         newObj[key] = isString(data[key]) ? data[key] : value;
       }
 
+      if (key === 'uniqKeyForParams') {
+        if (isString(data[key])) {
+          newObj[key] = data[key];
+        } else if (isString(data.uniqKey)) {
+          newObj[key] = data.uniqKey;
+        } else {
+          newObj[key] = value;
+        }
+        newObj[key] = isString(data[key]) ? data[key] : value;
+      }
+
       if (key === 'selectedRow') {
         newObj[key] = isObject(data[key]) ? data[key] : value;
       }

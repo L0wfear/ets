@@ -65,6 +65,7 @@ export const config: TypeConfigData<PedestrianTunnels> = {
     data: {
       uniqKey: 'id',
       fixedWidth: true,
+      uniqKeyForParams: 'pedestrian_tunnels_id',
     },
     meta: {
       fields: [

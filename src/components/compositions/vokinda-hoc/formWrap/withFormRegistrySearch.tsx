@@ -33,6 +33,7 @@ export const withFormRegistrySearch = (Component) => (
         buttons: getHeaderData(state.registry, registryKey).buttons,
         data: getListData(state.registry, registryKey).data,
         uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+        uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
         permissions: getPermissionsCreateReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       }),
       (dispatch: any) => ({
@@ -59,19 +60,19 @@ export const withFormRegistrySearch = (Component) => (
     withSearch,
     withRequirePermissionsNew(),
   )(
-    ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, ...props}) => {
+    ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, uniqKeyForParams, ...props}) => {
       const [element, setElement] = React.useState(null);
-      const uniqKeyValue = getNumberValueFromSerch(props.params[uniqKey]);
+      const uniqKeyValue = getNumberValueFromSerch(props.params[uniqKeyForParams]);
       const type = props.params.type;
 
       React.useEffect(
         () => {
-          if (props.params[uniqKey] === buttonsTypes.create && props.buttons.length) {
+          if (props.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
             if (props.buttons.includes(buttonsTypes.create)) {
               setElement({});
             } else {
               props.setParams({
-                [uniqKey]: null,
+                [uniqKeyForParams]: null,
               });
             }
             return;
@@ -99,18 +100,18 @@ export const withFormRegistrySearch = (Component) => (
             setElement(null);
           }
         },
-        [props.params[uniqKey], uniqKeyValue, array],
+        [props.params[uniqKeyForParams], uniqKeyValue, array],
       );
       const handleHide = React.useCallback(
         (isSubmitted: boolean, response?: any) => {
           setElement(null);
           props.setParams({
-            [uniqKey]: null,
+            [uniqKeyForParams]: null,
           });
 
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
         },
-        [uniqKey],
+        [uniqKeyForParams],
       );
 
       return element

@@ -95,7 +95,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
       </EtsModal>
     </>
   );
-}
+};
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
   connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, {}, ReduxState>(

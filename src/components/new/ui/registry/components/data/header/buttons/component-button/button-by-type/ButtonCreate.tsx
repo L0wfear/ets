@@ -14,7 +14,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 type ButtonCreateStateProps = {
-  uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
 };
 type ButtonCreateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
@@ -36,7 +36,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
     () => {
       props.registrySetSelectedRowToShowInForm({});
       props.setParams({
-        [props.uniqKey]: buttonsTypes.create,
+        [props.uniqKeyForParams]: buttonsTypes.create,
       });
     },
     [],
@@ -63,7 +63,7 @@ export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
   withRequirePermissionsNew(),
   connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ButtonCreateMergeProps, ReduxState>(
     (state, { registryKey }) => ({
-      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
     }),
     (dispatch: any, { registryKey }) => ({
       registrySetSelectedRowToShowInForm: () => (

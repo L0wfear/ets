@@ -68,6 +68,7 @@ export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): Type
       data: {
         uniqKey: 'id',
         fixedWidth: true,
+        uniqKeyForParams: 'id', // todo сделать нормально
       },
       processed: {
         filterValues: {},

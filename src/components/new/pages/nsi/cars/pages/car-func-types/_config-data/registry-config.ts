@@ -49,6 +49,7 @@ export const config: TypeConfigData<CarFuncTypes> = {
     data: {
       uniqKey: 'asuods_id',
       fixedWidth: true,
+      uniqKeyForParams: 'car_func_type_id',
     },
     meta: {
       fields: [

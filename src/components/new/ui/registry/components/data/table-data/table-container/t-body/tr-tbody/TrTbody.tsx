@@ -164,7 +164,7 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
         );
       } else {
         this.props.setParams({
-          [this.props.uniqKey]: get(props.rowData, this.props.uniqKey, null),
+          [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
         });
       }
     }
@@ -190,6 +190,7 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
     (state, { registryKey }) => ({
       STRUCTURES: getSessionStructuresOptions(state),
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       rowFields: getListData(state.registry, registryKey).meta.rowFields,
       permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       userData: getSessionState(state).userData,

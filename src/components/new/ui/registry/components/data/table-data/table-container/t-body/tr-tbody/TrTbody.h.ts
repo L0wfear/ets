@@ -7,6 +7,7 @@ export interface StatePropsTrTbody {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
   selectedUniqKey: OneRegistryData['list']['data']['uniqKey'] | null;
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   rowFields: OneRegistryData['list']['meta']['rowFields'];
   permissions: OneRegistryData['list']['permissions']['read'][];
   userData: InitialStateSession['userData'];

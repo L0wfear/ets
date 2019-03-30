@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_
 import { config } from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_config-data/registry-config';
 
 export default {
-  path: '/fueling-water',
-  routePath: `/fueling-water/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/fueling_water',
+  routePath: `/nsi/geoobjects/fueling_water/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник баз гидрантов',
   isNewRegistry: true,
   entyity: 'fueling_water',

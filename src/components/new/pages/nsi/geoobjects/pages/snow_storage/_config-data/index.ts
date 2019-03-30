@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_c
 import { config } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data/registry-config';
 
 export default {
-  path: '/snow_storage',
-  routePath: `/snow_storage/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/snow_storage',
+  routePath: `/nsi/geoobjects/snow_storage/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник пунктов временного складирования снега',
   isNewRegistry: true,
   entyity: 'snow_storage',

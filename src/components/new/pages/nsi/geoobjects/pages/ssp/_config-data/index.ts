@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-dat
 import { config } from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/registry-config';
 
 export default {
-  path: '/ssp',
-  routePath: `/ssp/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/ssp',
+  routePath: `/nsi/geoobjects/ssp/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник ССП',
   isNewRegistry: true,
   entyity: 'type',

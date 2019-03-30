@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/odh/_config-dat
 import { config } from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/registry-config';
 
 export default {
-  path: '/odh',
-  routePath: `/odh/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/odh',
+  routePath: `/nsi/geoobjects/odh/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник ОДХ',
   isNewRegistry: true,
   entyity: 'type',

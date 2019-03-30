@@ -31,9 +31,31 @@ const renderRoutes = (newRoutesArr, data) => {
 const getRouters = () => (
   <Switch>
     { Object.values(routerAndPermission).reduce(renderRoutes, []) }
+    { /* 27 релиз */ }
     <Redirect from="/duty-mission-templates-journal" to="/missions/duty_mission_templates" />
     <Redirect from="/employees" to="/nsi/employees" />
     <Redirect from="/types-attr" to="/types_attr" />
+    { /* 28 релиз */ }
+    <Redirect from="/technical-operations" to="/nsi/norm_registry" />
+    <Redirect from="/companies" to="/nsi/companies" />
+
+    <Redirect from="/car-func-types" to="/nsi/car/types" />
+    <Redirect from="/types_attr" to="/nsi/car/types_attr" />
+
+    <Redirect from="/bridges" to="/nsi/geoobjects/bridges" />
+    <Redirect from="/carpool" to="/nsi/geoobjects/carpool" />
+    <Redirect from="/ssp" to="/nsi/geoobjects/ssp" />
+    <Redirect from="/snow_storage" to="/nsi/geoobjects/snow_storage" />
+    <Redirect from="/pgm_store" to="/nsi/geoobjects/pgm_store" />
+    <Redirect from="/pedestrian_tunnels" to="/nsi/geoobjects/pedestrian_tunnels" />
+    <Redirect from="/pedestrian_tunnel_exits" to="/nsi/geoobjects/pedestrian_tunnel_exits" />
+    <Redirect from="/odh" to="/nsi/geoobjects/odh" />
+    <Redirect from="/msp" to="/nsi/geoobjects/msp" />
+    <Redirect from="/fueling-water" to="/nsi/geoobjects/fueling_water" />
+    <Redirect from="/fountains" to="/nsi/geoobjects/fountains" />
+    <Redirect from="/dt" to="/nsi/geoobjects/dt" />
+    <Redirect from="/danger_zone" to="/nsi/geoobjects/danger_zone" />
+
     <Redirect to="/monitor" />
   </Switch>
 );

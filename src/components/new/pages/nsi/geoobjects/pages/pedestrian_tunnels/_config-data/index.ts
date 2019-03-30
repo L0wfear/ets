@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunn
 import { config } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data/registry-config';
 
 export default {
-  path: '/pedestrian_tunnels',
-  routePath: `/pedestrian_tunnels/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/pedestrian_tunnels',
+  routePath: `/nsi/geoobjects/pedestrian_tunnels/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник пешеходных тоннелей',
   isNewRegistry: true,
   entyity: 'pedestrian_tunnels',

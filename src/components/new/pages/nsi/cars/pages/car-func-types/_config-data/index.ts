@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/cars/pages/car-func-types/_confi
 import { config } from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data/registry-config';
 
 export default {
-  path: '/car-func-types',
-  routePath: `/car-func-types/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/car/types',
+  routePath: `/nsi/car/types/:${config.list.data.uniqKeyForParams}?`,
   title: 'Типы техники',
   isNewRegistry: true,
   entyity: 'type',

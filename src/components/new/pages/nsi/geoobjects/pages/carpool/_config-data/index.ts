@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/carpool/_config
 import { config } from 'components/new/pages/nsi/geoobjects/pages/carpool/_config-data/registry-config';
 
 export default {
-  path: '/carpool',
-  routePath: `/carpool/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/carpool',
+  routePath: `/nsi/geoobjects/carpool/:${config.list.data.uniqKeyForParams}?`,
   isNewRegistry: true,
   title: 'Справочник Автобаз',
   entyity: 'carpool',

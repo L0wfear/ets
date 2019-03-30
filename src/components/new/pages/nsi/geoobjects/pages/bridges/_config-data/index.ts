@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/bridges/_config
 import { config } from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/registry-config';
 
 export default {
-  path: '/bridges',
-  routePath: `/bridges/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/bridges',
+  routePath: `/nsi/geoobjects/bridges/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник мостов',
   isNewRegistry: true,
   entyity: 'bridges',

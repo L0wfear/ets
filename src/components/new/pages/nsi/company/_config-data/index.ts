@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/company/_config-data/components'
 import { config } from 'components/new/pages/nsi/company/_config-data/registry-config';
 
 export default {
-  path: '/companies', // /company
-  routePath: `/companies/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/companies', // /company
+  routePath: `/nsi/companies/:${config.list.data.uniqKeyForParams}?`,
   title: 'Реестр организаций',
   isNewRegistry: true,
   entyity: 'company',

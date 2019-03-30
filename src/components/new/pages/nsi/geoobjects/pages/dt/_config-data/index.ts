@@ -4,8 +4,8 @@ import component from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data
 import { config } from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data/registry-config';
 
 export default {
-  path: '/dt',
-  routePath: `/dt/:${config.list.data.uniqKeyForParams}?`,
+  path: '/nsi/geoobjects/dt',
+  routePath: `/nsi/geoobjects/dt/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник ДТ',
   isNewRegistry: true,
   entyity: 'type',

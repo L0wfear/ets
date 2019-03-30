@@ -23,6 +23,7 @@ type InspectionAutobaseDataActionMenuStateProps = {
 type InspectionAutobaseDataActionMenuDispatchProps = DispatchProp;
 type InspectionAutobaseDataActionMenuOwnProps = {
   loadingPage: string;
+  loadRegistryData: () => Promise<void>;
 };
 
 type InspectionAutobaseDataActionMenuProps = (
@@ -98,6 +99,7 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
               ? (
                 <LineData>
                   <ButtonCreateInspectAutobase
+                    loadRegistryData={props.loadRegistryData}
                     loadingPage={props.loadingPage}
                   />
                 </LineData>
@@ -119,7 +121,7 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
                     </div>
                   </LineData>
                   <LineDataButtonLine>
-                    <ButtonContinueInspectAutobase />
+                    <ButtonContinueInspectAutobase loadingPage={props.loadingPage} />
                     <ButtonCloseInspectAutobase />
                     <span>* При завершении проверки карточку базы нельзя будет отредактировать</span>
                   </LineDataButtonLine>

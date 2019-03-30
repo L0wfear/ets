@@ -10,7 +10,6 @@ import InspectionAutobaseSelectCarpool from './components/select_carpool/Inspect
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import InspectionAutobaseDataWrap from './components/data/InspectionAutobaseDataWrap';
 import InspectionAutobaseFormLazy from 'components/new/pages/inspection/autobase/form';
-import AppleStyleBlock from 'components/new/ui/apple_style/AppleStyleBlock';
 
 const loadingPage = 'InspectionAutobaseList';
 
@@ -18,16 +17,12 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseListProps> = (props) =>
   return (
     <>
       <EtsPageWrap>
-        <AppleStyleBlock>
-          <InspectionAutobaseTitle />
-        </AppleStyleBlock>
-        <AppleStyleBlock delay={500}>
-          <InspectionListBlock>
-            <InspectionAutobaseSelectCarpool
-              loadingPage={loadingPage}
-            />
-          </InspectionListBlock>
-        </AppleStyleBlock>
+        <InspectionAutobaseTitle />
+        <InspectionListBlock>
+          <InspectionAutobaseSelectCarpool
+            loadingPage={loadingPage}
+          />
+        </InspectionListBlock>
         <InspectionAutobaseDataWrap
           loadingPage={loadingPage}
         />

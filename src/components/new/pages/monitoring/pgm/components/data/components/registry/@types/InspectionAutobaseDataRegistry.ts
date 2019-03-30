@@ -10,6 +10,7 @@ export type InspectionAutobaseDataRegistryDispatchProps = {
   registryRemoveData: any;
 };
 export type InspectionAutobaseDataRegistryOwnProps = {
+  registryKey: string;
 };
 export type InspectionAutobaseDataRegistryMergeProps = {};
 

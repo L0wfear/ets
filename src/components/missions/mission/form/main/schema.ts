@@ -238,7 +238,7 @@ export const missionFormSchema: SchemaType<Mission, PropsMissionForm> = {
         }
 
         if (for_column && Array.isArray(value) && value.length === 1) {
-          return 'Для создания шаблона задания на колонну должно быть выбрано более одного ТС';
+          return 'Для создания задания на колонну должно быть выбрано более одного ТС';
         }
 
         return '';

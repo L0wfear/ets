@@ -115,10 +115,10 @@ export const promiseGetInspectPgmBaseById = async (id: number) => {
 
   if (inspectPgmBase) {
     const headData = {
-      head_balance_holder_base_fio: inspectPgmBase.head_balance_holder_base.fio,
-      head_balance_holder_base_tel: inspectPgmBase.head_balance_holder_base.tel,
-      head_operating_base_fio: inspectPgmBase.head_operating_base.fio,
-      head_operating_base_tel: inspectPgmBase.head_operating_base.tel,
+      head_balance_holder_base_fio: get(inspectPgmBase, 'head_balance_holder_base.fio', null),
+      head_balance_holder_base_tel: get(inspectPgmBase, 'head_balance_holder_base.tel', null),
+      head_operating_base_fio: get(inspectPgmBase, 'head_operating_base.fio', null),
+      head_operating_base_tel: get(inspectPgmBase, 'head_operating_base.tel', null),
     };
     inspectPgmBase.data = {
       ...(inspectPgmBase.data || defaultInspectPgmBaseData),

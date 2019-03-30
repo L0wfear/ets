@@ -10,7 +10,6 @@ import InspectionPgmBaseSelectCarpool from './components/select_carpool/Inspecti
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import InspectionPgmBaseDataWrap from './components/data/InspectionPgmBaseDataWrap';
 import InspectionPgmBaseFormLazy from 'components/new/pages/inspection/pgm_base/form';
-import AppleStyleBlock from 'components/new/ui/apple_style/AppleStyleBlock';
 
 const loadingPage = 'InspectionPgmBaseList';
 
@@ -18,16 +17,12 @@ const InspectionPgmBaseList: React.FC<InspectionPgmBaseListProps> = (props) => {
   return (
     <>
       <EtsPageWrap>
-        <AppleStyleBlock>
-          <InspectionPgmBaseTitle />
-        </AppleStyleBlock>
-        <AppleStyleBlock delay={500}>
-          <InspectionListBlock>
-            <InspectionPgmBaseSelectCarpool
-              loadingPage={loadingPage}
-            />
-          </InspectionListBlock>
-        </AppleStyleBlock>
+        <InspectionPgmBaseTitle />
+        <InspectionListBlock>
+          <InspectionPgmBaseSelectCarpool
+            loadingPage={loadingPage}
+          />
+        </InspectionListBlock>
         <InspectionPgmBaseDataWrap
           loadingPage={loadingPage}
         />

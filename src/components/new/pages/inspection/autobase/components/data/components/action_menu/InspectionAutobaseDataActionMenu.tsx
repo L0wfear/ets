@@ -97,7 +97,7 @@ const InspectionAutobaseDataActionMenu: React.FC<InspectionAutobaseDataActionMen
             &nbsp;
           </LineData>
           {
-            true || status === STATUS.noToday && !lastConductingInspect && !lastCompletedInspect
+            status === STATUS.noToday && !lastConductingInspect && !lastCompletedInspect
               ? (
                 <LineData>
                   <ButtonCreateInspectAutobase

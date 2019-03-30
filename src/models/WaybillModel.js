@@ -317,8 +317,11 @@ export const waybillSchema = {
     ],
     fuel_method: [
       {
-        validator: (value, formData) => {
-          if (!value && (!formData.status || formData.status === 'draft')) {
+        validator: (value, { status }) => {
+          if (
+            !value
+            && (status === 'active' || status === 'draft' || !status)
+          ) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
           return false;
@@ -364,11 +367,11 @@ export const waybillSchema = {
     ],
     equipment_fuel_method: [
       {
-        validator: (value, formData) => {
+        validator: (value, { status, equipment_fuel }) => {
           if (
             !value
-            && formData.equipment_fuel
-            && (formData.status === 'draft' || !formData.status)
+            && equipment_fuel
+            && (status === 'active' || status === 'draft' || !status)
           ) {
             return 'Поле "Способ заправки" должно быть заполнено';
           }
@@ -402,7 +405,10 @@ export const waybillSchema = {
     fuel_type: [
       {
         validator: (value, { status }) => {
-          if ((status === 'draft' || !status) && !value) {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && !value
+          ) {
             return 'Поле "Топливо.Тип" должно быть заполнено';
           }
         },
@@ -411,8 +417,12 @@ export const waybillSchema = {
     equipment_fuel_type: [
       {
         validator: (value, { equipment_fuel, status }) => {
-          if (equipment_fuel && (status === 'draft' || !status) && !value) {
-            return 'Поле "Тип топлива" должно быть заполнено';
+          if (
+            equipment_fuel
+            && (status === 'active' || status === 'draft' || !status)
+            && !value
+          ) {
+            return 'Поле "Топливо.Тип" должно быть заполнено';
           }
         },
       },
@@ -420,7 +430,10 @@ export const waybillSchema = {
     fuel_start: [
       {
         validator: (value, { status }) => {
-          if ((status === 'draft' || !status) && (!value && value !== 0)) {
+          if (
+            (status === 'active' || status === 'draft' || !status)
+            && (!value && value !== 0)
+          ) {
             return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
         },
@@ -431,10 +444,10 @@ export const waybillSchema = {
         validator: (value, { status, equipment_fuel }) => {
           if (
             equipment_fuel
-            && (status === 'draft' || !status)
+            && (status === 'active' || status === 'draft' || !status)
             && (!value && value !== 0)
           ) {
-            return 'Поле "Выезд, л" должно быть заполнено';
+            return 'Поле "Топливо.Выезд" должно быть заполнено';
           }
         },
       },

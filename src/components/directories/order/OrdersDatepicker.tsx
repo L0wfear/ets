@@ -1,45 +1,37 @@
 import * as React from 'react';
 import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 import { connect } from 'react-redux';
 
 import { getOrders } from 'redux-main/reducers/modules/order/action-order';
-import { onChangeWithKeyOfObject, IOnChangeWithKeyOfObject } from 'components/compositions/hoc';
 
-import { IPropsDatePicker } from 'components/ui/@types/DatePicker.h';
-import Datepicker from 'components/ui/input/date-picker/DatePicker';
+import { Col } from 'react-bootstrap';
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-const DatePickerTsx: React.ComponentClass<IPropsDatePicker & IOnChangeWithKeyOfObject> = onChangeWithKeyOfObject(Datepicker) as any;
+const OrdersDatepicker: React.FC<any> = (props) => (
+  <Row>
+    <Col md={6} mdOffset={3} sm={6} smOffset={3}>
+      <DatePickerRange
+        date_start_id="date_start"
+        date_start_value={props.date_start}
+        date_end_id="date_end"
+        date_end_value={props.date_end}
 
-const OrdersDatepicker: React.FunctionComponent<any> = (props) =>
-    <Row>
-      <Col mdOffset={6} md={6} className="datepicker-range">
-        <div>
-          <DatePickerTsx
-            date={props.date_start}
-            onChange={props.getOrders}
-            boundKey={'date_start'}
-            time={true}
-          />
-        </div>
-        <div className="date-divider">—</div>
-        <div>
-          <DatePickerTsx
-            date={props.date_end}
-            onChange={props.getOrders}
-            boundKey={'date_end'}
-            time={true}
-          />
-        </div>
-      </Col>
-    </Row>;
+        onChange={props.getOrders}
+      />
+    </Col>
+  </Row>
+);
 
 const mapStateToProps = (state) => ({
   date_start: state.order.pageOptions.date_start,
   date_end: state.order.pageOptions.date_end,
 });
 const mapDispatchToProps = (dispatch) => ({
-  getOrders: (props) => dispatch(getOrders(props)),
+  getOrders: (key, value) => {
+    return dispatch(getOrders({
+      [key]: value,
+    }));
+  },
 });
 
 export default connect(

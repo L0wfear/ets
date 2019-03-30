@@ -69,6 +69,7 @@ export const config: TypeConfigData<PgmStore> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -93,21 +94,22 @@ export const config: TypeConfigData<PgmStore> = {
         {
           key: 'name',
           title: 'Наименование',
+          width: 200,
         },
         {
           key: 'address',
           title: 'Адрес',
-          width: 400,
+          width: 200,
         },
         {
           key: 'liquid_pgm_volume',
           title: 'Объем жидких ПГМ',
-          width: 200,
+          width: 250,
         },
         {
           key: 'solid_pgm_volume',
           title: 'Объем твердых ПГМ',
-          width: 200,
+          width: 250,
         },
         {
           key: 'pgm_stores_type_name',

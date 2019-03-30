@@ -1,5 +1,6 @@
 import { get, groupBy } from 'lodash';
 import { isArray } from 'highcharts';
+import { isNullOrUndefined } from 'util';
 
 export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
 export const removeRedundantNumbers = (rowValue) => Math.round(rowValue * 1000) / 1000;
@@ -63,7 +64,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
     });
 
     filedsRule.forEach(({ key, value: { force_value }}) => {
-      if (force_value !== false) {
+      if (!isNullOrUndefined(force_value)) {
         newItem[key] = force_value;
       }
     });
@@ -112,7 +113,13 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
         const cols_wsd = openFields(fields);
         const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);
 
-        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, []).map((child, index) => {
+        const filedsRule = fields.map((fieldData) => {
+          const [[key, value]] = Object.entries(fieldData);
+
+          return { key, value };
+        });
+
+        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, filedsRule).map((child, index) => {
           child[uniqName] = index + 1;
 
           return child;

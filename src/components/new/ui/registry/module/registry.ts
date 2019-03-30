@@ -22,6 +22,7 @@ export interface OneRegistryData {
       selectedRow?: object | null;
       selectedRowToShow?: object | null;
       checkedRows?: object | null;
+      fixedWidth: boolean;
     },
     permissions: {
       list: string | boolean;

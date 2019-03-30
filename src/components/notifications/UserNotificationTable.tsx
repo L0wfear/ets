@@ -30,7 +30,7 @@ export function tableMeta({
         filter: false,
       },
       {
-        name: 'additional_info',
+        name: 'gov_number',
         displayName: 'Дополнительная информация',
         type: 'string',
         filter: {
@@ -115,9 +115,9 @@ const renderers: ISchemaRenderer<IUserNotification> = {
       {meta.rowData.priority === 'warning' && <Icon type="warning" />}
       {meta.rowData.priority === 'info' && <Icon type="info" />}
     </div>,
-  additional_info: ({rowData}) =>
+  gov_number: ({ data }) =>
     <div>
-        { rowData.gov_number ? `Рег. номер: ${rowData.gov_number}` : null }
+        { data ? `Рег. номер: ${data}` : '' }
     </div>,
 };
 

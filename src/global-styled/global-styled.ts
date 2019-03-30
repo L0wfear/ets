@@ -38,9 +38,6 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
     outline: 0px !important;
     -webkit-appearance: none;
   }
-  .datepicker-range {
-    margin-bottom: 5px;
-  }
 `;
 
 export const FlexContainer = styled.div<{ isWrap?: boolean }>`
@@ -128,6 +125,14 @@ export const DisplayFlexAlignCenter = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const DisplayFlexAlignCenterFooterForm = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+`;
+
 export const FooterEnd = styled.div`
   display: flex;
   justify-content: flex-end;

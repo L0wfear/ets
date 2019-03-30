@@ -104,6 +104,7 @@ export const config: TypeConfigData<Fountains> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -128,16 +129,17 @@ export const config: TypeConfigData<Fountains> = {
         {
           key: 'name',
           title: 'Наименование',
+          width: 200,
         },
         {
           key: 'adm_area',
           title: 'Административный округ',
-          width: 230,
+          width: 250,
         },
         {
           key: 'district',
           title: 'Район',
-          width: 200,
+          width: 150,
         },
         {
           key: 'location',
@@ -147,7 +149,7 @@ export const config: TypeConfigData<Fountains> = {
         {
           key: 'departmental_affiliation',
           title: 'Ведомственная принадлежность',
-          width: 200,
+          width: 300,
         },
         {
           key: 'balance_holder_name',

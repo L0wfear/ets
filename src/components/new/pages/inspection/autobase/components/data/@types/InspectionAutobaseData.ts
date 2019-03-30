@@ -1,16 +1,13 @@
-import { HandleThunkActionCreator } from 'react-redux';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 export type InspectionAutobaseDataStateProps = {
 };
 export type InspectionAutobaseDataDispatchProps = {
-  actionGetAndSetInStoreInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionGetAndSetInStoreInspectAutobase>;
-  actionResetInspectAutobaseList: HandleThunkActionCreator<typeof inspectionActions.actionResetInspectAutobaseList>;
+  registryAddInitialData: any;
+  registryLoadDataByKey: any;
+  registryRemoveData: any;
 };
 export type InspectionAutobaseDataOwnProps = {
-  isFirst: boolean;
-  carpoolId: number;
   loadingPage: string;
 };
 
@@ -22,4 +19,4 @@ export type InspectionAutobaseDataProps = (
   InspectionAutobaseDataStateProps
   & InspectionAutobaseDataDispatchProps
   & InspectionAutobaseDataOwnProps
-);
+) & WithSearchProps;

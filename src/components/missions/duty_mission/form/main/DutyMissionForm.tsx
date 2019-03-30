@@ -123,7 +123,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         }
       }
 
-      if (state.request_id && !edcRequest || (edcRequest && edcRequest.id !== state.request_id)) {
+      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
         this.props.loadEdcRequiedByIdForDutyMission(
           state.request_id,
           { page, path },
@@ -170,6 +170,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         this.props.actionSetDependenceOrderDataForDutyMission(null, null);
       }
     }
+
+    this.props.actionReseSetDependenceMissionDataForDutyMissionForm();
   }
 
   handleGetPrintForm = async () => {
@@ -423,6 +425,11 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 error_fact_date_start={errors.fact_date_start}
                 fact_date_end={state.fact_date_end}
                 error_fact_date_end={errors.fact_date_end}
+
+                is_cleaning_norm={state.is_cleaning_norm}
+                object_type_name={state.object_type_name}
+                norm_id={state.norm_id}
+
                 DUTY_MISSION_IS_DISPLAY={DUTY_MISSION_IS_DISPLAY}
                 DUTY_MISSION_IS_CLOSED={DUTY_MISSION_IS_CLOSED}
                 DUTY_MISSION_IS_ASSIGNED={DUTY_MISSION_IS_ASSIGNED}
@@ -503,7 +510,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         </ModalBodyPreloader>
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
-            <>
+            <div>
               <Button
                 onClick={this.handleGetPrintForm}
                 disabled={!this.props.canSave}>
@@ -515,7 +522,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </Button>
-            </>
+            </div>
           ) : (
             <DivNone />
           )}
@@ -563,6 +570,11 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
       loadEdcRequiedByIdForDutyMission: (...arg) => (
         dispatch(
           missionsActions.loadEdcRequiedByIdForDutyMission(...arg),
+        )
+      ),
+      actionReseSetDependenceMissionDataForDutyMissionForm: (...arg) => (
+        dispatch(
+          missionsActions.actionReseSetDependenceMissionDataForDutyMissionForm(...arg),
         )
       ),
     }),

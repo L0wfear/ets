@@ -114,6 +114,7 @@ export const config: TypeConfigData<Odh> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -138,70 +139,82 @@ export const config: TypeConfigData<Odh> = {
         {
           key: 'id',
           title: 'Идентификатор (ID)',
-          width: 160,
+          width: 200,
         },
         {
           key: 'name',
           title: 'Название',
+          width: 200,
         },
         {
           key: 'clean_category_name',
           title: 'Категория',
-          width: 300,
+          width: 150,
         },
         {
           key: 'total_area',
           title: 'Общая площадь (кв.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'distance',
           title: 'Протяженность (п.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'roadway_area',
           title: 'Площадь проезжей части (кв.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'footway_area',
           title: 'Площадь тротуаров (кв.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'cleaning_area',
           title: 'Площадь уборки (кв.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'footway_length',
           title: 'Длина тротуара (п.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'auto_footway_area',
           title: 'Площадь механизированной уборки тротуаров (кв.м.)',
           format: 'toFixed2',
+          width: 300,
         },
         {
           key: 'manual_footway_area',
           title: 'Площадь ручной уборки тротуаров (кв.м.)',
           format: 'toFixed2',
+          width: 200,
         },
         {
           key: 'snow_area',
           title: 'Площадь уборки снега (кв.м.)',
           format: 'toFixed2',
+          width: 250,
         },
         {
           key: 'gutters_length',
           title: 'Протяженность лотков (п.м.)',
           format: 'toFixed2',
+          width: 300,
         },
         {
           key: 'company_structure_name',
           title: 'Подразделение',
+          width: 200,
         },
       ],
     },

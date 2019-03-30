@@ -176,7 +176,6 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       <EtsTrTbody
         enable
         selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
-        rowData={props.rowData}
         onClick={this.handleClick}
         onDoubleClick={this.handleDoubleClick}
       >

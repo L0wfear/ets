@@ -2,26 +2,24 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { InspectionAutobaseDataRegistryProps } from './@types/InspectionAutobaseDataRegistry';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 export const registryKey = 'inspectAutobase';
 
-export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobaseDataRegistryProps): TypeConfigData<InspectAutobase> => {
+export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): TypeConfigData<InspectAutobase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspect/registry',
         payload: {
-          base_id: getNumberValueFromSerch(props.searchState.carpoolId),
+          base_id: carpoolId,
           type: 'autobase',
         },
       },
       getBlobData: {
         entity: 'inspect/registry',
         payload: {
-          base_id: getNumberValueFromSerch(props.searchState.carpoolId),
+          base_id: carpoolId,
           type: 'autobase',
           format: 'xls',
         },
@@ -69,6 +67,7 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
       permissions,
       data: {
         uniqKey: 'id',
+        fixedWidth: true,
       },
       processed: {
         filterValues: {},
@@ -83,7 +82,7 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
             key: 'date_start',
             title: 'Дата начала испекции',
             format: 'date',
-            width: 200,
+            width: 250,
           },
           {
             key: 'date_end',
@@ -94,11 +93,12 @@ export const getInspectionAutobaseDataRegistryConfig = (props: InspectionAutobas
           {
             key: 'status_text',
             title: 'Статус проверки',
-            width: 300,
+            width: 200,
           },
           {
             key: 'company_name',
             title: 'Организация',
+            width: 500,
           },
           {
             key: 'base_address',

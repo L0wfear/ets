@@ -9,6 +9,7 @@ export const config: TypeConfigData<TypesAttr> = {
   Service: {
     getRegistryData: {
       entity: 'types_attr',
+      format: 'typesAttr',
     },
   },
   registryKey,
@@ -42,6 +43,7 @@ export const config: TypeConfigData<TypesAttr> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -52,26 +54,32 @@ export const config: TypeConfigData<TypesAttr> = {
         {
           key: 'oper_type_name',
           title: 'Сезон',
+          width: 100,
         },
         {
           key: 'work_class_short_name',
           title: 'Объект ГХ',
+          width: 150,
         },
         {
           key: 'short_name',
           title: 'Тип техники',
+          width: 150,
         },
         {
           key: 'speed_lim',
           title: 'Максимально допустимая скорость, км/ч',
+          width: 250,
         },
         {
           key: 'mkad_speed_lim',
           title: 'Максимально допустимая скорость на МКАД, км/ч',
+          width: 300,
         },
         {
           key: 'equip_width',
           title: 'Ширина уборочного оборудования, м',
+          width: 250,
         },
       ],
     },

@@ -11,6 +11,9 @@ import ButtonRemove from 'components/new/ui/registry/components/data/header/butt
 import ButtonCreateMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateMissionByEdcRequest';
 import ButtonCreateDutyMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateDutyMissionByEdcRequest';
 import ButtonCreateDutyMission from './button-by-type/duty_mission_template/ButtonCreateDutyMission';
+import ButtonCloseEdcRequest from './button-by-type/edc_request/ButtonCloseEdcRequest';
+import ButtonCancelEdcRequest from './button-by-type/edc_request/ButtonCancelEdcRequest';
+import ButtonRejectEdcRequest from './button-by-type/edc_request/ButtonRejectEdcRequest';
 
 type PropsComponentButton = {
   type: string;
@@ -56,18 +59,36 @@ class ComponentButton extends React.Component<PropsComponentButton, {}> {
         <ButtonCreateDutyMission registryKey={this.props.registryKey} />
       );
     }
-    if (type === buttonsTypes.createMissionByEdcReques) {
+    if (type === buttonsTypes.edc_request_create_mission) {
       return (
         <ButtonCreateMissionByEdcRequest registryKey={this.props.registryKey} />
       );
     }
-    if (type === buttonsTypes.createDutyMissionByEdcReques) {
+    if (type === buttonsTypes.edc_request_create_duty_mission) {
       return (
         <ButtonCreateDutyMissionByEdcRequest registryKey={this.props.registryKey} />
       );
     }
 
-    return <div>none_type</div>;
+    if (type === buttonsTypes.edc_request_reject) {
+      return (
+        <ButtonRejectEdcRequest registryKey={this.props.registryKey} />
+      );
+    }
+
+    if (type === buttonsTypes.edc_request_cancel) {
+      return (
+        <ButtonCancelEdcRequest registryKey={this.props.registryKey} />
+      );
+    }
+
+    if (type === buttonsTypes.edc_request_close) {
+      return (
+        <ButtonCloseEdcRequest registryKey={this.props.registryKey} />
+      );
+    }
+
+    return <div>Не определён тип для {type}</div>;
 
   }
 }

@@ -64,6 +64,7 @@ export const config: TypeConfigData<Bridges> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -88,16 +89,17 @@ export const config: TypeConfigData<Bridges> = {
         {
           key: 'name',
           title: 'Наименование',
+          width: 200,
         },
         {
           key: 'district_text',
           title: 'Район',
-          width: 200,
+          width: 150,
         },
         {
           key: 'location',
           title: 'Местоположение объекта',
-          width: 200,
+          width: 300,
         },
         {
           key: 'crossing',
@@ -107,7 +109,7 @@ export const config: TypeConfigData<Bridges> = {
         {
           key: 'year_of_commissioning',
           title: 'Год ввода в эксплуатацию',
-          width: 200,
+          width: 300,
         },
       ],
     },

@@ -64,6 +64,7 @@ export const config: TypeConfigData<Msp> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -88,22 +89,23 @@ export const config: TypeConfigData<Msp> = {
         {
           key: 'name',
           title: 'Полное наименование',
+          width: 200,
         },
         {
           key: 'shortname',
           title: 'Краткое наименование',
-          width: 300,
+          width: 200,
         },
         {
           key: 'address',
           title: 'Адрес',
-          width: 400,
+          width: 200,
         },
         {
           key: 'productivity',
           title: 'Производительность (куб. м в сутки)',
           format: 'toFixed2',
-          width: 200,
+          width: 300,
         },
       ],
     },

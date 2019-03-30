@@ -14,17 +14,44 @@ import {
 } from 'components/missions/duty_mission/form/main/inside_fields/dates/FieldDatesDutyMission.h';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
+import { get } from 'lodash';
 
 import {
   ColStartDatePicker,
   ColDividerDatePicker,
   ColEndDatePicker,
 } from './styled';
+import { routeTypesByTitle } from 'constants/route';
+import { addTime } from 'utils/dates';
 
 /**
  * Поля дат наряд-задания (плановые и фактические)
  */
 class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMission, StateFieldDatesDutyMission> {
+  componentDidUpdate(prevProps) {
+    const {
+      is_cleaning_norm,
+      plan_date_start,
+      object_type_name,
+      norm_id,
+    } = this.props;
+
+    if (prevProps.norm_id !== norm_id && is_cleaning_norm && plan_date_start && object_type_name) {
+      if (is_cleaning_norm && plan_date_start && object_type_name) {
+        const time = get(routeTypesByTitle, `${object_type_name}.time`, null);
+        if (time) {
+          this.props.onChange({
+            plan_date_end: addTime(
+              plan_date_start,
+              time,
+              'hours',
+            ),
+          });
+        }
+      }
+    }
+  }
+
   render() {
     const {
       isPermitted,

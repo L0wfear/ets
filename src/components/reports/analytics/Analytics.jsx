@@ -15,12 +15,12 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import Field from 'components/ui/Field';
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { getCompanyState } from 'redux-main/reducers/selectors';
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 const page = 'analytics';
 
@@ -71,7 +71,7 @@ class Analytics extends React.Component {
     });
   }
 
-  handleChange(field, value) {
+  handleChange = (field, value) => {
     if (field === 'report_ids') {
       const { report_ids } = this.state;
       const id = parseFloat(value);
@@ -91,7 +91,7 @@ class Analytics extends React.Component {
     } else {
       this.setState({ [field]: value });
     }
-  }
+  };
 
   render() {
     const { companyList } = this.props;
@@ -122,18 +122,13 @@ class Analytics extends React.Component {
               <Div>
                 <label>Период формирования:</label>
               </Div>
-              <Div className="inline-block reports-date">
-                <DatePicker
-                  date={this.state.date_from}
-                  onChange={this.handleChange.bind(this, 'date_from')}
-                />
-              </Div>
-              <Div className="inline-block reports-date">
-                <DatePicker
-                  date={this.state.date_to}
-                  onChange={this.handleChange.bind(this, 'date_to')}
-                />
-              </Div>
+              <DatePickerRange
+                date_start_id="date_from"
+                date_start_value={this.state.date_from}
+                date_end_id="date_to"
+                date_end_value={this.state.date_to}
+                onChange={this.handleChange}
+              />
             </Row>
             <br />
             <Row>

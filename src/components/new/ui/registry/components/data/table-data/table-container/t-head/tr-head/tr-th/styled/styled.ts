@@ -1,13 +1,12 @@
 import styled from 'styled-components';
 
-export const EtsTheadTh = styled.th<{ canClick: boolean, width: number }>`
+export const EtsTheadTh = styled.th<{ canClick?: boolean, width: number }>`
   &&& {
     vertical-align: middle;
-    user-select: none;
     background-color: #eee;
     padding: 8px;
     border: 1px solid white;
-    border-bottom: 2px solid #c1c1c1 !important;;
+    border-bottom: 2px solid #c1c1c1 !important;
     position: sticky;
     top: 0;
 

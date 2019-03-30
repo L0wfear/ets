@@ -1,6 +1,7 @@
 export type SingleFiled = {
     key: string;
     title?: string | null;
+    time?: boolean;
     type?: string | null;
     className?: string | null;
     reset?: string[] | null;

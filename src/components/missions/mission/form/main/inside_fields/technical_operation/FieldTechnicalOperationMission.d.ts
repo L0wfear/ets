@@ -29,6 +29,7 @@ export type OwnPropsFieldTechnicalOperationMission = {
   MISSION_IS_ORDER_SOURCE: boolean;
 
   car_ids: Mission['car_ids'];
+  for_column: Mission['for_column'];
 
   page: string;
   path: string;

@@ -20,6 +20,7 @@ export type DutyMission = {
   foreman_id: number | null;
   id: number | null;
   is_archive: boolean;
+  is_cleaning_norm: boolean;
   is_new?: boolean;
   is_valid_to_order_operation: null | boolean;
   mission_source_id: number | null;

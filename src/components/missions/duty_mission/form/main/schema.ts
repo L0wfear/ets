@@ -4,6 +4,7 @@ import { PropsDutyMissionForm } from './@types/index.h';
 import { isPermittedEmployeeForDutyMission } from './utils';
 import { diffDates } from 'utils/dates';
 import { get } from 'lodash';
+import { routeTypesByTitle } from 'constants/route';
 
 export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMissionForm> = {
   properties: [
@@ -16,25 +17,25 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
     {
       key: 'fact_date_start',
       title: 'Фактическая дата начала',
-      type: 'date',
+      type: 'datetime',
       required: false,
     },
     {
       key: 'fact_date_end',
       title: 'Фактическая дата окнчания',
-      type: 'date',
+      type: 'datetime',
       required: false,
     },
     {
       key: 'plan_date_start',
       title: 'Плановая дата начала',
-      type: 'date',
+      type: 'datetime',
       required: true,
     },
     {
       key: 'plan_date_end',
       title: 'Плановая дата окончания',
-      type: 'date',
+      type: 'datetime',
       required: true,
     },
     {
@@ -111,35 +112,45 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
       },
     ],
     plan_date_end: [
-      (value, _, { dependeceOrder, dependeceTechnicalOperation }) => {
-        if (value && dependeceOrder && dependeceTechnicalOperation) {
-          const order_operation_date_from = get(
-            dependeceTechnicalOperation,
-            'date_from',
-            null,
-          );
-          const order_operation_date_to = get(
-            dependeceTechnicalOperation,
-            'date_to',
-            null,
-          );
+      (value, { plan_date_start, object_type_name, is_cleaning_norm }, { dependeceOrder, dependeceTechnicalOperation }) => {
+        if (value) {
+          if (dependeceOrder && dependeceTechnicalOperation) {
+            const order_operation_date_from = get(
+              dependeceTechnicalOperation,
+              'date_from',
+              null,
+            );
+            const order_operation_date_to = get(
+              dependeceTechnicalOperation,
+              'date_to',
+              null,
+            );
 
-          const order_date = get(
-            dependeceOrder,
-            'order_date',
-            null,
-          );
-          const order_date_to = get(
-            dependeceOrder,
-            'order_date_to',
-            null,
-          );
+            const order_date = get(
+              dependeceOrder,
+              'order_date',
+              null,
+            );
+            const order_date_to = get(
+              dependeceOrder,
+              'order_date_to',
+              null,
+            );
 
-          const checkDateFrom = order_operation_date_from || order_date;
-          const checkDateTo = order_operation_date_to || order_date_to;
+            const checkDateFrom = order_operation_date_from || order_date;
+            const checkDateTo = order_operation_date_to || order_date_to;
 
-          if (diffDates(value, checkDateTo) > 0 || diffDates(value, checkDateFrom) < 0) {
-            return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
+            if (diffDates(value, checkDateTo) > 0 || diffDates(value, checkDateFrom) < 0) {
+              return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
+            }
+          }
+
+          if (is_cleaning_norm && plan_date_start && object_type_name) {
+            const time = get(routeTypesByTitle, `${object_type_name}.time`, null);
+
+            if (time && diffDates(value, plan_date_start, 'hours') > time) {
+              return `Время выполнения задания для ${object_type_name} должно составлять не более ${time} часов`;
+            }
           }
         }
         return '';

@@ -7,6 +7,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { promiseGetBlobActInspection, promiseCloseInspection, promiseUpdateInspection } from './inspect_promise';
 import { TypeOfInspect } from './@types/inspect_reducer';
+import inspectContainerActions from './container/container_actions';
 
 export const actionGetBlobActInspect = (id: number, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
@@ -58,6 +59,7 @@ const inspectionActions = {
   actionGetBlobActInspect,
   ...inspectionAutobaseActions,
   ...inspectionPgmBaseActions,
+  ...inspectContainerActions,
 };
 
 export default inspectionActions;

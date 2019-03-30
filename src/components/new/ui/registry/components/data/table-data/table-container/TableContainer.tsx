@@ -7,42 +7,59 @@ import {
   EtsTable,
 } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
-type PropsTableContainer = {
+type TableContainerStateProps = {
+  fixedWidth: OneRegistryData['list']['data']['fixedWidth'];
+};
+type TableContainerDispatchProps = {};
+type TableContainerOwnProps = {
   registryKey: string;
-  components?: any;
   handleClickOnRow: any;
   handleDoubleClickOnRow: any;
 };
+type TableContainerMergeProps = (
+  TableContainerStateProps
+  & TableContainerDispatchProps
+  & TableContainerOwnProps
+);
 
-type StateTableContainer = {};
+type TableContainerProps = TableContainerMergeProps;
 
-class TableContainer extends React.Component<PropsTableContainer, StateTableContainer> {
-  componentDidMount() {
-    setStickyThead('.ets_table_wrap', true);
-  }
+const TableContainer: React.FC<TableContainerProps> = (props) => {
+  React.useEffect(
+    () => {
+      setStickyThead('.ets_table_wrap', true);
+      return () => setStickyThead('.ets_table_wrap', false);
+    },
+    [],
+  );
+  const { registryKey } = props;
 
-  componentWillUnmount() {
-    setStickyThead('.ets_table_wrap', false);
-  }
+  return (
+    <EtsTableWrap className="ets_table_wrap">
+      <EtsTable fixedWidth={props.fixedWidth}>
+        <Thead registryKey={registryKey} />
+        <Tbody
+          registryKey={registryKey}
+          handleClickOnRow={props.handleClickOnRow}
+          handleDoubleClickOnRow={props.handleDoubleClickOnRow}
+        />
+      </EtsTable>
+    </EtsTableWrap>
+  );
+};
 
-  render() {
-    const { props } = this;
-    const { registryKey } = props;
-
-    return (
-      <EtsTableWrap className="ets_table_wrap">
-        <EtsTable>
-          <Thead registryKey={registryKey} />
-          <Tbody
-            registryKey={registryKey}
-            handleClickOnRow={props.handleClickOnRow}
-            handleDoubleClickOnRow={props.handleDoubleClickOnRow}
-          />
-        </EtsTable>
-      </EtsTableWrap>
-    );
-  }
-}
-
-export default TableContainer;
+export default connect<TableContainerStateProps, TableContainerDispatchProps, TableContainerOwnProps, TableContainerMergeProps, ReduxState>(
+  (state, { registryKey }) => ({
+    fixedWidth: getListData(state.registry, registryKey).data.fixedWidth,
+  }),
+  null,
+  null,
+  {
+    pure: false,
+  },
+)(TableContainer);

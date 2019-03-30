@@ -84,6 +84,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
     permissions: dutyMissionTemplatePermissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -102,6 +103,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
         {
           key: 'route_name',
           title: 'Маршрут',
+          width: 150,
         },
         {
           key: 'technical_operation_name',
@@ -116,6 +118,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
         {
           key: 'foreman_fio',
           title: 'Бригадир',
+          width: 150,
         },
         {
           key: 'brigade_employee_id_list_fio',
@@ -137,6 +140,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
         {
           key: 'comment',
           title: 'Комментарий',
+          width: 150,
         },
       ],
     },

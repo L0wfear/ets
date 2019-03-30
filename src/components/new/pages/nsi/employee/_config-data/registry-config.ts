@@ -135,6 +135,7 @@ export const config: TypeConfigData<Employee> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     processed: {
       sort: {
@@ -174,7 +175,7 @@ export const config: TypeConfigData<Employee> = {
           key: 'birthday',
           title: 'Дата рождения',
           format: 'date',
-          width: 200,
+          width: 150,
         },
         {
           key: 'personnel_number',
@@ -184,7 +185,7 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'position_name',
           title: 'Должность',
-          width: 150,
+          width: 200,
         },
         {
           key: 'prefer_car_text',
@@ -204,12 +205,12 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'category_drivers_license_text',
           title: 'Категория водительского удостоверения',
-          width: 300,
+          width: 200,
         },
         {
           key: 'drivers_license_date_end',
           title: 'Срок действия водительского удостоверения',
-          width: 350,
+          width: 250,
           format: 'date',
         },
         {
@@ -220,7 +221,7 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'category_special_license_text',
           title: 'Категория специального удостоверения',
-          width: 300,
+          width: 200,
         },
         {
           key: 'special_license_date_end',
@@ -231,7 +232,7 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'company_structure_name',
           title: 'Подразделение',
-          width: 100,
+          width: 200,
         },
         {
           key: 'active',
@@ -259,6 +260,7 @@ export const config: TypeConfigData<Employee> = {
           key: 'is_common',
           title: 'Общее',
           format: 'boolean',
+          width: 100,
         },
       ],
     },

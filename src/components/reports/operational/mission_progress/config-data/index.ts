@@ -3,8 +3,8 @@ import component from 'components/reports/operational/mission_progress/config-da
 
 export default {
   path: '/mission-progress-report',
-  title: 'Отчет по уборке территорий',
-  entyity: 'autobase_long_repair_report',
+  title: 'Отчет посещения ОДХ и ДТ',
+  entyity: 'mission_progress_report',
   noDotList: false,
   component,
   permissions,

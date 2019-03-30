@@ -54,6 +54,7 @@ export const config: TypeConfigData<FuelingWater> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -78,11 +79,12 @@ export const config: TypeConfigData<FuelingWater> = {
         {
           key: 'name',
           title: 'Полное наименование',
-          width: 400,
+          width: 200,
         },
         {
           key: 'address',
           title: 'Адрес',
+          width: 150,
         },
       ],
     },

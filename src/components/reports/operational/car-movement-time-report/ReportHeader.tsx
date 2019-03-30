@@ -8,9 +8,7 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates } from 'utils/dates';
-import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 import { ReduxState } from 'redux-main/@types/state';
@@ -20,8 +18,8 @@ import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import companyActions from 'redux-main/reducers/modules/company/actions';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types/index';
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
-const DatePickerBindable: any = bindable(DatePicker);
 const page = 'car-movement-time-report';
 
 interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
@@ -103,30 +101,26 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     const companyOptions = companyList.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
 
     return (
-      <div>
-        <Row className="report-page__header car-movement-time-report">
-          <Col md={6}>
+      <Row className="report-page__header">
+        <Col md={6}>
+          <Row>
             <Col md={12}>
-              <label>Период формирования</label>
+              <label htmlFor=" ">Период формирования</label>
             </Col>
-            <Col md={6}>
-              <DatePickerBindable
-                date={date_start}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_start'}
-                disabled={readOnly}
-              />
-            </Col>
-            <Col md={6}>
-              <DatePickerBindable
-                date={date_end}
-                onChange={this.handleChangeDateEnd}
-                bindOnChange={'date_end'}
-                disabled={readOnly}
-              />
-            </Col>
-          </Col>
-          <Col md={6}>
+          </Row>
+          <DatePickerRange
+            date_start_id="date_start"
+            date_start_value={date_start}
+            date_start_error={errorMes}
+            date_end_id="date_end"
+            date_end_value={date_end}
+
+            disabled={readOnly}
+            onChange={this.props.handleChange}
+          />
+        </Col>
+        <Col md={6}>
+          <Row>
             <Col md={12}>
               <label>Организация</label>
             </Col>
@@ -143,20 +137,17 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
               />
             </Col>
             <Col md={6}>
-              <Button style={{ marginTop: 3 }}
+              <Button
                 block
                 disabled={this.props.readOnly || !!errorMes || !company_id}
                 onClick={this.handleSubmit}
-              >Сформировать отчёт</Button>
+              >
+                Сформировать отчёт
+              </Button>
             </Col>
-          </Col>
-        </Row>
-        <Row className="error">
-          <Col md={12}>
-            {errorMes}
-          </Col>
-        </Row>
-      </div>
+          </Row>
+        </Col>
+      </Row>
     );
   }
 }

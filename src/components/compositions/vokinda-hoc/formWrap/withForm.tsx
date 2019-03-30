@@ -307,7 +307,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           <Component
             {...this.props}
             isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
-            isPermittedToUpdate={this.props.isPermittedToCreate && !this.props.readOnly}
+            isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
             formState={this.state.formState}
             originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}

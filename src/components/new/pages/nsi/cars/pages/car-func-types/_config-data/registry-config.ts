@@ -48,6 +48,7 @@ export const config: TypeConfigData<CarFuncTypes> = {
     permissions,
     data: {
       uniqKey: 'asuods_id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -58,6 +59,7 @@ export const config: TypeConfigData<CarFuncTypes> = {
         {
           key: 'full_name',
           title: 'Полное наименование',
+          width: 300,
         },
         {
           key: 'group_name',

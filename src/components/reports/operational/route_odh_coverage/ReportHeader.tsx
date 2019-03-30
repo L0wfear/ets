@@ -12,13 +12,10 @@ import {
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 import { ITechnicalOperationType } from 'api/@types/services/index.h';
 
-import { connectToStores } from 'utils/decorators';
-import FieldComponent from 'components/ui/Field';
-import { bindable, FluxContext } from 'utils/decorators';
+import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-
-const Field: any = bindable(FieldComponent);
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 interface IPropsReportHeader
   extends IPropsReportHeaderCommon,
@@ -74,14 +71,14 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       <Row className="headerRow">
         <ColorForTable />
         <Col lg={10} md={9}>
-          <Field
+          <ExtField
             type="select"
             label="Технологическая операция"
             multi
             options={TECH_OPERATION_TYPES}
             value={technical_operations_ids}
             onChange={this.props.handleChange}
-            bindOnChange={'technical_operations_ids'}
+            boundKeys={'technical_operations_ids'}
             disabled={readOnly}
           />
         </Col>

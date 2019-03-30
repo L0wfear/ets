@@ -200,7 +200,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   const data = cloneDeep(inspectAutobase.data);
 
   delete data.files;
-  delete data.photos_of_supporting_documents;
+  delete data.photos_defect;
   delete data.photos_of_supporting_documents;
   const payload = {};
 

@@ -3,11 +3,17 @@ import { incLoadingCount, decLoadingCount } from './module/actions-loading';
 
 const etsLoadingCounter = async <PromiseAns>(dispatch: any, promise: Promise<PromiseAns>, meta: LoadingMeta) => {
   let countLoad = false;
+  let interval = null;
 
-  const interval = setTimeout(() => {
+  if (!meta.noTimout) {
+    interval = setTimeout(() => {
+      countLoad = true;
+      dispatch(incLoadingCount(meta));
+    }, 300);
+  } else {
     countLoad = true;
     dispatch(incLoadingCount(meta));
-  }, 300);
+  }
 
   let response: PromiseAns = null;
 

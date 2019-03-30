@@ -343,6 +343,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         value={for_column ? value : value[0]}
         onChange={this.handleChange}
         components={!IS_TEMPLATE ? FieldCarIdsMissionSelectComponents : null}
+        clearable={false}
       />
     );
   }

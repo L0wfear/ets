@@ -61,7 +61,11 @@ export const promiseGetDutyMissionById = async (id: DutyMission['id']) => {
   const response = await DutyMissionService.get({ id });
   const dutyMission: DutyMission = get(response, 'result.rows.0', null);
 
-  return getFrontDutyMission(dutyMission);
+  if (dutyMission) {
+    return getFrontDutyMission(dutyMission);
+  }
+
+  return null;
 };
 
 export const promiseCreateDutyMission = async (payloadOwn: Partial<DutyMission>) => {

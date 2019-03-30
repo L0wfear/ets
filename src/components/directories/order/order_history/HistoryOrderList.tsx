@@ -17,7 +17,7 @@ import {
   HistoryOrderListPanelTitleCol,
   HistoryOrderListPanelTitleH4,
   HistoryOrderListPanelTitleColSelect,
-} from './styled/HistoryOrderList';
+} from 'components/directories/order/order_history/styled/HistoryOrderList';
 
 class HistoryOrderList extends React.Component<any, any> {
   state: any = {
@@ -77,7 +77,8 @@ class HistoryOrderList extends React.Component<any, any> {
       activeData: data.slice(num - 1, num)[0],
       activeList: num,
     });
-  };
+  }
+
   toggleHistoryTable = () => {
     const { historytableIsOpen } = this.state;
 

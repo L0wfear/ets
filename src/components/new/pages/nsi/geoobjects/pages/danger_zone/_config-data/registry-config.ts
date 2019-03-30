@@ -69,6 +69,7 @@ export const config: TypeConfigData<DangerZone> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -93,29 +94,30 @@ export const config: TypeConfigData<DangerZone> = {
         {
           key: 'name',
           title: 'Наименование ОДХ',
+          width: 200,
         },
         {
           key: 'address_comm',
           title: 'Адресная привязка',
-          width: 400,
+          width: 200,
         },
         {
           key: 'roadway_area',
           title: 'Площадь на проезжей части, м²',
           format: 'toFixed2',
-          width: 200,
+          width: 300,
         },
         {
           key: 'sidewalk_area',
           title: 'Площадь на тротуаре, м²',
           format: 'toFixed2',
-          width: 200,
+          width: 250,
         },
         {
           key: 'sidelines_area',
           title: 'Площадь на обочинах, м²',
           format: 'toFixed2',
-          width: 200,
+          width: 250,
         },
       ],
     },

@@ -64,6 +64,7 @@ export const config: TypeConfigData<PedestrianTunnels> = {
     permissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
@@ -88,21 +89,22 @@ export const config: TypeConfigData<PedestrianTunnels> = {
         {
           key: 'name',
           title: 'Наименование',
+          width: 200,
         },
         {
           key: 'adm_area',
           title: 'Административный округ',
-          width: 400,
+          width: 250,
         },
         {
           key: 'district',
           title: 'Район',
-          width: 200,
+          width: 150,
         },
         {
           key: 'location',
           title: 'Адресный ориентир',
-          width: 400,
+          width: 200,
         },
       ],
     },

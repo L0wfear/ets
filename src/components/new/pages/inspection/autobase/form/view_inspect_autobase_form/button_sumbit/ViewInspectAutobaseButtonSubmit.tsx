@@ -8,11 +8,13 @@ import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actio
 import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
+import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
   actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionUpdateInspectAutobase>;
   actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionCloseInspectAutobase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 
 type ViewInspectAutobaseButtonSubmitOwnProps = {
@@ -34,10 +36,14 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
   const handleSubmit = React.useCallback(
     async () => {
       if (canSave) {
-        await props.actionUpdateInspectAutobase(
-          selectedInspectAutobase,
-          { page: props.loadingPage },
-        );
+        try {
+          await props.actionUpdateInspectAutobase(
+            selectedInspectAutobase,
+            { page: props.loadingPage },
+          );
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
 
         props.handleHide(true);
       }
@@ -66,10 +72,14 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
   const handleCloseAndAutobaseAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
-        await props.actionCloseInspectAutobase(
-          selectedInspectAutobase,
-          { page: props.loadingPage },
-        );
+        try {
+          await props.actionCloseInspectAutobase(
+            selectedInspectAutobase,
+            { page: props.loadingPage },
+          );
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
         await handleGetAutobaseAct();
         props.handleHide(true);
       }
@@ -105,6 +115,11 @@ export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobase
       actionGetBlobActInspect: (...arg) => (
         dispatch(
           inspectionActions.actionGetBlobActInspect(...arg),
+        )
+      ),
+      registryLoadDataByKey: (...arg) => (
+        dispatch(
+          registryLoadDataByKey(...arg),
         )
       ),
     }),

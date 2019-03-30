@@ -28,6 +28,7 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import { getRoutesState } from 'redux-main/reducers/selectors/index';
 import { Route } from 'redux-main/reducers/modules/routes/@types/index';
 import { makeOptionFromRouteList } from 'components/missions/duty_mission/form/main/inside_fields/route_id/makeOptions';
+import { routeTypesByKey } from 'constants/route';
 
 const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
 
@@ -192,7 +193,11 @@ class FieldRouteIdDutyMission extends React.PureComponent<
     const route_id = get(route, 'id', null);
     const route_name = get(route, 'name', '');
     const object_type_id = get(route, 'type_id', null);
-    const object_type_name = get(route, 'type_name', '');
+    const object_type_name = get(
+      routeTypesByKey,
+      `${get(route, 'type', '')}.title`,
+      null,
+    );
 
     this.props.onChange({
       route_id,
@@ -219,7 +224,11 @@ class FieldRouteIdDutyMission extends React.PureComponent<
   ) => {
     const route_name = get(route, ['rowData', 'name'], '');
     const object_type_id = get(route, ['rowData', 'type_id'], null);
-    const object_type_name = get(route, ['rowData', 'type_name'], '');
+    const object_type_name = get(
+      routeTypesByKey,
+      `${get(route, 'rowData.type', '')}.title`,
+      null,
+    );
 
     this.props.onChange({
       route_id,
@@ -243,6 +252,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<
           this.setState({
             selectedRoute: route_data,
           });
+
+          const object_type_name = get(
+            routeTypesByKey,
+            `${get(route_data, 'type', '')}.title`,
+            null,
+          );
+
+          this.props.onChange({
+            object_type_name,
+          });
+
         } else {
           throw new Error(`Не найден маршрут ${route_id}`);
         }

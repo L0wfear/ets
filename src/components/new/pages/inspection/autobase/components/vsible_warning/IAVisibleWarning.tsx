@@ -5,11 +5,14 @@ import { groupBy, get } from 'lodash';
 import { IAVisibleWarningInputContainer } from './styled/IAVisibleWarning';
 import { DivNone } from 'global-styled/global-styled';
 import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
+import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
+import { isBoolean } from 'util';
+import { createValidDate, createValidDateTime } from 'utils/dates';
 
 type IAVisibleWarningProps = {
-  onChange: (data: InspectAutobase['data']) => void;
-  data: InspectAutobase['data'];
-  errors: Partial<Record<keyof InspectAutobase['data'], string>>;
+  onChange: (data: InspectAutobase['data'] | InspectContainer['data']) => void;
+  data: InspectAutobase['data'] | InspectContainer['data'];
+  errors?: Partial<Record<keyof InspectAutobase['data'] | keyof InspectContainer['data'], string>>;
   isPermitted?: boolean;
   filedToCheck: FiledToCheck;
 };
@@ -20,7 +23,13 @@ const getValueFromEvent = (key, value, filedToCheckByKey) => {
     case 'number':
     case 'string': return get(value, 'target.value', null);
     case 'select': return value;
-    case 'date': return value;
+    case 'date': {
+      if (value) {
+        return isBoolean(filedToCheckByKey[key][0].time) && !filedToCheckByKey[key][0].time ? createValidDate(value) : createValidDateTime(value);
+      }
+
+      return value;
+    }
   }
 };
 
@@ -62,7 +71,8 @@ const IAVisibleWarning: React.FC<IAVisibleWarningProps> = (props) => {
                     className={fieldData.className}
                     options={fieldData.options}
                     disabled={!props.isPermitted}
-                    error={props.errors[fieldData.key]}
+                    error={get(props.errors, fieldData.key, '')}
+                    time={fieldData.time}
                   />
                 )
                 : (

@@ -85,6 +85,9 @@ export const mergeListData = (data: OneRegistryData['list']['data']) => (
   data
   ? (
     Object.entries(registryDefaultObj.list.data).reduce((newObj, [key, value]) => {
+      if (key === 'fixedWidth') {
+        newObj[key] = isBoolean(data[key]) ? data[key] : value;
+      }
       if (key === 'array') {
         newObj[key] = isArray(data[key]) ? data[key] : value;
       }

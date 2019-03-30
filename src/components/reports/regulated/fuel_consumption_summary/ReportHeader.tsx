@@ -8,13 +8,10 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
-import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-
-const DatePickerBindable: any = bindable(DatePicker);
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_from: string;
@@ -43,34 +40,31 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     return (
       <Row className="report-page__header">
         <Col md={12}>
-          <label>Период формирования</label>
-        </Col>
-        <Col md={10}>
           <Row>
-            <Col md={3}>
-              <DatePickerBindable
-                date={date_from}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_from'}
-                disabled={readOnly}
-              />
+            <Col mdOffset={3} md={6}>
+              <label htmlFor=" ">Период формирования</label>
             </Col>
-            <Col md={3}>
-              <DatePickerBindable
-                date={date_to}
-                onChange={this.props.handleChange}
-                bindOnChange={'date_to'}
-                disabled={readOnly}
-              />
-            </Col>
-            <Col md={3}>
-              <Button block
-                disabled={this.props.readOnly}
-                onClick={this.handleSubmit}
-              >Сформировать отчёт</Button>
-            </Col>
-
           </Row>
+        </Col>
+        <Col mdOffset={3} md={6}>
+          <DatePickerRange
+            date_start_id="date_from"
+            date_start_value={date_from}
+            date_end_id="date_to"
+            date_end_value={date_to}
+
+            disabled={readOnly}
+            onChange={this.props.handleChange}
+          />
+        </Col>
+        <Col md={3}>
+          <Button
+            block
+            disabled={this.props.readOnly}
+            onClick={this.handleSubmit}
+          >
+            Сформировать отчёт
+          </Button>
         </Col>
       </Row>
     );

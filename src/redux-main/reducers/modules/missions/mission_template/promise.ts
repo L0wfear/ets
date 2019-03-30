@@ -38,7 +38,7 @@ export const promiseCreateMissionTemplate = async (
 
   return {
     ...payload,
-    data,
+    ...data,
   };
 };
 

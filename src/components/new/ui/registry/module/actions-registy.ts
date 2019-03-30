@@ -27,6 +27,7 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { isNullOrUndefined } from 'util';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
+import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -98,13 +99,13 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
         `${configStand.backend}/${getRegistryData.entity}`,
         payload,
       ),
-      { page: registryKey },
+      { page: registryKey, noTimout: true },
     );
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
 
     processResponse(result);
     const uniqKey: any = get(list, 'data.uniqKey', null);
-    arrayRaw = get(result, typeAns, []).filter((data) => !isNullOrUndefined(data[uniqKey]));
+    arrayRaw = get(result, typeAns, []);
 
     switch (getRegistryData.format) {
       case 'dutyMissionTemplate': {
@@ -115,7 +116,13 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
         arrayRaw = arrayRaw.map(getFrontEmployee);
         break;
       }
+      case 'typesAttr': {
+        arrayRaw = arrayRaw.map(getFrontTypesAttr);
+        break;
+      }
     }
+
+    arrayRaw = arrayRaw.filter((data) => !isNullOrUndefined(data[uniqKey]));
 
     if (getRegistryData.userServerFilters) {
       total_count =  get(result, 'total_count', 0);
@@ -135,7 +142,11 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
   }
 
   if (list) {
-    const array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+    let array = arrayRaw;
+    if (!getRegistryData.userServerFilters) {
+      array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+    }
+
     let processedArray = array;
     let processedTotalCount = array.length;
 
@@ -609,7 +620,7 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
         `${configStand.backend}/${getOneData.entity}`,
         { id },
       ),
-      { page: registryKey },
+      { page: registryKey, noTimout: true },
     );
 
     let response = get(
@@ -699,16 +710,16 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
 };
 
 export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
-  if (isSubmitted) {
-    dispatch(
-      registryLoadDataByKey(registryKey),
-    );
-  }
-
   dispatch(
     actionUnselectSelectedRowToShow(
       registryKey,
       isSubmitted,
     ),
   );
+
+  if (isSubmitted) {
+    dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+  }
 };

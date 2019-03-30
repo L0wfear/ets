@@ -107,6 +107,7 @@ export const withFormRegistrySearch = (Component) => (
           props.setParams({
             [uniqKey]: null,
           });
+
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
         },
         [uniqKey],

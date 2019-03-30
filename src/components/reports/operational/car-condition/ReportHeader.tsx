@@ -8,14 +8,10 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Div from 'components/ui/Div';
 import { getDatesByShift, createValidDate } from 'utils/dates';
-import { bindable } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-
-const DatePickerBindable: any = bindable(DatePicker);
+import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   start_date: string;
@@ -45,29 +41,21 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <Row>
-        <Col mdOffset={3} md={6} className="datepicker-range">
-          <Div className="inline-block faxogramms-date">
-            <DatePickerBindable
-              date={start_date}
-              onChange={this.props.handleChange}
-              bindOnChange={'start_date'}
-              disabled={readOnly}
-              time={false}
-            />
-          </Div>
-          <Div className="date-divider">—</Div>
-          <Div className="inline-block faxogramms-date">
-            <DatePickerBindable
-              date={end_date}
-              onChange={this.props.handleChange}
-              bindOnChange={'end_date'}
-              disabled={readOnly}
-              time={false}
-            />
-          </Div>
+        <Col mdOffset={3} md={6}>
+          <DatePickerRange
+            date_start_id="start_date"
+            date_start_value={start_date}
+            date_start_time={false}
+            date_end_id="end_date"
+            date_end_value={end_date}
+            date_end_time={false}
+
+            onChange={this.props.handleChange}
+          />
         </Col>
         <Col md={3}>
           <Button
+            block
             bsSize="small"
             disabled={readOnly}
             onClick={this.handleSubmit}

@@ -19,6 +19,10 @@ export type OwnPropsFieldDatesDutyMission = {
   fact_date_end?: DutyMission['fact_date_end'];
   error_fact_date_end?: string,
 
+  is_cleaning_norm?: DutyMission['is_cleaning_norm'];
+  object_type_name?: DutyMission['object_type_name'];
+  norm_id?: DutyMission['norm_id'];
+
   DUTY_MISSION_IS_DISPLAY?: boolean;
   DUTY_MISSION_IS_CLOSED?: boolean;
   DUTY_MISSION_IS_ASSIGNED?: boolean;

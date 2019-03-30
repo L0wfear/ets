@@ -47,7 +47,7 @@ import { IPropsHiddenMapForPrint } from './inside_fields/route_id/print/HiddenMa
 import { saveData, printData } from 'utils/functions';
 import {
   BtnGroupWrapper,
-  DisplayFlexAlignCenter,
+  DisplayFlexAlignCenterFooterForm,
   BtnPart,
 } from 'global-styled/global-styled';
 import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData';
@@ -180,14 +180,14 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         );
       }
 
-      if ((state.waybill_id && state.waybill_id !== -1) && !waybillData || (waybillData && waybillData.id !== state.waybill_id)) {
+      if ((state.waybill_id && state.waybill_id !== -1) && !waybillData || (waybillData && waybillData.id && waybillData.id !== state.waybill_id)) {
         this.props.actionLoadWaybillDataByIdForMission(
           state.waybill_id,
           { page, path },
         );
       }
 
-      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id !== state.request_id)) {
+      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
         this.props.loadEdcRequiedByIdForMission(
           state.request_id,
           { page, path },
@@ -223,6 +223,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         autoDismiss: 0,
       });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.actionReseSetDependenceMissionDataForMissionForm();
   }
 
   handleChangeAssignToWaybill = (value) => {
@@ -521,6 +525,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       onChange={this.props.handleChange}
 
                       car_ids={state.car_ids}
+                      for_column={state.for_column}
 
                       IS_TEMPLATE={false}
                       MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}
@@ -695,7 +700,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
           </ModalBodyPreloader>
           <Modal.Footer>
             {isPermitted ? ( // либо обновление, либо создание
-              <DisplayFlexAlignCenter>
+              <DisplayFlexAlignCenterFooterForm>
                 {
                   !state.status && !state.waybill_id && !state.for_column || this.state.likeNewMission
                     ? (
@@ -746,7 +751,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                     </Button>
                   </BtnPart>
                 </BtnGroupWrapper>
-              </DisplayFlexAlignCenter>
+              </DisplayFlexAlignCenterFooterForm>
             ) : (
               <DivNone />
             )}
@@ -790,6 +795,11 @@ export default compose<PropsMissionForm, OwnMissionProps>(
       loadEdcRequiedByIdForMission: (...arg) => (
         dispatch(
           missionsActions.loadEdcRequiedByIdForMission(...arg),
+        )
+      ),
+      actionReseSetDependenceMissionDataForMissionForm: (...arg) => (
+        dispatch(
+          missionsActions.actionReseSetDependenceMissionDataForMissionForm(...arg),
         )
       ),
     }),

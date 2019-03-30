@@ -13,7 +13,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
 import missionPermissions from 'components/missions/mission/config-data/permissions';
-import { edc_form_permitted_type } from 'components/new/pages/edc_request/_config-data/contants';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 type ButtonCreateMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -38,7 +38,7 @@ class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissio
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKey]: get(this.props.selectedRow, this.props.uniqKey, null),
-      type: edc_form_permitted_type.mission,
+      type: buttonsTypes.edc_request_create_mission,
     }),
     this.props.registrySetSelectedRowToShowInForm();
   }
@@ -46,8 +46,10 @@ class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissio
   render() {
     const { props } = this;
 
+    const can_create_mission = get(props.selectedRow, 'can_create_mission', false);
+
     return (
-      <Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
+      <Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_mission}>
         <Glyphicon glyph="plus" /> Создать децентрализованное задание
       </Button>
     );

@@ -22,8 +22,11 @@ export const config: TypeConfigData<EdcRequest> = {
     title: 'Реестр заявок',
     buttons: [
       buttonsTypes.filter,
-      buttonsTypes.createMissionByEdcReques,
-      buttonsTypes.createDutyMissionByEdcReques,
+      buttonsTypes.edc_request_create_mission,
+      buttonsTypes.edc_request_create_duty_mission,
+      buttonsTypes.edc_request_cancel,
+      buttonsTypes.edc_request_reject,
+      buttonsTypes.edc_request_close,
     ],
   },
   filter: {
@@ -54,9 +57,8 @@ export const config: TypeConfigData<EdcRequest> = {
         title: 'Категория',
         getRegistryData: {
           entity: 'edc/defect_category',
-          typeAns: 'result',
-          valueKey: 'defect_category_id',
-          labelKey: 'deffect_category_name',
+          valueKey: 'edc_id',
+          labelKey: 'name',
         },
       },
       {
@@ -65,9 +67,8 @@ export const config: TypeConfigData<EdcRequest> = {
         title: 'Дефект',
         getRegistryData: {
           entity: 'edc/defect',
-          typeAns: 'result',
-          valueKey: 'defect_id',
-          labelKey: 'defect_name',
+          valueKey: 'edc_id',
+          labelKey: 'name',
         },
       },
       {
@@ -91,12 +92,10 @@ export const config: TypeConfigData<EdcRequest> = {
     permissions: edcRequestPermissions,
     data: {
       uniqKey: 'id',
+      fixedWidth: true,
     },
     meta: {
       fields: [
-        {
-          key: 'checkbox',
-        },
         {
           key: 'enumerated',
           title: '№',
@@ -104,83 +103,103 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'status_name',
           title: 'Статус',
+          width: 100,
         },
         {
           key: 'request_number',
           title: 'Заявка №',
+          width: 150,
         },
         {
           key: 'create_date',
           title: 'Дата',
           format: 'datetime',
+          width: 150,
         },
         {
           key: 'deffect_category_name',
           title: 'Категория',
+          width: 200,
         },
         {
           key: 'defect_name',
           title: 'Дефект',
+          width: 200,
         },
         {
           key: 'emergency_name',
           title: 'Срочность',
+          width: 150,
         },
         {
           key: 'mission_numbers_text',
           title: 'Задание №',
+          width: 150,
         },
         {
           key: 'duty_mission_numbers_text',
           title: 'Наряд-задание №',
+          width: 200,
         },
         {
           key: 'ods',
           title: 'ОДС',
+          width: 100,
         },
         {
           key: 'address_name',
           title: 'Адрес',
+          width: 300,
         },
         {
           key: 'district_name',
           title: 'Район',
+          width: 100,
         },
         {
           key: 'okrug_name',
           title: 'Округ',
+          width: 100,
         },
         {
           key: 'contractor_name',
           title: 'Организация',
+          width: 200,
         },
         {
           key: 'main_phone',
           title: 'Осн.телефон',
+          width: 200,
         },
         {
           key: 'additional_phone',
           title: 'Доп.телефон',
+          width: 200,
         },
         {
           key: 'name',
           title: 'Контактное лицо',
+          width: 200,
         },
         {
           key: 'desired_time_from',
           title: 'Желательное время с:',
+          width: 200,
         },
         {
           key: 'desired_time_to',
           title: 'Желательное время по:',
+          width: 200,
         },
         {
           key: 'desired_date',
           title: 'Желательная дата',
+          width: 200,
         },
         {
           key: 'request_send_at',
           title: 'Передано в ППОЗ',
+          width: 200,
         },
       ],
     },

@@ -7,6 +7,7 @@ export type ButtonContinueInspectAutobaseStateProps = {
 export type ButtonContinueInspectAutobaseDispatchProps = {
 };
 export type ButtonContinueInspectAutobaseOwnProps = {
+  loadingPage: string;
 };
 
 export type ButtonContinueInspectAutobaseMergedProps = (

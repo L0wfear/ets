@@ -41,7 +41,7 @@ import { IPropsHiddenMapForPrint } from 'components/missions/mission/form/main/i
 import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 import {
   BtnGroupWrapper,
-  DisplayFlexAlignCenter,
+  DisplayFlexAlignCenterFooterForm,
   BtnPart,
 } from 'global-styled/global-styled';
 
@@ -79,28 +79,34 @@ class MissionTemplateForm extends React.PureComponent<
     );
     printData(blob);
   }
-  handlePrint: any = (mapKey: string) => {
+  handlePrint: any = async (mapKey: string) => {
     const { formState: state } = this.props;
 
-    const data = {
-      template_id: state.id,
-      size: '',
-      image: null,
-    };
+    const result = await this.props.submitAction(state);
 
-    if (mapKey === printMapKeyBig) {
-      data.size = 'a3';
-    }
-    if (mapKey === printMapKeySmall) {
-      data.size = 'a4';
-    }
+    if (result) {
+      this.props.handleChange(result);
 
-    this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
-      if (image) {
-        data.image = image;
-        this.printMissionTemplate(data);
+      const data = {
+        template_id: result.id,
+        size: '',
+        image: null,
+      };
+
+      if (mapKey === printMapKeyBig) {
+        data.size = 'a3';
       }
-    });
+      if (mapKey === printMapKeySmall) {
+        data.size = 'a4';
+      }
+
+      this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
+        if (image) {
+          data.image = image;
+          this.printMissionTemplate(data);
+        }
+      });
+    }
   };
 
   render() {
@@ -199,6 +205,7 @@ class MissionTemplateForm extends React.PureComponent<
                     onChange={this.props.handleChange}
 
                     car_ids={state.car_ids}
+                    for_column={state.for_column}
 
                     IS_TEMPLATE
                     MISSION_IS_ORDER_SOURCE={false}
@@ -260,6 +267,7 @@ class MissionTemplateForm extends React.PureComponent<
                 structure_name={state.structure_name}
                 mission_id={state.id}
                 onChange={this.props.handleChange}
+                IS_TEMPLATE
 
                 hiddenMapConfig={hiddenMapConfig}
 
@@ -285,27 +293,23 @@ class MissionTemplateForm extends React.PureComponent<
         </ModalBodyPreloader>
         <Modal.Footer>
           {isPermitted ? ( // либо обновление, либо создание
-            <DisplayFlexAlignCenter>
+            <DisplayFlexAlignCenterFooterForm>
               <BtnGroupWrapper>
-                {!IS_CREATING ? (
-                  <BtnPart>
-                    <Dropdown
-                      id="mission_template-print-dropdown"
-                      dropup
-                      onSelect={this.handlePrint}
-                      disabled={!this.props.canSave}>
-                      <Dropdown.Toggle>
-                        <Glyphicon id="m-print" glyph="print" />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
-                        <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </BtnPart>
-                ) : (
-                  <BtnPart></BtnPart>
-                )}
+                <BtnPart>
+                  <Dropdown
+                    id="mission_template-print-dropdown"
+                    dropup
+                    onSelect={this.handlePrint}
+                    disabled={!this.props.canSave}>
+                    <Dropdown.Toggle>
+                      <Glyphicon id="m-print" glyph="print" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
+                      <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </BtnPart>
                 <BtnPart>
                   <Button
                     disabled={!this.props.canSave}
@@ -314,7 +318,7 @@ class MissionTemplateForm extends React.PureComponent<
                   </Button>
                 </BtnPart>
               </BtnGroupWrapper>
-            </DisplayFlexAlignCenter>
+            </DisplayFlexAlignCenterFooterForm>
           ) : (
             <DivNone />
           )}

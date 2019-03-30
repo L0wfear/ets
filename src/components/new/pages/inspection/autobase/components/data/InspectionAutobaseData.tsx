@@ -1,77 +1,106 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { compose } from 'recompose';
 import { InspectionAutobaseDataProps, InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps } from './@types/InspectionAutobaseData';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { DivNone } from 'global-styled/global-styled';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import InspectionAutobaseDataActionMenu from './components/action_menu/InspectionAutobaseDataActionMenu';
 import InspectionAutobaseDataRegistry from './components/registry/InspectionAutobaseDataRegistry';
-import AppleStyleBlock from 'components/new/ui/apple_style/AppleStyleBlock';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { getInspectionAutobaseDataRegistryConfig } from './components/registry/config';
+import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 
-const InspectionAutobaseData: React.FC<InspectionAutobaseDataProps> = (props) => {
-  const {
-    isFirst,
-    carpoolId,
-  } = props;
+class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps, { isLoaded: boolean }> {
+  state = {
+    isLoaded: false,
+  };
 
-  React.useEffect(
-    () => {
-      if (carpoolId) {
-        props.actionGetAndSetInStoreInspectAutobase(
-          { carpoolId },
-          { page: props.loadingPage },
-        );
-      }
-
-      return () => {
-        props.actionResetInspectAutobaseList();
+  static getDerivedStateFromProps(nextProps: InspectionAutobaseDataProps, prevState) {
+    const carpoolId = getNumberValueFromSerch(nextProps.searchState.carpoolId);
+    if (!carpoolId) {
+      return {
+        isLoaded: false,
       };
-    },
-    [carpoolId],
-  );
+    }
 
-  return (
-    carpoolId
-      ? (
-        <>
-          <AppleStyleBlock delay={isFirst ? 1000 : 0}>
-            <Row>
-              <Col md={12}>
-                <InspectionAutobaseDataActionMenu
-                  loadingPage={props.loadingPage}
-                />
-              </Col>
-            </Row>
-          </AppleStyleBlock>
-          <AppleStyleBlock delay={(isFirst ? 1000 : 0) + 500}>
-            <Row>
-              <Col md={12}>
-                <InspectionAutobaseDataRegistry />
-              </Col>
-            </Row>
-          </AppleStyleBlock>
-        </>
-      )
-      : (
-        <DivNone />
-      )
-  );
-};
+    return null;
+  }
+
+  componentDidMount() {
+    const carpoolId = getNumberValueFromSerch(this.props.searchState.carpoolId);
+
+    if (carpoolId) {
+      this.props.registryAddInitialData(
+        getInspectionAutobaseDataRegistryConfig(carpoolId),
+      );
+      this.loadRegistryData();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const carpoolId = getNumberValueFromSerch(this.props.searchState.carpoolId);
+    const carpoolIdOld = getNumberValueFromSerch(prevProps.searchState.carpoolId);
+    if (carpoolId !== carpoolIdOld) {
+      if (carpoolId) {
+        this.props.registryAddInitialData(
+          getInspectionAutobaseDataRegistryConfig(carpoolId),
+        );
+        this.loadRegistryData();
+      } else {
+        this.setState({
+          isLoaded: false,
+        });
+        this.props.registryRemoveData(this.props.loadingPage);
+      }
+    }
+  }
+  async loadRegistryData() {
+    if (this.state.isLoaded) {
+      this.setState({ isLoaded: false });
+    }
+
+    try {
+      await this.props.registryLoadDataByKey(this.props.loadingPage);
+    } catch (error) {
+      //
+    }
+    this.setState({ isLoaded: true });
+  }
+
+  render() {
+    return (
+      this.state.isLoaded
+        ? (
+          <>
+            <InspectionAutobaseDataActionMenu loadingPage={this.props.loadingPage} loadRegistryData={this.loadRegistryData} />
+            <InspectionAutobaseDataRegistry registryKey={this.props.loadingPage}/>
+          </>
+        )
+        : (
+          <DivNone />
+        )
+    );
+  }
+}
 
 export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnProps>(
   connect<InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps, any, ReduxState>(
     null,
     (dispatch: any) => ({
-      actionGetAndSetInStoreInspectAutobase: (...arg) => (
+      registryAddInitialData: (config) => (
         dispatch(
-          inspectionActions.actionGetAndSetInStoreInspectAutobase(...arg),
+          registryAddInitialData(config),
         )
       ),
-      actionResetInspectAutobaseList: (...arg) => (
+      registryRemoveData: (registryKeyTemp: string) => (
         dispatch(
-          inspectionActions.actionResetInspectAutobaseList(...arg),
+          registryRemoveData(registryKeyTemp),
+        )
+      ),
+      registryLoadDataByKey: (registryKeyTemp: string) => (
+        dispatch(
+          registryLoadDataByKey(registryKeyTemp),
         )
       ),
     }),
@@ -80,4 +109,5 @@ export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnPro
       pure: false,
     },
   ),
+  withSearch,
 )(InspectionAutobaseData);

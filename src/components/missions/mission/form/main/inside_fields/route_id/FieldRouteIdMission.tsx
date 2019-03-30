@@ -229,10 +229,14 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     } = this.props;
 
     if (mission_id) {
+      const payload: any = {};
+      if (this.props.IS_TEMPLATE) {
+        payload.mission_template_id = mission_id;
+      } else {
+        payload.mission_id = mission_id;
+      }
       return this.props.actionLoadAndSetInStoreRoutes(
-        {
-          mission_id,
-        },
+        payload,
         { page, path },
       );
     }
@@ -259,7 +263,11 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     const route_id = get(route, 'id', null);
     const route_name = get(route, 'name', '');
     const object_type_id = get(route, 'type_id', null);
-    const object_type_name = get(route, 'type_name', '');
+    const object_type_name = get(
+      routeTypesByKey,
+      `${get(route, 'type', '')}.title`,
+      null,
+    );
 
     this.props.onChange({
       route_id,
@@ -289,7 +297,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     const object_type_id = get(route, 'rowData.type_id', null);
     const object_type_name = get(
       routeTypesByKey,
-      [get(route, 'rowData.type', null), 'title'],
+      `${get(route, 'rowData.type', null)}.title`,
       null,
     );
 
@@ -314,6 +322,15 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         if (route_data) {
           this.setState({
             selectedRoute: route_data,
+          });
+          const object_type_name = get(
+            routeTypesByKey,
+            `${get(route_data, 'type', '')}.title`,
+            null,
+          );
+
+          this.props.onChange({
+            object_type_name,
           });
         } else {
           throw new Error(`Не найден маршрут ${route_id}`);

@@ -14,6 +14,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { isArray } from 'util';
 import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import AdvancedStringLikeFilter from './advanced-string-like/AdvancedStringLikeFilter';
 
 type PropsFiltersLines = {
   wasFirstOpen: boolean;
@@ -90,6 +91,18 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
         return (
           <EtsFilterContainer key={otherFilterData.valueKey}>
             <AdvancedDateFilter
+              formatedTitle={formatedTitle}
+              filterData={otherFilterData}
+              registryKey={registryKey}
+              onChange={this.handleChange}
+            />
+          </EtsFilterContainer>
+        );
+      }
+      case 'advanced-string-like': {
+        return (
+          <EtsFilterContainer key={otherFilterData.valueKey}>
+            <AdvancedStringLikeFilter
               formatedTitle={formatedTitle}
               filterData={otherFilterData}
               registryKey={registryKey}

@@ -331,20 +331,36 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
       dispatch(
         actionChangeData(null),
       );
+
+      const closeEmployeeFio = props.selectedInspectPgmBase.close_employee_fio
+      ? props.selectedInspectPgmBase.close_employee_fio
+      : userData.fio;
+      const closeEmployeePosition = props.selectedInspectPgmBase.close_employee_fio
+        ? props.selectedInspectPgmBase.close_employee_position
+        : '-';
+      const userMember = {
+        fio: closeEmployeeFio,
+        position: closeEmployeePosition,
+        clearable: false,
+        id: 0,
+      };
+
       dispatch(
-        actionAddMembers({
-          fio: userData.fio,
-          position: userData.role,
-          clearable: false,
-          id: 0,
-        },
-        true),
+        actionAddMembers(
+          userMember,
+          true,
+        ),
       );
+
+      const commission_members = props.selectedInspectPgmBase.commission_members
+        ? [...props.selectedInspectPgmBase.commission_members, userMember]
+        : [userMember];
+
       if ( props.type === INSPECT_PGM_BASE_TYPE_FORM.closed || props.type === INSPECT_PGM_BASE_TYPE_FORM.list ) {
         dispatch(
           actionChangeData({
             resolve_to: props.selectedInspectPgmBase.resolve_to,
-            commission_members: props.selectedInspectPgmBase.commission_members,
+            commission_members,
             agents_from_gbu: props.selectedInspectPgmBase.agents_from_gbu,
           }),
         );

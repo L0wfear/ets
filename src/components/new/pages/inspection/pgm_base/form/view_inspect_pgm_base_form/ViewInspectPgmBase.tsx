@@ -1,10 +1,6 @@
 import * as React from 'react';
 import {
   TitleForm,
-  CheckContainerTable,
-  CheckContainerRow,
-  CheckContainerTd,
-  ButtonBlock,
 } from './styled/ViewInspectPgmBaseStyled';
 import { Button, Row, Col } from 'react-bootstrap';
 import { BoxContainer } from 'components/new/pages/inspection/pgm_base/components/data/styled/InspectionPgmBaseData';
@@ -20,16 +16,13 @@ import { inspectAutobaeSchema } from './inspect_pgm_base_schema';
 import { validate } from 'components/ui/form/new/validate';
 import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/add_inspect_employee/addInspectEmployee';
 import {
-  filedToCheckContainersFail,
-  filedToCheckContainersInfo,
   filedToCheckMonitoring,
   filedToCheckFall,
   filedToCheckFallHardPgm,
 } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { get } from 'lodash';
-import ContainerFormLazy from 'components/new/pages/inspection/container/index';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
+import ContainerBlock from './container_bloc';
 
 type InitialState = {
   selectedInspectPgmBase: InspectPgmBase,
@@ -102,13 +95,6 @@ const actionSetComissionAndMembers = (
     type: SET_COMISSION_AND_MEMBERS,
     payload: {
       data,
-    },
-  });
-
-const actionSetState = (payload) => ({
-    type: CHANGE_STATE,
-    payload: {
-      ...payload,
     },
   });
 
@@ -235,17 +221,6 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
-  const handleFormHideDutyMissionForm = React.useCallback(
-    () => {
-      dispatch(
-        actionSetState({
-          showDutyMissionForm: false,
-        }),
-      );
-    },
-    [],
-  );
-
   const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspectPgmBase.base_id', null) === get(elem, 'id'));
   const selectedPgmBaseTypeIsCombinate = get(selectedPgmBase, 'pgm_stores_type_id', null) === 3 ? true : false;
 
@@ -294,86 +269,13 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
         {
           selectedPgmBaseTypeIsCombinate ? (
             <Col md={6} sm={12}>
-              <TitleForm>
-                <h4>Готовность емкостей для хранения ПГМ</h4>
-              </TitleForm>
-              <BoxContainer>
-                <IAVisibleWarning
-                  onChange={onChangeData}
-                  data={state.selectedInspectPgmBase.data}
-                  errors={state.errors}
-                  isPermitted={isPermittedChangeListParams}
-                  filedToCheck={filedToCheckContainersInfo}
-                />
-              </BoxContainer>
-              <BoxContainer>
-                <h4>
-                  Выявленные нарушения
-                </h4>
-                <IAVisibleWarning
-                  onChange={onChangeData}
-                  data={state.selectedInspectPgmBase.data}
-                  errors={state.errors}
-                  isPermitted={isPermittedChangeListParams}
-                  filedToCheck={filedToCheckContainersFail}
-                />
-              </BoxContainer>
-              <BoxContainer>
-                <h4>
-                  Проверка емкостей
-                </h4>
-                <CheckContainerTable>
-                  {
-                    [
-                      {
-                        number: '123123123',
-                        updated_at_date: '12.12.2019',
-                      },
-                      {
-                        number: '131231212',
-                        updated_at_date: '21.12.2019',
-                      },
-                      {
-                        number: 'sfsdf',
-                        updated_at_date: '15.12.2019',
-                      },
-                    ].map((container) => (
-                      <CheckContainerRow>
-                        <CheckContainerTd>
-                          {container.number}
-                        </CheckContainerTd>
-                        <CheckContainerTd>
-                          На {container.updated_at_date}
-                        </CheckContainerTd>
-                        <CheckContainerTd>
-                          <ButtonBlock>
-                            <Button bsSize="small" onClick={() => alert('Редактирование')}>
-                              <Glyphicon glyph="pencil" />
-                            </Button>
-                            <Button bsSize="small" onClick={() => alert('Удаление')}>
-                              <Glyphicon glyph="trash" />
-                            </Button>
-                          </ButtonBlock>
-                        </CheckContainerTd>
-                      </CheckContainerRow>
-                    ))
-                  }
-                </CheckContainerTable>
-                <Button
-                  onClick={ () => dispatch(actionSetState({ showDutyMissionForm: true, containerElement: { inspection_id: props.selectedInspectPgmBase.id } })) }>
-                  <Glyphicon glyph="plus"/>&nbsp;Добавить
-                </Button> <br/><br/>
-                {/* <<< Добавить то что ниже, disable, для редактирования и удаления тоже самое */}
-                {/* <Button disabled={!isPermittedChangeListParams}
-                  onClick={() => alert('Добавить')}>
-                  <Glyphicon glyph="plus"/>&nbsp;Добавить
-                </Button> <br/><br/> */}
-              </BoxContainer>
+              <ContainerBlock
+                selectedInspectPgmBase={state.selectedInspectPgmBase}
+                onChangeData={onChangeData}
+                isPermittedChangeListParams={isPermittedChangeListParams}
+                errors={state.errors}
 
-              <ContainerFormLazy
-                element={state.showDutyMissionForm ? state.containerElement : null}
-                onFormHide={handleFormHideDutyMissionForm}
-                readOnly={!isPermittedChangeListParams}
+                page={props.page}
               />
               <Row>
                 <Col md={6}>

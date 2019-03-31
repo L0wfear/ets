@@ -224,7 +224,6 @@ export const filedToCheckContainersInfo: FiledToCheck = [
     key: 'pgm_volume_sum',
     title: 'Наличие ПГМ в емкостях на момент проверки(тонн):',
     type: 'string',
-    readOnly: true,
     inline: true,
   },
 ];

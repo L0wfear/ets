@@ -10,6 +10,7 @@ export const makeDefaultInspectContainer = (): InspectContainer => ({
   pgm_marka: '',
   last_checked_at: null,
   diagnostic_result: '',
+  id: null,
   data: {
     equipment_pipeline_in_poor_condition: false,
     control_measuring_instruments_in_poor_condition: false,

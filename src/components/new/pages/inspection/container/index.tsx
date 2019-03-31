@@ -13,7 +13,7 @@ const ContainerFormLazy: React.FC<PropsInspectContainerFormLazy> = (props) => {
   const page = props.loadingPageName || props.page;
   const path = `${props.path ? `${props.path}-` : ''}-form`;
 
-  return props.element && props.showForm ? (
+  return props.element ? (
     <ErrorBoundaryForm>
       <React.Suspense fallback={<LoadingComponent />}>
         <ContainerForm

@@ -16,7 +16,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import IAVisibleWarningContainer from './filed_to_check/IAVisibleWarningContainer';
 import InspectContainerRegistry from './registry/InspectContainerRegistry';
 import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal, Button, Row } from 'react-bootstrap';
+import { Modal, Button, Row, Col } from 'react-bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 
@@ -63,27 +63,29 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
-            <IAVisibleWarningContainer
-              onChange={this.props.handleChange}
-              data={state}
-              errors={errors}
-              isPermitted={isPermitted}
-              filedToCheck={filedToCheckContainerFirst}
-            />
-            <br/>
-            <IAVisibleWarning
-              onChange={this.handleChangeData}
-              data={state.data}
-              isPermitted={isPermitted}
-              filedToCheck={filedToCheckContainerSecond}
-            />
-            <br/>
-            <InspectContainerRegistry
-              actions={state.actions}
-              page={this.props.page}
-              path={this.props.path}
-              addToActionRow={this.addToActionRow}
-            />
+            <Col md={12}>
+              <IAVisibleWarningContainer
+                onChange={this.props.handleChange}
+                data={state}
+                errors={errors}
+                isPermitted={isPermitted}
+                filedToCheck={filedToCheckContainerFirst}
+              />
+              <br/>
+              <IAVisibleWarning
+                onChange={this.handleChangeData}
+                data={state.data}
+                isPermitted={isPermitted}
+                filedToCheck={filedToCheckContainerSecond}
+              />
+              <br/>
+              <InspectContainerRegistry
+                actions={state.actions}
+                page={this.props.page}
+                path={this.props.path}
+                addToActionRow={this.addToActionRow}
+              />
+            </Col>
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
@@ -110,8 +112,8 @@ export default compose<PropsInspectContainerForm, OwnInspectContainerProps>(
   ),
   withForm<PropsInspectContainerWithForm, InspectContainer>({
     uniqField: 'id',
-    createAction: inspectionActions.actionCreateInspectAutobase,
-    updateAction: inspectionActions.actionUpdateInspectAutobase,
+    createAction: inspectionActions.actionCreateInspectContainer,
+    updateAction: inspectionActions.actionUpdateInspectContainer,
     mergeElement: ({ element }) => {
       return getDefaultInspectContainerElement(element);
     },

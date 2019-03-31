@@ -360,7 +360,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                   }
                 </CheckContainerTable>
                 <Button
-                  onClick={ () => dispatch(actionSetState({showDutyMissionForm: true, })) }>
+                  onClick={ () => dispatch(actionSetState({ showDutyMissionForm: true, containerElement: { inspection_id: props.selectedInspectPgmBase.id } })) }>
                   <Glyphicon glyph="plus"/>&nbsp;Добавить
                 </Button> <br/><br/>
                 {/* <<< Добавить то что ниже, disable, для редактирования и удаления тоже самое */}
@@ -371,10 +371,9 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
               </BoxContainer>
 
               <ContainerFormLazy
-                element={state.containerElement}
+                element={state.showDutyMissionForm ? state.containerElement : null}
                 onFormHide={handleFormHideDutyMissionForm}
                 readOnly={!isPermittedChangeListParams}
-                showForm={state.showDutyMissionForm}
               />
               <Row>
                 <Col md={6}>

@@ -65,7 +65,7 @@ const InspectionPgmBaseSelectCarpool: React.FC<InspectionPgmBaseSelectCarpoolPro
           rowData,
         }))
     ),
-    [props.companyList],
+    [props.companyList, okrugId],
   );
   const OKRUG_OPTIONS = React.useMemo(
     () => {

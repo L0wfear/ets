@@ -36,7 +36,7 @@ export const inspectContainerSchema: SchemaType<any, { type: keyof typeof INSPEC
     {
       key: 'last_checked_at',
       title: 'Дата последней диагностики',
-      type: 'datetime',
+      type: 'date',
     },
     {
       key: 'diagnostic_result',

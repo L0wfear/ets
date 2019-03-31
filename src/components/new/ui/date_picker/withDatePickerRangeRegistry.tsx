@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Col } from 'react-bootstrap';
 import DatePickerRange from './DatePickerRange';
 import { WithDatePickerRangeRegistry } from './styled';
+import { createValidDateTime } from 'utils/dates';
 
 type WithDatePickerRangeRegistryConfig = {
   init_date_from: any;
@@ -10,16 +11,20 @@ type WithDatePickerRangeRegistryConfig = {
 
 export const withDatePickerRangeRegistry = (config: WithDatePickerRangeRegistryConfig) => (Component) => {
   const withDatePickerRange: React.FC<any> = (props) => {
-    const [date_from, setDateFrom] = React.useState(config.init_date_from);
-    const [date_to, setDateTo] = React.useState(config.init_date_to);
+    const [date_from, setDateFrom] = React.useState(createValidDateTime(config.init_date_from));
+    const [date_to, setDateTo] = React.useState(createValidDateTime(config.init_date_to));
 
     const handleChangeDate = React.useCallback(
       (key, value) => {
         if (key === 'date_from') {
-          setDateFrom(value);
+          if (value) {
+            setDateFrom(createValidDateTime(value));
+          }
         }
         if (key === 'date_to') {
-          setDateTo(value);
+          if (value) {
+            setDateTo(createValidDateTime(value));
+          }
         }
       },
       [],

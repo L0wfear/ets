@@ -27,7 +27,7 @@ export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): Type
     },
     registryKey,
     header: {
-      title: 'Журнал испекций',
+      title: 'Журнал проверок',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.read,

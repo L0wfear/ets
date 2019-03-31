@@ -42,8 +42,8 @@ export const config: TypeConfigData<EdcRequest> = {
         },
       },
       {
-        valueKey: 'request_id',
-        type: 'advanced-number',
+        valueKey: 'request_number',
+        type: 'advanced-string-like',
         title: 'Заявка №',
       },
       {

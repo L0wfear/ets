@@ -27,7 +27,7 @@ export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): Type
     },
     registryKey,
     header: {
-      title: 'Журнал испекций',
+      title: 'Журнал проверок',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.read,
@@ -39,12 +39,12 @@ export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): Type
         {
           valueKey: 'date_start',
           type: 'advanced-date',
-          title: 'Дата начала испекции',
+          title: 'Дата начала проверки',
         },
         {
           valueKey: 'date_end',
           type: 'advanced-date',
-          title: 'Дата окончания испекции',
+          title: 'Дата окончания проверки',
         },
         {
           valueKey: 'status_text',
@@ -81,13 +81,13 @@ export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): Type
         fields: [
           {
             key: 'date_start',
-            title: 'Дата начала испекции',
+            title: 'Дата начала проверки',
             format: 'date',
             width: 250,
           },
           {
             key: 'date_end',
-            title: 'Дата окончания испекции',
+            title: 'Дата окончания проверки',
             format: 'date',
             width: 250,
           },

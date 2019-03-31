@@ -38,7 +38,8 @@ export type OneFilterType<F> = {
 } & (
   {
     type: 'advanced-number'
-    | 'advanced-date';
+    | 'advanced-date'
+    | 'advanced-string-like';
   }| {
     type: 'multiselect';
     labelKey?: string;

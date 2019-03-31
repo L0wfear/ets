@@ -41,12 +41,12 @@ export const getInspectionPgmBaseDataRegistryConfig = (props: InspectionPgmBaseD
         {
           valueKey: 'date_start',
           type: 'advanced-date',
-          title: 'Дата начала испекции',
+          title: 'Дата начала проверки',
         },
         {
           valueKey: 'date_end',
           type: 'advanced-date',
-          title: 'Дата окончания испекции',
+          title: 'Дата окончания проверки',
         },
         {
           valueKey: 'status_text',

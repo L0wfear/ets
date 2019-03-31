@@ -324,7 +324,7 @@ class MissionInfoForm extends React.Component<
                     }
                   />
                 )}
-                {route_data.has_object_list ? (
+                {!route_data.has_object_list ? (
                   <h5>Объекты отсутствуют в маршруте</h5>
                 ) : (
                   <DivNone />

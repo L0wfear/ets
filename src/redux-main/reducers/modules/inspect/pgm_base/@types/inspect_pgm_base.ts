@@ -87,7 +87,8 @@ export type InspectPgmBase = {
   head_operating_base: {
     tel: string | null;
     fio: string | null;
-  }
+  },
+  close_employee_position: string | null;
 };
 
 export type IStateInspectPgmBase = {

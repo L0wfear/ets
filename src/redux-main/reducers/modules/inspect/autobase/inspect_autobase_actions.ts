@@ -233,6 +233,10 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
   delete data.photos_of_supporting_documents;
   delete data.photos_defect;
 
+  if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
+    commission_members.shift();
+  }
+
   const payload = {
     data,
     agents_from_gbu,

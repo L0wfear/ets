@@ -93,6 +93,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
             value={this.props.value[0] || ''}
             onChange={this.handleFirstInput}
             lang={this.props.lang}
+            step="any"
           />
         </div>
         {this.props.interval &&

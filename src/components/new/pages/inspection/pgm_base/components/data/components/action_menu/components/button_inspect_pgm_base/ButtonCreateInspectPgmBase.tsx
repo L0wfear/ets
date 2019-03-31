@@ -54,7 +54,7 @@ export default compose<ButtonCreateInspectPgmBaseProps, ButtonCreateInspectPgmBa
     (dispatch: any) => ({
       actionCreateInspectPgmBase: (...arg) => (
         dispatch(
-          inspectionActions.actionCreateInspectPgmBase(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionCreateInspectPgmBase(...arg),
         )
       ),
     }),

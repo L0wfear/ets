@@ -10,7 +10,7 @@ export type InspectionPgmBaseFormStateProps = {
   pgmBaseList: IStateInspectPgmBase['pgmBaseList'];
 };
 export type InspectionPgmBaseFormDispatchProps = {
-  actionGetInspectPgmBaseById: HandleThunkActionCreator<typeof inspectionActions.actionGetInspectPgmBaseById>;
+  actionGetInspectPgmBaseById: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionGetInspectPgmBaseById>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionSetInspectPgmBaseInspectPgmBaseList: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionSetInspectPgmBaseInspectPgmBaseList>;

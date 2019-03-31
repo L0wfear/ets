@@ -51,12 +51,12 @@ export default compose<InspectionPgmBaseDataProps, InspectionPgmBaseDataOwnProps
     (dispatch: any) => ({
       actionGetAndSetInStoreInspectPgmBase: (...arg) => (
         dispatch(
-          inspectionActions.actionGetAndSetInStoreInspectPgmBase(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionGetAndSetInStoreInspectPgmBase(...arg),
         )
       ),
       actionResetInspectPgmBaseList: (...arg) => (
         dispatch(
-          inspectionActions.actionResetInspectPgmBaseList(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionResetInspectPgmBaseList(...arg),
         )
       ),
     }),

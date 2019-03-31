@@ -5,7 +5,7 @@ import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 export type ButtonCreateInspectPgmBaseStateProps = {
 };
 export type ButtonCreateInspectPgmBaseDispatchProps = {
-  actionCreateInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.actionCreateInspectPgmBase>;
+  actionCreateInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionCreateInspectPgmBase>;
 };
 export type ButtonCreateInspectPgmBaseOwnProps = {
   loadingPage: string;

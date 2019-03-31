@@ -160,7 +160,7 @@ export default compose<InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps
     (dispatch: any) => ({
       actionGetInspectPgmBaseById: (...arg) => (
         dispatch(
-          inspectionActions.actionGetInspectPgmBaseById(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionGetInspectPgmBaseById(...arg),
         )
       ),
       actionUnselectSelectedRowToShow: (...arg) => (

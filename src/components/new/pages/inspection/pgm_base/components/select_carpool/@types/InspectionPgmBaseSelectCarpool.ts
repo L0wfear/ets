@@ -10,7 +10,7 @@ export type InspectionPgmBaseSelectCarpoolStateProps = {
 };
 export type InspectionPgmBaseSelectCarpoolDispatchProps = {
   actionGetAndSetInStoreCompany: HandleThunkActionCreator<typeof inspectionActions.actionGetAndSetInStoreCompany>;
-  actionGetAndSetInStorePgmBase: HandleThunkActionCreator<typeof inspectionActions.actionGetAndSetInStorePgmBase>;
+  actionGetAndSetInStorePgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionGetAndSetInStorePgmBase>;
   actionResetCompanyAndCarpool: HandleThunkActionCreator<typeof inspectionActions.actionResetCompanyAndCarpool>;
 };
 export type InspectionPgmBaseSelectCarpoolOwnProps = (

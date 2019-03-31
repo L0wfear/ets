@@ -239,7 +239,7 @@ export default compose<InspectionPgmBaseSelectCarpoolProps, InspectionPgmBaseSel
       ),
       actionGetAndSetInStorePgmBase: (...arg) => (
         dispatch(
-          inspectionActions.actionGetAndSetInStorePgmBase(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionGetAndSetInStorePgmBase(...arg),
         )
       ),
       actionResetCompanyAndCarpool: (...arg) => (

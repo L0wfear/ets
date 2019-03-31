@@ -10,8 +10,8 @@ import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 
 type ViewInspectPgmBaseButtonSubmitDispatchProps = {
-  actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.actionUpdateInspectPgmBase>;
-  actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.actionCloseInspectPgmBase>;
+  actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
+  actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionCloseInspectPgmBase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
 };
 
@@ -94,12 +94,12 @@ export default compose<ViewInspectPgmBaseButtonSubmitProps, ViewInspectPgmBaseBu
     (dispatch: any) => ({
       actionUpdateInspectPgmBase: (...arg) => (
         dispatch(
-          inspectionActions.actionUpdateInspectPgmBase(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionUpdateInspectPgmBase(...arg),
         )
       ),
       actionCloseInspectPgmBase: (...arg) => (
         dispatch(
-          inspectionActions.actionCloseInspectPgmBase(...arg),
+          inspectionActions.inspectionPgmBaseActions.actionCloseInspectPgmBase(...arg),
         )
       ),
       actionGetBlobActInspect: (...arg) => (

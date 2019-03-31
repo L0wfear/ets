@@ -202,6 +202,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   delete data.files;
   delete data.photos_defect;
   delete data.photos_of_supporting_documents;
+  const payload = {};
 
   const inspectionAutobase = await dispatch(
     actionUpdateInspect(
@@ -210,6 +211,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
       makeFilesForBackend(inspectAutobase.data),
       'autobase',
       meta,
+      payload,
     ),
   );
 
@@ -232,6 +234,10 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
   delete data.files;
   delete data.photos_of_supporting_documents;
   delete data.photos_defect;
+
+  if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
+    commission_members.shift();
+  }
 
   const payload = {
     data,

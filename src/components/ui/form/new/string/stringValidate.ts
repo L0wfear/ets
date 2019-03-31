@@ -29,6 +29,5 @@ export const validateString = <F, P>(fieldData: StringPropertie<F>, formState: F
   if (isString(value) || value === null) {
     return '';
   }
-
   return `Поле "${title}" должно быть строкой`;
 };

@@ -57,6 +57,7 @@ export type InspectAutobase = {
   agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
   commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
   resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
+  close_employee_position: string | null;
 };
 
 export type IStateInspectAutobase = {

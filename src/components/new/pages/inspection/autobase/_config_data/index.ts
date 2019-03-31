@@ -2,11 +2,11 @@ import permissions from 'components/new/pages/inspection/autobase/_config_data/p
 import component from 'components/new/pages/inspection/autobase/_config_data/components';
 
 export default {
-  path: '/inspection/autobase',
-  routePath: '/inspection/autobase/:id?/:type?',
+  path: '/monitoring/autobase',
+  routePath: '/monitoring/autobase/:id?/:type?',
   title: 'Обустройство автобаз',
   isNewRegistry: true,
-  entyity: 'inspect.autobase',
+  entyity: 'monitoring.autobase',
   noDotList: true,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
   component,

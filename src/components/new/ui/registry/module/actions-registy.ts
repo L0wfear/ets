@@ -64,6 +64,7 @@ export const registryRemoveData = (registryKey) => ({
 });
 
 export const registryLoadDataByKey = (registryKey) => async (dispatch, getState) => {
+  // const stateSome = getState();
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
   const list: any = get(registryData, 'list', null);

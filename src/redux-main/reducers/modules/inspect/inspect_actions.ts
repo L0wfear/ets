@@ -1,4 +1,5 @@
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
@@ -24,7 +25,7 @@ export const actionGetBlobActInspect = (id: number, meta: LoadingMeta): ThunkAct
   return result;
 };
 
-export const actionUpdateInspect = (id: number, data: any, files: any[], type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const actionUpdateInspect = (id: number, data: any, files: any[], type: TypeOfInspect, meta: LoadingMeta, payload: any): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseUpdateInspection(
@@ -32,6 +33,7 @@ export const actionUpdateInspect = (id: number, data: any, files: any[], type: T
       data,
       files,
       type,
+      payload,
     ),
     meta,
   );
@@ -56,6 +58,7 @@ export const actionCloseInspect = (id: number, payload: any, type: TypeOfInspect
 const inspectionActions = {
   actionGetBlobActInspect,
   ...inspectionAutobaseActions,
+  ...inspectionPgmBaseActions,
   ...inspectContainerActions,
 };
 

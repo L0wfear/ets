@@ -15,7 +15,7 @@ import {
 
 const loadingPageName = 'road-accident';
 
-@exportable({ entity: `autobase/${AUTOBASE.roadAccidentRegistry}` })
+@exportable({ entity: `autobase/${AUTOBASE.roadAccident}` })
 @staticProps({
   entity: 'autobase_road_accident',
   permissions,

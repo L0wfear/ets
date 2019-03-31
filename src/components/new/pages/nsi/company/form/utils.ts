@@ -9,6 +9,7 @@ export const defaultCompany: Company = {
   has_remote_checkup: false,
   id: null,
   okrug_name: '',
+  okrug_id: null,
   rgb_color: '',
   short_name: '',
 };

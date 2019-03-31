@@ -94,6 +94,7 @@ export const getInspectionPgmBaseDataRegistryConfig = (props: InspectionPgmBaseD
       permissions,
       data: {
         uniqKey: 'id',
+        uniqKeyForParams: 'id', // todo переписать
       },
       processed: {
         filterValues: {},

@@ -119,8 +119,14 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
           return { key, value };
         });
 
-        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, filedsRule).map((child, index) => {
+        const children = makeSummer([], rows, diffCols_wsd, cols_wsd, aggr_fields, []).map((child, index) => {
           child[uniqName] = index + 1;
+
+          filedsRule.forEach(({ key, value: { force_value }}) => {
+            if (!isNullOrUndefined(force_value) && (isNullOrUndefined(child[key]) || child[key] === '')) {
+              child[key] = force_value;
+            }
+          });
 
           return child;
         });

@@ -29,6 +29,7 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
           },
           { page: loadingPage },
         );
+        await props.loadRegistryData();
 
         props.setParams({
           id: inspectAutobase.id,

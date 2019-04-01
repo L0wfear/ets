@@ -55,7 +55,7 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
       }
     }
   }
-  async loadRegistryData() {
+  loadRegistryData = async () => {
     if (this.state.isLoaded) {
       this.setState({ isLoaded: false });
     }

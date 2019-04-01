@@ -338,20 +338,29 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
       const closeEmployeePosition = props.selectedInspectAutobase.close_employee_fio
         ? props.selectedInspectAutobase.close_employee_position
         : userData.role;
+      const userMember = {
+        fio: closeEmployeeFio,
+        position: closeEmployeePosition,
+        clearable: false,
+        id: 0,
+      };
+
       dispatch(
-        actionAddMembers({
-          fio: closeEmployeeFio,
-          position: closeEmployeePosition,
-          clearable: false,
-          id: 0,
-        },
-        true),
+        actionAddMembers(
+          userMember,
+          true,
+        ),
       );
+
+      const commission_members = props.selectedInspectAutobase.commission_members
+        ? [...props.selectedInspectAutobase.commission_members, userMember]
+        : [userMember];
+
       if ( props.type === INSPECT_AUTOBASE_TYPE_FORM.closed || props.type === INSPECT_AUTOBASE_TYPE_FORM.list ) {
         dispatch(
           actionChangeData({
             resolve_to: props.selectedInspectAutobase.resolve_to,
-            commission_members: props.selectedInspectAutobase.commission_members,
+            commission_members,
             agents_from_gbu: props.selectedInspectAutobase.agents_from_gbu,
           }),
         );

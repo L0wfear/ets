@@ -4,11 +4,11 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { PropsCarFuncTypesFormWrap } from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/@types/CarFuncTypes.h';
+import { PropsCarFuncTypesFormWrap } from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/@types/CarFuncTypes.h';
 import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const CarFuncTypesFrom = React.lazy(() => (
-  import(/* webpackChunkName: "car_func_types_form" */ 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/CarFuncTypesForm')
+  import(/* webpackChunkName: "car_func_types_form" */ 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/CarFuncTypesForm')
 ));
 
 const CarFuncTypesFormWrap: React.FC<PropsCarFuncTypesFormWrap> = (props) => {

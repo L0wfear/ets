@@ -5,12 +5,12 @@ import Registry from 'components/new/ui/registry/components/Registry';
 import {
   registryKey,
   config,
-} from 'components/new/pages/nsi/cars/pages/types-attr/_config-data/registry-config';
+} from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data/registry-config';
 
 import {
   PropsTypesAttrList,
   StateTypesAttrList,
-} from 'components/new/pages/nsi/cars/pages/types-attr/TypesAttrList.h';
+} from 'components/new/pages/nsi/autobase/pages/types-attr/TypesAttrList.h';
 
 class TypesAttrList extends React.Component<PropsTypesAttrList, StateTypesAttrList> {
   render() {

@@ -3,7 +3,7 @@ import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegist
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "types_attr" */ 'components/new/pages/nsi/cars/pages/types-attr/TypesAttrList')
+  import(/* webpackChunkName: "types_attr" */ 'components/new/pages/nsi/autobase/pages/types-attr/TypesAttrList')
 ));
 
 export default (props) => (

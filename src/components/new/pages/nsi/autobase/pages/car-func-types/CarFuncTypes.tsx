@@ -1,17 +1,17 @@
 import * as React from 'react';
 import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 import Registry from 'components/new/ui/registry/components/Registry';
-import CarFuncTypesFormWrap from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypesForm/CarFuncTypesFormWrap';
+import CarFuncTypesFormWrap from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/CarFuncTypesFormWrap';
 
 import {
   registryKey,
   config,
-} from 'components/new/pages/nsi/cars/pages/car-func-types/_config-data/registry-config';
+} from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data/registry-config';
 
 import {
   PropsCarFuncTypes,
   StateCarFuncTypes,
-} from 'components/new/pages/nsi/cars/pages/car-func-types/CarFuncTypes.h';
+} from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypes.h';
 
 class CarFuncTypes extends React.Component<PropsCarFuncTypes, StateCarFuncTypes> {
   render() {

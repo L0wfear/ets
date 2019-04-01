@@ -6,7 +6,7 @@ import { getChildrenData } from 'utils/routes/getChildrenData';
 // import technicalOperation from 'components/directories/technical_operation/config-data';
 import companyList from 'components/new/pages/nsi/company/_config-data';
 // import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
-import cars from 'components/new/pages/nsi/cars/_config-data';
+import cars from 'components/new/pages/nsi/autobase/_config-data';
 // import repairsRegistry from 'components/directories/repair/config-data';
 // import normative from 'components/directories/normative/config-data';
 import geoobjects from 'components/new/pages/nsi/geoobjects/_config-data';

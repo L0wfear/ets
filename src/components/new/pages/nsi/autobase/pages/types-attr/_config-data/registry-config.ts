@@ -1,6 +1,6 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
-import permissions from 'components/new/pages/nsi/cars/pages/types-attr/_config-data/permissions';
+import permissions from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data/permissions';
 import { TypesAttr } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const registryKey = 'TypesAttr';

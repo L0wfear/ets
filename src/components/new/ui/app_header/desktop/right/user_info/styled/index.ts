@@ -5,7 +5,7 @@ const defaultAvatar = require('assets/images/avatar-default.png');
 
 const avatars = [];
 
-if (process.env.STAND) {
+if (process.env.STAND === 'dev') {
   const av1 = require('assets/images/april/1.jpeg');
   const av2 = require('assets/images/april/2.jpeg');
   const av3 = require('assets/images/april/3.jpeg');

@@ -56,7 +56,6 @@ export default class LoadingStore extends Store {
       objectsActions.getTypes,
       objectsActions.getCars,
       objectsActions.getSomeCars,
-      objectsActions.getWorkKinds,
 
       objectsActions.getMaintenanceWork,
       objectsActions.getCleaningRate,
@@ -88,9 +87,7 @@ export default class LoadingStore extends Store {
       routesActions.getRoutesByMissionId,
 
       technicalOperationsActions.getTechnicalOperations,
-      technicalOperationsActions.getTechnicalOperationsWithBrigades,
       technicalOperationsActions.getTechnicalOperationsObjects,
-      technicalOperationsActions.updateTechnicalOperation,
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
 

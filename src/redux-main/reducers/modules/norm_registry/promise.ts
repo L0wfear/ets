@@ -1,0 +1,57 @@
+import {
+  cloneDeep,
+  get,
+} from 'lodash';
+import {
+  Norm, NormRegistrySensorTypes,
+} from 'redux-main/reducers/modules/norm_registry/@types';
+import { isString } from 'highcharts';
+import { CleaningNormRegistryService } from 'api/Services';
+
+export const getNorm = (normRaw: any, index) => {
+  if (normRaw) {
+    const norm: Norm = cloneDeep(normRaw);
+
+    const sensor_types: NormRegistrySensorTypes[] = get(norm, 'sensor_types', []);
+
+    norm.sensor_types_text = sensor_types.reduce(
+      (str, { sensor_type_name }: NormRegistrySensorTypes) => {
+        return `${str ? `${str}, ` : ''}${sensor_type_name}`;
+      },
+      '',
+    );
+
+    norm.elements_ids = norm.elements.map(({ id }) => id);
+    norm.objects_ids = norm.objects.map(({ id }) => id);
+    norm.car_func_types_ids = norm.car_func_types.map(({ id }) => id);
+
+    norm.objects_text_array = isString(norm.objects_text) ? norm.objects_text.split(', ') : [],
+
+    norm.norm_registry_id = index + 1;
+    return norm;
+  }
+
+  return null;
+};
+
+export const getBackNorm = (normRaw: any) => {
+  const norm: Norm = cloneDeep(normRaw);
+
+  delete norm.sensor_types_text;
+  delete norm.elements_ids;
+  delete norm.objects_ids;
+  delete norm.car_func_types_ids;
+  delete norm.norm_registry_id;
+
+  delete norm.objects_text_array;
+
+  return norm;
+};
+
+export const promiseUpdateNorm = (norm: Norm) => {
+  return CleaningNormRegistryService.path(norm.id).put(
+    getBackNorm(norm),
+    false,
+    'json',
+  );
+};

@@ -28,6 +28,7 @@ import { isNullOrUndefined } from 'util';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
+import { getNorm } from 'redux-main/reducers/modules/norm_registry/promise';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -118,6 +119,10 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
       }
       case 'typesAttr': {
         arrayRaw = arrayRaw.map(getFrontTypesAttr);
+        break;
+      }
+      case 'normRegistry': {
+        arrayRaw = arrayRaw.map(getNorm);
         break;
       }
     }

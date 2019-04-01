@@ -23,12 +23,13 @@ import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import Preloader from 'components/ui/new/preloader/Preloader';
 import { DivNone } from 'global-styled/global-styled';
+import { isNumber, isBoolean, isArray } from 'util';
 
 type PropsMultiselectRegestryFilter = {
   filterData: {
     title: string;
-    valueKey: string;
-    labelKey?: string;
+    valueKey: string | number;
+    labelKey?: string | number;
     options?: any;
     disabled?: boolean;
     getRegistryData: any;
@@ -39,15 +40,15 @@ type PropsMultiselectRegestryFilter = {
   formatedTitle: string;
   filterValuesObj: any;
   array: any[];
-  onChange: (valueKey: string, type: string, value: any[], option: object) => any;
+  onChange: (valueKey: string | number, type: string, value: any[], option: object) => any;
 };
 
 type StateMultiselectRegestryFilter = {
   array: any[];
   filterData: {
     title: string;
-    valueKey: string;
-    labelKey?: string;
+    valueKey: string | number;
+    labelKey?: string | number;
     options?: any;
     disabled?: boolean;
     getRegistryData: any;
@@ -57,13 +58,27 @@ type StateMultiselectRegestryFilter = {
   isLoading: boolean;
 };
 
-const makeOptionsFromArray = (array: any[], valueKey: string, labelKey?: string) => (
-  uniqBy(
-    array,
-    valueKey,
-  ).reduce((newArr, { [valueKey]: value, [labelKey || valueKey]: label }) => {
-    if (value && label) {
-      newArr.push({ value, label });
+const getOption = (value, label) => {
+  if ((value || isNumber(value) || isBoolean(value)) && (label || isNumber(label))) {
+    return { value, label };
+  }
+  return null;
+};
+
+const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey?: string | number) => (
+  array.reduce((newArr, { [valueKey]: value, [labelKey || valueKey]: label }) => {
+    if (isArray(value)) {
+      value.forEach((oneValue) => {
+        const newItem = getOption(oneValue, oneValue);
+        if (newItem) {
+          newArr.push(newItem);
+        }
+      });
+    } else {
+      const newItem = getOption(value, label);
+      if (newItem) {
+        newArr.push(newItem);
+      }
     }
 
     return newArr;
@@ -73,7 +88,10 @@ const makeOptionsFromArray = (array: any[], valueKey: string, labelKey?: string)
 const makeOptions = (props: PropsMultiselectRegestryFilter) => (
   props.filterData.options
   || (
-    makeOptionsFromArray(props.array, props.filterData.valueKey, props.filterData.labelKey)
+    uniqBy(
+      makeOptionsFromArray(props.array, props.filterData.valueKey, props.filterData.labelKey),
+      'value',
+    )
   )
 );
 

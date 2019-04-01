@@ -154,6 +154,7 @@ export default class Filter extends React.Component {
   render() {
     const { filterValues } = this.state;
     const { tableData, options: filters } = this.props;
+
     const filterRows = filters.map((option, i) => {
       const { filter = {}, name, displayName } = option;
       const { type, labelFunction, options, byKey, byLabel } = filter;

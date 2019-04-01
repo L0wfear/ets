@@ -4,7 +4,6 @@ import { createValidDateTime } from 'utils/dates';
 import { get } from 'lodash';
 import {
   OrderService,
-  WorkKindsService,
   CarService,
   WaybillCarService,
   MissionCarService,
@@ -19,9 +18,9 @@ import {
   Country,
   WorkMode,
   ConfigTrackService,
+  SensorTypeService,
+  MedicalStatsService,
 } from 'api/Services';
-
-import { MedicalStatsService, SensorTypeService } from 'api/nsi';
 
 function getMaterialConsumptionRates(payload = {}) {
   return MaterialConsumptionRateService.get(payload).then((r) => ({
@@ -67,10 +66,6 @@ export default class ObjectsActions extends Actions {
 
   getSensorTypes() {
     return SensorTypeService.get().then((r) => ({ result: r.result.rows }));
-  }
-
-  getWorkKinds() {
-    return WorkKindsService.get();
   }
 
   getWorkMode() {

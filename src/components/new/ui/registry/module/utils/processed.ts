@@ -56,7 +56,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
 
   if (filterValauesEntries.length > 0) {
     const fieldsAsObj = fields.reduce((newObj, fieldData) => {
-      newObj[fieldData.valueKey] = fieldData.type;
+      newObj[fieldData.valueKey] = fieldData;
 
       return newObj;
     }, {});
@@ -67,7 +67,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
         if (valueKeyType.match(/__in$/)) {
           const valueKey = valueKeyType.replace(/__in$/, '');
 
-          switch (fieldsAsObj[valueKey]) {
+          switch (fieldsAsObj[valueKey].type) {
             case 'multiselect': {
               if (isArray(row[valueKey])) {
                 return value.every((oneValue) => !row[valueKey].includes(oneValue));
@@ -80,7 +80,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
         if (valueKeyType.match(/__like$/)) {
           const valueKey = valueKeyType.replace(/__like$/, '');
 
-          switch (fieldsAsObj[valueKey]) {
+          switch (fieldsAsObj[valueKey].type) {
             case 'multiselect': return !row[valueKey].includes(value);
             default: throw new Error('non define filter by type');
           }
@@ -88,7 +88,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
         if (valueKeyType.match(/__eq$/)) {
           const valueKey = valueKeyType.replace(/__eq$/, '');
 
-          switch (fieldsAsObj[valueKey]) {
+          switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return value !== row[valueKey];
             case 'advanced-date': return diffDates(value, row[valueKey]) !== 0;
             default: throw new Error('non define filter by type');
@@ -97,7 +97,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
         if (valueKeyType.match(/__neq$/)) {
           const valueKey = valueKeyType.replace(/__neq$/, '');
 
-          switch (fieldsAsObj[valueKey]) {
+          switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return !(value !== row[valueKey]);
             case 'advanced-date': return !(diffDates(value, row[valueKey]) !== 0);
             default: throw new Error('non define filter by type');
@@ -106,7 +106,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
         if (valueKeyType.match(/__gt$/)) {
           const valueKey = valueKeyType.replace(/__gt$/, '');
 
-          switch (fieldsAsObj[valueKey]) {
+          switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return value >= row[valueKey];
             case 'advanced-date': return diffDates(value, row[valueKey]) >= 0;
             default: throw new Error('non define filter by type');
@@ -115,7 +115,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
         if (valueKeyType.match(/__lt$/)) {
           const valueKey = valueKeyType.replace(/__lt$/, '');
 
-          switch (fieldsAsObj[valueKey]) {
+          switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return value <= row[valueKey];
             case 'advanced-date': return diffDates(value, row[valueKey]) <= 0;
             default: throw new Error('non define filter by type');

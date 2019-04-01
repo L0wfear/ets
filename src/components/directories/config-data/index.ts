@@ -2,7 +2,6 @@ import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import employeeOnCar from 'components/directories/employee_on_car/config-data';
 import order from 'components/directories/order/config-data';
-import technicalOperation from 'components/directories/technical_operation/config-data';
 import companyList from 'components/new/pages/nsi/company/_config-data';
 import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
 import autobase from 'components/directories/autobase/config-data';
@@ -15,12 +14,13 @@ import companyStructure from 'components/directories/company_structure/config-da
 import userActionLog from 'components/directories/user_action_log/config-data';
 
 import employeesList from 'components/new/pages/nsi/employee/_config-data';
+import normRegistryList from 'components/new/pages/nsi/norm_registry/_config-data';
 
 const children = {
   employeesList,
   employeeOnCar,
   order,
-  technicalOperation,
+  normRegistryList,
   companyList,
   technicalOperationRelations,
   dividerOne: { divider: true },

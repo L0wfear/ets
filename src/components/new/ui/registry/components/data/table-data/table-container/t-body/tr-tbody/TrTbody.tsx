@@ -124,6 +124,9 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       if (format === 'workOrNot') {
         value = value ? 'Работает' : 'Не работает';
       }
+      if (format === 'yesOrNot') {
+        value = value ? 'Да' : 'Нет';
+      }
     }
 
     if (dashIfEmpty) {

@@ -98,7 +98,7 @@ export const FuelConsumptionRateService = ETS_API_FACTORY.createApiServiceAdapte
 export const FuelOperationsService = ETS_API_FACTORY.createApiServiceAdapter(
   'fuel_operations',
 );
-export const WorkKindsService = ETS_API_FACTORY.createApiServiceAdapter(
+export const WorkKindService = ETS_API_FACTORY.createApiServiceAdapter(
   'work_kind',
 );
 export const TechnicalOperationRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
@@ -300,6 +300,10 @@ export const CleaningOneNormService = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning/one_norm',
   {},
 );
+export const CleaningNormRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'cleaning/norm_registry',
+  {},
+);
 export const CleaningMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning/municipal_facility',
 );
@@ -342,4 +346,10 @@ export const EdcRefusalReasonService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 export const EdcRejectionReasonService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc/rejection_reason',
+);
+export const SensorTypeService = ETS_API_FACTORY.createApiServiceAdapter(
+  'sensor_type',
+);
+export const MedicalStatsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'medical_stats',
 );

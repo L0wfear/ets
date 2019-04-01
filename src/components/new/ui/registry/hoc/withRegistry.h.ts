@@ -42,18 +42,14 @@ export type OneFilterType<F> = {
     | 'advanced-string-like';
   }| {
     type: 'multiselect';
-    labelKey?: string;
+    labelKey?: string | number;
     options?: FilterOptionType<F>[];
     getRegistryData?: {
-      entity?: string;
+      entity: string;
       typeAns?: 'result.rows' | 'result',
-      valueKey?: string;
+      valueKey: string;
       labelKey?: string;
       mergeWithArray?: boolean;
-      format?: (
-        'dutyMissionTemplate'
-        | 'employee'
-      );
     }
   }
 );
@@ -73,6 +69,7 @@ export type TypeFields<F extends any> = {
     | 'toFixed3'
     | 'array'
     | 'workOrNot'
+    | 'yesOrNot'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {

@@ -7,6 +7,10 @@ import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_cat
 import { GeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/@types';
 import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
 import { ConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/@types';
+import { WorkKind } from '../work_kind/@types/work_kind';
+import { TechnicalOperationObjects } from '../technical_operation_objects/@types/technical_operation_objects';
+import { TechnicalOperationTypes } from '../technical_operation_types/@types/technical_operation_types';
+import { SensorType } from '../sensor_type/@types/sensor_type';
 
 export type modelListElement = {
   body_capacity: number | null;
@@ -43,4 +47,8 @@ export type IStateSomeUniq = {
     byId: GeozoneMunicipalFacilityById | null;
   };
   consumptionRateMaterialList: ConsumptionRateMaterial[];
+  workKindList: WorkKind[];
+  technicalOperationObjectsList: TechnicalOperationObjects[];
+  technicalOperationTypesList: TechnicalOperationTypes[];
+  sensorTypeList: SensorType[];
 };

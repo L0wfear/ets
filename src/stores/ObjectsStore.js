@@ -17,7 +17,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
-    this.register(objectsActions.getWorkKinds, this.handleGetWorkKinds);
     this.register(
       objectsActions.getMaterialConsumptionRate,
       this.handleGetMaterialConsumptionRate,
@@ -93,24 +92,12 @@ export default class ObjectsStore extends Store {
       this.handleGetTechOperations,
     );
     this.register(
-      technicalOperationsActions.getTechnicalOperationsRegistry,
-      this.handleGetTechOperationsRegistry,
-    );
-    this.register(
       technicalOperationsActions.getTechnicalOperationRelations,
       this.handleGetTechnicalOperationRelations,
     );
     this.register(
-      technicalOperationsActions.updateTechnicalOperation,
-      this.handleGetTechOperationsRegistry,
-    );
-    this.register(
       technicalOperationsActions.getTechnicalOperationsObjects,
       this.handleGetTechnicalOperationsObjects,
-    );
-    this.register(
-      technicalOperationsActions.getTechnicalOperationsTypes,
-      this.handleGetTechnicalOperationsTypes,
     );
 
     this.state = {
@@ -121,12 +108,9 @@ export default class ObjectsStore extends Store {
       fuelTypes: [],
       technicalOperationsList: [],
       technicalOperationsMap: new Map(),
-      technicalOperationsRegistryList: [],
       technicalOperationRelationsList: [],
-      workKindsList: [],
       OrdersList: [],
       technicalOperationsObjectsList: [],
-      technicalOperationsTypesList: [],
       positionsList: [],
       materialConsumptionRateList: [],
       cleanCategoriesList: [],
@@ -158,12 +142,6 @@ export default class ObjectsStore extends Store {
       }
     });
     this.setState({ technicalOperationsObjectsList: rows });
-  }
-
-  handleGetTechnicalOperationsTypes(technicalOperationsTypes) {
-    this.setState({
-      technicalOperationsTypesList: technicalOperationsTypes.result,
-    });
   }
 
   handleGetCars(cars) {
@@ -225,17 +203,8 @@ export default class ObjectsStore extends Store {
     });
   }
 
-  handleGetTechOperationsRegistry(techOperations) {
-    this.setState({ technicalOperationsRegistryList: techOperations.result });
-  }
-
   handleGetTechnicalOperationRelations({ result }) {
     this.setState({ technicalOperationRelationsList: result });
-  }
-
-  // Убрать второй вариант
-  handleGetWorkKinds(workKinds) {
-    this.setState({ workKindsList: workKinds.result.rows || workKinds.result });
   }
 
   handleGetMaterialConsumptionRate(rates) {

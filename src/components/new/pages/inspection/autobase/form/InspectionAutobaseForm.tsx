@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { PopupBottomForm, HiddenPageEtsContainer } from './styled/InspectionAutobaseFormStyled';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
@@ -144,7 +143,7 @@ export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnPro
     (dispatch: any) => ({
       actionGetInspectAutobaseById: (...arg) => (
         dispatch(
-          inspectionActions.actionGetInspectAutobaseById(...arg),
+          inspectionAutobaseActions.actionGetInspectAutobaseById(...arg),
         )
       ),
       actionUnselectSelectedRowToShow: (...arg) => (

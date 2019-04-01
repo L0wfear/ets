@@ -1,26 +1,26 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
-import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
-import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
-export const registryKey = 'inspectionPgmBase';
+export const registryKey = 'inspectAutobase';
 
-export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeConfigData<InspectPgmBase> => {
+export const getInspectionAutobaseDataRegistryConfig = (carpoolId: number): TypeConfigData<InspectAutobase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspect/registry',
         payload: {
-          base_id: pgmBaseId,
-          type: 'pgm_base',
+          base_id: carpoolId,
+          type: 'autobase',
         },
       },
       getBlobData: {
         entity: 'inspect/registry',
         payload: {
-          base_id: pgmBaseId,
-          type: 'pgm_base',
+          base_id: carpoolId,
+          type: 'autobase',
           format: 'xls',
         },
       },
@@ -52,11 +52,6 @@ export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeC
           title: 'Статус проверки',
         },
         {
-          valueKey: 'okrug_name',
-          type: 'multiselect',
-          title: 'Округ',
-        },
-        {
           valueKey: 'company_name',
           type: 'multiselect',
           title: 'Организация',
@@ -66,32 +61,14 @@ export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeC
           type: 'multiselect',
           title: 'Адрес',
         },
-        {
-          valueKey: 'base_type_text',
-          type: 'multiselect',
-          title: 'Тип базы',
-        },
-        {
-          valueKey: 'capacity_cnt',
-          type: 'multiselect',
-          title: 'Количество емкостей',
-        },
-        {
-          valueKey: 'volume_capacity_sum',
-          type: 'multiselect',
-          title: 'Суммарная вместимость',
-        },
-        {
-          valueKey: 'pgm_volume_sum',
-          type: 'multiselect',
-          title: 'Наличие ПГМ в емкостях',
-        },
       ],
     },
     list: {
       permissions,
       data: {
         uniqKey: 'id',
+        fixedWidth: true,
+        uniqKeyForParams: 'id', // todo сделать нормально
       },
       processed: {
         filterValues: {},
@@ -103,14 +80,10 @@ export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeC
       meta: {
         fields: [
           {
-            key: 'enumerated',
-            title: '№',
-          },
-          {
             key: 'date_start',
             title: 'Дата начала проверки',
             format: 'date',
-            width: 200,
+            width: 250,
           },
           {
             key: 'date_end',
@@ -121,40 +94,16 @@ export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeC
           {
             key: 'status_text',
             title: 'Статус проверки',
-            width: 300,
-          },
-          {
-            key: 'okrug_name',
-            title: 'Округ',
+            width: 200,
           },
           {
             key: 'company_name',
             title: 'Организация',
+            width: 500,
           },
           {
             key: 'base_address',
             title: 'Адрес',
-            width: 200,
-          },
-          {
-            key: 'base_type_text',
-            title: 'Тип базы',
-            width: 200,
-          },
-          {
-            key: 'capacity_cnt',
-            title: 'Количество емкостей',
-            width: 200,
-          },
-          {
-            key: 'volume_capacity_sum',
-            title: 'Суммарная вместимость',
-            width: 200,
-          },
-          {
-            key: 'pgm_volume_sum',
-            title: 'Наличие ПГМ в емкостях',
-            format: 'boolean',
             width: 200,
           },
         ],

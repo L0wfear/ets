@@ -1,16 +1,13 @@
-import { HandleThunkActionCreator } from 'react-redux';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 export type InspectionPgmBaseDataStateProps = {
 };
 export type InspectionPgmBaseDataDispatchProps = {
-  actionGetAndSetInStoreInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionGetAndSetInStoreInspectPgmBase>;
-  actionResetInspectPgmBaseList: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionResetInspectPgmBaseList>;
+  registryAddInitialData: any;
+  registryLoadDataByKey: any;
+  registryRemoveData: any;
 };
 export type InspectionPgmBaseDataOwnProps = {
-  isFirst: boolean;
-  pgmBaseId: number;
   loadingPage: string;
 };
 
@@ -22,4 +19,4 @@ export type InspectionPgmBaseDataProps = (
   InspectionPgmBaseDataStateProps
   & InspectionPgmBaseDataDispatchProps
   & InspectionPgmBaseDataOwnProps
-);
+) & WithSearchProps;

@@ -39,12 +39,12 @@ export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBa
 };
 
 export const actionSetInspectPgmBaseInspectPgmBaseList = (inspectPgmBaseList: IStateInspectPgmBase['inspectPgmBaseList']): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectPgmBase>>, ReduxState, {}, AnyAction> => (dispatch) => {
-  const lastConductingInspect = getTodayConductingInspect(inspectPgmBaseList);
+  const lastConductingInspect = getTodayConductingInspectPgmBase(inspectPgmBaseList);
   const stateInspectPgmBase = dispatch(
     actionSetInspectPgmBase({
       inspectPgmBaseList,
       lastConductingInspect,
-      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspect(inspectPgmBaseList),
+      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspectPgmBase(inspectPgmBaseList),
     }),
   );
 
@@ -291,7 +291,7 @@ const isInspectPgmBaseIsCompleted = ({ status }: InspectPgmBase) => (
 /**
  * Получаем последнюю за текущий день закрытую испекцию
  */
-export const getTodayCompletedInspect = (data: InspectPgmBase[]) => (
+export const getTodayCompletedInspectPgmBase = (data: InspectPgmBase[]) => (
   data.find((inspectPgmBase) => (
     isInspectPgmBaseIsCompleted(inspectPgmBase)
     && diffDatesByDays(getDateWithMoscowTz(), inspectPgmBase.date_end) === 0
@@ -304,7 +304,7 @@ export const isInspectPgmBaseIsConducting = ({ status }: InspectPgmBase) => (
 /**
  * Получаем последнюю открытую испекцию
  */
-export const getTodayConductingInspect = (data: InspectPgmBase[]) => (
+export const getTodayConductingInspectPgmBase = (data: InspectPgmBase[]) => (
   data.find(isInspectPgmBaseIsConducting)
 );
 

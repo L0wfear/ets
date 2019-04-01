@@ -18,7 +18,7 @@ import InspectContainerRegistry from './registry/InspectContainerRegistry';
 import EtsModal from 'components/new/ui/modal/Modal';
 import { Modal, Button, Row, Col } from 'react-bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
+import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
 
 class InspectionContainerList extends React.Component<PropsInspectContainerForm> {
   addToActionRow = () => {
@@ -112,8 +112,8 @@ export default compose<PropsInspectContainerForm, OwnInspectContainerProps>(
   ),
   withForm<PropsInspectContainerWithForm, InspectContainer>({
     uniqField: 'id',
-    createAction: inspectionActions.actionCreateInspectContainer,
-    updateAction: inspectionActions.actionUpdateInspectContainer,
+    createAction: inspectContainerActions.actionCreateInspectContainer,
+    updateAction: inspectContainerActions.actionUpdateInspectContainer,
     mergeElement: ({ element }) => {
       return getDefaultInspectContainerElement(element);
     },

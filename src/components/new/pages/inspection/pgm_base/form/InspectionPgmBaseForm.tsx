@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { PopupBottomForm, HiddenPageEtsContainer } from './styled/InspectionPgmBaseFormStyled';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
@@ -160,7 +159,7 @@ export default compose<InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps
     (dispatch: any) => ({
       actionGetInspectPgmBaseById: (...arg) => (
         dispatch(
-          inspectionActions.inspectionPgmBaseActions.actionGetInspectPgmBaseById(...arg),
+          inspectionPgmBaseActions.actionGetInspectPgmBaseById(...arg),
         )
       ),
       actionUnselectSelectedRowToShow: (...arg) => (

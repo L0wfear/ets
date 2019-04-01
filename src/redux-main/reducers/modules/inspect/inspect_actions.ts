@@ -57,9 +57,9 @@ export const actionCloseInspect = (id: number, payload: any, type: TypeOfInspect
 
 const inspectionActions = {
   actionGetBlobActInspect,
-  ...inspectionAutobaseActions,
+  inspectionAutobaseActions,
   inspectionPgmBaseActions,
-  ...inspectContainerActions,
+  inspectContainerActions,
 };
 
 export default inspectionActions;

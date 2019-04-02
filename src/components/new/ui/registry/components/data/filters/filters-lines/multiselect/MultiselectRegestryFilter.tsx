@@ -95,7 +95,7 @@ const makeOptions = (props: PropsMultiselectRegestryFilter) => (
   )
 );
 
-class MultiselectRegestryFilter extends React.Component<PropsMultiselectRegestryFilter, StateMultiselectRegestryFilter> {
+class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRegestryFilter, StateMultiselectRegestryFilter> {
   state = {
     array: this.props.array,
     filterData: this.props.filterData,

@@ -34,7 +34,7 @@ const getGlyphName = ({ colData: { key }, sort }) => {
   return '';
 };
 
-class TrTh extends React.Component<PropsTrTh, StateTrTh> {
+class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
   handleClick: React.MouseEventHandler<HTMLTableHeaderCellElement> = () => {
     const {
       colData: {

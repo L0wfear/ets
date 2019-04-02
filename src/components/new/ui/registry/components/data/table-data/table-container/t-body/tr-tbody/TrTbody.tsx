@@ -41,7 +41,7 @@ const getPermissionsReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
+class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
   renderRow = ({ key, title, format, dashIfEmpty }, index) => {
     const { props } = this;
 

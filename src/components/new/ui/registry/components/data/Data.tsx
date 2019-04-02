@@ -18,7 +18,7 @@ type StateData = {
 
 };
 
-class Data extends React.Component<PropsData, StateData> {
+class Data extends React.PureComponent<PropsData, StateData> {
   render() {
     const { props } = this;
     const {

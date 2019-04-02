@@ -13,7 +13,7 @@ type PropsButtons = {
 type StateButtons = {
 };
 
-class Buttons extends React.Component<PropsButtons, StateButtons> {
+class Buttons extends React.PureComponent<PropsButtons, StateButtons> {
   renderButton = (type) => (
     <ComponentButton key={type} type={type} registryKey={this.props.registryKey} />
   )

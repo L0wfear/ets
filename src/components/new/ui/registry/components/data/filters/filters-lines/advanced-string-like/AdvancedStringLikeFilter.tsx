@@ -37,7 +37,7 @@ type StateAdvancedStringLikeFilter = {
   disabled: boolean;
 };
 
-class AdvancedStringLikeFilter extends React.Component<PropsAdvancedStringLikeFilter, StateAdvancedStringLikeFilter> {
+class AdvancedStringLikeFilter extends React.PureComponent<PropsAdvancedStringLikeFilter, StateAdvancedStringLikeFilter> {
   handleChange = (e) => {
     const { props } = this;
     const { filterData } = props;

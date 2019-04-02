@@ -18,7 +18,7 @@ type PropsButtonLast = {
 type StatePaginator = {
 };
 
-class ButtonLast extends React.Component<PropsButtonLast, StatePaginator> {
+class ButtonLast extends React.PureComponent<PropsButtonLast, StatePaginator> {
   render() {
     const { index } = this.props;
 

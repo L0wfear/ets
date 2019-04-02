@@ -17,7 +17,7 @@ type PropsButtonFirst = {
 type StatePaginator = {
 };
 
-class ButtonFirst extends React.Component<PropsButtonFirst, StatePaginator> {
+class ButtonFirst extends React.PureComponent<PropsButtonFirst, StatePaginator> {
   render() {
     return (
       <Button

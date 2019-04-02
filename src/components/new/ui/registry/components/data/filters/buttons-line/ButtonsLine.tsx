@@ -33,7 +33,7 @@ type PropsButtonsLIne = {
 
 type StateButtonsLIne = {};
 
-class ButtonsLIne extends React.Component<PropsButtonsLIne, StateButtonsLIne> {
+class ButtonsLIne extends React.PureComponent<PropsButtonsLIne, StateButtonsLIne> {
   render() {
     const { props } = this;
 

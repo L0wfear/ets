@@ -7,7 +7,6 @@ import FiltersLines from 'components/new/ui/registry/components/data/filters/fil
 import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { registryApplyRawFilters } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 
 type PropsFilters = {
@@ -18,7 +17,7 @@ type PropsFilters = {
 
 type StateFilters = {};
 
-class Filters extends React.Component<PropsFilters, StateFilters> {
+class Filters extends React.PureComponent<PropsFilters, StateFilters> {
   render() {
     const { registryKey } = this.props;
 
@@ -39,7 +38,6 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
 });
 
 export default compose<any, any>(
-  withSearch,
   connect<any, any, any, ReduxState>(
     null,
     mapDispatchToProps,

@@ -19,7 +19,7 @@ type PropsButtonNext = {
 type StatePaginator = {
 };
 
-class ButtonNext extends React.Component<PropsButtonNext, StatePaginator> {
+class ButtonNext extends React.PureComponent<PropsButtonNext, StatePaginator> {
   handleButtonClick = () => {
     this.props.handleButtonClick(this.props.currentPage + 1);
   }

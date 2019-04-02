@@ -11,6 +11,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
   const Service: any = {
     getRegistryData: {
       entity: 'autobase/tech_inspection_registry',
+      noTimeout: !car_id,
     },
     removeOneData: {
       entity: 'autobase/tech_inspection_registry',

@@ -13,7 +13,7 @@ type PropsTableData = {
 type StateTableData = {
 };
 
-class TableData extends React.Component<PropsTableData, StateTableData> {
+class TableData extends React.PureComponent<PropsTableData, StateTableData> {
   render() {
     const { props } = this;
     const {

@@ -34,7 +34,7 @@ type ButtonRejectEdcRequestProps = (
   & ButtonRejectEdcRequestMergeProps
 ) & WithSearchProps;
 
-class ButtonRejectEdcRequest extends React.Component<ButtonRejectEdcRequestProps, {}> {
+class ButtonRejectEdcRequest extends React.PureComponent<ButtonRejectEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),

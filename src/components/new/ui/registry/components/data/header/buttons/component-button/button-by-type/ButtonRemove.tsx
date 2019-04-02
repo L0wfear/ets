@@ -10,7 +10,6 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import EtsModal from 'components/new/ui/modal/Modal';
 import { Modal } from 'react-bootstrap';
 
@@ -33,7 +32,7 @@ type ButtonRemoveProps = (
   & ButtonRemoveDispatchProps
   & ButtonRemoveOwnProps
   & ButtonRemoveMergeProps
-) & WithSearchProps;
+);
 
 const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   const [isOpenModalRemove, setIsOpenModalRemove] = React.useState(false);
@@ -101,7 +100,6 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  withSearch,
   connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент

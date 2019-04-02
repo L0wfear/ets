@@ -16,7 +16,7 @@ import {
   EtsThead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
 
-class Thead extends React.Component<PropsThead, StateThead> {
+class Thead extends React.PureComponent<PropsThead, StateThead> {
   mapRender = (thDataRow, index) => (
     <TrHead key={index} thDataRow={thDataRow} registryKey={this.props.registryKey} />
   )

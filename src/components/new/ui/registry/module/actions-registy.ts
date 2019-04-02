@@ -24,7 +24,7 @@ import { getBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import { isNullOrUndefined } from 'util';
+import { isBoolean, isNullOrUndefined } from 'util';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
@@ -103,7 +103,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
           `${configStand.backend}/${getRegistryData.entity}`,
           payload,
         ),
-        { page: registryKey, noTimout: true },
+        { page: registryKey, noTimeout: isBoolean(getRegistryData.noTimeout) ? getRegistryData.noTimeout : true },
       );
     } catch (error) {
       console.error(error); //tslint:disable-line
@@ -635,7 +635,7 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
         `${configStand.backend}/${getOneData.entity}`,
         { id },
       ),
-      { page: registryKey, noTimout: true },
+      { page: registryKey, noTimeout: true },
     );
 
     let response = get(

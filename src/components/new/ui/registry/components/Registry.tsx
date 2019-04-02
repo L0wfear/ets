@@ -17,7 +17,7 @@ type PropsRegistry = {
 type StateRegistry = {
 };
 
-class Registry extends React.Component<PropsRegistry, StateRegistry> {
+class Registry extends React.PureComponent<PropsRegistry, StateRegistry> {
   render() {
     const { props } = this;
 

@@ -9,7 +9,6 @@ import { getFilterData } from 'components/new/ui/registry/module/selectors-regis
 import Filters from 'components/new/ui/registry/components/data/filters/Filters';
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 
 type PropsFiltersWrap = {
@@ -23,7 +22,7 @@ type StateFiltersWrap = {
   wasFirstOpen: boolean;
 };
 
-class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
+class FiltersWrap extends React.PureComponent<PropsFiltersWrap, StateFiltersWrap> {
   state = {
     wasFirstOpen: this.props.isOpen,
   };
@@ -58,7 +57,6 @@ class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
 }
 
 export default compose<any, any>(
-  withSearch,
   connect<any, any, any, ReduxState>(
     (state, { registryKey }) => ({
       isOpen: getFilterData(state.registry, registryKey).isOpen,

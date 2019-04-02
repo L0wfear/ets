@@ -20,7 +20,7 @@ type PropsComponentButton = {
   registryKey: string;
 };
 
-class ComponentButton extends React.Component<PropsComponentButton, {}> {
+class ComponentButton extends React.PureComponent<PropsComponentButton, {}> {
   render() {
     const { type } = this.props;
 

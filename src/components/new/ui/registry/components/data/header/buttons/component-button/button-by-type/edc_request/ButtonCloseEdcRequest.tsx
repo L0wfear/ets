@@ -9,7 +9,6 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import missionPermissions from 'components/missions/mission/config-data/permissions';
 import { get } from 'lodash';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
@@ -32,7 +31,7 @@ type ButtonCloseEdcRequestProps = (
   & ButtonCloseEdcRequestDispatchProps
   & ButtonCloseEdcRequestOwnProps
   & ButtonCloseEdcRequestMergeProps
-) & WithSearchProps;
+);
 
 const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
   const handleClick = React.useCallback(
@@ -66,7 +65,6 @@ const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
 };
 
 export default compose<ButtonCloseEdcRequestProps, ButtonCloseEdcRequestOwnProps>(
-  withSearch,
   withRequirePermissionsNew({
     permissions: missionPermissions.update,
   }),

@@ -35,7 +35,7 @@ type ButtonCreateMissionByEdcRequestProps = (
   & ButtonCreateMissionByEdcRequestMergeProps
 ) & WithSearchProps;
 
-class ButtonCreateMissionByEdcRequest extends React.Component<ButtonCreateMissionByEdcRequestProps, {}> {
+class ButtonCreateMissionByEdcRequest extends React.PureComponent<ButtonCreateMissionByEdcRequestProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),

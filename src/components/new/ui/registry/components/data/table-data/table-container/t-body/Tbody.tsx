@@ -11,23 +11,17 @@ import {
   StateTbody,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/Tbody.h';
 import { ReduxState } from 'redux-main/@types/state';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
+import memoizeOne from 'memoize-one';
 
-class Tbody extends React.Component<PropsTbody, StateTbody> {
+class Tbody extends React.PureComponent<PropsTbody, StateTbody> {
   render() {
     const { props } = this;
-    const {
-      paginator: {
-        currentPage,
-        perPage,
-      },
-    } = props;
 
     return (
       <tbody>
         {
-          this.props.processedArray.slice(currentPage * perPage, (currentPage + 1) * perPage).map((rowData, indexRow) => (
+          this.props.showArray.map((rowData, indexRow) => (
             <TrTbody
               key={rowData[props.uniqKey]}
               rowData={rowData}
@@ -43,12 +37,24 @@ class Tbody extends React.Component<PropsTbody, StateTbody> {
   }
 }
 
+const makeShowArray = memoizeOne(
+  (processedArray, paginator) => {
+    const {
+      currentPage,
+      perPage,
+    } = paginator;
+
+    return processedArray.slice(currentPage * perPage, (currentPage + 1) * perPage);
+  },
+);
+
 export default compose<PropsTbody, OwnPropsTbody>(
-  withSearch,
   connect<StatePropsTbody, DispatchPropsTbody, OwnPropsTbody, ReduxState>(
     (state, { registryKey }) => ({
-      processedArray: getListData(state.registry, registryKey).processed.processedArray,
-      paginator: getListData(state.registry, registryKey).paginator,
+      showArray: makeShowArray(
+        getListData(state.registry, registryKey).processed.processedArray,
+        getListData(state.registry, registryKey).paginator,
+      ),
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
     }),
   ),

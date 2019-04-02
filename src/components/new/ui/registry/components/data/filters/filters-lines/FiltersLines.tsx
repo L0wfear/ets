@@ -31,7 +31,7 @@ type PropsFiltersLines = {
 type StateFiltersLines = {
 };
 
-class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines> {
+class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLines> {
   handleChange = (valueKey, type, value) => {
     this.props.onChangeFilterRawValue(valueKey, type, value);
   }

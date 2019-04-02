@@ -13,7 +13,7 @@ type StateHeader = {
 
 };
 
-class Header extends React.Component<PropsHeader, StateHeader> {
+class Header extends React.PureComponent<PropsHeader, StateHeader> {
   render() {
     return (
       <EtsHeaderTitle>

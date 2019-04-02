@@ -133,6 +133,17 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       if (format === 'yesOrNot') {
         value = value ? 'Да' : 'Нет';
       }
+      if (format === 'road_accident_driver_fio') {
+        const {
+          driver_fio,
+          employee_position_name,
+        } = rowData;
+
+        const drivers_license = get(rowData, 'drivers_license', '') || '';
+        const special_license = get(rowData, 'special_license', '') || '';
+
+        value = `${driver_fio} | ${employee_position_name} ${drivers_license ? `${drivers_license} ` : ''}${special_license}`;
+      }
     }
 
     if (dashIfEmpty) {

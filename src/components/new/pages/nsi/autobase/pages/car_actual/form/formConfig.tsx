@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/config-data/components';
 
-import RoadAccidentList from 'components/directories/autobase/road_accident/config-data/components';
+import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/road_accident/_config-data';
 
 import RepairList from 'components/directories/autobase/repair/config-data/components';
 
@@ -89,9 +89,9 @@ const insurancePolicy: OneTabData = {
 
 const roadAccident: OneTabData = {
   title: 'ДТП',
-  tabKey: 'roadAccident',
-  component: RoadAccidentList, // car_id
-  path: 'id',
+  tabKey: roadAccidentListConfig.item,
+  component: roadAccidentListConfig.component,
+  path: `${roadAccidentListConfig.patrialEndPath}`,
 };
 
 const techMaintenance: OneTabData = {

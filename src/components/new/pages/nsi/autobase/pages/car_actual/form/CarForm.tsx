@@ -62,6 +62,7 @@ const CarForm: React.FC<PropsCar> = (props) => {
 };
 
 export default compose<PropsCar, OwnCarProps>(
+  withSearch,
   connect<StatePropsCar, DispatchPropsCar, OwnCarProps, ReduxState>(
     null,
   ),
@@ -73,5 +74,4 @@ export default compose<PropsCar, OwnCarProps>(
     schema: carFormSchema,
     permissions: carActualPermissions,
   }),
-  withSearch,
 )(CarForm);

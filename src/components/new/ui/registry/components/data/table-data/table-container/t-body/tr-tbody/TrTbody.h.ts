@@ -20,7 +20,7 @@ export type DipatchPropsTrTbody = {
 
 export interface OwnPropsTrTbody {
   registryKey: string;
-  rowData: object;
+  rowData: any;
   components?: any;
   indexRow: number;
   handleClickOnRow: any;

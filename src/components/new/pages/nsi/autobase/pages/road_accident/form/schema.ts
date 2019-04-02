@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsRoadAccident } from 'components/directories/autobase/road_accident/RoadAccidentForm/@types/RoadAccident.h';
+import { PropsRoadAccident } from 'components/new/pages/nsi/autobase/pages/road_accident/form/@types/RoadAccident';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const roadAccidentFormSchema: SchemaType<RoadAccident, PropsRoadAccident> = {

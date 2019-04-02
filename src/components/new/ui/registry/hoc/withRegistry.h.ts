@@ -71,6 +71,7 @@ export type TypeFields<F extends any> = {
     | 'array'
     | 'workOrNot'
     | 'yesOrNot'
+    | 'road_accident_driver_fio'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {

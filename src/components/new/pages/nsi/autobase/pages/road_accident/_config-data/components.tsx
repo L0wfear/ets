@@ -1,15 +1,17 @@
 import * as React from 'react';
-import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegistry';
+import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "hidden_road_accident" */ 'components/directories/autobase/road_accident/RoadAccidentList')
+  import(/* webpackChunkName: "road_accident" */ 'components/new/pages/nsi/autobase/pages/road_accident/RoadAccidentList')
 ));
 
-export default (props) => (
+const RoadAccidentLazy = (props) => (
   <ErrorBoundaryRegistry>
     <React.Suspense fallback={<TemplateRegistry />}>
       <Component {...props}/>
     </React.Suspense>
   </ErrorBoundaryRegistry>
 );
+
+export default RoadAccidentLazy;

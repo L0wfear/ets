@@ -1,23 +1,16 @@
 import {
   RoadAccident,
-  RoadAccidentCause,
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import {
-  DefaultSelectListMapper,
-  DefaultSelectOption,
-} from 'components/ui/input/ReactSelect/utils';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetRoadAccidentCauseType } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/@types';
 import { GetDriver } from 'redux-main/reducers/modules/employee/driver/@types';
-import { Driver } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type PropsRoadAccidentFormWrap = {
-  showForm: boolean;
+export type PropsRoadAccidentFormLazy = {
   element: RoadAccident | null;
-  car_id: number;
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -35,14 +28,16 @@ export type DispatchPropsRoadAccident = {
 export type OwnRoadAccidentProps = {
   element: RoadAccident | null;
   handleHide: OnFormHideType;
-  car_id: number;
+
   page: string;
   path?: string;
 };
 
-export type PropsRoadAccidentWithForm = StatePropsRoadAccident &
-  DispatchPropsRoadAccident &
-  OwnRoadAccidentProps;
+export type PropsRoadAccidentWithForm = (
+  StatePropsRoadAccident
+  & DispatchPropsRoadAccident
+  & OwnRoadAccidentProps
+) & WithSearchProps;
 
 export type PropsRoadAccident = OutputWithFormProps<
   PropsRoadAccidentWithForm,
@@ -50,11 +45,3 @@ export type PropsRoadAccident = OutputWithFormProps<
   [RoadAccident],
   any
 >;
-export type StateRoadAccident = {
-  roadAccidentCauseOptions: DefaultSelectListMapper<RoadAccidentCause>;
-  driversOptions: DefaultSelectOption<
-    Driver['id'],
-    Driver['fio_license'],
-    Driver
-  >[];
-};

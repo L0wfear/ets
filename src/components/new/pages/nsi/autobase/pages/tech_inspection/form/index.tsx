@@ -21,7 +21,6 @@ const TechInspectionFormLazy: React.FC<PropsTechInspectionFormLazy> = (props) =>
         <TechInspectionFrom
           element={props.element}
           handleHide={props.onFormHide}
-          car_id={props.car_id}
 
           page={page}
           path={path}

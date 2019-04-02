@@ -15,7 +15,6 @@ export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 export type PropsTechInspectionFormLazy = {
   showForm: boolean;
   element: TechInspection | null;
-  car_id: number;
 
   onFormHide: OnFormHideType;
 
@@ -35,7 +34,6 @@ export type DispatchPropsTechInspection = {
 export type OwnTechInspectionProps = {
   element: TechInspection | null;
   handleHide: OnFormHideType;
-  car_id: number;
 
   page: string;
   path?: string;

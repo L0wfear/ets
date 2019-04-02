@@ -37,7 +37,6 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
     formState: state,
     formErrors: errors,
     params,
-    car_id,
     page,
     path,
   } = props;
@@ -119,7 +118,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <Row>
           <Col md={12}>
-            {IS_CREATING && !car_id && (
+            {IS_CREATING && !car_actual_asuods_id && (
               <ExtField
                 id="car_id"
                 type="select"

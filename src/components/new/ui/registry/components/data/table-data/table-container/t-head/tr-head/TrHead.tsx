@@ -70,16 +70,11 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
 }
 
 export default compose<PropsTrHead, OwnPropsTrHead>(
-  connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, MergedPropsTrHead, ReduxState>(
+  withSearch,
+  connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, ReduxState>(
     (state) => ({
       STRUCTURES: getSessionStructuresOptions(state),
       userData: getSessionState(state).userData,
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(TrHead);

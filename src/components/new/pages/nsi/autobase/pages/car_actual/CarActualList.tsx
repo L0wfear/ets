@@ -54,7 +54,7 @@ export default compose<CarActualListProps, CarActualListOwnProps>(
     page: config.registryKey,
     typePreloader: 'mainpage',
   }),
-  connect<CarActualListStateProps, CarActualListDispatchProps, CarActualListOwnProps, CarActualListMergedProps, ReduxState>(
+  connect<CarActualListStateProps, CarActualListDispatchProps, CarActualListOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (
@@ -68,9 +68,5 @@ export default compose<CarActualListProps, CarActualListOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(CarActualList);

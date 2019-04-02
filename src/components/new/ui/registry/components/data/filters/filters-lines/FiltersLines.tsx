@@ -159,13 +159,9 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
 });
 
 export default compose<any, any>(
+  withSearch,
   connect(
     mapStateToProps,
     mapDispatchToProps,
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(FiltersLines);

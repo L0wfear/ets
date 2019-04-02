@@ -9,6 +9,8 @@ import { getFilterData } from 'components/new/ui/registry/module/selectors-regis
 import Filters from 'components/new/ui/registry/components/data/filters/Filters';
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
 
 type PropsFiltersWrap = {
   registryKey: string;
@@ -55,16 +57,12 @@ class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
   }
 }
 
-const mapStateToProps = (state, { registryKey }) => ({
-  isOpen: getFilterData(state.registry, registryKey).isOpen,
-  rowFields: getListData(state.registry, registryKey).meta.rowFields,
-});
-
-export default connect<any, any, any, any, ReduxState>(
-  mapStateToProps,
-  null,
-  null,
-  {
-    pure: false,
-  },
+export default compose<any, any>(
+  withSearch,
+  connect<any, any, any, ReduxState>(
+    (state, { registryKey }) => ({
+      isOpen: getFilterData(state.registry, registryKey).isOpen,
+      rowFields: getListData(state.registry, registryKey).meta.rowFields,
+    }),
+  ),
 )(FiltersWrap);

@@ -51,11 +51,12 @@ const TechInspectionList: React.FC<TechInspectionListProps> = (props) => {
 };
 
 export default compose<TechInspectionListProps, TechInspectionListOwnProps>(
+  withSearch,
   withPreloader({
     page: getToConfig().registryKey,
     typePreloader: 'mainpage',
   }),
-  connect<TechInspectionListStateProps, TechInspectionListDispatchProps, TechInspectionListOwnProps, TechInspectionListMergedProps, ReduxState>(
+  connect<TechInspectionListStateProps, TechInspectionListDispatchProps, TechInspectionListOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (
@@ -69,10 +70,5 @@ export default compose<TechInspectionListProps, TechInspectionListOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(TechInspectionList);

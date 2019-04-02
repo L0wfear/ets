@@ -53,7 +53,8 @@ export default compose<ButtonCreateInspectAutobaseProps, ButtonCreateInspectAuto
   withRequirePermissionsNew({
     permissions: inspectAutobasePermissions.create,
   }),
-  connect<ButtonCreateInspectAutobaseStateProps, ButtonCreateInspectAutobaseDispatchProps, ButtonCreateInspectAutobaseOwnProps, any, ReduxState>(
+  withSearch,
+  connect<ButtonCreateInspectAutobaseStateProps, ButtonCreateInspectAutobaseDispatchProps, ButtonCreateInspectAutobaseOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       actionCreateInspect: (...arg) => (
@@ -62,10 +63,5 @@ export default compose<ButtonCreateInspectAutobaseProps, ButtonCreateInspectAuto
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCreateInspectAutobase);

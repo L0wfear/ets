@@ -35,18 +35,13 @@ const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (p
 };
 
 export default compose<ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutobaseOwnProps>(
+  withSearch,
   withRequirePermissionsNew({
     permissions: inspectAutobasePermissions.update,
   }),
-  connect<ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps, {}, ReduxState>(
+  connect<ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps, ReduxState>(
     (state, { loadingPage }) => ({
       lastConductingInspect: getLastConductingInspectAutobase(getListData(getRegistryState(state), loadingPage)),
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCloseInspectAutobase);

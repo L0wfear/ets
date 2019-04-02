@@ -66,18 +66,14 @@ class ButtonRead extends React.Component<ButtonReadProps, {}> {
 }
 
 export default compose<ButtonReadProps, ButtonReadOwnProps>(
-  connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, {}, ReduxState>(
+  withSearch,
+  connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
   withRequirePermissionsNew(),
-  connect<ButtonReadStateProps, ButtonReadDispatchProps, ButtonReadOwnProps, ButtonReadMergeProps, ReduxState>(
+  connect<ButtonReadStateProps, ButtonReadDispatchProps, ButtonReadOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
@@ -90,10 +86,5 @@ export default compose<ButtonReadProps, ButtonReadOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonRead);

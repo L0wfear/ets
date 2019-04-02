@@ -98,7 +98,8 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
 }
 
 export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnProps>(
-  connect<InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps, any, ReduxState>(
+  withSearch,
+  connect<InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (config) => (
@@ -117,10 +118,5 @@ export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnPro
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(InspectionAutobaseData);

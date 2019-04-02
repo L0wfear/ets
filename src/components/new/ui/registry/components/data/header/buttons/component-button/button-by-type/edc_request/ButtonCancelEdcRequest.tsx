@@ -57,10 +57,11 @@ class ButtonCancelEdcRequest extends React.Component<ButtonCancelEdcRequestProps
 }
 
 export default compose<ButtonCancelEdcRequestProps, ButtonCancelEdcRequestOwnProps>(
+  withSearch,
   withRequirePermissionsNew({
     permissions: missionPermissions.update,
   }),
-  connect<ButtonCancelEdcRequestStateProps, ButtonCancelEdcRequestDispatchProps, ButtonCancelEdcRequestOwnProps, ButtonCancelEdcRequestMergeProps, ReduxState>(
+  connect<ButtonCancelEdcRequestStateProps, ButtonCancelEdcRequestDispatchProps, ButtonCancelEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
@@ -73,10 +74,5 @@ export default compose<ButtonCancelEdcRequestProps, ButtonCancelEdcRequestOwnPro
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCancelEdcRequest);

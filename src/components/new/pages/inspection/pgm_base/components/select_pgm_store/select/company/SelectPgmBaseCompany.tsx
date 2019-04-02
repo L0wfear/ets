@@ -115,15 +115,10 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
 };
 
 export default compose<SelectPgmBaseCompanyProps, SelectPgmBaseCompanyOwnProps>(
-  connect<SelectPgmBaseCompanyStateProps, SelectPgmBaseCompanyDispatchProps, SelectPgmBaseCompanyOwnProps, SelectPgmBaseCompanyMergeProps, ReduxState>(
+  withSearch,
+  connect<SelectPgmBaseCompanyStateProps, SelectPgmBaseCompanyDispatchProps, SelectPgmBaseCompanyOwnProps, ReduxState>(
     (state) => ({
       companyList: getInspectPgmBase(state).companyList,
     }),
-    null,
-    null,
-    {
-      pure: false,  // для react-router
-    },
   ),
-  withSearch,
 )(SelectPgmBaseCompany);

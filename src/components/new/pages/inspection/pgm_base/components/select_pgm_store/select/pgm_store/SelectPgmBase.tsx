@@ -117,16 +117,11 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
 };
 
 export default compose<SelectPgmBaseProps, SelectPgmBaseOwnProps>(
-  connect<SelectPgmBaseStateProps, SelectPgmBaseDispatchProps, SelectPgmBaseOwnProps, SelectPgmBaseMergeProps, ReduxState>(
+  withSearch,
+  connect<SelectPgmBaseStateProps, SelectPgmBaseDispatchProps, SelectPgmBaseOwnProps, ReduxState>(
     (state) => ({
       companyList: getInspectPgmBase(state).companyList,
       pgmBaseList: getInspectPgmBase(state).pgmBaseList,
     }),
-    null,
-    null,
-    {
-      pure: false,  // для react-router
-    },
   ),
-  withSearch,
 )(SelectPgmBase);

@@ -98,18 +98,14 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, {}, ReduxState>(
+  withSearch,
+  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
   withRequirePermissionsNew(),
-  connect<ButtonRemoveStateProps, ButtonRemoveDispatchProps, ButtonRemoveOwnProps, ButtonRemoveMergeProps, ReduxState>(
+  connect<ButtonRemoveStateProps, ButtonRemoveDispatchProps, ButtonRemoveOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
@@ -127,10 +123,5 @@ export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonRemove);

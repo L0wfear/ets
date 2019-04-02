@@ -82,15 +82,10 @@ const SelectCarpoolCompany: React.FC<SelectCarpoolCompanyProps> = (props) => {
 };
 
 export default compose<SelectCarpoolCompanyProps, SelectCarpoolCompanyOwnProps>(
-  connect<SelectCarpoolCompanyStateProps, SelectCarpoolCompanyDispatchProps, SelectCarpoolCompanyOwnProps, SelectCarpoolCompanyMergeProps, ReduxState>(
+  withSearch,
+  connect<SelectCarpoolCompanyStateProps, SelectCarpoolCompanyDispatchProps, SelectCarpoolCompanyOwnProps, ReduxState>(
     (state) => ({
       companyList: getInspectAutobase(state).companyList,
     }),
-    null,
-    null,
-    {
-      pure: false,  // для react-router
-    },
   ),
-  withSearch,
 )(SelectCarpoolCompany);

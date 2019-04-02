@@ -17,6 +17,7 @@ import ButtonContinueInspectAutobase from './components/button_inspect_autobase/
 import ButtonCreateInspectAutobase from './components/button_inspect_autobase/ButtonCreateInspectAutobase';
 import { getLastConductingInspectAutobase, getLastCompletedInspectAutobase } from '../../../autobase/@selectors';
 import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;
@@ -160,15 +161,11 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
 };
 
 export default compose<InspectionActionMenuMenuProps, InspectionActionMenuMenuOwnProps>(
-  connect<InspectionActionMenuMenuStateProps, DispatchProp, InspectionActionMenuMenuOwnProps, any, ReduxState>(
+  withSearch,
+  connect<InspectionActionMenuMenuStateProps, DispatchProp, InspectionActionMenuMenuOwnProps, ReduxState>(
     (state, { loadingPage }) => ({
       lastConductingInspect: getLastConductingInspectAutobase(getListData(getRegistryState(state), loadingPage)),
       lastCompletedInspect: getLastCompletedInspectAutobase(getListData(getRegistryState(state), loadingPage)),
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
 )(InspectionActionMenuMenu);

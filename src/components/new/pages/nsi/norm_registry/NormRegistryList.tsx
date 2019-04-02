@@ -53,7 +53,7 @@ export default compose<NormRegistryListProps, NormRegistryListOwnProps>(
     page: config.registryKey,
     typePreloader: 'mainpage',
   }),
-  connect<NormRegistryListStateProps, NormRegistryListDispatchProps, NormRegistryListOwnProps, NormRegistryListMergedProps, ReduxState>(
+  connect<NormRegistryListStateProps, NormRegistryListDispatchProps, NormRegistryListOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (
@@ -67,9 +67,5 @@ export default compose<NormRegistryListProps, NormRegistryListOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(NormRegistryList);

@@ -6,6 +6,7 @@ import SelectPgmBaseOkrug from './select/okrug/SelectPgmBaseOkrug';
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import SelectPgmBaseCompany from './select/company/SelectPgmBaseCompany';
 import SelectPgmBase from './select/pgm_store/SelectPgmBase';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 type InspectionPgmBaseSelectCarpoolStateProps = {};
 type InspectionPgmBaseSelectCarpoolDispatchProps = {
@@ -48,7 +49,8 @@ const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps>
 };
 
 export default compose<InspectionPgmBaseSelectCarpoolProps, InspectionPgmBaseSelectCarpoolOwnProps>(
-  connect<InspectionPgmBaseSelectCarpoolStateProps, InspectionPgmBaseSelectCarpoolDispatchProps, InspectionPgmBaseSelectCarpoolOwnProps, InspectionPgmBaseSelectCarpoolMergedProps, ReduxState>(
+  withSearch,
+  connect<InspectionPgmBaseSelectCarpoolStateProps, InspectionPgmBaseSelectCarpoolDispatchProps, InspectionPgmBaseSelectCarpoolOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       actionGetAndSetInStoreCompany: (...arg) => (
@@ -67,9 +69,5 @@ export default compose<InspectionPgmBaseSelectCarpoolProps, InspectionPgmBaseSel
         )
       ),
     }),
-    null,
-    {
-      pure: false, // для react-router
-    },
   ),
 )(InspectionPgmBaseSelectData);

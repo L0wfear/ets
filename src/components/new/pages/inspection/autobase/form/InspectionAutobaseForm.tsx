@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormMergeProps, InspectionAutobaseFormStateProps } from 'components/new/pages/inspection/autobase/form/@types/InspectionAutobaseForm';
+import { InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormStateProps } from 'components/new/pages/inspection/autobase/form/@types/InspectionAutobaseForm';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
 import { getInspectAutobase } from 'redux-main/reducers/selectors';
@@ -131,11 +131,12 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
 };
 
 export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps>(
+  withSearch,
   withPreloader({
     page: loadingPage,
     typePreloader: 'mainpage',
   }),
-  connect<InspectionAutobaseFormStateProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormMergeProps, ReduxState>(
+  connect<InspectionAutobaseFormStateProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormOwnProps, ReduxState>(
     (state) => ({
       inspectAutobaseList: getInspectAutobase(state).inspectAutobaseList,
     }),
@@ -161,10 +162,5 @@ export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnPro
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(InspectionAutobaseList);

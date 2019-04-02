@@ -14,6 +14,7 @@ import {
 } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'redux';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Component) => (
   compose(
@@ -21,7 +22,8 @@ const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Componen
       page: configData.registryKey,
       typePreloader: 'mainpage',
     }),
-    connect<any, any, any, any, ReduxState>(
+    withSearch,
+    connect<any, any, any, ReduxState>(
       null,
       (dispatch: any) => ({
         registryAddInitialData: (config: TypeConfigData<F>) => (
@@ -35,10 +37,6 @@ const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Componen
           )
         ),
       }),
-      null,
-      {
-        pure: false,
-      },
     ),
   )(
     class RegistryWrap extends React.Component<PropsRegistryWrap, StateRegistryWrap> {

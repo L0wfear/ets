@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps, InspectionPgmBaseFormDispatchProps, InspectionPgmBaseFormMergeProps, InspectionPgmBaseFormStateProps } from 'components/new/pages/inspection/pgm_base/form/@types/InspectionPgmBaseForm';
+import { InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps, InspectionPgmBaseFormDispatchProps, InspectionPgmBaseFormStateProps } from 'components/new/pages/inspection/pgm_base/form/@types/InspectionPgmBaseForm';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
 import { getInspectPgmBase } from 'redux-main/reducers/selectors';
@@ -150,7 +150,8 @@ export default compose<InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps
     page: loadingPage,
     typePreloader: 'mainpage',
   }),
-  connect<InspectionPgmBaseFormStateProps, InspectionPgmBaseFormDispatchProps, InspectionPgmBaseFormOwnProps, InspectionPgmBaseFormMergeProps, ReduxState>(
+  withSearch,
+  connect<InspectionPgmBaseFormStateProps, InspectionPgmBaseFormDispatchProps, InspectionPgmBaseFormOwnProps, ReduxState>(
     (state) => ({
       inspectPgmBaseList: getInspectPgmBase(state).inspectPgmBaseList,
       pgmBaseList: getInspectPgmBase(state).pgmBaseList,
@@ -177,10 +178,5 @@ export default compose<InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(InspectionPgmBaseList);

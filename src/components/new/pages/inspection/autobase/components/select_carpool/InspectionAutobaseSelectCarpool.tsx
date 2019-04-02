@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 import SelectCarpoolCompany from './select_carpool/company/SelectCarpoolCompany';
 import SelectCarpool from './select_carpool/carpool/SelectCarpool';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolProps> = (props) => {
   React.useEffect(
@@ -35,6 +36,7 @@ const InspectionAutobaseSelectCarpool: React.FC<InspectionAutobaseSelectCarpoolP
 };
 
 export default compose<InspectionAutobaseSelectCarpoolProps, InspectionAutobaseSelectCarpoolOwnProps>(
+  withSearch,
   connect<InspectionAutobaseSelectCarpoolStateProps, InspectionAutobaseSelectCarpoolDispatchProps, InspectionAutobaseSelectCarpoolOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
@@ -54,9 +56,5 @@ export default compose<InspectionAutobaseSelectCarpoolProps, InspectionAutobaseS
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(InspectionAutobaseSelectCarpool);

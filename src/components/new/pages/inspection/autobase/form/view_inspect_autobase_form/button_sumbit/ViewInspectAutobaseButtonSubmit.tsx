@@ -10,6 +10,7 @@ import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
   actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobase>;
@@ -100,7 +101,8 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
 };
 
 export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobaseButtonSubmitOwnProps>(
-  connect<{}, ViewInspectAutobaseButtonSubmitDispatchProps, ViewInspectAutobaseButtonSubmitOwnProps, {}, ReduxState>(
+  withSearch,
+  connect<{}, ViewInspectAutobaseButtonSubmitDispatchProps, ViewInspectAutobaseButtonSubmitOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       actionUpdateInspectAutobase: (...arg) => (
@@ -124,9 +126,5 @@ export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobase
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(ViewInspectAutobaseButtonSubmit);

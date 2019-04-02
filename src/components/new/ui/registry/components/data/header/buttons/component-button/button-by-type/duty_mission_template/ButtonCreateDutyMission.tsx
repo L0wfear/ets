@@ -63,10 +63,11 @@ const ButtonCreateDutyMission: React.FC<ButtonCreateDutyMissionProps> = (props) 
 };
 
 export default compose<ButtonCreateDutyMissionProps, ButtonCreateDutyMissionOwnProps>(
+  withSearch,
   withRequirePermissionsNew({
     permissions: dutyMissionTemplatePermissions.create,
   }),
-  connect<ButtonCreateDutyMissionStateProps, ButtonCreateDutyMissionDispatchProps, ButtonCreateDutyMissionOwnProps, ButtonCreateDutyMissionMergeProps, ReduxState>(
+  connect<ButtonCreateDutyMissionStateProps, ButtonCreateDutyMissionDispatchProps, ButtonCreateDutyMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,
@@ -78,10 +79,5 @@ export default compose<ButtonCreateDutyMissionProps, ButtonCreateDutyMissionOwnP
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCreateDutyMission);

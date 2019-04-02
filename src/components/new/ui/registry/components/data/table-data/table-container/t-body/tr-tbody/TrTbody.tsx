@@ -189,7 +189,8 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 }
 
 export default compose<PropsTrTbody, OwnPropsTrTbody>(
-  connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, {}, ReduxState>(
+  withSearch,
+  connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, ReduxState>(
     (state, { registryKey }) => ({
       STRUCTURES: getSessionStructuresOptions(state),
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
@@ -210,13 +211,8 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
   withRequirePermissionsNew({
     withIsPermittedProps: true,
   }),
-  withSearch,
 )(TrTbody);

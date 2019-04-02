@@ -204,7 +204,8 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
 };
 
 export default compose<any, any>(
-  connect<null, EdcRequestFormLazyDispatchProps, any, any, ReduxState>(
+  withFormRegistrySearch,
+  connect<null, EdcRequestFormLazyDispatchProps, any, ReduxState>(
     null,
     (dispatch: any) => ({
       actionSetDependenceEdcRequestForMission: (...arg) => (
@@ -218,10 +219,5 @@ export default compose<any, any>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withFormRegistrySearch,
 )(EdcRequestFormLazy);

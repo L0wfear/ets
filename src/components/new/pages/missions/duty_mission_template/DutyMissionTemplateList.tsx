@@ -11,7 +11,6 @@ import {
   DutyMissionTemplateListOwnProps,
   DutyMissionTemplateListDispatchProps,
   DutyMissionTemplateListStateProps,
-  DutyMissionTemplateListMergedProps,
 } from 'components/new/pages/missions/duty_mission_template/DutyMissionTemplateList.h';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -47,7 +46,7 @@ export default compose<DutyMissionTemplateListProps, DutyMissionTemplateListOwnP
     page: config.registryKey,
     typePreloader: 'mainpage',
   }),
-  connect<DutyMissionTemplateListStateProps, DutyMissionTemplateListDispatchProps, DutyMissionTemplateListOwnProps, DutyMissionTemplateListMergedProps, ReduxState>(
+  connect<DutyMissionTemplateListStateProps, DutyMissionTemplateListDispatchProps, DutyMissionTemplateListOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (
@@ -61,9 +60,5 @@ export default compose<DutyMissionTemplateListProps, DutyMissionTemplateListOwnP
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(DutyMissionTemplateList);

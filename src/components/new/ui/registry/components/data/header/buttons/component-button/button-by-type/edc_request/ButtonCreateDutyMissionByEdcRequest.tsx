@@ -60,10 +60,11 @@ class ButtonCreateDutyMissionByEdcRequest extends React.Component<ButtonCreateDu
 }
 
 export default compose<ButtonCreateDutyMissionByEdcRequestProps, ButtonCreateDutyMissionByEdcRequestOwnProps>(
+  withSearch,
   withRequirePermissionsNew({
     permissions: dutyMssionPermissions.update,
   }),
-  connect<ButtonCreateDutyMissionByEdcRequestStateProps, ButtonCreateDutyMissionByEdcRequestDispatchProps, ButtonCreateDutyMissionByEdcRequestOwnProps, ButtonCreateDutyMissionByEdcRequestMergeProps, ReduxState>(
+  connect<ButtonCreateDutyMissionByEdcRequestStateProps, ButtonCreateDutyMissionByEdcRequestDispatchProps, ButtonCreateDutyMissionByEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
@@ -76,10 +77,5 @@ export default compose<ButtonCreateDutyMissionByEdcRequestProps, ButtonCreateDut
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCreateDutyMissionByEdcRequest);

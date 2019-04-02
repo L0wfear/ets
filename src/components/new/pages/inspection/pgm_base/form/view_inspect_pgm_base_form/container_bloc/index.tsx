@@ -10,6 +10,8 @@ import { ReduxState } from 'redux-main/@types/state';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
 
 type ContainerBlockStateProps = {};
 type ContainerBlockDispatchProps = {
@@ -29,7 +31,7 @@ type ContainerBlockMergedProps = (
   & ContainerBlockDispatchProps
   & ContainerBlockOwnProps
 );
-type ContainerBlockProps = ContainerBlockMergedProps;
+type ContainerBlockProps = ContainerBlockMergedProps & WithSearchProps;
 
 const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
   const [selectedContainer, setSelectedContainer] = React.useState(null);
@@ -161,22 +163,21 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
   );
 };
 
-export default connect<ContainerBlockStateProps, ContainerBlockDispatchProps, ContainerBlockOwnProps, ContainerBlockMergedProps, ReduxState>(
-  null,
-  (dispatch: any) => ({
-    actionGetInspectContainer: (...arg) => (
-      dispatch(
-        inspectContainerActions.actionGetInspectContainer(...arg),
-      )
-    ),
-    actionRemoveInspectContainer: (...arg) => (
-      dispatch(
-        inspectContainerActions.actionRemoveInspectContainer(...arg),
-      )
-    ),
-  }),
-  null,
-  {
-    pure: false,
-  },
+export default compose<ContainerBlockProps, ContainerBlockOwnProps>(
+  withSearch,
+  connect<ContainerBlockStateProps, ContainerBlockDispatchProps, ContainerBlockOwnProps, ReduxState>(
+    null,
+    (dispatch: any) => ({
+      actionGetInspectContainer: (...arg) => (
+        dispatch(
+          inspectContainerActions.actionGetInspectContainer(...arg),
+        )
+      ),
+      actionRemoveInspectContainer: (...arg) => (
+        dispatch(
+          inspectContainerActions.actionRemoveInspectContainer(...arg),
+        )
+      ),
+    }),
+  ),
 )(ContainerBlock);

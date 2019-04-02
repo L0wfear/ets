@@ -80,15 +80,10 @@ const SelectPgmBaseOkrug: React.FC<SelectPgmBaseOkrugProps> = (props) => {
 };
 
 export default compose<SelectPgmBaseOkrugProps, SelectPgmBaseOkrugOwnProps>(
-  connect<SelectPgmBaseOkrugStateProps, SelectPgmBaseOkrugDispatchProps, SelectPgmBaseOkrugOwnProps, SelectPgmBaseOkrugMergeProps, ReduxState>(
+  withSearch,
+  connect<SelectPgmBaseOkrugStateProps, SelectPgmBaseOkrugDispatchProps, SelectPgmBaseOkrugOwnProps, ReduxState>(
     (state) => ({
       companyList: getInspectPgmBase(state).companyList,
     }),
-    null,
-    null,
-    {
-      pure: false,  // для react-router
-    },
   ),
-  withSearch,
 )(SelectPgmBaseOkrug);

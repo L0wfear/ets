@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import InspectionActionMenu from '../action_menu/InspectionActionMenu';
+import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 
 class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps, { isLoaded: boolean }> {

@@ -1665,6 +1665,7 @@ class WaybillForm extends Form {
                             <BtnGroupWrapper>
                               <BtnPart>
                                 <WaybillEquipmentButton
+                                  id="active-equipment_fuel"
                                   active={
                                     isBoolean(state.equipment_fuel)
                                     && state.equipment_fuel
@@ -1676,6 +1677,7 @@ class WaybillForm extends Form {
                               </BtnPart>
                               <BtnPart>
                                 <WaybillEquipmentButton
+                                  id="not_active-equipment_fuel"
                                   active={
                                     isBoolean(state.equipment_fuel)
                                     && !state.equipment_fuel

@@ -28,6 +28,9 @@ function StringField(props) {
   const id = props.id
     ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
     : undefined;
+  const value_id = props.id
+    ? `${modalKey ? `${modalKey}-` : ''}${props.id}-value`
+    : undefined;
 
   if (isLoading) {
     return (
@@ -53,7 +56,7 @@ function StringField(props) {
     <Div hidden={hidden} style={wrapStyle || {}}>
       <div className="form-group">
         {typeof label === 'string' && (
-          <label className="control-label" id={id}>
+          <label className="control-label" id={id} htmlFor={value_id}>
             <span>{label}</span>
           </label>
         )}
@@ -62,7 +65,7 @@ function StringField(props) {
           disabled={disabled}
           className={inputClassName}
           {...mainProps}
-          id={id}
+          id={value_id}
           value={value}
         />
       </div>
@@ -75,10 +78,12 @@ function StringField(props) {
   ) : (
     <Div hidden={hidden} className={className}>
       {typeof label === 'string' && (
-        <label style={{ paddingTop: 5, paddingRight: 5 }}>{label}</label>
+        <label style={{ paddingTop: 5, paddingRight: 5 }} htmlFor={value_id}>
+          {label}
+        </label>
       )}
       {!inline && <br />}
-      <span id={id}>{value}</span>
+      <span id={value_id}>{value}</span>
     </Div>
   );
 }

@@ -11,6 +11,8 @@ import {
   StateTbody,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/Tbody.h';
 import { ReduxState } from 'redux-main/@types/state';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
 
 class Tbody extends React.Component<PropsTbody, StateTbody> {
   render() {
@@ -41,15 +43,13 @@ class Tbody extends React.Component<PropsTbody, StateTbody> {
   }
 }
 
-export default connect<StatePropsTbody, DispatchPropsTbody, OwnPropsTbody, StatePropsTbody & DispatchPropsTbody, ReduxState>(
-  (state, { registryKey }) => ({
-    processedArray: getListData(state.registry, registryKey).processed.processedArray,
-    paginator: getListData(state.registry, registryKey).paginator,
-    uniqKey: getListData(state.registry, registryKey).data.uniqKey,
-  }),
-  null,
-  null,
-  {
-    pure: false,
-  },
+export default compose<PropsTbody, OwnPropsTbody>(
+  withSearch,
+  connect<StatePropsTbody, DispatchPropsTbody, OwnPropsTbody, ReduxState>(
+    (state, { registryKey }) => ({
+      processedArray: getListData(state.registry, registryKey).processed.processedArray,
+      paginator: getListData(state.registry, registryKey).paginator,
+      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+    }),
+  ),
 )(Tbody);

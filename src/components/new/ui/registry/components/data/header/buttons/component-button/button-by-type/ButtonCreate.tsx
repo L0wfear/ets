@@ -50,18 +50,14 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
 };
 
 export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, {}, ReduxState>(
+  withSearch,
+  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
   withRequirePermissionsNew(),
-  connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ButtonCreateMergeProps, ReduxState>(
+  connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
     }),
@@ -72,10 +68,5 @@ export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCreate);

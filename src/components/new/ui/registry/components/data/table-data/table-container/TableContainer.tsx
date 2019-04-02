@@ -11,6 +11,8 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
 
 type TableContainerStateProps = {
   fixedWidth: OneRegistryData['list']['data']['fixedWidth'];
@@ -27,7 +29,7 @@ type TableContainerMergeProps = (
   & TableContainerOwnProps
 );
 
-type TableContainerProps = TableContainerMergeProps;
+type TableContainerProps = TableContainerMergeProps & WithSearchProps;
 
 const TableContainer: React.FC<TableContainerProps> = (props) => {
   React.useEffect(
@@ -53,13 +55,11 @@ const TableContainer: React.FC<TableContainerProps> = (props) => {
   );
 };
 
-export default connect<TableContainerStateProps, TableContainerDispatchProps, TableContainerOwnProps, TableContainerMergeProps, ReduxState>(
-  (state, { registryKey }) => ({
-    fixedWidth: getListData(state.registry, registryKey).data.fixedWidth,
-  }),
-  null,
-  null,
-  {
-    pure: false,
-  },
+export default compose<TableContainerProps, TableContainerOwnProps>(
+  withSearch,
+  connect<TableContainerStateProps, TableContainerDispatchProps, TableContainerOwnProps, ReduxState>(
+    (state, { registryKey }) => ({
+      fixedWidth: getListData(state.registry, registryKey).data.fixedWidth,
+    }),
+  ),
 )(TableContainer);

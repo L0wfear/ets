@@ -1,5 +1,6 @@
 import { HandleThunkActionCreator } from "react-redux";
 import { registryAddInitialData, registryRemoveData } from "components/new/ui/registry/module/actions-registy";
+import { WithSearchProps } from "components/new/utils/hooks/hoc/withSearch";
 
 export type EdcRequestListStateProps = {};
 export type EdcRequestListDispatchProps = {
@@ -14,4 +15,4 @@ export type EdcRequestListMergedProps = (
 );
 export type EdcRequestListProps = (
   EdcRequestListMergedProps
-);
+) & WithSearchProps;

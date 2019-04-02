@@ -2,26 +2,24 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import { InspectionPgmBaseDataRegistryProps } from './@types/InspectionPgmBaseDataRegistry';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
-export const registryKey = 'inspectPgmBase';
+export const registryKey = 'inspectionPgmBase';
 
-export const getInspectionPgmBaseDataRegistryConfig = (props: InspectionPgmBaseDataRegistryProps): TypeConfigData<InspectPgmBase> => {
+export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeConfigData<InspectPgmBase> => {
   return {
     noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'inspect/registry',
         payload: {
-          base_id: getNumberValueFromSerch(props.searchState.pgmBaseId),
+          base_id: pgmBaseId,
           type: 'pgm_base',
         },
       },
       getBlobData: {
         entity: 'inspect/registry',
         payload: {
-          base_id: getNumberValueFromSerch(props.searchState.pgmBaseId),
+          base_id: pgmBaseId,
           type: 'pgm_base',
           format: 'xls',
         },

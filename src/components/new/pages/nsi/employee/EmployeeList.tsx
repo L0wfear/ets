@@ -18,7 +18,6 @@ import {
   EmployeeListOwnProps,
   EmployeeListDispatchProps,
   EmployeeListStateProps,
-  EmployeeListMergedProps,
 } from 'components/new/pages/nsi/employee/EmployeeList.h';
 
 const EmployeeList: React.FC<EmployeeListProps> = (props) => {
@@ -46,7 +45,7 @@ export default compose<EmployeeListProps, EmployeeListOwnProps>(
     page: config.registryKey,
     typePreloader: 'mainpage',
   }),
-  connect<EmployeeListStateProps, EmployeeListDispatchProps, EmployeeListOwnProps, EmployeeListMergedProps, ReduxState>(
+  connect<EmployeeListStateProps, EmployeeListDispatchProps, EmployeeListOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (
@@ -60,9 +59,5 @@ export default compose<EmployeeListProps, EmployeeListOwnProps>(
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(EmployeeList);

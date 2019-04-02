@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormMergeProps, InspectionAutobaseFormStateProps } from 'components/new/pages/inspection/autobase/form/@types/InspectionAutobaseForm';
+import { InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormStateProps } from 'components/new/pages/inspection/autobase/form/@types/InspectionAutobaseForm';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
 import { getInspectAutobase } from 'redux-main/reducers/selectors';
@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { PopupBottomForm, HiddenPageEtsContainer } from './styled/InspectionAutobaseFormStyled';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
@@ -21,7 +20,6 @@ import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autob
 import { defaultInspectAutobaseData, makeFilesForFront } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 
 const loadingPage = 'InspectionAutobaseForm';
-const registryKey = 'inspectAutobase';
 
 const getSelectedInspectAutobase = async (props: InspectionAutobaseFormProps, inspectAutobaseId: InspectAutobase['id']) => {
   const selectedInspectAutobaseNew = await props.actionGetInspectAutobaseById(
@@ -68,10 +66,10 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
 
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
-      props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
+      props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : false);
 
       if (isBoolean(isSubmitted) && isSubmitted) {
-        const { payload } = await props.registryLoadDataByKey(registryKey);
+        const { payload } = await props.registryLoadDataByKey(props.loadingPage);
         const array = get(payload, `list.data.array`, []);
 
         const inspectAutobaseListNew = array.map((inspectAutobase: InspectAutobase) => {
@@ -133,18 +131,19 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
 };
 
 export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnProps>(
+  withSearch,
   withPreloader({
     page: loadingPage,
     typePreloader: 'mainpage',
   }),
-  connect<InspectionAutobaseFormStateProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormOwnProps, InspectionAutobaseFormMergeProps, ReduxState>(
+  connect<InspectionAutobaseFormStateProps, InspectionAutobaseFormDispatchProps, InspectionAutobaseFormOwnProps, ReduxState>(
     (state) => ({
       inspectAutobaseList: getInspectAutobase(state).inspectAutobaseList,
     }),
     (dispatch: any) => ({
       actionGetInspectAutobaseById: (...arg) => (
         dispatch(
-          inspectionActions.actionGetInspectAutobaseById(...arg),
+          inspectionAutobaseActions.actionGetInspectAutobaseById(...arg),
         )
       ),
       actionUnselectSelectedRowToShow: (...arg) => (
@@ -163,10 +162,5 @@ export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnPro
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(InspectionAutobaseList);

@@ -3,7 +3,6 @@ import {
   TitleForm,
 } from './styled/ViewInspectPgmBaseStyled';
 import { Button, Row, Col } from 'react-bootstrap';
-import { BoxContainer } from 'components/new/pages/inspection/pgm_base/components/data/styled/InspectionPgmBaseData';
 import IAVisibleWarning from 'components/new/pages/inspection/pgm_base/components/vsible_warning/IAVisibleWarning';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
@@ -23,6 +22,7 @@ import {
 import { get } from 'lodash';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import ContainerBlock from './container_bloc';
+import { BoxContainer } from '../../../autobase/components/data/styled/InspectionAutobaseData';
 
 type InitialState = {
   selectedInspectPgmBase: InspectPgmBase,

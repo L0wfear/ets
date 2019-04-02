@@ -40,12 +40,12 @@ export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAuto
 };
 
 export const actionSetInspectAutobaseInspectAutobaseList = (inspectAutobaseList: IStateInspectAutobase['inspectAutobaseList']): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectAutobase>>, ReduxState, {}, AnyAction> => (dispatch) => {
-  const lastConductingInspect = getTodayConductingInspect(inspectAutobaseList);
+  const lastConductingInspect = getTodayConductingInspectAutobase(inspectAutobaseList);
   const stateInspectAutobase = dispatch(
     actionSetInspectAutobase({
       inspectAutobaseList,
       lastConductingInspect,
-      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspect(inspectAutobaseList),
+      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspectAutobase(inspectAutobaseList),
     }),
   );
 
@@ -286,7 +286,7 @@ const isInspectAutobaseIsCompleted = ({ status }: InspectAutobase) => (
 /**
  * Получаем последнюю за текущий день закрытую испекцию
  */
-export const getTodayCompletedInspect = (data: InspectAutobase[]) => (
+export const getTodayCompletedInspectAutobase = (data: InspectAutobase[]) => (
   data.find((inspectAutobase) => (
     isInspectAutobaseIsCompleted(inspectAutobase)
     && diffDatesByDays(getDateWithMoscowTz(), inspectAutobase.date_end) === 0
@@ -299,6 +299,6 @@ export const isInspectAutobaseIsConducting = ({ status }: InspectAutobase) => (
 /**
  * Получаем последнюю открытую испекцию
  */
-export const getTodayConductingInspect = (data: InspectAutobase[]) => (
+export const getTodayConductingInspectAutobase = (data: InspectAutobase[]) => (
   data.find(isInspectAutobaseIsConducting)
 );

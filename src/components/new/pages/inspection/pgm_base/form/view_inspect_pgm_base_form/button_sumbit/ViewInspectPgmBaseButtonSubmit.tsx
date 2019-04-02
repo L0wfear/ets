@@ -8,10 +8,12 @@ import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actio
 import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
+import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 type ViewInspectPgmBaseButtonSubmitDispatchProps = {
-  actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
-  actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionActions.inspectionPgmBaseActions.actionCloseInspectPgmBase>;
+  actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
+  actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionCloseInspectPgmBase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
 };
 
@@ -89,17 +91,18 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
 };
 
 export default compose<ViewInspectPgmBaseButtonSubmitProps, ViewInspectPgmBaseButtonSubmitOwnProps>(
-  connect<{}, ViewInspectPgmBaseButtonSubmitDispatchProps, ViewInspectPgmBaseButtonSubmitOwnProps, {}, ReduxState>(
+  withSearch,
+  connect<{}, ViewInspectPgmBaseButtonSubmitDispatchProps, ViewInspectPgmBaseButtonSubmitOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       actionUpdateInspectPgmBase: (...arg) => (
         dispatch(
-          inspectionActions.inspectionPgmBaseActions.actionUpdateInspectPgmBase(...arg),
+          inspectionPgmBaseActions.actionUpdateInspectPgmBase(...arg),
         )
       ),
       actionCloseInspectPgmBase: (...arg) => (
         dispatch(
-          inspectionActions.inspectionPgmBaseActions.actionCloseInspectPgmBase(...arg),
+          inspectionPgmBaseActions.actionCloseInspectPgmBase(...arg),
         )
       ),
       actionGetBlobActInspect: (...arg) => (
@@ -108,9 +111,5 @@ export default compose<ViewInspectPgmBaseButtonSubmitProps, ViewInspectPgmBaseBu
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(ViewInspectPgmBaseButtonSubmit);

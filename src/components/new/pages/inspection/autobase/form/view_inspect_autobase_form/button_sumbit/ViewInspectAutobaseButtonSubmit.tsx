@@ -9,10 +9,12 @@ import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
+import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
-  actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionUpdateInspectAutobase>;
-  actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionCloseInspectAutobase>;
+  actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobase>;
+  actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionCloseInspectAutobase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
@@ -99,17 +101,18 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
 };
 
 export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobaseButtonSubmitOwnProps>(
-  connect<{}, ViewInspectAutobaseButtonSubmitDispatchProps, ViewInspectAutobaseButtonSubmitOwnProps, {}, ReduxState>(
+  withSearch,
+  connect<{}, ViewInspectAutobaseButtonSubmitDispatchProps, ViewInspectAutobaseButtonSubmitOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       actionUpdateInspectAutobase: (...arg) => (
         dispatch(
-          inspectionActions.actionUpdateInspectAutobase(...arg),
+          inspectionAutobaseActions.actionUpdateInspectAutobase(...arg),
         )
       ),
       actionCloseInspectAutobase: (...arg) => (
         dispatch(
-          inspectionActions.actionCloseInspectAutobase(...arg),
+          inspectionAutobaseActions.actionCloseInspectAutobase(...arg),
         )
       ),
       actionGetBlobActInspect: (...arg) => (
@@ -123,9 +126,5 @@ export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobase
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(ViewInspectAutobaseButtonSubmit);

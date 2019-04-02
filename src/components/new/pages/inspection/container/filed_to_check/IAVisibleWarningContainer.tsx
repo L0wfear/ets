@@ -62,6 +62,7 @@ const IAVisibleWarningContainer: React.FC<IAVisibleWarningProps> = (props) => {
                   <ExtField
                     id={fieldData.key}
                     type={fieldData.type}
+                    time={fieldData.time}
                     label={fieldData.title}
                     value={get(data, fieldData.key, null)}
                     boundKeys={fieldData.key}

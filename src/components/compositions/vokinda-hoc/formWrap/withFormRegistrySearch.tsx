@@ -32,6 +32,7 @@ const getPermissionsCreateReadUpdate = (permission) => {
 
 export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => (Component) => (
   compose<any, any>(
+    withSearch,
     connect<any, any, { registryKey: string }, any, ReduxState>(
       (state, { registryKey }) => ({
         getOneData: getServiceData(state.registry, registryKey).getOneData,
@@ -59,11 +60,7 @@ export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => 
         ),
       }),
       null,
-      {
-        pure: false,
-      },
     ),
-    withSearch,
     withRequirePermissionsNew(),
   )(
     ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, uniqKeyForParams, ...props}) => {

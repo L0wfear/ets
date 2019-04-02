@@ -57,10 +57,11 @@ class ButtonRejectEdcRequest extends React.Component<ButtonRejectEdcRequestProps
 }
 
 export default compose<ButtonRejectEdcRequestProps, ButtonRejectEdcRequestOwnProps>(
+  withSearch,
   withRequirePermissionsNew({
     permissions: missionPermissions.update,
   }),
-  connect<ButtonRejectEdcRequestStateProps, ButtonRejectEdcRequestDispatchProps, ButtonRejectEdcRequestOwnProps, ButtonRejectEdcRequestMergeProps, ReduxState>(
+  connect<ButtonRejectEdcRequestStateProps, ButtonRejectEdcRequestDispatchProps, ButtonRejectEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
@@ -73,10 +74,5 @@ export default compose<ButtonRejectEdcRequestProps, ButtonRejectEdcRequestOwnPro
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonRejectEdcRequest);

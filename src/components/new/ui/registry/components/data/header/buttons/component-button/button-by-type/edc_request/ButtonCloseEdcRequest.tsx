@@ -66,10 +66,11 @@ const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
 };
 
 export default compose<ButtonCloseEdcRequestProps, ButtonCloseEdcRequestOwnProps>(
+  withSearch,
   withRequirePermissionsNew({
     permissions: missionPermissions.update,
   }),
-  connect<ButtonCloseEdcRequestStateProps, ButtonCloseEdcRequestDispatchProps, ButtonCloseEdcRequestOwnProps, ButtonCloseEdcRequestMergeProps, ReduxState>(
+  connect<ButtonCloseEdcRequestStateProps, ButtonCloseEdcRequestDispatchProps, ButtonCloseEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
@@ -88,10 +89,5 @@ export default compose<ButtonCloseEdcRequestProps, ButtonCloseEdcRequestOwnProps
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-  withSearch,
 )(ButtonCloseEdcRequest);

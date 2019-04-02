@@ -675,7 +675,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
   );
 
   try {
-    Promise.all(
+    await Promise.all(
       Object.values(itemToRemove).map(async ({ [uniqKey]: uniqKeyValue }: any) => {
         let path = `${configStand.backend}/${removeOneData.entity}`;
         const payload: any = {};
@@ -708,7 +708,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
     );
     global.NOTIFICATION_SYSTEM.notify('Выбранные записи успешно удалены', 'success');
   } catch (error) {
-    global.NOTIFICATION_SYSTEM.notify('При удалении произошли ошибки', 'warning');
+    global.NOTIFICATION_SYSTEM.notify('При удалении произошла ошибка', 'warning');
   }
 
   return true;

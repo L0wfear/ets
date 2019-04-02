@@ -744,6 +744,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                   }
                   <BtnPart>
                     <Button
+                      id="mission_submit"
                       disabled={!this.props.canSave}
                       onClick={this.handleSubmitWrap}
                     >

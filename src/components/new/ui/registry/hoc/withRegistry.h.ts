@@ -116,6 +116,7 @@ export type TypeConfigData<F extends any> = {
     data?: {
       fixedWidth?: boolean;
       uniqKey?: string;
+      uniqKeyForParams?: string; // release 2.0.28
       array?: F[];
       total_count?: number;
     },

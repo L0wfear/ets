@@ -78,13 +78,17 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
   );
 
   const onRemoveContainer = React.useCallback(
-    (container) => {
-      props.actionRemoveInspectContainer(
-        container.id,
-        { page: props.page },
-      );
-      loadContainerList();
-      setSelectedContainer(null);
+    async (container) => {
+      try {
+        await props.actionRemoveInspectContainer(
+          container.id,
+          { page: props.page },
+        );
+        loadContainerList();
+        setSelectedContainer(null);
+      } catch (error) {
+        console.error(error); //tslint:disable-line
+      }
     },
     [],
   );

@@ -81,7 +81,12 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
       this.state.isLoaded
         ? (
           <>
-            <InspectionActionMenu loadingPage={this.props.loadingPage} loadRegistryData={this.loadRegistryData} />
+            <InspectionActionMenu
+              loadingPage={this.props.loadingPage}
+              loadRegistryData={this.loadRegistryData}
+              type={this.props.type}
+              triggerKey={this.props.triggerKey}
+            />
             <InspectionRegistry registryKey={this.props.loadingPage}/>
           </>
         )

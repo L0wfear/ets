@@ -8,25 +8,25 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
+import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 
 const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = (props) => {
   const {
     loadingPage,
     searchState,
+    triggerKey,
   } = props;
 
   const handleClickCreateInspectAutobase = React.useCallback(
     async () => {
-      const carpoolId = getNumberValueFromSerch(searchState.carpoolId);
+      const triggerKeyValue = getNumberValueFromSerch(searchState[triggerKey]);
       const companyId = getNumberValueFromSerch(searchState.companyId);
       try {
-        const inspectAutobase = await props.actionCreateInspectAutobase(
-          {
-            carpoolId,
-            companyId,
-          },
+        const inspectAutobase = await props.actionCreateInspect(
+          triggerKeyValue,
+          companyId,
+          props.type,
           { page: loadingPage },
         );
         await props.loadRegistryData();
@@ -39,7 +39,7 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
         await props.loadRegistryData();
       }
     },
-    [props.match.url, props.location.search],
+    [triggerKey, props.match.url, props.location.search],
   );
 
   return (
@@ -53,12 +53,12 @@ export default compose<ButtonCreateInspectAutobaseProps, ButtonCreateInspectAuto
   withRequirePermissionsNew({
     permissions: inspectAutobasePermissions.create,
   }),
-  connect<ButtonCreateInspectAutobaseStateProps, ButtonCreateInspectAutobaseDispatchProps, ButtonCreateInspectAutobaseOwnProps, ReduxState>(
+  connect<ButtonCreateInspectAutobaseStateProps, ButtonCreateInspectAutobaseDispatchProps, ButtonCreateInspectAutobaseOwnProps, any, ReduxState>(
     null,
     (dispatch: any) => ({
-      actionCreateInspectAutobase: (...arg) => (
+      actionCreateInspect: (...arg) => (
         dispatch(
-          inspectionAutobaseActions.actionCreateInspectAutobase(...arg),
+          inspectionActions.actionCreateInspect(...arg),
         )
       ),
     }),

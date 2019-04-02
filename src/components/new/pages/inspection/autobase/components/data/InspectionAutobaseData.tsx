@@ -7,6 +7,7 @@ const InspectionAutobaseData: React.FC<{ loadingPage: string }> = (props) => {
     <InspectionData
       loadingPage={props.loadingPage}
       triggerKey="carpoolId"
+      type="autobase"
       getRegistryFunc={getInspectionAutobaseDataRegistryConfig}
     />
   );

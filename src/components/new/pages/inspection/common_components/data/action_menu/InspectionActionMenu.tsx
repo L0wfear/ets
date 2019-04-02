@@ -16,6 +16,7 @@ import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled
 import ButtonContinueInspectAutobase from './components/button_inspect_autobase/ButtonContinueInspectAutobase';
 import ButtonCreateInspectAutobase from './components/button_inspect_autobase/ButtonCreateInspectAutobase';
 import { getLastConductingInspectAutobase, getLastCompletedInspectAutobase } from '../../../autobase/@selectors';
+import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;
@@ -25,7 +26,9 @@ type InspectionActionMenuMenuStateProps = {
 type InspectionActionMenuMenuDispatchProps = DispatchProp;
 type InspectionActionMenuMenuOwnProps = {
   loadingPage: string;
+  type: TypeOfInspect;
   loadRegistryData: () => Promise<void>;
+  triggerKey: string;
 };
 
 type InspectionActionMenuMenuProps = (
@@ -103,6 +106,8 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
                   <ButtonCreateInspectAutobase
                     loadRegistryData={props.loadRegistryData}
                     loadingPage={props.loadingPage}
+                    type={props.type}
+                    triggerKey={props.triggerKey}
                   />
                 </LineData>
               )

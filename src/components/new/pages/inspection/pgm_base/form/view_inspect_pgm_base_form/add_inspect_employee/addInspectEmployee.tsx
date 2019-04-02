@@ -556,46 +556,44 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 }
                 {
                   state.showAgentAdd ? (
-                    <Col md={12}>
-                      <ShowBlockWrapper>
-                        <Row>
-                          <Col md={6}>
-                            <FieldWrap>
-                              <ExtField
-                                type="string"
-                                label="Должность"
-                                value={state.agent_from_gbu_position}
-                                onChange={onChangeData}
-                                boundKeys="agent_from_gbu_position"
-                                error={state.errors.agent_from_gbu_position}
-                              />
-                            </FieldWrap>
-                          </Col>
-                          <Col md={6}>
-                            <FieldWrap>
-                              <ExtField
-                                type="string"
-                                label="ФИО"
-                                value={state.agent_from_gbu_fio}
-                                onChange={onChangeData}
-                                boundKeys="agent_from_gbu_fio"
-                                error={state.errors.agent_from_gbu_fio}
-                              />
-                            </FieldWrap>
-                          </Col>
-                        </Row>
-                        <Div>
-                          <Button disabled={!state.canSaveAgent} onClick={ () => dispatch(actionAddAgent(newAgent, true)) }>
-                            Сохранить
-                          </Button>
-                        </Div>
-                        <Button className="close" onClick={ () => dispatch(actionShowAgentAdd(false)) }>
-                          <span aria-hidden="true">
-                            ×
-                          </span>
+                    <ShowBlockWrapper>
+                      <Row>
+                        <Col md={6}>
+                          <FieldWrap>
+                            <ExtField
+                              type="string"
+                              label="Должность"
+                              value={state.agent_from_gbu_position}
+                              onChange={onChangeData}
+                              boundKeys="agent_from_gbu_position"
+                              error={state.errors.agent_from_gbu_position}
+                            />
+                          </FieldWrap>
+                        </Col>
+                        <Col md={6}>
+                          <FieldWrap>
+                            <ExtField
+                              type="string"
+                              label="ФИО"
+                              value={state.agent_from_gbu_fio}
+                              onChange={onChangeData}
+                              boundKeys="agent_from_gbu_fio"
+                              error={state.errors.agent_from_gbu_fio}
+                            />
+                          </FieldWrap>
+                        </Col>
+                      </Row>
+                      <Div>
+                        <Button disabled={!state.canSaveAgent} onClick={ () => dispatch(actionAddAgent(newAgent, true)) }>
+                          Сохранить
                         </Button>
-                      </ShowBlockWrapper>
-                    </Col>
+                      </Div>
+                      <Button className="close" onClick={ () => dispatch(actionShowAgentAdd(false)) }>
+                        <span aria-hidden="true">
+                          ×
+                        </span>
+                      </Button>
+                    </ShowBlockWrapper>
                   ) : (
                     <DivNone />
                   )

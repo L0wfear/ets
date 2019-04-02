@@ -7,6 +7,7 @@ const InspectionPgmBaseData: React.FC<{ loadingPage: string }> = (props) => {
     <InspectionData
       loadingPage={props.loadingPage}
       triggerKey="pgmBaseId"
+      type="pgm_base"
       getRegistryFunc={getInspectionPgmBaseDataRegistryConfig}
     />
   );

@@ -1,5 +1,6 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 export type InspectionAutobaseDataStateProps = {
 };
@@ -11,6 +12,7 @@ export type InspectionAutobaseDataDispatchProps = {
 export type InspectionAutobaseDataOwnProps = {
   loadingPage: string;
   triggerKey: string;
+  type: TypeOfInspect;
   getRegistryFunc: (value: number) => TypeConfigData<any>;
 };
 

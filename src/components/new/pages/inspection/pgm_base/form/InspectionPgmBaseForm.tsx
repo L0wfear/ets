@@ -20,7 +20,6 @@ import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_ba
 import { defaultInspectPgmBaseData, makeFilesForFront } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 
 const loadingPage = 'InspectionPgmBaseForm';
-const registryKey = 'inspectPgmBase';
 
 const getSelectedInspectPgmBase = async (props: InspectionPgmBaseFormProps, inspectPgmBaseId: InspectPgmBase['id']) => {
   const selectedInspectPgmBaseNew = await props.actionGetInspectPgmBaseById(
@@ -81,10 +80,10 @@ const InspectionPgmBaseList: React.FC<InspectionPgmBaseFormProps> = (props) => {
 
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
-      props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
+      props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : false);
 
       if (isBoolean(isSubmitted) && isSubmitted) {
-        const { payload } = await props.registryLoadDataByKey(registryKey);
+        const { payload } = await props.registryLoadDataByKey(props.loadingPage);
         const array = get(payload, `list.data.array`, []);
 
         const inspectPgmBaseListNew = array.map((inspectPgmBase: InspectPgmBase) => {

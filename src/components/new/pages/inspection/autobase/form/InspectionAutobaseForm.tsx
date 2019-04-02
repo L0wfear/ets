@@ -20,7 +20,6 @@ import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autob
 import { defaultInspectAutobaseData, makeFilesForFront } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 
 const loadingPage = 'InspectionAutobaseForm';
-const registryKey = 'inspectAutobase';
 
 const getSelectedInspectAutobase = async (props: InspectionAutobaseFormProps, inspectAutobaseId: InspectAutobase['id']) => {
   const selectedInspectAutobaseNew = await props.actionGetInspectAutobaseById(
@@ -67,10 +66,10 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
 
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
-      props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
+      props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : false);
 
       if (isBoolean(isSubmitted) && isSubmitted) {
-        const { payload } = await props.registryLoadDataByKey(registryKey);
+        const { payload } = await props.registryLoadDataByKey(props.loadingPage);
         const array = get(payload, `list.data.array`, []);
 
         const inspectAutobaseListNew = array.map((inspectAutobase: InspectAutobase) => {

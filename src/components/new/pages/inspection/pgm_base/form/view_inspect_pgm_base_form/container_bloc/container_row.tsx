@@ -43,7 +43,7 @@ const ContainerRow: React.FC<ContainerRowProps> = (props) => {
                 <Button bsSize="small" onClick={handleEditContainer}>
                   <Glyphicon glyph="pencil" />
                 </Button>
-                <Button bsSize="small" disabled onClick={handleRemoveContainer}>
+                <Button bsSize="small" onClick={handleRemoveContainer}>
                   <Glyphicon glyph="trash" />
                 </Button>
               </ButtonBlock>

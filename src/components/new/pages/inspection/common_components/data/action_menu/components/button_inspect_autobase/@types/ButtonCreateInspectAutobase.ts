@@ -1,15 +1,18 @@
 import { HandleThunkActionCreator } from 'react-redux';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
+import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 export type ButtonCreateInspectAutobaseStateProps = {
 };
 export type ButtonCreateInspectAutobaseDispatchProps = {
-  actionCreateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionCreateInspectAutobase>;
+  actionCreateInspect: HandleThunkActionCreator<typeof inspectionActions.actionCreateInspect>;
 };
 export type ButtonCreateInspectAutobaseOwnProps = {
   loadingPage: string;
   loadRegistryData: () => Promise<void>;
+  type: TypeOfInspect;
+  triggerKey: string;
 };
 
 export type ButtonCreateInspectAutobaseProps = (

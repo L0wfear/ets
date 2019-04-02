@@ -12,10 +12,10 @@ import { DivNone } from 'global-styled/global-styled';
 import ButtonCloseInspectAutobase from './components/button_inspect_autobase/ButtonCloseInspectAutobase';
 import { get } from 'lodash';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { getLastConductingInspectAutobase, getLastCompletedInspectAutobase } from '../../autobase/@selectors';
 import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled/InspectionAutobaseDataActionMenu';
 import ButtonContinueInspectAutobase from './components/button_inspect_autobase/ButtonContinueInspectAutobase';
 import ButtonCreateInspectAutobase from './components/button_inspect_autobase/ButtonCreateInspectAutobase';
+import { getLastConductingInspectAutobase, getLastCompletedInspectAutobase } from '../../../autobase/@selectors';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;

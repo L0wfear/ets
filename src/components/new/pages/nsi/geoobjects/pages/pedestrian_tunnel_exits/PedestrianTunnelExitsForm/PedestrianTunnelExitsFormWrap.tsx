@@ -38,4 +38,4 @@ class PedestrianTunnelExitsFormWrap extends React.Component<PropsPedestrianTunne
   }
 }
 
-export default withFormRegistrySearch(PedestrianTunnelExitsFormWrap);
+export default withFormRegistrySearch({})(PedestrianTunnelExitsFormWrap);

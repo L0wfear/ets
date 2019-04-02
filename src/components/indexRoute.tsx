@@ -14,7 +14,7 @@ const renderRoutes = (newRoutesArr, data) => {
       } else {
         newRoutesArr.push(
           <PublicRoute
-            key={data.routePath || data.path}
+            key={data.entyity}
             path={data.routePath || data.path}
             component={data.component}
           />,
@@ -39,8 +39,10 @@ const getRouters = () => (
     <Redirect from="/technical-operations" to="/nsi/norm_registry" />
     <Redirect from="/companies" to="/nsi/companies" />
 
+    <Redirect from="/cars" to="/nsi/autobase/car_actual" />
     <Redirect from="/car-func-types" to="/nsi/autobase/types" />
     <Redirect from="/types_attr" to="/nsi/autobase/types_attr" />
+    <Redirect from="/tech-inspection" to="/nsi/autobase/tech_inspection" />
 
     <Redirect from="/bridges" to="/nsi/geoobjects/bridges" />
     <Redirect from="/carpool" to="/nsi/geoobjects/carpool" />

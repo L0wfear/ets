@@ -38,4 +38,4 @@ class DtFormWrap extends React.Component<PropsDtFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(DtFormWrap);
+export default withFormRegistrySearch({})(DtFormWrap);

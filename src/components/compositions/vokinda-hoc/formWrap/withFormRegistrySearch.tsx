@@ -10,7 +10,13 @@ import { isNullOrUndefined } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { get } from 'lodash';
 
+type WithFormRegistrySearchConfig = {
+  hideSearch?: {
+    [key: string]: any,
+  },
+};
 let lasPermissions = {};
 let lastPermissionsArray = [];
 
@@ -24,7 +30,7 @@ const getPermissionsCreateReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-export const withFormRegistrySearch = (Component) => (
+export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => (Component) => (
   compose<any, any>(
     connect<any, any, { registryKey: string }, any, ReduxState>(
       (state, { registryKey }) => ({
@@ -107,6 +113,15 @@ export const withFormRegistrySearch = (Component) => (
           setElement(null);
           props.setParams({
             [uniqKeyForParams]: null,
+          });
+
+          const hideSearchState = get(config, 'hideSearch', {});
+
+          props.setParamsAndSearch({
+            params: {
+              [uniqKeyForParams]: null,
+            },
+            search: hideSearchState,
           });
 
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);

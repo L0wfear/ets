@@ -9,6 +9,7 @@ export type WithSearchProps = {
   setParams: (obj: { [key: string]: string | number }) => void;
   searchState: any;
   setDataInSearch: (obj: any) => void;
+  setParamsAndSearch: (any) => void;
 } & RouteComponentProps<any>;
 
 const withSearch = (Component) => (
@@ -100,12 +101,47 @@ const withSearch = (Component) => (
         );
       }
 
+      setParamsAndSearch = ({ params, search }) => {
+        let urlAsArray = this.props.match.path.split('/').map((partOfUrl) => {
+          let ans = partOfUrl.replace('?', '');
+
+          Object.entries(params).forEach(([key, value]) => {
+            ans = ans.replace(`:${key}`, value || isNumber(value) ? value.toString() : '');
+          });
+
+          Object.entries(this.props.match.params).forEach(([key, value]: [string, string]) => {
+            ans = ans.replace(`:${key}`, value ? value : '');
+          });
+
+          return ans;
+        });
+
+        const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
+        if (emptyIndex > 0) {
+          urlAsArray = urlAsArray.slice(0, emptyIndex);
+        }
+
+        this.props.history.push(
+          `${
+            urlAsArray.join('/')
+          }${
+            queryString.stringify(
+              useSearchMergeNewState(
+                this.state.searchState,
+                search,
+              ),
+            )
+          }`,
+        );
+      }
+
       render() {
         return (
           <Component
             params={this.state.params}
             setParams={this.setParams}
             searchState={this.state.searchState}
+            setParamsAndSearch={this.setParamsAndSearch}
             setDataInSearch={this.setDataInSearch}
             {...this.props}
           />

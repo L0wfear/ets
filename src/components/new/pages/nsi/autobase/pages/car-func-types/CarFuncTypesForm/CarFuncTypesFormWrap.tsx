@@ -35,4 +35,4 @@ const CarFuncTypesFormWrap: React.FC<PropsCarFuncTypesFormWrap> = (props) => {
     );
 };
 
-export default withFormRegistrySearch(CarFuncTypesFormWrap);
+export default withFormRegistrySearch({})(CarFuncTypesFormWrap);

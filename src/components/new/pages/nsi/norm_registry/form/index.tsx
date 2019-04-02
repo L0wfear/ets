@@ -38,4 +38,4 @@ class NormFormLazy extends React.Component<PropsNormFormLazy, {}> {
   }
 }
 
-export default withFormRegistrySearch(NormFormLazy);
+export default withFormRegistrySearch({})(NormFormLazy);

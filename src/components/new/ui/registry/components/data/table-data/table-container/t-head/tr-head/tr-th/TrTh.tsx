@@ -90,7 +90,7 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
           canClick={false}
           rowSpan={colData.rowSpan}
           colSpan={colData.colSpan}
-          width={30}
+          width={50}
         >
           {formatedTitle}
         </EtsTheadTh>

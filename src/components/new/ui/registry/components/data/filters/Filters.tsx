@@ -6,6 +6,7 @@ import FiltersLines from 'components/new/ui/registry/components/data/filters/fil
 
 import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { registryApplyRawFilters } from 'components/new/ui/registry/module/actions-registy';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsFilters = {
   wasFirstOpen: boolean;
@@ -37,7 +38,11 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
   },
 });
 
-export default connect(
+export default connect<any, any, any, any, ReduxState>(
   mapStateToProps,
   mapDispatchToProps,
+  null,
+  {
+    pure: false,
+  },
 )(Filters);

@@ -26,6 +26,7 @@ import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from '
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -85,7 +86,12 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
         if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return true;
         }
-
+        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
+          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
+          if (!car_actual_asuods_id) {
+            return true;
+          }
+        }
         return filtredTitle;
       }, null);
     }

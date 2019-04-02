@@ -38,4 +38,4 @@ class FountainsFormWrap extends React.Component<PropsFountainsFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(FountainsFormWrap);
+export default withFormRegistrySearch({})(FountainsFormWrap);

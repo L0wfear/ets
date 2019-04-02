@@ -103,6 +103,8 @@ export type Car = {
   car_group_name: string;
   company_id: number | null;
   company_name: string;
+  company_name_customer: string;
+  company_name_contractor: string;
   company_structure_id: number | null;
   company_structure_name: string | null;
   condition: number | null;

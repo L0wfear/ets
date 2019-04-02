@@ -38,4 +38,4 @@ class CompanyFormWrap extends React.Component<PropsCompanyFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(CompanyFormWrap);
+export default withFormRegistrySearch({})(CompanyFormWrap);

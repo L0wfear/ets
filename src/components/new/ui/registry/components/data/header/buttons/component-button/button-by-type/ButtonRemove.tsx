@@ -61,6 +61,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
       try {
         await props.registryRemoveSelectedRows(props.registryKey);
       } catch (error) {
+        console.error(error); // tslint:disable-line
         //
       }
 
@@ -89,8 +90,10 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
           </span>
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={handleClickRemoveSelectedRows}>Ок</Button>
-          <Button onClick={handleClickCloseForm}>Отмена</Button>
+          <div>
+            <Button onClick={handleClickRemoveSelectedRows}>Ок</Button>
+            <Button onClick={handleClickCloseForm}>Отмена</Button>
+          </div>
         </Modal.Footer>
       </EtsModal>
     </>

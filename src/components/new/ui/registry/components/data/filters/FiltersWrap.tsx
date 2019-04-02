@@ -8,6 +8,7 @@ import { getFilterData } from 'components/new/ui/registry/module/selectors-regis
 
 import Filters from 'components/new/ui/registry/components/data/filters/Filters';
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsFiltersWrap = {
   registryKey: string;
@@ -59,6 +60,11 @@ const mapStateToProps = (state, { registryKey }) => ({
   rowFields: getListData(state.registry, registryKey).meta.rowFields,
 });
 
-export default connect(
+export default connect<any, any, any, any, ReduxState>(
   mapStateToProps,
+  null,
+  null,
+  {
+    pure: false,
+  },
 )(FiltersWrap);

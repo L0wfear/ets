@@ -11,10 +11,14 @@ import {
   StatePropsTrHead,
   DispatchPropsTrHead,
   OwnPropsTrHead,
+  MergedPropsTrHead,
   PropsTrHead,
   StateTrHead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { compose } from 'recompose';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
   mapThDataRow = (colData) => {
@@ -34,6 +38,12 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
         }
         if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return titleSomeValue.title;
+        }
+        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
+          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
+          if (!car_actual_asuods_id) {
+            return titleSomeValue.title;
+          }
         }
 
         return filtredTitle;
@@ -59,9 +69,17 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
   }
 }
 
-export default connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, ReduxState>(
-  (state) => ({
-    STRUCTURES: getSessionStructuresOptions(state),
-    userData: getSessionState(state).userData,
-  }),
+export default compose<PropsTrHead, OwnPropsTrHead>(
+  connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, MergedPropsTrHead, ReduxState>(
+    (state) => ({
+      STRUCTURES: getSessionStructuresOptions(state),
+      userData: getSessionState(state).userData,
+    }),
+    null,
+    null,
+    {
+      pure: false,
+    },
+  ),
+  withSearch,
 )(TrHead);

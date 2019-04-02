@@ -15,6 +15,7 @@ export type TypeOneDisplayIf = (
   'isKgh'
   | 'isOkrug'
   | 'lenghtStructureMoreOne'
+  | 'carActualAsuodsIdInParams'
   | false
 );
 
@@ -42,7 +43,7 @@ export type OneFilterType<F> = {
     | 'advanced-string-like';
   }| {
     type: 'multiselect';
-    labelKey?: string | number;
+    labelKey?: keyof F;
     options?: FilterOptionType<F>[];
     getRegistryData?: {
       entity: string;
@@ -85,7 +86,7 @@ export type TypeFields<F extends any> = {
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 };
 
-export type TypeConfigData<F extends any> = {
+export type TypeConfigData<F> = {
   noInitialLoad?: boolean;
   Service: any;
   actionHelpers?: {

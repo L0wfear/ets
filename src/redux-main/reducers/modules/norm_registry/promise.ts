@@ -8,7 +8,7 @@ import {
 import { isString } from 'highcharts';
 import { CleaningNormRegistryService } from 'api/Services';
 
-export const getNorm = (normRaw: any, index) => {
+export const getFrontNorm = (normRaw: any, index) => {
   if (normRaw) {
     const norm: Norm = cloneDeep(normRaw);
 

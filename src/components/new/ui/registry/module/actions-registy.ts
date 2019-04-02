@@ -28,7 +28,8 @@ import { isNullOrUndefined } from 'util';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
-import { getNorm } from 'redux-main/reducers/modules/norm_registry/promise';
+import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
+import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -122,8 +123,11 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
         break;
       }
       case 'normRegistry': {
-        arrayRaw = arrayRaw.map(getNorm);
+        arrayRaw = arrayRaw.map(getFrontNorm);
         break;
+      }
+      case 'carActual': {
+        arrayRaw = arrayRaw.map(getFrontCar);
       }
     }
 
@@ -675,7 +679,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
   );
 
   try {
-    Promise.all(
+    await Promise.all(
       Object.values(itemToRemove).map(async ({ [uniqKey]: uniqKeyValue }: any) => {
         let path = `${configStand.backend}/${removeOneData.entity}`;
         const payload: any = {};
@@ -700,7 +704,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
           );
           processResponse(response);
         } catch (error) {
-          console.error(error); //tslint:disable-line
+          throw new Error(error);
         }
 
         return response;
@@ -708,7 +712,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
     );
     global.NOTIFICATION_SYSTEM.notify('Выбранные записи успешно удалены', 'success');
   } catch (error) {
-    global.NOTIFICATION_SYSTEM.notify('При удалении произошли ошибки', 'warning');
+    global.NOTIFICATION_SYSTEM.notify('При удалении произошла ошибка', 'warning');
   }
 
   return true;

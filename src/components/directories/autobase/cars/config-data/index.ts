@@ -2,7 +2,7 @@ import permissions from 'components/directories/autobase/cars/config-data/permis
 import component from 'components/directories/autobase/cars/config-data/components';
 
 export default {
-  path: '/cars',
+  path: '/cars_old',
   title: 'Реестр транспортных средств',
   entyity: 'car',
   noDotList: false,

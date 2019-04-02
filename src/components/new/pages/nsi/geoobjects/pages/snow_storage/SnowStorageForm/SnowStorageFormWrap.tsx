@@ -38,4 +38,4 @@ class SnowStorageFormWrap extends React.Component<PropsSnowStorageFormWrap, {}> 
   }
 }
 
-export default withFormRegistrySearch(SnowStorageFormWrap);
+export default withFormRegistrySearch({})(SnowStorageFormWrap);

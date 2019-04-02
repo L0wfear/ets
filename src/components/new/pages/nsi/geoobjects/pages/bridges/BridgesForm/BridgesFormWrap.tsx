@@ -38,4 +38,4 @@ class BridgesFormWrap extends React.Component<PropsBridgesFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(BridgesFormWrap);
+export default withFormRegistrySearch({})(BridgesFormWrap);

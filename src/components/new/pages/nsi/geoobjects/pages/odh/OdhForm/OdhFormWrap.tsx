@@ -38,4 +38,4 @@ class OdhFormWrap extends React.Component<PropsOdhFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(OdhFormWrap);
+export default withFormRegistrySearch({})(OdhFormWrap);

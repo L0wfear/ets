@@ -38,4 +38,4 @@ class CarpoolFormWrap extends React.Component<PropsCarpoolFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(CarpoolFormWrap);
+export default withFormRegistrySearch({})(CarpoolFormWrap);

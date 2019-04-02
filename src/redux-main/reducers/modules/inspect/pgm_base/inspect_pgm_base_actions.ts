@@ -39,12 +39,12 @@ export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBa
 };
 
 export const actionSetInspectPgmBaseInspectPgmBaseList = (inspectPgmBaseList: IStateInspectPgmBase['inspectPgmBaseList']): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectPgmBase>>, ReduxState, {}, AnyAction> => (dispatch) => {
-  const lastConductingInspect = getTodayConductingInspect(inspectPgmBaseList);
+  const lastConductingInspect = getTodayConductingInspectPgmBase(inspectPgmBaseList);
   const stateInspectPgmBase = dispatch(
     actionSetInspectPgmBase({
       inspectPgmBaseList,
       lastConductingInspect,
-      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspect(inspectPgmBaseList),
+      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspectPgmBase(inspectPgmBaseList),
     }),
   );
 
@@ -200,11 +200,12 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
 
   delete data.files;
   delete data.photos_of_supporting_documents;
-  delete data.photos_defect; // <<< ХЗ
+  delete data.photos_defect;
   delete data.head_balance_holder_base_tel;
   delete data.head_balance_holder_base_fio;
   delete data.head_operating_base_tel;
   delete data.head_operating_base_fio;
+
   const payload = {
     head_balance_holder_base: {
       tel: inspectPgmBase.data.head_balance_holder_base_tel,
@@ -215,6 +216,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
       fio: inspectPgmBase.data.head_operating_base_fio,
     },
   };
+
   const inspectionPgmBase = await dispatch(
     actionUpdateInspect(
       inspectPgmBase.id,
@@ -291,7 +293,7 @@ const isInspectPgmBaseIsCompleted = ({ status }: InspectPgmBase) => (
 /**
  * Получаем последнюю за текущий день закрытую испекцию
  */
-export const getTodayCompletedInspect = (data: InspectPgmBase[]) => (
+export const getTodayCompletedInspectPgmBase = (data: InspectPgmBase[]) => (
   data.find((inspectPgmBase) => (
     isInspectPgmBaseIsCompleted(inspectPgmBase)
     && diffDatesByDays(getDateWithMoscowTz(), inspectPgmBase.date_end) === 0
@@ -304,7 +306,7 @@ export const isInspectPgmBaseIsConducting = ({ status }: InspectPgmBase) => (
 /**
  * Получаем последнюю открытую испекцию
  */
-export const getTodayConductingInspect = (data: InspectPgmBase[]) => (
+export const getTodayConductingInspectPgmBase = (data: InspectPgmBase[]) => (
   data.find(isInspectPgmBaseIsConducting)
 );
 

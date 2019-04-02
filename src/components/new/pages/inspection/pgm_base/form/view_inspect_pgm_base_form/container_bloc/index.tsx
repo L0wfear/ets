@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { TitleForm, CheckContainerTable } from '../styled/ViewInspectPgmBaseStyled';
-import { BoxContainer } from '../../../components/data/styled/InspectionPgmBaseData';
 import IAVisibleWarning from '../../../components/vsible_warning/IAVisibleWarning';
 import { filedToCheckContainersInfo, filedToCheckContainersFail } from '../filed_to_check/filedToCheck';
 import { Button, Glyphicon } from 'react-bootstrap';
@@ -8,13 +7,14 @@ import ContainerFormLazy from 'components/new/pages/inspection/container';
 import ContainerRow from './container_row';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
+import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
 
 type ContainerBlockStateProps = {};
 type ContainerBlockDispatchProps = {
-  actionGetInspectContainer: HandleThunkActionCreator<typeof inspectionActions.actionGetInspectContainer>;
-  actionRemoveInspectContainer: HandleThunkActionCreator<typeof inspectionActions.actionRemoveInspectContainer>;
+  actionGetInspectContainer: HandleThunkActionCreator<typeof inspectContainerActions.actionGetInspectContainer>;
+  actionRemoveInspectContainer: HandleThunkActionCreator<typeof inspectContainerActions.actionRemoveInspectContainer>;
 };
 type ContainerBlockOwnProps = {
   selectedInspectPgmBase: InspectPgmBase;
@@ -78,13 +78,17 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
   );
 
   const onRemoveContainer = React.useCallback(
-    (container) => {
-      props.actionRemoveInspectContainer(
-        container.id,
-        { page: props.page },
-      );
-      loadContainerList();
-      setSelectedContainer(null);
+    async (container) => {
+      try {
+        await props.actionRemoveInspectContainer(
+          container.id,
+          { page: props.page },
+        );
+        loadContainerList();
+        setSelectedContainer(null);
+      } catch (error) {
+        console.error(error); //tslint:disable-line
+      }
     },
     [],
   );
@@ -162,12 +166,12 @@ export default connect<ContainerBlockStateProps, ContainerBlockDispatchProps, Co
   (dispatch: any) => ({
     actionGetInspectContainer: (...arg) => (
       dispatch(
-        inspectionActions.actionGetInspectContainer(...arg),
+        inspectContainerActions.actionGetInspectContainer(...arg),
       )
     ),
     actionRemoveInspectContainer: (...arg) => (
       dispatch(
-        inspectionActions.actionRemoveInspectContainer(...arg),
+        inspectContainerActions.actionRemoveInspectContainer(...arg),
       )
     ),
   }),

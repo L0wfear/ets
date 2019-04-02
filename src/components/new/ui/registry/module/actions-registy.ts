@@ -94,14 +94,20 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
       };
     }
 
-    const result = await etsLoadingCounter(
-      dispatch,
-      getJSON(
-        `${configStand.backend}/${getRegistryData.entity}`,
-        payload,
-      ),
-      { page: registryKey, noTimout: true },
-    );
+    let result = null;
+    try {
+      result = await etsLoadingCounter(
+        dispatch,
+        getJSON(
+          `${configStand.backend}/${getRegistryData.entity}`,
+          payload,
+        ),
+        { page: registryKey, noTimout: true },
+      );
+    } catch (error) {
+      console.error(error); //tslint:disable-line
+    }
+
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
 
     processResponse(result);

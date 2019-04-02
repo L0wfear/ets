@@ -9,10 +9,11 @@ import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
+import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
-  actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionUpdateInspectAutobase>;
-  actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionActions.actionCloseInspectAutobase>;
+  actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobase>;
+  actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionCloseInspectAutobase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
@@ -104,12 +105,12 @@ export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobase
     (dispatch: any) => ({
       actionUpdateInspectAutobase: (...arg) => (
         dispatch(
-          inspectionActions.actionUpdateInspectAutobase(...arg),
+          inspectionAutobaseActions.actionUpdateInspectAutobase(...arg),
         )
       ),
       actionCloseInspectAutobase: (...arg) => (
         dispatch(
-          inspectionActions.actionCloseInspectAutobase(...arg),
+          inspectionAutobaseActions.actionCloseInspectAutobase(...arg),
         )
       ),
       actionGetBlobActInspect: (...arg) => (

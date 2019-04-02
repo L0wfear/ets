@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { PopupBottomForm, HiddenPageEtsContainer } from './styled/InspectionPgmBaseFormStyled';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
@@ -21,7 +20,6 @@ import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_ba
 import { defaultInspectPgmBaseData, makeFilesForFront } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 
 const loadingPage = 'InspectionPgmBaseForm';
-const registryKey = 'inspectPgmBase';
 
 const getSelectedInspectPgmBase = async (props: InspectionPgmBaseFormProps, inspectPgmBaseId: InspectPgmBase['id']) => {
   const selectedInspectPgmBaseNew = await props.actionGetInspectPgmBaseById(
@@ -82,10 +80,10 @@ const InspectionPgmBaseList: React.FC<InspectionPgmBaseFormProps> = (props) => {
 
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
-      props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
+      props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : false);
 
       if (isBoolean(isSubmitted) && isSubmitted) {
-        const { payload } = await props.registryLoadDataByKey(registryKey);
+        const { payload } = await props.registryLoadDataByKey(props.loadingPage);
         const array = get(payload, `list.data.array`, []);
 
         const inspectPgmBaseListNew = array.map((inspectPgmBase: InspectPgmBase) => {
@@ -160,7 +158,7 @@ export default compose<InspectionPgmBaseFormProps, InspectionPgmBaseFormOwnProps
     (dispatch: any) => ({
       actionGetInspectPgmBaseById: (...arg) => (
         dispatch(
-          inspectionActions.inspectionPgmBaseActions.actionGetInspectPgmBaseById(...arg),
+          inspectionPgmBaseActions.actionGetInspectPgmBaseById(...arg),
         )
       ),
       actionUnselectSelectedRowToShow: (...arg) => (

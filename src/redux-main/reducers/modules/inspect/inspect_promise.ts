@@ -11,7 +11,7 @@ import { InspectPgmBase } from "./pgm_base/@types/inspect_pgm_base";
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
   company_id: number;
-  type: 'autobase' | 'pgm_base';
+  type: TypeOfInspect;
 };
 
 export const promiseGetInspectRegistry = async <T>(payload: object) => {

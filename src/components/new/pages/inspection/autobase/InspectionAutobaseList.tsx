@@ -2,7 +2,7 @@ import * as React from 'react';
 import { EtsPageWrap } from 'global-styled/global-styled';
 
 import { InspectionAutobaseListProps } from './@types/InspectionAutobaseList';
-import InspectionAutobaseTitle from './components/title/InspectionAutobaseTitle';
+import InspectionTitle from 'components/new/pages/inspection/common_components/inspect_title/InspectionTitle';
 import InspectionAutobaseSelectCarpool from './components/select_carpool/InspectionAutobaseSelectCarpool';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import InspectionAutobaseData from './components/data/InspectionAutobaseData';
@@ -14,7 +14,7 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseListProps> = (props) =>
   return (
     <>
       <EtsPageWrap>
-        <InspectionAutobaseTitle />
+        <InspectionTitle  title="Мониторинг обустройства автобаз" />
         <InspectionAutobaseSelectCarpool loadingPage={loadingPage} />
         <InspectionAutobaseData loadingPage={loadingPage} />
       </EtsPageWrap>

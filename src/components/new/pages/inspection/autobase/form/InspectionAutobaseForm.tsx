@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { PopupBottomForm, HiddenPageEtsContainer } from './styled/InspectionAutobaseFormStyled';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
@@ -21,7 +20,6 @@ import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autob
 import { defaultInspectAutobaseData, makeFilesForFront } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 
 const loadingPage = 'InspectionAutobaseForm';
-const registryKey = 'inspectAutobase';
 
 const getSelectedInspectAutobase = async (props: InspectionAutobaseFormProps, inspectAutobaseId: InspectAutobase['id']) => {
   const selectedInspectAutobaseNew = await props.actionGetInspectAutobaseById(
@@ -68,10 +66,10 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseFormProps> = (props) =>
 
   const handleCloseForm = React.useCallback(
     async (isSubmitted) => {
-      props.actionUnselectSelectedRowToShow(registryKey, isBoolean(isSubmitted) ? isSubmitted : false);
+      props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : false);
 
       if (isBoolean(isSubmitted) && isSubmitted) {
-        const { payload } = await props.registryLoadDataByKey(registryKey);
+        const { payload } = await props.registryLoadDataByKey(props.loadingPage);
         const array = get(payload, `list.data.array`, []);
 
         const inspectAutobaseListNew = array.map((inspectAutobase: InspectAutobase) => {
@@ -144,7 +142,7 @@ export default compose<InspectionAutobaseFormProps, InspectionAutobaseFormOwnPro
     (dispatch: any) => ({
       actionGetInspectAutobaseById: (...arg) => (
         dispatch(
-          inspectionActions.actionGetInspectAutobaseById(...arg),
+          inspectionAutobaseActions.actionGetInspectAutobaseById(...arg),
         )
       ),
       actionUnselectSelectedRowToShow: (...arg) => (

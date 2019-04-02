@@ -6,6 +6,7 @@ export default {
   routePath: '/monitoring/pgm_base/:id?/:type?',
   title: 'Состояние баз хранения ПГМ',
   entyity: 'monitoring.pgm_base',
+  isNewRegistry: true,
   noDotList: true,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
   component,

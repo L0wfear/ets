@@ -22,7 +22,6 @@ import { isArray } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
 import InsurancePolicyList from 'components/directories/autobase/insurance_policy/config-data/components';
-import TechInspectionList from 'components/directories/autobase/tech_inspection/config-data/components';
 import RepairList from 'components/directories/autobase/repair/config-data/components';
 import RoadAccidentList from 'components/directories/autobase/road_accident/config-data/components';
 
@@ -337,7 +336,9 @@ class CarForm extends Form {
 
           <TabContent eventKey={CAR_TAB_INDEX.tech_inspection} tabKey={tabKey}>
             {tabKey === CAR_TAB_INDEX.tech_inspection ? (
-              <TechInspectionList car_id={state.asuods_id} />
+              <div>
+                {'</div><TechInspectionList car_id={state.asuods_id} />'}
+              </div>
             ) : (
               <DivNone />
             )}

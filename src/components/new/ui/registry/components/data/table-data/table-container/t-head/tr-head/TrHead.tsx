@@ -11,7 +11,6 @@ import {
   StatePropsTrHead,
   DispatchPropsTrHead,
   OwnPropsTrHead,
-  MergedPropsTrHead,
   PropsTrHead,
   StateTrHead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';

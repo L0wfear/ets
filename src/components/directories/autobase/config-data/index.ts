@@ -4,9 +4,7 @@ import carActualList from 'components/new/pages/nsi/autobase/pages/car_actual/_c
 import carFuncTypesList from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data';
 import typesAttrList from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data';
 import techInspectionList from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data';
-import roadAccidentList from 'components/new/pages/nsi/autobase/pages/road_accident/_config-data';
 import insurancePolicyList from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
-import repairList from 'components/new/pages/nsi/autobase/pages/repair/_config-data';
 
 import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';
 import batteryBrand from 'components/directories/autobase/battery_brand/config-data';
@@ -34,9 +32,7 @@ const children = {
   techMaintenanceOrderRegistry,
   techInspectionList,
   insurancePolicyList,
-  repairList,
   repairCompany,
-  roadAccidentList,
   fuelCards,
 };
 

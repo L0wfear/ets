@@ -7,7 +7,7 @@ export type PropsCarFormLazy = {
   element: Partial<Car>;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -18,7 +18,8 @@ export type DispatchPropsCar = {
 };
 export type OwnCarProps = {
   element: Partial<Car>;
-  handleHide: OnFormHideType
+  handleHide: OnFormHideType;
+
   page: string;
   path?: string;
 };

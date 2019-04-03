@@ -1,5 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import memoizeOne from 'memoize-one';
 
 export const defaultCar: Car = {
   asuods_id: null,
@@ -60,3 +61,16 @@ export const getDefaultCarElement = (element: Partial<Car>): Car => {
 
   return newElement;
 };
+
+export const memoizeMergeElement = memoizeOne(
+  (element: any, selectedCarData: Car) => {
+    if (!element.car_id && selectedCarData) {
+      return {
+        ...element,
+        car_id: selectedCarData.asuods_id,
+      };
+    }
+
+    return element;
+  },
+);

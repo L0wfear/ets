@@ -72,6 +72,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
   const list: any = get(registryData, 'list', null);
 
   let arrayRaw = null;
+  let arrayExtra = {};
   let total_count = 0;
 
   if (getRegistryData) {
@@ -110,10 +111,12 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
     }
 
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
+    const typeExtra = get(getRegistryData, 'typeExtra', 'result.extra');
 
     processResponse(result);
     const uniqKey: any = get(list, 'data.uniqKey', null);
     arrayRaw = get(result, typeAns, []);
+    arrayExtra = get(result, typeExtra, {});
 
     switch (getRegistryData.format) {
       case 'dutyMissionTemplate': {
@@ -182,6 +185,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
             ...list.data,
             total_count,
             array,
+            arrayExtra,
           },
           processed: {
             ...list.processed,

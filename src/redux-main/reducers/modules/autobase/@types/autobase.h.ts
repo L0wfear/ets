@@ -344,7 +344,8 @@ export type ActualTiresOnCar = {
   tire_to_car_id: number | null;
   uninstalled_at: string;
 };
-export type TechMaint = {
+
+export type TechMaintenance = {
   can_edit: boolean;
   car_id: number | null;
   company_id: number | null;
@@ -382,7 +383,7 @@ export type TechMaint = {
   tech_maintenance_orders_text: string | null;
   files: any[];
 };
-export type TechMaintExtra = {
+export type TechMaintenanceExtra = {
   car_interval_probeg: number | null;
   car_interval_time: number | null;
 };
@@ -453,8 +454,8 @@ export type IStateAutobase = {
   tireAvailableCarList: TireAvailableCar[];
   actualBatteriesOnCarList: ActualBatteriesOnCar[];
   actualTiresOnCarList: ActualTiresOnCar[];
-  techMaintList: TechMaint[];
-  techMaintExtra: TechMaintExtra;
+  techMaintList: TechMaintenance[];
+  techMaintExtra: TechMaintenanceExtra;
   carCategoryList: CarCategory[];
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];

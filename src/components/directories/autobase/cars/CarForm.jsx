@@ -27,7 +27,7 @@ import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInf
 
 import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/battery_tab/lazy';
 import { TireTabLazyWrap } from 'components/directories/autobase/cars/tabs/tire_tab/lazy';
-import TechMaintTab from 'components/directories/autobase/cars/tabs/tech_main_tab';
+
 import { connect } from 'react-redux';
 import {
   getAutobaseState,
@@ -43,7 +43,6 @@ export const CAR_TAB_INDEX = {
   passport_info: '1.3',
   battery: '2',
   tire: '3',
-  tech_maintenance: '6.1',
 };
 
 class CarForm extends Form {
@@ -208,13 +207,6 @@ class CarForm extends Form {
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
             <NavItem eventKey={CAR_TAB_INDEX.tire}>Шины</NavItem>
-            <NavDropdown id={6} eventKey="6" title="ТО и ремонты">
-              <MenuItem
-                eventKey={CAR_TAB_INDEX.tech_maintenance}
-                active={tabKey === CAR_TAB_INDEX.tech_maintenance}>
-                Тех. обслуживание
-              </MenuItem>
-            </NavDropdown>
           </Nav>
 
           <TabContent eventKey={CAR_TAB_INDEX.main_info} tabKey={tabKey}>
@@ -269,22 +261,6 @@ class CarForm extends Form {
                 car_id={state.asuods_id}
                 page={this.props.page}
                 path={this.props.path}
-              />
-            ) : (
-              <DivNone />
-            )}
-          </TabContent>
-
-          <TabContent eventKey={CAR_TAB_INDEX.tech_maintenance} tabKey={tabKey}>
-            {tabKey === CAR_TAB_INDEX.tech_maintenance ? (
-              <TechMaintTab
-                type={
-                  state.gov_number
-                  && !!state.gov_number.toString().match(/\d{4}/)
-                }
-                car_id={state.asuods_id}
-                car_model_id={state.special_model_id}
-                gov_number={state.gov_number}
               />
             ) : (
               <DivNone />

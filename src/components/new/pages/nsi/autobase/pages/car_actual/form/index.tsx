@@ -14,7 +14,7 @@ const CarFrom = React.lazy(() => (
 class CarFormLazy extends React.Component<PropsCarFormLazy, {}> {
   render() {
     const { element, ...props } = this.props;
-    const page = props.loadingPageName || props.page;
+    const page = props.registryKey || props.page;
     const path = `${props.path ? `${props.path}-` : ''}car-form`;
 
     return element ?

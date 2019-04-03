@@ -3,11 +3,9 @@ import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 
 import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
-
-import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/road_accident/_config-data';
-
-import repairListConfig from 'components/new/pages/nsi/autobase/pages/repair/_config-data';
-
+import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/_config-data';
+import techMaintenanceListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/_config-data';
+import repairListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/_config-data';
 import techInspectionListConfig from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data';
 
 export type OneTabDataCommon = {
@@ -96,9 +94,9 @@ const roadAccident: OneTabData = {
 
 const techMaintenance: OneTabData = {
   title: 'Тех. обслуживание',
-  tabKey: 'techMaintenance',
-  component: 'div',
-  path: 'id',
+  tabKey: techMaintenanceListConfig.item,
+  component: techMaintenanceListConfig.component,
+  path: techMaintenanceListConfig.patrialEndPath,
 };
 
 const repair: OneTabData = {

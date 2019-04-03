@@ -42,7 +42,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <CarFormBodyHeader isPermitted={isPermitted} />
-          <CarFormBodyContainer isPermitted={isPermitted} />
+          <CarFormBodyContainer isPermitted={isPermitted} formState={state} />
         </ModalBodyPreloader>
         <Modal.Footer>
         {

@@ -17,6 +17,7 @@ const registryDefaultObj: OneRegistryData = {
   list: {
     data: {
       array: [],
+      arrayExtra: {},
       total_count: 0,
       uniqKey: 'id',
       uniqKeyForParams: 'id',

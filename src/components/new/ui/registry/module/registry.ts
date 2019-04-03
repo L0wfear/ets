@@ -17,6 +17,7 @@ export interface OneRegistryData {
   list: {
     data: {
       array: any[];
+      arrayExtra: any; // use lodash.get
       total_count?: number;
       uniqKey?: string;
       uniqKeyForParams?: string;

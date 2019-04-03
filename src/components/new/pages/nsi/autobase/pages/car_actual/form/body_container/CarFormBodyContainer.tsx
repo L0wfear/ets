@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { componentsInArray } from '../formConfig';
 import { Switch, Route } from 'react-router';
 import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
+import { Row } from 'react-bootstrap';
 
 type CarFormBodyContainerOwnProps = {
   isPermitted: boolean;
@@ -15,13 +16,15 @@ type CarFormBodyContainerProps = (
 
 const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = (props) => {
   return (
-    <Switch>
-      {
-        componentsInArray.map(({ path, component }) => (
-          <Route path={`/nsi/autobase/car_actual/:${config.list.data.uniqKeyForParams}?${path}`} component={component}></Route>
-        ))
-      }
-    </Switch>
+    <Row>
+      <Switch>
+        {
+          componentsInArray.map(({ path, component }) => (
+            <Route path={`/nsi/autobase/car_actual/:${config.list.data.uniqKeyForParams}?${path}`} component={component}></Route>
+          ))
+        }
+      </Switch>
+    </Row>
   );
 };
 

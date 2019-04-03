@@ -4,14 +4,13 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import repairPermissions from 'components/directories/autobase/repair/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { repairFormSchema } from 'components/directories/autobase/repair/RepairForm/repairFrom_schema';
+import { repairFormSchema } from 'components/new/pages/nsi/autobase/pages/repair/form/schema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultRepairElement } from 'components/directories/autobase/repair/RepairForm/utils';
+import { getDefaultRepairElement } from 'components/new/pages/nsi/autobase/pages/repair/form/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -22,33 +21,34 @@ import {
   StatePropsRepair,
   DispatchPropsRepair,
   PropsRepairWithForm,
-} from 'components/directories/autobase/repair/RepairForm/@types/Repair.h';
+} from 'components/new/pages/nsi/autobase/pages/repair/form/@types/RepairForm';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/ui/input/fields';
-import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import EtsModal from 'components/new/ui/modal/Modal';
+import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
+import repairPermissions from '../_config-data/permissions';
+
+const statusOptions = Object.entries(AUTOBASE_REPAIR_STATUS)
+.filter(([, value]) => !value.disabled)
+.map(([key, value]) => ({
+  value: key,
+  label: value.name,
+  rowData: null,
+}));
 
 class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
   state = {
     carListOptions: [],
     repairCompanyOptions: [],
     repairTypeOptions: [],
-    statusOptions: Object.entries(AUTOBASE_REPAIR_STATUS)
-      .filter(([, value]) => !value.disabled)
-      .map(([key, value]) => ({
-        value: key,
-        label: value.name,
-        rowData: null,
-      })),
   };
 
   componentDidMount() {
     this.loadRepairCompany();
     this.loadRepairType();
-    // this.loadInsuranceType();
 
     const IS_CREATING = !this.props.formState.id;
 
@@ -264,7 +264,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   label="Итог проведенного ремонта"
                   value={state.status}
                   error={errors.status}
-                  options={this.state.statusOptions}
+                  options={statusOptions}
                   emptyValue={null}
                   onChange={this.props.handleChange}
                   boundKeys="status"
@@ -297,14 +297,17 @@ export default compose<PropsRepair, OwnRepairProps>(
       userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch: any, { page, path }) => ({
-      autobaseGetSetCar: (...arg) =>
-        dispatch(autobaseActions.autobaseGetSetCar(...arg)),
-      autobaseGetRepairCompany: () =>
+      autobaseGetSetCar: (...arg) => (
+        dispatch(autobaseActions.autobaseGetSetCar(...arg))
+      ),
+      autobaseGetRepairCompany: () => (
         dispatch(
           autobaseActions.autobaseGetSetRepairCompany({}, { page, path }),
-        ),
-      autobaseGetRepairType: () =>
-        dispatch(autobaseActions.autobaseGetSetRepairType({}, { page, path })),
+        )
+      ),
+      autobaseGetRepairType: () => (
+        dispatch(autobaseActions.autobaseGetSetRepairType({}, { page, path }))
+      ),
     }),
   ),
   withForm<PropsRepairWithForm, Repair>({

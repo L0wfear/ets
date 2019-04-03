@@ -64,5 +64,4 @@ export type StateRepair = {
   >[];
   repairCompanyOptions: DefaultSelectListMapper<RepairCompany>;
   repairTypeOptions: DefaultSelectListMapper<RepairType>;
-  statusOptions: DefaultSelectListMapper<any>;
 };

@@ -26,12 +26,10 @@ const CarForm: React.FC<PropsCar> = React.memo(
   (props) => {
     const {
       formState: state,
-      formErrors: errors,
+      // formErrors: errors,
       page,
       path,
     } = props;
-
-    console.log(state, errors); // tslint:disable-line
 
     const IS_CREATING = !state.asuods_id;
 

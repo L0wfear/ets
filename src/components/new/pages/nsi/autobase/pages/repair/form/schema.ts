@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsRepair } from 'components/directories/autobase/repair/RepairForm/@types/Repair.h';
+import { PropsRepair } from 'components/new/pages/nsi/autobase/pages/repair/form/@types/RepairForm';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'utils/validate';
 import { diffDates } from 'utils/dates';

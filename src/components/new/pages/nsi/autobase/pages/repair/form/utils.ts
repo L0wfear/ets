@@ -1,7 +1,7 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { AUTOBASE_REPAIR_STATUS, failed } from 'components/directories/autobase/repair/RepairForm/constant';
 import { get } from 'lodash';
+import { AUTOBASE_REPAIR_STATUS, failed } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 
 export type GetDefaultRepairElement = (repair: Repair | null) => Repair;
 

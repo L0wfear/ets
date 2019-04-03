@@ -21,8 +21,6 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { isArray } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
-import RepairList from 'components/directories/autobase/repair/config-data/components';
-
 import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
 import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
 import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
@@ -46,7 +44,6 @@ export const CAR_TAB_INDEX = {
   battery: '2',
   tire: '3',
   tech_maintenance: '6.1',
-  repair: '6.2',
 };
 
 class CarForm extends Form {
@@ -217,11 +214,6 @@ class CarForm extends Form {
                 active={tabKey === CAR_TAB_INDEX.tech_maintenance}>
                 Тех. обслуживание
               </MenuItem>
-              <MenuItem
-                eventKey={CAR_TAB_INDEX.repair}
-                active={tabKey === CAR_TAB_INDEX.repair}>
-                Ремонты ТС
-              </MenuItem>
             </NavDropdown>
           </Nav>
 
@@ -294,13 +286,6 @@ class CarForm extends Form {
                 car_model_id={state.special_model_id}
                 gov_number={state.gov_number}
               />
-            ) : (
-              <DivNone />
-            )}
-          </TabContent>
-          <TabContent eventKey={CAR_TAB_INDEX.repair} tabKey={tabKey}>
-            {tabKey === CAR_TAB_INDEX.repair ? (
-              <RepairList car_id={state.asuods_id} />
             ) : (
               <DivNone />
             )}

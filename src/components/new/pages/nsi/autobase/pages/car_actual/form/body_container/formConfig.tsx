@@ -6,7 +6,7 @@ import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/i
 
 import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/road_accident/_config-data';
 
-import RepairList from 'components/directories/autobase/repair/config-data/components';
+import repairListConfig from 'components/new/pages/nsi/autobase/pages/repair/_config-data';
 
 import techInspectionListConfig from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data';
 
@@ -91,7 +91,7 @@ const roadAccident: OneTabData = {
   title: 'ДТП',
   tabKey: roadAccidentListConfig.item,
   component: roadAccidentListConfig.component,
-  path: `${roadAccidentListConfig.patrialEndPath}`,
+  path: roadAccidentListConfig.patrialEndPath,
 };
 
 const techMaintenance: OneTabData = {
@@ -103,9 +103,9 @@ const techMaintenance: OneTabData = {
 
 const repair: OneTabData = {
   title: 'Ремонты ТС',
-  tabKey: 'repair',
-  component: RepairList, // car_id
-  path: techInspectionListConfig.routePath,
+  tabKey: repairListConfig.item,
+  component: repairListConfig.component,
+  path: repairListConfig.patrialEndPath,
 };
 
 const tmAndR: OneTabData = {
@@ -121,7 +121,7 @@ const techInspection: OneTabData = {
   title: 'Техосмотр',
   tabKey: techInspectionListConfig.item,
   component: techInspectionListConfig.component, // car_id
-  path: `${techInspectionListConfig.patrialEndPath}`,
+  path: techInspectionListConfig.patrialEndPath,
 };
 
 const carFormTabKey: OneTabData[] = [

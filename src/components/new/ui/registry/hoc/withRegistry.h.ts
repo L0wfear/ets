@@ -72,6 +72,7 @@ export type TypeFields<F extends any> = {
     | 'workOrNot'
     | 'yesOrNot'
     | 'road_accident_driver_fio'
+    | 'AUTOBASE_REPAIR_STATUS'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {

@@ -79,12 +79,14 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                 filedToCheck={filedToCheckContainerSecond}
               />
               <br/>
-              <InspectContainerRegistry
-                actions={state.actions}
-                page={this.props.page}
-                path={this.props.path}
-                addToActionRow={this.addToActionRow}
-              />
+              <Row>
+                <InspectContainerRegistry
+                  actions={state.actions}
+                  page={this.props.page}
+                  path={this.props.path}
+                  addToActionRow={this.addToActionRow}
+                />
+              </Row>
             </Col>
           </Row>
         </ModalBodyPreloader>

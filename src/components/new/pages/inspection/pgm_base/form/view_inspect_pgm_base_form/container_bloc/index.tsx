@@ -56,6 +56,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
           ...props.selectedInspectPgmBase.data,
           containers_counter: ans.length,
           summ_capacity: ans.reduce((summ, { capacity }) => summ + capacity, 0),
+          pgm_volume_sum: ans.reduce((summ, { pgm_volume }) => summ + pgm_volume, 0),
         });
       });
     },

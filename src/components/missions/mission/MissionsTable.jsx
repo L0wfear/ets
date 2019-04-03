@@ -224,11 +224,9 @@ export const getTableMeta = ({
       },
       {
         name: 'reason_id',
-        displayName: 'Причина',
+        displayName: 'Причина отмены/невыполнения',
         type: 'number',
-        sort: {
-          serverFieldName: 'reason_name',
-        },
+        display: false,
         filter: {
           type: 'multiselect',
           options: missionCancelReasonsList.map(({ id, name }) => ({
@@ -236,6 +234,12 @@ export const getTableMeta = ({
             label: name,
           })),
         },
+      },
+      {
+        name: 'reason_name',
+        displayName: 'Причина',
+        type: 'number',
+        filter: false,
       },
       {
         name: 'comment',
@@ -310,7 +314,6 @@ const MissionTable = (props) => {
     technical_operation_id: ({ rowData }) => (
       <div>{rowData.technical_operation_name}</div>
     ),
-    reason_id: ({ rowData }) => <div>{rowData.reason_name}</div>,
   };
 
   return (

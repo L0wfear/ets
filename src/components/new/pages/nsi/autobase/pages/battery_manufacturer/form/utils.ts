@@ -1,14 +1,12 @@
 import { isObject } from 'util';
 import { BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type GetDefaultBatteryManufacturerElement = (batteryManufacturer: BatteryManufacturer | null) => BatteryManufacturer;
-
 export const defaultBatteryManufacturer: BatteryManufacturer = {
   id: null,
-  name: null,
+  name: '',
 };
 
-export const getDefaultBatteryManufacturerElement: GetDefaultBatteryManufacturerElement = (element) => {
+export const getDefaultBatteryManufacturerElement = (element: Partial<BatteryManufacturer>): BatteryManufacturer => {
   const newElement = { ...defaultBatteryManufacturer };
   if (isObject(element)) {
     Object.entries(element).forEach(([key, value]) => {

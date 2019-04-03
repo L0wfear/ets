@@ -5,11 +5,10 @@ import { DispatchProp } from 'react-redux';
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsBatteryManufacturerFormWrap = {
-  showForm: boolean;
-  element: BatteryManufacturer | null;
+  element: Partial<BatteryManufacturer>;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -17,7 +16,7 @@ export type PropsBatteryManufacturerFormWrap = {
 export type StatePropsBatteryManufacturer = {};
 export type DispatchPropsBatteryManufacturer = DispatchProp;
 export type OwnBatteryManufacturerProps = {
-  element: BatteryManufacturer | null;
+  element: Partial<BatteryManufacturer>;
   handleHide: OnFormHideType
   page: string;
   path?: string;
@@ -35,5 +34,3 @@ export type PropsBatteryManufacturer = OutputWithFormProps<
   [ BatteryManufacturer ],
   any
 >;
-export type StateBatteryManufacturer = {
-};

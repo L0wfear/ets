@@ -163,30 +163,17 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleClick: React.MouseEventHandler<HTMLTableRowElement> = () => {
     const { props } = this;
-
-    if (props.handleClickOnRow) {
-      props.handleClickOnRow(
-        props.rowData,
-      );
-    } else {
-      this.props.registryHandleClickOnRow(
-        props.rowData,
-      );
-    }
+    props.registryHandleClickOnRow(
+      props.rowData,
+    );
   }
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
     if (props.isPermitted && props.buttons.includes(buttonsTypes.read)) {
-      if (props.handleDoubleClickOnRow) {
-        props.handleDoubleClickOnRow(
-          props.rowData,
-        );
-      } else {
-        this.props.setParams({
-          [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
-        });
-      }
+      this.props.setParams({
+        [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
+      });
     }
   }
 

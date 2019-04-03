@@ -20,77 +20,35 @@ type PropsComponentButton = {
   registryKey: string;
 };
 
-class ComponentButton extends React.PureComponent<PropsComponentButton, {}> {
-  render() {
-    const { type } = this.props;
-
-    if (type === buttonsTypes.export) {
-      return (
-        <ButtonExport registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.filter) {
-      return (
-        <ButtonToggleFilter registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.create) {
-      return (
-        <ButtonCreate registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.read) {
-      return (
-        <ButtonRead registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.remove) {
-      return (
-        <ButtonRemove registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.duty_missions_by_templates) {
-      return (
-        <ButtonCreateDutyMission registryKey={this.props.registryKey} />
-      );
-    }
-    if (type === buttonsTypes.edc_request_create_mission) {
-      return (
-        <ButtonCreateMissionByEdcRequest registryKey={this.props.registryKey} />
-      );
-    }
-    if (type === buttonsTypes.edc_request_create_duty_mission) {
-      return (
-        <ButtonCreateDutyMissionByEdcRequest registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.edc_request_reject) {
-      return (
-        <ButtonRejectEdcRequest registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.edc_request_cancel) {
-      return (
-        <ButtonCancelEdcRequest registryKey={this.props.registryKey} />
-      );
-    }
-
-    if (type === buttonsTypes.edc_request_close) {
-      return (
-        <ButtonCloseEdcRequest registryKey={this.props.registryKey} />
-      );
-    }
-
-    return <div>Не определён тип для {type}</div>;
-
+const getButtomNameComponent = (type: string) => {
+  switch (type) {
+    case buttonsTypes.export: return ButtonExport;
+    case buttonsTypes.filter: return ButtonToggleFilter;
+    case buttonsTypes.create: return ButtonCreate;
+    case buttonsTypes.read: return ButtonRead;
+    case buttonsTypes.remove: return ButtonRemove;
+    case buttonsTypes.duty_missions_by_templates: return ButtonCreateDutyMission;
+    case buttonsTypes.edc_request_create_mission: return ButtonCreateMissionByEdcRequest;
+    case buttonsTypes.edc_request_create_duty_mission: return ButtonCreateDutyMissionByEdcRequest;
+    case buttonsTypes.edc_request_reject: return ButtonRejectEdcRequest;
+    case buttonsTypes.edc_request_cancel: return ButtonCancelEdcRequest;
+    case buttonsTypes.edc_request_close: return ButtonCloseEdcRequest;
+    default: return null;
   }
-}
+};
 
-export default ComponentButton;
+const ComponentButton: React.FC<PropsComponentButton> = (props) => {
+  const { type } = props;
+
+  const ButtonNameComponent = getButtomNameComponent(type);
+
+  if (ButtonNameComponent) {
+    return (
+      <ButtonNameComponent registryKey={props.registryKey} />
+    );
+  }
+
+  return <div>Не определён тип для {type}</div>;
+};
+
+export default React.memo(ComponentButton);

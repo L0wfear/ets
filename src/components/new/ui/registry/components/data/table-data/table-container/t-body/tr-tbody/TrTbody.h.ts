@@ -21,10 +21,7 @@ export type DipatchPropsTrTbody = {
 export interface OwnPropsTrTbody {
   registryKey: string;
   rowData: any;
-  components?: any;
   indexRow: number;
-  handleClickOnRow: any;
-  handleDoubleClickOnRow: any;
 }
 
 export type PropsTrTbody = (

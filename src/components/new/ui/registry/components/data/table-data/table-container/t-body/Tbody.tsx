@@ -27,8 +27,6 @@ class Tbody extends React.PureComponent<PropsTbody, StateTbody> {
               rowData={rowData}
               registryKey={props.registryKey}
               indexRow={indexRow}
-              handleClickOnRow={props.handleClickOnRow}
-              handleDoubleClickOnRow={props.handleDoubleClickOnRow}
             />
           ))
         }

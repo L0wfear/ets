@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as Panel from 'react-bootstrap/lib/Panel';
 
-import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { connect, DispatchProp } from 'react-redux';
 
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
 
@@ -10,24 +9,32 @@ import Filters from 'components/new/ui/registry/components/data/filters/Filters'
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
+import { OneRegistryData } from '../../../module/registry';
 
-type PropsFiltersWrap = {
-  registryKey: string;
-  isOpen: boolean;
-  rowFields: any[];
-  components?: any;
+type FiltersWrapStateProps = {
+  isOpen: OneRegistryData['filter']['isOpen'];
 };
+type FiltersWrapDispatchProps = DispatchProp;
+type FiltersWrapOwnProps = {
+  registryKey: string;
+};
+type FiltersWrapMergedProps = (
+  FiltersWrapStateProps
+  & FiltersWrapDispatchProps
+  & FiltersWrapOwnProps
+);
+type FiltersWrapProps = FiltersWrapMergedProps;
 
 type StateFiltersWrap = {
   wasFirstOpen: boolean;
 };
 
-class FiltersWrap extends React.PureComponent<PropsFiltersWrap, StateFiltersWrap> {
+class FiltersWrap extends React.PureComponent<FiltersWrapProps, StateFiltersWrap> {
   state = {
     wasFirstOpen: this.props.isOpen,
   };
 
-  static getDerivedStateFromProps(nextProps: PropsFiltersWrap, prevState: StateFiltersWrap) {
+  static getDerivedStateFromProps(nextProps: FiltersWrapProps, prevState: StateFiltersWrap) {
     if (!prevState.wasFirstOpen && nextProps.isOpen) {
       return {
         wasFirstOpen: true,
@@ -38,8 +45,8 @@ class FiltersWrap extends React.PureComponent<PropsFiltersWrap, StateFiltersWrap
   }
 
   handleToggle = () => {
-    // toggle
-  }
+    //
+  };
 
   render() {
     const { registryKey } = this.props;
@@ -56,11 +63,10 @@ class FiltersWrap extends React.PureComponent<PropsFiltersWrap, StateFiltersWrap
   }
 }
 
-export default compose<any, any>(
-  connect<any, any, any, ReduxState>(
+export default compose<FiltersWrapProps, FiltersWrapOwnProps>(
+  connect<FiltersWrapStateProps, FiltersWrapDispatchProps, FiltersWrapOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       isOpen: getFilterData(state.registry, registryKey).isOpen,
-      rowFields: getListData(state.registry, registryKey).meta.rowFields,
     }),
   ),
 )(FiltersWrap);

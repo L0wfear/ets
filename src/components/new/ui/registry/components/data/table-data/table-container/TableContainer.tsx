@@ -19,8 +19,6 @@ type TableContainerStateProps = {
 type TableContainerDispatchProps = {};
 type TableContainerOwnProps = {
   registryKey: string;
-  handleClickOnRow: any;
-  handleDoubleClickOnRow: any;
 };
 type TableContainerMergeProps = (
   TableContainerStateProps
@@ -44,11 +42,7 @@ const TableContainer: React.FC<TableContainerProps> = (props) => {
     <EtsTableWrap className="ets_table_wrap">
       <EtsTable fixedWidth={props.fixedWidth}>
         <Thead registryKey={registryKey} />
-        <Tbody
-          registryKey={registryKey}
-          handleClickOnRow={props.handleClickOnRow}
-          handleDoubleClickOnRow={props.handleDoubleClickOnRow}
-        />
+        <Tbody registryKey={registryKey} />
       </EtsTable>
     </EtsTableWrap>
   );

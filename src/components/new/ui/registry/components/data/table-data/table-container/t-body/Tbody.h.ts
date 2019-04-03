@@ -10,9 +10,6 @@ export type DispatchPropsTbody = DispatchProp;
 
 export interface OwnPropsTbody {
   registryKey: string;
-  components?: any;
-  handleClickOnRow: any;
-  handleDoubleClickOnRow: any;
 }
 
 export type PropsTbody = (

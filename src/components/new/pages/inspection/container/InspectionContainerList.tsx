@@ -4,7 +4,6 @@ import { DivNone } from 'global-styled/global-styled';
 import IAVisibleWarning from '../autobase/components/vsible_warning/IAVisibleWarning';
 import { inspectContainerSchema } from './filed_to_check/inspect_autobase_schema';
 import { filedToCheckContainerFirst, filedToCheckContainerSecond } from './filed_to_check/filedToCheck';
-import { createValidDate, getDateWithMoscowTz } from 'utils/dates';
 import inspectContainerPermissions from './_config_data/permissions';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -21,17 +20,19 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
 
 class InspectionContainerList extends React.Component<PropsInspectContainerForm> {
-  addToActionRow = () => {
+  addToActionRow = (action) => {
     // можно открывать форму
     this.props.handleChange({
       actions: [
         ...this.props.formState.actions,
-        {
-          name: 'Тест',
-          date_start: createValidDate(getDateWithMoscowTz()),
-          date_end: createValidDate(getDateWithMoscowTz()),
-        },
+        action,
       ],
+    });
+  }
+
+  removeActionByIndex = (removeIndex: number) => {
+    this.props.handleChange({
+      actions: this.props.formState.actions.filter((_, index) => index !== removeIndex),
     });
   }
 
@@ -85,6 +86,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                   page={this.props.page}
                   path={this.props.path}
                   addToActionRow={this.addToActionRow}
+                  removeActionByIndex={this.removeActionByIndex}
                 />
               </Row>
             </Col>

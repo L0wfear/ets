@@ -40,11 +40,11 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
     formState: state,
     formErrors: errors,
 
-    params,
+    match,
     page, path,
   } = props;
 
-  const car_actual_asuods_id = getNumberValueFromSerch(params.car_actual_asuods_id);
+  const car_actual_asuods_id = getNumberValueFromSerch(match.params.car_actual_asuods_id);
 
   const IS_CREATING = !state.id;
 
@@ -80,7 +80,7 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
         },
       );
     },
-    [isPermitted],
+    [],
   );
 
   React.useEffect(

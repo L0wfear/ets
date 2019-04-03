@@ -3,60 +3,24 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as queryString from 'query-string';
 import { useSearchMergeNewState } from 'components/new/utils/hooks/useSearchMergeNewState';
 import { isNumber } from 'util';
+import memoizeOne from 'memoize-one';
 
 export type WithSearchProps = {
-  params: any;
   setParams: (obj: { [key: string]: string | number }) => void;
   searchState: any;
   setDataInSearch: (obj: any) => void;
   setParamsAndSearch: (any) => void;
 } & RouteComponentProps<any>;
 
+const makeObjFromMemoise = memoizeOne(
+  (search: string): any => {
+    return queryString.parse(search);
+  },
+);
+
 const withSearch = (Component) => (
   withRouter(
-    class extends React.Component<RouteComponentProps<{}>, { params: any, search: string; searchState: WithSearchProps['searchState'] }> {
-      constructor(props) {
-        super(props);
-
-        const {
-          location: { search },
-          match: { params },
-        } = props;
-
-        this.state = {
-          search,
-          params,
-          searchState: queryString.parse(search),
-        };
-      }
-
-      componentDidUpdate(prevProps) {
-        const {
-          location: { search },
-          match: { params },
-        } = this.props;
-
-        const changeObj: any = {};
-        let hasChanges = false;
-
-        if (search !== prevProps.location.search) {
-          hasChanges = true;
-
-          changeObj.search = search;
-          changeObj.searchState = queryString.parse(search);
-        }
-
-        if (params !== prevProps.match.params) {
-          hasChanges = true;
-
-          changeObj.params = params;
-        }
-
-        if (hasChanges) {
-          this.setState(changeObj);
-        }
-      }
-
+    class extends React.PureComponent<RouteComponentProps<{}>, {}> {
       setDataInSearch: WithSearchProps['setDataInSearch'] = (data) => {
         this.props.history.replace(
           `${
@@ -64,7 +28,7 @@ const withSearch = (Component) => (
           }?${
             queryString.stringify(
               useSearchMergeNewState(
-                this.state.searchState,
+                makeObjFromMemoise(this.props.location.search),
                 data,
               ),
             )
@@ -127,7 +91,7 @@ const withSearch = (Component) => (
           }${
             queryString.stringify(
               useSearchMergeNewState(
-                this.state.searchState,
+                makeObjFromMemoise(this.props.location.search),
                 search,
               ),
             )
@@ -138,9 +102,8 @@ const withSearch = (Component) => (
       render() {
         return (
           <Component
-            params={this.state.params}
             setParams={this.setParams}
-            searchState={this.state.searchState}
+            searchState={makeObjFromMemoise(this.props.location.search)}
             setParamsAndSearch={this.setParamsAndSearch}
             setDataInSearch={this.setDataInSearch}
             {...this.props}

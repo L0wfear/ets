@@ -21,7 +21,6 @@ import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { isArray } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
-import InsurancePolicyList from 'components/directories/autobase/insurance_policy/config-data/components';
 import RepairList from 'components/directories/autobase/repair/config-data/components';
 
 import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
@@ -46,11 +45,8 @@ export const CAR_TAB_INDEX = {
   passport_info: '1.3',
   battery: '2',
   tire: '3',
-  insurance_policy: '4',
-  road_accident: '5',
   tech_maintenance: '6.1',
   repair: '6.2',
-  tech_inspection: '7',
 };
 
 class CarForm extends Form {
@@ -215,9 +211,6 @@ class CarForm extends Form {
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
             <NavItem eventKey={CAR_TAB_INDEX.tire}>Шины</NavItem>
-            <NavItem eventKey={CAR_TAB_INDEX.insurance_policy}>
-              Страхование
-            </NavItem>
             <NavDropdown id={6} eventKey="6" title="ТО и ремонты">
               <MenuItem
                 eventKey={CAR_TAB_INDEX.tech_maintenance}
@@ -285,14 +278,6 @@ class CarForm extends Form {
                 page={this.props.page}
                 path={this.props.path}
               />
-            ) : (
-              <DivNone />
-            )}
-          </TabContent>
-
-          <TabContent eventKey={CAR_TAB_INDEX.insurance_policy} tabKey={tabKey}>
-            {tabKey === CAR_TAB_INDEX.insurance_policy ? (
-              <InsurancePolicyList car_id={state.asuods_id} />
             ) : (
               <DivNone />
             )}

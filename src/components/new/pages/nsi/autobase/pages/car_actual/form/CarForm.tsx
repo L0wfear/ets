@@ -19,50 +19,50 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 import carActualPermissions from '../_config-data/permissions';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import CarFormBodyHeader from './body_header/CarFormBodyHeader';
 import CarFormBodyContainer from './body_container/CarFormBodyContainer';
 
-const CarForm: React.FC<PropsCar> = (props) => {
-  const {
-    formState: state,
-    formErrors: errors,
-    page,
-    path,
-  } = props;
+const CarForm: React.FC<PropsCar> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      formErrors: errors,
+      page,
+      path,
+    } = props;
 
-  console.log(state, errors); // tslint:disable-line
+    console.log(state, errors); // tslint:disable-line
 
-  const IS_CREATING = !state.asuods_id;
+    const IS_CREATING = !state.asuods_id;
 
-  const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
-  return (
-    <Modal id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>Карточка транспортного средства</Modal.Title>
-      </Modal.Header>
-      <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <CarFormBodyHeader isPermitted={isPermitted} />
-        <CarFormBodyContainer isPermitted={isPermitted} />
-      </ModalBodyPreloader>
-      <Modal.Footer>
-      {
-        isPermitted // либо обновление, либо создание
-        ? (
-          <Button id="save_employee" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
-        )
-        : (
-          <DivNone />
-        )
-      }
-      </Modal.Footer>
-    </Modal>
-  );
-};
+    return (
+      <Modal id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>Карточка транспортного средства</Modal.Title>
+        </Modal.Header>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <CarFormBodyHeader isPermitted={isPermitted} />
+          <CarFormBodyContainer isPermitted={isPermitted} />
+        </ModalBodyPreloader>
+        <Modal.Footer>
+        {
+          isPermitted // либо обновление, либо создание
+          ? (
+            <Button id="save_employee" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        </Modal.Footer>
+      </Modal>
+    );
+  },
+);
 
 export default compose<PropsCar, OwnCarProps>(
-  withSearch,
   connect<StatePropsCar, DispatchPropsCar, OwnCarProps, ReduxState>(
     null,
   ),

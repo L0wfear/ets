@@ -43,6 +43,7 @@ const getRouters = () => (
     <Redirect from="/car-func-types" to="/nsi/autobase/types" />
     <Redirect from="/types_attr" to="/nsi/autobase/types_attr" />
     <Redirect from="/tech-inspection" to="/nsi/autobase/tech_inspection" />
+    <Redirect from="/insurance-policy" to="/nsi/autobase/insurance_policy" />
 
     <Redirect from="/bridges" to="/nsi/geoobjects/bridges" />
     <Redirect from="/carpool" to="/nsi/geoobjects/carpool" />

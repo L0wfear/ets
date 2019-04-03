@@ -2,7 +2,7 @@ import * as React from 'react';
 import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 
-import InsurancePolicyList from 'components/directories/autobase/insurance_policy/config-data/components';
+import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
 
 import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/road_accident/_config-data';
 
@@ -82,9 +82,9 @@ const tireInfo: OneTabData = {
 
 const insurancePolicy: OneTabData = {
   title: 'Страхование',
-  tabKey: 'insurancePolicy',
-  component: InsurancePolicyList, // car_id
-  path: 'id',
+  tabKey: insurancePolicyListConfig.item,
+  component: insurancePolicyListConfig.component,
+  path: `${insurancePolicyListConfig.patrialEndPath}`,
 };
 
 const roadAccident: OneTabData = {

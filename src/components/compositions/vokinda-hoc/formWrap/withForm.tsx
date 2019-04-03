@@ -123,8 +123,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         };
       }
 
-      componentDidUpdate(prevProps) {
-        if (prevProps !== this.props) {
+      componentDidUpdate(prevProps, prevState) {
+        if (Object.entries(this.props).some(([key, value]) => value !== prevProps[key])) {
           if (this.props.element !== prevProps.element) {
             this.setState(this.getInitState(this.props));
           } else {

@@ -1,19 +1,18 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
-import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import techInspectionPermissions from './permissions';
+import insurancePolicyPermissions from './permissions';
 
-export const registryKey = 'techInspectionRegistry';
+export const registryKey = 'insurancePolicyRegistry';
 
-export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => {
-
+export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> => {
   const Service: any = {
     getRegistryData: {
-      entity: 'autobase/tech_inspection_registry',
+      entity: 'autobase/insurance_policy_registry',
     },
     removeOneData: {
-      entity: 'autobase/tech_inspection_registry',
+      entity: 'autobase/insurance_policy_registry',
       uniqKeyLikeQueryString: false,
     },
   };
@@ -24,7 +23,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
     };
 
     Service.getBlobData = {
-      entity: 'autobase/tech_inspection_registry',
+      entity: 'autobase/insurance_policy_registry',
       payload: {
         car_id,
         format: 'xls',
@@ -48,12 +47,6 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
     filter: {
       fields: [
         {
-          valueKey: 'company_id',
-          labelKey: 'company_name',
-          title: 'Организация',
-          type: 'multiselect',
-        },
-        {
           valueKey: 'car_id',
           labelKey: 'gov_number',
           title: [
@@ -65,24 +58,39 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
           type: 'multiselect',
         },
         {
-          valueKey: 'reg_number',
-          title: 'Номер диагностической карты/ Талона ГТО',
+          valueKey: 'insurer',
+          title: 'Страховая организация',
           type: 'multiselect',
         },
         {
-          valueKey: 'date_end',
-          title: 'Срок действия до',
-          type: 'advanced-date',
+          valueKey: 'insurance_type_name',
+          title: 'Тип страхования',
+          type: 'multiselect',
         },
         {
-          valueKey: 'tech_operator',
-          title: 'Место выдачи',
+          valueKey: 'seria',
+          title: 'Серия',
           type: 'multiselect',
+        },
+        {
+          valueKey: 'number',
+          title: 'Номер',
+          type: 'advanced-string-like',
         },
         {
           valueKey: 'date_start',
-          title: 'Дата прохождения',
+          title: 'Дата начала действия',
           type: 'advanced-date',
+        },
+        {
+          valueKey: 'date_end',
+          title: 'Дата окончания действия',
+          type: 'advanced-date',
+        },
+        {
+          valueKey: 'price',
+          title: 'Стоимость, руб.',
+          type: 'advanced-number',
         },
         {
           valueKey: 'note',
@@ -92,22 +100,17 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
       ],
     },
     list: {
-      permissions: techInspectionPermissions,
+      permissions: insurancePolicyPermissions,
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'tech_inspection_registry_id',
+        uniqKeyForParams: 'insurance_policy_registry_id',
       },
       meta: {
         fields: [
           {
             key: 'enumerated',
             title: '№',
-          },
-          {
-            key: 'company_name',
-            title: 'Организация',
-            width: 150,
           },
           {
             key: 'gov_number',
@@ -120,32 +123,41 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
             width: 200,
           },
           {
-            key: 'reg_number',
-            title: 'Номер диагностической карты/ Талона ГТО',
+            key: 'insurer',
+            title: 'Страховая организация',
             width: 200,
           },
           {
-            key: 'date_end',
-            title: 'Срок действия до',
-            format: 'date',
-            width: 150,
+            key: 'insurance_type_name',
+            title: 'Тип страхования',
+            width: 200,
           },
           {
-            key: 'tech_operator',
-            title: 'Место выдачи',
-            width: 150,
+            key: 'seria',
+            title: 'Серия',
+            width: 100,
+          },
+          {
+            key: 'number',
+            title: 'Номер',
+            width: 100,
           },
           {
             key: 'date_start',
-            title: 'Дата прохождения',
+            title: 'Дата начала действия',
             format: 'date',
             width: 150,
           },
           {
-            key: 'is_allowed',
-            title: 'Заключение о возможности эксплуатации ТС',
-            format: 'boolean',
-            width: 200,
+            key: 'date_end',
+            title: 'Дата окончания действия',
+            format: 'date',
+            width: 150,
+          },
+          {
+            key: 'price',
+            title: 'Стоимость, руб.',
+            width: 150,
           },
           {
             key: 'note',

@@ -65,12 +65,12 @@ export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => 
   )(
     ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, uniqKeyForParams, ...props}) => {
       const [element, setElement] = React.useState(null);
-      const uniqKeyValue = getNumberValueFromSerch(props.params[uniqKeyForParams]);
-      const type = props.params.type;
+      const uniqKeyValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
+      const type = props.match.params.type;
 
       React.useEffect(
         () => {
-          if (props.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
+          if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
             if (props.buttons.includes(buttonsTypes.create)) {
               setElement({});
             } else {
@@ -103,7 +103,7 @@ export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => 
             setElement(null);
           }
         },
-        [props.params[uniqKeyForParams], uniqKeyValue, array],
+        [props.match.params[uniqKeyForParams], uniqKeyValue, array],
       );
       const handleHide = React.useCallback(
         (isSubmitted: boolean, response?: any) => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
-import carFormTabKey, { mainInfo } from '../formConfig';
+import carFormTabKey, { mainInfo, findSelectedTabKeyComponent } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
 
 type CarFormBodyHeaderOwnProps = {
   isPermitted: boolean;
@@ -13,26 +13,18 @@ type CarFormBodyHeaderProps = (
 );
 
 const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
-  const [tabKey, setTabKey] = React.useState(mainInfo.tabKey);
   const {
-    params,
+    match,
   } = props;
 
-  const tabKeyOwn = params.tabKey;
+  const tabKeyOwn = match.params.tabKey;
 
   React.useEffect(
     () => {
-      props.setParams({
-        tabKey,
-      });
-    },
-    [tabKey],
-  );
-
-  React.useEffect(
-    () => {
-      if (tabKeyOwn !== tabKey) {
-        setTabKeyWrap(tabKey);
+      if (!findSelectedTabKeyComponent(tabKeyOwn)) {
+        props.setParams({
+          tabKey: mainInfo.tabKey,
+        });
       }
     },
     [tabKeyOwn],
@@ -40,7 +32,9 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
 
   const setTabKeyWrap = React.useCallback(
     (tabKeyNew) => {
-      setTabKey(tabKeyNew);
+      props.setParams({
+        tabKey: tabKeyNew,
+      });
     },
     [],
   );
@@ -48,7 +42,7 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
   return (
     <Nav
       bsStyle="tabs"
-      activeKey={tabKey}
+      activeKey={tabKeyOwn}
       onSelect={setTabKeyWrap}
       id="refs-car-tabs"
     >

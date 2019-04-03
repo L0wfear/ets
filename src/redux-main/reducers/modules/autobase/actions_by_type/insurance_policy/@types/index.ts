@@ -7,5 +7,3 @@ export type AutobaseCreateInsurancePolicy = (insurancePolicyOld: InsurancePolicy
 export type AutobaseUpdateInsurancePolicy = (insurancePolicyOld: InsurancePolicy, { page, path }: { page: string; path?: string }) => (
   Promise<any>
 );
-
-export type GetInsurancePolicyType = () => Promise<any>;

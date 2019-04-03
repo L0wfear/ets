@@ -3,12 +3,11 @@ import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWra
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type PropsTireModelFormWrap = {
-  showForm: boolean;
+export type PropsTireModelFormLazy = {
   element: TireModel | null;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -38,5 +37,3 @@ export type PropsTireModel = OutputWithFormProps<
   [ TireModel ],
   any
 >;
-export type StateTireModel = {
-};

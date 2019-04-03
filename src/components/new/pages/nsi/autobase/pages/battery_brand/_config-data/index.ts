@@ -15,7 +15,7 @@ export default {
   patrialEndPath,
   path,
   routePath,
-  title: 'Реестр страховок',
+  title: 'Марки аккумуляторов',
   isNewRegistry: true,
   entyity: 'autobase_battery_brand',
   noDotList: false,

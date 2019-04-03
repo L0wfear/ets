@@ -13,7 +13,10 @@ import batteryBrandList from 'components/new/pages/nsi/autobase/pages/battery_br
 import batteryManufacturerList from 'components/new/pages/nsi/autobase/pages/battery_manufacturer/_config-data';
 // old
 import tire from 'components/directories/autobase/tire/config-data';
-import tireModel from 'components/directories/autobase/tire_model/config-data';
+
+import tireModelList from 'components/new/pages/nsi/autobase/pages/tire_model/_config-data';
+
+// old
 import sparePart from 'components/directories/autobase/spare_part/config-data';
 import techMaintenanceOrderRegistry from 'components/directories/autobase/tech_maintenance_order_registry/config-data';
 
@@ -32,7 +35,7 @@ const children = {
   batteryBrandList,
   batteryManufacturerList,
   tire,
-  tireModel,
+  tireModelList,
   sparePart,
   techMaintenanceOrderRegistry,
   techInspectionList,

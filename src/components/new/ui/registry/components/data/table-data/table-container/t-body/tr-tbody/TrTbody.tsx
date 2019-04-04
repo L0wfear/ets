@@ -29,6 +29,7 @@ import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 import { TIME_MEASURES } from 'constants/dictionary';
+import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -69,6 +70,16 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           key={key}
           indexRow={props.indexRow}
           registryKey={registryKey}
+        />
+      );
+    }
+
+    if (key === 'buttonCloneTire') {
+      return (
+        <TrTdButtonCloneTire
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
         />
       );
     }

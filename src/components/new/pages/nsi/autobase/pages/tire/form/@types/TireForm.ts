@@ -4,12 +4,11 @@ import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/auto
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type PropsTireFormWrap = {
-  showForm: boolean;
-  element: Tire | null;
+export type PropsTireFormLazy = {
+  element: Partial<Tire>;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -23,7 +22,7 @@ export type DispatchPropsTire = {
   tireModelGetAndSetInStore: any;
 };
 export type OwnTireProps = {
-  element: Tire | null;
+  element: Partial<Tire>;
   handleHide: OnFormHideType
   page: string;
   path?: string;

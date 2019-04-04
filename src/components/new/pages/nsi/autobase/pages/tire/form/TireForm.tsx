@@ -6,13 +6,10 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import tirePermissions from 'components/directories/autobase/tire/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { tireFormSchema } from 'components/directories/autobase/tire/TireForm/tire_from_schema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { getDefaultTireElement } from 'components/directories/autobase/tire/TireForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -23,14 +20,17 @@ import {
   StatePropsTire,
   DispatchPropsTire,
   PropsTireWithForm,
-} from 'components/directories/autobase/tire/TireForm/@types/Tire.h';
+} from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire, TireSize, TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
-import TireToVehicleBlockComponent from 'components/directories/autobase/tire/TireForm/vehicle-block/TireToVehicleBlock';
+import TireToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/tire/form/vehicle-block/TireToVehicleBlock';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { InlineSpanValue } from './styled';
+import { getDefaultTireElement } from './utils';
+import { tireFormSchema } from './schema';
+import tirePermissions from '../_config-data/permissions';
 
 const TireToVehicleBlock: any = onChangeWithKeys(TireToVehicleBlockComponent);
 

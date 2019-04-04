@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type GetDefaultTireElement = (tire: Tire | null) => Tire;
-
 export const defaultTire: Tire = {
   car_id: null,
   comment: '',
@@ -24,7 +22,7 @@ export const defaultTire: Tire = {
   uninstalled_at: null,
 };
 
-export const getDefaultTireElement: GetDefaultTireElement = (element) => {
+export const getDefaultTireElement = (element: Partial<Tire>): Tire => {
   const newElement = { ...defaultTire };
   if (isObject(element)) {
     Object.keys(defaultTire).forEach((key) => {

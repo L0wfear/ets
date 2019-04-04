@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsTire } from 'components/directories/autobase/tire/TireForm/@types/Tire.h';
+import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const tireFormSchema: SchemaType<Tire, PropsTire> = {

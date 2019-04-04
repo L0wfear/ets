@@ -97,6 +97,19 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
       );
     }
 
+    if (colData.key === 'buttonCloneTire') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={200}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
     return (
       <EtsTheadTh
         canClick

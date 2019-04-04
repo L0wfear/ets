@@ -5,16 +5,14 @@ import { onClickWithKeys } from 'components/compositions/hoc';
 import DateFormatter from 'components/ui/DateFormatter';
 import Table from 'components/ui/table/DataTable';
 import { makeSchema, sortSchemaCols } from 'components/ui/table/utils';
-import permissions from 'components/directories/autobase/tire/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import tirePermissions from 'components/new/pages/nsi/autobase/pages/tire/_config-data/permissions';
 
 const CloneButton = withRequirePermissionsNew({
-  permissions: permissions.create,
+  permissions: tirePermissions.create,
 })(onClickWithKeys(Button));
 
-export const tableMeta = ({
-  schemaMakers = {},
-} = {}) => {
+export const tableMeta = ({ schemaMakers = {} } = {}) => {
   const schema = {
     cols: [
       {
@@ -105,10 +103,7 @@ export default (props) => {
   const renderers = {
     installed_at: ({ data }) => <DateFormatter date={data} />,
     cloneButton: ({ rowData }) => (
-      <CloneButton
-        onClick={props.onCloneClick}
-        boundKeys={rowData.id}
-      >
+      <CloneButton onClick={props.onCloneClick} boundKeys={rowData.id}>
         Создать копированием
       </CloneButton>
     ),

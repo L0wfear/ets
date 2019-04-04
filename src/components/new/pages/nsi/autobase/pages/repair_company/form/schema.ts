@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsRepairCompany } from 'components/directories/autobase/repair_company/RepairCompanyForm/@types/RepairCompany.h';
+import { PropsRepairCompany } from 'components/new/pages/nsi/autobase/pages/repair_company/form/@types/RepairCompanyForm';
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const repairCompanyFormSchema: SchemaType<RepairCompany, PropsRepairCompany> = {

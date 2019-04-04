@@ -4,12 +4,11 @@ import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type PropsRepairCompanyFormWrap = {
-  showForm: boolean;
-  element: RepairCompany | null;
+export type PropsRepairCompanyFormLazy = {
+  element: Partial<RepairCompany>;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -17,7 +16,7 @@ export type PropsRepairCompanyFormWrap = {
 export type StatePropsRepairCompany = {};
 export type DispatchPropsRepairCompany = DispatchProp;
 export type OwnRepairCompanyProps = {
-  element: RepairCompany | null;
+  element: Partial<RepairCompany>;
   handleHide: OnFormHideType
   page: string;
   path?: string;

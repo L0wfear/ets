@@ -19,8 +19,8 @@ import sparePartList from 'components/new/pages/nsi/autobase/pages/spare_part/_c
 import techMaintenanceOrderList from 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/_config-data';
 import techInspectionList from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data';
 import insurancePolicyList from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
+import repairCompanyList from 'components/new/pages/nsi/autobase/pages/repair_company/_config-data';
 // old
-import repairCompany from 'components/directories/autobase/repair_company/config-data';
 import fuelCards from 'components/directories/autobase/fuel_cards/config-data';
 
 const children = {
@@ -37,7 +37,7 @@ const children = {
   techMaintenanceOrderList,
   techInspectionList,
   insurancePolicyList,
-  repairCompany,
+  repairCompanyList,
   fuelCards,
 };
 

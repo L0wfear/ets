@@ -4,13 +4,10 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import repairCompanyPermissions from 'components/directories/autobase/repair_company/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { repairCompanyFormSchema } from 'components/directories/autobase/repair_company/RepairCompanyForm/repairCompany-schema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { getDefaultRepairCompanyElement } from 'components/directories/autobase/repair_company/RepairCompanyForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -21,9 +18,12 @@ import {
   StatePropsRepairCompany,
   DispatchPropsRepairCompany,
   PropsRepairCompanyWithForm,
-} from 'components/directories/autobase/repair_company/RepairCompanyForm/@types/RepairCompany.h';
+} from 'components/new/pages/nsi/autobase/pages/repair_company/form/@types/RepairCompanyForm';
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
+import { getDefaultRepairCompanyElement } from './utils';
+import { repairCompanyFormSchema } from './schema';
+import repairCompanyPermissions from '../_config-data/permissions';
 
 class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRepairCompany> {
   render() {

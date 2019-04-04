@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type GetDefaultRepairCompanyElement = (repairCompany: RepairCompany | null) => RepairCompany;
-
 export const defaultRepairCompany: RepairCompany = {
   comment: null,
   company_id: null,
@@ -12,7 +10,7 @@ export const defaultRepairCompany: RepairCompany = {
   name: null,
 };
 
-export const getDefaultRepairCompanyElement: GetDefaultRepairCompanyElement = (element) => {
+export const getDefaultRepairCompanyElement = (element: Partial<RepairCompany>): RepairCompany => {
   const newElement = { ...defaultRepairCompany };
   if (isObject(element)) {
     Object.keys(defaultRepairCompany).forEach((key) => {

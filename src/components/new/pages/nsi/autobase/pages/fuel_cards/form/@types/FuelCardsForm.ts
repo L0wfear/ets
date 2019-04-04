@@ -11,12 +11,11 @@ import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWra
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
-export type PropsFuelCardsFormWrap = {
-  showForm: boolean;
-  element: FuelCards | null;
+export type PropsFuelCardsFormLazy = {
+  element: Partial<FuelCards>;
   onFormHide: OnFormHideType;
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -32,7 +31,7 @@ export type StatePropsFuelCards = {
 };
 export type DispatchPropsFuelCards = {};
 export type OwnFuelCardsProps = {
-  element: FuelCards | null;
+  element: Partial<FuelCards>;
   handleHide: OnFormHideType;
   page: string;
   path?: string;

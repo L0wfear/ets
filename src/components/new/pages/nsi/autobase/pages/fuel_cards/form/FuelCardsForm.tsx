@@ -4,13 +4,10 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import fuelCardsPermissions from 'components/directories/autobase/fuel_cards/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { fuelCardsFormSchema } from 'components/directories/autobase/fuel_cards/FuelCardsForm/fuel-cards-from-schema';
 import { get } from 'lodash';
 
-import { getDefaultFuelCardsElement } from 'components/directories/autobase/fuel_cards/FuelCardsForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -21,7 +18,7 @@ import {
   StatePropsFuelCards,
   DispatchPropsFuelCards,
   PropsFuelCardsWithForm,
-} from 'components/directories/autobase/fuel_cards/FuelCardsForm/@types/FuelCards.h';
+} from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
 import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
@@ -35,12 +32,25 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import { FuelCardsIsCommonWrapper } from 'components/directories/autobase/fuel_cards/styled/styled';
+import fuelCardsPermissions from '../_config-data/permissions';
+import { fuelCardsFormSchema } from './schema';
+import { getDefaultFuelCardsElement } from './utils';
+import { FuelCardsIsCommonWrapper } from './styled';
 
-class FuelCardsForm extends React.PureComponent<
-  PropsFuelCards,
-  StateFuelCards
-> {
+const popover = (
+  <Popover
+    id="fuel_card-popover"
+    className="car-usage-report-title__popover"
+  >
+    При установленном флаге "Общая" данная топливная карта будет доступна
+    для всех подразделений организации, Если данный флаг не установлен, то
+    топливная карта доступна тому подразделению, которое указано в карточке.
+    Если подразделение не указано и не установлен признак "Общая", то
+    топливная карта доступна только головной организации.
+  </Popover>
+);
+
+class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {
   handleChangeIsCommon = async (fieldName, newValEvent) => {
     const { is_common, structure_id } = this.props.formState;
     const newVal = get(newValEvent, ['target', 'checked'], false);
@@ -90,17 +100,6 @@ class FuelCardsForm extends React.PureComponent<
     const companiesDefaultValue =
       IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
 
-    const popover = (
-      <Popover
-        id="route-odh-coverage-popover"
-        className="car-usage-report-title__popover">
-        При установленном флаге "Общая" данная топливная карта будет доступна
-        для всех подразделений организации, Если данный флаг не установлен, то
-        топливная карта доступна тому подразделению, которое указано в карточке.
-        Если подразделение не указано и не установлен признак "Общая", то
-        топливная карта доступна только головной организации.
-      </Popover>
-    );
     return (
       <Modal
         id="modal-fuel-cards"

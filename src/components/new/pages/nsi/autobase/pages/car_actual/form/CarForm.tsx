@@ -48,7 +48,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
         {
           isPermitted // либо обновление, либо создание
           ? (
-            <Button id="save_employee" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+            <Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
           )
           : (
             <DivNone />

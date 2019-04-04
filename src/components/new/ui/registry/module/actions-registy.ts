@@ -162,7 +162,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
   if (list) {
     let array = arrayRaw;
     if (!getRegistryData.userServerFilters) {
-      array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+      array = arrayRaw.sort((a, b) => b[list.data.uniqKey] - a[list.data.uniqKey]);
     }
 
     let processedArray = array;

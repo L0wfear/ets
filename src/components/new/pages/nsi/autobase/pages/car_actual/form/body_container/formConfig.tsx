@@ -2,6 +2,8 @@ import * as React from 'react';
 import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 
+import actualTiresOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data';
+
 import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
 import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/_config-data';
 import techMaintenanceListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/_config-data';
@@ -73,16 +75,16 @@ const battaryInfo: OneTabData = {
 
 const tireInfo: OneTabData = {
   title: 'Шины',
-  tabKey: 'tireInfo',
-  component: 'div',
-  path: 'id',
+  tabKey: actualTiresOnCarListConfig.item,
+  component: actualTiresOnCarListConfig.component,
+  path: actualTiresOnCarListConfig.patrialEndPath,
 };
 
 const insurancePolicy: OneTabData = {
   title: 'Страхование',
   tabKey: insurancePolicyListConfig.item,
   component: insurancePolicyListConfig.component,
-  path: `${insurancePolicyListConfig.patrialEndPath}`,
+  path: insurancePolicyListConfig.patrialEndPath,
 };
 
 const roadAccident: OneTabData = {

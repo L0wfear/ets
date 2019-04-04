@@ -26,7 +26,6 @@ import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterI
 import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
 
 import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/battery_tab/lazy';
-import { TireTabLazyWrap } from 'components/directories/autobase/cars/tabs/tire_tab/lazy';
 
 import { connect } from 'react-redux';
 import {
@@ -42,7 +41,6 @@ export const CAR_TAB_INDEX = {
   register_info: '1.2',
   passport_info: '1.3',
   battery: '2',
-  tire: '3',
 };
 
 class CarForm extends Form {
@@ -206,7 +204,6 @@ class CarForm extends Form {
               </MenuItem>
             </NavDropdown>
             <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
-            <NavItem eventKey={CAR_TAB_INDEX.tire}>Шины</NavItem>
           </Nav>
 
           <TabContent eventKey={CAR_TAB_INDEX.main_info} tabKey={tabKey}>
@@ -246,18 +243,6 @@ class CarForm extends Form {
           <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
             {tabKey === CAR_TAB_INDEX.battery ? (
               <BatteryTabLazyWrap
-                car_id={state.asuods_id}
-                page={this.props.page}
-                path={this.props.path}
-              />
-            ) : (
-              <DivNone />
-            )}
-          </TabContent>
-
-          <TabContent eventKey={CAR_TAB_INDEX.tire} tabKey={tabKey}>
-            {tabKey === CAR_TAB_INDEX.tire ? (
-              <TireTabLazyWrap
                 car_id={state.asuods_id}
                 page={this.props.page}
                 path={this.props.path}

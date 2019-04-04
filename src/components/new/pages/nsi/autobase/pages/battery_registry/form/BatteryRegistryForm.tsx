@@ -4,14 +4,11 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import batteryRegistryPermissions from 'components/directories/autobase/battery_registry/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { batteryRegistryFormSchema } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/battery-registry-from-schema';
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { getDefaultBatteryRegistryElement } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -22,11 +19,14 @@ import {
   StatePropsBatteryRegistry,
   DispatchPropsBatteryRegistry,
   PropsBatteryRegistryWithForm,
-} from 'components/directories/autobase/battery_registry/BatteryRegistryForm/@types/BatteryRegistry.h';
+} from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
-import BatteryToVehicleBlockComponent from 'components/directories/autobase/battery_registry/BatteryRegistryForm/vehicle-block/BatteryToVehicleBlock';
+import BatteryToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/BatteryToVehicleBlock';
 import { onChangeWithKeys } from 'components/compositions/hoc';
+import { getDefaultBatteryRegistryElement } from './utils';
+import { batteryRegistryFormSchema } from './schema';
+import batteryRegistryPermissions from '../_config-data/permissions';
 
 const BatteryVehicleBlock: any = onChangeWithKeys(
   BatteryToVehicleBlockComponent,

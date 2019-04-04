@@ -4,12 +4,11 @@ import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWra
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
-export type PropsBatteryRegistryFormWrap = {
-  showForm: boolean;
-  element: BatteryRegistry | null;
+export type PropsBatteryRegistryFormLazy = {
+  element: Partial<BatteryRegistry>;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -19,7 +18,7 @@ export type DispatchPropsBatteryRegistry = {
   autobaseGetSetBatteryBrand: GetBatteryBrand;
 };
 export type OwnBatteryRegistryProps = {
-  element: BatteryRegistry | null;
+  element: Partial<BatteryRegistry>;
   handleHide: OnFormHideType
   page: string;
   path?: string;

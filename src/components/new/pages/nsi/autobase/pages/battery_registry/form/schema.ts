@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsBatteryRegistry } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/@types/BatteryRegistry.h';
+import { PropsBatteryRegistry } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBatteryRegistry> = {

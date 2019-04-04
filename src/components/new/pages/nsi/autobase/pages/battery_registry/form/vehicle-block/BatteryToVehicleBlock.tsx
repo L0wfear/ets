@@ -4,7 +4,7 @@ import { ISharedPropsDataTableInput } from 'components/ui/table/DataTableInput/D
 import { IExternalPropsDataTableInputWrapper } from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
-import { meta, renderers, validationSchema } from 'components/directories/autobase/battery_registry/BatteryRegistryForm/vehicle-block/table-schema';
+import { meta, renderers, validationSchema } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/table-schema';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { getAutobaseState } from 'redux-main/reducers/selectors';

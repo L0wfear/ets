@@ -6,9 +6,7 @@ import carsListOld from 'components/directories/autobase/cars/config-data';
 
 import carFuncTypesList from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data';
 import typesAttrList from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data';
-// old
-import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';
-
+import batteryRegistryList from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data';
 import batteryBrandList from 'components/new/pages/nsi/autobase/pages/battery_brand/_config-data';
 import batteryManufacturerList from 'components/new/pages/nsi/autobase/pages/battery_manufacturer/_config-data';
 // old
@@ -27,7 +25,7 @@ const children = {
   carsListOld,
   carFuncTypesList,
   typesAttrList,
-  batteryRegistry,
+  batteryRegistryList,
   batteryBrandList,
   batteryManufacturerList,
   tire,

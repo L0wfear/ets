@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type GetDefaultBatteryRegistryElement = (batteryRegistry: BatteryRegistry | null) => BatteryRegistry;
-
 export const defaultBatteryRegistry: BatteryRegistry = {
   battery_to_car: [],
   battery_to_car_id: null,
@@ -24,7 +22,7 @@ export const defaultBatteryRegistry: BatteryRegistry = {
   worked_months: null,
 };
 
-export const getDefaultBatteryRegistryElement: GetDefaultBatteryRegistryElement = (element) => {
+export const getDefaultBatteryRegistryElement = (element: Partial<BatteryRegistry>): BatteryRegistry => {
   const newElement = { ...defaultBatteryRegistry };
   if (isObject(element)) {
     Object.keys(defaultBatteryRegistry).forEach((key) => {

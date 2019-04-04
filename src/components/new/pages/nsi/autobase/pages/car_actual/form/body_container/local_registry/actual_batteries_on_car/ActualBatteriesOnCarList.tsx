@@ -4,7 +4,7 @@ import Registry from 'components/new/ui/registry/components/Registry';
 import {
   registryKey,
   getToConfig,
-} from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data/registry-config';
+} from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -13,24 +13,24 @@ import { get } from 'lodash';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type ActualTiresOnCarListStateProps = {};
-export type ActualTiresOnCarListDispatchProps = {
+export type BatteryRegistryListStateProps = {};
+export type BatteryRegistryListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
 };
-export type ActualTiresOnCarListOwnProps = {
+export type BatteryRegistryListOwnProps = {
   selectedCarData?: Car;
 };
-export type ActualTiresOnCarListMergedProps = (
-  ActualTiresOnCarListStateProps
-  & ActualTiresOnCarListDispatchProps
-  & ActualTiresOnCarListOwnProps
+export type BatteryRegistryListMergedProps = (
+  BatteryRegistryListStateProps
+  & BatteryRegistryListDispatchProps
+  & BatteryRegistryListOwnProps
 );
-export type ActualTiresOnCarListProps = (
-  ActualTiresOnCarListMergedProps
+export type BatteryRegistryListProps = (
+  BatteryRegistryListMergedProps
 );
 
-const ActualTiresOnCarList: React.FC<ActualTiresOnCarListProps> = (props) => {
+const BatteryRegistryList: React.FC<BatteryRegistryListProps> = (props) => {
   const {
     selectedCarData,
   } = props;
@@ -54,12 +54,12 @@ const ActualTiresOnCarList: React.FC<ActualTiresOnCarListProps> = (props) => {
   );
 };
 
-export default compose<ActualTiresOnCarListProps, ActualTiresOnCarListOwnProps>(
+export default compose<BatteryRegistryListProps, BatteryRegistryListOwnProps>(
   withPreloader({
     page: registryKey,
     typePreloader: 'mainpage',
   }),
-  connect<ActualTiresOnCarListStateProps, ActualTiresOnCarListDispatchProps, ActualTiresOnCarListOwnProps, ReduxState>(
+  connect<BatteryRegistryListStateProps, BatteryRegistryListDispatchProps, BatteryRegistryListOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (
@@ -74,4 +74,4 @@ export default compose<ActualTiresOnCarListProps, ActualTiresOnCarListOwnProps>(
       ),
     }),
   ),
-)(ActualTiresOnCarList);
+)(BatteryRegistryList);

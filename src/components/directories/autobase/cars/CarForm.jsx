@@ -2,7 +2,6 @@ import React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Nav from 'react-bootstrap/lib/Nav';
-import * as NavItem from 'react-bootstrap/lib/NavItem';
 import * as NavDropdown from 'react-bootstrap/lib/NavDropdown';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 
@@ -19,13 +18,10 @@ import TabContent from 'components/ui/containers/TabContent';
 import Form from 'components/compositions/Form';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { isArray } from 'util';
-import { DivNone } from 'global-styled/global-styled';
 
 import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
 import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
 import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
-
-import { BatteryTabLazyWrap } from 'components/directories/autobase/cars/tabs/battery_tab/lazy';
 
 import { connect } from 'react-redux';
 import {
@@ -40,7 +36,6 @@ export const CAR_TAB_INDEX = {
   main_info: '1.1',
   register_info: '1.2',
   passport_info: '1.3',
-  battery: '2',
 };
 
 class CarForm extends Form {
@@ -203,7 +198,6 @@ class CarForm extends Form {
                 Паспорт ТС
               </MenuItem>
             </NavDropdown>
-            <NavItem eventKey={CAR_TAB_INDEX.battery}>Аккумуляторы</NavItem>
           </Nav>
 
           <TabContent eventKey={CAR_TAB_INDEX.main_info} tabKey={tabKey}>
@@ -238,18 +232,6 @@ class CarForm extends Form {
               carCategoryOptions={carCategoryOptions}
               typesOptions={typesOptions}
             />
-          </TabContent>
-
-          <TabContent eventKey={CAR_TAB_INDEX.battery} tabKey={tabKey}>
-            {tabKey === CAR_TAB_INDEX.battery ? (
-              <BatteryTabLazyWrap
-                car_id={state.asuods_id}
-                page={this.props.page}
-                path={this.props.path}
-              />
-            ) : (
-              <DivNone />
-            )}
           </TabContent>
         </ModalBody>
 

@@ -55,7 +55,7 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'tire_registry_id',
+        uniqKeyForParams: 'actual_tires_on_car_id',
       },
       meta: {
         fields: [

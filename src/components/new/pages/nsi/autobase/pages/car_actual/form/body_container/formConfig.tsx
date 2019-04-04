@@ -2,8 +2,8 @@ import * as React from 'react';
 import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 
+import actualBatteriesOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data';
 import actualTiresOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data';
-
 import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
 import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/_config-data';
 import techMaintenanceListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/_config-data';
@@ -68,9 +68,9 @@ const main: OneTabData = {
 
 const battaryInfo: OneTabData = {
   title: 'Аккумуляторы',
-  tabKey: 'battaryInfo',
-  component: 'div',
-  path: 'id',
+  tabKey: actualBatteriesOnCarListConfig.item,
+  component: actualBatteriesOnCarListConfig.component,
+  path: actualBatteriesOnCarListConfig.patrialEndPath,
 };
 
 const tireInfo: OneTabData = {

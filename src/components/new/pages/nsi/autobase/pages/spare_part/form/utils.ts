@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type GetDefaultSparePartElement = (sparePart: SparePart | null) => SparePart;
-
 export const defaultSparePart: SparePart = {
   id: null,
   spare_part_group_id: null,
@@ -13,7 +11,7 @@ export const defaultSparePart: SparePart = {
   supplied_at: null,
 };
 
-export const getDefaultSparePartElement: GetDefaultSparePartElement = (element) => {
+export const getDefaultSparePartElement = (element: Partial<SparePart>): SparePart => {
   const newElement = { ...defaultSparePart };
   if (isObject(element)) {
     Object.keys(defaultSparePart).forEach((key) => {

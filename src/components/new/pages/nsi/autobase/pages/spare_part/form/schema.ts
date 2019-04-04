@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsSparePart } from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
+import { PropsSparePart } from 'components/new/pages/nsi/autobase/pages/spare_part/form/@types/SparePartForm';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {

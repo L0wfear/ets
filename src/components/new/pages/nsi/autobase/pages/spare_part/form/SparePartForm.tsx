@@ -4,14 +4,11 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import sparePartPermissions from 'components/directories/autobase/spare_part/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { sparePartFormSchema } from 'components/directories/autobase/spare_part/SparePartForm/spare-part-from-schema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { getDefaultSparePartElement } from 'components/directories/autobase/spare_part/SparePartForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
@@ -22,9 +19,12 @@ import {
   StatePropsSparePart,
   DispatchPropsSparePart,
   PropsSparePartWithForm,
-} from 'components/directories/autobase/spare_part/SparePartForm/@types/SparePart.h';
+} from 'components/new/pages/nsi/autobase/pages/spare_part/form/@types/SparePartForm';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
+import sparePartPermissions from '../_config-data/permissions';
+import { sparePartFormSchema } from './schema';
+import { getDefaultSparePartElement } from './utils';
 
 class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> {
   state = {
@@ -133,16 +133,18 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
-        <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
+          <div>
+            {
+              isPermitted // либо обновление, либо создание
+              ? (
+                <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+              )
+              : (
+                <DivNone />
+              )
+            }
+            <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
+          </div>
         </Modal.Footer>
       </Modal>
     );

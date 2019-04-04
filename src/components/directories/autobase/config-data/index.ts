@@ -15,9 +15,9 @@ import batteryManufacturerList from 'components/new/pages/nsi/autobase/pages/bat
 import tire from 'components/directories/autobase/tire/config-data';
 
 import tireModelList from 'components/new/pages/nsi/autobase/pages/tire_model/_config-data';
+import sparePartList from 'components/new/pages/nsi/autobase/pages/spare_part/_config-data';
 
 // old
-import sparePart from 'components/directories/autobase/spare_part/config-data';
 import techMaintenanceOrderRegistry from 'components/directories/autobase/tech_maintenance_order_registry/config-data';
 
 import techInspectionList from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data';
@@ -36,7 +36,7 @@ const children = {
   batteryManufacturerList,
   tire,
   tireModelList,
-  sparePart,
+  sparePartList,
   techMaintenanceOrderRegistry,
   techInspectionList,
   insurancePolicyList,

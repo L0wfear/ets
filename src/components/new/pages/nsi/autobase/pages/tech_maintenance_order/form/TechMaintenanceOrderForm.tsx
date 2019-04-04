@@ -12,15 +12,12 @@ import { FileField } from 'components/ui/input/fields';
 import { DivNone } from 'global-styled/global-styled';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import techMaintOrderPermissions from 'components/directories/autobase/tech_maintenance_order_registry/config-data/permissions';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { techMaintOrderFormSchema } from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/tech_maint_order_shema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-import { getDefaultTechMaintOrderElement } from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/utils';
 
 import {
   SEQUENCE_1_TO_20_SELECT_OPTIONS,
@@ -35,22 +32,22 @@ import {
   StatePropsTechMaintOrder,
   DispatchPropsTechMaintOrder,
   PropsTechMaintOrderWithForm,
-} from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/@types/TechMaintOrderForm.h';
+} from 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/form/@types/TechMaintenanceOrderForm';
 import { TechMaintOrder, TechMaintType, MeasureUnitRun } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getAutobaseState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
+import { getDefaultTechMaintOrderElement } from './utils';
+import { techMaintOrderFormSchema } from './shema';
+import techMaintenanceOrderPermissions from '../_config-data/permissions';
 
-class TechMaintOrderForm extends React.PureComponent<PropsTechMaintOrder, StateTechMaintOrder> {
+class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, StateTechMaintOrder> {
   componentDidMount() {
     const {
       page,
       path,
     } = this.props;
 
-    this.props.actionGetAndSetInStoreSpecialModel(
-      {},
-      { page, path },
-    );
+    this.props.actionGetAndSetInStoreSpecialModel({}, { page, path });
 
     this.props.techMaintTypeGetAndSetInStore();
 
@@ -309,6 +306,6 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
       return getDefaultTechMaintOrderElement(props.element);
     },
     schema: techMaintOrderFormSchema,
-    permissions: techMaintOrderPermissions,
+    permissions: techMaintenanceOrderPermissions,
   }),
-)(TechMaintOrderForm);
+)(TechMaintenanceOrder);

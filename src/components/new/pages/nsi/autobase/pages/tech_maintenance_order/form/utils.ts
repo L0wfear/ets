@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export type GetDefaultTechMaintOrderElement = (techMaintOrder: TechMaintOrder | null) => TechMaintOrder;
-
 export const defaultTechMaintOrder: TechMaintOrder = {
   car_model_id: null,
   car_model_name: '',
@@ -21,7 +19,7 @@ export const defaultTechMaintOrder: TechMaintOrder = {
   files: [],
 };
 
-export const getDefaultTechMaintOrderElement: GetDefaultTechMaintOrderElement = (element) => {
+export const getDefaultTechMaintOrderElement = (element: Partial<TechMaintOrder>): TechMaintOrder => {
   const newElement = { ...defaultTechMaintOrder };
   if (isObject(element)) {
     Object.keys(defaultTechMaintOrder).forEach((key) => {

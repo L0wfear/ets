@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsTechMaintOrder } from 'components/directories/autobase/tech_maintenance_order_registry/TechMaintOrderForm/@types/TechMaintOrderForm.h';
+import { PropsTechMaintOrder } from 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/form/@types/TechMaintenanceOrderForm';
 
 import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'utils/validate';

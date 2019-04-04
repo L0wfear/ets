@@ -30,8 +30,8 @@ const getPermissionsCreateReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => (Component) => (
-  compose<any, any>(
+export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySearchConfig) => (Component) => (
+  compose<any, { registryKey: string } & P>(
     withSearch,
     connect<any, any, { registryKey: string }, any, ReduxState>(
       (state, { registryKey }) => ({
@@ -108,9 +108,6 @@ export const withFormRegistrySearch = (config: WithFormRegistrySearchConfig) => 
       const handleHide = React.useCallback(
         (isSubmitted: boolean, response?: any) => {
           setElement(null);
-          props.setParams({
-            [uniqKeyForParams]: null,
-          });
 
           const hideSearchState = get(config, 'hideSearch', {});
 

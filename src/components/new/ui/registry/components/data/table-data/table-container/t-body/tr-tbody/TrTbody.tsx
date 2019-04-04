@@ -28,6 +28,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
+import { TIME_MEASURES } from 'constants/dictionary';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -147,6 +148,9 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
       if (format === 'AUTOBASE_REPAIR_STATUS') {
         value = get(AUTOBASE_REPAIR_STATUS, `${value}.name`, null) || '---';
+      }
+      if (format === 'TIME_MEASURES') {
+        value = get(TIME_MEASURES, value, '-');
       }
     }
 

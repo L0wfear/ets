@@ -8,12 +8,10 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTechMaintOrderFormWrap = {
-  showForm: boolean;
-  element: TechMaintOrder | null;
-  car_id: number;
+  element: Partial<TechMaintOrder>;
   onFormHide: OnFormHideType
 
-  loadingPageName?: string;
+  registryKey?: string;
   page?: string;
   path?: string;
 };
@@ -29,9 +27,9 @@ export type DispatchPropsTechMaintOrder = {
   actionGetAndSetInStoreSpecialModel: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreSpecialModel>;
 };
 export type OwnTechMaintOrderProps = {
-  element: TechMaintOrder | null;
+  element: Partial<TechMaintOrder>;
   handleHide: OnFormHideType
-  car_id: number;
+
   page: string;
   path?: string;
 };

@@ -47,7 +47,7 @@ class OrderList extends React.Component<any, any> {
     flux.getActions('objects').getCars();
     flux.getActions('objects').getConfig().then((appConfig) => {
       this.props.sessionSetAppConfig(appConfig);
-    })
+    });
 
     const {
       location: { search },

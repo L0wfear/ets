@@ -849,7 +849,6 @@ body.application {
 .some-header {
   font-size: 18px;
   line-height: 40px;
-  z-index: 2;
 }
 
 
@@ -941,17 +940,7 @@ body.application {
 }
 
 .pagination {
-  z-index: 0;
   margin: 20px 0 0 0 !important;
-}
-.pagination-control {
-  background: #4C4C4C !important;
-  color: white !important;
-}
-
-.pagination-control.disabled {
-  background: #EEE !important;
-  color: #999 !important;
 }
 
 .griddle-container {
@@ -1011,7 +1000,6 @@ body.application {
 }
 
 .column-control-container {
-  z-index: 2;
   position: absolute;
   top: 0;
 
@@ -1423,7 +1411,7 @@ div.none {
   justify-content: space-between;
   line-height: 30px;
   color: white;
-  z-index: 100;
+  z-index: 100; /* футер выше загрузки */
 
   >div {
     flex: 1 1 0;
@@ -1500,7 +1488,6 @@ div.none {
   position: absolute;
   top: 25px;
   left: 520px;
-  z-index: 0;
   button {
     width: 54px;
   }
@@ -1663,12 +1650,10 @@ div.car-movement-time-report {
 
 .data-table .griddle th,
 .ets_table_wrap th {
-  z-index: 1;
   position: relative;
 }
 
 .headerRow{
-  z-index: 20;
   position: relative;
 }
 

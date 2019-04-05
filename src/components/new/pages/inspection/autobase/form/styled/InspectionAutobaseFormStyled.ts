@@ -7,13 +7,12 @@ export const HiddenPageEtsContainer = styled(EtsPageWrap)`
   top: 0;
   padding: 0;
   pointer-events: none;
-  z-index: 2;
 `;
 
 export const PopupBottomForm = styled.form<{ show: boolean }>`
   pointer-events: ${({ show }) => show ? 'all' : 'none'};
   height: 100%;
-  overflow: scroll;
+  overflow: auto;
 
   padding: 15px 20px;
   background-color: white;

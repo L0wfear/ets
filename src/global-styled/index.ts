@@ -10,9 +10,13 @@ const EtsGlobalStyle = createGlobalStyle`
   ${GlobalModalFooterCss}
   ${GlobalDropupCss}
 
+  .glyphicon.glyphicon-info-sign {
+    position: initial
+  }
+
   #notifications {
     position: fixed;
-    z-index: 10000000;
+    z-index: 10000000; /* уведомления в топчик всего */
   }
 `;
 

@@ -8,6 +8,7 @@ export type StringPropertie<F> = CommonPropertie<F> & {
   type: 'string';
   minLength?: number;
   maxLength?: number;
+  trimSpace?: boolean;
 };
 
 export type NumberPropertie<F> = CommonPropertie<F> & {

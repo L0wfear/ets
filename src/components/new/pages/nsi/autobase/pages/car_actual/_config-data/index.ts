@@ -15,6 +15,7 @@ export default {
   patrialEndPath,
   path,
   routePath,
+  title: 'Реестр транспортных средств',
   isNewRegistry: true,
   entyity: 'car',
   noDotList: false,

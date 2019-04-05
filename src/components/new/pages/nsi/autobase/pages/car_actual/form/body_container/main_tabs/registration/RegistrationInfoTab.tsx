@@ -27,7 +27,9 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
     const {
       isPermitted,
       formState: state,
-      formErrors: errors,
+      formErrors: {
+        registration_data: errors,
+      },
     } = props;
 
     const {

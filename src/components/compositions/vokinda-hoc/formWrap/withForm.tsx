@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isFunction, isString, isBoolean } from 'util';
+import { isFunction, isString, isBoolean, isArray } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -8,6 +8,7 @@ import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
+import { isObject } from 'highcharts';
 
 type FormErrorType<F> = {
   [K in keyof F]?: string | null;
@@ -68,6 +69,17 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
     hideWithoutChanges: (...arg: any[]) => void;
   }
 );
+
+const canSaveTest = (errorsData: any) => {
+  if (isObject(errorsData)) {
+    return Object.values(errorsData).every((error) => canSaveTest(error));
+  }
+  if (isArray(errorsData)) {
+    return errorsData.every((error) => canSaveTest(error));
+  }
+
+  return !errorsData;
+};
 
 const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<{ children?: React.ReactNode; }> & Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
   compose<any, any>(
@@ -155,11 +167,14 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           return config.canSave(state, this.props);
         }
 
-        return Object.values(state.formErrors).every((error) => !error);
+        return canSaveTest(state.formErrors);
       }
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
         this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
       }
+      /**
+       * @todo 1 сделать, чтобы шагал вглубь (по свойствам/массивам свойств)
+       */
       handleChange: FormWithHandleChange<F> = (objChangeOrName, newRawValue) => {
         const objChangeItareble = !isString(objChangeOrName)
           ? objChangeOrName

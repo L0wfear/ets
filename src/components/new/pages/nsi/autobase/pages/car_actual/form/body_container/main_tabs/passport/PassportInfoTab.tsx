@@ -27,7 +27,9 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
     const {
       isPermitted,
       formState: state,
-      // formErrors: errors,
+      formErrors: {
+        passport_data: errors,
+      },
     } = props;
 
     const {
@@ -91,7 +93,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   <GibddSelectFields
                     isPermitted={isPermitted}
                     onChange={onChange}
-                    passport_data_errors={{}}
+                    passport_data_errors={errors}
                     passport_data={passport_data}
 
                     page={props.page}
@@ -108,7 +110,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   <GtnSelectFields
                     isPermitted={isPermitted}
                     onChange={onChange}
-                    passport_data_errors={{}}
+                    passport_data_errors={errors}
                     passport_data={passport_data}
 
                     page={props.page}

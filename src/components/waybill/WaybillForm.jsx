@@ -159,7 +159,7 @@ class WaybillForm extends Form {
 
     if (IS_ACTIVE || IS_CLOSED) {
       this.getCarDistance(formState);
-      const currentSeason = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+      const currentSeason = getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date);
 
       Promise.all([
         getFuelRatesByCarModel(flux.getActions('fuelRates').getFuelRatesByCarModel, formState, currentSeason),

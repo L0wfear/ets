@@ -9,7 +9,6 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import { IAppConfig } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div';
@@ -21,6 +20,11 @@ import { getCurrentSeason } from 'utils/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { compose } from 'recompose';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
 
 const DatePickerBindable: any = bindable(DatePicker);
 const Field: any = bindable(FieldComponent);
@@ -31,7 +35,7 @@ interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeade
   geozone_type: string;
   element_type: string;
   car_func_types_groups: any;
-  appConfig: IAppConfig;
+  appConfig: InitialStateSession['appConfig'];
 }
 
 @connectToStores(['objects'])
@@ -131,7 +135,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const season = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+    const season = getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date);
     const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season], {});
     const CAR_TYPES =  Object.keys(carTypes).reduce((newArr, t) => {
       if (element_type !== 'roadway' || t !== 'tu') {
@@ -215,4 +219,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   }
 }
 
-export default ReportHeaderWrapper(ReportHeader);
+export default compose(
+  connect(
+    (state: ReduxState) => ({
+      appConfig: getSessionState(state).appConfig,
+    }),
+  ),
+  ReportHeaderWrapper,
+)(ReportHeader);

@@ -38,6 +38,8 @@ export type InitialStateSession = {
     },
     summer_start: [number, number];
     summer_end: [number, number];
+    summer_start_date: string,
+    summer_end_date: string,
     footer_url: string | null,
     project_name: string | null,
   };

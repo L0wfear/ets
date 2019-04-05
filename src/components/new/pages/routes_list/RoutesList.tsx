@@ -129,7 +129,7 @@ class RoutesList extends React.PureComponent<any, any> {
       ROUTES: {},
       routesList: [],
       showId: new Set(),
-      season_id: [3, getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end) === 'winter' ? 2 : 1],
+      season_id: [3, getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date) === 'winter' ? 2 : 1],
       routesMapNameId: new Map(),
     };
   }

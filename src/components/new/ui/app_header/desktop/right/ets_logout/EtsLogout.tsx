@@ -5,7 +5,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import {
   DefaultFirstDt,
   LinkFirstLvl,
-  DefaultFirstLvlMenu,
+  DefaultFirstLvlMenuLogout,
 } from 'components/new/ui/app_header/styled';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -54,9 +54,9 @@ class EtsLogout extends React.Component<any, {}> {
     return (
       <DefaultFirstDt ref={this.node}>
         <LinkFirstLvl id={`link-logout`} to="" onClick={this.handleClick}>
-          <DefaultFirstLvlMenu>
+          <DefaultFirstLvlMenuLogout>
             <span>Выйти</span>
-          </DefaultFirstLvlMenu>
+          </DefaultFirstLvlMenuLogout>
         </LinkFirstLvl>
       </DefaultFirstDt>
     );

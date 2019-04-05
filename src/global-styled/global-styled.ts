@@ -31,7 +31,7 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   position: relative;
   height: 100%;
 
-  padding: 10px 20px;
+  padding: 10px 15px;
   overflow: auto;
 
   &:focus {

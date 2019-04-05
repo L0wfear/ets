@@ -13,4 +13,6 @@ export const ETSLogoSpan = styled(DefaultFirstLvlMenu)`
   text-decoration: none;
   font-size: 18px;
   color: white;
+
+  padding: 0 15px;
 `;

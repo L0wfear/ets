@@ -1,8 +1,7 @@
 import * as React from 'react';
 
-import { MobiContainer, FirstLvlMobi, SecondMenuContainerMobiFirst, ChangeRoleContainerWithButton, SecondMenuItemContainerMobi} from 'components/new/ui/app_header/mobi/styled';
+import { MobiContainer, FirstLvlMobi, SecondMenuContainerMobiFirst, ChangeRoleContainerWithButton, SecondMenuItemContainerMobi, MenuButton } from 'components/new/ui/app_header/mobi/styled';
 import EtsLogo from 'components/new/ui/app_header/desktop/left/ets_logo/EtsLogo';
-import * as Button from 'react-bootstrap/lib/Button';
 import * as Collapse from 'react-bootstrap/lib/Collapse';
 import rWithP from 'constants/routerAndPermission';
 import BackToGorod from 'components/new/ui/app_header/desktop/right/back_to_gorod/BackToGorod';
@@ -48,7 +47,7 @@ class AppHeader extends React.Component<any, any> {
         <MobiContainer>
           <FirstLvlMobi>
             <EtsLogo />
-            <Button active={showChildren} onClick={this.toggleShowMenu}>Меню</Button>
+            <MenuButton active={showChildren} onClick={this.toggleShowMenu}>Меню</MenuButton>
           </FirstLvlMobi>
           <Collapse in={showChildren}>
             <div>

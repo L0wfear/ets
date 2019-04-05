@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
+import { mobiSize } from 'global-styled/global-constants';
 
 export const AppHeaderNav = styled.nav`
   display: flex;
@@ -35,6 +36,14 @@ export const DefaultFirstLvlMenu = styled.div`
   font-size: 14px;
 
   text-decoration: underline;
+`;
+
+export const DefaultFirstLvlMenuLogout = styled(DefaultFirstLvlMenu)`
+  padding: 0 15px;
+
+  @media screen and (max-width: ${mobiSize}px) {
+    padding: inherit;
+  }
 `;
 
 export const LinkFirstLvl = styled(Link)`

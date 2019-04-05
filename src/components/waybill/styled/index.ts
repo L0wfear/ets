@@ -16,8 +16,6 @@ export const DropdownWrap = styled(Dropdown)`
 export const WaybillEquipmentButton = styled(Button)`
   &&& {
     &.btn {
-      z-index: initial;
-
       &.active[disabled] {
       background-color: #6a9e56 !important;
       &:hover {

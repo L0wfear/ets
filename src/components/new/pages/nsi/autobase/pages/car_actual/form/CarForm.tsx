@@ -54,9 +54,18 @@ const CarForm: React.FC<PropsCar> = React.memo(
           try {
             props.actionLoadCarRegistration(state.asuods_id, { page: props.page, path: props.path }).then(
               (carRegistrationData) => {
-                props.handleChange({
-                  registration_data: carRegistrationData,
-                });
+                if (carRegistrationData) {
+                  props.handleChange({
+                    registration_data: carRegistrationData,
+                  });
+                } else {
+                  props.handleChange({
+                    registration_data: {
+                      ...state.registration_data,
+                      car_id: state.asuods_id,
+                    },
+                  });
+                }
               },
             );
           } catch (error) {

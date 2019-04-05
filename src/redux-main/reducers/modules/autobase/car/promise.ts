@@ -49,14 +49,25 @@ export const promiseUpdateCarDriversData = async (driversData: CarDriversData): 
   return driversData;
 };
 export const promiseUpdateCarRegistrationData = async (registrationData: CarRegistrationData): Promise<CarRegistrationData> => {
-  await CarRegistrationRegistryService.path(registrationData.id).put(
-    {
-      ...registrationData,
-      given_at: createValidDate(registrationData.given_at),
-    },
-    false,
-    'json',
-  );
+  if (registrationData.id) {
+    await CarRegistrationRegistryService.path(registrationData.id).put(
+      {
+        ...registrationData,
+        given_at: createValidDate(registrationData.given_at),
+      },
+      false,
+      'json',
+    );
+  } else {
+    await CarRegistrationRegistryService.post(
+      {
+        ...registrationData,
+        given_at: createValidDate(registrationData.given_at),
+      },
+      false,
+      'json',
+    );
+  }
 
   return Promise.resolve(registrationData);
 };

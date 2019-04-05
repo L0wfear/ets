@@ -1,13 +1,14 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { CarDriversData } from 'redux-main/reducers/modules/autobase/car/@types';
-import { actionGetCarDrivers } from 'redux-main/reducers/modules/autobase/car/actions';
+import { CarDriversData, CarRegistrationData } from 'redux-main/reducers/modules/autobase/car/@types';
+import { actionGetCarDrivers, actionLoadCarRegistration } from 'redux-main/reducers/modules/autobase/car/actions';
 import { HandleThunkActionCreator } from 'react-redux';
 
 export type CarWrap = (
   Car
   & {
     drivers_data: CarDriversData;
+    registration_data: CarRegistrationData;
   }
 );
 
@@ -26,6 +27,7 @@ export type StatePropsCar = {
 };
 export type DispatchPropsCar = {
   actionGetCarDrivers: HandleThunkActionCreator<typeof actionGetCarDrivers>;
+  actionLoadCarRegistration: HandleThunkActionCreator<typeof actionLoadCarRegistration>;
 };
 export type OwnCarProps = {
   element: Partial<CarWrap>;

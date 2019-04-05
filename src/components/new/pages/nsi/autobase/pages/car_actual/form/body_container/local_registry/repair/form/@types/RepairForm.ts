@@ -17,7 +17,6 @@ import { CarWrap } from '../../../../../@types/CarForm';
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsRepairFormWrap = {
-  showForm: boolean;
   element: Repair | null;
   selectedCarData?: CarWrap;
   onFormHide: OnFormHideType;
@@ -41,6 +40,7 @@ export type OwnRepairProps = {
   element: Repair | null;
   handleHide: OnFormHideType;
   selectedCarData?: CarWrap;
+
   page: string;
   path?: string;
 };

@@ -27,8 +27,7 @@ import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import EtsModal from 'components/new/ui/modal/Modal';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { get } from 'lodash';
 
 const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const [carListOptions, setCarListOptions] = React.useState([]);
@@ -36,13 +35,13 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   const {
     formState: state,
     formErrors: errors,
-    match,
+    selectedCarData,
 
     page,
     path,
   } = props;
 
-  const car_actual_asuods_id = getNumberValueFromSerch(match.params.car_actual_asuods_id);
+  const car_id = get(selectedCarData, 'asuods_id', null);
 
   const IS_CREATING = !state.id;
 
@@ -63,7 +62,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
 
   React.useEffect(
     () => {
-      if (IS_CREATING && !car_actual_asuods_id) {
+      if (IS_CREATING && !car_id) {
         props.autobaseGetSetCar({}, { page, path }).then(
           ({ data }) => (
             setCarListOptions(
@@ -79,15 +78,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
         );
       }
     },
-    [IS_CREATING, car_actual_asuods_id],
-  );
-  React.useEffect(
-    () => {
-      if (car_actual_asuods_id) {
-        props.handleChange('car_id', car_actual_asuods_id);
-      }
-    },
-    [car_actual_asuods_id],
+    [IS_CREATING, car_id],
   );
 
   const handleChangeIsActiveToTrue = React.useCallback(
@@ -119,7 +110,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <Row>
           <Col md={12}>
-            {IS_CREATING && !car_actual_asuods_id && (
+            {IS_CREATING && !car_id && (
               <ExtField
                 id="car_id"
                 type="select"
@@ -270,5 +261,4 @@ export default compose<PropsTechInspection, OwnTechInspectionProps>(
     schema: techInspectionFormSchema,
     permissions: techInspectionPermissions,
   }),
-  withSearch,
 )(TechInspectionForm);

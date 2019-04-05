@@ -6,6 +6,7 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { PropsTechInspectionFormLazy } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/@types/TechInspectionForm';
 import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { memoizeMergeElement } from '../../car_actual/form/utils';
 
 const TechInspectionFrom = React.lazy(() =>
   import(/* webpackChunkName: "tech_inspection_form" */ 'components/new/pages/nsi/autobase/pages/tech_inspection/form/TechInspectionForm'),
@@ -19,8 +20,9 @@ const TechInspectionFormLazy: React.FC<PropsTechInspectionFormLazy> = (props) =>
     <ErrorBoundaryForm>
       <React.Suspense fallback={<LoadingComponent />}>
         <TechInspectionFrom
-          element={props.element}
+          element={memoizeMergeElement(props.element, props.selectedCarData)}
           handleHide={props.onFormHide}
+          selectedCarData={props.selectedCarData}
 
           page={page}
           path={path}
@@ -32,4 +34,4 @@ const TechInspectionFormLazy: React.FC<PropsTechInspectionFormLazy> = (props) =>
   );
 };
 
-export default withFormRegistrySearch({})(TechInspectionFormLazy);
+export default withFormRegistrySearch<Pick<PropsTechInspectionFormLazy, 'selectedCarData'>>({})(TechInspectionFormLazy);

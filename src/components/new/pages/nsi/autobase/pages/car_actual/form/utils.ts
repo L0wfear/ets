@@ -58,6 +58,15 @@ export const defaultCar: CarWrap = {
     primary_drivers: [],
     secondary_drivers: [],
   },
+  registration_data: {
+    car_id: null,
+    certificate_number: '',
+    given_at: '',
+    given_by: '',
+    id: null,
+    note: '',
+    disabled: false,
+  },
 };
 
 export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {

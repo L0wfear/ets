@@ -3,6 +3,7 @@ import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 
 import infoTabConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/_config-data';
+import registrationTabConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/registration/_config-data';
 
 import actualBatteriesOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data';
 import actualTiresOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data';
@@ -42,15 +43,15 @@ export const mainInfo: OneTabData = {
   title: 'Общая информация',
   tabKey: infoTabConfig.item,
   component: infoTabConfig.component,
-  path: infoTabConfig.patrialEndPath,
+  path: infoTabConfig.id,
   isRegistry: false,
 };
 
 const registerInfo: OneTabData = {
   title: 'Информация о регистрации',
-  tabKey: 'registerInfo',
-  component: 'div',
-  path: 'id',
+  tabKey: registrationTabConfig.item,
+  component: registrationTabConfig.component,
+  path: registrationTabConfig.id,
   isRegistry: false,
 };
 
@@ -76,7 +77,7 @@ const battaryInfo: OneTabData = {
   title: 'Аккумуляторы',
   tabKey: actualBatteriesOnCarListConfig.item,
   component: actualBatteriesOnCarListConfig.component,
-  path: actualBatteriesOnCarListConfig.patrialEndPath,
+  path: `/:${actualBatteriesOnCarListConfig.id}?`,
   isRegistry: true,
 };
 
@@ -84,7 +85,7 @@ const tireInfo: OneTabData = {
   title: 'Шины',
   tabKey: actualTiresOnCarListConfig.item,
   component: actualTiresOnCarListConfig.component,
-  path: actualTiresOnCarListConfig.patrialEndPath,
+  path: `/:${actualTiresOnCarListConfig.id}?`,
   isRegistry: true,
 };
 
@@ -92,7 +93,7 @@ const insurancePolicy: OneTabData = {
   title: 'Страхование',
   tabKey: insurancePolicyListConfig.item,
   component: insurancePolicyListConfig.component,
-  path: insurancePolicyListConfig.patrialEndPath,
+  path: `/:${insurancePolicyListConfig.id}?`,
   isRegistry: true,
 };
 
@@ -100,7 +101,7 @@ const roadAccident: OneTabData = {
   title: 'ДТП',
   tabKey: roadAccidentListConfig.item,
   component: roadAccidentListConfig.component,
-  path: roadAccidentListConfig.patrialEndPath,
+  path: `/:${roadAccidentListConfig.id}?`,
   isRegistry: true,
 };
 
@@ -108,7 +109,7 @@ const techMaintenance: OneTabData = {
   title: 'Тех. обслуживание',
   tabKey: techMaintenanceListConfig.item,
   component: techMaintenanceListConfig.component,
-  path: techMaintenanceListConfig.patrialEndPath,
+  path: `/:${techMaintenanceListConfig.id}?`,
   isRegistry: true,
 };
 
@@ -116,7 +117,7 @@ const repair: OneTabData = {
   title: 'Ремонты ТС',
   tabKey: repairListConfig.item,
   component: repairListConfig.component,
-  path: repairListConfig.patrialEndPath,
+  path: `/:${repairListConfig.id}?`,
   isRegistry: true,
 };
 
@@ -134,7 +135,7 @@ const techInspection: OneTabData = {
   title: 'Техосмотр',
   tabKey: techInspectionListConfig.item,
   component: techInspectionListConfig.component, // car_id
-  path: techInspectionListConfig.patrialEndPath,
+  path: `/:${techInspectionListConfig.id}?`,
   isRegistry: true,
 };
 

@@ -22,9 +22,10 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
   React.useEffect(
     () => {
       if (!findSelectedTabKeyComponent(tabKeyOwn)) {
-        props.setParams({
-          tabKey: mainInfo.tabKey,
-        });
+        props.setParams(
+          { tabKey: mainInfo.tabKey },
+          'replace',
+        );
       }
     },
     [tabKeyOwn],

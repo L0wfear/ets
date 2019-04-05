@@ -11,4 +11,5 @@ export type CarRegistrationData = {
   given_by: string;
   id: number;
   note: string;
+  disabled?: boolean;
 };

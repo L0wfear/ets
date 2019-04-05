@@ -6,7 +6,7 @@ import { isNumber } from 'util';
 import memoizeOne from 'memoize-one';
 
 export type WithSearchProps = {
-  setParams: (obj: { [key: string]: string | number }) => void;
+  setParams: (obj: { [key: string]: string | number }, typeAction?: 'replace' | 'push') => void;
   searchState: any;
   setDataInSearch: (obj: any) => void;
   setParamsAndSearch: (any) => void;
@@ -36,7 +36,7 @@ const withSearch = (Component) => (
         );
       }
 
-      setParams: WithSearchProps['setParams'] = (objParams) => {
+      setParams: WithSearchProps['setParams'] = (objParams, typeAction = 'push') => {
         let urlAsArray = this.props.match.path.split('/').map((partOfUrl) => {
           let ans = partOfUrl.replace('?', '');
 
@@ -56,7 +56,7 @@ const withSearch = (Component) => (
           urlAsArray = urlAsArray.slice(0, emptyIndex);
         }
 
-        this.props.history.push(
+        this.props.history[typeAction](
           `${
             urlAsArray.join('/')
           }${

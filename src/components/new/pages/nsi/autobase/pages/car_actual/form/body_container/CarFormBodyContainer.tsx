@@ -7,6 +7,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../@types/CarForm';
 import { DivNone } from 'global-styled/global-styled';
+import { Route } from 'react-router-dom';
 
 type CarFormBodyContainerOwnProps = {
   isPermitted: boolean;
@@ -30,15 +31,26 @@ const componentsInArrayAsObject = componentsInArray.reduce((newObj, tabData) => 
 const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
   (props) => {
     const currentTabKey = get(props, 'match.params.tabKey', null);
-
     if (currentTabKey in componentsInArrayAsObject) {
       const TabComponent = componentsInArrayAsObject[currentTabKey].component;
 
       if (componentsInArrayAsObject[currentTabKey].isRegistry) {
+        const {
+          path,
+        } = componentsInArrayAsObject[currentTabKey];
+
         return (
           <Row>
-            <TabComponent
-              selectedCarData={props.formState}
+            <Route
+              path={`${props.match.url}${path ? path : ''}`}
+              render={
+                (routeProps) => (
+                  <TabComponent
+                    {...routeProps}
+                    selectedCarData={props.formState}
+                  />
+                )
+              }
             />
           </Row>
         );

@@ -74,9 +74,10 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
             if (props.buttons.includes(buttonsTypes.create)) {
               setElement({});
             } else {
-              props.setParams({
-                [uniqKeyForParams]: null,
-              });
+              props.setParams(
+                { [uniqKeyForParams]: null },
+                'replace',
+              );
             }
             return;
           }
@@ -110,7 +111,6 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
           setElement(null);
 
           const hideSearchState = get(config, 'hideSearch', {});
-
           props.setParamsAndSearch({
             params: {
               [uniqKeyForParams]: null,

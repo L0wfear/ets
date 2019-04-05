@@ -22,6 +22,7 @@ const RepareFormLazy: React.FC<PropsRepairFormWrap> = (props) => {
         <RepareFrom
           element={memoizeMergeElement(props.element, props.selectedCarData)}
           handleHide={props.onFormHide}
+          selectedCarData={props.selectedCarData}
 
           page={page}
           path={path}
@@ -33,4 +34,4 @@ const RepareFormLazy: React.FC<PropsRepairFormWrap> = (props) => {
   );
 };
 
-export default withFormRegistrySearch({})(RepareFormLazy);
+export default withFormRegistrySearch<Pick<PropsRepairFormWrap, 'selectedCarData'>>({})(RepareFormLazy);

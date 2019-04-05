@@ -8,13 +8,14 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { HandleThunkActionCreator } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { CarWrap } from '../../../car_actual/form/@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTechInspectionFormLazy = {
   showForm: boolean;
   element: TechInspection | null;
+  selectedCarData?: CarWrap;
 
   onFormHide: OnFormHideType;
 
@@ -34,6 +35,7 @@ export type DispatchPropsTechInspection = {
 export type OwnTechInspectionProps = {
   element: TechInspection | null;
   handleHide: OnFormHideType;
+  selectedCarData?: CarWrap;
 
   page: string;
   path?: string;
@@ -43,7 +45,7 @@ export type PropsTechInspectionWithForm = (
   StatePropsTechInspection
   & DispatchPropsTechInspection
   & OwnTechInspectionProps
-) & WithSearchProps;
+);
 
 export type PropsTechInspection = OutputWithFormProps<
   PropsTechInspectionWithForm,

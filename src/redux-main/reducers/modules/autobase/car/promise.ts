@@ -29,6 +29,7 @@ export const getBackCar = (carOwn: Car) => {
 };
 
 // drivers_data отдельный запрос на обновление
+// registration_data отдельный запрос на обновление
 export const updateSetCar = (oldCar) => {
   const payload = {
     ...oldCar,

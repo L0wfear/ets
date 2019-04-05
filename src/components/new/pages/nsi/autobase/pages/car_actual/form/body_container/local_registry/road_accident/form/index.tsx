@@ -33,4 +33,4 @@ const RoadAccidentFormLazy: React.FC<PropsRoadAccidentFormLazy> = (props) => {
   );
 };
 
-export default withFormRegistrySearch({})(RoadAccidentFormLazy);
+export default withFormRegistrySearch<Pick<PropsRoadAccidentFormLazy, 'selectedCarData' >>({})(RoadAccidentFormLazy);

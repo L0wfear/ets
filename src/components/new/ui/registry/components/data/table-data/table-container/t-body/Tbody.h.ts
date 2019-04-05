@@ -3,6 +3,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 export interface StatePropsTbody {
   showArray: OneRegistryData['list']['processed']['processedArray'];
+  rowFields: OneRegistryData['list']['meta']['rowFields'];
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
 }
 

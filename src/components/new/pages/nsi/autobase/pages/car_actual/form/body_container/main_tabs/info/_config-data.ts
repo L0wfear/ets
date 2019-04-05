@@ -4,6 +4,7 @@ export const patrialEndPath = `/${item}`;
 
 export default {
   item,
+  id: '',
   patrialEndPath,
   component: MainInfoTab,
 };

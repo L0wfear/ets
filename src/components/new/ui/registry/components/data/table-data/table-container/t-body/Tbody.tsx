@@ -13,6 +13,8 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import memoizeOne from 'memoize-one';
+import { EtsTrTbody } from './tr-tbody/styled/styled';
+import { EtsTbodyTrTd } from './tr-tbody/tr-td/styled/styled';
 
 class Tbody extends React.PureComponent<PropsTbody, StateTbody> {
   render() {
@@ -29,6 +31,17 @@ class Tbody extends React.PureComponent<PropsTbody, StateTbody> {
               indexRow={indexRow}
             />
           ))
+        }
+        {
+          !this.props.showArray.length && this.props.rowFields.length
+            ? (
+              <EtsTrTbody>
+                <EtsTbodyTrTd colSpan={2}>нет данных</EtsTbodyTrTd>
+              </EtsTrTbody>
+            )
+            : (
+              <tr><td></td></tr>
+            )
         }
       </tbody>
     );
@@ -53,6 +66,7 @@ export default compose<PropsTbody, OwnPropsTbody>(
         getListData(state.registry, registryKey).processed.processedArray,
         getListData(state.registry, registryKey).paginator,
       ),
+      rowFields: getListData(state.registry, registryKey).meta.rowFields,
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
     }),
   ),

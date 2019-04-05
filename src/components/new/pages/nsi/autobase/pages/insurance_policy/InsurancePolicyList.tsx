@@ -12,15 +12,17 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { CarWrap } from '../car_actual/form/@types/CarForm';
+import { get } from 'lodash';
 
 export type InsurancePolicyListStateProps = {};
 export type InsurancePolicyListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
 };
-export type InsurancePolicyListOwnProps = {};
+export type InsurancePolicyListOwnProps = {
+  selectedCarData: CarWrap;
+};
 export type InsurancePolicyListMergedProps = (
   InsurancePolicyListStateProps
   & InsurancePolicyListDispatchProps
@@ -28,10 +30,13 @@ export type InsurancePolicyListMergedProps = (
 );
 export type InsurancePolicyListProps = (
   InsurancePolicyListMergedProps
-) & WithSearchProps;
+);
 
 const InsurancePolicyList: React.FC<InsurancePolicyListProps> = (props) => {
-  const car_id = getNumberValueFromSerch(props.match.params.car_actual_asuods_id);
+  const {
+    selectedCarData,
+  } = props;
+  const car_id = get(selectedCarData, 'asuods_id', null);
 
   React.useEffect(
     () => {
@@ -46,13 +51,15 @@ const InsurancePolicyList: React.FC<InsurancePolicyListProps> = (props) => {
   return (
     <>
       <Registry registryKey={registryKey} />
-      <InsurancePolicyFormLazy registryKey={registryKey} />
+      <InsurancePolicyFormLazy
+        registryKey={registryKey}
+        selectedCarData={selectedCarData}
+      />
     </>
   );
 };
 
 export default compose<InsurancePolicyListProps, InsurancePolicyListOwnProps>(
-  withSearch,
   withPreloader({
     page: getToConfig().registryKey,
     typePreloader: 'mainpage',

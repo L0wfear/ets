@@ -12,15 +12,17 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { get } from 'lodash';
+import { CarWrap } from '../../../@types/CarForm';
 
 export type RoadAccidentListStateProps = {};
 export type RoadAccidentListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
 };
-export type RoadAccidentListOwnProps = {};
+export type RoadAccidentListOwnProps = {
+  selectedCarData?: CarWrap;
+};
 export type RoadAccidentListMergedProps = (
   RoadAccidentListStateProps
   & RoadAccidentListDispatchProps
@@ -28,10 +30,13 @@ export type RoadAccidentListMergedProps = (
 );
 export type RoadAccidentListProps = (
   RoadAccidentListMergedProps
-) & WithSearchProps;
+);
 
 const RoadAccidentList: React.FC<RoadAccidentListProps> = (props) => {
-  const car_id = getNumberValueFromSerch(props.match.params.car_actual_asuods_id);
+  const {
+    selectedCarData,
+  } = props;
+  const car_id = get(selectedCarData, 'asuods_id', null);
 
   React.useEffect(
     () => {
@@ -46,13 +51,15 @@ const RoadAccidentList: React.FC<RoadAccidentListProps> = (props) => {
   return (
     <>
       <Registry registryKey={registryKey} />
-      <RoadAccidentFormLazy registryKey={registryKey} />
+      <RoadAccidentFormLazy
+        registryKey={registryKey}
+        selectedCarData={selectedCarData}
+      />
     </>
   );
 };
 
 export default compose<RoadAccidentListProps, RoadAccidentListOwnProps>(
-  withSearch,
   withPreloader({
     page: registryKey,
     typePreloader: 'mainpage',

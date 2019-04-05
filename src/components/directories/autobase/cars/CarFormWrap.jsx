@@ -21,10 +21,6 @@ class CarFormWrap extends FormWrap {
 
       const formState = element || {};
 
-      const register_info
-        = (await this.context.flux
-          .getActions('cars')
-          .getCarRegisterInfo(element.asuods_id)) || {};
       const register_passport_info
         = (await this.context.flux
           .getActions('cars')
@@ -35,7 +31,6 @@ class CarFormWrap extends FormWrap {
       this.setState({
         formState: {
           ...formState,
-          ...unpackObjectData('register', register_info),
           passport_type: type,
           passport_id: id,
           ...unpackObjectData(

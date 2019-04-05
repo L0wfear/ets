@@ -7,7 +7,6 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsTechMaintenanceFormLazy } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/@types/TechMintenanceForm';
 import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { memoizeMergeElement } from '../../../../utils';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const TechMintenanceForm = React.lazy(() =>
   import(/* webpackChunkName: "tech_maint_form" */ 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/TechMintenanceForm'),
@@ -37,4 +36,4 @@ const TechMaintenanceFormLazy: React.FC<PropsTechMaintenanceFormLazy> = React.me
   },
 );
 
-export default withFormRegistrySearch<{ selectedCarData?: Car }>({})(TechMaintenanceFormLazy);
+export default withFormRegistrySearch<Pick<PropsTechMaintenanceFormLazy, 'selectedCarData'>>({})(TechMaintenanceFormLazy);

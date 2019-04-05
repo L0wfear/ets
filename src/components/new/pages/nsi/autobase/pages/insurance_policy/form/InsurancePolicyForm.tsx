@@ -25,8 +25,7 @@ import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/aut
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import EtsModal from 'components/new/ui/modal/Modal';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { get } from 'lodash';
 import insurancePolicyPermissions from '../_config-data/permissions';
 
 const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
@@ -35,11 +34,12 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   const {
     formState: state,
     formErrors: errors,
+    selectedCarData,
 
     page,
     path,
   } = props;
-  const car_id = getNumberValueFromSerch(props.match.params.car_actual_asuods_id);
+  const car_id = get(selectedCarData, 'asuods_id', null);
   const IS_CREATING = !state.id;
 
   const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
@@ -48,15 +48,6 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       ? props.isPermittedToUpdate
       : props.isPermittedToCreate
     );
-
-  React.useEffect(
-    () => {
-      if (car_id) {
-        props.handleChange('car_id', car_id);
-      }
-    },
-    [car_id],
-  );
 
   React.useEffect(
     () => {
@@ -236,7 +227,6 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
 };
 
 export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
-  withSearch,
   connect<StatePropsInsurancePolicy, DispatchPropsInsurancePolicy, OwnInsurancePolicyProps, ReduxState>(
     null,
     (dispatch: any, { page, path }) => ({

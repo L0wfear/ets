@@ -12,15 +12,17 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { get } from 'lodash';
+import { CarWrap } from '../../../@types/CarForm';
 
 export type RepairListStateProps = {};
 export type RepairListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
 };
-export type RepairListOwnProps = {};
+export type RepairListOwnProps = {
+  selectedCarData?: CarWrap;
+};
 export type RepairListMergedProps = (
   RepairListStateProps
   & RepairListDispatchProps
@@ -28,10 +30,13 @@ export type RepairListMergedProps = (
 );
 export type RepairListProps = (
   RepairListMergedProps
-) & WithSearchProps;
+);
 
 const RepairList: React.FC<RepairListProps> = (props) => {
-  const car_id = getNumberValueFromSerch(props.match.params.car_actual_asuods_id);
+  const {
+    selectedCarData,
+  } = props;
+  const car_id = get(selectedCarData, 'asuods_id', null);
 
   React.useEffect(
     () => {
@@ -46,13 +51,12 @@ const RepairList: React.FC<RepairListProps> = (props) => {
   return (
     <>
       <Registry registryKey={registryKey} />
-      <RepairFormLazy registryKey={registryKey} />
+      <RepairFormLazy registryKey={registryKey} selectedCarData={selectedCarData} />
     </>
   );
 };
 
 export default compose<RepairListProps, RepairListOwnProps>(
-  withSearch,
   withPreloader({
     page: registryKey,
     typePreloader: 'mainpage',

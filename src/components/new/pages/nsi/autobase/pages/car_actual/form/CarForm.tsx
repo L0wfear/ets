@@ -21,7 +21,7 @@ import { DivNone } from 'global-styled/global-styled';
 import carActualPermissions from '../_config-data/permissions';
 import CarFormBodyHeader from './body_header/CarFormBodyHeader';
 import CarFormBodyContainer from './body_container/CarFormBodyContainer';
-import { actionGetCarDrivers } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionGetCarDrivers, actionLoadCarRegistration } from 'redux-main/reducers/modules/autobase/car/actions';
 
 const CarForm: React.FC<PropsCar> = React.memo(
   (props) => {
@@ -48,7 +48,19 @@ const CarForm: React.FC<PropsCar> = React.memo(
               },
             );
           } catch (error) {
-            return;
+            console.error(error); //tslint:disable-line
+          }
+
+          try {
+            props.actionLoadCarRegistration(state.asuods_id, { page: props.page, path: props.path }).then(
+              (carRegistrationData) => {
+                props.handleChange({
+                  registration_data: carRegistrationData,
+                });
+              },
+            );
+          } catch (error) {
+            console.error(error); //tslint:disable-line
           }
         }
       },
@@ -96,6 +108,11 @@ export default compose<PropsCar, OwnCarProps>(
       actionGetCarDrivers: (...arg) => (
         dispatch(
           actionGetCarDrivers(...arg),
+        )
+      ),
+      actionLoadCarRegistration: (...arg) => (
+        dispatch(
+          actionLoadCarRegistration(...arg),
         )
       ),
     }),

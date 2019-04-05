@@ -11,15 +11,17 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { get } from 'lodash';
+import { CarWrap } from '../car_actual/form/@types/CarForm';
 
 export type TechInspectionListStateProps = {};
 export type TechInspectionListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
 };
-export type TechInspectionListOwnProps = {};
+export type TechInspectionListOwnProps = {
+  selectedCarData?: CarWrap;
+};
 export type TechInspectionListMergedProps = (
   TechInspectionListStateProps
   & TechInspectionListDispatchProps
@@ -27,10 +29,13 @@ export type TechInspectionListMergedProps = (
 );
 export type TechInspectionListProps = (
   TechInspectionListMergedProps
-) & WithSearchProps;
+);
 
 const TechInspectionList: React.FC<TechInspectionListProps> = (props) => {
-  const car_id = getNumberValueFromSerch(props.match.params.car_actual_asuods_id);
+  const {
+    selectedCarData,
+  } = props;
+  const car_id = get(selectedCarData, 'asuods_id', null);
 
   React.useEffect(
     () => {
@@ -45,13 +50,15 @@ const TechInspectionList: React.FC<TechInspectionListProps> = (props) => {
   return (
     <>
       <Registry registryKey={registryKey} />
-      <TechInspectionFormLazy registryKey={registryKey} />
+      <TechInspectionFormLazy
+        registryKey={registryKey}
+        selectedCarData={selectedCarData}
+        />
     </>
   );
 };
 
 export default compose<TechInspectionListProps, TechInspectionListOwnProps>(
-  withSearch,
   withPreloader({
     page: getToConfig().registryKey,
     typePreloader: 'mainpage',

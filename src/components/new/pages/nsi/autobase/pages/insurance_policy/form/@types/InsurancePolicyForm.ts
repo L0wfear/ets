@@ -10,13 +10,14 @@ import {
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { HandleThunkActionCreator } from 'react-redux';
-import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { CarWrap } from '../../../car_actual/form/@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsInsurancePolicyFormLazy = {
   element: InsurancePolicy | null;
   onFormHide: OnFormHideType;
+  selectedCarData?: CarWrap;
 
   loadingPageName?: string;
   page?: string;
@@ -31,6 +32,7 @@ export type DispatchPropsInsurancePolicy = {
 export type OwnInsurancePolicyProps = {
   element: InsurancePolicy | null;
   handleHide: OnFormHideType;
+  selectedCarData?: CarWrap;
 
   page: string;
   path?: string;
@@ -40,7 +42,7 @@ export type PropsInsurancePolicyWithForm = (
   StatePropsInsurancePolicy
   & DispatchPropsInsurancePolicy
   & OwnInsurancePolicyProps
-) & WithSearchProps;
+);
 
 export type PropsInsurancePolicy = OutputWithFormProps<
   PropsInsurancePolicyWithForm,

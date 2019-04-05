@@ -6,6 +6,7 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { PropsInsurancePolicyFormLazy } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/@types/InsurancePolicyForm';
 import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { memoizeMergeElement } from '../../car_actual/form/utils';
 
 const InsurancePolicyFrom = React.lazy(() =>
   import(/* webpackChunkName: "insurance_policy_form" */ 'components/new/pages/nsi/autobase/pages/insurance_policy/form/InsurancePolicyForm'),
@@ -19,8 +20,9 @@ const InsurancePolicyFormLazy: React.FC<PropsInsurancePolicyFormLazy> = (props) 
     <ErrorBoundaryForm>
       <React.Suspense fallback={<LoadingComponent />}>
         <InsurancePolicyFrom
-          element={props.element}
+          element={memoizeMergeElement(props.element, props.selectedCarData)}
           handleHide={props.onFormHide}
+          selectedCarData={props.selectedCarData}
 
           page={page}
           path={path}
@@ -32,4 +34,4 @@ const InsurancePolicyFormLazy: React.FC<PropsInsurancePolicyFormLazy> = (props) 
   );
 };
 
-export default withFormRegistrySearch({})(InsurancePolicyFormLazy);
+export default withFormRegistrySearch<Pick<PropsInsurancePolicyFormLazy, 'selectedCarData'>>({})(InsurancePolicyFormLazy);

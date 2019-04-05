@@ -8,28 +8,18 @@ import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import connectToStores from 'flummox/connect';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 import * as queryString from 'query-string';
-import createFio from 'utils/create-fio';
-import { diffDates } from 'utils/dates';
-import { isFourDigitGovNumber } from 'utils/functions';
 
 import { tabable } from 'components/compositions/hoc';
 import ModalBody from 'components/ui/Modal';
 import TabContent from 'components/ui/containers/TabContent';
 import Form from 'components/compositions/Form';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { isArray } from 'util';
 
-import MainInfoTab from 'components/directories/autobase/cars/tabs/MainInfoTab';
-import RegisterInfoTab from 'components/directories/autobase/cars/tabs/RegisterInfoTab';
 import PasportInfoTab from 'components/directories/autobase/cars/tabs/PasportInfoTab';
 
 import { connect } from 'react-redux';
-import {
-  getAutobaseState,
-  getCompanyStructureState,
-} from 'redux-main/reducers/selectors';
+import { getAutobaseState } from 'redux-main/reducers/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 export const CAR_TAB_INDEX = {
   info: '1',
@@ -42,14 +32,6 @@ class CarForm extends Form {
   static defaultProps = {
     tabKey: CAR_TAB_INDEX.main_info,
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      type_image_name: null,
-    };
-  }
 
   componentDidUpdate(prevProps) {
     const lastFormState = prevProps.formState;
@@ -72,14 +54,11 @@ class CarForm extends Form {
     }
 
     const { flux } = this.context;
-    flux.getActions('employees').getEmployees();
-    flux.getActions('employees').getDrivers();
     flux.getActions('objects').getCountry();
 
     this.props.carCategoryGetAndSetInStore();
     this.props.engineTypeGetAndSetInStore();
     this.props.propulsionTypeGetAndSetInStore();
-    this.props.getAndSetInStoreCompanyStructureDescendantsByUser();
   }
 
   handleChangeMainInfoTab = (key, value) => {
@@ -96,19 +75,13 @@ class CarForm extends Form {
     const {
       isPermitted = false,
       tabKey,
-      companyStructureDescendantsByUserList = [],
       countryOptions = [],
       engineTypeList = [],
       propulsionTypeList = [],
       carCategoryList = [],
-      employeesIndex = {},
       typesList = [],
-      driversList = [],
     } = this.props;
 
-    const COMPANY_ELEMENTS = companyStructureDescendantsByUserList.map(
-      defaultSelectListMapper,
-    );
     const engineTypeOptions = engineTypeList.map(defaultSelectListMapper);
     const propulsionTypeOptions = propulsionTypeList.map(
       defaultSelectListMapper,
@@ -118,51 +91,6 @@ class CarForm extends Form {
       value: el.asuods_id,
       label: el.short_name,
     }));
-
-    /**
-     * TODO Сделать виртуализацию списка, если список ТС будет тормозить из-за большого количества записей.
-     * Может с помощью этой штуки https://github.com/bvaughn/react-virtualized
-     */
-    const isFourInGovNumver = isFourDigitGovNumber(state.gov_number);
-
-    const selectedDriverArr = [];
-    if (isArray(state.car_drivers_primary_drivers)) {
-      selectedDriverArr.push(...state.car_drivers_primary_drivers);
-    }
-    if (isArray(state.car_drivers_secondary_drivers)) {
-      selectedDriverArr.push(...state.car_drivers_secondary_drivers);
-    }
-
-    const DRIVERS = driversList
-      .filter((driver) => {
-        const driverData = employeesIndex[driver.id];
-        if (driverData) {
-          if (selectedDriverArr.includes(driver.id)) {
-            return true;
-          }
-          if (driver.active) {
-            if (isFourInGovNumver) {
-              return (
-                driverData.special_license
-                && driverData.special_license_date_end
-                && diffDates(driverData.special_license_date_end, new Date()) > 0
-              );
-            }
-
-            return (
-              driverData.drivers_license
-              && driverData.drivers_license_date_end
-              && diffDates(driverData.drivers_license_date_end, new Date()) > 0
-            );
-          }
-        }
-        return false;
-      })
-      .map((driver) => ({
-        value: driver.id,
-        label: createFio(driver),
-        allData: driver,
-      }));
 
     return (
       <Modal
@@ -200,25 +128,6 @@ class CarForm extends Form {
             </NavDropdown>
           </Nav>
 
-          <TabContent eventKey={CAR_TAB_INDEX.main_info} tabKey={tabKey}>
-            <MainInfoTab
-              state={state}
-              errors={errors}
-              companyElements={COMPANY_ELEMENTS}
-              DRIVERS={DRIVERS}
-              isPermitted={isPermitted}
-              onChange={this.handleChangeMainInfoTab}
-            />
-          </TabContent>
-
-          <TabContent eventKey={CAR_TAB_INDEX.register_info} tabKey={tabKey}>
-            <RegisterInfoTab
-              state={state}
-              errors={errors}
-              isPermitted={isPermitted}
-              onChange={this.handleChange}
-            />
-          </TabContent>
           <TabContent eventKey={CAR_TAB_INDEX.passport_info} tabKey={tabKey}>
             <PasportInfoTab
               state={state}
@@ -250,8 +159,6 @@ export default connect(
     engineTypeList: getAutobaseState(state).engineTypeList,
     propulsionTypeList: getAutobaseState(state).propulsionTypeList,
     carCategoryList: getAutobaseState(state).carCategoryList,
-    companyStructureDescendantsByUserList: getCompanyStructureState(state)
-      .companyStructureDescendantsByUserList,
   }),
   (dispatch, { page, path }) => ({
     carCategoryGetAndSetInStore: () =>
@@ -261,13 +168,6 @@ export default connect(
     propulsionTypeGetAndSetInStore: () =>
       dispatch(
         autobaseActions.propulsionTypeGetAndSetInStore({}, { page, path }),
-      ),
-    getAndSetInStoreCompanyStructureDescendantsByUser: () =>
-      dispatch(
-        companyStructureActions.getAndSetInStoreCompanyStructureDescendantsByUser(
-          {},
-          { page, path },
-        ),
       ),
   }),
 )(tabable(connectToStores(CarForm, ['objects', 'employees'])));

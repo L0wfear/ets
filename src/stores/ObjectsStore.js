@@ -6,10 +6,7 @@ export default class ObjectsStore extends Store {
     super();
 
     const objectsActions = flux.getActions('objects');
-    const carActions = flux.getActions('cars');
     const technicalOperationsActions = flux.getActions('technicalOperation');
-
-    this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);

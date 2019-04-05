@@ -21,7 +21,7 @@ import { DivNone } from 'global-styled/global-styled';
 import carActualPermissions from '../_config-data/permissions';
 import CarFormBodyHeader from './body_header/CarFormBodyHeader';
 import CarFormBodyContainer from './body_container/CarFormBodyContainer';
-import { actionGetCarDrivers, actionLoadCarRegistration, actionLoadCarPassport } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionGetCarDrivers, actionLoadCarRegistration, actionLoadCarPassport, actionUpdateCarWrap } from 'redux-main/reducers/modules/autobase/car/actions';
 
 const CarForm: React.FC<PropsCar> = React.memo(
   (props) => {
@@ -66,9 +66,18 @@ const CarForm: React.FC<PropsCar> = React.memo(
           try {
             props.actionLoadCarPassport(state.asuods_id, { page: props.page, path: props.path }).then(
               (carPassportData) => {
-                props.handleChange({
-                  passport_data: carPassportData,
-                });
+                if (carPassportData) {
+                  props.handleChange({
+                    passport_data: carPassportData,
+                  });
+                } else {
+                  props.handleChange({
+                    passport_data: {
+                      ...state.passport_data,
+                      car_id: state.asuods_id,
+                    },
+                  });
+                }
               },
             );
           } catch (error) {
@@ -135,6 +144,7 @@ export default compose<PropsCar, OwnCarProps>(
     }),
   ),
   withForm<PropsCarWithForm, CarWrap>({
+    updateAction: actionUpdateCarWrap,
     uniqField: 'asuods_id',
     mergeElement: (props) => {
       return getDefaultCarElement(props.element);

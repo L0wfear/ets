@@ -83,10 +83,6 @@ export const autobaseLoadCars = async (payload = {}) => {
   };
 };
 
-export const autobaseUpdateCar = (ownPayload) => {
-  return Promise.reject();
-};
-
 /* ------------- CAR_FUNC_TYPES ------------- */
 export const autobaseLoadCarFuncTypess = (payload = {}) => (
   TypesService.get({ ...payload })

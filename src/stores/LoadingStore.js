@@ -9,7 +9,6 @@ export default class LoadingStore extends Store {
     const waybillsActions = flux.getActions('waybills');
     const fuelRateActions = flux.getActions('fuelRates');
     const objectsActions = flux.getActions('objects');
-    const carActions = flux.getActions('cars');
     const employeesActions = flux.getActions('employees');
     const missionsActons = flux.getActions('missions');
     const technicalOperationsActions = flux.getActions('technicalOperation');
@@ -85,8 +84,6 @@ export default class LoadingStore extends Store {
       technicalOperationsActions.getTechnicalOperationsObjects,
       technicalOperationsActions.getTechOperationsByNormIds,
       technicalOperationsActions.getTechnicalOperationRelations,
-
-      carActions.updateCarAdditionalInfo,
     );
 
     this.reg(true, missionsActons.getMissionsByCarAndDates);

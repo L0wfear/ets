@@ -299,6 +299,7 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             onChange={props.onChange}
             boundKeys="given_at"
             disabled={!isPermitted || disabled}
+            makeGoodFormat
           />
         </Col>
         <Col md={12}>

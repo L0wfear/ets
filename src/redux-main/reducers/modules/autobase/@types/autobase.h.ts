@@ -95,7 +95,7 @@ export type InsuranceType = {
 };
 
 export type Car = {
-  asuods_id: number | null;
+  asuods_id: number;
   available: boolean;
   available_to_bind: boolean;
   body_capacity: number | null;

@@ -260,6 +260,12 @@ export const CarRegistrationRegistryService = ETS_API_FACTORY.createApiServiceAd
 export const CarPassportRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/car_passport_registry',
 );
+export const CarPassportGibddRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/car_passport_gibdd_registry',
+);
+export const CarPassportGtnRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/car_passport_gtn_registry',
+);
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 

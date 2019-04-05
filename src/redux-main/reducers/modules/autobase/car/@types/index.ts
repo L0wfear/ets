@@ -19,7 +19,7 @@ export type CarGibddPasspost = {
   axle_number: number | string;
   body_color: string;
   body_number: string;
-  car_id: null;
+  car_id: number;
   category_id: null;
   chassis: string;
   company_address: string;
@@ -61,7 +61,7 @@ export type CarGtnPasspost = {
   axle_number: number | string;
   body_color: string;
   body_number: string;
-  car_id: null;
+  car_id: number;
   category_id: null;
   chassis: string;
   company_address: string;

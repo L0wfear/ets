@@ -75,6 +75,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               onChange={onChange}
               boundKeys="given_at"
               disabled={!isPermitted || registration_data.disabled}
+              makeGoodFormat
             />
             <ExtField
               type="text"

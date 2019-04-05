@@ -10,8 +10,6 @@ import ModalBody from 'components/ui/Modal';
 import DateFormatter from 'components/ui/DateFormatter';
 import Form from 'components/compositions/Form';
 
-import carPermissions from 'components/directories/autobase/cars/config-data/permissions';
-
 import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
@@ -22,6 +20,7 @@ import {
   insurancePolicy,
   techInspection,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
+import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -53,7 +52,7 @@ const MainEmployeeDesc = ({ linkText, handleClick }) => (
 
 const insurance_policy = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}
@@ -70,7 +69,7 @@ const insurance_policy = withRequirePermissionsNew({
 
 const tech_inspection = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={tech_inspection_reg_number}
@@ -87,7 +86,7 @@ const tech_inspection = withRequirePermissionsNew({
 
 const tech_maintenance = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}
@@ -104,7 +103,7 @@ const tech_maintenance = withRequirePermissionsNew({
 
 const repair = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}

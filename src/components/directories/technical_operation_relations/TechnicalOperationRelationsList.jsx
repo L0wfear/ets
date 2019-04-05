@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import ElementsList from 'components/ElementsList';
 import TechnicalOperationRelationsTable from 'components/directories/technical_operation_relations/table/TechnicalOperationRelationsTable';
-import CarFormWrap from 'components/directories/autobase/cars/CarFormWrap';
 import ChangeRouteForm from 'components/directories/technical_operation_relations/change-route-form/ChangeRouteForm';
 import permissions from 'components/directories/technical_operation_relations/config-data/permissions';
-import permissionsCar from 'components/directories/autobase/cars/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { makeOptions } from 'components/ui/input/makeOptions';
 import { customOptionsRoutes } from 'components/directories/technical_operation_relations/helpData';
@@ -16,9 +14,13 @@ import { ButtonUpdateRoute } from 'components/new/pages/routes_list/buttons/butt
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import CarForm from 'components/new/pages/nsi/autobase/pages/car_actual/form/CarForm';
+import { DivNone } from 'global-styled/global-styled';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
 
 const ButtonChangeCarData = withRequirePermissionsNew({
-  permissions: permissionsCar.update,
+  permissions: carActualPermissions.update,
 })(Button);
 
 const loadingPage = 'technical_operation_relations';
@@ -125,11 +127,15 @@ class TechnicalOperationRelationsList extends ElementsList {
     }
   };
 
-  onCarFormHide = () =>
+  onCarFormHide = (isSubmitted) => {
+    if (isSubmitted) {
+      this.refreshList();
+    }
     this.setState({
       carElement: null,
       showCarForm: false,
     });
+  };
 
   handleChangeRoutes = () =>
     this.setState(({ selectedElement }) => ({
@@ -169,36 +175,41 @@ class TechnicalOperationRelationsList extends ElementsList {
   }
 
   additionalRender() {
-    return [
-      <CarFormWrap
-        key="carFormWrap"
-        showForm={this.state.showCarForm}
-        onFormHide={this.onCarFormHide}
-        element={this.state.carElement}
-        entity="car"
-        permissions={['car.read']}
-        flux={this.context.flux}
-        refreshList={this.refreshList}
-        {...this.props}
-        page={loadingPage}
-        path="сarFormWrap"
-      />,
-      <ChangeRouteForm
-        key="ChangeRouteForm"
-        showForm={this.state.showRouteChangeForm}
-        onFormHide={this.onRouteFormHide}
-        routesData={this.state.routesData}
-        technical_operation_id={this.props.technical_operation_id}
-        municipal_facility_id={this.props.municipal_facility_id}
-        refreshList={this.refreshList}
-        page={loadingPage}
-        path="changeRouteForm"
-      />,
-    ];
+    return (
+      <React.Fragment>
+        {this.state.showCarForm ? (
+          <Route
+            path={`${this.props.match.url}/:tabKey?`}
+            render={(...routeProps) => (
+              <CarForm
+                handleHide={this.onCarFormHide}
+                element={this.state.showCarForm ? this.state.carElement : null}
+                page={loadingPage}
+                path="сarFormWrap"
+                {...routeProps}
+              />
+            )}
+          />
+        ) : (
+          <DivNone />
+        )}
+        <ChangeRouteForm
+          showForm={this.state.showRouteChangeForm}
+          onFormHide={this.onRouteFormHide}
+          routesData={this.state.routesData}
+          technical_operation_id={this.props.technical_operation_id}
+          municipal_facility_id={this.props.municipal_facility_id}
+          refreshList={this.refreshList}
+          page={loadingPage}
+          path="changeRouteForm"
+        />
+      </React.Fragment>
+    );
   }
 }
 
 export default compose(
+  withSearch,
   connect((state) => ({
     userData: getSessionState(state).userData,
   })),

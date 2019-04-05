@@ -1,9 +1,6 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import carActualList from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
-// old
-import carsListOld from 'components/directories/autobase/cars/config-data';
-
 import carFuncTypesList from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data';
 import typesAttrList from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data';
 import batteryRegistryList from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data';
@@ -20,7 +17,6 @@ import fuelCardsList from 'components/new/pages/nsi/autobase/pages/fuel_cards/_c
 
 const children = {
   carActualList,
-  carsListOld,
   carFuncTypesList,
   typesAttrList,
   batteryRegistryList,

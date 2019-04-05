@@ -4,7 +4,7 @@ import employeeOnCar from 'components/directories/employee_on_car/config-data';
 import order from 'components/directories/order/config-data';
 import companyList from 'components/new/pages/nsi/company/_config-data';
 import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
-import autobase from 'components/directories/autobase/config-data';
+import autobasePages from 'components/new/pages/nsi/autobase/_config-data';
 import repairsRegistry from 'components/directories/repair/config-data';
 import normative from 'components/directories/normative/config-data';
 import geoobjects from 'components/new/pages/nsi/geoobjects/_config-data';
@@ -24,7 +24,7 @@ const children = {
   companyList,
   technicalOperationRelations,
   dividerOne: { divider: true },
-  autobase,
+  autobasePages,
   repairsRegistry,
   normative,
   geoobjects,

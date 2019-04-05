@@ -155,8 +155,8 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
           value: [
             3,
             getCurrentSeason(
-              this.props.appConfig.summer_start,
-              this.props.appConfig.summer_end,
+              this.props.appConfig.summer_start_date,
+              this.props.appConfig.summer_end_date,
             ) === 'winter'
               ? 2
               : 1,

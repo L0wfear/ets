@@ -258,15 +258,6 @@ export default class MissionsActions extends Actions {
       );
   }
 
-  getCleaningByType({ type, payload: outerPyload }) {
-    const payload = {
-      ...outerPyload,
-      start_date: createValidDate(outerPyload.start_date),
-      end_date: createValidDate(outerPyload.end_date),
-    };
-    return Cleaning.path(type).get(payload, false, 'json');
-  }
-
   getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
     return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }

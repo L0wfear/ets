@@ -4,6 +4,7 @@ import { get } from 'lodash';
 
 import infoTabConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/_config-data';
 import registrationTabConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/registration/_config-data';
+import passportTabConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/passport/_config-data';
 
 import actualBatteriesOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data';
 import actualTiresOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data';
@@ -47,7 +48,7 @@ export const mainInfo: OneTabData = {
   isRegistry: false,
 };
 
-const registerInfo: OneTabData = {
+export const registerInfo: OneTabData = {
   title: 'Информация о регистрации',
   tabKey: registrationTabConfig.item,
   component: registrationTabConfig.component,
@@ -55,15 +56,15 @@ const registerInfo: OneTabData = {
   isRegistry: false,
 };
 
-const passportInfo: OneTabData = {
+export const passportInfo: OneTabData = {
   title: 'Паспорт ТС',
-  tabKey: 'passportInfo',
-  component: 'div',
-  path: 'id',
+  tabKey: passportTabConfig.item,
+  component: passportTabConfig.component,
+  path: passportTabConfig.id,
   isRegistry: false,
 };
 
-const main: OneTabData = {
+export const main: OneTabData = {
   tabKey: 'main',
   title: 'Информация',
   children: [
@@ -73,7 +74,7 @@ const main: OneTabData = {
   ],
 };
 
-const battaryInfo: OneTabData = {
+export const battaryInfo: OneTabData = {
   title: 'Аккумуляторы',
   tabKey: actualBatteriesOnCarListConfig.item,
   component: actualBatteriesOnCarListConfig.component,
@@ -81,7 +82,7 @@ const battaryInfo: OneTabData = {
   isRegistry: true,
 };
 
-const tireInfo: OneTabData = {
+export const tireInfo: OneTabData = {
   title: 'Шины',
   tabKey: actualTiresOnCarListConfig.item,
   component: actualTiresOnCarListConfig.component,
@@ -89,7 +90,7 @@ const tireInfo: OneTabData = {
   isRegistry: true,
 };
 
-const insurancePolicy: OneTabData = {
+export const insurancePolicy: OneTabData = {
   title: 'Страхование',
   tabKey: insurancePolicyListConfig.item,
   component: insurancePolicyListConfig.component,
@@ -97,7 +98,7 @@ const insurancePolicy: OneTabData = {
   isRegistry: true,
 };
 
-const roadAccident: OneTabData = {
+export const roadAccident: OneTabData = {
   title: 'ДТП',
   tabKey: roadAccidentListConfig.item,
   component: roadAccidentListConfig.component,
@@ -105,7 +106,7 @@ const roadAccident: OneTabData = {
   isRegistry: true,
 };
 
-const techMaintenance: OneTabData = {
+export const techMaintenance: OneTabData = {
   title: 'Тех. обслуживание',
   tabKey: techMaintenanceListConfig.item,
   component: techMaintenanceListConfig.component,
@@ -113,7 +114,7 @@ const techMaintenance: OneTabData = {
   isRegistry: true,
 };
 
-const repair: OneTabData = {
+export const repair: OneTabData = {
   title: 'Ремонты ТС',
   tabKey: repairListConfig.item,
   component: repairListConfig.component,
@@ -121,7 +122,7 @@ const repair: OneTabData = {
   isRegistry: true,
 };
 
-const tmAndR: OneTabData = {
+export const tmAndR: OneTabData = {
   title: 'ТО и ремонты',
   tabKey: 'tmAndR',
   children: [
@@ -131,7 +132,7 @@ const tmAndR: OneTabData = {
   isRegistry: true,
 };
 
-const techInspection: OneTabData = {
+export const techInspection: OneTabData = {
   title: 'Техосмотр',
   tabKey: techInspectionListConfig.item,
   component: techInspectionListConfig.component, // car_id

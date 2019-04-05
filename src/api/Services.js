@@ -257,6 +257,9 @@ export const CarDrivers = ETS_API_FACTORY.createApiServiceAdapter(
 export const CarRegistrationRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/car_registration_registry',
 );
+export const CarPassportRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/car_passport_registry',
+);
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 
@@ -268,6 +271,9 @@ export const FuelEvent = ETS_API_FACTORY.createApiServiceAdapter('fuel_event');
 
 // список стран
 export const Country = ETS_API_FACTORY.createApiServiceAdapter('country');
+export const CountryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'country',
+);
 
 export const UserNotificationService = ETS_API_FACTORY.createApiServiceAdapter(
   'notification_registry',

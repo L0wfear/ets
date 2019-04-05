@@ -11,6 +11,7 @@ import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/co
 import { CarWrap } from '../../../@types/CarForm';
 import FieldSelectDriverCar from './inside_fields/drivers_data/FieldSelectDriverCar';
 import { MarginTopRow } from '../registration/styled';
+import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
 
 type MainInfoTab = {
   isPermitted: boolean;
@@ -32,6 +33,15 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
       formState: state,
       formErrors: errors,
     } = props;
+
+    const onChangeCompanyStructure = React.useCallback(
+      (key, value) => {
+        global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
+
+        props.onChange(key, value);
+      },
+      [props.onChange],
+    );
 
     return (
       <MarginTopRow>
@@ -80,7 +90,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 label="Подразделение"
                 options={props.STRUCTURES}
                 value={state.company_structure_id}
-                onChange={props.onChange}
+                onChange={onChangeCompanyStructure}
                 boundKeys="company_structure_id"
                 disabled={!isPermitted}
               />

@@ -9,9 +9,10 @@ import {
   updateSetCar,
   promiseLoadCarDrivers,
   promiseLoadCarRegistration,
+  promiseLoadCarPassport,
 } from 'redux-main/reducers/modules/autobase/car/promise';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { CarDriversData, CarRegistrationData } from './@types';
+import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
 
 /* ---------- Car ---------- */
 export const autobaseSetCar = (carList: Car[]) => (dispatch) => (
@@ -81,6 +82,16 @@ export const actionLoadCarRegistration = (car_id: Car['asuods_id'], meta: Loadin
   const carDriversData = await etsLoadingCounter(
     dispatch,
     promiseLoadCarRegistration(car_id),
+    meta,
+  );
+
+  return carDriversData;
+};
+
+export const actionLoadCarPassport = (car_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarPassporntData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const carDriversData = await etsLoadingCounter(
+    dispatch,
+    promiseLoadCarPassport(car_id),
     meta,
   );
 

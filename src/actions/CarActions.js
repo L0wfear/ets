@@ -76,22 +76,6 @@ export default class CarActions extends Actions {
     ]).then(([carData]) => carData);
   }
 
-  getCarRegisterInfo(car_id) {
-    return AutoBase.path('car_registration_registry')
-      .get({ car_id })
-      .then((data) => get(data, ['result', 'rows'], [{ disabled: true }])[0]);
-  }
-
-  getCarPassportRegistryInfo(car_id) {
-    return AutoBase.path('car_passport_registry')
-      .get({ car_id })
-      .then((data) => get(data, ['result', 'rows'], [{ disabled: true }])[0]);
-  }
-
-  getCarDriversInfo(car_id) {
-    return CarDrivers.get({ car_id });
-  }
-
   updateCarRegisterInfo({ id, certificate_number, given_at, ...restPayload }) {
     const payload = {
       certificate_number,
@@ -116,14 +100,6 @@ export default class CarActions extends Actions {
 
   updateCarDriversInfo({ car_id, ...restData }) {
     return CarDrivers.path(car_id).put({ car_id, ...restData }, false, 'json');
-  }
-
-  getCarsByNormIds({ norm_ids }) {
-    const payload = {
-      norm_ids,
-    };
-
-    return CarService.get(payload);
   }
 
   getInfoFromCar(gps_code, from_dt, to_dt) {

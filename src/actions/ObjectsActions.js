@@ -15,7 +15,6 @@ import {
   MaintenanceRateService,
   CleaningRateService,
   UserActionLogService,
-  Country,
   WorkMode,
   ConfigTrackService,
   SensorTypeService,
@@ -238,14 +237,5 @@ export default class ObjectsActions extends Actions {
       date_to: createValidDateTime(p.date_to),
     };
     return MedicalStatsService.get(payload);
-  }
-
-  getCountry(query = false) {
-    const payload = {};
-    if (query) {
-      payload.query = query;
-    }
-
-    return Country.get(payload);
   }
 }

@@ -1,10 +1,20 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { CarDriversData } from 'redux-main/reducers/modules/autobase/car/@types';
+import { actionGetCarDrivers } from 'redux-main/reducers/modules/autobase/car/actions';
+import { HandleThunkActionCreator } from 'react-redux';
+
+export type CarWrap = (
+  Car
+  & {
+    drivers_data: CarDriversData;
+  }
+);
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsCarFormLazy = {
-  element: Partial<Car>;
+  element: Partial<CarWrap>;
   onFormHide: OnFormHideType
 
   registryKey?: string;
@@ -15,9 +25,10 @@ export type PropsCarFormLazy = {
 export type StatePropsCar = {
 };
 export type DispatchPropsCar = {
+  actionGetCarDrivers: HandleThunkActionCreator<typeof actionGetCarDrivers>;
 };
 export type OwnCarProps = {
-  element: Partial<Car>;
+  element: Partial<CarWrap>;
   handleHide: OnFormHideType;
 
   page: string;
@@ -36,7 +47,7 @@ export type PropsCarWithForm = (
 
 export type PropsCar = OutputWithFormProps<
   PropsCarWithForm,
-  Car,
-  [ Car ],
+  CarWrap,
+  [ CarWrap ],
   any
 >;

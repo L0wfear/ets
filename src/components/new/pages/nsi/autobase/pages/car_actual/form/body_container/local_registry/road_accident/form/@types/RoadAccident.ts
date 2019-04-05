@@ -1,17 +1,18 @@
 import {
-  RoadAccident, Car,
+  RoadAccident,
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { GetRoadAccidentCauseType } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/@types';
 import { GetDriver } from 'redux-main/reducers/modules/employee/driver/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { CarWrap } from '../../../../../@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsRoadAccidentFormLazy = {
   element: RoadAccident | null;
   onFormHide: OnFormHideType;
-  selectedCarData?: Car;
+  selectedCarData?: CarWrap;
 
   loadingPageName?: string;
   page?: string;
@@ -28,7 +29,7 @@ export type DispatchPropsRoadAccident = {
 export type OwnRoadAccidentProps = {
   element: RoadAccident | null;
   handleHide: OnFormHideType;
-  selectedCarData?: Car;
+  selectedCarData?: CarWrap;
 
   page: string;
   path?: string;

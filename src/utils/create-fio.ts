@@ -1,5 +1,10 @@
+import { get } from 'lodash';
+
 const createFio = (data, full = false) => {
-  const { first_name, last_name, middle_name } = data;
+  const first_name = get(data, 'first_name', '');
+  const last_name = get(data, 'last_name', '');
+  const middle_name = get(data, 'middle_name', '');
+
   let result = '';
   if (last_name && last_name.length) {
     result += `${last_name} `;

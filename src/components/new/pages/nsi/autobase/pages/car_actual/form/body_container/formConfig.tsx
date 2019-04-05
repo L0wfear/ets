@@ -2,6 +2,8 @@ import * as React from 'react';
 import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 
+import infoTabConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/main_tabs/info/_config-data';
+
 import actualBatteriesOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data';
 import actualTiresOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data';
 import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
@@ -27,6 +29,7 @@ export type OneTabDataComponent = (
   & {
     component: any;
     path: string;
+    isRegistry: boolean;
   }
 );
 
@@ -37,9 +40,10 @@ export type OneTabData = (
 
 export const mainInfo: OneTabData = {
   title: 'Общая информация',
-  tabKey: 'mainInfo',
-  component: 'div',
-  path: 'id',
+  tabKey: infoTabConfig.item,
+  component: infoTabConfig.component,
+  path: infoTabConfig.patrialEndPath,
+  isRegistry: false,
 };
 
 const registerInfo: OneTabData = {
@@ -47,6 +51,7 @@ const registerInfo: OneTabData = {
   tabKey: 'registerInfo',
   component: 'div',
   path: 'id',
+  isRegistry: false,
 };
 
 const passportInfo: OneTabData = {
@@ -54,6 +59,7 @@ const passportInfo: OneTabData = {
   tabKey: 'passportInfo',
   component: 'div',
   path: 'id',
+  isRegistry: false,
 };
 
 const main: OneTabData = {
@@ -71,6 +77,7 @@ const battaryInfo: OneTabData = {
   tabKey: actualBatteriesOnCarListConfig.item,
   component: actualBatteriesOnCarListConfig.component,
   path: actualBatteriesOnCarListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const tireInfo: OneTabData = {
@@ -78,6 +85,7 @@ const tireInfo: OneTabData = {
   tabKey: actualTiresOnCarListConfig.item,
   component: actualTiresOnCarListConfig.component,
   path: actualTiresOnCarListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const insurancePolicy: OneTabData = {
@@ -85,6 +93,7 @@ const insurancePolicy: OneTabData = {
   tabKey: insurancePolicyListConfig.item,
   component: insurancePolicyListConfig.component,
   path: insurancePolicyListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const roadAccident: OneTabData = {
@@ -92,6 +101,7 @@ const roadAccident: OneTabData = {
   tabKey: roadAccidentListConfig.item,
   component: roadAccidentListConfig.component,
   path: roadAccidentListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const techMaintenance: OneTabData = {
@@ -99,6 +109,7 @@ const techMaintenance: OneTabData = {
   tabKey: techMaintenanceListConfig.item,
   component: techMaintenanceListConfig.component,
   path: techMaintenanceListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const repair: OneTabData = {
@@ -106,6 +117,7 @@ const repair: OneTabData = {
   tabKey: repairListConfig.item,
   component: repairListConfig.component,
   path: repairListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const tmAndR: OneTabData = {
@@ -115,6 +127,7 @@ const tmAndR: OneTabData = {
     techMaintenance,
     repair,
   ],
+  isRegistry: true,
 };
 
 const techInspection: OneTabData = {
@@ -122,6 +135,7 @@ const techInspection: OneTabData = {
   tabKey: techInspectionListConfig.item,
   component: techInspectionListConfig.component, // car_id
   path: techInspectionListConfig.patrialEndPath,
+  isRegistry: true,
 };
 
 const carFormTabKey: OneTabData[] = [

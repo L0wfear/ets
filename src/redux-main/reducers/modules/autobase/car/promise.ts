@@ -3,7 +3,9 @@ import {
   autobaseUpdateCar,
 } from 'redux-main/reducers/modules/autobase/promises';
 import { Car } from '../@types/autobase.h';
-import { cloneDeep } from 'lodash';
+import { get, cloneDeep } from 'lodash';
+import { CarDrivers, CarRegistrationRegistryService } from 'api/Services';
+import { CarDriversData, CarRegistrationData } from './@types';
 
 export const getCars = autobaseLoadCars;
 export const updateCar = autobaseUpdateCar;
@@ -26,6 +28,7 @@ export const getBackCar = (carOwn: Car) => {
   return car;
 };
 
+// drivers_data отдельный запрос на обновление
 export const updateSetCar = (oldCar) => {
   const payload = {
     ...oldCar,
@@ -34,4 +37,16 @@ export const updateSetCar = (oldCar) => {
   return autobaseUpdateCar(
     payload,
   );
+};
+
+export const promiseLoadCarDrivers = (car_id: Car['asuods_id']): Promise<CarDriversData> => {
+  return CarDrivers.get({ car_id });
+};
+
+export const promiseLoadCarRegistration = async (car_id: Car['asuods_id']) => {
+  const response = await CarRegistrationRegistryService.get({ car_id });
+
+  const carRegistrationData: CarRegistrationData = get(response, 'result.rows.0', null);
+
+  return carRegistrationData;
 };

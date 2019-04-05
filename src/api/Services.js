@@ -254,6 +254,9 @@ export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase');
 export const CarDrivers = ETS_API_FACTORY.createApiServiceAdapter(
   'car_drivers',
 );
+export const CarRegistrationRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/car_registration_registry',
+);
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 

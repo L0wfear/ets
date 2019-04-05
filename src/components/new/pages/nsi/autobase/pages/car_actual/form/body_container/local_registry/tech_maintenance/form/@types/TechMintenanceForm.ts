@@ -1,16 +1,16 @@
 import {
   TechMaintenance,
   IStateAutobase,
-  Car,
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { CarWrap } from '../../../../../@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsTechMaintenanceFormLazy = {
   element: Partial<TechMaintenance>;
-  selectedCarData: Car;
+  selectedCarData: CarWrap;
 
   onFormHide: OnFormHideType;
 
@@ -29,7 +29,7 @@ export type DispatchPropsTechMaintenance = {
 };
 export type OwnTechMaintenanceProps = {
   element: Partial<TechMaintenance>;
-  selectedCarData: Car;
+  selectedCarData: CarWrap;
   handleHide: OnFormHideType;
 
   page: string;

@@ -15,18 +15,19 @@ import {
   StatePropsCar,
   DispatchPropsCar,
   PropsCarWithForm,
+  CarWrap,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 import { DivNone } from 'global-styled/global-styled';
 import carActualPermissions from '../_config-data/permissions';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import CarFormBodyHeader from './body_header/CarFormBodyHeader';
 import CarFormBodyContainer from './body_container/CarFormBodyContainer';
+import { actionGetCarDrivers } from 'redux-main/reducers/modules/autobase/car/actions';
 
 const CarForm: React.FC<PropsCar> = React.memo(
   (props) => {
     const {
       formState: state,
-      // formErrors: errors,
+      formErrors: errors,
       page,
       path,
     } = props;
@@ -35,6 +36,25 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
+    React.useEffect(                                                                              // загрузка водителей
+      () => {
+        if (state.asuods_id) {
+          try {
+            props.actionGetCarDrivers(state.asuods_id, { page: props.page, path: props.path }).then(
+              (carDriversData) => {
+                props.handleChange({
+                  drivers_data: carDriversData,
+                });
+              },
+            );
+          } catch (error) {
+            return;
+          }
+        }
+      },
+      [state.asuods_id],
+    );
+
     return (
       <Modal id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
         <Modal.Header closeButton>
@@ -42,7 +62,16 @@ const CarForm: React.FC<PropsCar> = React.memo(
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <CarFormBodyHeader isPermitted={isPermitted} />
-          <CarFormBodyContainer isPermitted={isPermitted} formState={state} />
+          <CarFormBodyContainer
+            isPermitted={isPermitted}
+            formState={state}
+            formErrors={errors}
+            onChange={props.handleChange}
+            onChangeBoolean={props.handleChangeBoolean}
+
+            page={props.page}
+            path={props.path}
+          />
         </ModalBodyPreloader>
         <Modal.Footer>
         {
@@ -63,8 +92,15 @@ const CarForm: React.FC<PropsCar> = React.memo(
 export default compose<PropsCar, OwnCarProps>(
   connect<StatePropsCar, DispatchPropsCar, OwnCarProps, ReduxState>(
     null,
+    (dispatch: any) => ({
+      actionGetCarDrivers: (...arg) => (
+        dispatch(
+          actionGetCarDrivers(...arg),
+        )
+      ),
+    }),
   ),
-  withForm<PropsCarWithForm, Car>({
+  withForm<PropsCarWithForm, CarWrap>({
     uniqField: 'asuods_id',
     mergeElement: (props) => {
       return getDefaultCarElement(props.element);

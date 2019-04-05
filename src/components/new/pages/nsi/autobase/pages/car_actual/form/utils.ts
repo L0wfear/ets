@@ -1,8 +1,11 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
+import { CarWrap } from './@types/CarForm';
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { isFourDigitGovNumber } from 'utils/functions';
+import { diffDates } from 'utils/dates';
 
-export const defaultCar: Car = {
+export const defaultCar: CarWrap = {
   asuods_id: null,
   available: null,
   available_to_bind: null,
@@ -49,9 +52,15 @@ export const defaultCar: Car = {
   type_id: null,
   type_image_name: '',
   type_name: '',
+
+  drivers_data: {
+    car_id: null,
+    primary_drivers: [],
+    secondary_drivers: [],
+  },
 };
 
-export const getDefaultCarElement = (element: Partial<Car>): Car => {
+export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {
   const newElement = { ...defaultCar };
   if (isObject(element)) {
     Object.keys(defaultCar).forEach((key) => {
@@ -63,7 +72,7 @@ export const getDefaultCarElement = (element: Partial<Car>): Car => {
 };
 
 export const memoizeMergeElement = memoizeOne(
-  (element: any, selectedCarData: Car) => {
+  (element: any, selectedCarData: CarWrap) => {
     if (!element.car_id && selectedCarData) {
       return {
         ...element,
@@ -74,3 +83,32 @@ export const memoizeMergeElement = memoizeOne(
     return element;
   },
 );
+
+/**
+ * Проверка доступности водителя на прикрепление к ТС
+ * @param employeeData данные по водителю из employee
+ * @param gov_number номер ТС
+ */
+export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_number']) => {
+  if (employeeData) {
+    const isFourInGovNumver = isFourDigitGovNumber(gov_number);
+
+    if (employeeData.active) {                                                  // сотрудник активен
+      if (isFourInGovNumver) {
+        return (
+          employeeData.special_license                                          // есть специальное удостоверение
+          && employeeData.special_license_date_end                              // есть дата окончания специального удостоверения
+          && diffDates(employeeData.special_license_date_end, new Date()) > 0   // срок действия специального удостоверения не закончился
+        );
+      }
+
+      return (
+        employeeData.drivers_license                                            // есть водительское удостоверение
+        && employeeData.drivers_license_date_end                                // есть дата окончания водительского удостоверения
+        && diffDates(employeeData.drivers_license_date_end, new Date()) > 0     // срок действия водительского удостоверения не закончился
+      );
+    }
+  }
+
+  return false;
+};

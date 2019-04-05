@@ -1,6 +1,5 @@
 import {
   Repair,
-  Car,
   RepairCompany,
   RepairType,
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -13,13 +12,14 @@ import { GetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_b
 import { GetRepairType } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/@types';
 import { HandleThunkActionCreator } from 'react-redux';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { CarWrap } from '../../../../../@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type PropsRepairFormWrap = {
   showForm: boolean;
   element: Repair | null;
-  selectedCarData?: Car;
+  selectedCarData?: CarWrap;
   onFormHide: OnFormHideType;
 
   loadingPageName?: string;
@@ -40,7 +40,7 @@ export type DispatchPropsRepair = {
 export type OwnRepairProps = {
   element: Repair | null;
   handleHide: OnFormHideType;
-  selectedCarData?: Car;
+  selectedCarData?: CarWrap;
   page: string;
   path?: string;
 };

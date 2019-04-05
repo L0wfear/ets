@@ -7,7 +7,10 @@ import { AnyAction } from 'redux';
 import {
   getCars,
   updateSetCar,
+  promiseLoadCarDrivers,
 } from 'redux-main/reducers/modules/autobase/car/promise';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { CarDriversData } from './@types';
 
 /* ---------- Car ---------- */
 export const autobaseSetCar = (carList: Car[]) => (dispatch) => (
@@ -61,4 +64,14 @@ export const autobaseUpdateCar: any = (carOld: Car, meta: LoadingMeta) => async 
   });
 
   return car;
+};
+
+export const actionGetCarDrivers = (car_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarDriversData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const carDriversData = await etsLoadingCounter(
+    dispatch,
+    promiseLoadCarDrivers(car_id),
+    meta,
+  );
+
+  return carDriversData;
 };

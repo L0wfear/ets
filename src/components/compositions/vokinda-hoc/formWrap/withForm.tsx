@@ -51,8 +51,8 @@ type WithFormProps<P> = P & DispatchProp & {
   isPermittedToCreate: boolean;
 };
 
-type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
-type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
+export type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
+export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
 type FormWithDefaultSubmit = () => void;
 

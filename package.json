@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.27.289",
+    "version": "2.0.27.290",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -42,12 +42,12 @@
         "url-join": "^4.0.0"
     },
     "devDependencies": {
-        "@babel/core": "^7.4.0",
+        "@babel/core": "^7.4.3",
         "@babel/plugin-proposal-class-properties": "^7.4.0",
         "@babel/plugin-proposal-decorators": "^7.4.0",
         "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-        "@babel/polyfill": "^7.4.0",
-        "@babel/preset-env": "^7.4.2",
+        "@babel/polyfill": "^7.4.3",
+        "@babel/preset-env": "^7.4.3",
         "@babel/preset-react": "^7.0.0",
         "@babel/preset-typescript": "^7.3.3",
         "@hot-loader/react-dom": "^16.8.4",
@@ -103,7 +103,7 @@
         "prettier-standard": "^9.1.1",
         "react-hot-loader": "^4.8.2",
         "redux-devtools-extension": "^2.13.8",
-        "resolve-url-loader": "^3.0.1",
+        "resolve-url-loader": "^3.1.0",
         "sass-loader": "^7.1.0",
         "style-loader": "^0.23.1",
         "styled-components": "^4.2.0",

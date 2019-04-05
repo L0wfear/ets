@@ -74,6 +74,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
             if (props.buttons.includes(buttonsTypes.create)) {
               setElement({});
             } else {
+              global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
               props.setParams(
                 { [uniqKeyForParams]: null },
                 'replace',
@@ -94,10 +95,12 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
                 if (responseElement) {
                   setElement(responseElement);
                 } else {
+                  global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
                   handleHide(false);
                 }
               });
             } else {
+              global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
               handleHide(false);
             }
           } else if (element) {

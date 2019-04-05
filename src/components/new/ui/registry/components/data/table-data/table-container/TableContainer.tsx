@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 
 type TableContainerStateProps = {
@@ -20,8 +19,6 @@ type TableContainerStateProps = {
 type TableContainerDispatchProps = {};
 type TableContainerOwnProps = {
   registryKey: string;
-  handleClickOnRow: any;
-  handleDoubleClickOnRow: any;
 };
 type TableContainerMergeProps = (
   TableContainerStateProps
@@ -29,7 +26,7 @@ type TableContainerMergeProps = (
   & TableContainerOwnProps
 );
 
-type TableContainerProps = TableContainerMergeProps & WithSearchProps;
+type TableContainerProps = TableContainerMergeProps;
 
 const TableContainer: React.FC<TableContainerProps> = (props) => {
   React.useEffect(
@@ -45,18 +42,13 @@ const TableContainer: React.FC<TableContainerProps> = (props) => {
     <EtsTableWrap className="ets_table_wrap">
       <EtsTable fixedWidth={props.fixedWidth}>
         <Thead registryKey={registryKey} />
-        <Tbody
-          registryKey={registryKey}
-          handleClickOnRow={props.handleClickOnRow}
-          handleDoubleClickOnRow={props.handleDoubleClickOnRow}
-        />
+        <Tbody registryKey={registryKey} />
       </EtsTable>
     </EtsTableWrap>
   );
 };
 
 export default compose<TableContainerProps, TableContainerOwnProps>(
-  withSearch,
   connect<TableContainerStateProps, TableContainerDispatchProps, TableContainerOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       fixedWidth: getListData(state.registry, registryKey).data.fixedWidth,

@@ -95,7 +95,7 @@ export type InsuranceType = {
 };
 
 export type Car = {
-  asuods_id: number | null;
+  asuods_id: number;
   available: boolean;
   available_to_bind: boolean;
   body_capacity: number | null;
@@ -103,6 +103,8 @@ export type Car = {
   car_group_name: string;
   company_id: number | null;
   company_name: string;
+  company_name_customer: string;
+  company_name_contractor: string;
   company_structure_id: number | null;
   company_structure_name: string | null;
   condition: number | null;
@@ -342,7 +344,8 @@ export type ActualTiresOnCar = {
   tire_to_car_id: number | null;
   uninstalled_at: string;
 };
-export type TechMaint = {
+
+export type TechMaintenance = {
   can_edit: boolean;
   car_id: number | null;
   company_id: number | null;
@@ -380,7 +383,7 @@ export type TechMaint = {
   tech_maintenance_orders_text: string | null;
   files: any[];
 };
-export type TechMaintExtra = {
+export type TechMaintenanceExtra = {
   car_interval_probeg: number | null;
   car_interval_time: number | null;
 };
@@ -451,8 +454,8 @@ export type IStateAutobase = {
   tireAvailableCarList: TireAvailableCar[];
   actualBatteriesOnCarList: ActualBatteriesOnCar[];
   actualTiresOnCarList: ActualTiresOnCar[];
-  techMaintList: TechMaint[];
-  techMaintExtra: TechMaintExtra;
+  techMaintList: TechMaintenance[];
+  techMaintExtra: TechMaintenanceExtra;
   carCategoryList: CarCategory[];
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];

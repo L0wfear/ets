@@ -9,7 +9,7 @@ type PropsButtonExport = {
   handleClick: React.MouseEventHandler<React.ClassicComponent<any, {}>>;
 };
 
-class ButtonExport extends React.Component<PropsButtonExport, {}> {
+class ButtonExport extends React.PureComponent<PropsButtonExport, {}> {
   render() {
     return (
       <Button

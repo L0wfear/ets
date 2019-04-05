@@ -11,7 +11,7 @@ import {
   clone,
   get,
 } from 'lodash';
-import { TechMaint } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'utils/dates';
 
 export const getTechMaint = autobaseLoadByType(techMaint);
@@ -32,7 +32,7 @@ export const getSetTechMaint = async (payload) => {
   };
 };
 
-const editTechMaintBeforeSave = (rawTechMaint: TechMaint) => {
+const editTechMaintBeforeSave = (rawTechMaint: TechMaintenance) => {
   const newObj = clone(rawTechMaint);
   newObj.plan_date_start = createValidDate(newObj.plan_date_start);
   newObj.plan_date_end = createValidDate(newObj.plan_date_end);
@@ -42,7 +42,7 @@ const editTechMaintBeforeSave = (rawTechMaint: TechMaint) => {
   return newObj;
 };
 
-export const createSetTechMaint = (rawTechMaint: TechMaint) => {
+export const createSetTechMaint = (rawTechMaint: TechMaintenance) => {
   const payload = editTechMaintBeforeSave(
     rawTechMaint,
   );
@@ -51,7 +51,7 @@ export const createSetTechMaint = (rawTechMaint: TechMaint) => {
     payload,
   );
 };
-export const updateSetTechMaint = (oldTechMaint: TechMaint) => {
+export const updateSetTechMaint = (oldTechMaint: TechMaintenance) => {
   const payload = editTechMaintBeforeSave(
     oldTechMaint,
   );

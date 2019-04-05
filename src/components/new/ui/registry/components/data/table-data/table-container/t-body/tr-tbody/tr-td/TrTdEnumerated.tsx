@@ -12,7 +12,7 @@ import {
   StateTrTdEnumerated,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd.h';
 
-class TrTdEnumerated extends React.Component<PropsTrTdEnumerated, StateTrTdEnumerated> {
+class TrTdEnumerated extends React.PureComponent<PropsTrTdEnumerated, StateTrTdEnumerated> {
   render() {
     const {
       paginator,

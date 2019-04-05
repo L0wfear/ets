@@ -38,4 +38,4 @@ class PgmStoreFormWrap extends React.Component<PropsPgmStoreFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(PgmStoreFormWrap);
+export default withFormRegistrySearch({})(PgmStoreFormWrap);

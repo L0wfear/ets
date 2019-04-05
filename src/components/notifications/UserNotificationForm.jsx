@@ -9,13 +9,18 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import ModalBody from 'components/ui/Modal';
 import DateFormatter from 'components/ui/DateFormatter';
 import Form from 'components/compositions/Form';
-import { CAR_TAB_INDEX } from 'components/directories/autobase/cars/CarForm';
-
-import carPermissions from 'components/directories/autobase/cars/config-data/permissions';
 
 import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
+
+import carActualListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
+
+import {
+  insurancePolicy,
+  techInspection,
+} from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
+import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -47,18 +52,15 @@ const MainEmployeeDesc = ({ linkText, handleClick }) => (
 
 const insurance_policy = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}
     textInfo="по страхованию"
     handleClick={() =>
       handleClick(
-        'cars',
-        {
-          asuods_id: car_id,
-          active_tab: CAR_TAB_INDEX.insurance_policy,
-        },
+        `${carActualListConfig.path}/${car_id}/${insurancePolicy.tabKey}`,
+        {},
         isPermitted,
       )
     }
@@ -67,18 +69,15 @@ const insurance_policy = withRequirePermissionsNew({
 
 const tech_inspection = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={tech_inspection_reg_number}
     textInfo="о государственном техосмотре"
     handleClick={() =>
       handleClick(
-        'cars',
-        {
-          asuods_id: car_id,
-          active_tab: CAR_TAB_INDEX.tech_inspection,
-        },
+        `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+        {},
         isPermitted,
       )
     }
@@ -87,18 +86,15 @@ const tech_inspection = withRequirePermissionsNew({
 
 const tech_maintenance = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}
     textInfo="о техническом обслуживании"
     handleClick={() =>
       handleClick(
-        'cars',
-        {
-          asuods_id: car_id,
-          active_tab: CAR_TAB_INDEX.tech_inspection,
-        },
+        `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+        {},
         isPermitted,
       )
     }
@@ -107,18 +103,15 @@ const tech_maintenance = withRequirePermissionsNew({
 
 const repair = withRequirePermissionsNew({
   withIsPermittedProps: true,
-  permissions: carPermissions.list,
+  permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
   <MainVehicleDesc
     linkText={gov_number}
     textInfo="о ремонте"
     handleClick={() =>
       handleClick(
-        'cars',
-        {
-          asuods_id: car_id,
-          active_tab: CAR_TAB_INDEX.tech_inspection,
-        },
+        `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+        {},
         isPermitted,
       )
     }

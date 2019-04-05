@@ -7,5 +7,5 @@ export type ETSLoading<A, M = { promise: true, page?: string, path?: string }, T
 export type LoadingMeta = {
   page: string;
   path?: string;
-  noTimout?: boolean;
+  noTimeout?: boolean;
 };

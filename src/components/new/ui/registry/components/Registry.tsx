@@ -2,10 +2,6 @@ import * as React from 'react';
 
 import Data from 'components/new/ui/registry/components/data/Data';
 
-import {
-  EtsRegistry,
-} from 'components/new/ui/registry/components/styled/styled';
-
 type PropsRegistry = {
   registryKey: string;
   components?: any;
@@ -14,27 +10,14 @@ type PropsRegistry = {
   formSetFormState?: (object) => void;
 };
 
-type StateRegistry = {
+const Registry: React.FC<PropsRegistry> = (props) => {
+  const {
+    registryKey,
+  } = props;
+
+  return (
+    <Data registryKey={registryKey} />
+  );
 };
 
-class Registry extends React.Component<PropsRegistry, StateRegistry> {
-  render() {
-    const { props } = this;
-
-    const {
-      registryKey,
-    } = props;
-
-    return (
-      <EtsRegistry>
-        <Data
-          registryKey={registryKey}
-          handleClickOnRow={props.handleClickOnRow}
-          handleDoubleClickOnRow={props.handleDoubleClickOnRow}
-        />
-      </EtsRegistry>
-    );
-  }
-}
-
-export default Registry;
+export default React.memo(Registry);

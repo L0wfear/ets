@@ -10,7 +10,7 @@ import { repair } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'utils/dates';
-import { AUTOBASE_REPAIR_STATUS } from 'components/directories/autobase/repair/RepairForm/constant';
+import { AUTOBASE_REPAIR_STATUS } from './status';
 
 export const getRepair = autobaseLoadByType(repair);
 export const createRepair = autobaseCreateByType(repair);

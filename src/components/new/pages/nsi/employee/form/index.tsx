@@ -38,4 +38,4 @@ class EmployeeFormLazy extends React.Component<PropsEmployeeFormLazy, {}> {
   }
 }
 
-export default withFormRegistrySearch(EmployeeFormLazy);
+export default withFormRegistrySearch({})(EmployeeFormLazy);

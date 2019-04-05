@@ -5,7 +5,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import {
   registryChangeDataPaginatorCurrentPage,
 } from 'components/new/ui/registry/module/actions-registy';
-import * as Button from 'react-bootstrap/lib/Button';
+import { ButtonPaginatorWrap } from './styled';
 
 type PropsButtonLast = {
   registryKey: string;
@@ -18,18 +18,18 @@ type PropsButtonLast = {
 type StatePaginator = {
 };
 
-class ButtonLast extends React.Component<PropsButtonLast, StatePaginator> {
+class ButtonLast extends React.PureComponent<PropsButtonLast, StatePaginator> {
   render() {
     const { index } = this.props;
 
     return (
-      <Button
+      <ButtonPaginatorWrap
         disabled={this.props.active}
         data-index={index}
         onClick={this.props.handleButtonClick}
       >
         Последняя
-      </Button>
+      </ButtonPaginatorWrap>
     );
   }
 }

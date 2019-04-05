@@ -9,7 +9,6 @@ import missions from './MissionsActions';
 import objects from './ObjectsActions';
 import odh from './ODHActions';
 import repair from './RepairAction';
-import routes from './RoutesActions';
 import technicalOperation from './TechnicalOperationsActions';
 import waybills from './WaybillsActions';
 
@@ -21,7 +20,6 @@ export {
   objects,
   odh,
   repair,
-  routes,
   technicalOperation,
   waybills,
 };

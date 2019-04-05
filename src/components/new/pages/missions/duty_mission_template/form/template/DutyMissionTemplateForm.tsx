@@ -60,7 +60,6 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
   // Получение сотрудников для валидации бригадира и бригады в схеме
   React.useEffect(
     () => {
-      console.log('here2')
       if (isPermitted) {
         props.employeeGetAndSetInStore({}, { page, path });
 
@@ -72,8 +71,6 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
     [isPermitted],
   );
   const title = !IS_CREATING ? 'Шаблон наряд-задания' : 'Создание шаблона наряд-задания';
-
-  console.log(page, path)
 
   return (
     <EtsModal

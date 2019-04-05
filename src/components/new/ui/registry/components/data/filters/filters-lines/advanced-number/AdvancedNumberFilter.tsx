@@ -35,7 +35,7 @@ type StateAdvancedNumberFilter = {
   optionsType: any;
 };
 
-class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, StateAdvancedNumberFilter> {
+class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter, StateAdvancedNumberFilter> {
   constructor(props) {
     super(props);
     const eq = ['eq'];

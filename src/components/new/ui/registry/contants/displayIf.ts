@@ -8,5 +8,6 @@ export const displayIfContant: DisplayIfContantType = {
   isKgh: 'isKgh',
   isOkrug: 'isOkrug',
   lenghtStructureMoreOne: 'lenghtStructureMoreOne',
+  carActualAsuodsIdInParams: 'carActualAsuodsIdInParams',
   false: false,
 };

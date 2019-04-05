@@ -6,6 +6,8 @@ import FiltersLines from 'components/new/ui/registry/components/data/filters/fil
 
 import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { registryApplyRawFilters } from 'components/new/ui/registry/module/actions-registy';
+import { ReduxState } from 'redux-main/@types/state';
+import { compose } from 'recompose';
 
 type PropsFilters = {
   wasFirstOpen: boolean;
@@ -15,7 +17,7 @@ type PropsFilters = {
 
 type StateFilters = {};
 
-class Filters extends React.Component<PropsFilters, StateFilters> {
+class Filters extends React.PureComponent<PropsFilters, StateFilters> {
   render() {
     const { registryKey } = this.props;
 
@@ -28,8 +30,6 @@ class Filters extends React.Component<PropsFilters, StateFilters> {
   }
 }
 
-const mapStateToProps = (state, { registryKey }) => ({});
-
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
   hanleClickApplyRawFilters: (event) => {
     event.preventDefault();
@@ -37,7 +37,9 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
   },
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose<any, any>(
+  connect<any, any, any, ReduxState>(
+    null,
+    mapDispatchToProps,
+  ),
 )(Filters);

@@ -38,4 +38,4 @@ class DangerZoneFormWrap extends React.Component<PropsDangerZoneFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(DangerZoneFormWrap);
+export default withFormRegistrySearch({})(DangerZoneFormWrap);

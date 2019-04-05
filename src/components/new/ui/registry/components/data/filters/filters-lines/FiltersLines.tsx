@@ -15,6 +15,9 @@ import { isArray } from 'util';
 import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import AdvancedStringLikeFilter from './advanced-string-like/AdvancedStringLikeFilter';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
 
 type PropsFiltersLines = {
   wasFirstOpen: boolean;
@@ -23,12 +26,12 @@ type PropsFiltersLines = {
   userData: InitialStateSession['userData'];
   onChangeFilterRawValue: (valueKey: string, type: string, value: any) => any;
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
-};
+} & WithSearchProps;
 
 type StateFiltersLines = {
 };
 
-class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines> {
+class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLines> {
   handleChange = (valueKey, type, value) => {
     this.props.onChangeFilterRawValue(valueKey, type, value);
   }
@@ -51,6 +54,14 @@ class FiltersLines extends React.Component<PropsFiltersLines, StateFiltersLines>
 
         if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return titleSomeValue.title;
+        }
+
+        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
+          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
+
+          if (!car_actual_asuods_id) {
+            return titleSomeValue.title;
+          }
         }
 
         return filtredTitle;
@@ -147,7 +158,10 @@ const mapDispatchToProps = (dispatch, { registryKey }) => ({
   ),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose<any, any>(
+  withSearch,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
 )(FiltersLines);

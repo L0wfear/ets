@@ -6,21 +6,15 @@ import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/h
 
 type PropsHeader = {
   registryKey: string;
-  components?: any;
 };
 
-type StateHeader = {
+const Header: React.FC<PropsHeader> = (props) => {
+  return (
+    <EtsHeaderContainer>
+      <Title registryKey={props.registryKey} />
+      <Buttons registryKey={props.registryKey} />
+    </EtsHeaderContainer>
+  );
 };
 
-class Header extends React.Component<PropsHeader, StateHeader> {
-  render() {
-    return (
-      <EtsHeaderContainer>
-        <Title registryKey={this.props.registryKey} />
-        <Buttons registryKey={this.props.registryKey} />
-      </EtsHeaderContainer>
-    );
-  }
-}
-
-export default Header;
+export default React.memo(Header);

@@ -12,6 +12,7 @@ import { createValidDate } from 'utils/dates';
 import { get } from 'lodash';
 import { AutoBase } from 'api/Services';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
+import { Tire } from '../../@types/autobase.h';
 
 export const getTire = autobaseLoadByType(tire);
 export const createTire = autobaseCreateByType(tireNoRegistry);
@@ -48,7 +49,7 @@ export const cloneSetTire = async (tireId) => {
     'json',
   );
 
-  const data = get(response, ['result', 'rows', 0], null);
+  const data: Tire = get(response, 'result.0', null);
 
   return data;
 };

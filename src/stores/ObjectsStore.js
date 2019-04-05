@@ -6,10 +6,7 @@ export default class ObjectsStore extends Store {
     super();
 
     const objectsActions = flux.getActions('objects');
-    const carActions = flux.getActions('cars');
     const technicalOperationsActions = flux.getActions('technicalOperation');
-
-    this.register(carActions.updateCarAdditionalInfo, this.handleGetCars);
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
@@ -84,7 +81,6 @@ export default class ObjectsStore extends Store {
     );
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
-    this.register(objectsActions.getCountry, this.handleGetCountry);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
     this.register(
@@ -236,16 +232,6 @@ export default class ObjectsStore extends Store {
 
   handleGetMedicalStats(medicalStatsList) {
     this.setState({ medicalStatsList: medicalStatsList.result.rows });
-  }
-
-  handleGetCountry({ result: { rows = [] } }) {
-    this.setState({
-      countryList: rows,
-      countryOptions: rows.map((one) => ({
-        value: one.id,
-        label: one.short_name,
-      })),
-    });
   }
 
   handleGetWorkMode({ result: { rows = [] } }) {

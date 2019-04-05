@@ -46,7 +46,7 @@ const getPermissionsReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-class ButtonRead extends React.Component<ButtonReadProps, {}> {
+class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
   handleClick: React.MouseEventHandler<Button> = () => {
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),

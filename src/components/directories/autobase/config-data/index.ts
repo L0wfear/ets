@@ -1,41 +1,35 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-import carFuncTypes from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data';
-import typesAttr from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data';
-
-import batteryRegistry from 'components/directories/autobase/battery_registry/config-data';
-import batteryBrand from 'components/directories/autobase/battery_brand/config-data';
-import batteryManufacturer from 'components/directories/autobase/battery_manufacturer/config-data';
-import tire from 'components/directories/autobase/tire/config-data';
-import tireModel from 'components/directories/autobase/tire_model/config-data';
-import sparePart from 'components/directories/autobase/spare_part/config-data';
-import techMaintenanceOrderRegistry from 'components/directories/autobase/tech_maintenance_order_registry/config-data';
-import techInspection from 'components/directories/autobase/tech_inspection/config-data';
-import insurancePolicy from 'components/directories/autobase/insurance_policy/config-data';
-import repair from 'components/directories/autobase/repair/config-data';
-import repairCompany from 'components/directories/autobase/repair_company/config-data';
-import roadAccident from 'components/directories/autobase/road_accident/config-data';
-import fuelCards from 'components/directories/autobase/fuel_cards/config-data';
-
-import carsList from 'components/directories/autobase/cars/config-data';
+import carActualList from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
+import carFuncTypesList from 'components/new/pages/nsi/autobase/pages/car-func-types/_config-data';
+import typesAttrList from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data';
+import batteryRegistryList from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data';
+import batteryBrandList from 'components/new/pages/nsi/autobase/pages/battery_brand/_config-data';
+import batteryManufacturerList from 'components/new/pages/nsi/autobase/pages/battery_manufacturer/_config-data';
+import tireList from 'components/new/pages/nsi/autobase/pages/tire/_config-data';
+import tireModelList from 'components/new/pages/nsi/autobase/pages/tire_model/_config-data';
+import sparePartList from 'components/new/pages/nsi/autobase/pages/spare_part/_config-data';
+import techMaintenanceOrderList from 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/_config-data';
+import techInspectionList from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data';
+import insurancePolicyList from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
+import repairCompanyList from 'components/new/pages/nsi/autobase/pages/repair_company/_config-data';
+import fuelCardsList from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data';
 
 const children = {
-  carsList,
-  carFuncTypes,
-  typesAttr,
-  batteryRegistry,
-  batteryBrand,
-  batteryManufacturer,
-  tire,
-  tireModel,
-  sparePart,
-  techMaintenanceOrderRegistry,
-  techInspection,
-  insurancePolicy,
-  repair,
-  repairCompany,
-  roadAccident,
-  fuelCards,
+  carActualList,
+  carFuncTypesList,
+  typesAttrList,
+  batteryRegistryList,
+  batteryBrandList,
+  batteryManufacturerList,
+  tireList,
+  tireModelList,
+  sparePartList,
+  techMaintenanceOrderList,
+  techInspectionList,
+  insurancePolicyList,
+  repairCompanyList,
+  fuelCardsList,
 };
 
 export default {

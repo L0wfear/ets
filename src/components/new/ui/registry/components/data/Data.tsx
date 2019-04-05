@@ -9,31 +9,21 @@ import { EtsDataContainer } from 'components/new/ui/registry/components/data/sty
 
 type PropsData = {
   registryKey: string;
-  components?: any;
-  handleClickOnRow: any;
-  handleDoubleClickOnRow: any;
 };
 
-type StateData = {
+const Data: React.FC<PropsData> = (props) => {
+  const {
+    registryKey,
+  } = props;
 
+  return (
+    <EtsDataContainer>
+      <Header registryKey={registryKey} />
+      <FiltersWrap registryKey={registryKey} />
+      <TableData registryKey={registryKey} />
+      <Paginator registryKey={registryKey} />
+    </EtsDataContainer>
+  );
 };
 
-class Data extends React.Component<PropsData, StateData> {
-  render() {
-    const { props } = this;
-    const {
-      registryKey,
-    } = props;
-
-    return (
-      <EtsDataContainer>
-        <Header registryKey={registryKey} />
-        <FiltersWrap registryKey={registryKey} />
-        <TableData registryKey={registryKey} handleClickOnRow={props.handleClickOnRow} handleDoubleClickOnRow={props.handleDoubleClickOnRow }/>
-        <Paginator registryKey={registryKey} />
-      </EtsDataContainer>
-    );
-  }
-}
-
-export default Data;
+export default React.memo(Data);

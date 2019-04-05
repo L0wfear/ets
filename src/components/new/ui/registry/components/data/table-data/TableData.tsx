@@ -5,15 +5,12 @@ import { EtsTableDataContainer } from 'components/new/ui/registry/components/dat
 
 type PropsTableData = {
   registryKey: string;
-  components?: any;
-  handleClickOnRow: any;
-  handleDoubleClickOnRow: any;
 };
 
 type StateTableData = {
 };
 
-class TableData extends React.Component<PropsTableData, StateTableData> {
+class TableData extends React.PureComponent<PropsTableData, StateTableData> {
   render() {
     const { props } = this;
     const {
@@ -22,7 +19,7 @@ class TableData extends React.Component<PropsTableData, StateTableData> {
 
     return (
       <EtsTableDataContainer>
-        <TableContainer registryKey={registryKey} handleClickOnRow={props.handleClickOnRow} handleDoubleClickOnRow={props.handleDoubleClickOnRow} />
+        <TableContainer registryKey={registryKey} />
       </EtsTableDataContainer>
     );
   }

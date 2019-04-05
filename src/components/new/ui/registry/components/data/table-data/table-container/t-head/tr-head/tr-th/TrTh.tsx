@@ -34,7 +34,7 @@ const getGlyphName = ({ colData: { key }, sort }) => {
   return '';
 };
 
-class TrTh extends React.Component<PropsTrTh, StateTrTh> {
+class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
   handleClick: React.MouseEventHandler<HTMLTableHeaderCellElement> = () => {
     const {
       colData: {
@@ -90,7 +90,20 @@ class TrTh extends React.Component<PropsTrTh, StateTrTh> {
           canClick={false}
           rowSpan={colData.rowSpan}
           colSpan={colData.colSpan}
-          width={30}
+          width={50}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
+    if (colData.key === 'buttonCloneTire') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={200}
         >
           {formatedTitle}
         </EtsTheadTh>

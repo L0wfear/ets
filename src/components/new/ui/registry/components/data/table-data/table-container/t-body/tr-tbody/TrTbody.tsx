@@ -26,6 +26,10 @@ import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from '
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
+import { TIME_MEASURES } from 'constants/dictionary';
+import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -40,7 +44,7 @@ const getPermissionsReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
+class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
   renderRow = ({ key, title, format, dashIfEmpty }, index) => {
     const { props } = this;
 
@@ -70,6 +74,16 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       );
     }
 
+    if (key === 'buttonCloneTire') {
+      return (
+        <TrTdButtonCloneTire
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
     let formatedTitle = title;
 
     if (isArray(title)) {
@@ -85,7 +99,12 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
         if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return true;
         }
-
+        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
+          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
+          if (!car_actual_asuods_id) {
+            return true;
+          }
+        }
         return filtredTitle;
       }, null);
     }
@@ -127,6 +146,23 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
       if (format === 'yesOrNot') {
         value = value ? 'Да' : 'Нет';
       }
+      if (format === 'road_accident_driver_fio') {
+        const {
+          driver_fio,
+          employee_position_name,
+        } = rowData;
+
+        const drivers_license = get(rowData, 'drivers_license', '') || '';
+        const special_license = get(rowData, 'special_license', '') || '';
+
+        value = `${driver_fio} | ${employee_position_name} ${drivers_license ? `${drivers_license} ` : ''}${special_license}`;
+      }
+      if (format === 'AUTOBASE_REPAIR_STATUS') {
+        value = get(AUTOBASE_REPAIR_STATUS, `${value}.name`, null) || '---';
+      }
+      if (format === 'TIME_MEASURES') {
+        value = get(TIME_MEASURES, value, '-');
+      }
     }
 
     if (dashIfEmpty) {
@@ -146,30 +182,17 @@ class TrTbody extends React.Component<PropsTrTbody, StateTrTbody> {
 
   handleClick: React.MouseEventHandler<HTMLTableRowElement> = () => {
     const { props } = this;
-
-    if (props.handleClickOnRow) {
-      props.handleClickOnRow(
-        props.rowData,
-      );
-    } else {
-      this.props.registryHandleClickOnRow(
-        props.rowData,
-      );
-    }
+    props.registryHandleClickOnRow(
+      props.rowData,
+    );
   }
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
     if (props.isPermitted && props.buttons.includes(buttonsTypes.read)) {
-      if (props.handleDoubleClickOnRow) {
-        props.handleDoubleClickOnRow(
-          props.rowData,
-        );
-      } else {
-        this.props.setParams({
-          [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
-        });
-      }
+      this.props.setParams({
+        [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
+      });
     }
   }
 

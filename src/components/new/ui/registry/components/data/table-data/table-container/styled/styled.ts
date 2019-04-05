@@ -4,7 +4,7 @@ export const EtsTableWrap = styled.div`
   max-height: calc(100vh - 250px);
   overflow: auto;
   margin: 5px;
-  height: calc(100vh - 270px);
+  min-height: 100px;
 `;
 
 export const EtsTable = styled.table<{ fixedWidth: boolean }>`

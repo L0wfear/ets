@@ -10,7 +10,13 @@ import { isNullOrUndefined } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { get } from 'lodash';
 
+type WithFormRegistrySearchConfig = {
+  hideSearch?: {
+    [key: string]: any,
+  },
+};
 let lasPermissions = {};
 let lastPermissionsArray = [];
 
@@ -24,8 +30,8 @@ const getPermissionsCreateReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-export const withFormRegistrySearch = (Component) => (
-  compose<any, any>(
+export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySearchConfig) => (Component) => (
+  compose<any, { registryKey: string } & P>(
     withSearch,
     connect<any, any, { registryKey: string }, any, ReduxState>(
       (state, { registryKey }) => ({
@@ -59,18 +65,19 @@ export const withFormRegistrySearch = (Component) => (
   )(
     ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, uniqKeyForParams, ...props}) => {
       const [element, setElement] = React.useState(null);
-      const uniqKeyValue = getNumberValueFromSerch(props.params[uniqKeyForParams]);
-      const type = props.params.type;
+      const uniqKeyValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
+      const type = props.match.params.type;
 
       React.useEffect(
         () => {
-          if (props.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
+          if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
             if (props.buttons.includes(buttonsTypes.create)) {
               setElement({});
             } else {
-              props.setParams({
-                [uniqKeyForParams]: null,
-              });
+              props.setParams(
+                { [uniqKeyForParams]: null },
+                'replace',
+              );
             }
             return;
           }
@@ -97,13 +104,18 @@ export const withFormRegistrySearch = (Component) => (
             setElement(null);
           }
         },
-        [props.params[uniqKeyForParams], uniqKeyValue, array],
+        [props.match.params[uniqKeyForParams], uniqKeyValue, array],
       );
       const handleHide = React.useCallback(
         (isSubmitted: boolean, response?: any) => {
           setElement(null);
-          props.setParams({
-            [uniqKeyForParams]: null,
+
+          const hideSearchState = get(config, 'hideSearch', {});
+          props.setParamsAndSearch({
+            params: {
+              [uniqKeyForParams]: null,
+            },
+            search: hideSearchState,
           });
 
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);

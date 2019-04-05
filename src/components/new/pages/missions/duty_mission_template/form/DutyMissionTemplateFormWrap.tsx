@@ -55,7 +55,7 @@ const DutyMissionTemplateFormWrap: React.FC<any> = (props) => {
 };
 
 export default compose<any, any>(
-  withFormRegistrySearch,
+  withFormRegistrySearch({}),
   connect<any, any, any, ReduxState>(
     (state, { registryKey }) => ({
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,

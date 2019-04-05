@@ -38,4 +38,4 @@ class MspFormWrap extends React.Component<PropsMspFormWrap, {}> {
   }
 }
 
-export default withFormRegistrySearch(MspFormWrap);
+export default withFormRegistrySearch({})(MspFormWrap);

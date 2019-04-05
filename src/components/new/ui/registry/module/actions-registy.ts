@@ -24,11 +24,12 @@ import { getBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import { isNullOrUndefined } from 'util';
+import { isBoolean, isNullOrUndefined } from 'util';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
-import { getNorm } from 'redux-main/reducers/modules/norm_registry/promise';
+import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
+import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
@@ -71,6 +72,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
   const list: any = get(registryData, 'list', null);
 
   let arrayRaw = null;
+  let arrayExtra = {};
   let total_count = 0;
 
   if (getRegistryData) {
@@ -102,17 +104,19 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
           `${configStand.backend}/${getRegistryData.entity}`,
           payload,
         ),
-        { page: registryKey, noTimout: true },
+        { page: registryKey, noTimeout: isBoolean(getRegistryData.noTimeout) ? getRegistryData.noTimeout : true },
       );
     } catch (error) {
       console.error(error); //tslint:disable-line
     }
 
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');
+    const typeExtra = get(getRegistryData, 'typeExtra', 'result.extra');
 
     processResponse(result);
     const uniqKey: any = get(list, 'data.uniqKey', null);
     arrayRaw = get(result, typeAns, []);
+    arrayExtra = get(result, typeExtra, {});
 
     switch (getRegistryData.format) {
       case 'dutyMissionTemplate': {
@@ -128,8 +132,11 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
         break;
       }
       case 'normRegistry': {
-        arrayRaw = arrayRaw.map(getNorm);
+        arrayRaw = arrayRaw.map(getFrontNorm);
         break;
+      }
+      case 'carActual': {
+        arrayRaw = arrayRaw.map(getFrontCar);
       }
     }
 
@@ -155,7 +162,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
   if (list) {
     let array = arrayRaw;
     if (!getRegistryData.userServerFilters) {
-      array = arrayRaw.sort((a, b) => a[list.data.uniqKey] - b[list.data.uniqKey]);
+      array = arrayRaw.sort((a, b) => b[list.data.uniqKey] - a[list.data.uniqKey]);
     }
 
     let processedArray = array;
@@ -178,6 +185,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
             ...list.data,
             total_count,
             array,
+            arrayExtra,
           },
           processed: {
             ...list.processed,
@@ -631,7 +639,7 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
         `${configStand.backend}/${getOneData.entity}`,
         { id },
       ),
-      { page: registryKey, noTimout: true },
+      { page: registryKey, noTimeout: true },
     );
 
     let response = get(
@@ -706,7 +714,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
           );
           processResponse(response);
         } catch (error) {
-          console.error(error); //tslint:disable-line
+          throw new Error(error);
         }
 
         return response;

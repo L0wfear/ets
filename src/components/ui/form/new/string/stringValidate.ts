@@ -18,6 +18,10 @@ export const validateString = <F, P>(fieldData: StringPropertie<F>, formState: F
     return `Длина поля должна быть больше минимального количества символов (${fieldData.minLength})`;
   }
 
+  if (fieldData.trimSpace && value && isString(value) && value.trim() !== value) {
+    return `Поле "${title}" не должно начинаться и закачиваться пробелом`;
+  }
+
   if (fieldData.maxLength && value && isString(value) && value.length > fieldData.maxLength) {
     return `Длина поля не должна превышать максимальное количество символов (${fieldData.maxLength})`;
   }

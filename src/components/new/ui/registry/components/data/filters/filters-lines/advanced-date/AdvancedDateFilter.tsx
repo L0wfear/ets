@@ -36,7 +36,7 @@ type StateAdvancedDateFilter = {
   optionsType: any;
 };
 
-class AdvancedDateFilter extends React.Component<PropsAdvancedDateFilter, StateAdvancedDateFilter> {
+class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, StateAdvancedDateFilter> {
   constructor(props) {
     super(props);
     const eq = ['eq'];

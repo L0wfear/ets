@@ -75,6 +75,10 @@ export const IS_NOT_SELECT_OPTIONS_INT = [
   { label: 'Есть', value: 1 },
   { label: 'Нет', value: 0 },
 ];
+export const IS_NOT_SELECT_OPTIONS = [
+  { label: 'Есть', value: true },
+  { label: 'Нет', value: false },
+];
 export const READ_NOT_SELECT_OPTIONS_INT = [
   { label: 'Прочитано', value: 1 },
   { label: 'Не прочитано', value: 0 },

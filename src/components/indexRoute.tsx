@@ -14,7 +14,7 @@ const renderRoutes = (newRoutesArr, data) => {
       } else {
         newRoutesArr.push(
           <PublicRoute
-            key={data.routePath || data.path}
+            key={data.entyity}
             path={data.routePath || data.path}
             component={data.component}
           />,
@@ -39,8 +39,20 @@ const getRouters = () => (
     <Redirect from="/technical-operations" to="/nsi/norm_registry" />
     <Redirect from="/companies" to="/nsi/companies" />
 
+    <Redirect from="/cars" to="/nsi/autobase/car_actual" />
     <Redirect from="/car-func-types" to="/nsi/autobase/types" />
     <Redirect from="/types_attr" to="/nsi/autobase/types_attr" />
+    <Redirect from="/tech-inspection" to="/nsi/autobase/tech_inspection" />
+    <Redirect from="/insurance-policy" to="/nsi/autobase/insurance_policy" />
+    <Redirect from="/battery-brand" to="/nsi/autobase/battery_brand" />
+    <Redirect from="/battery-manufacturer" to="/nsi/autobase/battery_manufacturer" />
+    <Redirect from="/tire-model" to="/nsi/autobase/tire_model" />
+    <Redirect from="/spare-part" to="/nsi/autobase/spare_part" />
+    <Redirect from="/tech-maintenance-order-registry" to="/nsi/autobase/tech_maintenance_order" />
+    <Redirect from="/repair-company" to="/nsi/autobase/repair_company" />
+    <Redirect from="/fuel_cards" to="/nsi/autobase/fuel_cards" />
+    <Redirect from="/battery-registry" to="/nsi/autobase/battery_registry" />
+    <Redirect from="/tire" to="/nsi/autobase/tire" />
 
     <Redirect from="/bridges" to="/nsi/geoobjects/bridges" />
     <Redirect from="/carpool" to="/nsi/geoobjects/carpool" />

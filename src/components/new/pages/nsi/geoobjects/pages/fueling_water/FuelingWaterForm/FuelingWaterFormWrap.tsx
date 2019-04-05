@@ -38,4 +38,4 @@ class FuelingWaterFormWrap extends React.Component<PropsFuelingWaterFormWrap, {}
   }
 }
 
-export default withFormRegistrySearch(FuelingWaterFormWrap);
+export default withFormRegistrySearch({})(FuelingWaterFormWrap);

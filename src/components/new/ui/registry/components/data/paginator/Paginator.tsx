@@ -32,7 +32,7 @@ type StatePaginator = {
   arrayForButton: number[];
 };
 
-class Paginator extends React.Component<PropsPaginator, StatePaginator> {
+class Paginator extends React.PureComponent<PropsPaginator, StatePaginator> {
   constructor(props) {
     super(props);
     const { paginator: { perPage } } = props;

@@ -11,7 +11,7 @@ const EtsGlobalStyle = createGlobalStyle`
   ${GlobalDropupCss}
 
   .glyphicon.glyphicon-info-sign {
-    position: initial
+    position: inherit;
   }
 
   #notifications {

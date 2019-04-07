@@ -1,11 +1,8 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { ICreateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
-import { PropsMaintenanceRate } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/@types/MaintenanceRate.h';
+import { MaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
+import { PropsMaintenanceRate } from 'components/new/pages/nsi/regulatory_indicator/pages/maintenance_rate/form/@types/MaintenanceRateForm';
 
-export const maintenanceRateSchema: SchemaType<
-  ICreateMaintenanceRate,
-  PropsMaintenanceRate
-> = {
+export const maintenanceRateSchema: SchemaType<MaintenanceRate, PropsMaintenanceRate> = {
   properties: [
     {
       key: 'technical_operation_id',

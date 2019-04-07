@@ -24,7 +24,7 @@ export const getMaterialConsumptionRate = (payload = {}) => {
 export const createMaterialConsumptionRate = async (payload: ICreateMaterialConsumptionRate) => {
   const response = await MaterialConsumptionRateService.post(
     payload,
-    null,
+    false,
     'json',
   );
   const materialConsumptionRateList = get(
@@ -44,7 +44,7 @@ export const updateMaterialConsumptionRate = async (payload) => {
   const elementId = get(payload, 'id', null);
   const response = await MaterialConsumptionRateService.path(elementId).put(
     payload,
-    null,
+    false,
     'json',
   );
 
@@ -64,7 +64,7 @@ export const updateMaterialConsumptionRate = async (payload) => {
 export const deleteMaterialConsumptionRate = ( id: number ) => {
   return MaterialConsumptionRateService.path(id).delete(
     {},
-    null,
+    false,
     'json',
   );
 };

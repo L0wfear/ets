@@ -24,7 +24,7 @@ export const getMaintenanceRate = (payload = {}) => {
 export const createMaintenanceRate = async (payload: ICreateMaintenanceRate) => {
   const response = await MaintenanceRateService.post(
     payload,
-    null,
+    false,
     'json',
   );
   const maintenanceRateList = get(
@@ -44,7 +44,7 @@ export const updateMaintenanceRate = async (payload) => {
   const elementId = get(payload, 'id', null);
   const response = await MaintenanceRateService.path(elementId).put(
     payload,
-    null,
+    false,
     'json',
   );
 
@@ -64,7 +64,7 @@ export const updateMaintenanceRate = async (payload) => {
 export const deleteMaintenanceRate = ( id: number ) => {
   return MaintenanceRateService.path(id).delete(
     {},
-    null,
+    false,
     'json',
   );
 };

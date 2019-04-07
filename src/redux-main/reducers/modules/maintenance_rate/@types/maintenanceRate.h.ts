@@ -1,35 +1,23 @@
 
-export type maintenanceRate = {
-  clean_category_id: number | null;
-  clean_category_name: string | null;
-  clean_subcategory_name: string | null;
-  cleanpsubcategory_id: number | null;
-  id: number | null;
-  maintenance_work_id: number | null;
-  maintenance_work_name: string | null;
-  measure_unit_id: number | null;
-  measure_unit_name: string | null;
-  season_id: number | null;
-  season_name: string | null;
-  technical_operation_id: number | null;
-  technical_operation_name: string | null;
-  type: string | null;
-  value: number | null;
-};
-
-export type ICreateMaintenanceRate = {
-  clean_category_id: number | null;
-  clean_subcategory_id: number | null;
-  maintenance_work_id: number | null;
-  season_id: number | null;
-  technical_operation_id: number | null;
-  type: string | null;
-  value: number | null;
-};
-export type IMaintenanceRateUpd = ICreateMaintenanceRate & {
+export type MaintenanceRate = {
+  clean_category_id: number;
+  clean_category_name: string;
+  clean_subcategory_id: number;
+  clean_subcategory_name: string;
+  cleanpsubcategory_id: number;
   id: number;
+  maintenance_work_id: number;
+  maintenance_work_name: string;
+  measure_unit_id: number;
+  measure_unit_name: string;
+  season_id: number;
+  season_name: string;
+  technical_operation_id: number;
+  technical_operation_name: string;
+  type: string;
+  value: number;
 };
 
 export type IStateMaintenanceRate = {
-  maintenanceRateList: maintenanceRate[],
+  maintenanceRateList: MaintenanceRate[],
 };

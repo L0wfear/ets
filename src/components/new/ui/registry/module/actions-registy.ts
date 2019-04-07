@@ -3,6 +3,7 @@ import {
   REGISTRY_REMOVE_DATA,
   REGISTRY_CHANGE_FILTER,
   REGISTRY_CHANGE_LIST,
+  REGISTRY_CHANGE_SERVICE,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
@@ -64,6 +65,40 @@ export const registryRemoveData = (registryKey) => ({
     registryKey,
   },
 });
+
+export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload) => (dispatch, getState) => {
+  const registryData = get(getState(), `registry.${registryKey}`, null);
+  const ServiceData = get(registryData, 'Service', null);
+
+  const ServiceDataNew = Object.entries(ServiceData).reduce(
+    (newObj, [key, value]) => {
+      if (payload[key]) {
+        const lastPayload = get(value, 'payload', {});
+
+        newObj[key] = {
+          ...value,
+          payload: {
+            ...lastPayload,
+            ...payload[key],
+          },
+        };
+      } else {
+        newObj[key] = value;
+      }
+
+      return newObj;
+    },
+    {},
+  );
+
+  dispatch(
+    registryChangeServiceData(registryKey, ServiceDataNew),
+  );
+
+  dispatch(
+    registryLoadDataByKey(registryKey),
+  );
+};
 
 export const registryLoadDataByKey = (registryKey) => async (dispatch, getState) => {
   // const stateSome = getState();
@@ -225,6 +260,14 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage 
     );
   }
 };
+
+export const registryChangeServiceData = (registryKey, Service) => ({
+  type: REGISTRY_CHANGE_SERVICE,
+  payload: {
+    registryKey,
+    Service,
+  },
+});
 
 export const registryChangeListData = (registryKey, list) => ({
   type: REGISTRY_CHANGE_LIST,

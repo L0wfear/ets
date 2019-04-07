@@ -7,11 +7,16 @@ export const REGISTRY_ADD_INITIAL_DATA = REGISTRY`ADD_INITIAL_DATA`;
 export const REGISTRY_REMOVE_DATA = REGISTRY`REMOVE_DATA`;
 export const REGISTRY_CHANGE_FILTER = REGISTRY`CHANGE_FILTER_DATA`;
 export const REGISTRY_CHANGE_LIST = REGISTRY`CHANGE_LIST`;
+export const REGISTRY_CHANGE_SERVICE = REGISTRY`CHANGE_SERVICE`;
 
 export interface OneRegistryData {
   Service: any;
   header?: {
     title?: any;
+    format?: (
+      'default'
+      | 'select_odh/dt(disabled)'
+    );
     buttons?: string[];
   };
   list: {
@@ -104,6 +109,17 @@ export default (state = initialState, { type, payload }) => {
         [registryKey]: {
           ...state[registryKey],
           list: payload.list,
+        },
+      };
+    }
+    case REGISTRY_CHANGE_SERVICE: {
+      const { registryKey } = payload;
+
+      return {
+        ...state,
+        [registryKey]: {
+          ...state[registryKey],
+          Service: payload.Service,
         },
       };
     }

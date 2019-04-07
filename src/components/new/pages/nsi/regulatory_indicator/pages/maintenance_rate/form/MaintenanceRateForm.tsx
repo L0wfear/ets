@@ -24,17 +24,17 @@ import {
   PropsMaintenanceRateWithForm,
   StatePropsMaintenanceRate,
   DispatchPropsMaintenanceRate,
-} from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/@types/MaintenanceRate.h';
+} from 'components/new/pages/nsi/regulatory_indicator/pages/maintenance_rate/form/@types/MaintenanceRateForm';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
-import { getDefaultMaintenanceRateElement } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/utils';
-import { maintenanceRateSchema } from 'components/directories/normative/maintenance_rate/MaintenanceRateForm/schema';
-import { IMaintenanceRateUpd } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
-import MaintenanceRatePermissions from 'components/directories/normative/maintenance_rate/config-data/permissions';
+import { MaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { getDefaultMaintenanceRateElement } from './utils';
+import { maintenanceRateSchema } from './schema';
+import maintenanceRatePermissions from '../_config-data/permissions';
 
 const makeOptionsMemoList = (inputList: any[]) => {
   const optionList = inputList.map(defaultSelectListMapper);
@@ -241,7 +241,7 @@ export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
         dispatch(someUniqActions.actionResetCleanCategories()),
     }),
   ),
-  withForm<PropsMaintenanceRateWithForm, IMaintenanceRateUpd>({
+  withForm<PropsMaintenanceRateWithForm, MaintenanceRate>({
     uniqField: 'id',
     createAction: maintenanceRateCreate,
     updateAction: maintenanceRateUpdate,
@@ -253,6 +253,6 @@ export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
       return getDefaultMaintenanceRateElement(elementWithType);
     },
     schema: maintenanceRateSchema,
-    permissions: MaintenanceRatePermissions,
+    permissions: maintenanceRatePermissions,
   }),
 )(MaintenanceRateForm);

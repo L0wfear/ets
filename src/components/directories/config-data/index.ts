@@ -6,7 +6,7 @@ import companyList from 'components/new/pages/nsi/company/_config-data';
 import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
 import autobasePages from 'components/new/pages/nsi/autobase/_config-data';
 import repairsRegistry from 'components/directories/repair/config-data';
-import normative from 'components/directories/normative/config-data';
+import regulatoryIndicator from 'components/new/pages/nsi/regulatory_indicator/_config-data';
 import geoobjects from 'components/new/pages/nsi/geoobjects/_config-data';
 import dataForCalculation from 'components/directories/data_for_calculation/config-data';
 import medicalStats from 'components/directories/medical_stats/config-data';
@@ -26,7 +26,7 @@ const children = {
   dividerOne: { divider: true },
   autobasePages,
   repairsRegistry,
-  normative,
+  regulatoryIndicator,
   geoobjects,
   dataForCalculation,
   medicalStats,

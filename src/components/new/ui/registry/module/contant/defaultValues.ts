@@ -3,7 +3,9 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 
 const registryDefaultObj: OneRegistryData = {
   Service: {
-    get: null,
+    getRegistryData: {
+      payload: {},
+    },
   },
   filter: {
     fields: [],
@@ -12,6 +14,7 @@ const registryDefaultObj: OneRegistryData = {
   },
   header: {
     buttons: [],
+    format: 'default',
     title: '',
   },
   list: {

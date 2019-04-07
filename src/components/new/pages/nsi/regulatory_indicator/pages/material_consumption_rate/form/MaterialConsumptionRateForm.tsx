@@ -24,17 +24,17 @@ import {
   PropsMaterialConsumptionRateWithForm,
   StatePropsMaterialConsumptionRate,
   DispatchPropsMaterialConsumptionRate,
-} from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm/@types/MaterialConsumptionRate.h';
+ } from 'components/new/pages/nsi/regulatory_indicator/pages/material_consumption_rate/form/@types/MaterialConsumptionRateForm';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
-import { getDefaultMaterialConsumptionRateElement } from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm/utils';
-import { materialConsumptionRateSchema } from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm/schema';
-import { IMaterialConsumptionRateUpd } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
-import MaterialConsumptionRatePermissions from 'components/directories/normative/material_consumption_rate/config-data/permissions';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
+import { materialConsumptionRateSchema } from './schema';
+import { getDefaultMaterialConsumptionRateElement } from './utils';
+import materialConsumptionRatePermissions from '../_config-data/permissions';
 
 const makeOptionsMemoList = (inputList: any[], selectListMapper) => {
   const optionList = inputList.map(selectListMapper);
@@ -47,9 +47,7 @@ const consumptionRateMateriaListMapper = <R extends any>(rowData: R): DefaultSel
   rowData,
 });
 
-export const MaterialConsumptionRateForm: React.FunctionComponent<
-  PropsMaterialConsumptionRate
-> = (props) => {
+export const MaterialConsumptionRateForm: React.FunctionComponent<PropsMaterialConsumptionRate> = (props) => {
   const {
     page,
     path,
@@ -245,18 +243,14 @@ export default compose<PropsMaterialConsumptionRate, OwnMaterialConsumptionRateP
         dispatch(someUniqActions.actionResetCleanCategories()),
     }),
   ),
-  withForm<PropsMaterialConsumptionRateWithForm, IMaterialConsumptionRateUpd>({
+  withForm<PropsMaterialConsumptionRateWithForm, MaterialConsumptionRate>({
     uniqField: 'id',
     createAction: materialConsumptionRateCreate,
     updateAction: materialConsumptionRateUpdate,
     mergeElement: (props) => {
-      const elementWithType = {
-        type: props.type,
-        ...props.element,
-      };
-      return getDefaultMaterialConsumptionRateElement(elementWithType);
+      return getDefaultMaterialConsumptionRateElement(props.element);
     },
     schema: materialConsumptionRateSchema,
-    permissions: MaterialConsumptionRatePermissions,
+    permissions: materialConsumptionRatePermissions,
   }),
 )(MaterialConsumptionRateForm);

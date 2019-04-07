@@ -1,17 +1,18 @@
-import { IMaterialConsumptionRateUpd } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { HandleThunkActionCreator } from 'react-redux';
+import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
-export type PropsMaterialConsumptionRateFormWrap = {
+export type PropsMaterialConsumptionRateFormLazy = {
   showForm: boolean;
-  element: IMaterialConsumptionRateUpd | null;
+  element: Partial<MaterialConsumptionRate>;
   onFormHide: OnFormHideType;
   type: string | null;
 
+  registryKey?: string;
   loadingPageName?: string;
   page?: string;
   path?: string;
@@ -45,14 +46,10 @@ export type DispatchPropsMaterialConsumptionRate = {
 };
 
 export type OwnMaterialConsumptionRateProps = {
-  element: IMaterialConsumptionRateUpd | null;
+  element: Partial<MaterialConsumptionRate>;
   handleHide: OnFormHideType;
   page: string;
   path?: string;
-  type?: any;
-  technicalOperationRegistryList?: any[];
-  consumptionRateMaterialList?: any[];
-  cleanCategoriesList?: any[];
 };
 
 export type PropsMaterialConsumptionRateWithForm = StatePropsMaterialConsumptionRate &
@@ -61,7 +58,7 @@ export type PropsMaterialConsumptionRateWithForm = StatePropsMaterialConsumption
 
 export type PropsMaterialConsumptionRate = OutputWithFormProps<
   PropsMaterialConsumptionRateWithForm,
-  IMaterialConsumptionRateUpd,
-  [IMaterialConsumptionRateUpd],
+  any,
+  [any],
   any
 >;

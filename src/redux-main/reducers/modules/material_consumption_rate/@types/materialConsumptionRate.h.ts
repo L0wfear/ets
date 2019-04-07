@@ -1,31 +1,19 @@
 
-export type materialConsumptionRate = {
-  clean_category_id: number | null;
-  clean_category_name: string | null;
-  clean_subcategory_id: number | null;
-  clean_subcategory_name: string | null;
-  consumable_material_id: number | null;
-  consumable_material_name: string | null;
-  id: number | null;
-  season_id: number | null;
-  season_name: string | null;
-  technical_operation_id: number | null;
-  technical_operation_name: string | null;
-  value: number | null;
-};
-
-export type ICreateMaterialConsumptionRate = {
-  technical_operation_id: number | null;
-  consumable_material_id: number | null;
-  season_id: number | null;
-  clean_category_id: number | null;
-  clean_subcategory_id: number | null;
-  value: number | null;
-};
-export type IMaterialConsumptionRateUpd = ICreateMaterialConsumptionRate & {
+export type MaterialConsumptionRate = {
+  clean_category_id: number;
+  clean_category_name: string;
+  clean_subcategory_id: number;
+  clean_subcategory_name: string;
+  consumable_material_id: number;
+  consumable_material_name: string;
   id: number;
+  season_id: number;
+  season_name: string;
+  technical_operation_id: number;
+  technical_operation_name: string;
+  value: number;
 };
 
 export type IStateMaterialConsumptionRate = {
-  materialConsumptionRateList: materialConsumptionRate[],
+  materialConsumptionRateList: MaterialConsumptionRate[],
 };

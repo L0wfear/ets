@@ -1,11 +1,8 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { ICreateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
-import { PropsMaterialConsumptionRate } from 'components/directories/normative/material_consumption_rate/MaterialConsumptionRateForm/@types/MaterialConsumptionRate.h';
+import { PropsMaterialConsumptionRate } from 'components/new/pages/nsi/regulatory_indicator/pages/material_consumption_rate/form/@types/MaterialConsumptionRateForm';
+import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 
-export const materialConsumptionRateSchema: SchemaType<
-  ICreateMaterialConsumptionRate,
-  PropsMaterialConsumptionRate
-> = {
+export const materialConsumptionRateSchema: SchemaType<MaterialConsumptionRate, PropsMaterialConsumptionRate> = {
   properties: [
     {
       key: 'technical_operation_id',

@@ -6,7 +6,6 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
@@ -28,12 +27,9 @@ import {
   StatePropsFuelRate,
   DispatchPropsFuelRate,
   PropsFuelRateWithForm,
-} from 'components/directories/normative/fuel_rates/FuelRateForm/@types/FuelRate.h';
+} from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/form/@types/FuelConsumptionRateFrom';
 
-import { getDefaultFuelRateElement } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
-import { fuelRateSchema } from 'components/directories/normative/fuel_rates/FuelRateForm/fuelRateSchema';
 import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-import fuelRatePermissions from 'components/directories/normative/fuel_rates/config-data/permissions';
 
 import {
   getModelsListState,
@@ -43,6 +39,10 @@ import { getSomeUniqSpecialModelOptions } from 'redux-main/reducers/modules/some
 import { getCompanyStructureLinearOptions } from 'redux-main/reducers/modules/company_structure/selectors';
 import { getFuelRateOperationsIsActiveOptions } from 'redux-main/reducers/modules/fuel_rates/selectors';
 import { get } from 'lodash';
+import { getDefaultFuelRateElement } from './utils';
+import { fuelRateSchema } from './schema';
+import fuelRatesPermissions from '../_config-data/permissions';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   const {
@@ -50,7 +50,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
     formErrors: errors,
     specialModelOptions,
     fuelRateOperationsIsActiveOptions,
-    companyStructureLinearOptions,
+    STRUCTURES,
     modelsListOptions,
     page,
     path,
@@ -58,12 +58,10 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
 
   React.useEffect(() => {
     props.actionGetAndSetInStoreSpecialModel({}, { page, path });
-    props.getAndSetInStoreCompanyStructureLinear({}, { page, path });
     props.fuelOperationsGetAndSetInStore({ is_active: true }, { page, path });
 
     return () => {
       props.actionResetModelList();
-      props.resetSetCompanyStructureLinear();
       props.resetFuelOperations();
     };
   }, []);
@@ -223,7 +221,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               modalKey={page}
               label="Подразделение"
               type="select"
-              options={companyStructureLinearOptions}
+              options={STRUCTURES}
               value={state.company_structure_id}
               emptyValue={null}
               onChange={props.handleChange}
@@ -245,13 +243,9 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
 };
 
 export default compose<PropsFuelRate, OwnFuelRateProps>(
-  connect<
-    StatePropsFuelRate,
-    DispatchPropsFuelRate,
-    OwnFuelRateProps,
-    ReduxState
-  >(
+  connect<StatePropsFuelRate, DispatchPropsFuelRate, OwnFuelRateProps, ReduxState>(
     (state) => ({
+      STRUCTURES: getSessionStructuresOptions(state),
       modelsList: getModelsListState(state),
       specialModelOptions: getSomeUniqSpecialModelOptions(state),
       companyStructureLinearOptions: getCompanyStructureLinearOptions(state),
@@ -261,25 +255,24 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
       ),
     }),
     (dispatch: any) => ({
-      actionGetAndSetInStoreModelList: (...arg) =>
-        dispatch(someUniqActions.actionGetAndSetInStoreModelList(...arg)),
-      actionGetAndSetInStoreSpecialModel: (...arg) =>
-        dispatch(someUniqActions.actionGetAndSetInStoreSpecialModel(...arg)),
-      getAndSetInStoreCompanyStructureLinear: (...arg) =>
-        dispatch(
-          companyStructureActions.getAndSetInStoreCompanyStructureLinear(
-            ...arg,
-          ),
-        ),
-      fuelOperationsGetAndSetInStore: (...arg) =>
-        dispatch(fuelOperationsGetAndSetInStore(...arg)),
-      actionResetModelList: () =>
-        dispatch(someUniqActions.actionResetModelList()),
-      actionResetSpecialModel: () =>
-        dispatch(someUniqActions.actionResetSpecialModel()),
-      resetSetCompanyStructureLinear: () =>
-        dispatch(companyStructureActions.resetSetCompanyStructureLinear()),
-      resetFuelOperations: () => dispatch(resetFuelOperations()),
+      actionGetAndSetInStoreSpecialModel: (...arg) => (
+        dispatch(someUniqActions.actionGetAndSetInStoreSpecialModel(...arg))
+      ),
+      actionGetAndSetInStoreModelList: (...arg) => (
+        dispatch(someUniqActions.actionGetAndSetInStoreModelList(...arg))
+      ),
+      fuelOperationsGetAndSetInStore: (...arg) => (
+        dispatch(fuelOperationsGetAndSetInStore(...arg))
+      ),
+      actionResetModelList: () => (
+        dispatch(someUniqActions.actionResetModelList())
+      ),
+      actionResetSpecialModel: () => (
+        dispatch(someUniqActions.actionResetSpecialModel())
+      ),
+      resetFuelOperations: () => (
+        dispatch(resetFuelOperations())
+      ),
     }),
   ),
   withForm<PropsFuelRateWithForm, FuelRate>({
@@ -290,6 +283,6 @@ export default compose<PropsFuelRate, OwnFuelRateProps>(
       return getDefaultFuelRateElement(props.element);
     },
     schema: fuelRateSchema,
-    permissions: fuelRatePermissions,
+    permissions: fuelRatesPermissions,
   }),
 )(FuelRateForm);

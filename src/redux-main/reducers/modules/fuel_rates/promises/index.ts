@@ -13,7 +13,7 @@ import {
   FuelRate,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
-import { makeDefaultFuelOperation } from 'components/directories/normative/fuel_rates/FuelRateForm/utils';
+import { makeDefaultFuelOperation } from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/form/utils';
 
 export const getFuelRates = (payload = {}) => {
   return FuelConsumptionRateService

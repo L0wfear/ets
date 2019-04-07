@@ -1,18 +1,9 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-// old
-import materialConsumptionRate from 'components/directories/normative/material_consumption_rate/config-data';
-
-// new
 import fuelConsumptionRateList from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/_config-data/';
 
-// old
-import maintenanceRate from 'components/directories/normative/maintenance_rate/config-data';
-
 const children = {
-  materialConsumptionRate,
   fuelConsumptionRateList,
-  maintenanceRate,
 };
 
 export default {

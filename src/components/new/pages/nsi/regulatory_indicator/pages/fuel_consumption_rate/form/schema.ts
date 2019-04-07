@@ -1,7 +1,7 @@
 import { isEmpty } from 'utils/functions';
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-import { PropsFuelRate } from 'components/directories/normative/fuel_rates/FuelRateForm/@types/FuelRate.h';
+import { PropsFuelRate } from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/form/@types/FuelConsumptionRateFrom';
 
 export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
   properties: [

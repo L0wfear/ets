@@ -54,6 +54,8 @@ const getRouters = () => (
     <Redirect from="/battery-registry" to="/nsi/autobase/battery_registry" />
     <Redirect from="/tire" to="/nsi/autobase/tire" />
 
+    <Redirect from="/fuel-rates" to="/nsi/regulatory_indicator/fuel_rates" />
+
     <Redirect from="/bridges" to="/nsi/geoobjects/bridges" />
     <Redirect from="/carpool" to="/nsi/geoobjects/carpool" />
     <Redirect from="/ssp" to="/nsi/geoobjects/ssp" />

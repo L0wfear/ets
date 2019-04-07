@@ -10,7 +10,6 @@ function tableFixHead(el, selector) {
 
   Array.from(el.querySelectorAll('thead th')).forEach((th: any) => {
     th.style.transform = `translateY(${sT}px)`;
-    th.style.transition = 'all .3s ease';
   });
 }
 

@@ -32,6 +32,18 @@ const getAvailableRouteTypesMemo = (
   memoize(getAvailableRouteTypes)
 );
 
+const getDependeceTechnicalOperationRouteType = (
+  memoize(
+    (dependeceTechnicalOperation, for_column) => {
+      if (!for_column) {
+        return get(dependeceTechnicalOperation, 'route_types', []);
+      }
+
+      return ['mixed'];
+    },
+  )
+);
+
 class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, StateFieldRouteIdMission> {
   state = {
     showRouteForm: false,
@@ -165,6 +177,17 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
           technical_operation_id !== prevProps.technical_operation_id
           || municipal_facility_id !== prevProps.municipal_facility_id
           || for_column !== prevProps.for_column
+          || (
+            MISSION_IS_ORDER_SOURCE
+            ? (
+              dependeceTechnicalOperation
+              && !prevProps.dependeceTechnicalOperation
+            )
+            : (
+              municipalFacilityForMissionList.length
+              && !prevProps.municipalFacilityForMissionList.length
+            )
+          )
         )
         && (
           MISSION_IS_ORDER_SOURCE
@@ -247,12 +270,15 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         municipal_facility_id,
         type: (
           MISSION_IS_ORDER_SOURCE
-            ? get(dependeceTechnicalOperation, 'route_types', [])
+            ? getDependeceTechnicalOperationRouteType(
+                dependeceTechnicalOperation,
+                for_column,
+              )
             : getAvailableRouteTypesMemo(
-              this.props.municipalFacilityForMissionList,
-              municipal_facility_id,
-              for_column,
-            )
+                this.props.municipalFacilityForMissionList,
+                municipal_facility_id,
+                for_column,
+              )
         ).toString(),
       },
       { page, path },
@@ -460,7 +486,10 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
                 missionAvailableRouteTypes={
                   (
                     MISSION_IS_ORDER_SOURCE
-                      ? get(dependeceTechnicalOperation, 'route_types', [])
+                      ? getDependeceTechnicalOperationRouteType(
+                        dependeceTechnicalOperation,
+                        for_column,
+                      )
                       : getAvailableRouteTypesMemo(
                           this.props.municipalFacilityForMissionList,
                           municipal_facility_id,

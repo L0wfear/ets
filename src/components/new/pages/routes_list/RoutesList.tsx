@@ -173,8 +173,10 @@ class RoutesList extends React.PureComponent<any, any> {
     return this.props.routesLoadRouteById(id).then(({ payload: { route_data: route } }) => route);
   }
 
-  handleChangeSeasonId = (season_id) => {
+  handleChangeSeasonId = async (season_id) => {
     this.setState({ season_id });
+    await Promise.resolve(true); // рак
+    this.saveFilter(this.state.filterValues);
   }
 
   closeFilter = () => {

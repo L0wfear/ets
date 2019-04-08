@@ -10,7 +10,6 @@ export type PropsMaterialConsumptionRateFormLazy = {
   showForm: boolean;
   element: Partial<MaterialConsumptionRate>;
   onFormHide: OnFormHideType;
-  type: string | null;
 
   registryKey?: string;
   loadingPageName?: string;

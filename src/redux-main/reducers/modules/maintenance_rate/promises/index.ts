@@ -2,7 +2,7 @@ import {
   MaintenanceRateService,
 } from 'api/Services';
 import {
-  ICreateMaintenanceRate,
+  MaintenanceRate,
  } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { get } from 'lodash';
 
@@ -21,7 +21,7 @@ export const getMaintenanceRate = (payload = {}) => {
     }).then((r) => ({ maintenanceRateList: r.result.rows }));
 };
 
-export const createMaintenanceRate = async (payload: ICreateMaintenanceRate) => {
+export const createMaintenanceRate = async (payload: MaintenanceRate) => {
   const response = await MaintenanceRateService.post(
     payload,
     false,

@@ -21,7 +21,6 @@ const MaterialConsumptionRateFormLazy: React.FC<PropsMaterialConsumptionRateForm
               element={props.element}
               handleHide={props.onFormHide}
 
-              type={props.type}
               page={page}
               path={path}
             />

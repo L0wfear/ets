@@ -6,8 +6,7 @@ import {
 } from 'redux-main/reducers/modules/material_consumption_rate/promises/index';
 
 import {
-  ICreateMaterialConsumptionRate,
-  IMaterialConsumptionRateUpd,
+  MaterialConsumptionRate,
  } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 
 import { MAINTENANCE_RATE_SET_DATA } from 'redux-main/reducers/modules/material_consumption_rate/materialConsumptionRate';
@@ -24,7 +23,7 @@ export const materialConsumptionRateGet = (payload = {}, { page, path }: { page:
   })
 );
 
-export const materialConsumptionRateCreate: any = (payload: ICreateMaterialConsumptionRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const materialConsumptionRateCreate: any = (payload: MaterialConsumptionRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const newMaterialConsumptionRate = await dispatch({
     type: 'none',
     payload: createMaterialConsumptionRate(payload),
@@ -57,7 +56,7 @@ export const materialConsumptionRateGetAndSetInStore: any = (payload = {}, { pag
   };
 };
 
-export const materialConsumptionRateUpdate: any = (payload: IMaterialConsumptionRateUpd, { page, path }: {page: string, path?: string }) => async (dispatch) => {
+export const materialConsumptionRateUpdate: any = (payload: MaterialConsumptionRate, { page, path }: {page: string, path?: string }) => async (dispatch) => {
   const materialConsumptionRateUpd = await dispatch({
     type: 'none',
     payload: updateMaterialConsumptionRate(payload),

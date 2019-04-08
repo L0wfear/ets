@@ -54,7 +54,7 @@ const Header: React.FC<HeaderProps> = React.memo(
   },
 );
 
-export default connect<HeaderStateProps, HeaderDispatchProps, HeaderMergedProps, ReduxState>(
+export default connect<HeaderStateProps, HeaderDispatchProps, HeaderOwnProps, ReduxState>(
   (state, { registryKey }) => ({
     format: getHeaderData(getRegistryState(state), registryKey).format,
   }),

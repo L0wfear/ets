@@ -6,8 +6,7 @@ import {
 } from 'redux-main/reducers/modules/maintenance_rate/promises/index';
 
 import {
-  ICreateMaintenanceRate,
-  IMaintenanceRateUpd,
+  MaintenanceRate,
  } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 
 import { MAINTENANCE_RATE_SET_DATA } from 'redux-main/reducers/modules/maintenance_rate/maintenanceRate';
@@ -24,7 +23,7 @@ export const maintenanceRateGet = (payload = {}, { page, path }: { page: string;
   })
 );
 
-export const maintenanceRateCreate: any = (payload: ICreateMaintenanceRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
+export const maintenanceRateCreate: any = (payload: MaintenanceRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const newMaintenanceRate = await dispatch({
     type: 'none',
     payload: createMaintenanceRate(payload),
@@ -57,7 +56,7 @@ export const maintenanceRateGetAndSetInStore: any = (payload = {}, { page, path 
   };
 };
 
-export const maintenanceRateUpdate: any = (payload: IMaintenanceRateUpd, { page, path }: {page: string, path?: string }) => async (dispatch) => {
+export const maintenanceRateUpdate: any = (payload: MaintenanceRate, { page, path }: {page: string, path?: string }) => async (dispatch) => {
   const maintenanceRateUpd = await dispatch({
     type: 'none',
     payload: updateMaintenanceRate(payload),

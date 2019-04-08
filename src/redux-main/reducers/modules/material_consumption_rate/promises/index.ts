@@ -2,7 +2,7 @@ import {
   MaterialConsumptionRateService,
 } from 'api/Services';
 import {
-  ICreateMaterialConsumptionRate,
+  MaterialConsumptionRate,
  } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { get } from 'lodash';
 
@@ -21,7 +21,7 @@ export const getMaterialConsumptionRate = (payload = {}) => {
     }).then((r) => ({ materialConsumptionRateList: r.result.rows }));
 };
 
-export const createMaterialConsumptionRate = async (payload: ICreateMaterialConsumptionRate) => {
+export const createMaterialConsumptionRate = async (payload: MaterialConsumptionRate) => {
   const response = await MaterialConsumptionRateService.post(
     payload,
     false,

@@ -203,20 +203,14 @@ export function secondsToTime(secs) {
   return `${pad(mHours)}:${pad(mMinutes)}:${pad(mSecs)}`;
 }
 
-export const getCurrentSeason = (summerStart = null, summerEnd = null) => {
-  if (isEqualOr([summerStart, summerEnd], null)) {
+export const getCurrentSeason = (summer_start_date: string = null, summer_end_date: string = null) => {
+  if (isEqualOr([summer_start_date, summer_end_date], null)) {
     return '';
   }
 
   const date = new Date();
 
-  const [summerStartMonth, summerStartDay] = summerStart;
-  const [summerEndMonth, summerEndDay] = summerEnd;
-
-  const begDateForSummerSeason = new Date(2018, summerStartMonth - 1, summerStartDay);
-  const endDateForSummerSeason = new Date(2018, summerEndMonth - 1, summerEndDay);
-
-  if (diffDates(date, begDateForSummerSeason) >= 0 && diffDates(endDateForSummerSeason, date) >= 0) {
+  if (diffDates(date, summer_start_date) >= 0 && diffDates(summer_end_date, date) >= 0) {
     return 'summer';
   }
 

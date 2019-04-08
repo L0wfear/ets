@@ -37,6 +37,8 @@ export const CONFIG_INITIAL: InitialStateSession['appConfig'] = { // дефол�
     11,
     1,
   ],
+  summer_start_date: '',
+  summer_end_date: '',
   footer_url: '',
   project_name: '',
 };

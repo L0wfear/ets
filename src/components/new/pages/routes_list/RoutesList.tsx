@@ -129,7 +129,7 @@ class RoutesList extends React.PureComponent<any, any> {
       ROUTES: {},
       routesList: [],
       showId: new Set(),
-      season_id: [3, getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end) === 'winter' ? 2 : 1],
+      season_id: [3, getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date) === 'winter' ? 2 : 1],
       routesMapNameId: new Map(),
     };
   }
@@ -173,8 +173,10 @@ class RoutesList extends React.PureComponent<any, any> {
     return this.props.routesLoadRouteById(id).then(({ payload: { route_data: route } }) => route);
   }
 
-  handleChangeSeasonId = (season_id) => {
+  handleChangeSeasonId = async (season_id) => {
     this.setState({ season_id });
+    await Promise.resolve(true); // рак
+    this.saveFilter(this.state.filterValues);
   }
 
   closeFilter = () => {

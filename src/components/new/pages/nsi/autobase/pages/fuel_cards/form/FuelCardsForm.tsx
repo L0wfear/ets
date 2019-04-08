@@ -51,14 +51,18 @@ const popover = (
 );
 
 class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {
-  handleChangeIsCommon = async (fieldName, newValEvent) => {
-    const { is_common, structure_id } = this.props.formState;
-    const newVal = get(newValEvent, ['target', 'checked'], false);
-    const { userStructureId } = this.props;
+  handleSubmit = async () => {
+    const {
+      originalFormState,
+      formState,
+      userStructureId,
+    } = this.props;
+
     if (
-      is_common === true &&
-      structure_id !== userStructureId &&
-      userStructureId
+      originalFormState.is_common
+      && !formState.is_common
+      && formState.structure_id !== userStructureId
+      && userStructureId
     ) {
       try {
         await global.confirmDialog({
@@ -67,13 +71,12 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
             'При сохранении карточки Вам не будет больше доступна данная топливная карта. Продолжить?',
         });
       } catch (e) {
-        this.props.handleChange(fieldName, true);
         return;
       }
     }
 
-    this.props.handleChange(fieldName, newVal);
-  };
+    this.props.defaultSubmit();
+  }
 
   render() {
     const {
@@ -88,8 +91,11 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
     } = this.props;
 
     const IS_CREATING = !state.id;
-    // tslint:disable-next-line:max-line-length
-    const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const title = (
+      !IS_CREATING
+        ? 'Изменение записи'
+        : 'Создание записи'
+    );
 
     const isPermitted = !IS_CREATING
       ? this.props.isPermittedToUpdate
@@ -131,7 +137,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                   value={state.is_common}
                   error={errors.is_common}
                   disabled={!isPermitted}
-                  onChange={this.handleChangeIsCommon}
+                  onChange={this.props.handleChangeBoolean}
                   boundKeys="is_common"
                   modalKey={page}
                 />
@@ -186,7 +192,8 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
           {isPermitted ? (
             <Button
               disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
+              onClick={this.handleSubmit}
+            >
               Сохранить
             </Button>
           ) : (
@@ -200,20 +207,13 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
 }
 
 export default compose<PropsFuelCards, OwnFuelCardsProps>(
-  connect<
-    StatePropsFuelCards,
-    DispatchPropsFuelCards,
-    OwnFuelCardsProps,
-    ReduxState
-  >((state) => ({
+  connect<StatePropsFuelCards, DispatchPropsFuelCards, OwnFuelCardsProps, ReduxState>((state) => ({
     companyOptions: getSessionCompanyOptions(state),
     userCompanyId: getSessionState(state).userData.company_id,
     fuelTypeOptions: getSessionFuelTypeOptions(state),
     STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state)
       .STRUCTURE_FIELD_VIEW,
     userStructureId: getSessionState(state).userData.structure_id,
-    // userStructureId: getSessionState(state).userData.structure_id,
-    // userStructureName: getSessionState(state).userData.structure_name,
   })),
   withForm<PropsFuelCardsWithForm, FuelCards>({
     uniqField: 'id',

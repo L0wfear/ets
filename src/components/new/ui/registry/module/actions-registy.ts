@@ -32,6 +32,11 @@ import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_at
 import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
 import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 
+/**
+ * Да простят меня боги
+ * @todo сделать нормально
+ */
+
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
   if (!config.noInitialLoad) {
     setTimeout(() => (

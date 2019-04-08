@@ -68,8 +68,8 @@ function singleFilterTypeHandler(SourcerFilterInput) {
           ({ inputValue, fieldName }) => {
             const intervalValue = filterValueMaker(value, this.props.type);
 
-            const isEmpty = intervalValue.length < 2 || intervalValue
-              .map((val) => isEqualOr(['', null, undefined], val))
+            const isEmpty = !intervalValue.length || intervalValue
+              .map((val) => isEqualOr([undefined], val))
               .includes(true);
 
             return isEmpty ? null : {

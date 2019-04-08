@@ -31,10 +31,8 @@ const GeoobjectData: React.FunctionComponent<PropsGeoobjectData> = ({ selectedGe
     <div className="data_container geoobjects_info car_info_block tab-data">
       <div>
         <div className="car_info-track_date_title">
-          <div className="car_info-gov_number">
-            <div>
-              <span>{`Выбранные ${GEOOBJECTS_OBJ_BY_SERVER_NAME[serverName].label}`}</span>
-            </div>
+          <div className="car_info-gov_number flex_basis_100">
+            <span>{`Выбранные ${GEOOBJECTS_OBJ_BY_SERVER_NAME[serverName].label}`}</span>
           </div>
           <div className="car_info-close">
             <div className="car_info_block" onClick={props.handleClickOnClose}>

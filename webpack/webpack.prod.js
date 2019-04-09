@@ -60,6 +60,7 @@ module.exports = {
                       'ie': '11',
                     },
                     useBuiltIns: 'usage',
+                    corejs: '2.*.*',
                   },
                 ],
                 '@babel/preset-typescript',

@@ -122,7 +122,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const season = getCurrentSeason(this.props.appConfig.summer_start, this.props.appConfig.summer_end);
+    const season = getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date);
     const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season], {});
     const CAR_TYPES =  Object.keys(carTypes).reduce((newArr, t) => {
       if (element_type !== 'roadway' || t !== 'tu') {

@@ -33,8 +33,16 @@ export const CONFIG_INITIAL: InitialStateSession['appConfig'] = {
     shift_end: null, // todo: сделать вызов тех же методов что и в факсограмме
     shift_start: null, // todo: сделать вызов тех же методов что и в факсограмме
   },
-  summer_start: [4, 6],
-  summer_end: [11, 1],
+  summer_start: [
+    4,
+    6,
+  ],
+  summer_end: [
+    11,
+    1,
+  ],
+  summer_start_date: '',
+  summer_end_date: '',
   footer_url: '',
   project_name: '',
 };

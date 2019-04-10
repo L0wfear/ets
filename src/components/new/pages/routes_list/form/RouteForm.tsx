@@ -243,30 +243,35 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         </ModalBodyPreloader>
 
         <Modal.Footer>
-          {isPermitted ? (
-            <>
-              <Button
-                id="route-submit-tempalte"
-                disabled={!canSave}
-                onClick={this.handleSaveAsTemplate}>
-                {this.props.fromMission && !this.props.fromMissionTemplate
-                  ? 'Сохранить как шаблон'
-                  : 'Сохранить'}
-              </Button>
-              {this.props.fromMission && !this.props.fromMissionTemplate ? (
-                <Button
-                  id="route-submit"
-                  disabled={!canSave}
-                  onClick={this.handleSubmitForMission}>
-                  Создать
-                </Button>
-              ) : (
-                <DivNone />
-              )}
-            </>
-          ) : (
-            <DivNone />
-          )}
+          <div>
+            {
+              isPermitted
+                ? (
+                  <>
+                    <Button
+                      id="route-submit-tempalte"
+                      disabled={!canSave}
+                      onClick={this.handleSaveAsTemplate}>
+                      {this.props.fromMission && !this.props.fromMissionTemplate
+                        ? 'Сохранить как шаблон'
+                        : 'Сохранить'}
+                    </Button>
+                    {this.props.fromMission && !this.props.fromMissionTemplate ? (
+                      <Button
+                        id="route-submit"
+                        disabled={!canSave}
+                        onClick={this.handleSubmitForMission}>
+                        Создать
+                      </Button>
+                    ) : (
+                      <DivNone />
+                    )}
+                  </>
+                ) : (
+                  <DivNone />
+                )
+            }
+          </div>
         </Modal.Footer>
       </EtsModal>
     );

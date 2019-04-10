@@ -189,17 +189,22 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-          {isPermitted ? (
-            <Button
-              disabled={!this.props.canSave}
-              onClick={this.handleSubmit}
-            >
-              Сохранить
-            </Button>
-          ) : (
-            <DivNone />
-          )}
-          <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
+          <div>
+            {
+              isPermitted
+                ? (
+                  <Button
+                    disabled={!this.props.canSave}
+                    onClick={this.handleSubmit}
+                  >
+                    Сохранить
+                  </Button>
+                ) : (
+                  <DivNone />
+                )
+            }
+            <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
+          </div>
         </Modal.Footer>
       </Modal>
     );

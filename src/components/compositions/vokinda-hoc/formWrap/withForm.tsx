@@ -182,7 +182,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [objChangeOrName]: get(newRawValue, ['target', 'value'], newRawValue),
           };
 
-        this.setState(({ propertiesByKey, formState }) => {
+        this.setState(({ propertiesByKey, formState: { ...formState } }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
             if (key in propertiesByKey) {

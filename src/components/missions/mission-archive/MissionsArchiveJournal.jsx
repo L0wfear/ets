@@ -89,7 +89,7 @@ class MissionsArchiveJournal extends CheckableElementsList {
     };
 
     this.props.actionGetAndSetInStoreMissionCancelReasons();
-    flux.getActions('objects').getCars();
+    flux.getActions('objects').getSomeCars('mission_archive');
     flux.getActions('technicalOperation').getTechnicalOperations();
     flux
       .getActions('missions')

@@ -71,8 +71,10 @@ class Prompt extends React.Component {
             : this.state.body}
         </Modal.Body>
         <Modal.Footer>
-          <Button onClick={this.ok}>Ок</Button>
-          <Button onClick={this.cancel}>Отмена</Button>
+          <div>
+            <Button onClick={this.ok}>Ок</Button>
+            <Button onClick={this.cancel}>Отмена</Button>
+          </div>
         </Modal.Footer>
       </EtsModal>
     );

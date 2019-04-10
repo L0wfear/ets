@@ -34,6 +34,9 @@ export const WaybillCarService = ETS_API_FACTORY.createApiServiceAdapter(
 export const MissionCarService = ETS_API_FACTORY.createApiServiceAdapter(
   'filters/mission/cars',
 );
+export const MissionArchiveCarService = ETS_API_FACTORY.createApiServiceAdapter(
+  'filters/mission_archive/cars',
+);
 export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapter(
   'latest_waybill_driver',
 );

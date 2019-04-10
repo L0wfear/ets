@@ -19,6 +19,7 @@ import {
   Country,
   WorkMode,
   ConfigTrackService,
+  MissionArchiveCarService,
 } from 'api/Services';
 
 import { MedicalStatsService, SensorTypeService } from 'api/nsi';
@@ -40,9 +41,9 @@ export default class ObjectsActions extends Actions {
     return CarService.get(payload).then((r) => ({ result: r.result.rows }));
   }
 
-  getSomeCars(serviceType) {
+  getSomeCars(type) {
     const payload = {};
-    switch (serviceType) {
+    switch (type) {
       case 'WaybillCarService':
         return WaybillCarService.get(payload).then((r) => ({
           result: r.result,
@@ -51,6 +52,11 @@ export default class ObjectsActions extends Actions {
         return MissionCarService.get(payload).then((r) => ({
           result: r.result,
         }));
+      case 'mission_archive': {
+        return MissionArchiveCarService.get(payload).then((r) => ({
+          result: r.result,
+        }));
+      }
       default:
         return CarService.get(payload).then((r) => ({ result: r.result.rows }));
     }

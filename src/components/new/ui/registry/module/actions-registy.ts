@@ -123,6 +123,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
       };
     }
     if (getRegistryData.userServerFilters) {
+      const perPage: any = get(list, 'paginator.perPage', 0);
       const offset: any = get(list, 'paginator.currentPage', 0);
       const filterValues: any = get(list, 'processed.filterValues', {}) || {};
       const sort: any = get(list, 'processed.sort', {}) || {};
@@ -130,7 +131,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
       payload = {
         ...payload,
         limit: MAX_ITEMS_PER_PAGE,
-        offset,
+        offset: offset * perPage,
         sort_by: sort.field ? `${sort.field}:${sort.reverse ? 'desc' : 'asc'}` : '',
         filter: JSON.stringify(filterValues),
       };
@@ -206,7 +207,7 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
     }
 
     let processedArray = array;
-    let processedTotalCount = array.length;
+    let processedTotalCount = 0;
 
     if (!getRegistryData.userServerFilters) {
       const processed: any = get(list, 'processed', {}) || {};
@@ -214,6 +215,8 @@ export const registryLoadDataByKey = (registryKey) => async (dispatch, getState)
 
       processedArray = makeProcessedArray(array, processed, fields);
       processedTotalCount = processedArray.length;
+    } else {
+      processedTotalCount = total_count;
     }
 
     return dispatch(

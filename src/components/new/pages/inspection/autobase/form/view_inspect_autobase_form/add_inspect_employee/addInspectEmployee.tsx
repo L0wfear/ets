@@ -296,7 +296,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
 
   const onChangeData = React.useCallback(
     (key, valueEvent) => {
-      const shemaElemByKey = addInspectEmployeeSchema.properties.find((elem) => elem.key === key);
+      const shemaElemByKey = addInspectEmployeeSchema.properties[key];
       let value = null;
       switch (shemaElemByKey.type) {
         case 'boolean':

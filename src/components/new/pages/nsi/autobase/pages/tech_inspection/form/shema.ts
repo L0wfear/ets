@@ -5,49 +5,42 @@ import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/auto
 import { diffDates } from 'utils/dates';
 
 export const techInspectionFormSchema: SchemaType<TechInspection, PropsTechInspection> = {
-  properties: [
-    {
-      key: 'car_id',
+  properties: {
+    car_id: {
       title: 'Регистрационный номер',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'reg_number',
+    reg_number: {
       title: 'Номер диагностической карты/Талона ГТО',
       type: 'string',
       required: true,
       maxLength: 21,
     },
-    {
-      key: 'date_start',
+    date_start: {
       title: 'Дата прохождения',
       type: 'date',
       required: true,
     },
-    {
-      key: 'date_end',
+    date_end: {
       title: 'Срок действия до',
       type: 'date',
       required: true,
     },
-    {
-      key: 'tech_operator',
+    tech_operator: {
       title: 'Оператор технического осмотра / пункт технического осмотра',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'is_allowed',
+    is_allowed: {
       title: 'Заключение о возможности/невозможности эксплуатации ТС',
       type: 'boolean',
     },
-    {
-      key: 'note',
+    note: {
       title: 'Примечание прохождения',
       type: 'string',
     },
-  ],
+  },
   dependencies: {
     date_end: [
       (value, { date_start }) => {

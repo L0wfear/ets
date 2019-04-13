@@ -3,11 +3,10 @@ import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
 import { PropsNorm } from './@types';
 
 export const normFormSchema: SchemaType<Norm, PropsNorm> = {
-  properties: [
-    {
-      key: 'sensor_type_ids',
+  properties: {
+    sensor_type_ids: {
       type: 'multiValueOfArray',
       title: 'Типы навесного оборудования',
     },
-  ],
+  },
 };

@@ -3,34 +3,30 @@ import { PropsBatteryRegistry } from 'components/new/pages/nsi/autobase/pages/ba
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBatteryRegistry> = {
-  properties: [
-    {
-      key: 'brand_id',
+  properties: {
+    brand_id: {
       title: 'Марка аккумулятора',
       type: 'number',
       integer: true,
       required: true,
     },
-    {
-      key: 'serial_number',
+    serial_number: {
       title: 'Серийный номер',
       type: 'string',
       required: true,
       maxLength: 128,
     },
-    {
-      key: 'lifetime_months',
+    lifetime_months: {
       title: 'Срок службы, мес.',
       type: 'number',
       required: true,
       maxLength: 128,
       integer: true,
     },
-    {
-      key: 'released_at',
+    released_at: {
       title: 'Дата выпуска',
       type: 'date',
       required: true,
     },
-  ],
+  },
 };

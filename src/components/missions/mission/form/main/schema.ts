@@ -6,69 +6,59 @@ import { get } from 'lodash';
 import { routeTypesByTitle } from 'constants/route';
 
 export const missionFormSchema: SchemaType<Mission, PropsMissionForm> = {
-  properties: [
-    {
-      key: 'technical_operation_id',
+  properties: {
+    technical_operation_id: {
       title: 'Технологическая операция',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'structure_id',
+    structure_id: {
       title: 'Подразделение',
       type: 'valueOfArray',
       required: false,
     },
-    {
-      key: 'passes_count',
+    passes_count: {
       title: 'Количество циклов',
       type: 'number',
       required: true,
       integer: true,
       max: 10,
     },
-    {
-      key: 'car_ids',
+    car_ids: {
       title: 'Транспортное средство',
       type: 'multiValueOfArray',
       required: true,
     },
-    {
-      key: 'for_column',
+    for_column: {
       title: 'Создать задания на колонну',
       type: 'boolean',
     },
-    {
-      key: 'mission_source_id',
+    mission_source_id: {
       title: 'Источник получения задания',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'date_start',
+    date_start: {
       title: 'Время выполнения, с',
       type: 'datetime',
       required: true,
     },
-    {
-      key: 'date_end',
+    date_end: {
       title: 'Время выполнения, по',
       type: 'datetime',
       required: true,
     },
-    {
-      key: 'municipal_facility_id',
+    municipal_facility_id: {
       title: 'Элемент',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'route_id',
+    route_id: {
       title: 'Маршрут',
       type: 'valueOfArray',
       required: true,
     },
-  ],
+  },
   dependencies: {
     passes_count: [
       (value, { order_id }, { dependeceTechnicalOperation }) => {

@@ -1,8 +1,8 @@
 import { DatePropertie } from 'components/ui/form/new/@types/validate.h';
 
-export const validateDate = <F, P>(fieldData: DatePropertie<F>, formState: F, props: P) => {
+export const validateDate = <F, P>(key: keyof F, fieldData: DatePropertie, formState: F, props: P) => {
   const {
-    [fieldData.key]: value,
+    [key]: value,
   } = formState;
 
   const {

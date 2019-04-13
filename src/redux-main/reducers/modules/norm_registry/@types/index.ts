@@ -57,7 +57,7 @@ export type Norm = {
   route_types: string;
   season_id: number;
   season_name: string;
-  sensor_type_ids: number;
+  sensor_type_ids: number[];
   sensor_types: NormRegistrySensorTypes[];
   sensor_types_text: string;
   technical_operation_id: number;

@@ -355,10 +355,10 @@ export type TechMaintenance = {
   fact_date_start: string | null;
   gov_number: number | null;
   id: number | null;
-  motohours_fact: null
+  motohours_fact: number;
   note: string;
   number: number | string | null;
-  odometr_fact: null
+  odometr_fact: number;
   plan_date_end: string;
   plan_date_start: string;
   repair_company_id: number | null;

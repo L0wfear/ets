@@ -2,23 +2,13 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { isFunction, isString, isBoolean, isArray } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType, FormErrorType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
 import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isObject } from 'highcharts';
-
-export type FormErrorType<F> = {
-  [K in keyof F]?: (
-    F[K] extends Array<any>
-      ? string
-      : F[K] extends { [k: string]: any }
-        ? FormErrorType<F[K]>
-        : string
-  );
-};
 
 type ConfigWithForm<P, F, S> = {
   uniqField: keyof F | boolean;
@@ -48,9 +38,6 @@ type WithFormState<F> = {
   originalFormState: F,
   formErrors: FormErrorType<F>;
   canSave: boolean;
-  propertiesByKey: {
-    [K in keyof F]?: PropertieType<F>
-  };
 };
 
 type WithFormProps<P> = P & DispatchProp & {
@@ -125,13 +112,6 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           formState,
           originalFormState: formState,
           formErrors,
-          propertiesByKey: config.schema.properties.reduce<{ [K in keyof F]?: PropertieType<F>}>((newObj, { key, ...other }) => {
-            newObj[key] = {
-              key,
-              ...other,
-            };
-            return newObj;
-          }, {}),
           canSave: false,
         };
 
@@ -190,11 +170,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             [objChangeOrName]: get(newRawValue, ['target', 'value'], newRawValue),
           };
 
-        this.setState(({ propertiesByKey, formState: { ...formState } }) => {
+        this.setState(({ formState: { ...formState } }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
-            if (key in propertiesByKey) {
-              switch (propertiesByKey[key].type) {
+            if (key in config.schema.properties) {
+              switch (config.schema.properties[key].type) {
                 case 'number':
                   const valueNumberString: number | string = (value as number | string);
 
@@ -300,7 +280,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
       defaultSubmit: FormWithDefaultSubmit = async () => {
         const formatedFormState = { ...this.state.formState };
-        config.schema.properties.forEach(({ key, type }) => {
+        Object.entries(config.schema.properties).forEach(([key, { type }]: any) => {
           let value: any = formatedFormState[key];
 
           if (type === 'number' && value) {

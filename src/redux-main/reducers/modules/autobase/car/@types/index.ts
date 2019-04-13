@@ -20,7 +20,7 @@ export type CarGibddPasspost = {
   body_color: string;
   body_number: string;
   car_id: number;
-  category_id: null;
+  category_id: number;
   chassis: string;
   company_address: string;
   conformity_certificate: string;

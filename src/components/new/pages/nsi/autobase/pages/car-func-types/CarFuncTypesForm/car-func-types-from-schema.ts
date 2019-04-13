@@ -3,9 +3,8 @@ import { PropsCarFuncTypes } from 'components/new/pages/nsi/autobase/pages/car-f
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const carFuncTypesFormSchema: SchemaType<CarFuncTypes, PropsCarFuncTypes> = {
-  properties: [
-    {
-      key: 'avg_work_hours',
+  properties: {
+    avg_work_hours: {
       title: 'Среднее количество часов работы',
       type: 'number',
       integer: true,
@@ -13,5 +12,5 @@ export const carFuncTypesFormSchema: SchemaType<CarFuncTypes, PropsCarFuncTypes>
       min: 1,
       max: 24,
     },
-  ],
+  },
 };

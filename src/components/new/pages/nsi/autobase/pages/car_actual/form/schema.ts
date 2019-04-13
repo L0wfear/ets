@@ -7,298 +7,252 @@ import { CarPassporntData, CarGibddPasspost, CarGtnPasspost } from 'redux-main/r
 const nonError = {};
 
 export const carPassportDataGibddSchema: SchemaType<CarGibddPasspost, PropsCar> = {
-  properties: [
-    {
-      key: 'seria_number',
+  properties: {
+    seria_number: {
       title: 'Серия и номер паспорта',
       type: 'string',
       minLength: 10,
       maxLength: 10,
       trimSpace: true,
     },
-    {
-      key: 'address',
+    address: {
       title: 'Адрес',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'manufactured_at',
+    manufactured_at: {
       title: 'Год выпуска',
       type: 'valueOfArray',
     },
-    {
-      key: 'engine_number',
+    engine_number: {
       title: 'Двигатель (номер)',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'vin',
+    vin: {
       title: 'VIN (Идентификационный номер)',
       type: 'string',
       maxLength: 17,
     },
-    {
-      key: 'category_id',
+    category_id: {
       title: 'Категория транспортного средства',
       type: 'valueOfArray',
     },
-    {
-      key: 'func_type_id',
+    func_type_id: {
       title: 'Тип транспортного средства',
       type: 'valueOfArray',
     },
-    {
-      key: 'body_number',
+    body_number: {
       title: 'Кузов (номер)',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'body_color',
+    body_color: {
       title: 'Цвет кузова',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'engine_model',
+    engine_model: {
       title: 'Модель двигателя',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'engine_power',
+    engine_power: {
       title: 'Мощность двигателя',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'engine_volumne',
+    engine_volumne: {
       title: 'Рабочий объем двигателя',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'engine_type_id',
+    engine_type_id: {
       title: 'Тип двигателя',
       type: 'valueOfArray',
     },
-    {
-      key: 'chassis',
+    chassis: {
       title: 'Шасси (рама)',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'empty_weight',
+    empty_weight: {
       title: 'Масса без нагрузки, кг',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'max_weight',
+    max_weight: {
       title: 'Разрешенная максимальная масса, кг',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'environmental_class',
+    environmental_class: {
       title: 'Экологический класс',
       type: 'string',
     },
-    {
-      key: 'origin_country_id',
+    origin_country_id: {
       title: 'Страна-изготовитель',
       type: 'valueOfArray',
     },
-    {
-      key: 'exporter_country_id',
+    exporter_country_id: {
       title: 'Страна вывоза автомобиля',
       type: 'valueOfArray',
     },
-    {
-      key: 'customs_declaration',
+    customs_declaration: {
       title: 'Серия и номер таможенной декларации',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'customs_restrictions',
+    customs_restrictions: {
       title: 'Таможенные ограничения',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'given_at',
+    given_at: {
       title: 'Дата выдачи ПТС',
       type: 'date',
     },
-    {
-      key: 'company_address',
+    company_address: {
       title: 'Адрес организации, выдавшей ПТС',
       type: 'string',
       maxLength: 256,
     },
-  ],
+  },
 };
 export const carPassportDataGtnSchema: SchemaType<CarGtnPasspost, PropsCar> = {
-  properties: [
-    {
-      key: 'address',
+  properties: {
+    address: {
       title: 'Адрес',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'manufactured_at',
+    manufactured_at: {
       title: 'Год выпуска',
       type: 'valueOfArray',
     },
-    {
-      key: 'engine_number',
+    engine_number: {
       title: 'Двигатель (номер)',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'number',
+    number: {
       title: 'Серия и номер паспорта',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'manufacturer',
+    manufacturer: {
       title: 'Предприятие и изготовитель',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'given_by',
+    given_by: {
       title: 'Выдан',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'conformity_certificate',
+    conformity_certificate: {
       title: 'Сертификат соответствия',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'tech_inspection_certificate',
+    tech_inspection_certificate: {
       title: 'Акт гостехосмотра',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'engine_power',
+    engine_power: {
       title: 'Мощность двигателя',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'body_color',
+    body_color: {
       title: 'Цвет',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'empty_weight',
+    empty_weight: {
       title: 'Конструкционная масса, кг',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'body_number',
+    body_number: {
       title: 'Заводской номер машины (рамы)',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'gearbox',
+    gearbox: {
       title: 'Коробка передач',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'axle_number',
+    axle_number: {
       title: 'Номер основного ведущего моста',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'propulsion_type_id',
+    propulsion_type_id: {
       title: 'Тип движителя',
       type: 'valueOfArray',
     },
-    {
-      key: 'max_speed',
+    max_speed: {
       title: 'Максимальная конструктивная скорость, км/ч',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'dimensions',
+    dimensions: {
       title: 'Габаритные размеры, мм',
       type: 'string',
       maxLength: 128,
     },
-  ],
+  },
 };
 
 export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'], PropsCar> = {
-  properties: [
-    {
-      key: 'given_by',
+  properties: {
+    given_by: {
       title: 'Кем выдано свидетельство о регистрации',
       type: 'string',
       maxLength: 256,
     },
-    {
-      key: 'given_at',
+    given_at: {
       title: 'Дата регистрации',
       type: 'date',
     },
-    {
-      key: 'note',
+    note: {
       title: 'Особые отметки',
       type: 'string',
       maxLength: 4000,
     },
-  ],
+  },
 };
 
 export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
-  properties: [
-    {
-      key: 'fuel_correction_rate',
+  properties: {
+    fuel_correction_rate: {
       title: 'Поправочный коэффициент',
       type: 'number',
       float: 2,
     },
-    {
-      key: 'note',
+    note: {
       title: 'Примечание',
       type: 'string',
       maxLength: 4000,
     },
-    {
-      key: 'parking_address',
+    parking_address: {
       title: 'Адрес стоянки',
       type: 'string',
       maxLength: 2000,
     },
-    {
-      key: 'company_structure_id',
+    company_structure_id: {
       title: 'Подразделение',
       type: 'valueOfArray',
     },
-  ],
+    registration_data: {
+      type: 'schema',
+      schema: carRegistrationDataSchema,
+    },
+  },
   dependencies: {
-    registration_data: [
-      (value, formState, props) => validate(carRegistrationDataSchema, value, props),
-    ],
     passport_data: [
       (value, formState, props) => {
         const type: CarPassporntData['type'] = get(value, 'type', null);

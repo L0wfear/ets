@@ -5,72 +5,61 @@ import { getRequiredFieldMessage } from 'utils/validate';
 import { diffDates } from 'utils/dates';
 
 export const repairFormSchema: SchemaType<Repair, PropsRepair> = {
-  properties: [
-    {
-      key: 'car_id',
+  properties: {
+    car_id: {
       title: 'Регистрационный номер',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'repair_company_id',
+    repair_company_id: {
       title: 'Исполнитель ремонта',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'repair_type_id',
+    repair_type_id: {
       title: 'Вид ремонта',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'number',
+    number: {
       title: 'Номер документа',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'plan_date_start',
+    plan_date_start: {
       title: 'Плановая дата начала ремонта',
       type: 'date',
       required: true,
     },
-    {
-      key: 'plan_date_end',
+    plan_date_end: {
       title: 'Плановая дата окончания ремонта',
       type: 'date',
       required: true,
     },
-    {
-      key: 'fact_date_start',
+    fact_date_start: {
       title: 'Фактическая дата начала ремонта',
       type: 'date',
     },
-    {
-      key: 'fact_date_end',
+    fact_date_end: {
       title: 'Фактическая дата окончания ремонта',
       type: 'date',
     },
-    {
-      key: 'description',
+    description: {
       title: 'Описание неисправности',
       type: 'string',
       maxLength: 4096,
       required: true,
     },
-    {
-      key: 'note',
+    note: {
       title: 'Примечание прохождения',
       type: 'string',
       maxLength: 2048,
     },
-    {
-      key: 'status',
+    status: {
       title: 'Итог проведенного ремонта',
       type: 'valueOfArray',
     },
-  ],
+  },
   dependencies: {
     plan_date_end: [
       (value, { plan_date_start }) => {

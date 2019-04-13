@@ -4,44 +4,38 @@ import { PropsDutyMissionTemplateForm } from './@types/index.h';
 import { isPermittedEmployeeForDutyMission } from 'components/missions/duty_mission/form/main/utils';
 
 export const dutyDutyMissionTemplateFormSchema: SchemaType<DutyMissionTemplate, PropsDutyMissionTemplateForm> = {
-  properties: [
-    {
-      key: 'technical_operation_id',
+  properties: {
+    technical_operation_id: {
       title: 'Технологическая операция',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'municipal_facility_id',
+    municipal_facility_id: {
       title: 'Элемент',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'route_id',
+    route_id: {
       title: 'Маршрут',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'foreman_id',
+    foreman_id: {
       title: 'Бригадир',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'brigade_employee_id_list_id',
+    brigade_employee_id_list_id: {
       title: 'Бригада',
       type: 'multiValueOfArray',
       required: false,
     },
-    {
-      key: 'comment',
+    comment: {
       title: 'Комментарий',
       type: 'string',
       required: false,
     },
-  ],
+  },
   dependencies: {
     foreman_id: [
       (value, { structure_id }, { employeeIndex }) => {

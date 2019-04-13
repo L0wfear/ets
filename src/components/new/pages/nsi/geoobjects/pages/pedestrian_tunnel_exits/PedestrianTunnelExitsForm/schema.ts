@@ -3,6 +3,5 @@ import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/act
 import { PropsPedestrianTunnelExitsFormWithForm } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/@types/PedestrianTunnelExitsForm.h';
 
 export const PedestrianTunnelExitsFormSchema: SchemaType<PedestrianTunnelExits, PropsPedestrianTunnelExitsFormWithForm> = {
-  properties: [
-  ],
+  properties: {},
 };

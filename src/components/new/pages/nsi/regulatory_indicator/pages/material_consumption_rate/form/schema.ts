@@ -3,43 +3,37 @@ import { PropsMaterialConsumptionRate } from 'components/new/pages/nsi/regulator
 import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 
 export const materialConsumptionRateSchema: SchemaType<MaterialConsumptionRate, PropsMaterialConsumptionRate> = {
-  properties: [
-    {
-      key: 'technical_operation_id',
+  properties: {
+    technical_operation_id: {
       title: 'Технологическая операция',
       type: 'number',
       required: true,
     },
-    {
-      key: 'consumable_material_id',
+    consumable_material_id: {
       title: 'Расходный материал',
       type: 'number',
       required: true,
     },
-    {
-      key: 'season_id',
+    season_id: {
       title: 'Сезон',
       type: 'number',
       required: true,
     },
-    {
-      key: 'clean_category_id',
+    clean_category_id: {
       title: 'Категория',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'clean_subcategory_id',
+    clean_subcategory_id: {
       title: 'Подкатегория',
       type: 'number',
       required: false,
     },
-    {
-      key: 'value',
+    value: {
       title: 'Норма',
       type: 'number',
       float: 3,
       required: true,
     },
-  ],
+  },
 };

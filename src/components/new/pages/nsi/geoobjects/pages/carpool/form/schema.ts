@@ -3,6 +3,5 @@ import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/c
 import { PropsCarpoolForm } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/@types/CarpoolForm.h';
 
 export const carpoolSchema: SchemaType<Carpool, PropsCarpoolForm> = {
-  properties: [
-  ],
+  properties: {},
 };

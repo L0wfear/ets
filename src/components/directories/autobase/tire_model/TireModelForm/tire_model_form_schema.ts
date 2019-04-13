@@ -3,18 +3,16 @@ import { PropsTireModel } from 'components/directories/autobase/tire_model/TireM
 import { TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const tireModelFormSchema: SchemaType<TireModel, PropsTireModel> = {
-  properties: [
-    {
-      key: 'name',
+  properties: {
+    name: {
       title: 'Марка аккумулятора',
       type: 'string',
       required: true,
     },
-    {
-      key: 'tire_manufacturer_id',
+    tire_manufacturer_id: {
       title: 'Производитель аккумулятора',
       type: 'valueOfArray',
       required: true,
     },
-  ],
+  },
 };

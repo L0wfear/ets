@@ -1,6 +1,7 @@
 import {
   SchemaType,
   DependencieFieldValidatorArrType,
+  PropertieFieldValidatorArrType,
 } from 'components/ui/form/new/@types/validate.h';
 
 import { validateString } from 'components/ui/form/new/string/stringValidate';
@@ -19,28 +20,34 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
     dependencies,
   } = shema;
 
-  const formError = properties.reduce<{ [K in keyof F]?: string | null }>((newObj, fieldData) => {
+  const formError = Object.entries<PropertieFieldValidatorArrType<F, P>>(properties).reduce((newObj: any, entriesData) => {
+    const key: keyof F = entriesData[0] as keyof F;
+    const fieldData: any = entriesData[1];
+
     switch (fieldData.type) {
       case 'string':
-        newObj[fieldData.key] = validateString<F, P>(fieldData, formState, props);
+        newObj[key] = validateString<F, P>(key, fieldData, formState, props);
         break;
       case 'number':
-        newObj[fieldData.key] = validateNumber<F, P>(fieldData, formState, props);
+        newObj[key] = validateNumber<F, P>(key, fieldData, formState, props);
         break;
       case 'valueOfArray':
-        newObj[fieldData.key] = validateValueOfArray<F, P>(fieldData, formState, props);
+        newObj[key] = validateValueOfArray<F, P>(key, fieldData, formState, props);
         break;
       case 'multiValueOfArray':
-        newObj[fieldData.key] = validateMultiValueOfArray<F, P>(fieldData, formState, props);
+        newObj[key] = validateMultiValueOfArray<F, P>(key, fieldData, formState, props);
         break;
       case 'date':
-        newObj[fieldData.key] = validateDate<F, P>(fieldData, formState, props);
+        newObj[key] = validateDate<F, P>(key, fieldData, formState, props);
         break;
       case 'datetime':
-        newObj[fieldData.key] = validateDatetime<F, P>(fieldData, formState, props);
+        newObj[key] = validateDatetime<F, P>(key, fieldData, formState, props);
         break;
       case 'boolean':
-        newObj[fieldData.key] = validateBoolean<F, P>(fieldData, formState, props);
+        newObj[key] = validateBoolean<F, P>(key, fieldData, formState, props);
+        break;
+      case 'schema':
+        newObj[key] = validate<any, P>((fieldData as any).shema, formState[key], props);
         break;
       default:
         throw new Error('Нужно определить функцию для валидации');

@@ -7,68 +7,58 @@ import { get } from 'lodash';
 import { routeTypesByTitle } from 'constants/route';
 
 export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMissionForm> = {
-  properties: [
-    {
-      key: 'technical_operation_id',
+  properties: {
+    technical_operation_id: {
       title: 'Технологическая операция',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'fact_date_start',
+    fact_date_start: {
       title: 'Фактическая дата начала',
       type: 'datetime',
       required: false,
     },
-    {
-      key: 'fact_date_end',
+    fact_date_end: {
       title: 'Фактическая дата окнчания',
       type: 'datetime',
       required: false,
     },
-    {
-      key: 'plan_date_start',
+    plan_date_start: {
       title: 'Плановая дата начала',
       type: 'datetime',
       required: true,
     },
-    {
-      key: 'plan_date_end',
+    plan_date_end: {
       title: 'Плановая дата окончания',
       type: 'datetime',
       required: true,
     },
-    {
-      key: 'mission_source_id',
+    mission_source_id: {
       title: 'Источник получения задания',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'route_id',
+    route_id: {
       title: 'Маршрут',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'foreman_id',
+    foreman_id: {
       title: 'Бригадир',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'brigade_employee_id_list',
+    brigade_employee_id_list: {
       title: 'Бригада',
       type: 'multiValueOfArray',
       required: false,
     },
-    {
-      key: 'municipal_facility_id',
+    municipal_facility_id: {
       title: 'Элемент',
       type: 'valueOfArray',
       required: true,
     },
-  ],
+  },
   dependencies: {
     plan_date_start: [
       (value, { plan_date_end }, { dependeceOrder, dependeceTechnicalOperation }) => {

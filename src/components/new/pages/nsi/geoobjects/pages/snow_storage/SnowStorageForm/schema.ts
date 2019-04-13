@@ -3,6 +3,5 @@ import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_ty
 import { PropsSnowStorageFormWithForm } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/@types/SnowStorageForm.h';
 
 export const SnowStorageFormSchema: SchemaType<SnowStorage, PropsSnowStorageFormWithForm> = {
-  properties: [
-  ],
+  properties: {},
 };

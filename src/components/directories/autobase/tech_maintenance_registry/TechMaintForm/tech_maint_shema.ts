@@ -7,66 +7,56 @@ import { hasMotohours } from 'utils/functions';
 import { diffDates } from 'utils/dates';
 
 export const techMaintFormSchema: SchemaType<TechMaint, PropsTechMaint> = {
-  properties: [
-    {
-      key: 'tech_maintenance_order_ids',
+  properties: {
+    tech_maintenance_order_ids: {
       title: 'Регламент ТО',
       type: 'multiValueOfArray',
       required: true,
     },
-    {
-      key: 'repair_company_id',
+    repair_company_id: {
       title: 'Исполнитель ремонта',
       type: 'valueOfArray',
     },
-    {
-      key: 'number',
+    number: {
       title: 'Номер документа',
       type: 'string',
       maxLength: 128,
     },
-    {
-      key: 'plan_date_start',
+    plan_date_start: {
       title: 'Плановая дата начала',
       type: 'date',
       required: true,
     },
-    {
-      key: 'plan_date_end',
+    plan_date_end: {
       title: 'Плановая дата окончания',
       type: 'date',
     },
-    {
-      key: 'fact_date_start',
+    fact_date_start: {
       title: 'Плановая дата начала',
       type: 'date',
     },
-    {
-      key: 'fact_date_end',
+    fact_date_end: {
       title: 'Плановая дата окончания',
       type: 'date',
     },
-    {
-      key: 'odometr_fact',
+    odometr_fact: {
       title: 'Пробег на момент ТО, км',
       type: 'number',
       maxLength: 128,
       integer: true,
     },
-    {
-      key: 'motohours_fact',
+    motohours_fact: {
       title: 'Счетчик м/ч на момент ТО, м/ч',
       type: 'number',
       maxLength: 128,
       integer: true,
     },
-    {
-      key: 'note',
+    note: {
       title: 'Номер документа',
       type: 'string',
       maxLength: 2048,
     },
-  ],
+  },
   dependencies: {
     repair_company_id: [
       (value, { fact_date_start = '' }) => {

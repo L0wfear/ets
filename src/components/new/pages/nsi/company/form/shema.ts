@@ -3,18 +3,16 @@ import { PropsCompany } from 'components/new/pages/nsi/company/form/@types/Compa
 import { Company } from 'redux-main/reducers/modules/company/@types';
 
 export const companySchema: SchemaType<Company, PropsCompany> = {
-  properties: [
-    {
-      key: 'short_name',
+  properties: {
+    short_name: {
       title: 'Наименование',
       type: 'string',
       required: false,
     },
-    {
-      key: 'has_remote_checkup',
+    has_remote_checkup: {
       title: 'Наличие дистанционного мед. осмотра',
       type: 'boolean',
       required: false,
     },
-  ],
+  },
 };

@@ -3,23 +3,20 @@ import { PropsSparePart } from 'components/directories/autobase/spare_part/Spare
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
-  properties: [
-    {
-      key: 'number',
+  properties: {
+    number: {
       title: 'Номер поставки',
       type: 'string',
       maxLength: 128,
       required: true,
     },
-    {
-      key: 'name',
+    name: {
       title: 'Подгруппа',
       type: 'string',
       required: true,
       maxLength: 1024,
     },
-    {
-      key: 'quantity',
+    quantity: {
       title: 'Количество',
       type: 'number',
       required: true,
@@ -27,22 +24,19 @@ export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
       min: 0,
       integer: true,
     },
-    {
-      key: 'spare_part_group_id',
+    spare_part_group_id: {
       title: 'Группа',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'measure_unit_id',
+    measure_unit_id: {
       title: 'Единица измерения',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'supplied_at',
+    supplied_at: {
       title: 'Дата поставки',
       type: 'date',
     },
-  ],
+  },
 };

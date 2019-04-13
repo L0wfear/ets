@@ -4,52 +4,44 @@ import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/aut
 import { diffDates } from 'utils/dates';
 
 export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsurancePolicy> = {
-  properties: [
-    {
-      key: 'car_id',
+  properties: {
+    car_id: {
       title: 'Номер транспортного средства',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'insurer',
+    insurer: {
       title: 'Страховая организация',
       type: 'string',
       required: true,
       maxLength: 256,
     },
-    {
-      key: 'insurance_type_id',
+    insurance_type_id: {
       title: 'Тип страхования',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'seria',
+    seria: {
       title: 'Серия',
       type: 'string',
     },
-    {
-      key: 'number',
+    number: {
       title: 'Номер',
       type: 'string',
       maxLength: 128,
       required: true,
     },
-    {
-      key: 'date_start',
+    date_start: {
       title: 'Дата начала действия',
       type: 'date',
       required: true,
     },
-    {
-      key: 'date_end',
+    date_end: {
       title: 'Дата окончания действия',
       type: 'date',
       required: true,
     },
-    {
-      key: 'price',
+    price: {
       title: 'Стоимость, руб.',
       type: 'number',
       maxLength: 128,
@@ -57,13 +49,12 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
       integer: false,
       float: 2,
     },
-    {
-      key: 'note',
+    note: {
       title: 'Примечание',
       type: 'string',
       maxLength: 2048,
     },
-  ],
+  },
   dependencies: {
     date_end: [
       (value, { date_start }) => {

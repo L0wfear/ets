@@ -4,51 +4,43 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { isEmpty } from 'utils/functions';
 
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
-  properties: [
-    {
-      key: 'last_name',
+  properties: {
+    last_name: {
       title: 'Фамилия',
       type: 'string',
       required: true,
     },
-    {
-      key: 'first_name',
+    first_name: {
       title: 'Имя',
       type: 'string',
       required: true,
     },
-    {
-      key: 'personnel_number',
+    personnel_number: {
       title: 'Табельный номер',
       type: 'string',
     },
-    {
-      key: 'position_id',
+    position_id: {
       title: 'Должность',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'special_license',
+    special_license: {
       title: 'Специальное удостоверение',
       type: 'string',
     },
-    {
-      key: 'drivers_license',
+    drivers_license: {
       title: 'Водительское удостоверение',
       type: 'string',
     },
-    {
-      key: 'drivers_license_date_end',
+    drivers_license_date_end: {
       title: 'Срок действия водительского удостоверения',
       type: 'date',
     },
-    {
-      key: 'special_license_date_end',
+    special_license_date_end: {
       title: 'Срок действия специального удостоверения',
       type: 'date',
     },
-  ],
+  },
   dependencies: {
     drivers_license: [
       (value, formData) => {

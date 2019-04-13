@@ -3,40 +3,35 @@ import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_te
 import { PropsMissionTemplateForm } from './@types/index.h';
 
 export const missionTemplateFormSchema: SchemaType<MissionTemplate, PropsMissionTemplateForm> = {
-  properties: [
-    {
-      key: 'technical_operation_id',
+  properties: {
+    technical_operation_id: {
       title: 'Технологическая операция',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'municipal_facility_id',
+    municipal_facility_id: {
       title: 'Элемент',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'passes_count',
+    passes_count: {
       title: 'Количество циклов',
       type: 'number',
       required: true,
       integer: true,
       max: 10,
     },
-    {
-      key: 'car_ids',
+    car_ids: {
       title: 'Транспортное средство',
       type: 'multiValueOfArray',
       required: true,
     },
-    {
-      key: 'route_id',
+    route_id: {
       title: 'Маршрут',
       type: 'valueOfArray',
       required: true,
     },
-  ],
+  },
   dependencies: {
     passes_count: [
       (value) => {

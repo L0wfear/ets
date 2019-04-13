@@ -7,7 +7,7 @@ import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/
 import { IAVisibleWarningInputContainer } from '../../autobase/components/vsible_warning/styled/IAVisibleWarning';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'utils/dates';
-import { FormErrorType } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type IAVisibleWarningProps = {
   onChange: (data: Partial<InspectContainer>) => void;

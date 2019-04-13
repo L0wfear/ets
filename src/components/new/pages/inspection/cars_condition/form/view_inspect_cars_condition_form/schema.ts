@@ -3,6 +3,5 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { PropsViewInspectCarsConditionWithForm } from './@types/ViewInspectCarsContidion';
 
 export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, PropsViewInspectCarsConditionWithForm> = {
-  properties: [
-  ],
+  properties: {},
 };

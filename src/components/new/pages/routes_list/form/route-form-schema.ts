@@ -13,36 +13,31 @@ export const routeFormSchema: SchemaType<
   FormStateRouteForm,
   PropsRouteWithForm
 > = {
-  properties: [
-    {
-      key: 'name',
+  properties: {
+    name: {
       title: 'Название маршрута',
       type: 'string',
       required: true,
     },
-    {
-      key: 'technical_operation_id',
+    technical_operation_id: {
       title: 'Технологическая операция',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'municipal_facility_id',
+    municipal_facility_id: {
       title: 'Элемент',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'structure_id',
+    structure_id: {
       title: 'Подразделение',
       type: 'valueOfArray',
     },
-    {
-      key: 'type',
+    type: {
       title: 'Тип объекта',
       type: 'string',
     },
-  ],
+  },
   dependencies: {
     name: [
       (value, formState, props) => {

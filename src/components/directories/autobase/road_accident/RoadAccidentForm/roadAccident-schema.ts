@@ -3,54 +3,46 @@ import { PropsRoadAccident } from 'components/directories/autobase/road_accident
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const roadAccidentFormSchema: SchemaType<RoadAccident, PropsRoadAccident> = {
-  properties: [
-    {
-      key: 'accident_date',
+  properties: {
+    accident_date: {
       title: 'Дата',
       type: 'date',
       required: true,
     },
-    {
-      key: 'driver_id',
+    driver_id: {
       title: 'Водитель',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'cause_id',
+    cause_id: {
       title: 'Причина ДТП',
       type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'accident_place',
+    accident_place: {
       title: 'Место ДТП',
       type: 'string',
       maxLength: 1024,
     },
-    {
-      key: 'damage_price',
+    damage_price: {
       title: 'Стоимость ущерба, руб.',
       type: 'number',
       maxLength: 128,
       min: 0,
       integer: true,
     },
-    {
-      key: 'comment',
+    comment: {
       title: 'Примечание',
       type: 'string',
       maxLength: 2048,
     },
-    {
-      key: 'cause_name',
+    cause_name: {
       title: 'Причина ДТП',
       type: 'string',
     },
-    {
-      key: 'is_guilty',
+    is_guilty: {
       title: 'Виновность',
       type: 'boolean',
     },
-  ],
+  },
 };

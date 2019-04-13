@@ -3,6 +3,5 @@ import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_typ
 import { PropsDangerZoneFormWithForm } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/@types/DangerZoneForm.h';
 
 export const DangerZoneFormSchema: SchemaType<DangerZone, PropsDangerZoneFormWithForm> = {
-  properties: [
-  ],
+  properties: {},
 };

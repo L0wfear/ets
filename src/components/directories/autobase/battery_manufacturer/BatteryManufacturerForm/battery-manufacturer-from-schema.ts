@@ -3,12 +3,11 @@ import { PropsBatteryManufacturer } from 'components/directories/autobase/batter
 import { BatteryManufacturer } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const batteryManufacturerFormSchema: SchemaType<BatteryManufacturer, PropsBatteryManufacturer> = {
-  properties: [
-    {
-      key: 'name',
+  properties: {
+    name: {
       title: 'Производитель аккумулятора',
       type: 'string',
       required: true,
     },
-  ],
+  },
 };

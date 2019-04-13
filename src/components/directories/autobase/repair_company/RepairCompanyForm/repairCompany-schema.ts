@@ -3,19 +3,17 @@ import { PropsRepairCompany } from 'components/directories/autobase/repair_compa
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const repairCompanyFormSchema: SchemaType<RepairCompany, PropsRepairCompany> = {
-  properties: [
-    {
-      key: 'name',
+  properties: {
+    name: {
       title: 'Наименование ремонтной организации',
       type: 'string',
       required: true,
       maxLength: 128,
     },
-    {
-      key: 'comment',
+    comment: {
       title: 'Примечание',
       type: 'string',
       maxLength: 1024,
     },
-  ],
+  },
 };

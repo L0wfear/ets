@@ -30,7 +30,8 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
         );
 
         const triggerOnWrongPath = (
-          typeRightView !== 'prepare_plan'
+          typeRightView
+          && typeRightView !== 'prepare_plan'
           && typeRightView !== 'car_info'
         );
 

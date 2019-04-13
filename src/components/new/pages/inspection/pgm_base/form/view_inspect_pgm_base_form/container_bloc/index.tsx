@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { TitleForm, CheckContainerTable } from '../styled/ViewInspectPgmBaseStyled';
 import IAVisibleWarning from '../../../components/vsible_warning/IAVisibleWarning';
 import { filedToCheckContainersInfo, filedToCheckContainersFail } from '../filed_to_check/filedToCheck';
 import { Button, Glyphicon } from 'react-bootstrap';
@@ -12,6 +11,7 @@ import { BoxContainer } from 'components/new/pages/inspection/autobase/component
 import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
+import { CheckContainerTable } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 
 type ContainerBlockStateProps = {};
 type ContainerBlockDispatchProps = {
@@ -108,10 +108,8 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
   );
 
   return (
-    <>
-      <TitleForm>
-        <h4>Готовность емкостей для хранения ПГМ</h4>
-      </TitleForm>
+    <React.Fragment>
+      <h4>Готовность емкостей для хранения ПГМ</h4>
       <BoxContainer>
         <IAVisibleWarning
           onChange={props.onChangeData}
@@ -160,7 +158,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
         onFormHide={handleFormHide}
         readOnly={!props.isPermittedChangeListParams}
       />
-    </>
+    </React.Fragment>
   );
 };
 

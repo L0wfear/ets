@@ -25,11 +25,11 @@ export const actionGetBlobActInspect = (id: number, meta: LoadingMeta): ThunkAct
   return result;
 };
 
-export const actionCreateInspect = (base_id: number, company_id: number, type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const actionCreateInspect = (payload: any, company_id: number, type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseCreateInspection({
-      base_id,
+      ...payload,
       company_id,
       type,
     }),

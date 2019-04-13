@@ -1,8 +1,9 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { IStateInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
 export type ButtonContinueInspectAutobaseStateProps = {
-  lastConductingInspect: IStateInspectAutobase['lastConductingInspect'];
+  lastConductingInspect: InspectAutobase;
+  permissions: string | boolean;
 };
 export type ButtonContinueInspectAutobaseDispatchProps = {
 };

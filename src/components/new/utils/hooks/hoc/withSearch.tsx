@@ -18,10 +18,11 @@ const makeObjFromMemoise = memoizeOne(
   },
 );
 
-const withSearch = (Component) => (
-  withRouter(
+const withSearch = <OwnProps extends any>(Component: React.ElementType<any>) => (
+  withRouter<any>(
     class extends React.PureComponent<RouteComponentProps<{}>, {}> {
-      setDataInSearch: WithSearchProps['setDataInSearch'] = (data) => {
+      setDataInSearch: WithSearchProps['setDataInSearch'] = async (data) => {
+        await Promise.resolve(true);
         this.props.history.replace(
           `${
             this.props.match.url
@@ -38,14 +39,14 @@ const withSearch = (Component) => (
 
       setParams: WithSearchProps['setParams'] = (objParams, typeAction = 'push') => {
         let urlAsArray = this.props.match.path.split('/').map((partOfUrl) => {
-          let ans = partOfUrl.replace('?', '');
+          let ans = partOfUrl;
 
           Object.entries(objParams).forEach(([key, value]) => {
-            ans = ans.replace(`:${key}`, value || isNumber(value) ? value.toString() : '');
+            ans = ans.replace(`:${key}?`, value || isNumber(value) ? value.toString() : '');
           });
 
           Object.entries(this.props.match.params).forEach(([key, value]: [string, string]) => {
-            ans = ans.replace(`:${key}`, value ? value : '');
+            ans = ans.replace(`:${key}?`, value ? value : '');
           });
 
           return ans;

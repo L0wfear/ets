@@ -74,6 +74,7 @@ export type TypeFields<F extends any> = {
     | 'road_accident_driver_fio'
     | 'AUTOBASE_REPAIR_STATUS'
     | 'TIME_MEASURES'
+    | 'checkOrExpect'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {

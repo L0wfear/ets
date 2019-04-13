@@ -163,6 +163,9 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       if (format === 'TIME_MEASURES') {
         value = get(TIME_MEASURES, value, '-');
       }
+      if (format === 'checkOrExpect') {
+        value = value ? 'Проверено' : 'Ожидает проверки';
+      }
     }
 
     if (dashIfEmpty) {

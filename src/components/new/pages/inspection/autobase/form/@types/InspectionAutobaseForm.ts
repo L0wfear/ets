@@ -11,7 +11,6 @@ export type InspectionAutobaseFormDispatchProps = {
   actionGetInspectAutobaseById: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionGetInspectAutobaseById>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  actionSetInspectAutobaseInspectAutobaseList: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionSetInspectAutobaseInspectAutobaseList>;
 };
 export type InspectionAutobaseFormOwnProps = {
   loadingPage: string;

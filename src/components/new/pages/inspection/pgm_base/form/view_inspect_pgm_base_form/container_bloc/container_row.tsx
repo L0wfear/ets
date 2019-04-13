@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { CheckContainerRow, CheckContainerTd, ButtonBlock } from '../styled/ViewInspectPgmBaseStyled';
 import { Button, Glyphicon } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
+import { CheckContainerRow, CheckContainerTd, ButtonBlock } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 
 type ContainerRowProps = {
   container: any;

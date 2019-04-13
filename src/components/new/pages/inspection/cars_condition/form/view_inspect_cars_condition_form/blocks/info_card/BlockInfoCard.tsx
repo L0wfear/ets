@@ -1,0 +1,81 @@
+import * as React from 'react';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { DivNone } from 'global-styled/global-styled';
+import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import BlockCarInfoWrap from './car_info';
+// import { Switch } from 'react-router-dom';
+
+type BlockInfoCardOwnProps = {
+  carsConditionCarsList: CarsConditionCars[];
+  page: string;
+  isHasPeriod: boolean;
+};
+type BlockInfoCardProps = (
+  BlockInfoCardOwnProps
+  & WithSearchProps
+);
+
+const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
+  (props) => {
+    const {
+      isHasPeriod,
+    } = props;
+    const typeRightView = props.match.params.typeRightView;
+
+    React.useEffect(
+      () => {
+        const triggerOnNotMatchCheckPeriod = (
+          !isHasPeriod
+          && typeRightView === 'prepare_plan'
+        );
+
+        const triggerOnWrongPath = (
+          typeRightView
+          && typeRightView !== 'prepare_plan'
+          && typeRightView !== 'car_info'
+        );
+
+        if (triggerOnNotMatchCheckPeriod || triggerOnWrongPath) {
+          props.setParams({
+            typeRightView: null,
+          });
+        }
+      },
+      [isHasPeriod, typeRightView, props.setParams, props.match.params],
+    );
+
+    const handleHide = React.useCallback(
+      () => {
+        props.setParams({
+          typeRightView: null,
+        });
+      },
+      [props.setParams],
+    );
+
+    if (typeRightView === 'car_info') {
+      return (
+        <BlockCarInfoWrap
+          handleHide={handleHide}
+          carsConditionCarsList={props.carsConditionCarsList}
+          page={props.page}
+        />
+      );
+    }
+
+    if (typeRightView === 'prepare_plan') {
+      // @todo
+      return (
+        <div>
+          {typeRightView}
+        </div>
+      );
+    }
+
+    return (
+      <DivNone />
+    );
+  },
+);
+
+export default withSearch<BlockInfoCardOwnProps>(BlockInfoCard);

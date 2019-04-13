@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { InspectionAutobaseDataProps, InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps } from './@types/InspectionAutobaseData';
+import { InspectionDataProps, InspectionDataStateProps, InspectionDataDispatchProps, InspectionDataOwnProps } from './@types/InspectionData';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { DivNone } from 'global-styled/global-styled';
@@ -10,12 +10,12 @@ import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } fro
 import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
 
-class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps, { isLoaded: boolean }> {
+class InspectionData extends React.Component<InspectionDataProps, { isLoaded: boolean }> {
   state = {
     isLoaded: false,
   };
 
-  static getDerivedStateFromProps(nextProps: InspectionAutobaseDataProps, prevState) {
+  static getDerivedStateFromProps(nextProps: InspectionDataProps, prevState) {
     const { triggerKey } = nextProps;
     const triggerKeyValue = getNumberValueFromSerch(nextProps.searchState[triggerKey]);
     if (!triggerKeyValue) {
@@ -35,7 +35,7 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
     if (triggerKeyValue) {
       this.props.registryAddInitialData(
         this.props.getRegistryFunc(
-          triggerKeyValue,
+          this.props.searchState,
         ),
       );
       this.loadRegistryData();
@@ -51,7 +51,7 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
       if (triggerKeyValue) {
         this.props.registryAddInitialData(
           this.props.getRegistryFunc(
-            triggerKeyValue,
+            this.props.searchState,
           ),
         );
         this.loadRegistryData();
@@ -86,6 +86,8 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
               loadRegistryData={this.loadRegistryData}
               type={this.props.type}
               triggerKey={this.props.triggerKey}
+              makePayloadToCreateInspect={this.props.makePayloadToCreateInspect}
+              LineDataCarsLast={this.props.LineDataCarsLast}
             />
             <InspectionRegistry registryKey={this.props.loadingPage}/>
           </>
@@ -97,9 +99,9 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
   }
 }
 
-export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnProps>(
+export default compose<InspectionDataProps, InspectionDataOwnProps>(
   withSearch,
-  connect<InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps, ReduxState>(
+  connect<InspectionDataStateProps, InspectionDataDispatchProps, InspectionDataOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (config) => (
@@ -119,4 +121,4 @@ export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnPro
       ),
     }),
   ),
-)(InspectionAutobaseData);
+)(InspectionData);

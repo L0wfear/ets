@@ -4,6 +4,7 @@ import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@t
 
 export type ButtonCloseInspectAutobaseStateProps = {
   lastConductingInspect: InspectAutobase;
+  permissions: string | boolean;
 };
 export type ButtonCloseInspectAutobaseDispatchProps = DispatchProp;
 

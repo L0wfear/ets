@@ -1,6 +1,7 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
+import { DefaultPartInspect } from '../../@types/inspect_reducer';
 
 type InspectAutobaseData = {
   is_under_construction: boolean;
@@ -46,19 +47,17 @@ export type InspectAutobase = {
   company_id: number;
   company_name: string;
   data: InspectAutobaseData;
-  date_end: string | null;
   date_start: string | null;
   id: number;
   inspection_company_id: number;
   open_employee_fio: string;
   open_employee_id: number | null;
-  status: 'conducting' | 'completed';
-  status_text: 'Проводится';
+  status_text: string;
   agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
   commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
   resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
   close_employee_position: string | null;
-};
+} & DefaultPartInspect;
 
 export type IStateInspectAutobase = {
   companyList: Company[],

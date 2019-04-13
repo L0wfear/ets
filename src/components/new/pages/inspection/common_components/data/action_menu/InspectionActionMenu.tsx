@@ -7,7 +7,6 @@ import { DispatchProp, connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { STATUS_TITLE_BY_SLUG, STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT_AUTOBASE_COMPLETED } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_constants';
 import { DivNone } from 'global-styled/global-styled';
 import ButtonCloseInspectAutobase from './components/button_inspect_autobase/ButtonCloseInspectAutobase';
 import { get } from 'lodash';
@@ -15,9 +14,9 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled/InspectionAutobaseDataActionMenu';
 import ButtonContinueInspectAutobase from './components/button_inspect_autobase/ButtonContinueInspectAutobase';
 import ButtonCreateInspectAutobase from './components/button_inspect_autobase/ButtonCreateInspectAutobase';
-import { getLastConductingInspectAutobase, getLastCompletedInspectAutobase } from '../../../autobase/@selectors';
 import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import useLastInpectSatus, { INSPECT_STATUS } from './useLastInpectSatus';
+import { getLastConductingInspect, getLastCompletedInspect } from '../../../autobase/@selectors';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;
@@ -29,7 +28,10 @@ type InspectionActionMenuMenuOwnProps = {
   loadingPage: string;
   type: TypeOfInspect;
   loadRegistryData: () => Promise<void>;
+  makePayloadToCreateInspect?: (searchState: object) => object;
   triggerKey: string;
+
+  LineDataCarsLast?: React.ReactNode;
 };
 
 type InspectionActionMenuMenuProps = (
@@ -38,46 +40,18 @@ type InspectionActionMenuMenuProps = (
   & InspectionActionMenuMenuOwnProps
 );
 
-const STATUS = {
-  noToday: 0,
-  conditionLast: 1,
-  completedLast: 2,
-};
-
-const getLabel = (status: number) => {
-  switch (status) {
-    case STATUS.noToday: return 'На текущий день проверка не создана';
-    case STATUS.conditionLast: return STATUS_TITLE_BY_SLUG[STATUS_INSPECT_AUTOBASE_CONDITING];
-    case STATUS.completedLast: return STATUS_TITLE_BY_SLUG[STATUS_INSPECT_AUTOBASE_COMPLETED];
-  }
-};
-
 const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props) => {
-  const [status, setStatus] = React.useState(STATUS.noToday);
   const {
     lastConductingInspect,
     lastCompletedInspect,
   } = props;
 
-  React.useEffect(
-    () => {
-      if (lastConductingInspect) {
-        if (status !== STATUS.conditionLast) {
-          setStatus(STATUS.conditionLast);
-        }
-      } else {
-        if (lastCompletedInspect) {
-          if (status !== STATUS.completedLast) {
-            setStatus(STATUS.completedLast);
-          }
-        } else {
-          if (status !== STATUS.noToday) {
-            setStatus(STATUS.noToday);
-          }
-        }
-      }
-    },
-    [status, lastConductingInspect, lastCompletedInspect],
+  const {
+    status,
+    status_text,
+  } = useLastInpectSatus(
+    lastConductingInspect,
+    lastCompletedInspect,
   );
 
   return (
@@ -95,13 +69,13 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
       <Row>
         <InspectInfo>
           <LineData>
-            Статус проверки: <StatusLabel>{getLabel(status)}</StatusLabel>
+            Статус проверки: <StatusLabel>{status_text}</StatusLabel>
           </LineData>
           <LineData>
             &nbsp;
           </LineData>
           {
-            status === STATUS.noToday && !lastConductingInspect && !lastCompletedInspect
+            status === INSPECT_STATUS.noToday
               ? (
                 <LineData>
                   <ButtonCreateInspectAutobase
@@ -109,6 +83,7 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
                     loadingPage={props.loadingPage}
                     type={props.type}
                     triggerKey={props.triggerKey}
+                    makePayloadToCreateInspect={props.makePayloadToCreateInspect}
                   />
                 </LineData>
               )
@@ -117,7 +92,7 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
               )
           }
           {
-            status === STATUS.conditionLast && lastConductingInspect
+            status === INSPECT_STATUS.conditionLast
               ? (
                 <>
                   <LineData>
@@ -128,6 +103,15 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
                       <span>Пользователем:</span><StatusLabel>{get(lastConductingInspect, 'open_employee_fio', '')}</StatusLabel>
                     </div>
                   </LineData>
+                  {
+                    props.LineDataCarsLast
+                      ? (
+                        props.LineDataCarsLast
+                      )
+                      : (
+                        <DivNone />
+                      )
+                  }
                   <LineDataButtonLine>
                     <ButtonContinueInspectAutobase loadingPage={props.loadingPage} />
                     <ButtonCloseInspectAutobase loadingPage={props.loadingPage} />
@@ -140,7 +124,7 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
               )
           }
           {
-            status === STATUS.completedLast && lastCompletedInspect
+            status === INSPECT_STATUS.completedLast
               ? (
                 <>
                   <LineData>
@@ -161,11 +145,10 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
 };
 
 export default compose<InspectionActionMenuMenuProps, InspectionActionMenuMenuOwnProps>(
-  withSearch,
   connect<InspectionActionMenuMenuStateProps, DispatchProp, InspectionActionMenuMenuOwnProps, ReduxState>(
     (state, { loadingPage }) => ({
-      lastConductingInspect: getLastConductingInspectAutobase(getListData(getRegistryState(state), loadingPage)),
-      lastCompletedInspect: getLastCompletedInspectAutobase(getListData(getRegistryState(state), loadingPage)),
+      lastConductingInspect: getLastConductingInspect(getListData(getRegistryState(state), loadingPage)),
+      lastCompletedInspect: getLastCompletedInspect(getListData(getRegistryState(state), loadingPage)),
     }),
   ),
 )(InspectionActionMenuMenu);

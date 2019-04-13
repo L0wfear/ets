@@ -42,9 +42,9 @@ export const promiseGetInspectionByIdType = async (id: number, type: TypeOfInspe
     console.error(error); // tslint:disable-line
   }
 
-  const inspectAutobase = get(response, 'result.rows.0', null);
+  const inspect = get(response, 'result.rows.0', null);
 
-  return inspectAutobase;
+  return inspect;
 };
 
 export const promiseCreateInspection = async (payload: PromiseCreateInspectionParameterPayload) => {

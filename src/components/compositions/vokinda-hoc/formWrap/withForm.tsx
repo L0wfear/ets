@@ -10,8 +10,14 @@ import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isObject } from 'highcharts';
 
-type FormErrorType<F> = {
-  [K in keyof F]?: string | null;
+export type FormErrorType<F> = {
+  [K in keyof F]?: (
+    F[K] extends Array<any>
+      ? string
+      : F[K] extends { [k: string]: any }
+        ? FormErrorType<F[K]>
+        : string
+  );
 };
 
 type ConfigWithForm<P, F, S> = {
@@ -48,6 +54,8 @@ type WithFormState<F> = {
 };
 
 type WithFormProps<P> = P & DispatchProp & {
+  IS_CREATING: boolean;
+  isPermitted: boolean;
   isPermittedToUpdate: boolean;
   isPermittedToCreate: boolean;
 };
@@ -318,11 +326,21 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       }
 
       render() {
+        const IS_CREATING = !Boolean(get(this.state.formState, `${config.uniqField}`, !config.uniqField));
+        const isPermittedToCreate = this.props.isPermittedToCreate && !this.props.readOnly;
+        const isPermittedToUpdate = this.props.isPermittedToUpdate && !this.props.readOnly;
+        const isPermitted = (
+          IS_CREATING
+            ? isPermittedToCreate
+            : isPermittedToUpdate
+        );
+
         return (
           <Component
             {...this.props}
             isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
             isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
+            isPermitted={isPermitted}
             formState={this.state.formState}
             originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}
@@ -332,6 +350,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             submitAction={this.submitAction}
             defaultSubmit={this.defaultSubmit}
             hideWithoutChanges={this.hideWithoutChanges}
+            IS_CREATING={IS_CREATING}
           />
         );
       }

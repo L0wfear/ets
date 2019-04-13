@@ -1,29 +1,16 @@
-import { getTodayConductingInspectAutobase, getTodayCompletedInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
 import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import { getTodayConductingInspectPgmBase, getTodayCompletedInspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
+import { getTodayCompletedInspect, getTodayConductingInspect } from 'redux-main/reducers/modules/inspect/inspect_utils';
 
-export const getLastConductingInspectAutobase = memoizeOne(
+export const getLastConductingInspect = memoizeOne(
   (registryList: OneRegistryData['list']) => {
-    return getTodayConductingInspectAutobase(get(registryList, 'data.array', []));
+    return getTodayConductingInspect(get(registryList, 'data.array', []));
   },
 );
 
-export const getLastCompletedInspectAutobase = memoizeOne(
+export const getLastCompletedInspect = memoizeOne(
   (registryList: OneRegistryData['list']) => {
-    return getTodayCompletedInspectAutobase(get(registryList, 'data.array', []));
-  },
-);
-
-export const getLastConductingInspectPgmBase = memoizeOne(
-  (registryList: OneRegistryData['list']) => {
-    return getTodayConductingInspectPgmBase(get(registryList, 'data.array', []));
-  },
-);
-
-export const getLastCompletedInspectPgmBase = memoizeOne(
-  (registryList: OneRegistryData['list']) => {
-    return getTodayCompletedInspectPgmBase(get(registryList, 'data.array', []));
+    return getTodayCompletedInspect(get(registryList, 'data.array', []));
   },
 );

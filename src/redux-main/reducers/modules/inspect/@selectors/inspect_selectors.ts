@@ -11,3 +11,7 @@ export const getInspectAutobase = (state: ReduxState) => (
 export const getInspectPgmBase = (state: ReduxState) => (
   getInspect(state).inspectPgmBase
 );
+
+export const getInspectCarsCondition = (state: ReduxState) => (
+  getInspect(state).inspectCarsCondition
+);

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
-import ViewInspectButtonSubmit from './ViewInspectButtonSubmit';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -10,6 +9,7 @@ import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
 
 type ViewInspectPgmBaseButtonSubmitDispatchProps = {
   actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
@@ -82,8 +82,8 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
-      handleCloseAndPgmBaseAct={handleCloseAndPgmBaseAct}
-      handleGetPgmBaseAct={handleGetPgmBaseAct}
+      handleCloseAndGetAct={handleCloseAndPgmBaseAct}
+      handleGetAct={handleGetPgmBaseAct}
       type={props.type}
       canSave={props.canSave}
     />

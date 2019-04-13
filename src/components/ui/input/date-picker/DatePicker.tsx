@@ -25,7 +25,7 @@ const DatePicker: React.FunctionComponent<DatePickerProps> = (props) => {
   const {
     time = true,
     calendar = true,
-    makeGoodFormat,
+    makeGoodFormat = false,
   } = props;
   let { date: value } = props;
   const format = `${calendar ? `${global.APP_DATE_FORMAT} ` : '' }${time ? global.APP_TIME_FORMAT : ''}`;

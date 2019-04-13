@@ -10,9 +10,11 @@ import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import { OneRegistryData } from '../../../module/registry';
+import { DivNone } from 'global-styled/global-styled';
 
 type FiltersWrapStateProps = {
   isOpen: OneRegistryData['filter']['isOpen'];
+  fields: OneRegistryData['filter']['fields'];
 };
 type FiltersWrapDispatchProps = DispatchProp;
 type FiltersWrapOwnProps = {
@@ -52,13 +54,19 @@ class FiltersWrap extends React.PureComponent<FiltersWrapProps, StateFiltersWrap
     const { registryKey } = this.props;
 
     return (
-      <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
-        <Panel.Collapse>
-          <PanelBodyWrap>
-            <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
-          </PanelBodyWrap>
-        </Panel.Collapse>
-      </PanelWrap>
+      this.props.fields.length
+       ? (
+          <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
+            <Panel.Collapse>
+              <PanelBodyWrap>
+                <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
+              </PanelBodyWrap>
+            </Panel.Collapse>
+          </PanelWrap>
+        )
+        : (
+          <DivNone />
+        )
     );
   }
 }
@@ -67,6 +75,7 @@ export default compose<FiltersWrapProps, FiltersWrapOwnProps>(
   connect<FiltersWrapStateProps, FiltersWrapDispatchProps, FiltersWrapOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       isOpen: getFilterData(state.registry, registryKey).isOpen,
+      fields: getFilterData(state.registry, registryKey).fields,
     }),
   ),
 )(FiltersWrap);

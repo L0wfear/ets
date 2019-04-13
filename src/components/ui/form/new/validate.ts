@@ -47,7 +47,7 @@ export const validate = <F, P>(shema: SchemaType<F, P>, formState: F, props: P):
         newObj[key] = validateBoolean<F, P>(key, fieldData, formState, props);
         break;
       case 'schema':
-        newObj[key] = validate<any, P>((fieldData as any).shema, formState[key], props);
+        newObj[key] = validate<any, P>((fieldData as any).schema, formState[key], props);
         break;
       default:
         throw new Error('Нужно определить функцию для валидации');

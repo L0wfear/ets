@@ -170,36 +170,38 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         this.setState(({ formState }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
-            switch (config.schema.properties[key].type) {
-              case 'number':
-                const valueNumberString: number | string = (value as number | string);
+            if (key in config.schema.properties) {
+              switch (config.schema.properties[key].type) {
+                case 'number':
+                  const valueNumberString: number | string = (value as number | string);
 
-                if (valueNumberString || valueNumberString === 0) {
-                  const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
-                  if (!isNaN(Number(valueReplaced))) {
-                    if (valueReplaced.match(/^.\d*$/)) {
-                      newValue = `0${valueReplaced}`;
+                  if (valueNumberString || valueNumberString === 0) {
+                    const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
+                    if (!isNaN(Number(valueReplaced))) {
+                      if (valueReplaced.match(/^.\d*$/)) {
+                        newValue = `0${valueReplaced}`;
+                      }
+                      newValue = valueReplaced;
+                    } else {
+                      newValue = valueReplaced;
                     }
-                    newValue = valueReplaced;
                   } else {
-                    newValue = valueReplaced;
+                    newValue = null;
                   }
-                } else {
-                  newValue = null;
-                }
-                break;
-              case 'string':
-              case 'boolean':
-                newValue = value;
-                break;
-              case 'date':
-                newValue = createValidDate(value);
-                break;
-              case 'datetime':
-                newValue = createValidDateTime(value);
-                break;
-              default:
-              newValue = Boolean(value) || value === 0 ? value : null;
+                  break;
+                case 'string':
+                case 'boolean':
+                  newValue = value;
+                  break;
+                case 'date':
+                  newValue = createValidDate(value);
+                  break;
+                case 'datetime':
+                  newValue = createValidDateTime(value);
+                  break;
+                default:
+                newValue = Boolean(value) || value === 0 ? value : null;
+              }
             }
             formState[key] = newValue;
 

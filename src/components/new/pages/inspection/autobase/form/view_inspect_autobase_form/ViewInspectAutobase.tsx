@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { TitleForm } from './styled/ViewInspectAutobaseStyled';
 import { Button, Row, Col } from 'react-bootstrap';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -15,9 +14,10 @@ import { inspectAutobaeSchema } from './inspect_autobase_schema';
 import { validate } from 'components/ui/form/new/validate';
 import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
+import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 
 type InitialState = {
-  selectedInspectAutobase: InspectAutobase,
+  selectedInspect: InspectAutobase,
   errors: Partial<Record<keyof InspectAutobase['data'], string>>;
   canSave: boolean;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
@@ -27,7 +27,7 @@ type InitialState = {
 };
 
 const initialState: InitialState = {
-  selectedInspectAutobase: null,
+  selectedInspect: null,
   errors: {},
   canSave: false,
   type: 'list',
@@ -47,10 +47,10 @@ const actionChangeSelectedInspectAutobaseData = (data: InspectAutobase['data']) 
   },
 });
 
-const actionSetSelectedInspectAutobaseData = (selectedInspectAutobase: InitialState['selectedInspectAutobase'], type: InitialState['type']) => ({
+const actionSetSelectedInspectAutobaseData = (selectedInspect: InitialState['selectedInspect'], type: InitialState['type']) => ({
   type: SET_INITIAL_STATE,
   payload: {
-    selectedInspectAutobase,
+    selectedInspect,
     type,
   },
 });
@@ -70,28 +70,28 @@ const actionSetComissionAndMembers = (
 const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
-      const errors = validate(inspectAutobaeSchema, payload.selectedInspectAutobase.data, { type: payload.type });
+      const errors = validate(inspectAutobaeSchema, payload.selectedInspect.data, { type: payload.type });
 
       return {
-        selectedInspectAutobase: payload.selectedInspectAutobase,
+        selectedInspect: payload.selectedInspect,
         type: payload.type,
         errors,
         canSave: Object.values(errors).every((error) => !error),
       };
     }
     case CHANGE_DATA: {
-      const selectedInspectAutobase = {
-        ...state.selectedInspectAutobase,
+      const selectedInspect = {
+        ...state.selectedInspect,
         data: {
-          ...state.selectedInspectAutobase.data,
+          ...state.selectedInspect.data,
           ...payload.data,
         },
       };
-      const errors = validate(inspectAutobaeSchema, selectedInspectAutobase.data, { type: state.type });
+      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: state.type });
 
       return {
         ...state,
-        selectedInspectAutobase,
+        selectedInspect,
         errors,
         canSave: Object.values(errors).every((error) => !error),
       };
@@ -102,15 +102,15 @@ const reducer = (state: InitialState, { type, payload }) => {
         agents_from_gbu,
         resolve_to,
       } = payload.data;
-      const selectedInspectAutobase = {
-        ...state.selectedInspectAutobase,
+      const selectedInspect = {
+        ...state.selectedInspect,
         commission_members,
         agents_from_gbu,
         resolve_to,
       };
       return {
         ...state,
-        selectedInspectAutobase,
+        selectedInspect,
       };
     }
     default: return state;
@@ -127,12 +127,12 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
     () => {
       dispatch(
         actionSetSelectedInspectAutobaseData(
-          props.selectedInspectAutobase,
+          props.selectedInspect,
           props.type,
         ),
       );
     },
-    [props.type, props.selectedInspectAutobase],
+    [props.type, props.selectedInspect],
   );
 
   const isPermittedChangeListParams = (
@@ -148,7 +148,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
         );
       }
     },
-    [state.selectedInspectAutobase, isPermittedChangeListParams],
+    [state.selectedInspect, isPermittedChangeListParams],
   );
 
   const onChangeFile = React.useCallback(
@@ -156,13 +156,13 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
       if (isPermittedChangeListParams) {
         dispatch(
           actionChangeSelectedInspectAutobaseData({
-            ...state.selectedInspectAutobase.data,
+            ...state.selectedInspect.data,
             [key]: value,
           }),
         );
       }
     },
-    [state.selectedInspectAutobase, isPermittedChangeListParams],
+    [state.selectedInspect, isPermittedChangeListParams],
   );
 
   const closeWithoutChanges = React.useCallback(
@@ -183,91 +183,87 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
-  return state.selectedInspectAutobase
+  return state.selectedInspect
     ? (
-      <Row>
-        <Col md={12} sm={12}>
-          <TitleForm>
-            <h4>Мониторинг обустройства автобаз</h4>
-          </TitleForm>
-        </Col>
-        <Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
-          <BoxContainer>
-            <ExtField
-              type="string"
-              label="Организация:"
-              value={state.selectedInspectAutobase.company_name}
-              readOnly
-              inline
-            />
-            <ExtField
-              type="string"
-              label="Адрес базы:"
-              value={state.selectedInspectAutobase.base_address}
-              readOnly
-              inline
-            />
-          </BoxContainer>
-          <BoxContainer>
-            <h4>
-              Выявленные нарушения:
-            </h4>
-            <IAVisibleWarning
-              onChange={onChangeData}
-              data={state.selectedInspectAutobase.data}
-              errors={state.errors}
-              isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheck}
-            />
-          </BoxContainer>
-          <Row>
-            <Col md={6}>
-              <FileField
-                id="file"
-                label="Фотографии подтверждающих документов"
-                multiple
-                value={state.selectedInspectAutobase.data.photos_of_supporting_documents}
-                onChange={onChangeFile}
-                disabled={!isPermittedChangeListParams}
-                boundKeys="photos_of_supporting_documents"
+      <>
+        <ContainerForm>
+          <Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
+            <BoxContainer>
+              <ExtField
+                type="string"
+                label="Организация:"
+                value={state.selectedInspect.company_name}
+                readOnly
+                inline
               />
-            </Col>
-            <Col md={6}>
-              <FileField
-                id="file"
-                label="Фотографии дефектов"
-                multiple
-                value={state.selectedInspectAutobase.data.photos_defect}
-                onChange={onChangeFile}
-                disabled={!isPermittedChangeListParams}
-                boundKeys="photos_defect"
+              <ExtField
+                type="string"
+                label="Адрес базы:"
+                value={state.selectedInspect.base_address}
+                readOnly
+                inline
               />
-            </Col>
-          </Row>
-        </Col>
-        <ViewAddInspectEmployee
-          type={props.type}
-          isPermitted={props.isPermitted}
-          canAddMembers={true}
-          canAddCompanyAgent={true}
-          canRemoveEmployee={true}
-          selectedInspectAutobase={state.selectedInspectAutobase}
-          setComissionAndMembers={setComissionAndMembers}
-        >
-        </ViewAddInspectEmployee>
-        <Col md={12} sm={12}>
+            </BoxContainer>
+            <BoxContainer>
+              <h4>
+                Выявленные нарушения:
+              </h4>
+              <IAVisibleWarning
+                onChange={onChangeData}
+                data={state.selectedInspect.data}
+                errors={state.errors}
+                isPermitted={isPermittedChangeListParams}
+                filedToCheck={filedToCheck}
+              />
+            </BoxContainer>
+            <Row>
+              <Col md={6}>
+                <FileField
+                  id="file"
+                  label="Фотографии подтверждающих документов"
+                  multiple
+                  value={state.selectedInspect.data.photos_of_supporting_documents}
+                  onChange={onChangeFile}
+                  disabled={!isPermittedChangeListParams}
+                  boundKeys="photos_of_supporting_documents"
+                />
+              </Col>
+              <Col md={6}>
+                <FileField
+                  id="file"
+                  label="Фотографии дефектов"
+                  multiple
+                  value={state.selectedInspect.data.photos_defect}
+                  onChange={onChangeFile}
+                  disabled={!isPermittedChangeListParams}
+                  boundKeys="photos_defect"
+                />
+              </Col>
+            </Row>
+          </Col>
+          <ViewAddInspectEmployee
+            type={props.type}
+            isPermitted={props.isPermitted}
+            canAddMembers={true}
+            canAddCompanyAgent={true}
+            canRemoveEmployee={true}
+            selectedInspectAutobase={state.selectedInspect}
+            setComissionAndMembers={setComissionAndMembers}
+          />
+        </ContainerForm>
+        <FooterForm md={12} sm={12}>
           <FooterEnd>
             <ViewInspectAutobaseButtonSubmit
               canSave={state.canSave}
               type={props.type}
               handleHide={props.handleHide}
-              selectedInspectAutobase={state.selectedInspectAutobase}
+              selectedInspectAutobase={state.selectedInspect}
               loadingPage={props.page}
             />
             <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
-        </Col>
-      </Row>
+        </FooterForm>
+      </>
     )
     : (
       <DivNone />

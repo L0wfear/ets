@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isFunction, isString, isBoolean } from 'util';
+import { isFunction, isString, isBoolean, isArray } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -8,9 +8,16 @@ import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
+import { isObject } from 'highcharts';
 
-type FormErrorType<F> = {
-  [K in keyof F]?: string | null;
+export type FormErrorType<F> = {
+  [K in keyof F]?: (
+    F[K] extends Array<any>
+      ? string
+      : F[K] extends { [k: string]: any }
+        ? FormErrorType<F[K]>
+        : string
+  );
 };
 
 type ConfigWithForm<P, F, S> = {
@@ -47,6 +54,8 @@ type WithFormState<F> = {
 };
 
 type WithFormProps<P> = P & DispatchProp & {
+  IS_CREATING: boolean;
+  isPermitted: boolean;
   isPermittedToUpdate: boolean;
   isPermittedToCreate: boolean;
 };
@@ -55,6 +64,17 @@ type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof
 type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
 type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
 type FormWithDefaultSubmit = () => void;
+
+const canSaveTest = (errorsData: any) => {
+  if (isObject(errorsData)) {
+    return Object.values(errorsData).every((error) => canSaveTest(error));
+  }
+  if (isArray(errorsData)) {
+    return errorsData.every((error) => canSaveTest(error));
+  }
+
+  return !errorsData;
+};
 
 export type OutputWithFormProps<P, F, T extends any[], A> = (
   WithFormProps<P>
@@ -155,7 +175,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           return config.canSave(state, this.props);
         }
 
-        return Object.values(state.formErrors).every((error) => !error);
+        return canSaveTest(state.formErrors);
       }
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
         this.handleChange(objChangeOrName, get(newRawValue, ['target', 'checked'], null));
@@ -303,11 +323,21 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       }
 
       render() {
+        const IS_CREATING = !Boolean(get(this.state.formState, `${config.uniqField}`, !config.uniqField));
+        const isPermittedToCreate = this.props.isPermittedToCreate && !this.props.readOnly;
+        const isPermittedToUpdate = this.props.isPermittedToUpdate && !this.props.readOnly;
+        const isPermitted = (
+          IS_CREATING
+            ? isPermittedToCreate
+            : isPermittedToUpdate
+        );
+
         return (
           <Component
             {...this.props}
             isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
             isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
+            isPermitted={isPermitted}
             formState={this.state.formState}
             originalFormState={this.state.originalFormState}
             formErrors={this.state.formErrors}
@@ -317,6 +347,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             submitAction={this.submitAction}
             defaultSubmit={this.defaultSubmit}
             hideWithoutChanges={this.hideWithoutChanges}
+            IS_CREATING={IS_CREATING}
           />
         );
       }

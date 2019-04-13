@@ -1,6 +1,7 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/add_inspect_employee/addInspectEmployee';
+import { DefaultPartInspect } from '../../@types/inspect_reducer';
 
 export type InspectPgmBaseData = {
   address_base: string;
@@ -61,13 +62,11 @@ export type InspectPgmBase = {
   company_id: number;
   company_name: string;
   data: InspectPgmBaseData;
-  date_end: string | null;
   date_start: string | null;
   id: number;
   inspection_company_id: number;
   open_employee_fio: string;
   open_employee_id: number | null;
-  status: 'conducting' | 'completed';
   status_text: 'Проводится';
   agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
   commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
@@ -89,7 +88,7 @@ export type InspectPgmBase = {
     fio: string | null;
   },
   close_employee_position: string | null;
-};
+} & DefaultPartInspect;
 
 export type IStateInspectPgmBase = {
   companyList: Company[],

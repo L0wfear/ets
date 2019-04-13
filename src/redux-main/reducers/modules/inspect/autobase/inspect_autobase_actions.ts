@@ -18,10 +18,9 @@ import {
   makeFilesForBackend,
 } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
-import { STATUS_INSPECT_AUTOBASE_CONDITING, STATUS_INSPECT_AUTOBASE_COMPLETED } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_constants';
 import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
-import { diffDatesByDays, getDateWithMoscowTz } from 'utils/dates';
 import { createValidDateTime } from 'utils/dates';
+import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -40,12 +39,12 @@ export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAuto
 };
 
 export const actionSetInspectAutobaseInspectAutobaseList = (inspectAutobaseList: IStateInspectAutobase['inspectAutobaseList']): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectAutobase>>, ReduxState, {}, AnyAction> => (dispatch) => {
-  const lastConductingInspect = getTodayConductingInspectAutobase(inspectAutobaseList);
+  const lastConductingInspect = getTodayConductingInspect(inspectAutobaseList);
   const stateInspectAutobase = dispatch(
     actionSetInspectAutobase({
       inspectAutobaseList,
       lastConductingInspect,
-      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspectAutobase(inspectAutobaseList),
+      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspect(inspectAutobaseList),
     }),
   );
 
@@ -279,26 +278,3 @@ const inspectionAutobaseActions = {
 };
 
 export default inspectionAutobaseActions;
-
-const isInspectAutobaseIsCompleted = ({ status }: InspectAutobase) => (
-  status === STATUS_INSPECT_AUTOBASE_COMPLETED
-);
-/**
- * Получаем последнюю за текущий день закрытую испекцию
- */
-export const getTodayCompletedInspectAutobase = (data: InspectAutobase[]) => (
-  data.find((inspectAutobase) => (
-    isInspectAutobaseIsCompleted(inspectAutobase)
-    && diffDatesByDays(getDateWithMoscowTz(), inspectAutobase.date_end) === 0
-  ))
-);
-
-export const isInspectAutobaseIsConducting = ({ status }: InspectAutobase) => (
-  status === STATUS_INSPECT_AUTOBASE_CONDITING
-);
-/**
- * Получаем последнюю открытую испекцию
- */
-export const getTodayConductingInspectAutobase = (data: InspectAutobase[]) => (
-  data.find(isInspectAutobaseIsConducting)
-);

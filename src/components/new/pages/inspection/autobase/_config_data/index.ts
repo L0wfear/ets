@@ -6,7 +6,7 @@ export default {
   routePath: '/monitoring/autobase/:id?/:type?',
   title: 'Обустройство автобаз',
   isNewRegistry: true,
-  entyity: 'monitoring.autobase',
+  entyity: 'inspect.autobase',
   noDotList: true,
   checkHidden: (isShow, props) => isShow && !props.isOkrug,
   component,

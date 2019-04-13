@@ -73,6 +73,7 @@ export type TypeFields<F extends any> = {
     | 'toFixed3'
     | 'array'
     | 'workOrNot'
+    | 'checkOrExpect'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   childrenFields?: TypeFields<F>[];
@@ -86,7 +87,7 @@ export type TypeFields<F extends any> = {
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 };
 
-export type TypeConfigData<F extends any> = {
+export type TypeConfigData<F = any> = {
   noInitialLoad?: boolean;
   Service: any;
   actionHelpers?: {

@@ -6,12 +6,12 @@ import { isNumber } from 'util';
 
 export type WithSearchProps = {
   params: any;
-  setParams: (obj: { [key: string]: string | number }) => void;
+  setParams: (obj: { [key: string]: string | number }, typeAction?: 'replace' | 'push') => void;
   searchState: any;
   setDataInSearch: (obj: any) => void;
 } & RouteComponentProps<any>;
 
-const withSearch = (Component) => (
+const withSearch = <OwnProps extends any>(Component: React.ElementType<any>) => (
   withRouter(
     class extends React.Component<RouteComponentProps<{}>, { params: any, search: string; searchState: WithSearchProps['searchState'] }> {
       constructor(props) {
@@ -56,7 +56,8 @@ const withSearch = (Component) => (
         }
       }
 
-      setDataInSearch: WithSearchProps['setDataInSearch'] = (data) => {
+      setDataInSearch: WithSearchProps['setDataInSearch'] = async (data) => {
+        await Promise.resolve(true);
         this.props.history.replace(
           `${
             this.props.match.url
@@ -71,16 +72,16 @@ const withSearch = (Component) => (
         );
       }
 
-      setParams: WithSearchProps['setParams'] = (objParams) => {
+      setParams: WithSearchProps['setParams'] = (objParams, typeAction = 'push') => {
         let urlAsArray = this.props.match.path.split('/').map((partOfUrl) => {
-          let ans = partOfUrl.replace('?', '');
+          let ans = partOfUrl;
 
           Object.entries(objParams).forEach(([key, value]) => {
-            ans = ans.replace(`:${key}`, value || isNumber(value) ? value.toString() : '');
+            ans = ans.replace(`:${key}?`, value || isNumber(value) ? value.toString() : '');
           });
 
           Object.entries(this.props.match.params).forEach(([key, value]: [string, string]) => {
-            ans = ans.replace(`:${key}`, value ? value : '');
+            ans = ans.replace(`:${key}?`, value ? value : '');
           });
 
           return ans;
@@ -91,7 +92,7 @@ const withSearch = (Component) => (
           urlAsArray = urlAsArray.slice(0, emptyIndex);
         }
 
-        this.props.history.push(
+        this.props.history[typeAction](
           `${
             urlAsArray.join('/')
           }${

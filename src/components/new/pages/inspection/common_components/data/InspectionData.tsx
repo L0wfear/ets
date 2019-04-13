@@ -35,7 +35,7 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
     if (triggerKeyValue) {
       this.props.registryAddInitialData(
         this.props.getRegistryFunc(
-          triggerKeyValue,
+          this.props.searchState,
         ),
       );
       this.loadRegistryData();
@@ -51,7 +51,7 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
       if (triggerKeyValue) {
         this.props.registryAddInitialData(
           this.props.getRegistryFunc(
-            triggerKeyValue,
+            this.props.searchState,
           ),
         );
         this.loadRegistryData();
@@ -86,6 +86,8 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
               loadRegistryData={this.loadRegistryData}
               type={this.props.type}
               triggerKey={this.props.triggerKey}
+              makePayloadToCreateInspect={this.props.makePayloadToCreateInspect}
+              LineDataCarsLast={this.props.LineDataCarsLast}
             />
             <InspectionRegistry registryKey={this.props.loadingPage}/>
           </>
@@ -98,7 +100,7 @@ class InspectionAutobaseData extends React.Component<InspectionAutobaseDataProps
 }
 
 export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnProps>(
-  connect<InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps, any, ReduxState>(
+  connect<InspectionAutobaseDataStateProps, InspectionAutobaseDataDispatchProps, InspectionAutobaseDataOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
       registryAddInitialData: (config) => (
@@ -117,10 +119,6 @@ export default compose<InspectionAutobaseDataProps, InspectionAutobaseDataOwnPro
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
   withSearch,
 )(InspectionAutobaseData);

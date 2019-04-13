@@ -1,0 +1,96 @@
+import styled from 'styled-components';
+import { Col } from 'react-bootstrap';
+
+export const TitleForm = styled(Col)`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: center;
+
+  padding: 5px 20px;
+  background-color: #e9f0f5;
+  flex-shrink: 0;
+  border-bottom: 1px solid black;
+`;
+
+export const ContainerForm = styled.div`
+  padding: 5px 0px;
+
+  flex-grow: 10;
+
+  overflow: auto;
+`;
+
+export const FooterForm = styled(Col)`
+  border-top: 1px solid black;
+  background-color: #e9f0f5;
+  padding: 5px 20px;
+  flex-shrink: 0;
+`;
+
+export const HiddenPageEtsContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  top: 0;
+  padding: 0;
+  pointer-events: none;
+  z-index: 2;
+  height: 100%;
+  overflow: hidden;
+
+  z-index: 1000;
+`;
+
+export const PopupBottomForm = styled.form<{ show: boolean }>`
+  pointer-events: ${({ show }) => show ? 'all' : 'none'};
+  height: 100%;
+
+  transition: all 500ms;
+  opacity: ${({ show }) => show ? 1 : 0};
+  transform: ${({ show }) => show ? 'translate(0, 0)' : 'translate(0, 100%)'};
+  background-color: #fafafa;
+
+  display: flex;
+  flex-direction: column;
+`;
+
+export const CheckContainerTable = styled.div`
+`;
+
+export const CheckContainerTd = styled.div`
+  max-width: 33%;
+  width: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const CheckContainerRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 3px;
+  border: solid 1px black;
+  padding: 10px 15px;
+  margin-bottom: 5px;
+  &:last-child {
+    margin-bottom: 10px;
+  }
+  ${CheckContainerTd}{
+    &:first-child{
+      justify-content: flex-start;
+    }
+    &:last-child{
+      justify-content: flex-end;
+    }
+  }
+`;
+
+export const ButtonBlock = styled.div`
+  button{
+    margin-right: 5px;
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+`;

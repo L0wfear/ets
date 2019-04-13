@@ -330,6 +330,9 @@ export const InspectRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
 export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/container',
 );
+export const InspectCarsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/cars',
+);
 
 export const EdcRequestService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc_request',

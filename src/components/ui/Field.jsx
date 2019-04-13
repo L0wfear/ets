@@ -13,14 +13,20 @@ import Div from 'components/ui/Div';
 const checkboxStyle = { fontSize: '20px', margin: '5px' };
 
 function StringField(props) {
-  const { error, label = '', modalKey, isLoading, ...mainProps } = props;
+  const {
+    error,
+    label = '',
+    modalKey,
+    isLoading,
+    inline,
+    ...mainProps
+  } = props;
   const {
     readOnly = false,
     disabled = false,
     className = '',
     wrapStyle,
     hidden,
-    inline = false,
   } = props;
   let { value } = props;
 

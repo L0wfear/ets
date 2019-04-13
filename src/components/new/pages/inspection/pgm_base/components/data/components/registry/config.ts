@@ -5,7 +5,7 @@ import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@ty
 
 export const registryKey = 'inspectionPgmBase';
 
-export const getInspectionPgmBaseDataRegistryConfig = (pgmBaseId: number): TypeConfigData<InspectPgmBase> => {
+export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): TypeConfigData<InspectPgmBase> => {
   return {
     noInitialLoad: true,
     Service: {

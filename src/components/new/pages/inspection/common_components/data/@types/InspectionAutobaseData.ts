@@ -13,7 +13,9 @@ export type InspectionAutobaseDataOwnProps = {
   loadingPage: string;
   triggerKey: string;
   type: TypeOfInspect;
-  getRegistryFunc: (value: number) => TypeConfigData<any>;
+  getRegistryFunc: (searchState: object) => TypeConfigData;
+  makePayloadToCreateInspect?: (searchState: object) => object;
+  LineDataCarsLast?: React.ReactNode;
 };
 
 export type InspectionAutobaseDataWrapProps = (

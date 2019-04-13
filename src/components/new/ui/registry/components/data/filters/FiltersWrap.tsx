@@ -2,17 +2,17 @@ import * as React from 'react';
 import * as Panel from 'react-bootstrap/lib/Panel';
 
 import { connect } from 'react-redux';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
 
 import Filters from 'components/new/ui/registry/components/data/filters/Filters';
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
+import { DivNone } from 'global-styled/global-styled';
 
 type PropsFiltersWrap = {
   registryKey: string;
   isOpen: boolean;
-  rowFields: any[];
+  fields: any[];
   components?: any;
 };
 
@@ -43,20 +43,26 @@ class FiltersWrap extends React.Component<PropsFiltersWrap, StateFiltersWrap> {
     const { registryKey } = this.props;
 
     return (
-      <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
-        <Panel.Collapse>
-          <PanelBodyWrap>
-            <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
-          </PanelBodyWrap>
-        </Panel.Collapse>
-      </PanelWrap>
+      this.props.fields.length
+       ? (
+          <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
+            <Panel.Collapse>
+              <PanelBodyWrap>
+                <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
+              </PanelBodyWrap>
+            </Panel.Collapse>
+          </PanelWrap>
+        )
+        : (
+          <DivNone />
+        )
     );
   }
 }
 
 const mapStateToProps = (state, { registryKey }) => ({
   isOpen: getFilterData(state.registry, registryKey).isOpen,
-  rowFields: getListData(state.registry, registryKey).meta.rowFields,
+  fields: getFilterData(state.registry, registryKey).fields,
 });
 
 export default connect(

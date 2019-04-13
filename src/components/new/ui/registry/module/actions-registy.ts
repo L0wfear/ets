@@ -63,7 +63,7 @@ export const registryRemoveData = (registryKey) => ({
   },
 });
 
-export const registryLoadDataByKey = (registryKey) => async (dispatch, getState) => {
+export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getState) => {
   // const stateSome = getState();
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
@@ -206,7 +206,7 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage 
     ),
   );
 
-  if (getRegistryData.userServerFilters) {
+  if (getRegistryData && getRegistryData.userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -277,7 +277,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     filterValues: applyFilterFromRaw(filter),
   };
 
-  if (!getRegistryData.userServerFilters) {
+  if (!getRegistryData || !getRegistryData.userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
     processed.total_count = processed.processedArray.length;
   }
@@ -301,7 +301,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     ),
   );
 
-  if (getRegistryData.userServerFilters) {
+  if (getRegistryData && getRegistryData.userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -337,7 +337,7 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
     console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
   }
 
-  if (!getRegistryData.userServerFilters) {
+  if (!getRegistryData || !getRegistryData.userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
     processed.total_count = processed.processedArray.length;
   }
@@ -352,7 +352,7 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
     ),
   );
 
-  if (getRegistryData.userServerFilters) {
+  if (getRegistryData && getRegistryData.userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -438,7 +438,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     sort,
   };
 
-  if (!getRegistryData.userServerFilters) {
+  if (!getRegistryData || !getRegistryData.userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
   }
 
@@ -452,7 +452,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     ),
   );
 
-  if (getRegistryData.userServerFilters) {
+  if (getRegistryData && getRegistryData.userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -499,7 +499,7 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   let checkedRowsNew = {};
   let checkArray = processedArray;
 
-  if (!getRegistryData.userServerFilters) {
+  if (!getRegistryData || !getRegistryData.userServerFilters) {
     checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
   }
 

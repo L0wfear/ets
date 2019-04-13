@@ -5,7 +5,7 @@ import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/auto
 export type ViewInspectAutobaseWrapOwnProps = {
   loadingPage: string;
   onFormHide: (isSubmitted: boolean, inspectAuotbase?: InspectAutobase) => any;
-  selectedInspectAutobase: InspectAutobase;
+  selectedInspect: InspectAutobase;
 };
 
 export type ViewInspectAutobaseWrapProps = (
@@ -22,7 +22,7 @@ export type ViewInspectAutobaseDispatchProps = {
 };
 export type ViewInspectAutobaseOwnProps = {
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
-  selectedInspectAutobase: InspectAutobase;
+  selectedInspect: InspectAutobase;
   handleHide: (isSubmitted: boolean, inspectAuotbase?: InspectAutobase) => any;
   isPermitted: boolean;
 

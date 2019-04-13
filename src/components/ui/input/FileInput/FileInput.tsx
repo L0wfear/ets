@@ -71,6 +71,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           disabled={this.props.disabled}
         />,
       );
+
     const ID = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-list` : undefined;
 
     return (

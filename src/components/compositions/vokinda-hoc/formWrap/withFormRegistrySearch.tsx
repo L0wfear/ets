@@ -26,7 +26,7 @@ const getPermissionsCreateReadUpdate = (permission) => {
 
 export const withFormRegistrySearch = (Component) => (
   compose<any, any>(
-    connect<any, any, { registryKey: string }, any, ReduxState>(
+    connect<any, any, { registryKey: string }, ReduxState>(
       (state, { registryKey }) => ({
         getOneData: getServiceData(state.registry, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
@@ -51,10 +51,6 @@ export const withFormRegistrySearch = (Component) => (
           )
         ),
       }),
-      null,
-      {
-        pure: false,
-      },
     ),
     withSearch,
     withRequirePermissionsNew(),

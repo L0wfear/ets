@@ -14,6 +14,7 @@ import ButtonCreateDutyMission from './button-by-type/duty_mission_template/Butt
 import ButtonCloseEdcRequest from './button-by-type/edc_request/ButtonCloseEdcRequest';
 import ButtonCancelEdcRequest from './button-by-type/edc_request/ButtonCancelEdcRequest';
 import ButtonRejectEdcRequest from './button-by-type/edc_request/ButtonRejectEdcRequest';
+import ButtonReadCarsConditionsCar from './button-by-type/cars_conditions_car/ButtonReadCarsConditionsCar';
 
 type PropsComponentButton = {
   type: string;
@@ -85,6 +86,12 @@ class ComponentButton extends React.Component<PropsComponentButton, {}> {
     if (type === buttonsTypes.edc_request_close) {
       return (
         <ButtonCloseEdcRequest registryKey={this.props.registryKey} />
+      );
+    }
+
+    if (type === buttonsTypes.read_cars_contisions_car) {
+      return (
+        <ButtonReadCarsConditionsCar registryKey={this.props.registryKey} />
       );
     }
 

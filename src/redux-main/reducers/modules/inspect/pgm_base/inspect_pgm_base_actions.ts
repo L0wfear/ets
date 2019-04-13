@@ -17,10 +17,9 @@ import {
   makeFilesForBackend,
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import pgmStoreActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
-import { STATUS_INSPECT_PGM_BASE_CONDITING, STATUS_INSPECT_PGM_BASE_COMPLETED } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_constants';
 import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
-import { diffDatesByDays, getDateWithMoscowTz } from 'utils/dates';
 import { createValidDateTime } from 'utils/dates';
+import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 
 export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBase>): ThunkAction<IStateInspectPgmBase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectPgmBaseOld = getInspectPgmBase(getState());
@@ -39,12 +38,12 @@ export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBa
 };
 
 export const actionSetInspectPgmBaseInspectPgmBaseList = (inspectPgmBaseList: IStateInspectPgmBase['inspectPgmBaseList']): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectPgmBase>>, ReduxState, {}, AnyAction> => (dispatch) => {
-  const lastConductingInspect = getTodayConductingInspectPgmBase(inspectPgmBaseList);
+  const lastConductingInspect = getTodayConductingInspect(inspectPgmBaseList);
   const stateInspectPgmBase = dispatch(
     actionSetInspectPgmBase({
       inspectPgmBaseList,
       lastConductingInspect,
-      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspectPgmBase(inspectPgmBaseList),
+      lastCompletedInspect: lastConductingInspect ? null : getTodayCompletedInspect(inspectPgmBaseList),
     }),
   );
 
@@ -286,28 +285,5 @@ const inspectionPgmBaseActions = {
   actionUpdateInspectPgmBase,
   actionCloseInspectPgmBase,
 };
-
-const isInspectPgmBaseIsCompleted = ({ status }: InspectPgmBase) => (
-  status === STATUS_INSPECT_PGM_BASE_COMPLETED
-);
-/**
- * Получаем последнюю за текущий день закрытую испекцию
- */
-export const getTodayCompletedInspectPgmBase = (data: InspectPgmBase[]) => (
-  data.find((inspectPgmBase) => (
-    isInspectPgmBaseIsCompleted(inspectPgmBase)
-    && diffDatesByDays(getDateWithMoscowTz(), inspectPgmBase.date_end) === 0
-  ))
-);
-
-export const isInspectPgmBaseIsConducting = ({ status }: InspectPgmBase) => (
-  status === STATUS_INSPECT_PGM_BASE_CONDITING
-);
-/**
- * Получаем последнюю открытую испекцию
- */
-export const getTodayConductingInspectPgmBase = (data: InspectPgmBase[]) => (
-  data.find(isInspectPgmBaseIsConducting)
-);
 
 export default inspectionPgmBaseActions;

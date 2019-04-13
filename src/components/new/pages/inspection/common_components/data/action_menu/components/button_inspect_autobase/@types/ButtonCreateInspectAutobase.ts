@@ -4,6 +4,7 @@ import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actio
 import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 export type ButtonCreateInspectAutobaseStateProps = {
+  permissions: string | boolean;
 };
 export type ButtonCreateInspectAutobaseDispatchProps = {
   actionCreateInspect: HandleThunkActionCreator<typeof inspectionActions.actionCreateInspect>;
@@ -13,6 +14,7 @@ export type ButtonCreateInspectAutobaseOwnProps = {
   loadRegistryData: () => Promise<void>;
   type: TypeOfInspect;
   triggerKey: string;
+  makePayloadToCreateInspect?: (searchState: object) => object;
 };
 
 export type ButtonCreateInspectAutobaseProps = (

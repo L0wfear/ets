@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {
-  TitleForm,
-} from './styled/ViewInspectPgmBaseStyled';
 import { Button, Row, Col } from 'react-bootstrap';
 import IAVisibleWarning from 'components/new/pages/inspection/pgm_base/components/vsible_warning/IAVisibleWarning';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
-import { ViewInspectPgmBaseProps } from './@types/ViewInspectPgmBase';
+import { ViewInspectPgmBaseProps, ViewInspectPgmBaseWrapOwnProps, ViewInspectPgmBaseStateProps, ViewInspectPgmBaseDispatchProps } from './@types/ViewInspectPgmBase';
 import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
 import ViewInspectPgmBaseButtonSubmit from './button_sumbit/ViewInspectPgmBaseButtonSubmit';
 import { Reducer } from 'redux';
@@ -23,9 +20,14 @@ import { get } from 'lodash';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import ContainerBlock from './container_bloc';
 import { BoxContainer } from '../../../autobase/components/data/styled/InspectionAutobaseData';
+import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
+import { getInspectPgmBase } from 'redux-main/reducers/selectors';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
 
 type InitialState = {
-  selectedInspectPgmBase: InspectPgmBase,
+  selectedInspect: InspectPgmBase,
   errors: Partial<Record<keyof InspectPgmBase['data'], string>>;
   canSave: boolean;
   type: keyof typeof INSPECT_PGM_BASE_TYPE_FORM;
@@ -54,7 +56,7 @@ const containerElementInitialState: InitialState['containerElement'] = {
 };
 
 const initialState: InitialState = {
-  selectedInspectPgmBase: null,
+  selectedInspect: null,
   errors: {},
   canSave: false,
   type: 'list',
@@ -78,10 +80,10 @@ const actionChangeSelectedInspectPgmBaseData = (data: InspectPgmBase['data']) =>
   },
 });
 
-const actionSetSelectedInspectPgmBaseData = (selectedInspectPgmBase: InitialState['selectedInspectPgmBase'], type: InitialState['type']) => ({
+const actionSetSelectedInspectPgmBaseData = (selectedInspect: InitialState['selectedInspect'], type: InitialState['type']) => ({
   type: SET_INITIAL_STATE,
   payload: {
-    selectedInspectPgmBase,
+    selectedInspect,
     type,
   },
 });
@@ -101,11 +103,11 @@ const actionSetComissionAndMembers = (
 const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
-      const errors = validate(inspectAutobaeSchema, payload.selectedInspectPgmBase.data, { type: payload.type });
+      const errors = validate(inspectAutobaeSchema, payload.selectedInspect.data, { type: payload.type });
 
       return {
         ...state,
-        selectedInspectPgmBase: payload.selectedInspectPgmBase,
+        selectedInspect: payload.selectedInspect,
         type: payload.type,
         errors,
         canSave: Object.values(errors).every((error) => !error),
@@ -118,18 +120,18 @@ const reducer = (state: InitialState, { type, payload }) => {
       };
     }
     case CHANGE_DATA: {
-      const selectedInspectPgmBase = {
-        ...state.selectedInspectPgmBase,
+      const selectedInspect = {
+        ...state.selectedInspect,
         data: {
-          ...state.selectedInspectPgmBase.data,
+          ...state.selectedInspect.data,
           ...payload.data,
         },
       };
-      const errors = validate(inspectAutobaeSchema, selectedInspectPgmBase.data, { type: state.type });
+      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: state.type });
 
       return {
         ...state,
-        selectedInspectPgmBase,
+        selectedInspect,
         errors,
         canSave: Object.values(errors).every((error) => !error),
       };
@@ -140,15 +142,15 @@ const reducer = (state: InitialState, { type, payload }) => {
         agents_from_gbu,
         resolve_to,
       } = payload.data;
-      const selectedInspectPgmBase = {
-        ...state.selectedInspectPgmBase,
+      const selectedInspect = {
+        ...state.selectedInspect,
         commission_members,
         agents_from_gbu,
         resolve_to,
       };
       return {
         ...state,
-        selectedInspectPgmBase,
+        selectedInspect,
       };
     }
     default: return state;
@@ -165,12 +167,12 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     () => {
       dispatch(
         actionSetSelectedInspectPgmBaseData(
-          props.selectedInspectPgmBase,
+          props.selectedInspect,
           props.type,
         ),
       );
     },
-    [props.type, props.selectedInspectPgmBase],
+    [props.type, props.selectedInspect],
   );
 
   const isPermittedChangeListParams = (
@@ -186,7 +188,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
         );
       }
     },
-    [state.selectedInspectPgmBase, isPermittedChangeListParams],
+    [state.selectedInspect, isPermittedChangeListParams],
   );
 
   const onChangeFile = React.useCallback(
@@ -194,13 +196,13 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
       if (isPermittedChangeListParams) {
         dispatch(
           actionChangeSelectedInspectPgmBaseData({
-            ...state.selectedInspectPgmBase.data,
+            ...state.selectedInspect.data,
             [key]: value,
           }),
         );
       }
     },
-    [state.selectedInspectPgmBase, isPermittedChangeListParams],
+    [state.selectedInspect, isPermittedChangeListParams],
   );
 
   const closeWithoutChanges = React.useCallback(
@@ -221,119 +223,123 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
-  const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspectPgmBase.base_id', null) === get(elem, 'id'));
+  const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspect.base_id', null) === get(elem, 'id'));
   const selectedPgmBaseTypeIsCombinate = get(selectedPgmBase, 'pgm_stores_type_id', null) === 3 ? true : false;
 
-  return state.selectedInspectPgmBase
+  return state.selectedInspect
     ? (
-      <Row>
-        <Col md={6} sm={12}>
-          <TitleForm>
-            <h4>Мониторинг состояния баз хранения ПГМ</h4>
-          </TitleForm>
-          <BoxContainer>
-            <IAVisibleWarning
-              onChange={onChangeData}
-              data={state.selectedInspectPgmBase.data}
-              errors={state.errors}
-              isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheckMonitoring}
-            />
-          </BoxContainer>
-          <BoxContainer>
-            <h4>
-              Выявленные нарушения на базе:
-            </h4>
-            <IAVisibleWarning
-              onChange={onChangeData}
-              data={state.selectedInspectPgmBase.data}
-              errors={state.errors}
-              isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheckFall}
-            />
-          </BoxContainer>
-          <BoxContainer>
-            <h4>
-              Нарушения, связанные с хранением твердых ПГМ:
-            </h4>
-            <IAVisibleWarning
-              onChange={onChangeData}
-              data={state.selectedInspectPgmBase.data}
-              errors={state.errors}
-              isPermitted={isPermittedChangeListParams}
-              filedToCheck={filedToCheckFallHardPgm}
-            />
-          </BoxContainer>
-        </Col>
-
-        {
-          selectedPgmBaseTypeIsCombinate ? (
-            <Col md={6} sm={12}>
-              <ContainerBlock
-                selectedInspectPgmBase={state.selectedInspectPgmBase}
-                onChangeData={onChangeData}
-                isPermittedChangeListParams={isPermittedChangeListParams}
+      <React.Fragment>
+        <ContainerForm>
+          <Col md={6} sm={12}>
+            <BoxContainer>
+              <IAVisibleWarning
+                onChange={onChangeData}
+                data={state.selectedInspect.data}
                 errors={state.errors}
-
-                page={props.page}
+                isPermitted={isPermittedChangeListParams}
+                filedToCheck={filedToCheckMonitoring}
               />
-              <Row>
-                <Col md={6}>
-                  <FileField
-                    id="file"
-                    label="Фотографии подтверждающих документов"
-                    multiple
-                    value={state.selectedInspectPgmBase.data.photos_of_supporting_documents}
-                    onChange={onChangeFile}
-                    disabled={!isPermittedChangeListParams}
-                    boundKeys="photos_of_supporting_documents"
-                  />
-                </Col>
-                <Col md={6}>
-                  <FileField
-                    id="file"
-                    label="Фотографии дефектов"
-                    multiple
-                    value={state.selectedInspectPgmBase.data.photos_defect}
-                    onChange={onChangeFile}
-                    disabled={!isPermittedChangeListParams}
-                    boundKeys="photos_defect"
-                  />
-                </Col>
-              </Row>
-            </Col>
-          ) : (
-            <DivNone />
-          )
-        }
+            </BoxContainer>
+            <BoxContainer>
+              <h4>
+                Выявленные нарушения на базе:
+              </h4>
+              <IAVisibleWarning
+                onChange={onChangeData}
+                data={state.selectedInspect.data}
+                errors={state.errors}
+                isPermitted={isPermittedChangeListParams}
+                filedToCheck={filedToCheckFall}
+              />
+            </BoxContainer>
+            <BoxContainer>
+              <h4>
+                Нарушения, связанные с хранением твердых ПГМ:
+              </h4>
+              <IAVisibleWarning
+                onChange={onChangeData}
+                data={state.selectedInspect.data}
+                errors={state.errors}
+                isPermitted={isPermittedChangeListParams}
+                filedToCheck={filedToCheckFallHardPgm}
+              />
+            </BoxContainer>
+          </Col>
 
-        <ViewAddInspectEmployee
-          type={props.type}
-          isPermitted={props.isPermitted}
-          canAddMembers={true}
-          canAddCompanyAgent={true}
-          canRemoveEmployee={true}
-          selectedInspectPgmBase={state.selectedInspectPgmBase}
-          setComissionAndMembers={setComissionAndMembers}
-        >
-        </ViewAddInspectEmployee>
-        <Col md={12} sm={12}>
+          {
+            selectedPgmBaseTypeIsCombinate ? (
+              <Col md={6} sm={12}>
+                <ContainerBlock
+                  selectedInspectPgmBase={state.selectedInspect}
+                  onChangeData={onChangeData}
+                  isPermittedChangeListParams={isPermittedChangeListParams}
+                  errors={state.errors}
+
+                  page={props.page}
+                />
+                <Row>
+                  <Col md={6}>
+                    <FileField
+                      id="file"
+                      label="Фотографии подтверждающих документов"
+                      multiple
+                      value={state.selectedInspect.data.photos_of_supporting_documents}
+                      onChange={onChangeFile}
+                      disabled={!isPermittedChangeListParams}
+                      boundKeys="photos_of_supporting_documents"
+                    />
+                  </Col>
+                  <Col md={6}>
+                    <FileField
+                      id="file"
+                      label="Фотографии дефектов"
+                      multiple
+                      value={state.selectedInspect.data.photos_defect}
+                      onChange={onChangeFile}
+                      disabled={!isPermittedChangeListParams}
+                      boundKeys="photos_defect"
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            ) : (
+              <DivNone />
+            )
+          }
+          <ViewAddInspectEmployee
+            type={props.type}
+            isPermitted={props.isPermitted}
+            canAddMembers={true}
+            canAddCompanyAgent={true}
+            canRemoveEmployee={true}
+            selectedInspectPgmBase={state.selectedInspect}
+            setComissionAndMembers={setComissionAndMembers}
+          >
+          </ViewAddInspectEmployee>
+        </ContainerForm>
+        <FooterForm md={12} sm={12}>
           <FooterEnd>
             <ViewInspectPgmBaseButtonSubmit
               canSave={state.canSave}
               type={props.type}
               handleHide={props.handleHide}
-              selectedInspectPgmBase={state.selectedInspectPgmBase}
+              selectedInspectPgmBase={state.selectedInspect}
               loadingPage={props.page}
             />
             <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
-        </Col>
-      </Row>
+        </FooterForm>
+      </React.Fragment>
     )
     : (
       <DivNone />
     );
 };
 
-export default ViewInspectPgmBase;
+export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseWrapOwnProps>(
+  connect<ViewInspectPgmBaseStateProps, ViewInspectPgmBaseDispatchProps, ViewInspectPgmBaseWrapOwnProps, ReduxState>(
+    (state) => ({
+      pgmBaseList: getInspectPgmBase(state).pgmBaseList,
+    }),
+  ),
+)(ViewInspectPgmBase);

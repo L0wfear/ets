@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
-import ViewInspectButtonSubmit from './ViewInspectButtonSubmit';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -10,6 +9,7 @@ import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
   actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobase>;
@@ -91,8 +91,8 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
-      handleCloseAndAutobaseAct={handleCloseAndAutobaseAct}
-      handleGetAutobaseAct={handleGetAutobaseAct}
+      handleCloseAndGetAct={handleCloseAndAutobaseAct}
+      handleGetAct={handleGetAutobaseAct}
       type={props.type}
       canSave={props.canSave}
     />

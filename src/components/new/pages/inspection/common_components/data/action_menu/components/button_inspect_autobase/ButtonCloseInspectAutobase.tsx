@@ -5,12 +5,11 @@ import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import inspectAutobasePermissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { getLastConductingInspectAutobase } from 'components/new/pages/inspection/autobase/@selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
+import { getLastConductingInspect } from 'components/new/pages/inspection/autobase/@selectors';
 
 const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (props) => {
   const { lastConductingInspect } = props;
@@ -35,18 +34,12 @@ const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (p
 };
 
 export default compose<ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutobaseOwnProps>(
-  withRequirePermissionsNew({
-    permissions: inspectAutobasePermissions.update,
-  }),
-  connect<ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps, {}, ReduxState>(
+  connect<ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps, ReduxState>(
     (state, { loadingPage }) => ({
-      lastConductingInspect: getLastConductingInspectAutobase(getListData(getRegistryState(state), loadingPage)),
+      permissions: getListData(getRegistryState(state), loadingPage).permissions.update, //  прокидывается в следующий компонент
+      lastConductingInspect: getLastConductingInspect(getListData(getRegistryState(state), loadingPage)),
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
+  withRequirePermissionsNew(),
   withSearch,
 )(ButtonCloseInspectAutobase);

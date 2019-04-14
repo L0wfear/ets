@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { FuelRate, FuelOperation } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 
 export const makeDefaultFuelRate = (): FuelRate => ({
@@ -33,28 +33,6 @@ export const makeDefaultFuelRate = (): FuelRate => ({
 
 export const getDefaultFuelRateElement = (element?: Partial<FuelRate>) => {
   const newElement = makeDefaultFuelRate();
-  if (isObject(element)) {
-    Object.keys(newElement).forEach((key) => {
-      if (!isNullOrUndefined(element[key])) {
-        newElement[key] = element[key];
-      }
-    });
-  }
-
-  return newElement;
-};
-
-export const makeDefaultFuelOperation = (): FuelOperation => ({
-  equipment: null,
-  id: null,
-  is_excluding_mileage: null,
-  measure_unit_id: null,
-  measure_unit_name: null,
-  name: null,
-});
-
-export const getDefaultFuelOperationElement = (element?: Partial<FuelOperation>) => {
-  const newElement = makeDefaultFuelOperation();
   if (isObject(element)) {
     Object.keys(newElement).forEach((key) => {
       if (!isNullOrUndefined(element[key])) {

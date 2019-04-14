@@ -10,10 +10,6 @@ export default class FuelRatesStore extends Store {
       fuelRateActions.getFuelOperations,
       this.handleGetFuelOperations,
     );
-    this.register(
-      fuelRateActions.deleteFuelOperation,
-      this.handleGetFuelOperations,
-    );
 
     this.state = {
       rates: [],

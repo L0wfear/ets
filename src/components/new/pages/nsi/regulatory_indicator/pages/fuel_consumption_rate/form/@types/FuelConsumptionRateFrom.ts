@@ -1,6 +1,5 @@
 import {
   FuelRate,
-  FuelOperation,
 } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
@@ -15,6 +14,7 @@ import {
   resetFuelOperations,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 

@@ -5,15 +5,10 @@ import {
   createFuelRate,
   updateFuelRate,
   deleteFuelRate,
-  getFuelOperationsIsActive,
   getFuelOperations,
-  createFuelOperation,
-  updateFuelOperation,
-  deleteFuelOperation,
 } from 'redux-main/reducers/modules/fuel_rates/promises/index';
 
 import {
-  FuelOperation,
   IFuelRatesByCarModel,
   IEquipmentFuelRatesByCarModel,
   FuelRate,
@@ -23,6 +18,7 @@ import {
   FUEL_RATES_SET_DATA,
   initialState as fuelRatesInitialState,
 } from 'redux-main/reducers/modules/fuel_rates/fuelRates';
+import { FuelOperation } from '../fuel_operations/@types/fuelOperations';
 
 export const fuelRatesGet = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({
@@ -143,35 +139,3 @@ export const fuelOperationsGetAndSetInStore: any = (payload: FuelOperation, { pa
     fuelRateOperations,
   };
 };
-
-export const fuelOperationsIsActiveGet = (payload) => ({
-  type: 'none',
-  payload: getFuelOperationsIsActive(payload),
-  meta: {
-    promise: true,
-  },
-});
-
-export const fuelOperationCreate = (payload) => ({
-  type: 'none',
-  payload: createFuelOperation(payload),
-  meta: {
-    promise: true,
-  },
-});
-
-export const fuelOperationUpdate = (payload) => ({
-  type: 'none',
-  payload: updateFuelOperation(payload),
-  meta: {
-    promise: true,
-  },
-});
-
-export const fuelOperationDelete = (payload) => ({
-  type: 'none',
-  payload: deleteFuelOperation(payload),
-  meta: {
-    promise: true,
-  },
-});

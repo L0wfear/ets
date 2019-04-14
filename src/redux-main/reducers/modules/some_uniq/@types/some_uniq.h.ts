@@ -11,6 +11,7 @@ import { WorkKind } from '../work_kind/@types/work_kind';
 import { TechnicalOperationObjects } from '../technical_operation_objects/@types/technical_operation_objects';
 import { TechnicalOperationTypes } from '../technical_operation_types/@types/technical_operation_types';
 import { SensorType } from '../sensor_type/@types/sensor_type';
+import { MeasureUnit } from '../measure_unit/@types';
 
 export type modelListElement = {
   body_capacity: number | null;
@@ -51,4 +52,5 @@ export type IStateSomeUniq = {
   technicalOperationObjectsList: TechnicalOperationObjects[];
   technicalOperationTypesList: TechnicalOperationTypes[];
   sensorTypeList: SensorType[];
+  measureUnitList: MeasureUnit[];
 };

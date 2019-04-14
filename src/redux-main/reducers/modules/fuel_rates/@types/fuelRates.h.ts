@@ -1,3 +1,5 @@
+import { FuelOperation } from "../../fuel_operations/@types/fuelOperations";
+
 export type FuelRate = {
   body_capacity: number | null;
   car_model_id: number | null;
@@ -23,16 +25,6 @@ export type FuelRate = {
   order_date: string | null;
   summer_rate: number | null;
   winter_rate: number | null;
-};
-
-export type FuelOperation = { // перенести в реестр FuelOperation, после его рефакторинга
-  equipment: boolean | null;
-  id: number | null;
-  is_excluding_mileage: boolean | null;
-  measure_unit_id: number | null;
-  measure_unit_name: string | null;
-  name: string | null;
-  is_active?: boolean | null;
 };
 
 export type IStateFuelRates = {

@@ -72,6 +72,8 @@ const getRouters = () => (
     <Redirect from="/dt" to="/nsi/geoobjects/dt" />
     <Redirect from="/danger_zone" to="/nsi/geoobjects/danger_zone" />
 
+    <Redirect from="/fuel-operations" to="/nsi/data_for_calculation/fuel_operations" />
+
     <Redirect to="/monitor" />
   </Switch>
 );

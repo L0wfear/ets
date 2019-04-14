@@ -46,11 +46,4 @@ export default class FuelRateActions extends Actions {
   getFuelOperations(payload) {
     return getFuelOperations(payload);
   }
-
-  deleteFuelOperation(id) {
-    const payload = {
-      id,
-    };
-    return FuelOperationsService.delete(payload, getFuelOperations, 'json');
-  }
 }

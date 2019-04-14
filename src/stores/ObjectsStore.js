@@ -28,19 +28,6 @@ export default class ObjectsStore extends Store {
       objectsActions.deleteMaintenanceWork,
       this.handleGetMaintenanceWork,
     );
-    this.register(objectsActions.getCleaningRate, this.handleGetCleaningRate);
-    this.register(
-      objectsActions.createCleaningRate,
-      this.handleGetCleaningRate,
-    );
-    this.register(
-      objectsActions.updateCleaningRate,
-      this.handleGetCleaningRate,
-    );
-    this.register(
-      objectsActions.deleteCleaningRate,
-      this.handleGetCleaningRate,
-    );
     this.register(
       objectsActions.getMaintenanceRate,
       this.handleGetMaintenanceRate,
@@ -74,7 +61,6 @@ export default class ObjectsStore extends Store {
       technicalOperationsObjectsList: [],
       positionsList: [],
       maintenanceWorkList: [],
-      cleaningRateList: [],
       userActionLogList: [],
       medicalStatsList: [],
 
@@ -159,11 +145,6 @@ export default class ObjectsStore extends Store {
 
   handleGetMaintenanceWork({ result: { rows: maintenanceWorkList } }) {
     this.setState({ maintenanceWorkList });
-  }
-
-  handleGetCleaningRate(r) {
-    const cleaningRateList = r.result.rows || r.result;
-    this.setState({ cleaningRateList });
   }
 
   handleGetMaintenanceRate(r) {

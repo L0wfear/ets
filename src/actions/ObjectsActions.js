@@ -10,7 +10,6 @@ import {
   TypesService,
   MaintenanceWorkService,
   MaintenanceRateService,
-  CleaningRateService,
   UserActionLogService,
   WorkMode,
   MedicalStatsService,
@@ -87,43 +86,6 @@ export default class ObjectsActions extends Actions {
     return MaintenanceWorkService.path(id).delete(
       {},
       this.getMaintenanceWork,
-      'json',
-    );
-  }
-
-  getCleaningRate(type) {
-    const payload = { type };
-    return CleaningRateService.get(payload);
-  }
-
-  createCleaningRate(type, formState) {
-    const payload = {
-      ...formState,
-      type,
-    };
-    return CleaningRateService.post(
-      payload,
-      this.getCleaningRate.bind(this, type),
-      'json',
-    );
-  }
-
-  updateCleaningRate(type, formState) {
-    const payload = {
-      ...formState,
-      type,
-    };
-    return CleaningRateService.path(formState.id).put(
-      payload,
-      this.getCleaningRate.bind(this, type),
-      'json',
-    );
-  }
-
-  deleteCleaningRate(type, id) {
-    return CleaningRateService.path(id).delete(
-      {},
-      this.getCleaningRate.bind(this, type),
       'json',
     );
   }

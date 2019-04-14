@@ -1,7 +1,9 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
+// new
+import cleaningRateList from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/_config-data';
+
 // old
-import cleaningRate from 'components/directories/data_for_calculation/cleaning_rate/config-data';
 import odhNorm from 'components/directories/data_for_calculation/odh_norm/config-data';
 import maintenanceWork from 'components/directories/data_for_calculation/maintenance_work/config-data';
 
@@ -13,7 +15,7 @@ import odhNormDataSummer from 'components/directories/data_for_calculation/odh_n
 import efficiency from 'components/directories/data_for_calculation/efficiency/config-data';
 
 const children = {
-  cleaningRate,
+  cleaningRateList,
   odhNorm,
   maintenanceWork,
   fuelOperationsList,

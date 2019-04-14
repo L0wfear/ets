@@ -16,6 +16,7 @@ export interface OneRegistryData {
     format?: (
       'default'
       | 'select_odh/dt(disabled)'
+      | 'select_odh/dt'
     );
     buttons?: string[];
   };

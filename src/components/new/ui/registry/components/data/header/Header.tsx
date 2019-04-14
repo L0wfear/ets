@@ -10,6 +10,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { DivNone } from 'global-styled/global-styled';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import SelectedOdhDtDisabled from './middle/SelectedOdhDtDisabled';
+import SelectedOdhDt from './middle/SelectedOdhDt';
 
 type HeaderStateProps = {
   format: OneRegistryData['header']['format'];
@@ -28,6 +29,7 @@ type HeaderProps = HeaderMergedProps;
 const getMiddleBlockComponent = (format: OneRegistryData['header']['format']) => {
   switch (format) {
     case 'select_odh/dt(disabled)': return SelectedOdhDtDisabled;
+    case 'select_odh/dt': return SelectedOdhDt;
     default: return null;
   }
 };

@@ -106,6 +106,7 @@ export type TypeConfigData<F> = {
     format?: (
       'default'
       | 'select_odh/dt(disabled)'
+      | 'select_odh/dt'
     );
     buttons?: ButtonDefineType,
   },

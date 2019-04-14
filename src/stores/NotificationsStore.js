@@ -8,7 +8,6 @@ export default class NotificationsStore extends Store {
 
     const repairActions = flux.getActions('repair');
     const missionsActions = flux.getActions('missions');
-    const objectsActions = flux.getActions('objects');
 
     const saveNotificationQueue = [
       {
@@ -23,10 +22,6 @@ export default class NotificationsStore extends Store {
           stateProgram: 'Запись успешно добавлена',
           contractor: 'Запись успешно добавлена',
         },
-      },
-      {
-        actions: objectsActions,
-        actionNames: ['createMaintenanceRate', 'deleteMaintenanceRate'],
       },
       {
         actions: flux.getActions('odh'),

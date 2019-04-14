@@ -10,26 +10,8 @@ export default class ObjectsStore extends Store {
 
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
-    this.register(objectsActions.getModels, this.handleGetModels);
     this.register(objectsActions.getTypes, this.handleGetTypes);
-    this.register(objectsActions.getSensorTypes, this.handleGetSensorTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
-    this.register(
-      objectsActions.getMaterialConsumptionRate,
-      this.handleGetMaterialConsumptionRate,
-    );
-    this.register(
-      objectsActions.createMaterialConsumptionRate,
-      this.handleGetMaterialConsumptionRate,
-    );
-    this.register(
-      objectsActions.updateMaterialConsumptionRate,
-      this.handleGetMaterialConsumptionRate,
-    );
-    this.register(
-      objectsActions.deleteMaterialConsumptionRate,
-      this.handleGetMaterialConsumptionRate,
-    );
     this.register(
       objectsActions.getMaintenanceWork,
       this.handleGetMaintenanceWork,
@@ -63,22 +45,6 @@ export default class ObjectsStore extends Store {
       objectsActions.getMaintenanceRate,
       this.handleGetMaintenanceRate,
     );
-    this.register(
-      objectsActions.createMaintenanceRate,
-      this.handleGetMaintenanceRate,
-    );
-    this.register(
-      objectsActions.updateMaintenanceRate,
-      this.handleGetMaintenanceRate,
-    );
-    this.register(
-      objectsActions.deleteMaintenanceRate,
-      this.handleGetMaintenanceRate,
-    );
-    this.register(
-      objectsActions.getCleanCategories,
-      this.handleGetCleanCategories,
-    );
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
@@ -99,7 +65,6 @@ export default class ObjectsStore extends Store {
     this.state = {
       carsList: [],
       typesList: [],
-      sensorTypesList: [],
       modelsList: [],
       fuelTypes: [],
       technicalOperationsList: [],
@@ -108,8 +73,6 @@ export default class ObjectsStore extends Store {
       OrdersList: [],
       technicalOperationsObjectsList: [],
       positionsList: [],
-      materialConsumptionRateList: [],
-      cleanCategoriesList: [],
       maintenanceWorkList: [],
       cleaningRateList: [],
       userActionLogList: [],
@@ -170,19 +133,10 @@ export default class ObjectsStore extends Store {
     this.setState({ carsFilterList, carsIndex });
   }
 
-  handleGetModels({ result: { rows = [] } }) {
-    const modelsIndex = _.keyBy(rows, 'id');
-    this.setState({ modelsList: rows, modelsIndex });
-  }
-
   handleGetTypes({ result: { rows = [] } }) {
     const typesList = rows;
     const typesIndex = _.keyBy(typesList, 'asuods_id');
     this.setState({ typesList, typesIndex });
-  }
-
-  handleGetSensorTypes({ result }) {
-    this.setState({ sensorTypesList: result });
   }
 
   handleGetFuelTypes(fuelTypes) {
@@ -203,11 +157,6 @@ export default class ObjectsStore extends Store {
     this.setState({ technicalOperationRelationsList: result });
   }
 
-  handleGetMaterialConsumptionRate(rates) {
-    const materialConsumptionRateList = rates.result.rows || rates.result;
-    this.setState({ materialConsumptionRateList });
-  }
-
   handleGetMaintenanceWork({ result: { rows: maintenanceWorkList } }) {
     this.setState({ maintenanceWorkList });
   }
@@ -220,10 +169,6 @@ export default class ObjectsStore extends Store {
   handleGetMaintenanceRate(r) {
     const maintenanceRateList = r.result.rows || r.result;
     this.setState({ maintenanceRateList });
-  }
-
-  handleGetCleanCategories({ result: { rows: cleanCategoriesList } }) {
-    this.setState({ cleanCategoriesList });
   }
 
   handleGetUserActionLog(userActionLogList) {

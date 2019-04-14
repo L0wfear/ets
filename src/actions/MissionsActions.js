@@ -7,7 +7,6 @@ import {
   MissionArchiveService,
   MissionReassignationService,
   MissionTemplateCarService,
-  MissionPrintService,
   MissionTemplatePrintService,
   MissionDataService,
   CarDutyMissionService,
@@ -27,8 +26,9 @@ export const parseFilterObject = (filter) =>
 
 // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
 // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-const getMissionFilterStatus = (waybillStatus) =>
-  waybillStatus ? undefined : 'not_assigned';
+const getMissionFilterStatus = (waybillStatus) => {
+  return waybillStatus ? undefined : 'not_assigned';
+};
 export default class MissionsActions extends Actions {
   /* ---------- MISSION ---------- */
 
@@ -107,12 +107,6 @@ export default class MissionsActions extends Actions {
     };
 
     return MissionArchiveService.path(id).put(payload, false, 'json');
-  }
-
-  printMission(data) {
-    const payload = cloneDeep(data);
-
-    return MissionPrintService.postBlob(payload);
   }
 
   getMissionData(mission_id) {

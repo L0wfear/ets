@@ -42,15 +42,9 @@ export default class LoadingStore extends Store {
 
       fuelRateActions.getFuelRates,
       fuelRateActions.getFuelOperations,
-      fuelRateActions.updateFuelRate,
-      fuelRateActions.deleteFuelRate,
-      fuelRateActions.createFuelRate,
-      fuelRateActions.createFuelOperation,
-      fuelRateActions.updateFuelOperation,
       fuelRateActions.getFuelRatesByCarModel,
       fuelRateActions.getEquipmentFuelRatesByCarModel,
 
-      objectsActions.getModels,
       objectsActions.getTypes,
       objectsActions.getCars,
       objectsActions.getSomeCars,
@@ -76,7 +70,6 @@ export default class LoadingStore extends Store {
       missionsActons.printMissionTemplate,
       missionsActons.createMissions,
       missionsActons.getCarDutyMissions,
-      missionsActons.printMission,
       missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
 

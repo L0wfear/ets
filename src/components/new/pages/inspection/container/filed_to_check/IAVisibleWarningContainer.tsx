@@ -56,7 +56,7 @@ const IAVisibleWarningContainer: React.FC<IAVisibleWarningProps> = (props) => {
     <>
       {
         filedToCheck.map((fieldData) => (
-          <IAVisibleWarningInputContainer key={fieldData.key} sub={fieldData.sub}>
+          <IAVisibleWarningInputContainer key={fieldData.key.toString()} sub={fieldData.sub}>
             {
               !fieldData.hidden || fieldData.hidden && !data[fieldData.hidden]
                 ? (

@@ -4,73 +4,188 @@ import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { Row, Col } from 'react-bootstrap';
 import { makeDate, makeTime } from 'utils/dates';
+import { statusOptions } from './options';
+import { DivNone } from 'global-styled/global-styled';
+import FieldCarsConditionsCarMarka from './inside_fields/marka/FieldCarsConditionsCarMarka';
+import FieldCarsConditionsCarModel from './inside_fields/model/FieldCarsConditionsCarModel';
+import FieldCarsConditionsCarType from './inside_fields/type/FieldCarsConditionsCarType';
+import FieldCarsConditionsCarSeason from './inside_fields/season/FieldCarsConditionsCarSeason';
 
 type BlockCarInfoMainDataProps = (
-  {}
-) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'handleChange'>;
+  {
+    isPermitted: boolean;
+  }
+) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'formErrors' | 'handleChange' | 'page' | 'path'>;
 
 const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
   (props) => {
     const {
       IS_CREATING,
       formState: state,
+      formErrors: errors,
     } = props;
 
     return (
       <BoxContainer>
         <ExtField
+          id="gov_number"
           type="string"
           label="Гос. номер:"
           value={state.gov_number}
           readOnly={!IS_CREATING}
           onChange={props.handleChange}
+          error={errors.gov_number}
+          boundKeys="gov_number"
+          disabled={!props.isPermitted}
           inline
         />
-        <ExtField
-          type="string"
-          label="Марка:"
-          value={state.marka}
-          readOnly={!IS_CREATING}
-          onChange={props.handleChange}
-          inline
-        />
-        <ExtField
-          type="string"
-          label="Модель:"
-          value={state.model}
-          readOnly={!IS_CREATING}
-          onChange={props.handleChange}
-          inline
-        />
-        <ExtField
-          type="string"
-          label="Тип ТС:"
-          value={state.type}
-          readOnly={!IS_CREATING}
-          inline
-        />
-        <ExtField
-          type="string"
-          label="Статус ТС по базе:"
-          value={state.fact_status_text}
-          readOnly={!IS_CREATING}
-          onChange={props.handleChange}
-          inline
-        />
+        {
+          !IS_CREATING
+            ? (
+              <ExtField
+                type="string"
+                label="Марка:"
+                value={state.marka}
+                readOnly
+                inline
+              />
+            )
+            : (
+              <FieldCarsConditionsCarMarka
+                value={state.marka}
+                error={errors.marka}
+
+                handleChange={props.handleChange}
+                isPermitted={props.isPermitted}
+                page={props.page}
+                path={props.path}
+              />
+            )
+        }
+        {
+          !IS_CREATING
+            ? (
+              <ExtField
+                type="string"
+                label="Модель:"
+                value={state.model}
+                readOnly
+                inline
+              />
+            )
+            : (
+              <FieldCarsConditionsCarModel
+                value={state.model}
+                error={errors.model}
+
+                handleChange={props.handleChange}
+                isPermitted={props.isPermitted}
+                page={props.page}
+                path={props.path}
+              />
+            )
+        }
+        {
+          !IS_CREATING
+            ? (
+              <ExtField
+                type="string"
+                label="Тип ТС:"
+                value={state.type}
+                readOnly
+                inline
+              />
+            )
+            : (
+              <FieldCarsConditionsCarType
+                value={state.type}
+                error={errors.type}
+
+                handleChange={props.handleChange}
+                isPermitted={props.isPermitted}
+                page={props.page}
+                path={props.path}
+              />
+            )
+        }
+        {
+          !IS_CREATING
+            ? (
+              <ExtField
+                type="select"
+                label="Статус ТС по базе:"
+                value={state.status}
+                options={statusOptions}
+                onChange={props.handleChange}
+                boundKeys="status"
+                error={errors.status}
+                disabled={!props.isPermitted}
+              />
+            )
+            : (
+              <DivNone />
+            )
+        }
+         {
+          !IS_CREATING
+            ? (
+              <ExtField
+                type="select"
+                label="Статус ТС по базе:"
+                value={state.status}
+                options={statusOptions}
+                onChange={props.handleChange}
+                boundKeys="status"
+                error={errors.status}
+                disabled={!props.isPermitted}
+              />
+            )
+            : (
+              <DivNone />
+            )
+        }
+        {
+          !IS_CREATING
+            ? (
+              <ExtField
+                type="string"
+                label="Сезон:"
+                value={state.season}
+                readOnly
+                inline
+              />
+            )
+            : (
+              <FieldCarsConditionsCarSeason
+                value={state.season}
+                error={errors.season}
+
+                handleChange={props.handleChange}
+                isPermitted={props.isPermitted}
+                page={props.page}
+                path={props.path}
+              />
+            )
+        }
         <ExtField
           type="string"
           label="VIN:"
-          value={''} // @todo
+          value={state.vin}
           readOnly={!IS_CREATING}
           onChange={props.handleChange}
+          error={errors.vin}
+          boundKeys="vin"
+          disabled={!props.isPermitted}
           inline
         />
         <ExtField
           type="string"
           label="Пробег на дату/счётчик моточасов:"
-          value={''} // @todo
-          readOnly={!IS_CREATING}
+          value={state.mileage}
           onChange={props.handleChange}
+          error={errors.mileage}
+          boundKeys="mileage"
+          disabled={!props.isPermitted}
           inline
         />
         <Row>
@@ -78,8 +193,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             <ExtField
               type="string"
               label="Номер ОСАГО:"
-              value={''} // @todo
+              value={state.osago}
               onChange={props.handleChange}
+              error={errors.osago}
+              boundKeys="osago"
+              disabled={!props.isPermitted}
           />
           </Col>
           <Col md={6}>
@@ -87,9 +205,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="date"
               time={false}
               label="действует до:"
-              value={null} // @todo
+              value={state.osago_finished_at}
               makeGoodFormat
               onChange={props.handleChange}
+              error={errors.osago_finished_at}
+              boundKeys="osago_finished_at"
+              disabled={!props.isPermitted}
             />
           </Col>
         </Row>
@@ -98,8 +219,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             <ExtField
               type="string"
               label="Номер диагностической карты:"
-              value={''} // @todo
+              value={state.diagnostic_card}
               onChange={props.handleChange}
+              error={errors.diagnostic_card}
+              boundKeys="diagnostic_card"
+              disabled={!props.isPermitted}
             />
           </Col>
           <Col md={6}>
@@ -107,9 +231,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="date"
               time={false}
               label="действует до:"
-              value={null} // @todo
+              value={state.diagnostic_card_finished_at}
               makeGoodFormat
               onChange={props.handleChange}
+              error={errors.diagnostic_card_finished_at}
+              boundKeys="diagnostic_card_finished_at"
+              disabled={!props.isPermitted}
             />
           </Col>
         </Row>
@@ -117,11 +244,22 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           type="date"
           time={false}
           label="Дата прохождения последнего ТО:"
-          value={null} // @todo
+          value={state.last_tech_inspection_date}
           makeGoodFormat
           onChange={props.handleChange}
+          error={errors.last_tech_inspection_date}
+          boundKeys="last_tech_inspection_date"
+          disabled={!props.isPermitted}
         />
-        <p>ТС проверено {makeDate(new Date())} в {makeTime(new Date())}</p>
+        {
+          !IS_CREATING && state.updated_at
+            ? (
+              <p>ТС проверено {makeDate(state.updated_at)} в {makeTime(state.updated_at)}</p>
+            )
+            : (
+              <DivNone />
+            )
+        }
       </BoxContainer>
     );
   },

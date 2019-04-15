@@ -3,7 +3,7 @@ import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import { HandleThunkActionCreator } from 'react-redux';
-import { IStateInspectCarsCondition, InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { IStateInspectCarsCondition, InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { getInspectCarsCondition } from 'redux-main/reducers/selectors';
 import { INSPECT_CARS_CONDITION, initialStateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition';
 import { actionLoadCompany } from 'redux-main/reducers/modules/company/actions';
@@ -11,6 +11,9 @@ import {
   promiseCreateInspectionCarsCondition,
   promiseGetInspectCarsConditionById,
   promiseGetSetCarsConditionCars,
+  promiseCreateCarsConditionsCar,
+  promiseUpdateCarsConditionsCar,
+  promiseGetCarsConditionsCarById,
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
@@ -144,6 +147,36 @@ const autobaseGetCarsConditionCars = (inspection_id: number, meta: LoadingMeta):
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetSetCarsConditionCars(inspection_id),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionGetCarsConditionsCarById = (id: CarsConditionCars['id'], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetCarsConditionsCarById>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseGetCarsConditionsCarById(id),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionCreateCarsConditionsCar = (carsConditionsCarRaw: Partial<CarsConditionCars>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateCarsConditionsCar>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseCreateCarsConditionsCar(carsConditionsCarRaw),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: Partial<CarsConditionCars>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateCarsConditionsCar>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseUpdateCarsConditionsCar(carsConditionsCarRaw),
     meta,
   );
 

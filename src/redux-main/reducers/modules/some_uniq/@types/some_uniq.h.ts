@@ -8,7 +8,7 @@ import { GeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/
 import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
 import { ConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/@types';
 
-export type modelListElement = {
+export type ModelElement = {
   body_capacity: number | null;
   full_name: string | null;
   id: number;
@@ -24,7 +24,7 @@ export type CancelReasons = {
 
 export type IStateSomeUniq = {
   specialModelList: SpecialModel[];
-  modelsList: modelListElement[];
+  modelsList: ModelElement[];
   technicalOperationRegistryList: TechnicalOperationRegistry[];
   technicalOperationRegistryForMissionList: TechnicalOperationRegistry[];
   technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[];

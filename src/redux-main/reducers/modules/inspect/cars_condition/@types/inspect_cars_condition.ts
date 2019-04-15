@@ -80,6 +80,8 @@ export type IStateInspectCarsCondition = {
 };
 
 export type CarsConditionCars = {
+  inspection_id?: number;
+  status: string;
   fact_status: string;
   fact_status_text: string;
   gov_number: string;
@@ -88,4 +90,55 @@ export type CarsConditionCars = {
   model: string;
   type: string;
   was_resaved: boolean;
+  state_exploitation: string;
+  vin: string;
+  mileage: number;
+  osago: string;
+  osago_finished_at: string;
+  diagnostic_card: string;
+  diagnostic_card_finished_at: string;
+  last_tech_inspection_date: string;
+  updated_at: string;
+  season: string;
+  data: {
+    no_status_docs: boolean;
+    fact_mileage: number;
+    defects_body: boolean;
+    defects_chassis: boolean;
+    defects_attachments: boolean;
+    incomplete_equipment: boolean;
+    liquids_leak: boolean;
+    no_glonass: boolean;
+    logos_not_required: boolean;
+    no_logos: boolean;
+
+    does_not_start: boolean;
+    broken_chassis: boolean;
+    broken_attachments: boolean;
+    broken_lighting: boolean;
+    broken_lighting_alarm: boolean;
+    broken_audible_alarm: boolean;
+    broken_windscreen_wipers: boolean;
+    broken_windscreen_washers: boolean;
+
+    no_registration: boolean;
+    owner_not_match: boolean;
+    no_vin: boolean;
+    registration_not_match_vin: boolean;
+    no_valid_diagnostic_card: boolean;
+    osago_not_required: boolean;
+    no_valid_osago: boolean;
+    act_readiness_not_issued: boolean;
+
+    untimely_maintenance: boolean;
+    technical_inspection_not_passed: boolean;
+    not_ready_to_work: boolean;
+    comments: string;
+
+    waybill_number?: number;
+    mission_numbers?: number;
+    not_passed_verification_glonass?: boolean;
+    reason_repair?: string;
+  };
+  files: any[];
 };

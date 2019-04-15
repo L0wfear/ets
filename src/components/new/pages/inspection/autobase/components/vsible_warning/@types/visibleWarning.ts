@@ -1,15 +1,15 @@
-export type SingleFiled = {
-    key: string;
+export type SingleFiled<F> = {
+    key: keyof F;
     title?: string | null;
     time?: boolean;
     type?: string | null;
     className?: string | null;
-    reset?: string[] | null;
+    reset?: Array<keyof F> | null;
     sub?: number | null;
-    hidden?: string | null;
+    hidden?: keyof F;
     options?: {
         value: string | number;
         label: string;
     }[];
 };
-export type FiledToCheck = SingleFiled[];
+export type FiledToCheck<F = any> = SingleFiled<F>[];

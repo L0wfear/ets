@@ -3,7 +3,6 @@ import {
   ConsumableMaterialService,
   ODHNormDataSummerService,
   EfficiencyService,
-  MeasureUnitService,
 } from 'api/Services';
 import { clone } from 'lodash';
 
@@ -30,10 +29,6 @@ export default class ODHActions extends Actions {
   createODHNormDataSummer(formState) {
     const payload = clone(formState);
     return ODHNormDataSummerService.post(payload, true, 'json');
-  }
-
-  getMeasureUnits(paylaod = {}) {
-    return MeasureUnitService.get(paylaod);
   }
 
   getEfficiency() {

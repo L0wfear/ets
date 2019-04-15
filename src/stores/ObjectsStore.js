@@ -12,26 +12,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
-    this.register(
-      objectsActions.getMaintenanceWork,
-      this.handleGetMaintenanceWork,
-    );
-    this.register(
-      objectsActions.createMaintenanceWork,
-      this.handleGetMaintenanceWork,
-    );
-    this.register(
-      objectsActions.updateMaintenanceWork,
-      this.handleGetMaintenanceWork,
-    );
-    this.register(
-      objectsActions.deleteMaintenanceWork,
-      this.handleGetMaintenanceWork,
-    );
-    this.register(
-      objectsActions.getMaintenanceRate,
-      this.handleGetMaintenanceRate,
-    );
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
@@ -60,7 +40,6 @@ export default class ObjectsStore extends Store {
       OrdersList: [],
       technicalOperationsObjectsList: [],
       positionsList: [],
-      maintenanceWorkList: [],
       userActionLogList: [],
       medicalStatsList: [],
 
@@ -141,15 +120,6 @@ export default class ObjectsStore extends Store {
 
   handleGetTechnicalOperationRelations({ result }) {
     this.setState({ technicalOperationRelationsList: result });
-  }
-
-  handleGetMaintenanceWork({ result: { rows: maintenanceWorkList } }) {
-    this.setState({ maintenanceWorkList });
-  }
-
-  handleGetMaintenanceRate(r) {
-    const maintenanceRateList = r.result.rows || r.result;
-    this.setState({ maintenanceRateList });
   }
 
   handleGetUserActionLog(userActionLogList) {

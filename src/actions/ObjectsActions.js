@@ -8,8 +8,6 @@ import {
   WaybillCarService,
   MissionCarService,
   TypesService,
-  MaintenanceWorkService,
-  MaintenanceRateService,
   UserActionLogService,
   WorkMode,
   MedicalStatsService,
@@ -58,41 +56,6 @@ export default class ObjectsActions extends Actions {
 
   getOrderById(id) {
     return OrderService.get({ id });
-  }
-
-  getMaintenanceWork() {
-    return MaintenanceWorkService.get();
-  }
-
-  createMaintenanceWork(formState) {
-    const payload = { ...formState };
-    return MaintenanceWorkService.post(
-      payload,
-      this.getMaintenanceWork,
-      'json',
-    );
-  }
-
-  updateMaintenanceWork(formState) {
-    const payload = { ...formState };
-    return MaintenanceWorkService.path(formState.id).put(
-      payload,
-      this.getMaintenanceWork,
-      'json',
-    );
-  }
-
-  deleteMaintenanceWork(id) {
-    return MaintenanceWorkService.path(id).delete(
-      {},
-      this.getMaintenanceWork,
-      'json',
-    );
-  }
-
-  getMaintenanceRate(type) {
-    const payload = { type };
-    return MaintenanceRateService.get(payload);
   }
 
   getUserActionLog(p = {}) {

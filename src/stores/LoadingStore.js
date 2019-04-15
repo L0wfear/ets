@@ -49,11 +49,8 @@ export default class LoadingStore extends Store {
       objectsActions.getCars,
       objectsActions.getSomeCars,
 
-      objectsActions.getMaintenanceWork,
       objectsActions.getUserActionLog,
       objectsActions.getMedicalStats,
-      objectsActions.createMaintenanceWork,
-      objectsActions.updateMaintenanceWork,
 
       employeesActions.getEmployees,
       employeesActions.getDrivers,

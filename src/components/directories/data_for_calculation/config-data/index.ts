@@ -3,11 +3,7 @@ import { getChildrenData } from 'utils/routes/getChildrenData';
 // new
 import cleaningRateList from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/_config-data';
 import consumableMaterialList from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/_config-data';
-
-// old
-import maintenanceWork from 'components/directories/data_for_calculation/maintenance_work/config-data';
-
-// new
+import maintenanceWorkList from 'components/new/pages/nsi/data_for_calculation/pages/maintenance_work/_config-data';
 import fuelOperationsList from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/_config-data';
 
 // old
@@ -17,7 +13,7 @@ import efficiency from 'components/directories/data_for_calculation/efficiency/c
 const children = {
   cleaningRateList,
   consumableMaterialList,
-  maintenanceWork,
+  maintenanceWorkList,
   fuelOperationsList,
   odhNormDataSummer,
   efficiency,

@@ -126,24 +126,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               <DivNone />
             )
         }
-         {
-          !IS_CREATING
-            ? (
-              <ExtField
-                type="select"
-                label="Статус ТС по базе:"
-                value={state.status}
-                options={statusOptions}
-                onChange={props.handleChange}
-                boundKeys="status"
-                error={errors.status}
-                disabled={!props.isPermitted}
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
         {
           !IS_CREATING
             ? (

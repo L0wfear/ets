@@ -82,6 +82,11 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Состояние эксплуатации',
       required: true,
     },
+    season: {
+      type: 'valueOfArray',
+      title: 'Сезон',
+      required: true,
+    },
     data: {
       type: 'schema',
       schema: carsConditionCarFormDataSchema,

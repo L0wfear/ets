@@ -1,4 +1,4 @@
-import { InspectCarsCondition } from "./@types/inspect_cars_condition";
+import { InspectCarsCondition, CarsConditionCars } from "./@types/inspect_cars_condition";
 import {
   promiseGetInspectRegistry,
   promiseCreateInspection,
@@ -96,4 +96,32 @@ export const promiseGetSetCarsConditionCars = async (inspection_id: number) => {
   const result = get(response, 'result.rows', []);
 
   return result;
+};
+
+export const promiseGetCarsConditionsCarById = async (id: CarsConditionCars['id']) => {
+  const response = await InspectCarsService.path(id).get();
+
+  const result: CarsConditionCars = get(response, 'result.rows.0', []);
+
+  return result;
+};
+
+export const promiseCreateCarsConditionsCar = async (carsConditionsCarRaw: Partial<CarsConditionCars>) => {
+  const response = await InspectCarsService.post(
+    { ...carsConditionsCarRaw },
+    false,
+    'json',
+  );
+
+  return response;
+};
+
+export const promiseUpdateCarsConditionsCar = async (carsConditionsCarRaw: Partial<CarsConditionCars>) => {
+  const response = await InspectCarsService.path(carsConditionsCarRaw.id).put(
+    { ...carsConditionsCarRaw },
+    false,
+    'json',
+  );
+
+  return response;
 };

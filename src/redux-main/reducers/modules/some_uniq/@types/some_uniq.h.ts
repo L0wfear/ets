@@ -13,7 +13,7 @@ import { TechnicalOperationTypes } from '../technical_operation_types/@types/tec
 import { SensorType } from '../sensor_type/@types/sensor_type';
 import { MeasureUnit } from '../measure_unit/@types';
 
-export type modelListElement = {
+export type ModelElement = {
   body_capacity: number | null;
   full_name: string | null;
   id: number;
@@ -29,7 +29,7 @@ export type CancelReasons = {
 
 export type IStateSomeUniq = {
   specialModelList: SpecialModel[];
-  modelsList: modelListElement[];
+  modelsList: ModelElement[];
   technicalOperationRegistryList: TechnicalOperationRegistry[];
   technicalOperationRegistryForMissionList: TechnicalOperationRegistry[];
   technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[];

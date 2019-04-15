@@ -14,6 +14,7 @@ type ConfigWithForm<P, F, S> = {
   uniqField: keyof F | boolean;
   createAction?: any;
   updateAction?: any;
+  getRecordAction?: any;
   mergeElement?: (props: P) => F;
   canSave?: (state: S, props: P) => boolean;
   validate?: (formState: F, props: P) => FormErrorType<F>;
@@ -123,10 +124,38 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         };
       }
 
-      componentDidUpdate(prevProps, prevState) {
+      componentDidMount() {
+        this.checkOnNewData();
+      }
+
+      checkOnNewData() {
+        if (config.getRecordAction && !isBoolean(config.uniqField) && this.props.element[config.uniqField]) {
+          this.props.dispatch(
+            config.getRecordAction(
+              this.props.element[config.uniqField],
+              {
+                page: this.props.page,
+                path: this.props.path,
+              },
+            ),
+          ).then(
+            (element: F) => {
+              this.setState(
+                this.getInitState({
+                  ...this.props,
+                  element,
+                }),
+              );
+            },
+          );
+        }
+      }
+
+      componentDidUpdate(prevProps) {
         if (Object.entries(this.props).some(([key, value]) => value !== prevProps[key])) {
           if (this.props.element !== prevProps.element) {
             this.setState(this.getInitState(this.props));
+            this.checkOnNewData();
           } else {
             this.setState((oldState) => {
               const formErrors = this.validate(oldState.formState);

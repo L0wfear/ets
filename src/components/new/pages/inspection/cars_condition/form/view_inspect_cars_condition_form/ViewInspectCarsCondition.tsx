@@ -53,6 +53,15 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       [],
     );
 
+    const handleCloseWithLoadregistry = React.useCallback(
+      () => {
+        props.handleHide(
+          props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed,
+        );
+      },
+      [props.handleHide, props.type],
+    );
+
     const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
 
     return (
@@ -121,7 +130,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               canSave={props.canSave}
               loadingPage={props.page}
             />
-            <Button onClick={props.handleHide}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
+            <Button onClick={handleCloseWithLoadregistry}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>

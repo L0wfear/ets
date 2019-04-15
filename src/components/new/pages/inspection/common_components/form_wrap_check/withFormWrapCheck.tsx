@@ -115,9 +115,9 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
 
     const handleCloseForm = React.useCallback(
       async (isSubmitted) => {
-        props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : false);
+        props.actionUnselectSelectedRowToShow(props.loadingPage, isBoolean(isSubmitted) ? isSubmitted : true);
 
-        if (isBoolean(isSubmitted) && isSubmitted) {
+        if (isBoolean(isSubmitted) && isSubmitted || true) {
           props.registryLoadDataByKey(props.loadingPage);
         }
 

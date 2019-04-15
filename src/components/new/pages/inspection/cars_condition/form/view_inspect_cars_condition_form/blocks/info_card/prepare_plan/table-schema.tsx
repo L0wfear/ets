@@ -93,14 +93,12 @@ const TypeRenderer: React.FunctionComponent<IPropsTypeRenderer> = ({
   />
 );
 
-const InputRenderer: React.FunctionComponent<
-  IPropsDataTableInputRenderer
-> = ({ value, onChange, index, outputListErrors, isPermitted, fieldKey }) => (
+const InputRenderer: React.FC<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted, fieldKey }) => (
   <ExtField
     id={fieldKey}
     type="string"
     label={false}
-    value={get(value, 'target.value', null)}
+    value={value}
     error={get(outputListErrors[index], fieldKey, '')}
     onChange={onChange}
     boundKeys={[index, fieldKey]}

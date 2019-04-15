@@ -7,6 +7,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
 import { ExtFieldContainer } from './styled';
+import { DivNone } from 'global-styled/global-styled';
 
 type BlockCarsConditionSelectCarOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
@@ -90,7 +91,15 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
           </span>
         </div>
-        <Button onClick={handleCreateNewCardCar}>Создать карточку</Button>
+        {
+          props.isActiveInspect
+            ? (
+              <Button onClick={handleCreateNewCardCar}>Создать карточку</Button>
+            )
+            : (
+              <DivNone />
+            )
+        }
         <br />
         <Row>
           <BlockCarsConditionSelectCarList

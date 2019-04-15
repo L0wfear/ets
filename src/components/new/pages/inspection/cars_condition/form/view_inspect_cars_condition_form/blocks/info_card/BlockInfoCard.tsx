@@ -4,10 +4,13 @@ import { DivNone } from 'global-styled/global-styled';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import BlockCarInfoWrap from './car_info';
 import PreparePlan from './prepare_plan';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 // import { Switch } from 'react-router-dom';
 
 type BlockInfoCardOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
+  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  callBackToLoadCars: () => Promise<void>;
   page: string;
   isHasPeriod: boolean;
 };
@@ -54,11 +57,22 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
       [props.setParams],
     );
 
+    const handleHideCarInfo = React.useCallback(
+      (isSubmitted) => {
+        handleHide();
+        if (isSubmitted) {
+          props.callBackToLoadCars();
+        }
+      },
+      [handleHide, props.callBackToLoadCars],
+    );
+
     if (typeRightView === 'car_info') {
       return (
         <BlockCarInfoWrap
-          handleHide={handleHide}
+          handleHide={handleHideCarInfo}
           carsConditionCarsList={props.carsConditionCarsList}
+          type={props.type}
           page={props.page}
         />
       );

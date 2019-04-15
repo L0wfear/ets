@@ -18,7 +18,7 @@ export const actionResetSpecialModel: any = () => (dispatch) => (
     actionSetSpecialModel([]),
   )
 );
-export const actionGetCompanyStructure: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
+export const actionLoadSpecialModel: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
   dispatch({
     type: 'none',
     payload: promiseGetSpecialModel(payload),
@@ -36,7 +36,7 @@ type actionGetAndSetInStoreSpecialModelAns = {
 
 export const actionGetAndSetInStoreSpecialModel = (payload: object, meta: LoadingMeta): ThunkAction<Promise<actionGetAndSetInStoreSpecialModelAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
-    actionGetCompanyStructure(payload, meta),
+    actionLoadSpecialModel(payload, meta),
   );
 
   dispatch(

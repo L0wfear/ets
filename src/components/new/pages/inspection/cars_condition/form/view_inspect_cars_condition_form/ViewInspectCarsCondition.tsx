@@ -2,9 +2,9 @@ import * as React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
-import { Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import { FooterEnd } from 'global-styled/global-styled';
 import ViewInspectCarsConditionButtonSubmit from './button_submit/ViewInspectCarsConditionButtonSubmit';
@@ -16,27 +16,50 @@ import { inspectcarsConditionormSchema } from './schema';
 import BlockCarSConditionInfo from './blocks/info/BlockCarSConditionInfo';
 import BlockCarSConditionPrepareCarToInspect from './blocks/prepare_car_to_inspect/BlockCarSConditionPrepareCarToInspect';
 import BlockCarsConditionSelectCar from './blocks/select_car/BlockCarSConditionSelectCar';
-import useCarsConditionGetCars from './load_data/useCarsConditionGetCars';
 import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import BlockCarsConditionSelectPhotosOfSupportingDocuments from './blocks/photos_of_supporting_documents/BlockCarsConditionSelectPhotosOfSupportingDocuments';
 import BlockCarsConditionHeadCountList from './blocks/headcount_list/BlockCarsConditionHeadCountList';
 import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUse';
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
-// import { get } from 'lodash';
+import { ColScroll } from './styled';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
+    const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
     const {
       formState: state,
       page,
       path,
     } = props;
-    const {
-      carsConditionCarsList,
-    } = useCarsConditionGetCars(
-      props.autobaseGetCarsConditionCars,
-      state.id,
-      page, path,
+
+    const callBackToLoadCars = React.useCallback(
+      () => {
+        setCarsConditionCarsList([]);
+        props.autobaseGetCarsConditionCars(state.id, { page, path }).then(
+          (result) => (
+            setCarsConditionCarsList(result)
+          ),
+        ).catch((error) => {
+          console.error(error); //tslint:disable-line
+        });
+      },
+      [state.id],
+    );
+
+    React.useEffect(
+      () => {
+        callBackToLoadCars();
+      },
+      [],
+    );
+
+    const handleCloseWithLoadregistry = React.useCallback(
+      () => {
+        props.handleHide(
+          props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed,
+        );
+      },
+      [props.handleHide, props.type],
     );
 
     const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
@@ -44,7 +67,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
     return (
       <React.Fragment>
         <ContainerForm>
-          <Col md={6} sm={6}>
+          <ColScroll md={6} sm={6}>
             <BlockCarSConditionInfo
               head_balance_holder_base={state.head_balance_holder_base}
               head_operating_base={state.head_operating_base}
@@ -87,14 +110,16 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               files={state.files}
               onChange={props.handleChange}
             />
-          </Col>
-          <Col md={6} sm={6}>
+          </ColScroll>
+          <ColScroll md={6} sm={6}>
             <BlockInfoCard
               isHasPeriod={isHasPeriod}
               carsConditionCarsList={carsConditionCarsList}
+              callBackToLoadCars={callBackToLoadCars}
               page={props.page}
+              type={props.type}
             />
-          </Col>
+          </ColScroll>
         </ContainerForm>
         <FooterForm md={12} sm={12}>
           <FooterEnd>
@@ -105,7 +130,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               canSave={props.canSave}
               loadingPage={props.page}
             />
-            <Button onClick={props.handleHide}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
+            <Button onClick={handleCloseWithLoadregistry}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>

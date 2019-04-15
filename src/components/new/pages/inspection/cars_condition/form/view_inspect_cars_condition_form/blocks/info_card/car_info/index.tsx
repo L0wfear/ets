@@ -4,10 +4,12 @@ import { DivNone } from 'global-styled/global-styled';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarInfo from './BlockCarInfo';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type BlockCarInfoWrapOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
   handleHide: (isSubmitted: boolean) => void;
+  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
 
   page: string;
 };
@@ -16,12 +18,11 @@ type BlockCarInfoWrapProps = (
   & WithSearchProps
 );
 
-const emptyElement = {};
-
 const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
   (props) => {
     const [selectedCar, setSelectedCar] = React.useState(null);
     const selectedCarsConditionsCar = props.match.params.selectedCarsConditionsCar;
+    const inspection_id = getNumberValueFromSerch(props.match.params.id);
 
     const {
       carsConditionCarsList,
@@ -30,7 +31,13 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
     React.useEffect(
       () => {
         if (selectedCarsConditionsCar === 'create') {
-          setSelectedCar(emptyElement);
+          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+            setSelectedCar({
+              inspection_id,
+            });
+          } else {
+            props.handleHide(false);
+          }
           return;
         }
 
@@ -39,14 +46,17 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
         if (id && carsConditionCarsList.length) {
           const selectedCarData = carsConditionCarsList.find((carData) => carData.id === id);
           if (selectedCarData) {
-            setSelectedCar(selectedCarData);
+            setSelectedCar({
+              inspection_id,
+              ...selectedCarData,
+            });
             return;
           } else {
             props.handleHide(false);
           }
         }
       },
-      [selectedCarsConditionsCar, carsConditionCarsList],
+      [selectedCarsConditionsCar, carsConditionCarsList, props.type, inspection_id],
     );
 
     return (
@@ -55,6 +65,7 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
           <BlockCarInfo
             element={selectedCar}
             handleHide={props.handleHide}
+            type={props.type}
 
             page={props.page}
             path="car_info-data"

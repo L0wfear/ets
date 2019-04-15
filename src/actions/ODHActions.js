@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import {
-  ODHNormService,
+  ConsumableMaterialService,
   ODHNormDataSummerService,
   EfficiencyService,
   MeasureUnitService,
@@ -8,27 +8,14 @@ import {
 import { clone } from 'lodash';
 
 function getODHNorm() {
-  return ODHNormService.get().then((r) => ({ result: r.result.rows }));
+  return ConsumableMaterialService.get().then((r) => ({
+    result: r.result.rows,
+  }));
 }
 
 export default class ODHActions extends Actions {
   getODHNorm() {
     return getODHNorm();
-  }
-
-  updateODHNorm(formState) {
-    const payload = clone(formState);
-    return ODHNormService.path(formState.id).put(payload, getODHNorm, 'json');
-  }
-
-  createODHNorm(formState) {
-    const payload = clone(formState);
-    // if (typeof payload.consumable_material === 'undefined') payload.consumable_material = false;
-    return ODHNormService.post(payload, getODHNorm, 'json');
-  }
-
-  deleteODHNorm(id) {
-    return ODHNormService.path(id).delete({}, getODHNorm, 'json');
   }
 
   getODHNormDataSummer() {

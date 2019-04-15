@@ -7,13 +7,22 @@ export default class ODHStore extends Store {
     const actions = flux.getActions('odh');
     this.register(actions.getODHNorm, this.handleGetODHNorm);
     this.register(actions.getMeasureUnits, this.handleGetMeasureUnits);
-    this.register(actions.updateODHNorm, this.handleGetODHNorm);
-    this.register(actions.createODHNorm, this.handleGetODHNorm);
-    this.register(actions.deleteODHNorm, this.handleGetODHNorm);
-    this.register(actions.getODHNormDataSummer, this.handleGetODHNormDataSummer);
-    this.register(actions.updateODHNormDataSummer, this.handleGetODHNormDataSummer);
-    this.register(actions.createODHNormDataSummer, this.handleGetODHNormDataSummer);
-    this.register(actions.deleteODHNormDataSummer, this.handleGetODHNormDataSummer);
+    this.register(
+      actions.getODHNormDataSummer,
+      this.handleGetODHNormDataSummer,
+    );
+    this.register(
+      actions.updateODHNormDataSummer,
+      this.handleGetODHNormDataSummer,
+    );
+    this.register(
+      actions.createODHNormDataSummer,
+      this.handleGetODHNormDataSummer,
+    );
+    this.register(
+      actions.deleteODHNormDataSummer,
+      this.handleGetODHNormDataSummer,
+    );
     this.register(actions.getEfficiency, this.handleGetEfficiency);
     this.register(actions.updateEfficiency, this.handleGetEfficiency);
     this.register(actions.createEfficiency, this.handleGetEfficiency);

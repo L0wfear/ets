@@ -139,7 +139,7 @@ export const PositionService = ETS_API_FACTORY.createApiServiceAdapter(
 export const VectorObjectService = ETS_API_FACTORY.createApiServiceAdapter(
   'vector_object',
 );
-export const ODHNormService = ETS_API_FACTORY.createApiServiceAdapter(
+export const ConsumableMaterialService = ETS_API_FACTORY.createApiServiceAdapter(
   'consumable_material',
 );
 export const MeasureUnitService = ETS_API_FACTORY.createApiServiceAdapter(

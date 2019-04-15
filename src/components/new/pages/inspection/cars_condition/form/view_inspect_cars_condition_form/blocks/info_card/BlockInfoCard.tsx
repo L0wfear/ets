@@ -3,6 +3,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { DivNone } from 'global-styled/global-styled';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import BlockCarInfoWrap from './car_info';
+import PreparePlan from './prepare_plan';
 // import { Switch } from 'react-router-dom';
 
 type BlockInfoCardOwnProps = {
@@ -67,7 +68,9 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
       // @todo
       return (
         <div>
-          {typeRightView}
+          <PreparePlan
+            page={props.page}
+          ></PreparePlan>
         </div>
       );
     }

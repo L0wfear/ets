@@ -27,10 +27,11 @@ export type IPropsDataTableInput = ISharedPropsDataTableInput & TInjectedPropsDa
 
 export interface IPropsDataTableInputRenderer {
   index: number;
-  value: string;
+  value: string | any;
   isPermitted: boolean;
   outputListErrors: ETSCore.Types.IStringKeyHashTable<string>[];
   onChange(index: number, key: string, value: any): void;
+  fieldKey?: string;
 }
 
 export type TRendererFunction = (

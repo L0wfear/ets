@@ -49,13 +49,14 @@ const TrTdButtonCloneTire: React.FC<TrTdButtonCloneTireProps> = React.memo(
           return;
         }
 
+        props.registrySetSelectedRowToShowInForm(props.registryKey);
+        await props.registryLoadDataByKey(props.registryKey);
+
         if (response) {
           props.setParams({
             [props.uniqKeyForParams]: get(response, props.uniqKey, null),
           });
         }
-        props.registrySetSelectedRowToShowInForm(props.registryKey);
-        props.registryLoadDataByKey(props.registryKey);
       },
       [rowData.id],
     );

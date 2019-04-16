@@ -196,15 +196,18 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
+          <div>
+            {
+              isPermitted // либо обновление, либо создание
+              ? (
+                <Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+              )
+              : (
+                <DivNone />
+              )
+            }
+            <Button onClick={this.props.hideWithoutChanges}>Отмена</Button>
+          </div>
         </Modal.Footer>
       </Modal>
     );

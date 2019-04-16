@@ -150,7 +150,7 @@ const mapStateToProps = (state) => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
   front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
   track: state.monitorPage.carInfo.trackCaching.track,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
+  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
 });
 
 export default compose<any, any>(

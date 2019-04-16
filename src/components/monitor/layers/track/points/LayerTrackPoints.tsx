@@ -73,7 +73,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
       }
     } else {
       const { lastPoint } = this.props;
-      if (lastPoint !== prevProps.lastPoint) {
+      if (lastPoint !== prevProps.lastPoint && lastPoint) {
         this.drawTrackPoints([lastPoint], SHOW_TRACK);
       } else if (SHOW_TRACK !== prevProps.SHOW_TRACK) {
         const { track } = this.props;
@@ -137,7 +137,7 @@ class LayerTrackPoints extends React.PureComponent<PropsLayerTrackPoints, StateL
 const mapStateToProps = (state) => ({
   SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
   track: state.monitorPage.carInfo.trackCaching.track,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track.slice(-1)[0],
+  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
   mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
   speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
 });

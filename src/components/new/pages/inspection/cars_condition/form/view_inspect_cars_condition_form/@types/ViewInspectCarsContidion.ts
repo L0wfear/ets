@@ -16,6 +16,7 @@ export type ViewInspectCarsConditionOwnProps = {
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
   handleHide: OnFormHideType;
 
+  loadingPage: string;
   page: string;
   path?: string;
 };

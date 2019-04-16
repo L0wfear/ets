@@ -29,6 +29,7 @@ export type ViewInspectPgmBaseOwnProps = {
   isPermitted: boolean;
   pgmBaseList: IStateInspectPgmBase['pgmBaseList'];
 
+  loadingPage: string;
   page: string;
 };
 

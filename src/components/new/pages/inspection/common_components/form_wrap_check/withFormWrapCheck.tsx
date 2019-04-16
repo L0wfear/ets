@@ -203,6 +203,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
                     isPermitted={props.isPermitted}
 
                     page={props.loadingPage}
+                    loadingPage={props.loadingPage}
                   />
                 </React.Fragment>
               )

@@ -15,6 +15,7 @@ import { validate } from 'components/ui/form/new/validate';
 import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 type InitialState = {
   selectedInspect: InspectAutobase,
@@ -258,7 +259,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               type={props.type}
               handleHide={props.handleHide}
               selectedInspectAutobase={state.selectedInspect}
-              loadingPage={props.page}
+              loadingPage={props.loadingPage}
             />
             <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
@@ -270,4 +271,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
     );
 };
 
-export default ViewInspectAutobase;
+export default withPreloader({
+  typePreloader: 'mainpage',
+  withPagePath: true,
+})(ViewInspectAutobase);

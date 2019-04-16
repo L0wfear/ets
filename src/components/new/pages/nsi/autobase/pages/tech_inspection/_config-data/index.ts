@@ -15,7 +15,7 @@ export default {
   patrialEndPath,
   path,
   routePath,
-  title: 'Реестр технологических операций',
+  title: 'Реестр техосмотров',
   isNewRegistry: true,
   entyity: 'autobase_tech_inspection',
   noDotList: false,

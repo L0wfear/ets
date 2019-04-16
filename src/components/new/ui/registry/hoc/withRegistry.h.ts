@@ -77,6 +77,7 @@ export type TypeFields<F extends any> = {
     | 'AUTOBASE_REPAIR_STATUS'
     | 'TIME_MEASURES'
     | 'checkOrExpect'
+    | 'efficiencySource'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {

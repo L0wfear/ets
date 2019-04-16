@@ -166,6 +166,13 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       if (format === 'checkOrExpect') {
         value = value ? 'Проверено' : 'Ожидает проверки';
       }
+      if (format === 'efficiencySource') {
+        value = (
+          value
+          ? 'Справочник показателей норм на содержание ОДХ'
+          : 'Реестр ОДХ'
+        );
+      }
     }
 
     if (dashIfEmpty) {

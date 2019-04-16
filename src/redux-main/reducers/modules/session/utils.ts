@@ -23,6 +23,7 @@ export const withSpecificPermissions = (user) => {
   /* end docs */
 
   // permissions.push(...getFullAccess('odh_norm_data_summer'));
+  // permissions.push(...getFullAccess('efficiency'));
 
   // permissions.push(...getFullAccess('inspect.autobase'));
   // permissions.push(...getFullAccess('inspect.container'));

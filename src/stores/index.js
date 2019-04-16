@@ -8,7 +8,6 @@ import loading from './LoadingStore';
 import missions from './MissionsStore';
 import notifications from './NotificationsStore';
 import objects from './ObjectsStore';
-import odh from './ODHStore';
 import repair from './RepairStore';
 import waybills from './WaybillsStore';
 
@@ -19,7 +18,6 @@ export {
   missions,
   notifications,
   objects,
-  odh,
   repair,
   waybills,
 };

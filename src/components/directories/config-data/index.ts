@@ -8,13 +8,13 @@ import autobasePages from 'components/new/pages/nsi/autobase/_config-data';
 import repairsRegistry from 'components/directories/repair/config-data';
 import regulatoryIndicator from 'components/new/pages/nsi/regulatory_indicator/_config-data';
 import geoobjects from 'components/new/pages/nsi/geoobjects/_config-data';
-import dataForCalculation from 'components/directories/data_for_calculation/config-data';
 import medicalStats from 'components/directories/medical_stats/config-data';
 import companyStructure from 'components/directories/company_structure/config-data';
 import userActionLog from 'components/directories/user_action_log/config-data';
 
 import employeesList from 'components/new/pages/nsi/employee/_config-data';
 import normRegistryList from 'components/new/pages/nsi/norm_registry/_config-data';
+import dataForCalculation from 'components/new/pages/nsi/data_for_calculation/_config-data';
 
 const children = {
   employeesList,

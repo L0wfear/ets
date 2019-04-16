@@ -6,9 +6,7 @@ import consumableMaterialList from 'components/new/pages/nsi/data_for_calculatio
 import maintenanceWorkList from 'components/new/pages/nsi/data_for_calculation/pages/maintenance_work/_config-data';
 import fuelOperationsList from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/_config-data';
 import odhNormDataSummerList from 'components/new/pages/nsi/data_for_calculation/pages/odh_norm_data_summer/_config-data';
-
-// old
-import efficiency from 'components/directories/data_for_calculation/efficiency/config-data';
+import efficiencyList from 'components/new/pages/nsi/data_for_calculation/pages/efficiency/_config-data';
 
 const children = {
   cleaningRateList,
@@ -16,7 +14,7 @@ const children = {
   maintenanceWorkList,
   fuelOperationsList,
   odhNormDataSummerList,
-  efficiency,
+  efficiencyList,
 };
 
 export default {

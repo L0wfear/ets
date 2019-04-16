@@ -277,35 +277,38 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
 
                   page={props.page}
                 />
-                <Row>
-                  <Col md={6}>
-                    <FileField
-                      id="file"
-                      label="Фотографии подтверждающих документов"
-                      multiple
-                      value={state.selectedInspect.data.photos_of_supporting_documents}
-                      onChange={onChangeFile}
-                      disabled={!isPermittedChangeListParams}
-                      boundKeys="photos_of_supporting_documents"
-                    />
-                  </Col>
-                  <Col md={6}>
-                    <FileField
-                      id="file"
-                      label="Фотографии дефектов"
-                      multiple
-                      value={state.selectedInspect.data.photos_defect}
-                      onChange={onChangeFile}
-                      disabled={!isPermittedChangeListParams}
-                      boundKeys="photos_defect"
-                    />
-                  </Col>
-                </Row>
               </Col>
-            ) : (
+            )
+            : (
               <DivNone />
             )
           }
+          <Col md={6} sm={12}>
+            <Row>
+              <Col md={6}>
+                <FileField
+                  id="file"
+                  label="Фотографии подтверждающих документов"
+                  multiple
+                  value={state.selectedInspect.data.photos_of_supporting_documents}
+                  onChange={onChangeFile}
+                  disabled={!isPermittedChangeListParams}
+                  boundKeys="photos_of_supporting_documents"
+                />
+              </Col>
+              <Col md={6}>
+                <FileField
+                  id="file"
+                  label="Фотографии дефектов"
+                  multiple
+                  value={state.selectedInspect.data.photos_defect}
+                  onChange={onChangeFile}
+                  disabled={!isPermittedChangeListParams}
+                  boundKeys="photos_defect"
+                />
+              </Col>
+            </Row>
+          </Col>
           <ViewAddInspectEmployee
             type={props.type}
             isPermitted={props.isPermitted}

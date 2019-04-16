@@ -8,6 +8,7 @@ import * as cx from 'classnames';
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
 
 import { onClickWithKeys } from 'components/compositions/hoc';
+import { DivNone } from 'global-styled/global-styled';
 
 const Button: any = onClickWithKeys(BootstrapButton as any);
 
@@ -77,11 +78,19 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     return (
       <div>
         { showFileList && <Row id={ID}>{fileList}</Row> }
-          <BootstrapButton
-            disabled={this.props.disabled}
-            onClick={this.handleFilePick}
-            id={button_id}
-          >{buttonName}</BootstrapButton>
+          {
+            !this.props.disabled
+              ? (
+                <BootstrapButton
+                  disabled={this.props.disabled}
+                  onClick={this.handleFilePick}
+                  id={button_id}
+                >{buttonName}</BootstrapButton>
+              )
+              : (
+                <DivNone />
+              )
+          }
           <input
             id={id}
             type="file"

@@ -10,6 +10,7 @@ import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@ty
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
 import { CheckContainerTable } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
+import { DivNone } from 'global-styled/global-styled';
 
 type ContainerBlockStateProps = {};
 type ContainerBlockDispatchProps = {
@@ -146,9 +147,18 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
             ))
           }
         </CheckContainerTable>
-        <Button disabled={!props.isPermittedChangeListParams} onClick={handleCreateContainer}>
-          <Glyphicon glyph="plus"/>&nbsp;Добавить
-        </Button> <br/><br/>
+        {
+          props.isPermittedChangeListParams
+            ? (
+              <Button disabled={!props.isPermittedChangeListParams} onClick={handleCreateContainer}>
+                <Glyphicon glyph="plus"/>&nbsp;Добавить
+              </Button>
+            )
+            : (
+              <DivNone />
+            )
+        }
+       <br />
       </BoxContainer>
 
       <ContainerFormLazy

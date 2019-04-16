@@ -41,6 +41,7 @@ export const config: TypeConfigData<CarFuncTypes> = {
         valueKey: 'avg_work_hours',
         type: 'advanced-number',
         title: 'Среднее количество часов работы',
+        step: 1,
       },
     ],
   },

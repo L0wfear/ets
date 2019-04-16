@@ -58,6 +58,7 @@ export const config: TypeConfigData<Ssp> = {
         valueKey: 'productivity',
         title: 'Производительность (куб. м в сутки)',
         type: 'advanced-number',
+        step: 0.01,
       },
       {
         valueKey: 'is_mobile',

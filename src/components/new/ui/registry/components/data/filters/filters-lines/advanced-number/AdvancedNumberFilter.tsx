@@ -24,6 +24,7 @@ type PropsAdvancedNumberFilter = {
     valueKey: string;
     labelKey?: string;
     disabled?: boolean;
+    step: number;
   };
   filterValuesObj: any;
   formatedTitle: string;
@@ -133,6 +134,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
                 noShowLabel
                 noShowError
                 disabled={this.props.filterData.disabled}
+                step={this.props.filterData.step}
               />
             </AdvacedFirstInputContainer>
           </AdvacedFirstLineContainer>
@@ -146,6 +148,7 @@ class AdvancedNumberFilter extends React.Component<PropsAdvancedNumberFilter, St
                 noShowLabel
                 noShowError
                 disabled={this.props.filterData.disabled}
+                step={this.props.filterData.step}
               />
             )
             : (

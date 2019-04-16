@@ -57,6 +57,7 @@ export const config: TypeConfigData<Msp> = {
         valueKey: 'productivity',
         title: 'Производительность (куб. м в сутки)',
         type: 'advanced-number',
+        step: 0.01,
       },
     ],
   },

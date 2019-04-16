@@ -26,7 +26,20 @@ export const getDefaultBatteryRegistryElement = (element: Partial<BatteryRegistr
   const newElement = { ...defaultBatteryRegistry };
   if (isObject(element)) {
     Object.keys(defaultBatteryRegistry).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultBatteryRegistry[key];
+      if (key === 'battery_to_car') {
+        if (!isNullOrUndefined(element[key])) {
+          newElement[key] = element[key].map((rowData, index) => {
+            return {
+              ...rowData,
+              customId: index + 1,
+            };
+          });
+        } else {
+          newElement[key] = defaultBatteryRegistry[key];
+        }
+      } else {
+        newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultBatteryRegistry[key];
+      }
     });
   }
 

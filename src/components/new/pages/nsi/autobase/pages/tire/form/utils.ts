@@ -25,8 +25,21 @@ export const defaultTire: Tire = {
 export const getDefaultTireElement = (element: Partial<Tire>): Tire => {
   const newElement = { ...defaultTire };
   if (isObject(element)) {
-    Object.keys(defaultTire).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultTire[key];
+    Object.keys(defaultTire).forEach((key: keyof Tire) => {
+      if (key === 'tire_to_car') {
+        if (!isNullOrUndefined(element[key])) {
+          newElement[key] = element[key].map((rowData, index) => {
+            return {
+              ...rowData,
+              customId: index + 1,
+            };
+          });
+        } else {
+          newElement[key] = defaultTire[key];
+        }
+      } else {
+        newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultTire[key];
+      }
     });
   }
 

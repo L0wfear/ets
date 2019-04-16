@@ -316,6 +316,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             value = Number(value);
           }
 
+          if (type === 'string' && !value) {
+            value = null;
+          }
+
           formatedFormState[key] = value;
         });
 

@@ -277,7 +277,8 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                   page={props.page}
                 />
               </Col>
-            ) : (
+            )
+            : (
               <DivNone />
             )
           }

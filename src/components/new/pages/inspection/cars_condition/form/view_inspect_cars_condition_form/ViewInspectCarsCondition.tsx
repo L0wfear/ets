@@ -22,6 +22,7 @@ import BlockCarsConditionHeadCountList from './blocks/headcount_list/BlockCarsCo
 import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUse';
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
 import { ColScroll } from './styled';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
@@ -128,7 +129,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}
               canSave={props.canSave}
-              loadingPage={props.page}
+              loadingPage={props.loadingPage}
             />
             <Button onClick={handleCloseWithLoadregistry}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
@@ -156,5 +157,9 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
     },
     permissions: inspectCarsConditionPermissions,
     schema: inspectcarsConditionormSchema,
+  }),
+  withPreloader({
+    typePreloader: 'mainpage',
+    withPagePath: true,
   }),
 )(ViewInspectCarsCondition);

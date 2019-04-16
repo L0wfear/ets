@@ -25,6 +25,7 @@ import { getInspectPgmBase } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
+import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 type InitialState = {
   selectedInspect: InspectPgmBase,
@@ -274,7 +275,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                   isPermittedChangeListParams={isPermittedChangeListParams}
                   errors={state.errors}
 
-                  page={props.page}
+                  page={props.loadingPage}
                 />
               </Col>
             )
@@ -326,7 +327,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
               type={props.type}
               handleHide={props.handleHide}
               selectedInspectPgmBase={state.selectedInspect}
-              loadingPage={props.page}
+              loadingPage={props.loadingPage}
             />
             <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
           </FooterEnd>
@@ -344,4 +345,8 @@ export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseWrapOwnProps>(
       pgmBaseList: getInspectPgmBase(state).pgmBaseList,
     }),
   ),
+  withPreloader({
+    typePreloader: 'mainpage',
+    withPagePath: true,
+  }),
 )(ViewInspectPgmBase);

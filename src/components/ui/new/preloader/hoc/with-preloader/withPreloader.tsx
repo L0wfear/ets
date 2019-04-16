@@ -14,6 +14,7 @@ type TypeConfig = {
   typePreloader?: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
   page?: string;
   path?: string;
+  withPagePath?: boolean;
 };
 
 type StateProps = {
@@ -26,10 +27,10 @@ type OwnerProps = {
 
 type PropsPreloaderWrap = StateProps & OwnerProps;
 
-const withPreloader = (cofing: TypeConfig) => (Component) => (
+const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
   connect<StateProps, {}, OwnerProps, ReduxState>(
     (state, { page, path }) => ({
-      isLoading: selectors.getLoadingCount(state.etsLoading, cofing.page || page, cofing.path || path),
+      isLoading: selectors.getLoadingCount(state.etsLoading, configWithPreloader.page || page, configWithPreloader.path || path),
     }),
   )(
     class PreloaderWrap extends React.Component<PropsPreloaderWrap, {}> {
@@ -41,14 +42,18 @@ const withPreloader = (cofing: TypeConfig) => (Component) => (
             {
               isLoading ?
               (
-                <Preloader typePreloader={cofing.typePreloader || typePreloader} />
+                <Preloader typePreloader={configWithPreloader.typePreloader || typePreloader} />
               )
               :
               (
                 <DivNone />
               )
             }
-            <Component {...props} />
+            <Component
+              {...props}
+                page={configWithPreloader.withPagePath ? page : undefined}
+                path={configWithPreloader.withPagePath ? path : undefined}
+            />
           </>
         );
       }

@@ -76,6 +76,7 @@ const getRouters = () => (
     <Redirect from="/odh-norm" to="/nsi/data_for_calculation/consumable_material" />
     <Redirect from="/fuel-operations" to="/nsi/data_for_calculation/fuel_operations" />
     <Redirect from="/maintenance-work" to="/nsi/data_for_calculation/maintenance_work" />
+    <Redirect from="/odh-norm-data-summer" to="/nsi/data_for_calculation/odh_norm_data_summer" />
 
     <Redirect to="/monitor" />
   </Switch>

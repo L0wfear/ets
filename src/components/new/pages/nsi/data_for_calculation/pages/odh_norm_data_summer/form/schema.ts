@@ -1,100 +1,75 @@
-export const odhNormSchema = {
-  properties: [
-    {
-      key: 'technical_operation_id',
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { OdhNormDataSummer } from 'redux-main/reducers/modules/odh_norm_data_summer/@types/odhNormDataSummer';
+import { PropsOdhNormDataSummer } from './@types/OdhNormDataSummerForm';
+
+export const odhNormDataSummerFormSchema: SchemaType<OdhNormDataSummer, PropsOdhNormDataSummer> = {
+  properties: {
+    technical_operation_id: {
       title: 'Технологическая операция',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'standard_id',
+    standard_id: {
       title: 'Норматив содержания ОДХ',
-      type: 'number',
+      type: 'valueOfArray',
       required: true,
     },
-    {
-      key: 'unit',
+    unit: {
       title: 'Единица измерения',
-      type: 'string',
+      type: 'valueOfArray',
       required: false,
     },
-    {
-      key: 'categorized_1',
+    categorized_1: {
       title: '1',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_2',
+    categorized_2: {
       title: '2',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_3',
+    categorized_3: {
       title: '3',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_4',
+    categorized_4: {
       title: '4',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_5',
+    categorized_5: {
       title: '5',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_6a',
+    categorized_6a: {
       title: '6а',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_6b',
+    categorized_6b: {
       title: '6б',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_6c',
+    categorized_6c: {
       title: '6в',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_7a',
+    categorized_7a: {
       title: '7а',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'categorized_7b',
+    categorized_7b: {
       title: '7б',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'uncategorized_highway',
+    uncategorized_highway: {
       title: 'Магистрали (направления "Внуковское", "Рублевское", "Шереметьевское")',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'uncategorized_odhs_center',
+    uncategorized_odhs_center: {
       title: 'ОДХ внутри Садового кольца',
       type: 'number',
-      required: false,
     },
-    {
-      key: 'uncategorized_odhs_other',
+    uncategorized_odhs_other: {
       title: 'ОДХ на территории ТиНАО, не отнесенные к иным категориям на территории г. Москвы',
       type: 'number',
-      required: false,
     },
-  ],
+  },
 };

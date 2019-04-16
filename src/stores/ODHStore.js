@@ -6,22 +6,6 @@ export default class ODHStore extends Store {
 
     const actions = flux.getActions('odh');
     this.register(actions.getODHNorm, this.handleGetODHNorm);
-    this.register(
-      actions.getODHNormDataSummer,
-      this.handleGetODHNormDataSummer,
-    );
-    this.register(
-      actions.updateODHNormDataSummer,
-      this.handleGetODHNormDataSummer,
-    );
-    this.register(
-      actions.createODHNormDataSummer,
-      this.handleGetODHNormDataSummer,
-    );
-    this.register(
-      actions.deleteODHNormDataSummer,
-      this.handleGetODHNormDataSummer,
-    );
     this.register(actions.getEfficiency, this.handleGetEfficiency);
     this.register(actions.updateEfficiency, this.handleGetEfficiency);
     this.register(actions.createEfficiency, this.handleGetEfficiency);
@@ -35,10 +19,6 @@ export default class ODHStore extends Store {
 
   handleGetODHNorm({ result }) {
     this.setState({ odhNormList: result });
-  }
-
-  handleGetODHNormDataSummer({ result }) {
-    this.setState({ odhNormDataSummerList: result });
   }
 
   handleGetEfficiency({ result }) {

@@ -126,7 +126,7 @@ export type TypeConfigData<F> = {
   list?: {
     data?: {
       fixedWidth?: boolean;
-      uniqKey?: string;
+      uniqKey?: keyof F;
       uniqKeyForParams: string;
       array?: F[];
       total_count?: number;

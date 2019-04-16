@@ -22,6 +22,8 @@ export const withSpecificPermissions = (user) => {
   permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
   /* end docs */
 
+  // permissions.push(...getFullAccess('odh_norm_data_summer'));
+
   // permissions.push(...getFullAccess('inspect.autobase'));
   // permissions.push(...getFullAccess('inspect.container'));
   // permissions.push(...getFullAccess('inspect.pgm_base'));

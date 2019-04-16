@@ -3,9 +3,18 @@ import component from 'components/new/pages/nsi/autobase/pages/types-attr/_confi
 
 import { config } from 'components/new/pages/nsi/autobase/pages/types-attr/_config-data/registry-config';
 
+export const item = 'types_attr';
+export const id = config.list.data.uniqKeyForParams;
+export const patrialEndPath = `/${item}/:${id}?`;
+export const path = `/nsi/autobase/${item}`;
+export const routePath = `${path}/:${id}?`;
+
 export default {
-  path: '/nsi/autobase/types_attr',
-  routePath: `/nsi/autobase/types_attr/:${config}?`,
+  item,
+  id,
+  patrialEndPath,
+  path,
+  routePath,
   title: 'Таблица нормативных скоростей и ширин',
   isNewRegistry: true,
   entyity: 'types_attr',

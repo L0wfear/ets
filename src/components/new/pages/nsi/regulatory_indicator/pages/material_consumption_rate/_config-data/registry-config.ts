@@ -63,6 +63,7 @@ export const getToConfig = (): TypeConfigData<MaterialConsumptionRate> => {
           valueKey: 'value',
           title: 'Норма',
           type: 'advanced-number',
+          step: 0.001,
         },
       ],
     },

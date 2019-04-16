@@ -68,11 +68,13 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           valueKey: 'cars_cnt',
           type: 'advanced-number',
           title: 'Количество ТС на балансе',
+          step: 1,
         },
         {
           valueKey: 'checked_cars_cnt',
           type: 'advanced-number',
           title: 'Проверено ТС',
+          step: 1,
         },
       ],
     },

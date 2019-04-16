@@ -74,6 +74,7 @@ export const getToConfig = (): TypeConfigData<MaintenanceRate> => {
           valueKey: 'value',
           title: 'Норма',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'measure_unit_id',

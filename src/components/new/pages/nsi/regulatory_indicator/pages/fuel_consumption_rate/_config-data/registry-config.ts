@@ -63,11 +63,13 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           valueKey: 'summer_rate',
           title: 'Норма для летнего периода',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'winter_rate',
           title: 'Норма для зимнего периода',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'car_special_model_id',

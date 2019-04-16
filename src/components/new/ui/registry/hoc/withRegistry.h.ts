@@ -38,10 +38,12 @@ export type OneFilterType<F> = {
   disabled?: boolean;
 } & (
   {
-    type: 'advanced-number'
-    | 'advanced-date'
+    type: 'advanced-date'
     | 'advanced-string-like';
-  }| {
+  } | {
+    type: 'advanced-number';
+    step: number;
+  } | {
     type: 'multiselect';
     labelKey?: keyof F;
     options?: FilterOptionType<F>[];

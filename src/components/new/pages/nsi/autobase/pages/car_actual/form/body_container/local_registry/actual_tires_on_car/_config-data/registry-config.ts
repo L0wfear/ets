@@ -42,11 +42,13 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
           valueKey: 'odometr_diff',
           title: 'Пробег, км',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'motohours_diff',
           title: 'Наработка, мч',
           type: 'advanced-number',
+          step: 1,
         },
       ],
     },

@@ -68,6 +68,7 @@ export const getToConfig = (car_id: number): TypeConfigData<RoadAccident> => {
           valueKey: 'damage_price',
           title: 'Стоимость ущерба, руб.',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'comment',

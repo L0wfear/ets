@@ -35,6 +35,7 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
         valueKey: 'number',
         type: 'advanced-number',
         title: 'Номер',
+        step: 1,
       },
       {
         valueKey: 'route_name',

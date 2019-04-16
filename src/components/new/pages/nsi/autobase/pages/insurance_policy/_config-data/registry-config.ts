@@ -91,6 +91,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
           valueKey: 'price',
           title: 'Стоимость, руб.',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'note',

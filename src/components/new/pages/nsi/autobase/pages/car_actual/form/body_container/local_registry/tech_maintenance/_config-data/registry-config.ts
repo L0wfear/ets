@@ -78,11 +78,13 @@ export const getToConfig = (car_id: number): TypeConfigData<TechMaintenance> => 
           valueKey: 'odometr_fact',
           title: 'Пробег на момент ТО, км',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'motohours_fact',
           title: 'Счетчик м/ч на момент ТО, м/ч',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'note',

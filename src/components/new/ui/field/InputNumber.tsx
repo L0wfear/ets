@@ -13,6 +13,7 @@ type PropsInputNumber = {
   noShowLabel?: boolean;
   onChange: any;
   disabled?: boolean;
+  step: number;
 };
 
 class InputNumber extends React.PureComponent<PropsInputNumber, {}> {

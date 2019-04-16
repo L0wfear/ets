@@ -64,6 +64,7 @@ export const getToConfig = (): TypeConfigData<TechMaintOrder> => {
           valueKey: 'interval_probeg',
           title: 'Интервал до следующего ТО (по пробегу)',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'measure_unit_run_name',
@@ -74,6 +75,7 @@ export const getToConfig = (): TypeConfigData<TechMaintOrder> => {
           valueKey: 'interval_time',
           title: 'Интервал до следующего ТО (по времени)',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'interval_time_type',

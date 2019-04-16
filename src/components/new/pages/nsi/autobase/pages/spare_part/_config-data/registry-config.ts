@@ -60,6 +60,7 @@ export const getToConfig = (): TypeConfigData<SparePart> => {
           valueKey: 'quantity',
           title: 'Количество',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'supplied_at',

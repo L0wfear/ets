@@ -52,11 +52,13 @@ export const config: TypeConfigData<PgmStore> = {
         valueKey: 'liquid_pgm_volume',
         title: 'Объем жидких ПГМ',
         type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'solid_pgm_volume',
         title: 'Объем твердых ПГМ',
         type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'pgm_stores_type_name',

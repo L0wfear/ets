@@ -40,11 +40,13 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
           valueKey: 'lifetime_months',
           title: 'Срок службы',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'worked_months',
           title: 'Количество месяцев наработки',
           type: 'advanced-number',
+          step: 1,
         },
         {
           valueKey: 'manufacturer_id',

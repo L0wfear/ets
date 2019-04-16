@@ -52,16 +52,19 @@ export const config: TypeConfigData<Dt> = {
         valueKey: 'total_area',
         title: 'Общая площадь (кв.м.)',
         type: 'advanced-number',
+        step: 0.01,
       },
       {
         valueKey: 'clean_area',
         title: 'Общая уборочная площадь (кв.м.)',
         type: 'advanced-number',
+        step: 0.01,
       },
       {
         valueKey: 'auto_area',
         title: 'Площадь механизированной уборки (кв.м.)',
         type: 'advanced-number',
+        step: 0.01,
       },
       {
         valueKey: 'company_structure_name',

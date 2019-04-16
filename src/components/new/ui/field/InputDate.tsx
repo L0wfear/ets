@@ -5,6 +5,7 @@ import { InputContainer } from 'components/new/ui/field/styled/styled';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 
 type PropsInputDate = {
+  id?: string;
   error?: string;
   noShowError?: boolean;
   value: number | string | string[];
@@ -44,6 +45,7 @@ class InputDate extends React.PureComponent<PropsInputDate, {}> {
               )
             }
             <DatePicker
+              id={this.props.id}
               className={inputClassName}
               date={value}
               time={Boolean(mainProps.time)}

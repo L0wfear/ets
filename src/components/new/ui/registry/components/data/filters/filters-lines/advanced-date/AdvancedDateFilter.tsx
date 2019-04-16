@@ -111,8 +111,10 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
       filterValuesObj,
     } = props;
 
+    const id = `filter_${props.filterData.valueKey}`;
+
     return (
-      <EtsFilter>
+      <EtsFilter htmlFor={id}>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>
@@ -127,6 +129,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
               <InputDate
+                id={id}
                 value={filterValuesObj[activeTypeArr[0]].value}
                 onChange={this.handleChangeFirst}
                 noShowLabel

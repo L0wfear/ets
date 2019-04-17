@@ -28,7 +28,7 @@ const ContainerRow: React.FC<ContainerRowProps> = (props) => {
   );
 
   return (
-    <CheckContainerRow>
+    <CheckContainerRow was_resaved={container.was_resaved}>
       <CheckContainerTd>
         {container.number}
       </CheckContainerTd>

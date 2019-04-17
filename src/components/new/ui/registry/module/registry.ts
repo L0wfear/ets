@@ -17,6 +17,7 @@ export interface OneRegistryData {
       'default'
       | 'select_odh/dt(disabled)'
       | 'select_odh/dt'
+      | 'datetime_range_picker'
     );
     buttons?: string[];
   };

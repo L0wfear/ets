@@ -4,10 +4,6 @@ import Data from 'components/new/ui/registry/components/data/Data';
 
 type PropsRegistry = {
   registryKey: string;
-  components?: any;
-  handleClickOnRow?: any;
-  handleDoubleClickOnRow?: any;
-  formSetFormState?: (object) => void;
 };
 
 const Registry: React.FC<PropsRegistry> = (props) => {

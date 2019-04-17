@@ -14,6 +14,8 @@ type DatePickerRangeProps = {
   date_end_error?: string | boolean;
   date_end_time?: boolean;
 
+  allWidth?: boolean;
+
   disabled?: boolean;
   onChange: (boundKey: string, value: string) => void;
 };
@@ -44,7 +46,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
   );
 
   return (
-    <DatePickerRangeContainer>
+    <DatePickerRangeContainer allWidth>
       <ColStartDatePickerRange md={5}>
         <ExtField
           id={props.date_start_id}

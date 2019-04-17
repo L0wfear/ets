@@ -13,7 +13,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
     this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
-    this.register(objectsActions.getMedicalStats, this.handleGetMedicalStats);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
     this.register(
@@ -41,7 +40,6 @@ export default class ObjectsStore extends Store {
       technicalOperationsObjectsList: [],
       positionsList: [],
       userActionLogList: [],
-      medicalStatsList: [],
 
       carsIndex: {},
       modelsIndex: {},
@@ -124,10 +122,6 @@ export default class ObjectsStore extends Store {
 
   handleGetUserActionLog(userActionLogList) {
     this.setState({ userActionLogList });
-  }
-
-  handleGetMedicalStats(medicalStatsList) {
-    this.setState({ medicalStatsList: medicalStatsList.result.rows });
   }
 
   handleGetWorkMode({ result: { rows = [] } }) {

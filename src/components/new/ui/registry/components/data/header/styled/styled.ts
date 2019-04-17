@@ -5,7 +5,7 @@ import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/heade
 export const EtsHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: self-end;
   padding: 10px 10px 0px 10px;
   overflow: auto;
 

@@ -10,7 +10,6 @@ import {
   TypesService,
   UserActionLogService,
   WorkMode,
-  MedicalStatsService,
   MissionArchiveCarService,
 } from 'api/Services';
 
@@ -70,13 +69,5 @@ export default class ObjectsActions extends Actions {
         return d;
       }),
     );
-  }
-
-  getMedicalStats(p = {}) {
-    const payload = {
-      date_from: createValidDateTime(p.date_from),
-      date_to: createValidDateTime(p.date_to),
-    };
-    return MedicalStatsService.get(payload);
   }
 }

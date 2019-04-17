@@ -110,6 +110,7 @@ export type TypeConfigData<F> = {
       'default'
       | 'select_odh/dt(disabled)'
       | 'select_odh/dt'
+      | 'datetime_range_picker'
     );
     buttons?: ButtonDefineType,
   },
@@ -128,7 +129,7 @@ export type TypeConfigData<F> = {
     data?: {
       fixedWidth?: boolean;
       uniqKey?: keyof F;
-      uniqKeyForParams: string;
+      uniqKeyForParams?: string;
       array?: F[];
       total_count?: number;
     },

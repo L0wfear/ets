@@ -25,7 +25,8 @@ export const ColDividerDatePickerRange = styled(Col)`
 `;
 export const ColEndDatePickerRange = styled(ColStartDatePickerRange)``;
 
-export const DatePickerRangeContainer = styled(Row)`
+export const DatePickerRangeContainer = styled(Row)<{ allWidth?: boolean }>`
+  width: ${({ allWidth }) => allWidth ? '100%' : 'initial'};
   margin-bottom: 5px;
 `;
 

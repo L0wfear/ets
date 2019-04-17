@@ -50,7 +50,6 @@ export default class LoadingStore extends Store {
       objectsActions.getSomeCars,
 
       objectsActions.getUserActionLog,
-      objectsActions.getMedicalStats,
 
       employeesActions.getEmployees,
       employeesActions.getDrivers,

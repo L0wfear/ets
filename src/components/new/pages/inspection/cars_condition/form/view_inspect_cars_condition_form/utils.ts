@@ -43,6 +43,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
     statements_defects_not_issued_cnt: '',
     drawbacks_eliminated: '',
     drawbacks_new: '',
+    types_cars: [],
   },
   headcount_list: {
     staff_drivers: null,
@@ -61,7 +62,9 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   resolve_to: '',
   status_text: '',
   type: 'cars_condition',
-  data: {},
+  data: {
+    types_cars: [],
+  },
   status: 'conducting',
   date_end: null,
   files: [],

@@ -13,6 +13,9 @@ type BlockInfoCardOwnProps = {
   callBackToLoadCars: () => Promise<void>;
   page: string;
   isHasPeriod: boolean;
+  types_cars: any;
+  canSavePreparePlanHandler: any;
+  prepareListHandler: any;
 };
 type BlockInfoCardProps = (
   BlockInfoCardOwnProps
@@ -84,6 +87,9 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
         <div>
           <PreparePlan
             page={props.page}
+            types_cars={props.types_cars}
+            canSavePreparePlanHandler={props.canSavePreparePlanHandler}
+            prepareListHandler={props.prepareListHandler}
           ></PreparePlan>
         </div>
       );

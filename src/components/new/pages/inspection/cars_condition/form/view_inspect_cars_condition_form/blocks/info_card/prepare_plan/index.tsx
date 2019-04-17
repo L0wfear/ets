@@ -5,20 +5,62 @@ import * as React from 'react';
 // import { Button } from 'react-bootstrap';
 // import { ButtonGroupWrapperMargin } from 'global-styled/global-styled';
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
-import { meta, renderers, validationSchema } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema';
+import * as PrepareCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
+import * as PrepareAgregat from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
 import { CustomTableWrapper } from './styled/styled';
+import { promiseLoadCarFuncTypess } from 'redux-main/reducers/modules/autobase/car_func_types/promise';
 
 export type PreparePlanProps = {
   page: string;
+  types_cars: any;
+  canSavePreparePlanHandler: any;
+  prepareListHandler: any;
 };
 
 const PreparePlan: React.FC<PreparePlanProps> = (props) => {
 
   const [prepareTsList, setPrepareTsList] = React.useState([]);
-  const [canSave, setCanSave] = React.useState(false);
+  const [prepareAgregatList, setPrepareAgregatList] = React.useState([]);
+  const [typesListOpt, setTypesListOpt] = React.useState([]);
+  const [canSavePrepareCars, setCanSavePrepareCars] = React.useState(false);
+  const [canSavePrepareAgregat, setCanSavePrepareAgregat] = React.useState(false);
+  // componentDidMount
+  React.useEffect(() => {
+    const prepareTsListOpt = props.types_cars.map((elem, index) =>
+      ({
+        ...elem,
+        customId: index + 1,
+        isDefaultVal: true, // для renderers
+      }),
+    );
 
-  const handleValidity = ({ isValidInput }) =>
-    setCanSave(isValidInput);
+    promiseLoadCarFuncTypess().then(({data}) => {
+      setTypesListOpt(data.map(
+        (rowData) => ({
+          label: rowData.short_name,
+          value: rowData.short_name,
+          rowData,
+        }), // Id с бека нет, делаем такую фигню
+      ));
+    });
+    setPrepareTsList(prepareTsListOpt);
+  }, []);
+
+  React.useEffect( () => {
+    props.canSavePreparePlanHandler(canSavePrepareCars && canSavePrepareAgregat);
+  }, [canSavePrepareCars, canSavePrepareAgregat]);
+
+  React.useEffect( () => {
+    props.prepareListHandler({prepareTsList, prepareAgregatList});
+  }, [prepareTsList, prepareAgregatList]);
+
+  const handleValidityPrepareCars = ({ isValidInput }) =>
+    setCanSavePrepareCars(isValidInput);
+
+  const handleValidityPrepareAgregat = ({ isValidInput }) =>
+    setCanSavePrepareAgregat(isValidInput);
+
+  // console.log('preparePlan === ', {prepareTsList, props, canSavePrepareCars, typesListOpt});
 
   return(
     <>
@@ -30,19 +72,11 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
           <h3>
             План подготовки ТС
           </h3>
-          {/* <ButtonGroupWrapperMargin>
-            <Button id="block_info_card-add_type" onClick={() => alert('Добавить тип')} >
-              Добавить тип
-            </Button>
-            <Button id="block_info_card-remove_type" onClick={() => alert('Удалить тип')} >
-              Удалить тип
-            </Button>
-          </ButtonGroupWrapperMargin> */}
           <CustomTableWrapper>
             <DataTableInput
-              tableSchema={meta}
-              renderers={renderers}
-              validationSchema={validationSchema}
+              tableSchema={PrepareCars.meta}
+              renderers={PrepareCars.renderers}
+              validationSchema={PrepareCars.validationSchema}
               addButtonLabel="Добавить тип"
               removeButtonLable="Удалить тип"
               stackOrder
@@ -50,7 +84,29 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
               inputList={prepareTsList || []}
               path="cars_condition-prepare_plan"
               isPermitted={true}
-              onValidation={handleValidity}
+              onValidation={handleValidityPrepareCars}
+              selectField="customId"
+              typesListOpt={typesListOpt}
+              {...props}
+            />
+          </CustomTableWrapper>
+          <h3>
+            План и проверка готовности к сезону прицепных, навесных и уборочных агрегатов
+          </h3>
+          <CustomTableWrapper>
+            <DataTableInput
+              tableSchema={PrepareAgregat.meta}
+              renderers={PrepareAgregat.renderers}
+              validationSchema={PrepareAgregat.validationSchema}
+              addButtonLabel="Добавить тип"
+              removeButtonLable="Удалить тип"
+              stackOrder
+              onChange={setPrepareAgregatList}
+              inputList={prepareAgregatList || []}
+              path="cars_condition-prepare_plan"
+              isPermitted={true}
+              onValidation={handleValidityPrepareAgregat}
+              selectField="customId"
               {...props}
             />
           </CustomTableWrapper>

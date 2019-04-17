@@ -49,7 +49,10 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', deafult_head_balance_holder_base);
   inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', default_head_operating_base);
   inspectCarsCondition.headcount_list = get(inspectCarsCondition, 'headcount_list', default_headcount_list);
-  inspectCarsCondition.data = get(inspectCarsCondition, 'preparing_cars_check', default_preparing_cars_check);
+  inspectCarsCondition.data = {
+    ...get(inspectCarsCondition, 'preparing_cars_check', default_preparing_cars_check),
+    types_cars: get(inspectCarsCondition, 'data.types_cars', []),
+  };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
   return inspectCarsCondition;

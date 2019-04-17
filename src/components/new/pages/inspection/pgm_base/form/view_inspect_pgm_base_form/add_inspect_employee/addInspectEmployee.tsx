@@ -335,7 +335,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
       const closeEmployeeFio = props.selectedInspectPgmBase.close_employee_fio
       ? props.selectedInspectPgmBase.close_employee_fio
       : userData.fio;
-      const closeEmployeePosition = props.selectedInspectPgmBase.close_employee_fio
+      const closeEmployeePosition = props.selectedInspectPgmBase.close_employee_position
         ? props.selectedInspectPgmBase.close_employee_position
         : '-';
       const userMember = {

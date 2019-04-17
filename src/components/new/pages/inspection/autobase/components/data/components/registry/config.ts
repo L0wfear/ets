@@ -79,6 +79,10 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
       meta: {
         fields: [
           {
+            key: 'enumerated',
+            title: '№',
+          },
+          {
             key: 'date_start',
             title: 'Дата начала проверки',
             format: 'date',

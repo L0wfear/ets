@@ -103,11 +103,16 @@ const actionSetComissionAndMembers = (
 const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
-      const errors = validate(inspectAutobaeSchema, payload.selectedInspect.data, { type: payload.type }, payload.selectedInspect);
+      const { selectedInspect } = payload;
+      selectedInspect.data.address_base = selectedInspect.base_address; // <<< Переделать хардкод
+      selectedInspect.data.balance_holder_base = selectedInspect.company_name;
+      selectedInspect.data.operating_base = selectedInspect.company_name;
+
+      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: payload.type }, selectedInspect);
 
       return {
         ...state,
-        selectedInspect: payload.selectedInspect,
+        selectedInspect,
         type: payload.type,
         errors,
         canSave: Object.values(errors).every((error) => !error),

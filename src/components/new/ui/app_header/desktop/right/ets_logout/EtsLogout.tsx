@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { ReduxState } from 'redux-main/@types/state';
 
 import {
@@ -13,11 +12,6 @@ import { sessionResetData } from 'redux-main/reducers/modules/session/actions-se
 
 class EtsLogout extends React.Component<any, {}> {
   node = React.createRef<any>();
-  static get contextTypes() {
-    return {
-      flux: PropTypes.object,
-    };
-  }
 
   getSnapshotBeforeUpdate(prevProps) {
     if (prevProps.width < this.props.width) {

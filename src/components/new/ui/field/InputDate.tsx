@@ -51,6 +51,7 @@ class InputDate extends React.PureComponent<PropsInputDate, {}> {
               time={Boolean(mainProps.time)}
               onChange={mainProps.onChange}
               disabled={mainProps.disabled}
+              makeGoodFormat
             />
           </InputContainer>
           {

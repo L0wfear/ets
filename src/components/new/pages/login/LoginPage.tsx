@@ -39,8 +39,6 @@ class LoginPage extends React.PureComponent<any, any> {
 
       if (userData.isGlavControl) {
         this.props.history.push('/change-company');
-      } else {
-        this.props.history.push(userData.stableRedirect);
       }
     } catch (e) {
       //

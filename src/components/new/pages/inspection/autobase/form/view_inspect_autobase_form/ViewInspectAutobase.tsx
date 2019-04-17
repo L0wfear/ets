@@ -217,28 +217,44 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               />
             </BoxContainer>
             <Row>
-              <Col md={6}>
-                <FileField
-                  id="file"
-                  label="Фотографии подтверждающих документов"
-                  multiple
-                  value={state.selectedInspect.data.photos_of_supporting_documents}
-                  onChange={onChangeFile}
-                  disabled={!isPermittedChangeListParams}
-                  boundKeys="photos_of_supporting_documents"
-                />
-              </Col>
-              <Col md={6}>
-                <FileField
-                  id="file"
-                  label="Фотографии дефектов"
-                  multiple
-                  value={state.selectedInspect.data.photos_defect}
-                  onChange={onChangeFile}
-                  disabled={!isPermittedChangeListParams}
-                  boundKeys="photos_defect"
-                />
-              </Col>
+            {
+              props.type === INSPECT_AUTOBASE_TYPE_FORM.list || state.selectedInspect.data.photos_of_supporting_documents.length
+                ? (
+                  <Col md={6}>
+                    <FileField
+                      id="file"
+                      label="Фотографии подтверждающих документов"
+                      multiple
+                      value={state.selectedInspect.data.photos_of_supporting_documents}
+                      onChange={onChangeFile}
+                      disabled={!isPermittedChangeListParams}
+                      boundKeys="photos_of_supporting_documents"
+                    />
+                  </Col>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+            {
+              props.type === INSPECT_AUTOBASE_TYPE_FORM.list || state.selectedInspect.data.photos_defect.length
+                ? (
+                  <Col md={6}>
+                    <FileField
+                      id="file"
+                      label="Фотографии дефектов"
+                      multiple
+                      value={state.selectedInspect.data.photos_defect}
+                      onChange={onChangeFile}
+                      disabled={!isPermittedChangeListParams}
+                      boundKeys="photos_defect"
+                    />
+                  </Col>
+                )
+                : (
+                  <DivNone />
+                )
+            }
             </Row>
           </Col>
           <ViewAddInspectEmployee

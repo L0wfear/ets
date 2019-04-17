@@ -97,10 +97,10 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
                 <>
                   <LineData>
                     <div>
-                      <span>Проверка открыта:</span><StatusLabel>{makeDate(get(lastConductingInspect, 'date_start', null))}</StatusLabel>
+                      <span>Проверка открыта: </span><StatusLabel>{makeDate(get(lastConductingInspect, 'date_start', null))}</StatusLabel>
                     </div>
                     <div>
-                      <span>Пользователем:</span><StatusLabel>{get(lastConductingInspect, 'open_employee_fio', '')}</StatusLabel>
+                      <span>пользователем: </span><StatusLabel>{get(lastConductingInspect, 'open_employee_fio', '')}</StatusLabel>
                     </div>
                   </LineData>
                   {

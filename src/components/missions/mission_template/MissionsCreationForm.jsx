@@ -176,11 +176,11 @@ class MissionsCreationForm extends Form {
                 boundKeys="mission_source_id"
                 clearable
               />
-              <span className="help-block-mission-source">
+              <div className="help-block-mission-source">
                 Задания на основе централизованных заданий необходимо создавать
                 во вкладке {'"'}НСИ{'"'}-{'"'}Реестр централизованных заданий
                 {'"'}.
-              </span>
+              </div>
             </Col>
           </Row>
           <Row>

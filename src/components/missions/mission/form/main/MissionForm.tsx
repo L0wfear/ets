@@ -458,10 +458,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       path={path}
                     />
                     {IS_CREATING && !MISSION_IS_ORDER_SOURCE ? (
-                      <span className="help-block-mission-source">
+                      <div className="help-block-mission-source">
                         Задания на основе централизованных заданий необходимо
                         создавать во вкладке "НСИ"-"Реестр централизованных заданий".
-                      </span>
+                      </div>
                     ) : (
                       <DivNone />
                     )}

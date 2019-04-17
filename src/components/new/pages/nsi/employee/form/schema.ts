@@ -8,16 +8,34 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
     last_name: {
       title: 'Фамилия',
       type: 'string',
+      maxLength: 50,
       required: true,
     },
     first_name: {
       title: 'Имя',
+      maxLength: 50,
       type: 'string',
       required: true,
+    },
+    middle_name: {
+      title: 'Отчество',
+      maxLength: 50,
+      type: 'string',
+    },
+    phone: {
+      type: 'string',
+      title: 'Телефон',
+      maxLength: 50,
+    },
+    special_marks: {
+      type: 'string',
+      title: 'Особые отметки',
+      maxLength: 150,
     },
     personnel_number: {
       title: 'Табельный номер',
       type: 'string',
+      maxLength: 15,
     },
     position_id: {
       title: 'Должность',
@@ -39,6 +57,11 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
     special_license_date_end: {
       title: 'Срок действия специального удостоверения',
       type: 'date',
+    },
+    medical_certificate: {
+      type: 'string',
+      title: 'Медицинская справка №',
+      maxLength: 25,
     },
   },
   dependencies: {

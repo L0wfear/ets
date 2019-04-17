@@ -7,14 +7,14 @@ type InspectAutobaseData = {
   is_under_construction: boolean;
   is_less_than_two_entrances: boolean;
   absence_of_a_shield_with_a_scheme_of_movement: boolean;
-  is_road_signs: boolean;
+  is_road_signs: number;
   lack_of_fire_fighting_equipment: boolean;
   no_fencing: boolean;
   fencing_in_poor_condition: boolean;
   is_not_protected: boolean;
-  protection_is_carried: boolean;
+  protection_is_carried: string;
   lack_of_video_surveillance: boolean;
-  is_hard_surface: boolean;
+  is_hard_surface: string;
   surface_in_poor_condition: boolean;
   surface_area_of_destruction: number | null;
   presence_of_pits_potholes: boolean;

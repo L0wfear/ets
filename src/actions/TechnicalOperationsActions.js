@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { cloneDeep } from 'lodash';
+import { get, cloneDeep } from 'lodash';
 import {
   TechnicalOperationObjectsService,
   TechnicalOperationRelationsService,
@@ -20,7 +20,13 @@ function getTechnicalOperationsRegistry(payload = {}) {
     .then((r) => ({
       result: r.result.rows.map((rowData, index) => {
         rowData.front_custom_id = index + 1;
-
+        rowData.sensor_types_text = get(rowData, 'sensor_types', []).reduce(
+          (sensor_types_text, { sensor_type_name }) =>
+            `${
+              sensor_types_text ? `${sensor_types_text}, ` : ''
+            }${sensor_type_name}`,
+          '',
+        );
         return rowData;
       }),
     }));

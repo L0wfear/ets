@@ -132,10 +132,17 @@ const getTableMeta = ({
         name: 'sensor_type_ids',
         displayName: 'Типы навесного оборудования',
         type: 'array',
+        display: false,
         filter: {
           type: 'multiselect',
           options: SENSORS_TYPE_OPTIONS,
         },
+      },
+      {
+        name: 'sensor_types_text',
+        displayName: 'Типы навесного оборудования',
+        type: 'array',
+        filter: false,
       },
     ],
   };

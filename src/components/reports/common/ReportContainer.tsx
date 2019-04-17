@@ -97,9 +97,10 @@ class ReportContainer extends React.Component<
     } = nextProps;
 
     const searchNextxObject = queryString.parse(search_next);
+    const newSearchEntries = Object.entries(searchNextxObject);
 
     // Если урл поменялся и он не пустой, то делаем запрос данных.
-    if (!isEqual(lastSearchObject, searchNextxObject)) {
+    if (newSearchEntries.some(([key, value]) => lastSearchObject[key] !== value) || newSearchEntries.length !== Object.entries(lastSearchObject).length) {
       return {
         filterValues: {},
         lastSearchObject: searchNextxObject,

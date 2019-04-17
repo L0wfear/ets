@@ -145,3 +145,15 @@ export const FooterEnd = styled.div`
     }
   }
 `;
+
+export const ButtonGroupWrapperMargin = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  button {
+    margin-right: 10px;
+    &:last-child {
+      margin-right: 0px;
+    }
+  }
+`;

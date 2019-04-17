@@ -26,6 +26,9 @@ import { ColScroll } from './styled';
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
+    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
+    const [prepareList, setPrepareList] = React.useState([]);
+
     const {
       formState: state,
       page,
@@ -63,7 +66,8 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
     );
 
     const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
-
+    // tslint:disable-next-line:no-console
+    console.log('ViewInspectCarsCondition === ', {props, preparePlanCanSave, prepareList});
     return (
       <React.Fragment>
         <ContainerForm>
@@ -116,6 +120,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               isHasPeriod={isHasPeriod}
               carsConditionCarsList={carsConditionCarsList}
               callBackToLoadCars={callBackToLoadCars}
+              types_cars={state.data.types_cars}
+              canSavePreparePlanHandler={setPreparePlanCanSave}
+              prepareListHandler={setPrepareList}
               page={props.page}
               type={props.type}
             />
@@ -127,7 +134,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               type={props.type}
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}
-              canSave={props.canSave}
+              canSave={props.canSave && preparePlanCanSave}
               loadingPage={props.page}
             />
             <Button onClick={handleCloseWithLoadregistry}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>

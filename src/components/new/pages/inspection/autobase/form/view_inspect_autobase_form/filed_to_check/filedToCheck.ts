@@ -85,12 +85,12 @@ export const filedToCheck: FiledToCheck = [
   },
   {
     key: 'surface_area_of_destruction',
-    title: 'Площадь разрушения покрытия на базе',
+    title: 'Площадь разрушения покрытия на базе (кв. м)',
     type: 'number',
   },
   {
     key: 'presence_of_pits_potholes',
-    title: 'Наличие ям, выбоин',
+    title: 'Наличие ям, выбоин (шт.)',
     type: 'number',
   },
   {
@@ -102,7 +102,7 @@ export const filedToCheck: FiledToCheck = [
   },
   {
     key: 'cnt_defective_light',
-    title: 'Количество неисправных мачт освещения',
+    title: 'Количество неисправных мачт освещения (шт.)',
     type: 'number',
     sub: 20,
     hidden: 'lack_of_lighting',
@@ -122,14 +122,14 @@ export const filedToCheck: FiledToCheck = [
   },
   {
     key: 'cnt_repair_posts',
-    title: 'Количество постов для обслуживания, ремонта техники',
+    title: 'Количество постов для обслуживания, ремонта техники (шт.)',
     type: 'number',
     sub: 20,
     hidden: 'lack_repair_areas',
   },
   {
     key: 'repair_posts_in_poor_condition',
-    title: 'Постов в неудовлетворительном состоянии',
+    title: 'Постов в неудовлетворительном состоянии (шт.)',
     type: 'number',
     sub: 20,
     hidden: 'lack_repair_areas',

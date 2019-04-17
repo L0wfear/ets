@@ -54,11 +54,11 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       type: 'boolean',
     },
     surface_area_of_destruction: {
-      title: 'Площадь разрушения покрытия на базе',
+      title: 'Площадь разрушения покрытия на базе (кв. м)',
       type: 'number',
     },
     presence_of_pits_potholes: {
-      title: 'Наличие ям, выбоин',
+      title: 'Наличие ям, выбоин (шт.)',
       type: 'number',
     },
     lack_of_lighting: {
@@ -66,7 +66,7 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       type: 'boolean',
     },
     cnt_defective_light: {
-      title: 'Количество неисправных мачт освещения',
+      title: 'Количество неисправных мачт освещения (шт.)',
       type: 'number',
     },
     lack_control_room: {
@@ -78,11 +78,11 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       type: 'boolean',
     },
     cnt_repair_posts: {
-      title: 'Количество постов для обслуживания, ремонта техники',
+      title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
     },
     repair_posts_in_poor_condition: {
-      title: 'Постов в неудовлетворительном состоянии',
+      title: 'Постов в неудовлетворительном состоянии (шт.)',
       type: 'number',
     },
     lack_of_storage_facilities: {
@@ -153,7 +153,7 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       (value, { lack_of_lighting }, { type }) => {
         if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
           if (!lack_of_lighting && !value) {
-            return 'Поле "Количество неисправных мачт освещения" должно быть заполнено';
+            return 'Поле "Количество неисправных мачт освещения (шт.)" должно быть заполнено';
           }
         }
 

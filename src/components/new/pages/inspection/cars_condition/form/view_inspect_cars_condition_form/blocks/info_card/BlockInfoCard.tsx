@@ -3,6 +3,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { DivNone } from 'global-styled/global-styled';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import BlockCarInfoWrap from './car_info';
+import PreparePlan from './prepare_plan';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 // import { Switch } from 'react-router-dom';
 
@@ -12,6 +13,9 @@ type BlockInfoCardOwnProps = {
   callBackToLoadCars: () => Promise<void>;
   page: string;
   isHasPeriod: boolean;
+  types_cars: any;
+  canSavePreparePlanHandler: any;
+  prepareListHandler: any;
 };
 type BlockInfoCardProps = (
   BlockInfoCardOwnProps
@@ -81,7 +85,12 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
       // @todo
       return (
         <div>
-          {typeRightView}
+          <PreparePlan
+            page={props.page}
+            types_cars={props.types_cars}
+            canSavePreparePlanHandler={props.canSavePreparePlanHandler}
+            prepareListHandler={props.prepareListHandler}
+          ></PreparePlan>
         </div>
       );
     }

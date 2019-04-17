@@ -74,6 +74,7 @@ export type InspectPgmBase = {
   okrug_name: string | null;
   okrug_id: string | null;
   base_type_text: string | null;
+  base_type: string | null;
   volume_capacity_sum: number | string | null;
   pgm_volume_sum: number | string | null;
   pgm_into_vol: number | string | null;

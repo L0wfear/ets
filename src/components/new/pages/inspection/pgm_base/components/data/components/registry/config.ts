@@ -67,7 +67,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           title: 'Адрес',
         },
         {
-          valueKey: 'base_type_text',
+          valueKey: 'base_type',
           type: 'multiselect',
           title: 'Тип базы',
         },
@@ -138,7 +138,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             width: 200,
           },
           {
-            key: 'base_type_text',
+            key: 'base_type',
             title: 'Тип базы',
             width: 200,
           },

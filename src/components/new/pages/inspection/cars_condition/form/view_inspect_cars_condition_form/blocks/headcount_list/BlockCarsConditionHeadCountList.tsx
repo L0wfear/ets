@@ -4,17 +4,23 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import { Row, Col } from 'react-bootstrap';
+import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarsConditionHeadCountListProps = {
   onChange: any;
   headcount_list: InspectCarsCondition['headcount_list'];
-  disabled?: boolean;
+  error_headcount_list: FormErrorType<InspectCarsCondition['headcount_list']>;
+  isPermitted: boolean;
+  isActiveInspect: boolean;
 };
 
 const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListProps> = React.memo(
   (props) => {
     const {
       headcount_list: state,
+      error_headcount_list: errors,
+      isPermitted,
+      isActiveInspect,
     } = props;
 
     const handleChange = React.useCallback(
@@ -44,7 +50,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staff_drivers}
               onChange={handleChange}
               boundKeys="staff_drivers"
-              disabled={props.disabled}
+              erorr={errors.staff_drivers}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
           <Col md={6}>
@@ -55,7 +62,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staff_mechanics}
               onChange={handleChange}
               boundKeys="staff_mechanics"
-              disabled={props.disabled}
+              erorr={errors.staff_mechanics}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
         </Row>
@@ -71,7 +79,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.list_drivers}
               onChange={handleChange}
               boundKeys="list_drivers"
-              disabled={props.disabled}
+              erorr={errors.list_drivers}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
           <Col md={6}>
@@ -82,7 +91,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.list_mechanics}
               onChange={handleChange}
               boundKeys="list_mechanics"
-              disabled={props.disabled}
+              erorr={errors.list_mechanics}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
         </Row>
@@ -98,7 +108,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staffing_drivers}
               onChange={handleChange}
               boundKeys="staffing_drivers"
-              disabled={props.disabled}
+              erorr={errors.staffing_drivers}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
           <Col md={6}>
@@ -109,7 +120,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staffing_mechanics}
               onChange={handleChange}
               boundKeys="staffing_mechanics"
-              disabled={props.disabled}
+              erorr={errors.staffing_mechanics}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
         </Row>

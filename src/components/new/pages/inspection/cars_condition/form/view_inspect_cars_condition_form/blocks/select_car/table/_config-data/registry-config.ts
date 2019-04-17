@@ -56,7 +56,7 @@ export const getConfig = (array: CarsConditionCars[]): TypeConfigData<CarsCondit
         {
           key: 'type',
           title: 'Тип ТС',
-          width: 100,
+          width: 200,
         },
         {
           key: 'fact_status_text',

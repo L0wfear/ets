@@ -1,4 +1,3 @@
-
 import { actionCompanySetNewData } from 'redux-main/reducers/modules/company/common';
 
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';

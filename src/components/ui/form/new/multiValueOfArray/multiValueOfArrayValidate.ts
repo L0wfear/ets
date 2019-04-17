@@ -1,7 +1,7 @@
 import { MultiValueOfArrayPropertie } from 'components/ui/form/new/@types/validate.h';
 import { isArray } from 'util';
 
-export const validateMultiValueOfArray = <F, P>(key: keyof F, fieldData: MultiValueOfArrayPropertie, formState: F, props: P) => {
+export const validateMultiValueOfArray = <F, P, RootFormState>(key: keyof F, fieldData: MultiValueOfArrayPropertie, formState: F, props: P, rootFormState: RootFormState) => {
   const {
     [key]: value,
   } = formState;

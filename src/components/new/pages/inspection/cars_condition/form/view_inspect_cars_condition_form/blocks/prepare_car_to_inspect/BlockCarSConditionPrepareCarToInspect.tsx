@@ -5,11 +5,14 @@ import { Button } from 'react-bootstrap';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarSConditionPrepareCarToInspectOwnProps = {
   onChange: any;
   preparing_cars_check: InspectCarsCondition['preparing_cars_check'];
-  disabled?: boolean;
+  error_preparing_cars_check: FormErrorType<InspectCarsCondition['preparing_cars_check']>;
+  isPermitted: boolean;
+  isActiveInspect: boolean;
 };
 
 type BlockCarSConditionPrepareCarToInspectProps = (
@@ -30,6 +33,9 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
   (props) => {
     const {
       preparing_cars_check: state,
+      error_preparing_cars_check: errors,
+      isPermitted,
+      isActiveInspect,
     } = props;
 
     const handleChange = React.useCallback(
@@ -64,9 +70,10 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           time={false}
           label="Приказ о подготовке техники к сезону издан от:"
           value={state.order_issued_at}
+          error={errors.order_issued_at}
           onChange={handleChange}
           boundKeys="order_issued_at"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
           makeGoodFormat
         />
         <ExtField
@@ -74,27 +81,30 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           type="string"
           label="№ приказа:"
           value={state.order_number}
+          error={errors.order_number}
           onChange={handleChange}
           boundKeys="order_number"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="master_plan_approved"
           type="string"
           label="Сводный план подготовки техники утвержден:"
           value={state.master_plan_approved}
+          error={errors.master_plan_approved}
           onChange={handleChange}
           boundKeys="master_plan_approved"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="named_plan_approved"
           type="string"
           label="Поименный план подготовки техники утвержден:"
           value={state.named_plan_approved}
+          error={errors.named_plan_approved}
           onChange={handleChange}
           boundKeys="named_plan_approved"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="planned_target"
@@ -103,9 +113,10 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           options={plannedTargetOptions}
           clearable={false}
           value={state.planned_target}
+          error={errors.planned_target}
           onChange={handleChange}
           boundKeys="planned_target"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="statements_defects_issued"
@@ -114,36 +125,40 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           options={statementsDefectsIssuedOptions}
           clearable={false}
           value={state.statements_defects_issued}
+          error={errors.statements_defects_issued}
           onChange={handleChange}
           boundKeys="statements_defects_issued"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="statements_defects_not_issued_cnt"
           type="number"
           label="Не оформлено ведомостей дефектов на <кол-во> единиц техники:"
           value={state.statements_defects_not_issued_cnt}
+          error={errors.statements_defects_not_issued_cnt}
           onChange={handleChange}
           boundKeys="statements_defects_not_issued_cnt"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="drawbacks_eliminated"
           type="string"
           label="Устранены ранее выявленные недостатки:"
           value={state.drawbacks_eliminated}
+          error={errors.drawbacks_eliminated}
           onChange={handleChange}
           boundKeys="drawbacks_eliminated"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField
           id="drawbacks_new"
           type="string"
           label="Новые замечания:"
           value={state.drawbacks_new}
+          error={errors.drawbacks_new}
           onChange={handleChange}
           boundKeys="drawbacks_new"
-          disabled={props.disabled}
+          disabled={!isPermitted || !isActiveInspect}
         />
       </BoxContainer>
     );

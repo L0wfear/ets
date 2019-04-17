@@ -1,6 +1,6 @@
 import { ValueOfArrayPropertie } from 'components/ui/form/new/@types/validate.h';
 
-export const validateValueOfArray = <F, P>(key: keyof F, fieldData: ValueOfArrayPropertie, formState: F, props: P) => {
+export const validateValueOfArray = <F, P, RootFormState>(key: keyof F, fieldData: ValueOfArrayPropertie, formState: F, props: P, rootFormState: RootFormState) => {
   const {
     [key]: value,
   } = formState;

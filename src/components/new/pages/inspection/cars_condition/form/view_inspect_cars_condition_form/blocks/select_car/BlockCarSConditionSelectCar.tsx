@@ -12,6 +12,7 @@ import { DivNone } from 'global-styled/global-styled';
 type BlockCarsConditionSelectCarOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
   isActiveInspect: boolean;
+  isPermitted: boolean;
 };
 
 type BlockCarsConditionSelectCarProps = (
@@ -94,7 +95,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
         {
           props.isActiveInspect
             ? (
-              <Button onClick={handleCreateNewCardCar}>Создать карточку</Button>
+              <Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>Создать карточку</Button>
             )
             : (
               <DivNone />

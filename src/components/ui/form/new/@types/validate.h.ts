@@ -1,6 +1,10 @@
 export type CommonPropertie = {
   title: string;
   required?: boolean;
+  validateIf?: {
+    path: string; // path.to.path | get(rootState, validateIf, false)
+    reverse?: boolean;
+  };
 };
 
 export type StringPropertie = CommonPropertie & {
@@ -78,10 +82,11 @@ export type PropertieType<F, P> = {
   [K in keyof F]?: PropertieFieldValidatorArrType<F, P, F[K]>
 };
 
-export type DependencieValidatorType<F, P, K = F[keyof F]> = (
+export type DependencieValidatorType<F, P, K = F[keyof F], T = any[]> = (
   value: K,
   formState: F,
   props: P,
+  ...arg: any[]
 ) => (
   K extends Array<any>
       ? string
@@ -90,10 +95,10 @@ export type DependencieValidatorType<F, P, K = F[keyof F]> = (
         : string
 );
 
-export type DependencieFieldValidatorArrType<F, P, K = F[keyof F]> = DependencieValidatorType<F, P, K>[];
+export type DependencieFieldValidatorArrType<F, P, K = F[keyof F], T = any[]> = DependencieValidatorType<F, P, K, T>[];
 
 export type DependencieType<F, P> = {
-  [K in keyof F]?: DependencieFieldValidatorArrType<F, P, F[K]>
+  [K in keyof F]?: DependencieFieldValidatorArrType<F, P, F[K],  any[]>
 };
 
 export type SchemaType<F, P> = {

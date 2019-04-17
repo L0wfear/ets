@@ -67,8 +67,9 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
       try {
         await global.confirmDialog({
           title: 'Внимание',
-          body:
-            'При сохранении карточки Вам не будет больше доступна данная топливная карта. Продолжить?',
+          body: 'При сохранении карточки Вам не будет больше доступна данная топливная карта. Продолжить?',
+          okName: 'Да',
+          cancelName: 'Нет',
         });
       } catch (e) {
         return;

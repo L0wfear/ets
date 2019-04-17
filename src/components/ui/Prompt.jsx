@@ -23,6 +23,8 @@ class Prompt extends React.Component {
   showConfirm = ({
     title,
     body,
+    okName,
+    cancelName,
     bsSize = 'small',
     defaultState = {},
     checkOnOk = () => true,
@@ -35,6 +37,8 @@ class Prompt extends React.Component {
         body,
         res,
         rej,
+        okName,
+        cancelName,
         checkOnOk,
         ...defaultState,
       });
@@ -72,8 +76,10 @@ class Prompt extends React.Component {
         </Modal.Body>
         <Modal.Footer>
           <div>
-            <Button onClick={this.ok}>Ок</Button>
-            <Button onClick={this.cancel}>Отмена</Button>
+            <Button onClick={this.ok}>{this.state.okName || 'Ок'}</Button>
+            <Button onClick={this.cancel}>
+              {this.state.cancelName || 'Отмена'}
+            </Button>
           </div>
         </Modal.Footer>
       </EtsModal>

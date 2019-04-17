@@ -151,14 +151,6 @@ export const MaterialConsumptionRateService = ETS_API_FACTORY.createApiServiceAd
 export const CleanCategoriesService = ETS_API_FACTORY.createApiServiceAdapter(
   'clean_categories',
 );
-export const OdhNormDataSummerService = ETS_API_FACTORY.createApiServiceAdapter(
-  'odh_norm_data_summer',
-  { useMock: true },
-);
-export const EfficiencyService = ETS_API_FACTORY.createApiServiceAdapter(
-  'efficiency',
-  { useMock: true },
-);
 export const MaintenanceWorkService = ETS_API_FACTORY.createApiServiceAdapter(
   'maintenance_work',
 );

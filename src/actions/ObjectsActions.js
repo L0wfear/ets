@@ -1,14 +1,11 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
-import { createValidDateTime } from 'utils/dates';
-import { get } from 'lodash';
 import {
   OrderService,
   CarService,
   WaybillCarService,
   MissionCarService,
   TypesService,
-  UserActionLogService,
   WorkMode,
   MissionArchiveCarService,
 } from 'api/Services';
@@ -55,19 +52,5 @@ export default class ObjectsActions extends Actions {
 
   getOrderById(id) {
     return OrderService.get({ id });
-  }
-
-  getUserActionLog(p = {}) {
-    const payload = {
-      date_start: createValidDateTime(p.date_start),
-      date_end: createValidDateTime(p.date_end),
-    };
-    return UserActionLogService.get(payload).then((response) =>
-      get(response, ['result', 'rows'], []).map((d) => {
-        d.front_entity_number = d.entity_number;
-
-        return d;
-      }),
-    );
   }
 }

@@ -11,8 +11,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCars, this.handleGetCars);
     this.register(objectsActions.getSomeCars, this.handleGetSomeCars);
     this.register(objectsActions.getTypes, this.handleGetTypes);
-    this.register(objectsActions.getFuelTypes, this.handleGetFuelTypes);
-    this.register(objectsActions.getUserActionLog, this.handleGetUserActionLog);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
     this.register(
@@ -32,14 +30,12 @@ export default class ObjectsStore extends Store {
       carsList: [],
       typesList: [],
       modelsList: [],
-      fuelTypes: [],
       technicalOperationsList: [],
       technicalOperationsMap: new Map(),
       technicalOperationRelationsList: [],
       OrdersList: [],
       technicalOperationsObjectsList: [],
       positionsList: [],
-      userActionLogList: [],
 
       carsIndex: {},
       modelsIndex: {},
@@ -102,10 +98,6 @@ export default class ObjectsStore extends Store {
     this.setState({ typesList, typesIndex });
   }
 
-  handleGetFuelTypes(fuelTypes) {
-    this.setState({ fuelTypes: fuelTypes.result });
-  }
-
   handleGetTechOperations({ result }) {
     const technicalOperationsMap = new Map();
     result.forEach((to) => technicalOperationsMap.set(to.id, to));
@@ -118,10 +110,6 @@ export default class ObjectsStore extends Store {
 
   handleGetTechnicalOperationRelations({ result }) {
     this.setState({ technicalOperationRelationsList: result });
-  }
-
-  handleGetUserActionLog(userActionLogList) {
-    this.setState({ userActionLogList });
   }
 
   handleGetWorkMode({ result: { rows = [] } }) {

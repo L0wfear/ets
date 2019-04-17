@@ -42,7 +42,7 @@ export type OneFilterType<F> = {
     | 'advanced-string-like';
   } | {
     type: 'advanced-number';
-    step: number;
+    step: number;  // для firefox
   } | {
     type: 'multiselect';
     labelKey?: keyof F;

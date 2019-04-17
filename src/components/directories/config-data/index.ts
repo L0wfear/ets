@@ -11,7 +11,7 @@ import geoobjects from 'components/new/pages/nsi/geoobjects/_config-data';
 import medicalStatsList from 'components/new/pages/nsi/medical_stats/_config-data';
 
 import companyStructure from 'components/directories/company_structure/config-data';
-import userActionLog from 'components/directories/user_action_log/config-data';
+import userActionLogList from 'components/new/pages/nsi/user_action_log/_config-data';
 
 import employeesList from 'components/new/pages/nsi/employee/_config-data';
 import normRegistryList from 'components/new/pages/nsi/norm_registry/_config-data';
@@ -33,7 +33,7 @@ const children = {
   medicalStatsList,
   dividerTwo: { divider: true },
   companyStructure,
-  userActionLog,
+  userActionLogList,
 };
 
 export default {

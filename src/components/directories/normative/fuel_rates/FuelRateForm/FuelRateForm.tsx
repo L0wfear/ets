@@ -65,6 +65,7 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
       props.actionResetModelList();
       props.resetSetCompanyStructureLinear();
       props.resetFuelOperations();
+      props.actionResetSpecialModel();
     };
   }, []);
 
@@ -73,10 +74,6 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
       { car_special_model_id: state.car_special_model_id },
       { page, path },
     );
-
-    return () => {
-      props.actionResetSpecialModel();
-    };
   }, [state.car_special_model_id]);
 
   const handleSpecialModelChange = React.useCallback(

@@ -258,10 +258,10 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
         const type: CarPassporntData['type'] = get(value, 'type', null);
 
         if (type === 'GIBDD') {
-          return validate(carPassportDataGibddSchema, value, props);
+          return validate(carPassportDataGibddSchema, value, props, formState);
         }
         if (type === 'GTN') {
-          return validate(carPassportDataGtnSchema, value, props);
+          return validate(carPassportDataGtnSchema, value, props, formState);
         }
 
         return nonError;

@@ -1,4 +1,4 @@
-import { isNullOrUndefined, isArray } from 'util';
+import { isNullOrUndefined, isArray, isString } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { diffDates } from 'utils/dates';
 
@@ -16,6 +16,10 @@ export const sortArray = (firstRowData, secondRowData, field) => {
 
   const firstIsNumber = !isNaN(Number(first));
   const secondIsNumber = !isNaN(Number(second));
+
+  if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
+    return diffDates(first, second);
+  }
 
   // оба числа
   if (firstIsNumber && secondIsNumber) {
@@ -48,7 +52,7 @@ export const sortArray = (firstRowData, secondRowData, field) => {
     return 1;
   }
 
-  return first.localeCompare(second);
+  return first.toLocaleLowerCase().trim().localeCompare(second.toLocaleLowerCase().trim());
 };
 
 export const filterArray = (array, filterValues, fields: OneRegistryData['filter']['fields']) => {

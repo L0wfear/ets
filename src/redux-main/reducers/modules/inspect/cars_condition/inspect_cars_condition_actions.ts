@@ -17,7 +17,6 @@ import {
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
-import { makeFilesForBackend } from '../autobase/inspect_autobase_promise';
 import { createValidDateTime } from 'utils/dates';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
@@ -87,22 +86,25 @@ export const actionCreateInspectCarsCondition = (payloadOwn: Parameters<typeof p
   return inspectionCarsCondition;
 };
 
-export const actionUpdateInspectCarsCondition = (inspectCarsCondition: InspectCarsCondition, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionCarsCondition>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionCarsCondition>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
   const data = cloneDeep(inspectCarsCondition.data);
 
-  delete data.files;
-  delete data.photos_defect;
-  delete data.photos_of_supporting_documents;
-  const payload = {};
+  data.cars_use = inspectCarsCondition.headcount_list.cars_use;
+  delete inspectCarsCondition.headcount_list.cars_use;
+  data.headcount_list = inspectCarsCondition.headcount_list;
+
+  delete inspectCarsCondition.data;
+  delete inspectCarsCondition.headcount_list;
 
   const inspectionCarsCondition = await dispatch(
     actionUpdateInspect(
       inspectCarsCondition.id,
       data,
-      makeFilesForBackend(inspectCarsCondition.data),
-      'autobase',
+      inspectCarsCondition.files,
+      'cars_condition',
       meta,
-      payload,
+      inspectCarsCondition,
     ),
   );
 

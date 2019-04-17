@@ -26,7 +26,7 @@ import { ColScroll } from './styled';
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
-    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(true);
+    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
     const [prepareList, setPrepareList] = React.useState([]);
 
     const {
@@ -52,6 +52,15 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
         });
       },
       [state.id],
+    );
+
+    React.useEffect(
+      () => {
+        if (isHasPeriod) {
+          setPreparePlanCanSave(true);
+        }
+      },
+      [isHasPeriod],
     );
 
     React.useEffect(

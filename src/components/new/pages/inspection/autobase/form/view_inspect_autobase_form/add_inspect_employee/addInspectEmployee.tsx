@@ -140,7 +140,7 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
       };
     }
     case SHOW_MEMBERS_ADD: {
-      const errors = validate(addInspectEmployeeSchema, state, { type, payload });
+      const errors = validate(addInspectEmployeeSchema, state, { type, payload }, state);
       return {
         ...state,
         showMemberAdd: payload.data,
@@ -193,7 +193,7 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
       };
     }
     case SHOW_AGENT_ADD: {
-      const errors = validate(addInspectEmployeeSchema, state, { type, payload });
+      const errors = validate(addInspectEmployeeSchema, state, { type, payload }, state);
 
       return {
         ...state,
@@ -215,7 +215,7 @@ const reducer = (state: ViewAddInspectEmployeeInitialState, { type, payload }) =
         ...state,
         ...payload.data,
       };
-      const errors = validate(addInspectEmployeeSchema, changedState, { type, payload });
+      const errors = validate(addInspectEmployeeSchema, changedState, { type, payload }, changedState);
       const canSaveMember = !errors.member_fio && !errors.member_position;
       const canSaveAgent = !errors.agent_from_gbu_fio && !errors.agent_from_gbu_position;
 

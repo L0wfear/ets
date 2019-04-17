@@ -177,7 +177,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           return config.validate(formState, this.props);
         }
 
-        return validate(config.schema, formState, this.props);
+        return validate(config.schema, formState, this.props, formState);
       }
       canSave = (state: WithFormState<F>) => {
         if (isFunction(config.canSave)) {

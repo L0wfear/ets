@@ -4,12 +4,15 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import { Row, Col } from 'react-bootstrap';
+import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarsConditionCarsUseProps = {
   onChange: any;
   headcount_list: InspectCarsCondition['headcount_list'];
   carsConditionCarsList: CarsConditionCars[];
-  disabled?: boolean;
+  error_cars_use: FormErrorType<InspectCarsCondition['headcount_list']['cars_use']>;
+  isPermitted: boolean;
+  isActiveInspect: boolean;
 };
 
 const waybillIssueLogExistsOptions = [
@@ -27,7 +30,10 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
       headcount_list: {
         cars_use: state,
       },
+      error_cars_use: errors,
       carsConditionCarsList,
+      isActiveInspect,
+      isPermitted,
     } = props;
 
     const handleChange = React.useCallback(
@@ -82,7 +88,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
               options={waybillIssueLogExistsOptions}
               onChange={handleChange}
               boundKeys="waybill_issue_log_exists"
-              disabled={props.disabled}
+              error={errors.waybill_issue_log_exists}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
           <Col md={6}>
@@ -94,7 +101,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
               options={waybillIssueLogUsedOptions}
               onChange={handleChange}
               boundKeys="waybill_issue_log_used"
-              disabled={props.disabled}
+              error={errors.waybill_issue_log_used}
+              disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
         </Row>
@@ -139,7 +147,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
           value={state.comment}
           onChange={handleChange}
           boundKeys="comment"
-          disabled={props.disabled}
+          error={errors.comment}
+          disabled={!isActiveInspect || !isPermitted}
         />
         <ExtField
           id="comment_detected"
@@ -148,7 +157,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
           value={state.comment_detected}
           onChange={handleChange}
           boundKeys="comment_detected"
-          disabled={props.disabled}
+          error={errors.comment_detected}
+          disabled={!isActiveInspect || !isPermitted}
         />
       </BoxContainer>
     );

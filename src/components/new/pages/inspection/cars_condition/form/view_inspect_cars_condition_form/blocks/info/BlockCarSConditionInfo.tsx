@@ -4,6 +4,7 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
+import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarSConditionInfoProps = {
   head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'],
@@ -13,11 +14,23 @@ type BlockCarSConditionInfoProps = {
   checks_period_text: InspectCarsCondition['checks_period_text'],
   checks_type_text: InspectCarsCondition['checks_type_text'],
 
+  error_head_balance_holder_base: FormErrorType<InspectCarsCondition['head_balance_holder_base']>;
+  error_head_operating_base: FormErrorType<InspectCarsCondition['head_operating_base']>;
+
+  isPermitted: boolean;
+  isActiveInspect: boolean;
+
   onChange: any;
 };
 
 const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo(
   (props) => {
+    const {
+      isPermitted,
+      isActiveInspect,
+      error_head_balance_holder_base,
+      error_head_operating_base,
+    } = props;
     const handleChangeHeadOperatingBase = React.useCallback(
       (key, event) => {
         props.onChange({
@@ -86,32 +99,44 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
           type="string"
           label="Руководитель предприятия:"
           value={props.head_balance_holder_base.fio}
+          error={error_head_balance_holder_base.fio}
           onChange={handleChangeHeadBalanceHolderBase}
           boundKeys="fio"
+          disabled={!isPermitted}
+          readOnly={!isActiveInspect}
         />
         <ExtField
           id="head_balance_holder_base_tel"
           type="string"
           label="Телефон:"
           value={props.head_balance_holder_base.tel}
+          error={error_head_balance_holder_base.tel}
           onChange={handleChangeHeadBalanceHolderBase}
           boundKeys="tel"
+          disabled={!isPermitted}
+          readOnly={!isActiveInspect}
         />
         <ExtField
           id="head_operating_base_fio"
           type="string"
           label="Лицо, ответственное за автотранспортную деятельность:"
           value={props.head_operating_base.fio}
+          error={error_head_operating_base.fio}
           onChange={handleChangeHeadOperatingBase}
           boundKeys="fio"
+          disabled={!isPermitted}
+          readOnly={!isActiveInspect}
         />
         <ExtField
           id="head_operating_base_tel"
           type="string"
           label="Телефон:"
           value={props.head_operating_base.tel}
+          error={error_head_operating_base.tel}
           onChange={handleChangeHeadOperatingBase}
           boundKeys="tel"
+          disabled={!isPermitted}
+          readOnly={!isActiveInspect}
         />
       </BoxContainer>
     );

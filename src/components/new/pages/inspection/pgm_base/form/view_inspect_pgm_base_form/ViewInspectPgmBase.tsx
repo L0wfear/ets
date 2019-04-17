@@ -103,7 +103,7 @@ const actionSetComissionAndMembers = (
 const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
-      const errors = validate(inspectAutobaeSchema, payload.selectedInspect.data, { type: payload.type });
+      const errors = validate(inspectAutobaeSchema, payload.selectedInspect.data, { type: payload.type }, payload.selectedInspect);
 
       return {
         ...state,
@@ -127,7 +127,7 @@ const reducer = (state: InitialState, { type, payload }) => {
           ...payload.data,
         },
       };
-      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: state.type });
+      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: state.type }, selectedInspect);
 
       return {
         ...state,

@@ -26,14 +26,19 @@ import { ColScroll } from './styled';
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
-    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
+    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(true);
     const [prepareList, setPrepareList] = React.useState([]);
 
     const {
       formState: state,
+      formErrors: errors,
       page,
       path,
+      isPermitted,
     } = props;
+
+    const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
+    const isActiveInspect = props.type === INSPECT_AUTOBASE_TYPE_FORM.list; // разное отображение по типу проверки
 
     const callBackToLoadCars = React.useCallback(
       () => {
@@ -65,7 +70,6 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       [props.handleHide, props.type],
     );
 
-    const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
     // tslint:disable-next-line:no-console
     console.log('ViewInspectCarsCondition === ', {props, preparePlanCanSave, prepareList});
     return (
@@ -76,6 +80,11 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               head_balance_holder_base={state.head_balance_holder_base}
               head_operating_base={state.head_operating_base}
 
+              error_head_balance_holder_base={errors.head_balance_holder_base}
+              error_head_operating_base={errors.head_operating_base}
+
+              isPermitted={isPermitted}
+              isActiveInspect={isActiveInspect}
               company_name={state.company_name}
               monitoring_kind_text={state.monitoring_kind_text}
               checks_type_text={state.checks_type_text}
@@ -87,31 +96,44 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                 ? (
                   <BlockCarSConditionPrepareCarToInspect
                     preparing_cars_check={state.preparing_cars_check}
+                    error_preparing_cars_check={errors.preparing_cars_check}
                     onChange={props.handleChange}
+                    isPermitted={isPermitted}
+                    isActiveInspect={isActiveInspect}
                   />
                 )
                 : (
                   <React.Fragment>
                     <BlockCarsConditionHeadCountList
                       headcount_list={state.headcount_list}
+                      error_headcount_list={errors.headcount_list}
+
+                      isPermitted={isPermitted}
+                      isActiveInspect={isActiveInspect}
 
                       onChange={props.handleChange}
                     />
                     <BlockCarsConditionCarsUse
                       headcount_list={state.headcount_list}
                       carsConditionCarsList={carsConditionCarsList}
+                      error_cars_use={errors.headcount_list.cars_use}
 
+                      isPermitted={isPermitted}
+                      isActiveInspect={isActiveInspect}
                       onChange={props.handleChange}
                     />
                   </React.Fragment>
                 )
             }
             <BlockCarsConditionSelectCar
-              isActiveInspect={props.type === INSPECT_AUTOBASE_TYPE_FORM.list}
+              isPermitted={isPermitted}
+              isActiveInspect={isActiveInspect}
               carsConditionCarsList={carsConditionCarsList}
             />
             <BlockCarsConditionSelectPhotosOfSupportingDocuments
               files={state.files}
+              isPermitted={isPermitted}
+              isActiveInspect={isActiveInspect}
               onChange={props.handleChange}
             />
           </ColScroll>

@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { FileField } from 'components/ui/input/fields';
+import { DivNone } from 'global-styled/global-styled';
 
 type BlockCarsConditionSelectPhotosOfSupportingDocumentsProps = {
   files: InspectCarsCondition['files'],
-
+  isActiveInspect: boolean;
+  isPermitted: boolean;
   onChange: any;
 };
 
@@ -38,13 +40,20 @@ const BlockCarsConditionSelectPhotosOfSupportingDocuments: React.FC<BlockCarsCon
       [props.onChange, files],
     );
     return (
-      <FileField
-        id="file_photos_of_supporting_documents"
-        label="Фотографии подтверждающих документов"
-        multiple
-        value={value}
-        onChange={handleChange}
-      />
+      props.isActiveInspect || value.length
+        ? (
+          <FileField
+            id="file_photos_of_supporting_documents"
+            label="Фотографии подтверждающих документов"
+            multiple
+            value={value}
+            disabled={!props.isPermitted || props.isActiveInspect}
+            onChange={handleChange}
+          />
+        )
+        : (
+          <DivNone />
+        )
     );
   },
 );

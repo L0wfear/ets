@@ -44,6 +44,7 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
       ));
     });
     setPrepareTsList(prepareTsListOpt);
+    props.canSavePreparePlanHandler(canSavePrepareCars && canSavePrepareAgregat);
   }, []);
 
   React.useEffect( () => {

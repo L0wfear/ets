@@ -1,6 +1,6 @@
 import { isNullOrUndefined, isArray, isString } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import { diffDatesByDays } from 'utils/dates';
+import { diffDatesByDays, diffDates } from 'utils/dates';
 
 export const sortArray = (firstRowData, secondRowData, field) => {
   let [

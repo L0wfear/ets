@@ -18,12 +18,12 @@ export const filedToCheckContainerFirst: FiledToCheck = [
   },
   {
     key: 'pgm_marka',
-    title: 'Марка ПГМ',
+    title: 'Марка ПГМ в емкости',
     type: 'string',
   },
   {
     key: 'pgm_volume',
-    title: 'Объем ПГМ (тонн)',
+    title: 'Объем ПГМ в емкости (тонн)',
     type: 'number',
   },
   {

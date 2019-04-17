@@ -65,12 +65,16 @@ export const CheckContainerTd = styled.div`
   justify-content: center;
 `;
 
-export const CheckContainerRow = styled.div`
+export const CheckContainerRow = styled.div<{ was_resaved: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-radius: 3px;
-  border: solid 1px black;
+  border: ${({ was_resaved }) => (
+    was_resaved
+      ? 'solid 2px green'
+      : 'solid 2px red'
+  )};
   padding: 10px 15px;
   margin-bottom: 5px;
   &:last-child {

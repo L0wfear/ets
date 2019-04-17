@@ -15,6 +15,7 @@ export interface ISharedPropsDataTableInput {
   selectField?: string;
   batteryAvailableCarGetAndSetInStore?: any;
   tireAvailableCarGetAndSetInStore?: any;
+  typesListOpt?: any[];
   page: string;
   path: string;
 }
@@ -27,10 +28,12 @@ export type IPropsDataTableInput = ISharedPropsDataTableInput & TInjectedPropsDa
 
 export interface IPropsDataTableInputRenderer {
   index: number;
-  value: string;
+  value: string | any;
   isPermitted: boolean;
   outputListErrors: ETSCore.Types.IStringKeyHashTable<string>[];
   onChange(index: number, key: string, value: any): void;
+  fieldKey?: string;
+  isDefaultVal?: boolean;
 }
 
 export type TRendererFunction = (

@@ -6,6 +6,7 @@ import {
   TInjectedPropsDataTableInputWrapper,
   IStateDataTableInputWrapper,
 } from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
+import { get } from 'lodash';
 
 import { validateField } from 'utils/validate/validateField';
 
@@ -53,7 +54,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
         (item: any, i) => i === index
           ? ({
             ...item,
-            [key]: value,
+            [key]: get(value, 'target.value', value),
           })
           : item,
       );

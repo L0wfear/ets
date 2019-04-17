@@ -66,10 +66,18 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
         name: 'car_ids',
         displayName: 'Рег. номер ТС',
         type: 'number',
+        display: false,
         filter: {
           type: 'multiselect',
           options: props.govNumberFilter.map((car) => ({ label: car.gov_number, value: car.asuods_id })),
         },
+        cssClassName: 'width120',
+      },
+      {
+        name: 'car_gov_numbers_text',
+        displayName: 'Рег. номер ТС',
+        type: 'number',
+        filter: false,
         cssClassName: 'width120',
       },
       {
@@ -141,7 +149,6 @@ const renderers: ISchemaRenderer = {
   date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
   date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-  car_ids: ({ rowData }) => <div>{get(rowData, 'car_gov_numbers_text') || '-'}</div>,
   car_type_names: ({ rowData }) => <div>{get(rowData, 'car_type_names_text') || '-'}</div>,
   for_column: ({ data }) => <div>{forColumnLabelFunction(data)}</div>,
 };

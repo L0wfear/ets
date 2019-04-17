@@ -28,6 +28,7 @@ export const getTableMeta = ({ structures = [], govNumberFilter = [] }) => {
         name: 'car_ids',
         displayName: 'Рег. номер ТС',
         type: 'number',
+        display: false,
         filter: {
           type: 'multiselect',
           options: govNumberFilter.map((car) => ({
@@ -35,6 +36,13 @@ export const getTableMeta = ({ structures = [], govNumberFilter = [] }) => {
             value: car.asuods_id,
           })),
         },
+        cssClassName: 'width120',
+      },
+      {
+        name: 'car_gov_numbers_text',
+        displayName: 'Рег. номер ТС',
+        type: 'number',
+        filter: false,
         cssClassName: 'width120',
       },
       {
@@ -116,9 +124,6 @@ export const getTableMeta = ({ structures = [], govNumberFilter = [] }) => {
 const renderers = {
   structure_id: ({ rowData }) => (
     <div>{get(rowData, 'structure_name') || '-'}</div>
-  ),
-  car_ids: ({ rowData }) => (
-    <div>{get(rowData, 'car_gov_numbers_text') || '-'}</div>
   ),
   car_type_names: ({ rowData }) => (
     <div>{get(rowData, 'car_type_names_text') || '-'}</div>

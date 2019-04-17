@@ -26,7 +26,6 @@ type FieldTypes =
   | 'advanced-number'
   | 'advanced-string'
   | 'advanced-date'
-  | 'advanced-datetime'
   | 'number'
   | 'customFilter';
 

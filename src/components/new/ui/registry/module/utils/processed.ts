@@ -1,6 +1,6 @@
 import { isNullOrUndefined, isArray, isString } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import { diffDates } from 'utils/dates';
+import { diffDatesByDays } from 'utils/dates';
 
 export const sortArray = (firstRowData, secondRowData, field) => {
   let [
@@ -94,7 +94,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
 
           switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return value !== row[valueKey];
-            case 'advanced-date': return diffDates(value, row[valueKey]) !== 0;
+            case 'advanced-date': return diffDatesByDays(value, row[valueKey]) !== 0;
             default: throw new Error('non define filter by type');
           }
         }
@@ -103,7 +103,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
 
           switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return !(value !== row[valueKey]);
-            case 'advanced-date': return !(diffDates(value, row[valueKey]) !== 0);
+            case 'advanced-date': return !(diffDatesByDays(value, row[valueKey]) !== 0);
             default: throw new Error('non define filter by type');
           }
         }
@@ -112,7 +112,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
 
           switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return value >= row[valueKey];
-            case 'advanced-date': return diffDates(value, row[valueKey]) >= 0;
+            case 'advanced-date': return diffDatesByDays(value, row[valueKey]) >= 0;
             default: throw new Error('non define filter by type');
           }
         }
@@ -121,7 +121,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
 
           switch (fieldsAsObj[valueKey].type) {
             case 'advanced-number': return value <= row[valueKey];
-            case 'advanced-date': return diffDates(value, row[valueKey]) <= 0;
+            case 'advanced-date': return diffDatesByDays(value, row[valueKey]) <= 0;
             default: throw new Error('non define filter by type');
           }
         }

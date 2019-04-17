@@ -179,7 +179,7 @@ export const sortFunction = (firstRowData, secondRowData, initialSort, other) =>
     return 1;
   }
 
-  return first.localeCompare(second);
+  return first.toLocaleLowerCase().trim().localeCompare(second.toLocaleLowerCase().trim());
 };
 
 export const sortData = (data, { initialSort, initialSortAscending, ...other }) => (

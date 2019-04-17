@@ -19,6 +19,7 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     is_road_signs: {
       title: 'Наличие дорожных знаков на территории базы (в соответствии со схемой движения)',
       type: 'number',
+      required: true,
     },
     lack_of_fire_fighting_equipment: {
       title: 'Отсутствие противопожарного оборудования',

@@ -23,7 +23,7 @@ const getValueFromEvent = (key, value, filedToCheckByKey) => {
     case 'boolean': return get(value, 'target.checked', null);
     case 'number':
     case 'text':
-    case 'string': return get(value, 'target.value', null);
+    case 'string': return get(value, 'target.value', null) || null;
     case 'select': return value;
     case 'date': {
       if (value) {

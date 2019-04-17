@@ -147,6 +147,12 @@ export const filedToCheck: FiledToCheck = [
     className: 'checkbox-input flex-reverse',
   },
   {
+    key: 'lack_of_washing',
+    title: 'Отсутствие моек на базе (стационарная/мобильная)',
+    type: 'boolean',
+    className: 'checkbox-input flex-reverse',
+  },
+  {
     key: 'lack_of_recreation',
     title: 'Отсутствие зон отдыха',
     type: 'boolean',

@@ -94,6 +94,10 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       title: 'Отсутствие навеса (постоянного, быстросъемного) для хранения аварийного запаса ПГМ',
       type: 'boolean',
     },
+    lack_of_washing: {
+      title: 'Отсутствие моек на базе (стационарная/мобильная)',
+      type: 'boolean',
+    },
     lack_of_recreation: {
       title: 'Отсутствие зон отдыха',
       type: 'boolean',

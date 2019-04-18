@@ -290,28 +290,43 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
           }
           <Col md={6} sm={12}>
             <Row>
-              <Col md={6}>
-                <FileField
-                  id="file"
-                  label="Фотографии подтверждающих документов"
-                  multiple
-                  value={state.selectedInspect.data.photos_of_supporting_documents}
-                  onChange={onChangeFile}
-                  disabled={!isPermittedChangeListParams}
-                  boundKeys="photos_of_supporting_documents"
-                />
-              </Col>
-              <Col md={6}>
-                <FileField
-                  id="file"
-                  label="Фотографии дефектов"
-                  multiple
-                  value={state.selectedInspect.data.photos_defect}
-                  onChange={onChangeFile}
-                  disabled={!isPermittedChangeListParams}
-                  boundKeys="photos_defect"
-                />
-              </Col>
+              { (props.type === INSPECT_PGM_BASE_TYPE_FORM.closed && state.selectedInspect.data.photos_of_supporting_documents.length)
+                || props.type === INSPECT_PGM_BASE_TYPE_FORM.list
+                ? (
+                  <Col md={6}>
+                    <FileField
+                      id="file"
+                      label="Фотографии подтверждающих документов"
+                      multiple
+                      value={state.selectedInspect.data.photos_of_supporting_documents}
+                      onChange={onChangeFile}
+                      disabled={!isPermittedChangeListParams}
+                      boundKeys="photos_of_supporting_documents"
+                    />
+                  </Col>
+                ) : (
+                  <DivNone />
+                )
+              }
+              {
+                (props.type === INSPECT_PGM_BASE_TYPE_FORM.closed && state.selectedInspect.data.photos_defect.length)
+                || props.type === INSPECT_PGM_BASE_TYPE_FORM.list
+                ? (
+                  <Col md={6}>
+                    <FileField
+                      id="file"
+                      label="Фотографии дефектов"
+                      multiple
+                      value={state.selectedInspect.data.photos_defect}
+                      onChange={onChangeFile}
+                      disabled={!isPermittedChangeListParams}
+                      boundKeys="photos_defect"
+                    />
+                  </Col>
+                ) : (
+                  <DivNone />
+                )
+              }
             </Row>
           </Col>
           <ViewAddInspectEmployee

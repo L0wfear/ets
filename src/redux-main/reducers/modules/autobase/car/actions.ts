@@ -85,6 +85,10 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
     carPassportData,
   ] = response;
 
+  if (!carData) {
+    return null;
+  }
+
   const defaultCarWrapData = getDefaultCarElement(null);
 
   const fullCarData: CarWrap = {

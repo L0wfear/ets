@@ -2040,9 +2040,7 @@ class WaybillForm extends Form {
                                   error={errors.equipment_fuel_start}
                                   value={state.equipment_fuel_start}
                                   disabled={
-                                    IS_ACTIVE
-                                    || IS_CLOSED
-                                    || !isPermittedByKey.update
+                                    IS_CLOSED || !isPermittedByKey.update
                                   }
                                   onChange={this.handleChange}
                                   boundKeys="equipment_fuel_start"

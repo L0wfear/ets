@@ -31,7 +31,7 @@ export const defaultCar: CarWrap = {
   garage_number: '',
   gov_number: '',
   gps_code: '',
-  is_common: null,
+  is_common: false,
   is_trailer: null,
   level_sensors_num: null,
   load_capacity: null,
@@ -113,8 +113,17 @@ export const defaultCar: CarWrap = {
 export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {
   const newElement = { ...defaultCar };
   if (isObject(element)) {
-    Object.keys(defaultCar).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultCar[key];
+    Object.keys(newElement).forEach((key) => {
+      if (key === 'drivers_data' || key === 'registration_data' || key === 'passport_data') {
+        newElement[key] = defaultCar[key];
+        if (isObject(element[key])) {
+          Object.keys(newElement[key]).forEach((key2) => {
+            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : defaultCar[key][key2];
+          });
+        }
+      } else {
+        newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultCar[key];
+      }
     });
   }
 

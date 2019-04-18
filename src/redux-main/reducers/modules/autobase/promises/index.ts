@@ -1,4 +1,4 @@
-import { AutoBase, CarService, TypesService } from 'api/Services';
+import { AutoBase, CarActualService, TypesService } from 'api/Services';
 import { get, keyBy } from 'lodash';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -67,7 +67,7 @@ export const autobaseLoadCars = async (payload = {}) => {
   let response = null;
 
   try {
-    response = await CarService.get({ ...payload });
+    response = await CarActualService.get({ ...payload });
   } catch (error) {
     console.log(error); // tslint:disable-line:no-console
   }

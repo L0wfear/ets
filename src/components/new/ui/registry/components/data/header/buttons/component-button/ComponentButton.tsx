@@ -15,6 +15,7 @@ import ButtonCloseEdcRequest from './button-by-type/edc_request/ButtonCloseEdcRe
 import ButtonCancelEdcRequest from './button-by-type/edc_request/ButtonCancelEdcRequest';
 import ButtonRejectEdcRequest from './button-by-type/edc_request/ButtonRejectEdcRequest';
 import ButtonReadCarsConditionsCar from './button-by-type/cars_conditions_car/ButtonReadCarsConditionsCar';
+import ButtonReadEmployeeOnCar from './button-by-type/employee_on_car/ButtonReadEmployeeOnCar';
 
 type PropsComponentButton = {
   type: string;
@@ -35,6 +36,7 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.edc_request_cancel: return ButtonCancelEdcRequest;
     case buttonsTypes.edc_request_close: return ButtonCloseEdcRequest;
     case buttonsTypes.read_cars_contisions_car: return ButtonReadCarsConditionsCar;
+    case buttonsTypes.read_employee_on_car: return ButtonReadEmployeeOnCar;
     default: return null;
   }
 };

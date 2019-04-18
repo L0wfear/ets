@@ -2,7 +2,6 @@ import { Actions } from 'flummox';
 import {
   EmployeeService,
   EmployeeBindedToCarService,
-  EmployeeOnCarService,
   DriverService,
   ForemanService,
   WaybillDriverService,
@@ -38,16 +37,6 @@ export default class EmployeesActions extends Actions {
     return EmployeeBindedToCarService.path(asuods_id)
       .get({})
       .then(({ result: { rows } }) => rows);
-  }
-
-  getEmployeeOnCarList(props) {
-    const payload = {
-      ...props,
-    };
-
-    return EmployeeOnCarService.get(payload).then(({ result: { rows } }) => ({
-      result: rows,
-    }));
   }
 
   getDrivers() {

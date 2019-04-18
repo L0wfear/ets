@@ -1,6 +1,6 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-import employeeOnCar from 'components/directories/employee_on_car/config-data';
+import employeeOnCarList from 'components/new/pages/nsi/employee_on_car/_config-data';
 import order from 'components/directories/order/config-data';
 import companyList from 'components/new/pages/nsi/company/_config-data';
 import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
@@ -19,7 +19,7 @@ import dataForCalculation from 'components/new/pages/nsi/data_for_calculation/_c
 
 const children = {
   employeesList,
-  employeeOnCar,
+  employeeOnCarList,
   order,
   normRegistryList,
   companyList,

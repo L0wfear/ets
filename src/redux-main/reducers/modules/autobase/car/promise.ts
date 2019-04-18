@@ -3,7 +3,15 @@ import {
 } from 'redux-main/reducers/modules/autobase/promises';
 import { Car } from '../@types/autobase.h';
 import { get, cloneDeep } from 'lodash';
-import { CarDrivers, CarRegistrationRegistryService, CarPassportRegistryService, CarService, CarPassportGibddRegistryService, CarPassportGtnRegistryService } from 'api/Services';
+import {
+  CarDrivers,
+  CarRegistrationRegistryService,
+  CarPassportRegistryService,
+  CarActualService,
+  CarPassportGibddRegistryService,
+  CarPassportGtnRegistryService,
+  CarService,
+} from 'api/Services';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
 import { createValidDate } from 'utils/dates';
 
@@ -27,8 +35,16 @@ export const getBackCar = (carOwn: Car) => {
   return car;
 };
 
+export const promiseLoadCarByAsuodsId = async (asuods_id: Car['asuods_id']) => {
+  const response = await CarService.get({ asuods_id });
+
+  const result: Car = get(response, 'result.rows.0');
+
+  return result;
+};
+
 export const promiseUpdateCar = async (car: Car): Promise<Car> => {
-  await CarService.put(
+  await CarActualService.put(
     {
       ...car,
       car_id: car.asuods_id,

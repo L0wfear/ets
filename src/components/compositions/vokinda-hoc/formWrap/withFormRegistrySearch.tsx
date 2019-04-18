@@ -16,7 +16,11 @@ type WithFormRegistrySearchConfig = {
   hideSearch?: {
     [key: string]: any,
   },
+  cantCreate?: boolean;
+  noCheckDataInRegistryArray?: boolean;
+  uniqKeyName?: string;
 };
+
 let lasPermissions = {};
 let lastPermissionsArray = [];
 
@@ -70,7 +74,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
       React.useEffect(
         () => {
           if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
-            if (props.buttons.includes(buttonsTypes.create)) {
+            if (props.buttons.includes(buttonsTypes.create) && !config.cantCreate) {
               setElement({});
             } else {
               global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
@@ -82,28 +86,36 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
             return;
           }
 
-          if (!isNullOrUndefined(uniqKeyValue) && array.length) {
-            const newElement = array.find((item) => item[uniqKey] === uniqKeyValue);
-            if (newElement) {
-              setElement(newElement);
+          if (!isNullOrUndefined(uniqKeyValue)) {
+            if (config.noCheckDataInRegistryArray) {
+              setElement({
+                [config.uniqKeyName || uniqKeyForParams]: uniqKeyValue,
+              });
               return;
             }
+            if (array.length) {
+              const newElement = array.find((item) => item[uniqKey] === uniqKeyValue);
+              if (newElement || !config.noCheckDataInRegistryArray) {
+                setElement(newElement);
+                return;
+              }
 
-            if (props.getOneData) {
-              props.registryLoadOneData(props.registryKey, uniqKeyValue).then((responseElement) => {
-                if (responseElement) {
-                  setElement(responseElement);
-                } else {
-                  global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                  handleHide(false);
-                }
-              });
-            } else {
-              global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-              handleHide(false);
+              if (props.getOneData) {
+                props.registryLoadOneData(props.registryKey, uniqKeyValue).then((responseElement) => {
+                  if (responseElement) {
+                    setElement(responseElement);
+                  } else {
+                    global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+                    handleHide(false);
+                  }
+                });
+              } else {
+                global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+                handleHide(false);
+              }
+            } else if (element) {
+              setElement(null);
             }
-          } else if (element) {
-            setElement(null);
           }
         },
         [props.match.params[uniqKeyForParams], uniqKeyValue, array],

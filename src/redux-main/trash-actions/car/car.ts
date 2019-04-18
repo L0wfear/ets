@@ -1,5 +1,5 @@
 import {
-  CarService,
+  CarActualService,
   CarInfoService,
 } from 'api/Services';
 import { keyBy } from 'lodash';
@@ -16,7 +16,7 @@ export const loadCarActualIndex: LoadCarActualIndexFunc = (type, data = {}, meta
   };
   return {
     type,
-    payload: CarService.get(payload)
+    payload: CarActualService.get(payload)
       .catch((error) => {
         // tslint:disable-next-line
         console.warn(error);

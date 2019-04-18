@@ -10,7 +10,7 @@ export const defaultFuelCards: FuelCards = {
   company: null,
   fuel_type_text: null,
   structure_id: null,
-  is_common: null,
+  is_common: false,
   structure_name: null,
 };
 

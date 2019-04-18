@@ -140,12 +140,17 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             ),
           ).then(
             (element: F) => {
-              this.setState(
-                this.getInitState({
-                  ...this.props,
-                  element,
-                }),
-              );
+              if (element) {
+                this.setState(
+                  this.getInitState({
+                    ...this.props,
+                    element,
+                  }),
+                );
+              } else {
+                global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+                this.props.handleHide(false);
+              }
             },
           );
         }
@@ -155,7 +160,14 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         if (Object.entries(this.props).some(([key, value]) => value !== prevProps[key])) {
           if (this.props.element !== prevProps.element) {
             this.setState(this.getInitState(this.props));
-            this.checkOnNewData();
+
+            if (!isBoolean(config.uniqField)) {
+              const lastUniqFieldValue = get(prevProps.element, config.uniqField, null);
+              const newUniqFieldValue = get(this.props.element, config.uniqField, null);
+              if (newUniqFieldValue && newUniqFieldValue !== lastUniqFieldValue) {
+                this.checkOnNewData();
+              }
+            }
           } else {
             this.setState((oldState) => {
               const formErrors = this.validate(oldState.formState);
@@ -320,6 +332,12 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             value = null;
           }
 
+          if (type === 'date' && value) {
+            value = createValidDate(value);
+          }
+          if (type === 'datetime' && value) {
+            value = createValidDateTime(value);
+          }
           formatedFormState[key] = value;
         });
 

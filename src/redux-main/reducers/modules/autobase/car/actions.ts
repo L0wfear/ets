@@ -13,10 +13,12 @@ import {
   promiseUpdateCarDriversData,
   promiseUpdateCarRegistrationData,
   promiseUpdateCarPassportData,
+  promiseLoadCarByAsuodsId,
 } from 'redux-main/reducers/modules/autobase/car/promise';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
+import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
 
 /* ---------- Car ---------- */
 export const autobaseSetCar = (carList: Car[]) => (dispatch) => (
@@ -58,6 +60,71 @@ export const carGetAndSetInStore = (payload = {}, meta: LoadingMeta) => async (d
   return {
     carList: data,
   };
+};
+
+export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarWrap>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await Promise.all([
+    dispatch(
+      actionsGetCarByAsuodsId(asuods_id, meta),
+    ),
+    dispatch(
+      actionGetCarDrivers(asuods_id, meta),
+    ),
+    dispatch(
+      actionLoadCarRegistration(asuods_id, meta),
+    ),
+    dispatch(
+      actionLoadCarPassport(asuods_id, meta),
+    ),
+  ]);
+
+  const [
+    carData,
+    carDriversData,
+    carRegistrationData,
+    carPassportData,
+  ] = response;
+
+  const defaultCarWrapData = getDefaultCarElement(null);
+
+  const fullCarData: CarWrap = {
+    ...carData,
+    asuods_id,
+    drivers_data: carDriversData,
+    registration_data: {
+      ...defaultCarWrapData.registration_data,
+      car_id: asuods_id,
+    },
+    passport_data: {
+      ...defaultCarWrapData.passport_data,
+      car_id: asuods_id,
+    },
+  };
+
+  if (carRegistrationData) {
+    fullCarData.registration_data = {
+      ...fullCarData.registration_data,
+      ...carRegistrationData,
+    };
+  }
+  if (carPassportData) {
+    fullCarData.passport_data = {
+      ...fullCarData.registration_data,
+      ...carPassportData,
+    };
+  }
+
+  return fullCarData;
+};
+
+export const actionsGetCarByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<Car>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseLoadCarByAsuodsId(asuods_id),
+    meta,
+  );
+
+  return response;
 };
 
 export const actionUpdateCar = (car: Car, meta: LoadingMeta): ThunkAction<Promise<Car>, ReduxState, {}, AnyAction> => async (dispatch) => {

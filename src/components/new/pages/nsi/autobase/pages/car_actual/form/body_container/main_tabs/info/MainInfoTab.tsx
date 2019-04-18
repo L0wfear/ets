@@ -76,6 +76,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 onChange={props.onChange}
                 boundKeys="exploitation_date_start"
                 disabled={!isPermitted}
+                makeGoodFormat
               />
               <ExtField
                 type="string"

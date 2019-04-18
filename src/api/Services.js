@@ -42,11 +42,13 @@ export const LatestWaybillDriverService = ETS_API_FACTORY.createApiServiceAdapte
 );
 
 /* ТС */
-export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car_actual');
+export const CarActualService = ETS_API_FACTORY.createApiServiceAdapter(
+  'car_actual',
+);
 export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter(
   'car_info',
 );
-export const Car = ETS_API_FACTORY.createApiServiceAdapter('car');
+export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car');
 export const FuelCards = ETS_API_FACTORY.createApiServiceAdapter('fuel_cards');
 
 /* Рабочий стол */

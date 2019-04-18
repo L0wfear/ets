@@ -5,9 +5,10 @@ import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_conf
 
 export const item = 'car_actual';
 export const id = config.list.data.uniqKeyForParams;
-export const patrialEndPath = `/${item}/:${id}?/:tabKey?`;
+export const formPath = `/:${id}?/:tabKey?`;
+export const patrialEndPath = `/${item}${formPath}`;
 export const path = `/nsi/autobase/${item}`;
-export const routePath = `${path}/:${id}?/:tabKey?`;
+export const routePath = `${path}${formPath}`;
 
 export default {
   item,

@@ -38,4 +38,8 @@ class CarFormLazy extends React.Component<PropsCarFormLazy, {}> {
   }
 }
 
-export default withFormRegistrySearch({})(CarFormLazy);
+export default withFormRegistrySearch({
+  cantCreate: true,
+  noCheckDataInRegistryArray: true,
+  uniqKeyName: 'asuods_id',
+})(CarFormLazy);

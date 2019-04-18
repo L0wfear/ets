@@ -2,7 +2,7 @@ import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
 import {
   OrderService,
-  CarService,
+  CarActualService,
   WaybillCarService,
   MissionCarService,
   TypesService,
@@ -18,7 +18,9 @@ export default class ObjectsActions extends Actions {
     } else {
       delete payload.technical_operation_id;
     }
-    return CarService.get(payload).then((r) => ({ result: r.result.rows }));
+    return CarActualService.get(payload).then((r) => ({
+      result: r.result.rows,
+    }));
   }
 
   getSomeCars(type) {
@@ -38,7 +40,9 @@ export default class ObjectsActions extends Actions {
         }));
       }
       default:
-        return CarService.get(payload).then((r) => ({ result: r.result.rows }));
+        return CarActualService.get(payload).then((r) => ({
+          result: r.result.rows,
+        }));
     }
   }
 

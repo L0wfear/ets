@@ -12,10 +12,6 @@ export default class EmployeeStore extends Store {
       this.handleGetEmployeeBindedToCar,
     );
     this.register(
-      employeesActions.getEmployeeOnCarList,
-      this.handleGetEmployeeOnCarList,
-    );
-    this.register(
       employeesActions.getWaybillDrivers,
       this.handleGetWaybillDrivers,
     );
@@ -27,7 +23,6 @@ export default class EmployeeStore extends Store {
       employeesIndex: {},
       employeesBindedoOnCarList: [],
       uniqEmployeesBindedoOnCarList: [],
-      employeeOnCarList: [],
       driversList: [],
       foremanList: [],
       waybillDriversList: [],
@@ -60,15 +55,6 @@ export default class EmployeeStore extends Store {
           return newObj;
         }, {}),
       ),
-    });
-  }
-
-  handleGetEmployeeOnCarList({ result }) {
-    this.setState({
-      employeeOnCarList: result.map((row, index) => ({
-        ...row,
-        _uniq_field: index + 1,
-      })),
     });
   }
 

@@ -251,6 +251,10 @@ export const carFormSchema: SchemaType<CarWrap, PropsCar> = {
       type: 'schema',
       schema: carRegistrationDataSchema,
     },
+    exploitation_date_start: {
+      type: 'date',
+      title: 'Дата ввода ТС в эксплуатацию',
+    },
   },
   dependencies: {
     passport_data: [

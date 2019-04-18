@@ -31,6 +31,7 @@ import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
 import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
 import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
+import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/promise_employee_on_car';
 
 /**
  * Да простят меня боги
@@ -179,6 +180,9 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       case 'carActual': {
         arrayRaw = arrayRaw.map(getFrontCar);
       }
+      case 'employee_on_car': {
+        arrayRaw = arrayRaw.map(getFrontEmployeeOnCar);
+      }
     }
 
     arrayRaw = arrayRaw.filter((data) => !isNullOrUndefined(data[uniqKey]));
@@ -243,7 +247,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
 
 export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage = 0) => (dispatch, getState) => {
   dispatch(
-    registryResetGlobalCheck(registryKey),
+    actionUnselectSelectedRowToShow(registryKey, true),
   );
 
   const { registry: { [registryKey]: registryData } } = getState();
@@ -324,7 +328,7 @@ export const registryChangeFilterRawValues = (registryKey, valueKey, type, value
 
 export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) => {
   dispatch(
-    registryResetGlobalCheck(registryKey),
+    actionUnselectSelectedRowToShow(registryKey, true),
   );
 
   const registyData = get(getState(), ['registry', registryKey], null);
@@ -374,7 +378,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
 
 export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
   dispatch(
-    registryResetGlobalCheck(registryKey),
+    actionUnselectSelectedRowToShow(registryKey, true),
   );
 
   const registyData = get(getState(), ['registry', registryKey], null);
@@ -467,7 +471,7 @@ export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState)
 
 export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {
   dispatch(
-    registryResetGlobalCheck(registryKey),
+    actionUnselectSelectedRowToShow(registryKey, true),
   );
 
   const registyData = get(getState(), ['registry', registryKey], null);

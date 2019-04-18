@@ -111,6 +111,7 @@ export type TypeConfigData<F> = {
       | 'select_odh/dt(disabled)'
       | 'select_odh/dt'
       | 'datetime_range_picker'
+      | 'select_for_technical_operation_relations'
     );
     buttons?: ButtonDefineType,
   },

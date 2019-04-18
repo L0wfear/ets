@@ -16,6 +16,8 @@ import ButtonCancelEdcRequest from './button-by-type/edc_request/ButtonCancelEdc
 import ButtonRejectEdcRequest from './button-by-type/edc_request/ButtonRejectEdcRequest';
 import ButtonReadCarsConditionsCar from './button-by-type/cars_conditions_car/ButtonReadCarsConditionsCar';
 import ButtonReadEmployeeOnCar from './button-by-type/employee_on_car/ButtonReadEmployeeOnCar';
+import ButtonChangeDriverTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeDriverTechnicalOperationRelations';
+import ButtonChangeRouteTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeRouteTechnicalOperationRelations';
 
 type PropsComponentButton = {
   type: string;
@@ -37,6 +39,8 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.edc_request_close: return ButtonCloseEdcRequest;
     case buttonsTypes.read_cars_contisions_car: return ButtonReadCarsConditionsCar;
     case buttonsTypes.read_employee_on_car: return ButtonReadEmployeeOnCar;
+    case buttonsTypes.change_driver_technical_operation_relations : return ButtonChangeDriverTechnicalOperationRelations;
+    case buttonsTypes.change_route_technical_operation_relations : return ButtonChangeRouteTechnicalOperationRelations;
     default: return null;
   }
 };

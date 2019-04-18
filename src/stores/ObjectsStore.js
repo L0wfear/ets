@@ -18,10 +18,6 @@ export default class ObjectsStore extends Store {
       this.handleGetTechOperations,
     );
     this.register(
-      technicalOperationsActions.getTechnicalOperationRelations,
-      this.handleGetTechnicalOperationRelations,
-    );
-    this.register(
       technicalOperationsActions.getTechnicalOperationsObjects,
       this.handleGetTechnicalOperationsObjects,
     );
@@ -32,7 +28,6 @@ export default class ObjectsStore extends Store {
       modelsList: [],
       technicalOperationsList: [],
       technicalOperationsMap: new Map(),
-      technicalOperationRelationsList: [],
       OrdersList: [],
       technicalOperationsObjectsList: [],
       positionsList: [],
@@ -106,10 +101,6 @@ export default class ObjectsStore extends Store {
       technicalOperationsList: result,
       technicalOperationsMap,
     });
-  }
-
-  handleGetTechnicalOperationRelations({ result }) {
-    this.setState({ technicalOperationRelationsList: result });
   }
 
   handleGetWorkMode({ result: { rows = [] } }) {

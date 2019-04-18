@@ -1,0 +1,110 @@
+import * as React from 'react';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import * as Button from 'react-bootstrap/lib/Button';
+import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import { ReduxState } from 'redux-main/@types/state';
+import {
+  getListData,
+} from 'components/new/ui/registry/module/selectors-registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { registrySetSelectedRowToShowInForm, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
+import { compose } from 'recompose';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { get } from 'lodash';
+import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+
+type ButtonChangeDriverTechnicalOperationRelationsStateProps = {
+  uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
+  selectedRow: OneRegistryData['list']['data']['selectedRow'];
+};
+type ButtonChangeDriverTechnicalOperationRelationsDispatchProps = {
+  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
+};
+type ButtonChangeDriverTechnicalOperationRelationsOwnProps = {
+  registryKey: string;
+};
+type ButtonChangeDriverTechnicalOperationRelationsMergeProps = {};
+
+type ButtonChangeDriverTechnicalOperationRelationsProps = (
+  ButtonChangeDriverTechnicalOperationRelationsStateProps
+  & ButtonChangeDriverTechnicalOperationRelationsDispatchProps
+  & ButtonChangeDriverTechnicalOperationRelationsOwnProps
+  & ButtonChangeDriverTechnicalOperationRelationsMergeProps
+) & WithSearchProps;
+
+const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriverTechnicalOperationRelationsProps> = (props) => {
+  const technical_operation_id = props.searchState.technical_operation_id || null;
+  const municipal_facility_id = props.searchState.municipal_facility_id || null;
+  const route_types = props.searchState.route_types || null;
+  const func_type_id = props.searchState.func_type_id || null;
+
+  const hasAllData = (
+    technical_operation_id
+    && municipal_facility_id
+    && route_types
+    && func_type_id
+  );
+
+  const handleClick = React.useCallback(
+    () => {
+      props.setParams({
+        technical_operation_relations_type_form: 'change_driver',
+        car_actual_asuods_id: get(props.selectedRow, 'car_id', null),
+      }),
+      props.registrySetSelectedRowToShowInForm(props.registryKey);
+    },
+    [props.registryKey, props.setParams, props.match.params, props.selectedRow],
+  );
+
+  React.useEffect(
+    () => {
+      if (hasAllData) {
+        props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      }
+    },
+    [hasAllData, technical_operation_id, func_type_id, municipal_facility_id. route_types],
+  );
+
+  React.useEffect(
+    () => {
+      if (!hasAllData) {
+        props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      }
+    },
+    [hasAllData],
+  );
+
+  return (
+    <Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+      Изменить водителей
+    </Button>
+  );
+};
+
+export default compose<ButtonChangeDriverTechnicalOperationRelationsProps, ButtonChangeDriverTechnicalOperationRelationsOwnProps>(
+  withRequirePermissionsNew({
+    permissions: carActualPermissions.update,
+  }),
+  connect<ButtonChangeDriverTechnicalOperationRelationsStateProps, ButtonChangeDriverTechnicalOperationRelationsDispatchProps, ButtonChangeDriverTechnicalOperationRelationsOwnProps, ReduxState>(
+    (state, { registryKey }) => ({
+      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
+      selectedRow: getListData(state.registry, registryKey).data.selectedRow,
+    }),
+    (dispatch: any) => ({
+      registrySetSelectedRowToShowInForm: (...arg) => (
+        dispatch(
+          registrySetSelectedRowToShowInForm(...arg),
+        )
+      ),
+      actionUnselectSelectedRowToShow: (...arg) => (
+        dispatch(
+          actionUnselectSelectedRowToShow(...arg),
+        )
+      ),
+    }),
+  ),
+  withSearch,
+)(ButtonChangeDriverTechnicalOperationRelations);

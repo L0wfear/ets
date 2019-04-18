@@ -10,12 +10,8 @@ import { isNullOrUndefined } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { get } from 'lodash';
 
 type WithFormRegistrySearchConfig = {
-  hideSearch?: {
-    [key: string]: any,
-  },
   cantCreate?: boolean;
   noCheckDataInRegistryArray?: boolean;
   uniqKeyName?: string;
@@ -35,17 +31,17 @@ const getPermissionsCreateReadUpdate = (permission) => {
 };
 
 export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySearchConfig) => (Component) => (
-  compose<any, { registryKey: string } & P>(
+  compose<any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } } & P>(
     withSearch,
-    connect<any, any, { registryKey: string }, ReduxState>(
-      (state, { registryKey }) => ({
+    connect<any, any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } }, ReduxState>(
+      (state, { registryKey, uniqKeyForParams, permissions }) => ({
         getOneData: getServiceData(state.registry, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
         buttons: getHeaderData(state.registry, registryKey).buttons,
         data: getListData(state.registry, registryKey).data,
         uniqKey: getListData(state.registry, registryKey).data.uniqKey,
-        uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
-        permissions: getPermissionsCreateReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
+        uniqKeyForParams: uniqKeyForParams || getListData(state.registry, registryKey).data.uniqKeyForParams,
+        permissions: getPermissionsCreateReadUpdate(permissions || getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       }),
       (dispatch: any) => ({
         registryResetSelectedRowToShowInForm: (...arg) => (
@@ -93,9 +89,10 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
               });
               return;
             }
+
             if (array.length) {
               const newElement = array.find((item) => item[uniqKey] === uniqKeyValue);
-              if (newElement || !config.noCheckDataInRegistryArray) {
+              if (newElement || config.noCheckDataInRegistryArray) {
                 setElement(newElement);
                 return;
               }
@@ -124,17 +121,13 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         (isSubmitted: boolean, response?: any) => {
           setElement(null);
 
-          const hideSearchState = get(config, 'hideSearch', {});
-          props.setParamsAndSearch({
-            params: {
-              [uniqKeyForParams]: null,
-            },
-            search: hideSearchState,
+          props.setParams({
+            [uniqKeyForParams]: null,
           });
 
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
         },
-        [uniqKeyForParams],
+        [uniqKeyForParams, props.setParams, props.match.params],
       );
 
       return element

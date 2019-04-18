@@ -30,6 +30,7 @@ export type DispatchRouteFormProps = {
 export type InputRouteFormProps = {
   handleHide: (hasSubmtit: boolean, route?: any) => any;
   page: string;
+  path?: string;
   element: Partial<Route> | null;
   routesMapNameId?: Map<string, number>;
   fromMission?: boolean;

@@ -3,7 +3,7 @@ import { getChildrenData } from 'utils/routes/getChildrenData';
 import employeeOnCarList from 'components/new/pages/nsi/employee_on_car/_config-data';
 import order from 'components/directories/order/config-data';
 import companyList from 'components/new/pages/nsi/company/_config-data';
-import technicalOperationRelations from 'components/directories/technical_operation_relations/config-data';
+import technicalOperationRelationsList from 'components/new/pages/nsi/technical_operation_relations/_config-data';
 import autobasePages from 'components/new/pages/nsi/autobase/_config-data';
 import repairsRegistry from 'components/directories/repair/config-data';
 import regulatoryIndicator from 'components/new/pages/nsi/regulatory_indicator/_config-data';
@@ -23,7 +23,7 @@ const children = {
   order,
   normRegistryList,
   companyList,
-  technicalOperationRelations,
+  technicalOperationRelationsList,
   dividerOne: { divider: true },
   autobasePages,
   repairsRegistry,

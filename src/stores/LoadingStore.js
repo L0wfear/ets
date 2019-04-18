@@ -62,13 +62,10 @@ export default class LoadingStore extends Store {
       missionsActons.printMissionTemplate,
       missionsActons.createMissions,
       missionsActons.getCarDutyMissions,
-      missionsActons.getCleaningMunicipalFacilityList,
       missionsActons.getCleaningOneNorm,
 
       technicalOperationsActions.getTechnicalOperations,
       technicalOperationsActions.getTechnicalOperationsObjects,
-      technicalOperationsActions.getTechOperationsByNormIds,
-      technicalOperationsActions.getTechnicalOperationRelations,
     );
 
     this.reg(true, missionsActons.getMissionsByCarAndDates);

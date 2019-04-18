@@ -12,6 +12,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import SelectedOdhDtDisabled from './middle/SelectedOdhDtDisabled';
 import SelectedOdhDt from './middle/SelectedOdhDt';
 import SelecteDateTimeRange from './middle/SelecteDateTimeRange';
+import SelectForTechnicalOperationRelations from './format/select_for_technical_operation_relations/SelectForTechnicalOperationRelations';
 
 type HeaderStateProps = {
   format: OneRegistryData['header']['format'];
@@ -38,6 +39,12 @@ const getMiddleBlockComponent = (format: OneRegistryData['header']['format']) =>
 
 const Header: React.FC<HeaderProps> = React.memo(
   (props) => {
+    if (props.format === 'select_for_technical_operation_relations') {
+      return (
+        <SelectForTechnicalOperationRelations registryKey={props.registryKey} />
+      );
+    }
+
     const MiddleBlock = getMiddleBlockComponent(props.format);
 
     return (

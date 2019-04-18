@@ -1,7 +1,8 @@
 export type NormRegistryCarFuncTypes = {
   id: number;
   asuods_id: number;
-  name: string;
+  name?: string;
+  short_name?: string;
 };
 
 export type NormRegistryElement = {
@@ -54,7 +55,7 @@ export type Norm = {
   objects_text_array: string[];
   objects_text: string;
   period_interval_name: any;
-  route_types: string;
+  route_types: string[];
   season_id: number;
   season_name: string;
   sensor_type_ids: number[];

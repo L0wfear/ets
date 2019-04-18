@@ -48,6 +48,28 @@ export const getBackNorm = (normRaw: any) => {
   return norm;
 };
 
+type PromiseGetNormPayload = (
+  {}
+  | {
+    norm_ids: string[] | string;
+  }
+);
+
+export const promiseGetNormsByParams = async (payload: PromiseGetNormPayload) => {
+  let response = null;
+  try {
+    response = await CleaningNormRegistryService.get({
+      ...payload,
+    });
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  const result: Norm[] = get(response, 'result.rows', []);
+
+  return result;
+};
+
 export const promiseUpdateNorm = (norm: Norm) => {
   return CleaningNormRegistryService.path(norm.id).put(
     getBackNorm(norm),

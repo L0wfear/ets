@@ -256,24 +256,6 @@ export default class MissionsActions extends Actions {
     return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }
 
-  getCleaningMunicipalFacilityList(outerPyload) {
-    const payload = {
-      ...outerPyload,
-      start_date: createValidDate(outerPyload.start_date),
-      end_date: createValidDate(outerPyload.end_date),
-    };
-
-    if (!payload.kind_task_ids) {
-      delete payload.kind_task_ids;
-    }
-
-    return Cleaning.path('municipal_facility')
-      .get(payload, false, 'json')
-      .then(({ result: { rows } }) => ({
-        municipal_facility_list: rows,
-      }));
-  }
-
   getCleaningMunicipalFacilityAllList(outerPyload) {
     const payload = {
       start_date: createValidDate(outerPyload.start_date || new Date()),

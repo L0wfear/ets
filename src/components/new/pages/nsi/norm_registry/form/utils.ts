@@ -32,7 +32,7 @@ export const defaultEmployee: Norm = {
   objects_text_array: [],
   objects_text: '',
   period_interval_name: null,
-  route_types: '',
+  route_types: [],
   season_id: null,
   season_name: '',
   sensor_type_ids: null,

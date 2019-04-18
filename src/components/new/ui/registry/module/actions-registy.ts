@@ -32,6 +32,7 @@ import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_at
 import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
 import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/promise_employee_on_car';
+import { getFrontTechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/promise_technical_operation_relations';
 
 /**
  * Да простят меня боги
@@ -179,9 +180,15 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       }
       case 'carActual': {
         arrayRaw = arrayRaw.map(getFrontCar);
+        break;
       }
       case 'employee_on_car': {
         arrayRaw = arrayRaw.map(getFrontEmployeeOnCar);
+        break;
+      }
+      case 'technical_operation_relations': {
+        arrayRaw = arrayRaw.map(getFrontTechnicalOperationRelations);
+        break;
       }
     }
 

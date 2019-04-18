@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const EtsTableWrap = styled.div`
-  max-height: calc(100vh - 250px);
+export const EtsTableWrap = styled.div<{ addToMinusHeight?: number }>`
+  max-height: ${({ addToMinusHeight }) => `calc(100vh - ${250 + (addToMinusHeight || 0)}px)`};
   overflow: auto;
   margin: 5px;
   min-height: 100px;

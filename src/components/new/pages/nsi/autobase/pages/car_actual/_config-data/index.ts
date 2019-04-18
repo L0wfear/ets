@@ -15,6 +15,7 @@ export default {
   id,
   patrialEndPath,
   path,
+  formPath,
   routePath,
   title: 'Реестр транспортных средств',
   isNewRegistry: true,

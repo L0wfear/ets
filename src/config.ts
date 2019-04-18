@@ -5,7 +5,11 @@ const PROTO = window.location.protocol;
 const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
 
-const WS_PROTO = 'wss:';
+const WS_PROTO = (
+  PROTO === 'https:'
+    ? 'wss:'
+    : 'ws:'
+);
 const STAND = process.env.STAND;
 
 const ADMIN_URL = {
@@ -16,13 +20,7 @@ const ADMIN_URL = {
     ets_hotfix: 'https://ets-hotfix.mos.ru/admin/',
     prod: 'http://ets.mos.ru/admin/',
   },
-  origin: {
-    dev: 'http://dev2-ets.gost-group.com/admin/',
-    gost_stage: `${PROTO}//${HOST}${PATHNAME}admin/`,
-    ets_test: `${PROTO}//${HOST}${PATHNAME}admin/`,
-    ets_hotfix: `${PROTO}//${HOST}${PATHNAME}admin/`,
-    prod: `${PROTO}//${HOST}${PATHNAME}admin/`,
-  },
+  origin: `${PROTO}//${HOST}${PATHNAME}admin/`,
 };
 
 const DOC_URL = {
@@ -33,13 +31,7 @@ const DOC_URL = {
     ets_hotfix: 'https://ets-hotfix.mos.ru/docs/',
     prod: 'http://ets.mos.ru/docs/',
   },
-  origin: {
-    dev: 'http://dev2-ets.gost-group.com/docs/',
-    gost_stage: `${PROTO}//${HOST}${PATHNAME}docs/`,
-    ets_test: `${PROTO}//${HOST}${PATHNAME}docs/`,
-    ets_hotfix: `${PROTO}//${HOST}${PATHNAME}docs/`,
-    prod: `${PROTO}//${HOST}${PATHNAME}docs/`,
-  },
+  origin: `${PROTO}//${HOST}${PATHNAME}docs/`,
 };
 
 const config = {
@@ -55,27 +47,21 @@ const config = {
     ws: `${WS_PROTO}//ets${
       STAND !== 'prod' ? '-test' : ''
     }.mos.ru/services/stream`,
-    images: `${PROTO}//ets.mos.ru/ets/data/images/`,
-    docs: DOC_URL.origin[process.env.STAND],
-    admin: ADMIN_URL.origin[process.env.STAND],
+    images: `https://ets.mos.ru/ets/data/images/`,
+    docs: DOC_URL.origin,
+    admin: ADMIN_URL.origin,
   },
 };
 
 const notification_config = {
   develop: {
     dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
-    gost_stage: 'wss://ets-stage.gost-group.com/services/notification_ws',
+    gost_stage: 'ws://ets-stage.gost-group.com/services/notification_ws',
     ets_test: 'wss://ets-test.mos.ru/services/notification_ws',
     ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',
     prod: 'wss://ets.mos.ru/services/notification_ws',
   },
-  origin: {
-    dev: `ws://${HOST}${PATHNAME}services/notification_ws`,
-    gost_stage: `wss://${HOST}${PATHNAME}services/notification_ws`,
-    ets_test: `wss://${HOST}${PATHNAME}services/notification_ws`,
-    ets_hotfix: `wss://${HOST}${PATHNAME}services/notification_ws`,
-    prod: `wss://${HOST}${PATHNAME}services/notification_ws`,
-  },
+  origin: `${WS_PROTO}//${HOST}${PATHNAME}services/notification_ws`,
 };
 
 export const configApi = {
@@ -86,13 +72,7 @@ export const configApi = {
     ets_hotfix: 'https://ets-hotfix.mos.ru/services',
     prod: 'https://ets.mos.ru/services',
   },
-  origin: {
-    dev: 'http://dev2-ets.gost-group.com/services',
-    gost_stage: `${PROTO}//${HOST}${PATHNAME}services`,
-    ets_test: `${PROTO}//${HOST}${PATHNAME}services`,
-    ets_hotfix: `${PROTO}//${HOST}${PATHNAME}services`,
-    prod: `${PROTO}//${HOST}${PATHNAME}services`,
-  },
+  origin: `${PROTO}//${HOST}${PATHNAME}services`,
 };
 
 const configs = {
@@ -113,11 +93,17 @@ try {
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;
   configs.admin = config[pathToConfig].admin;
-  configs.backend =
-    configApi[pathToConfig][STAND] || configApi[pathToConfig].dev;
-  configs.notification_ws =
-    notification_config[pathToConfig][STAND] ||
-    notification_config[pathToConfig].dev;
+  configs.backend = (
+    pathToConfig === 'develop'
+      ? configApi[pathToConfig][STAND]
+      : configApi.origin
+  );
+
+  configs.notification_ws = (
+    pathToConfig === 'develop'
+      ? notification_config[pathToConfig][STAND]
+      : notification_config.origin
+  );
 } catch (e) {
   // tslint:disable-next-line
   console.warn(e);

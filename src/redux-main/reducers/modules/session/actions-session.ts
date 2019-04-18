@@ -59,7 +59,7 @@ export const sessionCahngeCompanyOnAnother: any = (
 
   let sessionEtsTest = null;
 
-  if (process.env.STAND === 'dev') {
+  if (process.env.STAND === 'dev' || process.env.STAND === 'gost_stage') {
     const {
       payload: { token: sessionEtsTestToken },
     } = await dispatch({
@@ -100,7 +100,7 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
 
   let sessionEtsTest = '';
 
-  if (process.env.STAND === 'dev') {
+  if (process.env.STAND === 'dev' || process.env.STAND === 'gost_stage') {
     const {
       payload: { token: sessionEtsTestToken },
     } = await dispatch({
@@ -134,7 +134,7 @@ export const sessionSetData: any = (
 ) => async (dispatch) => {
   localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
 
-  if (process.env.STAND === 'dev') {
+  if (process.env.STAND === 'dev' || process.env.STAND === 'gost_stage') {
     localStorage.setItem(
       global.SESSION_KEY_ETS_TEST_BY_DEV2,
       JSON.stringify(sessionEtsTest),
@@ -208,7 +208,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
     && Boolean(Object.keys(data).length)
   );
 
-  if (process.env.STAND === 'dev') {
+  if (process.env.STAND === 'dev' || process.env.STAND === 'gost_stage') {
     sessionEtsTest = JSON.parse(
       localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
     );

@@ -32,7 +32,7 @@ class BsnoStaus extends React.Component {
       const { points_ws } = props;
       let token = null;
 
-      if (process.env.STAND === 'dev') {
+      if (process.env.STAND === 'dev' || process.env.STAND === 'gost_stage') {
         token = JSON.parse(
           localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
         );

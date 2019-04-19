@@ -12,12 +12,7 @@ export default class NotificationsStore extends Store {
     const saveNotificationQueue = [
       {
         actions: repairActions,
-        actionNames: [
-          'contractor',
-          'stateProgram',
-          'programRegistry',
-          'programVersionPut',
-        ],
+        actionNames: ['programRegistry', 'programVersionPut'],
         actionNotifications: {
           stateProgram: 'Запись успешно добавлена',
           contractor: 'Запись успешно добавлена',
@@ -32,7 +27,7 @@ export default class NotificationsStore extends Store {
     const removeNotificationQueue = [
       {
         actions: repairActions,
-        actionNames: ['removeStateProgram', 'removeProgramRegistry'],
+        actionNames: ['removeProgramRegistry'],
       },
     ];
 

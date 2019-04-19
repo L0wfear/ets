@@ -105,32 +105,6 @@ export default class RepairActions extends Actions {
     );
   }
 
-  // DITETS-1019
-  stateProgram(method, formState) {
-    const payload = {
-      ...formState,
-    };
-    const { stateProgram } = REPAIR;
-
-    const path = parsePutPath(stateProgram, method, formState);
-
-    return Repair.path(path)[method](
-      payload,
-      this.getRepairListByType.bind(null, 'stateProgram'),
-      'json',
-    );
-  }
-
-  removeStateProgram(id) {
-    const { stateProgram } = REPAIR;
-
-    return Repair.path(`${stateProgram}/${id}`).delete(
-      {},
-      this.getRepairListByType.bind(null, 'stateProgram'),
-      'json',
-    );
-  }
-
   // DITETS-1033
   async programRegistryPost(formState) {
     const payload = {

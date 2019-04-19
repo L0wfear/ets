@@ -1,7 +1,7 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import contractorPermissions from './permissions';
-import { Contractor } from 'redux-main/reducers/modules/repair/cleaning_rate/@types/contractor';
+import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 
 export const registryKey = 'contractorRegistry';
 

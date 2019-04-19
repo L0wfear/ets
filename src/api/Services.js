@@ -268,6 +268,12 @@ export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
 export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(
   'repair/contractor',
 );
+export const StateProgramService = ETS_API_FACTORY.createApiServiceAdapter(
+  'repair/state_program',
+);
+export const StateProgramStatusService = ETS_API_FACTORY.createApiServiceAdapter(
+  'repair/state_program_status',
+);
 
 /* DITETS-2079 */
 export const WorkMode = ETS_API_FACTORY.createApiServiceAdapter('work_mode');

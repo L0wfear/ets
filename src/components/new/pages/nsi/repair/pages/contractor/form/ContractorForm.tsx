@@ -20,8 +20,8 @@ import { contractorFormSchema } from './schema';
 import { getDefaultContractorElement } from './utils';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { Row, Col } from 'react-bootstrap';
-import { Contractor } from 'redux-main/reducers/modules/repair/cleaning_rate/@types/contractor';
-import { actionCreateContractor, actionUpdateContractor } from 'redux-main/reducers/modules/repair/cleaning_rate/actions_contractor';
+import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
+import { actionCreateContractor, actionUpdateContractor } from 'redux-main/reducers/modules/repair/contractor/actions_contractor';
 
 const ContractorForm: React.FC<PropsContractor> = (props) => {
   const {

@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { Contractor } from 'redux-main/reducers/modules/repair/cleaning_rate/@types/contractor';
+import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 
 export const defaultContractor: Contractor = {
   bik: '',

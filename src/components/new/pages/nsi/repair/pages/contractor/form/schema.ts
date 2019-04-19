@@ -1,6 +1,6 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsContractor } from './@types/ContractorForm';
-import { Contractor } from 'redux-main/reducers/modules/repair/cleaning_rate/@types/contractor';
+import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 
 export const contractorFormSchema: SchemaType<Contractor, PropsContractor> = {
   properties: {

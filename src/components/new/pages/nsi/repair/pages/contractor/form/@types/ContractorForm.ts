@@ -1,6 +1,6 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { DispatchProp } from 'react-redux';
-import { Contractor } from 'redux-main/reducers/modules/repair/cleaning_rate/@types/contractor';
+import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 

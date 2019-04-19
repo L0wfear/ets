@@ -29,7 +29,6 @@ export const withSpecificPermissions = (user) => {
   // permissions.push(...getFullAccess('inspect.container'));
   // permissions.push(...getFullAccess('inspect.pgm_base'));
   permissions.push(...getFullAccess('inspect.cars_condition'));
-  permissions.push(...getFullAccess('ets_object_properties'));
 
   // permissions.push(...getFullAccess('edc_request'));
   // permissions.push(...getFullAccess('fuel_cards_report'));

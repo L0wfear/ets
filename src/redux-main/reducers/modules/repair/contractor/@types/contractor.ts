@@ -2,7 +2,7 @@ export type Contractor = {
   bik: string;
   email: string;
   fax: string;
-  id: 1
+  id: number;
   inn: string;
   kpp: string;
   name: string;

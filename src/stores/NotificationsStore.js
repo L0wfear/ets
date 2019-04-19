@@ -32,11 +32,7 @@ export default class NotificationsStore extends Store {
     const removeNotificationQueue = [
       {
         actions: repairActions,
-        actionNames: [
-          'removeСontractor',
-          'removeStateProgram',
-          'removeProgramRegistry',
-        ],
+        actionNames: ['removeStateProgram', 'removeProgramRegistry'],
       },
     ];
 

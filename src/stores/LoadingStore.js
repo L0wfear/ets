@@ -17,8 +17,6 @@ export default class LoadingStore extends Store {
       false,
       repairActions.getRepairListByType,
       repairActions.getObjectProperty,
-      repairActions.contractor,
-      repairActions.removeСontractor,
       repairActions.programRegistry,
       repairActions.removeProgramRegistry,
       repairActions.stateProgram,

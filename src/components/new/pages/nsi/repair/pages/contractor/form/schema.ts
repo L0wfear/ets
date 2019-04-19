@@ -1,86 +1,78 @@
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsContractor } from './@types/ContractorForm';
+import { Contractor } from 'redux-main/reducers/modules/repair/cleaning_rate/@types/contractor';
 
-export const formValidationSchema: IValidationSchema = {
-  properties: [
-    {
-      key: 'name',
+export const contractorFormSchema: SchemaType<Contractor, PropsContractor> = {
+  properties: {
+    name: {
       title: 'Наименование',
       type: 'string',
       required: true,
       minLength: 3,
       maxLength: 255,
     },
-    {
-      key: 'inn',
+    inn: {
       title: 'ИНН',
       type: 'string',
       required: true,
       minLength: 12,
       maxLength: 12,
     },
-    {
-      key: 'kpp',
+    kpp: {
       title: 'КПП',
       type: 'string',
       required: true,
       minLength: 9,
       maxLength: 9,
     },
-    {
-      key: 'ogrn',
+    ogrn: {
       title: 'ОГРН',
       type: 'string',
       required: true,
       minLength: 15,
       maxLength: 15,
     },
-    {
-      key: 'okpo',
+    okpo: {
       title: 'ОКПО',
       type: 'string',
       required: true,
       minLength: 10,
       maxLength: 10,
     },
-    {
-      key: 'postal_address',
+    postal_address: {
       title: 'Почтовый адрес',
       type: 'string',
       required: true,
       minLength: 5,
       maxLength: 500,
     },
-    {
-      key: 'email',
+    email: {
       title: 'Электронный адрес',
       type: 'string',
       required: true,
       minLength: 5,
       maxLength: 200,
     },
-    {
-      key: 'phone',
+    phone: {
       title: 'Телефон',
       type: 'string',
       required: true,
       minLength: 5,
       maxLength: 20,
     },
-    {
-      key: 'fax',
+    fax: {
       title: 'Факс',
       type: 'string',
       required: true,
       minLength: 5,
       maxLength: 20,
     },
-    {
-      key: 'bik',
+    bik: {
       title: 'БИК',
       type: 'string',
       required: true,
       minLength: 20,
       maxLength: 20,
     },
-  ],
+  },
 };

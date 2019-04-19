@@ -1,11 +1,11 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-import contractor from 'components/directories/repair/contractor/config-data';
+import contractorList from 'components/new/pages/nsi/repair/pages/contractor/_config-data';
 import stateProgram from 'components/directories/repair/state_program/config-data';
 import objectPropertyList from 'components/new/pages/nsi/repair/pages/object_property/_config-data';
 
 const children = {
-  contractor,
+  contractorList,
   stateProgram,
   objectPropertyList,
 };

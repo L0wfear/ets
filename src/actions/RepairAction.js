@@ -105,15 +105,6 @@ export default class RepairActions extends Actions {
     );
   }
 
-  removeСontractor(id) {
-    const { contractor } = REPAIR;
-    return Repair.path(`${contractor}/${id}`).delete(
-      {},
-      this.getRepairListByType.bind(null, 'contractor'),
-      'json',
-    );
-  }
-
   // DITETS-1019
   stateProgram(method, formState) {
     const payload = {

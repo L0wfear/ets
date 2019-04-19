@@ -265,6 +265,9 @@ export const CarPassportGtnRegistryService = ETS_API_FACTORY.createApiServiceAda
 );
 
 export const Repair = ETS_API_FACTORY.createApiServiceAdapter('repair');
+export const ContractorService = ETS_API_FACTORY.createApiServiceAdapter(
+  'repair/contractor',
+);
 
 /* DITETS-2079 */
 export const WorkMode = ETS_API_FACTORY.createApiServiceAdapter('work_mode');

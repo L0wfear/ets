@@ -37,7 +37,7 @@ class Tbody extends React.PureComponent<PropsTbody, StateTbody> {
           !this.props.showArray.length && this.props.rowFields.length
             ? (
               <EtsTrTbody>
-                <EtsTbodyTrTd colSpan={2}>нет данных</EtsTbodyTrTd>
+                <EtsTbodyTrTd colSpan={3}>Нет данных</EtsTbodyTrTd>
               </EtsTrTbody>
             )
             : (

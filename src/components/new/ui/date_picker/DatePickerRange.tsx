@@ -13,6 +13,7 @@ type DatePickerRangeProps = {
   date_end_value: any;
   date_end_error?: string | boolean;
   date_end_time?: boolean;
+  label?: string | boolean;
 
   disabled?: boolean;
   onChange: (boundKey: string, value: string) => void;
@@ -43,6 +44,9 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
     [props.date_end_id, props.date_end_time],
   );
 
+  const labelDatePickerStart = props.label ? props.label : false;
+  const labelDatePickerEnd = labelDatePickerStart ? '' : false;
+
   return (
     <DatePickerRangeContainer>
       <ColStartDatePickerRange md={5}>
@@ -50,14 +54,14 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           id={props.date_start_id}
           type="date"
           time={props.date_start_time}
-          label={false}
+          label={labelDatePickerStart}
           date={props.date_start_value}
           onChange={onChangeDateStart}
           error={props.date_start_error}
           disabled={props.disabled}
         />
       </ColStartDatePickerRange>
-      <ColDividerDatePickerRange md={2}>
+      <ColDividerDatePickerRange md={2} label={labelDatePickerStart}>
         —
       </ColDividerDatePickerRange>
       <ColEndDatePickerRange md={5}>
@@ -65,7 +69,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           id={props.date_end_id}
           type="date"
           time={props.date_end_time}
-          label={false}
+          label={labelDatePickerEnd}
           date={props.date_end_value}
           onChange={onChangeDateEnd}
           error={props.date_end_error}

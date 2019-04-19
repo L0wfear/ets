@@ -19,6 +19,7 @@ const makeFilesToFrontendAll = (rows) =>
     medical_certificate_files: files.filter(
       (file) => file.kind === 'medical_certificate',
     ),
+    assignment_files: files.filter((file) => file.kind === 'assignment'),
   }));
 
 function getEmployees(payload = {}) {

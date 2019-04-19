@@ -9,10 +9,11 @@ export const ColStartDatePickerRange = styled(Col)`
     }
   }
 `;
-export const ColDividerDatePickerRange = styled(Col)`
+export const ColDividerDatePickerRange = styled(Col)<{label: any}>`
   &&& {
     visibility: hidden;
     text-align: center;
+    bottom: ${(props) => props.label ? '-24px' : '0px'};
     @media (min-width: 992px) {
       visibility: initial;
       width: 2%;
@@ -28,6 +29,7 @@ export const ColEndDatePickerRange = styled(ColStartDatePickerRange)``;
 export const DatePickerRangeContainer = styled(Row)<{ allWidth?: boolean }>`
   width: ${({ allWidth }) => allWidth ? '100%' : 'initial'};
   margin-bottom: 5px;
+  position: relative;
 `;
 
 export const WithDatePickerRangeRegistry = styled(Row)`

@@ -28,7 +28,9 @@ import {
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DivNone } from 'global-styled/global-styled';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import employeePermissions from '../_config-data/permissions';
+import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
+
+import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   state = {
@@ -571,6 +573,15 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                 </Col>
               </Row>
             </Col>
+            <AsigmentView
+              handleChange = {this.props.handleChange}
+              state = {state}
+              errors = {errors}
+              IS_CREATING = {IS_CREATING}
+              isPermitted = {isPermitted}
+              path= {path}
+            >
+            </AsigmentView>
           </Row>
         </ModalBodyPreloader>
         <Modal.Footer>

@@ -42,6 +42,10 @@ export type Employee = {
   special_license: string | null;
   special_license_date_end: string | null;
   special_marks: string | null;
+  assignment: string | null;
+  assignment_date_start: string | null;
+  assignment_date_end: string | null;
+  assignment_files?: any[];
 };
 export type Driver = {
   active: boolean;

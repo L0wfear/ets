@@ -2,6 +2,7 @@ import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsEmployee } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isEmpty } from 'utils/functions';
+import { diffDates } from 'utils/dates';
 
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
   properties: {
@@ -63,6 +64,10 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       title: 'Медицинская справка №',
       maxLength: 25,
     },
+    assignment_date_end: {
+      title: 'Дата окончания действия',
+      type: 'date',
+    },
   },
   dependencies: {
     drivers_license: [
@@ -113,6 +118,16 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       (value, formData) => {
         if (!isEmpty(formData.special_license) && !value.length) {
           return 'Поле "Категория специального удостоверения" должно быть заполнено';
+        }
+        return undefined;
+      },
+    ],
+    assignment_date_end: [
+      (value, {assignment_date_start}) => {
+        if (value) {
+          if (assignment_date_start && diffDates(assignment_date_start, value) >= 0) {
+            return `"Дата окончания действия" должно быть больше "Дата начала действия"`;
+          }
         }
         return undefined;
       },

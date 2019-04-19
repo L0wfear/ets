@@ -44,6 +44,10 @@ export const defaultEmployee: Employee = {
   special_license: null,
   special_license_date_end: null,
   special_marks: null,
+  assignment: null,
+  assignment_date_start: null,
+  assignment_date_end: null,
+  assignment_files: [],
 };
 
 export const getDefaultEmployeeElement: GetDefaultEmployeeElement = (element) => {

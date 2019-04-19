@@ -89,13 +89,6 @@ export default class RepairActions extends Actions {
     return response;
   }
 
-  setActiveList(listName, listNameTrue) {
-    return {
-      listName,
-      listNameTrue,
-    };
-  }
-
   // DITETS-1795
   contractor(method, formState) {
     const payload = {

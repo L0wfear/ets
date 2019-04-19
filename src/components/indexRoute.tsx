@@ -83,6 +83,8 @@ const getRouters = () => (
     <Redirect from="/employee_on_car" to="/nsi/employee_on_car" />
     <Redirect from="/technical_operation_relations" to="/nsi/technical_operation_relations" />
 
+    <Redirect from="/object-property" to="/nsi/repair/object_property" />
+
     <Redirect to="/monitor" />
   </Switch>
 );

@@ -7,7 +7,7 @@ import MissionFormLazy from 'components/missions/mission/form/main';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
-import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
+import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { diffDates, getDateWithMoscowTz, createValidDateTime, makeDataFromRaw, isValidDate } from 'utils/dates';
 import { compose } from 'recompose';

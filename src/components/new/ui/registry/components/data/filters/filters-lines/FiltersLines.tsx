@@ -98,6 +98,7 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
           </EtsFilterContainer>
         );
       }
+      case 'advanced-datetime':
       case 'advanced-date': {
         return (
           <EtsFilterContainer key={otherFilterData.valueKey}>
@@ -106,6 +107,7 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
               filterData={otherFilterData}
               registryKey={registryKey}
               onChange={this.handleChange}
+              time={type === 'advanced-datetime'}
             />
           </EtsFilterContainer>
         );

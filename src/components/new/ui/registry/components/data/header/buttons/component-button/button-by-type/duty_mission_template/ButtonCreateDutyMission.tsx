@@ -52,7 +52,7 @@ const ButtonCreateDutyMission: React.FC<ButtonCreateDutyMissionProps> = (props) 
         type: buttonsTypes.duty_missions_by_templates,
       });
     },
-    [disabled, missionsAsArray],
+    [disabled, missionsAsArray, props.match, props.setParams],
   );
 
   return (

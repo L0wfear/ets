@@ -70,6 +70,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
     },
     [props.selectedRow, props.checkedRows],
   );
+  const checkedRowsAsArray = Object.values(props.checkedRows);
 
   return (
     <>
@@ -85,7 +86,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         <Modal.Header>Внимание</Modal.Header>
         <Modal.Body>
           <span>
-            Вы уверены, что хотите удалить выбранные элементы?
+            {`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
           </span>
         </Modal.Body>
         <Modal.Footer>

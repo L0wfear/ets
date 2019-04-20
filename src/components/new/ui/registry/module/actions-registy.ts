@@ -190,12 +190,15 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
         arrayRaw = arrayRaw.map(getFrontTechnicalOperationRelations);
         break;
       }
+      case 'duty_mission': {
+        arrayRaw = arrayRaw.map(getFrontDutyMission);
+      }
     }
 
     arrayRaw = arrayRaw.filter((data) => !isNullOrUndefined(data[uniqKey]));
 
     if (getRegistryData.userServerFilters) {
-      total_count =  get(result, 'total_count', 0);
+      total_count = get(result, 'result.meta.total_count', 0) || get(result, 'meta.total_count', 0) || get(result, 'total_count', 0);
     } else {
       total_count = arrayRaw.length;
     }
@@ -448,7 +451,7 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
   );
 };
 
-export const registyLoadPrintForm = (registryKey) => async  (dispatch, getState) => {
+export const registyLoadPrintForm: any = (registryKey) => async  (dispatch, getState) => {
   const getBlobData = get(
     getState(),
     ['registry', registryKey, 'Service', 'getBlobData'],

@@ -10,12 +10,14 @@ import { createValidDateTime } from 'utils/dates';
 
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { DutyMissionArchiveService } from 'api/missions';
+import { DUTY_MISSION_STATUS_LABELS } from './constants';
 
 export const getFrontDutyMission = (dutyMissionRaw: any) => {
   const dutyMission: DutyMission = { ...dutyMissionRaw };
 
   const brigade_employee_id_list = get(dutyMissionRaw, 'brigade_employee_id_list', []) || [];
 
+  dutyMission.status_name = DUTY_MISSION_STATUS_LABELS[dutyMission.status];
   dutyMission.brigade_employee_id_list_id = brigade_employee_id_list.map(({ employee_id }) => employee_id);
   dutyMission.brigade_employee_id_list_fio = brigade_employee_id_list.map(({ employee_fio }) => employee_fio);
 

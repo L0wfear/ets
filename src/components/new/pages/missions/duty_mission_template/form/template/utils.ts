@@ -10,7 +10,7 @@ import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import createFio from 'utils/create-fio';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types/index';
-import { isPermittedEmployeeForDutyMission } from 'components/missions/duty_mission/form/main/utils';
+import { isPermittedEmployeeForDutyMission } from '../../../duty_mission/form/main/utils';
 
 export const makeDefaultDutyMissionTemplate = (): DutyMissionTemplate => ({
   brigade_employee_id_list: [],

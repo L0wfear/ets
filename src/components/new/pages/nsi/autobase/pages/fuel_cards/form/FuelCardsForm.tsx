@@ -27,7 +27,7 @@ import {
   getSessionFuelTypeOptions,
 } from 'redux-main/reducers/modules/session/selectors';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import FieldStructureDutyMission from 'components/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
+import FieldStructureDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';

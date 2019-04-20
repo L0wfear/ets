@@ -12,8 +12,8 @@ import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/m
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
-import dutyMssionPermissions from 'components/missions/duty_mission/config-data/permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 
 type ButtonCreateDutyMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -62,7 +62,7 @@ class ButtonCreateDutyMissionByEdcRequest extends React.PureComponent<ButtonCrea
 export default compose<ButtonCreateDutyMissionByEdcRequestProps, ButtonCreateDutyMissionByEdcRequestOwnProps>(
   withSearch,
   withRequirePermissionsNew({
-    permissions: dutyMssionPermissions.update,
+    permissions: dutyMissionPermissions.update,
   }),
   connect<ButtonCreateDutyMissionByEdcRequestStateProps, ButtonCreateDutyMissionByEdcRequestDispatchProps, ButtonCreateDutyMissionByEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({

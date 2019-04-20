@@ -139,11 +139,13 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
 
       if (getRegistryData) {
         let response = null;
+        const payload = get(getRegistryData, 'payload', {});
+
         try {
           response = await this.props.actionFetchWithCount(
             getJSON(
               `${configStand.backend}/${getRegistryData.entity}`,
-              {},
+              payload,
             ),
             { page: '' },
           );

@@ -5,7 +5,7 @@ import { IStateBrigadeEfficiency } from 'components/reports/operational/brigade_
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/reports/common/ReportContainer';
 import reportProps, { serviceUrl, renderers } from 'components/reports/operational/brigade_efficiency/reportProps';
-import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
+import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import { compose } from 'recompose';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { connect, HandleThunkActionCreator } from 'react-redux';

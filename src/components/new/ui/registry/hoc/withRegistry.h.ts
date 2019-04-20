@@ -39,6 +39,7 @@ export type OneFilterType<F> = {
 } & (
   {
     type: 'advanced-date'
+    | 'advanced-datetime'
     | 'advanced-string-like';
   } | {
     type: 'advanced-number';
@@ -78,6 +79,7 @@ export type TypeFields<F extends any> = {
     | 'TIME_MEASURES'
     | 'checkOrExpect'
     | 'efficiencySource'
+    | 'duty_mission_status_name'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {

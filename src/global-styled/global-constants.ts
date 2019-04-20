@@ -12,6 +12,7 @@ export const constantColor = {
   colorLightPink: '#ffaabb',
   navbarHeight: '64px',
   navbarPaddingA: '22px',
+  orange: 'orange',
 };
 
 export const mobiSize = 768;

@@ -3,6 +3,7 @@ import { edc_form_permitted_type } from 'components/new/ui/registry/components/d
 import { read_cars_contisions_car_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/cars_conditions_car/constant';
 import { employee_on_car_types } from '../components/data/header/buttons/component-button/button-by-type/employee_on_car/constant';
 import { technical_operation_relations_types } from '../components/data/header/buttons/component-button/button-by-type/technical_operation_relations/constant';
+import { duty_mission_types } from '../components/data/header/buttons/component-button/button-by-type/duty_mission/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -10,6 +11,7 @@ const buttonsTypes =  {
   create: 'create',
   read: 'read',
   remove: 'remove',
+  ...duty_mission_types,
   ...technical_operation_relations_types,
   ...employee_on_car_types,
   ...edc_form_permitted_type,

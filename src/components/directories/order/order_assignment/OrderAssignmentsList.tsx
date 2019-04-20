@@ -10,10 +10,10 @@ import {
 import Div from 'components/ui/Div';
 import connectToStores from 'flummox/connect';
 import permissions_mission from 'components/missions/mission/config-data/permissions';
-import permissions_duty_mission from 'components/missions/duty_mission/config-data/permissions';
 
 import OrderAssignmentsInfoTable from 'components/directories/order/order_assignment/OrderAssignmentsInfoTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
+import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 
 import {
   ColOrderAssignmentHeaderTitleContainer,
@@ -28,7 +28,7 @@ const OrderAssignmentsList: React.FunctionComponent<any> = (props) => (
         <TitleText>Расшифровка централизованного задания</TitleText>
         <div>
           <ButtonOrderAssignment permissions={permissions_mission.create} onClick={props.setMissionData} disabled={props.disabledAssignmentButtonMission}>Создать задание</ButtonOrderAssignment>
-          <ButtonOrderAssignment permissions={permissions_duty_mission.create} onClick={props.setDutyMissionData} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
+          <ButtonOrderAssignment permissions={dutyMissionPermissions.create} onClick={props.setDutyMissionData} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
         </div>
       </ColOrderAssignmentHeaderTitleContainer>
       <Col md={8}>

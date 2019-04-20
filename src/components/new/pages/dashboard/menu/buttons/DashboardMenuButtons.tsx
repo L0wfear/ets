@@ -29,7 +29,7 @@ import {
   PropsDashboardMenuButtons,
   StateDashboardMenuButtons,
 } from 'components/new/pages/dashboard/menu/buttons/DashboardMenuButtons.h';
-import DutyMissionFormLazy from 'components/missions/duty_mission/form/main';
+import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/missions/mission/form/main';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;

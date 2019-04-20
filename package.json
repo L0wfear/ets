@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.28.143",
+    "version": "2.0.28.144",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -100,6 +100,7 @@
         "mini-css-extract-plugin": "^0.6.0",
         "node-sass": "^4.11.0",
         "openurl": "^1.1.1",
+        "polished": "^3.2.0",
         "prettier": "1.16.4",
         "prettier-standard": "^9.1.1",
         "react-hot-loader": "^4.8.3",

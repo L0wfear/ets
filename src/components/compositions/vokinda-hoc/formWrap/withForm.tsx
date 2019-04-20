@@ -9,6 +9,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isObject } from 'highcharts';
+import PreloaderComponent from 'components/ui/new/preloader/Preloader';
 
 type ConfigWithForm<P, F, S> = {
   uniqField: keyof F | boolean;
@@ -16,8 +17,6 @@ type ConfigWithForm<P, F, S> = {
   updateAction?: any;
   getRecordAction?: any;
   mergeElement?: (props: P) => F;
-  canSave?: (state: S, props: P) => boolean;
-  validate?: (formState: F, props: P) => FormErrorType<F>;
   schema: SchemaType<F, P>,
   permissions: {
     update: string;
@@ -39,6 +38,9 @@ type WithFormState<F> = {
   originalFormState: F,
   formErrors: FormErrorType<F>;
   canSave: boolean;
+
+  hasData: boolean;
+  inLoading: boolean;
 };
 
 type WithFormProps<P> = P & DispatchProp & {
@@ -56,7 +58,7 @@ type FormWithDefaultSubmit = () => void;
 export type OutputWithFormProps<P, F, T extends any[], A> = (
   WithFormProps<P>
   & WithFormState<F>
-  & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'canSave' | 'validate' | 'schema'>
+  & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'schema'>
   & {
     handleChange: FormWithHandleChange<F>;
     handleChangeBoolean: FormWithHandleChangeBoolean<F>;
@@ -77,7 +79,32 @@ const canSaveTest = (errorsData: any) => {
   return !errorsData;
 };
 
-const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<{ children?: React.ReactNode; }> & Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
+const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataForm) => {
+  let formState = propsForm.element;
+
+  if (isFunction(configForm.mergeElement)) {
+    formState = configForm.mergeElement(propsForm);
+  }
+
+  const formErrors = validate(configForm.schema, formState, propsForm, formState);
+
+  const newState = {
+    formState,
+    originalFormState: formState,
+    formErrors,
+    canSave: false,
+    hasData: hasDataForm,
+  };
+
+  return {
+    ...newState,
+    canSave: canSaveTest({
+      ...newState,
+    }),
+  };
+};
+
+const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
   compose<any, any>(
     withRequirePermissionsNew({
       permissions: config.permissions.update,
@@ -97,105 +124,130 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       constructor(props) {
         super(props);
 
-        this.state = this.getInitState(props);
+        const hasData = (
+          !Boolean(config.getRecordAction)
+          || (
+            isBoolean(config.uniqField)
+            || (
+              !isBoolean(config.uniqField)
+              && !get(props.element, config.uniqField, null)
+            )
+          )
+        );
+
+        this.state = {
+          ...getInitState(
+            props,
+            config,
+            hasData,
+          ),
+          inLoading: false,
+        };
       }
 
-      getInitState(props: WithFormProps<P>) {
-        let formState: F = props.element;
+      static getDerivedStateFromProps(nextProps: WithFormProps<P>, prevState: WithFormState<F>) {
+        const triggerOnUpdateFromState = (
+          !isBoolean(config.uniqField)
+          && get(nextProps.element, config.uniqField, null)
+          && get(nextProps.element, config.uniqField, null) !== get(prevState.formState, config.uniqField, null)
+        );
 
-        if (isFunction(config.mergeElement)) {
-          formState = config.mergeElement(props);
+        if (triggerOnUpdateFromState) {
+          const triggerOnLoadNewData = (
+            config.getRecordAction
+            && !prevState.inLoading
+          );
+
+          if (triggerOnLoadNewData) {
+            return {
+              hasData: false,
+              inLoading: false,
+            };
+          } else {
+            return {
+              ...getInitState(
+                nextProps,
+                config,
+                true,
+              ),
+            };
+          }
         }
 
-        const formErrors = this.validate(formState);
-
-        const newState = {
-          formState,
-          originalFormState: formState,
-          formErrors,
-          canSave: false,
-        };
-
-        return {
-          ...newState,
-          canSave: this.canSave({
-            ...newState,
-          }),
-        };
+        return null;
       }
 
       componentDidMount() {
-        this.checkOnNewData();
-      }
-
-      checkOnNewData() {
-        if (config.getRecordAction && !isBoolean(config.uniqField) && this.props.element[config.uniqField]) {
-          this.props.dispatch(
-            config.getRecordAction(
-              this.props.element[config.uniqField],
-              {
-                page: this.props.page,
-                path: this.props.path,
-              },
-            ),
-          ).then(
-            (element: F) => {
-              if (element) {
-                this.setState(
-                  this.getInitState({
-                    ...this.props,
-                    element,
-                  }),
-                );
-              } else {
-                global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                this.props.handleHide(false);
-              }
-            },
-          );
+        if (!this.state.hasData) {
+          this.loadElement();
         }
       }
 
-      componentDidUpdate(prevProps) {
-        if (Object.entries(this.props).some(([key, value]) => value !== prevProps[key])) {
-          if (this.props.element !== prevProps.element) {
-            this.setState(this.getInitState(this.props));
+      async loadElement() {
+        if (!isBoolean(config.uniqField)) {
+          this.setState({
+            inLoading: true,
+          });
 
-            if (!isBoolean(config.uniqField)) {
-              const lastUniqFieldValue = get(prevProps.element, config.uniqField, null);
-              const newUniqFieldValue = get(this.props.element, config.uniqField, null);
-              if (newUniqFieldValue && newUniqFieldValue !== lastUniqFieldValue) {
-                this.checkOnNewData();
-              }
-            }
+          let element: F = null;
+
+          try {
+            element = await this.props.dispatch(
+              config.getRecordAction(
+                this.props.element[config.uniqField],
+                {
+                  page: this.props.page,
+                  path: this.props.path,
+                },
+              ),
+            );
+          } catch (error) {
+            console.error('ошибка загузки'); // tslint:disable-line
+          }
+
+          if (element) {
+            this.setState((state, props) => ({
+              ...getInitState(
+                {
+                  ...props,
+                  element,
+                },
+                config,
+                true,
+              ),
+              inLoading: false,
+            }));
           } else {
-            this.setState((oldState) => {
-              const formErrors = this.validate(oldState.formState);
-
-              return {
-                formErrors,
-                canSave: this.canSave({
-                  ...oldState,
-                  formErrors,
-                }),
-              };
-            });
+            global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+            this.props.handleHide(false);
           }
         }
       }
 
-      validate = (formState: F) => {
-        if (isFunction(config.validate)) {
-          return config.validate(formState, this.props);
+      componentDidUpdate(prevProps) {
+        if (!this.state.hasData && !this.state.inLoading) {
+          this.loadElement();
         }
 
+        if (Object.entries(this.props).some(([key, value]) => value !== prevProps[key])) {
+          this.setState((oldState) => {
+            const formErrors = this.validate(oldState.formState);
+
+            return {
+              formErrors,
+              canSave: this.canSave({
+                ...oldState,
+                formErrors,
+              }),
+            };
+          });
+        }
+      }
+
+      validate = (formState: F) => {
         return validate(config.schema, formState, this.props, formState);
       }
       canSave = (state: WithFormState<F>) => {
-        if (isFunction(config.canSave)) {
-          return config.canSave(state, this.props);
-        }
-
         return canSaveTest(state.formErrors);
       }
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {
@@ -244,7 +296,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
                   newValue = createValidDateTime(value);
                   break;
                 default:
-                newValue = Boolean(value) || value === 0 ? value : null;
+                  newValue = Boolean(value) || value === 0 ? value : null;
               }
             }
             formState[key] = newValue;
@@ -366,24 +418,28 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             : isPermittedToUpdate
         );
 
-        return (
-          <Component
-            {...this.props}
-            isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
-            isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
-            isPermitted={isPermitted}
-            formState={this.state.formState}
-            originalFormState={this.state.originalFormState}
-            formErrors={this.state.formErrors}
-            canSave={this.state.canSave}
-            handleChange={this.handleChange}
-            handleChangeBoolean={this.handleChangeBoolean}
-            submitAction={this.submitAction}
-            defaultSubmit={this.defaultSubmit}
-            hideWithoutChanges={this.hideWithoutChanges}
-            IS_CREATING={IS_CREATING}
-          />
-        );
+        return this.state.hasData && !this.state.inLoading
+          ? (
+            <Component
+              {...this.props}
+              isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
+              isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
+              isPermitted={isPermitted}
+              formState={this.state.formState}
+              originalFormState={this.state.originalFormState}
+              formErrors={this.state.formErrors}
+              canSave={this.state.canSave}
+              handleChange={this.handleChange}
+              handleChangeBoolean={this.handleChangeBoolean}
+              submitAction={this.submitAction}
+              defaultSubmit={this.defaultSubmit}
+              hideWithoutChanges={this.hideWithoutChanges}
+              IS_CREATING={IS_CREATING}
+            />
+          )
+          : (
+            <PreloaderComponent typePreloader="mainpage" />
+          );
       }
     },
   )

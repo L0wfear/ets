@@ -23,13 +23,13 @@ import {
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import FieldTechnicalOperationDutyMission from 'components/missions/duty_mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationDutyMission';
-import FieldMunicipalFacilityIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMission';
-import FieldForemanIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/foreman_id/FieldForemanIdDutyMission';
-import FieldBrigadeEmployeeIdListDutyMission from 'components/missions/duty_mission/form/main/inside_fields/brigade_employee_id_list/FieldBrigadeEmployeeIdListDutyMission';
-import FieldStructureDutyMission from 'components/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
+import FieldTechnicalOperationDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationDutyMission';
+import FieldMunicipalFacilityIdDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMission';
+import FieldForemanIdDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/foreman_id/FieldForemanIdDutyMission';
+import FieldBrigadeEmployeeIdListDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/brigade_employee_id_list/FieldBrigadeEmployeeIdListDutyMission';
+import FieldStructureDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import FieldRouteIdDutyMission from 'components/missions/duty_mission/form/main/inside_fields/route_id/FieldRouteIdDutyMission';
+import FieldRouteIdDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/route_id/FieldRouteIdDutyMission';
 
 import {
   PropsDutyMissionTemplateForm,

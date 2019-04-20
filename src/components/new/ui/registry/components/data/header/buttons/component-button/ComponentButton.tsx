@@ -18,6 +18,12 @@ import ButtonReadCarsConditionsCar from './button-by-type/cars_conditions_car/Bu
 import ButtonReadEmployeeOnCar from './button-by-type/employee_on_car/ButtonReadEmployeeOnCar';
 import ButtonChangeDriverTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeDriverTechnicalOperationRelations';
 import ButtonChangeRouteTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeRouteTechnicalOperationRelations';
+import ButtonRemoveDutyMission from './button-by-type/duty_mission/ButtonRemoveDutyMission';
+import ButtonExportDutyMission from './button-by-type/duty_mission/ButtonExportDutyMission';
+import ButtonCompleteDutyMission from './button-by-type/duty_mission/ButtonCompleteDutyMission';
+import ButtonToArchiveDutyMission from './button-by-type/duty_mission/ButtonToArchiveDutyMission';
+import ButtonFailDutyMission from './button-by-type/duty_mission/ButtonFailDutyMission';
+import ButtonFromArchiveDutyMission from './button-by-type/duty_mission/ButtonFromArchiveDutyMission';
 
 type PropsComponentButton = {
   type: string;
@@ -41,6 +47,13 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.read_employee_on_car: return ButtonReadEmployeeOnCar;
     case buttonsTypes.change_driver_technical_operation_relations : return ButtonChangeDriverTechnicalOperationRelations;
     case buttonsTypes.change_route_technical_operation_relations : return ButtonChangeRouteTechnicalOperationRelations;
+    case buttonsTypes.duty_missions_remove : return ButtonRemoveDutyMission;
+    case buttonsTypes.duty_missions_export : return ButtonExportDutyMission;
+    case buttonsTypes.duty_missions_fail : return ButtonFailDutyMission;
+    case buttonsTypes.duty_missions_complete : return ButtonCompleteDutyMission;
+    case buttonsTypes.duty_missions_to_archvie : return ButtonToArchiveDutyMission;
+    case buttonsTypes.duty_missions_from_archvie: return ButtonFromArchiveDutyMission;
+
     default: return null;
   }
 };

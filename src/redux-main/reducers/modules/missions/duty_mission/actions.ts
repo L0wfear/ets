@@ -24,6 +24,8 @@ import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/orde
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { get } from 'lodash';
 import edcRequestActions from '../../edc_request/edc_request_actions';
+import { DUTY_MISSION_STATUS } from '../mission/constants';
+import { isArray } from 'util';
 
 const actionSetDutyMissionPartialData = (partialDutyMissionData: Partial<IStateMissions['dutyMissionData']>): ThunkAction<IStateMissions['dutyMissionData'], ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const newDutyMissionData = {
@@ -241,6 +243,119 @@ const actionRemoveDutyMission: any = (dutyDutyMissionOld: Pick<DutyMission, 'id'
   });
 
   return payload;
+};
+
+export const actionCompleteDutyMissionByIds: any = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const ids = isArray(id) ? id : [id];
+
+  return Promise.all(
+    ids.map((dutyMissionId) => (
+      dispatch(
+        actionCompleteDutyMissionById(
+          dutyMissionId,
+          meta,
+        ),
+      )
+    )),
+  );
+};
+
+export const actionCompleteDutyMissionById: any = (id: DutyMission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const dutyMission = await dispatch(
+    actionGetDutyMissionById(
+      id,
+      meta,
+    ),
+  );
+
+  if (dutyMission) {
+    await dispatch(
+      actionUpdateDutyMission(
+        {
+          ...dutyMission,
+          status: DUTY_MISSION_STATUS.complete,
+        },
+        meta,
+      ),
+    );
+
+    return true;
+  }
+
+  return false;
+};
+
+export const actionToArchiveDutyMissionByIds: any = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const ids = isArray(id) ? id : [id];
+
+  return Promise.all(
+    ids.map((dutyMissionId) => (
+      dispatch(
+        actionChangeArchiveDutuMissionStatus(
+          dutyMissionId,
+          true,
+          meta,
+        ),
+      )
+    )),
+  );
+};
+
+export const actionFailDutyMissionsByPartialData: any = (partialDutyMission: DutyMission | DutyMission[], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const arrays = isArray(partialDutyMission) ? partialDutyMission : [partialDutyMission];
+
+  return Promise.all(
+    arrays.map((partialDutyMissionData) => (
+      dispatch(
+        actionCompleteDutyMissionById(
+          partialDutyMissionData,
+          meta,
+        ),
+      )
+    )),
+  );
+};
+
+export const actionFailDutyMissionByPartialData: any = (partialDutyMission: DutyMission, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const dutyMission = await dispatch(
+    actionGetDutyMissionById(
+      partialDutyMission.id,
+      meta,
+    ),
+  );
+
+  if (dutyMission) {
+    await dispatch(
+      actionUpdateDutyMission(
+        {
+          ...dutyMission,
+          comment: partialDutyMission.comment,
+          status: DUTY_MISSION_STATUS.fail,
+        },
+        meta,
+      ),
+    );
+
+    return true;
+  }
+
+  return false;
+};
+
+export const actionFromArchiveDutyMissionByIds: any = (id: DutyMission['id'] | DutyMission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const ids = isArray(id) ? id : [id];
+
+  return Promise.all(
+    ids.map((dutyMissionId) => (
+      dispatch(
+        actionChangeArchiveDutuMissionStatus(
+          dutyMissionId,
+          false,
+          meta,
+        ),
+      )
+    )),
+  );
 };
 
 type ActionReseSetDependenceMissionDataForDutyMissionForm = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetDutyMissionPartialData>>, ReduxState, {}, AnyAction>;

@@ -30,6 +30,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 import { TIME_MEASURES } from 'constants/dictionary';
 import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
+import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -173,6 +174,9 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           : 'Реестр ОДХ'
         );
       }
+      if (format === 'duty_mission_status_name') {
+        value = DUTY_MISSION_STATUS_LABELS[value];
+      }
     }
 
     if (dashIfEmpty) {
@@ -214,6 +218,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
         selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
         onClick={this.handleClick}
         onDoubleClick={this.handleDoubleClick}
+        rowData={this.props.rowData}
       >
         { props.rowFields.map(this.renderRow) }
       </EtsTrTbody>

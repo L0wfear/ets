@@ -1,11 +1,16 @@
 import styled from 'styled-components';
+import { mobiSize } from 'global-styled/global-constants';
 
 export const EtsButtonsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
 
   >* {
     margin: 5px;
+  }
+
+  @media screen and (max-width: ${mobiSize}px) {
+    justify-content: center;
   }
 `;

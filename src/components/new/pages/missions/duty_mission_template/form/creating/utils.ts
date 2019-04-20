@@ -3,7 +3,7 @@ import { createValidDateTime, getTomorrow9am, getToday9am } from 'utils/dates';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_mission_template/@types/index.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { isPermittedEmployeeForDutyMission } from 'components/missions/duty_mission/form/main/utils';
+import { isPermittedEmployeeForDutyMission } from '../../../duty_mission/form/main/utils';
 
 export const makeDefaultDutyMissionTemplate = (): Pick<DutyMission, 'plan_date_end' | 'plan_date_start' | 'mission_source_id' | 'mission_source_name'> => ({
   plan_date_end: createValidDateTime(getTomorrow9am()),

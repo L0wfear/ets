@@ -88,19 +88,12 @@ const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataFor
 
   const formErrors = validate(configForm.schema, formState, propsForm, formState);
 
-  const newState = {
+  return {
     formState,
     originalFormState: formState,
     formErrors,
-    canSave: false,
+    canSave: canSaveTest(formErrors),
     hasData: hasDataForm,
-  };
-
-  return {
-    ...newState,
-    canSave: canSaveTest({
-      ...newState,
-    }),
   };
 };
 

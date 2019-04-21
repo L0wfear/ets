@@ -88,6 +88,7 @@ const getRouters = () => (
     <Redirect from="/object-property" to="/nsi/repair/state_program" />
 
     <Redirect from="/duty-missions-journal" to="/missions/duty_missions" />
+    <Redirect from="/duty-missions-archive-journal" to="/missions/duty_missions_archive" />
 
     <Redirect to="/monitor" />
   </Switch>

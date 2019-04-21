@@ -810,6 +810,7 @@ export default compose<PropsMissionForm, OwnMissionProps>(
     uniqField: 'id',
     createAction: missionsActions.actionCreateMission,
     updateAction: missionsActions.actionUpdateMission,
+    getRecordAction: missionsActions.actionGetMissionById,
     mergeElement: ({ element, userStructureId, userStructureName }) => {
       return getDefaultMissionElement({
         ...element,

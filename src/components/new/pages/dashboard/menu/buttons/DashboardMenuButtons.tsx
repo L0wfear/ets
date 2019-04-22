@@ -11,7 +11,7 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import { LinkToOrder } from 'components/directories/order/buttons/buttons';
-import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
+import { ButtonCreateMission } from 'components/new/pages/missions/mission/buttons/buttons';
 import { ButtonCreateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { ButtonCreateWaybill } from 'components/waybill/buttons/buttons';
 
@@ -30,7 +30,7 @@ import {
   StateDashboardMenuButtons,
 } from 'components/new/pages/dashboard/menu/buttons/DashboardMenuButtons.h';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 

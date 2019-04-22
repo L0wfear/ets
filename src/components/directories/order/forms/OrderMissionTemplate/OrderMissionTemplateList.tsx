@@ -40,10 +40,18 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
 import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
-import { makePayloadFromState } from 'components/missions/mission/MissionForm/utils';
 import {
   get,
 } from 'lodash';
+
+export const makePayloadFromState = (formState, type_id) => ({
+  datetime: formState.date_start,
+  technical_operation_id: formState.technical_operation_id,
+  municipal_facility_id: formState.municipal_facility_id,
+  route_type: formState.route_type,
+  func_type_id: type_id || formState.type_id,
+  needs_brigade: false,
+});
 
 export const getNormByMissionAndCar = async (getCleaningOneNorm, carsIndex, missionArr: any[]) => {
   const ans = await Promise.all(

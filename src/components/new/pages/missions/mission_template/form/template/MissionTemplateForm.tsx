@@ -31,13 +31,13 @@ import { Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
 import EtsModal from 'components/new/ui/modal/Modal';
-import FieldForColumnMission from 'components/missions/mission/form/main/inside_fields/for_column/FieldForColumnMission';
-import FieldCarIdsMission from 'components/missions/mission/form/main/inside_fields/car_ids/FieldCarIdsMission';
-import FieldStructureMission from 'components/missions/mission/form/main/inside_fields/structure/FieldStructureMission';
-import FieldTechnicalOperationMission from 'components/missions/mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationMission';
-import FieldMunicipalFacilityIdMission from 'components/missions/mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdMission';
-import FieldRouteIdMission from 'components/missions/mission/form/main/inside_fields/route_id/FieldRouteIdMission';
-import { IPropsHiddenMapForPrint } from 'components/missions/mission/form/main/inside_fields/route_id/print/HiddenMapForPrint';
+import FieldForColumnMission from 'components/new/pages/missions/mission/form/main/inside_fields/for_column/FieldForColumnMission';
+import FieldCarIdsMission from 'components/new/pages/missions/mission/form/main/inside_fields/car_ids/FieldCarIdsMission';
+import FieldStructureMission from 'components/new/pages/missions/mission/form/main/inside_fields/structure/FieldStructureMission';
+import FieldTechnicalOperationMission from 'components/new/pages/missions/mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationMission';
+import FieldMunicipalFacilityIdMission from 'components/new/pages/missions/mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdMission';
+import FieldRouteIdMission from 'components/new/pages/missions/mission/form/main/inside_fields/route_id/FieldRouteIdMission';
+import { IPropsHiddenMapForPrint } from 'components/new/pages/missions/mission/form/main/inside_fields/route_id/print/HiddenMapForPrint';
 import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
 import {
   BtnGroupWrapper,

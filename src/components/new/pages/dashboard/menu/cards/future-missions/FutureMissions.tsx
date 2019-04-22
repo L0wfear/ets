@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import ListByTypeFutureMission from 'components/new/pages/dashboard/menu/cards/future-missions/list/ListByTypeFutureMission';
 
 import { dashboardLoadFutureMissions } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-import { PermittedMissionFormLazy } from 'components/missions/mission/buttons/buttons';
+import { PermittedMissionFormLazy } from 'components/new/pages/missions/mission/buttons/buttons';
 
 import {
   PropsFutureMissions,

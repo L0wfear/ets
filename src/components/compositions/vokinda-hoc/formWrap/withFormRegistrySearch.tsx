@@ -70,7 +70,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
       React.useEffect(
         () => {
           if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
-            if (props.buttons.includes(buttonsTypes.create) && !config.cantCreate) {
+            if (props.buttons.includes(buttonsTypes.create) || props.buttons.includes(buttonsTypes.mission_create) && !config.cantCreate) {
               setElement({});
             } else {
               global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');

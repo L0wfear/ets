@@ -110,6 +110,19 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
       );
     }
 
+    if (colData.key === 'showMissionInfo') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={150}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
     return (
       <EtsTheadTh
         canClick

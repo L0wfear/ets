@@ -33,6 +33,7 @@ import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise'
 import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/promise_employee_on_car';
 import { getFrontTechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/promise_technical_operation_relations';
+import { getFrontMission } from 'redux-main/reducers/modules/missions/mission/promise';
 
 /**
  * Да простят меня боги
@@ -73,7 +74,7 @@ export const registryRemoveData = (registryKey) => ({
   },
 });
 
-export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload) => (dispatch, getState) => {
+export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload, needUpdate = true) => (dispatch, getState) => {
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const ServiceData = get(registryData, 'Service', null);
 
@@ -102,9 +103,11 @@ export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload
     registryChangeServiceData(registryKey, ServiceDataNew),
   );
 
-  dispatch(
-    registryLoadDataByKey(registryKey),
-  );
+  if (needUpdate) {
+    dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+  }
 };
 
 export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getState) => {
@@ -192,6 +195,9 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       }
       case 'duty_mission': {
         arrayRaw = arrayRaw.map(getFrontDutyMission);
+      }
+      case 'mission': {
+        arrayRaw = arrayRaw.map(getFrontMission);
       }
     }
 

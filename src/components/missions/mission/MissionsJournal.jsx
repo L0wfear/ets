@@ -6,7 +6,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { getWarningNotification } from 'utils/notifications';
 
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
+import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfoFormWrap';
 import permissions from 'components/missions/mission/config-data/permissions';
 import order_permissions from 'components/directories/order/config-data/permissions';
 import CheckableElementsList from 'components/CheckableElementsList';
@@ -23,7 +23,7 @@ import Paginator from 'components/ui/new/paginator/Paginator';
 import MissionsTable, {
   getTableMeta,
 } from 'components/missions/mission/MissionsTable';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';

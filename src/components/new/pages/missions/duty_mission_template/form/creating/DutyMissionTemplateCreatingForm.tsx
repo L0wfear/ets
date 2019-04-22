@@ -31,7 +31,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import FieldDatesDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/dates/FieldDatesDutyMission';
-import FieldMissionSourceMission from 'components/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
+import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 
 /**
  * Форма шаблона наряд-заданий

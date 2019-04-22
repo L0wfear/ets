@@ -26,7 +26,7 @@ import {
 } from './@types/MissionTemplateCreatingForm';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { Row, Col } from 'react-bootstrap';
-import FieldMissionSourceMission from 'components/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
+import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldNormIdMissionTemplateCreating from './inside_fields/norm_id/FieldNormIdMissionTemplateCreating';
 import FieldDatesMissionTemplateCreating from './inside_fields/dates/FieldDatesMissionTemplateCreating';
 import FieldAssignToWaybillMissionTemplateCreating from './inside_fields/assign_to_waybill/FieldAssignToWaybillMissionTemplateCreating';

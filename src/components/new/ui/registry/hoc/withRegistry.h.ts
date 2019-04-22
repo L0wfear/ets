@@ -80,6 +80,8 @@ export type TypeFields<F extends any> = {
     | 'checkOrExpect'
     | 'efficiencySource'
     | 'duty_mission_status_name'
+    | 'floor'
+    | 'mission_status_name'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {
@@ -93,6 +95,9 @@ export type TypeFields<F extends any> = {
 } | {
   key: 'checkbox';
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+} | {
+  key: 'showMissionInfo';
+  title: string;
 };
 
 export type TypeConfigData<F> = {

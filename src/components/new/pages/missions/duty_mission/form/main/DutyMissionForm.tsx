@@ -60,8 +60,8 @@ import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMissi
 import EtsModal from 'components/new/ui/modal/Modal';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 import { isOrderSource } from 'components/missions/utils/utils';
-import FieldMissionSourceMission from 'components/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
-import FieldEdcRequestData from 'components/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
+import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
+import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {

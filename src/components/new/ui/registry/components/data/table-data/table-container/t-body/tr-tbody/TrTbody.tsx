@@ -28,9 +28,10 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
-import { TIME_MEASURES } from 'constants/dictionary';
+import { TIME_MEASURES, MISSION_STATUS_LABELS } from 'constants/dictionary';
 import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -78,6 +79,16 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'buttonCloneTire') {
       return (
         <TrTdButtonCloneTire
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'showMissionInfo') {
+      return (
+        <TrTdButtonShowMissionInfo
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}
@@ -176,6 +187,12 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
       if (format === 'duty_mission_status_name') {
         value = DUTY_MISSION_STATUS_LABELS[value];
+      }
+      if (format === 'floor') {
+        value = value ? Math.floor(value) : '';
+      }
+      if (format === 'mission_status_name') {
+        value = MISSION_STATUS_LABELS[value];
       }
     }
 

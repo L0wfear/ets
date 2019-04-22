@@ -11,9 +11,6 @@ import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'componen
 import { compose } from 'recompose';
 import EtsModal from 'components/new/ui/modal/Modal';
 import { Modal } from 'react-bootstrap';
-import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
-import { get } from 'lodash';
 import { actionFromArchiveDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 
 type ButtonFromArchiveDutyMissionStateProps = {
@@ -86,15 +83,11 @@ const ButtonFromArchiveDutyMission: React.FC<ButtonFromArchiveDutyMissionProps> 
     [props.selectedRow, props.checkedRows],
   );
 
-  let disabled = false;
-
   const checkedRowsAsArray = Object.values(props.checkedRows);
-  if (checkedRowsAsArray.length) {
-    disabled = checkedRowsAsArray.some((dutyMission: DutyMission) => dutyMission.status === DUTY_MISSION_STATUS.assigned);
-  } else {
-    const status = get(props.selectedRow, 'status', null);
-    disabled = !status || status === DUTY_MISSION_STATUS.assigned;
-  }
+  const disabled = !(
+    checkedRowsAsArray.length
+    || props.selectedRow
+  );
 
   return (
     <>

@@ -9,6 +9,7 @@ import {
   promiseUpdateMission,
   promiseRemoveMissions,
   promiseRemoveMission,
+  getMissionDataById,
 } from 'redux-main/reducers/modules/missions/mission/promise';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
@@ -29,6 +30,11 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { get } from 'lodash';
 import edcRequestActions from '../../edc_request/edc_request_actions';
+import { MISSION_STATUS } from 'constants/dictionary';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import { isArray } from 'util';
+import { MissionDataType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (
   dispatch,
@@ -357,7 +363,7 @@ const actionChangeArchiveMissionStatus = (
 };
 
 const actionUpdateMission = (
-  missionOld: Mission,
+  missionOld: Mission & { action_at?: string },
   meta: LoadingMeta,
 ): ThunkAction<
   ReturnType<typeof promiseUpdateMission>,
@@ -415,6 +421,91 @@ const actionRemoveMission: any = (
   });
 
   return payload;
+};
+
+export const actionCompleteMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const ids = isArray(id) ? id : [id];
+
+  return Promise.all(
+    ids.map((missionId) => (
+      dispatch(
+        actionCompleteMissionById(
+          missionId,
+          meta,
+        ),
+      )
+    )),
+  );
+};
+
+export const actionCompleteMissionById: any = (id: Mission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const mission = await dispatch(
+    actionGetMissionById(
+      id,
+      meta,
+    ),
+  );
+
+  const { time } = await loadMoscowTime();
+
+  if (mission) {
+    await dispatch(
+      actionUpdateMission(
+        {
+          ...mission,
+          action_at: time.date,
+          status: MISSION_STATUS.complete,
+        },
+        meta,
+      ),
+    );
+
+    return true;
+  }
+
+  return false;
+};
+
+export const actionToArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const ids = isArray(id) ? id : [id];
+
+  return Promise.all(
+    ids.map((missionId) => (
+      dispatch(
+        actionChangeArchiveMissionStatus(
+          missionId,
+          true,
+          meta,
+        ),
+      )
+    )),
+  );
+};
+
+export const actionFromArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const ids = isArray(id) ? id : [id];
+
+  return Promise.all(
+    ids.map((missionId) => (
+      dispatch(
+        actionChangeArchiveMissionStatus(
+          missionId,
+          false,
+          meta,
+        ),
+      )
+    )),
+  );
+};
+
+export const actionLoadMissionData = (id: Mission['id'], meta: LoadingMeta): ThunkAction<Promise<MissionDataType>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    getMissionDataById(id),
+    meta,
+  );
+
+  return result;
 };
 
 type ActionReseSetDependenceMissionDataForMissionForm = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;

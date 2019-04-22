@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { isObject, isNullOrUndefined } from 'util';
 import { MissionTemplateCreating } from './@types/MissionTemplateCreatingForm';
-import { getDefaultMissionElement } from 'components/missions/mission/form/main/utils';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { routeTypesBySlug } from 'constants/route';
 import { diffDates, addTime, getToday9am, getTomorrow9am } from 'utils/dates';
@@ -11,6 +10,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
+import { getDefaultMissionElement } from '../../../mission/form/main/utils';
 
 export const makeDefaultMissionTemplate = (): MissionTemplateCreating => {
   const defaultMission = getDefaultMissionElement(null);

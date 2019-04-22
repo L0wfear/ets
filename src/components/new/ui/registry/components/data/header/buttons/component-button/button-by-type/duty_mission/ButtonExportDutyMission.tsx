@@ -35,7 +35,7 @@ const ButtonExportDutyMission: React.FC<PropsButtonExportDutyMission> = (props) 
         },
       };
 
-      await props.actionChangeGlobalPaylaodInServiceData(props.registryKey, payload);
+      await props.actionChangeGlobalPaylaodInServiceData(props.registryKey, payload, false);
       await props.registyLoadPrintForm(props.registryKey);
       setIsOpenModalRemove(false);
     },

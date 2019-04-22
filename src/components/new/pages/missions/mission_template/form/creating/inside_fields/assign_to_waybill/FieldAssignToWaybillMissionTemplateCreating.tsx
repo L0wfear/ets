@@ -3,7 +3,7 @@ import {
   PropsMissionTemplateCreatingForm,
   MissionTemplateCreating,
 } from '../../@types/MissionTemplateCreatingForm';
-import FieldAssignToWaybillMission from 'components/missions/mission/form/main/inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
+import FieldAssignToWaybillMission from 'components/new/pages/missions/mission/form/main/inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
 import { DivNone } from 'global-styled/global-styled';
 
 type FieldAssignToWaybillMissionTemplateCreatingProps = {

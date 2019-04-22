@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { ButtonCreateMission } from 'components/missions/mission/buttons/buttons';
+import { ButtonCreateMission } from 'components/new/pages/missions/mission/buttons/buttons';
 import { connect } from 'react-redux';
 import { FlexCenterButton } from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/styled/index';
 import memoizeOne from 'memoize-one';
 import { fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 

@@ -4,7 +4,7 @@ import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import permissionsMission from 'components/missions/mission/config-data/permissions';
 import * as Button from 'react-bootstrap/lib/Button';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';

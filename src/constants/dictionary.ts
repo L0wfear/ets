@@ -2,14 +2,24 @@
  * Всё то, что не приходит с бэка для заполнения данными выпадающих списков и других элементов интерфейса.
  */
 
+export const MISSION_STATUS = {
+  assigned: 'assigned',
+  in_progress: 'in_progress',
+  expired: 'expired',
+  not_assigned: 'not_assigned',
+  complete: 'complete',
+  fail: 'Не fail',
+  canceled: 'canceled',
+};
+
 export const MISSION_STATUS_LABELS = {
-  assigned: 'Назначено',
-  in_progress: 'Выполняется',
-  expired: 'Просрочено',
-  not_assigned: 'Не назначено',
-  complete: 'Выполнено',
-  fail: 'Не выполнено',
-  canceled: 'Отменено',
+  [MISSION_STATUS.assigned]: 'Назначено',
+  [MISSION_STATUS.in_progress]: 'Выполняется',
+  [MISSION_STATUS.expired]: 'Просрочено',
+  [MISSION_STATUS.not_assigned]: 'Не назначено',
+  [MISSION_STATUS.complete]: 'Выполнено',
+  [MISSION_STATUS.fail]: 'Не выполнено',
+  [MISSION_STATUS.canceled]: 'Отменено',
 };
 
 export const ORDER_STATUS_KEYS = {

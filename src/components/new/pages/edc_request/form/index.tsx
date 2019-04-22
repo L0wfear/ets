@@ -3,7 +3,7 @@ import * as React from 'react';
 import { DivNone } from 'global-styled/global-styled';
 
 import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';

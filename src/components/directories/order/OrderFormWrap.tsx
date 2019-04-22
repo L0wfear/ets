@@ -10,7 +10,7 @@ import Div from 'components/ui/Div';
 
 import OrderMissionTemplate from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 
 // todo
 // Описать интерфейсы форм

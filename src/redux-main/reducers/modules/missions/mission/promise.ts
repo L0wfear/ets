@@ -2,7 +2,7 @@ import {
   cloneDeep,
   get,
 } from 'lodash';
-import { MissionPrintService, MissionService } from 'api/missions/index';
+import { MissionPrintService, MissionService, MissionDataService } from 'api/missions/index';
 import {
   Mission,
   GetMissionPayload,
@@ -11,8 +11,24 @@ import {
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
 import { createValidDateTime } from 'utils/dates';
+import { MissionDataType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
 
-const getFrontMission = (missionRaw: any) => {
+export const getMissionDataById = async (id: number) => {
+  let responce = null;
+
+  try {
+    responce = await MissionDataService.path(id).get();
+  } catch (error) {
+    // tslint:disable-next-line
+    console.warn(error);
+  }
+
+  const result: MissionDataType = get(responce, 'result', null);
+
+  return result;
+};
+
+export const getFrontMission = (missionRaw: any) => {
   if (missionRaw) {
     const mission: Mission = cloneDeep(missionRaw);
 

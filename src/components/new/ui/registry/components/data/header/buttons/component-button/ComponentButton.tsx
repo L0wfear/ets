@@ -26,6 +26,13 @@ import ButtonFailDutyMission from './button-by-type/duty_mission/ButtonFailDutyM
 import ButtonFromArchiveDutyMission from './button-by-type/duty_mission/ButtonFromArchiveDutyMission';
 import ButtonCopyMissionTemplate from './button-by-type/mission_template/ButtonCopyMissionTemplate';
 import ButtonCreateMissionTemplate from './button-by-type/mission_template/ButtonCreateMissionTemplate';
+import ButtonCreateMission from './button-by-type/mission/ButtonCreateMission';
+import ButtonCreateMissionByOrder from './button-by-type/mission/ButtonCreateMissionByOrder';
+import ButtonRemoveMission from './button-by-type/mission/ButtonRemoveMission';
+import ButtonExportMission from './button-by-type/mission/ButtonExportMission';
+import ButtonCompleteMission from './button-by-type/mission/ButtonCompleteMission';
+import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMission';
+import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
 
 type PropsComponentButton = {
   type: string;
@@ -57,6 +64,13 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.duty_missions_from_archvie: return ButtonFromArchiveDutyMission;
     case buttonsTypes.missions_by_templates: return ButtonCreateMissionTemplate;
     case buttonsTypes.copy_template: return ButtonCopyMissionTemplate;
+    case buttonsTypes.mission_create: return ButtonCreateMission;
+    case buttonsTypes.mission_create_by_order: return ButtonCreateMissionByOrder;
+    case buttonsTypes.missions_remove: return ButtonRemoveMission;
+    case buttonsTypes.missions_export: return ButtonExportMission;
+    case buttonsTypes.missions_complete: return ButtonCompleteMission;
+    case buttonsTypes.missions_to_archvie: return ButtonToArchiveMission;
+    case buttonsTypes.missions_from_archvie: return ButtonFromArchiveMission;
 
     default: return null;
   }

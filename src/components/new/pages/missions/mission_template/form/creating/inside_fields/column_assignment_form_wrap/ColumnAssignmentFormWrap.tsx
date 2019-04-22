@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ColumnAssignmentFormLazy from 'components/missions/mission/form/main/column_assignment';
+import ColumnAssignmentFormLazy from 'components/new/pages/missions/mission/form/main/column_assignment';
 
 import {
   PropsMissionTemplateCreatingForm,

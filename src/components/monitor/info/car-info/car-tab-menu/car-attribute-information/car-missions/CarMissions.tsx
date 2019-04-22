@@ -2,8 +2,8 @@ import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 
 import MissionsList from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/MissionsList';
-import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
-import MissionFormLazy from 'components/missions/mission/form/main';
+import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfoFormWrap';
+import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 
 import {
   loadMissionDataById,

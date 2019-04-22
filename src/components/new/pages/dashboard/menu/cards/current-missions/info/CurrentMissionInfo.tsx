@@ -9,7 +9,7 @@ import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/w
 import {
   ButtenUpdateMission,
   LinkToOpenMissionInfoForm,
-} from 'components/missions/mission/buttons/buttons';
+} from 'components/new/pages/missions/mission/buttons/buttons';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 
@@ -20,7 +20,7 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
-import MissionInfoFormWrap from 'components/missions/mission/MissionInfoForm/MissionInfoFormWrap';
+import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfoFormWrap';
 import { listData } from 'components/new/pages/dashboard/menu/cards/current-missions/info/listData';
 
 import {

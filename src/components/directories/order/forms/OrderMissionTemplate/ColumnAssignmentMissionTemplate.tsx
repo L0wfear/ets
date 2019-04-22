@@ -7,10 +7,20 @@ import * as Row from 'react-bootstrap/lib/Row';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import ModalBody from 'components/ui/Modal';
-import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { makeCarOptionLabel } from 'components/missions/mission/MissionForm/utils';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { cloneDeep } from 'lodash';
+
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+
+export const makeCarOptionLabel = (car: Car | null) => (
+  car
+    ? (
+      `${car.gov_number} [${car.model_name || ''}${car.model_name ? '/' : ''}${car.special_model_name || ''}${car.type_name ? '/' : ''}${car.type_name || ''}]`
+    )
+    : (
+      ''
+    )
+);
 
 type ColumnAssignmentMissionTemplateProps = {
   assign_to_waybill: {

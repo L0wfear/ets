@@ -79,11 +79,11 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
             selectedInspectAutobase,
             { page: props.loadingPage },
           );
+          props.handleHide(true);
+          await handleGetAutobaseAct();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
         }
-        await handleGetAutobaseAct();
-        props.handleHide(true);
       }
     },
     [selectedInspectAutobase, canSave],

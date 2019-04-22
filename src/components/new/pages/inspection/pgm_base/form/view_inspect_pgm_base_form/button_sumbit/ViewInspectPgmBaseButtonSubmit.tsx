@@ -7,6 +7,7 @@ import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actio
 import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
+import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
@@ -15,6 +16,7 @@ type ViewInspectPgmBaseButtonSubmitDispatchProps = {
   actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
   actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionCloseInspectPgmBase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 
 type ViewInspectPgmBaseButtonSubmitOwnProps = {
@@ -36,11 +38,14 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
   const handleSubmit = React.useCallback(
     async () => {
       if (canSave) {
-        await props.actionUpdateInspectPgmBase(
-          selectedInspectPgmBase,
-          { page: props.loadingPage },
-        );
-
+        try {
+          await props.actionUpdateInspectPgmBase(
+            selectedInspectPgmBase,
+            { page: props.loadingPage },
+          );
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
         props.handleHide(true);
       }
     },
@@ -68,12 +73,18 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
   const handleCloseAndPgmBaseAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
-        await props.actionCloseInspectPgmBase(
-          selectedInspectPgmBase,
-          { page: props.loadingPage },
-        );
-        await handleGetPgmBaseAct();
-        props.handleHide(true);
+        try {
+          await props.actionCloseInspectPgmBase(
+            selectedInspectPgmBase,
+            { page: props.loadingPage },
+          );
+          await handleGetPgmBaseAct();
+          props.handleHide(true);
+        } catch (error) {
+          // tslint:disable-next-line:no-console
+          console.error(error);
+          // props.registryLoadDataByKey(props.loadingPage);
+        }
       }
     },
     [selectedInspectPgmBase, canSave],
@@ -108,6 +119,11 @@ export default compose<ViewInspectPgmBaseButtonSubmitProps, ViewInspectPgmBaseBu
       actionGetBlobActInspect: (...arg) => (
         dispatch(
           inspectionActions.actionGetBlobActInspect(...arg),
+        )
+      ),
+      registryLoadDataByKey: (...arg) => (
+        dispatch(
+          registryLoadDataByKey(...arg),
         )
       ),
     }),

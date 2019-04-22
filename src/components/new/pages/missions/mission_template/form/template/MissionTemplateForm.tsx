@@ -11,7 +11,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import missionTemplatePermissions from 'components/missions/mission_template/config-data/permissions';
+import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 import { ReduxState } from 'redux-main/@types/state';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { getDefaultMissionTemplateElement } from './utils';

@@ -31,7 +31,6 @@ import {
 } from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
 import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
-import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -41,6 +40,44 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
 import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
+import { makePayloadFromState } from 'components/missions/mission/MissionForm/utils';
+import {
+  get,
+} from 'lodash';
+
+export const getNormByMissionAndCar = async (getCleaningOneNorm, carsIndex, missionArr: any[]) => {
+  const ans = await Promise.all(
+    missionArr.map(async (missionData: any) => {
+      const carIdNormIdArray = await Promise.all(
+        missionData.car_ids.map(async (car_id) => {
+          const normData = await getCleaningOneNorm({
+            ...makePayloadFromState(missionData, get(carsIndex, [car_id, 'type_id'], null)),
+          });
+
+          return {
+            car_id,
+            norm_id: normData.norm_id,
+          };
+        }),
+      );
+
+      return {
+        id: missionData.id,
+        normByCarId: carIdNormIdArray.reduce((newObj: any, { car_id, norm_id }: any) => {
+          newObj[car_id] = norm_id;
+
+          return newObj;
+        }, {}),
+      };
+    }),
+  );
+
+  return ans.reduce((newObj: any, { id, normByCarId }) => {
+    newObj[id] = normByCarId;
+
+    return newObj;
+  }, {});
+};
 
 const loadingPage = 'OrderMissionTemplateList';
 

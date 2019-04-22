@@ -11,7 +11,7 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 import * as Modal from 'react-bootstrap/lib/Modal';
 import * as Button from 'react-bootstrap/lib/Button';
 import { DivNone } from 'global-styled/global-styled';
-import missionTemplatePermissions from 'components/missions/mission_template/config-data/permissions';
+import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 

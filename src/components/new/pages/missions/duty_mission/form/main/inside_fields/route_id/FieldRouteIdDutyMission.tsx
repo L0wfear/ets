@@ -28,7 +28,7 @@ import { getRoutesState } from 'redux-main/reducers/selectors/index';
 import { Route } from 'redux-main/reducers/modules/routes/@types/index';
 import { makeOptionFromRouteList } from 'components/new/pages/missions/duty_mission/form/main/inside_fields/route_id/makeOptions';
 import { routeTypesByKey } from 'constants/route';
-import { getAvailableRouteTypes } from 'components/missions/mission_template/form/template/utils';
+import { getAvailableRouteTypes } from 'components/new/pages/missions/mission_template/form/template/utils';
 
 const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
 

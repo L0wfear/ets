@@ -6,7 +6,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsMissionTemplateCreatingFormLazy } from './@types/MissionTemplateCreatingForm';
 
 const MissionTemplateCreatingForm = React.lazy(() =>
-  import(/* webpackChunkName: "mission_template_creating_form" */ 'components/missions/mission_template/form/creating/MissionTemplateCreatingForm'),
+  import(/* webpackChunkName: "mission_template_creating_form" */ 'components/new/pages/missions/mission_template/form/creating/MissionTemplateCreatingForm'),
 );
 
 // Ленивая загрузка шаблона наряд-задания

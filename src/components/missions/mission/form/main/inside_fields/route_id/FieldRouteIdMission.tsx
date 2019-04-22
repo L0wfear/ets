@@ -20,7 +20,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import { getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors/index';
-import { getAvailableRouteTypes } from 'components/missions/mission_template/form/template/utils';
+import { getAvailableRouteTypes } from 'components/new/pages/missions/mission_template/form/template/utils';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getRoutesState } from 'redux-main/reducers/selectors/index';
 import { Route } from 'redux-main/reducers/modules/routes/@types/index';

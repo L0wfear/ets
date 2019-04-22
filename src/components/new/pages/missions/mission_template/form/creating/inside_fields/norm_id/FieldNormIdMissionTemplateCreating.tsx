@@ -8,7 +8,7 @@ import {
   DispatchPropsFieldNormIdMissionTemplateCreating,
   OwnPropsFieldNormIdMissionTemplateCreating,
   StateFieldNormIdMissionTemplateCreating,
-} from 'components/missions/mission_template/form/creating/inside_fields/norm_id/FieldNormIdMissionTemplateCreating.d';
+} from 'components/new/pages/missions/mission_template/form/creating/inside_fields/norm_id/FieldNormIdMissionTemplateCreating.d';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { DivNone } from 'global-styled/global-styled';
 import { createValidDateTime } from 'utils/dates';

@@ -10,7 +10,7 @@ import {
   DispatchPropsFieldDatesMissionTemplateCreating,
   OwnPropsFieldDatesMissionTemplateCreating,
   StateFieldDatesMissionTemplateCreating,
-} from 'components/missions/mission_template/form/creating/inside_fields/dates/FieldDatesMissionTemplateCreating.h';
+} from 'components/new/pages/missions/mission_template/form/creating/inside_fields/dates/FieldDatesMissionTemplateCreating.h';
 
 import { addTime } from 'utils/dates';
 import { checkMissionsByRouteType } from '../../utils';

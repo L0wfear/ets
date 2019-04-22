@@ -6,7 +6,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsMissionTemplateFormLazy } from './@types/index.h';
 
 const MissionTemplateForm = React.lazy(() =>
-  import(/* webpackChunkName: "mission_template_form" */ 'components/missions/mission_template/form/template/MissionTemplateForm'),
+  import(/* webpackChunkName: "mission_template_form" */ 'components/new/pages/missions/mission_template/form/template/MissionTemplateForm'),
 );
 
 class MissionTemplateFormLazy extends React.Component<

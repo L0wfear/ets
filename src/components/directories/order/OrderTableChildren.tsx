@@ -11,7 +11,7 @@ import {
   setDMInMissionTemplateData,
 } from 'redux-main/reducers/modules/order/action-order';
 
-import permissions_mission_template from 'components/missions/mission_template/config-data/permissions';
+import permissions_mission_template from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
 import { TypeDownload } from 'components/directories/order/constant-order';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';

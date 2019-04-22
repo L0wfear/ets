@@ -337,7 +337,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
         : userData.fio;
       const closeEmployeePosition = props.selectedInspectAutobase.close_employee_fio
         ? props.selectedInspectAutobase.close_employee_position
-        : userData.role;
+        : '-';
       const userMember = {
         fio: closeEmployeeFio,
         position: closeEmployeePosition,

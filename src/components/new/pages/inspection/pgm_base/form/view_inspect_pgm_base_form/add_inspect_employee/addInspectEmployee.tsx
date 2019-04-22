@@ -427,8 +427,8 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
               <Col md={12}>
                 <h4>Члены комиссии:</h4>
                 {
-                  state.commission_members.map((employeeData) => (
-                    <Row>
+                  state.commission_members.map((employeeData, index) => (
+                    <Row key={index}>
                       <Col md={12}>
                         <EmpRow highlight={employeeData.clearable}>
                           <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>
@@ -528,8 +528,8 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                   От ГБУ:&nbsp;{`${props.selectedInspectPgmBase.company_name}`}
                 </h4>
                 {
-                  state.agents_from_gbu.map((employeeData) => (
-                    <Row>
+                  state.agents_from_gbu.map((employeeData, index) => (
+                    <Row key={index}>
                       <Col md={12}>
                         <EmpRow highlight={employeeData.clearable}>
                           <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>

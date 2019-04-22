@@ -427,7 +427,7 @@ class ReportContainer extends React.Component<
     const fields = get(tableMetaInfo, 'fields', []) || [];
     const cols = fields
       .reduce((tableMeta, field) => {
-        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true }]] = Object.entries(
+        const [[fieldName, { name: displayName, is_row, display = true, type = 'multiselect', filter = true, sort_by }]] = Object.entries(
           field,
         );
 
@@ -438,6 +438,7 @@ class ReportContainer extends React.Component<
             name: fieldName,
             displayName,
             display,
+            sort_by,
           };
           if (filter) {
             initialSchema.filter = {

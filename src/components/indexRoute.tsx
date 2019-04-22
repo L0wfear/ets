@@ -89,6 +89,7 @@ const getRouters = () => (
 
     <Redirect from="/duty-missions-journal" to="/missions/duty_missions" />
     <Redirect from="/duty-missions-archive-journal" to="/missions/duty_missions_archive" />
+    <Redirect from="/mission-templates-journal" to="/missions/mission_templates" />
 
     <Redirect to="/monitor" />
   </Switch>

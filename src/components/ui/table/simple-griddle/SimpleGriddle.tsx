@@ -104,8 +104,9 @@ class SimpleGriddle extends React.Component<any, any> {
   mapTheadTrTh = (columnNameOuter) => {
     // При переключении страницы, чекбокс не ставится
     const field = this.props.columnMetadata.find((meta) => meta.columnName === columnNameOuter);
-    const { columnName } = field;
+    const { columnName, sortByName } = field;
     const { shortResult } = this.state;
+
     if (columnName === 'isChecked') {
       const isCheckedAll = this.getGlobalCheckboxState(shortResult);
       return (
@@ -119,7 +120,7 @@ class SimpleGriddle extends React.Component<any, any> {
       <EtsTheadThL canClick key={columnName} data-title={columnName} className={cx(field.cssClassName, { sortable: field.sortable })} onClick={this.handleThClick}>
         {field.displayName}
         {
-          this.state.initialSort === columnName ?
+          this.state.initialSort === sortByName ?
             <Glyphicon glyph={`sort-by-attributes${!this.state.initialSortAscending ? '-alt' : ''}`} />
           :
             <span></span>
@@ -249,13 +250,13 @@ class SimpleGriddle extends React.Component<any, any> {
       const fieldMeta = this.props.columnMetadata.find(({ columnName }) => columnName === title);
 
       if (fieldMeta && fieldMeta.sortable) {
-        const initialSortAscending = title === this.state.initialSort ? !this.state.initialSortAscending : true;
+        const initialSortAscending = fieldMeta.sortByName === this.state.initialSort ? !this.state.initialSortAscending : true;
 
-        console.log('CHANGE SORT', title, initialSortAscending); // tslint:disable-line:no-console
+        console.log('CHANGE SORT', fieldMeta.sortByName, initialSortAscending); // tslint:disable-line:no-console
 
-        this.props.externalChangeSort(title, initialSortAscending);
+        this.props.externalChangeSort(fieldMeta.sortByName, initialSortAscending);
         this.setState({
-          initialSort: title,
+          initialSort: fieldMeta.sortByName,
           initialSortAscending,
         });
       }

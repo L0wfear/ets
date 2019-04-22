@@ -400,6 +400,7 @@ export default class DataTable extends React.Component {
 
       const metaObject = {
         columnName: col.name,
+        sortByName: col.sort_by || col.name,
         displayName: col.customHeaderComponent
           ? col.customHeaderComponent
           : col.displayName,

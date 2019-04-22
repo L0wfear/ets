@@ -82,6 +82,8 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
           props.handleHide(true);
           await handleGetAutobaseAct();
         } catch (error) {
+          // tslint:disable-next-line:no-console
+          console.error(error);
           props.registryLoadDataByKey(props.loadingPage);
         }
       }

@@ -83,7 +83,7 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
         } catch (error) {
           // tslint:disable-next-line:no-console
           console.error(error);
-          // props.registryLoadDataByKey(props.loadingPage);
+          props.registryLoadDataByKey(props.loadingPage);
         }
       }
     },

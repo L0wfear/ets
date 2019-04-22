@@ -40,7 +40,7 @@ export const config: TypeConfigData<Mission> = {
       buttonsTypes.missions_remove,
       buttonsTypes.missions_export,
       buttonsTypes.missions_complete,
-      // buttonsTypes.missions_fail,
+      buttonsTypes.missions_fail,
       buttonsTypes.missions_to_archvie,
     ],
   },

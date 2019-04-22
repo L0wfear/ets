@@ -4,7 +4,7 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import missionPermissions from 'components/missions/mission/config-data/permissions';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 type ButtonCreateMissionByOrderStateProps = {
 };

@@ -217,7 +217,7 @@ class MissionRejectForm extends React.Component {
     this.setState({ [field]: e });
   }
 
-  async handleSubmit() {
+  handleSubmit = async () => {
     let resolve;
     let payload;
     const { action_at, isWaybillForm } = this.props;
@@ -342,7 +342,7 @@ class MissionRejectForm extends React.Component {
       };
       this.props.onReject(waybillPayload);
     }
-  }
+  };
 
   render() {
     const { state, props } = this;
@@ -526,9 +526,7 @@ class MissionRejectForm extends React.Component {
 
         <Modal.Footer>
           <Div>
-            <Button
-              disabled={!!errors.reason_id}
-              onClick={this.handleSubmit.bind(this)}>
+            <Button disabled={!!errors.reason_id} onClick={this.handleSubmit}>
               Сохранить
             </Button>
             <Button onClick={this.reject}>Отменить</Button>

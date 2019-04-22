@@ -19,7 +19,6 @@ import {
   dashboardLoadDependentDataByCloseMission,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfoFormWrap';
 import { listData } from 'components/new/pages/dashboard/menu/cards/current-missions/info/listData';
 
@@ -39,6 +38,7 @@ import { getWarningNotification } from 'utils/notifications';
 
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {

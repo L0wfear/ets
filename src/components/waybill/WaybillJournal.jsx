@@ -74,7 +74,7 @@ class WaybillJournal extends CheckableElementsList {
     const { flux } = this.context;
     flux.getActions('employees').getEmployees();
     flux.getActions('employees').getDrivers();
-    flux.getActions('objects').getSomeCars('WaybillCarService');
+    flux.getActions('objects').getWaybillSomeCars();
     flux.getActions('objects').getWorkMode();
   };
 
@@ -237,7 +237,7 @@ class WaybillJournal extends CheckableElementsList {
   // call create/update/delete waybill
   changeWaybillListAction = () => {
     const { flux } = this.context;
-    flux.getActions('objects').getSomeCars('WaybillCarService');
+    flux.getActions('objects').getWaybillSomeCars();
   };
 
   formCallback = async (flags) => {

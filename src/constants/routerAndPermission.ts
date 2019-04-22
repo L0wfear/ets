@@ -1,13 +1,13 @@
 import monitor from 'components/monitor/config-data';
 import coverageReports from 'components/coverage_reports/config-data';
 import waybillJournal from 'components/waybill/config-data';
-import missions from 'components/missions/config-data';
 import nsi from 'components/directories/config-data';
 import reports from 'components/reports/config-data';
 import programRegistry from 'components/program_registry/config-data';
 import notificationRegistry from 'components/notifications/config-data';
 import changeCompany from 'components/new/ui/app_header/desktop/right/change_role/config-data';
 
+import missions from 'components/new/pages/missions/_config-data';
 import dashboard from 'components/new/pages/dashboard/config-data';
 import inspection from 'components/new/pages/inspection/_config_data';
 import edcRequest from 'components/new/pages/edc_request/_config-data';

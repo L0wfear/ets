@@ -4,10 +4,8 @@ import {
   OrderService,
   CarActualService,
   WaybillCarService,
-  MissionCarService,
   TypesService,
   WorkMode,
-  MissionArchiveCarService,
 } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
@@ -23,27 +21,10 @@ export default class ObjectsActions extends Actions {
     }));
   }
 
-  getSomeCars(type) {
-    const payload = {};
-    switch (type) {
-      case 'WaybillCarService':
-        return WaybillCarService.get(payload).then((r) => ({
-          result: r.result,
-        }));
-      case 'MissionCarService':
-        return MissionCarService.get(payload).then((r) => ({
-          result: r.result,
-        }));
-      case 'mission_archive': {
-        return MissionArchiveCarService.get(payload).then((r) => ({
-          result: r.result,
-        }));
-      }
-      default:
-        return CarActualService.get(payload).then((r) => ({
-          result: r.result.rows,
-        }));
-    }
+  getWaybillSomeCars() {
+    return WaybillCarService.get({}).then((r) => ({
+      result: r.result,
+    }));
   }
 
   getTypes(payload = {}) {

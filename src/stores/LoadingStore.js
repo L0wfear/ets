@@ -43,21 +43,17 @@ export default class LoadingStore extends Store {
 
       objectsActions.getTypes,
       objectsActions.getCars,
-      objectsActions.getSomeCars,
+      objectsActions.getWaybillSomeCars,
 
       employeesActions.getEmployees,
       employeesActions.getDrivers,
       employeesActions.getWaybillDrivers,
-      employeesActions.getForemans,
 
-      missionsActons.getMissions,
       missionsActons.getMissionReassignationParameters,
       missionsActons.createMissionFromReassignation,
       missionsActons.updateMissionFromReassignation,
       missionsActons.updateMission,
-      missionsActons.printMissionTemplate,
       missionsActons.createMissions,
-      missionsActons.getCarDutyMissions,
       missionsActons.getCleaningOneNorm,
 
       technicalOperationsActions.getTechnicalOperations,

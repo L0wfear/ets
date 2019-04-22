@@ -9,7 +9,6 @@ import {
 } from 'redux-main/reducers/modules/order/action-order';
 import Div from 'components/ui/Div';
 import connectToStores from 'flummox/connect';
-import permissions_mission from 'components/missions/mission/config-data/permissions';
 
 import OrderAssignmentsInfoTable from 'components/directories/order/order_assignment/OrderAssignmentsInfoTable';
 import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
@@ -20,6 +19,7 @@ import {
   ButtonOrderAssignment,
   TitleText,
 } from 'components/directories/order/order_assignment/styled/styled';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 const OrderAssignmentsList: React.FunctionComponent<any> = (props) => (
   <Div className="data-table data-other" hidden={props.hidden} >
@@ -27,7 +27,7 @@ const OrderAssignmentsList: React.FunctionComponent<any> = (props) => (
       <ColOrderAssignmentHeaderTitleContainer md={8}>
         <TitleText>Расшифровка централизованного задания</TitleText>
         <div>
-          <ButtonOrderAssignment permissions={permissions_mission.create} onClick={props.setMissionData} disabled={props.disabledAssignmentButtonMission}>Создать задание</ButtonOrderAssignment>
+          <ButtonOrderAssignment permissions={missionPermissions.create} onClick={props.setMissionData} disabled={props.disabledAssignmentButtonMission}>Создать задание</ButtonOrderAssignment>
           <ButtonOrderAssignment permissions={dutyMissionPermissions.create} onClick={props.setDutyMissionData} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
         </div>
       </ColOrderAssignmentHeaderTitleContainer>

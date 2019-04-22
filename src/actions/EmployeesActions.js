@@ -3,7 +3,6 @@ import {
   EmployeeService,
   EmployeeBindedToCarService,
   DriverService,
-  ForemanService,
   WaybillDriverService,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
@@ -42,10 +41,6 @@ export default class EmployeesActions extends Actions {
 
   getDrivers() {
     return DriverService.get();
-  }
-
-  getForemans() {
-    return ForemanService.get();
   }
 
   getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {

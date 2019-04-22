@@ -11,8 +11,8 @@ import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/m
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
-import missionPermissions from 'components/missions/mission/config-data/permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
 
 type ButtonCancelEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -59,7 +59,7 @@ class ButtonCancelEdcRequest extends React.PureComponent<ButtonCancelEdcRequestP
 export default compose<ButtonCancelEdcRequestProps, ButtonCancelEdcRequestOwnProps>(
   withSearch,
   withRequirePermissionsNew({
-    permissions: missionPermissions.update,
+    permissions: edcRequestPermissions.update,
   }),
   connect<ButtonCancelEdcRequestStateProps, ButtonCancelEdcRequestDispatchProps, ButtonCancelEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({

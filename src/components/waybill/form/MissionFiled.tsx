@@ -2,12 +2,10 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import permissionsMission from 'components/missions/mission/config-data/permissions';
 import * as Button from 'react-bootstrap/lib/Button';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
-import MissionRejectForm from 'components/missions/mission/MissionRejectForm';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import { getWarningNotification } from 'utils/notifications';
 import { compose } from 'recompose';
@@ -16,9 +14,11 @@ import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
 
 const ButtonCreateMission = withRequirePermissionsNew({
-  permissions: permissionsMission.create,
+  permissions: missionPermissions.create,
 })(Button);
 
 class MissionField extends React.Component<any, any> {
@@ -283,7 +283,7 @@ class MissionField extends React.Component<any, any> {
 
 export default compose<any, any>(
   withRequirePermissionsNew({
-    permissions: permissionsMission.read,
+    permissions: missionPermissions.read,
   }),
   connect<null, { actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(
     null,

@@ -9,9 +9,9 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import missionPermissions from 'components/missions/mission/config-data/permissions';
 import { get } from 'lodash';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
+import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
 
 type ButtonCloseEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -66,7 +66,7 @@ const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
 
 export default compose<ButtonCloseEdcRequestProps, ButtonCloseEdcRequestOwnProps>(
   withRequirePermissionsNew({
-    permissions: missionPermissions.update,
+    permissions: edcRequestPermissions.update,
   }),
   connect<ButtonCloseEdcRequestStateProps, ButtonCloseEdcRequestDispatchProps, ButtonCloseEdcRequestOwnProps, ReduxState>(
     (state, { registryKey }) => ({

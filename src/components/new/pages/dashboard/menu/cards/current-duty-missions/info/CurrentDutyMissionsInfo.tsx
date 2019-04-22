@@ -15,7 +15,6 @@ import {
   dashboardLoadMissionDataForCurrentMission,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { ButtonUpdateDutyMission } from 'components/missions/duty_mission/buttons/buttons';
 import { LinkToOpenRouteInfoForm } from 'components/new/pages/routes_list/buttons/buttons';
 
 import {
@@ -29,6 +28,7 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { ButtonUpdateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {

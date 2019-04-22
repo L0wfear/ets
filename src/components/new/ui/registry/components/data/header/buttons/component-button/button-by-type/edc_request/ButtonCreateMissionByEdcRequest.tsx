@@ -12,8 +12,8 @@ import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/m
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
-import missionPermissions from 'components/missions/mission/config-data/permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 type ButtonCreateMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];

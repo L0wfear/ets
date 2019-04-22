@@ -33,6 +33,7 @@ import ButtonExportMission from './button-by-type/mission/ButtonExportMission';
 import ButtonCompleteMission from './button-by-type/mission/ButtonCompleteMission';
 import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMission';
 import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
+import ButtonFailMission from './button-by-type/mission/ButtonFailMission';
 
 type PropsComponentButton = {
   type: string;
@@ -69,6 +70,7 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.missions_remove: return ButtonRemoveMission;
     case buttonsTypes.missions_export: return ButtonExportMission;
     case buttonsTypes.missions_complete: return ButtonCompleteMission;
+    case buttonsTypes.missions_fail: return ButtonFailMission;
     case buttonsTypes.missions_to_archvie: return ButtonToArchiveMission;
     case buttonsTypes.missions_from_archvie: return ButtonFromArchiveMission;
 

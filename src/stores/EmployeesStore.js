@@ -16,7 +16,6 @@ export default class EmployeeStore extends Store {
       this.handleGetWaybillDrivers,
     );
     this.register(employeesActions.getDrivers, this.handleGetDrivers);
-    this.register(employeesActions.getForemans, this.handleGetForemans);
 
     this.state = {
       employeesList: [],
@@ -24,7 +23,6 @@ export default class EmployeeStore extends Store {
       employeesBindedoOnCarList: [],
       uniqEmployeesBindedoOnCarList: [],
       driversList: [],
-      foremanList: [],
       waybillDriversList: [],
     };
   }
@@ -60,10 +58,6 @@ export default class EmployeeStore extends Store {
 
   handleGetDrivers({ result }) {
     this.setState({ driversList: result });
-  }
-
-  handleGetForemans({ result }) {
-    this.setState({ foremanList: result });
   }
 
   handleGetWaybillDrivers({ result }) {

@@ -1,15 +1,11 @@
 import { Actions } from 'flummox';
 import { clone, cloneDeep } from 'lodash';
-import { createValidDateTime, createValidDate } from 'utils/dates';
+import { createValidDateTime } from 'utils/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionService,
-  MissionArchiveService,
   MissionReassignationService,
   MissionTemplateCarService,
-  MissionTemplatePrintService,
-  MissionDataService,
-  CarDutyMissionService,
   Cleaning,
 } from 'api/missions';
 
@@ -101,35 +97,6 @@ export default class MissionsActions extends Actions {
     return MissionService.put(payload, false, 'json');
   }
 
-  changeArchiveMissionStatus(id, is_archive) {
-    const payload = {
-      is_archive,
-    };
-
-    return MissionArchiveService.path(id).put(payload, false, 'json');
-  }
-
-  getMissionData(mission_id) {
-    return MissionDataService.path(mission_id)
-      .get()
-      .then((ans) => {
-        const {
-          result: {
-            report_data: { entries },
-          },
-        } = ans;
-        if (entries) {
-          ans.result.report_data.entries.forEach((data, i) => {
-            data.customId = i + 1;
-          });
-        }
-        // todo
-        // убрать
-        // для гибридной карты
-        return ans;
-      });
-  }
-
   /* ---------- MISSION TEMPLATES ---------- */
   getMissionTemplatesCars(payload = {}) {
     return MissionTemplateCarService.get(payload);
@@ -209,18 +176,6 @@ export default class MissionsActions extends Actions {
     return Promise.all(queries);
   }
 
-  printMissionTemplate(data) {
-    const payload = cloneDeep(data);
-
-    return MissionTemplatePrintService.postBlob(payload);
-  }
-
-  /* ---------- MISSION DUTY TEMPLATES ---------- */
-
-  getCarDutyMissions() {
-    return CarDutyMissionService.get();
-  }
-
   /* ---------- MISSION REPORTS ---------- */
 
   getCleaningOneNorm(outerData) {
@@ -254,14 +209,5 @@ export default class MissionsActions extends Actions {
 
   getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
     return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
-  }
-
-  getCleaningMunicipalFacilityAllList(outerPyload) {
-    const payload = {
-      start_date: createValidDate(outerPyload.start_date || new Date()),
-      end_date: createValidDate(outerPyload.end_date || new Date()),
-    };
-
-    return Cleaning.path('municipal_facility').get(payload, false, 'json');
   }
 }

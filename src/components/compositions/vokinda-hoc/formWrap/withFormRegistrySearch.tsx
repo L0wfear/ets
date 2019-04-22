@@ -12,9 +12,9 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 type WithFormRegistrySearchConfig = {
-  cantCreate?: boolean;
-  noCheckDataInRegistryArray?: boolean;
-  uniqKeyName?: string;
+  cantCreate?: boolean;                   // может ли форма создать запись
+  noCheckDataInRegistryArray?: boolean;   // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
+  uniqKeyName?: string;                   // имя уникального ключа для формы (см выше)
 };
 
 let lasPermissions = {};

@@ -7,12 +7,12 @@ import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 
 type TypeConfig = {
-  withIsPermittedProps?: boolean;
-  permissions?: string | string[];
-  every?: boolean;
-  byEntity?: boolean;
-  type?: string;
-  permissionName?: string;
+  withIsPermittedProps?: boolean;       // true даёт isPermitted в пропсах оборачиваемого компонента
+  permissions?: string | string[];      // разрешения для проверки | можно прокинуть как пропсы
+  every?: boolean;                      // ну ясненько
+  byEntity?: boolean;                   // даёт пермишен для проверки `${entity}.${type}`
+  type?: string;                        // смотри выше
+  permissionName?: string;              // название пермишена, который придёт в пропсах
 };
 
 const makePermissionOnCheck = (config, props) => {

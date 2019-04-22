@@ -9,7 +9,7 @@ import permissions from 'components/missions/mission_template/config-data/permis
 import permissions_mission from 'components/missions/mission/config-data/permissions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
-import MissionsCreationFormWrap from 'components/missions/mission_template/MissionsCreationFormWrap';
+import MissionsCreationFormLazy from 'components/missions/mission_template/form/creating';
 import MissionTemplateFormLazy from 'components/missions/mission_template/form/template';
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
@@ -136,7 +136,6 @@ class MissionTemplatesJournal extends CheckableElementsList {
     const { flux } = this.context;
     this.loadMissionTemplateData();
     flux.getActions('technicalOperation').getTechnicalOperations();
-    flux.getActions('objects').getCars();
   }
 
   /**
@@ -214,12 +213,24 @@ class MissionTemplatesJournal extends CheckableElementsList {
     });
   };
 
+  onFormHideCreating = (isSubmitted) => {
+    const changeObj = {
+      showForm: false,
+      formType: 'ViewForm',
+    };
+
+    if (isSubmitted) {
+      changeObj.selectedElement = null;
+      changeObj.checkedElements = {};
+    }
+    this.setState(changeObj);
+  };
+
   getForms = () => {
     const missions = getMissionList(
       this.state.checkedElements,
       this.state.selectedElement,
     );
-    const { carsIndex = {} } = this.props;
 
     return [
       <MissionTemplateFormLazy
@@ -231,16 +242,13 @@ class MissionTemplatesJournal extends CheckableElementsList {
         element={this.state.selectedElement}
         page={loadingPageName}
       />,
-      <MissionsCreationFormWrap
+      <MissionsCreationFormLazy
         key="form"
         onFormHide={this.onFormHide}
         showForm={
           this.state.showForm && this.state.formType === 'MissionsCreationForm'
         }
-        element={this.state.selectedElement}
-        formType={this.state.formType}
-        missions={missions}
-        _carsIndex={carsIndex}
+        missionTemplates={missions}
       />,
     ];
   };
@@ -299,10 +307,6 @@ class MissionTemplatesJournal extends CheckableElementsList {
 
     return {
       structures,
-      noHeader: this.props.renderOnly,
-      noDataMessage: this.props.payload.faxogramm_id
-        ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий'
-        : null,
       data: listData.filter(({ technical_operation_id }) =>
         technicalOperationsMap.has(technical_operation_id),
       ),

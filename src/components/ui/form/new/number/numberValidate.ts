@@ -33,6 +33,10 @@ export const validateNumber = <F, P, RootFormState>(key: keyof F, fieldData: Num
       return `Поле "${fieldData.title}" должно быть больше ${fieldData.min}`;
     }
 
+    if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual) {
+      return `Поле "${fieldData.title}" должно быть больше ${fieldData.minNotEqual}`;
+    }
+
     if (isNumber(fieldData.max) && numberValue > fieldData.max) {
       return `Поле "${fieldData.title}" должно быть не больше ${fieldData.max}`;
     }

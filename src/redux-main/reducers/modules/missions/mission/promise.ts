@@ -30,16 +30,16 @@ const getFrontMission = (missionRaw: any) => {
   return null;
 };
 
-const getBackMission = (missionRaw: any, index) => {
+export const getBackMission = (missionRaw: any, index): Mission => {
   const mission: Mission = cloneDeep(missionRaw);
 
-  mission.car_gov_number = mission.car_gov_number[index];
-  mission.car_id = mission.car_ids[index];
-  mission.car_type_id = mission.car_type_ids[index];
-  mission.car_type_name = mission.car_type_names[index];
-  mission.car_model_name = mission.car_model_names[index];
-  mission.car_special_model_name = mission.car_special_model_names[index];
-  mission.norm_id = mission.norm_ids[index];
+  mission.car_gov_number = get(mission.car_gov_number, index, null);
+  mission.car_id = get(mission.car_ids, index, null);
+  mission.car_type_id = get(mission.car_type_ids, index, null);
+  mission.car_type_name = get(mission.car_type_names, index, null);
+  mission.car_model_name = get(mission.car_model_names, index, null);
+  mission.car_special_model_name = get(mission.car_special_model_names, index, null);
+  mission.norm_id = get(mission.norm_ids, index, null);
 
   delete mission.car_gov_numbers;
   delete mission.car_ids;

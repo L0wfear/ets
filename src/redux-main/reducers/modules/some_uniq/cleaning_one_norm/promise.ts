@@ -1,5 +1,6 @@
 import { CleaningOneNormService } from 'api/Services';
 import { get } from 'lodash';
+import { Norm } from '../../norm_registry/@types';
 
 export const promiseGetCleaningOneNorm = async (payload) => {
   let response = null;
@@ -11,7 +12,7 @@ export const promiseGetCleaningOneNorm = async (payload) => {
     response = null;
   }
 
-  const data = get(response, 'result.rows.0', null);
+  const data: Norm = get(response, 'result.rows.0', null);
 
   return data;
 };

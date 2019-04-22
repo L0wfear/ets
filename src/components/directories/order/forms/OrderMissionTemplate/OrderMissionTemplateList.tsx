@@ -32,7 +32,6 @@ import {
 import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
 import { getNormByMissionAndCar } from 'components/missions/mission_template/utils';
-import ColumnAssignmentMissionTemplate from 'components/missions/mission_template/ColumnAssignmentMissionTemplate';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -41,6 +40,7 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
+import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
 
 const loadingPage = 'OrderMissionTemplateList';
 

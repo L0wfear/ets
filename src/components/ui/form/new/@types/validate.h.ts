@@ -19,6 +19,7 @@ export type NumberPropertie = CommonPropertie & {
   minLength?: number;
   maxLength?: number;
   min?: number;
+  minNotEqual?: number;
   max?: number;
   integer?: boolean;
   float?: number;

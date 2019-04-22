@@ -10,11 +10,11 @@ import { isArray, isUndefined, isNullOrUndefined, isObject } from 'util';
 import { ReduxState } from 'redux-main/@types/state';
 
 type TypeConfigToShow = {
-  path: string[],
-  checkErrorPath?: string[];
-  canNull?: boolean;
-  type?: 'loader-field' | 'small-loader-field' | 'hidden' | 'none',
-  isObj?: boolean;
+  path: string[],                                                           // path.to.проверяемое.свойство
+  checkErrorPath?: string[];                                                // path.to.error
+  canNull?: boolean;                                                        // может ли значение быть нуловом после ответа
+  type?: 'loader-field' | 'small-loader-field' | 'hidden' | 'none',         // что отображать вместо (прелоадер/ ничего)
+  isObj?: boolean;                                                          // может ли значение быть объектом после ответа
 };
 
 const HiddenComponent: React.FunctionComponent<any> = ({ type }) => {
@@ -44,6 +44,11 @@ type OwnerProps = {
 
 type PropsShowByProps = StateProps & OwnerProps;
 
+/**
+ *
+ * @todo добработать
+ * добавить ключ, означабщий загрузку | например Symbol.for('loading')
+ */
 const withShowByProps = (configToShow: TypeConfigToShow) => (Component) => (
   connect<StateProps, {}, OwnerProps, ReduxState>(
     (state) => {

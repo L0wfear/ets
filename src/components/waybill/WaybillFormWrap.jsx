@@ -106,7 +106,7 @@ class WaybillFormWrap extends FormWrap {
     };
   }
 
-  componentWillReceiveProps(props) {
+  UNSAFE_componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
       const currentDate = new Date();
 

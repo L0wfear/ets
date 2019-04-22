@@ -42,7 +42,7 @@ class FormWrap extends React.Component {
   }
 
   // prettier-ignore
-  componentWillReceiveProps(props) { // eslint-disable-line
+  UNSAFE_componentWillReceiveProps(props) { // eslint-disable-line
     if (props.showForm && props.showForm !== this.props.showForm) {
       let element = {};
       if (props.element !== null) {

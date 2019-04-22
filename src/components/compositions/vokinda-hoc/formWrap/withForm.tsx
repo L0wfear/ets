@@ -11,15 +11,20 @@ import { createValidDateTime, createValidDate } from 'utils/dates';
 import { isObject } from 'highcharts';
 import PreloaderComponent from 'components/ui/new/preloader/Preloader';
 
+/**
+ * @params uniqField - уникальный ключ формы
+ */
 type ConfigWithForm<P, F, S> = {
-  uniqField: keyof F | boolean;
-  createAction?: any;
-  updateAction?: any;
-  getRecordAction?: any;
-  mergeElement?: (props: P) => F;
-  schema: SchemaType<F, P>,
-  permissions: {
-    update: string;
+  uniqField: keyof F | boolean;       // уникальный ключ формы
+  createAction?: any;                 // Экшен создания записи
+  updateAction?: any;                 // Экшен изменения записи
+  withThrow?: boolean;                // Бросает исключение при сабмите
+  getRecordAction?: any;              // Экшен загрузки записи по uniqField
+  mergeElement?: (props: P) => F;     // Получение дефолтного элемента
+  schema: SchemaType<F, P>,           // Схема валиадции
+  permissions: {                      // Разрешения
+    create: string | string[];
+    update: string | string[];
     [k: string]: any;
   };
 };
@@ -338,6 +343,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
               global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line
+              if (config.withThrow) {
+                throw error;
+              }
               return null;
             }
           } else {
@@ -354,6 +362,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
               global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             } catch (error) {
               console.warn(error); // tslint:disable-line
+              if (config.withThrow) {
+                throw error;
+              }
               return null;
             }
           } else {

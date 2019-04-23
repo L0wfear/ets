@@ -137,8 +137,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
         onClick={this.handleClick}
         width={colData.width}
       >
-        {formatedTitle}
-        <Glyphicon glyph={getGlyphName(this.props)} />
+        {formatedTitle} <Glyphicon glyph={getGlyphName(this.props)} />
       </EtsTheadTh>
     );
   }

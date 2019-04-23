@@ -1,7 +1,8 @@
 import { CompanyStructure, IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { DispatchProp } from 'react-redux';
+import { HandleThunkActionCreator } from 'react-redux';
+import { getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -19,7 +20,9 @@ export type StatePropsCompanyStructure = {
   companyStructureLinearList: IStateCompanyStructure['companyStructureLinearList'];
   carpoolList: any;
 };
-export type DispatchPropsCompanyStructure = DispatchProp;
+export type DispatchPropsCompanyStructure = {
+  getAndSetInStoreCompanyStructureLinear: HandleThunkActionCreator<typeof getAndSetInStoreCompanyStructureLinear>;
+};
 export type OwnCompanyStructureProps = {
   element: CompanyStructure | null;
   handleHide: OnFormHideType

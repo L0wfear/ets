@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import CheckableElementsList from 'components/CheckableElementsList';
+import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
 import {
   ButtonCreate,
   ButtonRead,
@@ -40,7 +40,7 @@ const notifyTexts = {
   formComponent: ProgramObjectFormWrap,
   operations: [],
 })
-class ProgramRemarkList extends CheckableElementsList {
+class ProgramRemarkList extends UNSAFE_CheckableElementsList {
   constructor(props, context) {
     super(props);
     const { program_version_id } = props;

@@ -10,6 +10,7 @@ import { isNullOrUndefined } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { get } from 'lodash';
 
 type WithFormRegistrySearchConfig = {
   cantCreate?: boolean;                   // может ли форма создать запись
@@ -28,6 +29,24 @@ const getPermissionsCreateReadUpdate = (permission) => {
   }
 
   return lastPermissionsArray;
+};
+
+const reduceArrayToObj = (newObj, rowData, uniqKey) => {
+  return {
+    ...newObj,
+    [rowData[uniqKey]]: rowData,
+    ...get(rowData, 'children', []).reduce(
+      (newObjChild, rowDataChild) => reduceArrayToObj(newObjChild, rowDataChild, uniqKey),
+      {},
+    ),
+  };
+};
+
+const findRecondInDeepArray = (array: any[], uniqKey, uniqKeyValue) => {
+  return array.reduce(
+    (newObj, rowData) => reduceArrayToObj(newObj, rowData, uniqKey),
+    {},
+  )[uniqKeyValue];
 };
 
 export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySearchConfig) => (Component) => (
@@ -91,7 +110,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
             }
 
             if (array.length) {
-              const newElement = array.find((item) => item[uniqKey] === uniqKeyValue);
+              const newElement = findRecondInDeepArray(array, uniqKey, uniqKeyValue);
               if (newElement || config.noCheckDataInRegistryArray) {
                 setElement(newElement);
                 return;

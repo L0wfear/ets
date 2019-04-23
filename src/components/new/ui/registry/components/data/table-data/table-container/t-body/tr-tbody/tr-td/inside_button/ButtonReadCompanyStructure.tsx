@@ -37,7 +37,8 @@ const ButtonReadCompanyStructure: React.FC<ButtonReadCompanyStructureProps> = Re
     const { rowData } = props;
 
     const handleClickOnRead = React.useCallback(
-      async () => {
+      async (e) => {
+        e.stopPropagation();
         props.setParams({
           [props.uniqKeyForParams]: get(props.rowData, props.uniqKey, null),
         });

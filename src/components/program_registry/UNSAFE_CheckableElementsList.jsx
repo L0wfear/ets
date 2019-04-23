@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { cloneDeep, find } from 'lodash';
-import ElementsList from 'components/ElementsList';
+import UNSAFE_ElementsList from 'components/program_registry/UNSAFE_ElementsList';
 import {
   ButtonCreateNew,
   ButtonReadNew,
@@ -15,7 +15,7 @@ import {
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
  * @extends React.Component
  */
-class CheckableElementsList extends ElementsList {
+class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
   static get propTypes() {
     return {
       onListStateChange: PropTypes.func,
@@ -239,4 +239,4 @@ class CheckableElementsList extends ElementsList {
   };
 }
 
-export default CheckableElementsList;
+export default UNSAFE_CheckableElementsList;

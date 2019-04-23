@@ -11,19 +11,19 @@ import ModalBody from 'components/ui/Modal';
 import Datepicker from 'components/ui/input/date-picker/DatePicker';
 import { getToday9am, getTomorrow9am, createValidDateTime, addTime } from 'utils/dates';
 
-export interface IPropsPrintForm {
+export interface IPropsPrintByDates {
   show: boolean;
   onHide(): void;
   onExport(payload: any);
   title: string;
 }
 
-export interface IStatePrintForm {
+export interface IStatePrintByDates {
   date_from: Date;
   date_to: Date;
 }
 
-class PrintForm extends React.Component<IPropsPrintForm, any> {
+class PrintByDates extends React.Component<IPropsPrintByDates, any> {
   constructor(props) {
     super(props);
 
@@ -92,4 +92,4 @@ class PrintForm extends React.Component<IPropsPrintForm, any> {
   }
 }
 
-export default PrintForm;
+export default PrintByDates;

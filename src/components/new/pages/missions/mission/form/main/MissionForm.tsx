@@ -49,7 +49,7 @@ import {
   BtnPart,
 } from 'global-styled/global-styled';
 import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData';
-import { isOrderSource } from 'components/missions/utils/utils';
+import { isOrderSource } from 'components/new/pages/missions/utils';
 import missionPermissions from '../../_config-data/permissions';
 
 const smallPrintMapKey = 'smallPrintMapKey';

@@ -48,7 +48,8 @@ const ButtonRemoveCompanyStructure: React.FC<ButtonRemoveCompanyStructureProps> 
       [],
     );
     const handleClickRemoveSelectedRows = React.useCallback(
-      async () => {
+      async (e) => {
+        e.stopPropagation();
         try {
           await props.registryRemoveSelectedRows(props.registryKey, [props.rowData]);
         } catch (error) {

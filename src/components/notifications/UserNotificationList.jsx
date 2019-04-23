@@ -3,7 +3,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 import { staticProps } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
-import CheckableElementsList from 'components/CheckableElementsList';
+import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
 import UserNotificationFormWrap from 'components/notifications/UserNotificationFormWrap';
 import UserNotificationTable from 'components/notifications/UserNotificationTable';
 import permissions from 'components/notifications/config-data/permissions';
@@ -30,7 +30,7 @@ import { compose } from 'recompose';
   formComponent: UserNotificationFormWrap,
   operations: ['LIST', 'READ', 'CHECK'],
 })
-class UserNotificationList extends CheckableElementsList {
+class UserNotificationList extends UNSAFE_CheckableElementsList {
   async init() {
     try {
       await Promise.all([

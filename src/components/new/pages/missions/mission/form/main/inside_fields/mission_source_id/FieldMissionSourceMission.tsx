@@ -17,7 +17,7 @@ import { makeOptionsByMissionSourceForMission } from './makeOptions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types/index';
 import { Row, Col } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
-import { isOrderSource } from 'components/missions/utils/utils';
+import { isOrderSource } from 'components/new/pages/missions/utils';
 
 class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSourceMission, StateFieldMissionSourceMission> {
   state = {

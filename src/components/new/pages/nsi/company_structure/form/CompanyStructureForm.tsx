@@ -9,6 +9,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { companyStructureFormSchema } from 'components/new/pages/nsi/company_structure/form/schema';
+import { get } from 'lodash';
 
 import {
   getdefaultCompanyStructureElement,
@@ -34,6 +35,12 @@ import companyStructureActions from 'redux-main/reducers/modules/company_structu
 import companyStructurePermissions from '../_config-data/permissions';
 
 class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, StateCompanyStructure> {
+  componentDidMount() {
+    this.props.getAndSetInStoreCompanyStructureLinear(
+      {},
+      { page: this.props.page, path: this.props.path },
+    );
+  }
   handleChangeParentID = (parent_id) => {
     this.props.handleChange({
       type: null,
@@ -83,9 +90,13 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
     let parent_type_is_dek = false;
 
     if (parent_id) {
-      parent_type_is_dek = companyStructureLinearList
-        .find((companyStructure) => companyStructure.id === parent_id)
-        .type === STRUCTURE_TYPE_DEK.value;
+      parent_type_is_dek = (
+        get(
+          companyStructureLinearList.find((companyStructure) => companyStructure.id === parent_id),
+          'type',
+          null,
+        ) === STRUCTURE_TYPE_DEK.value
+      );
     }
     if (!parent_id || !parent_type_is_dek) {
       structureType = 'all';
@@ -161,6 +172,13 @@ export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
     (state) => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
       carpoolList: getGeoobjectState(state).carpoolList,
+    }),
+    (dispatch: any) => ({
+      getAndSetInStoreCompanyStructureLinear: (...arg) => (
+        dispatch(
+          companyStructureActions.getAndSetInStoreCompanyStructureLinear(...arg),
+        )
+      ),
     }),
   ),
   withForm<PropsCompanyStructureWithForm, CompanyStructure>({

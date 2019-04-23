@@ -5,7 +5,7 @@ import EtsModal from 'components/new/ui/modal/Modal';
 type ModalYesNo = {
   show: boolean;
   handleHide: () => any;
-  handleSubmit: () => any;
+  handleSubmit: (e: any) => any;
 
   title?: string;
   message: string;

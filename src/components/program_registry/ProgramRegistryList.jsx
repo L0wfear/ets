@@ -1,6 +1,6 @@
 import { connectToStores, staticProps, exportable } from 'utils/decorators';
 import REPAIR from 'constants/repair';
-import CheckableElementsList from 'components/CheckableElementsList';
+import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
 import ProgramRegistryTable from 'components/program_registry/ProgramRegistryTable';
 import ProgramRegistrySwitch from 'components/program_registry/ProgramRegistrySwitch';
 import permissions from 'components/program_registry/config-data/permissions';
@@ -19,7 +19,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
   selectField: 'version_id',
 })
-class ProgramRegistryList extends CheckableElementsList {
+class ProgramRegistryList extends UNSAFE_CheckableElementsList {
   constructor(props, context) {
     super(props);
     this.removeElementAction = context.flux.getActions(

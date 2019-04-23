@@ -22,7 +22,6 @@ global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${
 }2`;
 
 import LoginPageWrap from 'components/new/pages/login/LoginPageWrap';
-import MainAppWrap from 'components/MainAppWrap';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -34,6 +33,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { Switch, Route } from 'react-router-dom';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
+import PrivateAppContainer from 'components/new/PrivateAppContainer';
 
 class App extends React.Component<any, any> {
   static get childContextTypes() {
@@ -114,7 +114,7 @@ class App extends React.Component<any, any> {
     return (
       <Switch>
         <Route path="/login" component={LoginPageWrap} />
-        <Route path="*" component={MainAppWrap} />
+        <Route path="*" component={PrivateAppContainer} />
       </Switch>
     );
   }

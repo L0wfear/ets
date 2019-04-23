@@ -32,10 +32,7 @@ const defaultNonVersionoption = {
 
 const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
 
-class ModalSwitchApiVersion extends React.PureComponent<
-  PropsModalSwitchApiVersion,
-  StateModalSwitchApiVersion
-> {
+class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
   state = {
     serviceValue: get(
       JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),

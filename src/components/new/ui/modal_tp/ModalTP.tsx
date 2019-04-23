@@ -2,14 +2,12 @@ import * as React from 'react';
 import * as Modal from 'react-bootstrap/lib/Modal';
 
 import config from 'config';
-import { DivNone } from 'global-styled/global-styled';
 import { PropsModalTP } from 'components/new/ui/modal_tp/ModalTP.h';
 
 class ModalTP extends React.PureComponent<PropsModalTP, {}> {
   render() {
-    return this.props.show
-    ? (
-      <Modal show onHide={this.props.onHide} dialogClassName="custom-modalTP">
+    return (
+      <Modal show={this.props.show} onHide={this.props.onHide} dialogClassName="custom-modalTP">
         <Modal.Header closeButton>
           <Modal.Title>Техническая поддержка</Modal.Title>
         </Modal.Header>
@@ -28,9 +26,6 @@ class ModalTP extends React.PureComponent<PropsModalTP, {}> {
           </div>
         </Modal.Body>
       </Modal>
-    )
-    : (
-      <DivNone />
     );
   }
 }

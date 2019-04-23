@@ -47,13 +47,13 @@ class LoginPage extends React.PureComponent<any, any> {
 
   handleChangeLogin = (event) => {
     this.setState({
-      login: get(event, ['target', 'value'], event),
+      login: get(event, 'target.value', event),
     });
   };
 
   handleChangePassword = (event) => {
     this.setState({
-      password: get(event, ['target', 'value'], event),
+      password: get(event, 'target.value', event),
     });
   };
 

@@ -80,7 +80,6 @@ export type TypeFields<F extends any> = {
     | 'TIME_MEASURES'
     | 'checkOrExpect'
     | 'efficiencySource'
-    | 'duty_mission_status_name'
     | 'floor'
     | 'mission_status_name'
     | 'company_structure_actions'

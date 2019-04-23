@@ -30,7 +30,6 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 import { TIME_MEASURES, MISSION_STATUS_LABELS } from 'constants/dictionary';
 import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
-import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
 import TrTdIsOpen from './tr-td/TrTdIsOpen';
 import TrTdButtonCompanyStructureActions from './tr-td/TrTdButtonCompanyStructureActions';
@@ -204,9 +203,6 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           ? 'Справочник показателей норм на содержание ОДХ'
           : 'Реестр ОДХ'
         );
-      }
-      if (format === 'duty_mission_status_name') {
-        value = DUTY_MISSION_STATUS_LABELS[value];
       }
       if (format === 'floor') {
         value = value ? Math.floor(value) : '';

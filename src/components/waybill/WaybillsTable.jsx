@@ -347,49 +347,44 @@ export const getTableMeta = ({
   return tableMeta;
 };
 
-export default (props) => {
-  const renderers = {
-    status: ({ data }) => (
-      <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>
-    ),
-    responsible_person_id: ({ data }) => (
-      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
-    ),
-    driver_id: ({ data }) => (
-      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
-    ),
-    created_by_employee_id: ({ data }) => (
-      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
-    ),
-    activated_by_employee_id: ({ data }) => (
-      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
-    ),
-    closed_by_employee_id: ({ data }) => (
-      <div>{employeeFIOLabelFunction(props.employeesIndex, data)}</div>
-    ),
-    date_create: ({ data }) => <DateFormatter date={data} time />,
-    closing_date: ({ data }) => <DateFormatter date={data} time />,
-    plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
-    fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
-    fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
-    all_missions_status: ({ data }) => (
-      <div>{get(missionsStatusBySlag, data, '')}</div>
-    ),
-    structure_id: ({ rowData }) => (
-      <div>{get(rowData, 'structure_name', '')}</div>
-    ),
-    comment: ({ data }) => (
-      <div>
-        {data
-          ? data
-            .split('\n')
-            .map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>)
-          : data}
-      </div>
-    ),
-    car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '-')}</div>,
-  };
+const renderers = {
+  status: ({ data }) => (
+    <div>{WAYBILL_STATUSES[data] || WAYBILL_STATUSES.default}</div>
+  ),
+  driver_id: ({ rowData }) => <div>{rowData.driver_fio}</div>,
+  created_by_employee_id: ({ rowData }) => (
+    <div>{rowData.created_by_employee_name}</div>
+  ),
+  activated_by_employee_id: ({ rowData }) => (
+    <div>{rowData.activated_by_employee_name}</div>
+  ),
+  closed_by_employee_id: ({ rowData }) => (
+    <div>{rowData.closed_by_employee_name}</div>
+  ),
+  date_create: ({ data }) => <DateFormatter date={data} time />,
+  closing_date: ({ data }) => <DateFormatter date={data} time />,
+  plan_departure_date: ({ data }) => <DateFormatter date={data} time />,
+  fact_departure_date: ({ data }) => <DateFormatter date={data} time />,
+  fact_arrival_date: ({ data }) => <DateFormatter date={data} time />,
+  all_missions_status: ({ data }) => (
+    <div>{get(missionsStatusBySlag, data, '')}</div>
+  ),
+  structure_id: ({ rowData }) => (
+    <div>{get(rowData, 'structure_name', '')}</div>
+  ),
+  comment: ({ data }) => (
+    <div>
+      {data
+        ? data
+          .split('\n')
+          .map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>)
+        : data}
+    </div>
+  ),
+  car_id: ({ rowData }) => <div>{get(rowData, 'gov_number', '-')}</div>,
+};
 
+export default (props) => {
   return (
     <Table
       title="Журнал путевых листов"

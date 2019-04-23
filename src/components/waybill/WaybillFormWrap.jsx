@@ -1,6 +1,6 @@
 import React from 'react';
 import { clone, cloneDeep, filter, get, last } from 'lodash';
-import FormWrap from 'components/compositions/FormWrap';
+import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
@@ -81,7 +81,7 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) =>
 let timeId = 0;
 
 @FluxContext
-class WaybillFormWrap extends FormWrap {
+class WaybillFormWrap extends UNSAFE_FormWrap {
   static defaultProps = {
     onCallback: (newState) => {
       this.setState({

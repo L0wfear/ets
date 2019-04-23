@@ -8,7 +8,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 
 import ModalBody from 'components/ui/Modal';
 import DateFormatter from 'components/ui/DateFormatter';
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 
 import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
@@ -135,7 +135,7 @@ const notificationComponents = {
   repair,
   medical_certificate,
 };
-class UserNotificationForm extends Form {
+class UserNotificationForm extends UNSAFE_Form {
   handleClick = (pathComponent, query, isPermitted) => {
     if (isPermitted) {
       this.props.history.push(

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap';
+import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormBase from 'components/program_registry/UpdateFrom/ProgramRegistryUForm';
 import { compose } from 'recompose';
@@ -46,7 +46,7 @@ const checkIsPermittedByStatusForContractorLine = (status) => {
   }
 };
 
-class ProgramRegistryFormWrap extends FormWrap {
+class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
   constructor(props) {
     super(props);
     this.preventDefaultNotification = true;

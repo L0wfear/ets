@@ -1,6 +1,6 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap';
+import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField';
 
@@ -12,7 +12,7 @@ import {
   elementsValidationSchema,
 } from 'components/program_registry/UpdateFrom/inside_components/program_object/schema';
 
-class ProgramObjectFormWrap extends FormWrap {
+class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   constructor(props) {
     super(props);
     this.schema = formValidationSchema;

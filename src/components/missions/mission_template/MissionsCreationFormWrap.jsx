@@ -52,7 +52,7 @@ export const createMissions = async (flux, element, payload) => {
           date_end: payload.date_end,
           assign_to_waybill: 'assign_to_new_draft',
         };
-        await createMissions(element, newPayload);
+        await createMissions(flux, element, newPayload);
       }
     }
     if (code === 'invalid_period') {
@@ -104,7 +104,7 @@ export const createMissions = async (flux, element, payload) => {
           assign_to_waybill: payload.assign_to_waybill,
         };
 
-        await createMissions(element, newPayload);
+        await createMissions(flux, element, newPayload);
       }
     }
   }

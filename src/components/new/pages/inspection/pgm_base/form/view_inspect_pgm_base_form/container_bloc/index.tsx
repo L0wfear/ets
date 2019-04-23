@@ -23,7 +23,7 @@ type ContainerBlockOwnProps = {
   selectedInspectPgmBase: InspectPgmBase;
   errors: any;
   isPermittedChangeListParams: boolean;
-  onChangeData: (obj: any) => void;
+  onChangeData: (obj: any, canChangeWithoutPermission: boolean) => void;
 
   page: string;
 };
@@ -57,7 +57,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
           containers_counter: ans.length,
           summ_capacity: ans.reduce((summ, { capacity }) => summ + capacity, 0),
           pgm_volume_sum: ans.reduce((summ, { pgm_volume }) => summ + pgm_volume, 0),
-        });
+        }, true);
       });
     },
     [props.selectedInspectPgmBase],

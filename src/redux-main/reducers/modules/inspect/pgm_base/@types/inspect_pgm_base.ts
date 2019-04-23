@@ -46,6 +46,10 @@ export type InspectPgmBaseData = {
   lack_of_shelter_for_solid_pgm: boolean | null;
   pgm_on_open_area: number | null;
 
+  containers_counter: number | null;
+  summ_capacity: number | null;
+  pgm_volume_sum: number | null;
+
   equipment_and_piping_in_poor_condition: boolean | null;
   containers_in_poor_condition: boolean | null;
 

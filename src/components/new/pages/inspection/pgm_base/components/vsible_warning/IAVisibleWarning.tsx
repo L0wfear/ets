@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { FiledToCheck } from "components/new/pages/inspection/pgm_base/components/vsible_warning/@types/visibleWarning";
 
 type IAVisibleWarningProps = {
-  onChange: (data: InspectPgmBase['data']) => void;
+  onChange: (data: InspectPgmBase['data'], canChangeWithoutPermission?: boolean) => void;
   data: InspectPgmBase['data'];
   errors: Partial<Record<keyof InspectPgmBase['data'], string>>;
   isPermitted?: boolean;

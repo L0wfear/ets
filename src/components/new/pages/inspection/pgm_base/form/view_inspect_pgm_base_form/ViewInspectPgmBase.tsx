@@ -187,8 +187,8 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
   );
 
   const onChangeData = React.useCallback(
-    (data) => {
-      if (isPermittedChangeListParams) {
+    (data, canChangeWithoutPermission: boolean = false) => {
+      if (isPermittedChangeListParams || canChangeWithoutPermission) {
         dispatch(
           actionChangeSelectedInspectPgmBaseData(data),
         );

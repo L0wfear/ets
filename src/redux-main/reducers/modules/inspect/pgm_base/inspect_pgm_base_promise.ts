@@ -49,6 +49,10 @@ export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
   lack_of_shelter_for_solid_pgm: false,
   pgm_on_open_area: null,
 
+  containers_counter: 0,
+  summ_capacity: 0,
+  pgm_volume_sum: 0,
+
   equipment_and_piping_in_poor_condition: false,
   containers_in_poor_condition: false,
 

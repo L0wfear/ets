@@ -44,7 +44,7 @@ export const CONFIG_INITIAL: InitialStateSession['appConfig'] = { // дефол�
 };
 
 export const TRACK_CONFIG_INITIAL = {
-  api_version_stable: null,
+  api_version_stable: 4,
   api_versions: [],
 };
 

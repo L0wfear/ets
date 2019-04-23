@@ -96,7 +96,7 @@ export const createMissionPromise = async (flux, mission, mission_source_id, ass
   const {
     date_from: date_start,
     date_to: date_end,
-    num_exec: passes_count,
+    passes_count,
   } = mission as any;
 
   const externalPayload = {

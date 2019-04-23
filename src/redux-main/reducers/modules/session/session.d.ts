@@ -61,6 +61,7 @@ export type InitialStateSession = {
     summer_end_date: string;
     footer_url: string | null;
     project_name: string | null;
+    can_switch_api_version?: boolean;
   };
   appConfigTracksCaching: {
     api_version_stable: number | null;

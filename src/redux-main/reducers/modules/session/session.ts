@@ -45,6 +45,7 @@ export const CONFIG_INITIAL: InitialStateSession['appConfig'] = {
   summer_end_date: '',
   footer_url: '',
   project_name: '',
+  can_switch_api_version: false,
 };
 
 export const TRACK_CONFIG_INITIAL = {

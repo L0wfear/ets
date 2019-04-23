@@ -61,18 +61,6 @@ const TrTdButtonShowMissionInfo: React.FC<TrTdButtonShowMissionInfoProps> = Reac
       [],
     );
 
-    /*
-    if (rowData.status === 'not_assigned') return <div>Нет данных</div>;
-      const className = Number(rowData.current_percentage) < 100 ? 'td-red' : undefined;
-
-      return (
-        <div className={className} style={{ width: '100%', heigth: '100%' }}>
-          <span onClick={() => props.mapView(data)}>
-            <Glyphicon glyph="info-sign" />
-          </span>
-        </div>
-    */
-
     return (
       <EtsTbodyTrTdMisionData>
         <MissionInfoStatusDiv>

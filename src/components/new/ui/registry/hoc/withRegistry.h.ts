@@ -63,6 +63,7 @@ export type TypeFields<F extends any> = {
   title: string | DisplayIfTitle[];
   width?: number;
   dashIfEmpty?: boolean;
+  sortable?: boolean;
   format?: (
     'date'
     | 'datetime'

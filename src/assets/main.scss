@@ -1402,52 +1402,6 @@ div.none {
   transform: translateY(-75%);
 }
 
-.app-footer {
-  height: 30px;
-  width: 100%;
-  padding: 0 20px;
-  background: #292929;
-  color: white;
-  line-height: 30px;
-  min-height: 30px;
-  display: flex;
-  justify-content: space-between;
-  line-height: 30px;
-  color: white;
-  z-index: 100; /* футер выше загрузки */
-
-  >div {
-    flex: 1 1 0;
-  }
-  >.container-tp {
-    display: flex;
-    justify-content: space-around;
-  }
-  >.container-company {
-    display: flex;
-    justify-content: center;
-    flex: 1 1 auto;
-  }
-  >.container-version {
-    display: flex;
-    justify-content: flex-end;
-    cursor: default;
-  }
-  >div {
-    overflow: hidden;
-    height: 30px;
-  }
-  & .tp {
-    color: red;
-    font-weight: bold;
-    cursor: pointer;
-    &.not-red {
-      color: white;
-    }
-  }
-
-}
-
 .griddle:focus {
   outline: none;
 }

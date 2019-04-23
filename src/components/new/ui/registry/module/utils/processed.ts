@@ -1,6 +1,7 @@
 import { isNullOrUndefined, isArray, isString } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { diffDatesByDays, diffDates } from 'utils/dates';
+import { get } from 'lodash';
 
 export const sortArray = (firstRowData, secondRowData, field) => {
   let [
@@ -135,8 +136,8 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
   return [...array];
 };
 
-export const makeProcessedArray = (array, { sort, filterValues, ...other }: Pick<OneRegistryData['list']['processed'], 'sort' | 'filterValues'>, fields: OneRegistryData['filter']['fields']) => {
-  const processedArray = filterArray(array, filterValues, fields);
+export const makeProcessedArray = (array, { sort, filterValues }: Pick<OneRegistryData['list']['processed'], 'sort' | 'filterValues'>, fields: OneRegistryData['filter']['fields']) => {
+  let processedArray = filterArray(array, filterValues, fields);
 
   if (sort.field) {
     if (processedArray.some(({ [sort.field]: fieldValue }: any) => !isNullOrUndefined(fieldValue))) {
@@ -147,6 +148,22 @@ export const makeProcessedArray = (array, { sort, filterValues, ...other }: Pick
           sort.field,
         ),
       );
+    }
+
+    if (processedArray.some(({ children }) => isArray(children) && children.length)) {
+      processedArray = processedArray.map((rowData) => {
+        const children = get(rowData, 'children', null);
+        if (children) {
+          const rowDataTemp =  {
+            ...rowData,
+            children: makeProcessedArray(children, { sort, filterValues }, fields),
+          };
+
+          rowDataTemp.is_open = false;
+
+          return rowDataTemp;
+        }
+      });
     }
   }
 

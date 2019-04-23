@@ -34,6 +34,7 @@ import ButtonCompleteMission from './button-by-type/mission/ButtonCompleteMissio
 import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMission';
 import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
 import ButtonFailMission from './button-by-type/mission/ButtonFailMission';
+import ButtonCreateCompanyStructure from './button-by-type/company_structure/ButtonCreateCompanyStructure';
 
 type PropsComponentButton = {
   type: string;
@@ -73,6 +74,7 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.missions_fail: return ButtonFailMission;
     case buttonsTypes.missions_to_archvie: return ButtonToArchiveMission;
     case buttonsTypes.missions_from_archvie: return ButtonFromArchiveMission;
+    case buttonsTypes.company_structure_create: return ButtonCreateCompanyStructure;
 
     default: return null;
   }

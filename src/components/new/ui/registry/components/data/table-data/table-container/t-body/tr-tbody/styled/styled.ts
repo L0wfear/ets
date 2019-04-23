@@ -8,6 +8,10 @@ const getColorTd = (rowData) => {
     return constantColor.orange;
   }
 
+  if (!!get(rowData, 'parent_id', null)) {
+    return constantColor.colorChildRegistry;
+  }
+
   return 'white';
 };
 

@@ -7,7 +7,7 @@ export const constantColor = {
   colorButton: '#4c4c4c',
   colorGray: '#9b9b9b',
   colorLightGray: '#e7e7e7',
-  colorYellow: '#c0e1f6',
+  colorChildRegistry: '#c0e1f6',
   colorPink: 'pink',
   colorLightPink: '#ffaabb',
   navbarHeight: '64px',

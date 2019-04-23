@@ -10,11 +10,10 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal } from 'react-bootstrap';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
+import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 
 type ButtonRemoveDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -63,8 +62,8 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
       try {
         await props.registryRemoveSelectedRows(props.registryKey);
       } catch (error) {
-        console.error(error); // tslint:disable-line
-        //
+        handleClickCloseForm();
+        return;
       }
 
       props.registryLoadDataByKey(props.registryKey);
@@ -89,25 +88,13 @@ const ButtonRemoveDutyMission: React.FC<ButtonRemoveDutyMissionProps> = (props) 
       <Button id="remove-element" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
         <Glyphicon glyph="remove" /> Удалить
       </Button>
-      <EtsModal
+      <ModalYesNo
         show={isOpenModalRemove}
-        bsSize="small"
-        id="delete-form"
-        onHide={handleClickCloseForm}
-      >
-        <Modal.Header>Внимание!</Modal.Header>
-        <Modal.Body>
-          <span>
-            {`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
-          </span>
-        </Modal.Body>
-        <Modal.Footer>
-          <div>
-            <Button onClick={handleClickRemoveSelectedRows}>Ок</Button>
-            <Button onClick={handleClickCloseForm}>Отмена</Button>
-          </div>
-        </Modal.Footer>
-      </EtsModal>
+        handleHide={handleClickCloseForm}
+        handleSubmit={handleClickRemoveSelectedRows}
+
+        message={`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
+      />
     </>
   );
 };

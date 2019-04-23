@@ -9,12 +9,11 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal } from 'react-bootstrap';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
 import { actionToArchiveDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
+import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 
 type ButtonToArchiveDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -101,25 +100,13 @@ const ButtonToArchiveDutyMission: React.FC<ButtonToArchiveDutyMissionProps> = (p
       <Button id="duty_mission-to-archive" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
         В архив
       </Button>
-      <EtsModal
+      <ModalYesNo
         show={isOpenModalRemove}
-        bsSize="small"
-        id="delete-form"
-        onHide={handleClickCloseForm}
-      >
-        <Modal.Header>Внимание!</Modal.Header>
-        <Modal.Body>
-          <span>
-            {`Вы уверены, что хотите перенести в архив ${checkedRowsAsArray.length > 1 ? 'выбранные наряд-задания' : 'выбранное наряд-задание'}?`}
-          </span>
-        </Modal.Body>
-        <Modal.Footer>
-          <div>
-            <Button onClick={handleClickToArchive}>Ок</Button>
-            <Button onClick={handleClickCloseForm}>Отмена</Button>
-          </div>
-        </Modal.Footer>
-      </EtsModal>
+        handleHide={handleClickCloseForm}
+        handleSubmit={handleClickToArchive}
+
+        message={`Вы уверены, что хотите перенести в архив ${checkedRowsAsArray.length > 1 ? 'выбранные наряд-задания' : 'выбранное наряд-задание'}?`}
+      />
     </>
   );
 };

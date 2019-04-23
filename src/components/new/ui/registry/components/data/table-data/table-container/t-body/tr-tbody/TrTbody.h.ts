@@ -2,6 +2,8 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { HandleThunkActionCreator } from 'react-redux';
+import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 
 export interface StatePropsTrTbody {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
@@ -15,7 +17,7 @@ export interface StatePropsTrTbody {
 }
 
 export type DipatchPropsTrTbody = {
-  registryHandleClickOnRow: any;
+  registrySelectRow: HandleThunkActionCreator<typeof registrySelectRow>;
 };
 
 export interface OwnPropsTrTbody {

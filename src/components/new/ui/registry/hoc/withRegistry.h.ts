@@ -83,6 +83,7 @@ export type TypeFields<F extends any> = {
     | 'duty_mission_status_name'
     | 'floor'
     | 'mission_status_name'
+    | 'company_structure_actions'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {
@@ -98,6 +99,12 @@ export type TypeFields<F extends any> = {
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {
   key: 'showMissionInfo';
+  title: string;
+} | {
+  key: 'is_open';
+  title?: string;
+} | {
+  key: 'company_structure_actions',
   title: string;
 };
 

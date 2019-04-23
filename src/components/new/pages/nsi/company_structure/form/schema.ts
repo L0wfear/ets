@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { PropsCompanyStructure } from 'components/directories/company_structure/CompanyStructureForm/@types/CompanyStructureForm.h';
+import { PropsCompanyStructure } from 'components/new/pages/nsi/company_structure/form/@types/CompanyStructureForm';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 export const companyStructureFormSchema: SchemaType<CompanyStructure, PropsCompanyStructure> = {

@@ -32,6 +32,8 @@ import { TIME_MEASURES, MISSION_STATUS_LABELS } from 'constants/dictionary';
 import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
+import TrTdIsOpen from './tr-td/TrTdIsOpen';
+import TrTdButtonCompanyStructureActions from './tr-td/TrTdButtonCompanyStructureActions';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -59,7 +61,6 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       return (
         <TrTdCheckbox
           key={key}
-          indexRow={props.indexRow}
           registryKey={registryKey}
           rowData={props.rowData}
         />
@@ -72,6 +73,15 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           key={key}
           indexRow={props.indexRow}
           registryKey={registryKey}
+        />
+      );
+    }
+
+    if (key === 'is_open') {
+      return (
+        <TrTdIsOpen
+          key={key}
+          rowData={props.rowData}
         />
       );
     }
@@ -89,6 +99,16 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'showMissionInfo') {
       return (
         <TrTdButtonShowMissionInfo
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'company_structure_actions') {
+      return (
+        <TrTdButtonCompanyStructureActions
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}
@@ -213,7 +233,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleClick: React.MouseEventHandler<HTMLTableRowElement> = () => {
     const { props } = this;
-    props.registryHandleClickOnRow(
+    props.registrySelectRow(
       props.rowData,
     );
   }
@@ -229,21 +249,36 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   render() {
     const { props } = this;
+
+    const children = get(props, 'rowData.children', []);
+
     return (
-      <EtsTrTbody
-        enable
-        selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
-        onClick={this.handleClick}
-        onDoubleClick={this.handleDoubleClick}
-        rowData={this.props.rowData}
-      >
-        { props.rowFields.map(this.renderRow) }
-      </EtsTrTbody>
+      <React.Fragment>
+        <EtsTrTbody
+          enable
+          selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
+          onClick={this.handleClick}
+          onDoubleClick={this.handleDoubleClick}
+          rowData={this.props.rowData}
+        >
+          { props.rowFields.map(this.renderRow) }
+        </EtsTrTbody>
+        {
+          props.rowData.is_open && children.map((childRowData, childIndexRow) => (
+            <TrTbodyConnected
+              key={childRowData[props.uniqKey]}
+              rowData={childRowData}
+              registryKey={props.registryKey}
+              indexRow={childIndexRow}
+            />
+          ))
+        }
+      </React.Fragment>
     );
   }
 }
 
-export default compose<PropsTrTbody, OwnPropsTrTbody>(
+const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
   withSearch,
   connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, ReduxState>(
     (state, { registryKey }) => ({
@@ -257,7 +292,7 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
       buttons: getHeaderData(state.registry, registryKey).buttons,
     }),
     (dispatch, { registryKey }) => ({
-      registryHandleClickOnRow: (rowData) => (
+      registrySelectRow: (rowData) => (
         dispatch(
           registrySelectRow(
             registryKey,
@@ -271,3 +306,5 @@ export default compose<PropsTrTbody, OwnPropsTrTbody>(
     withIsPermittedProps: true,
   }),
 )(TrTbody);
+
+export default TrTbodyConnected;

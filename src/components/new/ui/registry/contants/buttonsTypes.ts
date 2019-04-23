@@ -6,6 +6,7 @@ import { technical_operation_relations_types } from '../components/data/header/b
 import { duty_mission_types } from '../components/data/header/buttons/component-button/button-by-type/duty_mission/constant';
 import { mission_types } from '../components/data/header/buttons/component-button/button-by-type/mission/constant';
 import { mission_template_types } from '../components/data/header/buttons/component-button/button-by-type/mission_template/constant';
+import { company_structure_types } from '../components/data/header/buttons/component-button/button-by-type/company_structure/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -21,6 +22,7 @@ const buttonsTypes =  {
   ...duty_mission_template_types,
   ...read_cars_contisions_car_types,
   ...mission_types,
+  ...company_structure_types,
 };
 
 export default buttonsTypes;

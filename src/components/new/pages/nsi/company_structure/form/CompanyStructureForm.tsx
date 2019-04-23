@@ -6,17 +6,16 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import companyStructurePermissions from 'components/directories/company_structure/config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { companyStructureFormSchema } from 'components/directories/company_structure/CompanyStructureForm/schema';
+import { companyStructureFormSchema } from 'components/new/pages/nsi/company_structure/form/schema';
 
 import {
   getdefaultCompanyStructureElement,
   STRUCTURE_TYPE_DEY,
   STRUCTURE_TYPE_DEK,
   STRUCTURE_TYPES
-} from 'components/directories/company_structure/CompanyStructureForm/utils';
+} from 'components/new/pages/nsi/company_structure/form/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -27,11 +26,12 @@ import {
   StatePropsCompanyStructure,
   DispatchPropsCompanyStructure,
   PropsCompanyStructureWithForm,
-} from 'components/directories/company_structure/CompanyStructureForm/@types/CompanyStructureForm.h';
+} from 'components/new/pages/nsi/company_structure/form/@types/CompanyStructureForm';
 import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { DivNone } from 'global-styled/global-styled';
 import { getCompanyStructureState, getGeoobjectState } from 'redux-main/reducers/selectors';
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import companyStructurePermissions from '../_config-data/permissions';
 
 class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, StateCompanyStructure> {
   handleChangeParentID = (parent_id) => {

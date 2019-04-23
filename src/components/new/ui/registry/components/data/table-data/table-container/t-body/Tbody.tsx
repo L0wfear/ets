@@ -9,7 +9,6 @@ import {
   DispatchPropsTbody,
   OwnPropsTbody,
   PropsTbody,
-  StateTbody,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/Tbody.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
@@ -17,37 +16,33 @@ import memoizeOne from 'memoize-one';
 import { EtsTrTbody } from './tr-tbody/styled/styled';
 import { EtsTbodyTrTd } from './tr-tbody/tr-td/styled/styled';
 
-class Tbody extends React.PureComponent<PropsTbody, StateTbody> {
-  render() {
-    const { props } = this;
-
-    return (
-      <tbody>
-        {
-          this.props.showArray.map((rowData, indexRow) => (
-            <TrTbody
-              key={rowData[props.uniqKey]}
-              rowData={rowData}
-              registryKey={props.registryKey}
-              indexRow={indexRow}
-            />
-          ))
-        }
-        {
-          !this.props.showArray.length && this.props.rowFields.length
-            ? (
-              <EtsTrTbody>
-                <EtsTbodyTrTd colSpan={3}>Нет данных</EtsTbodyTrTd>
-              </EtsTrTbody>
-            )
-            : (
-              <tr><td></td></tr>
-            )
-        }
-      </tbody>
-    );
-  }
-}
+const Tbody: React.FC<PropsTbody> = (props) => {
+  return (
+    <tbody>
+      {
+        props.showArray.map((rowData, indexRow) => (
+          <TrTbody
+            key={rowData[props.uniqKey]}
+            rowData={rowData}
+            registryKey={props.registryKey}
+            indexRow={indexRow}
+          />
+        ))
+      }
+      {
+        !props.showArray.length && props.rowFields.length
+          ? (
+            <EtsTrTbody>
+              <EtsTbodyTrTd colSpan={3}>Нет данных</EtsTbodyTrTd>
+            </EtsTrTbody>
+          )
+          : (
+            <tr><td></td></tr>
+          )
+      }
+    </tbody>
+  );
+};
 
 const makeShowArray = memoizeOne(
   (processedArray, paginator, Service) => {

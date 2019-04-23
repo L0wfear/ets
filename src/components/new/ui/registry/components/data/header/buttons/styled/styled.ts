@@ -7,7 +7,7 @@ export const EtsButtonsContainer = styled.div`
   justify-content: flex-end;
 
   >* {
-    margin: 5px;
+    margin: 5px 5px 0px 5px;
   }
 
   @media screen and (max-width: ${mobiSize}px) {

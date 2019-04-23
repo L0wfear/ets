@@ -40,16 +40,19 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
       colData: {
         key,
         childrenFields,
+        sortable = true,
       },
     } = this.props;
 
-    if (!Array.isArray(childrenFields)) {
-      if (key === 'selectAll') {
-        // console.log('selectAll');
-      } else if (key === 'enumerated') {
-        // console.log('enumerated');
-      } else {
-        this.props.registryTriggerOnChangeSelectedField(key);
+    if (sortable) {
+      if (!Array.isArray(childrenFields)) {
+        if (key === 'selectAll') {
+          // console.log('selectAll');
+        } else if (key === 'enumerated') {
+          // console.log('enumerated');
+        } else {
+          this.props.registryTriggerOnChangeSelectedField(key);
+        }
       }
     }
   }
@@ -61,6 +64,9 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
   render() {
     const {
       colData,
+      colData: {
+        sortable = true,
+      },
       formatedTitle,
     } = this.props;
 
@@ -125,7 +131,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
 
     return (
       <EtsTheadTh
-        canClick
+        canClick={sortable}
         rowSpan={colData.rowSpan}
         colSpan={colData.colSpan}
         onClick={this.handleClick}

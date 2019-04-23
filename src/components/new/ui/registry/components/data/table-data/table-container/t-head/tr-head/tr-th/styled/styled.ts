@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { lighten } from 'polished';
 
 export const EtsTheadTh = styled.th<{ canClick?: boolean, width: number }>`
   &&& {
@@ -13,7 +14,10 @@ export const EtsTheadTh = styled.th<{ canClick?: boolean, width: number }>`
     cursor: ${({ canClick }) => canClick ? 'pointer' : 'default'};
     width: ${({ width }) => width ? `${width}px` : 'auto'};
     &:hover {
-      background-color: #f7f7f7;
+      background-color: ${({ canClick }) => canClick ? lighten(0.04, '#eee') : '#eee'};
+    }
+    input {
+      cursor: ${({ canClick }) => canClick ? 'pointer' : 'default'};
     }
   }
 `;

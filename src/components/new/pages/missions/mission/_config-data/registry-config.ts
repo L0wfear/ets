@@ -234,6 +234,7 @@ export const config: TypeConfigData<Mission> = {
         {
           key: 'current_percentage',
           title: 'Процент выполнения задания (%)',
+          sortable: false,
           format: 'floor',
           width: 300,
         },

@@ -9,7 +9,9 @@ export const EtsTbodyTrTd = styled.td`
     padding: 8px;
     border: 1px solid white;
     vertical-align: baseline;
-
+    input {
+      cursor: pointer;
+    }
   }
 `;
 
@@ -30,6 +32,9 @@ export const MissionInfoStatusDiv = styled.div`
 
 export const GlyphiconContainer32 = styled.div<{ notFull: boolean }>`
   font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   ${({ notFull }) => notFull && redColor};
 `;

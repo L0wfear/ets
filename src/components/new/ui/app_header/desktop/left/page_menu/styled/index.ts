@@ -13,16 +13,25 @@ const buPosition = {
   bottom_left: css`
     transform: translate(-100%);
     left: 100%;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top: 0px;
   `,
   left: css`
     top: 0;
     transform: translate(-100%);
     left: 0;
-    `,
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid black;
+  `,
   right: css`
     top: 0;
     transform: translate(100%);
     right: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 1px solid black;
   `,
   default: css`
     transform: initial;
@@ -32,7 +41,6 @@ const buPosition = {
 
 export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right' }>`
   position: relative;
-  ${({ position }) => get(buPosition, position) || get(buPosition, 'default')};
   position: absolute;
   display: flex;
   margin: 0;
@@ -46,12 +54,13 @@ export const SecondMenuContainer = styled.dl<{ position?: 'bottom_left' | 'right
   list-style: none;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0,0,0,.15);
+  border: 1px solid rgba(0,0,0, 0.15);
   border-radius: 4px;
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
 
   padding: 8px 0px;
+
+  ${({ position }) => get(buPosition, position) || get(buPosition, 'default')};
 `;
 
 export const SecondMenuItemContainer = styled(DefaultFirstDt)<{ noneEffect?: boolean  }>`

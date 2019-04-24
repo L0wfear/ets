@@ -43,7 +43,7 @@ import {
   defaultSelectListMapper,
 } from 'components/ui/input/ReactSelect/utils';
 
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 import Taxes from 'components/waybill/Taxes';
 
 import WaybillFooter from 'components/waybill/form/WaybillFooter';
@@ -180,7 +180,7 @@ const setEmptyFieldByKey = (shema) => {
 
 const modalKey = 'waybill';
 
-class WaybillForm extends Form {
+class WaybillForm extends UNSAFE_Form {
   constructor(props) {
     super(props);
 

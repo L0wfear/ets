@@ -17,7 +17,7 @@ import {
   toServerFilteringObject,
 } from 'components/ui/table/utils';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import CheckableElementsList from 'components/CheckableElementsList';
+import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
 import Paginator from 'components/ui/new/paginator/Paginator';
 
 import { connectToStores, staticProps } from 'utils/decorators';
@@ -42,7 +42,7 @@ import { DropdownWrap } from './styled';
   formComponent: WaybillFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
-class WaybillJournal extends CheckableElementsList {
+class WaybillJournal extends UNSAFE_CheckableElementsList {
   constructor(props, context) {
     super(props);
 

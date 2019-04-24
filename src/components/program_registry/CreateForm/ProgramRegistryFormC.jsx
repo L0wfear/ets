@@ -4,7 +4,7 @@ import * as Row from 'react-bootstrap/lib/Row';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Button from 'react-bootstrap/lib/Button';
 
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -25,7 +25,7 @@ const setTypeOptionsBySlug = (slug, allOptions) => {
 };
 
 @connectToStores(['repair', 'objects'])
-class ProgramRegistryForm extends Form {
+class ProgramRegistryForm extends UNSAFE_Form {
   state = { REPAIR_TYPES_OPTIONS: [] };
   componentDidMount() {
     const { flux } = this.context;

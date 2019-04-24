@@ -5,6 +5,7 @@ export type CompanyStructure = {
   note: string | null;
   parent_id?: number | null;
   type: number | null;
+  children: CompanyStructure[];
 };
 export type CompanyStructureLinear = {
   id: number | null;

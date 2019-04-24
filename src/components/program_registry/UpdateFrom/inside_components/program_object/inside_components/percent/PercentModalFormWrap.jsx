@@ -3,13 +3,13 @@ import moment from 'moment';
 
 import { validateField } from 'utils/validate/validateField';
 
-import FormWrap from 'components/compositions/FormWrap';
+import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import PercentModalForm from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalForm';
 
 import { formValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/schema';
 
-class PercentModalFormWrap extends FormWrap {
+class PercentModalFormWrap extends UNSAFE_FormWrap {
   constructor(props) {
     super(props);
     this.schema = formValidationSchema;

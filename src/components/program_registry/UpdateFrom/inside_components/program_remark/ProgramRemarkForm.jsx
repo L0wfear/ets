@@ -7,9 +7,9 @@ import * as Button from 'react-bootstrap/lib/Button';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 
-export default class SparePartForm extends Form {
+export default class SparePartForm extends UNSAFE_Form {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {

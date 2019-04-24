@@ -12,14 +12,14 @@ const SAVE_BUTTON_LABEL_PROGRESS = 'Сохранение...';
 const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
 
 /**
- * FormWrap базовый класс хранения и работы с состоянием формы
+ * UNSAFE_FormWrap базовый класс хранения и работы с состоянием формы
  * @validate валидация состояния формы в соответствии со схемой (this.schema обязателен)
  * @handleFormStateChange обработка изменения состояния формы
  * @handleFormSubmit обработка отправки формы
  * @render дефолтный, обязательно переопределяется
  */
 @FluxContext
-class FormWrap extends React.Component {
+class UNSAFE_FormWrap extends React.Component {
   static get propTypes() {
     return {
       showForm: PropTypes.bool.isRequired,
@@ -243,10 +243,11 @@ class FormWrap extends React.Component {
   render() {
     return (
       <div>
-        FormWrap: do not call abstract method FormWrap#render from child.
+        UNSAFE_FormWrap: do not call abstract method UNSAFE_FormWrap#render from
+        child.
       </div>
     );
   }
 }
 
-export default FormWrap;
+export default UNSAFE_FormWrap;

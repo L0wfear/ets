@@ -59,7 +59,7 @@ import {
 import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMission';
 import EtsModal from 'components/new/ui/modal/Modal';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
-import { isOrderSource } from 'components/missions/utils/utils';
+import { isOrderSource } from 'components/new/pages/missions/utils';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
 

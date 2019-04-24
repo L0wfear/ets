@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import PrintForm from 'components/missions/common/PrintForm';
+import PrintByDates from 'components/new/ui/modal/print_by_dates/PrintByDates';
 
 type PropsButtonExportMission = {
   registryKey: string;
@@ -51,7 +51,7 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
       >
         <Glyphicon glyph="download-alt" />
       </Button>
-      <PrintForm
+      <PrintByDates
         show={isOpenModalRemove}
         onHide={handleClickCloseForm}
         onExport={handleExport}

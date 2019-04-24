@@ -18,7 +18,7 @@ import {
 
 import { tabable } from 'components/compositions/hoc';
 
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -48,7 +48,7 @@ const getObjectsType = (slug) => {
 };
 const log = {};
 
-class ProgramObjectFormDT extends Form {
+class ProgramObjectFormDT extends UNSAFE_Form {
   static defaultProps = {
     tabKey: OBJ_TAB_INDEX.PLAN,
   };

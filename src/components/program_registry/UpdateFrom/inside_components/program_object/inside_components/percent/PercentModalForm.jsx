@@ -7,19 +7,13 @@ import * as Button from 'react-bootstrap/lib/Button';
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 
-export default class PercentModalForm extends Form {
+export default class PercentModalForm extends UNSAFE_Form {
   handleSubmitWrap = () => this.handleSubmit();
 
   render() {
-    const [
-      state,
-      errors,
-    ] = [
-      this.props.formState,
-      this.props.formErrors,
-    ];
+    const [state, errors] = [this.props.formState, this.props.formErrors];
 
     const {
       isPermitted: isPermittedOuter = false,
@@ -34,9 +28,13 @@ export default class PercentModalForm extends Form {
     if (IS_CREATING) title = 'Добавление записи';
 
     return (
-      <Modal id="modal-percent" show={this.props.show} onHide={this.props.onHide} backdrop="static">
+      <Modal
+        id="modal-percent"
+        show={this.props.show}
+        onHide={this.props.onHide}
+        backdrop="static">
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
         <Div style={{ padding: 15 }}>
           <Row>
@@ -73,8 +71,12 @@ export default class PercentModalForm extends Form {
         </Div>
         <ModalBody />
         <Modal.Footer>
-          <Div hidden={!IS_CREATING} >
-            <Button disabled={!this.props.canSave} onClick={this.handleSubmitWrap}>Сохранить</Button>
+          <Div hidden={!IS_CREATING}>
+            <Button
+              disabled={!this.props.canSave}
+              onClick={this.handleSubmitWrap}>
+              Сохранить
+            </Button>
           </Div>
         </Modal.Footer>
       </Modal>

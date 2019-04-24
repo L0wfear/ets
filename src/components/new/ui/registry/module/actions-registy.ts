@@ -34,6 +34,8 @@ import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/promise_employee_on_car';
 import { getFrontTechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/promise_technical_operation_relations';
 import { getFrontMission } from 'redux-main/reducers/modules/missions/mission/promise';
+import { getListData } from './selectors-registry';
+import { getRegistryState } from 'redux-main/reducers/selectors';
 
 /**
  * Да простят меня боги
@@ -629,7 +631,7 @@ export const registryResetGlobalCheck: any = (registryKey) => (dispatch, getStat
         },
       ),
     );
-      }
+  }
 };
 
 export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
@@ -653,6 +655,37 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
       },
     ),
   );
+
+  const children = get(selectedRow, 'children', null);
+
+  if (children && children.length) {
+    const listNew = getListData(getRegistryState(getState()), registryKey);
+    const uniqKey = listNew.data.uniqKey;
+    const processedArray = listNew.processed.processedArray.map(
+      (rowData) => {
+        if (rowData[uniqKey] === selectedRow[uniqKey]) {
+          return {
+            ...rowData,
+            is_open: !rowData.is_open,
+          };
+        }
+        return rowData;
+      },
+    );
+
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...listNew,
+          processed: {
+            ...listNew.processed,
+            processedArray,
+          },
+        },
+      ),
+    );
+  }
 };
 
 export const registrySetSelectedRowToShowInForm: any = (registryKey, selectedRow?) => (dispatch, getState) => {
@@ -740,19 +773,26 @@ export const registryLoadOneData: any = (registryKey, id) => async (dispatch, ge
   return null;
 };
 
-export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch, getState) => {
+export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => async (dispatch, getState) => {
+  let itemToRemove = rows;
   const registryData = get(getState(), `registry.${registryKey}`, null);
-  const removeOneData = get(registryData, 'Service.removeOneData', null);
-
   const list: any = get(registryData, 'list', null);
   const uniqKey: string = get(list, 'data.uniqKey', null);
-  const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
-  const selectedRowCurrent: any = get(list, 'data.selectedRow', {});
+  const removeOneData = get(
+    registryData,
+    'Service.removeOneData',
+    get(registryData, 'Service.getRegistryData', null),
+  );
 
-  const itemToRemove = checkedRowsCurrent;
+  if (!itemToRemove) {
+    const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
+    const selectedRowCurrent: any = get(list, 'data.selectedRow', {});
 
-  if (!Object.values(itemToRemove).length) {
-    itemToRemove[uniqKey] = selectedRowCurrent;
+    itemToRemove = Object.values(checkedRowsCurrent);
+
+    if (!itemToRemove.length) {
+      itemToRemove.push(selectedRowCurrent);
+    }
   }
 
   dispatch(
@@ -761,7 +801,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
 
   try {
     await Promise.all(
-      Object.values(itemToRemove).map(async ({ [uniqKey]: uniqKeyValue }: any) => {
+      itemToRemove.map(async ({ [uniqKey]: uniqKeyValue }: any) => {
         let path = `${configStand.backend}/${removeOneData.entity}`;
         const payload: any = {};
 
@@ -793,7 +833,7 @@ export const registryRemoveSelectedRows: any = (registryKey) => async (dispatch,
     );
     global.NOTIFICATION_SYSTEM.notify('Выбранные записи успешно удалены', 'success');
   } catch (error) {
-    global.NOTIFICATION_SYSTEM.notify('При удалении произошла ошибка', 'warning');
+    throw error;
   }
 
   return true;

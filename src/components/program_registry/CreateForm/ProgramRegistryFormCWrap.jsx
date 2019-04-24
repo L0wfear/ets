@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap';
+import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormCreate from 'components/program_registry/CreateForm/ProgramRegistryFormC';
 
@@ -12,7 +12,7 @@ const firstStepFields = [
   'plan_date_end',
 ];
 
-class ProgramRegistryFormCreateWrap extends FormWrap {
+class ProgramRegistryFormCreateWrap extends UNSAFE_FormWrap {
   componentDidMount() {
     this.state = {
       ...this.state,

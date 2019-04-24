@@ -33,7 +33,6 @@ export type DispatchPropsTrTdCheckbox = {
 
 export interface OwnPropsTrTdCheckbox {
   registryKey: string;
-  indexRow: number;
   rowData: any;
 }
 

@@ -14,7 +14,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 
-import Form from 'components/compositions/Form';
+import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 
 import {
   ProgramRemarkList,
@@ -59,7 +59,7 @@ const getTitleByStatus = (status) => {
 
 @loadingOverlay
 @connectToStores(['repair', 'objects'])
-class ProgramRegistryForm extends Form {
+class ProgramRegistryForm extends UNSAFE_Form {
   constructor(props) {
     super(props);
     const { entity } = props;

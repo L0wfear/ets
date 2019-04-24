@@ -1,11 +1,11 @@
 import React from 'react';
 
-import FormWrap from 'components/compositions/FormWrap';
+import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRemarkForm from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkForm';
 import { formValidationSchema } from 'components/program_registry/UpdateFrom/inside_components/program_remark/schema';
 
-class ProgramRemarkFormWrap extends FormWrap {
+class ProgramRemarkFormWrap extends UNSAFE_FormWrap {
   constructor(props, context) {
     super(props);
     this.schema = formValidationSchema;

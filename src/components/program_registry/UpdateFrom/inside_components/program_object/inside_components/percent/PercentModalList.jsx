@@ -5,7 +5,7 @@ import moment from 'moment';
 import { isEmpty } from 'lodash';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import ElementsList from 'components/ElementsList';
+import UNSAFE_ElementsList from 'components/program_registry/UNSAFE_ElementsList';
 import ModalBody from 'components/ui/Modal';
 import {
   ButtonCreate,
@@ -29,7 +29,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
   formComponent: PercentModalFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'DELETE'],
 })
-class PercentModalList extends ElementsList {
+class PercentModalList extends UNSAFE_ElementsList {
   constructor(props) {
     super(props);
     this.keyPressDisabled = true;

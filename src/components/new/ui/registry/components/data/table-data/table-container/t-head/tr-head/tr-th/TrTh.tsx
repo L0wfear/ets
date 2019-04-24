@@ -70,6 +70,19 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
       formatedTitle,
     } = this.props;
 
+    if (colData.key === 'is_open') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={35}
+        >
+          {formatedTitle || ' '}
+        </EtsTheadTh>
+      );
+    }
+
     if (colData.key === 'checkbox') {
       return (
         <EtsTheadTh
@@ -123,6 +136,19 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           rowSpan={colData.rowSpan}
           colSpan={colData.colSpan}
           width={150}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
+    if (colData.key === 'company_structure_actions') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={250}
         >
           {formatedTitle}
         </EtsTheadTh>

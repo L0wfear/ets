@@ -246,6 +246,9 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
   delete data.files;
   delete data.photos_of_supporting_documents;
   delete data.photos_defect;
+  delete data.pgm_volume_sum;
+  delete data.summ_capacity;
+  delete data.containers_counter;
 
   const payload = {
     data,

@@ -12,7 +12,10 @@ import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobase
 import { Reducer } from 'redux';
 import { inspectAutobaeSchema } from './inspect_autobase_schema';
 import { validate } from 'components/ui/form/new/validate';
-import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
+import ViewAddInspectEmployee, {
+  ViewAddInspectEmployeeInitialState,
+  viewAddInspectEmployeeInitialState,
+} from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
@@ -264,8 +267,9 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
             canAddMembers={true}
             canAddCompanyAgent={true}
             canRemoveEmployee={true}
-            selectedInspectAutobase={state.selectedInspect}
+            selectedInspect={state.selectedInspect}
             setComissionAndMembers={setComissionAndMembers}
+            inspectTypeForm={INSPECT_AUTOBASE_TYPE_FORM}
           />
         </ContainerForm>
         <FooterForm md={12} sm={12}>

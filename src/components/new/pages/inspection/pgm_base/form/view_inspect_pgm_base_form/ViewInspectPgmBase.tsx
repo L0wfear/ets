@@ -10,7 +10,10 @@ import ViewInspectPgmBaseButtonSubmit from './button_sumbit/ViewInspectPgmBaseBu
 import { Reducer } from 'redux';
 import { inspectAutobaeSchema } from './inspect_pgm_base_schema';
 import { validate } from 'components/ui/form/new/validate';
-import ViewAddInspectEmployee, { ViewAddInspectEmployeeInitialState, viewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/add_inspect_employee/addInspectEmployee';
+import ViewAddInspectEmployee, {
+  ViewAddInspectEmployeeInitialState,
+  viewAddInspectEmployeeInitialState,
+} from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import {
   filedToCheckMonitoring,
   filedToCheckFall,
@@ -335,8 +338,9 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             canAddMembers={true}
             canAddCompanyAgent={true}
             canRemoveEmployee={true}
-            selectedInspectPgmBase={state.selectedInspect}
+            selectedInspect={state.selectedInspect}
             setComissionAndMembers={setComissionAndMembers}
+            inspectTypeForm={INSPECT_PGM_BASE_TYPE_FORM}
           >
           </ViewAddInspectEmployee>
         </ContainerForm>

@@ -9,8 +9,8 @@ import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarSConditionPrepareCarToInspectOwnProps = {
   onChange: any;
-  preparing_cars_check: InspectCarsCondition['preparing_cars_check'];
-  error_preparing_cars_check: FormErrorType<InspectCarsCondition['preparing_cars_check']>;
+  preparing_cars_check: InspectCarsCondition['data']['preparing_cars_check'];
+  error_preparing_cars_check: FormErrorType<InspectCarsCondition['data']['preparing_cars_check']>;
   isPermitted: boolean;
   isActiveInspect: boolean;
 };

@@ -34,7 +34,7 @@ export const validationSchema: IValidationSchema = {
       required: false,
     },
     {
-      key: 'only_summer_use_cnt',
+      key: 'checks_period_use_cnt',
       title: 'Используемая только в летний период',
       type: 'number',
       integer: true,
@@ -62,7 +62,7 @@ export const meta: IDataTableSchema = {
       type: 'input',
     },
     {
-      name: 'only_summer_use_cnt',
+      name: 'checks_period_use_cnt',
       displayName: 'Используемая только в летний период',
       type: 'input',
     },
@@ -80,7 +80,6 @@ const TypeRenderer: React.FunctionComponent<IPropsTypeRenderer> = ({
   onChange,
   index,
   isPermitted,
-  isDefaultVal,
 }) => (
   <ExtField
     type="select"
@@ -90,7 +89,7 @@ const TypeRenderer: React.FunctionComponent<IPropsTypeRenderer> = ({
     error={get(outputListErrors[index], 'type', '')}
     onChange={onChange}
     boundKeys={[index, 'type']}
-    disabled={!isPermitted || isDefaultVal}
+    disabled={!isPermitted}
   />
 );
 
@@ -113,11 +112,11 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
       return (
         <TypeRenderer
           {...props}
+          isPermitted={props.isPermitted && !rowMeta.rowData.disabled}
           onChange={onListItemChange}
           value={rowMeta.data}
           index={rowMeta.rowData.rowNumber - 1}
           vehicleList={props.typesListOpt}
-          isDefaultVal={rowMeta.rowData.isDefaultVal}
         />);
     },
     will_checked_cnt: (rowMeta) => (
@@ -138,13 +137,13 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         fieldKey='allseason_use_cnt'
       />
     ),
-    only_summer_use_cnt: (rowMeta) => (
+    checks_period_use_cnt: (rowMeta) => (
       <InputRenderer
         {...props}
         onChange={onListItemChange}
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
-        fieldKey='only_summer_use_cnt'
+        fieldKey='checks_period_use_cnt'
       />
     ),
   };

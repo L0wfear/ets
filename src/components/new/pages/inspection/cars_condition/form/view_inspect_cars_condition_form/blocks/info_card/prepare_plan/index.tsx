@@ -5,63 +5,94 @@ import * as React from 'react';
 // import { Button } from 'react-bootstrap';
 // import { ButtonGroupWrapperMargin } from 'global-styled/global-styled';
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
-import * as PrepareCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
-import * as PrepareAgregat from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
+import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
+import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
 import { CustomTableWrapper } from './styled/styled';
-import { promiseLoadCarFuncTypess } from 'redux-main/reducers/modules/autobase/car_func_types/promise';
+import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
+import { ReduxState } from 'redux-main/@types/state';
 
-export type PreparePlanProps = {
+type PreparePlanOwnProps = {
+  types_cars: InspectCarsCondition['data']['types_cars'];
+  types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];
+  canSavePreparePlanHandler: (value: boolean) => any;
+  handleChangeData: (ownObj: Partial<InspectCarsCondition['data']>) => any;
+
   page: string;
-  types_cars: any;
-  canSavePreparePlanHandler: any;
-  prepareListHandler: any;
 };
 
-const PreparePlan: React.FC<PreparePlanProps> = (props) => {
+type PreparePlanDispatchProps = {
+  autobaseGetSetCarFuncTypes: HandleThunkActionCreator<typeof autobaseGetSetCarFuncTypes>;
+};
 
-  const [prepareTsList, setPrepareTsList] = React.useState([]);
-  const [prepareAgregatList, setPrepareAgregatList] = React.useState([]);
+export type PreparePlanProps = (
+  PreparePlanOwnProps
+  & PreparePlanDispatchProps
+);
+
+const PreparePlan: React.FC<PreparePlanProps> = (props) => {
   const [typesListOpt, setTypesListOpt] = React.useState([]);
-  const [canSavePrepareCars, setCanSavePrepareCars] = React.useState(false);
-  const [canSavePrepareAgregat, setCanSavePrepareAgregat] = React.useState(false);
+  const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(false);
+  const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(false);
+
   // componentDidMount
   React.useEffect(() => {
-    const prepareTsListOpt = props.types_cars.map((elem, index) =>
-      ({
-        ...elem,
-        customId: index + 1,
-        isDefaultVal: true, // для renderers
-      }),
+    props.autobaseGetSetCarFuncTypes().then(
+      ({ data }) => {
+        setTypesListOpt(
+          data.map(
+            (rowData) => ({
+              label: rowData.short_name,
+              value: rowData.short_name,
+              rowData,
+            }),
+          ),
+        );
+      },
     );
-
-    promiseLoadCarFuncTypess().then(({data}) => {
-      setTypesListOpt(data.map(
-        (rowData) => ({
-          label: rowData.short_name,
-          value: rowData.short_name,
-          rowData,
-        }), // Id с бека нет, делаем такую фигню
-      ));
-    });
-    setPrepareTsList(prepareTsListOpt);
-    props.canSavePreparePlanHandler(canSavePrepareCars && canSavePrepareAgregat);
+    props.canSavePreparePlanHandler(
+      canSaveTypesCars && canSaveTypesHarvestingUnit,
+    );
   }, []);
 
-  React.useEffect( () => {
-    props.canSavePreparePlanHandler(canSavePrepareCars && canSavePrepareAgregat);
-  }, [canSavePrepareCars, canSavePrepareAgregat]);
+  const handleChangeTypesCars = React.useCallback(
+    (types_cars) => {
+      props.handleChangeData({
+        types_cars,
+      });
+    },
+    [props.handleChangeData],
+  );
+  const handleChangeTypesHarvestingUnit = React.useCallback(
+    (types_harvesting_unit) => {
+      props.handleChangeData({
+        types_harvesting_unit,
+      });
+    },
+    [props.handleChangeData],
+  );
 
-  React.useEffect( () => {
-    props.prepareListHandler({prepareTsList, prepareAgregatList});
-  }, [prepareTsList, prepareAgregatList]);
+  const handleValidityTypesCars = React.useCallback(
+    ({ isValidInput: canSaveTypesCarsNew }) => {
+      setCanSaveTypesCars(canSaveTypesCarsNew);
 
-  const handleValidityPrepareCars = ({ isValidInput }) =>
-    setCanSavePrepareCars(isValidInput);
+      props.canSavePreparePlanHandler(
+        canSaveTypesCarsNew && canSaveTypesHarvestingUnit,
+      );
+    },
+    [canSaveTypesHarvestingUnit],
+  );
 
-  const handleValidityPrepareAgregat = ({ isValidInput }) =>
-    setCanSavePrepareAgregat(isValidInput);
-
-  // console.log('preparePlan === ', {prepareTsList, props, canSavePrepareCars, typesListOpt});
+  const handleValidityTypesHarvestingUnit = React.useCallback(
+    ({ isValidInput: canSaveTypesHarvestingUnitNew }) => {
+      setCanSaveTypesHarvestingUnit(canSaveTypesHarvestingUnitNew);
+      props.canSavePreparePlanHandler(
+        canSaveTypesCars && canSaveTypesHarvestingUnitNew,
+      );
+    },
+    [canSaveTypesCars],
+  );
 
   return(
     <>
@@ -75,17 +106,17 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
           </h3>
           <CustomTableWrapper>
             <DataTableInput
-              tableSchema={PrepareCars.meta}
-              renderers={PrepareCars.renderers}
-              validationSchema={PrepareCars.validationSchema}
+              tableSchema={TypesCars.meta}
+              renderers={TypesCars.renderers}
+              validationSchema={TypesCars.validationSchema}
               addButtonLabel="Добавить тип"
               removeButtonLable="Удалить тип"
               stackOrder
-              onChange={setPrepareTsList}
-              inputList={prepareTsList || []}
+              onChange={handleChangeTypesCars}
+              inputList={props.types_cars}
               path="cars_condition-prepare_plan"
-              isPermitted={true}
-              onValidation={handleValidityPrepareCars}
+              isPermitted={Boolean(typesListOpt.length)}
+              onValidation={handleValidityTypesCars}
               selectField="customId"
               typesListOpt={typesListOpt}
               {...props}
@@ -96,17 +127,17 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
           </h3>
           <CustomTableWrapper>
             <DataTableInput
-              tableSchema={PrepareAgregat.meta}
-              renderers={PrepareAgregat.renderers}
-              validationSchema={PrepareAgregat.validationSchema}
+              tableSchema={TypesHarvestingUnit.meta}
+              renderers={TypesHarvestingUnit.renderers}
+              validationSchema={TypesHarvestingUnit.validationSchema}
               addButtonLabel="Добавить тип"
               removeButtonLable="Удалить тип"
               stackOrder
-              onChange={setPrepareAgregatList}
-              inputList={prepareAgregatList || []}
+              onChange={handleChangeTypesHarvestingUnit}
+              inputList={props.types_harvesting_unit}
               path="cars_condition-prepare_plan"
               isPermitted={true}
-              onValidation={handleValidityPrepareAgregat}
+              onValidation={handleValidityTypesHarvestingUnit}
               selectField="customId"
               {...props}
             />
@@ -117,4 +148,13 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
   );
 };
 
-export default PreparePlan;
+export default connect<{}, PreparePlanDispatchProps, PreparePlanOwnProps, ReduxState>(
+  null,
+  (dispatch: any) => ({
+    autobaseGetSetCarFuncTypes: (...arg) => (
+      dispatch(
+        autobaseGetSetCarFuncTypes(...arg),
+      )
+    ),
+  }),
+)(PreparePlan);

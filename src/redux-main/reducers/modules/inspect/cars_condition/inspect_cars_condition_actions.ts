@@ -16,8 +16,7 @@ import {
   promiseGetCarsConditionsCarById,
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
-import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
-import { createValidDateTime } from 'utils/dates';
+import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): ThunkAction<IStateInspectCarsCondition, ReduxState, {}, AnyAction> => (dispatch, getState) => {
@@ -90,12 +89,15 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
   const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
   const data = cloneDeep(inspectCarsCondition.data);
 
-  data.cars_use = inspectCarsCondition.headcount_list.cars_use;
-  delete inspectCarsCondition.headcount_list.cars_use;
-  data.headcount_list = inspectCarsCondition.headcount_list;
-
   delete inspectCarsCondition.data;
-  delete inspectCarsCondition.headcount_list;
+
+  const isHasPeriod = Boolean(inspectCarsConditionOwn.checks_period); // разное отображение по типу проверки
+  if (isHasPeriod) {
+    delete data.cars_use;
+    delete data.headcount_list;
+  } else {
+    delete data.preparing_cars_check;
+  }
 
   const inspectionCarsCondition = await dispatch(
     actionUpdateInspect(
@@ -112,37 +114,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
 };
 
 const actionCloseInspectCarsCondition = (inspectCarsCondition: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
-  const data = cloneDeep(inspectCarsCondition.data);
-  const {
-    agents_from_gbu,
-    commission_members,
-    resolve_to,
-  } = inspectCarsCondition;
-  delete data.files;
-  delete data.photos_of_supporting_documents;
-  delete data.photos_defect;
-
-  if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
-    commission_members.shift();
-  }
-
-  const payload = {
-    data,
-    agents_from_gbu,
-    commission_members,
-    resolve_to: createValidDateTime(resolve_to),
-  };
-
-  const result = await dispatch(
-    actionCloseInspect(
-      inspectCarsCondition.id,
-      payload,
-      'autobase',
-      meta,
-    ),
-  );
-
-  return result;
+  throw new Error('');
 };
 
 const autobaseGetCarsConditionCars = (inspection_id: number, meta: LoadingMeta): ThunkAction<Promise<any>, ReduxState, {} , AnyAction> => async (dispatch, getState) => {

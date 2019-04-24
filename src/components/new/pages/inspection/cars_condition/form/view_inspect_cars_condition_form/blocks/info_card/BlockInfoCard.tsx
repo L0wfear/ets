@@ -1,7 +1,7 @@
 import * as React from 'react';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { DivNone } from 'global-styled/global-styled';
-import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { CarsConditionCars, InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import BlockCarInfoWrap from './car_info';
 import PreparePlan from './prepare_plan';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
@@ -13,9 +13,11 @@ type BlockInfoCardOwnProps = {
   callBackToLoadCars: () => Promise<void>;
   page: string;
   isHasPeriod: boolean;
-  types_cars: any;
-  canSavePreparePlanHandler: any;
-  prepareListHandler: any;
+
+  types_cars: InspectCarsCondition['data']['types_cars'];
+  types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];
+  canSavePreparePlanHandler: (value: boolean) => any;
+  handleChangeData: (ownObj: Partial<InspectCarsCondition['data']>) => any;
 };
 type BlockInfoCardProps = (
   BlockInfoCardOwnProps
@@ -84,14 +86,14 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
     if (typeRightView === 'prepare_plan') {
       // @todo
       return (
-        <div>
-          <PreparePlan
-            page={props.page}
-            types_cars={props.types_cars}
-            canSavePreparePlanHandler={props.canSavePreparePlanHandler}
-            prepareListHandler={props.prepareListHandler}
-          ></PreparePlan>
-        </div>
+        <PreparePlan
+          types_cars={props.types_cars}
+          types_harvesting_unit={props.types_harvesting_unit}
+          canSavePreparePlanHandler={props.canSavePreparePlanHandler}
+          handleChangeData={props.handleChangeData}
+
+          page={props.page}
+        />
       );
     }
 

@@ -38,6 +38,7 @@ const BlockCarsConditionCarSelectPhotoDefect: React.FC<BlockCarsConditionCarSele
       },
       [props.onChange, files],
     );
+
     return (
       <FileField
         id="file_photo_defect"

@@ -7,10 +7,10 @@ import { Row, Col } from 'react-bootstrap';
 import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarsConditionCarsUseProps = {
-  onChange: any;
-  headcount_list: InspectCarsCondition['headcount_list'];
+  onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
+  cars_use: InspectCarsCondition['data']['cars_use'];
   carsConditionCarsList: CarsConditionCars[];
-  error_cars_use: FormErrorType<InspectCarsCondition['headcount_list']['cars_use']>;
+  error_cars_use: FormErrorType<InspectCarsCondition['data']['cars_use']>;
   isPermitted: boolean;
   isActiveInspect: boolean;
 };
@@ -27,9 +27,7 @@ const waybillIssueLogUsedOptions = [
 const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = React.memo(
   (props) => {
     const {
-      headcount_list: {
-        cars_use: state,
-      },
+      cars_use: state,
       error_cars_use: errors,
       carsConditionCarsList,
       isActiveInspect,
@@ -39,16 +37,13 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
     const handleChange = React.useCallback(
       (key, event) => {
         props.onChange({
-          headcount_list: {
-            ...props.headcount_list,
-            cars_use: {
-              ...props.headcount_list.cars_use,
-              [key]: get(event, 'target.value', event),
-            },
+          cars_use: {
+            ...props.cars_use,
+            [key]: get(event, 'target.value', event),
           },
         });
       },
-      [props.onChange, props.headcount_list],
+      [props.onChange, props.cars_use],
     );
 
     const countData = React.useMemo(

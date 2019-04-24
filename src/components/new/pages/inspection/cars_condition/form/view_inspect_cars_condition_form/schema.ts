@@ -1,6 +1,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { PropsViewInspectCarsConditionWithForm } from './@types/ViewInspectCarsContidion';
+import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectCarsCondition['head_balance_holder_base'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
@@ -32,7 +33,7 @@ const headOperatingBaseSchema: SchemaType<InspectCarsCondition['head_operating_b
   },
 };
 
-const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['preparing_cars_check'], PropsViewInspectCarsConditionWithForm> = {
+const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['preparing_cars_check'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     order_issued_at: {
       validateIf: {
@@ -40,6 +41,14 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['preparing_cars_
       },
       type: 'date',
       title: 'Приказ о подготовке техники к сезону издан от',
+      required: true,
+    },
+    order_number: {
+      validateIf: {
+        path: 'checks_period_text',
+      },
+      type: 'string',
+      title: '№ приказа',
       required: true,
     },
     master_plan_approved: {
@@ -100,7 +109,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['preparing_cars_
   },
 };
 
-const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['headcount_list']['cars_use'], PropsViewInspectCarsConditionWithForm> = {
+const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_use'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     waybill_issue_log_exists: {
       validateIf: {
@@ -141,7 +150,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['headcount_lis
   },
 };
 
-const headCountListSchema: SchemaType<InspectCarsCondition['headcount_list'], PropsViewInspectCarsConditionWithForm> = {
+const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_list'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     staff_drivers: {
       validateIf: {
@@ -191,6 +200,19 @@ const headCountListSchema: SchemaType<InspectCarsCondition['headcount_list'], Pr
       type: 'number',
       title: 'Механизаторов',
     },
+  },
+};
+
+const dataSchema: SchemaType<InspectCarsCondition['data'], PropsViewInspectCarsConditionWithForm> = {
+  properties: {
+    preparing_cars_check: {
+      type: 'schema',
+      schema: preparingCarsCheckSchema,
+    },
+    headcount_list: {
+      type: 'schema',
+      schema: headCountListSchema,
+    },
     cars_use: {
       type: 'schema',
       schema: headCountListCarsUseSchema,
@@ -208,13 +230,20 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'schema',
       schema: headOperatingBaseSchema,
     },
-    headcount_list: {
+    data: {
       type: 'schema',
-      schema: headCountListSchema,
+      schema: dataSchema,
     },
-    preparing_cars_check: {
-      type: 'schema',
-      schema: preparingCarsCheckSchema,
-    },
+  },
+  dependencies: {
+    checked_cars_cnt: [
+      (checked_cars_cnt, { cars_cnt }, props) => {
+        if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
+          if (checked_cars_cnt !== cars_cnt) {
+            return 'error';
+          }
+        }
+      },
+    ],
   },
 };

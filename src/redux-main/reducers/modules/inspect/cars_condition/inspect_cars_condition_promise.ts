@@ -6,6 +6,7 @@ import {
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
 import { InspectCarsService } from "api/Services";
+import { createValidDate } from "utils/dates";
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -17,7 +18,7 @@ const default_head_operating_base: InspectCarsCondition['head_operating_base'] =
   fio: '',
   tel: '',
 };
-const default_preparing_cars_check: InspectCarsCondition['preparing_cars_check'] = {
+const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars_check'] = {
   order_issued_at: '',
   order_number: '',
   master_plan_approved: '',
@@ -28,19 +29,20 @@ const default_preparing_cars_check: InspectCarsCondition['preparing_cars_check']
   drawbacks_eliminated: '',
   drawbacks_new: '',
 };
-const default_headcount_list: InspectCarsCondition['headcount_list'] = {
+const default_headcount_list: InspectCarsCondition['data']['headcount_list'] = {
   staff_drivers: null,
   staff_mechanics: null,
   list_drivers: null,
   list_mechanics: null,
   staffing_drivers: null,
   staffing_mechanics: null,
-  cars_use: {
-    waybill_issue_log_exists: '',
-    waybill_issue_log_used: '',
-    comment: '',
-    comment_detected: '',
-  },
+};
+
+const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
+  waybill_issue_log_exists: '',
+  waybill_issue_log_used: '',
+  comment: '',
+  comment_detected: '',
 };
 
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
@@ -48,13 +50,24 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
 
   inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', deafult_head_balance_holder_base);
   inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', default_head_operating_base);
-  inspectCarsCondition.headcount_list = get(inspectCarsCondition, 'headcount_list', default_headcount_list);
+
   inspectCarsCondition.data = {
-    ...get(inspectCarsCondition, 'preparing_cars_check', default_preparing_cars_check),
-    types_cars: get(inspectCarsCondition, 'data.types_cars', []),
+    types_cars: get(inspectCarsCondition, 'data.types_cars', []).map((rowData, index) => {
+      rowData.customId = index + 1;
+      rowData.disabled = true;
+      return rowData;
+    }),
+    types_harvesting_unit: get(inspectCarsCondition, 'data.types_harvesting_unit', []).map((rowData, index) => {
+      rowData.customId = index + 1;
+      return rowData;
+    }),
+    preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', default_preparing_cars_check),
+    headcount_list: get(inspectCarsCondition, 'data.headcount_list', default_headcount_list),
+    cars_use: get(inspectCarsCondition, 'data.cars_use', default_cars_use),
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
+  inspectCarsCondition.data.preparing_cars_check.order_issued_at = createValidDate(inspectCarsCondition.data.preparing_cars_check.order_issued_at);
   return inspectCarsCondition;
 };
 

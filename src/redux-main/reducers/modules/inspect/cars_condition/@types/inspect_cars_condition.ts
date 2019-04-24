@@ -6,6 +6,30 @@ type AgentsFromGbu = {
   position: string;
 };
 
+type CommissionMembers = {
+  fio: string;
+  position: string;
+  employee_id: number;
+  assignment: string;
+  assignment_date_start: string;
+};
+
+export type HeadcountList = {       // Штатная и списочная численность
+  staff_drivers: number;
+  staff_mechanics: number;
+  list_drivers: number;
+  list_mechanics: number;
+  staffing_drivers: number;
+  staffing_mechanics: number;
+};
+
+export type CarsUse = {
+  waybill_issue_log_exists: string;
+  waybill_issue_log_used: string;
+  comment: string;
+  comment_detected: string
+};
+
 export type PreparingCarsCheck = {
   order_issued_at: string;
   order_number: string,
@@ -18,6 +42,20 @@ export type PreparingCarsCheck = {
   drawbacks_new: string;
 };
 
+export type TypesСar = {
+  allseason_use_cnt: string;
+  checks_period_use_cnt: string;
+  type: string;
+  will_checked_cnt: string;
+};
+export type TypesHarvestingUnit = {
+  not_ready_cnt: string;
+  ready_cnt: string;
+  season: string;
+  type: string;
+  will_checked_cnt: string;
+};
+
 export type InspectCarsCondition = {
   agents_from_gbu: AgentsFromGbu[];
   fio: string;
@@ -28,10 +66,12 @@ export type InspectCarsCondition = {
   checks_period_text: string;
   checks_type: string;
   checks_type_text: string;
+  close_employee_assignment: string;
+  close_employee_assignment_date_start: string;
   close_employee_fio: string;
   close_employee_id: number;
   close_employee_position: string;
-  commission_members: AgentsFromGbu[];
+  commission_members: CommissionMembers[];
   company_id: number;
   company_name: string;
   date_start: string;
@@ -46,29 +86,20 @@ export type InspectCarsCondition = {
     fio: string;
     tel: string;
   };
-  headcount_list: {       // Штатная и списочная численность
-    staff_drivers: number;
-    staff_mechanics: number;
-    list_drivers: number;
-    list_mechanics: number;
-    staffing_drivers: number;
-    staffing_mechanics: number;
-    cars_use: {
-      waybill_issue_log_exists: string;
-      waybill_issue_log_used: string;
-      comment: string;
-      comment_detected: string
-    },
-  },
   monitoring_kind: string;
   monitoring_kind_text: string;
   open_employee_fio: string;
   open_employee_id: number;
-  preparing_cars_check: PreparingCarsCheck;
   resolve_to: string;
   status_text: string;
   type: 'cars_condition';
-  data?: any;
+  data?: {
+    types_cars: TypesСar[],
+    types_harvesting_unit: TypesHarvestingUnit[],
+    preparing_cars_check: PreparingCarsCheck;
+    headcount_list: HeadcountList,
+    cars_use: CarsUse,
+  };
   files: any[];
 } & DefaultPartInspect;
 

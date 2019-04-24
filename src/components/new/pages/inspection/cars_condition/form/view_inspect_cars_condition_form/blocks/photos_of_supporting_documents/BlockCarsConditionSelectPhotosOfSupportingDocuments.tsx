@@ -47,7 +47,7 @@ const BlockCarsConditionSelectPhotosOfSupportingDocuments: React.FC<BlockCarsCon
             label="Фотографии подтверждающих документов"
             multiple
             value={value}
-            disabled={!props.isPermitted || props.isActiveInspect}
+            disabled={!props.isPermitted || !props.isActiveInspect}
             onChange={handleChange}
           />
         )

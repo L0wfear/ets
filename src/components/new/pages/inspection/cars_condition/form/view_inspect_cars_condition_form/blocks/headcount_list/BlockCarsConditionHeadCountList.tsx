@@ -7,9 +7,9 @@ import { Row, Col } from 'react-bootstrap';
 import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
 
 type BlockCarsConditionHeadCountListProps = {
-  onChange: any;
-  headcount_list: InspectCarsCondition['headcount_list'];
-  error_headcount_list: FormErrorType<InspectCarsCondition['headcount_list']>;
+  onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
+  headcount_list: InspectCarsCondition['data']['headcount_list'];
+  error_headcount_list: FormErrorType<InspectCarsCondition['data']['headcount_list']>;
   isPermitted: boolean;
   isActiveInspect: boolean;
 };

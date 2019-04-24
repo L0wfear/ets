@@ -23,12 +23,12 @@ import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUs
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
 import { ColScroll } from './styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
     const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
-    const [prepareList, setPrepareList] = React.useState([]);
 
     const {
       formState: state,
@@ -57,7 +57,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
     React.useEffect(
       () => {
-        if (isHasPeriod) {
+        if (!isHasPeriod) {
           setPreparePlanCanSave(true);
         }
       },
@@ -80,8 +80,18 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       [props.handleHide, props.type],
     );
 
-    // tslint:disable-next-line:no-console
-    console.log('ViewInspectCarsCondition === ', {props, preparePlanCanSave, prepareList});
+    const handleChangeData = React.useCallback(
+      (ownObj: Partial<InspectCarsCondition['data']>) => {
+        props.handleChange({
+          data: {
+            ...state.data,
+            ...ownObj,
+          },
+        });
+      },
+      [state.data],
+    );
+
     return (
       <React.Fragment>
         <ContainerForm>
@@ -105,9 +115,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               isHasPeriod
                 ? (
                   <BlockCarSConditionPrepareCarToInspect
-                    preparing_cars_check={state.preparing_cars_check}
-                    error_preparing_cars_check={errors.preparing_cars_check}
-                    onChange={props.handleChange}
+                    preparing_cars_check={state.data.preparing_cars_check}
+                    error_preparing_cars_check={errors.data.preparing_cars_check}
+                    onChange={handleChangeData}
                     isPermitted={isPermitted}
                     isActiveInspect={isActiveInspect}
                   />
@@ -115,22 +125,22 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                 : (
                   <React.Fragment>
                     <BlockCarsConditionHeadCountList
-                      headcount_list={state.headcount_list}
-                      error_headcount_list={errors.headcount_list}
+                      headcount_list={state.data.headcount_list}
+                      error_headcount_list={errors.data.headcount_list}
 
                       isPermitted={isPermitted}
                       isActiveInspect={isActiveInspect}
 
-                      onChange={props.handleChange}
+                      onChange={handleChangeData}
                     />
                     <BlockCarsConditionCarsUse
-                      headcount_list={state.headcount_list}
+                      cars_use={state.data.cars_use}
                       carsConditionCarsList={carsConditionCarsList}
-                      error_cars_use={errors.headcount_list.cars_use}
+                      error_cars_use={errors.data.cars_use}
 
                       isPermitted={isPermitted}
                       isActiveInspect={isActiveInspect}
-                      onChange={props.handleChange}
+                      onChange={handleChangeData}
                     />
                   </React.Fragment>
                 )
@@ -146,15 +156,34 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               isActiveInspect={isActiveInspect}
               onChange={props.handleChange}
             />
+            <BlockCarsConditionSetInspectEmployee
+              type={props.type}
+              isPermitted={props.isPermitted}
+
+              close_employee_fio={state.close_employee_fio}
+              close_employee_position={state.close_employee_position}
+              close_employee_assignment={state.close_employee_assignment}
+              close_employee_assignment_date_start={state.close_employee_assignment_date_start}
+
+              commission_members={state.commission_members}
+              agents_from_gbu={state.agents_from_gbu}
+              company_name={state.company_name}
+              handleChange={props.handleChange}
+              page={props.page}
+              path={props.path}
+            />
           </ColScroll>
           <ColScroll md={6} sm={6}>
             <BlockInfoCard
               isHasPeriod={isHasPeriod}
               carsConditionCarsList={carsConditionCarsList}
               callBackToLoadCars={callBackToLoadCars}
+
               types_cars={state.data.types_cars}
+              types_harvesting_unit={state.data.types_harvesting_unit}
               canSavePreparePlanHandler={setPreparePlanCanSave}
-              prepareListHandler={setPrepareList}
+              handleChangeData={handleChangeData}
+
               page={props.page}
               type={props.type}
             />
@@ -164,6 +193,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
           <FooterEnd>
             <ViewInspectCarsConditionButtonSubmit
               type={props.type}
+              handleSubmit={props.defaultSubmit}
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}
               canSave={props.canSave && preparePlanCanSave}
@@ -190,6 +220,8 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
   ),
   withForm<PropsViewInspectCarsConditionWithForm, InspectCarsCondition>({
     uniqField: 'id',
+    updateAction: inspectionCarsConditionActions.actionUpdateInspectCarsCondition,
+    withThrow: true,
     mergeElement: (props) => {
       return getDefaultInspectCarsConditionElement(props.element);
     },

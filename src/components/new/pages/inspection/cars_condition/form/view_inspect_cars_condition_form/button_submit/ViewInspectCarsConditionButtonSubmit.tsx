@@ -12,13 +12,13 @@ import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_comp
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type ViewInspectCarsConditionButtonSubmitDispatchProps = {
-  actionUpdateInspectCarsCondition: HandleThunkActionCreator<typeof inspectionCarsConditionActions.actionUpdateInspectCarsCondition>;
   actionCloseInspectCarsCondition: HandleThunkActionCreator<typeof inspectionCarsConditionActions.actionCloseInspectCarsCondition>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 
 type ViewInspectCarsConditionButtonSubmitOwnProps = {
+  handleSubmit: any;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectCarsCondition: InspectCarsCondition;
@@ -38,12 +38,10 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
     async () => {
       if (canSave) {
         try {
-          await props.actionUpdateInspectCarsCondition(
-            selectedInspectCarsCondition,
-            { page: props.loadingPage },
-          );
+          await props.handleSubmit();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
+          return;
         }
 
         props.handleHide(true);
@@ -80,6 +78,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
           );
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
+          return;
         }
         await handleGetCarsConditionAct();
         props.handleHide(true);
@@ -103,11 +102,6 @@ export default compose<ViewInspectCarsConditionButtonSubmitProps, ViewInspectCar
   connect<{}, ViewInspectCarsConditionButtonSubmitDispatchProps, ViewInspectCarsConditionButtonSubmitOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
-      actionUpdateInspectCarsCondition: (...arg) => (
-        dispatch(
-          inspectionCarsConditionActions.actionUpdateInspectCarsCondition(...arg),
-        )
-      ),
       actionCloseInspectCarsCondition: (...arg) => (
         dispatch(
           inspectionCarsConditionActions.actionCloseInspectCarsCondition(...arg),

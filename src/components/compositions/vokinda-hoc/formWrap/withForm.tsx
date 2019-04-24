@@ -102,6 +102,25 @@ const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataFor
   };
 };
 
+export const removeEmptyString = (formState: any) => {
+  Object.keys(formState).forEach((key) => {
+    if (formState[key] === '') {
+      formState[key] = null;
+      return;
+    }
+
+    if (isObject(formState[key])) {
+      removeEmptyString(formState[key]);
+      return;
+    }
+    if (isArray(formState[key]) && isObject(formState[key][0])) {
+      formState[key].forEach((obj) => {
+        removeEmptyString(obj);
+      });
+    }
+  });
+};
+
 const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
   compose<any, any>(
     withRequirePermissionsNew({
@@ -384,10 +403,6 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
             value = Number(value);
           }
 
-          if (type === 'string' && !value) {
-            value = null;
-          }
-
           if (type === 'date' && value) {
             value = createValidDate(value);
           }
@@ -396,6 +411,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
           }
           formatedFormState[key] = value;
         });
+
+        removeEmptyString(formatedFormState);
 
         const result = await this.submitAction(formatedFormState);
 

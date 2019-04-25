@@ -40,7 +40,7 @@ export type OneFilterType<F> = {
     type: 'advanced-number'
     | 'advanced-date'
     | 'advanced-string-like';
-  }| {
+  } | {
     type: 'multiselect';
     labelKey?: string;
     options?: FilterOptionType<F>[];
@@ -89,13 +89,6 @@ export type TypeFields<F extends any> = {
 export type TypeConfigData<F extends any> = {
   noInitialLoad?: boolean;
   Service: any;
-  actionHelpers?: {
-    get?: object;
-    post?: object;
-    put?: object;
-    delete?: object;
-    patch?: object;
-  };
   registryKey: string;
   header: {
     title: string;

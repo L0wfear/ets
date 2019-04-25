@@ -140,7 +140,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
         }
       }
 
-      if (value !== prevProps.value) {
+      if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {
         this.loadSelectedRoute(value);
       }
       if (structure_id !== prevProps.structure_id) {
@@ -209,6 +209,9 @@ class FieldRouteIdDutyMission extends React.PureComponent<
     if (isSubmitted) {
       const { technical_operation_id, municipal_facility_id } = this.props;
 
+      this.setState({
+        selectedRoute: route,
+      });
       this.getRoutes(technical_operation_id, municipal_facility_id);
     }
 

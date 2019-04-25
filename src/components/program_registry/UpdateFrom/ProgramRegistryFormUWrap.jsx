@@ -196,7 +196,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
 
     this.props.defSendFromState(payload).then(() => {
       if (close) {
-        return this.props.onFormHide();
+        return this.props.handleHide();
       }
       return this.updateVersionList({ id: this.props.element.id });
     });
@@ -323,7 +323,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
         canSave={canSave}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
-        onHide={this.props.onFormHide}
+        onHide={this.props.handleHide}
         fromCreating={fromCreating}
         permissionForButton={permissionForButton}
         activeVersionId={activeVersionId}

@@ -91,6 +91,7 @@ const getRouters = () => (
     <Redirect from="/duty-missions-archive-journal" to="/missions/duty_missions_archive" />
     <Redirect from="/mission-templates-journal" to="/missions/mission_templates" />
     <Redirect from="/company-structure" to="/nsi/company_structure" />
+    <Redirect from="/program-registry" to="/program_registry" />
 
     <Redirect to="/monitor" />
   </Switch>

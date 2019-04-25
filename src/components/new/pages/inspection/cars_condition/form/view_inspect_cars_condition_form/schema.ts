@@ -245,5 +245,12 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
         }
       },
     ],
+    resolve_to: [
+      (resolve_to, _, props) => {
+        if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close && !resolve_to) {
+          return 'Поле "Срок, до которого необходимо представить отчет об устранении выявленных недостатков" необходимо заполнить';
+        }
+      },
+    ],
   },
 };

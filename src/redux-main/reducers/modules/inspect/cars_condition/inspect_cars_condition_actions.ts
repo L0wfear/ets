@@ -16,8 +16,9 @@ import {
   promiseGetCarsConditionsCarById,
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
-import { actionUpdateInspect } from '../inspect_actions';
+import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { createValidDateTime } from 'utils/dates';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): ThunkAction<IStateInspectCarsCondition, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectCarsConditionOld = getInspectCarsCondition(getState());
@@ -114,7 +115,31 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
 };
 
 const actionCloseInspectCarsCondition = (inspectCarsCondition: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
-  throw new Error('');
+  const payload = {
+    data: inspectCarsCondition.data,
+    agents_from_gbu: inspectCarsCondition.agents_from_gbu,
+    commission_members: inspectCarsCondition.commission_members,
+    resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+  };
+
+  const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки
+  if (isHasPeriod) {
+    delete payload.data.cars_use;
+    delete payload.data.headcount_list;
+  } else {
+    delete payload.data.preparing_cars_check;
+  }
+
+  const result = await dispatch(
+    actionCloseInspect(
+      inspectCarsCondition.id,
+      payload,
+      'cars_condition',
+      meta,
+    ),
+  );
+
+  return result;
 };
 
 const autobaseGetCarsConditionCars = (inspection_id: number, meta: LoadingMeta): ThunkAction<Promise<any>, ReduxState, {} , AnyAction> => async (dispatch, getState) => {

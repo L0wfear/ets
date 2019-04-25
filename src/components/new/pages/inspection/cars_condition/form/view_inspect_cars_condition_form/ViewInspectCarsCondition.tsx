@@ -28,7 +28,7 @@ import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
-    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
+    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(true);
 
     const {
       formState: state,
@@ -168,6 +168,8 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               commission_members={state.commission_members}
               agents_from_gbu={state.agents_from_gbu}
               company_name={state.company_name}
+              resolve_to={state.resolve_to}
+              error_resolve_to={errors.resolve_to}
               handleChange={props.handleChange}
               page={props.page}
               path={props.path}

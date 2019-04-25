@@ -33,8 +33,8 @@ export type PreparePlanProps = (
 
 const PreparePlan: React.FC<PreparePlanProps> = (props) => {
   const [typesListOpt, setTypesListOpt] = React.useState([]);
-  const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(false);
-  const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(false);
+  const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(true);
+  const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(true);
 
   // componentDidMount
   React.useEffect(() => {

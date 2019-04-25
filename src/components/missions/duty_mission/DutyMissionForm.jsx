@@ -65,23 +65,29 @@ export class DutyMissionForm extends Form {
     return <components.MultiValueContainer innerProps={newInnerProps} {...props} />;
   }
 
-  handleRouteIdChange = (v) => {
-    this.handleChange('route_id', v);
+  handleRouteChange = (route_id) => {
+    this.handleRouteIdChange(route_id);
+  }
+
+  handleRouteIdChange = async (route_id, fullRoute) => {
+    this.handleChange('route_id', route_id);
     this.handleChange('norm_id', null);
 
-    if (v) {
+    if (route_id) {
       const { flux } = this.context;
-      flux.getActions('routes').getRouteById(v).then((route) => {
-        const payload = {
-          ...makePayloadFromState(this.props.formState),
-          route_type: route.type,
-          kind_task_ids: this.state.kind_task_ids,
-        };
-        flux.getActions('missions').getCleaningOneNorm(payload)
-          .then(normData => this.handleChange('norm_id', normData.norm_id));
+      let route = fullRoute;
+      if (!route) {
+        route = await flux.getActions('routes').getRouteById(route_id);
+      }
+      const payload = {
+        ...makePayloadFromState(this.props.formState),
+        route_type: route.type,
+        kind_task_ids: this.state.kind_task_ids,
+      };
+      flux.getActions('missions').getCleaningOneNorm(payload)
+        .then(normData => this.handleChange('norm_id', normData.norm_id));
 
-        this.setState({ selectedRoute: route });
-      });
+      this.setState({ selectedRoute: route });
     } else {
       this.setState({ selectedRoute: null });
     }
@@ -119,7 +125,7 @@ export class DutyMissionForm extends Form {
         }
 
         if (this.state.selectedRoute && v !== this.state.selectedRoute.structure_id) {
-          this.handleRouteIdChange(undefined);
+          this.handleRouteIdChange(null);
         }
       }
 
@@ -649,7 +655,7 @@ export class DutyMissionForm extends Form {
                 disabled={IS_DISPLAY || !state.municipal_facility_id || readOnly}
                 options={ROUTES}
                 value={state.route_id}
-                onChange={this.handleRouteIdChange}
+                onChange={this.handleRouteChange}
               />
               <Div hidden={state.route_id}>
                 <Button

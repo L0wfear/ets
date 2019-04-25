@@ -115,6 +115,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
   }
   handleSubmitForMission = async () => {
     const result = await this.props.submitAction(this.props.formState, false);
+
     if (result) {
       resetCachedDataForRoute();
       if (result) {

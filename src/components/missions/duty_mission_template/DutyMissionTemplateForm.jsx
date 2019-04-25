@@ -162,7 +162,7 @@ class MissionTemplateForm extends DutyMissionForm {
                 options={ROUTES}
                 value={state.route_id}
                 disabled={!state.municipal_facility_id}
-                onChange={this.handleRouteIdChange.bind(this)}
+                onChange={this.handleRouteChange}
                 clearable
               />
               <Div hidden={state.route_id}>

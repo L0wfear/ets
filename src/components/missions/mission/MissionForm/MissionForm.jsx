@@ -826,7 +826,7 @@ export class MissionForm extends Form {
                     onChange={this.handleRouteChange}
                   />
                   <Div hidden={state.route_id}>
-                    <Button id="create-route" onClick={this.createNewRoute} disabled={false}>Создать новый</Button>
+                    <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>
                   </Div>
                 </Col>
               </Row>

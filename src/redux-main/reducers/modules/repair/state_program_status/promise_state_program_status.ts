@@ -9,7 +9,7 @@ export const promiseLoadStateProgramStatus = async (payload: any) => {
     },
   );
 
-  const result: StateProgramStatus[] = get(response, 'result.0', {});
+  const result: StateProgramStatus[] = get(response, 'result.rows', []);
 
   return result;
 };

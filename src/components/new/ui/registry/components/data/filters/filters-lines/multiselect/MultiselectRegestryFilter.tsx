@@ -7,7 +7,7 @@ import {
   getFilterData,
 } from 'components/new/ui/registry/module/selectors-registry';
 
-import { uniqBy } from 'lodash';
+import { get, uniqBy } from 'lodash';
 
 import {
   EtsFilter,
@@ -17,7 +17,6 @@ import {
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 
-import { get } from 'lodash';
 import { getJSON } from 'api/adapter';
 import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
@@ -28,7 +27,7 @@ import { isNumber, isBoolean, isArray } from 'util';
 type PropsMultiselectRegestryFilter = {
   filterData: {
     title: string;
-    valueKey: string | number;
+    valueKey: string;
     labelKey?: string | number;
     options?: any;
     disabled?: boolean;
@@ -40,14 +39,14 @@ type PropsMultiselectRegestryFilter = {
   formatedTitle: string;
   filterValuesObj: any;
   array: any[];
-  onChange: (valueKey: string | number, type: string, value: any[], option: object) => any;
+  onChange: (valueKey: string, type: string, value: any[], option: object) => any;
 };
 
 type StateMultiselectRegestryFilter = {
   array: any[];
   filterData: {
     title: string;
-    valueKey: string | number;
+    valueKey: string;
     labelKey?: string | number;
     options?: any;
     disabled?: boolean;
@@ -95,6 +94,26 @@ const makeOptions = (props: PropsMultiselectRegestryFilter) => (
   )
 );
 
+const makeObjByKey = (array: any[], valueKey: string) => {
+  return Object.values(array.reduce((newObj, { [valueKey]: value }) => {
+    if (isArray(value)) {
+      value.forEach((valueItem) => {
+        newObj[valueItem] = true;
+      });
+    } else {
+      newObj[value] = true;
+    }
+
+    return newObj;
+  }, {}));
+};
+
+const checkOnNewValuewInArray = (array: any[], filterData: StateMultiselectRegestryFilter['filterData'], options: StateMultiselectRegestryFilter['options']) => {
+  const objArray = Object.values(makeObjByKey(array, filterData.valueKey));
+
+  return options.length !== objArray.length;
+};
+
 class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRegestryFilter, StateMultiselectRegestryFilter> {
   state = {
     array: this.props.array,
@@ -134,7 +153,17 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    if (!prevProps.wasFirstOpen && this.props.wasFirstOpen || prevState.array !== this.state.array && this.props.wasFirstOpen) {
+    const triggerToUpdate = (
+      this.props.wasFirstOpen
+      && (
+       !prevProps.wasFirstOpen
+        || (
+          prevState.array !== this.state.array
+          && checkOnNewValuewInArray(this.state.array, this.state.filterData, this.state.options)
+        )
+      )
+    );
+    if (triggerToUpdate) {
       const getRegistryData = get(this.props.filterData, 'getRegistryData', null);
 
       if (getRegistryData) {

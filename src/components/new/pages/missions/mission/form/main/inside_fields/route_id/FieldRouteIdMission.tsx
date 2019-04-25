@@ -212,7 +212,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         this.getRoutes(technical_operation_id, municipal_facility_id, for_column);
       }
 
-      if (value !== prevProps.value) {
+      if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {
         this.loadSelectedRoute(value);
       }
       if (structure_id !== prevProps.structure_id) {
@@ -309,6 +309,9 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         for_column,
       } = this.props;
 
+      this.setState({
+        selectedRoute: route,
+      });
       this.getRoutes(technical_operation_id, municipal_facility_id, for_column);
     }
 

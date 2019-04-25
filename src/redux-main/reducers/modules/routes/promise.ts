@@ -2,9 +2,79 @@ import {
   RouteService,
   RouteValidateService,
 } from 'api/Services';
-import { get, keyBy } from 'lodash';
+import { get, keyBy, cloneDeep } from 'lodash';
 import { Route, OdhValidate, DrawData } from './@types';
 import { getErrorNotificationFromBack } from 'utils/notifications';
+
+const makeRoute = (route_data) => {
+  const route: Route = cloneDeep(route_data);
+
+  if (route.type === 'points') {
+    route.object_list.forEach((el, i) => {
+      el.customId = i + 1;
+
+      if (!el.shape && el.coordinates) {
+        el.shape = {
+          type: 'Point',
+          coordinates: el.coordinates,
+        };
+      }
+      el.type = 'points';
+      return el;
+    });
+  } else {
+    if (route.type === 'mixed') {
+      if (route.input_lines && route.input_lines.length) {
+        route.input_lines.forEach((object) => {
+          const start = [object.begin.x_msk, object.begin.y_msk];
+          const end = [object.end.x_msk, object.end.y_msk];
+
+          object.shape = {
+            type: 'LineString',
+            coordinates: [start, end],
+          };
+
+          return object;
+        });
+      } else {
+        route.input_lines = [];
+      }
+      route.draw_object_list.forEach((object: DrawData) => {
+        const start = [object.begin.x_msk, object.begin.y_msk];
+        const end = [object.end.x_msk, object.end.y_msk];
+
+        object.shape = {
+          type: 'LineString',
+          coordinates: [start, end],
+        };
+
+        return object;
+      });
+
+      route.object_list.forEach((objData, i) => {
+        if (objData.from_vectors) {
+          route.input_lines.push(objData);
+          route.object_list.splice(i, 1);
+        }
+      });
+    }
+    const shapes = get(route, 'shapes', {});
+
+    route.object_list.forEach((objData, i) => {
+      if (objData.type === 'odh' || objData.type === 'dt') {
+        const myShape = get(shapes, objData.object_id, null);
+
+        try {
+          objData.shape = JSON.parse(myShape);
+        } catch (e) {
+          objData.shape = myShape;
+        }
+      }
+    });
+  }
+
+  return route;
+};
 
 export const promiseLoadRoutes = async (payload: object) => {
   let response = null;
@@ -34,75 +104,13 @@ export const promiseLoadRouteById = async (id: Route['id']) => {
     return null;
   }
 
-  const route_data: Route | null = get(response, ['result', 0], null);
+  let route: Route | null = get(response, ['result', 0], null);
 
-  if (route_data) {
-    if (route_data.type === 'points') {
-      route_data.object_list.forEach((el, i) => {
-        el.customId = i + 1;
-
-        if (!el.shape && el.coordinates) {
-          el.shape = {
-            type: 'Point',
-            coordinates: el.coordinates,
-          };
-        }
-        el.type = 'points';
-        return el;
-      });
-    } else {
-      if (route_data.type === 'mixed') {
-        if (route_data.input_lines && route_data.input_lines.length) {
-          route_data.input_lines.forEach((object) => {
-            const start = [object.begin.x_msk, object.begin.y_msk];
-            const end = [object.end.x_msk, object.end.y_msk];
-
-            object.shape = {
-              type: 'LineString',
-              coordinates: [start, end],
-            };
-
-            return object;
-          });
-        } else {
-          route_data.input_lines = [];
-        }
-        route_data.draw_object_list.forEach((object: DrawData) => {
-          const start = [object.begin.x_msk, object.begin.y_msk];
-          const end = [object.end.x_msk, object.end.y_msk];
-
-          object.shape = {
-            type: 'LineString',
-            coordinates: [start, end],
-          };
-
-          return object;
-        });
-
-        route_data.object_list.forEach((objData, i) => {
-          if (objData.from_vectors) {
-            route_data.input_lines.push(objData);
-            route_data.object_list.splice(i, 1);
-          }
-        });
-      }
-      const shapes = get(route_data, 'shapes', {});
-
-      route_data.object_list.forEach((objData, i) => {
-        if (objData.type === 'odh' || objData.type === 'dt') {
-          const myShape = get(shapes, objData.object_id, null);
-
-          try {
-            objData.shape = JSON.parse(myShape);
-          } catch (e) {
-            objData.shape = myShape;
-          }
-        }
-      });
-    }
+  if (route) {
+    route = makeRoute(route);
   }
 
-  return route_data;
+  return route;
 };
 export const promiseCreateRoute = async (formState: Partial<Route>, isTemplate?: boolean) => {
   const payload = {
@@ -120,7 +128,15 @@ export const promiseCreateRoute = async (formState: Partial<Route>, isTemplate?:
 
   const route_data: Partial<Route> = {
     ...formState,
-    id: get(response, ['result', 0, 'id'], null),
+    ...get(
+      response,
+      'result.rows.0.0',
+      get(
+        response,
+        'result.rows.0',
+        {},
+      ),
+    ),
   };
 
   return route_data;
@@ -134,7 +150,15 @@ export const promiseUpdateRoute = async (formState: Partial<Route>) => {
 
   const route_data: Partial<Route> = {
     ...formState,
-    id: get(response, ['result', 0, 'id'], null),
+    ...get(
+      response,
+      'result.rows.0.0',
+      get(
+        response,
+        'result.rows.0',
+        {},
+      ),
+    ),
   };
 
   return route_data;

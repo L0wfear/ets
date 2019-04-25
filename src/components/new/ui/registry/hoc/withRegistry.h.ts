@@ -43,7 +43,7 @@ export type OneFilterType<F> = {
     | 'advanced-string-like';
   } | {
     type: 'advanced-number';
-    step: number;  // для firefox
+    step: number; // для firefox
   } | {
     type: 'multiselect';
     labelKey?: keyof F;
@@ -110,13 +110,6 @@ export type TypeFields<F extends any> = {
 export type TypeConfigData<F> = {
   noInitialLoad?: boolean;
   Service: any;
-  actionHelpers?: {
-    get?: object;
-    post?: object;
-    put?: object;
-    delete?: object;
-    patch?: object;
-  };
   registryKey: string;
   header: {
     title: string;

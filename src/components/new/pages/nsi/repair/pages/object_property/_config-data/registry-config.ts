@@ -7,6 +7,7 @@ export const registryKey = 'objectPropertyRegistry';
 
 export const getToConfig = (object_type?: ObjectProperty['type_slug']): TypeConfigData<ObjectProperty> => {
   return {
+    noInitialLoad: !object_type,
     Service: {
       getRegistryData: {
         entity: 'object_property',

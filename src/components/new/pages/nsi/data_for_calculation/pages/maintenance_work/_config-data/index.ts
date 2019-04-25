@@ -6,7 +6,7 @@ import { getToConfig } from 'components/new/pages/nsi/data_for_calculation/pages
 export const item = 'maintenance_work';
 export const id = getToConfig().list.data.uniqKeyForParams;
 export const patrialEndPath = `/${item}/:${id}?`;
-export const path = `/nsi/data_for_calculation/${item}/odh`;
+export const path = `/nsi/data_for_calculation/${item}`;
 export const routePath = `/nsi/data_for_calculation/${item}/:${id}?`;
 
 export default {

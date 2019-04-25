@@ -6,7 +6,7 @@ import { getToConfig } from 'components/new/pages/nsi/data_for_calculation/pages
 export const item = 'cleaning_rate';
 export const id = getToConfig('odh').list.data.uniqKeyForParams;
 export const patrialEndPath = `/${item}/:selected_odh_dt_value?/:${id}?`;
-export const path = `/nsi/data_for_calculation/${item}/odh`;
+export const path = `/nsi/data_for_calculation/${item}`;
 export const routePath = `/nsi/data_for_calculation/${item}/:selected_odh_dt_value?/:${id}?`;
 
 export default {

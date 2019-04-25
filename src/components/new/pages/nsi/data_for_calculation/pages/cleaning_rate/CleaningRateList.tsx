@@ -9,17 +9,14 @@ import {
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
+import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
 
 export type CleaningRateListStateProps = {};
 export type CleaningRateListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-  actionChangeGlobalPaylaodInServiceData: HandleThunkActionCreator<typeof actionChangeGlobalPaylaodInServiceData>;
 };
 export type CleaningRateListOwnProps = {};
 export type CleaningRateListMergedProps = (
@@ -29,38 +26,17 @@ export type CleaningRateListMergedProps = (
 );
 export type CleaningRateListProps = (
   CleaningRateListMergedProps
-) & WithSearchProps;
+);
 
 const CleaningRateList: React.FC<CleaningRateListProps> = (props) => {
-  const selected_odh_dt_value: CleaningRate['type'] = props.match.params.selected_odh_dt_value;
-
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(selected_odh_dt_value));
+      props.registryAddInitialData(getToConfig());
       return () => {
         props.registryRemoveData(registryKey);
       };
     },
     [],
-  );
-
-  React.useEffect(
-    () => {
-      if (selected_odh_dt_value && (selected_odh_dt_value === 'odh' || selected_odh_dt_value === 'dt')) {
-        const payload = {
-          getRegistryData: {
-            type: selected_odh_dt_value,
-          },
-          getBlobData: {
-            format: 'xls',
-            type: selected_odh_dt_value,
-          },
-        };
-
-        props.actionChangeGlobalPaylaodInServiceData(registryKey, payload);
-      }
-    },
-    [selected_odh_dt_value],
   );
 
   return (
@@ -89,12 +65,6 @@ export default compose<CleaningRateListProps, CleaningRateListOwnProps>(
           registryRemoveData(registryKeyTemp),
         )
       ),
-      actionChangeGlobalPaylaodInServiceData: (...arg) => (
-        dispatch(
-          actionChangeGlobalPaylaodInServiceData(...arg),
-        )
-      ),
     }),
   ),
-  withSearch,
 )(CleaningRateList);

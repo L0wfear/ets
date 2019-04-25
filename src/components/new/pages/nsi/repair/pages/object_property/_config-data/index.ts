@@ -3,7 +3,7 @@ import component from 'components/new/pages/nsi/repair/pages/object_property/_co
 
 export const item = 'object_property';
 export const patrialEndPath = `/${item}/:selected_odh_dt_value?`;
-export const path = `/nsi/repair/${item}/odh`;
+export const path = `/nsi/repair/${item}`;
 export const routePath = `/nsi/repair/${item}/:selected_odh_dt_value?`;
 
 export default {

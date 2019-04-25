@@ -5,8 +5,9 @@ import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/c
 
 export const registryKey = 'cleaningRateRegistry';
 
-export const getToConfig = (type: CleaningRate['type']): TypeConfigData<CleaningRate> => {
+export const getToConfig = (type?: CleaningRate['type']): TypeConfigData<CleaningRate> => {
   return {
+    noInitialLoad: !type,
     Service: {
       getRegistryData: {
         entity: 'cleaning_rate',

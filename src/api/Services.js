@@ -377,3 +377,7 @@ export const SensorTypeService = ETS_API_FACTORY.createApiServiceAdapter(
 export const MedicalStatsService = ETS_API_FACTORY.createApiServiceAdapter(
   'medical_stats',
 );
+
+export const RefillTypeService = ETS_API_FACTORY.createApiServiceAdapter(
+  'refill_type',
+);

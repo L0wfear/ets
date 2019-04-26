@@ -201,9 +201,11 @@ export default class Field extends React.Component {
     return (
       <Div hidden={this.props.hidden}>
         <div className="form-group">
-          <label className="control-label">
-            <span>{this.props.label}</span>
-          </label>
+          {typeof this.props.label === 'string' && (
+            <label className="control-label">
+              <span>{this.props.label}</span>
+            </label>
+          )}
           <FormControl
             lang="en"
             type="number"

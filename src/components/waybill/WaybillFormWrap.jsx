@@ -1,5 +1,5 @@
 import React from 'react';
-import { clone, cloneDeep, filter, get, last } from 'lodash';
+import { clone, cloneDeep, get, last } from 'lodash';
 import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData } from 'utils/functions';
@@ -11,10 +11,18 @@ import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
 import { DivNone } from 'global-styled/global-styled';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isObject, isArray } from 'util';
 import { connect } from 'react-redux';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import {
+  getAutobaseState,
+  getSomeUniqState,
+} from 'redux-main/reducers/selectors';
 import connectToStores from 'flummox/connect';
+import {
+  actionLoadRefillTypeAndSetInStore,
+  actionResetRefillTypeAndSetInStore,
+} from 'redux-main/reducers/modules/refill_type/actions_refill_type';
+import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -28,6 +36,49 @@ const canSaveNotCheckField = [
   'equipment_fact_fuel_end',
   'fact_fuel_end',
 ];
+
+const canCloseNotCheckField = ['distance'];
+
+const canSaveTest = (errorsData) => {
+  if (isObject(errorsData)) {
+    return Object.values(errorsData).every((error) => canSaveTest(error));
+  }
+  if (isArray(errorsData)) {
+    return errorsData.every((error) => canSaveTest(error));
+  }
+
+  return !errorsData;
+};
+
+const canSaveTestWrap = (formError) => {
+  const filredFormErrors = Object.entries(formError).reduce(
+    (newObj, [key, value]) => {
+      if (!canSaveNotCheckField.includes(key)) {
+        newObj[key] = value;
+      }
+
+      return newObj;
+    },
+    {},
+  );
+
+  return canSaveTest(filredFormErrors);
+};
+
+const canCloseWrap = (formError) => {
+  const filredFormErrors = Object.entries(formError).reduce(
+    (newObj, [key, value]) => {
+      if (!canCloseNotCheckField.includes(key)) {
+        newObj[key] = value;
+      }
+
+      return newObj;
+    },
+    {},
+  );
+
+  return canSaveTest(filredFormErrors);
+};
 
 function calculateWaybillMetersDiff(waybill, field, value) {
   // Для уже созданных ПЛ
@@ -108,6 +159,21 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
 
   UNSAFE_componentWillReceiveProps(props) {
     if (props.showForm && props.showForm !== this.props.showForm) {
+      this.props.actionLoadRefillTypeAndSetInStore(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      );
+      this.props.fuelCardsGetAndSetInStore(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      );
+
       const currentDate = new Date();
 
       timeId = setTimeout(
@@ -154,18 +220,6 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
           waybill.mission_id_list = [];
         }
 
-        if (waybill.fuel_card_id) {
-          waybill.fuel_method = 'fuel_card';
-        } else {
-          waybill.fuel_method = 'naliv';
-        }
-
-        if (waybill.equipment_fuel_card_id) {
-          waybill.equipment_fuel_method = 'fuel_card';
-        } else {
-          waybill.equipment_fuel_method = 'naliv';
-        }
-
         if (
           props.element.status === 'active'
           || props.element.status === 'closed'
@@ -187,7 +241,7 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
             waybill.equipment_tax_data,
           );
 
-          if (waybill.equipment_fuel) {
+          if (waybill.equipment_fuel && !waybill.is_one_fuel_tank) {
             waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
             waybill.equipment_fuel_end = (
               equipmentFuelStart
@@ -201,6 +255,7 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
               - fuelTaxes
               - equipmentFuelTaxes
             ).toFixed(3);
+            waybill.equipment_fuel_end = null;
           }
 
           // Расчет пробегов
@@ -229,9 +284,7 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
               canSave:
                 (this.state.isPermittedByKey.update
                   || this.state.isPermittedByKey.departure_and_arrival_values)
-                && !clone(formErrors, (v, k) =>
-                  canSaveNotCheckField.includes(k) ? false : v,
-                ).length
+                && canSaveTestWrap(formErrors)
                 && !(
                   (formErrors.fact_arrival_date
                     && !formErrors.fact_departure_date)
@@ -239,10 +292,7 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
                     && formErrors.fact_departure_date)
                 ),
               canClose:
-                this.state.isPermittedByKey.update
-                && !filter(formErrors, (v, k) =>
-                  ['distance'].includes(k) ? false : v,
-                ).length,
+                this.state.isPermittedByKey.update && canCloseWrap(formErrors),
             });
           } else {
             this.setState({
@@ -263,7 +313,7 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
             canSave:
               (this.state.isPermittedByKey.update
                 || this.state.isPermittedByKey.departure_and_arrival_values)
-              && !formErrors.length,
+              && canSaveTestWrap(this.state.formErrors),
             canClose: this.state.isPermittedByKey.update && formErrors.length,
             formErrors,
           });
@@ -274,6 +324,8 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
 
   componentWillUnmount() {
     clearTimeout(timeId);
+    this.props.actionResetRefillTypeAndSetInStore();
+    this.props.resetSetFuelCards();
   }
 
   handleFieldsChange = (formState) => {
@@ -339,17 +391,13 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
     );
 
     newState.canSave
-      = !filter(formErrors, (v, k) =>
-        canSaveNotCheckField.includes(k) ? false : v,
-      ).length
+      = canSaveTestWrap(formErrors)
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
       );
 
-    newState.canClose = !filter(formErrors, (v, k) =>
-      ['distance'].includes(k) ? false : v,
-    ).length;
+    newState.canClose = canCloseWrap(formErrors);
 
     newState.formState = formState;
     newState.formErrors = formErrors;
@@ -372,17 +420,13 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
     );
 
     newState.canSave
-      = !filter(formErrors, (v, k) =>
-        canSaveNotCheckField.includes(k) ? false : v,
-      ).length
+      = canSaveTestWrap(formErrors)
       && !(
         (formErrors.fact_arrival_date && !formErrors.fact_departure_date)
         || (!formErrors.fact_arrival_date && formErrors.fact_departure_date)
       );
 
-    newState.canClose = !filter(formErrors, (v, k) =>
-      ['distance'].includes(k) ? false : v,
-    ).length;
+    newState.canClose = canCloseWrap(formErrors);
 
     newState.formErrors = formErrors;
     timeId = setTimeout(() => this.checkError(), 60 * 1000);
@@ -709,7 +753,19 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default connect((state) => ({
-  currentUser: state.session.userData,
-  fuelCardsList: getAutobaseState(state).fuelCardsList,
-}))(connectToStores(WaybillFormWrap, ['objects']));
+export default connect(
+  (state) => ({
+    currentUser: state.session.userData,
+    fuelCardsList: getAutobaseState(state).fuelCardsList,
+    refillTypeList: getSomeUniqState(state).refillTypeList,
+  }),
+  (dispatch) => ({
+    actionLoadRefillTypeAndSetInStore: (...arg) =>
+      dispatch(actionLoadRefillTypeAndSetInStore(...arg)),
+    actionResetRefillTypeAndSetInStore: (...arg) =>
+      dispatch(actionResetRefillTypeAndSetInStore(...arg)),
+    fuelCardsGetAndSetInStore: (...arg) =>
+      dispatch(fuelCardsActions.fuelCardsGetAndSetInStore(...arg)),
+    resetSetFuelCards: () => dispatch(fuelCardsActions.resetSetFuelCards()),
+  }),
+)(connectToStores(WaybillFormWrap, ['objects']));

@@ -5,6 +5,30 @@ import { diffDates, getDateWithMoscowTz } from 'utils/dates';
 import { getTrailers } from 'components/waybill/utils';
 import { get } from 'lodash';
 import { isArray } from 'util';
+import memoizeOne from 'memoize-one';
+
+const checkCarRefill = memoizeOne((car_refill, refillTypeList) => {
+  return car_refill.map((rowData) => {
+    return {
+      type_id: !rowData.type_id
+        ? 'Поле "Способо заправки" должно быть заполнено'
+        : '',
+      fuel_card_id:
+        !rowData.fuel_card_id
+        && get(
+          refillTypeList.find(({ id }) => id === rowData.type_id),
+          'is_fuel_card_required',
+          false,
+        )
+          ? 'Поле "Топливная карта" должно быть заполнено'
+          : '',
+      value:
+        !rowData.value && rowData.value !== 0
+          ? 'Поле "Выдано, л" должно быть заполнено'
+          : '',
+    };
+  });
+});
 
 export const waybillSchema = {
   properties: [
@@ -134,31 +158,29 @@ export const waybillSchema = {
       type: 'number',
     },
     {
-      key: 'fuel_method',
-      title: 'Способ заправки',
-      required: false,
-      type: 'string',
+      key: 'car_refill',
+      title: 'car_refill',
     },
     {
-      key: 'fuel_card_id',
-      title: 'Топливная карта',
-      required: false, // dependencies valid
-      type: 'string',
-    },
-    {
-      key: 'equipment_fuel_method',
-      title: 'Способ заправки',
-      required: false,
-      type: 'string',
-    },
-    {
-      key: 'equipment_fuel_card_id',
-      title: 'Топливная карта',
-      required: false, // dependencies valid
-      type: 'string',
+      key: 'equipment_refill',
+      title: 'equipment_refill',
     },
   ],
   dependencies: {
+    car_refill: [
+      {
+        validator: (car_refill, formStatet, { refillTypeList }) => {
+          return checkCarRefill(car_refill, refillTypeList);
+        },
+      },
+    ],
+    equipment_refill: [
+      {
+        validator: (equipment_refill, formStatet, { refillTypeList }) => {
+          return checkCarRefill(equipment_refill, refillTypeList);
+        },
+      },
+    ],
     plan_departure_date: [
       {
         validator: (value, { status }) => {
@@ -281,104 +303,6 @@ export const waybillSchema = {
         },
       },
     ],
-    fuel_card_id: [
-      {
-        validator: (value, formData, props) => {
-          // проверка на соответствие подразделений в ПЛ и топливной карты
-          const { fuelCardsList } = props;
-          const fuelCardsElem = fuelCardsList.find((fuelCard) => {
-            return fuelCard.id === formData.fuel_card_id;
-          });
-
-          const userCompanyId = get(props, 'userData.company_id');
-          if (
-            fuelCardsElem
-            && (!formData.status || formData.status === 'draft')
-          ) {
-            if (
-              formData.fuel_method !== 'naliv'
-              && fuelCardsElem.structure_id !== formData.structure_id
-              && !fuelCardsElem.is_common
-            ) {
-              return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
-            }
-            if (
-              formData.fuel_method !== 'naliv'
-              && fuelCardsElem.company_id !== userCompanyId
-              && !fuelCardsElem.is_common
-            ) {
-              return 'Выбранная топливная карта не привязана к Вашей организации. Выберите другую топливную карту.';
-            }
-          }
-
-          return false;
-        },
-      },
-    ],
-    fuel_method: [
-      {
-        validator: (value, { status }) => {
-          if (
-            !value
-            && (status === 'active' || status === 'draft' || !status)
-          ) {
-            return 'Поле "Способ заправки" должно быть заполнено';
-          }
-          return false;
-        },
-      },
-    ],
-    equipment_fuel_card_id: [
-      {
-        validator: (value, formData, props) => {
-          // проверка на соответствие подразделений в ПЛ и топливной карты
-          const { fuelCardsList } = props;
-          const equipmentFuelCardsElem = fuelCardsList.find((fuelCard) => {
-            return fuelCard.id === formData.equipment_fuel_card_id;
-          });
-
-          const userCompanyId = get(props, 'userData.company_id');
-          if (
-            equipmentFuelCardsElem
-            && (!formData.status || formData.status === 'draft')
-          ) {
-            if (
-              formData.equipment_fuel_method !== 'naliv'
-              && formData.equipment_fuel
-              && equipmentFuelCardsElem.structure_id !== formData.structure_id
-              && !equipmentFuelCardsElem.is_common
-            ) {
-              return 'Подразделение в топливной карте не совпадает с подразделением, указанным в путевом листе. Выберите другую топливную карту.';
-            }
-
-            if (
-              formData.equipment_fuel_method !== 'naliv'
-              && formData.equipment_fuel
-              && equipmentFuelCardsElem.company_id !== userCompanyId
-              && !equipmentFuelCardsElem.is_common
-            ) {
-              return 'Выбранная топливная карта не привязана к Вашей организации. Выберите другую топливную карту.';
-            }
-          }
-
-          return false;
-        },
-      },
-    ],
-    equipment_fuel_method: [
-      {
-        validator: (value, { status, equipment_fuel }) => {
-          if (
-            !value
-            && equipment_fuel
-            && (status === 'active' || status === 'draft' || !status)
-          ) {
-            return 'Поле "Способ заправки" должно быть заполнено';
-          }
-          return false;
-        },
-      },
-    ],
     trailer_id: [
       {
         validator: (
@@ -416,9 +340,10 @@ export const waybillSchema = {
     ],
     equipment_fuel_type: [
       {
-        validator: (value, { equipment_fuel, status }) => {
+        validator: (value, { equipment_fuel, is_one_fuel_tank, status }) => {
           if (
             equipment_fuel
+            && !is_one_fuel_tank
             && (status === 'active' || status === 'draft' || !status)
             && !value
           ) {
@@ -441,9 +366,10 @@ export const waybillSchema = {
     ],
     equipment_fuel_start: [
       {
-        validator: (value, { status, equipment_fuel }) => {
+        validator: (value, { status, equipment_fuel, is_one_fuel_tank }) => {
           if (
             equipment_fuel
+            && !is_one_fuel_tank
             && (status === 'active' || status === 'draft' || !status)
             && (!value && value !== 0)
           ) {
@@ -454,9 +380,10 @@ export const waybillSchema = {
     ],
     equipment_fact_fuel_end: [
       {
-        validator: (value, { status, equipment_fuel }) => {
+        validator: (value, { status, equipment_fuel, is_one_fuel_tank }) => {
           if (
             equipment_fuel
+            && !is_one_fuel_tank
             && status === 'active'
             && (!value && value !== 0)
           ) {
@@ -467,9 +394,10 @@ export const waybillSchema = {
     ],
     fact_fuel_end: [
       {
-        validator: (value, { status, equipment_fuel }) => {
+        validator: (value, { status, equipment_fuel, is_one_fuel_tank }) => {
           if (
             equipment_fuel
+            && !is_one_fuel_tank
             && status === 'active'
             && (!value && value !== 0)
           ) {
@@ -494,20 +422,6 @@ const closingProperties = [
     type: 'datetime',
   },
   {
-    key: 'fuel_given',
-    title: 'Топливо.Выдано',
-    type: 'number',
-    float: 3,
-    required: false,
-  },
-  {
-    key: 'equipment_fuel_given',
-    title: 'Топливо.Выдано',
-    type: 'number',
-    float: 3,
-    required: false,
-  },
-  {
     key: 'fuel_end',
     title: 'Топливо.Возврат по таксировке',
     type: 'number',
@@ -520,13 +434,6 @@ const closingProperties = [
     type: 'number',
     float: 3,
     min: 0,
-  },
-  {
-    key: 'equipment_fuel_end',
-    title: 'Топливо.Возврат',
-    type: 'number',
-    float: 3,
-    required: false,
   },
   {
     key: 'equipment_fact_fuel_end',

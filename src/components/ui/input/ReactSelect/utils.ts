@@ -4,6 +4,7 @@ export type DefaultSelectOption<V, L, R> = {
   value: V,
   label: L,
   rowData: Partial<R>,
+  [k: string]: any;
 };
 
 export type DefaultSelectListMapper<R extends any> = DefaultSelectOption<R['id'], R['name'], R>[];

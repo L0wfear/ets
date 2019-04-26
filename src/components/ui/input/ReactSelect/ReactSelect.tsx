@@ -120,9 +120,10 @@ export default class ReactSelect extends React.Component<any, any> {
     }
     const label = (get(option, 'label', '') || '').toString() || '';
     const valueOpt = get(option, 'value', null) || null;
+    const isNotVisible = get(option, 'data.isNotVisible', false) || false;
     const { value } = this.props;
 
-    return (
+    return !isNotVisible && (
       label.toLocaleLowerCase().includes(
         filterValue.toLocaleLowerCase(),
       )

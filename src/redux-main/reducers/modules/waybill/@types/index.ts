@@ -1,5 +1,13 @@
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
+type WaybillCarRefill = {
+  fuel_card_id: number;
+  type_id: number;
+  value: number;
+};
+
+type WaybillEquipmentRefill = WaybillCarRefill;
+
 export type Waybill = {
   accompanying_person_id: number;
   accompanying_person_name: string;
@@ -11,6 +19,7 @@ export type Waybill = {
   car_id: number;
   car_model_id: number;
   car_model_name: string;
+  car_refill: WaybillCarRefill[]
   car_special_model_id: number;
   car_special_model_name: string;
   closed_by_employee_id: number;
@@ -29,18 +38,17 @@ export type Waybill = {
   driver_id: number;
   equipment_fact_fuel_end: number;
   equipment_fuel: true
-  equipment_fuel_card_id: number;
   equipment_fuel_end: number;
   equipment_fuel_given: number;
   equipment_fuel_start: number;
   equipment_fuel_to_give: number;
   equipment_fuel_type: string;
+  equipment_refill: WaybillEquipmentRefill[];
   equipment_tax_data: any[];
   fact_arrival_date: string;
   fact_departure_date: string;
   fact_fuel_end: number;
   failed_medical_stat_types: boolean | null;
-  fuel_card_id: number;
   fuel_end: number;
   fuel_given: number;
   fuel_start: number;

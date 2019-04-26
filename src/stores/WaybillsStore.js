@@ -41,8 +41,9 @@ export function getDefaultBill({ company_id = null }) {
     odometr_start: null,
     motohours_start: null,
     mission_id_list: [],
+    car_refill: [],
+    equipment_refill: [],
     company_id,
-    fuel_method: 'fuel_card',
-    equipment_fuel_method: 'fuel_card',
+    is_one_fuel_tank: true,
   };
 }

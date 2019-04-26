@@ -31,6 +31,8 @@ export const initialState: IStateSomeUniq = {
   technicalOperationTypesList: [],
   sensorTypeList: [],
   measureUnitList: [],
+
+  refillTypeList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

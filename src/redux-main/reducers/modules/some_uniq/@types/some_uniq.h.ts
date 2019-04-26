@@ -12,6 +12,7 @@ import { TechnicalOperationObjects } from '../technical_operation_objects/@types
 import { TechnicalOperationTypes } from '../technical_operation_types/@types/technical_operation_types';
 import { SensorType } from '../sensor_type/@types/sensor_type';
 import { MeasureUnit } from '../measure_unit/@types';
+import { RefillType } from '../../refill_type/@types/refillType';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -53,4 +54,6 @@ export type IStateSomeUniq = {
   technicalOperationTypesList: TechnicalOperationTypes[];
   sensorTypeList: SensorType[];
   measureUnitList: MeasureUnit[];
+
+  refillTypeList: RefillType[];
 };

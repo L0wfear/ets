@@ -58,18 +58,14 @@ import {
 } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { BorderDash, DivNone } from 'global-styled/global-styled';
 import { isArray } from 'highcharts';
-import { WaybillEquipmentButton } from './styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import EtsModal from 'components/new/ui/modal/Modal';
 
-import {
-  BtnGroupWrapper,
-  DisplayFlexAlignCenter,
-  BtnPart,
-} from 'global-styled/global-styled';
+import { DisplayFlexAlignCenter } from 'global-styled/global-styled';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -98,9 +94,6 @@ const fieldToCheckHasData = {
   motohours_equip_end: {
     type: 'field',
   },
-  equipment_fuel_card_id: {
-    type: 'field',
-  },
   motohours_equip_start: {
     type: 'field',
   },
@@ -116,20 +109,15 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
         = fieldsToChange.equipment_fuel_start;
     }
 
-    if (lastCarUsedWaybill.equipment_fuel_card_id) {
-      fieldsToChange.equipment_fuel_card_id
-        = lastCarUsedWaybill.equipment_fuel_card_id;
-      fieldsToChange.equipment_fuel_method = 'fuel_card';
-    } else {
-      fieldsToChange.equipment_fuel_method = 'naliv';
-    }
-
     if (isNotNull(lastCarUsedWaybill.motohours_equip_end)) {
       fieldsToChange.motohours_equip_start
         = lastCarUsedWaybill.motohours_equip_end;
     }
 
-    fieldsToChange.equipment_fuel_type = lastCarUsedWaybill.equipment_fuel_type;
+    fieldsToChange.equipment_fuel_type
+      = lastCarUsedWaybill.equipment_fuel_type
+      || getDefaultBill({}).equipment_fuel_type;
+    fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank;
 
     fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
       fieldsToChange,
@@ -137,10 +125,8 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
     );
   } else {
     fieldsToChange.equipment_fuel_type = getDefaultBill({}).equipment_fuel_type;
-    fieldsToChange.equipment_fuel_method = getDefaultBill(
-      {},
-    ).equipment_fuel_method;
     fieldsToChange.equipment_fuel_end = null;
+    fieldsToChange.is_one_fuel_tank = true;
   }
 
   return fieldsToChange;
@@ -195,10 +181,6 @@ class WaybillForm extends UNSAFE_Form {
       fuelRateAllList: [],
       tooLongFactDates: false,
       notAvailableMissions: [],
-      fuel_method: null,
-      fuel_card_id: null,
-      equipment_fuel_method: null,
-      equipment_fuel_card_id: null,
       rejectMissionList: [], // Массив с заданиями, которые надо будет отменить, формируется в missionField
     };
   }
@@ -258,8 +240,6 @@ class WaybillForm extends UNSAFE_Form {
   }
 
   async componentDidMount() {
-    this.props.fuelCardsGetAndSetInStore();
-
     const {
       formState,
       formState: { status },
@@ -437,10 +417,6 @@ class WaybillForm extends UNSAFE_Form {
           });
         });
     }
-  }
-
-  componentWillUnmount() {
-    this.props.resetSetFuelCards();
   }
 
   handlePlanDepartureDates = (field, value) => {
@@ -697,8 +673,6 @@ class WaybillForm extends UNSAFE_Form {
       const fieldsToChange = {
         car_id,
         gov_number: '',
-        equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
-        fuel_card_id: null,
         fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
         equipment_fuel: getDefaultBill({}).equipment_fuel,
@@ -758,14 +732,6 @@ class WaybillForm extends UNSAFE_Form {
       if (isNotNull(lastCarUsedWaybill.trailer_id)) {
         fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
       }
-      if (isNotNull(lastCarUsedWaybill.fuel_card_id)) {
-        fieldsToChange.fuel_card_id = lastCarUsedWaybill.fuel_card_id;
-      }
-      if (lastCarUsedWaybill.fuel_card_id) {
-        fieldsToChange.fuel_method = 'fuel_card';
-      } else {
-        fieldsToChange.fuel_method = 'naliv';
-      }
     } else {
       fieldsToChange.fuel_start = 0;
       fieldsToChange.fact_fuel_end = fieldsToChange.fuel_start;
@@ -809,6 +775,13 @@ class WaybillForm extends UNSAFE_Form {
     const carData = this.props.carsIndex[car_id];
 
     const changeObj = { structure_id };
+
+    if (changeObj.structure_id) {
+      changeObj.car_refill = [];
+      changeObj.fuel_given = null;
+      changeObj.equipment_refill = [];
+      changeObj.equipment_fuel_given = null;
+    }
     if (
       carData
       && !(carData.is_common || carData.company_structure_id === structure_id)
@@ -944,92 +917,49 @@ class WaybillForm extends UNSAFE_Form {
     structures.map(defaultSelectListMapper),
   );
 
-  getFuelCardsListOptions = (fuelCardsList, fuelTypeFilter) => {
-    const { userStructureId, userCompanyId } = this.props;
-    const fuel_card_id = get(this.state.origFormState, 'fuel_card_id', null);
-    const equipment_fuel_card_id = get(
-      this.state.origFormState,
-      'equipment_fuel_card_id',
-      null,
-    );
-    // Преобразуем лист в формат опций
-    const fuelCardsListOpt = fuelCardsList.reduce(
-      (newArr, { id, number, ...other }) => {
-        newArr.push({
-          value: id,
-          label: number,
-          rowData: {
-            id,
-            number,
-            ...other,
-          },
-        });
-        return newArr;
-      },
-      [],
-    );
-
-    // фильтруем, исключая ТЛ, которые не подходят для подразделения в ПЛ и Организации пользователя, есть общие ПЛ (is_common: true) они доступны всегда
-    // Бывает ситуация, когда в топливной карте сменили организацию, для этого случая, последнее условие, мы выводим топливную карту, но при этом валидация будет выдавать ошибку
-    const optionsList = fuelCardsListOpt.filter(
-      ({ rowData: { id, fuel_type, company_id, structure_id, is_common } }) => {
-        return (
-          ((fuel_type === fuelTypeFilter || !fuelTypeFilter)
-            && ((company_id === userCompanyId
-              && structure_id === userStructureId)
-              || is_common))
-          || id === fuel_card_id
-          || id === equipment_fuel_card_id
-        );
-      },
-    );
-    return optionsList;
-  };
-
-  handleFuelMethodChange = (value) => {
-    if (value !== 'fuel_card') {
-      this.handleChange('fuel_card_id', null);
-      this.props.handleMultipleChange({
-        fuel_card_id: null,
-        fuel_method: value,
-      });
-    } else {
-      this.handleChange('fuel_method', value);
-    }
-  };
-
-  handleEquipmentFuelMethodChange = (value) => {
-    if (value !== 'fuel_card') {
-      this.handleChange('fuel_card_id', null);
-      this.props.handleMultipleChange({
-        equipment_fuel_card_id: null,
-        equipment_fuel_method: value,
-      });
-    } else {
-      this.handleChange('equipment_fuel_method', value);
-    }
-  };
-
   handleFuelTypeChange = (value) => {
     this.props.handleMultipleChange({
-      fuel_card_id: null,
       fuel_type: value,
     });
   };
 
   handleEquipmentFuelTypeChange = (value) => {
     this.props.handleMultipleChange({
-      equipment_fuel_card_id: null,
       equipment_fuel_type: value,
     });
+  };
+
+  handleIsOneFuelTank = (is_one_fuel_tank) => {
+    const changeObj = {
+      is_one_fuel_tank: Boolean(is_one_fuel_tank),
+    };
+
+    if (changeObj.is_one_fuel_tank) {
+      changeObj.equipment_refill = [];
+      changeObj.equipment_fuel_given = null;
+      changeObj.equipment_fuel_type = null;
+      changeObj.equipment_fuel_to_give = null;
+      changeObj.equipment_fuel_start = null;
+      changeObj.equipment_fuel_end = null;
+    }
+    this.handleMultipleChange(changeObj);
+  };
+
+  handleEquipmentFuel = (equipment_fuel) => {
+    if (equipment_fuel) {
+      this.handleChangeHasEquipmentOnTrue();
+    } else {
+      this.handleChangeHasEquipmentOnFalse();
+    }
   };
 
   handleChangeHasEquipmentOnTrue = async () => {
     this.handleMultipleChange({
       equipment_fuel: true,
       motohours_equip_start: this.props.formState.motohours_equip_start || 0,
-      equipment_fuel_method: getDefaultBill({}).equipment_fuel_method,
     });
+
+    this.handleIsOneFuelTank(true);
 
     const {
       formState: { car_id },
@@ -1059,8 +989,8 @@ class WaybillForm extends UNSAFE_Form {
           this.handleMultipleChange({
             motohours_equip_start: null,
             ...setEmptyFieldByKey(fieldToCheckHasData),
-            equipment_fuel_method: null,
           });
+          this.handleIsOneFuelTank(true);
         } catch (e) {
           console.error(e);
           return;
@@ -1069,6 +999,24 @@ class WaybillForm extends UNSAFE_Form {
     }
     this.handleChange('equipment_fuel', false);
   };
+
+  handleChangeCarReFill = (car_refill) => {
+    this.handleMultipleChange({
+      car_refill,
+      fuel_given: car_refill.reduce((summ, { value }) => summ + value, 0),
+    });
+  };
+
+  handleChangeEquipmentRefill = (equipment_refill) => {
+    this.handleMultipleChange({
+      equipment_refill,
+      equipment_fuel_given: equipment_refill.reduce(
+        (summ, { value }) => summ + value,
+        0,
+      ),
+    });
+  };
+
   rejectMissionHandler = (rejectMissionList) => {
     let rejectMissionSubmitError = false;
     const acceptedRejectMissionsIdList = rejectMissionList.map(
@@ -1205,7 +1153,6 @@ class WaybillForm extends UNSAFE_Form {
       isPermittedByKey = {},
       userStructures,
       userStructureId,
-      fuelCardsList,
     } = this.props;
 
     let taxesControl = false;
@@ -1222,30 +1169,6 @@ class WaybillForm extends UNSAFE_Form {
       value: k,
       label: v,
     }));
-
-    const FUEL_CARDS = this.getFuelCardsListOptions(
-      fuelCardsList,
-      state.fuel_type,
-    );
-    const EQUIPMENT_FUEL_CARDS = this.getFuelCardsListOptions(
-      fuelCardsList,
-      state.equipment_fuel_type,
-    );
-
-    const FUEL_METHOD = [
-      {
-        value: 'naliv',
-        label: 'Налив',
-      },
-      {
-        value: 'fuel_card',
-        label: 'Топливная карта',
-      },
-    ];
-
-    const fuelCardDisable = !state.fuel_method || state.fuel_method === 'naliv';
-    const equipmentFuelCardDisable
-      = !state.fuel_method || state.equipment_fuel_method === 'naliv';
 
     const driversEnability = state.car_id !== null && state.car_id !== '';
 
@@ -1642,6 +1565,59 @@ class WaybillForm extends UNSAFE_Form {
               />
             </Col>
           </Row>
+          {state.car_id ? (
+            <Row>
+              <Col md={4}>
+                <ExtField
+                  id="equipment_fuel"
+                  type="select"
+                  label="На ТС установлено спецоборудование"
+                  value={state.equipment_fuel}
+                  options={YES_NO_SELECT_OPTIONS_BOOL}
+                  onChange={this.handleEquipmentFuel}
+                  disabled={IS_CLOSED}
+                  clearable={false}
+                  modalKey={modalKey}
+                />
+              </Col>
+              {state.equipment_fuel ? (
+                <React.Fragment>
+                  <Col md={4}>
+                    <ExtField
+                      id="is_one_fuel_tank"
+                      type="select"
+                      label="Таксировка с одного топливного бака"
+                      value={state.is_one_fuel_tank}
+                      options={YES_NO_SELECT_OPTIONS_BOOL}
+                      onChange={this.handleIsOneFuelTank}
+                      disabled={IS_CLOSED}
+                      clearable={false}
+                      modalKey={modalKey}
+                    />
+                  </Col>
+                  {!state.is_one_fuel_tank ? (
+                    <Col md={4}>
+                      <ExtField
+                        type="string"
+                        label="Общее топливо при выезде, л"
+                        value={(
+                          Number(state.equipment_fuel_start)
+                          + Number(state.fuel_start)
+                        ).toFixed(3)}
+                        disabled
+                      />
+                    </Col>
+                  ) : (
+                    <DivNone />
+                  )}
+                </React.Fragment>
+              ) : (
+                <DivNone />
+              )}
+            </Row>
+          ) : (
+            <DivNone />
+          )}
           <Div hidden={!state.car_id}>
             <Row>
               <Col md={12}>
@@ -1662,34 +1638,6 @@ class WaybillForm extends UNSAFE_Form {
                             <span style={{ marginRight: 10 }}>
                               На ТС установлено спецоборудование:
                             </span>
-                            <BtnGroupWrapper>
-                              <BtnPart>
-                                <WaybillEquipmentButton
-                                  id="active-equipment_fuel"
-                                  active={
-                                    isBoolean(state.equipment_fuel)
-                                    && state.equipment_fuel
-                                  }
-                                  disabled={IS_CLOSED}
-                                  onClick={this.handleChangeHasEquipmentOnTrue}>
-                                  Да
-                                </WaybillEquipmentButton>
-                              </BtnPart>
-                              <BtnPart>
-                                <WaybillEquipmentButton
-                                  id="not_active-equipment_fuel"
-                                  active={
-                                    isBoolean(state.equipment_fuel)
-                                    && !state.equipment_fuel
-                                  }
-                                  disabled={IS_CLOSED}
-                                  onClick={
-                                    this.handleChangeHasEquipmentOnFalse
-                                  }>
-                                  Нет
-                                </WaybillEquipmentButton>
-                              </BtnPart>
-                            </BtnGroupWrapper>
                           </DisplayFlexAlignCenter>
                         </h4>
                       </Col>
@@ -1776,21 +1724,14 @@ class WaybillForm extends UNSAFE_Form {
                           />
                         </Col>
                       </Div>
-                      <Col md={4}>
-                        <h4>Топливо</h4>
-                        <ExtField
-                          id="fuel-method"
-                          type="select"
-                          modalKey={modalKey}
-                          label="Способ заправки"
-                          error={errors.fuel_method}
-                          disabled={IS_CLOSED || !isPermittedByKey.update}
-                          options={FUEL_METHOD}
-                          value={state.fuel_method}
-                          onChange={this.handleFuelMethodChange}
-                        />
+                      <Col md={8}>
                         <Row>
-                          <Col md={6}>
+                          <Col md={12}>
+                            <h4>Топливо</h4>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
                             <ExtField
                               id="fuel-type"
                               type="select"
@@ -1803,44 +1744,7 @@ class WaybillForm extends UNSAFE_Form {
                               onChange={this.handleFuelTypeChange}
                             />
                           </Col>
-                          <Col md={6}>
-                            <ExtField
-                              id="fuel_start"
-                              type="number"
-                              label="Выезд, л"
-                              error={errors.fuel_start}
-                              value={state.fuel_start}
-                              disabled={
-                                IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
-                              }
-                              onChange={this.handleChange}
-                              boundKeys="fuel_start"
-                            />
-                          </Col>
-                        </Row>
-                        <ExtField
-                          id="fuel-card-id"
-                          type="select"
-                          modalKey={modalKey}
-                          label="Топливная карта"
-                          error={errors.fuel_card_id}
-                          disabled={
-                            IS_CLOSED
-                            || !isPermittedByKey.update
-                            || fuelCardDisable
-                          }
-                          options={FUEL_CARDS}
-                          value={state.fuel_card_id}
-                          onChange={this.handleChange}
-                          boundKeys="fuel_card_id"
-                        />
-                      </Col>
-                      <Col md={4}>
-                        <Row>
-                          <h4>&nbsp;</h4>
-                          <Col md={6}>
+                          <Col md={4}>
                             <ExtField
                               id="fuel-to-give"
                               type="number"
@@ -1856,34 +1760,45 @@ class WaybillForm extends UNSAFE_Form {
                               boundKeys="fuel_to_give"
                             />
                           </Col>
-                          <Col md={6}>
+                          <Col md={4}>
                             <ExtField
                               id="fuel-given"
                               type="number"
                               label="Выдано, л"
                               error={errors.fuel_given}
                               value={state.fuel_given}
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
+                              disabled
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md={4}>
+                            <ExtField
+                              id="fuel_start"
+                              type="number"
+                              label="Выезд, л"
+                              error={errors.fuel_start}
+                              value={state.fuel_start}
                               disabled={
-                                (IS_CLOSED && !this.state.canEditIfClose)
+                                IS_ACTIVE
+                                || IS_CLOSED
                                 || !isPermittedByKey.update
                               }
                               onChange={this.handleChange}
-                              boundKeys="fuel_given"
+                              boundKeys="fuel_start"
                             />
                           </Col>
-                          <Col md={6}>
+                          <Col md={4}>
                             <ExtField
                               id="fuel-end"
                               type="number"
                               label="Возврат по таксировке, л"
                               error={errors.fuel_end}
                               value={state.fuel_end}
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
                               disabled
                             />
                           </Col>
-                          <Col md={6}>
+                          <Col md={4}>
                             <ExtField
                               id="fact-fuel-end"
                               type="number"
@@ -1903,7 +1818,9 @@ class WaybillForm extends UNSAFE_Form {
                               }
                             />
                           </Col>
-                          <Col md={12}>
+                        </Row>
+                        <Row>
+                          <Col md={8} mdOffset={4}>
                             {IS_ACTIVE || IS_CLOSED ? (
                               'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
                             ) : (
@@ -1913,6 +1830,27 @@ class WaybillForm extends UNSAFE_Form {
                         </Row>
                       </Col>
                     </Col>
+                    <Col md={12}>
+                      <Col md={12}>
+                        <FieldWaybillCarRefill
+                          array={state.car_refill}
+                          errors={get(
+                            errors,
+                            'car_refill',
+                            state.car_refill.map(() => ({})),
+                          )} // временно
+                          handleChange={this.handleChangeCarReFill}
+                          fuel_given={state.fuel_given}
+                          IS_DRAFT_OR_ACTIVE={
+                            IS_CREATING || IS_DRAFT || IS_ACTIVE
+                          }
+                          disabled={IS_CLOSED}
+                          page={this.props.page}
+                          path={this.props.path}
+                        />
+                      </Col>
+                    </Col>
+                    <br />
                     <Col md={12}>
                       <Col md={12}>
                         <Taxes
@@ -2004,143 +1942,137 @@ class WaybillForm extends UNSAFE_Form {
                               disabled
                             />
                           </Col>
-                          <Col md={4}>
-                            <h4> Топливо для оборудования</h4>
-                            <ExtField
-                              id="equipment-fuel-method"
-                              type="select"
-                              modalKey={modalKey}
-                              label="Способ заправки"
-                              error={errors.equipment_fuel_method}
-                              disabled={IS_CLOSED || !isPermittedByKey.update}
-                              options={FUEL_METHOD}
-                              value={state.equipment_fuel_method}
-                              onChange={this.handleEquipmentFuelMethodChange}
-                            />
-                            <Row>
-                              <Col md={6}>
-                                <ExtField
-                                  id="equipment-fuel-type"
-                                  type="select"
-                                  label="Тип топлива"
-                                  error={errors.equipment_fuel_type}
-                                  disabled={
-                                    IS_CLOSED || !isPermittedByKey.update
-                                  }
-                                  options={FUEL_TYPES}
-                                  value={state.equipment_fuel_type}
-                                  onChange={this.handleEquipmentFuelTypeChange}
-                                />
-                              </Col>
-                              <Col md={6}>
-                                <ExtField
-                                  id="equipment-fuel-start"
-                                  type="number"
-                                  label="Выезд, л"
-                                  error={errors.equipment_fuel_start}
-                                  value={state.equipment_fuel_start}
-                                  disabled={
-                                    IS_CLOSED || !isPermittedByKey.update
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="equipment_fuel_start"
-                                />
-                              </Col>
-                            </Row>
-                            <ExtField
-                              id="equipment-fuel-card-id"
-                              type="select"
-                              modalKey={modalKey}
-                              label="Топливная карта"
-                              error={errors.equipment_fuel_card_id}
-                              disabled={
-                                IS_CLOSED
-                                || !isPermittedByKey.update
-                                || equipmentFuelCardDisable
-                              }
-                              options={EQUIPMENT_FUEL_CARDS}
-                              value={state.equipment_fuel_card_id}
-                              onChange={this.handleChange}
-                              boundKeys="equipment_fuel_card_id"
-                            />
-                          </Col>
-                          <Col md={4}>
-                            <Row>
-                              <h4>&nbsp;</h4>
-                              <Col md={6}>
-                                <ExtField
-                                  id="equipment-fuel-to-give"
-                                  type="number"
-                                  label="Выдать, л"
-                                  error={errors.equipment_fuel_to_give}
-                                  value={state.equipment_fuel_to_give}
-                                  disabled={
-                                    IS_ACTIVE
-                                    || IS_CLOSED
-                                    || !isPermittedByKey.update
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="equipment_fuel_to_give"
-                                />
-                              </Col>
-                              <Col md={6}>
-                                <ExtField
-                                  id="equipment-fuel-given"
-                                  type="number"
-                                  label="Выдано, л"
-                                  error={errors.equipment_fuel_given}
-                                  value={state.equipment_fuel_given}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled={
-                                    (IS_CLOSED
-                                      && !(
-                                        this.state.canEditIfClose
-                                        && !!state.equipment_fuel
-                                      ))
-                                    || !isPermittedByKey.update
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="equipment_fuel_given"
-                                />
-                              </Col>
-                              <Col md={6}>
-                                <ExtField
-                                  id="equipment-fuel-end"
-                                  type="number"
-                                  label="Возврат по таксировке, л"
-                                  error={errors.equipment_fuel_end}
-                                  value={state.equipment_fuel_end}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled
-                                />
-                              </Col>
-                              <Col md={6}>
-                                <ExtField
-                                  id="equipment-fact-fuel-end"
-                                  type="number"
-                                  modalKey={modalKey}
-                                  label="Возврат фактический, л"
-                                  error={errors.equipment_fact_fuel_end}
-                                  value={state.equipment_fact_fuel_end}
-                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
-                                  disabled={
-                                    !(IS_ACTIVE || this.state.canEditIfClose)
-                                    || !isPermittedByKey.update
-                                  }
-                                  onChange={this.handleChange}
-                                  boundKeys="equipment_fact_fuel_end"
-                                />
-                              </Col>
-                              <Col md={12}>
-                                {IS_ACTIVE || IS_CLOSED ? (
-                                  'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
-                                ) : (
-                                  <DivNone />
-                                )}
-                              </Col>
-                            </Row>
-                          </Col>
+                          {!state.is_one_fuel_tank ? (
+                            <Col md={8}>
+                              <Row>
+                                <Col md={12}>
+                                  <h4> Топливо для оборудования</h4>
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={4}>
+                                  <ExtField
+                                    id="equipment-fuel-type"
+                                    type="select"
+                                    label="Тип топлива"
+                                    error={errors.equipment_fuel_type}
+                                    disabled={
+                                      IS_CLOSED || !isPermittedByKey.update
+                                    }
+                                    options={FUEL_TYPES}
+                                    value={state.equipment_fuel_type}
+                                    onChange={
+                                      this.handleEquipmentFuelTypeChange
+                                    }
+                                  />
+                                </Col>
+                                <Col md={4}>
+                                  <ExtField
+                                    id="equipment-fuel-to-give"
+                                    type="number"
+                                    label="Выдать, л"
+                                    error={errors.equipment_fuel_to_give}
+                                    value={state.equipment_fuel_to_give}
+                                    disabled={
+                                      IS_ACTIVE
+                                      || IS_CLOSED
+                                      || !isPermittedByKey.update
+                                    }
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_fuel_to_give"
+                                  />
+                                </Col>
+                                <Col md={4}>
+                                  <ExtField
+                                    id="equipment-fuel-given"
+                                    type="number"
+                                    label="Выдано, л"
+                                    value={state.equipment_fuel_given}
+                                    disabled
+                                  />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={4}>
+                                  <ExtField
+                                    id="equipment-fuel-start"
+                                    type="number"
+                                    label="Выезд, л"
+                                    error={errors.equipment_fuel_start}
+                                    value={state.equipment_fuel_start}
+                                    disabled={
+                                      IS_CLOSED || !isPermittedByKey.update
+                                    }
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_fuel_start"
+                                  />
+                                </Col>
+                                <Col md={4}>
+                                  <ExtField
+                                    id="equipment-fuel-end"
+                                    type="number"
+                                    label="Возврат по таксировке, л"
+                                    value={state.equipment_fuel_end}
+                                    disabled
+                                  />
+                                </Col>
+                                <Col md={4}>
+                                  <ExtField
+                                    id="equipment-fact-fuel-end"
+                                    type="number"
+                                    modalKey={modalKey}
+                                    label="Возврат фактический, л"
+                                    error={errors.equipment_fact_fuel_end}
+                                    value={state.equipment_fact_fuel_end}
+                                    hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                    disabled={
+                                      !(
+                                        IS_ACTIVE || this.state.canEditIfClose
+                                      ) || !isPermittedByKey.update
+                                    }
+                                    onChange={this.handleChange}
+                                    boundKeys="equipment_fact_fuel_end"
+                                  />
+                                </Col>
+                              </Row>
+                              <Row>
+                                <Col md={8} mdOffset={4}>
+                                  {IS_ACTIVE || IS_CLOSED ? (
+                                    'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
+                                  ) : (
+                                    <DivNone />
+                                  )}
+                                </Col>
+                              </Row>
+                            </Col>
+                          ) : (
+                            <DivNone />
+                          )}
                         </Col>
+                        {!state.is_one_fuel_tank ? (
+                          <Col md={12}>
+                            <Col md={12}>
+                              <FieldWaybillCarRefill
+                                array={state.equipment_refill}
+                                errors={get(
+                                  errors,
+                                  'equipment_refill',
+                                  state.equipment_refill.map(() => ({})),
+                                )} // временно
+                                handleChange={this.handleChangeEquipmentRefill}
+                                fuel_given={state.equipment_fuel_given}
+                                IS_DRAFT_OR_ACTIVE={
+                                  IS_CREATING || IS_DRAFT || IS_ACTIVE
+                                }
+                                disabled={IS_CLOSED}
+                                page={this.props.page}
+                                path={this.props.path}
+                              />
+                            </Col>
+                          </Col>
+                        ) : (
+                          <DivNone />
+                        )}
                         <Col md={12}>
                           <Col md={12}>
                             <Taxes
@@ -2341,23 +2273,16 @@ WaybillForm.contextTypes = {
 };
 
 export default compose(
-  connect(
-    (state) => ({
-      appConfig: getSessionState(state).appConfig,
-      userStructureId: getSessionState(state).userData.structure_id,
-      userCompanyId: getSessionState(state).userData.company_id,
-      userStructures: getSessionState(state).userData.structures,
-      userPermissionsSet: getSessionState(state).userData.permissionsSet,
-      fuelCardsList: getAutobaseState(state).fuelCardsList,
-      order_mission_source_id: getSomeUniqState(state).missionSource
-        .order_mission_source_id,
-    }),
-    (dispatch) => ({
-      fuelCardsGetAndSetInStore: () =>
-        dispatch(fuelCardsActions.fuelCardsGetAndSetInStore({}, {})),
-      resetSetFuelCards: () => dispatch(fuelCardsActions.resetSetFuelCards()),
-    }),
-  ),
+  connect((state) => ({
+    appConfig: getSessionState(state).appConfig,
+    userStructureId: getSessionState(state).userData.structure_id,
+    userCompanyId: getSessionState(state).userData.company_id,
+    userStructures: getSessionState(state).userData.structures,
+    userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    fuelCardsList: getAutobaseState(state).fuelCardsList,
+    order_mission_source_id: getSomeUniqState(state).missionSource
+      .order_mission_source_id,
+  })),
 )(
   connectToStores(WaybillForm, [
     'objects',

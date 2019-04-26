@@ -48,6 +48,7 @@ export type Mission = {
   request_id?: number;
   request_number?: string;
   route_id: number | null;
+  route_type: string;
   route_name: string;
   status: string; // @todo
   structure_id: number | null;

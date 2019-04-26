@@ -499,7 +499,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             datetime={state.plan_date_start}
             technical_operation_id={state.technical_operation_id}
             municipal_facility_id={state.municipal_facility_id}
-            route_id={state.route_id}
+            route_type={state.route_type}
             disabled={DUTY_MISSION_IS_DISPLAY}
             onChange={this.props.handleChange}
             IS_TEMPLATE={false}

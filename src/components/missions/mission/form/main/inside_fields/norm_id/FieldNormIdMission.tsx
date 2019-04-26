@@ -13,7 +13,6 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
 import { createValidDateTime } from 'utils/dates';
-import routesActions from 'redux-main/reducers/modules/routes/actions';
 
 class FieldNormIdMission extends React.PureComponent<
   PropsFieldNormIdMission,
@@ -26,7 +25,7 @@ class FieldNormIdMission extends React.PureComponent<
       datetime,
       technical_operation_id,
       municipal_facility_id,
-      route_id,
+      route_type,
       type_ids,
     } = this.props;
 
@@ -37,7 +36,7 @@ class FieldNormIdMission extends React.PureComponent<
         datetime !== prevProps.datetime
         || technical_operation_id !== prevProps.technical_operation_id
         || municipal_facility_id !== prevProps.municipal_facility_id
-        || route_id !== prevProps.route_id
+        || route_type !== prevProps.route_type
         || type_ids !== prevProps.type_ids
       )
     );
@@ -60,21 +59,16 @@ class FieldNormIdMission extends React.PureComponent<
       datetime,
       technical_operation_id,
       municipal_facility_id,
-      route_id,
+      route_type,
       type_ids,
       page,
       path,
     } = this.props;
 
     const hasAllData =
-      datetime && technical_operation_id && municipal_facility_id && route_id && type_ids.length;
+      datetime && technical_operation_id && municipal_facility_id && route_type && type_ids.length;
 
     if (hasAllData) {
-      const route_data = await this.props.actionLoadRouteById(route_id, {
-        page,
-        path,
-      });
-
       const norms = await Promise.all(
         type_ids.map((func_type_id) => (
           this.props.actionLoadCleaningOneNorm(
@@ -82,7 +76,7 @@ class FieldNormIdMission extends React.PureComponent<
               datetime: createValidDateTime(datetime),
               technical_operation_id,
               municipal_facility_id,
-              route_type: route_data.type,
+              route_type,
               needs_brigade: false,
               func_type_id,
               kind_task_ids: 3,
@@ -126,8 +120,6 @@ export default connect<
     dependeceTechnicalOperation: getMissionsState(state).missionData.dependeceTechnicalOperation,
   }),
   (dispatch: any) => ({
-    actionLoadRouteById: (...arg) =>
-      dispatch(routesActions.actionLoadRouteById(...arg)),
     actionLoadCleaningOneNorm: (...arg) =>
       dispatch(someUniqActions.actionLoadCleaningOneNorm(...arg)),
   }),

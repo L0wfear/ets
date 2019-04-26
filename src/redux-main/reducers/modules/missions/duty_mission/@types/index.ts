@@ -42,6 +42,7 @@ export type DutyMission = {
   request_id?: number;
   request_number?: string;
   route_id: number | null;
+  route_type: string;
   route_name: string;
   status: keyof typeof DUTY_MISSION_STATUS_LABELS;
   structure_id: number | null;

@@ -688,7 +688,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
               datetime={state.date_start}
               technical_operation_id={state.technical_operation_id}
               municipal_facility_id={state.municipal_facility_id}
-              route_id={state.route_id}
+              route_type={state.route_type}
               type_ids={state.car_type_ids}
               disabled={state.status && !IS_NOT_ASSIGNED}
               onChange={this.props.handleChange}

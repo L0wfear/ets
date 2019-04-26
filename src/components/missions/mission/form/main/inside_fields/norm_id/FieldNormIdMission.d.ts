@@ -2,7 +2,6 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 
 export type StateFieldNormIdMission = {
@@ -12,9 +11,6 @@ export type StatePropsFieldNormIdMission = {
   dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
 };
 export type DispatchPropsFieldNormIdMission = {
-  actionLoadRouteById: HandleThunkActionCreator<
-    typeof routesActions.actionLoadRouteById
-  >;
   actionLoadCleaningOneNorm: HandleThunkActionCreator<
     typeof someUniqActions.actionLoadCleaningOneNorm
   >;
@@ -25,7 +21,7 @@ export type OwnPropsFieldNormIdMission = {
   datetime: Mission['date_start'];
   technical_operation_id: Mission['technical_operation_id'];
   municipal_facility_id: Mission['municipal_facility_id'];
-  route_id: Mission['route_id'];
+  route_type: Mission['route_type'];
   type_ids: Mission['car_type_ids'];
 
   disabled: boolean;

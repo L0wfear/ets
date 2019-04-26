@@ -192,19 +192,14 @@ class FieldRouteIdDutyMission extends React.PureComponent<
   onRouteFormHide = (isSubmitted, route) => {
     const route_id = get(route, 'id', null);
     const route_name = get(route, 'name', '');
+    const route_type = get(route, 'type', '');
+
     const object_type_id = get(route, 'type_id', null);
     const object_type_name = get(
       routeTypesByKey,
       `${get(route, 'type', '')}.title`,
       null,
     );
-
-    this.props.onChange({
-      route_id,
-      route_name,
-      object_type_id,
-      object_type_name,
-    });
 
     if (isSubmitted) {
       const { technical_operation_id, municipal_facility_id } = this.props;
@@ -214,6 +209,14 @@ class FieldRouteIdDutyMission extends React.PureComponent<
       });
       this.getRoutes(technical_operation_id, municipal_facility_id);
     }
+
+    this.props.onChange({
+      route_id,
+      route_name,
+      route_type,
+      object_type_id,
+      object_type_name,
+    });
 
     this.setState({
       selectedRouteRaw: null,
@@ -226,6 +229,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<
     route?: ValuesOf<StateFieldRouteIdDutyMission['ROUTE_OPTIONS']>,
   ) => {
     const route_name = get(route, ['rowData', 'name'], '');
+    const route_type = get(route, ['rowData', 'type'], '');
+
     const object_type_id = get(route, ['rowData', 'type_id'], null);
     const object_type_name = get(
       routeTypesByKey,
@@ -236,6 +241,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
     this.props.onChange({
       route_id,
       route_name,
+      route_type,
       object_type_id,
       object_type_name,
     });

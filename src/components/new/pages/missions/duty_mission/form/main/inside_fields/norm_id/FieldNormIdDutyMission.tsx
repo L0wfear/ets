@@ -13,7 +13,6 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
 import { createValidDateTime } from 'utils/dates';
-import routesActions from 'redux-main/reducers/modules/routes/actions';
 
 /**
  * Пустой рендер для вычисления норматива (norm_id)
@@ -30,7 +29,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
       datetime,
       technical_operation_id,
       municipal_facility_id,
-      route_id,
+      route_type,
     } = this.props;
 
     const triggerOnUpdate =
@@ -39,7 +38,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
       (datetime !== prevProps.datetime ||
         technical_operation_id !== prevProps.technical_operation_id ||
         municipal_facility_id !== prevProps.municipal_facility_id ||
-        route_id !== prevProps.route_id);
+        route_type !== prevProps.route_type);
 
     if (triggerOnUpdate) {
       this.updateNormId();
@@ -52,24 +51,19 @@ class FieldNormIdDutyMission extends React.PureComponent<
       datetime,
       technical_operation_id,
       municipal_facility_id,
-      route_id,
+      route_type,
       page,
       path,
     } = this.props;
 
-    const hasAllData = datetime && technical_operation_id && municipal_facility_id && route_id;
+    const hasAllData = datetime && technical_operation_id && municipal_facility_id && route_type;
 
     if (hasAllData) {
-      const route_data = await this.props.actionLoadRouteById(route_id, {
-        page,
-        path,
-      });
-
       const payload = {
         datetime: createValidDateTime(datetime),
         technical_operation_id,
         municipal_facility_id,
-        route_type: route_data.type,
+        route_type,
         needs_brigade: true,
         kind_task_ids: 3,
       };
@@ -109,8 +103,6 @@ export default connect<
       .technicalOperationRegistryForDutyMissionList,
   }),
   (dispatch: any) => ({
-    actionLoadRouteById: (...arg) =>
-      dispatch(routesActions.actionLoadRouteById(...arg)),
     actionLoadCleaningOneNorm: (...arg) =>
       dispatch(someUniqActions.actionLoadCleaningOneNorm(...arg)),
   }),

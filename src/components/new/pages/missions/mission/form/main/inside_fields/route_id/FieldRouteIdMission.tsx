@@ -288,19 +288,13 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
   onRouteFormHide = (isSubmitted, route) => {
     const route_id = get(route, 'id', null);
     const route_name = get(route, 'name', '');
+    const route_type = get(route, 'type', '');
     const object_type_id = get(route, 'type_id', null);
     const object_type_name = get(
       routeTypesByKey,
       `${get(route, 'type', '')}.title`,
       null,
     );
-
-    this.props.onChange({
-      route_id,
-      route_name,
-      object_type_id,
-      object_type_name,
-    });
 
     if (isSubmitted) {
       const {
@@ -319,10 +313,19 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       selectedRouteRaw: null,
       showRouteForm: false,
     });
+
+    this.props.onChange({
+      route_id,
+      route_name,
+      route_type,
+      object_type_id,
+      object_type_name,
+    });
   }
 
   handleRouteIdChange = async (route_id: Mission['route_id'], route?: ValuesOf<StateFieldRouteIdMission['ROUTE_OPTIONS']>) => {
     const route_name = get(route, 'rowData.name', null);
+    const route_type = get(route, 'rowData.type', null);
     const object_type_id = get(route, 'rowData.type_id', null);
     const object_type_name = get(
       routeTypesByKey,
@@ -333,6 +336,7 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
     this.props.onChange({
       route_id,
       route_name,
+      route_type,
       object_type_id,
       object_type_name,
     });

@@ -48,6 +48,7 @@ export const makeDefaultDutyMission = (): DutyMission => ({
   request_id: null,
   request_number: '',
   route_id: null,
+  route_type: '',
   route_name: '',
   status: DUTY_MISSION_STATUS.not_assigned,
   status_name: DUTY_MISSION_STATUS_LABELS[DUTY_MISSION_STATUS.not_assigned],

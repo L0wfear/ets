@@ -8,9 +8,6 @@ export type StateFieldNormIdDutyMission = {};
 
 export type StatePropsFieldNormIdDutyMission = {};
 export type DispatchPropsFieldNormIdDutyMission = {
-  actionLoadRouteById: HandleThunkActionCreator<
-    typeof routesActions.actionLoadRouteById
-  >;
   actionLoadCleaningOneNorm: HandleThunkActionCreator<
     typeof someUniqActions.actionLoadCleaningOneNorm
   >;
@@ -21,7 +18,7 @@ export type OwnPropsFieldNormIdDutyMission = {
   datetime: DutyMission['plan_date_start'];
   technical_operation_id: DutyMission['technical_operation_id'];
   municipal_facility_id: DutyMission['municipal_facility_id'];
-  route_id: DutyMission['route_id'];
+  route_type: DutyMission['route_type'];
 
   disabled: boolean;
   onChange: (obj: { [key in keyof DutyMission]?: DutyMission[key] }) => void;

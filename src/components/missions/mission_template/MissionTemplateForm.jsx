@@ -87,13 +87,18 @@ class MissionTemplateForm extends MissionForm {
       });
   }
 
-  handleRouteIdChange = (route_id) => {
+  handleRouteChange = (route_id) => {
+    this.handleRouteIdChange(route_id);
+  }
+
+  handleRouteIdChange = async (route_id, fullRoute) => {
     const { flux } = this.context;
     if (route_id) {
-      flux.getActions('routes').getRouteById(route_id, false)
-        .then((route) => {
-          this.setState({ selectedRoute: route });
-        });
+      let route = fullRoute;
+      if (!fullRoute) {
+        route = await flux.getActions('routes').getRouteById(route_id, false);
+      }
+      this.setState({ selectedRoute: route });
     } else {
       this.setState({ selectedRoute: null });
     }
@@ -113,7 +118,7 @@ class MissionTemplateForm extends MissionForm {
         car_ids,
       });
 
-      this.handleRouteIdChange(undefined);
+      this.handleRouteIdChange(null);
     }
   }
 
@@ -140,7 +145,7 @@ class MissionTemplateForm extends MissionForm {
       car_ids: [],
     });
 
-    this.handleRouteIdChange(undefined);
+    this.handleRouteIdChange(null);
   }
 
   handleChangeMF = (name, value) => {
@@ -148,7 +153,7 @@ class MissionTemplateForm extends MissionForm {
     if (!this.props.fromWaybill) {
       this.handleChange('car_ids', []);
     }
-    this.handleRouteIdChange(undefined);
+    this.handleRouteIdChange(null);
   }
 
   handleStructureIdChange = (structure_id) => {
@@ -166,7 +171,7 @@ class MissionTemplateForm extends MissionForm {
         changesObj.car_ids = [];
       }
       if (this.state.selectedRoute && structure_id !== this.state.selectedRoute.structure_id) {
-        this.handleRouteIdChange(undefined);
+        this.handleRouteIdChange(null);
       }
     }
 
@@ -442,7 +447,7 @@ class MissionTemplateForm extends MissionForm {
                 options={ROUTES}
                 value={state.route_id}
                 disabled={!state.car_ids.length}
-                onChange={this.handleRouteIdChange}
+                onChange={this.handleRouteChange}
                 clearable
               />
               <Div hidden={state.route_id}>

@@ -103,7 +103,11 @@ export class MissionForm extends Form {
       }));
   }
 
-  handleRouteIdChange = (route_id) => {
+  handleRouteChange = (route_id) => {
+    this.handleRouteIdChange(route_id);
+  }
+
+  handleRouteIdChange = async (route_id, fullRoute) => {
     const changesObj = {
       route_id,
     };
@@ -120,54 +124,57 @@ export class MissionForm extends Form {
 
     const { flux } = this.context;
     if (route_id) {
-      flux.getActions('routes').getRouteById(route_id, false)
-        .then((route) => {
-          const { formState } = this.props;
+      let route = null;
+      if (fullRoute) {
+        route = fullRoute;
+      } else {
+        route = await flux.getActions('routes').getRouteById(route_id, false);
+      }
+      const { formState } = this.props;
 
-          (
-            formState.is_column
-              ? Promise.all(
-                formState.type_id.map(type_id => (
-                  flux.getActions('missions').getCleaningOneNorm({
-                    ...makePayloadFromState(formState, type_id),
-                    route_type: route.type,
-                    kind_task_ids: this.state.kind_task_ids,
-                  })
-                )),
-              )
-              : flux.getActions('missions').getCleaningOneNorm({
-                ...makePayloadFromState(formState),
-                route_type: route.type,
-                kind_task_ids: this.state.kind_task_ids,
-              }).then(Array)
-          ).then((ans) => {
-            const changesObjSecond = ans.reduce((newObj, normData) => ({
-              norm_id: [...newObj.norm_id, normData.norm_id],
-              is_cleaning_norm: [...newObj.is_cleaning_norm, normData.is_cleaning_norm],
-            }), { norm_id: [], is_cleaning_norm: [] });
+      let ans = null;
+      if (formState.is_column) {
+        ans = await Promise.all(
+          formState.type_id.map(type_id => (
+            flux.getActions('missions').getCleaningOneNorm({
+              ...makePayloadFromState(formState, type_id),
+              route_type: route.type,
+              kind_task_ids: this.state.kind_task_ids,
+            })
+          )),
+        );
+      } else {
+        ans = await flux.getActions('missions').getCleaningOneNorm({
+          ...makePayloadFromState(formState),
+          route_type: route.type,
+          kind_task_ids: this.state.kind_task_ids,
+        }).then(Array);
+      }
+      const changesObjSecond = ans.reduce((newObj, normData) => ({
+        norm_id: [...newObj.norm_id, normData.norm_id],
+        is_cleaning_norm: [...newObj.is_cleaning_norm, normData.is_cleaning_norm],
+      }), { norm_id: [], is_cleaning_norm: [] });
 
-            if (changesObjSecond.is_cleaning_norm.some(value => value)) {
-              const { formState: { date_start, date_end } } = this.props;
+      if (changesObjSecond.is_cleaning_norm.some(value => value)) {
+        const { formState: { date_start, date_end } } = this.props;
 
-              if (date_start && date_end) {
-                const { time } = routeTypesByKey[route.type];
+        if (date_start && date_end) {
+          const { time } = routeTypesByKey[route.type];
 
-                if (diffDates(date_end, date_start, 'hours') > time) {
-                  changesObjSecond.date_end = addTime(date_start, time, 'hours');
-                }
-              }
-            }
+          if (diffDates(date_end, date_start, 'hours') > time) {
+            changesObjSecond.date_end = addTime(date_start, time, 'hours');
+          }
+        }
+      }
 
-            if (!formState.is_column) {
-              [changesObjSecond.norm_id] = changesObjSecond.norm_id;
-              [changesObjSecond.is_cleaning_norm] = changesObjSecond.is_cleaning_norm;
-            }
+      if (!formState.is_column) {
+        [changesObjSecond.norm_id] = changesObjSecond.norm_id;
+        [changesObjSecond.is_cleaning_norm] = changesObjSecond.is_cleaning_norm;
+      }
 
-            this.props.handleMultiFormChange(changesObjSecond);
-          });
+      this.props.handleMultiFormChange(changesObjSecond);
 
-          this.setState({ selectedRoute: route });
-        });
+      this.setState({ selectedRoute: route });
     } else {
       this.setState({ selectedRoute: null });
     }
@@ -221,7 +228,7 @@ export class MissionForm extends Form {
 
       this.props.handleMultiFormChange(chageObj);
 
-      this.handleRouteIdChange(undefined);
+      this.handleRouteIdChange(null);
     }
   }
 
@@ -301,7 +308,7 @@ export class MissionForm extends Form {
       ...changedObj,
     });
 
-    this.handleRouteIdChange(undefined);
+    this.handleRouteIdChange(null);
   }
 
   handleChangeMF = (name, value) => {
@@ -309,7 +316,7 @@ export class MissionForm extends Form {
     if (!this.props.withDefineCarId) {
       this.handleChange('car_id', null);
     }
-    this.handleRouteIdChange(undefined);
+    this.handleRouteIdChange(null);
   }
 
   handleStructureIdChange = (structure_id) => {
@@ -328,7 +335,7 @@ export class MissionForm extends Form {
         changesObj.car_id = null;
       }
       if (this.state.selectedRoute && structure_id !== this.state.selectedRoute.structure_id) {
-        this.handleRouteIdChange(undefined);
+        this.handleRouteIdChange(null);
       }
     }
 
@@ -816,7 +823,7 @@ export class MissionForm extends Form {
                     disabled={routeIdDisabled}
                     options={ROUTES}
                     value={state.route_id}
-                    onChange={this.handleRouteIdChange}
+                    onChange={this.handleRouteChange}
                   />
                   <Div hidden={state.route_id}>
                     <Button id="create-route" onClick={this.createNewRoute} disabled={routeIdDisabled}>Создать новый</Button>

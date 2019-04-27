@@ -19,12 +19,10 @@ import {
   filedToCheckFall,
   filedToCheckFallHardPgm,
 } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
-import { get } from 'lodash';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import ContainerBlock from './container_bloc';
 import { BoxContainer } from '../../../autobase/components/data/styled/InspectionAutobaseData';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
-import { getInspectPgmBase } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -232,9 +230,6 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
-  const selectedPgmBase = props.pgmBaseList.find((elem) => get(props, 'selectedInspect.base_id', null) === get(elem, 'id'));
-  const selectedPgmBaseTypeIsCombinate = get(selectedPgmBase, 'pgm_stores_type_id', null) === 3 ? true : false;
-
   return state.selectedInspect
     ? (
       <React.Fragment>
@@ -275,7 +270,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             </BoxContainer>
           </Col>
           {
-            selectedPgmBaseTypeIsCombinate ? (
+            state.selectedInspect.can_have_container ? (
               <Col md={6} sm={12}>
                 <ContainerBlock
                   selectedInspectPgmBase={state.selectedInspect}
@@ -365,9 +360,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
 
 export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseWrapOwnProps>(
   connect<ViewInspectPgmBaseStateProps, ViewInspectPgmBaseDispatchProps, ViewInspectPgmBaseWrapOwnProps, ReduxState>(
-    (state) => ({
-      pgmBaseList: getInspectPgmBase(state).pgmBaseList,
-    }),
+    null,
   ),
   withPreloader({
     typePreloader: 'mainpage',

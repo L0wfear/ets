@@ -61,6 +61,7 @@ export type InspectPgmBaseData = {
 export type InspectPgmBase = {
   base_address: string;
   base_id: number | null;
+  can_have_container: boolean;
   close_employee_fio: string;
   close_employee_id: number | null;
   company_id: number;

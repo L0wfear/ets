@@ -6,7 +6,6 @@ export type ViewInspectPgmBaseWrapOwnProps = {
   loadingPage: string;
   onFormHide: (isSubmitted: boolean, inspectAuotbase?: InspectPgmBase) => any;
   selectedInspect: InspectPgmBase;
-  pgmBaseList: IStateInspectPgmBase['pgmBaseList'];
 };
 
 export type ViewInspectPgmBaseWrapProps = (
@@ -18,7 +17,6 @@ export type ViewInspectPgmBaseWrapProps = (
 );
 
 export type ViewInspectPgmBaseStateProps = {
-  pgmBaseList: IStateInspectPgmBase['pgmBaseList'];
 };
 export type ViewInspectPgmBaseDispatchProps = {
 };
@@ -27,7 +25,6 @@ export type ViewInspectPgmBaseOwnProps = {
   selectedInspect: InspectPgmBase;
   handleHide: (isSubmitted: boolean, inspectAuotbase?: InspectPgmBase) => any;
   isPermitted: boolean;
-  pgmBaseList: IStateInspectPgmBase['pgmBaseList'];
 
   loadingPage: string;
   page: string;

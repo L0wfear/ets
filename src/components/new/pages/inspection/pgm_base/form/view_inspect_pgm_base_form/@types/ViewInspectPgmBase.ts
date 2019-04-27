@@ -1,5 +1,5 @@
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { InspectPgmBase, IStateInspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
 
 export type ViewInspectPgmBaseWrapOwnProps = {

@@ -35,6 +35,18 @@ export const repairFormSchema: SchemaType<Repair, PropsRepair> = {
       title: 'Плановая дата окончания ремонта',
       type: 'date',
       required: true,
+      dependencies: [
+        (value, { plan_date_start }) => {
+          if (plan_date_start && value) {
+
+            if (diffDates(value, plan_date_start) < 0) {
+              return '"Плановая дата окончания" должна быть позже "Плановой даты начала ремонта"';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     fact_date_start: {
       title: 'Фактическая дата начала ремонта',
@@ -43,6 +55,18 @@ export const repairFormSchema: SchemaType<Repair, PropsRepair> = {
     fact_date_end: {
       title: 'Фактическая дата окончания ремонта',
       type: 'date',
+      dependencies: [
+        (value, { fact_date_start }) => {
+          if (fact_date_start && value) {
+
+            if (diffDates(value, fact_date_start) < 0) {
+              return '"Фактическая дата окончания" должна быть позже "Фактической даты начала ремонта"';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     description: {
       title: 'Описание неисправности',
@@ -58,41 +82,15 @@ export const repairFormSchema: SchemaType<Repair, PropsRepair> = {
     status: {
       title: 'Итог проведенного ремонта',
       type: 'valueOfArray',
+      dependencies: [
+        (value, { fact_date_start, fact_date_end }) => {
+          if (fact_date_start && fact_date_end && !value) {
+            return getRequiredFieldMessage('Итог проведенного ремонта');
+          }
+
+          return '';
+        },
+      ],
     },
-  },
-  dependencies: {
-    plan_date_end: [
-      (value, { plan_date_start }) => {
-        if (plan_date_start && value) {
-
-          if (diffDates(value, plan_date_start) < 0) {
-            return '"Плановая дата окончания" должна быть позже "Плановой даты начала ремонта"';
-          }
-        }
-
-        return '';
-      },
-    ],
-    fact_date_end: [
-      (value, { fact_date_start }) => {
-        if (fact_date_start && value) {
-
-          if (diffDates(value, fact_date_start) < 0) {
-            return '"Фактическая дата окончания" должна быть позже "Фактической даты начала ремонта"';
-          }
-        }
-
-        return '';
-      },
-    ],
-    status: [
-      (value, { fact_date_start, fact_date_end }) => {
-        if (fact_date_start && fact_date_end && !value) {
-          return getRequiredFieldMessage('Итог проведенного ремонта');
-        }
-
-        return '';
-      },
-    ],
   },
 };

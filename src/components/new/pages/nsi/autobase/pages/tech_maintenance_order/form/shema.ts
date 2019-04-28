@@ -14,6 +14,15 @@ export const techMaintOrderFormSchema: SchemaType<TechMaintOrder, PropsTechMaint
     sequence: {
       title: 'Последовательность ТО',
       type: 'valueOfArray',
+      dependencies: [
+        (value, { is_periodic }) => {
+          if (!is_periodic && !value) {
+            return getRequiredFieldMessage('Последовательность ТО');
+          }
+
+          return '';
+        },
+      ],
     },
     description: {
       title: 'Описание',
@@ -42,6 +51,16 @@ export const techMaintOrderFormSchema: SchemaType<TechMaintOrder, PropsTechMaint
       type: 'number',
       integer: true,
       required: true,
+
+      dependencies: [
+        (_, { tech_maintenance_type_id }) => {
+          if (!tech_maintenance_type_id) {
+            return getRequiredFieldMessage('Тип ТО');
+          }
+
+          return '';
+        },
+      ],
     },
     interval_time: {
       title: 'Интервал до следующего ТО (по времени)',
@@ -53,25 +72,5 @@ export const techMaintOrderFormSchema: SchemaType<TechMaintOrder, PropsTechMaint
       title: 'Время измеряется',
       type: 'valueOfArray',
     },
-  },
-  dependencies: {
-    sequence: [
-      (value, { is_periodic }) => {
-        if (!is_periodic && !value) {
-          return getRequiredFieldMessage('Последовательность ТО');
-        }
-
-        return '';
-      },
-    ],
-    measure_unit_run_id: [
-      (_, { tech_maintenance_type_id }) => {
-        if (!tech_maintenance_type_id) {
-          return getRequiredFieldMessage('Тип ТО');
-        }
-
-        return '';
-      },
-    ],
   },
 };

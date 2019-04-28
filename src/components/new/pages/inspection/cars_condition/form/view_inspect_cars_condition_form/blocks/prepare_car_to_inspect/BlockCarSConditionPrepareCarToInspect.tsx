@@ -5,12 +5,13 @@ import { Button } from 'react-bootstrap';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
+import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 
 type BlockCarSConditionPrepareCarToInspectOwnProps = {
   onChange: any;
   preparing_cars_check: InspectCarsCondition['data']['preparing_cars_check'];
-  error_preparing_cars_check: FormErrorType<InspectCarsCondition['data']['preparing_cars_check']>;
+  error_preparing_cars_check: FormErrorType<SchemaType<InspectCarsCondition['data']['preparing_cars_check'], PropsViewInspectCarsConditionWithForm>>;
   isPermitted: boolean;
   isActiveInspect: boolean;
 };

@@ -40,6 +40,17 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
       title: 'Дата окончания действия',
       type: 'date',
       required: true,
+      dependencies: [
+        (value, { date_start }) => {
+          if (value && date_start) {
+            if (diffDates(date_start, value) >= 0) {
+              return '"Дата окончания действия" должна быть позже "Даты начала действия"';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     price: {
       title: 'Стоимость, руб.',
@@ -54,18 +65,5 @@ export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsuran
       type: 'string',
       maxLength: 2048,
     },
-  },
-  dependencies: {
-    date_end: [
-      (value, { date_start }) => {
-        if (value && date_start) {
-          if (diffDates(date_start, value) >= 0) {
-            return '"Дата окончания действия" должна быть позже "Даты начала действия"';
-          }
-        }
-
-        return '';
-      },
-    ],
   },
 };

@@ -7,6 +7,14 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
     head_balance_holder_base_fio: {
       title: 'Руководитель балансодержателя',
       type: 'string',
+      dependencies: [
+        (value, _, { type }) => {
+          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+              return 'Поле "Руководитель балансодержателя" должно быть заполнено';
+          }
+          return '';
+        },
+      ],
     },
     head_balance_holder_base_tel: {
       title: 'Телефон руководителя балансодержателя',
@@ -15,6 +23,14 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
     head_operating_base_fio: {
       title: 'Руководитель организации, эксплуатирующей базу',
       type: 'string',
+      dependencies: [
+        (value, _, { type }) => {
+          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+              return 'Поле "Руководитель организации, эксплуатирующей базу" должно быть заполнено';
+          }
+          return '';
+        },
+      ],
     },
     head_operating_base_tel: {
       title: 'Телефон руководителя организации, эксплуатирующей базу',
@@ -28,6 +44,14 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
     type_of_base_coverage: {
       title: 'Вид покрытия базы',
       type: 'string',
+      dependencies: [
+        (value, _, { type }) => {
+          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+              return 'Поле "Вид покрытия базы" должно быть заполнено';
+          }
+          return '';
+        },
+      ],
     },
     access_roads_in_poor_condition: {
       title: 'Неудовлетворительное состояние подъездных путей',
@@ -89,6 +113,14 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
     type_coverage_in_hangar: {
       title: 'Вид покрытия в ангаре',
       type: 'string',
+      dependencies: [
+        (value, _, { type }) => {
+          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+              return 'Поле "Вид покрытия в ангаре" должно быть заполнено';
+          }
+          return '';
+        },
+      ],
     },
     lack_of_lighting_in_hangars: {
       title: 'Отсутствие освещенности в ангарах',
@@ -122,39 +154,5 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       title: 'Наличие ПГМ на открытой площадке на момент проверки (тонн)',
       type: 'number',
     },
-  },
-  dependencies: {
-    head_balance_holder_base_fio: [
-      (value, formData, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
-            return 'Поле "Руководитель балансодержателя" должно быть заполнено';
-        }
-        return '';
-      },
-    ],
-    head_operating_base_fio: [
-      (value, formData, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
-            return 'Поле "Руководитель организации, эксплуатирующей базу" должно быть заполнено';
-        }
-        return '';
-      },
-    ],
-    type_of_base_coverage: [
-      (value, formData, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
-            return 'Поле "Вид покрытия базы" должно быть заполнено';
-        }
-        return '';
-      },
-    ],
-    type_coverage_in_hangar: [
-      (value, formData, { type }) => {
-        if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
-            return 'Поле "Вид покрытия в ангаре" должно быть заполнено';
-        }
-        return '';
-      },
-    ],
   },
 };

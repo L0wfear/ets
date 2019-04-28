@@ -18,6 +18,20 @@ export const routeFormSchema: SchemaType<
       title: 'Название маршрута',
       type: 'string',
       required: true,
+      dependencies: [
+        (value, formState, props) => {
+          if (value) {
+            const { routesMapNameId } = props;
+
+            const hasInRoutesName = routesMapNameId && routesMapNameId.has(value);
+            if (hasInRoutesName && routesMapNameId.get(value) !== formState.id) {
+              return 'Маршрут с данным названием уже существует';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     technical_operation_id: {
       title: 'Технологическая операция',
@@ -36,72 +50,64 @@ export const routeFormSchema: SchemaType<
     type: {
       title: 'Тип объекта',
       type: 'string',
+      dependencies: [
+        (value, formState) => {
+          const triggerOnError =
+            isNumber(formState.technical_operation_id) &&
+            isNumber(formState.municipal_facility_id) &&
+            !value;
+
+          if (triggerOnError) {
+            return 'Поле "Тип объекта" должно быть заполнено';
+          }
+
+          return '';
+        },
+      ],
     },
-  },
-  dependencies: {
-    name: [
-      (value, formState, props) => {
-        if (value) {
-          const { routesMapNameId } = props;
-
-          const hasInRoutesName = routesMapNameId && routesMapNameId.has(value);
-          if (hasInRoutesName && routesMapNameId.get(value) !== formState.id) {
-            return 'Маршрут с данным названием уже существует';
+    object_list: {
+      type: 'multiValueOfArray',
+      title: 'Список выбранных геообъектов',
+      dependencies: [
+        (value, formState, props) => {
+          const { draw_object_list, type } = formState;
+          if (
+            type &&
+            !draw_object_list.length &&
+            !value.length &&
+            type !== 'mixed'
+          ) {
+            const title = get(routeTypesByKey, `${type}.title`, null);
+            if (title) {
+              return `Поле "Список выбранных "${
+                  title
+                }" должно быть заполнено`;
+            }
           }
-        }
 
-        return '';
-      },
-    ],
-    type: [
-      (value, formState) => {
-        const triggerOnError =
-          isNumber(formState.technical_operation_id) &&
-          isNumber(formState.municipal_facility_id) &&
-          !value;
+          return '';
+        },
+      ],
+    },
+    draw_object_list: {
+      type: 'multiValueOfArray',
+      title: 'Список выбранных геообъектов',
+      dependencies: [
+        (value, formState) => {
+          const { object_list, type } = formState;
 
-        if (triggerOnError) {
-          return 'Поле "Тип объекта" должно быть заполнено';
-        }
-
-        return '';
-      },
-    ],
-    object_list: [
-      (value, formState, props) => {
-        const { draw_object_list, type } = formState;
-        if (
-          type &&
-          !draw_object_list.length &&
-          !value.length &&
-          type !== 'mixed'
-        ) {
-          const title = get(routeTypesByKey, `${type}.title`, null);
-          if (title) {
-            return `Поле "Список выбранных "${
-                title
-              }" должно быть заполнено`;
+          if (type && !object_list.length && !value.length) {
+            const title = get(routeTypesByKey, `${type}.title`, null);
+            if (title) {
+              return `Поле "Список выбранных "${
+                  title
+                }" должно быть заполнено, либо построен маршрут вручную`;
+            }
           }
-        }
 
-        return '';
-      },
-    ],
-    draw_object_list: [
-      (value, formState) => {
-        const { object_list, type } = formState;
-
-        if (type && !object_list.length && !value.length) {
-          const title = get(routeTypesByKey, `${type}.title`, null);
-          if (title) {
-            return `Поле "Список выбранных "${
-                title
-              }" должно быть заполнено, либо построен маршрут вручную`;
-          }
-        }
-
-        return '';
-      },
-    ],
+          return '';
+        },
+      ],
+    },
   },
 };

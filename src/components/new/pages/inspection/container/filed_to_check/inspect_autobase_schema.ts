@@ -1,7 +1,8 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
+import { PropsInspectContainerWithForm } from '../@types/InspectionContainerList';
 
-export const inspectContainerSchema: SchemaType<any, { type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM }> = {
+export const inspectContainerSchema: SchemaType<InspectContainer, PropsInspectContainerWithForm> = {
   properties: {
     number: {
       title: 'Порядковый и/или инвентарный номер емкости',

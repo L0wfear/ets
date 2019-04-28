@@ -9,9 +9,9 @@ export type InspectContainer = {
   number: string;
   capacity: number;
   capacity_percent: number;
-  pgm_volume: 50;
+  pgm_volume: number;
   pgm_marka: string;
-  last_checked_at: Date;
+  last_checked_at: string;
   diagnostic_result: string;
   id: number; // бэк ещё не присылает
   data: {

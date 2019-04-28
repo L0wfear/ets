@@ -4,7 +4,8 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
-import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
+import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 
 type BlockCarSConditionInfoProps = {
   head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'],
@@ -14,8 +15,8 @@ type BlockCarSConditionInfoProps = {
   checks_period_text: InspectCarsCondition['checks_period_text'],
   checks_type_text: InspectCarsCondition['checks_type_text'],
 
-  error_head_balance_holder_base: FormErrorType<InspectCarsCondition['head_balance_holder_base']>;
-  error_head_operating_base: FormErrorType<InspectCarsCondition['head_operating_base']>;
+  error_head_balance_holder_base: FormErrorType<SchemaType<InspectCarsCondition['head_balance_holder_base'], PropsViewInspectCarsConditionWithForm>>;
+  error_head_operating_base: FormErrorType<SchemaType<InspectCarsCondition['head_operating_base'], PropsViewInspectCarsConditionWithForm>>;
 
   isPermitted: boolean;
   isActiveInspect: boolean;

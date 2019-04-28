@@ -26,6 +26,17 @@ export const techInspectionFormSchema: SchemaType<TechInspection, PropsTechInspe
       title: 'Срок действия до',
       type: 'date',
       required: true,
+      dependencies: [
+        (value, { date_start }) => {
+          if (value && date_start) {
+            if (diffDates(date_start, value) > 0) {
+              return '"Срок действия до" не должен быть раньше "Даты прохождения"';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     tech_operator: {
       title: 'Оператор технического осмотра / пункт технического осмотра',
@@ -40,18 +51,5 @@ export const techInspectionFormSchema: SchemaType<TechInspection, PropsTechInspe
       title: 'Примечание прохождения',
       type: 'string',
     },
-  },
-  dependencies: {
-    date_end: [
-      (value, { date_start }) => {
-        if (value && date_start) {
-          if (diffDates(date_start, value) > 0) {
-            return '"Срок действия до" не должен быть раньше "Даты прохождения"';
-          }
-        }
-
-        return '';
-      },
-    ],
   },
 };

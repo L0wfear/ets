@@ -14,7 +14,7 @@ import PreloaderComponent from 'components/ui/new/preloader/Preloader';
 /**
  * @params uniqField - уникальный ключ формы
  */
-type ConfigWithForm<P, F, S> = {
+type ConfigWithForm<P, F> = {
   uniqField: keyof F | boolean;       // уникальный ключ формы
   createAction?: any;                 // Экшен создания записи
   updateAction?: any;                 // Экшен изменения записи
@@ -38,10 +38,10 @@ type WithFormConfigProps = {
   path?: string;
 };
 
-type WithFormState<F> = {
+type WithFormState<F, P> = {
   formState: F;
   originalFormState: F,
-  formErrors: FormErrorType<F>;
+  formErrors: FormErrorType<SchemaType<F, P>>;
   canSave: boolean;
 
   hasData: boolean;
@@ -62,8 +62,8 @@ type FormWithDefaultSubmit = () => void;
 
 export type OutputWithFormProps<P, F, T extends any[], A> = (
   WithFormProps<P>
-  & WithFormState<F>
-  & Pick<ConfigWithForm<P, F, WithFormState<F>>, 'mergeElement' | 'schema'>
+  & WithFormState<F, P>
+  & Pick<ConfigWithForm<P, F>, 'mergeElement' | 'schema'>
   & {
     handleChange: FormWithHandleChange<F>;
     handleChangeBoolean: FormWithHandleChangeBoolean<F>;
@@ -121,7 +121,7 @@ export const removeEmptyString = (formState: any) => {
   });
 };
 
-const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
+const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithFormProps<P>, F>) => (Component) => (
   compose<any, any>(
     withRequirePermissionsNew({
       permissions: config.permissions.update,
@@ -137,7 +137,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       null,
     ),
   )(
-    class extends React.PureComponent<WithFormProps<P>, WithFormState<F>> {
+    class extends React.PureComponent<WithFormProps<P>, WithFormState<F, P>> {
       constructor(props) {
         super(props);
 
@@ -162,7 +162,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
         };
       }
 
-      static getDerivedStateFromProps(nextProps: WithFormProps<P>, prevState: WithFormState<F>) {
+      static getDerivedStateFromProps(nextProps: WithFormProps<P>, prevState: WithFormState<F, P>) {
         const triggerOnUpdateFromState = (
           !isBoolean(config.uniqField)
           && get(nextProps.element, config.uniqField, null)
@@ -264,7 +264,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
       validate = (formState: F) => {
         return validate(config.schema, formState, this.props, formState);
       }
-      canSave = (state: WithFormState<F>) => {
+      canSave = (state: WithFormState<F, P>) => {
         return canSaveTest(state.formErrors);
       }
       handleChangeBoolean: FormWithHandleChangeBoolean<F> = (objChangeOrName, newRawValue) => {

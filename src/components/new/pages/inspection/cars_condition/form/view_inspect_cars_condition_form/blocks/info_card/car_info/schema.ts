@@ -43,6 +43,13 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     status: {
       type: 'valueOfArray',
       title: 'Статус ТС по базе',
+      dependencies: [
+        (value, formState) => {
+          if (formState.id && !value) {
+            return 'Поле "Статус ТС по базе" должно быть заполнено';
+          }
+        },
+      ],
     },
     mileage: {
       type: 'number',
@@ -52,10 +59,24 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     osago: {
       type: 'string',
       title: 'Номер ОСАГО',
+      dependencies: [
+        (value, formState) => {
+          if (!formState.data.osago_not_required && !value) {
+            return 'Поле "Номер ОСАГО" должно быть заполнено';
+          }
+        },
+      ],
     },
     osago_finished_at: {
       type: 'date',
       title: 'Действует до',
+      dependencies: [
+        (value, formState) => {
+          if (!formState.data.osago_not_required && !value) {
+            return 'Поле "Действует до" должно быть заполнено';
+          }
+        },
+      ],
     },
     diagnostic_card: {
       type: 'string',
@@ -91,28 +112,5 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       type: 'schema',
       schema: carsConditionCarFormDataSchema,
     },
-  },
-  dependencies: {
-    status: [
-      (value, formState) => {
-        if (formState.id && !value) {
-          return 'Поле "Статус ТС по базе" должно быть заполнено';
-        }
-      },
-    ],
-    osago: [
-      (value, formState) => {
-        if (!formState.data.osago_not_required && !value) {
-          return 'Поле "Номер ОСАГО" должно быть заполнено';
-        }
-      },
-    ],
-    osago_finished_at: [
-      (value, formState) => {
-        if (!formState.data.osago_not_required && !value) {
-          return 'Поле "Действует до" должно быть заполнено';
-        }
-      },
-    ],
   },
 };

@@ -14,23 +14,21 @@ export const dutyDutyMissionTemplateCreatingFormSchema: SchemaType<Partial<Pick<
       title: 'Время выполнения.C',
       type: 'datetime',
       required: true,
+      dependencies: [
+        (value, { plan_date_end }) => {
+          if (value) {
+            if (plan_date_end && diffDates(value, plan_date_end) >= 0) {
+              return 'Дата планируемого начала должна быть раньше даты планируемого окончания';
+            }
+          }
+          return '';
+        },
+      ],
     },
     plan_date_end: {
       title: 'Время выполнения.По',
       type: 'datetime',
       required: true,
     },
-  },
-  dependencies: {
-    plan_date_start: [
-      (value, { plan_date_end }) => {
-        if (value) {
-          if (plan_date_end && diffDates(value, plan_date_end) >= 0) {
-            return 'Дата планируемого начала должна быть раньше даты планируемого окончания';
-          }
-        }
-        return '';
-      },
-    ],
   },
 };

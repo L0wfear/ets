@@ -20,12 +20,28 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
       type: 'number',
       float: 3,
       min: 0,
+      dependencies: [
+        (value, formState) => {
+          if (isEmpty(formState.winter_rate) && isEmpty(value)) {
+            return 'Одна из норм должна быть заполнена';
+          }
+          return '';
+        },
+      ],
     },
     winter_rate: {
       title: 'Норма для зимнего периода',
       type: 'number',
       float: 3,
       min: 0,
+      dependencies: [
+        (value, formState) => {
+          if (isEmpty(formState.summer_rate) && isEmpty(value)) {
+            return 'Одна из норм должна быть заполнена';
+          }
+          return '';
+        },
+      ],
     },
     car_special_model_id: {
       title: 'Модель ТС',
@@ -37,23 +53,5 @@ export const fuelRateSchema: SchemaType<FuelRate, PropsFuelRate> = {
       type: 'valueOfArray',
       required: false,
     },
-  },
-  dependencies: {
-    summer_rate: [
-      (value, formState) => {
-        if (isEmpty(formState.winter_rate) && isEmpty(value)) {
-          return 'Одна из норм должна быть заполнена';
-        }
-        return '';
-      },
-    ],
-    winter_rate: [
-      (value, formState) => {
-        if (isEmpty(formState.summer_rate) && isEmpty(value)) {
-          return 'Одна из норм должна быть заполнена';
-        }
-        return '';
-      },
-    ],
   },
 };

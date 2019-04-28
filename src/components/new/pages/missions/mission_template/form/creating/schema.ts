@@ -14,11 +14,34 @@ export const missionTemplateCreatingFormSchema: SchemaType<MissionTemplateCreati
       title: 'Время выполнения.C',
       type: 'datetime',
       required: true,
+      dependencies: [
+        (date_start, { date_end }) => {
+          if (date_start) {
+            if (date_end && diffDates(date_start, date_end) >= 0) {
+              return 'Дата начала должна быть раньше даты окончания';
+            }
+          }
+          return '';
+        },
+      ],
     },
     date_end: {
       title: 'Время выполнения.По',
       type: 'datetime',
       required: true,
+      dependencies: [
+        (date_end, { date_start, missionTemplates }) => {
+          const missionTemplatesAsArr = Object.values(missionTemplates);
+
+          if (missionTemplatesAsArr.some(({ is_cleaning_norm }) => is_cleaning_norm.includes(true)) && date_start) {
+            const time = routeTypesByKey[missionTemplatesAsArr[0].route_type].time;
+
+            if (time && diffDates(date_end, date_start, 'hours') > time) {
+              return `Время выполнения задания для ${routeTypesByKey[missionTemplatesAsArr[0].route_type].title} должно составлять не более ${time} часов`;
+            }
+          }
+        },
+      ],
     },
     passes_count: {
       title: 'Количество циклов',
@@ -28,30 +51,5 @@ export const missionTemplateCreatingFormSchema: SchemaType<MissionTemplateCreati
       max: 10,
       minNotEqual: 0,
     },
-  },
-  dependencies: {
-    date_start: [
-      (date_start, { date_end }) => {
-        if (date_start) {
-          if (date_end && diffDates(date_start, date_end) >= 0) {
-            return 'Дата начала должна быть раньше даты окончания';
-          }
-        }
-        return '';
-      },
-    ],
-    date_end: [
-      (date_end, { date_start, missionTemplates }) => {
-        const missionTemplatesAsArr = Object.values(missionTemplates);
-
-        if (missionTemplatesAsArr.some(({ is_cleaning_norm }) => is_cleaning_norm.includes(true)) && date_start) {
-          const time = routeTypesByKey[missionTemplatesAsArr[0].route_type].time;
-
-          if (time && diffDates(date_end, date_start, 'hours') > time) {
-            return `Время выполнения задания для ${routeTypesByKey[missionTemplatesAsArr[0].route_type].title} должно составлять не более ${time} часов`;
-          }
-        }
-      },
-    ],
   },
 };

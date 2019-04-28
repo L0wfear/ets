@@ -1,7 +1,5 @@
 import {
   SchemaType,
-  DependencieFieldValidatorArrType,
-  PropertieFieldValidatorArrType,
 } from 'components/ui/form/new/@types/validate.h';
 import { get } from 'lodash';
 
@@ -14,84 +12,132 @@ import { validateDatetime } from 'components/ui/form/new/datetime/datetimeValida
 import { validateBoolean } from 'components/ui/form/new/boolean/booleanValidate';
 
 import { isObject } from 'util';
+import { isArray } from 'highcharts';
 
-const emptyObj = {};
+const hasError = (errorsData: any) => {
+  if (isObject(errorsData)) {
+    return Object.values(errorsData).every((error) => hasError(error));
+  }
+  if (isArray(errorsData)) {
+    return errorsData.every((error) => hasError(error));
+  }
+
+  return Boolean(errorsData);
+};
+
+const mergeErrors = (errorOld: any, error: any) => {
+  if (isObject(errorOld)) {
+    return Object.entries(errorOld).reduce(
+      (errorNew, [key, value]) => {
+        errorNew[key] = mergeErrors(value, get(error, key, {}));
+        return errorNew;
+      },
+      {},
+    );
+  }
+  if (isArray(errorOld)) {
+    return errorOld.reduce(
+      (errorNew, value, key) => {
+        errorNew[key] = mergeErrors(value, get(error, key, {}));
+        return errorNew;
+      },
+      {},
+    );
+  }
+
+  return errorOld || error;
+};
 
 export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState: F, props: P, rootFormState: RootFormState): any => {
   const {
     properties,
-    dependencies,
   } = shema;
 
-  const formError = Object.entries<PropertieFieldValidatorArrType<F, P>>(properties).reduce((newObj: any, entriesData) => {
-    const key: keyof F = entriesData[0] as keyof F;
-    const fieldData: any = entriesData[1];
+  const formError: any = {};
 
-    const {
-      validateIf,
-    } = fieldData;
+  for (const key in properties) {
+    if (key in properties) {
 
-    if (validateIf) {
+      const fieldData: any = properties[key];
       const {
-        reverse = false,
-      } = validateIf;
+        validateIf,
+      } = fieldData;
+      if (validateIf) {
+        const {
+          type,
+        } = validateIf;
 
-      const valueByPath = get(rootFormState, validateIf.path, false);
+        if (type === 'has_data') {
+          const {
+            reverse = false,
+          } = validateIf;
+          const valueByPath = get(rootFormState, validateIf.path, false);
 
-      if (!reverse ? !valueByPath : valueByPath) {
-        return newObj;
-      }
-    }
-
-    switch (fieldData.type) {
-      case 'string':
-        newObj[key] = validateString<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'number':
-        newObj[key] = validateNumber<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'valueOfArray':
-        newObj[key] = validateValueOfArray<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'multiValueOfArray':
-        newObj[key] = validateMultiValueOfArray<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'date':
-        newObj[key] = validateDate<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'datetime':
-        newObj[key] = validateDatetime<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'boolean':
-        newObj[key] = validateBoolean<F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-        break;
-      case 'schema':
-        if (fieldData.schema) {
-          newObj[key] = validate<F[keyof F], P, RootFormState>((fieldData as any).schema, formState[key], props, rootFormState);
-        } else {
-          newObj[key] = emptyObj;
-        }
-        break;
-      default:
-        throw new Error('Нужно определить функцию для валидации');
-    }
-
-    return newObj;
-  }, {});
-
-  if (isObject(dependencies)) {
-    Object.entries<DependencieFieldValidatorArrType<F, P>>(dependencies).forEach(([name, arrayValidate]) => {
-      if (!formError[name]) {
-        arrayValidate.some((dependencieValidator) => {
-          if (!formError[name]) {
-            formError[name] = dependencieValidator(formState[name], formState, props, formState);
-
-            return Boolean(formError[name]);
+          if (!reverse ? !valueByPath : valueByPath) {
+            return;
           }
-          return Boolean(formError[name]);
+        }
+        if (type === 'equal_to_value') {
+          const {
+            value,
+            reverse = false,
+          } = validateIf;
+          const valueByPath = get(rootFormState, validateIf.path, false);
+
+          if (reverse ? valueByPath === value : valueByPath !== value) {
+            return;
+          }
+        }
+      }
+
+      switch (fieldData.type) {
+        case 'string': {
+          fieldData.
+          formError[key] = validateString<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'number': {
+          formError[key] = validateNumber<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'valueOfArray': {
+          formError[key] = validateValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'multiValueOfArray': {
+          formError[key] = validateMultiValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'date': {
+          formError[key] = validateDate<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'datetime': {
+          formError[key] = validateDatetime<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'boolean': {
+          formError[key] = validateBoolean<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+          break;
+        }
+        case 'schema': {
+          formError[key] = validate<F[keyof F], P, RootFormState>((fieldData as any).schema, formState[key], props, rootFormState);
+          break;
+        }
+        default:
+          throw new Error('Нужно определить функцию для валидации');
+      }
+
+      if (fieldData.dependencies && !hasError(formError[key])) {
+        fieldData.dependencies.some((dependencieValidator) => {
+          const error = dependencieValidator(formState[key], formState, props, rootFormState);
+          if (hasError(error)) {
+            formError[key] = mergeErrors(formError[key], error);
+            return true;
+          }
         });
       }
-    });
+    }
   }
 
   return formError;

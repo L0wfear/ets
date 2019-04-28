@@ -40,6 +40,17 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     protection_is_carried: {
       title: 'Охрану осуществляет',
       type: 'string',
+      dependencies: [
+        (value, { is_not_protected }, { type }) => {
+          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!is_not_protected && !value) {
+              return 'Поле "Охрану осуществляет" должно быть заполнено';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     lack_of_video_surveillance: {
       title: 'Отсутствие видеонаблюдения на базе',
@@ -69,6 +80,18 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     cnt_defective_light: {
       title: 'Количество неисправных мачт освещения (шт.)',
       type: 'number',
+
+      dependencies: [
+        (value, { lack_of_lighting }, { type }) => {
+          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!lack_of_lighting && !value) {
+              return 'Поле "Количество неисправных мачт освещения (шт.)" должно быть заполнено';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     lack_control_room: {
       title: 'Отсутствие помещения для оформления путевых листов (диспетчерской)',
@@ -81,6 +104,18 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     cnt_repair_posts: {
       title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
+
+      dependencies: [
+        (value, { lack_repair_areas }, { type }) => {
+          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!lack_repair_areas && !value) {
+              return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
@@ -126,40 +161,5 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       title: 'Отсутствие душевых кабин (в помещении/на открытой площадке)',
       type: 'boolean',
     },
-  },
-  dependencies: {
-    protection_is_carried: [
-      (value, { is_not_protected }, { type }) => {
-        if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-          if (!is_not_protected && !value) {
-            return 'Поле "Охрану осуществляет" должно быть заполнено';
-          }
-        }
-
-        return '';
-      },
-    ],
-    cnt_repair_posts: [
-      (value, { lack_repair_areas }, { type }) => {
-        if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-          if (!lack_repair_areas && !value) {
-            return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
-          }
-        }
-
-        return '';
-      },
-    ],
-    cnt_defective_light: [
-      (value, { lack_of_lighting }, { type }) => {
-        if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-          if (!lack_of_lighting && !value) {
-            return 'Поле "Количество неисправных мачт освещения (шт.)" должно быть заполнено';
-          }
-        }
-
-        return '';
-      },
-    ],
   },
 };

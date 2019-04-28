@@ -4,12 +4,13 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import { Row, Col } from 'react-bootstrap';
-import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
+import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 
 type BlockCarsConditionHeadCountListProps = {
   onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
   headcount_list: InspectCarsCondition['data']['headcount_list'];
-  error_headcount_list: FormErrorType<InspectCarsCondition['data']['headcount_list']>;
+  error_headcount_list: FormErrorType<SchemaType<InspectCarsCondition['data']['headcount_list'], PropsViewInspectCarsConditionWithForm>>;
   isPermitted: boolean;
   isActiveInspect: boolean;
 };

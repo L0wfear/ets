@@ -1,20 +1,39 @@
-export type CommonPropertie = {
+export type DependenciesFieldFunc<K, F, P> = (
+  value: K,
+  formState: F,
+  props: P,
+) => any;
+
+export type DependenciesField<K, F, P> = DependenciesFieldFunc<K, F, P>[];
+
+export type CommonPropertie<K, F, P> = {
   title: string;
   required?: boolean;
-  validateIf?: {
-    path: string; // path.to.path | get(rootState, validateIf, false)
-    reverse?: boolean;
-  };
+  validateIf?: (
+    {
+      type: 'has_data';
+      path: string; // path.to.path | get(rootState, validateIf, false)
+      reverse?: boolean;
+    }
+    | {
+      type: 'equal_to_value';
+      path: string; // path.to.path | get(rootState, validateIf, false)
+      value: any;
+      reverse?: boolean;
+    }
+  );
+
+  dependencies?: DependenciesField<K, F, P>;
 };
 
-export type StringPropertie = CommonPropertie & {
+export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'string';
   minLength?: number;
   maxLength?: number;
   trimSpace?: boolean;
 };
 
-export type NumberPropertie = CommonPropertie & {
+export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'number';
   minLength?: number;
   maxLength?: number;
@@ -23,45 +42,48 @@ export type NumberPropertie = CommonPropertie & {
   max?: number;
   integer?: boolean;
   float?: number;
+
 };
 
-export type ValueOfArrayPropertie = CommonPropertie & {
+export type ValueOfArrayPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'valueOfArray';
 };
 
-export type MultiValueOfArrayPropertie = CommonPropertie & {
+export type MultiValueOfArrayPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'multiValueOfArray';
 };
 
-export type DatePropertie = CommonPropertie & {
+export type DatePropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'date';
 };
-export type DateTimePropertie = CommonPropertie & {
+export type DateTimePropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'datetime';
 };
 
-export type BooleanPropertie = CommonPropertie & {
+export type BooleanPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'boolean';
 };
-export type ObjectProperty<F, P> = {
+export type ObjectProperty<K, P> = {
   type: 'schema';
-  schema: SchemaType<F, P>;
+  schema: SchemaType<K, P>;
+};
+export type ArrayOfObjectProperty<K, P> = {
+  type: 'arrayOfObjectShmeta';
+  schema: SchemaType<K, P>;
 };
 
-export type FormErrorType<F> = {
-  [K in keyof F]?: (
-    F[K] extends Array<any>
-      ? string
-      : F[K] extends { [k: string]: any }
-        ? FormErrorType<F[K]>
-        : string
+export type FormErrorType<Shema extends SchemaType<any, any>> = {
+  [K in keyof Shema['properties']]: (
+    Shema['properties'][K] extends ObjectProperty<any, any>
+      ? FormErrorType<Shema['properties'][K]['schema']>
+      : string
   );
 };
 
 export type PropertieFieldValidatorArrType<F, P, K = F[keyof F]> = (
   K extends Array<any>
     ? (
-      MultiValueOfArrayPropertie
+      MultiValueOfArrayPropertie<K, F, P>
     )
     : (
       K extends { [k: string]: any }
@@ -69,12 +91,12 @@ export type PropertieFieldValidatorArrType<F, P, K = F[keyof F]> = (
           ObjectProperty<K, P>
         )
         : (
-          StringPropertie
-          | NumberPropertie
-          | ValueOfArrayPropertie
-          | DatePropertie
-          | DateTimePropertie
-          | BooleanPropertie
+          StringPropertie<K, F, P>
+          | NumberPropertie<K, F, P>
+          | ValueOfArrayPropertie<K, F, P>
+          | DatePropertie<K, F, P>
+          | DateTimePropertie<K, F, P>
+          | BooleanPropertie<K, F, P>
         )
     )
 );
@@ -83,34 +105,6 @@ export type PropertieType<F, P> = {
   [K in keyof F]?: PropertieFieldValidatorArrType<F, P, F[K]>
 };
 
-export type DependencieValidatorType<F, P, K = F[keyof F], T = any[]> = (
-  value: K,
-  formState: F,
-  props: P,
-  ...arg: any[]
-) => (
-  K extends Array<any>
-      ? string
-      : K extends { [k: string]: any }
-        ? FormErrorType<K>
-        : string
-);
-
-export type DependencieFieldValidatorArrType<F, P, K = F[keyof F], T = any[]> = DependencieValidatorType<F, P, K, T>[];
-
-export type DependencieType<F, P> = {
-  [K in keyof F]?: DependencieFieldValidatorArrType<F, P, F[K],  any[]>
-};
-
 export type SchemaType<F, P> = {
   properties: PropertieType<F, P>,
-  dependencies?: DependencieType<F, P>;
-};
-
-export type ValidateFuncType<F, P> = (
-  shema: SchemaType<F, P>,
-  formState: F,
-  props: P,
-) => {
-  [key: string]: FormErrorType<F>;
 };

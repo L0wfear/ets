@@ -37,6 +37,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
   properties: {
     order_issued_at: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'date',
@@ -45,6 +46,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     order_number: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'string',
@@ -53,6 +55,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     master_plan_approved: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'string',
@@ -61,6 +64,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     named_plan_approved: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'string',
@@ -69,6 +73,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     planned_target: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'valueOfArray',
@@ -77,6 +82,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     statements_defects_issued: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'valueOfArray',
@@ -85,6 +91,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     statements_defects_not_issued_cnt: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'number',
@@ -92,6 +99,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     drawbacks_eliminated: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'string',
@@ -100,6 +108,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     },
     drawbacks_new: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
       },
       type: 'string',
@@ -113,6 +122,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
   properties: {
     waybill_issue_log_exists: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -122,6 +132,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     },
     waybill_issue_log_used: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -131,6 +142,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     },
     comment: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -140,6 +152,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     },
     comment_detected: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -154,6 +167,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
   properties: {
     staff_drivers: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -162,6 +176,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
     },
     staff_mechanics: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -170,6 +185,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
     },
     list_drivers: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -178,6 +194,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
     },
     list_mechanics: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -186,6 +203,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
     },
     staffing_drivers: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -194,6 +212,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
     },
     staffing_mechanics: {
       validateIf: {
+        type: 'has_data',
         path: 'checks_period_text',
         reverse: true,
       },
@@ -234,23 +253,29 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'schema',
       schema: dataSchema,
     },
-  },
-  dependencies: {
-    checked_cars_cnt: [
-      (checked_cars_cnt, { cars_cnt }, props) => {
-        if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
-          if (checked_cars_cnt !== cars_cnt) {
-            return 'error';
+    checked_cars_cnt: {
+      type: 'number',
+      title: 'Количество проверенных ТС',
+      dependencies: [
+        (checked_cars_cnt, { cars_cnt }, props) => {
+          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
+            if (checked_cars_cnt !== cars_cnt) {
+              return 'error';
+            }
           }
-        }
-      },
-    ],
-    resolve_to: [
-      (resolve_to, _, props) => {
-        if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close && !resolve_to) {
-          return 'Поле "Срок, до которого необходимо представить отчет об устранении выявленных недостатков" необходимо заполнить';
-        }
-      },
-    ],
+        },
+      ],
+    },
+    resolve_to: {
+      type: 'date',
+      title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+      dependencies: [
+        (resolve_to, _, props) => {
+          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close && !resolve_to) {
+            return 'Поле "Срок, до которого необходимо представить отчет об устранении выявленных недостатков" необходимо заполнить';
+          }
+        },
+      ],
+    },
   },
 };

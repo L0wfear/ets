@@ -120,14 +120,18 @@ class WaybillInProgressInfo extends React.PureComponent<PropsWaybillInProgressIn
       <InfoCard title="Информация о ПЛ" handleClose={this.handleClose}>
         {Object.entries(infoDataGroupByDate)
           .sort()
-          .map(this.mapInfoDataGroupByDate)}
-        <WaybillFormWrap
-          onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
-          onCallback={this.handleWaybillFormWrapHideAfterSubmit}
-          showForm={this.state.showWaybillFormWrap}
-          element={this.state.elementWaybillFormWrap}
-          fromDashboard
-        />
+          .map(this.mapInfoDataGroupByDate)
+        }
+        {
+          this.state.showWaybillFormWrap
+            && (
+              <WaybillFormWrap
+                onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
+                onCallback={this.handleWaybillFormWrapHideAfterSubmit}
+                element={this.state.elementWaybillFormWrap}
+              />
+            )
+        }
       </InfoCard>
     );
   }

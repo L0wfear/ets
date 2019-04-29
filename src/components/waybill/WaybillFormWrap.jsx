@@ -1,6 +1,5 @@
 import React from 'react';
 import { clone, cloneDeep, get, last } from 'lodash';
-import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
@@ -10,7 +9,6 @@ import WaybillForm from 'components/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/waybill/Taxes';
 import { makeReactMessange } from 'utils/helpMessangeWarning';
-import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined, isObject, isArray } from 'util';
 import { connect } from 'react-redux';
 import {
@@ -23,6 +21,7 @@ import {
   actionResetRefillTypeAndSetInStore,
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { validateField } from 'utils/validate/validateField';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -132,7 +131,7 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) =>
 let timeId = 0;
 
 @FluxContext
-class WaybillFormWrap extends UNSAFE_FormWrap {
+class WaybillFormWrap extends React.Component {
   static defaultProps = {
     onCallback: (newState) => {
       this.setState({
@@ -157,151 +156,118 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
     };
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
-    if (props.showForm && props.showForm !== this.props.showForm) {
-      this.props.actionLoadRefillTypeAndSetInStore(
-        {},
-        {
-          page: this.props.page,
-          path: this.props.path,
-        },
-      );
-      this.props.fuelCardsGetAndSetInStore(
-        {},
-        {
-          page: this.props.page,
-          path: this.props.path,
-        },
-      );
+  componentDidMount() {
+    this.props.actionLoadRefillTypeAndSetInStore(
+      {},
+      {
+        page: this.props.page,
+        path: this.props.path,
+      },
+    );
+    this.props.fuelCardsGetAndSetInStore(
+      {},
+      {
+        page: this.props.page,
+        path: this.props.path,
+      },
+    );
 
-      const currentDate = new Date();
+    const currentDate = new Date();
 
-      timeId = setTimeout(
-        () => this.checkError(),
-        (60 - currentDate.getSeconds()) * 1000,
-      );
+    timeId = setTimeout(
+      () => this.checkError(),
+      (60 - currentDate.getSeconds()) * 1000,
+    );
 
-      this.setState({
-        isPermittedByKey: {
-          update: this.props.currentUser.permissions.includes(
-            permissions.update,
-          ),
-          departure_and_arrival_values: this.props.currentUser.permissions.includes(
-            permissions.departure_and_arrival_values,
-          ),
-        },
+    this.setState({
+      isPermittedByKey: {
+        update: this.props.currentUser.permissions.includes(permissions.update),
+        departure_and_arrival_values: this.props.currentUser.permissions.includes(
+          permissions.departure_and_arrival_values,
+        ),
+      },
+    });
+
+    if (this.props.element === null) {
+      const defaultBill = getDefaultBill({
+        company_id: this.props.currentUser.company_id,
       });
+      if (typeof defaultBill.structure_id === 'undefined') {
+        const currentStructureId = this.props.currentUser.structure_id;
+        defaultBill.structure_id = currentStructureId;
+      }
+      this.schema = waybillSchema;
+      this.setState({
+        formState: defaultBill,
+        canSave: false,
+        canClose: false,
+        canPrint: false,
+        formErrors: this.validate(defaultBill, {}),
+      });
+    } else {
+      const waybill = clone(this.props.element);
+      if (!waybill.tax_data) {
+        waybill.tax_data = [];
+      }
+      if (!waybill.equipment_tax_data) {
+        waybill.equipment_tax_data = [];
+      }
+      if (waybill.mission_id_list.filter((v) => v).length === 0) {
+        waybill.mission_id_list = [];
+      }
 
-      if (props.element === null) {
-        const defaultBill = getDefaultBill({
-          company_id: this.props.currentUser.company_id,
-        });
-        if (typeof defaultBill.structure_id === 'undefined') {
-          const currentStructureId = this.props.currentUser.structure_id;
-          defaultBill.structure_id = currentStructureId;
+      if (
+        this.props.element.status === 'active'
+        || this.props.element.status === 'closed'
+      ) {
+        const fuelStart = waybill.fuel_start
+          ? parseFloat(waybill.fuel_start)
+          : 0;
+        const fuelGiven = waybill.fuel_given
+          ? parseFloat(waybill.fuel_given)
+          : 0;
+        const fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
+        const equipmentFuelStart = waybill.equipment_fuel_start
+          ? parseFloat(waybill.equipment_fuel_start)
+          : 0;
+        const equipmentFuelGiven = waybill.equipment_fuel_given
+          ? parseFloat(waybill.equipment_fuel_given)
+          : 0;
+        const equipmentFuelTaxes = Taxes.calculateFinalResult(
+          waybill.equipment_tax_data,
+        );
+
+        if (waybill.equipment_fuel && !waybill.is_one_fuel_tank) {
+          waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
+          waybill.equipment_fuel_end = (
+            equipmentFuelStart
+            + equipmentFuelGiven
+            - equipmentFuelTaxes
+          ).toFixed(3);
+        } else {
+          waybill.fuel_end = (
+            fuelStart
+            + fuelGiven
+            - fuelTaxes
+            - equipmentFuelTaxes
+          ).toFixed(3);
+          waybill.equipment_fuel_end = null;
         }
-        this.schema = waybillSchema;
-        this.setState({
-          formState: defaultBill,
-          canSave: false,
-          canClose: false,
-          canPrint: false,
-          formErrors: this.validate(defaultBill, {}),
-        });
-      } else {
-        const waybill = clone(props.element);
-        if (!waybill.tax_data) {
-          waybill.tax_data = [];
-        }
-        if (!waybill.equipment_tax_data) {
-          waybill.equipment_tax_data = [];
-        }
-        if (waybill.mission_id_list.filter((v) => v).length === 0) {
-          waybill.mission_id_list = [];
-        }
 
-        if (
-          props.element.status === 'active'
-          || props.element.status === 'closed'
-        ) {
-          const fuelStart = waybill.fuel_start
-            ? parseFloat(waybill.fuel_start)
-            : 0;
-          const fuelGiven = waybill.fuel_given
-            ? parseFloat(waybill.fuel_given)
-            : 0;
-          const fuelTaxes = Taxes.calculateFinalResult(waybill.tax_data);
-          const equipmentFuelStart = waybill.equipment_fuel_start
-            ? parseFloat(waybill.equipment_fuel_start)
-            : 0;
-          const equipmentFuelGiven = waybill.equipment_fuel_given
-            ? parseFloat(waybill.equipment_fuel_given)
-            : 0;
-          const equipmentFuelTaxes = Taxes.calculateFinalResult(
-            waybill.equipment_tax_data,
-          );
+        // Расчет пробегов
+        waybill.odometr_diff = waybill.odometr_end
+          ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0)
+          : null;
+        waybill.motohours_diff = waybill.motohours_end
+          ? waybill.motohours_end - (waybill.motohours_start || 0)
+          : null;
+        waybill.motohours_equip_diff = waybill.motohours_equip_end
+          ? (waybill.motohours_equip_end || 0)
+            - (waybill.motohours_equip_start || 0)
+          : null;
 
-          if (waybill.equipment_fuel && !waybill.is_one_fuel_tank) {
-            waybill.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
-            waybill.equipment_fuel_end = (
-              equipmentFuelStart
-              + equipmentFuelGiven
-              - equipmentFuelTaxes
-            ).toFixed(3);
-          } else {
-            waybill.fuel_end = (
-              fuelStart
-              + fuelGiven
-              - fuelTaxes
-              - equipmentFuelTaxes
-            ).toFixed(3);
-            waybill.equipment_fuel_end = null;
-          }
-
-          // Расчет пробегов
-          waybill.odometr_diff = waybill.odometr_end
-            ? (waybill.odometr_end || 0) - (waybill.odometr_start || 0)
-            : null;
-          waybill.motohours_diff = waybill.motohours_end
-            ? waybill.motohours_end - (waybill.motohours_start || 0)
-            : null;
-          waybill.motohours_equip_diff = waybill.motohours_equip_end
-            ? (waybill.motohours_equip_end || 0)
-              - (waybill.motohours_equip_start || 0)
-            : null;
-
-          if (props.element.status === 'active') {
-            this.schema = waybillClosingSchema;
-            const formErrors = filterFormErrorByPerission(
-              this.state.isPermittedByKey,
-              this.validate(waybill, {}),
-            );
-
-            this.setState({
-              formState: waybill,
-              formErrors,
-              canPrint: false,
-              canSave:
-                (this.state.isPermittedByKey.update
-                  || this.state.isPermittedByKey.departure_and_arrival_values)
-                && canSaveTestWrap(formErrors)
-                && !(
-                  (formErrors.fact_arrival_date
-                    && !formErrors.fact_departure_date)
-                  || (!formErrors.fact_arrival_date
-                    && formErrors.fact_departure_date)
-                ),
-              canClose:
-                this.state.isPermittedByKey.update && canCloseWrap(formErrors),
-            });
-          } else {
-            this.setState({
-              formState: waybill,
-              formErrors: {},
-            });
-          }
-        } else if (props.element.status === 'draft') {
-          this.schema = waybillSchema;
+        if (this.props.element.status === 'active') {
+          this.schema = waybillClosingSchema;
           const formErrors = filterFormErrorByPerission(
             this.state.isPermittedByKey,
             this.validate(waybill, {}),
@@ -309,15 +275,44 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
 
           this.setState({
             formState: waybill,
-            canPrint: true,
+            formErrors,
+            canPrint: false,
             canSave:
               (this.state.isPermittedByKey.update
                 || this.state.isPermittedByKey.departure_and_arrival_values)
-              && canSaveTestWrap(this.state.formErrors),
-            canClose: this.state.isPermittedByKey.update && formErrors.length,
-            formErrors,
+              && canSaveTestWrap(formErrors)
+              && !(
+                (formErrors.fact_arrival_date
+                  && !formErrors.fact_departure_date)
+                || (!formErrors.fact_arrival_date
+                  && formErrors.fact_departure_date)
+              ),
+            canClose:
+              this.state.isPermittedByKey.update && canCloseWrap(formErrors),
+          });
+        } else {
+          this.setState({
+            formState: waybill,
+            formErrors: {},
           });
         }
+      } else if (this.props.element.status === 'draft') {
+        this.schema = waybillSchema;
+        const formErrors = filterFormErrorByPerission(
+          this.state.isPermittedByKey,
+          this.validate(waybill, {}),
+        );
+
+        this.setState({
+          formState: waybill,
+          canPrint: true,
+          canSave:
+            (this.state.isPermittedByKey.update
+              || this.state.isPermittedByKey.departure_and_arrival_values)
+            && canSaveTestWrap(this.state.formErrors),
+          canClose: this.state.isPermittedByKey.update && formErrors.length,
+          formErrors,
+        });
       }
     }
   }
@@ -327,6 +322,28 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
     this.props.actionResetRefillTypeAndSetInStore();
     this.props.resetSetFuelCards();
   }
+
+  validate = (state, errors) => {
+    if (typeof this.schema === 'undefined') return errors;
+
+    const schema = this.schema;
+    const formState = { ...state };
+
+    return schema.properties.reduce(
+      (formErrors, prop) => {
+        const { key } = prop;
+        formErrors[key] = validateField(
+          prop,
+          formState[key],
+          formState,
+          this.schema,
+          this.props,
+        );
+        return formErrors;
+      },
+      { ...errors },
+    );
+  };
 
   handleFieldsChange = (formState) => {
     let { formErrors } = this.state;
@@ -730,25 +747,25 @@ class WaybillFormWrap extends UNSAFE_FormWrap {
   render() {
     const { entity } = this.props;
 
-    return this.props.showForm ? (
-      <WaybillForm
-        formState={this.state.formState}
-        onSubmit={this.handleFormSubmit}
-        onSubmitActiveWaybill={this.submitActiveWaybill}
-        handlePrint={this.handlePrint}
-        handleClose={this.handleClose}
-        handleFormChange={this.handleFormStateChange}
-        handleMultipleChange={this.handleMultipleChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        entity={entity || 'waybill'}
-        handlePrintFromMiniButton={this.handlePrintFromMiniButton}
-        clearSomeData={this.clearSomeData}
-        isPermittedByKey={this.state.isPermittedByKey}
-        {...this.state}
-      />
-    ) : (
-      <DivNone />
+    return (
+      this.state.formState && (
+        <WaybillForm
+          formState={this.state.formState}
+          onSubmit={this.handleFormSubmit}
+          onSubmitActiveWaybill={this.submitActiveWaybill}
+          handlePrint={this.handlePrint}
+          handleClose={this.handleClose}
+          handleFormChange={this.handleFormStateChange}
+          handleMultipleChange={this.handleMultipleChange}
+          show
+          onHide={this.props.onFormHide}
+          entity={entity || 'waybill'}
+          handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+          clearSomeData={this.clearSomeData}
+          isPermittedByKey={this.state.isPermittedByKey}
+          {...this.state}
+        />
+      )
     );
   }
 }

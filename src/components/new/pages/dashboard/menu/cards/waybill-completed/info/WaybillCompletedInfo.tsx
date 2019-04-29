@@ -121,14 +121,18 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
                 <ul>{arrData.map(this.mapInfoDataGroupByDate)}</ul>
               </div>
             </div>
-          ))}
-        <WaybillFormWrap
-          onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
-          onCallback={this.handleWaybillFormWrapHideAfterSubmit}
-          showForm={this.state.showWaybillFormWrap}
-          element={this.state.elementWaybillFormWrap}
-          fromDashboard
-        />
+          ))
+        }
+        {
+          this.state.showWaybillFormWrap
+            && (
+              <WaybillFormWrap
+                onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
+                onCallback={this.handleWaybillFormWrapHideAfterSubmit}
+                element={this.state.elementWaybillFormWrap}
+              />
+            )
+        }
       </InfoCard>
     );
   }

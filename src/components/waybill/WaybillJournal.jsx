@@ -39,7 +39,6 @@ import { DropdownWrap } from './styled';
   schema: waybillClosingSchema,
   tableComponent: WaybillsTable,
   tableMeta: extractTableMeta(getTableMeta()),
-  formComponent: WaybillFormWrap,
   operations: ['LIST', 'CREATE', 'READ', 'UPDATE', 'DELETE'],
 })
 class WaybillJournal extends UNSAFE_CheckableElementsList {
@@ -220,7 +219,27 @@ class WaybillJournal extends UNSAFE_CheckableElementsList {
    * @override
    */
   getForms = () => {
-    const forms = super.getForms();
+    const forms = [];
+
+    if (this.state.showForm) {
+      forms.push(
+        <WaybillFormWrap
+          key="WaybillFormWrap"
+          onFormHide={this.onFormHide}
+          element={this.state.selectedElement}
+          setNewSelectedElement={this.setNewSelectedElement}
+          entity={this.entity}
+          selectField={this.selectField}
+          onCallback={this.formCallback}
+          meta={this.constructor.formMeta}
+          renderers={this.constructor.formRenderers}
+          permissions={[`${this.entity}.read`]}
+          flux={this.context.flux}
+          {...this.getAdditionalFormProps()}
+          {...this.props}
+        />,
+      );
+    }
 
     forms.push(
       <WaybillPrintForm

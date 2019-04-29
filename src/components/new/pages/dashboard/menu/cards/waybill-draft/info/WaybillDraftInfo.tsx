@@ -115,14 +115,18 @@ class WaybillDraftInfo extends React.PureComponent<PropsWaybillDraftInfo, StateW
       <InfoCard title="Рег. номер ТС" handleClose={this.handleClose}>
         {Object.entries(infoDataGroupByDate)
           .sort()
-          .map(this.mapInfoDataGroupByDate)}
-        <WaybillFormWrap
-          onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
-          onCallback={this.handleWaybillFormWrapHideAfterSubmit}
-          showForm={this.state.showWaybillFormWrap}
-          element={this.state.elementWaybillFormWrap}
-          fromDashboard
-        />
+          .map(this.mapInfoDataGroupByDate)
+        }
+        {
+          this.state.showWaybillFormWrap
+            && (
+              <WaybillFormWrap
+                onFormHide={this.handleWaybillFormWrapHideAfterSubmit}
+                onCallback={this.handleWaybillFormWrapHideAfterSubmit}
+                element={this.state.elementWaybillFormWrap}
+              />
+            )
+        }
       </InfoCard>
     );
   }

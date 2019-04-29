@@ -159,7 +159,6 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
                 car_gov_number: infoData.car_data.gov_number,
                 waybill_number: infoData.waybill_data.number,
               }}
-              fromDashboard
               action_at={this.state.action_at}
             />
           )

@@ -63,10 +63,7 @@ class UNSAFE_FormWrap extends React.Component {
         ),
       });
     }
-    this.inheritedComponentWillReceiveProps(props);
   }
-
-  inheritedComponentWillReceiveProps() {}
 
   validate = (state, errors) => {
     if (typeof this.schema === 'undefined') return errors;

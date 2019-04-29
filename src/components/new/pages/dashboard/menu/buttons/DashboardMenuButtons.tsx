@@ -106,14 +106,16 @@ class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, St
             </ButtonCreateDutyMission>
           </CardBodyContainer>
         </CardContainer>
-        <WaybillFormWrap
-          onFormHide={this.handleFormHideWaybillForm}
-          onCallback={this.handleFormHideWaybillForm}
-          showForm={this.state.showWaybillForm}
-          element={null}
-          entity={'waybill'}
-          fromDashboard
-        />
+        {
+          this.state.showWaybillForm
+            && (
+              <WaybillFormWrap
+                onFormHide={this.handleFormHideWaybillForm}
+                onCallback={this.handleFormHideWaybillForm}
+                element={null}
+              />
+            )
+        }
         <MissionFormLazy
           onFormHide={this.handleFormHideMissionForm}
           showForm={this.state.showMissionForm}

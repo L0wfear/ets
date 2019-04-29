@@ -249,7 +249,7 @@ export class DutyMissionForm extends Form {
     });
   }
 
-  async changeRouteAfterSubmit(createdRouteId) {
+  async changeRouteAfterSubmit(createdRouteId, route) {
     const { flux } = this.context;
     const routesActions = flux.getActions('routes');
     const {
@@ -262,7 +262,7 @@ export class DutyMissionForm extends Form {
 
     this.handleChange('route_id', createdRouteId);
     const [selectedRoute, routesList] = await Promise.all([
-      routesActions.getRouteById(createdRouteId),
+      route ? Promise.resolve(route) : routesActions.getRouteById(createdRouteId),
       routesActions.getRoutesBySomeData({
         municipal_facility_id,
         technical_operation_id,
@@ -288,7 +288,7 @@ export class DutyMissionForm extends Form {
   onFormHide = async (isSubmitted, route) => {
     if (isSubmitted && route) {
       const createdRouteId = route.id;
-      return this.changeRouteAfterSubmit(createdRouteId)
+      return this.changeRouteAfterSubmit(createdRouteId, route);
     }
     this.setState({
       showRouteForm: false,

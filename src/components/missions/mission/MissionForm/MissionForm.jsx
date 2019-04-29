@@ -376,7 +376,7 @@ export class MissionForm extends Form {
         this.setState({ ...ans });
       });
 
-      this.handleRouteIdChange(route.id);
+      this.handleRouteIdChange(route.id, route);
     }
 
     this.setState({ showRouteForm: false });

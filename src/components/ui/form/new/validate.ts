@@ -92,7 +92,6 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
 
       switch (fieldData.type) {
         case 'string': {
-          fieldData.
           formError[key] = validateString<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
           break;
         }

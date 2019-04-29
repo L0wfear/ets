@@ -172,14 +172,16 @@ export class MissionForm extends Form {
         [changesObjSecond.is_cleaning_norm] = changesObjSecond.is_cleaning_norm;
       }
 
-      this.props.handleMultiFormChange(changesObjSecond);
+      this.props.handleMultiFormChange({
+        ...changesObj,
+        ...changesObjSecond,
+      });
 
       this.setState({ selectedRoute: route });
     } else {
       this.setState({ selectedRoute: null });
+      this.props.handleMultiFormChange(changesObj);
     }
-
-    this.props.handleMultiFormChange(changesObj);
   }
 
   handleCarIdChange = (car_id, dataCar) => {

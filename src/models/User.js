@@ -28,6 +28,8 @@ export default class User extends Model {
       okrug_name: 'string',
       stableRedirect: 'string',
       isGlavControl: 'boolean',
+      isOkrug: 'boolean',
+      isKgh: 'boolean',
     };
   }
 
@@ -55,5 +57,7 @@ export default class User extends Model {
     this.okrug_name = user.okrug_name;
     this.stableRedirect = user.stableRedirect || '/login';
     this.isGlavControl = user.isGlavControl || false;
+    this.isOkrug = user.isOkrug || false;
+    this.isKgh = user.isKgh || false;
   }
 }

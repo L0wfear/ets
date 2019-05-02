@@ -12,6 +12,8 @@ try {
   //
 }
 
+const cachingPromise = {};
+
 export function setHeaders(requestHeaders) {
   headers = requestHeaders;
 }
@@ -89,6 +91,14 @@ function httpMethod(
   params = {},
   otherToken,
 ) {
+  const cacheKey = `${urlOwn}${dataOwn ? JSON.stringify(dataOwn) : ''}`;
+
+  if (method === 'GET') {
+    if (cachingPromise[cacheKey]) {
+      return cachingPromise[urlOwn];
+    }
+  }
+
   let body;
   let url = urlOwn;
   const data = { ...dataOwn };
@@ -125,7 +135,9 @@ function httpMethod(
     url = `${url}?${urlencode(data)}`;
   }
 
-  return fetch(url, options).then(async (r) => {
+  const promise = fetch(url, options).then(async (r) => {
+    delete cachingPromise[cacheKey];
+
     if (r.status === 401) {
       window.localStorage.clear();
       window.location.reload();
@@ -170,6 +182,12 @@ function httpMethod(
       return Promise.reject({ error, error_text });
     }
   });
+
+  if (method === 'GET') {
+    cachingPromise[cacheKey] = promise;
+  }
+
+  return promise;
 }
 
 export function getJSON(url, data = {}, otherToken) {

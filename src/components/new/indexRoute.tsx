@@ -93,6 +93,8 @@ const getRouters = () => (
     <Redirect from="/company-structure" to="/nsi/company_structure" />
     <Redirect from="/program-registry" to="/program_registry" />
 
+    <Redirect from="/waybill-journal" to="/waybills" />
+
     <Redirect to="/monitor" />
   </Switch>
 );

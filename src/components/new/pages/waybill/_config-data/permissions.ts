@@ -1,4 +1,4 @@
-export default {
+const waybillPermissions = {
   list: 'waybill.list',
   create: 'waybill.create',
   read: 'waybill.read',
@@ -8,3 +8,5 @@ export default {
   delete: 'waybill.delete',
   departure_and_arrival_values: 'waybill.departure_and_arrival_values',
 };
+
+export default waybillPermissions;

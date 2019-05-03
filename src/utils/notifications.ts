@@ -1,4 +1,4 @@
-import { makeReactMessange } from 'utils/helpMessangeWarning';
+import { makeReactMessage } from 'utils/helpMessangeWarning';
 
 export const loginErrorNotification = {
   title: 'Ошибка!',
@@ -134,7 +134,7 @@ export function getWarningNotification(message) {
     dismissible: true,
     position: 'tr',
     autoDismiss: 0,
-    children: makeReactMessange(message),
+    children: makeReactMessage(message),
   };
 }
 
@@ -145,14 +145,14 @@ export function getErrorNotificationFromBack(message) {
     dismissible: true,
     position: 'tr',
     autoDismiss: 0,
-    children: makeReactMessange(message),
+    children: makeReactMessage(message),
   };
 }
 
 export function getInfoNotification(message) {
   return {
     title: 'Информация.',
-    children: makeReactMessange(message),
+    children: makeReactMessage(message),
     level: 'info',
     dismissible: true,
     position: 'tr',

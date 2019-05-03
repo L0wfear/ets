@@ -29,10 +29,8 @@ export default class LoadingStore extends Store {
       repairActions.getDataAboutObjectById,
       repairActions.removePercent,
 
-      waybillsActions.deleteWaybill,
       waybillsActions.createWaybill,
       waybillsActions.updateWaybill,
-      waybillsActions.getWaybills,
       waybillsActions.getWaybill,
       waybillsActions.getLastClosedWaybill,
 
@@ -43,7 +41,6 @@ export default class LoadingStore extends Store {
 
       objectsActions.getTypes,
       objectsActions.getCars,
-      objectsActions.getWaybillSomeCars,
 
       employeesActions.getEmployees,
       employeesActions.getDrivers,

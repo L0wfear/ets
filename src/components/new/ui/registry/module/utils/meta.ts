@@ -97,13 +97,14 @@ export const makeFieldsInDeepArr = (treeFields, deep) => {
   return makeOneDeepLine(arr, treeFields, 0, deep);
 };
 
-export const makerDataMetaField = ({ fields }) => {
+export const makerDataMetaField = (fieldsOwn) => {
+  const fields = fieldsOwn.filter(({ hidden }) => !hidden);
   const { tree: treeFields, deep } = getColsWithRowAndColSpan(fields);
   const fieldsInDeepArr = makeFieldsInDeepArr(treeFields, deep);
   const rowFields = getRowKeys(fields);
 
   return {
-    fields,
+    fields: fieldsOwn,
     treeFields,
     rowFields,
     fieldsInDeepArr,

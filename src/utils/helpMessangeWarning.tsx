@@ -3,7 +3,7 @@ import * as React from 'react';
 const expression = /(https|http)?:\/\/(((www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b)|((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)))([-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
 const urlRegex = new RegExp(expression);
 
-export const makeReactMessange = (messageRaw) => {
+export const makeReactMessage = (messageRaw) => {
   const message = messageRaw.replace(/\[href\]/g, '').replace(urlRegex, (url) => `[href]${url}[href]`);
 
   return (
@@ -27,5 +27,5 @@ export const makeReactMessange = (messageRaw) => {
 };
 
 export default{
-  makeReactMessange,
+  makeReactMessage,
 };

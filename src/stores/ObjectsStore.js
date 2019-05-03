@@ -9,7 +9,6 @@ export default class ObjectsStore extends Store {
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.register(objectsActions.getCars, this.handleGetCars);
-    this.register(objectsActions.getWaybillSomeCars, this.handleGetSomeCars);
     this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
@@ -70,21 +69,6 @@ export default class ObjectsStore extends Store {
     });
     const carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({ carsList, carsIndex });
-  }
-
-  handleGetSomeCars(cars) {
-    const carsFilterList = cars.result.rows.map((c) => {
-      const model = _.find(this.state.modelsList, (m) => m.id === c.model_id);
-      c.model = model ? model.title : 'Н/Д';
-      const type = _.find(
-        this.state.typesList,
-        (t) => t.asuods_id === c.type_id,
-      );
-      c.type = type ? type.title : 'Н/Д';
-      return c;
-    });
-    const carsIndex = _.keyBy(carsFilterList, 'asuods_id');
-    this.setState({ carsFilterList, carsIndex });
   }
 
   handleGetTypes({ result: { rows = [] } }) {

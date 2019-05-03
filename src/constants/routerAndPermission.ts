@@ -1,6 +1,5 @@
 import monitor from 'components/monitor/config-data';
 import coverageReports from 'components/coverage_reports/config-data';
-import waybillJournal from 'components/waybill/config-data';
 import nsi from 'components/directories/config-data';
 import reports from 'components/reports/config-data';
 import notificationRegistry from 'components/notifications/config-data';
@@ -12,6 +11,7 @@ import inspection from 'components/new/pages/inspection/_config_data';
 import edcRequest from 'components/new/pages/edc_request/_config-data';
 import routeList from 'components/new/pages/routes_list/config-data';
 import programRegistryList from 'components/new/pages/program_registry/_config-data';
+import waybillList from 'components/new/pages/waybill/_config-data';
 import config from 'config';
 
 const routerAndPermission = {
@@ -19,7 +19,7 @@ const routerAndPermission = {
   coverageReports,
   dashboard,
   inspection,
-  waybillJournal,
+  waybillList,
   missions,
   edcRequest,
   nsi,

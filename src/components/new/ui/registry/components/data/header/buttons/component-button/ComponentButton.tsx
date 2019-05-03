@@ -35,6 +35,8 @@ import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMiss
 import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
 import ButtonFailMission from './button-by-type/mission/ButtonFailMission';
 import ButtonCreateCompanyStructure from './button-by-type/company_structure/ButtonCreateCompanyStructure';
+import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumnsControl';
+import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 
 type PropsComponentButton = {
   type: string;
@@ -75,6 +77,8 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.missions_to_archvie: return ButtonToArchiveMission;
     case buttonsTypes.missions_from_archvie: return ButtonFromArchiveMission;
     case buttonsTypes.company_structure_create: return ButtonCreateCompanyStructure;
+    case buttonsTypes.columns_control: return ButtonColumnsControl;
+    case buttonsTypes.waybill_print: return ButtonWaybillExport;
 
     default: return null;
   }
@@ -83,7 +87,10 @@ const getButtomNameComponent = (type: string) => {
 const ComponentButton: React.FC<PropsComponentButton> = (props) => {
   const { type } = props;
 
-  const ButtonNameComponent = getButtomNameComponent(type);
+  const ButtonNameComponent = React.useMemo(
+    () => getButtomNameComponent(type),
+    [type],
+  );
 
   if (ButtonNameComponent) {
     return (

@@ -1,10 +1,12 @@
-import { WaybillService } from 'api/Services';
+import { WaybillService, WaybillJournalReportService, WaybillsReportService } from 'api/Services';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import {
   get,
 } from 'lodash';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { monthOptions, makeDate } from 'utils/dates';
 
-/* ------------- COMPANY ------------- */
+/* ------------- WAYBILL ------------- */
 export const promiseGetWaybill = async (payload = {}) => {
   throw new Error('Define promiseGetWaybill');
 };
@@ -65,4 +67,56 @@ export const promiseGetWaybillById = async (id: Waybill['id']) => {
   }
 
   return waybill;
+};
+
+export const promiseGetBlobWaybilljournalReport = async (payload: { date: string } | { month: number, year: number }, filter: OneRegistryData['list']['processed']['filterValues']) => {
+  let response = null;
+  try {
+    response = await WaybillJournalReportService.path(
+      `?filter=${JSON.stringify(filter)}`,
+    ).postBlob(payload);
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  let fileName = 'Отчет по журналу ПЛ за';
+
+  if ('month' in payload && payload.month && payload.year) {
+    const monthName = get(monthOptions.find(({ value }) => value === payload.month), 'label', '');
+
+    fileName = `${fileName} ${monthName} ${payload.year}.xls`;
+  }
+  if ('date' in payload && payload.date) {
+    fileName = `${fileName} ${makeDate(payload.date)}.xls`;
+  }
+
+  return {
+    blob: get(response, 'blob', null),
+    fileName,
+  };
+};
+
+export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: string, date_end: string }, filter: OneRegistryData['list']['processed']['filterValues']) => {
+  let response = null;
+  const payload: any = {
+    ...payloadOwn,
+  };
+
+  if (filter) {
+    payload.filter = JSON.stringify(filter);
+  }
+
+  try {
+    response = await WaybillsReportService.getBlob(payload);
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  let fileName = 'Отчет по выработке ТС за';
+  fileName = `${fileName} ${makeDate(payload.date_start)} - ${makeDate(payload.date_end)}.xls`;
+
+  return {
+    blob: get(response, 'blob', null),
+    fileName,
+  };
 };

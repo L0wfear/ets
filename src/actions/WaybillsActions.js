@@ -1,59 +1,21 @@
 import { Actions } from 'flummox';
-import { createValidDateTime, createValidDate } from 'utils/dates';
-import { cloneDeep, clone, mapKeys } from 'lodash';
+import { createValidDateTime } from 'utils/dates';
+import { clone, mapKeys } from 'lodash';
 import { hasMotohours, isEmpty } from 'utils/functions';
 import {
   WaybillService,
   LatestWaybillDriverService,
-  WaybillJournalReportService,
-  WaybillsReportService,
   RootService,
 } from 'api/Services';
-import { parseFilterObject } from 'actions/MissionsActions';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
 export default class WaybillsActions extends Actions {
-  getWaybills(limit = 15, offset = 0, sort_by = ['number:desc'], filter = {}) {
-    const payload = {
-      limit,
-      offset,
-      sort_by,
-      filter: JSON.stringify(parseFilterObject(cloneDeep(filter))),
-    };
-    return WaybillService.get(payload).then((ans) => ({
-      ...ans,
-      result: ans.result.map((waybill) => {
-        if (waybill.tax_data) {
-          waybill.tax_data = waybill.tax_data.map((tax) => {
-            tax.originOperation = true;
-            tax.uniqKey = `originOperation_${tax.OPERATION}`;
-            return tax;
-          });
-        }
-        if (waybill.equipment_tax_data) {
-          waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax) => {
-            tax.originOperation = true;
-            tax.uniqKey = `originOperation_${tax.OPERATION}`;
-            return tax;
-          });
-        }
-
-        return waybill;
-      }),
-    }));
-  }
-
   getLastClosedWaybill(car_id) {
     const payload = {
       car_id,
     };
     return WaybillService.path('closed').get(payload);
-  }
-
-  deleteWaybill(id, callback) {
-    const payload = { id };
-    return WaybillService.delete(payload, callback, 'json');
   }
 
   getLatestWaybillDriver(car_id, driver_id) {
@@ -112,35 +74,6 @@ export default class WaybillsActions extends Actions {
           result: waybill,
         };
       });
-  }
-
-  getWaybillJournalReport(state, filter) {
-    const payload = {};
-
-    if (state.formationPeriod === 'month') {
-      payload.month = state.month;
-      payload.year = state.year;
-    }
-    if (state.formationPeriod === 'date') {
-      payload.date = createValidDate(state.date);
-    }
-
-    return WaybillJournalReportService.path(
-      `?filter=${JSON.stringify(parseFilterObject(cloneDeep(filter)))}`,
-    ).postBlob(payload);
-  }
-
-  getWaybillsReport(state, filter) {
-    const payload = {
-      date_start: createValidDateTime(state.date_from),
-      date_end: createValidDateTime(state.date_to),
-    };
-
-    if (state.with_filter) {
-      payload.filter = JSON.stringify(parseFilterObject(cloneDeep(filter)));
-    }
-
-    return WaybillsReportService.getBlob(payload);
   }
 
   printWaybill(print_form_type, waybill_id) {

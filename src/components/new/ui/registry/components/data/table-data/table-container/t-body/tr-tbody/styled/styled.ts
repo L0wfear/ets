@@ -2,10 +2,15 @@ import styled from 'styled-components';
 import { constantColor } from 'global-styled/global-constants';
 import { get } from 'lodash';
 import { darken } from 'polished';
+import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
 
 const getColorTd = (rowData) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
     return constantColor.orange;
+  }
+
+  if (get(rowData, 'status', null) === WAYBILL_STATUSES_KEY.active) {
+    return constantColor.colorChildRegistry;
   }
 
   if (!!get(rowData, 'parent_id', null)) {

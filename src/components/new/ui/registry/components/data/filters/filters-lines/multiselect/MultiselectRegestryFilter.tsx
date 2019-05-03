@@ -32,6 +32,7 @@ type PropsMultiselectRegestryFilter = {
     options?: any;
     disabled?: boolean;
     getRegistryData: any;
+    format?: string;
   };
   registryKey: string;
   actionFetchWithCount: any;
@@ -51,10 +52,47 @@ type StateMultiselectRegestryFilter = {
     options?: any;
     disabled?: boolean;
     getRegistryData: any;
+    format?: string;
   };
   options: any[];
   disabled: boolean;
   isLoading: boolean;
+};
+
+export const employeeFIOLabelFunction = (employeeData, fullFlag = false) => {
+  if (!employeeData) {
+    return '';
+  }
+  let result = `${employeeData.last_name} `;
+
+  if (fullFlag) {
+    result = `${result}${employeeData.first_name || ''} ${employeeData.middle_name || ''}`;
+  } else {
+    if (employeeData.first_name && employeeData.first_name[0]) {
+      result = `${result}${employeeData.first_name[0]}.`;
+    }
+    if (employeeData.middle_name && employeeData.middle_name[0]) {
+      result = `${result}${employeeData.middle_name[0]}.`;
+    }
+  }
+
+  return result;
+};
+
+const getLabel = (label, rowData, format) => {
+  if (!format) {
+    return label;
+  }
+
+  if (format === 'short_employee_name') {
+    return employeeFIOLabelFunction(rowData);
+  }
+
+  if (format === 'work_mode_label') {
+    return `${rowData.name} (${rowData.start_time_text} - ${rowData.end_time_text})`;
+  }
+
+  return 'no_define_format';
 };
 
 const getOption = (value, label) => {
@@ -64,8 +102,10 @@ const getOption = (value, label) => {
   return null;
 };
 
-const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey?: string | number) => (
-  array.reduce((newArr, { [valueKey]: value, [labelKey || valueKey]: label }) => {
+const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey: string | number, format: string) => (
+  array.reduce((newArr, rowData) => {
+    const { [valueKey]: value, [labelKey || valueKey]: label } = rowData;
+
     if (isArray(value)) {
       value.forEach((oneValue) => {
         const newItem = getOption(oneValue, oneValue);
@@ -74,7 +114,8 @@ const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey?
         }
       });
     } else {
-      const newItem = getOption(value, label);
+
+      const newItem = getOption(value, getLabel(label, rowData, format));
       if (newItem) {
         newArr.push(newItem);
       }
@@ -88,7 +129,7 @@ const makeOptions = (props: PropsMultiselectRegestryFilter) => (
   props.filterData.options
   || (
     uniqBy(
-      makeOptionsFromArray(props.array, props.filterData.valueKey, props.filterData.labelKey),
+      makeOptionsFromArray(props.array, props.filterData.valueKey, props.filterData.labelKey, props.filterData.format),
       'value',
     )
   )
@@ -204,6 +245,7 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
           result,
           valueKey,
           labelKey,
+          getRegistryData.format,
         );
 
         if (getRegistryData.mergeWithArray) {

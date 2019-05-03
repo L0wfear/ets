@@ -33,6 +33,8 @@ import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
 import TrTdIsOpen from './tr-td/TrTdIsOpen';
 import TrTdButtonCompanyStructureActions from './tr-td/TrTdButtonCompanyStructureActions';
+import { WAYBILL_STATUSES } from 'constants/statuses';
+import { missionsStatusBySlag } from 'components/waybill/constant/table';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -209,6 +211,12 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
       if (format === 'mission_status_name') {
         value = MISSION_STATUS_LABELS[value];
+      }
+      if (format === 'waybill_all_missions_status') {
+        value = get(missionsStatusBySlag, value, '');
+      }
+      if (format === 'waybill_status_name') {
+        value = WAYBILL_STATUSES[value];
       }
     }
 

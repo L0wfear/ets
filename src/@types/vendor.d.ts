@@ -7,6 +7,7 @@ declare namespace NodeJS {
     NODE_ENV: string;
     NOTIFICATION_SYSTEM: {
       notify(text: string | object, type?: string, position?: string);
+      notifyWithObject: any;
       removeNotification(uid: string | number);
     };
     SESSION_KEY2: string;

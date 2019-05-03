@@ -18,7 +18,7 @@ type DatePickerRangeProps = {
   allWidth?: boolean;
 
   disabled?: boolean;
-  onChange: (boundKey: string, value: string) => void;
+  onChange: (boundKey: any, value: string) => void;
 };
 
 export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
@@ -50,7 +50,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
   const labelDatePickerEnd = labelDatePickerStart ? '' : false;
 
   return (
-    <DatePickerRangeContainer allWidth>
+    <DatePickerRangeContainer allWidth={props.allWidth}>
       <ColStartDatePickerRange md={5}>
         <ExtField
           id={props.date_start_id}

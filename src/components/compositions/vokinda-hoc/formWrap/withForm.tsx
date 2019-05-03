@@ -21,6 +21,7 @@ type ConfigWithForm<P, F> = {
   withThrow?: boolean;                // Бросает исключение при сабмите
   getRecordAction?: any;              // Экшен загрузки записи по uniqField
   mergeElement?: (props: P) => F;     // Получение дефолтного элемента
+  noMessage?: boolean;                // Не показывать уведомление после сабмита
   schema: SchemaType<F, P>,           // Схема валиадции
   permissions: {                      // Разрешения
     create: string | string[];
@@ -57,7 +58,7 @@ type WithFormProps<P> = P & DispatchProp & {
 
 export type FormWithHandleChange<F> = (objChange: Partial<F> | keyof F, value?: F[keyof F]) => any;
 export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof F]) => any;
-type FormWithSubmitAction<T extends any[], A extends any> = (...payload: T) => Promise<A>;
+type FormWithSubmitAction = (...arg: any[]) => Promise<any>;
 type FormWithDefaultSubmit = () => void;
 
 export type OutputWithFormProps<P, F, T extends any[], A> = (
@@ -67,7 +68,7 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
   & {
     handleChange: FormWithHandleChange<F>;
     handleChangeBoolean: FormWithHandleChangeBoolean<F>;
-    submitAction: FormWithSubmitAction<T, A>;
+    submitAction: FormWithSubmitAction;
     defaultSubmit: FormWithDefaultSubmit;
     hideWithoutChanges: (...arg: any[]) => void;
   }
@@ -337,7 +338,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           };
         });
       }
-      submitAction = async <T extends any[], A extends any>(...payload: T) => {
+      submitAction = async (...payload: any[]) => {
         const uniqValue = (
           !isBoolean(config.uniqField)
             ? get(this.state.formState, config.uniqField, null)
@@ -359,7 +360,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           if (isFunction(createAction)) {
             try {
               result = await this.props.dispatch(createAction(...payload, { page, path }));
-              global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+              if (!config.noMessage) {
+                global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+              }
             } catch (error) {
               console.warn(error); // tslint:disable-line
               if (config.withThrow) {
@@ -378,7 +381,9 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           if (isFunction(updateAction)) {
             try {
               result = await this.props.dispatch(updateAction(...payload, { page, path }));
-              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+              if (!config.noMessage) {
+                global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+              }
             } catch (error) {
               console.warn(error); // tslint:disable-line
               if (config.withThrow) {

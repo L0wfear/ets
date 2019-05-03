@@ -18,6 +18,7 @@ import {
   mergeFilter,
   mergeHeader,
   mergeList,
+  mergeListMeta,
 } from 'components/new/ui/registry/module/utils/merge';
 import { getJSON, deleteJSON } from 'api/adapter';
 import configStand from 'config';
@@ -35,14 +36,15 @@ import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_c
 import { getFrontTechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/promise_technical_operation_relations';
 import { getFrontMission } from 'redux-main/reducers/modules/missions/mission/promise';
 import { getListData } from './selectors-registry';
-import { getRegistryState } from 'redux-main/reducers/selectors';
+import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 
 /**
  * Да простят меня боги
  * @todo сделать нормально
  */
 
-export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch) => {
+export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch, getState) => {
   if (!config.noInitialLoad) {
     setTimeout(() => (
       dispatch(
@@ -51,6 +53,9 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
     ), 100);
   }
 
+  const STRUCTURES = getSessionStructuresOptions(getState());
+  const userData = getSessionState(getState()).userData;
+
   const mergeConfig: any = {
     Service: config.Service,
     filter: mergeFilter(config.filter),
@@ -58,7 +63,36 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
     trash: config.trash,
   };
 
-  mergeConfig.list = mergeList(config.list, mergeConfig.filter.fields);
+  const columnContorolData = localStorage.getItem(`columnContorol`);
+  let meta = config.list.meta;
+
+  if (columnContorolData) {
+    const currentRegistryData = get(JSON.parse(columnContorolData), registryKey, null);
+
+    if (currentRegistryData) {
+      meta = {
+        fields: meta.fields.map((fieldData) => {
+          const filedFormLocalStorage = currentRegistryData.find(({ key }) => fieldData.key === key);
+          return {
+            ...fieldData,
+            ...(filedFormLocalStorage || {}),
+          };
+        }),
+      };
+    }
+  }
+
+  mergeConfig.list = mergeList(
+    {
+      ...config.list,
+      meta,
+    },
+    mergeConfig.filter.fields,
+    {
+      STRUCTURES,
+      userData,
+    },
+  );
 
   return dispatch({
     type: REGISTRY_ADD_INITIAL_DATA,
@@ -75,6 +109,29 @@ export const registryRemoveData = (registryKey) => ({
     registryKey,
   },
 });
+
+export const actionChangeRegistryMetaFields: any = (registryKey, fields) => (dispatch, getState) => {
+  const registyData = get(getState(), ['registry', registryKey], null);
+  const list = get(registyData, 'list', null);
+
+  const STRUCTURES = getSessionStructuresOptions(getState());
+  const userData = getSessionState(getState()).userData;
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        meta: mergeListMeta(
+          { fields },
+          {
+            STRUCTURES,
+            userData,
+          }),
+      },
+    ),
+  );
+};
 
 export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload, needUpdate = true) => (dispatch, getState) => {
   const registryData = get(getState(), `registry.${registryKey}`, null);

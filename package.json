@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.0.28.194",
+    "version": "2.0.28.195",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -112,7 +112,7 @@
         "thread-loader": "=2.1.2",
         "ts-jest": "=24.0.2",
         "tslint": "=5.16.0",
-        "typescript": "=3.4.5",
+        "typescript": "=3.3.4000",
         "typescript-styled-plugin": "=0.14.0",
         "url-loader": "=1.1.2",
         "webpack": "=4.30.0",

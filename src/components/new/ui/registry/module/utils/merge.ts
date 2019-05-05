@@ -176,7 +176,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
         }, null);
       }
 
-      if (formatedTitle || fieldData.key !== 'checkbox') {
+      if (formatedTitle || fieldData.key === 'checkbox') {
         newArr.push({
           ...fieldData,
           title: formatedTitle,

@@ -128,16 +128,17 @@
         "dev:ets_test": "cross-env STAND=ets_test NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
         "dev:ets_hotfix": "cross-env STAND=ets_hotfix NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
         "dev:prod": "cross-env STAND=prod NODE_ENV=development webpack-dev-server --config webpack/webpack.dev.js",
-        "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/webpack.prod.js",
-        "build:gost_stage": "cross-env STAND=gost_stage NODE_ENV=production webpack --config webpack/webpack.prod.js",
-        "build:ets_test": "cross-env STAND=ets_test NODE_ENV=production webpack --config webpack/webpack.prod.js",
-        "build:ets_hotfix": "cross-env STAND=ets_hotfix NODE_ENV=production webpack --config webpack/webpack.prod.js",
-        "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js",
+        "build": "cross-env STAND=dev NODE_ENV=production webpack --config webpack/webpack.prod.js && node webpack/utils/logVersion.js",
+        "build:gost_stage": "cross-env STAND=gost_stage NODE_ENV=production webpack --config webpack/webpack.prod.js && node webpack/utils/logVersion.js",
+        "build:ets_test": "cross-env STAND=ets_test NODE_ENV=production webpack --config webpack/webpack.prod.js && node webpack/utils/logVersion.js",
+        "build:ets_hotfix": "cross-env STAND=ets_hotfix NODE_ENV=production webpack --config webpack/webpack.prod.js && node webpack/utils/logVersion.js",
+        "build:prod": "cross-env STAND=prod NODE_ENV=production webpack --config webpack/webpack.prod.js && node webpack/utils/logVersion.js",
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "bump": "node webpack/utils/updateVersion.js",
         "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",
         "test": "jest --collectCoverage",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "log-version": "node webpack/utils/logVersion.js"
     },
     "husky": {
         "hooks": {

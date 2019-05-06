@@ -1,7 +1,6 @@
 import { EngineType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import {
-  getEngineType,
   createSetEngineType,
   updateSetEngineType,
   autobaseDeleteEngineType,
@@ -20,30 +19,6 @@ export const autobaseResetSetEngineType = () => (dispatch) => (
     autobaseSetEngineType([]),
   )
 );
-export const autobaseGetSetEngineType: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getEngineType(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-export const engineTypeGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetEngineType(payload, { page, path }),
-  );
-
-  dispatch(
-    autobaseSetEngineType(data),
-  );
-
-  return {
-    engineTypeList: data,
-  };
-};
 export const autobaseCreateEngineType: any = (engineTypeOld: EngineType, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: engineType } = await dispatch({
     type: 'none',

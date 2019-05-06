@@ -1,7 +1,6 @@
 import { CarCategory } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import {
-  getCarCategory,
   createSetCarCategory,
   updateSetCarCategory,
   autobaseDeleteCarCategory,
@@ -20,30 +19,6 @@ export const autobaseResetSetCarCategory = () => (dispatch) => (
     autobaseSetCarCategory([]),
   )
 );
-export const autobaseGetSetCarCategory: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getCarCategory(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-export const carCategoryGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetCarCategory(payload, { page, path }),
-  );
-
-  dispatch(
-    autobaseSetCarCategory(data),
-  );
-
-  return {
-    carCategoryList: data,
-  };
-};
 export const autobaseCreateCarCategory: any = (carCategoryOld: CarCategory, { page, path }: { page: string; path?: string }) => async (dispatch) => {
   const { payload: carCategory } = await dispatch({
     type: 'none',

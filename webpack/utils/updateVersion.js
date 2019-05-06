@@ -10,12 +10,11 @@ var data = JSON.parse(
 );
 
 var [
-  kontur,
   zero,
   release,
-  version,
+  patch,
 ] = data.version.split('.').map(number => Number(number));
 
-data.version = `${kontur}.${zero}.${release}.${version + 1}`;
+data.version = `${zero}.${release}.${patch + 1}`;
 
 fs.writeFileSync(package, `${JSON.stringify(data, null, 4)}\n`);

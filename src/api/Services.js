@@ -381,3 +381,6 @@ export const MedicalStatsService = ETS_API_FACTORY.createApiServiceAdapter(
 export const RefillTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'refill_type',
 );
+export const ServicesService = ETS_API_FACTORY.createApiServiceAdapter(
+  'services',
+);

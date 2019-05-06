@@ -1,4 +1,6 @@
 import styled, { css } from 'styled-components';
+import { Button } from 'react-bootstrap';
+import { constantColor } from 'global-styled/global-constants';
 
 const redColor = css`
   color: red;
@@ -37,4 +39,26 @@ export const GlyphiconContainer32 = styled.div<{ notFull: boolean }>`
   align-items: center;
 
   ${({ notFull }) => notFull && redColor};
+`;
+
+const cssActiveGreenButton = css`
+  background-color: green !important;;
+`;
+const cssActiveRedButton = css`
+  background-color: red !important;
+`;
+const cssNotActiveButton = css`
+  background-color: ${constantColor.colorGray} !important;;
+`;
+
+export const ButtonGreenActive = styled(Button)`
+  &&& {
+    ${({ active }) => active ? cssActiveGreenButton : cssNotActiveButton}
+  }
+`;
+
+export const ButtonRedActive = styled(Button)`
+  &&& {
+    ${({ active }) => active ? cssActiveRedButton : cssNotActiveButton}
+  }
 `;

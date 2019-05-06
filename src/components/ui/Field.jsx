@@ -262,9 +262,11 @@ export default class Field extends React.Component {
 
     return (
       <Div hidden={this.props.hidden} style={{ marginBottom: 15 }}>
-        <label htmlFor=" " id={id} style={{ minHeight: 15 }}>
-          {label}
-        </label>
+        {typeof label === 'string' && (
+          <label htmlFor=" " id={id} style={{ minHeight: 15 }}>
+            {label}
+          </label>
+        )}
         <FileInput {...props} errorClassName={errorClassName} />
         <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
           {error}

@@ -110,6 +110,21 @@ export type TypeFields<F extends any> = {
 } | {
   key: 'company_structure_actions',
   title: string;
+} | {
+  key: 'services_actions_on_off',
+  title: string,
+  sortable?: boolean;
+  width: number;
+} | {
+  key: 'service_files';
+  title: string,
+  sortable?: boolean;
+  width: number;
+} | {
+  key: 'button_show_action_log';
+  title: string,
+  sortable?: boolean;
+  width: number;
 };
 
 export type TypeConfigData<F> = {

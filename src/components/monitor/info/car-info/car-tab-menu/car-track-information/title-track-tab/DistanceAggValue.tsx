@@ -8,7 +8,7 @@ type PropsDistanceAggValue = {
   distance: any;
 };
 
-const DistanceAggValue: React.FunctionComponent<PropsDistanceAggValue> = ({ distance }) => (
+const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => (
     <span>
     {
       distance === null

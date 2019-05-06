@@ -74,7 +74,7 @@ const renderers: ISchemaRenderer = {
   date_to: ({ data }) => <DateFormatter date={data} time empty={'Не указано'} />,
 };
 
-const Table: React.FunctionComponent<any> = (props) => {
+const Table: React.FC<any> = (props) => {
   const { technical_operations = emptyArr } = props.dataSource;
 
   return (

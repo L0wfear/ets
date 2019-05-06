@@ -47,7 +47,7 @@ const consumptionRateMateriaListMapper = <R extends any>(rowData: R): DefaultSel
   rowData,
 });
 
-export const MaterialConsumptionRateForm: React.FunctionComponent<PropsMaterialConsumptionRate> = (props) => {
+export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate> = (props) => {
   const {
     page,
     path,

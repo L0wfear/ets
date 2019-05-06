@@ -92,7 +92,7 @@ interface IPropsSelectRenderer extends IPropsDataTableInputRenderer {
   vehicleList: IBatteryAvailableCar[];
 }
 
-const SelectRenderer: React.FunctionComponent<IPropsSelectRenderer> = ({
+const SelectRenderer: React.FC<IPropsSelectRenderer> = ({
   value,
   outputListErrors = [],
   vehicleList = [],

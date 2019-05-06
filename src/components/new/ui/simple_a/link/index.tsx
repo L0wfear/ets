@@ -7,7 +7,7 @@ type PropsSimpleLinkA = {
   href: string;
 };
 
-const SimpleLinkA: React.FunctionComponent<PropsSimpleLinkA> = ({ id, className, title, children, href }) => (
+const SimpleLinkA: React.FC<PropsSimpleLinkA> = ({ id, className, title, children, href }) => (
   <a id={id} className={className} href={href}>{title || children || href}</a>
 );
 

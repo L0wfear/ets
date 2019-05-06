@@ -20,7 +20,7 @@ const meta: IDataTableSchema = {
 };
 export const tableMeta = () => meta;
 
-const Table: React.FunctionComponent<any> = (props) => {
+const Table: React.FC<any> = (props) => {
   const { dataSource: { instruction = '' } } = props;
 
   return (

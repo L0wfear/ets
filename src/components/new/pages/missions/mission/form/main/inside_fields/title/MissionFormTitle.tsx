@@ -4,7 +4,7 @@ import { DivNone } from "global-styled/global-styled";
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import { Label } from 'react-bootstrap';
 
-const MissionFormTitle: React.FunctionComponent<PropsMissionFormTitle> = (props) => {
+const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {
   if (props.IS_CREATING) {
     return (
       <div>

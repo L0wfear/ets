@@ -21,7 +21,7 @@ type PropsGeoobjectData = {
   centerOn: any;
 };
 
-const GeoobjectData: React.FunctionComponent<PropsGeoobjectData> = ({ selectedGeoobjectData, serverName, ...props }) => (
+const GeoobjectData: React.FC<PropsGeoobjectData> = ({ selectedGeoobjectData, serverName, ...props }) => (
   !selectedGeoobjectData ?
   (
     <DivNone />

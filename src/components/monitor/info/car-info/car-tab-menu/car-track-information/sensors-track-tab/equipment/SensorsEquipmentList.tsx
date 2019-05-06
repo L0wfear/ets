@@ -37,7 +37,7 @@ const getRightRus = (count) => {
   return 'датчиков';
 };
 
-const SensorsEquipmentList: React.FunctionComponent<
+const SensorsEquipmentList: React.FC<
   PropsSensorsEquipmentList
 > = (props) => {
   const { track } = props;
@@ -52,7 +52,7 @@ const SensorsEquipmentList: React.FunctionComponent<
   );
 
   const hasSomeData = sensors_equipment.find(([, { show }]) => show);
-  console.log(sensors_equipment, hasSomeData);
+
   return (
     <div className="sensors-list">
       {!track || (Array.isArray(track) && track.length === 0) ? (

@@ -3,7 +3,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
 
-const FilterButton: React.FunctionComponent<any> = ({ active, disabled, onClick, noFilter }) =>
+const FilterButton: React.FC<any> = ({ active, disabled, onClick, noFilter }) =>
   !noFilter && (
     <Button
       bsSize="small"

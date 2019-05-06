@@ -6,7 +6,7 @@ import { geoJSON } from 'utils/ol';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
 
-const InfoDt: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoDt: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -19,7 +19,7 @@ const InfoDt: React.FunctionComponent<any> = ({ data, ...props }) =>
     {data.total_area}
   </div>;
 
-const InfoODh: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoODh: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -44,7 +44,7 @@ const InfoODh: React.FunctionComponent<any> = ({ data, ...props }) =>
     {data.gutters_length || '--'}
   </div>;
 
-const InfoSsp: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoSsp: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -61,7 +61,7 @@ const InfoSsp: React.FunctionComponent<any> = ({ data, ...props }) =>
 
 const InfoMsp = InfoSsp;
 
-const InfoCarpool: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoCarpool: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -76,7 +76,7 @@ const InfoCarpool: React.FunctionComponent<any> = ({ data, ...props }) =>
 
 const InfoFuelingWater = InfoCarpool;
 
-const InfoDangerZone: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoDangerZone: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Адрес</span>
@@ -93,7 +93,7 @@ const InfoDangerZone: React.FunctionComponent<any> = ({ data, ...props }) =>
     {data.sidelines_area}
   </div>;
 
-const InfoPgm: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoPgm: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -114,7 +114,7 @@ const InfoPgm: React.FunctionComponent<any> = ({ data, ...props }) =>
 
 const InfoSnowStorage = InfoCarpool;
 
-const InfoBridges: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoBridges: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -129,7 +129,7 @@ const InfoBridges: React.FunctionComponent<any> = ({ data, ...props }) =>
     <h5>Идентификатор моста</h5>{data.global_id}
   </div>;
 
-const InfoPedestrianTunnels: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoPedestrianTunnels: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -142,7 +142,7 @@ const InfoPedestrianTunnels: React.FunctionComponent<any> = ({ data, ...props })
     <h5>Адресный ориентир</h5>{data.location}
   </div>;
 
-const InfoPedestrianTunnelExits: React.FunctionComponent<any> = ({ data, ...props }) =>
+const InfoPedestrianTunnelExits: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -154,7 +154,7 @@ const InfoPedestrianTunnelExits: React.FunctionComponent<any> = ({ data, ...prop
     <h5>Район</h5>{data.district}
   </div>;
 
-const FountainsInfo: React.FunctionComponent<any> = ({ data, ...props }) =>
+const FountainsInfo: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
@@ -178,7 +178,7 @@ const FountainsInfo: React.FunctionComponent<any> = ({ data, ...props }) =>
     <h5>Электронная почта эксплуатирующей организации</h5>{data.operation_organization_email}
   </div>;
 
-export const InfoDefaultData: React.FunctionComponent<any> = ({ data, ...props }) => (
+export const InfoDefaultData: React.FC<any> = ({ data, ...props }) => (
   <div className="geoobject_one_data">define component</div>
 );
 
@@ -199,7 +199,7 @@ export let dataByServerName = {
   [GEOOBJECTS_OBJ.fountains.serverName]: FountainsInfo,
 };
 
-const GeoDataTemplate: React.FunctionComponent<any> = (props) => {
+const GeoDataTemplate: React.FC<any> = (props) => {
   const { [props.serverName]: Component = InfoDefaultData } = dataByServerName;
 
   return <Component data={props.data} serverName={props.serverName} id={props.id} centerOn={props.centerOn} handleClickOnClose={props.handleClickOnClose} />;

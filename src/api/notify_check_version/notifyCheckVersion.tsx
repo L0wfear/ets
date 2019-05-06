@@ -7,7 +7,7 @@ interface IPropsNotifiVersionPopup {
   nextV: string;
 }
 
-const getNotifyCheckVersion: React.FunctionComponent<IPropsNotifiVersionPopup> = (props) => (
+const getNotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
     <div className="check-version-notification">
       <div className="text-version-container">
         <div className="one-text-version">

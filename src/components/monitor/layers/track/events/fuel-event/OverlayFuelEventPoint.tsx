@@ -18,7 +18,7 @@ const getTitleByType = (event_type) => {
   }
 };
 
-const OverlayFuelEventPoint: React.FunctionComponent<any> = (props) => {
+const OverlayFuelEventPoint: React.FC<any> = (props) => {
   const { fuelEventPoint } = props;
 
   if (!fuelEventPoint) {

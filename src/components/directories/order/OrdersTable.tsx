@@ -96,7 +96,7 @@ const renderers: ISchemaRenderer = {
   order_type_id: ({ rowData }) => <div>{get(rowData, 'order_type_name', '')}</div>,
 };
 
-const Table: React.FunctionComponent<any> = (props) => (
+const Table: React.FC<any> = (props) => (
   <DataTable
     title="Реестр централизованных заданий (факсограмм)"
     results={props.data}

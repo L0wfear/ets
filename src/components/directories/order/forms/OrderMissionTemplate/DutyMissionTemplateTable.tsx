@@ -126,7 +126,7 @@ const getRenders = (props) => {
   return renderers;
 };
 
-const Table: React.FunctionComponent<any> = (props) => (
+const Table: React.FC<any> = (props) => (
   <DataTable
     multiSelection={true}
     results={props.data}

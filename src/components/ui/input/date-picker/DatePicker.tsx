@@ -17,7 +17,7 @@ interface DatePickerProps {
   makeGoodFormat?: boolean;
 }
 
-const DatePicker: React.FunctionComponent<DatePickerProps> = (props) => {
+const DatePicker: React.FC<DatePickerProps> = (props) => {
   const {
     time = true,
     calendar = true,

@@ -6,7 +6,7 @@ import SensorsLevelList from 'components/monitor/info/car-info/car-tab-menu/car-
 type PropsSensorsTrackTab = {
 };
 
-const SensorsTrackTab: React.FunctionComponent<PropsSensorsTrackTab> = () => (
+const SensorsTrackTab: React.FC<PropsSensorsTrackTab> = () => (
   <div className="car_info_block column tab-data">
     <div className="car_info-track_date_title">
       <div>Отображение датчиков на треке</div>

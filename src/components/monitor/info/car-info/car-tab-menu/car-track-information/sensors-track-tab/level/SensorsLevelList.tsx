@@ -24,7 +24,7 @@ type PropsSensorsTrackTab = {
   toggleSensorOnMap: any;
 };
 
-const SensorsLevelList: React.FunctionComponent<PropsSensorsTrackTab> = (props) => {
+const SensorsLevelList: React.FC<PropsSensorsTrackTab> = (props) => {
   const { track, isPermitted } = props;
   const sensors_level = Object.entries(props.front_cars_sensors_level);
 

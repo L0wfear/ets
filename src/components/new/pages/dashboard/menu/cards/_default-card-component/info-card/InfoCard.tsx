@@ -16,7 +16,7 @@ type PropsInfoCard = {
   handleClose: React.MouseEventHandler<HTMLDivElement>;
 };
 
-const InfoCard: React.FunctionComponent<PropsInfoCard> = (props) => (
+const InfoCard: React.FC<PropsInfoCard> = (props) => (
   <InfoCardWrapContainer>
     <CardInfoContainer>
       <CardTitleContainer>

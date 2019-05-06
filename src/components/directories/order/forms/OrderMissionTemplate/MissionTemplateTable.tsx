@@ -164,7 +164,7 @@ type MissionTemplateOrderTableProps = {
   checked: object | null;
 };
 
-const Table: React.FunctionComponent<MissionTemplateOrderTableProps> = (props) => {
+const Table: React.FC<MissionTemplateOrderTableProps> = (props) => {
   return (
     <DataTable
       multiSelection={true}

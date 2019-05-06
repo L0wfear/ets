@@ -8,7 +8,7 @@ type PropsTitleBlock = {
   handleClickOnClose: React.EventHandler<React.MouseEvent<HTMLDivElement>>;
 };
 
-const TitleBlock: React.FunctionComponent<PropsTitleBlock> = ({ gov_number, ...props }) => (
+const TitleBlock: React.FC<PropsTitleBlock> = ({ gov_number, ...props }) => (
   <div className="map_info-title_container">
     <div></div>
     <div className="car_info-gov_number">

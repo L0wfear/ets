@@ -16,7 +16,7 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
-const CarInWorkOverallInfo: React.FunctionComponent<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
+const CarInWorkOverallInfo: React.FC<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
   <InfoCard title={infoData.title} handleClose={props.handleClose}>
     <ul>
       {

@@ -3,7 +3,7 @@ import * as cx from 'classnames';
 
 import { PropsList } from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-routes/list/List.h';
 
-const List: React.FunctionComponent<PropsList> = (props) => (
+const List: React.FC<PropsList> = (props) => (
   <ul>
     {
       props.items.map(({ subItems = [], title, ...item }, index) => (

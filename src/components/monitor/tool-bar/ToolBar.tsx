@@ -7,7 +7,7 @@ import BarShowGeoobjects from 'components/monitor/tool-bar/show-geoobjects/BarSh
 import FuelLeak from 'components/monitor/tool-bar/fuel-leak/FuelLeak';
 import BarCompanyColor from 'components/monitor/tool-bar/show-company-color/BarCompanyColor';
 
-const ToolBar: React.FunctionComponent<{}> = () => (
+const ToolBar: React.FC<{}> = () => (
   <div className="tool_bar-wrap">
     <div className="tool_bar">
       <BarCarData />

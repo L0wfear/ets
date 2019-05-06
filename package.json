@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.28.198",
+    "version": "2.0.28.199",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -142,7 +142,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && git add package.json"
+            "pre-commit": "lint-staged && npm run bump && git add package.json"
         }
     },
     "lint-staged": {

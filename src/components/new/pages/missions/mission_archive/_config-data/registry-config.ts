@@ -95,7 +95,7 @@ export const config: TypeConfigData<Mission> = {
         title: 'Рег. номер ТС',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'filters/mission/cars',
+          entity: 'filters/mission_archive/cars',
           valueKey: 'asuods_id',
           labelKey: 'gov_number',
         },
@@ -105,7 +105,7 @@ export const config: TypeConfigData<Mission> = {
         title: 'Тип техники',
         type: 'multiselect',
         getRegistryData: {
-          entity: 'filters/mission/cars',
+          entity: 'filters/mission_archive/cars',
           valueKey: 'type_id',
           labelKey: 'type_name',
         },

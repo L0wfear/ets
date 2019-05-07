@@ -11,7 +11,7 @@ const checkCarRefill = memoizeOne((car_refill, refillTypeList) => {
   return car_refill.map((rowData) => {
     return {
       type_id: !rowData.type_id
-        ? 'Поле "Способо заправки" должно быть заполнено'
+        ? 'Поле "Способ заправки" должно быть заполнено'
         : '',
       fuel_card_id:
         !rowData.fuel_card_id

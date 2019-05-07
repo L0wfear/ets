@@ -95,7 +95,7 @@ function httpMethod(
 
   if (method === 'GET') {
     if (cachingPromise[cacheKey]) {
-      return cachingPromise[urlOwn];
+      return cachingPromise[cacheKey];
     }
   }
 

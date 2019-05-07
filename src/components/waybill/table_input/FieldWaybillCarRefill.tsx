@@ -36,7 +36,7 @@ type FieldWaybillCarRefillProps = FieldWaybillCarRefillMergedProps;
 
 const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
   key: 'type_id',
-  title: 'Способо заправки',
+  title: 'Способ заправки',
   format: 'select',
   width: 200,
   options: [],

@@ -1,7 +1,7 @@
 import { AutobaseEngineTypeApi } from 'components/new/utils/context/loading/@types/all';
-import useLoadListData from './useLoadListData';
+import useLoadListData from './common/useLoadListData';
 
-const useAutobaseEngineTypeList = (page: string, path: string): AutobaseEngineTypeApi['result'] => {
+const useAutobaseEngineTypeList = (page: string, path: string) => {
   return useLoadListData<AutobaseEngineTypeApi>('autobase/engine_type', page, path);
 };
 

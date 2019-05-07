@@ -1,52 +1,46 @@
 import * as React from 'react';
+import { get } from 'lodash';
 import {
-  formatDate, getFormattedTimeWithSecond, getDateWithMoscowTz, getDateWithMoscowTzByTimestamp,
+  formatDate,
+  getFormattedTimeWithSecond,
+  getDateWithMoscowTz,
 } from 'utils/dates';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 import {
   DashboardTimeContainer,
   TimeLineContainer,
   DateLineContainer,
 } from 'components/new/pages/dashboard/time/styled/styled';
+import useMoscowTime from 'components/new/utils/hooks/services/useList/useMoscowTime';
 
-type StateDashboardTime = {
-  date: Date;
-  itervalId: NodeJS.Timeout;
-};
+const DashboardTimeNew: React.FC<{ page: string }> = React.memo(
+  (props) => {
+    const [date, setDate] = React.useState(getDateWithMoscowTz());
 
-class DashboardTime extends React.Component<{}, StateDashboardTime> {
-  state = {
-    date: getDateWithMoscowTz(),
-    itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
-  };
+    const moscowTime = useMoscowTime(props.page);
 
-  componentDidMount() {
-    loadMoscowTime()
-      .then(({ time }) => {
-        clearInterval(this.state.itervalId);
+    React.useEffect(
+      () => {
+        const timestamp = get(moscowTime, '0.timestamp', null);
+        let intervalIdtemp = null;
+        let countInc = 0;
 
-        this.setState({
-          date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
-          itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
-        });
-      });
-  }
+        if (timestamp) {
+          intervalIdtemp = setInterval(
+            () => {
+              countInc = countInc + 1;
+              const newDate = new Date(date);
+              newDate.setSeconds(newDate.getSeconds() + countInc);
+              setDate(newDate);
+            },
+            1000,
+          );
+        }
 
-  componentWillUnmount() {
-    clearInterval(this.state.itervalId);
-  }
-
-  updateDateOnSecond = () => {
-    const { date } = this.state;
-
-    date.setSeconds(date.getSeconds() + 1);
-
-    this.setState({ date });
-  }
-
-  render() {
-    const { date } = this.state;
+        return () => clearInterval(intervalIdtemp);
+      },
+      [moscowTime],
+    );
 
     return (
       <DashboardTimeContainer>
@@ -54,7 +48,7 @@ class DashboardTime extends React.Component<{}, StateDashboardTime> {
         <DateLineContainer>{formatDate(date, 'DD MMMM YYYY') || '--:------:--'}</DateLineContainer>
       </DashboardTimeContainer>
     );
-  }
-}
+  },
+);
 
-export default DashboardTime;
+export default DashboardTimeNew;

@@ -1,7 +1,7 @@
 import { TypesApi } from 'components/new/utils/context/loading/@types/all';
-import useLoadListData from './useLoadListData';
+import useLoadListData from './common/useLoadListData';
 
-const useCarTypesList = (page: string, path: string): TypesApi['result'] => {
+const useCarTypesList = (page: string, path: string) => {
   return useLoadListData<TypesApi>('types', page, path);
 };
 

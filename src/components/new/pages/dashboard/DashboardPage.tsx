@@ -11,21 +11,23 @@ import {
   DashboardPageContainer,
 } from 'components/new/pages/dashboard/styled/styled';
 
-class DashboardPage extends React.PureComponent<{}, {}> {
-  render() {
+const page = 'dashboard';
+
+const DashboardPage: React.FC<{}> = React.memo(
+  () => {
     return (
       <DashboardPageContainer>
-        <DashboardTime />
-        <DashboardMenu />
+        <DashboardTime page={page} />
+        <DashboardMenu page={page} />
       </DashboardPageContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<any, any>(
   triggerOnChangeCompany,
   withPreloader({
-    page: 'dashboard',
+    page,
     typePreloader: 'mainpage',
   }),
 )(DashboardPage);

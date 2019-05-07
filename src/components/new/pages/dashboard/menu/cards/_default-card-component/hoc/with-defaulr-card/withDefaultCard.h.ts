@@ -13,6 +13,7 @@ export type DispatchPropsDefaultCard = {
 export type PropsToDefaultCard = {
   timeInterval?: number;
   timeDelay: number;
+  page?: string;
 };
 
 export type OwnerPropsDefaultCard<P> = P & PropsToDefaultCard;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import { dashBoardResetData } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import CurrentMissions from 'components/new/pages/dashboard/menu/cards/current-missions/CurrentMissions';
@@ -18,23 +18,37 @@ import WaybillClosed from 'components/new/pages/dashboard/menu/cards/waybill-clo
 import { DashboardMenuCardsContainer } from 'components/new/pages/dashboard/menu/cards/styled/styled';
 
 import { ReduxState } from 'redux-main/@types/state';
-import {
-  StatePropsDashboardMenuCards,
-  DispatchPropsDashboardMenuCards,
-  OwnerPropsDashboardMenuCards,
-  PropsDashboardMenuCards,
-  StateDashboardMenuCards,
-} from 'components/new/pages/dashboard/menu/cards/DashboardMenuCards.h';
 
-class DashboardMenuCards extends React.Component<PropsDashboardMenuCards, StateDashboardMenuCards> {
-  componentWillUnmount() {
-    this.props.dashBoardResetData();
-  }
+export type StatePropsDashboardMenuCards = {};
 
-  render() {
+export type DispatchPropsDashboardMenuCards = {
+  dashBoardResetData: HandleThunkActionCreator<typeof dashBoardResetData>;
+};
+
+export type OwnerPropsDashboardMenuCards = {
+  page: string;
+};
+
+export type PropsDashboardMenuCards = (
+  StatePropsDashboardMenuCards
+  & DispatchPropsDashboardMenuCards
+  & OwnerPropsDashboardMenuCards
+);
+
+export interface StateDashboardMenuCards {}
+
+const DashboardMenuCards: React.FC<PropsDashboardMenuCards> = React.memo(
+  (props) => {
+    React.useEffect(
+      () => {
+        return () => props.dashBoardResetData();
+      },
+      [],
+    );
+
     return (
       <DashboardMenuCardsContainer>
-        <CurrentMissions timeDelay={0} timeInterval={60} />
+        <CurrentMissions timeDelay={0} timeInterval={60} page={props.page} />
         <FutureMissions timeDelay={1} />
         <OdhNotCoveredByMissionsOfCurrentShift timeDelay={2} />
         <OdhNotCoveredByRoutes timeDelay={3} />
@@ -48,8 +62,8 @@ class DashboardMenuCards extends React.Component<PropsDashboardMenuCards, StateD
         <WaybillClosed timeDelay={11} />
       </DashboardMenuCardsContainer>
     );
-  }
-}
+  },
+);
 
 export default connect<StatePropsDashboardMenuCards, DispatchPropsDashboardMenuCards, OwnerPropsDashboardMenuCards, ReduxState>(
   null,

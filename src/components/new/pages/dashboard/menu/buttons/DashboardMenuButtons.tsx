@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
 
 import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
@@ -21,131 +21,116 @@ import {
 } from 'components/new/pages/dashboard/menu/buttons/styled/styled';
 import { CardContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
-import {
-  StatePropsDashboardMenuButtons,
-  DispatchPropsDashboardMenuButtons,
-  OwnerPropsDashboardMenuButtons,
-  PropsDashboardMenuButtons,
-  StateDashboardMenuButtons,
-} from 'components/new/pages/dashboard/menu/buttons/DashboardMenuButtons.h';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ButtonCreateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
-class DashboardMenuButtons extends React.Component<PropsDashboardMenuButtons, StateDashboardMenuButtons> {
-  state = {
-    showWaybillForm: false,
-    showMissionForm: false,
-    showDutyMissionForm: false,
-  };
+export type StatePropsDashboardMenuButtons = {};
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      Object.entries(nextProps).some(
-        ([key, value]) => this.props[key] !== value,
-      ) ||
-      Object.entries(nextState).some(
-        ([key, value]) => this.state[key] !== value,
-      )
+export type DispatchPropsDashboardMenuButtons = {
+  dashboardLoadDependentDataByWaybillDraft: HandleThunkActionCreator<typeof dashboardLoadDependentDataByWaybillDraft>;
+  dashboardLoadDependentDataByNewMission: HandleThunkActionCreator<typeof dashboardLoadDependentDataByNewMission>;
+  dashboardLoadDependentDataByNewDutyMission: HandleThunkActionCreator<typeof dashboardLoadDependentDataByNewDutyMission>;
+};
+
+export type OwnerPropsDashboardMenuButtons = {
+  page: string;
+};
+
+export type PropsDashboardMenuButtons = (
+  StatePropsDashboardMenuButtons
+  & DispatchPropsDashboardMenuButtons
+  & OwnerPropsDashboardMenuButtons
+);
+
+const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
+  (props) => {
+    const [showWaybillForm, setShowWaybillForm] = React.useState(false);
+    const [showMissionForm, setShowMissionForm] = React.useState(false);
+    const [showDutyMissionForm, setShowDutyMissionForm] = React.useState(false);
+
+    const handleFormHideWaybillForm = React.useCallback(
+      (isSubmitted) => {
+        props.dashboardLoadDependentDataByWaybillDraft();
+        setShowWaybillForm(false);
+      },
+      [],
     );
-  }
+    const handleFormHideMissionForm = React.useCallback(
+      (isSubmitted) => {
+        if (isSubmitted) {
+          props.dashboardLoadDependentDataByNewMission();
+        }
+        setShowMissionForm(false);
+      },
+      [],
+    );
+    const handleFormHideDutyMissionForm = React.useCallback(
+      (isSubmitted) => {
+        if (isSubmitted) {
+          props.dashboardLoadDependentDataByNewDutyMission();
+        }
+        setShowDutyMissionForm(false);
+      },
+      [],
+    );
 
-  showWaybillForm = () => {
-    this.setState({ showWaybillForm: true });
-  };
-
-  handleFormHideWaybillForm = (newState) => {
-    this.props.loadDataAfterCreateWaybill();
-    this.setState({
-      showWaybillForm: false,
-      ...newState,
-    });
-  };
-
-  showMissionForm = () => {
-    this.setState({ showMissionForm: true });
-  };
-
-  handleFormHideMissionForm = (isSubmitted) => {
-    if (isSubmitted) {
-      this.props.loadDataAfterCreateMission();
-    }
-    this.setState({ showMissionForm: false });
-  };
-
-  showDutyMissionForm = () => {
-    this.setState({ showDutyMissionForm: true });
-  };
-
-  handleFormHideDutyMissionForm = (isSubmitted) => {
-    if (isSubmitted) {
-      this.props.loadDataAfterCreateDutyMission();
-    }
-    this.setState({ showDutyMissionForm: false });
-  };
-
-  render() {
     return (
       <DashboardMenuButtonsContainer>
         <CardContainer>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>
-            <ButtonCreateWaybill onClick={this.showWaybillForm}>
+            <ButtonCreateWaybill onClick={setShowWaybillForm}>
               Создать путевой лист
             </ButtonCreateWaybill>
             <LinkToOrder to="/orders">
               <Button active>Исполнение централизованного задания</Button>
             </LinkToOrder>
-            <ButtonCreateMission onClick={this.showMissionForm}>
+            <ButtonCreateMission onClick={setShowMissionForm}>
               Создать децентрализованное задание
             </ButtonCreateMission>
-            <ButtonCreateDutyMission onClick={this.showDutyMissionForm}>
+            <ButtonCreateDutyMission onClick={setShowDutyMissionForm}>
               Создать наряд-задание
             </ButtonCreateDutyMission>
           </CardBodyContainer>
         </CardContainer>
         {
-          this.state.showWaybillForm
+          showWaybillForm
             && (
               <WaybillFormWrap
-                onFormHide={this.handleFormHideWaybillForm}
-                onCallback={this.handleFormHideWaybillForm}
+                onFormHide={handleFormHideWaybillForm}
+                onCallback={handleFormHideWaybillForm}
                 element={null}
               />
             )
         }
         <MissionFormLazy
-          onFormHide={this.handleFormHideMissionForm}
-          showForm={this.state.showMissionForm}
+          onFormHide={handleFormHideMissionForm}
+          showForm={showMissionForm}
           element={null}
-          page={'dashboard'}
+          page={props.page}
         />
         <DutyMissionFormLazy
-          onFormHide={this.handleFormHideDutyMissionForm}
-          showForm={this.state.showDutyMissionForm}
+          onFormHide={handleFormHideDutyMissionForm}
+          showForm={showDutyMissionForm}
           element={null}
-          page="dashboarc"
+          page={props.page}
         />
       </DashboardMenuButtonsContainer>
     );
-  }
-}
+  },
+);
 
-export default connect<
-  StatePropsDashboardMenuButtons,
-  DispatchPropsDashboardMenuButtons,
-  OwnerPropsDashboardMenuButtons,
-  ReduxState
->(
+export default connect<StatePropsDashboardMenuButtons, DispatchPropsDashboardMenuButtons, OwnerPropsDashboardMenuButtons, ReduxState>(
   null,
   (dispatch) => ({
-    loadDataAfterCreateWaybill: () =>
+    dashboardLoadDependentDataByWaybillDraft: () =>
       dispatch(dashboardLoadDependentDataByWaybillDraft()),
-    loadDataAfterCreateMission: () =>
+    dashboardLoadDependentDataByNewMission: () =>
       dispatch(dashboardLoadDependentDataByNewMission()),
-    loadDataAfterCreateDutyMission: () =>
+    dashboardLoadDependentDataByNewDutyMission: () =>
       dispatch(dashboardLoadDependentDataByNewDutyMission()),
   }),
 )(DashboardMenuButtons);

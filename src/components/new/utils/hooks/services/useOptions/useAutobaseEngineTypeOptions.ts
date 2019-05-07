@@ -1,19 +1,13 @@
-import * as React from 'react';
 import useAutobaseEngineTypeList from '../useList/useAutobaseEngineTypeList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import useDefaultOptons from './common/useDefaultOptons';
 
 const useAutobaseEngineTypeOptions = (page: LoadingMeta['page'], path: LoadingMeta['path']) => {
   const list = useAutobaseEngineTypeList(page, path);
 
-  const countryOptions = React.useMemo(
-    () => {
-      return list.map(defaultSelectListMapper);
-    },
-    [list],
-  );
+  const options = useDefaultOptons(list);
 
-  return countryOptions;
+  return options;
 };
 
 export default useAutobaseEngineTypeOptions;

@@ -6,15 +6,15 @@ import {
   DashboardMenuContainer
 } from 'components/new/pages/dashboard/menu/styled/styled';
 
-class DashboardMenu extends React.PureComponent<{}, {}> {
-  render() {
+const DashboardMenu: React.FC<{ page: string }> = React.memo(
+  (props) => {
     return (
       <DashboardMenuContainer>
-        <DashboardMenuCards />
-        <DashboardMenuButtons />
+        <DashboardMenuCards page={props.page} />
+        <DashboardMenuButtons page={props.page} />
       </DashboardMenuContainer>
     );
-  }
-}
+  },
+);
 
 export default DashboardMenu;

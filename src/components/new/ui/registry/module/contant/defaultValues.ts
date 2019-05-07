@@ -6,6 +6,7 @@ const registryDefaultObj: OneRegistryData = {
     getRegistryData: {
       payload: {},
     },
+    getOneData: null,
   },
   filter: {
     fields: [],

@@ -57,6 +57,13 @@ const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
       [props.element],
     );
 
+    const onCallbackLegacy = React.useCallback(
+      () => {
+        props.onFormHide(true);
+      },
+      [props.onFormHide],
+    );
+
     const is_creating = props.match.params.waybill_id === 'create';
 
     return (
@@ -69,6 +76,7 @@ const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
                 showForm
                 element={is_creating ? null : elementMemo}
                 onFormHide={props.onFormHide}
+                onCallback={onCallbackLegacy}
 
                 page={page}
                 path={path}

@@ -368,7 +368,7 @@ class WaybillFormWrap extends React.Component {
       formState.equipment_tax_data,
     );
 
-    if (formState.equipment_fuel) {
+    if (formState.equipment_fuel && !formState.is_one_fuel_tank) {
       formState.fuel_end = (fuelStart + fuelGiven - fuelTaxes).toFixed(3);
       formState.equipment_fuel_end = (
         equipmentFuelStart

@@ -16,6 +16,12 @@ export type TableMeta<F> = {
     compareItemPath: string,
     match: any,
   }[];
+  resetIf?: {
+    type: 'compare_with_value_in_option',
+    path_to_option: string,
+    compareItemPath: string,
+    match: any,
+  }[];
 } & (
   {
     format: 'select';
@@ -95,6 +101,7 @@ const TableInput: React.FC<TableInputProps> = React.memo(
               )
           }
         </DisplayFlexAlignCenterFooterForm>
+        <br />
         {
           Boolean(props.array.length)
             && (

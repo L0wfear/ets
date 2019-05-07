@@ -39,6 +39,28 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
       [metaData.key, metaData.format, props.onChange],
     );
 
+    React.useEffect(
+      () => {
+        if (isArray(props.metaData.resetIf)) {
+          return props.metaData.resetIf.forEach((resetData) => {
+            if (resetData.type === 'compare_with_value_in_option') {
+              const localMetaData = props.meta.find(({ key }) => key === resetData.path_to_option);
+              if (localMetaData) {
+                const options = get(localMetaData, 'options', []);
+                const selectedItem = options.find(({ value }) => value === get(props.rowData, resetData.path_to_option, null));
+                if (selectedItem) {
+                  if (get(selectedItem, `rowData.${resetData.compareItemPath}`, null) === resetData.match && props.value) {
+                    handleChange(null);
+                  }
+                }
+              }
+            }
+          });
+        }
+      },
+      [props.metaData.resetIf, props.rowData, props.meta, handleChange, props.value],
+    );
+
     const disabled = React.useMemo(
       () => {
         if (isArray(props.metaData.disabledIf)) {

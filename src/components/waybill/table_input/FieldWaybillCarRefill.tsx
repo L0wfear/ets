@@ -3,7 +3,7 @@ import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { DisplayFlexAlignCenterFooterForm } from 'global-styled/global-styled';
+import { DisplayFlexAlignCenterFooterForm, DivNone } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -49,6 +49,14 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
   placeholder: '',
   format: 'select',
   disabledIf: [
+    {
+      type: 'compare_with_value_in_option',
+      path_to_option: 'type_id',
+      compareItemPath: 'is_fuel_card_required',
+      match: false,
+    },
+  ],
+  resetIf: [
     {
       type: 'compare_with_value_in_option',
       path_to_option: 'type_id',
@@ -129,9 +137,13 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
         />
         <DisplayFlexAlignCenterFooterForm>
           {
-            props.fuel_given > 0 && (
-              <span>{`Итого ${props.fuel_given.toFixed(3)}`}</span>
-            )
+            props.fuel_given || props.fuel_given === 0
+              ? (
+                <span>{`Итого ${props.fuel_given.toFixed(3)}`}</span>
+              )
+              : (
+                <DivNone />
+              )
           }
         </DisplayFlexAlignCenterFooterForm>
       </div>

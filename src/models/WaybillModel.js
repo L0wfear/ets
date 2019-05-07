@@ -25,7 +25,9 @@ const checkCarRefill = memoizeOne((car_refill, refillTypeList) => {
       value:
         !rowData.value && rowData.value !== 0
           ? 'Поле "Выдано, л" должно быть заполнено'
-          : '',
+          : rowData.value < 0
+            ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+            : '',
     };
   });
 });

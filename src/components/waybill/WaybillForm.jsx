@@ -63,7 +63,6 @@ import { isArray } from 'highcharts';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import EtsModal from 'components/new/ui/modal/Modal';
 
-import { DisplayFlexAlignCenter } from 'global-styled/global-styled';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 
@@ -1632,15 +1631,6 @@ class WaybillForm extends UNSAFE_Form {
                   color="rgba(0, 0, 0, 0.5)">
                   <Row>
                     <Col md={12}>
-                      <Col md={12}>
-                        <h4>
-                          <DisplayFlexAlignCenter>
-                            <span style={{ marginRight: 10 }}>
-                              На ТС установлено спецоборудование:
-                            </span>
-                          </DisplayFlexAlignCenter>
-                        </h4>
-                      </Col>
                       <Div hidden={!CAR_HAS_ODOMETER}>
                         <Col md={4}>
                           <h4>Одометр</h4>
@@ -1830,6 +1820,7 @@ class WaybillForm extends UNSAFE_Form {
                         </Row>
                       </Col>
                     </Col>
+                    <br />
                     <Col md={12}>
                       <Col md={12}>
                         <FieldWaybillCarRefill
@@ -2049,6 +2040,7 @@ class WaybillForm extends UNSAFE_Form {
                             <DivNone />
                           )}
                         </Col>
+                        <br />
                         {!state.is_one_fuel_tank ? (
                           <Col md={12}>
                             <Col md={12}>

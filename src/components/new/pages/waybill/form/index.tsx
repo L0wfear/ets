@@ -23,6 +23,8 @@ type PropsWaybilFormlLazy = {
 
   onFormHide: any;
 
+  uniqKeyForParams: string;
+
   actionGetWaybillById: HandleThunkActionCreator<typeof waybillActions.actionGetWaybillById>;
 } & WithSearchProps;
 
@@ -55,15 +57,17 @@ const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
       [props.element],
     );
 
+    const is_creating = props.match.params.waybill_id === 'create';
+
     return (
       <ErrorBoundaryForm>
         <React.Suspense fallback={<LoadingComponent />}>
         {
-          props.match.params.type === 'create' || elementMemo
+          (is_creating || elementMemo)
             && (
               <WaybillFormWrap
                 showForm
-                element={props.match.params.type === 'create' ? null : elementMemo}
+                element={is_creating ? null : elementMemo}
                 onFormHide={props.onFormHide}
 
                 page={page}

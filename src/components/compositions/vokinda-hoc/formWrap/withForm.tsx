@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isFunction, isString } from 'util';
+import { isFunction, isString, isArray, isObject } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, PropertieType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -58,6 +58,25 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
     defaultSubmit: FormWithDefaultSubmit;
   }
 );
+
+export const removeEmptyString = (formState: any) => {
+  Object.keys(formState).forEach((key) => {
+    if (formState[key] === '') {
+      formState[key] = null;
+      return;
+    }
+
+    if (isObject(formState[key])) {
+      removeEmptyString(formState[key]);
+      return;
+    }
+    if (isArray(formState[key]) && isObject(formState[key][0])) {
+      formState[key].forEach((obj) => {
+        removeEmptyString(obj);
+      });
+    }
+  });
+};
 
 const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Readonly<{ children?: React.ReactNode; }> & Readonly<WithFormProps<P>>, F, WithFormState<F>>) => (Component) => (
   compose<any, any>(
@@ -229,6 +248,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<Reado
 
           formatedFormState[key] = value;
         });
+
+        removeEmptyString(formatedFormState);
 
         const result = await this.submitAction(formatedFormState);
 

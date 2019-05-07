@@ -10,10 +10,19 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
 import { getLastConductingInspect } from 'components/new/pages/inspection/autobase/@selectors';
+import {get} from 'lodash';
 
 const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (props) => {
   const { lastConductingInspect } = props;
-
+  /**
+   * was_resaved
+   * была ли отредактирована проверка, приходит с бека
+   * true, если проверка была сохранена пользователем, соответственно все поля заполненны корректно
+   * ---
+   * есть кейс, когда пользователь открывает проверку, но не заполняет поля, а просто закрывает окно, проверка создаётся с незаполненными полями ()
+   * в этом случае was_resaved === false
+   */
+  const was_resaved = get(lastConductingInspect, 'was_resaved', false);
   const handleClickCreateInspectAutobase = React.useCallback(
     async () => {
       if (lastConductingInspect) {
@@ -27,7 +36,7 @@ const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (p
   );
 
   return (
-    <BigPaddingButton onClick={handleClickCreateInspectAutobase}>
+    <BigPaddingButton onClick={handleClickCreateInspectAutobase} disabled={!was_resaved}>
       Завершить проверку
     </BigPaddingButton>
   );

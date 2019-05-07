@@ -101,6 +101,7 @@ export const promiseCloseInspection = async (
     head_operating_base_tel,
   } = data;
 
+  // <<< переделать, не добовлять новые атрибуты в data на фронте
   delete data.head_balance_holder_base_fio;
   delete data.head_balance_holder_base_tel;
   delete data.head_operating_base_fio;
@@ -108,6 +109,8 @@ export const promiseCloseInspection = async (
   delete data.address_base;
   delete data.balance_holder_base;
   delete data.operating_base;
+  delete data.head_balance_holder_base;
+  delete data.head_operating_base;
 
   const responsePayload =
     type === 'pgm_base'

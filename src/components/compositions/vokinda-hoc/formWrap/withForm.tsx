@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isFunction, isString, isBoolean, isArray } from 'util';
+import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { SchemaType, FormErrorType } from 'components/ui/form/new/@types/validate.h';
 import { validate } from 'components/ui/form/new/validate';
@@ -8,7 +8,6 @@ import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import { isObject } from 'highcharts';
 import PreloaderComponent from 'components/ui/new/preloader/Preloader';
 
 /**

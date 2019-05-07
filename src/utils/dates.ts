@@ -1,5 +1,9 @@
 import * as moment from 'moment';
 import { isEqualOr } from 'utils/functions';
+import momentLocalizer from 'components/ui/input/date-picker/localizer';
+
+moment.locale('ru');
+momentLocalizer();
 
 export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
   moment(dateA).diff(moment(dateB), typeDiff as any, float);
@@ -277,3 +281,14 @@ export const diffDatesByDays = (dateA, dateB) =>
 
 export const currentDateInInterval = ({ date_start, date_end }) =>
   diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0;
+
+export const monthOptions = Array(12).fill(0).map(
+  (_, index) => {
+    const monthName = moment().month(index).format('MMMM');
+
+    return ({
+      value: index + 1,
+      label: monthName.charAt(0).toUpperCase() + monthName.substr(1),
+    });
+  },
+);

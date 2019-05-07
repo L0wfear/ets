@@ -1,6 +1,5 @@
 import monitor from 'components/monitor/config-data';
 import coverageReports from 'components/coverage_reports/config-data';
-import waybillJournal from 'components/waybill/config-data';
 import nsi from 'components/directories/config-data';
 import reports from 'components/reports/config-data';
 import notificationRegistry from 'components/notifications/config-data';
@@ -12,14 +11,15 @@ import inspection from 'components/new/pages/inspection/_config_data';
 import edcRequest from 'components/new/pages/edc_request/_config-data';
 import routeList from 'components/new/pages/routes_list/config-data';
 import programRegistryList from 'components/new/pages/program_registry/_config-data';
-import config from 'config';
+import waybillList from 'components/new/pages/waybill/_config-data';
+import administration from 'components/new/pages/administration/_config-data';
 
 const routerAndPermission = {
   monitor,
   coverageReports,
   dashboard,
   inspection,
-  waybillJournal,
+  waybillList,
   missions,
   edcRequest,
   nsi,
@@ -27,18 +27,7 @@ const routerAndPermission = {
   routeList,
   notificationRegistry,
   programRegistryList,
-  admin: {
-    path: `${config.admin}`,
-    title: 'Администрирование',
-    entyity: 'administration',
-    noHash: true,
-    noDotList: true,
-    noRoute: true,
-    checkHidden: (isShow, props) => isShow && !props.isOkrug,
-    permissions: {
-      list: 'administration',
-    },
-  },
+  administration,
   changeCompany,
 };
 

@@ -19,7 +19,7 @@ declare namespace ETSCore {
       [key: number]: ValueType;
     }
 
-    type TReactComponent<TInjectedProps> = React.ComponentClass<TInjectedProps> | React.FunctionComponent<TInjectedProps>;
+    type TReactComponent<TInjectedProps> = React.ComponentClass<TInjectedProps> | React.FC<TInjectedProps>;
     type THOCFunction<TSourceProps, TResultHOCProps> = (SourceComponent: ETSCore.Types.TReactComponent<TSourceProps>) => React.ComponentClass<TResultHOCProps>;
   }
 

@@ -4,7 +4,7 @@ import CarFilterBySelect from 'components/monitor/tool-bar/car-data/car-filters/
 
 type CarFiltersProps = {};
 
-const CarFilters: React.FunctionComponent<CarFiltersProps> = () => (
+const CarFilters: React.FC<CarFiltersProps> = () => (
   <span className="car_filters-container-wrap">
     <span className="car_filters-container">
       <CarFilterByText />

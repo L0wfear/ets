@@ -3,12 +3,8 @@ import {
   autobaseUpdateByType,
   autobaseRemoveByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import {
-  autobaseLoadByType,
-} from 'redux-main/reducers/modules/autobase/promises';
 import { carCategory } from 'redux-main/reducers/modules/autobase/constants';
 
-export const getCarCategory = autobaseLoadByType(carCategory);
 export const createCarCategory = autobaseCreateByType(carCategory);
 export const updateCarCategory = autobaseUpdateByType(carCategory);
 export const removeCarCategory = autobaseRemoveByType(carCategory);

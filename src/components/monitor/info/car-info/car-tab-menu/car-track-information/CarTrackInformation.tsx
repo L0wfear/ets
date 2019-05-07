@@ -8,7 +8,7 @@ type PropsCarTrackInformation = {
   map: ol.Map;
 };
 
-const CarTrackInformation: React.FunctionComponent<PropsCarTrackInformation> = (props) => (
+const CarTrackInformation: React.FC<PropsCarTrackInformation> = (props) => (
   <div>
     <TitleTrackTab />
     <ActionTrackTab />

@@ -15,7 +15,7 @@ import {
   PropsCarLegendStatus,
 } from 'components/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus.h';
 
-const CarLegendStatus: React.FunctionComponent<PropsCarLegendStatus> = (props) => (
+const CarLegendStatus: React.FC<PropsCarLegendStatus> = (props) => (
   <span className="car-toolbar">
     <div className="tool_bar-block">
       <div className="default_cube dark">

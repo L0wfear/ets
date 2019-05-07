@@ -55,6 +55,9 @@ export type OneFilterType<F> = {
       labelKey?: string;
       mergeWithArray?: boolean;
     }
+  } | {
+    type: 'advanced-select-like',
+    options: any[];
   }
 );
 
@@ -83,6 +86,8 @@ export type TypeFields<F extends any> = {
     | 'floor'
     | 'mission_status_name'
     | 'company_structure_actions'
+    | 'waybill_all_missions_status'
+    | 'waybill_status_name'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
 } | {
@@ -105,6 +110,21 @@ export type TypeFields<F extends any> = {
 } | {
   key: 'company_structure_actions',
   title: string;
+} | {
+  key: 'services_actions_on_off',
+  title: string,
+  sortable?: boolean;
+  width: number;
+} | {
+  key: 'service_files';
+  title: string,
+  sortable?: boolean;
+  width: number;
+} | {
+  key: 'button_show_action_log';
+  title: string,
+  sortable?: boolean;
+  width: number;
 };
 
 export type TypeConfigData<F> = {

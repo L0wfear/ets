@@ -7,7 +7,7 @@ type PropsList = {
   classNameContainer?: string;
 };
 
-const List: React.FunctionComponent<PropsList> = (props) => (
+const List: React.FC<PropsList> = (props) => (
   <div>
     {
       props.items.map(({ subItems = [], value, ...item } , index) => (

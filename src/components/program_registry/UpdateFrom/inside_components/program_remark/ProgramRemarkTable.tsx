@@ -76,7 +76,7 @@ const renderers: ISchemaRenderer = {
   status: ({ data }) => <span>{status_name[data]}</span>,
 };
 
-const Table: React.FunctionComponent<any> = (props) => {
+const Table: React.FC<any> = (props) => {
   const showTable = checkPermittedTable(props.program_version_status, props.data.length, props.isСustomer, props.isSupervisor);
 
   return showTable ?

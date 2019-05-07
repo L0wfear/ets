@@ -40,7 +40,7 @@ export const meta = {
   ],
 };
 
-const ChangeRouteTable: React.FunctionComponent<any> = (props) => {
+const ChangeRouteTable: React.FC<any> = (props) => {
   return (
     <DataTable
       data={props.data}

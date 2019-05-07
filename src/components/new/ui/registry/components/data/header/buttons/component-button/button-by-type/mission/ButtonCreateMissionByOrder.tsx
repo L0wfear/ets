@@ -33,8 +33,8 @@ const ButtonCreateMissionByOrder: React.FC<ButtonCreateMissionByOrderProps> = (p
   );
 
   return (
-    <Button id="open-create-form" bsSize="small" onClick={handleClick}>
-      <Glyphicon glyph="plus" /> Создать децентрализованное задание
+    <Button id="open-create-form" bsSize="small" active onClick={handleClick}>
+      <Glyphicon glyph="plus" /> Создать централизованное задание
     </Button>
   );
 };

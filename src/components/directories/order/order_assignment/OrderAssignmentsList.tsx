@@ -21,7 +21,7 @@ import {
 } from 'components/directories/order/order_assignment/styled/styled';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
-const OrderAssignmentsList: React.FunctionComponent<any> = (props) => (
+const OrderAssignmentsList: React.FC<any> = (props) => (
   <Div className="data-table data-other" hidden={props.hidden} >
     <Row>
       <ColOrderAssignmentHeaderTitleContainer md={8}>

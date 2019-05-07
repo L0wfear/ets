@@ -73,7 +73,7 @@ interface IPropsTypeRenderer extends IPropsDataTableInputRenderer {
   vehicleList: IBatteryAvailableCar[];
 }
 
-const TypeRenderer: React.FunctionComponent<IPropsTypeRenderer> = ({
+const TypeRenderer: React.FC<IPropsTypeRenderer> = ({
   value,
   outputListErrors = [],
   vehicleList = [],

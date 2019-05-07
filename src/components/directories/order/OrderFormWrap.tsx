@@ -15,7 +15,7 @@ import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 // todo
 // Описать интерфейсы форм
 
-const OrderMissionController: React.FunctionComponent<any> = (props) => {
+const OrderMissionController: React.FC<any> = (props) => {
   const { missionData, dutyMissionData, missionTemplateData } = props;
 
   return (

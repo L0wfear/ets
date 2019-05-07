@@ -55,7 +55,7 @@ interface IPropsCarIdRenderer extends IPropsDataTableInputRenderer {
   vehicleList: ITireAvailableCar[];
 }
 
-const CarIdRenderer: React.FunctionComponent<IPropsCarIdRenderer> = ({
+const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   value,
   outputListErrors = [],
   vehicleList = [],
@@ -75,7 +75,7 @@ const CarIdRenderer: React.FunctionComponent<IPropsCarIdRenderer> = ({
   />
 );
 
-const InstalledAtRenderer: React.FunctionComponent<
+const InstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
 > = ({ value, onChange, index, outputListErrors, isPermitted }) => (
   <ExtField
@@ -90,7 +90,7 @@ const InstalledAtRenderer: React.FunctionComponent<
   />
 );
 
-const UninstalledAtRenderer: React.FunctionComponent<
+const UninstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
 > = ({ value, onChange, index, isPermitted }) => (
   <ExtField

@@ -7,29 +7,33 @@ import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
 
-import { onClickWithKeys } from 'components/compositions/hoc';
 import { DivNone } from 'global-styled/global-styled';
+import { ButtonRemoveFile } from './styled';
 
-const Button: any = onClickWithKeys(BootstrapButton as any);
+const FileListItem: React.FC<any> = React.memo(
+  (props) => {
 
-const FileListItem: React.FunctionComponent<any> = ({
-  onFileRemove,
-  disabled,
-  index,
-  name,
-  url,
-}) =>
-  <Col style={{ marginBottom: 10 }} md={12}>
-    <a href={url} target="_blanc">{name}</a>
-    <Button
-      bsClass="close"
-      bsSize="xsmall"
-      onClick={onFileRemove}
-      boundKeys={index}
-      disabled={disabled}
-    ><span>×</span>
-    </Button>
-  </Col>;
+    const onFileRemove = React.useCallback(
+      () => {
+        props.onFileRemove(props.index);
+      },
+      [props.onFileRemove, props.index],
+    );
+
+    return (
+      <Col style={{ marginBottom: 10 }} md={12}>
+        <ButtonRemoveFile
+          bsClass="close"
+          bsSize="xsmall"
+          onClick={onFileRemove}
+          disabled={props.disabled}
+          children="×"
+        />
+        <a href={props.url} target="_blanc">{props.name}</a>
+      </Col>
+    );
+  },
+);
 
 class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
   fileInputNode: HTMLInputElement;

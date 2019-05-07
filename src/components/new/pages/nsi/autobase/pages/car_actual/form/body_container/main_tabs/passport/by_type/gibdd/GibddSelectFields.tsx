@@ -3,23 +3,13 @@ import { Row, Col } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { CarGibddPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
 import { FileField } from 'components/ui/input/fields';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import useCarCategoryOptions from './useCarCategoryOptions';
-import { autobaseGetSetCarCategory } from 'redux-main/reducers/modules/autobase/actions_by_type/car_category/actions';
-import useEngineTypeOptions from './useEngineTypeOptions';
-import { autobaseGetSetEngineType } from 'redux-main/reducers/modules/autobase/actions_by_type/engine_type/actions';
-import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
-import useCarFuncTypesOptions from './useCarTypesOptions';
-import useCountryOptions from './useCountryOptions';
-import { actionLoadCountry } from 'redux-main/reducers/modules/some_uniq/country/actions';
+import useCarTypesOptions from 'components/new/utils/hooks/services/useOptions/useCarTypesOptions';
+import useCountryOptions from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
+import useAutobaseCarCategoryOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseCarCategoryOptions';
+import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 
 type GibddSelectFieldsStateProps = {};
 type GibddSelectFieldsDispatchProps = {
-  autobaseGetSetCarCategory: HandleThunkActionCreator<typeof autobaseGetSetCarCategory>;
-  autobaseGetSetEngineType: HandleThunkActionCreator<typeof autobaseGetSetEngineType>;
-  autobaseGetSetCarFuncTypes: HandleThunkActionCreator<typeof autobaseGetSetCarFuncTypes>;
-  actionLoadCountry: HandleThunkActionCreator<typeof actionLoadCountry>;
 };
 type GibddSelectFieldsOwnProps = {
   isPermitted: boolean;
@@ -52,31 +42,19 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
       disabled,
     } = passport_data;
 
-    const {
-      carCategoryOptions,
-    } = useCarCategoryOptions(
-      props.autobaseGetSetCarCategory,
+    const carCategoryOptions = useAutobaseCarCategoryOptions(
       page, path,
     );
 
-    const {
-      engineTypeOptions,
-    } = useEngineTypeOptions(
-      props.autobaseGetSetEngineType,
+    const engineTypeOptions = useAutobaseEngineTypeOptions(
       page, path,
     );
 
-    const {
-      carFuncTypesOptions,
-    } = useCarFuncTypesOptions(
-      props.autobaseGetSetCarFuncTypes,
+    const carFuncTypesOptions = useCarTypesOptions(
       page, path,
     );
 
-    const {
-      countryOptions,
-    } = useCountryOptions(
-      props.actionLoadCountry,
+    const countryOptions = useCountryOptions(
       page, path,
     );
 
@@ -317,28 +295,4 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
   },
 );
 
-export default connect<GibddSelectFieldsStateProps, GibddSelectFieldsDispatchProps, GibddSelectFieldsOwnProps, ReduxState>(
-  null,
-  (dispatch: any) => ({
-    autobaseGetSetCarCategory: (...arg) => (
-      dispatch(
-        autobaseGetSetCarCategory(...arg),
-      )
-    ),
-    autobaseGetSetEngineType: (...arg) => (
-      dispatch(
-        autobaseGetSetEngineType(...arg),
-      )
-    ),
-    autobaseGetSetCarFuncTypes: (...arg) => (
-      dispatch(
-        autobaseGetSetCarFuncTypes(...arg),
-      )
-    ),
-    actionLoadCountry: (...arg) => (
-      dispatch(
-        actionLoadCountry(...arg),
-      )
-    ),
-  }),
-)(GibddSelectFields);
+export default GibddSelectFields;

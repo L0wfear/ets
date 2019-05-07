@@ -1,12 +1,8 @@
 import * as React from 'react';
 import * as DateTimePicker from 'react-widgets/lib/DateTimePicker';
-import momentLocalizer from 'components/ui/input/date-picker/localizer';
 import * as cx from 'classnames';
 import * as moment from 'moment';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-
-moment.locale('ru');
-momentLocalizer();
 
 const DTPicker: any = DateTimePicker;
 
@@ -21,7 +17,7 @@ interface DatePickerProps {
   makeGoodFormat?: boolean;
 }
 
-const DatePicker: React.FunctionComponent<DatePickerProps> = (props) => {
+const DatePicker: React.FC<DatePickerProps> = (props) => {
   const {
     time = true,
     calendar = true,

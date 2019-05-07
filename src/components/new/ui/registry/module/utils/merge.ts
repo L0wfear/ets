@@ -4,6 +4,14 @@ import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/fil
 import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { makeProcessedArray } from './processed';
+import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { displayIfContant } from '../../contants/displayIf';
+
+type OtherData = {
+  STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
+  userData: InitialStateSession['userData'];
+};
 
 export const mergeFilter = (filter: OneRegistryData['filter']) => {
   const rawFilterValues = makeRawFilterValues(filter);
@@ -140,12 +148,46 @@ export const mergeListPermissions = (permissions: OneRegistryData['list']['permi
   return permissions;
 };
 
-export const mergeListMeta = (meta: OneRegistryData['list']['meta']) => {
+export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, otherData: OtherData) => {
   const {
     fields = registryDefaultObj.list.meta.fields,
   } = meta || {};
 
-  return makerDataMetaField({ fields });
+  const fieldsFiltred = fields.reduce(
+    (newArr, fieldData) => {
+      const { title } = fieldData;
+      let formatedTitle = title;
+
+      if (isArray(title)) {
+        formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
+          const { displayIf } = titleSomeValue;
+
+          if (displayIf === displayIfContant.isKgh && otherData.userData.isKgh) {
+            return titleSomeValue.title;
+          }
+          if (displayIf === displayIfContant.isOkrug && otherData.userData.isOkrug) {
+            return titleSomeValue.title;
+          }
+          if (displayIf === displayIfContant.lenghtStructureMoreOne && otherData.STRUCTURES.length) {
+            return titleSomeValue.title;
+          }
+
+          return filtredTitle;
+        }, null);
+      }
+
+      if (formatedTitle || fieldData.key === 'checkbox') {
+        newArr.push({
+          ...fieldData,
+          title: formatedTitle,
+        });
+      }
+      return newArr;
+    },
+    [],
+  );
+
+  return makerDataMetaField(fieldsFiltred);
 };
 
 export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator']) => (
@@ -209,12 +251,12 @@ export const mergeListProcessed = (processed: Partial<OneRegistryData['list']['p
   return processedNew;
 };
 
-export const mergeList = (list: OneRegistryData['list'], fields: OneRegistryData['filter']['fields']) => {
+export const mergeList = (list: OneRegistryData['list'], fields: OneRegistryData['filter']['fields'], otherData: OtherData) => {
   const listNew: Partial<OneRegistryData['list']> = {};
 
   listNew.data = mergeListData(list.data) as any;
   listNew.permissions = mergeListPermissions(list.permissions);
-  listNew.meta = mergeListMeta(list.meta);
+  listNew.meta = mergeListMeta(list.meta, otherData);
   listNew.paginator = mergeListPaginator(list.paginator);
   listNew.processed = mergeListProcessed(list.processed);
 

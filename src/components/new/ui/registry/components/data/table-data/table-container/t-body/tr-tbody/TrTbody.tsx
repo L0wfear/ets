@@ -33,6 +33,11 @@ import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
 import TrTdIsOpen from './tr-td/TrTdIsOpen';
 import TrTdButtonCompanyStructureActions from './tr-td/TrTdButtonCompanyStructureActions';
+import { WAYBILL_STATUSES } from 'constants/statuses';
+import { missionsStatusBySlag } from 'components/waybill/constant/table';
+import TrTdButtonServicesActionsOnOff from './tr-td/TrTdButtonServicesActionsOnOff';
+import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
+import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -108,6 +113,36 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'company_structure_actions') {
       return (
         <TrTdButtonCompanyStructureActions
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'services_actions_on_off') {
+      return (
+        <TrTdButtonServicesActionsOnOff
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'service_files') {
+      return (
+        <TrTdServiceFiles
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'button_show_action_log') {
+      return (
+        <TrTdServiceButtonShowActionLog
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}
@@ -209,6 +244,12 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
       if (format === 'mission_status_name') {
         value = MISSION_STATUS_LABELS[value];
+      }
+      if (format === 'waybill_all_missions_status') {
+        value = get(missionsStatusBySlag, value, '');
+      }
+      if (format === 'waybill_status_name') {
+        value = WAYBILL_STATUSES[value];
       }
     }
 

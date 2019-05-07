@@ -2283,11 +2283,4 @@ export default compose(
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
   })),
-)(
-  connectToStores(WaybillForm, [
-    'objects',
-    'employees',
-    'waybills',
-    'missions',
-  ]),
-);
+)(connectToStores(WaybillForm, ['objects', 'employees', 'missions']));

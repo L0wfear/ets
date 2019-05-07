@@ -9,7 +9,6 @@ import missions from './MissionsStore';
 import notifications from './NotificationsStore';
 import objects from './ObjectsStore';
 import repair from './RepairStore';
-import waybills from './WaybillsStore';
 
 export {
   employees,
@@ -19,5 +18,4 @@ export {
   notifications,
   objects,
   repair,
-  waybills,
 };

@@ -9,7 +9,7 @@ import {
   OverlayLineInfoContainer,
 } from 'components/new/ui/map/overlay/styled/styled';
 
-const OverlayTrackPoint: React.FunctionComponent<any> = (props) => {
+const OverlayTrackPoint: React.FC<any> = (props) => {
   const { parkingPoint } = props;
 
   if (!parkingPoint) {

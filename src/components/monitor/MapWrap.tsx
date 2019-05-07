@@ -22,7 +22,7 @@ type PropsMapWrap = {
   disabledMouseSingleClick: boolean;
 };
 
-const MapWrap: React.FunctionComponent<PropsMapWrap> = (props) => (
+const MapWrap: React.FC<PropsMapWrap> = (props) => (
   <MapEtsConsumer>
   {
     ({ setMapToContext, removeMapToContext }) => (

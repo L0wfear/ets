@@ -9,19 +9,19 @@ import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import DivForEnhance from 'components/ui/Div';
-import permissions from 'components/waybill/config-data/permissions';
 import {
   BtnGroupWrapper,
   DisplayFlexAlignCenterFooterForm,
   BtnPart,
 } from 'global-styled/global-styled';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 const Div = withRequirePermissionsNew({})(DivForEnhance);
 
 const savePermissions = [
-  permissions.update_closed,
-  permissions.update,
-  permissions.departure_and_arrival_values,
+  waybillPermissions.update_closed,
+  waybillPermissions.update,
+  waybillPermissions.departure_and_arrival_values,
 ];
 
 interface IPropsWaybillFooter {
@@ -65,7 +65,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
           <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
           </OverlayTrigger>
         </Div>
-        <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? permissions.plate : undefined}>
+        <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? waybillPermissions.plate : undefined}>
           <BtnGroupWrapper>
             <BtnPart>
               <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
@@ -102,7 +102,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
         >
           <Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
         </Div>
-        <Div permissions={permissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
+        <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
           <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
         </Div>
       </DisplayFlexAlignCenterFooterForm>

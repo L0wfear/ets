@@ -7,7 +7,7 @@ import {
   PropsDefaultInput,
 } from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput.h';
 
-const DefaultInput: React.FunctionComponent<PropsDefaultInput> = ({ OPTIONS, OPTIONS: { length }, ...props }) => (
+const DefaultInput: React.FC<PropsDefaultInput> = ({ OPTIONS, OPTIONS: { length }, ...props }) => (
   <ExtField
     multi
     label={false}

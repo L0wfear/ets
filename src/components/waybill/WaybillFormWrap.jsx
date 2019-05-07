@@ -4,11 +4,10 @@ import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
 import { FluxContext } from 'utils/decorators';
-import permissions from 'components/waybill/config-data/permissions';
 import WaybillForm from 'components/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/waybill/Taxes';
-import { makeReactMessange } from 'utils/helpMessangeWarning';
+import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { isNullOrUndefined, isObject, isArray } from 'util';
 import { connect } from 'react-redux';
 import {
@@ -22,6 +21,7 @@ import {
 } from 'redux-main/reducers/modules/refill_type/actions_refill_type';
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { validateField } from 'utils/validate/validateField';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -181,9 +181,11 @@ class WaybillFormWrap extends React.Component {
 
     this.setState({
       isPermittedByKey: {
-        update: this.props.currentUser.permissions.includes(permissions.update),
+        update: this.props.currentUser.permissions.includes(
+          waybillPermissions.update,
+        ),
         departure_and_arrival_values: this.props.currentUser.permissions.includes(
-          permissions.departure_and_arrival_values,
+          waybillPermissions.departure_and_arrival_values,
         ),
       },
     });
@@ -562,7 +564,7 @@ class WaybillFormWrap extends React.Component {
       dismissible: false,
       autoDismiss: 0,
       uid: 'waybilPrintCurrForm',
-      children: makeReactMessange('Формирование печатной формы'),
+      children: makeReactMessage('Формирование печатной формы'),
     });
     const callback = (waybill_id = currentWaybillId) =>
       flux

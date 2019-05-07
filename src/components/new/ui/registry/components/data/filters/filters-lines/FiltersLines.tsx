@@ -18,6 +18,7 @@ import AdvancedStringLikeFilter from './advanced-string-like/AdvancedStringLikeF
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
+import AdvancedSelectLikeFilter from './advanced-select-like/AdvancedSelectLikeFilter';
 
 type PropsFiltersLines = {
   wasFirstOpen: boolean;
@@ -77,6 +78,19 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
         return (
           <EtsFilterContainer key={otherFilterData.valueKey}>
             <MultiselectRegestryFilter
+              formatedTitle={formatedTitle}
+              filterData={otherFilterData}
+              wasFirstOpen={this.props.wasFirstOpen}
+              registryKey={registryKey}
+              onChange={this.handleChange}
+            />
+          </EtsFilterContainer>
+        );
+      }
+      case 'advanced-select-like': {
+        return (
+          <EtsFilterContainer key={otherFilterData.valueKey}>
+            <AdvancedSelectLikeFilter
               formatedTitle={formatedTitle}
               filterData={otherFilterData}
               wasFirstOpen={this.props.wasFirstOpen}

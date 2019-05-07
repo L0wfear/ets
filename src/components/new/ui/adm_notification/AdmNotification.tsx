@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeReactMessange } from 'utils/helpMessangeWarning';
+import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { setMakeReadAdmNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
@@ -28,7 +28,7 @@ class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNoti
     props.admNotReadNotificationsList.forEach((notify) => (
       global.NOTIFICATION_SYSTEM.notify({
         title: notify.title,
-        message: makeReactMessange(notify.description),
+        message: makeReactMessage(notify.description),
         level: 'info',
         position: 'tr',
         autoDismiss: 0,

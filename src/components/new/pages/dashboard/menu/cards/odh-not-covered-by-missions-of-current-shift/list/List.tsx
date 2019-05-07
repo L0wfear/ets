@@ -3,7 +3,7 @@ import * as cx from 'classnames';
 
 import { PropsList } from 'components/new/pages/dashboard/menu/cards/odh-not-covered-by-missions-of-current-shift/list/List.h';
 
-const List: React.FunctionComponent<PropsList> = (props) => (
+const List: React.FC<PropsList> = (props) => (
   <ul>
     {
       props.items.map(({ sub_items = [], title, ...item }, index) => (

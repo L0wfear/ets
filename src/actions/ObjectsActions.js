@@ -3,7 +3,6 @@ import { isEmpty } from 'utils/functions';
 import {
   OrderService,
   CarActualService,
-  WaybillCarService,
   TypesService,
   WorkMode,
 } from 'api/Services';
@@ -18,12 +17,6 @@ export default class ObjectsActions extends Actions {
     }
     return CarActualService.get(payload).then((r) => ({
       result: r.result.rows,
-    }));
-  }
-
-  getWaybillSomeCars() {
-    return WaybillCarService.get({}).then((r) => ({
-      result: r.result,
     }));
   }
 

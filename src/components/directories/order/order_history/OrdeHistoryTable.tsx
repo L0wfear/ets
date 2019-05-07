@@ -36,7 +36,7 @@ export function tableMeta({
   return meta;
 }
 
-const Table: React.FunctionComponent<any> = (props) => {
+const Table: React.FC<any> = (props) => {
   return (
     <DataTable
       title="Расшифровка централизованного задания предыдущих версий"

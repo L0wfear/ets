@@ -43,7 +43,7 @@ class InputNumber extends React.PureComponent<PropsInputNumber, {}> {
                 <DivNone />
               )
             }
-            <FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={0.01} />
+            <FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
           </InputContainer>
           {
             !noShowError ? (

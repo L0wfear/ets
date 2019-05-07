@@ -63,7 +63,6 @@ class ReportContainer extends React.Component<
       selectedRow: null,
       filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
-      lastSearchObject: queryString.parse(this.props.location.search),
     };
   }
 
@@ -95,23 +94,30 @@ class ReportContainer extends React.Component<
     nextProps: IPropsReportContainer,
     prevState: IStateReportContainer,
   ) {
-    const { lastSearchObject } = prevState;
-    const {
-      location: { search: search_next },
-    } = nextProps;
+    const { filterValues } = prevState;
+    const { list } = nextProps;
 
-    const searchNextxObject = queryString.parse(search_next);
-    const newSearchEntries = Object.entries(searchNextxObject);
+    return {
+      filterValues: Object.entries(filterValues).reduce(
+        (newObj, [key, data]: any) => {
+          if (list.some((rowData) => key in rowData)) {
+            if (data.type === 'multiselect') {
+              if (list.some((rowData) => {
+                const keyValue = rowData[key];
+                return data.value.includes(keyValue);
+              })) {
+                newObj[key] = data;
+              }
+            } else {
+              newObj[key] = data;
+            }
+          }
 
-    // Если урл поменялся и он не пустой, то делаем запрос данных.
-    if (newSearchEntries.some(([key, value]) => lastSearchObject[key] !== value) || newSearchEntries.length !== Object.entries(lastSearchObject).length) {
-      return {
-        filterValues: {},
-        lastSearchObject: searchNextxObject,
-      };
-    }
-
-    return null;
+          return newObj;
+        },
+        {},
+      ),
+    };
   }
 
   componentDidUpdate(prevProps) {

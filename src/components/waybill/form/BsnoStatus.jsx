@@ -59,13 +59,6 @@ class BsnoStaus extends React.Component {
           // console.warn('WEBSOCKET - Потеряно соединение с WebSocket, пытаемся переподключиться');
         };
         ws.onerror = () => {
-          if (!__DEVELOPMENT__) {
-            Raven.captureException(
-              new Error(
-                'Ошибка подключения к сокету (Исправность датчика ГЛОНАСС)',
-              ),
-            );
-          }
           // console.error('WEBSOCKET - Ошибка WebSocket');
         };
       } catch (e) {

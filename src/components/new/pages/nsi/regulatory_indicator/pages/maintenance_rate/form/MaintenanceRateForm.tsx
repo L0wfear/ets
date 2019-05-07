@@ -41,7 +41,7 @@ const makeOptionsMemoList = (inputList: any[]) => {
   return optionList;
 };
 
-export const MaintenanceRateForm: React.FunctionComponent<
+export const MaintenanceRateForm: React.FC<
   PropsMaintenanceRate
 > = (props) => {
   const {

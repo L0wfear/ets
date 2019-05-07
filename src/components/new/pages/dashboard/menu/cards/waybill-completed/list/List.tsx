@@ -8,7 +8,7 @@ type PropsList = {
   addIndex?: number;
 };
 
-const List: React.FunctionComponent<PropsList> = ({ addIndex = 0, ...props }) => (
+const List: React.FC<PropsList> = ({ addIndex = 0, ...props }) => (
   <ul>
     {
       props.items.map(({ subItems = [], title, ...item } , index) => (

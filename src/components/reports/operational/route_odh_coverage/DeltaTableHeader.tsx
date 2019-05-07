@@ -8,7 +8,7 @@ interface IPropsDeltaTableHeader {
   name: string;
 }
 
-const DeltaTableHeader: React.FunctionComponent<IPropsDeltaTableHeader> = ({ tooltip, name }) => {
+const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) => {
   const popover = (
     <Popover id="route-odh-coverage-popover" className="car-usage-report-title__popover">
       {tooltip}

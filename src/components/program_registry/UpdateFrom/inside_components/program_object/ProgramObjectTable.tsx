@@ -75,7 +75,7 @@ const renderers: ISchemaRenderer = {
   fact_date_end: ({ data }) => (<DateFormatter date={data} />),
 };
 
-const Table: React.FunctionComponent<any> = (props) => (
+const Table: React.FC<any> = (props) => (
   <DataTable
     title="Объекты"
     results={props.data}

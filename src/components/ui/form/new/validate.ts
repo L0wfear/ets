@@ -59,9 +59,12 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
     if (key in properties) {
 
       const fieldData: any = properties[key];
+
       const {
         validateIf,
       } = fieldData;
+      let skipValidate = false;
+
       if (validateIf) {
         const {
           type,
@@ -74,7 +77,7 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
           const valueByPath = get(rootFormState, validateIf.path, false);
 
           if (!reverse ? !valueByPath : valueByPath) {
-            return;
+            skipValidate = true;
           }
         }
         if (type === 'equal_to_value') {
@@ -85,57 +88,58 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
           const valueByPath = get(rootFormState, validateIf.path, false);
 
           if (reverse ? valueByPath === value : valueByPath !== value) {
-            return;
+            skipValidate = true;
           }
         }
       }
 
-      switch (fieldData.type) {
-        case 'string': {
-          fieldData.
-          formError[key] = validateString<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'number': {
-          formError[key] = validateNumber<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'valueOfArray': {
-          formError[key] = validateValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'multiValueOfArray': {
-          formError[key] = validateMultiValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'date': {
-          formError[key] = validateDate<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'datetime': {
-          formError[key] = validateDatetime<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'boolean': {
-          formError[key] = validateBoolean<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
-          break;
-        }
-        case 'schema': {
-          formError[key] = validate<F[keyof F], P, RootFormState>((fieldData as any).schema, formState[key], props, rootFormState);
-          break;
-        }
-        default:
-          throw new Error('Нужно определить функцию для валидации');
-      }
-
-      if (fieldData.dependencies && !hasError(formError[key])) {
-        fieldData.dependencies.some((dependencieValidator) => {
-          const error = dependencieValidator(formState[key], formState, props, rootFormState);
-          if (hasError(error)) {
-            formError[key] = mergeErrors(formError[key], error);
-            return true;
+      if (!skipValidate) {
+        switch (fieldData.type) {
+          case 'string': {
+            formError[key] = validateString<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
           }
-        });
+          case 'number': {
+            formError[key] = validateNumber<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
+          }
+          case 'valueOfArray': {
+            formError[key] = validateValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
+          }
+          case 'multiValueOfArray': {
+            formError[key] = validateMultiValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
+          }
+          case 'date': {
+            formError[key] = validateDate<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
+          }
+          case 'datetime': {
+            formError[key] = validateDatetime<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
+          }
+          case 'boolean': {
+            formError[key] = validateBoolean<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            break;
+          }
+          case 'schema': {
+            formError[key] = validate<F[keyof F], P, RootFormState>((fieldData as any).schema, formState[key], props, rootFormState);
+            break;
+          }
+          default:
+            throw new Error('Нужно определить функцию для валидации');
+        }
+
+        if (fieldData.dependencies && !hasError(formError[key])) {
+          fieldData.dependencies.some((dependencieValidator) => {
+            const error = dependencieValidator(formState[key], formState, props, rootFormState);
+            if (hasError(error)) {
+              formError[key] = mergeErrors(formError[key], error);
+              return true;
+            }
+          });
+        }
       }
     }
   }

@@ -3,7 +3,6 @@ import * as React from 'react';
 import TrTh from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/TrTh';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { connect } from 'react-redux';
-import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 
@@ -14,7 +13,6 @@ import {
   PropsTrHead,
   StateTrHead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
-import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
@@ -29,15 +27,6 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
       formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
         const { displayIf } = titleSomeValue;
 
-        if (displayIf === displayIfContant.isKgh && this.props.userData.isKgh) {
-          return titleSomeValue.title;
-        }
-        if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
-          return titleSomeValue.title;
-        }
-        if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
-          return titleSomeValue.title;
-        }
         if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
           const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
           if (!car_actual_asuods_id) {
@@ -71,9 +60,6 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
 export default compose<PropsTrHead, OwnPropsTrHead>(
   withSearch,
   connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, ReduxState>(
-    (state) => ({
-      STRUCTURES: getSessionStructuresOptions(state),
-      userData: getSessionState(state).userData,
-    }),
+    null,
   ),
 )(TrHead);

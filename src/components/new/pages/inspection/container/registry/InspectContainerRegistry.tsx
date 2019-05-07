@@ -85,7 +85,7 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
                 <EtsTheadTh width={30}>№</EtsTheadTh>
                 <EtsTheadTh width={150}>Наименование работ</EtsTheadTh>
                 <EtsTheadTh width={250}>Дата начала</EtsTheadTh>
-                <EtsTheadTh width={250}>Дата окончая</EtsTheadTh>
+                <EtsTheadTh width={250}>Дата окончания</EtsTheadTh>
               </tr>
             </EtsThead>
             <tbody>

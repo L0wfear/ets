@@ -1,5 +1,5 @@
 import { SchemaType } from "components/ui/form/new/@types/validate.h";
-import { ViewAddInspectEmployeeInitialState } from "components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee";
+import { ViewAddInspectEmployeeInitialState } from "components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee";
 
 export const addInspectEmployeeSchema: SchemaType<Partial<ViewAddInspectEmployeeInitialState>, any> = {
   properties: {

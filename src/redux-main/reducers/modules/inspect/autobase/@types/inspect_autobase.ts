@@ -1,6 +1,6 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee';
+import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import { DefaultPartInspect } from '../../@types/inspect_reducer';
 
 type InspectAutobaseData = {

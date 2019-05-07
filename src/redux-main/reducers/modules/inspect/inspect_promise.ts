@@ -4,7 +4,7 @@ import {
   keyBy,
 } from 'lodash';
 import { InspectAutobase } from "./autobase/@types/inspect_autobase";
-import { ViewAddInspectEmployeeInitialState } from "components/new/pages/inspection/autobase/form/view_inspect_autobase_form/add_inspect_employee/addInspectEmployee";
+import { ViewAddInspectEmployeeInitialState } from "components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee";
 import { TypeOfInspect } from "./@types/inspect_reducer";
 import { InspectPgmBase } from "./pgm_base/@types/inspect_pgm_base";
 

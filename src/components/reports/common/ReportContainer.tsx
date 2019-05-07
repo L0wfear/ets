@@ -96,15 +96,17 @@ class ReportContainer extends React.Component<
     return {
       filterValues: Object.entries(filterValues).reduce(
         (newObj, [key, data]: any) => {
-          if (data.type === 'multiselect') {
-            if (list.some((rowData) => {
-              const keyValue = rowData[key];
-              return data.value.includes(keyValue);
-            })) {
+          if (list.some((rowData) => key in rowData)) {
+            if (data.type === 'multiselect') {
+              if (list.some((rowData) => {
+                const keyValue = rowData[key];
+                return data.value.includes(keyValue);
+              })) {
+                newObj[key] = data;
+              }
+            } else {
               newObj[key] = data;
             }
-          } else {
-            newObj[key] = data;
           }
 
           return newObj;

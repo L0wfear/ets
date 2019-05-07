@@ -619,6 +619,12 @@ body.application {
                 background-color: white;
                 padding: 5px;
                 cursor: pointer;
+                &.show_tc {
+                  transform: translate(-130%, -50%);
+                }
+                &.remove {
+                  transform: translate(-110%, -50%);
+                }
                 >*:nth-child(n + 2) {
                   margin-left: 5px;
                 }

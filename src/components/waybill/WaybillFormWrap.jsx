@@ -133,11 +133,7 @@ let timeId = 0;
 @FluxContext
 class WaybillFormWrap extends React.Component {
   static defaultProps = {
-    onCallback: (newState) => {
-      this.setState({
-        ...newState,
-      });
-    },
+    onCallback: () => {},
   };
 
   constructor(props) {

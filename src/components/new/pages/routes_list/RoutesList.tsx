@@ -213,6 +213,9 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
 
   async getRouteById(id) {
     const route_data = await this.props.actionLoadRouteById(id, { page });
+    if (!route_data) {
+      throw new Error('Маршрут не найден');
+    }
     return route_data;
   }
 

@@ -36,17 +36,25 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
           onChange={this.props.changeCarFilterText}
           placeholder="рег.номер/гар.номер/БНСО"
         />
-        {
-          this.props.canFocusOnCar ?
-            <div className="input_text_action-wrap">
-              <div className="input_text_action" onClick={this.props.handleFocusOnCar}>
-                <Glyphicon glyph="screenshot" />
-                <span>Показать</span>
+        <div className="input_text_action-wrap">
+          {
+            this.props.carFilterText ?
+              <div className="input_text_action remove" onClick={this.props.resetCarFilterText}>
+                <Glyphicon glyph="remove" />
               </div>
-            </div>
-          :
+            :
             <DivNone />
-        }
+          }
+          {
+            this.props.canFocusOnCar ?
+            <div className="input_text_action show_tc" onClick={this.props.handleFocusOnCar}>
+              <Glyphicon glyph="screenshot" />
+              <span>Показать</span>
+            </div>
+            :
+              <DivNone />
+          }
+        </div>
       </div>
     );
   }
@@ -67,6 +75,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  resetCarFilterText: () => (
+    dispatch(
+      monitorPageChangeFilter('carFilterText', ''),
+    )
+  ),
   changeCarFilterText: ({ target: { value } }) => (
     dispatch(
       monitorPageChangeFilter('carFilterText', value),

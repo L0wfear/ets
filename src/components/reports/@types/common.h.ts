@@ -18,4 +18,5 @@ export interface IReportProps {
   additionalSchemaMakers?: IDataTableColSchema[];
   notUseServerSummerTable?: boolean;
   headerStateMaker?(state: any): any;
+  onRowDoubleClick?: any;
 }

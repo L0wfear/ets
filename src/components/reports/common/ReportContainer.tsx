@@ -74,6 +74,10 @@ class ReportContainer extends React.Component<
       location: { search },
     } = this.props;
     const searchObject = queryString.parse(search);
+    if (this.props.setDateRange) {
+      const {level, ...dateRange} = searchObject;
+      this.props.setDateRange(dateRange);
+    }
 
     if (Object.keys(searchObject).length > 0) {
       try {
@@ -463,7 +467,6 @@ class ReportContainer extends React.Component<
           const renderer = schemaMakers[fieldName] || identity;
           tableMeta.push(renderer(initialSchema, this.props));
         }
-
         return tableMeta;
       }, [])
       .concat(...additionalSchemaMakers);
@@ -583,6 +586,7 @@ class ReportContainer extends React.Component<
           externalFilter={this.externalFilter}
           needMyFilter={!this.props.notUseServerSummerTable}
           filterValues={this.state.filterValues}
+          onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
           {...this.props.tableProps}>
           <Button

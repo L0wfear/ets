@@ -381,3 +381,7 @@ export const MedicalStatsService = ETS_API_FACTORY.createApiServiceAdapter(
 export const RefillTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'refill_type',
 );
+
+export const CarsTravelTimeDetailService = ETS_API_FACTORY.createApiServiceAdapter(
+  'cars_travel_time_new/detail', // <<< newReport заменить на cars_travel_time после выката
+);

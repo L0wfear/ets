@@ -45,15 +45,6 @@ class TrackEventReport extends React.Component<{}, IStateTrackEventReport> {
           renderers={renderers(this.handleMapVisibility)}
           {...this.props}
         />
-        {
-          /*
-          <MapModal
-            coords={this.state.coords}
-            showForm={this.state.mapFormVisibility}
-            onFormHide={this.onMapFormHide}
-          />
-          */
-        }
         <ReportFormWrap
           showForm={this.state.mapFormVisibility}
           onFormHide={this.onMapFormHide}

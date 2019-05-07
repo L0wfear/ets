@@ -1,0 +1,281 @@
+import * as React from 'react';
+import * as Modal from 'react-bootstrap/lib/Modal';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+
+import MapContainer from 'components/new/ui/mission_info_form/form-components/map-contaienr/MapContainer';
+
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+
+import {
+  actionGetAndSetInStoreCarsTravelTime,
+  actionResetCarsTravelTime,
+} from 'redux-main/reducers/modules/some_uniq/cars_travel_time/actions';
+
+import {
+  actionGetAndSetInStoreTracksCaching,
+  actionResetTracksCaching,
+} from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
+
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
+
+import { get } from 'lodash';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { Row, Col, } from 'react-bootstrap';
+import DataTable from 'components/ui/table/DataTable';
+import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
+import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
+import { getSessionState } from 'redux-main/reducers/selectors';
+
+// Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
+const Table: any = DataTable;
+
+type CarsTravelTimeModalStateProps = {
+  carsTravelTimeList: IStateSomeUniq['carsTravelTimeList'];
+  tracksCaching: IStateSomeUniq['tracksCaching'];
+};
+
+type CarsTravelTimeModalDispatchProps = {
+  actionGetAndSetInStoreCarsTravelTime: HandleThunkActionCreator<typeof actionGetAndSetInStoreCarsTravelTime>;
+  actionResetCarsTravelTime: HandleThunkActionCreator<typeof actionResetCarsTravelTime>;
+  actionGetAndSetInStoreTracksCaching: HandleThunkActionCreator<typeof actionGetAndSetInStoreTracksCaching>;
+  actionResetTracksCaching: HandleThunkActionCreator<typeof actionResetTracksCaching>;
+  loadGeozones: HandleThunkActionCreator<typeof loadGeozones>;
+};
+
+type PropsCarsTravelTimeModal = {
+  onFormHide: () => any;
+  date_from: string;
+  date_to: string;
+  selectedElement: any;
+  carsTravelTimeList: IStateSomeUniq['carsTravelTimeList'];
+  tracksCaching: IStateSomeUniq['tracksCaching'];
+}
+& CarsTravelTimeModalDispatchProps
+& CarsTravelTimeModalStateProps;
+
+type CarsTravelTimeModalOwnProps = {
+};
+
+export const tableMeta = {
+  cols: [
+    {
+      name: 'name',
+      displayName: 'Наименование объекта',
+      type: 'string',
+      cssClassName: 'width120',
+      filter: false,
+    },
+    {
+      name: 'type',
+      displayName: 'Тип объекта',
+      type: 'string',
+      filter: false,
+    },
+    {
+      name: 'distance',
+      displayName: 'Дистанция, км',
+      type: 'number',
+      filter: false,
+    },
+    {
+      name: 'time_by_objects',
+      displayName: 'Время нахождения на объекте, ч.мин',
+      type: 'string',
+      filter: false,
+    },
+  ],
+};
+
+const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
+
+  const [geoobjects, setGeoobjects] = React.useState(null);
+  const [track, setTrack] = React.useState(null);
+
+  const gov_number = get(props.selectedElement, 'gov_number', null);
+  const gps_code = get(props.selectedElement, 'gps_code', null);
+  const has_mkad = get(props.selectedElement, 'has_mkad', false);
+  const type = '';
+  const front_parkings = get(props.tracksCaching, 'parkings', []);
+  const cars_sensors = get(props.tracksCaching, 'sensors', []);
+  const distance_out_mission_text = `Дистанция не по объектам задания: ${get(props.selectedElement, 'distance_out_mission', null)} км.`;
+  const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;
+  const modalTitle = `Детализация объектов, по которым двигалось ТС: ${gov_number}`;
+
+  React.useEffect( () => {
+    const page = 'cars_travel_time_new';
+    const path = 'cars_travel_time_new';
+    const {
+      date_from,
+      date_to,
+    } = props;
+
+    const car_id = get(props, 'selectedElement.car_id', null);
+    let odh_mkad = {};
+
+    if (has_mkad) {
+      const { serverName } = GEOOBJECTS_OBJ.odh_mkad;
+
+      props.loadGeozones(serverName)
+        .then(({ payload: geozones }) => {
+          odh_mkad = get(geozones, 'odh_mkad', {});
+          props.actionGetAndSetInStoreTracksCaching({
+            date_start: date_from,
+            date_end: date_to,
+            car_id,
+            gps_code,
+            odh_mkad,
+          }, { page, path });
+        });
+    } else {
+      props.actionGetAndSetInStoreTracksCaching({
+        date_start: date_from,
+        date_end: date_to,
+        car_id,
+        gps_code,
+        odh_mkad,
+      }, { page, path });
+    }
+
+    props.actionGetAndSetInStoreCarsTravelTime({
+      date_from,
+      date_to,
+      car_id,
+    }, { page, path });
+
+    props.actionGetAndSetInStoreTracksCaching({
+      date_start: date_from,
+      date_end: date_to,
+      car_id,
+      gps_code,
+      odh_mkad,
+    }, { page, path });
+
+    return () => {
+      props.actionResetCarsTravelTime();
+      props.actionResetTracksCaching();
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const typeLayer = 'any';
+    const geoObjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
+      const front_key = `${typeLayer}/${currentElem.id}`;
+      const { shape, type: someType, ...someElem } = currentElem;
+      return {
+        [front_key]: {
+          shape: JSON.parse(shape),
+          front_key,
+          front_id: currentElem.id,
+          object_id: currentElem.id,
+          type: typeLayer,
+          state: 2, // влияет на окраску одх/дт
+          ...someElem,
+        },
+        ...newElem,
+      };
+    }, {});
+    setGeoobjects({
+      [typeLayer]: {
+        ...geoObjects,
+      },
+    });
+
+  }, [props.carsTravelTimeList]);
+
+  React.useEffect(() => {
+    setTrack(get(props.tracksCaching, 'track', null));
+  }, [props.tracksCaching]);
+
+  return (
+    <Modal id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large" backdrop="static">
+      <Modal.Header closeButton>
+        <Modal.Title>{modalTitle}</Modal.Title>
+      </Modal.Header>
+      <ModalBodyPreloader>
+        <Row>
+          <Col md={6}>
+            <MapContainer
+                gov_number={gov_number}
+                gps_code={gps_code}
+                track={track}
+                geoobjects={geoobjects}
+                inputLines={[]} //
+                front_parkings={front_parkings}
+                speed_limits={{mkad_speed_lim: 60, speed_lim: 60}}
+                cars_sensors={cars_sensors} //
+                missionNumber={777} //
+                has_mkad={has_mkad}
+                object_type_name={type}
+              />
+          </Col>
+          <Col md={6}>
+            {
+              props.carsTravelTimeList.length ?
+                (
+                  <Table
+                    title={false}
+                    noFilter
+                    results={props.carsTravelTimeList}
+                    enumerated={false}
+                    tableMeta={tableMeta}
+                    className="report-time-table"
+                  />
+                ) : (
+                  <div>У данной ТС за выбранный промежуток времени заданий по ОДХ / ДТ не было</div>
+                )
+            }
+            <b>{distance_out_mission_text} <br/>
+            {travel_time_out_mission_text}</b>
+          </Col>
+        </Row>
+      </ModalBodyPreloader>
+    </Modal>
+  );
+
+};
+
+export default connect<CarsTravelTimeModalStateProps, CarsTravelTimeModalDispatchProps, CarsTravelTimeModalOwnProps, ReduxState>(
+  (state) => ({
+    carsTravelTimeList: getSomeUniqState(state)
+      .carsTravelTimeList,
+    tracksCaching: getSomeUniqState(state)
+      .tracksCaching,
+    company_id: getSessionState(state).userData.company_id,
+  }),
+  (dispatch: any) => ({
+    actionGetAndSetInStoreCarsTravelTime: (...arg) => (
+      dispatch(
+        actionGetAndSetInStoreCarsTravelTime(...arg),
+      )
+    ),
+    actionResetCarsTravelTime: () => (
+      dispatch(
+        actionResetCarsTravelTime(),
+      )
+    ),
+    actionGetAndSetInStoreTracksCaching: (...arg) => (
+      dispatch(
+        actionGetAndSetInStoreTracksCaching(...arg),
+      )
+    ),
+    actionResetTracksCaching: () => (
+      dispatch(
+        actionResetTracksCaching(),
+      )
+    ),
+    loadGeozones: (serverName, company_id) =>
+      dispatch(
+        loadGeozones(
+          'none',
+          serverName,
+          {
+            promise: true,
+            page: 'any',
+            path: 'missionInfoForm',
+          },
+          company_id,
+        ),
+      ),
+  }),
+)(CarsTravelTimeModal);

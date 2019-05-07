@@ -5,6 +5,8 @@ import municipalFacilityActions from 'redux-main/reducers/modules/some_uniq/muni
 import missionSourceActions from 'redux-main/reducers/modules/some_uniq/mission_source/actions';
 import cleaningOneNormActions from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 import maintenanceWorkListActions from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
+import carsTravelTimeListActions from 'redux-main/reducers/modules/some_uniq/cars_travel_time/actions';
+import TracksCachingActions from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 import cleanCategoriesListActions from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 import * as mission_cancel_reasons from 'redux-main/reducers/modules/some_uniq/mission_cancel_reasons/actions';
 import geozoneMunicipalFacilityActions from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
@@ -30,6 +32,8 @@ const someUniqActions = {
   ...technicalOperationObjectsActions,
   ...technicalOperationTypesActions,
   ...sensorTypeActions,
+  ...carsTravelTimeListActions,
+  ...TracksCachingActions,
 };
 
 export default someUniqActions;

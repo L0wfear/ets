@@ -13,6 +13,8 @@ import { TechnicalOperationTypes } from '../technical_operation_types/@types/tec
 import { SensorType } from '../sensor_type/@types/sensor_type';
 import { MeasureUnit } from '../measure_unit/@types';
 import { RefillType } from '../../refill_type/@types/refillType';
+import { CarsTravelTime } from '../cars_travel_time/@types';
+import { TracksCaching } from '../tracks_caching/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -56,4 +58,7 @@ export type IStateSomeUniq = {
   measureUnitList: MeasureUnit[];
 
   refillTypeList: RefillType[];
+
+  carsTravelTimeList: CarsTravelTime[];
+  tracksCaching: TracksCaching;
 };

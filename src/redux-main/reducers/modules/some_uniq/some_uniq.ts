@@ -33,6 +33,8 @@ export const initialState: IStateSomeUniq = {
   measureUnitList: [],
 
   refillTypeList: [],
+  carsTravelTimeList: [],
+  tracksCaching: null,
 };
 
 export default (state = initialState, { type, payload }) => {

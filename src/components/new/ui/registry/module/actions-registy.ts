@@ -4,6 +4,8 @@ import {
   REGISTRY_CHANGE_FILTER,
   REGISTRY_CHANGE_LIST,
   REGISTRY_CHANGE_SERVICE,
+  REGISTRY_SET_LOADING_STATUS,
+  OneRegistryData,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
@@ -13,6 +15,7 @@ import { makeProcessedArray } from 'components/new/ui/registry/module/utils/proc
 import {
   setEmptyRawFilters,
   applyFilterFromRaw,
+  mergeFilterValuesWithRawFilter,
 } from 'components/new/ui/registry/module/utils/filter';
 import {
   mergeFilter,
@@ -57,6 +60,7 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
   const userData = getSessionState(getState()).userData;
 
   const mergeConfig: any = {
+    isLoading: !config.noInitialLoad,
     Service: config.Service,
     filter: mergeFilter(config.filter),
     header: mergeHeader(config.header),
@@ -107,6 +111,14 @@ export const registryRemoveData = (registryKey) => ({
   type: REGISTRY_REMOVE_DATA,
   payload: {
     registryKey,
+  },
+});
+
+export const actionSetLoadingStatus = (registryKey, isLoading) => ({
+  type: REGISTRY_SET_LOADING_STATUS,
+  payload: {
+    registryKey,
+    isLoading,
   },
 });
 
@@ -171,6 +183,10 @@ export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload
 
 export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getState) => {
   // const stateSome = getState();
+  dispatch(
+    actionSetLoadingStatus(registryKey, true),
+  );
+
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
   const list: any = get(registryData, 'list', null);
@@ -279,6 +295,8 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     }
   }
 
+  let resultDisaptch = null;
+
   if (list) {
     let array = arrayRaw;
     if (!getRegistryData.userServerFilters) {
@@ -298,7 +316,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       processedTotalCount = total_count;
     }
 
-    return dispatch(
+    resultDisaptch = dispatch(
       registryChangeListData(
         registryKey,
         {
@@ -318,6 +336,12 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       ),
     );
   }
+
+  dispatch(
+    actionSetLoadingStatus(registryKey, false),
+  );
+
+  return resultDisaptch;
 };
 
 export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage = 0) => (dispatch, getState) => {
@@ -325,26 +349,29 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage 
     actionUnselectSelectedRowToShow(registryKey, true),
   );
 
-  const { registry: { [registryKey]: registryData } } = getState();
-  const getRegistryData = get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null);
+  const registryData = get(getState(), `registry.${registryKey}`, null);
 
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...registryData.list,
-        paginator: {
-          ...registryData.list.paginator,
-          currentPage: Number(currentPage),
-        },
-      },
-    ),
-  );
-
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (registryData) {
     dispatch(
-      registryLoadDataByKey(registryKey),
+      registryChangeListData(
+        registryKey,
+        {
+          ...registryData.list,
+          paginator: {
+            ...registryData.list.paginator,
+            currentPage: Number(currentPage),
+          },
+        },
+      ),
     );
+
+    const getRegistryData = get(getState(), `registry.${registryKey}.Service.getRegistryData`, null);
+
+    if (getRegistryData && getRegistryData.userServerFilters) {
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      );
+    }
   }
 };
 
@@ -356,7 +383,7 @@ export const registryChangeServiceData = (registryKey, Service) => ({
   },
 });
 
-export const registryChangeListData = (registryKey, list) => ({
+export const registryChangeListData = (registryKey: string, list: OneRegistryData['list']) => ({
   type: REGISTRY_CHANGE_LIST,
   payload: {
     registryKey,
@@ -451,19 +478,19 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
   }
 };
 
-export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
+export const applyFilterValues = (registryKey, filterValues) => (dispatch, getState) => {
   dispatch(
     actionUnselectSelectedRowToShow(registryKey, true),
   );
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
-  const filter = get(registyData, 'filter', {});
-  const list = get(registyData, 'list', null);
+  const filter: OneRegistryData['filter'] = get(registyData, 'filter', {});
+  const list: OneRegistryData['list'] = get(registyData, 'list', null);
 
   const processed = {
     ...list.processed,
-    filterValues: applyFilterFromRaw(filter),
+    filterValues,
   };
 
   if (__DEVELOPMENT__) {
@@ -486,6 +513,16 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
   }
 
   dispatch(
+    registryChangeFilterData(
+      registryKey,
+      {
+        ...filter,
+        rawFilterValues: mergeFilterValuesWithRawFilter(filter.rawFilterValues, filterValues),
+      },
+    ),
+  );
+
+  dispatch(
     registryChangeListData(
       registryKey,
       {
@@ -500,6 +537,18 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
       registryLoadDataByKey(registryKey),
     );
   }
+};
+
+export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
+  const registyData = get(getState(), ['registry', registryKey], null);
+  const filter = get(registyData, 'filter', {});
+
+  dispatch(
+    applyFilterValues(
+      registryKey,
+      applyFilterFromRaw(filter),
+    ),
+  );
 };
 
 export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) => {

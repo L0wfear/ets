@@ -5,7 +5,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_INT, MISSION_STATUS_LABELS } from 'constants/dictionary';
 
-export const registryKey = 'MissionTemplate';
+export const registryKey = 'Mission';
 
 export const config: TypeConfigData<Mission> = {
   Service: {

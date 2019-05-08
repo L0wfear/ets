@@ -1,3 +1,5 @@
+import { isNullOrUndefined } from "util";
+
 export const useSearchMergeNewState = (searchState, data) => {
   const query = {
     ...searchState,
@@ -5,7 +7,7 @@ export const useSearchMergeNewState = (searchState, data) => {
   };
 
   Object.keys(query).forEach((key) => {
-    if (!query[key]) {
+    if (isNullOrUndefined(query[key])) {
       delete query[key];
     }
   });

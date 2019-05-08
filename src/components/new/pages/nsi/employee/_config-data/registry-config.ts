@@ -29,13 +29,6 @@ export const config: TypeConfigData<Employee> = {
     ],
   },
   filter: {
-    rawFilterValues: {
-      active: {
-        in: {
-          value: [true],
-        },
-      },
-    },
     fields: [
       {
         valueKey: 'company_name',
@@ -142,9 +135,6 @@ export const config: TypeConfigData<Employee> = {
       sort: {
         field: 'full_name',
         reverse: false,
-      },
-      filterValues: {
-        active__in: [true],
       },
     },
     meta: {

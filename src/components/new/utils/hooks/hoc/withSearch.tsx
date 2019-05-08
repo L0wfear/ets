@@ -23,6 +23,7 @@ const withSearch = <OwnProps extends any>(Component: React.ElementType<any>) => 
     class extends React.PureComponent<RouteComponentProps<{}>, {}> {
       setDataInSearch: WithSearchProps['setDataInSearch'] = async (data) => {
         await Promise.resolve(true);
+
         this.props.history.replace(
           `${
             this.props.match.url

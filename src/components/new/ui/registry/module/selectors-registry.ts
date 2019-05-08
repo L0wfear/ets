@@ -20,6 +20,7 @@ type getFilterDataFunc = (
 type getRootRegistryFunc = (
   registryState: ReduxState['registry'],
   registryKey: string,
+  noTemplate?: boolean,
 ) => OneRegistryData;
 
 export const getServiceData: any = (registryState, registryKey) => (
@@ -38,6 +39,6 @@ export const getFilterData: getFilterDataFunc = (registryState, registryKey) => 
   (registryState[registryKey] || registryDefaultObj).filter
 );
 
-export const getRootRegistry: getRootRegistryFunc = (registryState, registryKey) => (
-  (registryState[registryKey] || registryDefaultObj)
+export const getRootRegistry: getRootRegistryFunc = (registryState, registryKey, noTemplate) => (
+  (registryState[registryKey] || (!noTemplate ? registryDefaultObj : null))
 );

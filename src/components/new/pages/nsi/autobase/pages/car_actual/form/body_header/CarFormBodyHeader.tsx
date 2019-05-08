@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { Nav, NavDropdown, MenuItem, NavItem } from 'react-bootstrap';
+import { Nav, NavDropdown } from 'react-bootstrap';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
-import carFormTabKey, { mainInfo, findSelectedTabKeyComponent } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
+import carFormTabKey from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
+import { Link } from 'react-router-dom';
 
 type CarFormBodyHeaderOwnProps = {
   isPermitted: boolean;
@@ -13,38 +14,9 @@ type CarFormBodyHeaderProps = (
 );
 
 const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
-  const {
-    match,
-  } = props;
-
-  const tabKeyOwn = match.params.tabKey;
-
-  React.useEffect(
-    () => {
-      if (!findSelectedTabKeyComponent(tabKeyOwn)) {
-        props.setParams(
-          { tabKey: mainInfo.tabKey },
-          'replace',
-        );
-      }
-    },
-    [tabKeyOwn],
-  );
-
-  const setTabKeyWrap = React.useCallback(
-    (tabKeyNew) => {
-      props.setParams({
-        tabKey: tabKeyNew,
-      });
-    },
-    [],
-  );
-
   return (
     <Nav
       bsStyle="tabs"
-      activeKey={tabKeyOwn}
-      onSelect={setTabKeyWrap}
       id="refs-car-tabs"
     >
       {
@@ -54,7 +26,9 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
               <NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title}>
                 {
                   other.children.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
-                    <MenuItem key={tabKeyChildScheme} eventKey={tabKeyChildScheme}>{titleChild}</MenuItem>
+                    <li role="presentation" key={tabKeyChildScheme}>
+                      <Link role="menuitem" to={`/nsi/autobase/car_actual/${props.match.params.car_actual_asuods_id}/${tabKeyChildScheme}`}>{titleChild}</Link>
+                    </li>
                   ))
                 }
               </NavDropdown>
@@ -62,7 +36,9 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
           }
 
           return (
-            <NavItem key={tabKeyScheme} eventKey={tabKeyScheme}>{title}</NavItem>
+            <li key={tabKeyScheme} role="presentation">
+              <Link role="button" key={tabKeyScheme} to={`/nsi/autobase/car_actual/${props.match.params.car_actual_asuods_id}/${tabKeyScheme}`}>{title}</Link>
+            </li>
           );
         })
       }

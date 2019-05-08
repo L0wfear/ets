@@ -1,4 +1,5 @@
 import { isBoolean, isArray, isString, isNumber } from 'util';
+import { OneRegistryData } from '../registry';
 
 export const typeFilter = [
   {
@@ -94,4 +95,28 @@ export const applyFilterFromRaw = ({ rawFilterValues }) => {
 
     return newObj;
   }, {});
+};
+
+export const mergeFilterValuesWithRawFilter = (rawFilterValues: OneRegistryData['filter']['rawFilterValues'], filterValues: OneRegistryData['list']['processed']['filterValues']) => {
+  const rawFilterValuesNew = Object.entries(rawFilterValues).reduce(
+    (newObj, [key, dataByType]) => {
+      newObj[key] = {};
+      Object.entries(dataByType).forEach(([type, data]) => {
+        const keyFilter = `${key}__${type}`;
+        if (keyFilter in filterValues) {
+          newObj[key][type] = {
+            ...newObj[key][type],
+            value: filterValues[keyFilter],
+          };
+        } else {
+          newObj[key][type] = data;
+        }
+      });
+
+      return newObj;
+    },
+    {},
+  );
+
+  return rawFilterValuesNew;
 };

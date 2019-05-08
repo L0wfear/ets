@@ -8,7 +8,7 @@ export const id = config.list.data.uniqKeyForParams;
 export const formPath = `/:${id}?/:tabKey?`;
 export const patrialEndPath = `/${item}${formPath}`;
 export const path = `/nsi/autobase/${item}`;
-export const routePath = `${path}${formPath}`;
+export const routePath = `${path}/:${id}?`;
 
 export default {
   item,

@@ -2,6 +2,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 
 const registryDefaultObj: OneRegistryData = {
+  isLoading: false,
   Service: {
     getRegistryData: {
       payload: {},

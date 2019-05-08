@@ -22,6 +22,7 @@ const ColumnAssignmentFormLazy: React.FC<PropsColumnAssignmentFormLazy> = (props
             handleSubmit={props.handleSubmit}
 
             page={props.page}
+            path={props.path}
           />
         </React.Suspense>
       </ErrorBoundaryForm>

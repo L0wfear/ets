@@ -12,4 +12,5 @@ export type PropsColumnAssignmentForm = {
   handleSubmit: () => Promise<Mission | void>;
 
   page: string;
+  path: string;
 };

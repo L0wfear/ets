@@ -4,11 +4,11 @@ import * as Button from 'react-bootstrap/lib/Button';
 import * as Col from 'react-bootstrap/lib/Col';
 import * as Row from 'react-bootstrap/lib/Row';
 
-import ModalBody from 'components/ui/Modal';
 import EtsModal from 'components/new/ui/modal/Modal';
 import FieldAssignToWaybillMissionWithCarId from './inside_fields/assign_to_waybill/FieldAssignToWaybillMissionWithCarId';
 import { PropsColumnAssignmentForm } from './@types/index.h';
 import { DivNone } from 'global-styled/global-styled';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm, { showBackButton: boolean }> {
   state = {
@@ -42,7 +42,7 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
         <Modal.Header closeButton>
           <Modal.Title>Прикрепление заданий к ПЛ</Modal.Title>
         </Modal.Header>
-        <ModalBody>
+        <ModalBodyPreloader page={this.props.page} path={this.props.path} typePreloader="mainpage">
           <Row>
             <Col md={12}>
               <label>Транспортное средство</label>
@@ -61,7 +61,7 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
               />
             ))
           }
-        </ModalBody>
+        </ModalBodyPreloader>
         <Modal.Footer>
           <div className="pr-object-data">
             {

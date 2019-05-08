@@ -282,6 +282,7 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
 
         onChange={props.handleChange}
         page={page}
+        path={path}
       />
     </React.Fragment>
   );

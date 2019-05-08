@@ -14,6 +14,7 @@ type ColumnAssignmentFormWrapProps = {
   handleSubmit: any;
 
   page: string;
+  path: string;
 };
 
 const ColumnAssignmentFormWrap: React.FC<ColumnAssignmentFormWrapProps> = React.memo(
@@ -63,6 +64,7 @@ const ColumnAssignmentFormWrap: React.FC<ColumnAssignmentFormWrapProps> = React.
         handleSubmit={handleSubmit}
 
         page={props.page}
+        path={props.path}
       />
     );
   },

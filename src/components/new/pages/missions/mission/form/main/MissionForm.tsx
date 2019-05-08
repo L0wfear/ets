@@ -767,6 +767,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
           handleSubmit={this.handleSubmit}
 
           page={this.props.page}
+          path={this.props.path}
         />
       </>
     );

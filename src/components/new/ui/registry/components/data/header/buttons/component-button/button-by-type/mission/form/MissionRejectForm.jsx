@@ -456,7 +456,7 @@ class MissionRejectForm extends React.Component {
           />
           <Field
             type="select"
-            label="Переназначить задание на:"
+            label="Переназначить задание на ТС:"
             error={errors.car_id}
             options={CARS}
             value={state.car_id}

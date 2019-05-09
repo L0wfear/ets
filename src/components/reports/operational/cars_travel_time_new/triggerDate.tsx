@@ -21,6 +21,10 @@ const TriggerCarpoolDate = styled.div`
   align-items: center;
   padding: 5px;
   padding-left: 0px;
+  .glyphicon {
+    position: initial;
+    font-size: 9px;
+  }
 `;
 
 const TriggerCarpoolDateString = styled.div`

@@ -4,7 +4,7 @@ import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBody
 
 import MapContainer from 'components/new/ui/mission_info_form/form-components/map-contaienr/MapContainer';
 
-import { connect, HandleThunkActionCreator } from 'react-redux';
+import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
 import {
@@ -20,42 +20,20 @@ import {
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 import { get } from 'lodash';
-import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { Row, Col, } from 'react-bootstrap';
 import DataTable from 'components/ui/table/DataTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { getSessionState } from 'redux-main/reducers/selectors';
-
+import { ReportFormRightWrapper } from 'components/reports/operational/cars_travel_time_new/styled';
+import {
+  CarsTravelTimeModalStateProps,
+  CarsTravelTimeModalDispatchProps,
+  PropsCarsTravelTimeModal,
+  CarsTravelTimeModalOwnProps,
+} from 'components/reports/operational/cars_travel_time_new/form/@types/CarsTravelTime.h';
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
-
-type CarsTravelTimeModalStateProps = {
-  carsTravelTimeList: IStateSomeUniq['carsTravelTimeList'];
-  tracksCaching: IStateSomeUniq['tracksCaching'];
-};
-
-type CarsTravelTimeModalDispatchProps = {
-  actionGetAndSetInStoreCarsTravelTime: HandleThunkActionCreator<typeof actionGetAndSetInStoreCarsTravelTime>;
-  actionResetCarsTravelTime: HandleThunkActionCreator<typeof actionResetCarsTravelTime>;
-  actionGetAndSetInStoreTracksCaching: HandleThunkActionCreator<typeof actionGetAndSetInStoreTracksCaching>;
-  actionResetTracksCaching: HandleThunkActionCreator<typeof actionResetTracksCaching>;
-  loadGeozones: HandleThunkActionCreator<typeof loadGeozones>;
-};
-
-type PropsCarsTravelTimeModal = {
-  onFormHide: () => any;
-  date_from: string;
-  date_to: string;
-  selectedElement: any;
-  carsTravelTimeList: IStateSomeUniq['carsTravelTimeList'];
-  tracksCaching: IStateSomeUniq['tracksCaching'];
-}
-& CarsTravelTimeModalDispatchProps
-& CarsTravelTimeModalStateProps;
-
-type CarsTravelTimeModalOwnProps = {
-};
 
 export const tableMeta = {
   cols: [
@@ -210,21 +188,23 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
               />
           </Col>
           <Col md={6}>
-            {
-              props.carsTravelTimeList.length ?
-                (
-                  <Table
-                    title={false}
-                    noFilter
-                    results={props.carsTravelTimeList}
-                    enumerated={false}
-                    tableMeta={tableMeta}
-                    className="report-time-table"
-                  />
-                ) : (
-                  <div>У данной ТС за выбранный промежуток времени заданий по ОДХ / ДТ не было</div>
-                )
-            }
+            <ReportFormRightWrapper>
+              {
+                props.carsTravelTimeList.length ?
+                  (
+                    <Table
+                      title={false}
+                      noFilter
+                      results={props.carsTravelTimeList}
+                      enumerated={false}
+                      tableMeta={tableMeta}
+                      className="report-time-table"
+                    />
+                  ) : (
+                    <div>У данной ТС за выбранный промежуток времени заданий по ОДХ / ДТ не было</div>
+                  )
+              }
+            </ReportFormRightWrapper>
             <b>{distance_out_mission_text} <br/>
             {travel_time_out_mission_text}</b>
           </Col>

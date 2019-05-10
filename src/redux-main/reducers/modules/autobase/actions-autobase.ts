@@ -24,8 +24,6 @@ import * as tireManufacturer from 'redux-main/reducers/modules/autobase/actions_
 import * as tire from 'redux-main/reducers/modules/autobase/actions_by_type/tire/actions';
 import * as tireAvailableCar from 'redux-main/reducers/modules/autobase/actions_by_type/tire_available_car/actions';
 import * as tireSize from 'redux-main/reducers/modules/autobase/actions_by_type/tire_size/actions';
-import * as actualBatteriesOnCar from 'redux-main/reducers/modules/autobase/actions_by_type/actual_batteries_on_car/actions';
-import * as actualTiresOnCar from 'redux-main/reducers/modules/autobase/actions_by_type/actual_tires_on_car/actions';
 import * as TechMaintenance from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint/actions';
 import * as carCategory from 'redux-main/reducers/modules/autobase/actions_by_type/car_category/actions';
 import * as engineType from 'redux-main/reducers/modules/autobase/actions_by_type/engine_type/actions';
@@ -60,8 +58,6 @@ const autobaseActions = {
   ...tire,
   ...tireAvailableCar,
   ...tireSize,
-  ...actualBatteriesOnCar,
-  ...actualTiresOnCar,
   ...TechMaintenance,
   ...carCategory,
   ...engineType,

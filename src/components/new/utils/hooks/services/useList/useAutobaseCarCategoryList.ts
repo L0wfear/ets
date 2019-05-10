@@ -2,7 +2,7 @@ import { AutobaseCarCategoryApi } from 'components/new/utils/context/loading/@ty
 import useLoadListData from './common/useLoadListData';
 
 const useAutobaseCarCategoryList = (page: string, path: string) => {
-  return useLoadListData<AutobaseCarCategoryApi>('autobase/car_category', page, path);
+  return useLoadListData<AutobaseCarCategoryApi>('autobase/car_category', null, page, path);
 };
 
 export default useAutobaseCarCategoryList;

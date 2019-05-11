@@ -26,16 +26,19 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
       [key, handleChange],
     );
 
-    return (
-      <ExtField
-        id={`${path}_${key}`}
-        type="string"
-        label={title}
-        value={formState[key]}
-        error={formErrors[key]}
-        onChange={handleChangeWrap}
-        disabled={!isPermitted}
-      />
+    return React.useMemo(
+      () => (
+        <ExtField
+          id={`${path}_${key}`}
+          type="string"
+          label={title}
+          value={formState[key]}
+          error={formErrors[key]}
+          onChange={handleChangeWrap}
+          disabled={!isPermitted}
+        />
+      ),
+      [path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
     );
   },
 );

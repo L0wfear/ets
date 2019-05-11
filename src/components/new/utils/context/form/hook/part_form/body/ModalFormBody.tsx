@@ -12,10 +12,13 @@ const ModalFormBody: React.FC<ModalFormBodyProps> = React.memo(
     const page = useForm.useFormDataSchemaPage(props.formDataKey);
     const path = useForm.useFormDataSchemaPath(props.formDataKey);
 
-    return (
-      <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <FieldsRows formDataKey={props.formDataKey} />
-      </ModalBodyPreloader>
+    return React.useMemo(
+      () => (
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <FieldsRows formDataKey={props.formDataKey} />
+        </ModalBodyPreloader>
+      ),
+      [page, path],
     );
   },
 );

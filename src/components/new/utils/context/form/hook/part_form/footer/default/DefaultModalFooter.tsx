@@ -11,21 +11,19 @@ const DefaultModalFooter: React.FC<DefaultModalFooterProps> = React.memo(
   (props) => {
     const formDataFooterValue = useForm.useFormDataSchemaFooter(props.formDataKey);
 
-    const buttonsBlock = React.useMemo(
+    return React.useMemo(
       () => {
         return (
-          formDataFooterValue.buttons.map((_: any, index) => (
-            <ButtonBlock key={index + 1} indexBlock={index} formDataKey={props.formDataKey} />
-          ))
+          <Modal.Footer>
+            {
+              formDataFooterValue.buttons.map((_: any, index) => (
+                <ButtonBlock key={index + 1} indexBlock={index} formDataKey={props.formDataKey} />
+              ))
+            }
+          </Modal.Footer>
         );
       },
       [formDataFooterValue.buttons, props.formDataKey],
-    );
-
-    return (
-      <Modal.Footer>
-        { buttonsBlock }
-      </Modal.Footer>
     );
   },
 );

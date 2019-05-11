@@ -11,7 +11,7 @@ const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
   (props) => {
     const fields = useForm.useFormDataSchemaBodyFields(props.formDataKey);
 
-    const fieldsRows = React.useMemo(
+    return React.useMemo(
       () => {
         return (
           fields.map((fieldsInRow, indexRow) => (
@@ -22,10 +22,6 @@ const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
         );
       },
       [fields, props.formDataKey],
-    );
-
-    return (
-      fieldsRows
     );
   },
 );

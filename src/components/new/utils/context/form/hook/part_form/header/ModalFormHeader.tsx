@@ -10,12 +10,17 @@ const ModalFormHeader: React.FC<ModalFormHeaderProps> = React.memo(
   (props) => {
     const formDataHeaderValue = useForm.useFormDataSchemaHeader(props.formDataKey);
 
-    if (!formDataHeaderValue.type || formDataHeaderValue.type) {
-      return (
-        <DefaultModalHeader formDataKey={props.formDataKey} />
-      );
-    }
-    return <div>{`Определи тип шапки для ${formDataHeaderValue.type}`}</div>;
+    return React.useMemo(
+      () => {
+        if (!formDataHeaderValue.type || formDataHeaderValue.type) {
+          return (
+            <DefaultModalHeader formDataKey={props.formDataKey} />
+          );
+        }
+        return <div>{`Определи тип шапки для ${formDataHeaderValue.type}`}</div>;
+      },
+      [formDataHeaderValue],
+    );
   },
 );
 

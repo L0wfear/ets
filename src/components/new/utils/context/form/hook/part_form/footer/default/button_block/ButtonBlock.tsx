@@ -13,32 +13,32 @@ const ButtonBlock: React.FC<ButtonBlockProps> = React.memo(
     const formDataHeaderValue = useForm.useFormDataSchemaFooter(props.formDataKey);
     const buttonsBlockData = formDataHeaderValue.buttons[props.indexBlock];
 
-    const buttons = React.useMemo(
+    return React.useMemo(
       () => {
-        return buttonsBlockData.map((buttonType) => {
-          if (buttonType === 'save') {
-            return (
-              <ButtonSaveForm key={buttonType} formDataKey={props.formDataKey} />
-            );
-          }
-          if (buttonType === 'cancel') {
-            return (
-              <ButtonCancelForm key={buttonType} formDataKey={props.formDataKey} />
-            );
-          }
+        return (
+          <div>
+            {
+              buttonsBlockData.map((buttonType) => {
+                if (buttonType === 'save') {
+                  return (
+                    <ButtonSaveForm key={buttonType} formDataKey={props.formDataKey} />
+                  );
+                }
+                if (buttonType === 'cancel') {
+                  return (
+                    <ButtonCancelForm key={buttonType} formDataKey={props.formDataKey} />
+                  );
+                }
 
-          return (
-            <div>{`Опередели тип кнопки для ${buttonType} в ButtonBlock`}</div>
-          );
-        });
+                return (
+                  <div>{`Опередели тип кнопки для ${buttonType} в ButtonBlock`}</div>
+                );
+              })
+            }
+          </div>
+        );
       },
       [buttonsBlockData, props.formDataKey],
-    );
-
-    return (
-      <div>
-        { buttons }
-      </div>
     );
   },
 );

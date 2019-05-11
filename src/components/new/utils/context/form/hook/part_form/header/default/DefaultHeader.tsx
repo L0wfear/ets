@@ -34,10 +34,13 @@ const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
       [formDataHeaderValue.title, IS_CREATING],
     );
 
-    return (
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
+    return React.useMemo(
+      () => (
+        <Modal.Header closeButton>
+          <Modal.Title>{ title }</Modal.Title>
+        </Modal.Header>
+      ),
+      [title],
     );
   },
 );

@@ -31,18 +31,21 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
       [key, handleChange],
     );
 
-    return (
-      <ExtField
-        id={`${path}_${key}`}
-        type="select"
-        clearable={clearable}
-        label={title}
-        value={formState[key]}
-        error={formErrors[key]}
-        options={options}
-        onChange={handleChangeWrap}
-        disabled={!isPermitted}
-      />
+    return React.useMemo(
+      () => (
+        <ExtField
+          id={`${path}_${key}`}
+          type="select"
+          clearable={clearable}
+          label={title}
+          value={formState[key]}
+          error={formErrors[key]}
+          options={options}
+          onChange={handleChangeWrap}
+          disabled={!isPermitted}
+        />
+      ),
+      [path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],
     );
   },
 );

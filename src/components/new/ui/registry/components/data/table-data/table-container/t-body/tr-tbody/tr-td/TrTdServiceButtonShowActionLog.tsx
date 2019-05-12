@@ -1,12 +1,18 @@
 import * as React from 'react';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { compose } from 'recompose';
-import { Service } from 'redux-main/reducers/modules/services/@types/services';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import { Service } from 'redux-main/reducers/modules/services/@types/services';
+import { ReduxState } from 'redux-main/@types/state';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 type TrTdServiceButtonShowActionLogStateProps = {
-  permissions: string | boolean;
+  uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
 };
 type TrTdServiceButtonShowActionLogDispatchProps = {
 };
@@ -28,19 +34,27 @@ const TrTdServiceButtonShowActionLog: React.FC<TrTdServiceButtonShowActionLogPro
 
     const handleClick = React.useCallback(
       async () => {
-        //
+        props.setParams({
+          [props.uniqKeyForParams]: get(props.rowData, props.uniqKey, null),
+        });
       },
-      [rowData],
+      [rowData, props.setParams],
     );
 
     return (
       <EtsTbodyTrTd>
-        <Button disabled onClick={handleClick}>Открыть историю</Button>
+        <Button block onClick={handleClick}>Открыть историю</Button>
       </EtsTbodyTrTd>
     );
   },
 );
 
 export default compose<TrTdServiceButtonShowActionLogProps, TrTdServiceButtonShowActionLogOwnProps>(
+  connect<TrTdServiceButtonShowActionLogStateProps, TrTdServiceButtonShowActionLogDispatchProps, TrTdServiceButtonShowActionLogOwnProps, ReduxState>(
+    (state, { registryKey }) => ({
+      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
+    }),
+  ),
   withSearch,
 )(TrTdServiceButtonShowActionLog);

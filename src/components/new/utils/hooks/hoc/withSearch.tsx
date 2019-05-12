@@ -90,7 +90,7 @@ const withSearch = <OwnProps extends any>(Component: React.ElementType<any>) => 
         this.props.history.push(
           `${
             urlAsArray.join('/')
-          }${
+          }?${
             queryString.stringify(
               useSearchMergeNewState(
                 makeObjFromMemoise(this.props.location.search),

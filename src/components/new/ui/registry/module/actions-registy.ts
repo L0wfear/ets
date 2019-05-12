@@ -25,7 +25,7 @@ import {
 } from 'components/new/ui/registry/module/utils/merge';
 import { getJSON, deleteJSON } from 'api/adapter';
 import configStand from 'config';
-import { getBlob } from 'api/adapterBlob';
+import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
@@ -569,7 +569,7 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
   );
 };
 
-export const registyLoadPrintForm: any = (registryKey) => async  (dispatch, getState) => {
+export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean) => async  (dispatch, getState) => {
   const getBlobData = get(
     getState(),
     ['registry', registryKey, 'Service', 'getBlobData'],
@@ -579,17 +579,42 @@ export const registyLoadPrintForm: any = (registryKey) => async  (dispatch, getS
   let fileName = '';
 
   if (getBlobData) {
-    const result = await etsLoadingCounter(
-      dispatch,
-      getBlob(
-        `${configStand.backend}/${getBlobData.entity}`,
-        getBlobData.payload || { format: 'xls'},
-      ),
-      { page: registryKey },
-    );
-    processResponse(result);
-    blob = get(result, 'blob', null);
-    fileName = get(result, 'fileName', '');
+    const payload = getBlobData.payload || { format: 'xls'};
+
+    if (useFiltredData) {
+      const registryData = get(getState(), `registry.${registryKey}`, null);
+      const list: any = get(registryData, 'list', null);
+      const processedArray: any = get(list, 'processed.processedArray', {}) || {};
+
+      const paylaodAsString = Object.entries(payload).reduce(
+        (str, [key, payloadData]) => `${str}&${key}=${payloadData}`,
+        '',
+      ).slice(1);
+
+      const result = await etsLoadingCounter(
+        dispatch,
+        postBlob(
+          `${configStand.backend}/${getBlobData.entity}?${paylaodAsString}`,
+          { rows: processedArray },
+        ),
+        { page: registryKey },
+      );
+      processResponse(result);
+      blob = get(result, 'blob', null);
+      fileName = get(result, 'fileName', '');
+    } else {
+      const result = await etsLoadingCounter(
+        dispatch,
+        getBlob(
+          `${configStand.backend}/${getBlobData.entity}`,
+          getBlobData.payload || { format: 'xls'},
+        ),
+        { page: registryKey },
+      );
+      processResponse(result);
+      blob = get(result, 'blob', null);
+      fileName = get(result, 'fileName', '');
+    }
   }
 
   if (blob && fileName) {

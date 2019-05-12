@@ -14,6 +14,8 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 
 import { HandleThunkActionCreator } from "react-redux";
 
+import ServicesFormLazy from 'components/new/pages/administration/services/form';
+
 export type ServicesListStateProps = {};
 export type ServicesListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
@@ -43,8 +45,9 @@ const ServicesList: React.FC<ServicesListProps> = (props) => {
 
   return (
       <>
-      <Registry registryKey={registryKey} />
-    </>
+        <Registry registryKey={registryKey} />
+        <ServicesFormLazy registryKey={registryKey} />
+      </>
   );
 };
 

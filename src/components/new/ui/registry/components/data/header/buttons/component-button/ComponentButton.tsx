@@ -37,6 +37,7 @@ import ButtonFailMission from './button-by-type/mission/ButtonFailMission';
 import ButtonCreateCompanyStructure from './button-by-type/company_structure/ButtonCreateCompanyStructure';
 import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumnsControl';
 import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
+import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 
 type PropsComponentButton = {
   type: string;
@@ -46,6 +47,7 @@ type PropsComponentButton = {
 const getButtomNameComponent = (type: string) => {
   switch (type) {
     case buttonsTypes.export: return ButtonExport;
+    case buttonsTypes.export_filtred_data: return ButtonExportFiltredData;
     case buttonsTypes.filter: return ButtonToggleFilter;
     case buttonsTypes.create: return ButtonCreate;
     case buttonsTypes.read: return ButtonRead;

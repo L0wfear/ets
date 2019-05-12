@@ -15,14 +15,28 @@ export type OneFormDataByKey<F> = {
   formState: F;
   formErrors: FormErrorBySchema<F, SchemaFormContext<F>['body'], F>;
   IS_CREATING: boolean;
+  canSave: boolean;
   page: string;
   path: string;
   handleHide: (isSubmitted: boolean | any, resultSubmit?: F) => void;
   handleChange: (objChange: Partial<F>) => void;
 };
 
-type InitialFormContextValue = {
-  addFormData: <T extends any>(config: Partial<OneFormDataByKey<T>>, element: Partial<T>) => void;
+export type ConfigFormData<F extends any> = {
+  key: OneFormDataByKey<F>['key'];
+  mergeElement: OneFormDataByKey<F>['mergeElement'];
+  schema: OneFormDataByKey<F>['schema'];
+  uniqField?: OneFormDataByKey<F>['uniqField'];
+  permissions: OneFormDataByKey<F>['permissions'];
+};
+
+export type ConfigFormDataForAdd<F extends any> = (
+  ConfigFormData<F>
+  & Partial<OneFormDataByKey<F>>
+);
+
+export type InitialFormContextValue = {
+  addFormData: <T extends any>(config: ConfigFormDataForAdd<T>, element: Partial<T>) => void;
   removeFormData: <T extends any>(formDataKey: OneFormDataByKey<T>['key']) => void;
   handleChangeFormState: <T extends any>(formDataKey: string, obj: Partial<OneFormDataByKey<T>['formState']>) => void;
   formDataByKey: {
@@ -30,9 +44,9 @@ type InitialFormContextValue = {
   };
 };
 export const initialContextValue: InitialFormContextValue = ({
-  addFormData: (config: any, element: any) => null,
-  removeFormData: (formDataKey: string) => null,
-  handleChangeFormState: (formDataKey: string, obj: any) => null,
+  addFormData: (config, element) => null,
+  removeFormData: (formDataKey) => null,
+  handleChangeFormState: (formDataKey, obj) => null,
   formDataByKey: {},
 });
 

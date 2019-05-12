@@ -10,7 +10,7 @@ type SwitchFieldsProps = {
 
 const SwitchFields: React.FC<SwitchFieldsProps> = React.memo(
   (props) => {
-    if (props.fieldData.key === 'name') {
+    if (props.fieldDataKey === 'name') {
       return (
         <FieldName
           fieldData={props.fieldData}
@@ -19,7 +19,7 @@ const SwitchFields: React.FC<SwitchFieldsProps> = React.memo(
         />
       );
     }
-    if (props.fieldData.key === 'measure_unit_id') {
+    if (props.fieldDataKey === 'measure_unit_id') {
       return (
         <FieldMeasureUnitId
           fieldData={props.fieldData}

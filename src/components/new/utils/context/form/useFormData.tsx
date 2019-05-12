@@ -73,6 +73,13 @@ const useFormDataFormErrors = <T extends any>(formDataKey: string) => {
 
   return formData ? formData.formErrors : null;
 };
+
+const useFormDataCanSave = <T extends any>(formDataKey: string) => {
+  const formData = useFormData<T>(formDataKey);
+
+  return formData ? formData.canSave : null;
+};
+
 const useFormDataIsPermitted = <T extends any>(formDataKey: string) => {
   const IS_CREATING = useFormDataSchemaIsCreating<T>(formDataKey);
   // const permissions = useFormDataPermissions(formDataKey); // нужна валидация в контексте
@@ -95,4 +102,5 @@ export default {
   useFormDataFormErrors,
   useFormDataIsPermitted,
   useFormDataHandleChange,
+  useFormDataCanSave,
 };

@@ -18,6 +18,9 @@ export type FieldCommon = {
 };
 export type FieldString<F, K extends keyof F> = FieldCommon & {
   type: 'string';
+  minLength?: number;
+  maxLength?: number;
+  trimSpace?: boolean;
 };
 export type FieldValueOFArray<F, K extends keyof F> = FieldCommon & {
   type: 'valueOfArray';
@@ -35,9 +38,7 @@ export type Field<F, K extends keyof F> = (
 );
 
 export type SchemaFormContextBody<F> = {
-  fields: {
-    [K in keyof F]?: Field<F, K>
-  };
+  fields: Partial<Record<keyof F, Field<F, keyof F>>>;
 };
 
 export type ButtonType = 'save' | 'cancel';
@@ -57,10 +58,8 @@ export type SchemaFormContext<F> = {
 
 export type FormErrorBySchema<F, SchemaBodyFields extends SchemaFormContextBody<any>, RootFormState> = (
   {
-    [K in keyof SchemaBodyFields['fields']]: (
-      SchemaBodyFields['fields'][K] extends ObjectProperty<any, K>
-        ? FormErrorBySchema<F[K], SchemaBodyFields['fields'][K]['schemaBody'], RootFormState>
-        : string
+    [K in keyof SchemaBodyFields['fields']]?: (
+      string
     );
   }
 );

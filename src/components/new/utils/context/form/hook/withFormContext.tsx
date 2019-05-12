@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal } from 'react-bootstrap';
 import { get } from 'lodash';
-import FormContext, { OneFormDataByKey } from '../FormContext';
+import FormContext, { ConfigFormData } from '../FormContext';
 import ModalFormHeader from './part_form/header/ModalFormHeader';
 import ModalFormFooter from './part_form/footer/ModalFormFooter';
 import ModalFormBody from './part_form/body/ModalFormBody';
@@ -12,14 +12,6 @@ export type DefaultPropsWithFormContext<T extends any> = {
 
   page: string;
   path?: string;
-};
-
-export type ConfigFormData<T extends any> = {
-  key: OneFormDataByKey<T>['key'];
-  mergeElement: OneFormDataByKey<T>['mergeElement'];
-  schema: OneFormDataByKey<T>['schema'];
-  uniqField?: OneFormDataByKey<T>['uniqField'];
-  permissions: OneFormDataByKey<T>['permissions'];
 };
 
 const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormContext<T>>(formData: ConfigFormData<T>): React.FC<InnerProps> => React.memo(

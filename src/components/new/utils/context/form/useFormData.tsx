@@ -39,6 +39,11 @@ const useFormDataHandleChange = <T extends any>(formDataKey: string) => {
 
   return formData ? formData.handleChange : null;
 };
+const useFormDataHandleSubmitAction = <T extends any>(formDataKey: string) => {
+  const formData = useFormData<T>(formDataKey);
+
+  return formData ? formData.handleSubmitPromise : null;
+};
 
 const useFormDataSchemaPage = <T extends any>(formDataKey: string) => {
   const formData = useFormData<T>(formDataKey);
@@ -103,4 +108,5 @@ export default {
   useFormDataIsPermitted,
   useFormDataHandleChange,
   useFormDataCanSave,
+  useFormDataHandleSubmitAction,
 };

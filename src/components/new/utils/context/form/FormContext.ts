@@ -20,6 +20,7 @@ export type OneFormDataByKey<F> = {
   path: string;
   handleHide: (isSubmitted: boolean | any, resultSubmit?: F) => void;
   handleChange: (objChange: Partial<F>) => void;
+  handleSubmitPromise: (formState: F) => Promise<F>;
 };
 
 export type ConfigFormData<F extends any> = {
@@ -28,6 +29,7 @@ export type ConfigFormData<F extends any> = {
   schema: OneFormDataByKey<F>['schema'];
   uniqField?: OneFormDataByKey<F>['uniqField'];
   permissions: OneFormDataByKey<F>['permissions'];
+  handleSubmitPromise: OneFormDataByKey<F>['handleSubmitPromise'];
 };
 
 export type ConfigFormDataForAdd<F extends any> = (

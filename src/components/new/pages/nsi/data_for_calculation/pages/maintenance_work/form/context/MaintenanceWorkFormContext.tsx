@@ -3,6 +3,7 @@ import { maintenanceWorkFormSchema } from './schema';
 import maintenanceWorkPermissions from '../../_config-data/permissions';
 import { getDefaultMaintenanceWorkElement } from './utils';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
+import { submitMaintenanceWork } from 'redux-main/reducers/modules/maintenance_work/promise_maintenance_work';
 
 export default withFormContext<MaintenanceWork, DefaultPropsWithFormContext<MaintenanceWork>>({
   key: 'maintenance_work_form',
@@ -10,4 +11,5 @@ export default withFormContext<MaintenanceWork, DefaultPropsWithFormContext<Main
   mergeElement: getDefaultMaintenanceWorkElement,
   schema: maintenanceWorkFormSchema,
   permissions: maintenanceWorkPermissions,
+  handleSubmitPromise: submitMaintenanceWork,
 });

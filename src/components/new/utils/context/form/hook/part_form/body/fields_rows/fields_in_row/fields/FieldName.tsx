@@ -24,7 +24,7 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
     const handleChangeWrap = React.useCallback(
       (event) => {
         const value = get(event, 'target.value', event);
-        handleChange({ [key]: value });
+        handleChange({ [key]: value || null });
       },
       [key, handleChange],
     );

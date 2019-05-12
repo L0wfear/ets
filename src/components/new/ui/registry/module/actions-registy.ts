@@ -189,6 +189,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
 
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const list: any = get(registryData, 'list', null);
 
   let arrayRaw = null;
@@ -202,7 +203,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
         ...getRegistryData.payload,
       };
     }
-    if (getRegistryData.userServerFilters) {
+    if (userServerFilters) {
       const perPage: any = get(list, 'paginator.perPage', 0);
       const offset: any = get(list, 'paginator.currentPage', 0);
       const filterValues: any = get(list, 'processed.filterValues', {}) || {};
@@ -278,7 +279,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
 
     arrayRaw = arrayRaw.filter((data) => !isNullOrUndefined(data[uniqKey]));
 
-    if (getRegistryData.userServerFilters) {
+    if (userServerFilters) {
       total_count = get(result, 'result.meta.total_count', 0) || get(result, 'meta.total_count', 0) || get(result, 'total_count', 0);
     } else {
       total_count = arrayRaw.length;
@@ -299,14 +300,14 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
 
   if (list) {
     let array = arrayRaw;
-    if (!getRegistryData.userServerFilters) {
+    if (!userServerFilters) {
       array = arrayRaw.sort((a, b) => b[list.data.uniqKey] - a[list.data.uniqKey]);
     }
 
     let processedArray = array;
     let processedTotalCount = 0;
 
-    if (!getRegistryData.userServerFilters) {
+    if (!userServerFilters) {
       const processed: any = get(list, 'processed', {}) || {};
       const fields: any = get(registryData, 'filter.fields', []);
 
@@ -366,8 +367,9 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage 
     );
 
     const getRegistryData = get(getState(), `registry.${registryKey}.Service.getRegistryData`, null);
+    const userServerFilters = get(getRegistryData, 'userServerFilters', false);
 
-    if (getRegistryData && getRegistryData.userServerFilters) {
+    if (getRegistryData && userServerFilters) {
       dispatch(
         registryLoadDataByKey(registryKey),
       );
@@ -435,6 +437,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const filter = {
     ...get(registyData, 'filter', {}),
   };
@@ -447,7 +450,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     filterValues: applyFilterFromRaw(filter),
   };
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
     processed.total_count = processed.processedArray.length;
   }
@@ -471,7 +474,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     ),
   );
 
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (getRegistryData && userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -485,6 +488,7 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const filter: OneRegistryData['filter'] = get(registyData, 'filter', {});
   const list: OneRegistryData['list'] = get(registyData, 'list', null);
 
@@ -507,7 +511,7 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
     console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
   }
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
     processed.total_count = processed.processedArray.length;
   }
@@ -532,7 +536,7 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
     ),
   );
 
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (getRegistryData && userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -600,6 +604,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const filter = get(registyData, 'filter', {});
   const list = get(registyData, 'list', null);
 
@@ -630,7 +635,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     sort,
   };
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
   }
 
@@ -644,7 +649,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     ),
   );
 
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (getRegistryData && userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -682,6 +687,7 @@ export const registryCheckLine: any = (registryKey, rowData) => (dispatch, getSt
 export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) => {
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const list: any = get(registryData, 'list', null);
   const uniqKey: any = get(list, 'data.uniqKey', null);
   const offset: any = get(list, 'paginator.currentPage', 0);
@@ -691,7 +697,7 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   let checkedRowsNew = {};
   let checkArray = processedArray;
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
   }
 

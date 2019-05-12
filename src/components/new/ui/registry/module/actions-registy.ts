@@ -959,7 +959,7 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitt
     ),
   );
 
-  if (isSubmitted) {
+  if (isBoolean(isSubmitted) && isSubmitted) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );

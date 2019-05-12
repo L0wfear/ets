@@ -8,6 +8,7 @@ import {
   TimeApi,
   AutobaseActualBatteriesOnCarApi,
   AutobaseActualTiresOnCarApi,
+  MeasureUnitApi,
 } from "./all";
 
 type UrlValues = (
@@ -18,6 +19,7 @@ type UrlValues = (
   | TimeApi['url']
   | AutobaseActualBatteriesOnCarApi['url']
   | AutobaseActualTiresOnCarApi['url']
+  | MeasureUnitApi['url']
 );
 
 export type LoadingService = (url: UrlValues) => {

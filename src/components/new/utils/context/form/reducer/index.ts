@@ -93,7 +93,7 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
     const formErrors = validate<typeof formState, typeof formState>(action.payload.formData.schema.body, formState);
     const canSave = canSaveTest(formErrors);
 
-    const IS_CREATING = Boolean(get(
+    const IS_CREATING = !Boolean(get(
       formState,
       get(action.payload.formData, 'uniqField', 'id'),
       false,

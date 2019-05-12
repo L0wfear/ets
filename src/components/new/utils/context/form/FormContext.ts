@@ -21,6 +21,8 @@ export type OneFormDataByKey<F> = {
   handleHide: (isSubmitted: boolean | any, resultSubmit?: F) => void;
   handleChange: (objChange: Partial<F>) => void;
   handleSubmitPromise: (formState: F) => Promise<F>;
+  isPermittedToCreate: boolean;
+  isPermittedToUpdate: boolean;
 };
 
 export type ConfigFormData<F extends any> = {

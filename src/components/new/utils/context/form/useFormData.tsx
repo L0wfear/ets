@@ -28,6 +28,16 @@ const useFormDataSchemaIsCreating = <T extends any>(formDataKey: string) => {
 
   return formData ? formData.IS_CREATING : null;
 };
+const useFormDataSchemaIsPermittedToCreate = <T extends any>(formDataKey: string) => {
+  const formData = useFormData<T>(formDataKey);
+
+  return formData ? formData.isPermittedToCreate : null;
+};
+const useFormDataSchemaIsPermittedToUpdate = <T extends any>(formDataKey: string) => {
+  const formData = useFormData<T>(formDataKey);
+
+  return formData ? formData.isPermittedToUpdate : null;
+};
 
 const useFormDataSchemaHandleHide = <T extends any>(formDataKey: string) => {
   const formData = useFormData<T>(formDataKey);
@@ -87,9 +97,10 @@ const useFormDataCanSave = <T extends any>(formDataKey: string) => {
 
 const useFormDataIsPermitted = <T extends any>(formDataKey: string) => {
   const IS_CREATING = useFormDataSchemaIsCreating<T>(formDataKey);
-  // const permissions = useFormDataPermissions(formDataKey); // нужна валидация в контексте
+  const isPermittedToCreate = useFormDataSchemaIsPermittedToCreate<T>(formDataKey);
+  const isPermittedToUpdate = useFormDataSchemaIsPermittedToUpdate<T>(formDataKey);
 
-  return IS_CREATING ? true : true;
+  return IS_CREATING ? isPermittedToCreate : isPermittedToUpdate;
 };
 
 export default {
@@ -109,4 +120,6 @@ export default {
   useFormDataHandleChange,
   useFormDataCanSave,
   useFormDataHandleSubmitAction,
+  useFormDataSchemaIsPermittedToCreate,
+  useFormDataSchemaIsPermittedToUpdate,
 };

@@ -5,23 +5,26 @@ import useForm from 'components/new/utils/context/form/useFormData';
 
 type FieldNameProps = {
   fieldData: any;
+  fieldDataKey: string;
   formDataKey: string;
 };
 
 const FieldName: React.FC<FieldNameProps> = React.memo(
   (props) => {
-    const { fieldData: { key, title } } = props;
-    const path = useForm.useFormDataSchemaPath(props.formDataKey);
-    const formState = useForm.useFormDataFormState(props.formDataKey);
-    const formErrors = useForm.useFormDataFormErrors(props.formDataKey);
-    const handleChange = useForm.useFormDataHandleChange(props.formDataKey);
-    const isPermitted = useForm.useFormDataIsPermitted(props.formDataKey);
+    const {
+      fieldDataKey: key,
+      fieldData: { title },
+    } = props;
+    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const formState = useForm.useFormDataFormState<any>(props.formDataKey);
+    const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
+    const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
+    const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
       (event) => {
-        handleChange({
-          [key]: get(event, 'target.value', event),
-        });
+        const value = get(event, 'target.value', event);
+        handleChange({ [key]: value });
       },
       [key, handleChange],
     );

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import FormContext from '../FormContext';
+import FormContext, { OneFormDataByKey } from '../FormContext';
 import { Modal } from 'react-bootstrap';
 import ModalFormHeader from './part_form/header/ModalFormHeader';
 import ModalFormFooter from './part_form/footer/ModalFormFooter';
 import ModalFormBody from './part_form/body/ModalFormBody';
 
-type DefaultPropsWithFormContext<T = any> = {
+export type DefaultPropsWithFormContext<T = any> = {
   element: Partial<T>,
   handleHide: (isSumbitted: boolean, result?: Partial<T>) => void;
 
@@ -13,38 +13,37 @@ type DefaultPropsWithFormContext<T = any> = {
   path?: string;
 };
 
-type ConfigFormData = {
-  key: string;
-  uniqField?: string;
-  mergeElement: any;
-  schema: any;
-  permissions: {
-    create: string | string[] | boolean;
-    update: string | string[] | boolean;
-    [k: string]: any;
-  };
+type ConfigFormData<T = any> = {
+  key: OneFormDataByKey<T>['key'];
+  mergeElement: OneFormDataByKey<T>['mergeElement'];
+  schema: OneFormDataByKey<T>['schema'];
+  uniqField?: OneFormDataByKey<T>['uniqField'];
+  permissions: OneFormDataByKey<T>['permissions'];
 };
 
-const withFormContext = <InnerProps extends DefaultPropsWithFormContext>(formData: ConfigFormData) => React.memo<InnerProps>(
+const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormContext<T>>(formData: ConfigFormData): React.FC<InnerProps> => React.memo(
   (props) => {
     const context = React.useContext(FormContext);
 
     React.useEffect(
       () => {
-        context.addFormData(
+        context.addFormData<any>(
           {
             ...formData,
             handleHide: (isSubmitted, result) => {
-              context.removeFormData(formData.key);
+              context.removeFormData<any>(formData.key);
               props.handleHide(isSubmitted, result);
             },
-            handleChange: (obj) => {
-              context.handleChangeFormState(formData.key, obj);
+            handleChange: (objChange) => {
+              context.handleChangeFormState<any>(
+                formData.key,
+                objChange,
+              );
             },
           },
           props.element,
         );
-        return () => context.removeFormData(formData.key);
+        return () => context.removeFormData<any>(formData.key);
       },
       [],
     );

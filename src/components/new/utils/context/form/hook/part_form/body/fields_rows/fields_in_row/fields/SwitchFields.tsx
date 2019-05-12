@@ -4,6 +4,7 @@ import FieldMeasureUnitId from './FieldMeasureUnitId';
 
 type SwitchFieldsProps = {
   fieldData: any;
+  fieldDataKey: string;
   formDataKey: string;
 };
 
@@ -13,6 +14,7 @@ const SwitchFields: React.FC<SwitchFieldsProps> = React.memo(
       return (
         <FieldName
           fieldData={props.fieldData}
+          fieldDataKey={props.fieldDataKey}
           formDataKey={props.formDataKey}
         />
       );
@@ -21,6 +23,7 @@ const SwitchFields: React.FC<SwitchFieldsProps> = React.memo(
       return (
         <FieldMeasureUnitId
           fieldData={props.fieldData}
+          fieldDataKey={props.fieldDataKey}
           formDataKey={props.formDataKey}
         />
       );

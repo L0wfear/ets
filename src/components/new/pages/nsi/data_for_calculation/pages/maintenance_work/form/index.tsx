@@ -9,7 +9,7 @@ import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
-const MaintenanceWorkFrom: any = React.lazy(() => (
+const MaintenanceWorkFrom = React.lazy(() => (
   import(/* webpackChunkName: "maintenance_work_form" */ 'components/new/pages/nsi/data_for_calculation/pages/maintenance_work/form/context/MaintenanceWorkFormContext')
 ));
 

@@ -1,9 +1,10 @@
-import withFormContext from 'components/new/utils/context/form/hook/withFormContext';
+import withFormContext, { DefaultPropsWithFormContext } from 'components/new/utils/context/form/hook/withFormContext';
 import { maintenanceWorkFormSchema } from './schema';
 import maintenanceWorkPermissions from '../../_config-data/permissions';
 import { getDefaultMaintenanceWorkElement } from './utils';
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
-export default withFormContext({
+export default withFormContext<MaintenanceWork, DefaultPropsWithFormContext<MaintenanceWork>>({
   key: 'maintenance_work_form',
   uniqField: 'id',
   mergeElement: getDefaultMaintenanceWorkElement,

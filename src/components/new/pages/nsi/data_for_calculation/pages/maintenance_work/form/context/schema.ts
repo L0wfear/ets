@@ -1,4 +1,7 @@
-export const maintenanceWorkFormSchema = {
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
+import { SchemaFormContext } from 'components/new/utils/context/@types';
+
+export const maintenanceWorkFormSchema: SchemaFormContext<MaintenanceWork> = {
   header: {
     type: 'default',
     title: [
@@ -14,25 +17,19 @@ export const maintenanceWorkFormSchema = {
     ],
   },
   body: {
-    fields: [
-      [
-        {
-          key: 'name',
-          title: 'Наименование',
-          type: 'string',
-          required: true,
-        },
-      ],
-      [
-        {
-          key: 'measure_unit_id',
-          title: 'Единица измерения',
-          type: 'valueOfArray',
-          required: true,
-          clearable: false,
-        },
-      ],
-    ],
+    fields: {
+      name: {
+        title: 'Наименование',
+        type: 'string',
+        required: true,
+      },
+      measure_unit_id: {
+        title: 'Единица измерения',
+        type: 'valueOfArray',
+        required: true,
+        clearable: false,
+      },
+    },
   },
   footer: {
     type: 'default',

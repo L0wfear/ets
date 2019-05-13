@@ -1,6 +1,6 @@
 import * as React from 'react';
-import FieldName from './FieldName';
-import FieldMeasureUnitId from './FieldMeasureUnitId';
+import FieldName from './name/FieldName';
+import FieldMeasureUnitId from './measure_unit_id/FieldMeasureUnitId';
 
 type SwitchFieldsProps = {
   fieldData: any;

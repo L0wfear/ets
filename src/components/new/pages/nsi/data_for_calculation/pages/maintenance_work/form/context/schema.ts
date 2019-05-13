@@ -6,11 +6,11 @@ export const maintenanceWorkFormSchema: SchemaFormContext<MaintenanceWork> = {
     type: 'default',
     title: [
       {
-        title: 'Изменение расходного материала',
+        title: 'Добавление расходного материала',
         disaplayIf: 'IS_CREATING',
       },
       {
-        title: 'Добавление расходного материала',
+        title: 'Изменение расходного материала',
         disaplayIf: 'IS_CREATING',
         reverse: true,
       },

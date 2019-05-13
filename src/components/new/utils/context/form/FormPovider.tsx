@@ -8,24 +8,28 @@ import {
   reducerFormProvider,
 } from './reducer';
 
-type FormProviderProps = {};
+type FormProviderProps = {}; // тк провайдер глобальный, то пока ничего не ждёт
 
 const FormProvider: React.FC<FormProviderProps> = React.memo(
   (props) => {
+    // state - { formDataByKey: Record<string, OneFormDataByKey<any>>; }
     const [state, dispatch] = React.useReducer(reducerFormProvider, initialFormProviderState);
 
+    // добавление данных по форме в контекст
     const addFormData = React.useCallback<InitialFormContextValue['addFormData']>(
       (formData, element) => {
         dispatch(addFormDataToStore(formData, element));
       },
       [],
     );
+    // удаление данных формы из контекста
     const removeFormData = React.useCallback<InitialFormContextValue['removeFormData']>(
       (formDataKey) => {
         dispatch(removeFormDataFromStore(formDataKey));
       },
       [],
     );
+    // изменение состояния формы в контексте по ключу
     const handleChangeFormState = React.useCallback<InitialFormContextValue['handleChangeFormState']>(
       (formDataKey, obj) => {
         dispatch(changeFormDataFromState(formDataKey, obj));
@@ -33,6 +37,7 @@ const FormProvider: React.FC<FormProviderProps> = React.memo(
       [],
     );
 
+    // formContext value
     const value: typeof initialContextValue = React.useMemo(
       () => {
         return {
@@ -42,7 +47,7 @@ const FormProvider: React.FC<FormProviderProps> = React.memo(
           handleChangeFormState,
         };
       },
-      [state, addFormData, handleChangeFormState],
+      [state, addFormData, removeFormData, handleChangeFormState],
     );
 
     return (

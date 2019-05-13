@@ -1,3 +1,4 @@
+import { isObject, isArray } from 'util';
 import { SchemaFormContext, FormErrorBySchema, FieldString, FieldValueOFArray } from '../../@types';
 import { validateString } from './string/stringValidate';
 import { validateValueOfArray } from './valueOfArray/valueOfArrayValidate';
@@ -19,4 +20,16 @@ export const validate = <F, RF>(shemaBody: SchemaFormContext<F>['body'], formSta
   }
 
   return formError;
+};
+
+// проверка formErrors на ошибки
+export const canSaveTest = (errors: object | string | string[]) => {
+  if (isObject(errors)) {
+    return Object.values(errors).every((error) => canSaveTest(error));
+  }
+  if (isArray(errors)) {
+    return errors.every((error) => canSaveTest(error));
+  }
+
+  return !errors;
 };

@@ -1,7 +1,6 @@
 import { get } from 'lodash';
-import { InitialFormContextValue, ConfigFormDataForAdd } from "../FormContext";
-import { validate } from './validate';
-import { isObject, isArray } from 'util';
+import { InitialFormContextValue, ConfigFormDataForAdd } from '../FormContext';
+import { validate, canSaveTest } from './validate';
 
 type AddFormDataToStore<T = any> = (
   formData: ConfigFormDataForAdd<T>,
@@ -9,10 +8,11 @@ type AddFormDataToStore<T = any> = (
 ) => {
   type: 'ADD_FORM_DATA';
   payload: {
-    formData: any;
-    element: any;
+    formData: ConfigFormDataForAdd<T>;
+    element: Partial<T>;
   },
 };
+
 type RemoveFormDataFromStore = (
   formDataKey: string,
 ) => {
@@ -21,14 +21,15 @@ type RemoveFormDataFromStore = (
     formDataKey: string,
   },
 };
-type ChangeFormDataFromState = (
+
+type ChangeFormDataFromState<T = any> = (
   formDataKey: string,
-  partialFormState: any,
+  partialFormState: Partial<T>,
 ) => {
   type: 'CHANGE_FORM_STATE';
   payload: {
     formDataKey: string,
-    partialFormState: any;
+    partialFormState: Partial<T>;
   },
 };
 
@@ -44,25 +45,18 @@ type ReducerFormProvider = (
   >
 );
 
+/* ------------------------------------------------------------------------- */
+
+// пока три типа экшенов
 const ADD_FORM_DATA = 'ADD_FORM_DATA';
 const REMOVE_FORM_DATA = 'REMOVE_FORM_DATA';
 const CHANGE_FORM_STATE = 'CHANGE_FORM_STATE';
-
-const canSaveTest = (errors: any) => {
-  if (isObject(errors)) {
-    return Object.values(errors).every((error) => canSaveTest(error));
-  }
-  if (isArray(errors)) {
-    return errors.every((error) => canSaveTest(error));
-  }
-
-  return !errors;
-};
 
 export const initialFormProviderState: React.ReducerState<ReducerFormProvider> = {
   formDataByKey: {},
 };
 
+// экшен добавления formData в formDataByKey
 export const addFormDataToStore: AddFormDataToStore = (formData, element) => ({
   type: ADD_FORM_DATA,
   payload: {
@@ -71,6 +65,7 @@ export const addFormDataToStore: AddFormDataToStore = (formData, element) => ({
   },
 });
 
+// экшен удаления formData из formDataByKey по ключу
 export const removeFormDataFromStore: RemoveFormDataFromStore = (formDataKey) => ({
   type: REMOVE_FORM_DATA,
   payload: {
@@ -78,6 +73,7 @@ export const removeFormDataFromStore: RemoveFormDataFromStore = (formDataKey) =>
   },
 });
 
+// экшен изменения formState в formData в formDataByKey по ключу и partial<formState>
 export const changeFormDataFromState: ChangeFormDataFromState = (formDataKey, partialFormState) => ({
   type: CHANGE_FORM_STATE,
   payload: {
@@ -93,9 +89,10 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
     const formErrors = validate<typeof formState, typeof formState>(action.payload.formData.schema.body, formState);
     const canSave = canSaveTest(formErrors);
 
+    const uniqField =  get(action.payload.formData, 'uniqField', 'id');
     const IS_CREATING = !Boolean(get(
       formState,
-      get(action.payload.formData, 'uniqField', 'id'),
+      uniqField,
       false,
     ));
 
@@ -105,6 +102,7 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
         ...state.formDataByKey,
         [action.payload.formData.key]: {
           ...action.payload.formData,
+          uniqField,
           formState,
           formErrors,
           canSave,
@@ -133,8 +131,16 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
     const canSave = canSaveTest(formErrors);
 
     console.log('----'); // tslint:disable-line:no-console
-    console.log('FORM CHANGE STATE', action.payload.partialFormState); // tslint:disable-line:no-console
-    console.log('FORM CHANGE ERRORS', formErrors); // tslint:disable-line:no-console
+    let partialFormStateToShow: object | string = action.payload.partialFormState;
+    let formErrorsToShow: object | string = action.payload.partialFormState;
+
+    if (!__DEVELOPMENT__) {
+      partialFormStateToShow = JSON.stringify(partialFormStateToShow);
+      formErrorsToShow = JSON.stringify(formErrorsToShow);
+    }
+
+    console.log('FORM CHANGE STATE', partialFormStateToShow); // tslint:disable-line:no-console
+    console.log('FORM CHANGE ERRORS', formErrorsToShow); // tslint:disable-line:no-console
     console.log('FORM CANSAVE', canSave); // tslint:disable-line:no-console
 
     formDataByKey[action.payload.formDataKey].formState = formState;

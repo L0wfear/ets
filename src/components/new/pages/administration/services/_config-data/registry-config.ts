@@ -63,7 +63,7 @@ export const config: TypeConfigData<Service> = {
         {
           key: 'service_files',
           title: 'Спецификации',
-          width: 150,
+          width: 400,
           sortable: false,
         },
         {

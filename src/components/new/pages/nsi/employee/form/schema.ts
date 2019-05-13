@@ -53,6 +53,11 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
+          const maxLengthString = 12;
+          if ( value ? value.length > maxLengthString : false) {
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+          }
+
           return undefined;
         },
       ],
@@ -67,6 +72,11 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
               return 'Одно из полей "Специальное удостоверение", "Водительское удостоверение" должно быть заполнено';
             }
           }
+          const maxLengthString = 12;
+          if ( value ? value.length > maxLengthString : false) {
+            return `Длина поля не должна превышать максимальное количество символов (${maxLengthString}). Пример заполнения: 30 КЕ 123456`;
+          }
+
           return undefined;
         },
       ],

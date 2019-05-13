@@ -2,13 +2,6 @@ import { FiledToCheck } from "components/new/pages/inspection/pgm_base/component
 
 export const filedToCheckMonitoring: FiledToCheck = [
   {
-    key: 'address_base', // Состоит и адреса базы и типа ПГМ
-    title: 'Адрес базы:',
-    type: 'string',
-    readOnly: true,
-    inline: true,
-  },
-  {
     key: 'balance_holder_base', // Организация из селекта на первом экране
     title: 'Балансодержатель базы:',
     type: 'string',

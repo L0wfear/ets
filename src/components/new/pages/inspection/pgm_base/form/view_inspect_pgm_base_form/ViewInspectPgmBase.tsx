@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
+import { get } from 'lodash';
 import IAVisibleWarning from 'components/new/pages/inspection/pgm_base/components/vsible_warning/IAVisibleWarning';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
@@ -27,6 +28,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { ExtField } from 'components/ui/new/field/ExtField';
 
 type InitialState = {
   selectedInspect: InspectPgmBase,
@@ -230,12 +232,21 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     [state.agents_from_gbu, state.commission_members, state.resolve_to],
   );
 
+  const base_type = get(state.selectedInspect, 'base_type', null);
+
   return state.selectedInspect
     ? (
       <React.Fragment>
         <ContainerForm>
           <Col md={6} sm={12}>
             <BoxContainer>
+              <ExtField
+                type="string"
+                label="Адрес базы:"
+                value={`${state.selectedInspect.data.address_base}${base_type ? ` (${base_type})` : ''}`}
+                readOnly
+                inline
+              />
               <IAVisibleWarning
                 onChange={onChangeData}
                 data={state.selectedInspect.data}

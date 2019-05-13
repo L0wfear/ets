@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import * as Col from 'react-bootstrap/lib/Col';
 import { Row } from 'react-bootstrap';
+import { mobiSize } from 'global-styled/global-constants';
 
 export const ColStartDatePickerRange = styled(Col)`
   &&& {
@@ -30,6 +31,11 @@ export const DatePickerRangeContainer = styled(Row)<{ allWidth?: boolean }>`
   width: ${({ allWidth }) => allWidth ? '100%' : 'initial'};
   margin-bottom: 5px;
   position: relative;
+
+  min-width: 460px;
+  @media screen and (max-width: ${mobiSize}px) {
+    min-width: 0;
+  }
 `;
 
 export const WithDatePickerRangeRegistry = styled(Row)`

@@ -27,7 +27,7 @@ export const getConfig = (service_id: number, service_name, date_start: string, 
   },
   registryKey,
   header: {
-    title: `История изменений по сервису ${service_name}`,
+    title: `История изменений по сервису "${service_name}"`,
     format: 'datetime_range_picker',
     buttons: [
       buttonsTypes.filter,

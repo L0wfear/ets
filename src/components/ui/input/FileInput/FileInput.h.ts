@@ -14,6 +14,8 @@ export interface IPropsFileInput {
   modalKey?: string;
   onChange(e: React.ChangeEvent<HTMLInputElement> | File[] | IFileWrapper[]): void;
   isLoading?(callback: (indicator: boolean, error?: any) => void): void;
+
+  askBefoeRemove?: boolean;
 }
 
 export interface IStateFileInput {

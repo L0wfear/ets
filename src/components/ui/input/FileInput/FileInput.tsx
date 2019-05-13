@@ -14,10 +14,22 @@ const FileListItem: React.FC<any> = React.memo(
   (props) => {
 
     const onFileRemove = React.useCallback(
-      () => {
+      async () => {
+        if (props.askBefoeRemove) {
+          try {
+            await global.confirmDialog({
+              title: 'Внимание!',
+              body: 'Файл после удаления не может быть восстановлен. Продолжить?',
+              okName: 'Да',
+              cancelName: 'Нет',
+            });
+          } catch (e) {
+            return;
+          }
+        }
         props.onFileRemove(props.index);
       },
-      [props.onFileRemove, props.index],
+      [props.onFileRemove, props.index, props.askBefoeRemove],
     );
 
     return (
@@ -74,6 +86,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           name={name}
           onFileRemove={this.handleFileRemove}
           disabled={this.props.disabled}
+          askBefoeRemove={this.props.askBefoeRemove}
         />,
       );
 

@@ -12,6 +12,7 @@ import { waybill_types } from '../components/data/header/buttons/component-butto
 const buttonsTypes =  {
   export: 'export',
   filter: 'filter',
+  export_filtred_data: 'export_filtred_data',
   create: 'create',
   read: 'read',
   remove: 'remove',

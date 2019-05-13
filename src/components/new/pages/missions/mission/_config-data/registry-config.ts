@@ -5,7 +5,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_INT, MISSION_STATUS_LABELS } from 'constants/dictionary';
 
-export const registryKey = 'MissionTemplate';
+export const registryKey = 'Mission';
 
 export const config: TypeConfigData<Mission> = {
   Service: {
@@ -58,12 +58,14 @@ export const config: TypeConfigData<Mission> = {
       {
         valueKey: 'number',
         title: 'Номер задания',
-        type: 'advanced-string-like',
+        type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'waybill_number',
         title: 'Путевой лист',
-        type: 'advanced-string-like',
+        type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'column_id',
@@ -134,7 +136,8 @@ export const config: TypeConfigData<Mission> = {
       {
         valueKey: 'passes_count',
         title: 'Количество циклов',
-        type: 'advanced-string-like',
+        type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'technical_operation_id',

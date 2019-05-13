@@ -2,7 +2,7 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/administration/services/_config-data/permissions';
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 
-export const registryKey = 'serviceRegistry';
+export const registryKey = 'service_registry';
 
 export const config: TypeConfigData<Service> = {
   Service: {
@@ -19,6 +19,7 @@ export const config: TypeConfigData<Service> = {
     permissions,
     data: {
       fixedWidth: true,
+      uniqKeyForParams: 'service_registry_id',
     },
     meta: {
       fields: [
@@ -62,7 +63,7 @@ export const config: TypeConfigData<Service> = {
         {
           key: 'service_files',
           title: 'Спецификации',
-          width: 150,
+          width: 400,
           sortable: false,
         },
         {

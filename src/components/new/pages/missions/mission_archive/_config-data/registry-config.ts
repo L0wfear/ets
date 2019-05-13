@@ -5,7 +5,7 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 import { YES_NO_SELECT_OPTIONS_INT, MISSION_STATUS_LABELS } from 'constants/dictionary';
 import missionPermissions from '../../mission/_config-data/permissions';
 
-export const registryKey = 'MissionTemplate';
+export const registryKey = 'MissionArchive';
 
 export const config: TypeConfigData<Mission> = {
   Service: {

@@ -4,6 +4,8 @@ import {
   REGISTRY_CHANGE_FILTER,
   REGISTRY_CHANGE_LIST,
   REGISTRY_CHANGE_SERVICE,
+  REGISTRY_SET_LOADING_STATUS,
+  OneRegistryData,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
 import { get } from 'lodash';
@@ -13,6 +15,7 @@ import { makeProcessedArray } from 'components/new/ui/registry/module/utils/proc
 import {
   setEmptyRawFilters,
   applyFilterFromRaw,
+  mergeFilterValuesWithRawFilter,
 } from 'components/new/ui/registry/module/utils/filter';
 import {
   mergeFilter,
@@ -22,7 +25,7 @@ import {
 } from 'components/new/ui/registry/module/utils/merge';
 import { getJSON, deleteJSON } from 'api/adapter';
 import configStand from 'config';
-import { getBlob } from 'api/adapterBlob';
+import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
@@ -57,6 +60,7 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
   const userData = getSessionState(getState()).userData;
 
   const mergeConfig: any = {
+    isLoading: !config.noInitialLoad,
     Service: config.Service,
     filter: mergeFilter(config.filter),
     header: mergeHeader(config.header),
@@ -107,6 +111,14 @@ export const registryRemoveData = (registryKey) => ({
   type: REGISTRY_REMOVE_DATA,
   payload: {
     registryKey,
+  },
+});
+
+export const actionSetLoadingStatus = (registryKey, isLoading) => ({
+  type: REGISTRY_SET_LOADING_STATUS,
+  payload: {
+    registryKey,
+    isLoading,
   },
 });
 
@@ -171,8 +183,13 @@ export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload
 
 export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getState) => {
   // const stateSome = getState();
+  dispatch(
+    actionSetLoadingStatus(registryKey, true),
+  );
+
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const list: any = get(registryData, 'list', null);
 
   let arrayRaw = null;
@@ -186,7 +203,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
         ...getRegistryData.payload,
       };
     }
-    if (getRegistryData.userServerFilters) {
+    if (userServerFilters) {
       const perPage: any = get(list, 'paginator.perPage', 0);
       const offset: any = get(list, 'paginator.currentPage', 0);
       const filterValues: any = get(list, 'processed.filterValues', {}) || {};
@@ -262,7 +279,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
 
     arrayRaw = arrayRaw.filter((data) => !isNullOrUndefined(data[uniqKey]));
 
-    if (getRegistryData.userServerFilters) {
+    if (userServerFilters) {
       total_count = get(result, 'result.meta.total_count', 0) || get(result, 'meta.total_count', 0) || get(result, 'total_count', 0);
     } else {
       total_count = arrayRaw.length;
@@ -279,16 +296,18 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     }
   }
 
+  let resultDisaptch = null;
+
   if (list) {
     let array = arrayRaw;
-    if (!getRegistryData.userServerFilters) {
+    if (!userServerFilters) {
       array = arrayRaw.sort((a, b) => b[list.data.uniqKey] - a[list.data.uniqKey]);
     }
 
     let processedArray = array;
     let processedTotalCount = 0;
 
-    if (!getRegistryData.userServerFilters) {
+    if (!userServerFilters) {
       const processed: any = get(list, 'processed', {}) || {};
       const fields: any = get(registryData, 'filter.fields', []);
 
@@ -298,7 +317,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       processedTotalCount = total_count;
     }
 
-    return dispatch(
+    resultDisaptch = dispatch(
       registryChangeListData(
         registryKey,
         {
@@ -318,6 +337,12 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       ),
     );
   }
+
+  dispatch(
+    actionSetLoadingStatus(registryKey, false),
+  );
+
+  return resultDisaptch;
 };
 
 export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage = 0) => (dispatch, getState) => {
@@ -325,26 +350,30 @@ export const registryChangeDataPaginatorCurrentPage = (registryKey, currentPage 
     actionUnselectSelectedRowToShow(registryKey, true),
   );
 
-  const { registry: { [registryKey]: registryData } } = getState();
-  const getRegistryData = get(getState(), ['registry', registryKey, 'Service', 'getRegistryData'], null);
+  const registryData = get(getState(), `registry.${registryKey}`, null);
 
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...registryData.list,
-        paginator: {
-          ...registryData.list.paginator,
-          currentPage: Number(currentPage),
-        },
-      },
-    ),
-  );
-
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (registryData) {
     dispatch(
-      registryLoadDataByKey(registryKey),
+      registryChangeListData(
+        registryKey,
+        {
+          ...registryData.list,
+          paginator: {
+            ...registryData.list.paginator,
+            currentPage: Number(currentPage),
+          },
+        },
+      ),
     );
+
+    const getRegistryData = get(getState(), `registry.${registryKey}.Service.getRegistryData`, null);
+    const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+
+    if (getRegistryData && userServerFilters) {
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      );
+    }
   }
 };
 
@@ -356,7 +385,7 @@ export const registryChangeServiceData = (registryKey, Service) => ({
   },
 });
 
-export const registryChangeListData = (registryKey, list) => ({
+export const registryChangeListData = (registryKey: string, list: OneRegistryData['list']) => ({
   type: REGISTRY_CHANGE_LIST,
   payload: {
     registryKey,
@@ -408,6 +437,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const filter = {
     ...get(registyData, 'filter', {}),
   };
@@ -420,7 +450,7 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     filterValues: applyFilterFromRaw(filter),
   };
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
     processed.total_count = processed.processedArray.length;
   }
@@ -444,26 +474,27 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     ),
   );
 
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (getRegistryData && userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
   }
 };
 
-export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
+export const applyFilterValues = (registryKey, filterValues) => (dispatch, getState) => {
   dispatch(
     actionUnselectSelectedRowToShow(registryKey, true),
   );
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
-  const filter = get(registyData, 'filter', {});
-  const list = get(registyData, 'list', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+  const filter: OneRegistryData['filter'] = get(registyData, 'filter', {});
+  const list: OneRegistryData['list'] = get(registyData, 'list', null);
 
   const processed = {
     ...list.processed,
-    filterValues: applyFilterFromRaw(filter),
+    filterValues,
   };
 
   if (__DEVELOPMENT__) {
@@ -480,10 +511,20 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
     console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
   }
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
     processed.total_count = processed.processedArray.length;
   }
+
+  dispatch(
+    registryChangeFilterData(
+      registryKey,
+      {
+        ...filter,
+        rawFilterValues: mergeFilterValuesWithRawFilter(filter.rawFilterValues, filterValues),
+      },
+    ),
+  );
 
   dispatch(
     registryChangeListData(
@@ -495,11 +536,23 @@ export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => 
     ),
   );
 
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (getRegistryData && userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
   }
+};
+
+export const registryApplyRawFilters = (registryKey) => (dispatch, getState) => {
+  const registyData = get(getState(), ['registry', registryKey], null);
+  const filter = get(registyData, 'filter', {});
+
+  dispatch(
+    applyFilterValues(
+      registryKey,
+      applyFilterFromRaw(filter),
+    ),
+  );
 };
 
 export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) => {
@@ -516,7 +569,7 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
   );
 };
 
-export const registyLoadPrintForm: any = (registryKey) => async  (dispatch, getState) => {
+export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean) => async  (dispatch, getState) => {
   const getBlobData = get(
     getState(),
     ['registry', registryKey, 'Service', 'getBlobData'],
@@ -526,17 +579,42 @@ export const registyLoadPrintForm: any = (registryKey) => async  (dispatch, getS
   let fileName = '';
 
   if (getBlobData) {
-    const result = await etsLoadingCounter(
-      dispatch,
-      getBlob(
-        `${configStand.backend}/${getBlobData.entity}`,
-        getBlobData.payload || { format: 'xls'},
-      ),
-      { page: registryKey },
-    );
-    processResponse(result);
-    blob = get(result, 'blob', null);
-    fileName = get(result, 'fileName', '');
+    const payload = getBlobData.payload || { format: 'xls'};
+
+    if (useFiltredData) {
+      const registryData = get(getState(), `registry.${registryKey}`, null);
+      const list: any = get(registryData, 'list', null);
+      const processedArray: any = get(list, 'processed.processedArray', {}) || {};
+
+      const paylaodAsString = Object.entries(payload).reduce(
+        (str, [key, payloadData]) => `${str}&${key}=${payloadData}`,
+        '',
+      ).slice(1);
+
+      const result = await etsLoadingCounter(
+        dispatch,
+        postBlob(
+          `${configStand.backend}/${getBlobData.entity}?${paylaodAsString}`,
+          { rows: processedArray },
+        ),
+        { page: registryKey },
+      );
+      processResponse(result);
+      blob = get(result, 'blob', null);
+      fileName = get(result, 'fileName', '');
+    } else {
+      const result = await etsLoadingCounter(
+        dispatch,
+        getBlob(
+          `${configStand.backend}/${getBlobData.entity}`,
+          getBlobData.payload || { format: 'xls'},
+        ),
+        { page: registryKey },
+      );
+      processResponse(result);
+      blob = get(result, 'blob', null);
+      fileName = get(result, 'fileName', '');
+    }
   }
 
   if (blob && fileName) {
@@ -551,6 +629,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
 
   const registyData = get(getState(), ['registry', registryKey], null);
   const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const filter = get(registyData, 'filter', {});
   const list = get(registyData, 'list', null);
 
@@ -581,7 +660,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     sort,
   };
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
   }
 
@@ -595,7 +674,7 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
     ),
   );
 
-  if (getRegistryData && getRegistryData.userServerFilters) {
+  if (getRegistryData && userServerFilters) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );
@@ -633,6 +712,7 @@ export const registryCheckLine: any = (registryKey, rowData) => (dispatch, getSt
 export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) => {
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const list: any = get(registryData, 'list', null);
   const uniqKey: any = get(list, 'data.uniqKey', null);
   const offset: any = get(list, 'paginator.currentPage', 0);
@@ -642,7 +722,7 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   let checkedRowsNew = {};
   let checkArray = processedArray;
 
-  if (!getRegistryData || !getRegistryData.userServerFilters) {
+  if (!getRegistryData || !userServerFilters) {
     checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
   }
 
@@ -904,7 +984,7 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitt
     ),
   );
 
-  if (isSubmitted) {
+  if (isBoolean(isSubmitted) && isSubmitted) {
     dispatch(
       registryLoadDataByKey(registryKey),
     );

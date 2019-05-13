@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {
   registryToggleIsOpenFilter,
   registryResetAllTypeFilter,
-  registryApplyRawFilters,
 } from 'components/new/ui/registry/module/actions-registy';
 
 import {
@@ -19,6 +18,8 @@ import {
   EtsFilterActionButtonConteiner,
 } from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { compose } from 'recompose';
 
 type PropsButtonsLIne = {
   registryKey: string;
@@ -27,15 +28,22 @@ type PropsButtonsLIne = {
   canResetFilters: boolean;
 
   handleClose: any;
-  resetAllTypeFilter: any;
-  hanleClickApplyRawFilters: any;
-};
+  registryResetAllTypeFilter: any;
+} & WithSearchProps;
 
-type StateButtonsLIne = {};
+const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
+  (props) => {
+    const resetAllTypeFilter = React.useCallback(
+      () => {
+        const filterKey = `${props.registryKey}_filters`;
+        props.setDataInSearch({
+          [filterKey]: null,
+        });
 
-class ButtonsLIne extends React.PureComponent<PropsButtonsLIne, StateButtonsLIne> {
-  render() {
-    const { props } = this;
+        props.registryResetAllTypeFilter(props.registryKey);
+      },
+      [],
+    );
 
     return (
       <EtsFiltersButtonsLine>
@@ -43,7 +51,7 @@ class ButtonsLIne extends React.PureComponent<PropsButtonsLIne, StateButtonsLIne
         <EtsFilterActionButtonConteiner>
           <EtsFilterActionButton type="submit">Применить</EtsFilterActionButton>
           <EtsFilterActionButton
-            onClick={props.resetAllTypeFilter}
+            onClick={resetAllTypeFilter}
             disabled={!props.canResetFilters}>
             Сброс
           </EtsFilterActionButton>
@@ -53,8 +61,8 @@ class ButtonsLIne extends React.PureComponent<PropsButtonsLIne, StateButtonsLIne
         </EtsFiltersCloseContainer>
       </EtsFiltersButtonsLine>
     );
-  }
-}
+  },
+);
 
 const mapStateToProps = (state, { registryKey }) => {
   const canApply = Object.values(
@@ -82,14 +90,15 @@ const mapStateToProps = (state, { registryKey }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch, { registryKey }) => ({
+const mapDispatchToProps = (dispatch: any, { registryKey }) => ({
   handleClose: () => dispatch(registryToggleIsOpenFilter(registryKey)),
-  hanleClickApplyRawFilters: () =>
-    dispatch(registryApplyRawFilters(registryKey)),
-  resetAllTypeFilter: () => dispatch(registryResetAllTypeFilter(registryKey)),
+  registryResetAllTypeFilter: () => dispatch(registryResetAllTypeFilter(registryKey)),
 });
 
-export default connect<any, any, any, ReduxState>(
-  mapStateToProps,
-  mapDispatchToProps,
+export default compose<any, any>(
+  connect<any, any, any, ReduxState>(
+    mapStateToProps,
+    mapDispatchToProps,
+  ),
+  withSearch,
 )(ButtonsLIne);

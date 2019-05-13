@@ -103,7 +103,7 @@ const getOption = (value, label) => {
 };
 
 const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey: string | number, format: string) => (
-  array.reduce((newArr, rowData) => {
+  array.reduce<any[]>((newArr, rowData) => {
     const { [valueKey]: value, [labelKey || valueKey]: label } = rowData;
 
     if (isArray(value)) {
@@ -241,11 +241,14 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
           throw new Error(`опередели valueKey в ${this.props.registryKey}/${this.props.filterData.valueKey}`);
         }
 
-        let options = makeOptionsFromArray(
-          result,
-          valueKey,
-          labelKey,
-          getRegistryData.format,
+        let options = uniqBy(
+          makeOptionsFromArray(
+            result,
+            valueKey,
+            labelKey,
+            getRegistryData.format,
+          ),
+          'value',
         );
 
         if (getRegistryData.mergeWithArray) {

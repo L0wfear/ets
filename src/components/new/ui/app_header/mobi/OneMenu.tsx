@@ -58,7 +58,7 @@ class OneMenu extends React.Component<any, any> {
 
     if (data.noHash) {
       return (
-        <LinkNoHashSecontLvl id={`link-${key}`} href={data.path}>
+        <LinkNoHashSecontLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultSecondLvlMenuMobi>
             <MenuTitleContainer>
               { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
@@ -70,7 +70,7 @@ class OneMenu extends React.Component<any, any> {
     }
 
     return (
-      <LinkSecontLvl id={`link-${key}`} to={`${data.path || ''}`} onClick={this.handleMiddlewareClick}>
+      <LinkSecontLvl id={`link-${key}`} to={`${data.pathFormMenu || data.path || ''}`} onClick={this.handleMiddlewareClick}>
         <DefaultSecondLvlMenuMobi>
           <MenuTitleContainer>
             { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}

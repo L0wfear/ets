@@ -42,7 +42,7 @@ class SecondDocsMenuItem extends React.Component<any, any> {
 
     if (data.noHash) {
       return (
-        <LinkNoHashSecontLvl id={`link-${key}`} href={data.path}>
+        <LinkNoHashSecontLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultSecondLvlMenu>
             <span>{data.title}</span>
           </DefaultSecondLvlMenu>

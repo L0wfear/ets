@@ -94,30 +94,34 @@ class ReportContainer extends React.Component<
     nextProps: IPropsReportContainer,
     prevState: IStateReportContainer,
   ) {
-    const { filterValues } = prevState;
-    const { list } = nextProps;
 
-    return {
-      filterValues: Object.entries(filterValues).reduce(
-        (newObj, [key, data]: any) => {
-          if (list.some((rowData) => key in rowData)) {
-            if (data.type === 'multiselect') {
-              if (list.some((rowData) => {
-                const keyValue = rowData[key];
-                return data.value.includes(keyValue);
-              })) {
+    if (!nextProps.reportDataFetching) {
+      const { filterValues } = prevState;
+      const { list } = nextProps;
+      return {
+        filterValues: Object.entries(filterValues).reduce(
+          (newObj, [key, data]: any) => {
+            if (list.some((rowData) => key in rowData)) {
+              if (data.type === 'multiselect') {
+                if (list.some((rowData) => {
+                  const keyValue = rowData[key];
+                  return data.value.includes(keyValue);
+                })) {
+                  newObj[key] = data;
+                }
+              } else {
                 newObj[key] = data;
               }
-            } else {
-              newObj[key] = data;
             }
-          }
 
-          return newObj;
-        },
-        {},
-      ),
-    };
+            return newObj;
+          },
+          {},
+        ),
+      };
+    }
+
+    return null;
   }
 
   componentDidUpdate(prevProps) {

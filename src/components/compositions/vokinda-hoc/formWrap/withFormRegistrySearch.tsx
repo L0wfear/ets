@@ -16,6 +16,7 @@ type WithFormRegistrySearchConfig = {
   cantCreate?: boolean;                   // может ли форма создать запись
   noCheckDataInRegistryArray?: boolean;   // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   uniqKeyName?: string;                   // имя уникального ключа для формы (см выше)
+  hideWithClose?: string[];
 };
 
 let lasPermissions = {};
@@ -143,10 +144,27 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
           props.setParams({
             [uniqKeyForParams]: null,
           });
+          props.setParamsAndSearch({
+            params: { [uniqKeyForParams]: null },
+            search: (
+              config.hideWithClose
+                ? (
+                  config.hideWithClose.reduce(
+                    (newObj, key) => {
+                      newObj[key] = null;
+
+                      return newObj;
+                    },
+                    {},
+                  )
+                )
+                : {}
+            ),
+          });
 
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
         },
-        [uniqKeyForParams, props.setParams, props.match.params],
+        [uniqKeyForParams, props.setParamsAndSearch, props.match.params, props.searchState],
       );
 
       return element

@@ -54,7 +54,7 @@ class MainMenuItem extends React.Component<any, any> {
 
     if (data.noHash) {
       return (
-        <LinkNoHashFirstLvl id={`link-${key}`} href={data.path}>
+        <LinkNoHashFirstLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultFirstLvlMenu>
             <MenuTitleContainer>
               { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
@@ -66,7 +66,7 @@ class MainMenuItem extends React.Component<any, any> {
     }
 
     return (
-      <LinkFirstLvl id={`link-${key}`} to={`${data.path || ''}`}>
+      <LinkFirstLvl id={`link-${key}`} to={`${data.pathFormMenu || data.path || ''}`}>
         <DefaultFirstLvlMenu>
           <MenuTitleContainer>
             { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}

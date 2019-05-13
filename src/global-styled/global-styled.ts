@@ -126,6 +126,12 @@ export const DisplayFlexAlignCenter = styled.div`
   align-items: center;
 `;
 
+export const DisplayFlexAlignCenterSpaceBetween = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const DisplayFlexAlignCenterFooterForm = styled.div`
   display: flex;
   align-items: center;

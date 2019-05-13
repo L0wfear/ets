@@ -2,6 +2,7 @@ import * as React from 'react';
 import useForm from 'components/new/utils/context/form/useFormData';
 import { Modal } from 'react-bootstrap';
 import { isArray } from 'highcharts';
+import { DefaultHeaderType } from 'components/new/utils/context/@types';
 
 type DefaultModalHeaderProps = {
   formDataKey: string;
@@ -9,8 +10,8 @@ type DefaultModalHeaderProps = {
 
 const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
   (props) => {
-    const formDataHeaderValue = useForm.useFormDataSchemaHeader(props.formDataKey);
-    const IS_CREATING = useForm.useFormDataSchemaIsCreating(props.formDataKey);
+    const formDataHeaderValue = useForm.useFormDataSchemaHeader<any>(props.formDataKey) as DefaultHeaderType;
+    const IS_CREATING = useForm.useFormDataSchemaIsCreating<any>(props.formDataKey);
 
     const title = React.useMemo(
       () => {

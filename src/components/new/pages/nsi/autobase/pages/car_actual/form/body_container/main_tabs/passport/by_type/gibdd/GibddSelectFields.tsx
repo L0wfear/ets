@@ -34,29 +34,16 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
       passport_data,
       passport_data_errors,
       isPermitted,
-
-      page, path,
     } = props;
 
     const {
       disabled,
     } = passport_data;
 
-    const carCategoryOptions = useAutobaseCarCategoryOptions(
-      page, path,
-    );
-
-    const engineTypeOptions = useAutobaseEngineTypeOptions(
-      page, path,
-    );
-
-    const carFuncTypesOptions = useCarTypesOptions(
-      page, path,
-    );
-
-    const countryOptions = useCountryOptions(
-      page, path,
-    );
+    const carCategoryOptionData = useAutobaseCarCategoryOptions();
+    const engineTypeOptionData = useAutobaseEngineTypeOptions();
+    const carFuncTypesOptionData = useCarTypesOptions();
+    const countryOptionData = useCountryOptions();
 
     return (
       <Row>
@@ -84,10 +71,11 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             label="Категория транспортного средства"
             value={passport_data.category_id}
             error={passport_data_errors.category_id}
-            options={carCategoryOptions}
+            options={carCategoryOptionData.options}
             onChange={props.onChange}
             boundKeys="category_id"
             disabled={!isPermitted || disabled}
+            etsIsLoading={carCategoryOptionData.isLoading}
           />
           <ExtField
             type="string"
@@ -121,10 +109,11 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             label="Тип двигателя"
             value={passport_data.engine_type_id}
             error={passport_data_errors.engine_type_id}
-            options={engineTypeOptions}
+            options={engineTypeOptionData.options}
             onChange={props.onChange}
             boundKeys="engine_type_id"
             disabled={!isPermitted || disabled}
+            etsIsLoading={engineTypeOptionData.isLoading}
           />
           <ExtField
             type="number"
@@ -150,10 +139,11 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             label="Страна вывоза автомобиля"
             value={passport_data.exporter_country_id}
             error={passport_data_errors.exporter_country_id}
-            options={countryOptions}
+            options={countryOptionData.options}
             onChange={props.onChange}
             boundKeys="exporter_country_id"
             disabled={!isPermitted || disabled}
+            etsIsLoading={countryOptionData.isLoading}
           />
           <ExtField
             type="string"
@@ -180,10 +170,11 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             label="Тип транспортного средства"
             value={passport_data.func_type_id}
             error={passport_data_errors.func_type_id}
-            options={carFuncTypesOptions}
+            options={carFuncTypesOptionData.options}
             onChange={props.onChange}
             boundKeys="func_type_id"
             disabled={!isPermitted || disabled}
+            etsIsLoading={carFuncTypesOptionData.isLoading}
           />
           <ExtField
             type="string"
@@ -245,10 +236,11 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             label="Страна-изготовитель"
             value={passport_data.origin_country_id}
             error={passport_data_errors.origin_country_id}
-            options={countryOptions}
+            options={countryOptionData.options}
             onChange={props.onChange}
             boundKeys="origin_country_id"
             disabled={!isPermitted || disabled}
+            etsIsLoading={countryOptionData.isLoading}
           />
           <ExtField
             type="string"

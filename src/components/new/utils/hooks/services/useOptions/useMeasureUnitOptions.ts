@@ -1,13 +1,24 @@
+import * as React from 'react';
 import useMeasureUnitList from '../useList/useMeasureUnitList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import useDefaultOptons from './common/useDefaultOptons';
 
 const useMeasureUnitOptions = (page: LoadingMeta['page'], path: LoadingMeta['path']) => {
-  const list = useMeasureUnitList(page, path);
+  const listData = useMeasureUnitList(page, path);
 
-  const options = useDefaultOptons(list);
-
-  return options;
+  const optionData = React.useMemo(
+    () => {
+      return {
+        options: listData.list.map((rowData) => ({
+          value: rowData.id,
+          label: rowData.name,
+          rowData,
+        })),
+        isLoading: listData.isLoading,
+      };
+    },
+    [listData],
+  );
+  return optionData;
 };
 
 export default useMeasureUnitOptions;

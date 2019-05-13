@@ -13,7 +13,7 @@ const ASSIGN_OPTIONS = [
   { value: 'assign_to_available_draft', label: 'Добавить в черновик ПЛ' },
 ];
 
-const WrapExtField = styled(ExtField)`
+const WrapExtField: any = styled(ExtField)`
   max-width: 300px;
   width: 100%;
   text-align: left;

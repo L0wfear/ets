@@ -3,7 +3,7 @@ import { isString, isNumber } from 'lodash';
 export type DefaultSelectOption<V, L, R> = {
   value: V,
   label: L,
-  rowData: Partial<R>,
+  rowData?: Partial<R>,
   [k: string]: any;
 };
 

@@ -22,7 +22,7 @@ export type PropsFuelCardsFormLazy = {
 
 export type StatePropsFuelCards = {
   companyOptions: GetSessionCompanyOptionsAns;
-  fuelTypeOptions: InitialStateSession['appConfig']['enums']['FUEL_TYPE'];
+  fuelTypeOptions: any[];
   userCompanyId: InitialStateSession['userData']['company_id'];
   userStructureId: number | null;
   STRUCTURE_FIELD_VIEW: ReturnType<

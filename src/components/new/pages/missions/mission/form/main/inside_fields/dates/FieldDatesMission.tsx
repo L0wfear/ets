@@ -137,7 +137,7 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
               type="date"
               label={false}
               error={error_date_start}
-              date={date_start}
+              value={date_start}
               disabled={!isPermitted || this.props.disabled}
               onChange={this.handleChangeDateStart}
             />

@@ -3,6 +3,8 @@ import * as PropTypes from 'prop-types';
 import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 import { get } from 'lodash';
+import { EtsPreloaderFieldContainer } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
+import Preloader from 'components/ui/new/preloader/Preloader';
 
 import {
   onChangeSelectLegacy,
@@ -12,6 +14,7 @@ import { SingleValueProps } from 'react-select/lib/components/SingleValue';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
 import { isArray, isNullOrUndefined, isString, isObject } from 'util';
 import { SingleValue } from 'components/ui/input/ReactSelect/styled/styled';
+import { DivRelative } from 'global-styled/global-styled';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -24,6 +27,7 @@ export default class ReactSelect extends React.Component<any, any> {
   static defaultProps = {
     legacy: true,
     clearable: true,
+    etsIsLoading: false,
   };
 
   static get propTypes() {
@@ -36,6 +40,7 @@ export default class ReactSelect extends React.Component<any, any> {
       onChange: PropTypes.func,
       fieldName: PropTypes.string,
       selectType: PropTypes.string,
+      etsIsLoading: PropTypes.bool,
     };
   }
   constructor(props) {
@@ -201,6 +206,7 @@ export default class ReactSelect extends React.Component<any, any> {
       clearable,
       legacy,
       multi,
+      etsIsLoading,
       ...props
     } = this.props;
 
@@ -222,27 +228,37 @@ export default class ReactSelect extends React.Component<any, any> {
     const id = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-container` : undefined;
 
     return (
-      <Select
-        {...props}
-        id={id}
-        filterOption={this.filterOption}
-        instanceId={instanceId}
-        isClearable={clearable}
-        isMulti={multi}
-        value={value}
-        className={cx(
-          'react-select',
-          className,
-        )}
-        classNamePrefix="react-select"
-        onChange={this.handleChange}
-        options={sortedOptions}
-        placeholder={placeholder}
-        noOptionsMessage={this.noOptionsMessage}
-        components={this.state.components}
-        isDisabled={disabled}
-        menuIsOpen={get(openMenuIds, id, undefined)}
-      />
+      <DivRelative>
+        <Select
+          {...props}
+          id={id}
+          filterOption={this.filterOption}
+          instanceId={instanceId}
+          isClearable={clearable}
+          isMulti={multi}
+          value={value}
+          className={cx(
+            'react-select',
+            className,
+          )}
+          classNamePrefix="react-select"
+          onChange={this.handleChange}
+          options={sortedOptions}
+          placeholder={etsIsLoading ? 'Загрузка...' : placeholder}
+          noOptionsMessage={this.noOptionsMessage}
+          components={this.state.components}
+          isDisabled={disabled}
+          menuIsOpen={get(openMenuIds, id, undefined)}
+        />
+        {
+          etsIsLoading
+            && (
+              <EtsPreloaderFieldContainer>
+                <Preloader typePreloader="field" />
+              </EtsPreloaderFieldContainer>
+            )
+        }
+      </DivRelative>
     );
   }
 }

@@ -139,7 +139,7 @@ const NormForm: React.FC<PropsNorm> = (props) => {
           <Col md={3}>
             <ExtField
               id="season_id"
-              type="string"
+              type="select"
               label="Сезон"
               value={state.season_id}
               options={SEASONS}

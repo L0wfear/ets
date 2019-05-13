@@ -78,7 +78,6 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
                   label="Не пройдена проверка фактической работы техники с использованием ГЛОНАСС"
                   value={state.data.not_passed_verification_glonass}
                   error={errors.data.not_passed_verification_glonass}
-                  options={factStatusOptions}
                   onChange={handleChangeDataBoolean}
                   boundKeys="not_passed_verification_glonass"
                   className="checkbox-input flex-reverse"

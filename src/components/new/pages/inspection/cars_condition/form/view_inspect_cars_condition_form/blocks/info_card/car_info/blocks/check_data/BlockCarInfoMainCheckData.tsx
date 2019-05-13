@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { factStatusOptions, stateExploitationOptions } from './options';
+import { stateExploitationOptions } from './options';
 import { get } from 'lodash';
 import IAVisibleWarning from 'components/new/pages/inspection/autobase/components/vsible_warning/IAVisibleWarning';
 import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataDocs, filedToCheckDefectDataOtherSecond, filedToCheckDefectDataOtherFirst } from './filedToCheckCarInfoMainCheckData';
@@ -66,7 +66,6 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
           label="Отсутствие подтверждающих <статус> документов"
           value={state.data.no_status_docs}
           error={errors.data.no_status_docs}
-          options={factStatusOptions}
           onChange={handleChangeDataBoolean}
           boundKeys="no_status_docs"
           className="checkbox-input flex-reverse"

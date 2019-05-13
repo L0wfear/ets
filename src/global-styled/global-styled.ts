@@ -5,6 +5,10 @@ export type EtsPageWrapProps = {
   autoHeight?: boolean;
 };
 
+export const DivRelative = styled.div`
+  position: relative;
+`;
+
 export const DivNone = styled.div`
   display: none;
 `;

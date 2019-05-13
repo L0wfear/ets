@@ -1,7 +1,7 @@
 export type PropsCarFieldBytextInput = {
   carFilterText: string;
   canFocusOnCar: boolean;
-  changeCarFilterText: React.ChangeEvent<HTMLInputElement>;
+  changeCarFilterText: any;
   resetCarFilterText: React.MouseEventHandler<any>;
   handleFocusOnCar: React.MouseEventHandler<HTMLDivElement>;
 };

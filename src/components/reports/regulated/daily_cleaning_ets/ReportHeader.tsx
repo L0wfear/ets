@@ -144,7 +144,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             />
           </Col>
           <Col md={3} className={'vehicle-types-container'}>
-            <ExtField type="select"
+            <ExtField
+              type="select"
               label="Типы ТС"
               multi
               options={CAR_TYPES}

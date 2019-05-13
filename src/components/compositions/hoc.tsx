@@ -7,7 +7,7 @@ type TypePropsOnChangeWithKeys = {
   [key: string]: any;
 };
 
-export const onChangeWithKeys = compose(
+export const onChangeWithKeys = compose<any, any>(
   shouldUpdate((props: TypePropsOnChangeWithKeys, nextProps: TypePropsOnChangeWithKeys) => Object.entries(nextProps).some(([key, value]) => {
     if (key === 'boundKeys') {
       const { boundKeys: new_boundKeys } = nextProps;

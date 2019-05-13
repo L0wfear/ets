@@ -25,7 +25,7 @@ class FieldIsMain extends React.PureComponent<PropsFieldIsMain, {}> {
           label="Основной маршрут"
           value={props.value}
           onChange={this.handleChange}
-          dispabled={props.disabled}
+          disabled={props.disabled}
           className="checkbox-input flex-reverse"
         />
       </Flex>

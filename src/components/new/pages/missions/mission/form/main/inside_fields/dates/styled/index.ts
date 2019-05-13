@@ -20,7 +20,7 @@ export const DropdownDateEnd = styled(Dropdown)`
     height: 38px;
   }
 `;
-export const ExtFieldDateStartWrap = styled(ExtField)`
+export const ExtFieldDateStartWrap: any = styled(ExtField)`
   width: 100%;
 `;
 

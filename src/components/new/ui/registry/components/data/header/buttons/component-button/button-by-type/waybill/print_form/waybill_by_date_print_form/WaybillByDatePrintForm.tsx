@@ -143,10 +143,8 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
                       label="Дата"
                       value={state.date}
                       error={errors.date}
-                      clearable={false}
                       onChange={props.handleChange}
                       boundKeys="date"
-                      makeGoodFormat
                     />
                 )
               }

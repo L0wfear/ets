@@ -51,7 +51,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staff_drivers}
               onChange={handleChange}
               boundKeys="staff_drivers"
-              erorr={errors.staff_drivers}
+              error={errors.staff_drivers}
               disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
@@ -63,7 +63,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staff_mechanics}
               onChange={handleChange}
               boundKeys="staff_mechanics"
-              erorr={errors.staff_mechanics}
+              error={errors.staff_mechanics}
               disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
@@ -80,7 +80,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.list_drivers}
               onChange={handleChange}
               boundKeys="list_drivers"
-              erorr={errors.list_drivers}
+              error={errors.list_drivers}
               disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
@@ -92,7 +92,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.list_mechanics}
               onChange={handleChange}
               boundKeys="list_mechanics"
-              erorr={errors.list_mechanics}
+              error={errors.list_mechanics}
               disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
@@ -109,7 +109,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staffing_drivers}
               onChange={handleChange}
               boundKeys="staffing_drivers"
-              erorr={errors.staffing_drivers}
+              error={errors.staffing_drivers}
               disabled={!isActiveInspect || !isPermitted}
             />
           </Col>
@@ -121,7 +121,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               value={state.staffing_mechanics}
               onChange={handleChange}
               boundKeys="staffing_mechanics"
-              erorr={errors.staffing_mechanics}
+              error={errors.staffing_mechanics}
               disabled={!isActiveInspect || !isPermitted}
             />
           </Col>

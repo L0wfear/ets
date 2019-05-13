@@ -17,14 +17,16 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
       fieldData: { title, clearable },
     } = props;
 
-    const page = useForm.useFormDataSchemaPage<any>(props.formDataKey);
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<any>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
 
-    const options = useMeasureUnitOptions(page, path);
+    const {
+      isLoading,
+      options,
+    } = useMeasureUnitOptions('', '');
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -46,6 +48,8 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
           options={options}
           onChange={handleChangeWrap}
           disabled={!isPermitted}
+
+          etsIsLoading={isLoading}
         />
       ),
       [path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],

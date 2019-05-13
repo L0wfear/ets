@@ -50,7 +50,7 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           valueKey: 'monitoring_kind',
           labelKey: 'monitoring_kind_text',
           type: 'multiselect',
-          title: 'Вид мониторинга',
+          title: 'Вид проверки',
         },
         {
           valueKey: 'status',
@@ -112,7 +112,7 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           },
           {
             key: 'monitoring_kind_text',
-            title: 'Вид мониторинга',
+            title: 'Вид проверки',
             width: 200,
           },
           {

@@ -25,7 +25,7 @@ export const promiseGetTracksCaching = async (payload) => {
     version,
     gps_code,
     from_dt: makeUnixTime(date_start),
-    to_dt: makeUnixTime(date_end),
+    to_dt: date_end ? makeUnixTime(date_end) + 86340 : makeUnixTime(date_end), // <<< исправить
     sensors: 1,
   };
 

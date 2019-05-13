@@ -61,7 +61,9 @@ export const actionGetAndSetInStoreGeozoneMunicipalFacility: any = (
   dispatch(actionSetGeozoneMunicipalFacility(data));
 
   return {
-    geozoneMunicipalFacility: data,
+    geozoneMunicipalFacility: {
+      ...data,
+    },
   };
 };
 

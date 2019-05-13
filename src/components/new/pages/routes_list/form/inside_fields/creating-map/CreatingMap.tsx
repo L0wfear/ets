@@ -72,7 +72,7 @@ class CreatingMap extends React.PureComponent<
     const { object_list, type } = nextProps;
     let changeObj = null;
 
-    if (object_list !== prevState.object_list) {
+    if (object_list !== prevState.object_list || nextProps.geozone_municipal_facility_by_id !== prevState.geozone_municipal_facility_by_id) {
       const { geozone_municipal_facility_by_id } = mergeStateFromObjectList(
         object_list,
         prevState.geozone_municipal_facility_by_id,
@@ -183,7 +183,6 @@ class CreatingMap extends React.PureComponent<
       if (typeData) {
         const resolve = await this.props.actionGetAndSetInStoreGeozoneMunicipalFacility(
           {
-            // Убрать await?
             municipal_facility_id: props.municipal_facility_id,
             technical_operation_id: props.technical_operation_id,
             object_type_id: typeData.id,
@@ -192,7 +191,7 @@ class CreatingMap extends React.PureComponent<
         );
         const geozoneMunicipalFacility = get(
           resolve,
-          'geozoneMunicipalFacility.geozoneMunicipalFacility',
+          'geozoneMunicipalFacility',
           someUniq.initialState.geozoneMunicipalFacility,
         );
 

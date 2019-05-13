@@ -27,10 +27,8 @@ export const promiseGetGeozoneMunicipalFacility = async (payload) => {
 
   return {
     data: {
-      geozoneMunicipalFacility: {
-        list: geozone_municipal_facility,
-        byId: keyBy(geozone_municipal_facility, 'id'),
-      },
+      list: geozone_municipal_facility,
+      byId: keyBy(geozone_municipal_facility, 'id'),
     },
   };
 };

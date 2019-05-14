@@ -12,7 +12,7 @@ interface IFormState {
   type_id?: number;
 }
 interface ITechnicalOperation {
-  car_func_types: { id: number }[];
+  car_func_types: { id: number, asuods_id: number }[];
   id: number;
   is_new: boolean;
   name: string;
@@ -33,7 +33,7 @@ type TMakeTechnicalOperationOptionfFromWaybill = (technicalOperationsList: ITech
  */
 export const makeTechnicalOperationOptionfFromWaybill: TMakeTechnicalOperationOptionfFromWaybill = (technicalOperationsList, { type_id }) =>
   technicalOperationsList.reduce((newArr, technicalOperation) => {
-    if (technicalOperation.is_new && technicalOperation.car_func_types.find(({ id }) => id === type_id)) {
+    if (technicalOperation.is_new && technicalOperation.car_func_types.find(({ asuods_id }) => asuods_id === type_id)) {
       return [
         ...newArr,
         { value: technicalOperation.id, label: technicalOperation.name },

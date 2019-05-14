@@ -135,6 +135,11 @@ class ReportContainer extends React.Component<
     const searchObject = queryString.parse(search);
     const searchNextxObject = queryString.parse(search_next);
 
+    if (this.props.setDateRange) {
+      const {level, ...dateRange} = searchObject;
+      this.props.setDateRange(dateRange);
+    }
+
     // Если урл поменялся и он не пустой, то делаем запрос данных.
     if (!isEqual(searchObject, searchNextxObject)) {
       if (Object.keys(searchNextxObject).length > 0) {

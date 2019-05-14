@@ -84,6 +84,7 @@ const TrTdServiceFilesf: React.FC<TrTdServiceFilesfProps> = React.memo(
           error={false}
           onChange={handleChange}
           disabled={!props.isPermitted}
+          withDateTime
           askBefoeRemove
         />
       </EtsTbodyTrTd>

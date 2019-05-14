@@ -27,4 +27,5 @@ export interface IFileWrapper {
   name: string;
   url?: string;
   base64?: string;
+  created_at?: string;
 }

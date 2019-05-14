@@ -7,8 +7,10 @@ import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
 
-import { DivNone } from 'global-styled/global-styled';
+import { DivNone, DisplayFlexAlignCenter, DisplayFlexAlignCenterSpaceBetween } from 'global-styled/global-styled';
 import { ButtonRemoveFile } from './styled';
+import { get } from 'lodash';
+import { createValidDateHM } from 'utils/dates';
 
 const FileListItem: React.FC<any> = React.memo(
   (props) => {
@@ -32,16 +34,30 @@ const FileListItem: React.FC<any> = React.memo(
       [props.onFileRemove, props.index, props.askBefoeRemove],
     );
 
+    const createdAt = get(props, 'created_at', null);
+    const withDateTime = get(props, 'withDateTime', false);
+
     return (
       <Col style={{ marginBottom: 10 }} md={12}>
-        <ButtonRemoveFile
-          bsClass="close"
-          bsSize="xsmall"
-          onClick={onFileRemove}
-          disabled={props.disabled}
-          children="×"
-        />
-        <a href={props.url} target="_blanc">{props.name}</a>
+        <DisplayFlexAlignCenterSpaceBetween>
+          <DisplayFlexAlignCenter>
+            <ButtonRemoveFile
+              bsClass="close"
+              bsSize="xsmall"
+              onClick={onFileRemove}
+              disabled={props.disabled}
+              children="×"
+            />
+            <a href={props.url} target="_blanc">{props.name}</a>
+          </DisplayFlexAlignCenter>
+          {
+            (createdAt && withDateTime) ? (
+              <div>
+                {createValidDateHM(createdAt)}
+              </div>
+            ) : (<DivNone />)
+          }
+        </DisplayFlexAlignCenterSpaceBetween>
       </Col>
     );
   },
@@ -76,9 +92,10 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       name: 'Ошибка на сервере. Невалидный файл.',
     };
 
+    const withDateTime = get(this.props, 'withDateTime', false); // флаг для отображения даты и времени
     const fileList = value
       .map((file) => file === null ? serverErrorFile : file)
-      .map(({ name = 'Без названия', url, base64 } = serverErrorFile, i) =>
+      .map(({ name = 'Без названия', url, base64, created_at } = serverErrorFile, i) =>
         <FileListItem
           key={i}
           index={i}
@@ -87,6 +104,8 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           onFileRemove={this.handleFileRemove}
           disabled={this.props.disabled}
           askBefoeRemove={this.props.askBefoeRemove}
+          created_at={created_at}
+          withDateTime={withDateTime}
         />,
       );
 

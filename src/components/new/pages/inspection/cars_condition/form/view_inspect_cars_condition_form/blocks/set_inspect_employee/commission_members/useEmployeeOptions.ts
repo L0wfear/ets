@@ -8,16 +8,17 @@ type UseEmployeeOptionsAns = DefaultSelectOption<Employee['id'], Employee['full_
 
 type UseEmployeeOptions = (
   loadAction: HandleThunkActionCreator<typeof employeeEmployeeGetSetEmployee>,
+  payload: any,
   page: string,
   path?: string,
 ) => UseEmployeeOptionsAns;
 
-const useEmployeeOptions: UseEmployeeOptions = (loadAction, page, path) => {
+const useEmployeeOptions: UseEmployeeOptions = (loadAction, payload, page, path) => {
   const [options, setOptions] = React.useState<UseEmployeeOptionsAns>([]);
 
   React.useEffect(
     () => {
-      loadAction({}, { page, path }).then(
+      loadAction(payload ? payload : {}, { page, path }).then(
         ({ payload: { data } }) => (
           setOptions(
             data.map((rowData) => ({

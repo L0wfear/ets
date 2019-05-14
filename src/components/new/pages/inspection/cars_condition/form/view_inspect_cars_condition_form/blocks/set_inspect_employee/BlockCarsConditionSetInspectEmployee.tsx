@@ -16,6 +16,7 @@ type BlockCarsConditionSetInspectEmployeeProps = {
   close_employee_fio: InspectCarsCondition['close_employee_fio'];
   close_employee_position: InspectCarsCondition['close_employee_position'];
   commission_members: InspectCarsCondition['commission_members'];
+  company_id: InspectCarsCondition['company_id'];
 
   agents_from_gbu: InspectCarsCondition['agents_from_gbu'];
   company_name: InspectCarsCondition['company_name'];
@@ -54,6 +55,7 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
           isPermittedToChange={isPermittedToChange}
 
           commission_members={props.commission_members}
+          company_id={props.company_id}
           handleChange={props.handleChange}
           page={props.page}
           path={props.path}

@@ -166,6 +166,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               close_employee_assignment_date_start={state.close_employee_assignment_date_start}
 
               commission_members={state.commission_members}
+              company_id={state.company_id}
               agents_from_gbu={state.agents_from_gbu}
               company_name={state.company_name}
               resolve_to={state.resolve_to}

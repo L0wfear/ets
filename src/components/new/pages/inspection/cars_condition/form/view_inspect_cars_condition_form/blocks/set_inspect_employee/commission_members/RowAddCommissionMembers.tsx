@@ -18,6 +18,7 @@ type RowAddCommissionMembersOwnProps = {
   isPermitted: boolean;
   handleAddChangeCommissionMembers: (commission_members: ValuesOf<InspectCarsCondition['commission_members']>) => any;
   commission_members: InspectCarsCondition['commission_members'];
+  company_id: InspectCarsCondition['company_id']
 
   page: string;
   path?: string;
@@ -50,6 +51,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
 
     const options = useEmployeeOptions(
       props.employeeEmployeeGetSetEmployee,
+      { company_id: props.company_id },
       props.page,
     );
 

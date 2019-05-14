@@ -35,6 +35,7 @@ const FileListItem: React.FC<any> = React.memo(
     );
 
     const createdAt = get(props, 'created_at', null);
+    const withDateTime = get(props, 'withDateTime', false);
 
     return (
       <Col style={{ marginBottom: 10 }} md={12}>
@@ -50,7 +51,7 @@ const FileListItem: React.FC<any> = React.memo(
             <a href={props.url} target="_blanc">{props.name}</a>
           </DisplayFlexAlignCenter>
           {
-            createdAt ? (
+            (createdAt && withDateTime) ? (
               <div>
                 {createValidDateHM(createdAt)}
               </div>
@@ -91,6 +92,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       name: 'Ошибка на сервере. Невалидный файл.',
     };
 
+    const withDateTime = get(this.props, 'withDateTime', false); // флаг для отображения даты и времени
     const fileList = value
       .map((file) => file === null ? serverErrorFile : file)
       .map(({ name = 'Без названия', url, base64, created_at } = serverErrorFile, i) =>
@@ -103,6 +105,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
           disabled={this.props.disabled}
           askBefoeRemove={this.props.askBefoeRemove}
           created_at={created_at}
+          withDateTime={withDateTime}
         />,
       );
 

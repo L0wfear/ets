@@ -90,9 +90,10 @@ export const promiseCloseInspection = async (
   const {
     data,
     agents_from_gbu,
-    commission_members,
     resolve_to,
   } = payload;
+
+  const commission_members = get(payload, 'commission_members', []).filter((el) => el.id !== 0); // <<< удаляем текущего пользака из членов комисии, попытаться договорится с беком что бы не писать такую дичь
 
   const {
     head_balance_holder_base_fio,

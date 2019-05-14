@@ -21,7 +21,7 @@ const makePermissionOnCheck = (config, props) => {
     return [`${props.entity}.${config.type}`];
   }
 
-  const permissionsOnCheck = config.permissions || props.permissions;
+  const permissionsOnCheck = config.permissions || props.permissions || true;
 
   return isArray(permissionsOnCheck)
     ? permissionsOnCheck
@@ -37,7 +37,7 @@ export const validatePermissions = (permissions: string | string[] | boolean, pe
   }
 
   return permissions.some((permission) => (
-    permissionsSet.has(permission)
+    isBoolean(permission) ? permission : permissionsSet.has(permission)
   ));
 };
 

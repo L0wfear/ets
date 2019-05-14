@@ -1779,14 +1779,18 @@ class WaybillForm extends UNSAFE_Form {
                             />
                           </Col>
                           <Col md={4}>
-                            <ExtField
-                              id="fuel-end"
-                              type="number"
-                              label="Возврат по таксировке, л"
-                              error={errors.fuel_end}
-                              value={state.fuel_end}
-                              disabled
-                            />
+                            {!(IS_DRAFT || IS_CREATING) ? (
+                              <ExtField
+                                id="fuel-end"
+                                type="number"
+                                label="Возврат по таксировке, л"
+                                error={errors.fuel_end}
+                                value={state.fuel_end}
+                                disabled
+                              />
+                            ) : (
+                              <DivNone />
+                            )}
                           </Col>
                           <Col md={4}>
                             <ExtField
@@ -1830,6 +1834,7 @@ class WaybillForm extends UNSAFE_Form {
                             'car_refill',
                             state.car_refill.map(() => ({})),
                           )} // временно
+                          title="Заправка топлива"
                           handleChange={this.handleChangeCarReFill}
                           fuel_given={state.fuel_given}
                           IS_DRAFT_OR_ACTIVE={
@@ -1999,13 +2004,17 @@ class WaybillForm extends UNSAFE_Form {
                                   />
                                 </Col>
                                 <Col md={4}>
-                                  <ExtField
-                                    id="equipment-fuel-end"
-                                    type="number"
-                                    label="Возврат по таксировке, л"
-                                    value={state.equipment_fuel_end}
-                                    disabled
-                                  />
+                                  {!(IS_DRAFT || IS_CREATING) ? (
+                                    <ExtField
+                                      id="equipment-fuel-end"
+                                      type="number"
+                                      label="Возврат по таксировке, л"
+                                      value={state.equipment_fuel_end}
+                                      disabled
+                                    />
+                                  ) : (
+                                    <DivNone />
+                                  )}
                                 </Col>
                                 <Col md={4}>
                                   <ExtField
@@ -2051,6 +2060,7 @@ class WaybillForm extends UNSAFE_Form {
                                   'equipment_refill',
                                   state.equipment_refill.map(() => ({})),
                                 )} // временно
+                                title="Заправка топлива"
                                 handleChange={this.handleChangeEquipmentRefill}
                                 fuel_given={state.equipment_fuel_given}
                                 IS_DRAFT_OR_ACTIVE={

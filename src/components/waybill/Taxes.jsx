@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'components/ui/table/Table';
+import Table from 'components/waybill/Table';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
 import * as Button from 'react-bootstrap/lib/Button';
 
@@ -8,8 +8,12 @@ import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/ui/Div';
 import { isEmpty } from 'utils/functions';
-import cx from 'classnames';
 import _, { get } from 'lodash';
+import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
+import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { Row } from 'react-bootstrap';
+import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 
 /**
  * Компонент таксировки ТС
@@ -25,7 +29,7 @@ export default class Taxes extends React.Component {
       readOnly: PropTypes.bool,
       hidden: PropTypes.bool,
       correctionRate: PropTypes.number,
-      baseFactValue: PropTypes.string,
+      baseFactValue: PropTypes.any,
       fuelRates: PropTypes.array,
       onChange: PropTypes.func.isRequired,
     };
@@ -84,24 +88,29 @@ export default class Taxes extends React.Component {
     this.tableCaptions = [
       {
         value: 'Операция',
-        cssClassName: 'min-width250',
+        width: 250,
       },
       {
         value: 'Ед. измерения',
+        width: 100,
       },
       {
         value: 'Норма',
+        width: 75,
       },
       {
         value: 'Поправочный коэффициент',
+        width: 125,
       },
       {
         value: `Значение (${
           type === 'odometr' ? 'км | м/ч | раз | час' : 'м/ч | раз | час'
         })`,
+        width: 150,
       },
       {
         value: 'Результат (л)',
+        width: 125,
       },
     ];
 
@@ -318,39 +327,43 @@ export default class Taxes extends React.Component {
     const finalFactValueEqualsBaseValue
       = parseFloat(baseFactValue).toFixed(3)
       === parseFloat(finalFactValue).toFixed(3);
-    const finalFactValueClassName = cx({
-      'taxes-result-label-positive': finalFactValueEqualsBaseValue,
-      'taxes-result-label-negative': !finalFactValueEqualsBaseValue,
-    });
 
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
-        <Div className="some-header">
-          <h4>{title}</h4>
-          <Div hidden={fuelRates.length || hasTaxes}>
-            <h5>{noDataMessage}</h5>
-          </Div>
-          <Div
-            className="waybills-buttons"
-            hidden={this.props.readOnly || !fuelRates.length}>
-            <Button
-              id="add-operation"
-              bsSize="xsmall"
-              onClick={this.addOperation}
-              disabled={this.state.operations.length === taxes.length}>
-              Добавить операцию
-            </Button>
-            <Button
-              id="remove-operation"
-              bsSize="xsmall"
-              disabled={
-                this.state.selectedOperation === null || taxes.length === 0
-              }
-              onClick={this.removeOperation}>
-              Удалить операцию
-            </Button>
-          </Div>
-        </Div>
+        <Row>
+          <EtsHeaderContainer>
+            <EtsHeaderTitle>{title}</EtsHeaderTitle>
+            <EtsButtonsContainer>
+              {!(this.props.readOnly || !fuelRates.length) && (
+                <React.Fragment>
+                  <Button
+                    id="add-operation"
+                    onClick={this.addOperation}
+                    disabled={this.state.operations.length === taxes.length}>
+                    Добавить операцию
+                  </Button>
+                  <Button
+                    id="remove-operation"
+                    disabled={
+                      this.state.selectedOperation === null
+                      || taxes.length === 0
+                    }
+                    onClick={this.removeOperation}>
+                    Удалить операцию
+                  </Button>
+                </React.Fragment>
+              )}
+            </EtsButtonsContainer>
+          </EtsHeaderContainer>
+        </Row>
+        {!(fuelRates.length || !!hasTaxes) && (
+          <Row>
+            <EtsHeaderContainer>
+              <EtsHeaderTitle>{noDataMessage}</EtsHeaderTitle>
+              <EtsButtonsContainer />
+            </EtsHeaderContainer>
+          </Row>
+        )}
         <Div hidden={!hasTaxes}>
           <Table
             title="Расчет топлива по норме"
@@ -358,21 +371,32 @@ export default class Taxes extends React.Component {
             data={taxes}
             tableCols={this.tableCols}
             pageSize={10}
-            usePagination={false}
             cellRenderers={this.tableCellRenderers}
             onRowSelected={
               !this.props.readOnly ? this.selectOperation : undefined
             }
           />
         </Div>
-        <Div className="taxes-result" hidden={!hasTaxes}>
-          <div className="taxes-result-label">Итого</div>
-          <div className="taxes-result-label">
-            <span className={finalFactValueClassName}>{finalFactValue}</span>
-            <span> (км | м/ч)</span>
-          </div>
-          <div className="taxes-result-value">{finalResult} л.</div>
-        </Div>
+        {Boolean(hasTaxes) && (
+          <FooterEnd margin={30}>
+            <div>
+              <b>{'Итого '}</b>
+            </div>
+            <div>
+              <b>
+                {!finalFactValueEqualsBaseValue ? (
+                  <SpanRed>{finalFactValue}</SpanRed>
+                ) : (
+                  <SpanGreen>{finalFactValue}</SpanGreen>
+                )}
+                <span> (км | м/ч)</span>
+              </b>
+            </div>
+            <div>
+              <b>{finalResult} л</b>
+            </div>
+          </FooterEnd>
+        )}
       </Div>
     );
   }

@@ -12,6 +12,7 @@ type CommissionMembersProps = {
 
   isPermittedToChange: boolean;
   commission_members: InspectCarsCondition['commission_members'];
+  company_id: InspectCarsCondition['company_id'];
   handleChange: ViewInspectCarsConditionProps['handleChange'];
 
   page: string;
@@ -73,6 +74,7 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
               isPermitted={props.isPermittedToChange}
               handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
               commission_members={props.commission_members}
+              company_id={props.company_id}
 
               page={props.page}
               path={props.path}

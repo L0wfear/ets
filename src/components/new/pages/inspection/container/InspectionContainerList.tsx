@@ -60,7 +60,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         backdrop="static"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Карточка ёмкости</Modal.Title>
+          <Modal.Title>Карточка емкости</Modal.Title>
         </Modal.Header>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <Row>
@@ -104,6 +104,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
           ) : (
             <DivNone />
           )}
+          <Button onClick={this.props.hideWithoutChanges}>Отмена</Button>
         </Modal.Footer>
       </EtsModal>
     );

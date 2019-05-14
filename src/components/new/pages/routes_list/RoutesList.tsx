@@ -194,6 +194,19 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
     } else {
       this.refreshRoutes();
     }
+
+    const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+    if (document) {
+      document.title = `${etsName} Реестр маршрутов`;
+    }
+  }
+
+  componentWillUnmount() {
+    const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+
+    if (document) {
+      document.title = etsName;
+    }
   }
 
   onFormHide = (isSubmitted, route) => {

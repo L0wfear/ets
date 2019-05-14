@@ -55,6 +55,23 @@ class Analytics extends React.Component {
 
   componentDidMount() {
     this.props.actionGetAndSetInStoreCompany({}, { page });
+
+    const etsName = __DEVELOPMENT__
+      ? `__ETS::${process.env.STAND.toUpperCase()}__`
+      : 'ЕТС';
+    if (document) {
+      document.title = `${etsName} Аналитика`;
+    }
+  }
+
+  componentWillUnmount() {
+    const etsName = __DEVELOPMENT__
+      ? `__ETS::${process.env.STAND.toUpperCase()}__`
+      : 'ЕТС';
+
+    if (document) {
+      document.title = etsName;
+    }
   }
 
   handleSubmit() {

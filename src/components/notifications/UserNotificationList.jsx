@@ -32,6 +32,13 @@ import { compose } from 'recompose';
 })
 class UserNotificationList extends UNSAFE_CheckableElementsList {
   async init() {
+    const etsName = __DEVELOPMENT__
+      ? `__ETS::${process.env.STAND.toUpperCase()}__`
+      : 'ЕТС';
+    if (document) {
+      document.title = `${etsName} Уведомления пользователей`;
+    }
+
     try {
       await Promise.all([
         this.props.getNotifications(),
@@ -42,6 +49,16 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
     }
 
     this.updateCounterNotify();
+  }
+
+  componentWillUnmount() {
+    const etsName = __DEVELOPMENT__
+      ? `__ETS::${process.env.STAND.toUpperCase()}__`
+      : 'ЕТС';
+
+    if (document) {
+      document.title = etsName;
+    }
   }
 
   updateCounterNotify() {

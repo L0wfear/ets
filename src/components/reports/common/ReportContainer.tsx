@@ -88,6 +88,21 @@ class ReportContainer extends React.Component<
     } else {
       this.getTableMetaInfo();
     }
+
+    if (this.props.title) {
+      const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+      if (document) {
+        document.title = `${etsName} ${this.props.title}`;
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+
+    if (document) {
+      document.title = etsName;
+    }
   }
 
   static getDerivedStateFromProps(

@@ -68,23 +68,35 @@ class OrderList extends React.Component<any, any> {
 
     this.props
       .getOrders(newPartPageOptions)
-      .then(({ payload: { OrdersList } }) => {
-        if (!isNaN(outerIdFax)) {
-          const selectedElementOrder = OrdersList.find(
-            ({ id }) => id === outerIdFax,
-          );
+      .then(
+        ({ payload: { OrdersList } }) => {
+          if (!isNaN(outerIdFax)) {
+            const selectedElementOrder = OrdersList.find(
+              ({ id }) => id === outerIdFax,
+            );
 
-          if (selectedElementOrder) {
-            this.props.setSelectedElementOrder(selectedElementOrder);
+            if (selectedElementOrder) {
+              this.props.setSelectedElementOrder(selectedElementOrder);
+            }
+
+            this.props.history.replace('/orders');
           }
+        },
+      );
 
-          this.props.history.replace('/orders');
-        }
-      });
+    const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+    if (document) {
+      document.title = `${etsName} Реестр централизованных заданий `;
+    }
   }
 
   componentWillUnmount() {
     this.props.resetOrder();
+    const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+
+    if (document) {
+      document.title = etsName;
+    }
   }
 
   render() {

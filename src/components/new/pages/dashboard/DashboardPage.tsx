@@ -15,6 +15,21 @@ const page = 'dashboard';
 
 const DashboardPage: React.FC<{}> = React.memo(
   () => {
+    React.useLayoutEffect(
+      () => {
+        const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+        if (document) {
+          document.title = `${etsName} Рабочий стол`;
+        }
+
+        return () => {
+          if (document) {
+            document.title = etsName;
+          }
+        };
+      },
+    );
+
     return (
       <DashboardPageContainer>
         <DashboardTime page={page} />

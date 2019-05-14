@@ -28,23 +28,32 @@ type PropsMonitorPage = {
   resetMonitorPageState: any;
 };
 
-type StateMonitorPage = {
+const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
+  (props) => {
+    React.useEffect(
+      () => {
+        props.loadCarActualIndex();
+        props.loadGeozonesOdhMkad();
+        props.getCompany();
 
-};
+        return () => props.resetMonitorPageState();
+      },
+      [],
+    );
+    React.useLayoutEffect(
+      () => {
+        const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+        if (document) {
+          document.title = `${etsName} Карта`;
+        }
 
-class MonitorPage extends React.Component<PropsMonitorPage, StateMonitorPage> {
-  componentDidMount() {
-    this.props.loadCarActualIndex();
-    this.props.loadGeozonesOdhMkad();
-    this.props.getCompany();
-  }
-
-  componentWillUnmount() {
-    this.props.resetMonitorPageState();
-  }
-
-  render() {
-    const { props } = this;
+        return () => {
+          if (document) {
+            document.title = etsName;
+          }
+        };
+      },
+    );
 
     return (
       props.token ?
@@ -55,8 +64,8 @@ class MonitorPage extends React.Component<PropsMonitorPage, StateMonitorPage> {
       :
         <div>загрузка...</div>
     );
-  }
-}
+  },
+);
 
 const mapStateToProps = (state) => ({
   token: state.session.token,

@@ -17,7 +17,15 @@ export const DivGreen = styled.div`
   color: green;
 `;
 
+export const SpanGreen = styled.span`
+  color: green;
+`;
+
 export const DivRed = styled.div`
+  color: red;
+`;
+
+export const SpanRed = styled.span`
   color: red;
 `;
 
@@ -143,12 +151,12 @@ export const DisplayFlexAlignCenterFooterForm = styled.div`
   width: 100%;
 `;
 
-export const FooterEnd = styled.div`
+export const FooterEnd = styled.div<{ margin?: number }>`
   display: flex;
   justify-content: flex-end;
 
   &>* {
-    margin-right: 10px;
+    margin-right: ${({ margin }) => `${margin || 10}px`};
 
     &:last-child {
       margin-right: 0;

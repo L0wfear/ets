@@ -137,7 +137,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
         />
         <DisplayFlexAlignCenterFooterForm>
           {
-            props.fuel_given || props.fuel_given === 0
+            Boolean(props.array) && Boolean(props.array.length)
               ? (
                 <span>{`Итого ${props.fuel_given.toFixed(3)}`}</span>
               )

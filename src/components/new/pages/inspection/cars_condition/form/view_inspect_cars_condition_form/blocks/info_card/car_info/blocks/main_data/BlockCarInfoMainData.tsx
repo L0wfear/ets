@@ -4,7 +4,6 @@ import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { Row, Col } from 'react-bootstrap';
 import { makeDate, makeTime } from 'utils/dates';
-import { statusOptions } from './options';
 import { DivNone } from 'global-styled/global-styled';
 import FieldCarsConditionsCarMarka from './inside_fields/marka/FieldCarsConditionsCarMarka';
 import FieldCarsConditionsCarModel from './inside_fields/model/FieldCarsConditionsCarModel';
@@ -106,24 +105,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 page={props.page}
                 path={props.path}
               />
-            )
-        }
-        {
-          !IS_CREATING
-            ? (
-              <ExtField
-                type="select"
-                label="Статус ТС по базе:"
-                value={state.status}
-                options={statusOptions}
-                onChange={props.handleChange}
-                boundKeys="status"
-                error={errors.status}
-                disabled={!props.isPermitted}
-              />
-            )
-            : (
-              <DivNone />
             )
         }
         {

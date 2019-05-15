@@ -15,6 +15,9 @@ export const EtsTbodyTrTd = styled.td`
       cursor: pointer;
     }
   }
+  .col-md-12 {
+    position: initial;
+  }
 `;
 
 export const EtsTbodyTrTdMisionData = styled(EtsTbodyTrTd)`

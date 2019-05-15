@@ -11,8 +11,8 @@ import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
-const WaybillFormWrap: any = React.lazy(() => (
-  import(/* webpackChunkName: "waybill_form_wrap" */ 'components/waybill/WaybillFormWrap')
+const WaybillFormWrap = React.lazy(() => (
+  import(/* webpackChunkName: "waybill_form_wrap" */ 'components/new/pages/waybill/form/context/WaybillForm')
 ));
 
 type PropsWaybilFormlLazy = {
@@ -57,13 +57,6 @@ const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
       [props.element],
     );
 
-    const onCallbackLegacy = React.useCallback(
-      () => {
-        props.onFormHide(true);
-      },
-      [props.onFormHide],
-    );
-
     const is_creating = props.match.params.waybill_id === 'create';
 
     return (
@@ -73,10 +66,8 @@ const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
           (is_creating || elementMemo)
             && (
               <WaybillFormWrap
-                showForm
                 element={is_creating ? null : elementMemo}
-                onFormHide={props.onFormHide}
-                onCallback={onCallbackLegacy}
+                handleHide={props.onFormHide}
 
                 page={page}
                 path={path}

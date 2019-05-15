@@ -6,34 +6,8 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { monthOptions, makeDate } from 'utils/dates';
 
-/* ------------- WAYBILL ------------- */
-export const promiseGetWaybill = async (payload = {}) => {
-  throw new Error('Define promiseGetWaybill');
-};
-
-export const promiseLoadPFWaybill = async (payloadOwn) => {
-  throw new Error('Define promiseLoadPFWaybill');
-};
-
-export const promiseCreateWaybill = async (ownPayload) => {
-  throw new Error('Define promiseCreateWaybill');
-};
-export const promiseUpdateWaybill = async (ownPayload) => {
-  throw new Error('Define promiseUpdateWaybill');
-};
-export const promiseDeleteWaybill = (id) => {
-  throw new Error('Define promiseDeleteWaybill');
-};
-
-export const promiseGetWaybillById = async (id: Waybill['id']) => {
-  let response = null;
-  try {
-    response = await WaybillService.path(id).get();
-  } catch (error) {
-    console.error(error); // tslint:disable-line
-  }
-
-  const waybill: Waybill = get(response, 'result', null);
+export const getOneWaybillFront = (waybillRaw) => {
+  const waybill: Waybill = waybillRaw;
 
   if (waybill) {
     waybill.tax_data = (get(waybill, 'tax_data', []) || []).map((tax) => {
@@ -67,6 +41,38 @@ export const promiseGetWaybillById = async (id: Waybill['id']) => {
   }
 
   return waybill;
+};
+
+/* ------------- WAYBILL ------------- */
+export const promiseGetWaybill = async (payload = {}) => {
+  throw new Error('Define promiseGetWaybill');
+};
+
+export const promiseLoadPFWaybill = async (payloadOwn) => {
+  throw new Error('Define promiseLoadPFWaybill');
+};
+
+export const promiseCreateWaybill = async (ownPayload) => {
+  throw new Error('Define promiseCreateWaybill');
+};
+export const promiseUpdateWaybill = async (ownPayload) => {
+  throw new Error('Define promiseUpdateWaybill');
+};
+export const promiseDeleteWaybill = (id) => {
+  throw new Error('Define promiseDeleteWaybill');
+};
+
+export const promiseGetWaybillById = async (id: Waybill['id']) => {
+  let response = null;
+  try {
+    response = await WaybillService.path(id).get();
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  const waybill: Waybill = get(response, 'result', null);
+
+  return getOneWaybillFront(waybill);
 };
 
 export const promiseGetBlobWaybilljournalReport = async (payload: { date: string } | { month: number, year: number }, filter: OneRegistryData['list']['processed']['filterValues']) => {
@@ -119,4 +125,33 @@ export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: stri
     blob: get(response, 'blob', null),
     fileName,
   };
+};
+
+export const submitWaybill = async (waybillRaw: Partial<Waybill>) => {
+  let response = null;
+
+  if (waybillRaw.id) {
+    response = await WaybillService.put(
+      {
+        ...waybillRaw,
+      },
+      false,
+      'json',
+    );
+  } else {
+    response = await WaybillService.post(
+      {
+        ...waybillRaw,
+      },
+      false,
+      'json',
+    );
+  }
+
+  const result: Waybill = {
+    ...waybillRaw,
+    ...get(response, 'result.0', null),
+  };
+
+  return result;
 };

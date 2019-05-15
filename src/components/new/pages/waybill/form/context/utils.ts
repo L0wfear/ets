@@ -1,0 +1,85 @@
+import { isObject, isNullOrUndefined } from 'util';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+
+export const defaultWaybill: Waybill = {
+  accompanying_person_id: null,
+  accompanying_person_name: '',
+  activated_by_employee_id: null,
+  activated_by_employee_name: '',
+  all_missions_completed_or_failed: false,
+  all_missions_status: '',
+  can_delete_missions: true,
+  car_id: null,
+  car_model_id: null,
+  car_model_name: '',
+  car_refill: [],
+  car_special_model_id: null,
+  car_special_model_name: '',
+  closed_by_employee_id: null,
+  closed_by_employee_name: '',
+  closed_editable: false,
+  closing_date: '',
+  comment: '',
+  company_id: null,
+  created_by_employee_id: null,
+  created_by_employee_name: '',
+  date_create: '',
+  downtime_hours_dinner: null,
+  downtime_hours_duty: null,
+  downtime_hours_repair: null,
+  downtime_hours_work: null,
+  driver_id: null,
+  equipment_fact_fuel_end: null,
+  equipment_fuel: false,
+  equipment_fuel_end: null,
+  equipment_fuel_given: null,
+  equipment_fuel_start: null,
+  equipment_fuel_to_give: null,
+  equipment_fuel_type: '',
+  equipment_refill: [],
+  equipment_tax_data: [],
+  fact_arrival_date: '',
+  fact_departure_date: '',
+  fact_fuel_end: null,
+  failed_medical_stat_types: false,
+  fuel_end: null,
+  fuel_given: null,
+  fuel_start: null,
+  fuel_to_give: null,
+  fuel_type: 'DT',
+  garage_number: '',
+  gov_number: '',
+  id: null,
+  is_bnso_broken: true,
+  mission_id_list: [],
+  motohours_end: null,
+  motohours_equip_end: null,
+  motohours_equip_start: null,
+  motohours_start: null,
+  number: null,
+  odometr_end: null,
+  odometr_start: null,
+  plan_arrival_date: '',
+  plan_departure_date: '',
+  sensor_consumption: null,
+  status: 'draft',
+  structure_id: null,
+  structure_name: '',
+  tax_data: [],
+  track_length: null,
+  trailer_id: null,
+  work_mode_id: null,
+  work_mode_name: '',
+  work_mode_text: '',
+};
+
+export const getDefaultWaybillElement = (element: Partial<Waybill>): Waybill => {
+  const newElement = { ...defaultWaybill };
+  if (isObject(element)) {
+    Object.keys(defaultWaybill).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultWaybill[key];
+    });
+  }
+
+  return newElement;
+};

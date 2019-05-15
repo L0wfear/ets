@@ -2,18 +2,17 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/useFormData';
+import { FieldDataName } from 'components/new/utils/context/@types/fields/string';
 
 type FieldNameProps = {
-  fieldData: any;
-  fieldDataKey: string;
+  fieldData: FieldDataName;
   formDataKey: string;
 };
 
 const FieldName: React.FC<FieldNameProps> = React.memo(
   (props) => {
     const {
-      fieldDataKey: key,
-      fieldData: { title },
+      fieldData: { key, title },
     } = props;
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<any>(props.formDataKey);

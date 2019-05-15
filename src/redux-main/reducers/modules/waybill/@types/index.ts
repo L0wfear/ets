@@ -13,7 +13,7 @@ export type Waybill = {
   accompanying_person_name: string;
   activated_by_employee_id: number;
   activated_by_employee_name: string;
-  all_missions_completed_or_failed: boolean | null;
+  all_missions_completed_or_failed: boolean;
   all_missions_status: 'not_all_completed' | any;
   can_delete_missions: boolean;
   car_id: number;
@@ -24,7 +24,7 @@ export type Waybill = {
   car_special_model_name: string;
   closed_by_employee_id: number;
   closed_by_employee_name: string;
-  closed_editable: boolean | false
+  closed_editable: boolean;
   closing_date: string;
   comment: string;
   company_id: number;
@@ -37,7 +37,7 @@ export type Waybill = {
   downtime_hours_work: number;
   driver_id: number;
   equipment_fact_fuel_end: number;
-  equipment_fuel: true
+  equipment_fuel: boolean;
   equipment_fuel_end: number;
   equipment_fuel_given: number;
   equipment_fuel_start: number;
@@ -48,7 +48,7 @@ export type Waybill = {
   fact_arrival_date: string;
   fact_departure_date: string;
   fact_fuel_end: number;
-  failed_medical_stat_types: boolean | null;
+  failed_medical_stat_types: boolean;
   fuel_end: number;
   fuel_given: number;
   fuel_start: number;
@@ -57,7 +57,7 @@ export type Waybill = {
   garage_number: string;
   gov_number: string;
   id: number;
-  is_bnso_broken: boolean | null;
+  is_bnso_broken: boolean;
   mission_id_list: Mission['id'][];
   motohours_end: number;
   motohours_equip_end: number;

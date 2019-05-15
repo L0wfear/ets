@@ -9,16 +9,16 @@ type FieldsRowsProps = {
 
 const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
   (props) => {
-    const fields = useForm.useFormDataSchemaBodyFields(props.formDataKey);
+    const fields = useForm.useFormDataSchemaBodyFields<any>(props.formDataKey);
 
     return React.useMemo(
       () => {
         return (
           <Row>
             {
-              Object.entries(fields).map(([fieldDataKey, fieldData]: any) => (
-                <Col md={fieldData.md || 12} key={fieldDataKey}>
-                  <SwitchFields fieldData={fieldData} fieldDataKey={fieldDataKey} formDataKey={props.formDataKey} />
+              fields.map((fieldData) => (
+                <Col md={fieldData.md || 12} key={fieldData.key}>
+                  <SwitchFields fieldData={fieldData} formDataKey={props.formDataKey} />
                 </Col>
               ))
             }

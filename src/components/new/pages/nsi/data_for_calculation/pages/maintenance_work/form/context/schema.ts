@@ -17,19 +17,19 @@ export const maintenanceWorkFormSchema: SchemaFormContext<MaintenanceWork> = {
     ],
   },
   body: {
-    fields: {
-      name: {
+    fields: [
+      {
+        key: 'name',
         title: 'Наименование',
-        type: 'string',
         required: true,
       },
-      measure_unit_id: {
+      {
+        key: 'measure_unit_id',
         title: 'Единица измерения',
-        type: 'valueOfArray',
         required: true,
         clearable: false,
       },
-    },
+    ],
   },
   footer: {
     type: 'default',

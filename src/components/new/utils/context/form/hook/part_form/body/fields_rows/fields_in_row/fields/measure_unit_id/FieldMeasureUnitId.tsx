@@ -3,18 +3,17 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/useFormData';
 import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
+import { FieldDataMeasureUnitId } from 'components/new/utils/context/@types/fields/valueOfArray';
 
 type FieldMeasureUnitIdProps = {
-  fieldData: any;
-  fieldDataKey: string;
+  fieldData: FieldDataMeasureUnitId;
   formDataKey: string;
 };
 
 const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
   (props) => {
     const {
-      fieldDataKey: key,
-      fieldData: { title, clearable },
+      fieldData: { title, clearable, key },
     } = props;
 
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);

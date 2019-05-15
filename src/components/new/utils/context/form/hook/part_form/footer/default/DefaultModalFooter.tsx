@@ -1,7 +1,7 @@
 import * as React from 'react';
 import useForm from 'components/new/utils/context/form/useFormData';
-import { Modal } from 'react-bootstrap';
 import ButtonBlock from './button_block/ButtonBlock';
+import { DefautlFooterButtons } from 'components/new/utils/context/@types';
 
 type DefaultModalFooterProps = {
   formDataKey: string;
@@ -9,18 +9,18 @@ type DefaultModalFooterProps = {
 
 const DefaultModalFooter: React.FC<DefaultModalFooterProps> = React.memo(
   (props) => {
-    const formDataFooterValue = useForm.useFormDataSchemaFooter(props.formDataKey);
+    const formDataFooterValue = useForm.useFormDataSchemaFooter<any>(props.formDataKey) as DefautlFooterButtons;
 
     return React.useMemo(
       () => {
         return (
-          <Modal.Footer>
+          <React.Fragment>
             {
-              formDataFooterValue.buttons.map((_: any, index) => (
-                <ButtonBlock key={index + 1} indexBlock={index} formDataKey={props.formDataKey} />
+              formDataFooterValue.buttons.map((blockButtons: any, index) => (
+                <ButtonBlock key={index + 1} blockButtons={blockButtons} formDataKey={props.formDataKey} />
               ))
             }
-          </Modal.Footer>
+          </React.Fragment>
         );
       },
       [formDataFooterValue.buttons, props.formDataKey],

@@ -131,9 +131,11 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           title={props.title}
 
           addName="Добавить заправку"
+          addWidth={160}
           visibleAdd={props.IS_DRAFT_OR_ACTIVE}
 
           removeName="Удалить заправку"
+          removeWidth={160}
           visibleRemove={props.IS_DRAFT_OR_ACTIVE}
 
           disabled={props.disabled}

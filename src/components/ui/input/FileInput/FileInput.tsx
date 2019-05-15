@@ -7,8 +7,8 @@ import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
 
-import { DivNone, DisplayFlexAlignCenter, DisplayFlexAlignCenterSpaceBetween } from 'global-styled/global-styled';
-import { ButtonRemoveFile } from './styled';
+import { DivNone, DisplayFlexAlignCenter } from 'global-styled/global-styled';
+import { ButtonRemoveFile, FileInputWrapper } from 'components/ui/input/FileInput/styled';
 import { get } from 'lodash';
 import { createValidDateHM } from 'utils/dates';
 
@@ -39,7 +39,7 @@ const FileListItem: React.FC<any> = React.memo(
 
     return (
       <Col style={{ marginBottom: 10 }} md={12}>
-        <DisplayFlexAlignCenterSpaceBetween>
+        <FileInputWrapper>
           <DisplayFlexAlignCenter>
             <ButtonRemoveFile
               bsClass="close"
@@ -57,7 +57,7 @@ const FileListItem: React.FC<any> = React.memo(
               </div>
             ) : (<DivNone />)
           }
-        </DisplayFlexAlignCenterSpaceBetween>
+        </FileInputWrapper>
       </Col>
     );
   },

@@ -7,6 +7,11 @@ export const EtsTableWrap = styled.div<{ addToMinusHeight?: number }>`
   min-height: 100px;
 `;
 
+export const EtsTableWrapNoScroll = styled.div`
+  margin: 5px;
+  min-height: 100px;
+`;
+
 export const EtsTable = styled.table<{ fixedWidth: boolean }>`
   margin: 0;
   border-collapse: separate;

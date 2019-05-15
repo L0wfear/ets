@@ -1,9 +1,12 @@
 import * as React from 'react';
-import { EtsTable } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
+import { EtsTable, EtsTableWrapNoScroll } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import TableInputThead from './thead/TableInputThead';
 import TableInputTbody from './tbody/TableInputTbody';
-import { Button } from 'react-bootstrap';
-import { DisplayFlexAlignCenterFooterForm } from 'global-styled/global-styled';
+import { Button, Row } from 'react-bootstrap';
+import { EtsHeaderTitle } from '../registry/components/data/header/title/styled/styled';
+import { EtsHeaderContainer } from '../registry/components/data/header/styled/styled';
+import { EtsButtonsContainer } from '../registry/components/data/header/buttons/styled/styled';
+import { EtsTableDataContainer } from '../registry/components/data/table-data/styled/styled';
 
 export type TableMeta<F> = {
   key: string;
@@ -35,6 +38,7 @@ export type TableMeta<F> = {
 
 export type TableInputProps = {
   meta: TableMeta<any>[];
+  title: string;
   array: any[];
   errors: any[];
   onChange: any;
@@ -87,40 +91,50 @@ const TableInput: React.FC<TableInputProps> = React.memo(
 
     return (
       <React.Fragment>
-        <DisplayFlexAlignCenterFooterForm>
+        <Row>
+          <EtsHeaderContainer>
+            <EtsHeaderTitle>
+              {props.title}
+            </EtsHeaderTitle>
+            <EtsButtonsContainer>
+              {
+                props.visibleAdd
+                  && (
+                    <Button onClick={handleAddRow} disabled={disabled}>{props.addName || 'Добавить'}</Button>
+                  )
+              }
+              {
+                props.visibleRemove
+                  && (
+                    <Button onClick={handleRemoveRow} disabled={selectedRowIndex === null || disabled}>{props.removeName || 'Удалить'}</Button>
+                  )
+              }
+            </EtsButtonsContainer>
+          </EtsHeaderContainer>
           {
-            props.visibleAdd
+            Boolean(props.array.length)
               && (
-                <Button onClick={handleAddRow} disabled={disabled}>{props.addName || 'Добавить'}</Button>
+                <EtsTableDataContainer>
+                  <EtsTableWrapNoScroll className="ets_table_wrap">
+                    <EtsTable fixedWidth>
+                      <TableInputThead
+                        meta={props.meta}
+                      />
+                      <TableInputTbody
+                        meta={props.meta}
+                        array={props.array}
+                        errors={props.errors}
+                        onChange={props.onChange}
+                        selectedRowIndex={selectedRowIndex}
+                        setSelectedRowIndex={setSelectedRowIndex}
+                        disabled={disabled}
+                      />
+                    </EtsTable>
+                  </EtsTableWrapNoScroll>
+                </EtsTableDataContainer>
               )
           }
-          {
-            props.visibleRemove
-              && (
-                <Button onClick={handleRemoveRow} disabled={selectedRowIndex === null || disabled}>{props.removeName || 'Удалить'}</Button>
-              )
-          }
-        </DisplayFlexAlignCenterFooterForm>
-        <br />
-        {
-          Boolean(props.array.length)
-            && (
-              <EtsTable fixedWidth>
-                <TableInputThead
-                  meta={props.meta}
-                />
-                <TableInputTbody
-                  meta={props.meta}
-                  array={props.array}
-                  errors={props.errors}
-                  onChange={props.onChange}
-                  selectedRowIndex={selectedRowIndex}
-                  setSelectedRowIndex={setSelectedRowIndex}
-                  disabled={disabled}
-                />
-              </EtsTable>
-            )
-        }
+        </Row>
       </React.Fragment>
     );
   },

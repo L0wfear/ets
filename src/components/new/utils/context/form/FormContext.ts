@@ -28,7 +28,6 @@ export type OneFormDataByKey<F> = {
 
   // может быть лучше по entitry и format
   handleSubmitPromise: (formState: F) => Promise<F>;                  // промис создания/ сохранения
-
 };
 
 // конфиг для hook withFormContext

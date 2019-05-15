@@ -27,7 +27,6 @@ export interface IPropsReportContainer
 }
 
 export interface IStateReportContainer {
-  filterResetting: boolean;
   fetchedBySubmitButton: boolean;
   fetchedByMoveDownButton: boolean;
   selectedRow: IDataTableSelectedRowPropsData;

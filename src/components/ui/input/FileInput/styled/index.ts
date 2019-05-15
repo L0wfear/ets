@@ -7,3 +7,15 @@ export const ButtonRemoveFile = styled(Button)`
     margin-right: 10px;
   }
 `;
+
+export const FileInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .close-default {
+    display: contents;
+  }
+  a {
+    padding-left: 10px;
+  }
+`;

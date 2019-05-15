@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/useFormData';
+import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import ButtonBlock from './button_block/ButtonBlock';
 import { DefautlFooterButtons } from 'components/new/utils/context/@types';
 

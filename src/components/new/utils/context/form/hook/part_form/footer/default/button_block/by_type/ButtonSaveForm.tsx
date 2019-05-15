@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import useFormData from 'components/new/utils/context/form/useFormData';
+import useFormData from 'components/new/utils/context/form/hoc_selectors/useForm';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FormContext, { OneFormDataByKey } from './FormContext';
+import FormContext, { OneFormDataByKey } from '../FormContext';
 
 /* _______________ селекторы хуки _______________ */
 

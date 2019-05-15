@@ -57,7 +57,10 @@ export default class SessionStore extends Store {
       isOkrug: currentUser.okrug_id !== null,
       isKgh: currentUser.permissions.includes('common.nsi_company_column_show'),
       session: storedSession,
-      userPermissions: currentUser.permissions,
+      userPermissions: [
+        ...currentUser.permissions,
+        ...withSpecificPermissions(currentUser),
+      ],
       isGlavControl: currentUser.permissions.includes('role.change'),
     };
   }

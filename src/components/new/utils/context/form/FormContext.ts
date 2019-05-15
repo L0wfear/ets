@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SchemaFormContext, FormErrorBySchema } from '../@types';
+import { Modal } from 'react-bootstrap';
 
 // что имееем по formData
 export type OneFormDataByKey<F> = {
@@ -28,6 +29,9 @@ export type OneFormDataByKey<F> = {
 
   // может быть лучше по entitry и format
   handleSubmitPromise: (formState: F) => Promise<F>;                  // промис создания/ сохранения
+  loadItemPromise?: (id: F[keyof F]) => Promise<F>;                   // Получениче данных по одному элементу
+
+  bsSizeForm?: Modal.ModalProps['bsSize'];                            // Размер формы
 };
 
 // конфиг для hook withFormContext
@@ -37,7 +41,9 @@ export type ConfigFormData<F extends any> = {
   schema: OneFormDataByKey<F>['schema'];
   uniqField?: OneFormDataByKey<F>['uniqField'];
   permissions: OneFormDataByKey<F>['permissions'];
+  loadItemPromise?: OneFormDataByKey<F>['loadItemPromise'];
   handleSubmitPromise: OneFormDataByKey<F>['handleSubmitPromise'];
+  bsSizeForm?: OneFormDataByKey<F>['bsSizeForm'];
 };
 
 // необходимый набор для добавления данных по форме в контекст
@@ -51,6 +57,8 @@ export type ConfigFormDataForAdd<F extends any> = (
     | 'path'
     | 'isPermittedToCreate'
     | 'isPermittedToUpdate'
+    | 'IS_CREATING'
+    | 'uniqField'
   >
 );
 

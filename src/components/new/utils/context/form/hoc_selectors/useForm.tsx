@@ -140,7 +140,7 @@ const useFormDataFormState = <T extends any>(formDataKey: string) => {
 /**
  * получение состояния значения формы (formState) по ключу (key)
  */
-const useFormDataFormStatePickValue = <T extends any>(formDataKey: string, key: string) => {
+const useFormDataFormStatePickValue = <T extends any>(formDataKey: string, key: keyof T) => {
   const formState = useFormDataFormState<T>(formDataKey);
 
   return formState ? formState[key] : null;

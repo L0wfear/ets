@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { InitialFormContextValue, ConfigFormDataForAdd } from '../FormContext';
 import { validate, canSaveTest } from './validate';
 
@@ -84,17 +83,14 @@ export const changeFormDataFromState: ChangeFormDataFromState = (formDataKey, pa
 
 export const reducerFormProvider: ReducerFormProvider = (state, action) => {
   if (action.type === ADD_FORM_DATA) {
-
     const formState = action.payload.formData.mergeElement(action.payload.element);
     const formErrors = validate<typeof formState, typeof formState>(action.payload.formData.schema.body, formState);
     const canSave = canSaveTest(formErrors);
 
-    const uniqField =  get(action.payload.formData, 'uniqField', 'id');
-    const IS_CREATING = !Boolean(get(
-      formState,
-      uniqField,
-      false,
-    ));
+    console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️'); // tslint:disable-line:no-console
+    console.log('⚙️ FORM INIT STATE', formState); // tslint:disable-line:no-console
+    console.log('⚙️ FORM INIT ERRORS', formErrors); // tslint:disable-line:no-console
+    console.log('⚙️ FORM INIT CANSAVE', canSave); // tslint:disable-line:no-console
 
     return {
       ...state,
@@ -102,11 +98,9 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
         ...state.formDataByKey,
         [action.payload.formData.key]: {
           ...action.payload.formData,
-          uniqField,
           formState,
           formErrors,
           canSave,
-          IS_CREATING,
         },
       },
     };
@@ -139,9 +133,9 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
       formErrorsToShow = JSON.stringify(formErrorsToShow);
     }
 
-    console.log('FORM CHANGE STATE', partialFormStateToShow); // tslint:disable-line:no-console
-    console.log('FORM CHANGE ERRORS', formErrorsToShow); // tslint:disable-line:no-console
-    console.log('FORM CANSAVE', canSave); // tslint:disable-line:no-console
+    console.log('⚙️ FORM CHANGE STATE', partialFormStateToShow); // tslint:disable-line:no-console
+    console.log('⚙️ FORM CHANGE ERRORS', formErrorsToShow); // tslint:disable-line:no-console
+    console.log('⚙️ FORM CANSAVE', canSave); // tslint:disable-line:no-console
 
     formDataByKey[action.payload.formDataKey].formState = formState;
     formDataByKey[action.payload.formDataKey].formErrors = formErrors;

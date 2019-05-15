@@ -1,7 +1,9 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import { Modal } from 'react-bootstrap';
-import { DefaultHeaderType } from 'components/new/utils/context/@types';
+import useWaybillFormData from '../../../../hoc_selectors/waybill/useWaybillForm';
+import { getTitleByStatus } from './utils';
+import useForm from '../../../../hoc_selectors/useForm';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 type WaybillHeaderProps = {
   formDataKey: string;
@@ -9,23 +11,27 @@ type WaybillHeaderProps = {
 
 const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
   (props) => {
-    const formDataHeaderValue = useForm.useFormDataSchemaHeader<any>(props.formDataKey) as DefaultHeaderType;
-    const IS_CREATING = useForm.useFormDataSchemaIsCreating<any>(props.formDataKey);
+    const IS_CREATING = useForm.useFormDataSchemaIsCreating<Waybill>(props.formDataKey);
+    const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
+    const IS_ACTIVE = useWaybillFormData.useFormDataIsActive(props.formDataKey);
+    const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
+    const number = useForm.useFormDataFormStatePickValue<Waybill>(props.formDataKey, 'number');
 
-    const title = React.useMemo(
+    const titleText = React.useMemo(
       () => {
-        return 'hello';
+        const title = getTitleByStatus(IS_CREATING, IS_DRAFT, IS_ACTIVE, IS_CLOSED, number);
+        return title;
       },
-      [formDataHeaderValue.title, IS_CREATING],
+      [IS_CREATING, IS_DRAFT, IS_ACTIVE, IS_CLOSED, number],
     );
 
     return React.useMemo(
       () => (
         <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
+          <Modal.Title>{ titleText }</Modal.Title>
         </Modal.Header>
       ),
-      [title],
+      [titleText],
     );
   },
 );

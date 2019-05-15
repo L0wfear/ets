@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Modal } from 'react-bootstrap';
 import { get } from 'lodash';
 import FormContext, { ConfigFormData } from '../FormContext';
 import ModalFormHeader from './part_form/header/ModalFormHeader';
@@ -9,6 +8,8 @@ import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import EtsModal from 'components/new/ui/modal/Modal';
 
 type FormStateProps = {
   permissionsSet: InitialStateSession['userData']['permissionsSet'];    // пермишены для валидации, пока сессия на redux
@@ -38,26 +39,58 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
 
       React.useEffect(
         () => {
-          context.addFormData<T>(
-            {
-              ...formData,                                        // что пришло из конфига
-              handleHide: (isSubmitted, result) => {              // обёртка закрытия формы
-                context.removeFormData<T>(formData.key);
-                props.handleHide(isSubmitted, result);
-              },
-              handleChange: (objChange) => {                      // обёртка изменения формы
-                context.handleChangeFormState<T>(
-                  formData.key,
-                  objChange,
+          const addFormData = async () => {
+            const uniqField =  get(formData, 'uniqField', 'id');
+            const IS_CREATING = !Boolean(get(
+              props.element,
+              uniqField,
+              false,
+            ));
+
+            let element = props.element;
+
+            if (!IS_CREATING && formData.loadItemPromise) {
+              try {
+                element = await etsLoadingCounter(
+                  props.dispatch,
+                  formData.loadItemPromise(element[uniqField]),
+                  {
+                    page: props.page,
+                    path: props.path,
+                  },
                 );
+              } catch (e) {
+                global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+                props.handleHide(false);
+                return;
+              }
+            }
+
+            context.addFormData<T>(
+              {
+                ...formData,                                        // что пришло из конфига
+                handleHide: (isSubmitted, result) => {              // обёртка закрытия формы
+                  context.removeFormData<T>(formData.key);
+                  props.handleHide(isSubmitted, result);
+                },
+                handleChange: (objChange) => {                      // обёртка изменения формы
+                  context.handleChangeFormState<T>(
+                    formData.key,
+                    objChange,
+                  );
+                },
+                isPermittedToCreate: validatePermissions(formData.permissions.create, props.permissionsSet),     // разрешение на сохранение
+                isPermittedToUpdate: validatePermissions(formData.permissions.update, props.permissionsSet),     // разрешение на изменение
+                page: props.page,
+                path: props.path,
+                uniqField,
+                IS_CREATING,
               },
-              isPermittedToCreate: validatePermissions(formData.permissions.create, props.permissionsSet),     // разрешение на сохранение
-              isPermittedToUpdate: validatePermissions(formData.permissions.update, props.permissionsSet),     // разрешение на изменение
-              page: props.page,
-              path: props.path,
-            },
-            props.element,                                        // новый элемент
-          );
+              element,                                            // новый элемент
+            );
+          };
+
+          addFormData();
           return () => context.removeFormData<T>(formData.key);   // удаление данных в контексте при unmount формы
         },
         [],
@@ -68,11 +101,11 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
       return React.useMemo(
         () => {
           return handleHide && (
-            <Modal id={`modal-${formData.key}}`}show onHide={handleHide} backdrop="static">
+            <EtsModal id={`modal-${formData.key}}`}show onHide={handleHide} backdrop="static" bsSize={formData.bsSizeForm}>
               <ModalFormHeader formDataKey={formData.key} />
               <ModalFormBody formDataKey={formData.key} />
               <ModalFormFooter formDataKey={formData.key} />
-            </Modal>
+            </EtsModal>
           );
         },
         [handleHide], // так проще, тк formData меняется, но это изменение здесь не нужно

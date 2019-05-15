@@ -64,13 +64,19 @@ export const promiseDeleteWaybill = (id) => {
 
 export const promiseGetWaybillById = async (id: Waybill['id']) => {
   let response = null;
+  let hasErrror = false;
+
   try {
     response = await WaybillService.path(id).get();
   } catch (error) {
-    console.error(error); // tslint:disable-line
+    hasErrror = true;
   }
 
   const waybill: Waybill = get(response, 'result', null);
+
+  if (!waybill && hasErrror) {
+    throw new Error('hasErrror');
+  }
 
   return getOneWaybillFront(waybill);
 };

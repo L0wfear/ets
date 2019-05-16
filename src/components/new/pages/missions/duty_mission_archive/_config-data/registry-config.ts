@@ -120,7 +120,8 @@ export const config: TypeConfigData<DutyMission> = {
         },
       },
       {
-        valueKey: 'foreman_fio',
+        valueKey: 'foreman_id',
+        labelKey: 'foreman_fio',
         title: 'Бригадир',
         type: 'multiselect',
         getRegistryData: {

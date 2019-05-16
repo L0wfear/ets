@@ -74,7 +74,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   const gps_code = get(props.selectedElement, 'gps_code', null);
   const has_mkad = get(props.selectedElement, 'has_mkad', false);
   const type = '';
-  const front_parkings = get(props.tracksCaching, 'parkings', []);
+  const front_parkings = get(props.tracksCaching, 'front_parkings', []);
   const cars_sensors = get(props.tracksCaching, 'sensors', []);
   const distance_out_mission_text = `Дистанция не по объектам задания: ${get(props.selectedElement, 'distance_out_mission', null)} км.`;
   const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;

@@ -6,7 +6,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
-import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';
+import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
 
 type SelecteDateTimeRangeStateProps = {
 };
@@ -49,16 +49,23 @@ const ButtonContainer = styled.div`
 
 const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
   (props) => {
+    let errorDateTo = null;
     const date_from: string = props.searchState.date_from || createValidDateTime(getToday0am());
     const date_to: string = props.searchState.date_to || createValidDateTime(getToday2359());
 
+    if (diffDates(date_to, date_from) <= 0) {
+      errorDateTo = 'Дата окончания должна быть позже даты начала';
+    }
+
     const handleChangeDate = React.useCallback(
       (key, value) => {
-        props.setDataInSearch({
+        const partialSerachState = {
           date_from: props.searchState.date_from || createValidDateTime(getToday0am()),
           date_to: props.searchState.date_to || createValidDateTime(getToday2359()),
-          [key]: createValidDateTime(value),
-        });
+        };
+
+        partialSerachState[key] = createValidDateTime(value) || partialSerachState[key];
+        props.setDataInSearch(partialSerachState);
       },
       [props.searchState, props.setDataInSearch],
     );
@@ -70,6 +77,7 @@ const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
           date_start_value={date_from}
           date_end_id="date_to"
           date_end_value={date_to}
+          date_end_error={errorDateTo}
           allWidth
 
           onChange={handleChangeDate}

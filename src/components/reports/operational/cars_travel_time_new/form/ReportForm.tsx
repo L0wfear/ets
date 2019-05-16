@@ -69,6 +69,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
 
   const [geoobjects, setGeoobjects] = React.useState(null);
   const [track, setTrack] = React.useState(null);
+  const [selectedElement, setSelectedElement] = React.useState(null);
 
   const gov_number = get(props.selectedElement, 'gov_number', null);
   const gps_code = get(props.selectedElement, 'gps_code', null);
@@ -165,6 +166,43 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
     setTrack(get(props.tracksCaching, 'track', null));
   }, [props.tracksCaching]);
 
+  const handleSelectedElementChange = React.useCallback((selectedRow) => {
+    const selectedRowElement = get(selectedRow, 'props.data', null);
+    setSelectedElement(selectedRowElement);
+  }, [geoobjects]);
+
+  React.useEffect(() => { // для перевода фокуса на объект ОДХ/ДТ
+    if ( selectedElement ) {
+      const typeLayer = 'any';
+      const selectedFrontKey = `${typeLayer}/${selectedElement.id}`;
+      if (Object.values(props.carsTravelTimeList).length) {
+        const newGeoobjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
+          const front_key = `${typeLayer}/${currentElem.id}`;
+          const { shape, type: someType, frontIsSelected, ...someElem } = currentElem;
+          return {
+            [front_key]: {
+              shape: JSON.parse(shape),
+              front_key,
+              front_id: currentElem.id,
+              object_id: currentElem.id,
+              type: typeLayer,
+              state: 2, // влияет на окраску одх/дт
+              frontIsSelected: selectedFrontKey === front_key ? true : false,
+              ...someElem,
+            },
+            ...newElem,
+          };
+        }, {});
+
+        setGeoobjects({
+          [typeLayer]: {
+            ...newGeoobjects,
+          },
+        });
+      }
+    }
+  }, [selectedElement]);
+
   return (
     <Modal id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large" backdrop="static">
       <Modal.Header closeButton>
@@ -193,12 +231,14 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
                 props.carsTravelTimeList.length ?
                   (
                     <Table
-                      title={false}
+                      noTitle={true}
                       noFilter
                       results={props.carsTravelTimeList}
                       enumerated={false}
                       tableMeta={tableMeta}
                       className="report-time-table"
+                      onRowSelected={handleSelectedElementChange}
+                      selected={selectedElement}
                     />
                   ) : (
                     <div>У данной ТС за выбранный промежуток времени заданий по ОДХ / ДТ не было</div>

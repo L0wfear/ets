@@ -4,6 +4,10 @@ import TableInputThead from './thead/TableInputThead';
 import TableInputTbody from './tbody/TableInputTbody';
 import { Button } from 'react-bootstrap';
 import { DisplayFlexAlignCenterFooterForm } from 'global-styled/global-styled';
+import {
+  BtnGroupWrapper,
+  BtnPart,
+} from 'global-styled/global-styled';
 
 export type TableMeta<F> = {
   key: string;
@@ -88,18 +92,24 @@ const TableInput: React.FC<TableInputProps> = React.memo(
     return (
       <React.Fragment>
         <DisplayFlexAlignCenterFooterForm>
-          {
-            props.visibleAdd
-              && (
-                <Button onClick={handleAddRow} disabled={disabled}>{props.addName || 'Добавить'}</Button>
-              )
-          }
-          {
-            props.visibleRemove
-              && (
-                <Button onClick={handleRemoveRow} disabled={selectedRowIndex === null || disabled}>{props.removeName || 'Удалить'}</Button>
-              )
-          }
+          <BtnGroupWrapper>
+            <BtnPart>
+              {
+                props.visibleAdd
+                  && (
+                    <Button onClick={handleAddRow} disabled={disabled}>{props.addName || 'Добавить'}</Button>
+                  )
+              }
+            </BtnPart>
+            <BtnPart>
+            {
+              props.visibleRemove
+                && (
+                  <Button onClick={handleRemoveRow} disabled={selectedRowIndex === null || disabled}>{props.removeName || 'Удалить'}</Button>
+                )
+            }
+            </BtnPart>
+          </BtnGroupWrapper>
         </DisplayFlexAlignCenterFooterForm>
         <br />
         {

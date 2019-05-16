@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SchemaFormContext, FormErrorBySchema } from '../@types';
+import { SchemaFormContext, FormErrorBySchema } from './@types';
 import { Modal } from 'react-bootstrap';
 
 // что имееем по formData
@@ -15,7 +15,7 @@ export type OneFormDataByKey<F> = {
   };
 
   formState: F;                                                       // состояни формы
-  formErrors: FormErrorBySchema<F, SchemaFormContext<F>['body'], F>;  // состояние ошибок
+  formErrors: FormErrorBySchema<F>;                                   // состояние ошибок
   IS_CREATING: boolean;                                               // флаг создания элемента
   canSave: boolean;                                                   // можно ли сохранить
   page: string;                                                       // ключ для загрузки
@@ -31,7 +31,9 @@ export type OneFormDataByKey<F> = {
   handleSubmitPromise: (formState: F) => Promise<F>;                  // промис создания/ сохранения
   loadItemPromise?: (id: F[keyof F]) => Promise<F>;                   // Получениче данных по одному элементу
 
-  bsSizeForm?: Modal.ModalProps['bsSize'];                            // Размер формы
+  bsSizeForm?: Modal.ModalProps['bsSize'];                            // размер формы
+
+  store: Record<string, any>;                                         // всякие глобальные данные
 };
 
 // конфиг для hook withFormContext
@@ -44,6 +46,7 @@ export type ConfigFormData<F extends any> = {
   loadItemPromise?: OneFormDataByKey<F>['loadItemPromise'];
   handleSubmitPromise: OneFormDataByKey<F>['handleSubmitPromise'];
   bsSizeForm?: OneFormDataByKey<F>['bsSizeForm'];
+  store?: OneFormDataByKey<F>['store'];
 };
 
 // необходимый набор для добавления данных по форме в контекст
@@ -59,6 +62,7 @@ export type ConfigFormDataForAdd<F extends any> = (
     | 'isPermittedToUpdate'
     | 'IS_CREATING'
     | 'uniqField'
+    | 'store'
   >
 );
 
@@ -67,6 +71,7 @@ export type InitialFormContextValue = {
   addFormData: <T extends any>(config: ConfigFormDataForAdd<T>, element: Partial<T>) => void;                             // добавление данных по форме в контекст
   removeFormData: <T extends any>(formDataKey: OneFormDataByKey<T>['key']) => void;                                       // удаление данных формы из контекста
   handleChangeFormState: <T extends any>(formDataKey: string, obj: Partial<OneFormDataByKey<T>['formState']>) => void;    // изменение состояния формы в контексте по ключу
+  handleChangeStore: <T extends any>(formDataKey: string, obj: Partial<OneFormDataByKey<T>['store']>) => void;            // изменение состояния стора в контексте по ключу
   formDataByKey: Record<string, OneFormDataByKey<any>>;                                                                   // сами формы
 };
 
@@ -75,6 +80,7 @@ export const initialContextValue: InitialFormContextValue = ({
   addFormData: (config, element) => null,
   removeFormData: (formDataKey) => null,
   handleChangeFormState: (formDataKey, obj) => null,
+  handleChangeStore: (formDataKey, obj) => null,
   formDataByKey: {},
 });
 

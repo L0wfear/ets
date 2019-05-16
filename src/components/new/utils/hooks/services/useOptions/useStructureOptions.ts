@@ -1,9 +1,9 @@
 import * as React from 'react';
-import useMeasureUnitList from '../useList/useMeasureUnitList';
+import useStructureLinearList from '../useList/useStructureLinearList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-const useMeasureUnitOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '') => {
-  const listData = useMeasureUnitList(page, path);
+const useStructureOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '') => {
+  const listData = useStructureLinearList(page, path);
 
   const optionData = React.useMemo(
     () => {
@@ -21,4 +21,4 @@ const useMeasureUnitOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta
   return optionData;
 };
 
-export default useMeasureUnitOptions;
+export default useStructureOptions;

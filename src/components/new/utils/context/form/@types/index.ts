@@ -30,8 +30,10 @@ export type SchemaFormContextHeader = (
   | NewHeaderType
 );
 
-export type SchemaFormContextBody<F> = {
-  fields: Array<ContextFormField>;
+export type FieldsRow = Array<ContextFormField>;
+
+export type SchemaFormContextBody = {
+  fields: Array<FieldsRow>;
 };
 
 /**
@@ -70,17 +72,12 @@ export type SchemaFormContextFooter = (
  */
 export type SchemaFormContext<F> = {
   header: SchemaFormContextHeader;
-  body: SchemaFormContextBody<F>;
+  body: SchemaFormContextBody;
   footer: SchemaFormContextFooter;
 };
 
 /**
  * тип formErrors по схеме
+ * @todo
  */
-export type FormErrorBySchema<F, SchemaBodyFields extends SchemaFormContextBody<any>, RootFormState> = (
-  {
-    [K in keyof SchemaBodyFields['fields']]?: (
-      string
-    );
-  }
-);
+export type FormErrorBySchema<F> = any;

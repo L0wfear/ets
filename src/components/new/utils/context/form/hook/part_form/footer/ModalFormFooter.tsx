@@ -1,7 +1,7 @@
 import * as React from 'react';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import DefaultModalFooter from './default/DefaultModalFooter';
-import { SchemaFormContextFooter } from 'components/new/utils/context/@types';
+import { SchemaFormContextFooter } from 'components/new/utils/context/form/@types';
 import WaybillModalFooter from './waybill/WaybillModalFooter';
 import { Modal } from 'react-bootstrap';
 

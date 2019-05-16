@@ -1,5 +1,6 @@
 import { FieldsString } from "./string";
 import { FieldsValueOfArray } from "./valueOfArray";
+import { FieldsWaybill } from "./waybill";
 
 /**
  * поля схемы
@@ -8,4 +9,5 @@ import { FieldsValueOfArray } from "./valueOfArray";
 export type ContextFormField = (
   FieldsString
   | FieldsValueOfArray
+  | FieldsWaybill
 );

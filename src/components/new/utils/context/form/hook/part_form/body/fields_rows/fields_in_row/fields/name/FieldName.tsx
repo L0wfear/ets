@@ -2,7 +2,8 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
-import { FieldDataName } from 'components/new/utils/context/@types/fields/string';
+import { FieldDataName } from 'components/new/utils/context/form/@types/fields/string';
+import { Col } from 'react-bootstrap';
 
 type FieldNameProps = {
   fieldData: FieldDataName;
@@ -30,15 +31,17 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <ExtField
-          id={`${path}_${key}`}
-          type="string"
-          label={title}
-          value={formState[key]}
-          error={formErrors[key]}
-          onChange={handleChangeWrap}
-          disabled={!isPermitted}
-        />
+        <Col md={props.fieldData.md || 12}>
+          <ExtField
+            id={`${path}_${key}`}
+            type="string"
+            label={title}
+            value={formState[key]}
+            error={formErrors[key]}
+            onChange={handleChangeWrap}
+            disabled={!isPermitted}
+          />
+        </Col>
       ),
       [path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
     );

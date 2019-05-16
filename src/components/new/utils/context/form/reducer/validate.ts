@@ -1,39 +1,41 @@
 import { isObject, isArray } from 'util';
-import { SchemaFormContext, FormErrorBySchema } from '../../@types';
+import { SchemaFormContext, FormErrorBySchema } from '../@types';
 import { validateString } from './string/stringValidate';
 import { validateValueOfArray } from './valueOfArray/valueOfArrayValidate';
-import { FieldValueOFArrayCommon } from '../../@types/fields/valueOfArray';
-import { FieldStringCommon } from '../../@types/fields/string';
+import { ContextFormField } from '../@types/fields';
 
 /**
  * Set всех stirng полей
  */
-const StringSet = new Set<ValuesOf<SchemaFormContext<any>['body']['fields']>['key']>([
+const StringSet = new Set<ContextFormField['key']>([
   'name',
 ]);
 
 /**
  * Set всех valueOfArray полей
  */
-const ValueOfArraySet = new Set<ValuesOf<SchemaFormContext<any>['body']['fields']>['key']>([
+const ValueOfArraySet = new Set<ContextFormField['key']>([
   'measure_unit_id',
 ]);
 
-export const validate = <F, RF>(shemaBody: SchemaFormContext<F>['body'], formState: F): FormErrorBySchema<F, typeof shemaBody, RF> => {
-  const formError: FormErrorBySchema<F, typeof shemaBody, RF> = {};
+export const validate = <F>(shemaBody: SchemaFormContext<F>['body'], formState: F): FormErrorBySchema<F> => {
+  const formError: FormErrorBySchema<F> = {};
 
-  for (const key in shemaBody.fields) {
-    if (key in shemaBody.fields) {
-      const fieldData = shemaBody.fields[key];
-
-      if (StringSet.has(fieldData.key)) {
-        formError[key] = validateString<F, any>(key as keyof F, fieldData as FieldStringCommon<F, any>, formState);
-      }
-      if (ValueOfArraySet.has(fieldData.key)) {
-        formError[key] = validateValueOfArray<F, any>(key as keyof F, fieldData as FieldValueOFArrayCommon<F, any>, formState);
-      }
-    }
-  }
+  shemaBody.fields.forEach(
+    (fieldsRow) => {
+      fieldsRow.forEach(
+        (fieldData) => {
+          const key = fieldData.key;
+          if (StringSet.has(fieldData.key)) {
+            formError[key] = validateString<F, any>(key as keyof F, fieldData, formState);
+          }
+          if (ValueOfArraySet.has(fieldData.key)) {
+            formError[key] = validateValueOfArray<F, any>(key as keyof F, fieldData, formState);
+          }
+        },
+      );
+    },
+  );
 
   return formError;
 };

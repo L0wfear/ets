@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { Row } from 'react-bootstrap';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
-import { Row, Col } from 'react-bootstrap';
 import SwitchFields from './fields_in_row/fields/SwitchFields';
 
 type FieldsRowsProps = {
@@ -14,15 +14,19 @@ const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
     return React.useMemo(
       () => {
         return (
-          <Row>
+          <React.Fragment>
             {
-              fields.map((fieldData) => (
-                <Col md={fieldData.md || 12} key={fieldData.key}>
-                  <SwitchFields fieldData={fieldData} formDataKey={props.formDataKey} />
-                </Col>
+              fields.map((fieldDataRow, indexRow) => (
+                <Row key={indexRow + 1}>
+                  {
+                    fieldDataRow.map((fieldData) => (
+                      <SwitchFields key={fieldData.key} fieldData={fieldData} formDataKey={props.formDataKey} />
+                    ))
+                  }
+                </Row>
               ))
             }
-          </Row>
+          </React.Fragment>
         );
       },
       [fields, props.formDataKey],

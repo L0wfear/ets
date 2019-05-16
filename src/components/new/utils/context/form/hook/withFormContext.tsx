@@ -85,13 +85,13 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
                 path: props.path,
                 uniqField,
                 IS_CREATING,
+                store: formData.store || {},
               },
               element,                                            // новый элемент
             );
           };
 
           addFormData();
-          return () => context.removeFormData<T>(formData.key);   // удаление данных в контексте при unmount формы
         },
         [],
       );

@@ -2,7 +2,7 @@ import * as React from 'react';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import { Modal } from 'react-bootstrap';
 import { isArray } from 'highcharts';
-import { DefaultHeaderType } from 'components/new/utils/context/@types';
+import { DefaultHeaderType } from 'components/new/utils/context/form/@types';
 
 type DefaultModalHeaderProps = {
   formDataKey: string;

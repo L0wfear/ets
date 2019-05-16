@@ -1,5 +1,5 @@
 import { isString } from 'util';
-import { FieldStringCommon } from '../../../@types/fields/string';
+import { FieldStringCommon } from '../../@types/fields/string';
 
 export const validateString = <F, K extends keyof F>(key: keyof F, fieldData: FieldStringCommon<F, K>, formState: F) => {
   const {

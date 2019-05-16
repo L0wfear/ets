@@ -111,6 +111,25 @@ const useFormDataHandleSubmitAction = <T extends any>(formDataKey: string) => {
 };
 
 /**
+ * получение функции измнения значение стора формы
+ */
+const useFormDataHandleChangeStore = <T extends any>(formDataKey: string) => {
+  const context = React.useContext(FormContext);
+
+  return React.useMemo(
+    () => {
+      return (partialStore: object) => {
+        context.handleChangeStore(
+          formDataKey,
+          partialStore,
+        );
+      };
+    },
+    [context.handleChangeStore],
+  );
+};
+
+/**
  * получение page формы
  */
 const useFormDataSchemaPage = <T extends any>(formDataKey: string) => {
@@ -175,6 +194,40 @@ const useFormDataIsPermitted = <T extends any>(formDataKey: string) => {
   return IS_CREATING ? isPermittedToCreate : isPermittedToUpdate;
 };
 
+/**
+ * получение глобального стора формы
+ */
+const useFormDataStore = <T extends any>(formDataKey: string) => {
+  const formData = useFormData<T>(formDataKey);
+
+  return formData ? formData.store : null;
+};
+
+/**
+ * получение значения из глобального стора формы
+ */
+const useFormDataStorePickValue = <T extends any>(formDataKey: string, key: string) => {
+  const store = useFormDataStore<T>(formDataKey);
+
+  return store ? store[key] : null;
+};
+
+const useFormDataLoadOptions = <T extends any>(formDataKey: string, key: string, hookData: { options: any } & Record<string, any>) => {
+  const optionData = hookData;
+  const handleChangeStore = useFormDataHandleChangeStore<T>(formDataKey);
+
+  React.useEffect(
+    () => {
+      handleChangeStore({
+        [key]: optionData.options,
+      });
+    },
+    [handleChangeStore, optionData],
+  );
+
+  return optionData;
+};
+
 export default {
   useFormData,
   useFormDataSchema,
@@ -183,6 +236,7 @@ export default {
   useFormDataSchemaFooter,
   useFormDataSchemaIsCreating,
   useFormDataSchemaHandleHide,
+  useFormDataHandleChangeStore,
   useFormDataSchemaPage,
   useFormDataSchemaPath,
   useFormDataSchemaBodyFields,
@@ -195,4 +249,8 @@ export default {
   useFormDataHandleSubmitAction,
   useFormDataSchemaIsPermittedToCreate,
   useFormDataSchemaIsPermittedToUpdate,
+
+  useFormDataStore,
+  useFormDataStorePickValue,
+  useFormDataLoadOptions,
 };

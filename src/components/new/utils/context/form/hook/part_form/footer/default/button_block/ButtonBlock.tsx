@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ButtonSaveForm from './by_type/ButtonSaveForm';
 import ButtonCancelForm from './by_type/ButtonCancelForm';
-import { DefautlFooterButtons } from 'components/new/utils/context/@types';
+import { DefautlFooterButtons } from 'components/new/utils/context/form/@types';
 
 type ButtonBlockProps = {
   formDataKey: string;

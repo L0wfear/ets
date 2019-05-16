@@ -18,4 +18,8 @@ export default withFormContext<Waybill, DefaultPropsWithFormContext<Waybill>>({
   loadItemPromise: promiseGetWaybillById,
   handleSubmitPromise: submitWaybill,
   bsSizeForm: 'large',
+
+  store: {
+    mission_reject_list: [],
+  },
 });

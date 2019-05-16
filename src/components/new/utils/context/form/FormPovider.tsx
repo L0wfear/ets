@@ -6,6 +6,7 @@ import {
   changeFormDataFromState,
   initialFormProviderState,
   reducerFormProvider,
+  changeFormDataStore,
 } from './reducer';
 
 type FormProviderProps = {}; // тк провайдер глобальный, то пока ничего не ждёт
@@ -37,6 +38,14 @@ const FormProvider: React.FC<FormProviderProps> = React.memo(
       [],
     );
 
+    // изменение состояния стора в контексте
+    const handleChangeStore = React.useCallback<InitialFormContextValue['handleChangeFormState']>(
+      (formDataKey, obj) => {
+        dispatch(changeFormDataStore(formDataKey, obj));
+      },
+      [],
+    );
+
     // formContext value
     const value: typeof initialContextValue = React.useMemo(
       () => {
@@ -45,9 +54,10 @@ const FormProvider: React.FC<FormProviderProps> = React.memo(
           addFormData,
           removeFormData,
           handleChangeFormState,
+          handleChangeStore,
         };
       },
-      [state, addFormData, removeFormData, handleChangeFormState],
+      [state, addFormData, removeFormData, handleChangeFormState, handleChangeStore],
     );
 
     return (

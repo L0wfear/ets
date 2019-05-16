@@ -3,7 +3,8 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
-import { FieldDataMeasureUnitId } from 'components/new/utils/context/@types/fields/valueOfArray';
+import { FieldDataMeasureUnitId } from 'components/new/utils/context/form/@types/fields/valueOfArray';
+import { Col } from 'react-bootstrap';
 
 type FieldMeasureUnitIdProps = {
   fieldData: FieldDataMeasureUnitId;
@@ -25,31 +26,35 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
     const {
       isLoading,
       options,
-    } = useMeasureUnitOptions('', '');
+    } = useMeasureUnitOptions();
 
     const handleChangeWrap = React.useCallback(
-      (event) => {
-        const value = get(event, 'target.value', event);
-        handleChange({ [key]: value });
+      (value, option) => {
+        handleChange({
+          measure_unit_id: value,
+          measure_unit_name: get(option, 'rowData.name', null),
+        });
       },
       [key, handleChange],
     );
 
     return React.useMemo(
       () => (
-        <ExtField
-          id={`${path}_${key}`}
-          type="select"
-          clearable={clearable}
-          label={title}
-          value={formState[key]}
-          error={formErrors[key]}
-          options={options}
-          onChange={handleChangeWrap}
-          disabled={!isPermitted}
+        <Col md={props.fieldData.md || 12}>
+          <ExtField
+            id={`${path}_${key}`}
+            type="select"
+            clearable={clearable}
+            label={title}
+            value={formState[key]}
+            error={formErrors[key]}
+            options={options}
+            onChange={handleChangeWrap}
+            disabled={!isPermitted}
 
-          etsIsLoading={isLoading}
-        />
+            etsIsLoading={isLoading}
+          />
+        </Col>
       ),
       [path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],
     );

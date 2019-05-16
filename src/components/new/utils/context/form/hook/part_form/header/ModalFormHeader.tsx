@@ -2,7 +2,7 @@ import * as React from 'react';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import DefaultModalHeader from './default/DefaultHeader';
 import WaybillHeader from './waybill/WaybillHeader';
-import { SchemaFormContextHeader } from 'components/new/utils/context/@types';
+import { SchemaFormContextHeader } from 'components/new/utils/context/form/@types';
 
 type ModalFormHeaderProps = {
   formDataKey: string;

@@ -63,30 +63,47 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
     );
 
     return React.useMemo(
-      () => (
-        structurePickData.STRUCTURE_FIELD_VIEW
-          && (
-            <Col md={props.fieldData.md || 12}>
-              <ExtField
-                id={`${path}_${key}`}
-                type="select"
-                label={title}
-                value={formState[key]}
-                error={formErrors[key]}
-                options={options}
-                onChange={handleChangeWrap}
-                clearable={clearable || structurePickData.STRUCTURE_FIELD_DELETABLE}
-                disabled={
-                  !isPermitted
-                  || IS_CLOSE_OR_IS_ACTIVE
-                  || structurePickData.STRUCTURE_FIELD_READONLY
-                }
+      () => {
+        const isDisabled = (
+          !isPermitted
+          || IS_CLOSE_OR_IS_ACTIVE
+          || structurePickData.STRUCTURE_FIELD_READONLY
+        );
 
-                etsIsLoading={isLoading}
-              />
-            </Col>
-          )
-      ),
+        return (
+          structurePickData.STRUCTURE_FIELD_VIEW
+            && (
+              <Col md={props.fieldData.md || 12}>
+                {
+                  !isDisabled
+                    ? (
+                      <ExtField
+                        id={`${path}_${key}`}
+                        type="select"
+                        label={title}
+                        value={formState[key]}
+                        error={formErrors[key]}
+                        options={options}
+                        onChange={handleChangeWrap}
+                        clearable={clearable || structurePickData.STRUCTURE_FIELD_DELETABLE}
+
+                        etsIsLoading={isLoading}
+                      />
+                    )
+                    : (
+                      <ExtField
+                        id={`${path}_${key}`}
+                        type="string"
+                        label={title}
+                        value={formState.structure_name ? formState.structure_name : 'Не выбрано'}
+                        disabled
+                      />
+                    )
+                }
+              </Col>
+            )
+        );
+      },
       [
         path,
         key,

@@ -16,7 +16,7 @@ type MunicipalFacilityType = {
   municipal_facility_name: string;
   normatives: MunicipalFacilityNormative[];
   car_func_types: {
-    id: number;
+    asuods_id: number;
   }[];
 };
 
@@ -146,7 +146,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
             !typeIdWraomWaybill
             || (
               typeIdWraomWaybill
-              && mfData.car_func_types.some((mfDataCarFuncType) => mfDataCarFuncType.id === typeIdWraomWaybill)
+              && mfData.car_func_types.some((mfDataCarFuncType) => mfDataCarFuncType.asuods_id === typeIdWraomWaybill)
             )
           );
 

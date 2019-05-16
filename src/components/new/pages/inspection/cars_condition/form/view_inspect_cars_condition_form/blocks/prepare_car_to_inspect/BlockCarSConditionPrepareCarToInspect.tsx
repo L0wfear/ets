@@ -76,6 +76,7 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           boundKeys="order_issued_at"
           disabled={!isPermitted || !isActiveInspect}
           makeGoodFormat
+          preventDateTime
         />
         <ExtField
           id="order_number"

@@ -14,6 +14,7 @@ import {
   promiseCreateCarsConditionsCar,
   promiseUpdateCarsConditionsCar,
   promiseGetCarsConditionsCarById,
+  makeInspectCarsConditionBack,
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
@@ -114,7 +115,9 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
   return inspectionCarsCondition;
 };
 
-const actionCloseInspectCarsCondition = (inspectCarsCondition: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
+const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
+  const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
+
   const payload = {
     data: inspectCarsCondition.data,
     agents_from_gbu: inspectCarsCondition.agents_from_gbu,

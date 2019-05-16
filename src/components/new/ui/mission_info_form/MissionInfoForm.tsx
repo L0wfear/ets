@@ -34,6 +34,7 @@ import {
 } from 'components/new/ui/mission_info_form/MissionInfoForm.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { ReduxState } from 'redux-main/@types/state';
+import EtsModal from '../modal/Modal';
 
 /**
  * Карточка информации о задании
@@ -234,7 +235,6 @@ class MissionInfoForm extends React.Component<
   handleSelectedElementChange = (id) => {
     const { polys } = this.state;
     const { slug } = routeTypesByKey[this.props.element.route_data.type];
-
     if (Object.values(polys).length) {
       this.setState({
         polys: {
@@ -270,7 +270,7 @@ class MissionInfoForm extends React.Component<
     const title = makeTitle(element);
 
     return (
-      <Modal
+      <EtsModal
         id="modal-mission-info"
         show
         onHide={onFormHide}
@@ -336,7 +336,7 @@ class MissionInfoForm extends React.Component<
             <Button type="submit">Закрыть</Button>
           </Modal.Footer>
         </form>
-      </Modal>
+      </EtsModal>
     );
   }
 }

@@ -53,7 +53,8 @@ export const config: TypeConfigData<DutyMissionTemplate> = {
         title: 'Элемент',
       },
       {
-        valueKey: 'foreman_fio',
+        valueKey: 'foreman_id',
+        labelKey: 'foreman_fio',
         type: 'multiselect',
         title: 'Бригадир',
       },

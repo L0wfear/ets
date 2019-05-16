@@ -15,7 +15,7 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 import { HandleThunkActionCreator } from "react-redux";
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';
+import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
 
 export type ServicesHistoryListStateProps = {};
 export type ServicesHistoryListDispatchProps = {
@@ -60,19 +60,24 @@ const ServicesHistoryList: React.FC<ServicesHistoryListProps> = (props) => {
   React.useEffect(
     () => {
       if (date_start && date_end) {
-        const payload = {
-          getRegistryData: {
-            date_start,
-            date_end,
-          },
-          getBlobData: {
-            format: 'xls',
-            date_start,
-            date_end,
-          },
-        };
+        const date_start_value = date_start || createValidDateTime(getToday0am());
+        const date_end_value = date_end || createValidDateTime(getToday2359());
 
-        props.actionChangeGlobalPaylaodInServiceData(registryKey, payload);
+        if (diffDates(date_end_value, date_start_value) > 0) {
+          const payload = {
+            getRegistryData: {
+              date_start: date_start_value,
+              date_end: date_end_value,
+            },
+            getBlobData: {
+              format: 'xls',
+              date_start: date_start_value,
+              date_end: date_end_value,
+            },
+          };
+
+          props.actionChangeGlobalPaylaodInServiceData(registryKey, payload);
+        }
       }
     },
     [date_start, date_end],

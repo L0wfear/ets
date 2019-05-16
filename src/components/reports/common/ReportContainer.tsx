@@ -204,9 +204,11 @@ class ReportContainer extends React.Component<
             data.result.rows = filterFunction(rows, { filterValues: this.state.filterValues });
           }
 
+          const reportKey = get(this.props, 'tableProps.reportKey', null);
+
           this.props.setReportDataWithSummerData({
             data,
-            props: { ...this.state },
+            props: { ...this.state, notUseServerSummerTable: this.props.notUseServerSummerTable, reportKey },
           });
         }
       }

@@ -84,7 +84,7 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
 const makeRowsWithNoneStructure = (rows, colMeta) =>
   rows.map(({ ...row }) => ({ ...row, [colMeta.keyName]: '-' }));
 
-export const makeDataForSummerTable = (data, { uniqName }) => {
+export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
   if (data.result.meta.level === 'company') {
     let rows = get(data, 'result.rows', []);
     const {
@@ -108,7 +108,7 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
       }, []);
     }
 
-    if (with_summary_data) {
+    if (reportKey === 'fuel_cards_report') {
       if (rows.length) {
         const cols_wsd = openFields(fields);
         const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);
@@ -131,16 +131,18 @@ export const makeDataForSummerTable = (data, { uniqName }) => {
           return child;
         });
 
-        children.push(({
-          [cols_wsd[0].keyName]: 'Итого',
-          [uniqName]: 'summary',
-          noIndexRow: true,
-          ...aggr_fields.reduce((newObj, keyName) => {
-            newObj[keyName] = children.reduce((summ, row) => summ + row[keyName], 0);
-            return newObj;
-          }, {}),
-          _fix_bottom: true,
-        }));
+        if (with_summary_data) {
+          children.push(({
+            [cols_wsd[0].keyName]: 'Итого',
+            [uniqName]: 'summary',
+            noIndexRow: true,
+            ...aggr_fields.reduce((newObj, keyName) => {
+              newObj[keyName] = children.reduce((summ, row) => summ + row[keyName], 0);
+              return newObj;
+            }, {}),
+            _fix_bottom: true,
+          }));
+        }
 
         return children;
       }

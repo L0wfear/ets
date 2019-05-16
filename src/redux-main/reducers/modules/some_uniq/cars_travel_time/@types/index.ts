@@ -5,4 +5,5 @@ export type CarsTravelTime = {
   time_by_objects: string; // 'Время нахождения на объекте, ч.мин',
   shape: any; // для карты
   id: number; // id dt
+  frontIsSelected: boolean; // выделить объект на карте
 };

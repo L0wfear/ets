@@ -235,7 +235,6 @@ class MissionInfoForm extends React.Component<
   handleSelectedElementChange = (id) => {
     const { polys } = this.state;
     const { slug } = routeTypesByKey[this.props.element.route_data.type];
-
     if (Object.values(polys).length) {
       this.setState({
         polys: {

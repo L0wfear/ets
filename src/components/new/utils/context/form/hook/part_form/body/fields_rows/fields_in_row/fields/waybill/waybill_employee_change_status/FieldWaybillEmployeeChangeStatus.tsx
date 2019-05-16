@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { FieldDataName } from 'components/new/utils/context/form/@types/fields/string';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import FieldWaybillActivatedByEmployeeName from './activated_by_employee_name/FieldWaybillActivatedByEmployeeName';
+import FieldWaybillClosedByEmployeeName from './closed_by_employee_name/FieldWaybillClosedByEmployeeName';
 
 type FieldWaybillEmployeeChangeStatusProps = {
   fieldData: FieldDataName;
@@ -18,7 +20,12 @@ const FieldWaybillEmployeeChangeStatus: React.FC<FieldWaybillEmployeeChangeStatu
           IS_CLOSE_OR_IS_ACTIVE
             && (
               <Col md={2}>
-                FieldWaybillEmployeeChangeStatus
+                <Row>
+                  <FieldWaybillActivatedByEmployeeName formDataKey={props.formDataKey} />
+                </Row>
+                <Row>
+                  <FieldWaybillClosedByEmployeeName formDataKey={props.formDataKey} />
+                </Row>
               </Col>
             )
         );

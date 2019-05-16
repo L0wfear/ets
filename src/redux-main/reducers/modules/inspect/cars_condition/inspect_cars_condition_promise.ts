@@ -71,6 +71,22 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   return inspectCarsCondition;
 };
 
+export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
+  const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionFront);
+
+  inspectCarsCondition.data.types_cars = inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
+      delete rowData.customId;
+      delete rowData.disabled;
+      return rowData;
+    });
+  inspectCarsCondition.data.types_harvesting_unit = inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
+      delete rowData.customId;
+      return rowData;
+    });
+
+  return inspectCarsCondition;
+};
+
 export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number }) => {
   const response = await promiseGetInspectRegistry<InspectCarsCondition>({
     base_id: payload.carsConditionId,

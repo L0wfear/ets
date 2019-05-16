@@ -67,7 +67,7 @@ export const tableMeta = {
 
 const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
 
-  const [geoobjects, setGeoobjects] = React.useState(null);
+  const [geoobjects, setGeoobjects] = React.useState({});
   const [track, setTrack] = React.useState(null);
   const [selectedElement, setSelectedElement] = React.useState(null);
 
@@ -80,6 +80,35 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   const distance_out_mission_text = `Дистанция не по объектам задания: ${get(props.selectedElement, 'distance_out_mission', null)} км.`;
   const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;
   const modalTitle = `Детализация объектов, по которым двигалось ТС: ${gov_number}`;
+
+  const setGeoobjectsValidValue = React.useCallback(() => {
+    if (Object.values(props.carsTravelTimeList).length) {
+      const typeLayer = 'any';
+      const selectedFrontKey = `${typeLayer}/${get(selectedElement, 'id', null)}`;
+      const newGeoobjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
+        const front_key = `${typeLayer}/${currentElem.id}`;
+        const { shape, type: someType, frontIsSelected, ...someElem } = currentElem;
+        return {
+          [front_key]: {
+            shape: JSON.parse(shape),
+            front_key,
+            front_id: currentElem.id,
+            object_id: currentElem.id,
+            type: typeLayer,
+            state: 2, // влияет на окраску одх/дт
+            frontIsSelected: selectedFrontKey === front_key ? true : false, // выделение объекта на карте (заливка)
+            ...someElem,
+          },
+          ...newElem,
+        };
+      }, {});
+      setGeoobjects({
+        [typeLayer]: {
+          ...newGeoobjects,
+        },
+      });
+    }
+  }, [selectedElement, props.carsTravelTimeList]);
 
   React.useEffect( () => {
     const page = 'cars_travel_time_new';
@@ -137,29 +166,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   }, []);
 
   React.useEffect(() => {
-    const typeLayer = 'any';
-    const geoObjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
-      const front_key = `${typeLayer}/${currentElem.id}`;
-      const { shape, type: someType, ...someElem } = currentElem;
-      return {
-        [front_key]: {
-          shape: JSON.parse(shape),
-          front_key,
-          front_id: currentElem.id,
-          object_id: currentElem.id,
-          type: typeLayer,
-          state: 2, // влияет на окраску одх/дт
-          ...someElem,
-        },
-        ...newElem,
-      };
-    }, {});
-    setGeoobjects({
-      [typeLayer]: {
-        ...geoObjects,
-      },
-    });
-
+    setGeoobjectsValidValue();
   }, [props.carsTravelTimeList]);
 
   React.useEffect(() => {
@@ -172,35 +179,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   }, [geoobjects]);
 
   React.useEffect(() => { // для перевода фокуса на объект ОДХ/ДТ
-    if ( selectedElement ) {
-      const typeLayer = 'any';
-      const selectedFrontKey = `${typeLayer}/${selectedElement.id}`;
-      if (Object.values(props.carsTravelTimeList).length) {
-        const newGeoobjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
-          const front_key = `${typeLayer}/${currentElem.id}`;
-          const { shape, type: someType, frontIsSelected, ...someElem } = currentElem;
-          return {
-            [front_key]: {
-              shape: JSON.parse(shape),
-              front_key,
-              front_id: currentElem.id,
-              object_id: currentElem.id,
-              type: typeLayer,
-              state: 2, // влияет на окраску одх/дт
-              frontIsSelected: selectedFrontKey === front_key ? true : false,
-              ...someElem,
-            },
-            ...newElem,
-          };
-        }, {});
-
-        setGeoobjects({
-          [typeLayer]: {
-            ...newGeoobjects,
-          },
-        });
-      }
-    }
+    setGeoobjectsValidValue();
   }, [selectedElement]);
 
   return (

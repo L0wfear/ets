@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/waybill/Table';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
-import * as Button from 'react-bootstrap/lib/Button';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
@@ -14,6 +13,7 @@ import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/h
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { Row } from 'react-bootstrap';
 import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
+import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 
 /**
  * Компонент таксировки ТС
@@ -336,21 +336,25 @@ export default class Taxes extends React.Component {
             <EtsButtonsContainer>
               {!(this.props.readOnly || !fuelRates.length) && (
                 <React.Fragment>
-                  <Button
+                  <ButtonTableInput
+                    width={160}
                     id="add-operation"
+                    block
                     onClick={this.addOperation}
                     disabled={this.state.operations.length === taxes.length}>
                     Добавить операцию
-                  </Button>
-                  <Button
+                  </ButtonTableInput>
+                  <ButtonTableInput
+                    width={160}
                     id="remove-operation"
+                    block
                     disabled={
                       this.state.selectedOperation === null
                       || taxes.length === 0
                     }
                     onClick={this.removeOperation}>
                     Удалить операцию
-                  </Button>
+                  </ButtonTableInput>
                 </React.Fragment>
               )}
             </EtsButtonsContainer>

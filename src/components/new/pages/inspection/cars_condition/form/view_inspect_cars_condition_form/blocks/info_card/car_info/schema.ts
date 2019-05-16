@@ -40,17 +40,6 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'VIN',
       maxLength: 17,
     },
-    status: {
-      type: 'valueOfArray',
-      title: 'Статус ТС по базе',
-      dependencies: [
-        (value, formState) => {
-          if (formState.id && !value) {
-            return 'Поле "Статус ТС по базе" должно быть заполнено';
-          }
-        },
-      ],
-    },
     mileage: {
       type: 'number',
       title: 'Пробег на дату/счетчик моточасов',

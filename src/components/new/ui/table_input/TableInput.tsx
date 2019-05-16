@@ -2,11 +2,12 @@ import * as React from 'react';
 import { EtsTable, EtsTableWrapNoScroll } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import TableInputThead from './thead/TableInputThead';
 import TableInputTbody from './tbody/TableInputTbody';
-import { Button, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { EtsHeaderTitle } from '../registry/components/data/header/title/styled/styled';
 import { EtsHeaderContainer } from '../registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from '../registry/components/data/header/buttons/styled/styled';
 import { EtsTableDataContainer } from '../registry/components/data/table-data/styled/styled';
+import { ButtonTableInput } from './styled';
 
 export type TableMeta<F> = {
   key: string;
@@ -43,8 +44,12 @@ export type TableInputProps = {
   errors: any[];
   onChange: any;
   addName?: string;
+  addWidth?: number;
+  addBlock?: boolean;
   visibleAdd: boolean;
   removeName?: string;
+  removeWidth?: number;
+  removeBlock?: boolean;
   visibleRemove: boolean;
 
   disabled: boolean;
@@ -100,13 +105,13 @@ const TableInput: React.FC<TableInputProps> = React.memo(
               {
                 props.visibleAdd
                   && (
-                    <Button onClick={handleAddRow} disabled={disabled}>{props.addName || 'Добавить'}</Button>
+                    <ButtonTableInput block={props.addBlock} width={props.addWidth} onClick={handleAddRow} disabled={disabled}>{props.addName || 'Добавить'}</ButtonTableInput>
                   )
               }
               {
                 props.visibleRemove
                   && (
-                    <Button onClick={handleRemoveRow} disabled={selectedRowIndex === null || disabled}>{props.removeName || 'Удалить'}</Button>
+                    <ButtonTableInput block={props.removeBlock} width={props.removeWidth} onClick={handleRemoveRow} disabled={selectedRowIndex === null || disabled}>{props.removeName || 'Удалить'}</ButtonTableInput>
                   )
               }
             </EtsButtonsContainer>

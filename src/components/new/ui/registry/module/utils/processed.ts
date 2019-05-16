@@ -90,6 +90,7 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
               const sliceValue = value.slice(1, -1);
               return !row[valueKey].includes(sliceValue);
             }
+            case 'advanced-string-like':
             case 'multiselect': return !row[valueKey].includes(value);
             default: throw new Error('non define filter by type');
           }

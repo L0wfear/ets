@@ -19,6 +19,8 @@ export const PanelWrap = styled(Panel)`
     margin: 0;
     border: none;
     box-shadow: none;
+    position: relative;
+    z-index: 2;
   }
 `;
 

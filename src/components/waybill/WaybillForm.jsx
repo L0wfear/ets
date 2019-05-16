@@ -927,21 +927,50 @@ class WaybillForm extends UNSAFE_Form {
       equipment_fuel_type: value,
     });
   };
+  // очистка данных по топливу спецоборудования
+  // возвращает true/false, да/нет в диалоговом окне
+  clearFuelEquipmentData = async (changedFieldsData, withConfirmDialog) => {
+    const changeObj = {
+      equipment_refill: [],
+      equipment_fuel_given: null,
+      equipment_fuel_type: null,
+      equipment_fuel_to_give: null,
+      equipment_fuel_start: null,
+      equipment_fuel_end: null,
+      ...changedFieldsData,
+    };
+    if (withConfirmDialog) {
+      try {
+        await confirmDialog({
+          title: 'Внимание',
+          body: 'Очистить введенные данные по спецоборудованию?',
+          okName: 'Да',
+          cancelName: 'Нет',
+        });
+        this.handleMultipleChange(changeObj);
+        return true;
+      } catch (e) {
+        console.error(e);
+        return false;
+      }
+    } else {
+      this.handleMultipleChange(changeObj);
+      return true;
+    }
+  };
 
-  handleIsOneFuelTank = (is_one_fuel_tank) => {
+  handleIsOneFuelTank = async (is_one_fuel_tank) => {
     const changeObj = {
       is_one_fuel_tank: Boolean(is_one_fuel_tank),
     };
-
+    let dialogIsConfirmed = false;
     if (changeObj.is_one_fuel_tank) {
-      changeObj.equipment_refill = [];
-      changeObj.equipment_fuel_given = null;
-      changeObj.equipment_fuel_type = null;
-      changeObj.equipment_fuel_to_give = null;
-      changeObj.equipment_fuel_start = null;
-      changeObj.equipment_fuel_end = null;
+      dialogIsConfirmed = await this.clearFuelEquipmentData(changeObj, true);
     }
-    this.handleMultipleChange(changeObj);
+    if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
+      this.handleMultipleChange(changeObj);
+    }
+    return dialogIsConfirmed;
   };
 
   handleEquipmentFuel = (equipment_fuel) => {
@@ -953,13 +982,6 @@ class WaybillForm extends UNSAFE_Form {
   };
 
   handleChangeHasEquipmentOnTrue = async () => {
-    this.handleMultipleChange({
-      equipment_fuel: true,
-      motohours_equip_start: this.props.formState.motohours_equip_start || 0,
-    });
-
-    this.handleIsOneFuelTank(true);
-
     const {
       formState: { car_id },
     } = this.props;
@@ -972,7 +994,10 @@ class WaybillForm extends UNSAFE_Form {
 
     const closedEquipmentData = getClosedEquipmentData(lastCarUsedWaybill);
     closedEquipmentData.equipment_fuel = true;
-    this.handleMultipleChange(closedEquipmentData);
+    closedEquipmentData.motohours_equip_start
+      = this.props.formState.motohours_equip_start || 0;
+    closedEquipmentData.is_one_fuel_tank = true; // да, в closedEquipmentData и так true, но именно в этой функции значение выставляется в true
+    this.clearFuelEquipmentData(closedEquipmentData, false); // handleMultipleChange внутри этой функции,
   };
 
   handleChangeHasEquipmentOnFalse = async () => {
@@ -980,23 +1005,17 @@ class WaybillForm extends UNSAFE_Form {
 
     if (formState.equipment_fuel) {
       if (hasWaybillEquipmentData(formState, fieldToCheckHasData)) {
-        try {
-          await confirmDialog({
-            title: 'Внимание',
-            body: 'Очистить введенные данные по спецоборудованию?',
-          });
-          this.handleMultipleChange({
+        await this.clearFuelEquipmentData(
+          {
+            is_one_fuel_tank: true,
             motohours_equip_start: null,
+            equipment_fuel: false,
             ...setEmptyFieldByKey(fieldToCheckHasData),
-          });
-          this.handleIsOneFuelTank(true);
-        } catch (e) {
-          console.error(e);
-          return;
-        }
+          },
+          true,
+        );
       }
     }
-    this.handleChange('equipment_fuel', false);
   };
 
   handleChangeCarReFill = (car_refill) => {

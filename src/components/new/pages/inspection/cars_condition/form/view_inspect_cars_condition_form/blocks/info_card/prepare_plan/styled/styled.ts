@@ -15,4 +15,7 @@ export const CustomTableWrapper = styled.div`
       }
     }
   }
+  .date-table-input .griddle-body{
+    height: auto;
+  }
 `;

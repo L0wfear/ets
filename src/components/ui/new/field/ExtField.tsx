@@ -40,6 +40,7 @@ type ExtFieldDate<V = any> = ExtFieldCommon<V> & {
   time?: boolean;
 
   makeGoodFormat?: boolean; // валидный формат даты при изменении
+  preventDateTime?: boolean; // всегда datetime
 };
 
 type ExtFieldBoolean<V = any> = ExtFieldCommon<V> & {

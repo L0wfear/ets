@@ -929,7 +929,11 @@ class WaybillForm extends UNSAFE_Form {
   };
   // очистка данных по топливу спецоборудования
   // возвращает true/false, да/нет в диалоговом окне
-  clearFuelEquipmentData = async (changedFieldsData, withConfirmDialog) => {
+  clearFuelEquipmentData = async (
+    changedFieldsData,
+    withConfirmDialog,
+    dialogBody,
+  ) => {
     const changeObj = {
       equipment_refill: [],
       equipment_fuel_given: null,
@@ -943,7 +947,7 @@ class WaybillForm extends UNSAFE_Form {
       try {
         await confirmDialog({
           title: 'Внимание',
-          body: 'Очистить введенные данные по спецоборудованию?',
+          body: dialogBody || 'Очистить введенные данные по спецоборудованию?',
           okName: 'Да',
           cancelName: 'Нет',
         });
@@ -965,7 +969,11 @@ class WaybillForm extends UNSAFE_Form {
     };
     let dialogIsConfirmed = false;
     if (changeObj.is_one_fuel_tank) {
-      dialogIsConfirmed = await this.clearFuelEquipmentData(changeObj, true);
+      dialogIsConfirmed = await this.clearFuelEquipmentData(
+        changeObj,
+        true,
+        'Очистить введенные данные по топливу спецоборудования?',
+      );
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
       this.handleMultipleChange(changeObj);

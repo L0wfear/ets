@@ -20,6 +20,9 @@ export default withFormContext<Waybill, DefaultPropsWithFormContext<Waybill>>({
   bsSizeForm: 'large',
 
   store: {
-    mission_reject_list: [],
+    mission_reject_list: {
+      value: [],
+      isLoading: false,
+    },
   },
 });

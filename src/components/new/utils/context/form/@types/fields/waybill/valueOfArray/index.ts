@@ -10,3 +10,13 @@ export type FieldDataWaybillStuctureId = FieldValueOFArrayCommon<
   | any,
   'structure_id'
 >;
+
+/**
+ * Тип поля accompanying_person_id
+ * возможно стоит вынести
+ */
+export type FieldDataWaybillAccompanyingPersonId = FieldValueOFArrayCommon<
+  Waybill
+  | any,
+  'accompanying_person_id'
+>;

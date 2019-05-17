@@ -15,12 +15,6 @@ export const waybillFormSchema: SchemaFormContext<Waybill> = {
         {
           key: 'waybill_structure_and_accompanying_person',
           title: '',
-          fields: [
-            {
-              key: 'structure_id',
-              title: 'Подразделение',
-            },
-          ],
         },
         {
           key: 'waybill_dates',

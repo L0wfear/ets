@@ -219,7 +219,7 @@ const useFormDataLoadOptions = <T extends any>(formDataKey: string, key: string,
   React.useEffect(
     () => {
       handleChangeStore({
-        [key]: optionData.options,
+        [key]: optionData,
       });
     },
     [handleChangeStore, optionData],

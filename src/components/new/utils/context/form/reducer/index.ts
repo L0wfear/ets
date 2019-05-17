@@ -184,13 +184,13 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
       ...action.payload.partialStore,
     };
 
-    let partialStoreToShow: object | string = action.payload.partialStore;
+    let storeToShow: object | string = formData.store;
 
     if (!__DEVELOPMENT__) {
-      partialStoreToShow = JSON.stringify(partialStoreToShow);
+      storeToShow = JSON.stringify(storeToShow);
     }
 
-    console.log('⚙️ FORM CHANGE STORE', partialStoreToShow); // tslint:disable-line:no-console
+    console.log('⚙️ FORM CHANGE STORE', storeToShow); // tslint:disable-line:no-console
 
     formDataByKey[action.payload.formDataKey] = formData;
 

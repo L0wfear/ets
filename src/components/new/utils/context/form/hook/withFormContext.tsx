@@ -32,7 +32,7 @@ export type DefaultPropsWithFormContext<T extends any> = {
   path?: string;                                                          // для отображения загрузки (вторая часть)
 };
 
-const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormContext<T>>(formData: ConfigFormData<T>) => {
+const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormContext<T>, Store extends Record<string, any>>(formData: ConfigFormData<T, Store>) => {
   const Form: React.FC<FormProps<InnerProps>> = React.memo(
     (props) => {
       const context = React.useContext(FormContext);
@@ -66,15 +66,17 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
               }
             }
 
-            context.addFormData<T>(
+            const store = formData.store || {} as Store;
+
+            context.addFormData<T, Store>(
               {
                 ...formData,                                        // что пришло из конфига
                 handleHide: (isSubmitted, result) => {              // обёртка закрытия формы
-                  context.removeFormData<T>(formData.key);
+                  context.removeFormData<T, Store>(formData.key);
                   props.handleHide(isSubmitted, result);
                 },
                 handleChange: (objChange) => {                      // обёртка изменения формы
-                  context.handleChangeFormState<T>(
+                  context.handleChangeFormState<T, Store>(
                     formData.key,
                     objChange,
                   );
@@ -85,7 +87,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
                 path: props.path,
                 uniqField,
                 IS_CREATING,
-                store: formData.store || {},
+                store,
               },
               element,                                            // новый элемент
             );

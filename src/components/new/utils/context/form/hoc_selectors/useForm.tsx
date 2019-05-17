@@ -1,12 +1,12 @@
 import * as React from 'react';
-import FormContext, { OneFormDataByKey } from '../FormContext';
+import FormContext from '../FormContext';
 
 /* _______________ селекторы хуки _______________ */
 
 /**
  * formData по ключу
  */
-const useFormData = <T extends any>(formDataKey: string): OneFormDataByKey<T> => {
+const useFormData = <T extends any, Store extends Record<string, any>>(formDataKey: string) => {
   const context = React.useContext(FormContext);
 
   return context.formDataByKey[formDataKey];
@@ -16,7 +16,7 @@ const useFormData = <T extends any>(formDataKey: string): OneFormDataByKey<T> =>
  * получение схемы formData
  */
 const useFormDataSchema = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.schema : null;
 };
@@ -60,7 +60,7 @@ const useFormDataSchemaFooter = <T extends any>(formDataKey: string) => {
  * получение флага 'Создаётся ли элемент' формы
  */
 const useFormDataSchemaIsCreating = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.IS_CREATING : null;
 };
@@ -69,7 +69,7 @@ const useFormDataSchemaIsCreating = <T extends any>(formDataKey: string) => {
  * получение разрешения на создание формы
  */
 const useFormDataSchemaIsPermittedToCreate = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.isPermittedToCreate : null;
 };
@@ -78,7 +78,7 @@ const useFormDataSchemaIsPermittedToCreate = <T extends any>(formDataKey: string
  * получение разрешения на редактирование формы
  */
 const useFormDataSchemaIsPermittedToUpdate = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.isPermittedToUpdate : null;
 };
@@ -87,7 +87,7 @@ const useFormDataSchemaIsPermittedToUpdate = <T extends any>(formDataKey: string
  * получение функции закрытия формы
  */
 const useFormDataSchemaHandleHide = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.handleHide : null;
 };
@@ -96,7 +96,7 @@ const useFormDataSchemaHandleHide = <T extends any>(formDataKey: string) => {
  * получение функции изменения формы
  */
 const useFormDataHandleChange = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.handleChange : null;
 };
@@ -105,7 +105,7 @@ const useFormDataHandleChange = <T extends any>(formDataKey: string) => {
  * получение функции сабмита формы
  */
 const useFormDataHandleSubmitAction = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.handleSubmitPromise : null;
 };
@@ -113,12 +113,12 @@ const useFormDataHandleSubmitAction = <T extends any>(formDataKey: string) => {
 /**
  * получение функции измнения значение стора формы
  */
-const useFormDataHandleChangeStore = <T extends any>(formDataKey: string) => {
+const useFormDataHandleChangeStore = <T extends any, Store extends Record<string, any>>(formDataKey: string) => {
   const context = React.useContext(FormContext);
 
   return React.useMemo(
     () => {
-      return (partialStore: object) => {
+      return (partialStore: Partial<Store>) => {
         context.handleChangeStore(
           formDataKey,
           partialStore,
@@ -133,7 +133,7 @@ const useFormDataHandleChangeStore = <T extends any>(formDataKey: string) => {
  * получение page формы
  */
 const useFormDataSchemaPage = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.page : null;
 };
@@ -142,7 +142,7 @@ const useFormDataSchemaPage = <T extends any>(formDataKey: string) => {
  * получение path формы
  */
 const useFormDataSchemaPath = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.path : null;
 };
@@ -151,7 +151,7 @@ const useFormDataSchemaPath = <T extends any>(formDataKey: string) => {
  * получение состояния зачений формы (formState)
  */
 const useFormDataFormState = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.formState : null;
 };
@@ -169,7 +169,7 @@ const useFormDataFormStatePickValue = <T extends any>(formDataKey: string, key: 
  * получение состояния ошибок (formErrors)
  */
 const useFormDataFormErrors = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.formErrors : null;
 };
@@ -178,7 +178,7 @@ const useFormDataFormErrors = <T extends any>(formDataKey: string) => {
  * получение статуса возможности сабмита формы
  */
 const useFormDataCanSave = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+  const formData = useFormData<T, any>(formDataKey);
 
   return formData ? formData.canSave : null;
 };
@@ -197,8 +197,8 @@ const useFormDataIsPermitted = <T extends any>(formDataKey: string) => {
 /**
  * получение глобального стора формы
  */
-const useFormDataStore = <T extends any>(formDataKey: string) => {
-  const formData = useFormData<T>(formDataKey);
+const useFormDataStore = <T extends any, Store extends Record<string, any>>(formDataKey: string) => {
+  const formData = useFormData<T, Store>(formDataKey);
 
   return formData ? formData.store : null;
 };
@@ -206,21 +206,22 @@ const useFormDataStore = <T extends any>(formDataKey: string) => {
 /**
  * получение значения из глобального стора формы
  */
-const useFormDataStorePickValue = <T extends any>(formDataKey: string, key: string) => {
-  const store = useFormDataStore<T>(formDataKey);
+const useFormDataStorePickValue = <T extends any, Store extends Record<string, any>>(formDataKey: string, key: string) => {
+  const store = useFormDataStore<T, Store>(formDataKey);
 
   return store ? store[key] : null;
 };
 
-const useFormDataLoadOptions = <T extends any>(formDataKey: string, key: string, hookData: { options: any } & Record<string, any>) => {
+const useFormDataLoadOptions = <Store extends Record<string, any>, K extends keyof Store>(formDataKey: string, key: K, hookData: Store[K]) => {
   const optionData = hookData;
-  const handleChangeStore = useFormDataHandleChangeStore<T>(formDataKey);
+  const handleChangeStore = useFormDataHandleChangeStore<any, Store>(formDataKey);
 
   React.useEffect(
     () => {
-      handleChangeStore({
-        [key]: optionData,
-      });
+      const partialStore: Partial<Store> = {};
+      partialStore[key] = optionData;
+
+      handleChangeStore(partialStore);
     },
     [handleChangeStore, optionData],
   );

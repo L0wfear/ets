@@ -6,20 +6,28 @@ import { isBoolean } from 'util';
 
 type DatePickerRangeProps = {
   date_start_id: string;
+  date_start_key?: string;
   date_start_value: any;
   date_start_error?: string | boolean;
   date_start_time?: boolean;
   date_end_id: string;
+  date_end_key?: string;
   date_end_value: any;
   date_end_error?: string | boolean;
   date_end_time?: boolean;
-  label?: string | boolean;
 
   allWidth?: boolean;
 
   disabled?: boolean;
   onChange: (boundKey: any, value: string) => void;
-};
+} & (
+  {
+    label?: string | boolean;
+  } | {
+    date_start_label?: string | boolean;
+    date_end_label?: string | boolean;
+  }
+);
 
 export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
   const onChangeDateStart = React.useCallback(
@@ -29,7 +37,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
       if (value) {
         value = isBoolean(props.date_start_time) && !props.date_start_time ? createValidDate(value) : createValidDateTime(value);
       }
-      props.onChange(props.date_start_id, value);
+      props.onChange(props.date_start_key || props.date_start_id, value);
     },
     [props.date_start_id, props.date_start_time],
   );
@@ -40,14 +48,30 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
       if (value) {
         value = isBoolean(props.date_end_time) && !props.date_end_time ? createValidDate(value) : createValidDateTime(value);
       }
-      props.onChange(props.date_end_id, value);
+      props.onChange(props.date_end_key || props.date_end_id, value);
 
     },
     [props.date_end_id, props.date_end_time],
   );
 
-  const labelDatePickerStart = props.label ? props.label : false;
-  const labelDatePickerEnd = labelDatePickerStart ? '' : false;
+  const labelDatePickerStart = (
+    'date_start_label' in props
+      ? props.date_start_label
+      : (
+        'label' in props
+        ? props.label
+        : false
+      )
+  );
+  const labelDatePickerEnd = (
+    'date_start_label' in props
+      ? props.date_start_label
+      : (
+        labelDatePickerStart
+          ? ''
+          : false
+      )
+  );
 
   return (
     <DatePickerRangeContainer allWidth={props.allWidth}>
@@ -63,7 +87,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           disabled={props.disabled}
         />
       </ColStartDatePickerRange>
-      <ColDividerDatePickerRange md={2} label={labelDatePickerStart}>
+      <ColDividerDatePickerRange md={2} label={labelDatePickerStart} date_start_label={'date_start_label' in props}>
         —
       </ColDividerDatePickerRange>
       <ColEndDatePickerRange md={5}>

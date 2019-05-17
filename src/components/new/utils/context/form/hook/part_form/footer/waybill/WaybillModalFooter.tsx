@@ -15,7 +15,7 @@ const WaybillModalFooter: React.FC<WaybillModalFooterProps> = React.memo(
           </div>
         );
       },
-      [props.formDataKey],
+      [props],
     );
   },
 );

@@ -6,7 +6,7 @@ import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenan
 import { submitMaintenanceWork } from 'redux-main/reducers/modules/maintenance_work/promise_maintenance_work';
 
 // удалил старую форму вместе с этим коммитом
-export default withFormContext<MaintenanceWork, DefaultPropsWithFormContext<MaintenanceWork>>({
+export default withFormContext<MaintenanceWork, DefaultPropsWithFormContext<MaintenanceWork>, {}>({
   key: 'maintenance_work_form',
   uniqField: 'id',
   mergeElement: getDefaultMaintenanceWorkElement,

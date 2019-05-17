@@ -23,7 +23,7 @@ const DefaultModalFooter: React.FC<DefaultModalFooterProps> = React.memo(
           </React.Fragment>
         );
       },
-      [formDataFooterValue.buttons, props.formDataKey],
+      [formDataFooterValue.buttons, props],
     );
   },
 );

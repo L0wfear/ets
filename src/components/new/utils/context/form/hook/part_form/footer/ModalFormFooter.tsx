@@ -28,7 +28,7 @@ const ModalFormFooter: React.FC<ModalFormFooterProps> = React.memo(
         }
         return <div>{`Определи тип футера для ${formDataFooterValue.type} в ModalFormFooter ComponentsByKey`}</div>;
       },
-      [formDataFooterValue],
+      [formDataFooterValue, props],
     );
 
     return React.useMemo(

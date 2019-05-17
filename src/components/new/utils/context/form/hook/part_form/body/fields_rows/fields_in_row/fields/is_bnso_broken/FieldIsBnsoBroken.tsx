@@ -2,38 +2,29 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
-import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
-import { FieldDataMeasureUnitId } from 'components/new/utils/context/form/@types/fields/valueOfArray';
+import { FieldDataIsBnsoBroken } from 'components/new/utils/context/form/@types/fields/string';
 import { Col } from 'react-bootstrap';
 
-type FieldMeasureUnitIdProps = {
-  fieldData: FieldDataMeasureUnitId;
+type FieldIsBnsoBrokenProps = {
+  fieldData: FieldDataIsBnsoBroken;
   formDataKey: string;
 };
 
-const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
+const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
   (props) => {
     const {
-      fieldData: { title, clearable, key },
+      fieldData: { key, title },
     } = props;
-
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<any>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
 
-    const {
-      isLoading,
-      options,
-    } = useMeasureUnitOptions();
-
     const handleChangeWrap = React.useCallback(
-      (value, option) => {
-        handleChange({
-          measure_unit_id: value,
-          measure_unit_name: get(option, 'rowData.name', null),
-        });
+      (event) => {
+        const value = get(event, 'target.value', event);
+        handleChange({ [key]: value || null });
       },
       [key, handleChange],
     );
@@ -43,22 +34,18 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
         <Col md={props.fieldData.md || 12}>
           <ExtField
             id={`${path}_${key}`}
-            type="select"
-            clearable={clearable}
+            type="string"
             label={title}
             value={formState[key]}
             error={formErrors[key]}
-            options={options}
             onChange={handleChangeWrap}
             disabled={!isPermitted}
-
-            etsIsLoading={isLoading}
           />
         </Col>
       ),
-      [props, path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],
+      [props, path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
     );
   },
 );
 
-export default FieldMeasureUnitId;
+export default FieldIsBnsoBroken;

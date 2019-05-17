@@ -36,7 +36,7 @@ const FieldWaybillStructureAndAccompanyingPerson: React.FC<FieldWaybillStructure
           </Col>
         );
       },
-      [IS_CLOSE_OR_IS_ACTIVE, props.formDataKey],
+      [props, IS_CLOSE_OR_IS_ACTIVE, props.formDataKey],
     );
   },
 );

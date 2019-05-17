@@ -41,7 +41,7 @@ const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
           <Modal.Title>{ title }</Modal.Title>
         </Modal.Header>
       ),
-      [title],
+      [props, title],
     );
   },
 );

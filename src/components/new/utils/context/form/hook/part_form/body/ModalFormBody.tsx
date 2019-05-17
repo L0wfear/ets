@@ -18,7 +18,7 @@ const ModalFormBody: React.FC<ModalFormBodyProps> = React.memo(
           <FieldsRows formDataKey={props.formDataKey} />
         </ModalBodyPreloader>
       ),
-      [page, path],
+      [page, path, props],
     );
   },
 );

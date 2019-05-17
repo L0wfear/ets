@@ -7,6 +7,7 @@ import useEmployeeFullNameOptions from 'components/new/utils/hooks/services/useO
 import { FieldDataWaybillAccompanyingPersonId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 
 type FieldWaybillAccompanyingPersonIdOwnProps = {
   fieldData: FieldDataWaybillAccompanyingPersonId;
@@ -28,10 +29,10 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
     const {
       isLoading,
       options,
-    } = useForm.useFormDataLoadOptions(
+    } = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'employee'>(
       props.formDataKey,
-      'accompanying_person_id',
-      useEmployeeFullNameOptions(), // EMPLOYEES
+      'employee',
+      useEmployeeFullNameOptions(),
     );
 
     const handleChangeWrap = React.useCallback(
@@ -83,6 +84,7 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
         );
       },
       [
+        props,
         path,
         key,
         clearable,

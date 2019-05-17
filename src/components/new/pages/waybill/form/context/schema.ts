@@ -22,6 +22,42 @@ export const waybillFormSchema: SchemaFormContext<Waybill> = {
           md: 6,
         },
       ],
+      [
+        {
+          key: 'waybill_car_id',
+          title: 'Транспортное средство',
+          md: 6,
+        },
+        {
+          key: 'waybill_trailer_id',
+          title: 'Прицеп',
+          md: 6,
+        },
+      ],
+      [
+        {
+          key: 'is_bnso_broken',
+          title: 'Исправность датчика ГЛОНАСС',
+        },
+      ],
+      [
+        {
+          key: 'waybill_driver_id',
+          title: 'Водитель',
+          md: 6,
+        },
+        {
+          key: 'waybill_work_mode_id',
+          title: 'Режим работы',
+          md: 6,
+        },
+      ],
+      [
+        {
+          key: 'waybill_missions',
+          title: 'Задание',
+        },
+      ],
     ],
   },
   footer: {

@@ -11,6 +11,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 
 type FieldWaybillStructureIdStateProps = {
   userStructureId: InitialStateSession['userData']['structure_id'];
@@ -41,7 +42,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
     const {
       isLoading,
       options,
-    } = useForm.useFormDataLoadOptions(
+    } = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'structure_id'>(
       props.formDataKey,
       'structure_id',
       useStructureOptions(),

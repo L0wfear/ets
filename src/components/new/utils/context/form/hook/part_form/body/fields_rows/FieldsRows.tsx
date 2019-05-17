@@ -29,7 +29,7 @@ const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
           </React.Fragment>
         );
       },
-      [fields, props.formDataKey],
+      [fields, props],
     );
   },
 );

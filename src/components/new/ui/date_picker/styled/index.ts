@@ -6,18 +6,18 @@ import { mobiSize } from 'global-styled/global-constants';
 export const ColStartDatePickerRange = styled(Col)`
   &&& {
     @media (min-width: 992px) {
-      width: 49%;
+      width: 49.5%;
     }
   }
 `;
-export const ColDividerDatePickerRange = styled(Col)<{label: any}>`
+export const ColDividerDatePickerRange = styled(Col)<{ label: any; date_start_label: any }>`
   &&& {
-    visibility: hidden;
+    display: none;
     text-align: center;
-    bottom: ${(props) => props.label ? '-24px' : '0px'};
+    bottom: ${(props) => props.label || props.date_start_label ? '-24px' : '0px'};
     @media (min-width: 992px) {
-      visibility: initial;
-      width: 2%;
+      display: initial;
+      width: 1%;
       margin: 0;
       padding: 8px 0 0 0;
       display: flex;
@@ -32,7 +32,7 @@ export const DatePickerRangeContainer = styled(Row)<{ allWidth?: boolean }>`
   margin-bottom: 5px;
   position: relative;
 
-  min-width: 460px;
+  min-width: 450px;
   @media screen and (max-width: ${mobiSize}px) {
     min-width: 0;
   }

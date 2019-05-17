@@ -58,6 +58,7 @@ export type Waybill = {
   gov_number: string;
   id: number;
   is_bnso_broken: boolean;
+  is_one_fuel_tank: boolean;
   mission_id_list: Mission['id'][];
   motohours_end: number;
   motohours_equip_end: number;

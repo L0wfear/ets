@@ -1,5 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'utils/dates';
 
 export const defaultWaybill: Waybill = {
   accompanying_person_id: null,
@@ -20,7 +21,7 @@ export const defaultWaybill: Waybill = {
   closed_editable: false,
   closing_date: '',
   comment: '',
-  company_id: null,
+  company_id: null,            // нужно брать из стора
   created_by_employee_id: null,
   created_by_employee_name: '',
   date_create: '',
@@ -30,12 +31,12 @@ export const defaultWaybill: Waybill = {
   downtime_hours_work: null,
   driver_id: null,
   equipment_fact_fuel_end: null,
-  equipment_fuel: false,
+  equipment_fuel: null,
   equipment_fuel_end: null,
   equipment_fuel_given: null,
   equipment_fuel_start: null,
   equipment_fuel_to_give: null,
-  equipment_fuel_type: '',
+  equipment_fuel_type: 'DT',
   equipment_refill: [],
   equipment_tax_data: [],
   fact_arrival_date: '',
@@ -50,7 +51,8 @@ export const defaultWaybill: Waybill = {
   garage_number: '',
   gov_number: '',
   id: null,
-  is_bnso_broken: true,
+  is_bnso_broken: null,
+  is_one_fuel_tank: true,
   mission_id_list: [],
   motohours_end: null,
   motohours_equip_end: null,
@@ -59,8 +61,8 @@ export const defaultWaybill: Waybill = {
   number: null,
   odometr_end: null,
   odometr_start: null,
-  plan_arrival_date: '',
-  plan_departure_date: '',
+  plan_arrival_date: createValidDateTime(getTomorrow9am()),
+  plan_departure_date: createValidDateTime(getDateWithMoscowTz()),
   sensor_consumption: null,
   status: 'draft',
   structure_id: null,

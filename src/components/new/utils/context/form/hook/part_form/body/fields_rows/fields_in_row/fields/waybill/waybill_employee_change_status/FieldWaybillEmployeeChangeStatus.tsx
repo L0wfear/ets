@@ -30,7 +30,7 @@ const FieldWaybillEmployeeChangeStatus: React.FC<FieldWaybillEmployeeChangeStatu
             )
         );
       },
-      [IS_CLOSE_OR_IS_ACTIVE],
+      [props, IS_CLOSE_OR_IS_ACTIVE],
     );
   },
 );

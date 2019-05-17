@@ -3,7 +3,7 @@ import { SchemaFormContext, FormErrorBySchema } from './@types';
 import { Modal } from 'react-bootstrap';
 
 // что имееем по formData
-export type OneFormDataByKey<F> = {
+export type OneFormDataByKey<F, Store extends object> = {
   key: string;                                                        // уникальный ключ формы
   mergeElement: (element: Partial<F>) => F;                           // функция получения нужного для формы элемента
   uniqField: keyof F;                                                 // ключ, отсутсвие знаения которого говорит, что элемент создаётся
@@ -33,27 +33,27 @@ export type OneFormDataByKey<F> = {
 
   bsSizeForm?: Modal.ModalProps['bsSize'];                            // размер формы
 
-  store: Record<string, any>;                                         // всякие глобальные данные
+  store: Store;                                                       // всякие глобальные данные
 };
 
 // конфиг для hook withFormContext
-export type ConfigFormData<F extends any> = {
-  key: OneFormDataByKey<F>['key'];
-  mergeElement: OneFormDataByKey<F>['mergeElement'];
-  schema: OneFormDataByKey<F>['schema'];
-  uniqField?: OneFormDataByKey<F>['uniqField'];
-  permissions: OneFormDataByKey<F>['permissions'];
-  loadItemPromise?: OneFormDataByKey<F>['loadItemPromise'];
-  handleSubmitPromise: OneFormDataByKey<F>['handleSubmitPromise'];
-  bsSizeForm?: OneFormDataByKey<F>['bsSizeForm'];
-  store?: OneFormDataByKey<F>['store'];
+export type ConfigFormData<F extends any, Store extends Record<string, any>> = {
+  key: OneFormDataByKey<F, Store>['key'];
+  mergeElement: OneFormDataByKey<F, Store>['mergeElement'];
+  schema: OneFormDataByKey<F, Store>['schema'];
+  uniqField?: OneFormDataByKey<F, Store>['uniqField'];
+  permissions: OneFormDataByKey<F, Store>['permissions'];
+  loadItemPromise?: OneFormDataByKey<F, Store>['loadItemPromise'];
+  handleSubmitPromise: OneFormDataByKey<F, Store>['handleSubmitPromise'];
+  bsSizeForm?: OneFormDataByKey<F, Store>['bsSizeForm'];
+  store?: OneFormDataByKey<F, Store>['store'];
 };
 
 // необходимый набор для добавления данных по форме в контекст
-export type ConfigFormDataForAdd<F extends any> = (
-  ConfigFormData<F>
+export type ConfigFormDataForAdd<F extends any, Store extends Record<string, any>> = (
+  ConfigFormData<F, Store>
   & Pick<
-    OneFormDataByKey<F>,
+    OneFormDataByKey<F, Store>,
     'handleChange'
     | 'handleHide'
     | 'page'
@@ -68,11 +68,11 @@ export type ConfigFormDataForAdd<F extends any> = (
 
 // что имеет контекст
 export type InitialFormContextValue = {
-  addFormData: <T extends any>(config: ConfigFormDataForAdd<T>, element: Partial<T>) => void;                             // добавление данных по форме в контекст
-  removeFormData: <T extends any>(formDataKey: OneFormDataByKey<T>['key']) => void;                                       // удаление данных формы из контекста
-  handleChangeFormState: <T extends any>(formDataKey: string, obj: Partial<OneFormDataByKey<T>['formState']>) => void;    // изменение состояния формы в контексте по ключу
-  handleChangeStore: <T extends any>(formDataKey: string, obj: Partial<OneFormDataByKey<T>['store']>) => void;            // изменение состояния стора в контексте по ключу
-  formDataByKey: Record<string, OneFormDataByKey<any>>;                                                                   // сами формы
+  addFormData: <T extends any, Store extends Record<string, any>>(config: ConfigFormDataForAdd<T, Store>, element: Partial<T>) => void;                             // добавление данных по форме в контекст
+  removeFormData: <T extends any, Store extends Record<string, any>>(formDataKey: OneFormDataByKey<T, Store>['key']) => void;                                       // удаление данных формы из контекста
+  handleChangeFormState: <T extends any, Store extends Record<string, any>>(formDataKey: string, obj: Partial<OneFormDataByKey<T, Store>['formState']>) => void;    // изменение состояния формы в контексте по ключу
+  handleChangeStore: <T extends any, Store extends Record<string, any>>(formDataKey: string, obj: Partial<OneFormDataByKey<T, Store>['store']>) => void;            // изменение состояния стора в контексте по ключу
+  formDataByKey: Record<string, OneFormDataByKey<any, Record<string, any>>>;                                                                                        // сами формы
 };
 
 // дефолтный контекст

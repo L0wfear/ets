@@ -1,13 +1,13 @@
 import { InitialFormContextValue, ConfigFormDataForAdd } from '../FormContext';
 import { validate, canSaveTest } from './validate';
 
-type AddFormDataToStore<T = any> = (
-  formData: ConfigFormDataForAdd<T>,
+type AddFormDataToStore<T = any, Store = Record<string, any>> = (
+  formData: ConfigFormDataForAdd<T, Store>,
   element: Partial<T>,
 ) => {
   type: 'ADD_FORM_CONTEXT_FORM_DATA';
   payload: {
-    formData: ConfigFormDataForAdd<T>;
+    formData: ConfigFormDataForAdd<T, Store>;
     element: Partial<T>;
   },
 };

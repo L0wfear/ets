@@ -43,7 +43,7 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
           />
         </Col>
       ),
-      [path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
+      [props, path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
     );
   },
 );

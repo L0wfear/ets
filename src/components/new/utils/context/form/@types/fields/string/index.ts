@@ -1,5 +1,6 @@
 import { FieldCommon } from "../common";
 import { MaintenanceWork } from "redux-main/reducers/modules/some_uniq/maintenance_work/@types";
+import { Waybill } from "redux-main/reducers/modules/waybill/@types";
 
 /**
  * Схема для типа stirng
@@ -22,8 +23,19 @@ export type FieldDataName = FieldStringCommon<
 >;
 
 /**
+ * Тип поля is_bnso_broken
+ * возможно стоит вынести
+ */
+export type FieldDataIsBnsoBroken = FieldStringCommon<
+  Waybill
+  | any,
+  'is_bnso_broken'
+>;
+
+/**
  * Все типы string полей
  */
 export type FieldsString = (
   FieldDataName
+  | FieldDataIsBnsoBroken
 );

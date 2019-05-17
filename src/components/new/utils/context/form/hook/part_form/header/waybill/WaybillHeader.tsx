@@ -31,7 +31,7 @@ const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
           <Modal.Title>{ titleText }</Modal.Title>
         </Modal.Header>
       ),
-      [titleText],
+      [props, titleText],
     );
   },
 );

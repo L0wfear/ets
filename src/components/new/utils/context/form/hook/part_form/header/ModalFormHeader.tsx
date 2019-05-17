@@ -27,7 +27,7 @@ const ModalFormHeader: React.FC<ModalFormHeaderProps> = React.memo(
         }
         return <div>{`Определи тип шапки для ${formDataHeaderValue.type} в ModalFormHeader ComponentsByKey`}</div>;
       },
-      [formDataHeaderValue],
+      [props, formDataHeaderValue],
     );
   },
 );

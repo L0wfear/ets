@@ -111,31 +111,28 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   }, [selectedElement, props.carsTravelTimeList]);
 
   React.useEffect( () => {
-    const page = 'cars_travel_time_new';
-    const path = 'cars_travel_time_new';
-    const {
-      date_from,
-      date_to,
-    } = props;
+    const loadFunc = async () => {
+      const page = 'cars_travel_time_new';
+      const path = 'cars_travel_time_new';
+      const {
+        date_from,
+        date_to,
+      } = props;
 
-    const car_id = get(props, 'selectedElement.car_id', null);
-    let odh_mkad = {};
+      const car_id = get(props, 'selectedElement.car_id', null);
 
-    if (has_mkad) {
-      const { serverName } = GEOOBJECTS_OBJ.odh_mkad;
+      let odh_mkad = {};
+      if (has_mkad) {
+        const { serverName } = GEOOBJECTS_OBJ.odh_mkad;
 
-      props.loadGeozones(serverName)
-        .then(({ payload: geozones }) => {
-          odh_mkad = get(geozones, 'odh_mkad', {});
-          props.actionGetAndSetInStoreTracksCaching({
-            date_start: date_from,
-            date_end: date_to,
-            car_id,
-            gps_code,
-            odh_mkad,
-          }, { page, path });
-        });
-    } else {
+        const response = await props.loadGeozones(serverName)
+          .then(({ payload: geozones }) => {
+            odh_mkad = get(geozones, 'odh_mkad', {});
+          });
+
+        odh_mkad = get(response, 'payload.odh_mkad', {});
+      }
+
       props.actionGetAndSetInStoreTracksCaching({
         date_start: date_from,
         date_end: date_to,
@@ -143,13 +140,15 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
         gps_code,
         odh_mkad,
       }, { page, path });
-    }
 
-    props.actionGetAndSetInStoreCarsTravelTime({
-      date_from,
-      date_to,
-      car_id,
-    }, { page, path });
+      props.actionGetAndSetInStoreCarsTravelTime({
+        date_from,
+        date_to,
+        car_id,
+      }, { page, path });
+    };
+
+    loadFunc();
 
     return () => {
       props.actionResetCarsTravelTime();

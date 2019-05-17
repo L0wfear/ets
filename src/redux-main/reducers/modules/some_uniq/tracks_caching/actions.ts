@@ -5,6 +5,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* --------------- обновление стора --------------- */
 export const actionSetTracksCaching = (
@@ -29,34 +30,21 @@ export const actionResetTracksCaching = (): ThunkAction<
 };
 
 /* --------------- запрос --------------- */
-export const actionGetTracksCaching: any = (
-  payload = {},
-  { page, path }: LoadingMeta,
-) => async (dispatch) =>
-  dispatch({
-    type: 'none',
-    payload: promiseGetTracksCaching(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const actionGetTracksCaching = (payload: Parameters<typeof promiseGetTracksCaching>[0],  meta: LoadingMeta): ThunkAction<Promise<ReturnType<typeof promiseGetTracksCaching>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseGetTracksCaching(payload),
+    meta,
+  );
+};
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreTracksCaching: any = (
-  payload = {},
-  { page, path }: LoadingMeta,
-) => async (dispatch) => {
-  const {
-    payload: { data },
-  } = await dispatch(actionGetTracksCaching(payload, { page, path }));
+export const actionGetAndSetInStoreTracksCaching = (payload: Parameters<typeof actionGetTracksCaching>[0], meta: LoadingMeta): ThunkAction<Promise<ReturnType<typeof actionSetTracksCaching>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const data = await dispatch(actionGetTracksCaching(payload, meta));
 
   dispatch(actionSetTracksCaching(data));
 
-  return {
-    tracksCaching: data,
-  };
+  return data;
 };
 
 export default {

@@ -151,14 +151,6 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
       car_id,
     }, { page, path });
 
-    props.actionGetAndSetInStoreTracksCaching({
-      date_start: date_from,
-      date_end: date_to,
-      car_id,
-      gps_code,
-      odh_mkad,
-    }, { page, path });
-
     return () => {
       props.actionResetCarsTravelTime();
       props.actionResetTracksCaching();

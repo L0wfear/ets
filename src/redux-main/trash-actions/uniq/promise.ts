@@ -1,21 +1,11 @@
 import {
   CompanyService,
-  TrackService,
   TimeMoscowService,
 } from 'api/Services';
 import {
-  get,
   keyBy,
 } from 'lodash';
-import config from 'config';
-import { getDateWithMoscowTz, makeUnixTime } from 'utils/dates';
-import {
-  getCarGpsNumberByDateTime,
-} from 'redux-main/trash-actions/car/promise/promise';
-
-import {
-  checkAndModifyTrack,
-} from 'redux-main/trash-actions/uniq/utils/utils';
+import { getDateWithMoscowTz } from 'utils/dates';
 
 const colors = [];
 
@@ -75,30 +65,3 @@ export const loadMoscowTime = () => (
     };
   })
 );
-
-export const loadTrackCaching = ({ odh_mkad, ...payloadData }) => {
-  let version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], '');
-  const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [`TEST::${config.tracksCaching}`], '');
-
-  if (test_version) {
-    version = test_version;
-  }
-
-  return (
-    getCarGpsNumberByDateTime(payloadData as any)
-      .then(({ gps_code }) => {
-        const payloadToTrack = {
-          version,
-          gps_code,
-          from_dt: makeUnixTime(payloadData.date_start),
-          to_dt: makeUnixTime(payloadData.date_end),
-          sensors: 1,
-        };
-
-        return TrackService.get(payloadToTrack).then((ans) => ({
-          ...ans,
-          ...checkAndModifyTrack(ans, odh_mkad),
-        }));
-      })
-  );
-};

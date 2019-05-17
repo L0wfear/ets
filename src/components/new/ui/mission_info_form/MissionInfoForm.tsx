@@ -13,8 +13,6 @@ import { routeTypesBySlug, routeTypesByKey } from 'constants/route';
 import { diffDates } from 'utils/dates';
 import { makeTitle } from 'components/new/ui/mission_info_form/utils/format';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
-import { loadTrackCaching } from 'redux-main/trash-actions/uniq/promise';
-import { loadCarGpsCode } from 'redux-main/trash-actions/car/car';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 
 import {
@@ -35,6 +33,7 @@ import {
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { ReduxState } from 'redux-main/@types/state';
 import EtsModal from '../modal/Modal';
+import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 
 /**
  * Карточка информации о задании
@@ -60,7 +59,6 @@ class MissionInfoForm extends React.Component<
       polys: {},
       inputLines: [],
       parkingCount: null,
-      gps_code: null,
       tooLongDates:
         diffDates(mission_data.date_end, mission_data.date_start, 'days') > 10,
       missionReport: entries
@@ -107,22 +105,8 @@ class MissionInfoForm extends React.Component<
           }
         });
 
-      this.loadGpsCode();
       this.loadTrack();
     }
-  }
-
-  async loadGpsCode() {
-    const { element } = this.props;
-
-    const {
-      payload: { gps_code },
-    } = await this.props.loadCarGpsCode({
-      asuods_id: element.car_data.asuods_id,
-      date_start: element.mission_data.date_start,
-    });
-
-    this.setState({ gps_code });
   }
 
   /**
@@ -134,8 +118,7 @@ class MissionInfoForm extends React.Component<
     const { element } = this.props;
 
     const payload: any = {
-      asuods_id: element.car_data.asuods_id,
-      gps_code: element.car_data.gps_code,
+      car_id: element.car_data.asuods_id,
       date_start: element.mission_data.date_start,
       date_end: element.mission_data.date_end,
       odh_mkad: {},
@@ -154,8 +137,13 @@ class MissionInfoForm extends React.Component<
     }
 
     const calcTrackData = await this.props
-      .loadTrackCaching(payload)
-      .then(({ payload: track }) => track);
+      .actionGetTracksCaching(
+        payload,
+        {
+          page: 'any',
+          path: 'missionInfoForm',
+        },
+      );
 
     this.setState({
       track: calcTrackData.track,
@@ -289,7 +277,7 @@ class MissionInfoForm extends React.Component<
               <SideContainerDiv>
                 <MapContainer
                   gov_number={car_data.gov_number}
-                  gps_code={this.state.gps_code}
+                  gps_code={car_data.gps_code}
                   track={this.state.track}
                   geoobjects={this.state.polys}
                   inputLines={this.state.inputLines}
@@ -359,30 +347,11 @@ export default connect<any, DispatchPropsMissionInfoForm, any, ReduxState>(
           company_id,
         ),
       ),
-    actionLoadRouteById: (...arg) =>
-      dispatch(routesActions.actionLoadRouteById(...arg)),
-    loadTrackCaching: (props) =>
-      dispatch({
-        type: '',
-        payload: loadTrackCaching(props),
-        meta: {
-          page: 'any',
-          path: 'missionInfoForm',
-        },
-      }),
-    loadCarGpsCode: ({ asuods_id, date_start }) =>
-      dispatch(
-        loadCarGpsCode(
-          'none',
-          {
-            asuods_id,
-            date_start,
-          },
-          {
-            page: 'any',
-            path: 'missionInfoForm',
-          },
-        ),
-      ),
+    actionLoadRouteById: (...arg) => (
+      dispatch(routesActions.actionLoadRouteById(...arg))
+    ),
+    actionGetTracksCaching: (...arg) => (
+      dispatch(actionGetTracksCaching(...arg))
+    ),
   }),
 )(MissionInfoForm);

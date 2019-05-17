@@ -113,14 +113,16 @@ export const checkAndModifyTrack = (
     if (point.sensors && point.sensors.level) {
       const { sensors: { level = [] } = {} } = point;
       level.forEach((sensorData) => {
-        front_cars_sensors_level[sensorData.sensor_id].data.push([
-          point.timestamp,
-          sensorData.val,
-        ]);
-        front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
-          point.timestamp,
-          sensorData.raw,
-        ]);
+        if (front_cars_sensors_level[sensorData.sensor_id]) {
+          front_cars_sensors_level[sensorData.sensor_id].data.push([
+            point.timestamp,
+            sensorData.val,
+          ]);
+          front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
+            point.timestamp,
+            sensorData.raw,
+          ]);
+        }
       });
     }
 

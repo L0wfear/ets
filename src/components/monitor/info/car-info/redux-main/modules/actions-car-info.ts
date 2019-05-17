@@ -18,17 +18,16 @@ import {
   CAR_INFO_SET_POPUP_FUEL_EVENT_POINT,
   initialState,
 } from 'components/monitor/info/car-info/redux-main/modules/car-info';
-import { makeUnixTime, createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'utils/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad } from 'components/monitor/info/car-info/redux-main/modules/utils';
-import { getCarGpsNumberByDateTime } from 'redux-main/trash-actions/car/promise/promise';
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 
 import {
-  TrackService,
   CarInfoService,
 } from 'api/Services';
 import config from 'config';
 import { get } from 'lodash';
+import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 
 export const carInfoSetGpsNumber = (gps_code = null, gov_number = null) => ({
   type: CAR_INFO_SET_GPS_CODE,
@@ -112,7 +111,7 @@ export const carInfoToggleSensorShow = (type, key) => ({
   },
 });
 
-export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as TypeMeta) => (dispatch, getState) => {
+export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as any) => async (dispatch, getState) => {
   const {
     monitorPage: {
       carInfo: {
@@ -130,38 +129,33 @@ export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as Ty
   }
 
   dispatch(carInfoResetTrackCahing());
+  let trackData = null;
+  try {
+    trackData = await dispatch(
+      actionGetTracksCaching(
+        {
+          version,
+          car_id: payloadData.asuods_id,
+          date_start: payloadData.date_start || date_start,
+          date_end: payloadData.date_end || date_end,
+          sensors: 1,
+          odh_mkad,
+        },
+        meta,
+      ),
+    );
+  } catch (error) {
+    trackData = {
+      ...initialState.trackCaching,
+      error: true,
+    };
+  }
+
   dispatch({
     type: CAR_INFO_SET_TRACK_CACHING,
-    payload: getCarGpsNumberByDateTime(payloadData)
-      .then(({ gps_code }) => {
-        const payloadToTrack = {
-          version,
-          gps_code,
-          from_dt: makeUnixTime(payloadData.date_start || date_start),
-          to_dt: makeUnixTime(payloadData.date_end || date_end),
-          sensors: 1,
-        };
-
-        return TrackService.get(payloadToTrack).then((ans) => ({
-          trackCaching: {
-            ...ans,
-            ...checkAndModifyTrack(ans, odh_mkad),
-          },
-          gps_code: payloadData.gps_code,
-        }));
-      }).catch((error) => {
-        console.log(error); // tslint:disable-line:no-console
-
-        return {
-          trackCaching: {
-            ...initialState.trackCaching,
-            error: true,
-          },
-          gps_code: payloadData.gps_code,
-        };
-      }),
-    meta: {
-      ...meta,
+    payload: {
+      trackCaching: trackData,
+      gps_code: payloadData.gps_code,
     },
   });
 };

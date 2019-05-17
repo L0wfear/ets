@@ -1,6 +1,7 @@
 import { IMissionInfoFormState } from 'components/new/ui/mission_info_form/MissionInfoForm.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
+import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 
 export interface IMIssionData {
   column_id: number | void;
@@ -82,9 +83,8 @@ export interface IMissionInfoFormState {
 }
 
 export type DispatchPropsMissionInfoForm = {
+  actionGetTracksCaching: HandleThunkActionCreator<typeof actionGetTracksCaching>;
   loadGeozones: any;
-  loadCarGpsCode: any;
-  loadTrackCaching: any;
   actionLoadRouteById: HandleThunkActionCreator<
     typeof routesActions.actionLoadRouteById
   >;
@@ -105,5 +105,4 @@ export type StateMissionInfoForm = {
   track: any[];
   front_parkings: any[];
   cars_sensors: object;
-  gps_code: string | null;
 };

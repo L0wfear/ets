@@ -3,7 +3,7 @@ import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import DefaultModalFooter from './default/DefaultModalFooter';
 import { SchemaFormContextFooter } from 'components/new/utils/context/form/@types';
 import WaybillModalFooter from './waybill/WaybillModalFooter';
-import { Modal } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ModalFormFooterProps = {
   formDataKey: string;
@@ -33,9 +33,9 @@ const ModalFormFooter: React.FC<ModalFormFooterProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           {children}
-        </Modal.Footer>
+        </EtsBootstrap.ModalFooter>
       ),
       [children],
     );

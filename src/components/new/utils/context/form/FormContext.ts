@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { SchemaFormContext, FormErrorBySchema } from './@types';
-import { Modal } from 'react-bootstrap';
+import { EtsModalContainerProps } from 'components/new/ui/@bootstrap/02-modal_container/EtsModalContainer';
 
 // что имееем по formData
 export type OneFormDataByKey<F, Store extends object> = {
@@ -31,7 +31,7 @@ export type OneFormDataByKey<F, Store extends object> = {
   handleSubmitPromise: (formState: F) => Promise<F>;                  // промис создания/ сохранения
   loadItemPromise?: (id: F[keyof F]) => Promise<F>;                   // Получениче данных по одному элементу
 
-  bsSizeForm?: Modal.ModalProps['bsSize'];                            // размер формы
+  bsSizeForm?: EtsModalContainerProps['bsSize'];                      // размер формы
 
   store: Store;                                                       // всякие глобальные данные
 };

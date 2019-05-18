@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Modal } from 'react-bootstrap';
 import useWaybillFormData from '../../../../hoc_selectors/waybill/useWaybillForm';
 import { getTitleByStatus } from './utils';
 import useForm from '../../../../hoc_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type WaybillHeaderProps = {
   formDataKey: string;
@@ -27,9 +27,9 @@ const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <Modal.Header closeButton>
-          <Modal.Title>{ titleText }</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ titleText }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
       ),
       [props, titleText],
     );

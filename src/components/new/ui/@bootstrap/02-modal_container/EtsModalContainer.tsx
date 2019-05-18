@@ -4,7 +4,7 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 
 export const ModalStyled = styled(Modal)``;
 
-type EtsModalContainerProps = any;
+export type EtsModalContainerProps = any;
 
 const EtsModalContainer: React.FC<EtsModalContainerProps> = React.memo(
   (props) => {

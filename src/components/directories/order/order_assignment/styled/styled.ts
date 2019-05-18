@@ -1,12 +1,9 @@
 import styled from 'styled-components';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as BootstrapButton from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import ButtonCheckPermission from 'components/ui/buttons/ButtonCheckPermission';
 
-const Button = withRequirePermissionsNew({})(BootstrapButton);
-
-export const ColOrderAssignmentHeaderTitleContainer = styled(Col)`
+export const ColOrderAssignmentHeaderTitleContainer = styled(EtsBootstrap.Col)`
   display: flex;
   justify-content: space-between;
 `;
@@ -16,6 +13,6 @@ export const TitleText = styled.h4`
   font-weight: bold;
 `;
 
-export const ButtonOrderAssignment = styled(Button)`
+export const ButtonOrderAssignment = styled(ButtonCheckPermission)`
   margin-left: 10px;
 `;

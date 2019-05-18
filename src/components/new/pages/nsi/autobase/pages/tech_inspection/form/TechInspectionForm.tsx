@@ -1,8 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import techInspectionPermissions from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data/permissions';
 import { compose } from 'recompose';
@@ -26,7 +24,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import EtsModal from 'components/new/ui/modal/Modal';
+
 import { get } from 'lodash';
 
 const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
@@ -99,17 +97,17 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
   );
 
   return (
-    <EtsModal
+    <EtsBootstrap.ModalContainer
       id="modal-tech-inspection"
       show
       onHide={props.hideWithoutChanges}
       backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             {IS_CREATING && !car_id && (
               <ExtField
                 id="car_id"
@@ -218,21 +216,21 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
               disabled={!isPermitted}
               modalKey={path}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         {isPermitted ? ( // либо обновление, либо создание
-          <Button
+          <EtsBootstrap.Button
             disabled={!props.canSave}
             onClick={props.defaultSubmit}>
             Сохранить
-          </Button>
+          </EtsBootstrap.Button>
         ) : (
           <DivNone />
         )}
-      </Modal.Footer>
-    </EtsModal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as Col from 'react-bootstrap/lib/Col';
 
 import * as _ from 'lodash';
 import { groupBy, forOwn, sortBy, cloneDeep } from 'lodash';
@@ -56,6 +54,7 @@ import {
   PropsRoutesList,
   StateRoutesList,
 } from 'components/new/pages/routes_list/@types/RoutesList.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const SEASONS_OPTIONS = [
   {
@@ -467,7 +466,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
               selectedRoute={this.state.selectedRoute}
             />
           </RoutesTreeColWrap>
-          <Col xs={7} md={9}>
+          <EtsBootstrap.Col xs={7} md={9}>
             <RouteHeaderContainer className="some-header">
               <div className="waybills-buttons">
                 <span>{'Сезон: '}</span>
@@ -487,25 +486,25 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                   onClick={this.toggleFilter}
                 />
                 <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
-                  <Glyphicon glyph="plus" /> Создать маршрут
+                  <EtsBootstrap.Glyphicon glyph="plus" /> Создать маршрут
                 </ButtonCreateRoute>
                 <ButtonUpdateRoute
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
                   onClick={this.updateRoute}>
-                  <Glyphicon glyph="pencil" /> Изменить маршрут
+                  <EtsBootstrap.Glyphicon glyph="pencil" /> Изменить маршрут
                 </ButtonUpdateRoute>
                 <ButtonUpdateRoute
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
                   onClick={this.copyRoute}>
-                  <Glyphicon glyph="copy" /> Копировать маршрут
+                  <EtsBootstrap.Glyphicon glyph="copy" /> Копировать маршрут
                 </ButtonUpdateRoute>
                 <ButtonDeleteRoute
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
                   onClick={this.deleteRoute}>
-                  <Glyphicon glyph="remove" /> Удалить
+                  <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
                 </ButtonDeleteRoute>
               </div>
             </RouteHeaderContainer>
@@ -533,7 +532,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                 routesMapNameId={this.state.routesMapNameId}
               />
             </div>
-          </Col>
+          </EtsBootstrap.Col>
         </RouteListContainer>
       </EtsPageWrapRoute>
     );

@@ -7,12 +7,12 @@ import {
 
 import RouteInfoMap from 'components/new/pages/routes_list/route-info/map/RouteInfoMap';
 import RouteGeoList from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList';
-import { Col, Row } from 'react-bootstrap';
 
 import {
   PropsRouteInfo,
   StateRouteInfo,
 } from 'components/new/pages/routes_list/route-info/RouteInfo.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
   render() {
@@ -22,26 +22,26 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
     return (
       <RouteInfoContainerDiv>
         <RouteName isDisplay={Boolean(!props.noRouteName)}>
-          <Col md={8}>
-            <Row>
-              <Col md={4}>
+          <EtsBootstrap.Col md={8}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={4}>
                 <b>Наименование маршрута:</b>
                 <div>{route.name}</div>
-              </Col>
-              <Col md={4}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={4}>
                 <b>Технологическая операция:</b>
                 <div>{route.technical_operation_name}</div>
-              </Col>
-              <Col md={4}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={4}>
                 <b>Элемент:</b>
                 <div>{route.municipal_facility_name}</div>
-              </Col>
-            </Row>
-          </Col>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
         </RouteName>
-        <Col md={12}>
-          <Row>
-            <Col md={8}>
+        <EtsBootstrap.Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={8}>
               <RouteInfoMap
                 input_lines={route.input_lines}
                 object_list={route.object_list}
@@ -49,17 +49,17 @@ class RouteInfo extends React.PureComponent<PropsRouteInfo, StateRouteInfo> {
                 height={props.height}
                 mapKey={this.props.mapKey}
               />
-            </Col>
-            <Col md={4}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <RouteGeoList
                 type={route.type}
                 object_list={route.object_list}
                 draw_object_list={route.draw_object_list}
                 height={props.height}
               />
-            </Col>
-          </Row>
-        </Col>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </EtsBootstrap.Col>
       </RouteInfoContainerDiv>
     );
   }

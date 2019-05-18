@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
 import DatePickerRange from './DatePickerRange';
 import { WithDatePickerRangeRegistry } from './styled';
 import { createValidDateTime } from 'utils/dates';
+import EtsBootstrap from '../@bootstrap';
 
 type WithDatePickerRangeRegistryConfig = {
   init_date_from: any;
@@ -33,7 +33,7 @@ export const withDatePickerRangeRegistry = (config: WithDatePickerRangeRegistryC
     return (
       <>
         <WithDatePickerRangeRegistry>
-          <Col md={6} mdOffset={3} sm={6} smOffset={3}>
+          <EtsBootstrap.Col md={6} mdOffset={3} sm={6} smOffset={3}>
             <DatePickerRange
               date_start_id="date_from"
               date_start_value={date_from}
@@ -42,7 +42,7 @@ export const withDatePickerRangeRegistry = (config: WithDatePickerRangeRegistryC
 
               onChange={handleChangeDate}
             />
-          </Col>
+          </EtsBootstrap.Col>
         </WithDatePickerRangeRegistry>
         <Component
           {...props}

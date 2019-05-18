@@ -6,12 +6,11 @@ import {
   PropsFieldAssignToWaybillMissionWithCarId, StatePropsFieldAssignToWaybillMissionWithCarId, DispatchPropsPropsFieldAssignToWaybillMissionWithCarId, OwnPropsPropsFieldAssignToWaybillMissionWithCarId,
 } from 'components/new/pages/missions/mission/form/main/column_assignment/inside_fields/assign_to_waybill/FieldAssignToWaybillMissionWithCarId.d';
 import FieldAssignToWaybillMission from 'components/new/pages/missions/mission/form/main/inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
 import { connect } from 'react-redux';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { makeLabelForMissionCarOption } from 'components/new/pages/missions/mission/form/main/inside_fields/car_ids/makeOptions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const FieldAssignToWaybillMissionWithCarId: React.FC<PropsFieldAssignToWaybillMissionWithCarId> = (props) => {
   const handleChange = React.useCallback(
@@ -25,8 +24,8 @@ const FieldAssignToWaybillMissionWithCarId: React.FC<PropsFieldAssignToWaybillMi
   );
 
   return (
-    <Row>
-      <Col md={6}>
+    <EtsBootstrap.Row>
+      <EtsBootstrap.Col md={6}>
         <ExtField
           id={`car-number-${props.index}`}
           label={false}
@@ -34,16 +33,16 @@ const FieldAssignToWaybillMissionWithCarId: React.FC<PropsFieldAssignToWaybillMi
           value={makeLabelForMissionCarOption(props.carForMissionIndex[props.car_id])}
           readOnly
         />
-      </Col>
-      <Col md={6}>
+      </EtsBootstrap.Col>
+      <EtsBootstrap.Col md={6}>
         <FieldAssignToWaybillMission
           value={props.value}
           label={''}
           onChange={handleChange}
           page={props.page}
         />
-      </Col>
-    </Row>
+      </EtsBootstrap.Col>
+    </EtsBootstrap.Row>
   );
 };
 

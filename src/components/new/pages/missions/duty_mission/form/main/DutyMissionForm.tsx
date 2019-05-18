@@ -24,10 +24,8 @@ import {
 import { dutyDutyMissionFormSchema } from './schema';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 import {
   getSessionState,
@@ -46,7 +44,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
 import FieldRouteIdDutyMission from './inside_fields/route_id/FieldRouteIdDutyMission';
 import FieldCarMissionIdDutyMission from './inside_fields/car_mission_id/FieldCarMissionIdDutyMission';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+
 import { saveData } from 'utils/functions';
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getMissionsState } from 'redux-main/reducers/selectors/index';
@@ -57,7 +55,7 @@ import {
   createValidDateTime,
 } from 'utils/dates';
 import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMission';
-import EtsModal from 'components/new/ui/modal/Modal';
+
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 import { isOrderSource } from 'components/new/pages/missions/utils';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
@@ -255,19 +253,19 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       : this.props.isPermittedToCreate;
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-duty-mission"
         show
         onHide={this.handleHideFom}
         bsSize="large"
         backdrop="static"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <FieldTechnicalOperationDutyMission
                 value={state.technical_operation_id}
                 name={state.technical_operation_name}
@@ -288,8 +286,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 page={page}
                 path={path}
               />
-            </Col>
-            <Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 6}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 6}>
               <FieldMissionSourceMission
                 value={state.mission_source_id}
                 name={state.mission_source_name}
@@ -322,8 +320,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
               ) : (
                 <DivNone />
               )}
-            </Col>
-            <Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 0}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={DUTY_MISSION_IS_ORDER_SOURCE ? 3 : 0}>
               {DUTY_MISSION_IS_ORDER_SOURCE ? (
                 <ExtField
                   id="order-number"
@@ -335,10 +333,10 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
               ) : (
                 <DivNone />
               )}
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <FieldMunicipalFacilityIdDutyMission
                 value={state.municipal_facility_id}
                 name={state.municipal_facility_name}
@@ -361,12 +359,12 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 page={page}
                 path={path}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6}>
-              <Row>
-                <Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
                   <FieldForemanIdDutyMission
                     value={state.foreman_id}
                     foreman_fio={state.foreman_fio}
@@ -380,9 +378,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                     page={page}
                     path={path}
                   />
-                </Col>
+                </EtsBootstrap.Col>
                 {STRUCTURE_FIELD_VIEW ? (
-                  <Col md={6}>
+                  <EtsBootstrap.Col md={6}>
                     <FieldStructureDutyMission
                       value={state.structure_id}
                       name={state.structure_name}
@@ -393,11 +391,11 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                       page={page}
                       path={path}
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                 ) : (
                   <DivNone />
                 )}
-                <Col md={12}>
+                <EtsBootstrap.Col md={12}>
                   <FieldBrigadeEmployeeIdListDutyMission
                     brigade_employee_id_list={state.brigade_employee_id_list}
                     value={state.brigade_employee_id_list_id}
@@ -411,10 +409,10 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                     page={page}
                     path={path}
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
               <FieldDatesDutyMission
                 isPermitted={isPermitted}
                 plan_date_start={state.plan_date_start}
@@ -438,13 +436,13 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 page={page}
                 path={path}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <FieldEdcRequestData request_id={state.request_id} edcRequest={this.props.edcRequest} />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           <FieldRouteIdDutyMission
             error={errors.route_id}
             value={state.route_id}
@@ -464,8 +462,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             page={page}
             path={path}
           />
-          <Row>
-            <Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 id="comment"
                 modalKey={page}
@@ -477,8 +475,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onChange={this.props.handleChange}
                 boundKeys="comment"
               />
-            </Col>
-            <Col md={6}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
               <FieldCarMissionIdDutyMission
                 value={state.car_mission_id}
                 name={state.car_mission_name}
@@ -492,8 +490,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 path={path}
                 page={page}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           <FieldNormIdDutyMission
             value={state.norm_id}
             datetime={state.plan_date_start}
@@ -508,26 +506,26 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             path={path}
           />
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
             <div>
-              <Button
+              <EtsBootstrap.Button
                 onClick={this.handleGetPrintForm}
                 disabled={!this.props.canSave}>
-                <Glyphicon id="dm-download-all" glyph="download-alt" />{' '}
+                <EtsBootstrap.Glyphicon id="dm-download-all" glyph="download-alt" />{' '}
                 {DUTY_MISSION_IS_DISPLAY ? 'Просмотр' : 'Выдать'}
-              </Button>
-              <Button
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
                 disabled={!this.props.canSave}
                 onClick={this.props.defaultSubmit}>
                 Сохранить
-              </Button>
+              </EtsBootstrap.Button>
             </div>
           ) : (
             <DivNone />
           )}
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

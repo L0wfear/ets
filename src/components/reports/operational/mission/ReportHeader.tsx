@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   IPropsReportHeaderCommon,
@@ -41,15 +39,15 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.props;
 
     return (
-      <Row className="report-page__header">
-        <Col md={12}>
-          <Row>
-            <Col mdOffset={3} md={6}>
+      <EtsBootstrap.Row className="report-page__header">
+        <EtsBootstrap.Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col mdOffset={3} md={6}>
               <Div><label htmlFor=" ">Период формирования</label></Div>
-            </Col>
-          </Row>
-        </Col>
-        <Col mdOffset={3} md={6}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col mdOffset={3} md={6}>
           <DatePickerRange
             date_start_id="mission_date_start_from"
             date_start_value={mission_date_start_from}
@@ -59,17 +57,17 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             disabled={readOnly}
             onChange={this.props.handleChange}
           />
-        </Col>
-        <Col md={3}>
-          <Button
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={3}>
+          <EtsBootstrap.Button
             block
             disabled={this.props.readOnly}
             onClick={this.handleSubmit}
           >
             Сформировать отчёт
-          </Button>
-        </Col>
-      </Row>
+          </EtsBootstrap.Button>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

@@ -6,10 +6,9 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { getDefaultMissionTemplateElement, checkMissionsOnStructureIdCar, makeMissionsByTemplate, createMissionByTemplate, makePartialMission } from './utils';
 import { missionTemplateCreatingFormSchema } from './schema';
 
-import EtsModal from 'components/new/ui/modal/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
@@ -25,7 +24,6 @@ import {
   MissionTemplateCreating,
 } from './@types/MissionTemplateCreatingForm';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { Row, Col } from 'react-bootstrap';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldNormIdMissionTemplateCreating from './inside_fields/norm_id/FieldNormIdMissionTemplateCreating';
 import FieldDatesMissionTemplateCreating from './inside_fields/dates/FieldDatesMissionTemplateCreating';
@@ -190,16 +188,16 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
 
   return (
     <React.Fragment>
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-duty-mission-template-creating"
         show
         onHide={props.hideWithoutChanges}
         bsSize="large"
         backdrop="static"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FieldDatesMissionTemplateCreating
             date_start={state.date_start}
@@ -215,8 +213,8 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
             page={page}
             path={path}
             />
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <FieldMissionSourceMission
                 value={state.mission_source_id}
                 name={state.mission_source_name}
@@ -231,8 +229,8 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
                 Задания на основе централизованных заданий необходимо
                 создавать во вкладке "НСИ"-"Реестр централизованных заданий".
               </div>
-            </Col>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="passes-count"
                 type="number"
@@ -243,7 +241,7 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
                 onChange={props.handleChange}
                 boundKeys="passes_count"
               />
-            </Col>
+            </EtsBootstrap.Col>
             <FieldNormIdMissionTemplateCreating
               date_start={state.date_start}
               missionTemplates={state.missionTemplates}
@@ -252,9 +250,9 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
               page={page}
               path={path}
             />
-          </Row>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <FieldAssignToWaybillMissionTemplateCreating
             assign_to_waybill={state.assign_to_waybill}
             missionTemplates={state.missionTemplates}
@@ -263,16 +261,16 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
             page={page}
           />
           {isPermitted ? ( // либо обновление, либо создание
-            <Button
+            <EtsBootstrap.Button
               disabled={!props.canSave}
               onClick={handleSubmitWrap}>
               Сформировать
-            </Button>
+            </EtsBootstrap.Button>
           ) : (
             <DivNone />
           )}
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
       <ColumnAssignmentFormWrap
         showColumnAssignmentFormWrap={showColumnAssignmentFormWrap}
         missionTemplates={state.missionTemplates}

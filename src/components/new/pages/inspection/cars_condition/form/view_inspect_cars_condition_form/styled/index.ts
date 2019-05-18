@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const ColScroll = styled(Col)`
+export const ColScroll = styled(EtsBootstrap.Col)`
 `;

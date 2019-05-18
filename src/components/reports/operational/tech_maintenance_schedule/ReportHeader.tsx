@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   IPropsReportHeaderCommon,
@@ -24,15 +22,15 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.props;
 
     return (
-      <Row className="report-page__header">
-        <Col md={8}></Col>
-        <Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
-          <Button
+      <EtsBootstrap.Row className="report-page__header">
+        <EtsBootstrap.Col md={8}></EtsBootstrap.Col>
+        <EtsBootstrap.Col md={4} style={{ marginTop: 28, textAlign: 'right' }}>
+          <EtsBootstrap.Button
             disabled={readOnly}
             onClick={this.handleSubmit}
-          >Сформировать отчёт</Button>
-        </Col>
-      </Row>
+          >Сформировать отчёт</EtsBootstrap.Button>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

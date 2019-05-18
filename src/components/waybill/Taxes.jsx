@@ -11,9 +11,9 @@ import _, { get } from 'lodash';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-import { Row } from 'react-bootstrap';
 import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 /**
  * Компонент таксировки ТС
@@ -330,7 +330,7 @@ export default class Taxes extends React.Component {
 
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
-        <Row>
+        <EtsBootstrap.Row>
           <EtsHeaderContainer>
             <EtsHeaderTitle>{title}</EtsHeaderTitle>
             <EtsButtonsContainer>
@@ -359,14 +359,14 @@ export default class Taxes extends React.Component {
               )}
             </EtsButtonsContainer>
           </EtsHeaderContainer>
-        </Row>
+        </EtsBootstrap.Row>
         {!(fuelRates.length || !!hasTaxes) && (
-          <Row>
+          <EtsBootstrap.Row>
             <EtsHeaderContainer>
               <EtsHeaderTitle>{noDataMessage}</EtsHeaderTitle>
               <EtsButtonsContainer />
             </EtsHeaderContainer>
-          </Row>
+          </EtsBootstrap.Row>
         )}
         <Div hidden={!hasTaxes}>
           <Table

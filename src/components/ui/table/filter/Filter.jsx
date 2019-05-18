@@ -1,15 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Collapse from 'react-bootstrap/lib/Collapse';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
 import { reduce, cloneDeep } from 'lodash';
 import Div from 'components/ui/Div';
 import FilterRow from 'components/ui/table/filter/FilterRow';
-import { Col } from 'react-bootstrap';
 import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
 
 export default class Filter extends React.Component {
@@ -194,29 +191,29 @@ export default class Filter extends React.Component {
         <Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
-              <Button id="apply-filter" type="submit">
+              <EtsBootstrap.Button id="apply-filter" type="submit">
                 Применить
-              </Button>
-              <Button
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
                 id="reset-filter"
                 onClick={this.reset}
                 disabled={this.checkDisabledButton(filterValues)}>
                 Сброс
-              </Button>
+              </EtsBootstrap.Button>
               <span
                 id="filter-close"
                 className="filter-close"
                 onClick={this.props.onHide}>
-                <Glyphicon glyph="remove" />
+                <EtsBootstrap.Glyphicon glyph="remove" />
               </span>
             </Div>
-            <Row>
-              <Col md={12}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <FilterRowsContainerDataTable>
                   {filterRows}
                 </FilterRowsContainerDataTable>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </Div>
         </Collapse>
       </form>

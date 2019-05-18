@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
 import useFormData from 'components/new/utils/context/form/useFormData';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ButtonSaveFormStateProps = void;
 type ButtonSaveFormDispatchProps = DispatchProp;
@@ -49,7 +49,7 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
       () => (
         isPermitted
          && (
-            <Button disabled={!canSave} onClick={handleSubmit}>Сохранить</Button>
+            <EtsBootstrap.Button disabled={!canSave} onClick={handleSubmit}>Сохранить</EtsBootstrap.Button>
           )
       ),
       [canSave, handleSubmit, isPermitted],

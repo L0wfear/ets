@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { Link } from 'react-router-dom';
 import permissionsRoute from 'components/new/pages/routes_list/config-data/permissions';
 
@@ -19,12 +19,12 @@ export const LinkToRouteListPermitted = withRequirePermissionsNew({
 
 export const ButtonCreateRoute = withRequirePermissionsNew({
   permissions: permissionsRoute.create,
-})(Button);
+})(EtsBootstrap.Button);
 
 export const ButtonUpdateRoute = withRequirePermissionsNew({
   permissions: permissionsRoute.update,
-})(Button);
+})(EtsBootstrap.Button);
 
 export const ButtonDeleteRoute = withRequirePermissionsNew({
   permissions: permissionsRoute.delete,
-})(Button);
+})(EtsBootstrap.Button);

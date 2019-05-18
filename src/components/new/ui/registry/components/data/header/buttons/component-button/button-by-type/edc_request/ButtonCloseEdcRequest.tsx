@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -58,9 +58,9 @@ const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
   const can_resolved = get(props.selectedRow, 'can_resolved', false);
 
   return (
-    <Button id="open-cancel_edc_close--form" bsSize="small" onClick={handleClick} disabled={!can_resolved}>
+    <EtsBootstrap.Button id="open-cancel_edc_close--form" bsSize="small" onClick={handleClick} disabled={!can_resolved}>
       Решена
-    </Button>
+    </EtsBootstrap.Button>
   );
 };
 

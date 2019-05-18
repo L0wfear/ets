@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const InstectionBlockSelect = styled(Row)<{ disabled?: boolean }>`
+export const InstectionBlockSelect = styled(EtsBootstrap.Row)<{ disabled?: boolean }>`
   margin-top: 10px;
   margin-bottom: 10px;
 
@@ -10,9 +10,9 @@ export const InstectionBlockSelect = styled(Row)<{ disabled?: boolean }>`
   opacity: ${({ disabled }) => disabled ? 0.5 : 1};
 `;
 
-export const SelectLabel = styled(Col)`
+export const SelectLabel = styled(EtsBootstrap.Col)`
   min-width: 100px;
 `;
 
-export const SelectField = styled(Col)`
+export const SelectField = styled(EtsBootstrap.Col)`
 `;

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { makeDate } from 'utils/dates';
 import * as orderNotifiyMp3 from 'components/new/ui/modal_notification/audio/orderNotifiy.mp3';
@@ -42,24 +42,24 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
     } = firstOrderNotify;
 
     return (
-      <Modal show onHide={this.onHide} backdrop="static">
-        <Modal.Header closeButton>
+      <EtsBootstrap.ModalContainer show onHide={this.onHide} backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
           <div className="flex-space-between">
             <span>{title}</span>
             <span>{created_at ? makeDate(created_at) : ''}</span>
           </div>
-        </Modal.Header>
-        <Modal.Body>
+        </EtsBootstrap.ModalHeader>
+        <EtsBootstrap.ModalBody>
           <label key="0">{description}</label>
           <audio autoPlay>
             <source src={orderNotifiyMp3} type={'audio/mpeg; codecs="mp3"'} />
             <source src={orderNotifiyOgg} type={'audio/mpeg; codecs="ogg"'} />
           </audio>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={this.onHide}>Закрыть</Button>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalBody>
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button onClick={this.onHide}>Закрыть</EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

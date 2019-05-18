@@ -1,10 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connectToStores, FluxContext } from 'utils/decorators';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import Field from 'components/ui/Field';
@@ -389,8 +386,8 @@ class MissionRejectForm extends React.Component {
     const datePickers
       = missions
       && missions.map((oneM, i) => (
-        <Row style={{ marginBottom: '4px' }} key={i}>
-          <Col md={4} style={{ paddingRight: '0' }}>
+        <EtsBootstrap.Row style={{ marginBottom: '4px' }} key={i}>
+          <EtsBootstrap.Col md={4} style={{ paddingRight: '0' }}>
             <div
               title={oneM.technical_operation_name}
               style={{
@@ -401,8 +398,8 @@ class MissionRejectForm extends React.Component {
               }}>
               {`№: ${oneM.number} (${oneM.technical_operation_name})`}
             </div>
-          </Col>
-          <Col
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col
             md={8}
             style={{
               textAlign: 'right',
@@ -430,20 +427,20 @@ class MissionRejectForm extends React.Component {
                 )}
               />
             </Div>
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       ));
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-mission-reject"
         show={this.props.show}
         onHide={this.props.onHide}
         dialogClassName="mission-reject-info-modal"
         backdrop="static">
-        <Modal.Header>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
 
         <ModalBody>
           <Field
@@ -483,8 +480,8 @@ class MissionRejectForm extends React.Component {
                   state.data.waybill_plan_arrival_date,
                 )})`}
               </label>
-              <Row style={{ marginBottom: '4px' }}>
-                <Col md={4} style={{ paddingRight: '0' }}>
+              <EtsBootstrap.Row style={{ marginBottom: '4px' }}>
+                <EtsBootstrap.Col md={4} style={{ paddingRight: '0' }}>
                   <div
                     style={{
                       paddingTop: '9px',
@@ -494,8 +491,8 @@ class MissionRejectForm extends React.Component {
                     }}>
                     Переносимое задание
                   </div>
-                </Col>
-                <Col
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col
                   md={8}
                   style={{
                     textAlign: 'right',
@@ -515,8 +512,8 @@ class MissionRejectForm extends React.Component {
                       onChange={this.handleChange.bind(this, 'date_end')}
                     />
                   </Div>
-                </Col>
-              </Row>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
             </Div>
           ) : (
             ''
@@ -524,15 +521,19 @@ class MissionRejectForm extends React.Component {
           {datePickers}
         </ModalBody>
 
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <Div>
-            <Button disabled={!!errors.reason_id} onClick={this.handleSubmit}>
+            <EtsBootstrap.Button
+              disabled={!!errors.reason_id}
+              onClick={this.handleSubmit}>
               Сохранить
-            </Button>
-            <Button onClick={this.reject}>Отменить</Button>
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.reject}>
+              Отменить
+            </EtsBootstrap.Button>
           </Div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

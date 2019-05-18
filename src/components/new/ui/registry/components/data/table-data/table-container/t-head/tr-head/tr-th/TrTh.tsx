@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { connect } from 'react-redux';
 import { getListData, getRootRegistry } from 'components/new/ui/registry/module/selectors-registry';
 
@@ -9,6 +8,7 @@ import {
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { isAllChecked } from 'components/new/ui/registry/module/check_funk';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsTrTh = {
   registryKey: string;
@@ -163,7 +163,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
         onClick={this.handleClick}
         width={colData.width}
       >
-        {formatedTitle} <Glyphicon glyph={getGlyphName(this.props)} />
+        {formatedTitle} <EtsBootstrap.Glyphicon glyph={getGlyphName(this.props)} />
       </EtsTheadTh>
     );
   }

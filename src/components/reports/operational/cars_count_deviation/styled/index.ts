@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const ButtonSubmit = styled(Button)`
+export const ButtonSubmit = styled(EtsBootstrap.Button)`
   width: 100%
 `;

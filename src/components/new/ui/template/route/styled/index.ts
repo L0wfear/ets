@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { Row, Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const TemplateRouteContainer = styled(EtsPageWrap)`
   opacity: 0.5;
@@ -8,17 +8,17 @@ export const TemplateRouteContainer = styled(EtsPageWrap)`
   padding: 0;
 `;
 
-export const TemplateRouteWrap = styled(Row)`
+export const TemplateRouteWrap = styled(EtsBootstrap.Row)`
   display: flex;
   justify-content: space-between;
   height: 100%;
 `;
 
-export const TemplateRouteListTree = styled(Col).attrs({ xs: 5, md: 3 })`
+export const TemplateRouteListTree = styled(EtsBootstrap.Col).attrs({ xs: 5, md: 3 })`
   background-color: grey;
 `;
 
-export const TemplateRouteData = styled(Col).attrs({ xs: 7, md: 9 })``;
+export const TemplateRouteData = styled(EtsBootstrap.Col).attrs({ xs: 7, md: 9 })``;
 
 export const MaintTemplateComponent = styled.div<{ width?: number; height?: number }>`
   border-radius: 10px;

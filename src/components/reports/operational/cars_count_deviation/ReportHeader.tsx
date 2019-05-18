@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
 
 import {
   IPropsReportHeaderCommon,
@@ -12,6 +10,7 @@ import { getToday0am, createValidDate } from 'utils/dates';
 import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ButtonSubmit } from 'components/reports/operational/cars_count_deviation/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   start_date: string;
@@ -43,8 +42,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.getState();
 
     return (
-      <Row>
-        <Col md={3}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={3}>
           <ExtField
             type="date"
             date={start_date}
@@ -52,13 +51,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             boundKeys="start_date"
             time={false}
           />
-        </Col>
-        <Col mdOffset={6} md={3}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col mdOffset={6} md={3}>
           <ButtonSubmit
             onClick={this.handleSubmit}
           >Сформировать отчёт</ButtonSubmit>
-        </Col>
-      </Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

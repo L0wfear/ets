@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as BootstrapButton from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as cx from 'classnames';
 
@@ -38,7 +36,7 @@ const FileListItem: React.FC<any> = React.memo(
     const withDateTime = get(props, 'withDateTime', false);
 
     return (
-      <Col style={{ marginBottom: 10 }} md={12}>
+      <EtsBootstrap.Col style={{ marginBottom: 10 }} md={12}>
         <FileInputWrapper>
           <DisplayFlexAlignCenter>
             <ButtonRemoveFile
@@ -58,7 +56,7 @@ const FileListItem: React.FC<any> = React.memo(
             ) : (<DivNone />)
           }
         </FileInputWrapper>
-      </Col>
+      </EtsBootstrap.Col>
     );
   },
 );
@@ -113,15 +111,16 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
 
     return (
       <div>
-        { showFileList && <Row id={ID}>{fileList}</Row> }
+        { showFileList && <EtsBootstrap.Row id={ID}>{fileList}</EtsBootstrap.Row> }
           {
             !this.props.disabled
               ? (
-                <BootstrapButton
+                <EtsBootstrap.Button
                   disabled={this.props.disabled}
                   onClick={this.handleFilePick}
                   id={button_id}
-                >{buttonName}</BootstrapButton>
+                  children={buttonName}
+                />
               )
               : (
                 <DivNone />

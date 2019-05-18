@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { components } from 'react-select';
@@ -19,7 +19,7 @@ import MissionRejectForm from 'components/new/ui/registry/components/data/header
 
 const ButtonCreateMission = withRequirePermissionsNew({
   permissions: missionPermissions.create,
-})(Button);
+})(EtsBootstrap.Button);
 
 class MissionField extends React.Component<any, any> {
   state = {

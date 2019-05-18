@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
-import { mobiSize } from 'global-styled/global-constants';
 
-export const ButtonPaginatorWrap = styled(Button)`
+import { mobiSize } from 'global-styled/global-constants';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+
+export const ButtonPaginatorWrap = styled(EtsBootstrap.Button)`
   @media screen and (max-width: ${mobiSize}px) {
     display: block;
     width: 100%;

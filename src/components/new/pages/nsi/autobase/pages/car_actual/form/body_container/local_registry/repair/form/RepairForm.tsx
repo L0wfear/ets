@@ -1,8 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -27,7 +25,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/ui/input/fields';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import EtsModal from 'components/new/ui/modal/Modal';
+
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 import repairPermissions from '../_config-data/permissions';
 
@@ -87,17 +85,17 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
         state.company_id === this.props.userCompanyId);
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-repair"
         show
         onHide={this.props.hideWithoutChanges}
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="repair_company_id"
                 type="select"
@@ -231,21 +229,21 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   modalKey={path}
                 />
               )}
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
-            <Button
+            <EtsBootstrap.Button
               disabled={!this.props.canSave}
               onClick={this.props.defaultSubmit}>
               Сохранить
-            </Button>
+            </EtsBootstrap.Button>
           ) : (
             <DivNone />
           )}
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import {
   registryChangeDataPaginatorCurrentPage,
 } from 'components/new/ui/registry/module/actions-registy';
 import { ButtonPaginatorWrap } from './styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsButtonPrev = {
   registryKey: string;
@@ -28,7 +28,7 @@ class ButtonPrev extends React.PureComponent<PropsButtonPrev, StatePaginator> {
   render() {
     return (
       <ButtonPaginatorWrap disabled={!this.props.show} onClick={this.handleButtonClick} className="pagination-control">
-        <Glyphicon glyph="chevron-left" />
+        <EtsBootstrap.Glyphicon glyph="chevron-left" />
       </ButtonPaginatorWrap>
     );
   }

@@ -10,8 +10,8 @@ import {
   OwnPropsFieldEdcRequestData,
   PropsFieldEdcRequestData,
 } from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData.h';
-import { Row, Col } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const FieldEdcRequestData: React.FC<PropsFieldEdcRequestData> = (props) => {
   const {
@@ -21,24 +21,24 @@ const FieldEdcRequestData: React.FC<PropsFieldEdcRequestData> = (props) => {
 
   return request_id && edcRequest
     ? (
-        <Row>
-          <Col md={6}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Категория дефекта"
               value={edcRequest.deffect_category_name}
               disabled
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Наименование дефекта"
               value={edcRequest.defect_name}
               disabled
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
     )
     : (
       <DivNone />

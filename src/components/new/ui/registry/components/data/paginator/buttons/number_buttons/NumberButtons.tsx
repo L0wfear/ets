@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { registryChangeDataPaginatorCurrentPage } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
@@ -35,12 +35,12 @@ const NumberButtons: React.FC<NumberButtonsProps> = React.memo(
       [props.registryChangeDataPaginatorCurrentPage, props.number, props.registryKey],
     );
     return (
-      <Button
+      <EtsBootstrap.Button
         active={props.active}
         onClick={handleClick}
       >
         {props.number + 1}
-      </Button>
+      </EtsBootstrap.Button>
     );
   },
 );

@@ -1,11 +1,11 @@
 import * as React from 'react';
+import { get } from 'lodash';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { get } from 'lodash';
-import { Row, Col } from 'react-bootstrap';
 import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionCarsUseProps = {
   onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
@@ -71,11 +71,11 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
     return (
       <BoxContainer>
         <h4>На момент проверки использования ТС</h4>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <h5>Журнал выдачи путевых листов.</h5>
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="waybill_issue_log_exists"
               type="select"
@@ -87,8 +87,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
               error={errors.waybill_issue_log_exists}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="waybill_issue_log_used"
               type="select"
@@ -100,8 +100,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
               error={errors.waybill_issue_log_used}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <ExtField
           type="string"
           label="На линии:"

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import connectToStores from 'flummox/connect';
 import { createValidDate } from 'utils/dates';
 
@@ -82,8 +82,8 @@ const Buttons: React.FC<any> = (props) => {
 
   return (
     <div>
-      <Button disabled={disabled} onClick={props.handleClickAddEl} >Добавить элемент</Button>
-      <Button disabled={selectedRow === null} onClick={props.handleClickOnRemove} >Удалить</Button>
+      <EtsBootstrap.Button disabled={disabled} onClick={props.handleClickAddEl} >Добавить элемент</EtsBootstrap.Button>
+      <EtsBootstrap.Button disabled={selectedRow === null} onClick={props.handleClickOnRemove} >Удалить</EtsBootstrap.Button>
     </div>
   );
 };
@@ -255,10 +255,10 @@ class PlanTab extends React.Component<any, any> {
 
     return (
       <div>
-        <Col md={12}>
+        <EtsBootstrap.Col md={12}>
           <label>{label}</label>
-        </Col>
-        <Col md={12}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={12}>
           <div style={{ display: 'flex', alignItems: 'baseline', textAlign: 'center' }}>
             <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
@@ -284,8 +284,8 @@ class PlanTab extends React.Component<any, any> {
               />
             </div>
           </div>
-        </Col>
-        <Col md={12}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={12}>
           <Table
             title={titleTable}
             headerData={tableMeta}
@@ -298,8 +298,8 @@ class PlanTab extends React.Component<any, any> {
             isPermitted={isPermitted}
             errors={errors}
           />
-        </Col>
-        <Col md={12}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={12}>
           <ExtField
             type="text"
             value={note}
@@ -309,7 +309,7 @@ class PlanTab extends React.Component<any, any> {
             boundKeys="note"
             disabled={!isPermitted}
           />
-        </Col>
+        </EtsBootstrap.Col>
       </div>
     );
   }

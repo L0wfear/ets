@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const FlexRow = styled(Row)`
+export const FlexRow = styled(EtsBootstrap.Row)`
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -9,6 +9,6 @@ export const FlexRow = styled(Row)`
   flex-direction: row-reverse;
 `;
 
-export const CenterCol = styled(Col)`
+export const CenterCol = styled(EtsBootstrap.Col)`
   text-align: center;
 `;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import mspPermissions from 'components/new/pages/nsi/geoobjects/pages/msp/_config-data/permissions';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -43,15 +42,15 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
       : this.props.isPermittedToCreate;
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-msp"
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
@@ -103,18 +102,18 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           {isPermitted && false ? ( // либо обновление, либо создание
-            <Button
+            <EtsBootstrap.Button
               disabled={!this.props.canSave}
               onClick={this.props.defaultSubmit}>
               Сохранить
-            </Button>
+            </EtsBootstrap.Button>
           ) : (
             <DivNone />
           )}
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

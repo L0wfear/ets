@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Glyphicon } from 'react-bootstrap';
+
 import { DivNone } from 'global-styled/global-styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 // types
 export type TriggerDateProps = {
@@ -59,9 +60,9 @@ export const TriggerDate: React.FC<TriggerDateProps> = (props) => {
         &nbsp;
         {
           showEvents ? (
-            <Glyphicon glyph="triangle-top"/>
+            <EtsBootstrap.Glyphicon glyph="triangle-top"/>
           ) : (
-            <Glyphicon glyph="triangle-bottom"/>
+            <EtsBootstrap.Glyphicon glyph="triangle-bottom"/>
           )
         }
       </TriggerCarpoolDate>

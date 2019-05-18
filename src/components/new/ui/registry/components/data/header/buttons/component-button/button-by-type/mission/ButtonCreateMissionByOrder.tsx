@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
@@ -33,9 +32,9 @@ const ButtonCreateMissionByOrder: React.FC<ButtonCreateMissionByOrderProps> = (p
   );
 
   return (
-    <Button id="open-create-form" bsSize="small" active onClick={handleClick}>
-      <Glyphicon glyph="plus" /> Создать централизованное задание
-    </Button>
+    <EtsBootstrap.Button id="open-create-form" bsSize="small" active onClick={handleClick}>
+      <EtsBootstrap.Glyphicon glyph="plus" /> Создать централизованное задание
+    </EtsBootstrap.Button>
   );
 };
 

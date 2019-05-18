@@ -2,9 +2,8 @@ import * as React from 'react';
 import { omit } from 'lodash';
 
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import {
@@ -150,9 +149,9 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
         <ButtonContainer>
           <ButtonGroup vertical>
             <ButtonDraw disabled={this.state.activeDraw } onClick={this.toggleMeasureActive} />
-            <Button disabled={this.state.activeDraw || !this.props.featureBufferPolygon} onClick={this.handleClickRemove}>
-              <Glyphicon glyph="remove" />
-            </Button>
+            <EtsBootstrap.Button disabled={this.state.activeDraw || !this.props.featureBufferPolygon} onClick={this.handleClickRemove}>
+              <EtsBootstrap.Glyphicon glyph="remove" />
+            </EtsBootstrap.Button>
           </ButtonGroup>
         </ButtonContainer>
         <LayerDraw

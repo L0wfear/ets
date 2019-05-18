@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { connect } from 'react-redux';
 import { Flex, DivNone, FlexContainer } from 'global-styled/global-styled';
@@ -44,6 +43,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
 import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class CreatingMap extends React.PureComponent<
   PropsCreatingMap,
@@ -463,7 +463,7 @@ class CreatingMap extends React.PureComponent<
                     disabled={!isPermitted}
                     boundKeys={index}
                     onClick={this.handleRemovePoint}>
-                    <Glyphicon glyph="remove" />
+                    <EtsBootstrap.Glyphicon glyph="remove" />
                   </ExtButton>
                 </FlexContainer>
               </PointInputContainer>

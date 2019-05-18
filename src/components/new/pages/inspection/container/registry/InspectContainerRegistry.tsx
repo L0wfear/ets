@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
 import { EtsTableWrap, EtsTable } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
@@ -10,6 +10,7 @@ import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/heade
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import ContainerRegistryTr from './ContainerRegistryTr';
 import InspectContainerFormAddActionLazy from './form_add_action';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type InspectContainerRegistryProps = {
   actions: InspectContainer['actions'];
@@ -73,8 +74,8 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
       <EtsHeaderContainer>
         <EtsHeaderTitle>Проведённые мероприятия по подготовке емкости к эксплуатации</EtsHeaderTitle>
         <EtsButtonsContainer>
-          <Button onClick={setShowFormTrue}>Добавить</Button>
-          <Button onClick={removeActionByIndex} disabled={!selectedRowNumber}>Удалить</Button>
+          <EtsBootstrap.Button onClick={setShowFormTrue}>Добавить</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={removeActionByIndex} disabled={!selectedRowNumber}>Удалить</EtsBootstrap.Button>
         </EtsButtonsContainer>
       </EtsHeaderContainer>
       <EtsTableDataContainer>

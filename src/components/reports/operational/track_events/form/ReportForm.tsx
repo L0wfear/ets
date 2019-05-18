@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import MapEts from 'components/new/ui/map/MapEts';
 
@@ -7,6 +6,7 @@ import { MapEtsContainer } from 'components/reports/operational/track_events/for
 import LayerOneGeometry from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
 
 import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsGeoObjectsMapModalNew = {
   onFormHide: () => any;
@@ -56,10 +56,10 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
 
   render() {
     return (
-      <Modal id="modal-geoobjects-map" show onHide={this.props.onFormHide} bsSize="large" backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>Просмотр объекта</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-geoobjects-map" show onHide={this.props.onFormHide} bsSize="large" backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Просмотр объекта</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader>
           <MapEtsContainer>
             <MapEtsConsumer>
@@ -84,7 +84,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
             </MapEtsConsumer>
           </MapEtsContainer>
         </ModalBodyPreloader>
-      </Modal>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

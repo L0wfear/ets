@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
@@ -30,7 +29,7 @@ import {
   InputRouteFormProps,
 } from 'components/new/pages/routes_list/form/RouteForm.h';
 import { ReduxState } from 'redux-main/@types/state';
-import { Button } from 'react-bootstrap';
+
 import { DivNone } from 'global-styled/global-styled';
 import { isArray, isFunction } from 'util';
 import { compose } from 'recompose';
@@ -48,8 +47,9 @@ import {
 } from 'redux-main/reducers/selectors';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { getDefaultRouteElement } from './utils';
-import EtsModal from 'components/new/ui/modal/Modal';
+
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const path = 'routeForm';
 
@@ -156,16 +156,16 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
       : this.props.isPermittedToCreate;
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-route"
         show
 
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlewWrapFormRow isWrap>
             <FieldIsMain
@@ -243,27 +243,27 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
           </FlewWrapFormRow>
         </ModalBodyPreloader>
 
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div>
             {
               isPermitted
                 ? (
                   <>
-                    <Button
+                    <EtsBootstrap.Button
                       id="route-submit-tempalte"
                       disabled={!canSave}
                       onClick={this.handleSaveAsTemplate}>
                       {this.props.fromMission && !this.props.fromMissionTemplate
                         ? 'Сохранить как шаблон'
                         : 'Сохранить'}
-                    </Button>
+                    </EtsBootstrap.Button>
                     {this.props.fromMission && !this.props.fromMissionTemplate ? (
-                      <Button
+                      <EtsBootstrap.Button
                         id="route-submit"
                         disabled={!canSave}
                         onClick={this.handleSubmitForMission}>
                         Создать
-                      </Button>
+                      </EtsBootstrap.Button>
                     ) : (
                       <DivNone />
                     )}
@@ -273,8 +273,8 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
                 )
             }
           </div>
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

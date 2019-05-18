@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 import { getFormattedDateTime } from 'utils/dates';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { NO_DATA_TEXT } from 'constants/statuses';
 
 import TimeParking from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/time-parking/TimeParking';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsCarMissions = {
   showMissionInfoForm: any;
@@ -61,7 +61,7 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
                     )
                   }
                 </div>
-                <Glyphicon glyph="info-sign" className="pointer fontSize24" data-id={mission.id} onClick={this.showMissionInfoForm} />
+                <EtsBootstrap.Glyphicon glyph="info-sign" className="pointer fontSize24" data-id={mission.id} onClick={this.showMissionInfoForm} />
               </div>
             );
           })

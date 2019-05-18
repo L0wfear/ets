@@ -8,12 +8,8 @@ import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_m
 import { getDefaultDutyMissionTemplateElement } from './utils';
 import { dutyDutyMissionTemplateFormSchema } from './schema';
 
-import EtsModal from 'components/new/ui/modal/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import {
@@ -73,19 +69,19 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
   const title = !IS_CREATING ? 'Шаблон наряд-задания' : 'Создание шаблона наряд-задания';
 
   return (
-    <EtsModal
+    <EtsBootstrap.ModalContainer
       id="modal-duty-mission-template"
       show
       onHide={props.hideWithoutChanges}
       bsSize="large"
       backdrop="static"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <FieldTechnicalOperationDutyMission
               value={state.technical_operation_id}
               name={state.technical_operation_name}
@@ -98,10 +94,10 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
               page={page}
               path={path}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <FieldMunicipalFacilityIdDutyMission
               value={state.municipal_facility_id}
               name={state.municipal_facility_name}
@@ -115,10 +111,10 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
               page={page}
               path={path}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
             <FieldForemanIdDutyMission
               value={state.foreman_id}
               foreman_fio={state.foreman_fio}
@@ -132,9 +128,9 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
               page={page}
               path={path}
             />
-          </Col>
+          </EtsBootstrap.Col>
           {STRUCTURE_FIELD_VIEW ? (
-            <Col md={6}>
+            <EtsBootstrap.Col md={6}>
               <FieldStructureDutyMission
                 value={state.structure_id}
                 name={state.structure_name}
@@ -145,11 +141,11 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
                 page={page}
                 path={path}
               />
-            </Col>
+            </EtsBootstrap.Col>
           ) : (
             <DivNone />
           )}
-          <Col md={12}>
+          <EtsBootstrap.Col md={12}>
             <FieldBrigadeEmployeeIdListDutyMission
               brigade_employee_id_list={state.brigade_employee_id_list}
               value={state.brigade_employee_id_list_id}
@@ -163,8 +159,8 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
               page={page}
               path={path}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <FieldRouteIdDutyMission
           error={errors.route_id}
           value={state.route_id}
@@ -183,8 +179,8 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
           page={page}
           path={path}
         />
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               id="comment"
               modalKey={page}
@@ -196,21 +192,21 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
               onChange={props.handleChange}
               boundKeys="comment"
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         {isPermitted ? ( // либо обновление, либо создание
-          <Button
+          <EtsBootstrap.Button
             disabled={!props.canSave}
             onClick={props.defaultSubmit}>
             Сохранить
-          </Button>
+          </EtsBootstrap.Button>
         ) : (
           <DivNone />
         )}
-      </Modal.Footer>
-    </EtsModal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -12,7 +12,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
-import { Glyphicon } from 'react-bootstrap';
+
 import { get } from 'lodash';
 
 type ButtonCopyMissionTemplateStateProps = {
@@ -54,9 +54,9 @@ const ButtonCopyMissionTemplate: React.FC<ButtonCopyMissionTemplateProps> = (pro
   );
 
   return (
-      <Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!selectedRow}>
-        <Glyphicon glyph="copy" />  Копировать
-      </Button>
+      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!selectedRow}>
+        <EtsBootstrap.Glyphicon glyph="copy" />  Копировать
+      </EtsBootstrap.Button>
   );
 };
 

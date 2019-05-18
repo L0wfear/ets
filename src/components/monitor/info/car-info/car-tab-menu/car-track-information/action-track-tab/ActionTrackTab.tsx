@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { get } from 'lodash';
 import { makeDateFromUnix } from 'utils/dates';
 import {
@@ -88,20 +87,20 @@ class ActionTrackTab extends React.Component<
           <div>Проигрывание трека</div>
         </div>
         <div className="car_info-track_player">
-          <Button
+          <EtsBootstrap.Button
             disabled={
               STATUS_TC_FOLLOW_ON_CAR ||
               track === -1 ||
               (Array.isArray(track) && track.length <= 1)
             }
             onClick={this.togglePlayTrack}>
-            <Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />
-          </Button>
-          <Button
+            <EtsBootstrap.Glyphicon glyph={status !== 'play' ? 'play' : 'pause'} />
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button
             disabled={STATUS_TC_FOLLOW_ON_CAR || status === 'stop'}
             onClick={this.stopPlayTrack}>
-            <Glyphicon glyph="stop" />
-          </Button>
+            <EtsBootstrap.Glyphicon glyph="stop" />
+          </EtsBootstrap.Button>
         </div>
         {status !== 'stop' ? (
           <div>

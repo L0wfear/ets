@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
@@ -104,22 +101,22 @@ export const MaintenanceRateForm: React.FC<
   }, []);
 
   return (
-    <Modal
+    <EtsBootstrap.ModalContainer
       id="modal-maintenance-rate"
       show
       onHide={props.hideWithoutChanges}
       backdrop="static"
       bsSize="large">
-      <Modal.Header closeButton>
-        <Modal.Title>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>
           {!state.id ? 'Добавление' : 'Изменение'} нормы на содержание{' '}
           {type === 'odh' ? 'ОДХ' : 'ДТ'}
-        </Modal.Title>
-      </Modal.Header>
+        </EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
 
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="select"
               label="Технологическая операция"
@@ -130,10 +127,10 @@ export const MaintenanceRateForm: React.FC<
               boundKeys="technical_operation_id"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="select"
               label="Наименование регламентной работы"
@@ -144,10 +141,10 @@ export const MaintenanceRateForm: React.FC<
               boundKeys="maintenance_work_id"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Сезон"
@@ -161,8 +158,8 @@ export const MaintenanceRateForm: React.FC<
               boundKeys="season_id"
               disabled={!isPermitted}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Категория"
@@ -172,8 +169,8 @@ export const MaintenanceRateForm: React.FC<
               onChange={handleChangeCategory}
               disabled={!isPermitted}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Подкатегория"
@@ -184,8 +181,8 @@ export const MaintenanceRateForm: React.FC<
               boundKeys="clean_subcategory_id"
               disabled={!isPermitted || SUBCATEGORIES.length === 0}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="Норма"
@@ -195,17 +192,17 @@ export const MaintenanceRateForm: React.FC<
               boundKeys="value"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
-        <Button
+      <EtsBootstrap.ModalFooter>
+        <EtsBootstrap.Button
           disabled={!props.canSave || !isPermitted}
           onClick={props.defaultSubmit}>
           Сохранить
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </EtsBootstrap.Button>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

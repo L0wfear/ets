@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { Button } from 'react-bootstrap';
+
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
@@ -9,6 +9,7 @@ import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type TrTdServiceButtonShowActionLogStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -43,7 +44,7 @@ const TrTdServiceButtonShowActionLog: React.FC<TrTdServiceButtonShowActionLogPro
 
     return (
       <EtsTbodyTrTd>
-        <Button block onClick={handleClick}>Открыть историю</Button>
+        <EtsBootstrap.Button block onClick={handleClick}>Открыть историю</EtsBootstrap.Button>
       </EtsTbodyTrTd>
     );
   },

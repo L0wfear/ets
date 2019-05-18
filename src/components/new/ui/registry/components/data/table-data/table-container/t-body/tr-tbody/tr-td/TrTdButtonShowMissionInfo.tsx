@@ -3,7 +3,6 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { MissionInfoStatusDiv, GlyphiconContainer32, EtsTbodyTrTdMisionData } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
-import { Glyphicon } from 'react-bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
@@ -12,6 +11,7 @@ import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfo
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
 import { MISSION_STATUS } from 'constants/dictionary';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type TrTdButtonShowMissionInfoStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -68,7 +68,7 @@ const TrTdButtonShowMissionInfo: React.FC<TrTdButtonShowMissionInfoProps> = Reac
             !noData
               ? (
                 <GlyphiconContainer32 onClick={handleClick} notFull={Number(rowData.current_percentage) < 100}>
-                  <Glyphicon glyph="info-sign" />
+                  <EtsBootstrap.Glyphicon glyph="info-sign" />
                 </GlyphiconContainer32>
 
               )

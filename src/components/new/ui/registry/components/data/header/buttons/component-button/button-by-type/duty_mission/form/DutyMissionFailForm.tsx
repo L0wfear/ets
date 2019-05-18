@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal, Button } from 'react-bootstrap';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type DutyMissionFailFormProps = {
   element: DutyMission;
@@ -45,14 +45,14 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
     );
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-duty-mission-reject"
         onHide={props.handleHide}
         show
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{`Введите причину для наряд-задания №${element.number}`}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{`Введите причину для наряд-задания №${element.number}`}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={props.page} typePreloader="mainpage">
           <ExtField
             type="string"
@@ -61,15 +61,15 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
             onChange={handleChangeComment}
           />
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div>
-            <Button disabled={!comment} onClick={handleSubmit}>
+            <EtsBootstrap.Button disabled={!comment} onClick={handleSubmit}>
               Отметка о невыполнении
-            </Button>
-            <Button onClick={props.handleHide}>Отмена</Button>
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   },
 );

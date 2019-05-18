@@ -1,10 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import EtsModal from 'components/new/ui/modal/Modal';
 import FieldAssignToWaybillMissionWithCarId from './inside_fields/assign_to_waybill/FieldAssignToWaybillMissionWithCarId';
 import { PropsColumnAssignmentForm } from './@types/index.h';
 import { DivNone } from 'global-styled/global-styled';
@@ -34,20 +30,20 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
 
   render() {
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-column-assignment"
         show
         onHide={this.props.hideColumnAssignment}
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Прикрепление заданий к ПЛ</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Прикрепление заданий к ПЛ</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={this.props.page} path={this.props.path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <label>Транспортное средство</label>
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           {
             this.props.car_ids.map((car_id, index) => (
               <FieldAssignToWaybillMissionWithCarId
@@ -62,27 +58,27 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
             ))
           }
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div className="pr-object-data">
             {
               this.state.showBackButton
                 ? (
                   <div>
-                    <Button id="m-back" onClick={this.props.hideColumnAssignment}>
+                    <EtsBootstrap.Button id="m-back" onClick={this.props.hideColumnAssignment}>
                       Назад
-                    </Button>
+                    </EtsBootstrap.Button>
                   </div>
                 )
                 : (
                   <DivNone />
                 )
             }
-            <Button id="m-submit" onClick={this.handleSubmit}>
+            <EtsBootstrap.Button id="m-submit" onClick={this.handleSubmit}>
               Сохранить
-            </Button>
+            </EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

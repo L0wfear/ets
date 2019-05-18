@@ -1,8 +1,6 @@
 import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 import * as Panel from 'react-bootstrap/lib/Panel';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as moment from 'moment';
 import { connect } from 'react-redux';
@@ -96,14 +94,14 @@ class HistoryOrderList extends React.Component<any, any> {
 
     return (
       <Div hidden={this.props.hidden}>
-        <Row>
+        <EtsBootstrap.Row>
           <Panel>
             <HistoryOrderListPanelTitleCol
               md={12}
               onClick={this.toggleHistoryTable}>
               <HistoryOrderListPanelTitleH4>
                 <span>Версионность централизованного задания</span>
-                <Glyphicon
+                <EtsBootstrap.Glyphicon
                   glyph={historytableIsOpen ? 'menu-up' : 'menu-down'}
                 />
               </HistoryOrderListPanelTitleH4>
@@ -111,7 +109,7 @@ class HistoryOrderList extends React.Component<any, any> {
             <Div hidden={!historytableIsOpen}>
               <HistoryOrderListPanelTitleColSelect md={12}>
                 <div>Версия централизованного задания</div>
-                <Col md={3}>
+                <EtsBootstrap.Col md={3}>
                   <ReactSelect
                     type="select"
                     options={VERSION_OPTIONS}
@@ -119,41 +117,41 @@ class HistoryOrderList extends React.Component<any, any> {
                     clearable={false}
                     onChange={this.handleChangeVersion}
                   />
-                </Col>
+                </EtsBootstrap.Col>
               </HistoryOrderListPanelTitleColSelect>
               <Div hidden={!haveData}>
                 <div>
-                  <Col md={8}>
+                  <EtsBootstrap.Col md={8}>
                     <OrdeHistoryTable
                       noHeader
                       preventNoDataMessage
                       withNormInitialData
                       data={activeData.technical_operations}
                     />
-                  </Col>
-                  <Col md={4}>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={4}>
                     <OrderInfoTable
                       noHeader
                       preventNoDataMessage
                       withNormInitialData
                       data={[{ id: 0, order_info: activeData.order_info }]}
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                 </div>
               </Div>
               <Div hidden={haveData}>
                 <div>
-                  <Col md={12} style={{ marginTop: 20 }}>
+                  <EtsBootstrap.Col md={12} style={{ marginTop: 20 }}>
                     <span>
                       Для выбранного централизованного задания предыдущих версий
                       нет.
                     </span>
-                  </Col>
+                  </EtsBootstrap.Col>
                 </div>
               </Div>
             </Div>
           </Panel>
-        </Row>
+        </EtsBootstrap.Row>
       </Div>
     );
   }

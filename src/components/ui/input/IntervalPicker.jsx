@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export default class IntervalPicker extends Component {
   constructor(props) {
@@ -25,32 +24,36 @@ export default class IntervalPicker extends Component {
 
     return (
       <div className="interval-picker">
-        <Row style={{ margin: '0 0 5px 0' }}>
-          <Col md={1} style={{ padding: '6px 6px 0 0', fontWeight: 'bold' }}>
+        <EtsBootstrap.Row style={{ margin: '0 0 5px 0' }}>
+          <EtsBootstrap.Col
+            md={1}
+            style={{ padding: '6px 6px 0 0', fontWeight: 'bold' }}>
             с
-          </Col>
-          <Col md={11} style={{ padding: 0 }}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={11} style={{ padding: 0 }}>
             <DatePicker
               time={this.props.time}
               date={interval[0]}
               onChange={this.handleChange.bind(this, 0)}
               max={interval[1]}
             />
-          </Col>
-        </Row>
-        <Row style={{ margin: 0 }}>
-          <Col md={1} style={{ padding: '6px 6px 0 0', fontWeight: 'bold' }}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row style={{ margin: 0 }}>
+          <EtsBootstrap.Col
+            md={1}
+            style={{ padding: '6px 6px 0 0', fontWeight: 'bold' }}>
             по
-          </Col>
-          <Col md={11} style={{ padding: 0 }}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={11} style={{ padding: 0 }}>
             <DatePicker
               time={this.props.time}
               date={interval[1]}
               onChange={this.handleChange.bind(this, 1)}
               min={interval[0]}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </div>
     );
   }

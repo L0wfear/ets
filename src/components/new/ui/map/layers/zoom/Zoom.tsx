@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
@@ -31,8 +31,8 @@ class LayerZoom extends React.PureComponent<PropsLayerZoom, {}> {
       <div>
         <ButtonContainer>
           <ButtonGroup vertical>
-            <Button onClick={this.handleClickInc}>+</Button>
-            <Button onClick={this.handleClickDec}>-</Button>
+            <EtsBootstrap.Button onClick={this.handleClickInc}>+</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.handleClickDec}>-</EtsBootstrap.Button>
           </ButtonGroup>
         </ButtonContainer>
       </div>

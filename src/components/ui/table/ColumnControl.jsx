@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBody from 'components/ui/Modal';
 import cx from 'classnames';
 
@@ -38,8 +37,15 @@ export default class ColumnControl extends React.Component {
           <div className="form-group" style={{ cursor: 'pointer' }}>
             <div className="checkbox">
               <label className="control-label">
-                <input readOnly type="checkbox" checked={this.props.values.indexOf(option.name) === -1} onClick={this.checkboxChange.bind(this, option.name)} />
-                <span style={{ bottom: -2, position: 'relative' }}>{option.displayName}</span>
+                <input
+                  readOnly
+                  type="checkbox"
+                  checked={this.props.values.indexOf(option.name) === -1}
+                  onClick={this.checkboxChange.bind(this, option.name)}
+                />
+                <span style={{ bottom: -2, position: 'relative' }}>
+                  {option.displayName}
+                </span>
               </label>
             </div>
           </div>
@@ -49,14 +55,15 @@ export default class ColumnControl extends React.Component {
 
     return (
       <Div className="column-control-wrap">
-        <Button bsSize="small" className={buttonClass} onClick={this.props.onClick}>
-          <Glyphicon glyph="cog" />
-        </Button>
+        <EtsBootstrap.Button
+          bsSize="small"
+          className={buttonClass}
+          onClick={this.props.onClick}>
+          <EtsBootstrap.Glyphicon glyph="cog" />
+        </EtsBootstrap.Button>
         <Div hidden={!this.props.show} className="column-control-container">
           <Div className="column-control-container-window">
-            <ModalBody>
-              {rows}
-            </ModalBody>
+            <ModalBody>{rows}</ModalBody>
           </Div>
         </Div>
       </Div>

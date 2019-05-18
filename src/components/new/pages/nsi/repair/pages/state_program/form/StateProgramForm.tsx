@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -22,7 +22,6 @@ import { StateProgram } from 'redux-main/reducers/modules/repair/state_program/@
 import { actionCreateStateProgram, actionUpdateStateProgram } from 'redux-main/reducers/modules/repair/state_program/actions_state_program';
 import useStateProgramStatusOptions from './use/useStateProgramStatusOptions';
 import { actionLoadStateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/actions_state_program_status';
-import { Row, Col } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
@@ -42,13 +41,13 @@ const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
   const title = 'Государственная программа ремонта';
 
   return (
-    <Modal id="modal-state_program" show onHide={props.hideWithoutChanges} backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
+    <EtsBootstrap.ModalContainer id="modal-state_program" show onHide={props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="string"
               label="Наименование государственной программы"
@@ -57,8 +56,8 @@ const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
               onChange={props.handleChange}
               boundKeys="name"
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="select"
               label="Статус"
@@ -69,24 +68,24 @@ const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
               clearable={false}
               boundKeys="status_id"
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         <div>
           {
             isPermitted // либо обновление, либо создание
             ? (
-              <Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
             )
             : (
               <DivNone />
             )
           }
-          <Button onClick={props.hideWithoutChanges}>Отменить</Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </div>
-      </Modal.Footer>
-    </Modal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

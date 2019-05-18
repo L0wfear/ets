@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 
 import { sessionCahngeCompanyOnAnother } from 'redux-main/reducers/modules/session/actions-session';
 
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-
 import { withRouter } from 'react-router-dom';
 
 import {
@@ -15,6 +13,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { isNull } from 'util';
 import { BackToGorodContainer } from 'components/new/ui/app_header/desktop/right/back_to_gorod/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class BackToGorod extends React.Component<any, any> {
   context!: ETSCore.LegacyContext;
@@ -67,7 +66,7 @@ class BackToGorod extends React.Component<any, any> {
     return show
       ? (
         <BackToGorodContainer ref={this.node} id="button-back-to-city" onClick={this.handleSelect} title="Возврат на уровень города">
-          <Glyphicon glyph="arrow-left"/>
+          <EtsBootstrap.Glyphicon glyph="arrow-left"/>
         </BackToGorodContainer>
       )
       : (

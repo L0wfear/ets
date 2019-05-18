@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -90,9 +90,9 @@ const ButtonFromArchiveMission: React.FC<ButtonFromArchiveMissionProps> = (props
 
   return (
     <>
-      <Button id="mission-from-archive" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
+      <EtsBootstrap.Button id="mission-from-archive" bsSize="small" onClick={handleClickOpenForm} disabled={disabled}>
         Перенести из архива
-      </Button>
+      </EtsBootstrap.Button>
       <ModalYesNo
         show={isOpenModalRemove}
         handleHide={handleClickCloseForm}

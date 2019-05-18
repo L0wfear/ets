@@ -1,8 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -38,13 +36,13 @@ const BatteryManufacturerForm: React.FC<PropsBatteryManufacturer> = (props) => {
   const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
   return (
-    <Modal id="modal-battery-manufacturer" show onHide={props.hideWithoutChanges} backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
+    <EtsBootstrap.ModalContainer id="modal-battery-manufacturer" show onHide={props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               id={name}
               type="string"
@@ -56,21 +54,21 @@ const BatteryManufacturerForm: React.FC<PropsBatteryManufacturer> = (props) => {
               boundKeys="name"
               modalKey={page}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
       {
         isPermitted // либо обновление, либо создание
         ? (
-          <Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+          <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
         )
         : (
           <DivNone />
         )
       }
-      </Modal.Footer>
-    </Modal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

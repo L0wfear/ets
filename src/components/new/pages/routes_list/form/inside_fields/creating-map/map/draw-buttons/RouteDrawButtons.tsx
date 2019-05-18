@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   RouteDrawButtonsContaineWrapr,
@@ -12,10 +12,10 @@ type PropsRouteDrawButtons = {
 };
 
 class RouteDrawButtons extends React.PureComponent<PropsRouteDrawButtons, {}> {
-  handleClickOnStartDraw: React.MouseEventHandler<Button> = () => {
+  handleClickOnStartDraw = () => {
     this.props.handleClickOnStartDraw();
   }
-  handleClickOnRemove: React.MouseEventHandler<Button> = () => {
+  handleClickOnRemove = () => {
     this.props.handleClickOnRemove();
   }
 
@@ -23,8 +23,8 @@ class RouteDrawButtons extends React.PureComponent<PropsRouteDrawButtons, {}> {
     return (
       <RouteDrawButtonsContaineWrapr>
         <RouteDrawButtonsContainer>
-          <Button onClick={this.handleClickOnStartDraw} disabled={this.props.disabledDraw}><Glyphicon glyph="pencil" /></Button>
-          <Button onClick={this.handleClickOnRemove} disabled={this.props.disabledRemove}><Glyphicon glyph="remove" /></Button>
+          <EtsBootstrap.Button onClick={this.handleClickOnStartDraw} disabled={this.props.disabledDraw}><EtsBootstrap.Glyphicon glyph="pencil" /></EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.handleClickOnRemove} disabled={this.props.disabledRemove}><EtsBootstrap.Glyphicon glyph="remove" /></EtsBootstrap.Button>
         </RouteDrawButtonsContainer>
       </RouteDrawButtonsContaineWrapr>
     );

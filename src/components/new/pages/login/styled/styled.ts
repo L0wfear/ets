@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const background = require('components/new/pages/login/styled/bg.jpg');
 const jkh = require('components/new/pages/login/styled/jkh.png');
@@ -93,7 +93,7 @@ export const LoginPageFormContentInput = styled.input`
   margin-bottom: 25px !important;
 `;
 
-export const LoginPageFormContentButton = styled(Button)`
+export const LoginPageFormContentButton = styled(EtsBootstrap.Button)`
   &&& {
     width: 100%;
     background: #706b77;

@@ -2,13 +2,13 @@ import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { Row, Col } from 'react-bootstrap';
 import { makeDate, makeTime } from 'utils/dates';
 import { DivNone } from 'global-styled/global-styled';
 import FieldCarsConditionsCarMarka from './inside_fields/marka/FieldCarsConditionsCarMarka';
 import FieldCarsConditionsCarModel from './inside_fields/model/FieldCarsConditionsCarModel';
 import FieldCarsConditionsCarType from './inside_fields/type/FieldCarsConditionsCarType';
 import FieldCarsConditionsCarSeason from './inside_fields/season/FieldCarsConditionsCarSeason';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -151,8 +151,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           disabled={!props.isPermitted}
           inline
         />
-        <Row>
-          <Col md={6}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Номер ОСАГО:"
@@ -162,8 +162,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               boundKeys="osago"
               disabled={!props.isPermitted}
           />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="date"
               time={false}
@@ -175,10 +175,10 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               boundKeys="osago_finished_at"
               disabled={!props.isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Номер диагностической карты:"
@@ -188,8 +188,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               boundKeys="diagnostic_card"
               disabled={!props.isPermitted}
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="date"
               time={false}
@@ -201,8 +201,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               boundKeys="diagnostic_card_finished_at"
               disabled={!props.isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <ExtField
           type="date"
           time={false}

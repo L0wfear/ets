@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+
 import styled from 'styled-components';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelectedOdhDtStateProps = {
 };
@@ -26,7 +27,7 @@ type SelectedOdhDtProps = (
   & WithSearchProps
 );
 
-const ButtonWrap = styled(Button)``;
+const ButtonWrap = styled(EtsBootstrap.Button)``;
 
 const ButtonContainer = styled.div`
   flex-grow: 1;

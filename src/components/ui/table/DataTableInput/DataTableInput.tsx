@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
 import { IDataTableSelectedRow, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
@@ -48,8 +48,8 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
       <div className="date-table-input">
          <div className="pull-right">
           <ButtonToolbar>
-            <Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</Button>
-            <Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</Button>
+            <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
+            <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
           </ButtonToolbar>
         </div>
         <DataTable

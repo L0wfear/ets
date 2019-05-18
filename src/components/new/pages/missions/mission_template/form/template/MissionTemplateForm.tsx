@@ -18,19 +18,17 @@ import { getDefaultMissionTemplateElement } from './utils';
 import { missionTemplateFormSchema } from './schema';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import { Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
-import EtsModal from 'components/new/ui/modal/Modal';
+
 import FieldForColumnMission from 'components/new/pages/missions/mission/form/main/inside_fields/for_column/FieldForColumnMission';
 import FieldCarIdsMission from 'components/new/pages/missions/mission/form/main/inside_fields/car_ids/FieldCarIdsMission';
 import FieldStructureMission from 'components/new/pages/missions/mission/form/main/inside_fields/structure/FieldStructureMission';
@@ -125,21 +123,21 @@ class MissionTemplateForm extends React.PureComponent<
       : this.props.isPermittedToCreate;
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-mission-template"
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
-              <Row>
-                <Col md={3}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={3}>
                   <FieldForColumnMission
                     value={state.for_column}
                     error={errors.car_ids}
@@ -148,8 +146,8 @@ class MissionTemplateForm extends React.PureComponent<
                     page={page}
                     path={path}
                   />
-                </Col>
-                <Col md={9}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={9}>
                   <FieldCarIdsMission
                     value={state.car_ids}
                     disabled={!isPermitted}
@@ -170,13 +168,13 @@ class MissionTemplateForm extends React.PureComponent<
                     page={page}
                     path={path}
                   />
-                </Col>
-              </Row>
-            </Col>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
             {
               STRUCTURE_FIELD_VIEW
               ? (
-                <Col md={6}>
+                <EtsBootstrap.Col md={6}>
                   <FieldStructureMission
                     value={state.structure_id}
                     name={state.structure_name}
@@ -186,16 +184,16 @@ class MissionTemplateForm extends React.PureComponent<
                     page={page}
                     path={path}
                   />
-                </Col>
+                </EtsBootstrap.Col>
             ) : (
               <DivNone />
             )
             }
-          </Row>
-          <Row>
-            <Col md={6}>
-              <Row>
-                <Col md={12}>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={12}>
                   <FieldTechnicalOperationMission
                     value={state.technical_operation_id}
                     name={state.technical_operation_name}
@@ -213,8 +211,8 @@ class MissionTemplateForm extends React.PureComponent<
                     page={page}
                     path={path}
                   />
-                </Col>
-                <Col md={12}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={12}>
                   <FieldMunicipalFacilityIdMission
                     value={state.municipal_facility_id}
                     name={state.municipal_facility_name}
@@ -230,10 +228,10 @@ class MissionTemplateForm extends React.PureComponent<
                     page={page}
                     path={path}
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 id="passes-count"
                 type="string"
@@ -244,10 +242,10 @@ class MissionTemplateForm extends React.PureComponent<
                 onChange={this.props.handleChange}
                 boundKeys="passes_count"
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <FieldRouteIdMission
                 error={errors.route_id}
                 value={state.route_id}
@@ -274,10 +272,10 @@ class MissionTemplateForm extends React.PureComponent<
                 page={page}
                 path={path}
               />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="m-comment"
                 type="string"
@@ -288,10 +286,10 @@ class MissionTemplateForm extends React.PureComponent<
                 onChange={this.props.handleChange}
                 boundKeys="comment"
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
             <DisplayFlexAlignCenterFooterForm>
               <BtnGroupWrapper>
@@ -302,7 +300,7 @@ class MissionTemplateForm extends React.PureComponent<
                     onSelect={this.handlePrint}
                     disabled={!this.props.canSave}>
                     <Dropdown.Toggle>
-                      <Glyphicon id="m-print" glyph="print" />
+                      <EtsBootstrap.Glyphicon id="m-print" glyph="print" />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
@@ -311,19 +309,19 @@ class MissionTemplateForm extends React.PureComponent<
                   </Dropdown>
                 </BtnPart>
                 <BtnPart>
-                  <Button
+                  <EtsBootstrap.Button
                     disabled={!this.props.canSave}
                     onClick={this.props.defaultSubmit}>
                     Сохранить
-                  </Button>
+                  </EtsBootstrap.Button>
                 </BtnPart>
               </BtnGroupWrapper>
             </DisplayFlexAlignCenterFooterForm>
           ) : (
             <DivNone />
           )}
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

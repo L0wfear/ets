@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 
@@ -133,13 +132,13 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           )
         }
         <RightButtonBlockContainer needMarginBottom>
-          <DropdownButtonTSX id="save-faxogramm" onSelect={this.seclectDownload} title={<Glyphicon glyph="download-alt" />} pullRight>
+          <DropdownButtonTSX id="save-faxogramm" onSelect={this.seclectDownload} title={<EtsBootstrap.Glyphicon glyph="download-alt" />} pullRight>
             <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
             <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
           </DropdownButtonTSX>
-          <ButtonReadOrder onClick={this.showPDFViewModal}><Glyphicon glyph="info-sign" /></ButtonReadOrder>
+          <ButtonReadOrder onClick={this.showPDFViewModal}><EtsBootstrap.Glyphicon glyph="info-sign" /></ButtonReadOrder>
           <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
-            <Button >Сформировать задания</Button>
+            <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>
           </LinkToOrder>
         </RightButtonBlockContainer>
         <PDFViewModalLazy

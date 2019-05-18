@@ -2,9 +2,7 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 import { get } from 'lodash';
 
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
@@ -340,8 +338,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<
 
     return (
       <>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="select"
               id="route_id"
@@ -355,19 +353,19 @@ class FieldRouteIdDutyMission extends React.PureComponent<
               clearable
             />
             {!value ? (
-              <Button
+              <EtsBootstrap.Button
                 id="mt-create-route"
                 onClick={this.createNewRoute}
                 disabled={
                   !hasSelectedMunicipalFacilityId || this.props.disabled
                 }>
                 Создать новый
-              </Button>
+              </EtsBootstrap.Button>
             ) : (
               <DivNone />
             )}
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             {selectedRoute && !showRouteForm ? (
               <RouteInfo
                 route={selectedRoute}
@@ -377,8 +375,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<
             ) : (
               <DivNone />
             )}
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         {showRouteForm ? (
           <RouteFormWrap
             element={selectedRouteRaw}

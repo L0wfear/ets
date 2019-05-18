@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { carFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/schema';
@@ -33,10 +32,10 @@ const CarForm: React.FC<PropsCar> = React.memo(
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>Карточка транспортного средства</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <CarFormBodyHeader isPermitted={isPermitted} />
           <CarFormBodyContainer
@@ -50,18 +49,18 @@ const CarForm: React.FC<PropsCar> = React.memo(
             path={props.path}
           />
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
         {
           isPermitted // либо обновление, либо создание
           ? (
-            <Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+            <EtsBootstrap.Button id="save_car_actial" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
           : (
             <DivNone />
           )
         }
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   },
 );

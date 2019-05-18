@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { IReportProps } from 'components/reports/@types/common.h';
 
 import { bindable } from 'utils/decorators';
 import ReportHeader from 'components/reports/operational/track_events/ReportHeader';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const serviceUrl = 'track_events';
 const reportUrl = 'track-events-reports';
@@ -26,7 +26,7 @@ const schemaMakers = {
 const ShowMapButtonSFC = (props) =>
   <div>
     <span onClick={props.onClick}>
-      <Glyphicon glyph="info-sign" />
+      <EtsBootstrap.Glyphicon glyph="info-sign" />
     </span>
   </div>;
 

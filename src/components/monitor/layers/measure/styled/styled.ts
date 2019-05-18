@@ -10,7 +10,7 @@ import {
   EtsOverlayTitleContainer,
   EtsTriangleContainer,
 } from 'components/new/ui/map/overlay/styled/styled';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const ruler = require('components/monitor/layers/measure/styled/image/ruler.png');
 
@@ -77,7 +77,7 @@ export const ButtonContainer = styled.div`
   }
 `;
 
-export const ButtonDraw = styled(Button).attrs({ className: 'ruler' })`
+export const ButtonDraw = styled(EtsBootstrap.Button).attrs({ className: 'ruler' })`
   &.ruler {
     background-image: url(${ruler});
     background-blend-mode: difference;

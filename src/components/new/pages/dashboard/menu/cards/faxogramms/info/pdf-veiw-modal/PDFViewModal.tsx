@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
+
 import PDF from 'react-pdf-js';
 import * as Raven from 'raven-js';
 
@@ -10,6 +10,7 @@ import {
   PropsPDFViewModal,
   StatePDFViewModal,
 } from 'components/new/pages/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModal.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class PDFViewModal extends React.Component<
   PropsPDFViewModal,
@@ -39,7 +40,7 @@ class PDFViewModal extends React.Component<
 
   render() {
     return (
-      <Modal show onHide={this.props.onHide}>
+      <EtsBootstrap.ModalContainer show onHide={this.props.onHide}>
         <ModalBody bsClass="null">
           {!this.state.url ? (
             <Preloader typePreloader="mainpage" />
@@ -47,7 +48,7 @@ class PDFViewModal extends React.Component<
             <PDF file={this.state.url} />
           )}
         </ModalBody>
-      </Modal>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

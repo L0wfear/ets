@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import {
   IPropsReportHeaderCommon,
@@ -101,13 +99,13 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
     const companyOptions = companyList.map(({ company_id: value, short_name }) => ({ value, label: short_name }));
 
     return (
-      <Row className="report-page__header">
-        <Col md={6}>
-          <Row>
-            <Col md={12}>
+      <EtsBootstrap.Row className="report-page__header">
+        <EtsBootstrap.Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <label htmlFor=" ">Период формирования</label>
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           <DatePickerRange
             date_start_id="date_start"
             date_start_value={date_start}
@@ -118,13 +116,13 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
             disabled={readOnly}
             onChange={this.props.handleChange}
           />
-        </Col>
-        <Col md={6}>
-          <Row>
-            <Col md={12}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <label>Организация</label>
-            </Col>
-            <Col md={6}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
                 clearable={false}
@@ -135,19 +133,19 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
                 onChange={this.props.handleChange}
                 boundKeys="company_id"
               />
-            </Col>
-            <Col md={6}>
-              <Button
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <EtsBootstrap.Button
                 block
                 disabled={this.props.readOnly || !!errorMes || !company_id}
                 onClick={this.handleSubmit}
               >
                 Сформировать отчёт
-              </Button>
-            </Col>
-          </Row>
-        </Col>
-      </Row>
+              </EtsBootstrap.Button>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

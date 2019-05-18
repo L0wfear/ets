@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -14,6 +12,7 @@ import {
 
 import { addTime } from 'utils/dates';
 import { checkMissionsByRouteType } from '../../utils';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class FieldDatesMissionTemplateCreating extends React.PureComponent<PropsFieldDatesMissionTemplateCreating, StateFieldDatesMissionTemplateCreating> {
   componentDidUpdate(prevProps) {
@@ -57,13 +56,13 @@ class FieldDatesMissionTemplateCreating extends React.PureComponent<PropsFieldDa
 
     return (
       <React.Fragment>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <h5>Время выполнения</h5>
-          </Col>
-        </Row>
-        <Row>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="date_start"
               type="date"
@@ -74,8 +73,8 @@ class FieldDatesMissionTemplateCreating extends React.PureComponent<PropsFieldDa
               disabled={!isPermitted}
               boundKeys="date_start"
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="date_end"
               type="date"
@@ -86,8 +85,8 @@ class FieldDatesMissionTemplateCreating extends React.PureComponent<PropsFieldDa
               disabled={!isPermitted}
               boundKeys="date_end"
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </React.Fragment>
     );
   }

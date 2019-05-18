@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Button, Modal } from 'react-bootstrap';
-import EtsModal from 'components/new/ui/modal/Modal';
+import EtsBootstrap from '../../@bootstrap';
 
 type ModalYesNo = {
   show: boolean;
@@ -16,25 +15,25 @@ const ModalYesNo: React.FC<ModalYesNo> = React.memo(
     const title = props.title || 'Внимание!';
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         show={props.show}
         bsSize="small"
         id="delete-form"
         onHide={props.handleHide}
       >
-        <Modal.Header>{title}</Modal.Header>
-        <Modal.Body>
+        <EtsBootstrap.ModalHeader>{title}</EtsBootstrap.ModalHeader>
+        <EtsBootstrap.ModalBody>
           <span>
             {props.message}
           </span>
-        </Modal.Body>
-        <Modal.Footer>
+        </EtsBootstrap.ModalBody>
+        <EtsBootstrap.ModalFooter>
           <div>
-            <Button onClick={props.handleSubmit}>Ок</Button>
-            <Button onClick={props.handleHide}>Отмена</Button>
+            <EtsBootstrap.Button onClick={props.handleSubmit}>Ок</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   },
 );

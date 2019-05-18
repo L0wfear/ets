@@ -1,10 +1,9 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
@@ -62,7 +61,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
       <DisplayFlexAlignCenterFooterForm>
         <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
           <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
-          <Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><Glyphicon glyph="refresh" /></Button>
+          <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><EtsBootstrap.Glyphicon glyph="refresh" /></EtsBootstrap.Button>
           </OverlayTrigger>
         </Div>
         <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? waybillPermissions.plate : undefined}>
@@ -70,7 +69,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
             <BtnPart>
               <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
                 <Dropdown.Toggle disabled={!props.canSave}>
-                  <Glyphicon glyph="print" />
+                  <EtsBootstrap.Glyphicon glyph="print" />
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
@@ -83,7 +82,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
             <BtnPart>
               <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup pullRight disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
                 <Dropdown.Toggle disabled={!props.canSave}>
-                  <Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
+                  <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
@@ -100,10 +99,10 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
           className={'inline-block'}
           hidden={(props.state.status === 'closed' && !props.canEditIfClose) || (!props.isPermittedByKey.update && props.isPermittedByKey.departure_and_arrival_values && props.state.status !== 'active')}
         >
-          <Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</Button>
+          <EtsBootstrap.Button id="waybill-submit" onClick={props.handleSubmit} disabled={!props.canSave && !props.state.canEditIfClose}>Сохранить</EtsBootstrap.Button>
         </Div>
         <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
-          <Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</Button>
+          <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>
         </Div>
       </DisplayFlexAlignCenterFooterForm>
     );

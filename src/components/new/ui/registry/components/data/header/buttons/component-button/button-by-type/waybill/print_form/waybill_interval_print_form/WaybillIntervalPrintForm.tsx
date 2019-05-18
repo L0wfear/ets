@@ -1,6 +1,6 @@
 import * as React from 'react';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -15,6 +15,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { saveData } from 'utils/functions';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const WaybillIntervalPrintForm: React.FC<PropsWaybillIntervalPrint> = React.memo(
   (props) => {
@@ -61,13 +62,13 @@ const WaybillIntervalPrintForm: React.FC<PropsWaybillIntervalPrint> = React.memo
     );
 
     return (
-      <Modal id="modal-waybill_report" show onHide={props.hideWithoutChanges} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-waybill_report" show onHide={props.hideWithoutChanges} backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <DatePickerRange
                 allWidth={false}
                 label="Период формирования"
@@ -80,8 +81,8 @@ const WaybillIntervalPrintForm: React.FC<PropsWaybillIntervalPrint> = React.memo
 
                 onChange={props.handleChange}
               />
-            </Col>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="boolean"
                 label="С применением фильтрации"
@@ -91,16 +92,16 @@ const WaybillIntervalPrintForm: React.FC<PropsWaybillIntervalPrint> = React.memo
                 className="checkbox-input flex-reverse"
                 boundKeys="withFilter"
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div>
-            <Button disabled={!props.canSave} onClick={handleSubmit}>Ок</Button>
-            <Button onClick={props.hideWithoutChanges}>Отменить</Button>
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={handleSubmit}>Ок</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   },
 );

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { connect } from 'react-redux';
 import config from 'config';
 import Preloader from 'components/ui/new/preloader/Preloader';
@@ -54,16 +53,16 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
           <div>
             <BtnGroupWrapper vertical={true}>
               <BtnPart>
-                <Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
-                  <Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
+                <EtsBootstrap.Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
+                  <EtsBootstrap.Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
                   {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
-                </Button>
+                </EtsBootstrap.Button>
               </BtnPart>
               <BtnPart>
-                <Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
-                  <Glyphicon glyph="resize-full" className="car_info-main_block-button" />
+                <EtsBootstrap.Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
+                  <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
                   Трек
-                </Button>
+                </EtsBootstrap.Button>
               </BtnPart>
             </BtnGroupWrapper>
           </div>

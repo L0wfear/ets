@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
 
 import {
   FlexContainer,
@@ -30,6 +29,7 @@ import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors/index';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm> {
   render() {
@@ -45,10 +45,10 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
     // const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-carpool" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-carpool" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
@@ -87,9 +87,9 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
             </Flex>
           </FlexContainer>
         </ModalBodyPreloader>
-        <Modal.Footer>
-        </Modal.Footer>
-      </Modal>
+        <EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { CarWrap } from '../../../../../@types/CarForm';
 import { FormWithHandleChange } from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -10,6 +9,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { employeeDriverGetSetDriver } from 'redux-main/reducers/modules/employee/driver/actions';
 import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
 import useCarDriversList from './useCarDriversList';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldSelectDriverCarStateProps = {};
 type FieldSelectDriverCarDispatchProps = {
@@ -68,8 +68,8 @@ const FieldSelectDriverCar: React.FC<FieldSelectDriverCarProps> = React.memo(
     );
 
     return (
-      <Row>
-        <Col md={6}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={6}>
           <ExtField
             id="primary_drivers"
             type="select"
@@ -82,8 +82,8 @@ const FieldSelectDriverCar: React.FC<FieldSelectDriverCarProps> = React.memo(
             disabled={!props.isPermitted}
             components={componentsToDriver}
           />
-        </Col>
-        <Col md={6}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
           <ExtField
             id="secondary_drivers"
             type="select"
@@ -96,8 +96,8 @@ const FieldSelectDriverCar: React.FC<FieldSelectDriverCarProps> = React.memo(
             disabled={!props.isPermitted}
             components={componentsToDriver}
           />
-        </Col>
-      </Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   },
 );

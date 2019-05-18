@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsTrTable = {
   rowData: any;
@@ -74,11 +74,11 @@ class TrTable extends React.Component<PropsTrTable, any> {
                 (
                   rowData._isShowChildren ?
                   (
-                    <Glyphicon glyph="triangle-bottom" />
+                    <EtsBootstrap.Glyphicon glyph="triangle-bottom" />
                   )
                   :
                   (
-                    <Glyphicon glyph="triangle-right" />
+                    <EtsBootstrap.Glyphicon glyph="triangle-right" />
                   )
                 )
                 :

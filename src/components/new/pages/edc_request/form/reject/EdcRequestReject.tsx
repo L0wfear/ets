@@ -18,11 +18,8 @@ import {
 import { edcRequestRejectSchema } from './schema';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
-import EtsModal from 'components/new/ui/modal/Modal';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+
 import edcRequestPermissions from '../../_config-data/permissions';
 import { makeDate } from 'utils/dates';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -65,18 +62,18 @@ const EdcRequestRejectForm: React.FC<EdcRequestRejectFormProps> = (props) => {
   const title = `Отклонение заявки №${props.edcReques.request_number} от ${makeDate(props.edcReques.create_date)}`;
 
   return (
-    <EtsModal
+    <EtsBootstrap.ModalContainer
       id="modal-edc_request_reject-mission"
       show
       onHide={props.hideWithoutChanges}
       backdrop="static"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               id="rejection_reason_id"
               type="select"
@@ -88,23 +85,23 @@ const EdcRequestRejectForm: React.FC<EdcRequestRejectFormProps> = (props) => {
               clearable={false}
               disabled={!props.isPermittedToUpdate}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         <div>
-          <Button
+          <EtsBootstrap.Button
             disabled={!props.canSave}
             onClick={props.defaultSubmit}
           >
             Сохранить
-          </Button>
-          <Button onClick={props.hideWithoutChanges} >
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges} >
             Отмена
-          </Button>
+          </EtsBootstrap.Button>
         </div>
-      </Modal.Footer>
-    </EtsModal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

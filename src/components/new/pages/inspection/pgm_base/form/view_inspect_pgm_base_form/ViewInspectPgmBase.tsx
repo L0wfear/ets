@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
 import { get } from 'lodash';
 import IAVisibleWarning from 'components/new/pages/inspection/pgm_base/components/vsible_warning/IAVisibleWarning';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
@@ -29,6 +28,7 @@ import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type InitialState = {
   selectedInspect: InspectPgmBase,
@@ -238,7 +238,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
     ? (
       <React.Fragment>
         <ContainerForm>
-          <Col md={6} sm={12}>
+          <EtsBootstrap.Col md={6} sm={12}>
             <BoxContainer>
               <ExtField
                 type="string"
@@ -279,10 +279,10 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                 filedToCheck={filedToCheckFallHardPgm}
               />
             </BoxContainer>
-          </Col>
+          </EtsBootstrap.Col>
           {
             state.selectedInspect.can_have_container ? (
-              <Col md={6} sm={12}>
+              <EtsBootstrap.Col md={6} sm={12}>
                 <ContainerBlock
                   selectedInspectPgmBase={state.selectedInspect}
                   onChangeData={onChangeData}
@@ -291,18 +291,18 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
 
                   page={props.loadingPage}
                 />
-              </Col>
+              </EtsBootstrap.Col>
             )
             : (
               <DivNone />
             )
           }
-          <Col md={6} sm={12}>
-            <Row>
+          <EtsBootstrap.Col md={6} sm={12}>
+            <EtsBootstrap.Row>
               { (props.type === INSPECT_PGM_BASE_TYPE_FORM.closed && state.selectedInspect.data.photos_of_supporting_documents.length)
                 || props.type === INSPECT_PGM_BASE_TYPE_FORM.list
                 ? (
-                  <Col md={6}>
+                  <EtsBootstrap.Col md={6}>
                     <FileField
                       id="file"
                       label="Фотографии подтверждающих документов"
@@ -312,7 +312,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                       disabled={!isPermittedChangeListParams}
                       boundKeys="photos_of_supporting_documents"
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                 ) : (
                   <DivNone />
                 )
@@ -321,7 +321,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                 (props.type === INSPECT_PGM_BASE_TYPE_FORM.closed && state.selectedInspect.data.photos_defect.length)
                 || props.type === INSPECT_PGM_BASE_TYPE_FORM.list
                 ? (
-                  <Col md={6}>
+                  <EtsBootstrap.Col md={6}>
                     <FileField
                       id="file"
                       label="Фотографии дефектов"
@@ -331,13 +331,13 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
                       disabled={!isPermittedChangeListParams}
                       boundKeys="photos_defect"
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                 ) : (
                   <DivNone />
                 )
               }
-            </Row>
-          </Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
           <ViewAddInspectEmployee
             type={props.type}
             isPermitted={props.isPermitted}
@@ -359,7 +359,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
               selectedInspectPgmBase={state.selectedInspect}
               loadingPage={props.loadingPage}
             />
-            <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
+            <EtsBootstrap.Button onClick={closeWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import * as Col from 'react-bootstrap/lib/Col';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const ColStartDatePicker = styled(Col)`
+export const ColStartDatePicker = styled(EtsBootstrap.Col)`
   &&& {
     @media (min-width: 992px) {
       width: 49%;
@@ -10,7 +10,7 @@ export const ColStartDatePicker = styled(Col)`
     margin-bottom: 15px;
   }
 `;
-export const ColDividerDatePicker = styled(Col)`
+export const ColDividerDatePicker = styled(EtsBootstrap.Col)`
   &&& {
     visibility: hidden;
     text-align: center;

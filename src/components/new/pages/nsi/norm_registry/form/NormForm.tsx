@@ -1,8 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -106,13 +103,13 @@ const NormForm: React.FC<PropsNorm> = (props) => {
   const isPermittedHardcode = false;
 
   return (
-    <Modal id="modal-technical-operation" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
+    <EtsBootstrap.ModalContainer id="modal-technical-operation" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={3}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="name"
               type="string"
@@ -123,8 +120,8 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               disabled={!isPermittedHardcode}
               error={errors.name}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="elements_text"
               type="string"
@@ -135,8 +132,8 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               error={errors.elements_text}
               disabled={!isPermittedHardcode}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="season_id"
               type="select"
@@ -148,8 +145,8 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               error={errors.season_id}
               disabled={!isPermittedHardcode}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="Способ выполнения"
@@ -159,10 +156,10 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               error={errors.kind_task_names}
               disabled={!isPermittedHardcode}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="work_type_name"
               type="string"
@@ -173,9 +170,9 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               error={errors.work_type_name}
               disabled={!isPermittedHardcode}
             />
-          </Col>
+          </EtsBootstrap.Col>
 
-          <Col md={3}>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="conditions"
               type="string"
@@ -186,9 +183,9 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               error={errors.conditions}
               disabled={!isPermittedHardcode}
             />
-          </Col>
+          </EtsBootstrap.Col>
 
-          <Col md={3}>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="norm_period"
               type="string"
@@ -198,8 +195,8 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               boundKeys="norm_period"
               disabled={!isPermittedHardcode}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="check_types"
               label="Тип проверки"
@@ -211,10 +208,10 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               boundKeys="check_types"
               disabled={!isPermittedHardcode}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="objects_ids"
               type="select"
@@ -226,8 +223,8 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               boundKeys="objects_ids"
               disabled={!isPermittedHardcode}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               id="use_in_report"
               type="boolean"
@@ -237,10 +234,10 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               boundKeys="use_in_report"
               disabled={!isPermittedHardcode}
             />
-          </Col>
-        </Row>
-        <Row>
-        <Col md={3}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={3}>
           <ExtField
             id="car_func_types_ids"
             type="select"
@@ -252,8 +249,8 @@ const NormForm: React.FC<PropsNorm> = (props) => {
             boundKeys="car_func_types_ids"
             disabled={!isPermittedHardcode}
           />
-        </Col>
-        <Col md={3}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={3}>
           <ExtField
             id="sensor_type_ids"
             type="select"
@@ -265,21 +262,21 @@ const NormForm: React.FC<PropsNorm> = (props) => {
             boundKeys="sensor_type_ids"
             disabled={!isPermitted && false}
           />
-        </Col>
-        </Row>
+        </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
       {
         isPermitted || true // либо обновление, либо создание
           ? (
-            <Button id="save_norm" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+            <EtsBootstrap.Button id="save_norm" disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
           : (
             <DivNone />
           )
       }
-      </Modal.Footer>
-    </Modal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

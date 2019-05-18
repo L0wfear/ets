@@ -1,8 +1,6 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -23,6 +21,7 @@ import {
 } from './styled';
 import { routeTypesByTitle } from 'constants/route';
 import { addTime } from 'utils/dates';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 /**
  * Поля дат наряд-задания (плановые и фактические)
@@ -73,12 +72,12 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
 
     return (
       <>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <label>Время выполнения, планируемое:</label>
-          </Col>
-        </Row>
-        <Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
           <ColStartDatePicker md={5}>
             <ExtField
               id="plan-date-start"
@@ -106,17 +105,17 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
               boundKeys="plan_date_end"
             />
           </ColEndDatePicker>
-        </Row>
+        </EtsBootstrap.Row>
         {
           (DUTY_MISSION_IS_ASSIGNED || DUTY_MISSION_IS_COMPLETED)
             ? (
               <>
-                <Row>
-                  <Col md={12}>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={12}>
                     <label>Время выполнения, фактическое:</label>
-                  </Col>
-                </Row>
-                <Row>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
+                <EtsBootstrap.Row>
                   <ColStartDatePicker md={5}>
                     <ExtField
                       id="fact-date-start"
@@ -144,7 +143,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
                       boundKeys="fact_date_end"
                     />
                   </ColEndDatePicker>
-                </Row>
+                </EtsBootstrap.Row>
               </>
             )
             : (

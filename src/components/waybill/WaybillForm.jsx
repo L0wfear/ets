@@ -2,9 +2,6 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
 
 import ModalBody from 'components/ui/Modal';
@@ -61,10 +58,10 @@ import { compose } from 'recompose';
 import { BorderDash, DivNone } from 'global-styled/global-styled';
 import { isArray } from 'highcharts';
 import { getDefaultBill } from 'stores/WaybillsStore';
-import EtsModal from 'components/new/ui/modal/Modal';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -1289,24 +1286,24 @@ class WaybillForm extends UNSAFE_Form {
     }
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-waybill"
         show={this.props.show}
         onHide={this.props.onHide}
         bsSize="large"
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>
             {title} {IS_DRAFT && '(возможна корректировка)'}{' '}
             {(IS_CLOSED || IS_ACTIVE) && `№ ${state.number}`}
-          </Modal.Title>
-        </Modal.Header>
+          </EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
 
         <ModalBody>
-          <Row>
+          <EtsBootstrap.Row>
             <Div>
               {IS_CLOSED || IS_ACTIVE ? (
-                <Col md={2}>
+                <EtsBootstrap.Col md={2}>
                   <ExtField
                     id="activated-by-employee-name"
                     type="string"
@@ -1323,11 +1320,11 @@ class WaybillForm extends UNSAFE_Form {
                     hidden={!IS_CLOSED}
                     value={state.closed_by_employee_name}
                   />
-                </Col>
+                </EtsBootstrap.Col>
               ) : (
                 ''
               )}
-              <Col md={!IS_CLOSED && !IS_ACTIVE ? 6 : 4}>
+              <EtsBootstrap.Col md={!IS_CLOSED && !IS_ACTIVE ? 6 : 4}>
                 {STRUCTURE_FIELD_VIEW && (
                   <ExtField
                     id="waybill-structure-id"
@@ -1360,10 +1357,10 @@ class WaybillForm extends UNSAFE_Form {
                   onChange={this.handleChange}
                   boundKeys="accompanying_person_id"
                 />
-              </Col>
+              </EtsBootstrap.Col>
             </Div>
             <Div hidden={!(IS_CREATING || IS_DRAFT)}>
-              <Col md={3}>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   id="plan-departure-date"
                   type="date"
@@ -1374,10 +1371,10 @@ class WaybillForm extends UNSAFE_Form {
                   boundKeys="plan_departure_date"
                   disabled={!isPermittedByKey.update}
                 />
-              </Col>
+              </EtsBootstrap.Col>
             </Div>
             <Div hidden={!(IS_CREATING || IS_DRAFT)}>
-              <Col md={3}>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   id="plan-arrival-date"
                   type="date"
@@ -1389,9 +1386,9 @@ class WaybillForm extends UNSAFE_Form {
                   boundKeys="plan_arrival_date"
                   disabled={!isPermittedByKey.update}
                 />
-              </Col>
+              </EtsBootstrap.Col>
             </Div>
-            <Col md={6}>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 id="work_mode_id"
                 type="select"
@@ -1405,9 +1402,9 @@ class WaybillForm extends UNSAFE_Form {
                 onChange={this.handleChange}
                 boundKeys="work_mode_id"
               />
-            </Col>
+            </EtsBootstrap.Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-              <Col md={3}>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   id="plan-departure-date"
                   type="date"
@@ -1430,8 +1427,8 @@ class WaybillForm extends UNSAFE_Form {
                   onChange={this.handleChange}
                   boundKeys="fact_departure_date"
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   id="plan-arrival-date"
                   type="date"
@@ -1454,12 +1451,12 @@ class WaybillForm extends UNSAFE_Form {
                   onChange={this.handleChange}
                   boundKeys="fact_arrival_date"
                 />
-              </Col>
+              </EtsBootstrap.Col>
             </Div>
-          </Row>
+          </EtsBootstrap.Row>
           <br />
-          <Row>
-            <Col md={4}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="car-id"
                 type="select"
@@ -1491,8 +1488,8 @@ class WaybillForm extends UNSAFE_Form {
                     : 'Н/Д'
                 }
               />
-            </Col>
-            <Col md={4}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="trailer-id"
                 type="select"
@@ -1524,17 +1521,17 @@ class WaybillForm extends UNSAFE_Form {
                     : 'Н/Д'
                 }
               />
-            </Col>
-            <Col md={IS_ACTIVE || IS_CLOSED ? 7 : 12}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 7 : 12}>
               <BsnoStatus
                 okStatus={IS_CREATING || IS_DRAFT}
                 is_bnso_broken={state.is_bnso_broken}
                 gps_code={gps_code}
                 handleChange={this.handleChange}
               />
-            </Col>
+            </EtsBootstrap.Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-              <Col md={5}>
+              <EtsBootstrap.Col md={5}>
                 <ExtField
                   id="distance-by-glonass"
                   type="string"
@@ -1548,9 +1545,9 @@ class WaybillForm extends UNSAFE_Form {
                   isLoading={loadingFields.distance}
                   disabled
                 />
-              </Col>
+              </EtsBootstrap.Col>
             </Div>
-            <Col md={IS_CREATING || IS_DRAFT ? 12 : 4}>
+            <EtsBootstrap.Col md={IS_CREATING || IS_DRAFT ? 12 : 4}>
               <ExtField
                 id="driver-id"
                 type="select"
@@ -1579,8 +1576,8 @@ class WaybillForm extends UNSAFE_Form {
                   true,
                 )}
               />
-            </Col>
-            <Col md={4}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="work_mode_id"
                 type="string"
@@ -1589,11 +1586,11 @@ class WaybillForm extends UNSAFE_Form {
                 hidden={IS_CREATING || IS_DRAFT}
                 value={state.work_mode_name}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           {state.car_id ? (
-            <Row>
-              <Col md={4}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={4}>
                 <ExtField
                   id="equipment_fuel"
                   type="select"
@@ -1605,10 +1602,10 @@ class WaybillForm extends UNSAFE_Form {
                   clearable={false}
                   modalKey={modalKey}
                 />
-              </Col>
+              </EtsBootstrap.Col>
               {state.equipment_fuel ? (
                 <React.Fragment>
-                  <Col md={4}>
+                  <EtsBootstrap.Col md={4}>
                     <ExtField
                       id="is_one_fuel_tank"
                       type="select"
@@ -1620,9 +1617,9 @@ class WaybillForm extends UNSAFE_Form {
                       clearable={false}
                       modalKey={modalKey}
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                   {!state.is_one_fuel_tank ? (
-                    <Col md={4}>
+                    <EtsBootstrap.Col md={4}>
                       <ExtField
                         type="string"
                         label="Общее топливо при выезде, л"
@@ -1632,7 +1629,7 @@ class WaybillForm extends UNSAFE_Form {
                         ).toFixed(3)}
                         disabled
                       />
-                    </Col>
+                    </EtsBootstrap.Col>
                   ) : (
                     <DivNone />
                   )}
@@ -1640,26 +1637,26 @@ class WaybillForm extends UNSAFE_Form {
               ) : (
                 <DivNone />
               )}
-            </Row>
+            </EtsBootstrap.Row>
           ) : (
             <DivNone />
           )}
           <Div hidden={!state.car_id}>
-            <Row>
-              <Col md={12}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <h3>Транспортное средство</h3>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <BorderDash
                   width={2}
                   borderStyle="dashed"
                   color="rgba(0, 0, 0, 0.5)">
-                  <Row>
-                    <Col md={12}>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={12}>
                       <Div hidden={!CAR_HAS_ODOMETER}>
-                        <Col md={4}>
+                        <EtsBootstrap.Col md={4}>
                           <h4>Одометр</h4>
                           <ExtField
                             id="odometr-start"
@@ -1697,10 +1694,10 @@ class WaybillForm extends UNSAFE_Form {
                             hidden={!(IS_ACTIVE || IS_CLOSED)}
                             disabled
                           />
-                        </Col>
+                        </EtsBootstrap.Col>
                       </Div>
                       <Div hidden={CAR_HAS_ODOMETER}>
-                        <Col md={4}>
+                        <EtsBootstrap.Col md={4}>
                           <h4>Счетчик моточасов</h4>
                           <ExtField
                             id="motohours-start"
@@ -1739,16 +1736,16 @@ class WaybillForm extends UNSAFE_Form {
                             hidden={!(IS_ACTIVE || IS_CLOSED)}
                             disabled
                           />
-                        </Col>
+                        </EtsBootstrap.Col>
                       </Div>
-                      <Col md={8}>
-                        <Row>
-                          <Col md={12}>
+                      <EtsBootstrap.Col md={8}>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={12}>
                             <h4>Топливо</h4>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={4}>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={4}>
                             <ExtField
                               id="fuel-type"
                               type="select"
@@ -1760,8 +1757,8 @@ class WaybillForm extends UNSAFE_Form {
                               value={state.fuel_type}
                               onChange={this.handleFuelTypeChange}
                             />
-                          </Col>
-                          <Col md={4}>
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
                             <ExtField
                               id="fuel-to-give"
                               type="number"
@@ -1776,8 +1773,8 @@ class WaybillForm extends UNSAFE_Form {
                               onChange={this.handleChange}
                               boundKeys="fuel_to_give"
                             />
-                          </Col>
-                          <Col md={4}>
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
                             <ExtField
                               id="fuel-given"
                               type="number"
@@ -1786,10 +1783,10 @@ class WaybillForm extends UNSAFE_Form {
                               value={state.fuel_given}
                               disabled
                             />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={4}>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={4}>
                             <ExtField
                               id="fuel_start"
                               type="number"
@@ -1804,8 +1801,8 @@ class WaybillForm extends UNSAFE_Form {
                               onChange={this.handleChange}
                               boundKeys="fuel_start"
                             />
-                          </Col>
-                          <Col md={4}>
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
                             {!(IS_DRAFT || IS_CREATING) ? (
                               <ExtField
                                 id="fuel-end"
@@ -1818,8 +1815,8 @@ class WaybillForm extends UNSAFE_Form {
                             ) : (
                               <DivNone />
                             )}
-                          </Col>
-                          <Col md={4}>
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={4}>
                             <ExtField
                               id="fact-fuel-end"
                               type="number"
@@ -1838,22 +1835,22 @@ class WaybillForm extends UNSAFE_Form {
                                 state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
                               }
                             />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col md={8} mdOffset={4}>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={8} mdOffset={4}>
                             {IS_ACTIVE || IS_CLOSED ? (
                               'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
                             ) : (
                               <DivNone />
                             )}
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Col>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
                     <br />
-                    <Col md={12}>
-                      <Col md={12}>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
                           array={state.car_refill}
                           errors={get(
@@ -1871,11 +1868,11 @@ class WaybillForm extends UNSAFE_Form {
                           page={this.props.page}
                           path={this.props.path}
                         />
-                      </Col>
-                    </Col>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
                     <br />
-                    <Col md={12}>
-                      <Col md={12}>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={12}>
                         <Taxes
                           modalKey={modalKey}
                           hidden={
@@ -1904,28 +1901,28 @@ class WaybillForm extends UNSAFE_Form {
                           }
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
                         />
-                      </Col>
-                    </Col>
-                  </Row>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
                 </BorderDash>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
             {state.equipment_fuel ? (
               <>
-                <Row>
-                  <Col md={12}>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={12}>
                     <h3>Спецоборудование</h3>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={12}>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={12}>
                     <BorderDash
                       width={2}
                       borderStyle="dashed"
                       color="rgba(0, 0, 0, 0.5)">
-                      <Row>
-                        <Col md={12}>
-                          <Col md={4}>
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Col md={4}>
                             <h4>Счетчик моточасов оборудования</h4>
                             <ExtField
                               id="motohours-equip-start"
@@ -1964,16 +1961,16 @@ class WaybillForm extends UNSAFE_Form {
                               hidden={!(IS_ACTIVE || IS_CLOSED)}
                               disabled
                             />
-                          </Col>
+                          </EtsBootstrap.Col>
                           {!state.is_one_fuel_tank ? (
-                            <Col md={8}>
-                              <Row>
-                                <Col md={12}>
+                            <EtsBootstrap.Col md={8}>
+                              <EtsBootstrap.Row>
+                                <EtsBootstrap.Col md={12}>
                                   <h4> Топливо для оборудования</h4>
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={4}>
+                                </EtsBootstrap.Col>
+                              </EtsBootstrap.Row>
+                              <EtsBootstrap.Row>
+                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-fuel-type"
                                     type="select"
@@ -1988,8 +1985,8 @@ class WaybillForm extends UNSAFE_Form {
                                       this.handleEquipmentFuelTypeChange
                                     }
                                   />
-                                </Col>
-                                <Col md={4}>
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-fuel-to-give"
                                     type="number"
@@ -2004,8 +2001,8 @@ class WaybillForm extends UNSAFE_Form {
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_to_give"
                                   />
-                                </Col>
-                                <Col md={4}>
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-fuel-given"
                                     type="number"
@@ -2013,10 +2010,10 @@ class WaybillForm extends UNSAFE_Form {
                                     value={state.equipment_fuel_given}
                                     disabled
                                   />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={4}>
+                                </EtsBootstrap.Col>
+                              </EtsBootstrap.Row>
+                              <EtsBootstrap.Row>
+                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-fuel-start"
                                     type="number"
@@ -2029,8 +2026,8 @@ class WaybillForm extends UNSAFE_Form {
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_start"
                                   />
-                                </Col>
-                                <Col md={4}>
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
                                   {!(IS_DRAFT || IS_CREATING) ? (
                                     <ExtField
                                       id="equipment-fuel-end"
@@ -2042,8 +2039,8 @@ class WaybillForm extends UNSAFE_Form {
                                   ) : (
                                     <DivNone />
                                   )}
-                                </Col>
-                                <Col md={4}>
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={4}>
                                   <ExtField
                                     id="equipment-fact-fuel-end"
                                     type="number"
@@ -2060,26 +2057,26 @@ class WaybillForm extends UNSAFE_Form {
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fact_fuel_end"
                                   />
-                                </Col>
-                              </Row>
-                              <Row>
-                                <Col md={8} mdOffset={4}>
+                                </EtsBootstrap.Col>
+                              </EtsBootstrap.Row>
+                              <EtsBootstrap.Row>
+                                <EtsBootstrap.Col md={8} mdOffset={4}>
                                   {IS_ACTIVE || IS_CLOSED ? (
                                     'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
                                   ) : (
                                     <DivNone />
                                   )}
-                                </Col>
-                              </Row>
-                            </Col>
+                                </EtsBootstrap.Col>
+                              </EtsBootstrap.Row>
+                            </EtsBootstrap.Col>
                           ) : (
                             <DivNone />
                           )}
-                        </Col>
+                        </EtsBootstrap.Col>
                         <br />
                         {!state.is_one_fuel_tank ? (
-                          <Col md={12}>
-                            <Col md={12}>
+                          <EtsBootstrap.Col md={12}>
+                            <EtsBootstrap.Col md={12}>
                               <FieldWaybillCarRefill
                                 array={state.equipment_refill}
                                 errors={get(
@@ -2097,13 +2094,13 @@ class WaybillForm extends UNSAFE_Form {
                                 page={this.props.page}
                                 path={this.props.path}
                               />
-                            </Col>
-                          </Col>
+                            </EtsBootstrap.Col>
+                          </EtsBootstrap.Col>
                         ) : (
                           <DivNone />
                         )}
-                        <Col md={12}>
-                          <Col md={12}>
+                        <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Col md={12}>
                             <Taxes
                               modalKey={modalKey}
                               hidden={
@@ -2135,19 +2132,19 @@ class WaybillForm extends UNSAFE_Form {
                             <div className="error">
                               {errors.equipment_tax_data}
                             </div>
-                          </Col>
-                        </Col>
-                      </Row>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Col>
+                      </EtsBootstrap.Row>
                     </BorderDash>
-                  </Col>
-                </Row>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
               </>
             ) : (
               <DivNone />
             )}
           </Div>
-          <Row>
-            <Col md={8}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={8}>
               <MissionField
                 carsList={this.props.carsList}
                 state={state}
@@ -2162,8 +2159,8 @@ class WaybillForm extends UNSAFE_Form {
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
               />
-            </Col>
-            <Col md={4}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <h4>&nbsp;</h4>
               <ExtField
                 type="number"
@@ -2172,9 +2169,9 @@ class WaybillForm extends UNSAFE_Form {
                 hidden={taxeTotalHidden}
                 disabled
               />
-            </Col>
+            </EtsBootstrap.Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
-              <Col md={8}>
+              <EtsBootstrap.Col md={8}>
                 <ExtField
                   id="waybill-comment"
                   type="text"
@@ -2185,8 +2182,8 @@ class WaybillForm extends UNSAFE_Form {
                   boundKeys="comment"
                   error={errors.comment}
                 />
-              </Col>
-              <Col md={4}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={4}>
                 <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>
                   <ExtField
                     id="consumption"
@@ -2208,16 +2205,16 @@ class WaybillForm extends UNSAFE_Form {
                   boundKeys="failed_medical_stat_types"
                   error={errors.failed_medical_stat_types}
                 />
-              </Col>
+              </EtsBootstrap.Col>
             </Div>
-          </Row>
-          <Row>
-            <Col md={12}>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <h4>Простои на линии, ч.</h4>
-            </Col>
-            <Row>
-              <Col md={8}>
-                <Col md={6}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={8}>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="downtime-hours-work"
                     type="string"
@@ -2228,8 +2225,8 @@ class WaybillForm extends UNSAFE_Form {
                     boundKeys="downtime_hours_work"
                     error={errors.downtime_hours_work}
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="downtime-hours-duty"
                     type="string"
@@ -2240,12 +2237,12 @@ class WaybillForm extends UNSAFE_Form {
                     boundKeys="downtime_hours_duty"
                     error={errors.downtime_hours_duty}
                   />
-                </Col>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={8}>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={8}>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="downtime-hours-dinner"
                     type="string"
@@ -2256,8 +2253,8 @@ class WaybillForm extends UNSAFE_Form {
                     boundKeys="downtime_hours_dinner"
                     error={errors.downtime_hours_dinner}
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="downtime-hours-repair"
                     type="string"
@@ -2268,12 +2265,12 @@ class WaybillForm extends UNSAFE_Form {
                     boundKeys="downtime_hours_repair"
                     error={errors.downtime_hours_repair}
                   />
-                </Col>
-              </Col>
-            </Row>
-          </Row>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Row>
         </ModalBody>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <WaybillFooter
             isCreating={IS_CREATING}
             isDraft={IS_DRAFT}
@@ -2291,8 +2288,8 @@ class WaybillForm extends UNSAFE_Form {
             entity={entity}
             isPermittedByKey={isPermittedByKey}
           />
-        </Modal.Footer>
-      </EtsModal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

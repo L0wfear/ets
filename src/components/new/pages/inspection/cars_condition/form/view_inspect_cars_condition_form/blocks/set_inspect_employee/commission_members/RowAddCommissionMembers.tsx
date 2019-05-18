@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { Row, Col, Button } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { connect, HandleThunkActionCreator } from 'react-redux';
@@ -9,6 +8,7 @@ import useEmployeeOptions from './useEmployeeOptions';
 import { ReduxState } from 'redux-main/@types/state';
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import { DivNone } from 'global-styled/global-styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type RowAddCommissionMembersDispatchProps = {
   employeeEmployeeGetSetEmployee: HandleThunkActionCreator<typeof employeeEmployeeGetSetEmployee>;
@@ -65,8 +65,8 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
     return (
       props.isPermitted
         ? (
-          <Row>
-            <Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
                 value={selectedEmployee}
@@ -77,11 +77,11 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
                 legacy={false}
                 filterOption={filterOption}
               />
-            </Col>
-            <Col md={6}>
-              <Button block disabled={!selectedEmployee} onClick={handleClickAddCommissionEmployee}>Добавить представителя ГБУ</Button>
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
+              <EtsBootstrap.Button block disabled={!selectedEmployee} onClick={handleClickAddCommissionEmployee}>Добавить представителя ГБУ</EtsBootstrap.Button>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         )
         : (
           <DivNone />

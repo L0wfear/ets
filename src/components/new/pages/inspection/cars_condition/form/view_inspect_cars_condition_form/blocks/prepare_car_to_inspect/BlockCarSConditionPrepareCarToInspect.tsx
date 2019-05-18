@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { Button } from 'react-bootstrap';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarSConditionPrepareCarToInspectOwnProps = {
   onChange: any;
@@ -64,7 +64,7 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
     return (
       <BoxContainer>
         <h4>Подготовка ТС к проверке</h4>
-        <Button id="inspect_cars_conditions-prepare_plan" onClick={onClickMakePlan} >Внести план подготовки ТС</Button>
+        <EtsBootstrap.Button id="inspect_cars_conditions-prepare_plan" onClick={onClickMakePlan} >Внести план подготовки ТС</EtsBootstrap.Button>
         <ExtField
           id="order_issued_at"
           type="date"

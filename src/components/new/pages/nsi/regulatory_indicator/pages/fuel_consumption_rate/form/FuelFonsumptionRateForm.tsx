@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
@@ -103,20 +100,20 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
   );
 
   return (
-    <Modal
+    <EtsBootstrap.ModalContainer
       id="modal-fuel-rate"
       show
       onHide={props.hideWithoutChanges}
       backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>
           {!state.id ? 'Добавление' : 'Изменение'} нормы расхода топлива
-        </Modal.Title>
-      </Modal.Header>
+        </EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
 
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               id="order_date"
               modalKey={page}
@@ -225,17 +222,17 @@ const FuelRateForm: React.FC<PropsFuelRate> = (props) => {
               boundKeys="company_structure_id"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
-        <Button
+      <EtsBootstrap.ModalFooter>
+        <EtsBootstrap.Button
           disabled={!props.canSave || !isPermitted}
           onClick={props.defaultSubmit}>
           Сохранить
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </EtsBootstrap.Button>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

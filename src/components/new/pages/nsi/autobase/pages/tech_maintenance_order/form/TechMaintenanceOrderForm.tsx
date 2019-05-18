@@ -2,10 +2,7 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
 
@@ -115,13 +112,13 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
     const MEASURE_UNITS_RUN = this.makeOptionFromMeasureUnitRunList(this.props.measureUnitRunList);
 
     return (
-      <Modal id="modal-tech-maint-order" show onHide={this.props.hideWithoutChanges} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-tech-maint-order" show onHide={this.props.hideWithoutChanges} backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="tech_maintenance_type_id"
                 type="select"
@@ -248,21 +245,21 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
                 disabled={!isPermitted}
                 modalKey={path}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
         {
           isPermitted // либо обновление, либо создание
           ? (
-            <Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
           : (
             <DivNone />
           )
         }
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

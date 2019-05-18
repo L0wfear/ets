@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import Field from 'components/ui/Field';
@@ -46,30 +44,30 @@ class ODHReports extends Component {
           <div className="waybills-buttons" />
         </div>
 
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <div className="panel panel-default">
               <div className="panel-heading">Генерация отчетов</div>
               <div className="panel-body odh-generation">
-                <Row>
-                  <Col md={4}>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={4}>
                     <label>Период</label>
-                    <Row>
-                      <Col md={6}>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={6}>
                         <DatePicker
                           date={new Date()}
                           onChange={this.handleChange.bind(this, 'date_start')}
                         />
-                      </Col>
-                      <Col md={6}>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={6}>
                         <DatePicker
                           date={new Date()}
                           onChange={this.handleChange.bind(this, 'date_start')}
                         />
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={2}>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={2}>
                     <Field
                       type="select"
                       label="Типы ТС"
@@ -80,8 +78,8 @@ class ODHReports extends Component {
                         'responsible_person_id',
                       )}
                     />
-                  </Col>
-                  <Col md={2}>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={2}>
                     <Field
                       type="string"
                       label="Норма, ПМ"
@@ -91,8 +89,8 @@ class ODHReports extends Component {
                         'responsible_person_id',
                       )}
                     />
-                  </Col>
-                  <Col md={2}>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={2}>
                     <Field
                       type="string"
                       label="ТУ"
@@ -102,46 +100,52 @@ class ODHReports extends Component {
                         'responsible_person_id',
                       )}
                     />
-                  </Col>
-                  <Col md={2}>
-                    <Button bsStyle="primary">Запустить</Button>
-                  </Col>
-                </Row>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={2}>
+                    <EtsBootstrap.Button bsStyle="primary">
+                      Запустить
+                    </EtsBootstrap.Button>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
               </div>
             </div>
 
             <div className="panel panel-default">
               <div className="panel-heading">Фильтры</div>
               <div className="panel-body odh-filters">
-                <Row>
-                  <Col md={4}>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={4}>
                     <label>Период</label>
-                    <Row>
-                      <Col md={6}>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={6}>
                         <DatePicker
                           date={new Date()}
                           onChange={this.handleChange.bind(this, 'date_start')}
                         />
-                      </Col>
-                      <Col md={6}>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={6}>
                         <DatePicker
                           date={new Date()}
                           onChange={this.handleChange.bind(this, 'date_start')}
                         />
-                      </Col>
-                    </Row>
-                  </Col>
-                  <Col md={4}>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={4}>
                     <ButtonToolbar>
-                      <Button bsStyle="primary">Применить</Button>
-                      <Button bsStyle="default">Очистить</Button>
+                      <EtsBootstrap.Button bsStyle="primary">
+                        Применить
+                      </EtsBootstrap.Button>
+                      <EtsBootstrap.Button bsStyle="default">
+                        Очистить
+                      </EtsBootstrap.Button>
                     </ButtonToolbar>
-                  </Col>
-                </Row>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
               </div>
             </div>
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </EtsPageWrap>
     );
   }

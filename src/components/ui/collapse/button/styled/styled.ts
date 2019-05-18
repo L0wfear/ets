@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const GlyphiconCollapseButtonWrap = styled.div<{ isOpen: boolean }>`
   display: flex;
@@ -13,6 +13,6 @@ export const GlyphiconCollapseButtonWrap = styled.div<{ isOpen: boolean }>`
   }
 `;
 
-export const GlyphiconPointer = styled(Glyphicon)`
+export const GlyphiconPointer = styled(EtsBootstrap.Glyphicon)`
   cursor: pointer;
 `;

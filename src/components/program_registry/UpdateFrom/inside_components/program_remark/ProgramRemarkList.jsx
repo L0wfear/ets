@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as BootstrapButton from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
 import enhanceWithPermissions from 'components/util/RequirePermissions';
 import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
-import { ButtonCreate, ButtonDelete } from 'components/ui/buttons/CRUD';
+import { ButtonCreateNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
 
 import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
 import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
@@ -13,7 +13,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-const Button = enhanceWithPermissions(BootstrapButton);
+const Button = enhanceWithPermissions(EtsBootstrap.Button);
 
 export const ButtonChangeStatus = ({
   permissions,
@@ -216,7 +216,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     const { program_version_status } = this.props;
 
     const buttons = [
-      <ButtonDelete
+      <ButtonDeleteNew
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
@@ -224,7 +224,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           this.checkDisabledDelete()
           || program_version_status !== 'sent_on_review'
         }
-        permissions={['repair_program_version.review']}
+        permissions="repair_program_version.review"
       />,
       <ButtonChangeStatus
         buttonName={'Отклонено'}
@@ -244,11 +244,11 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
         }
         permissions={[`${entity}.update`]}
       />,
-      <ButtonCreate
+      <ButtonCreateNew
         buttonName={'Добавить'}
         key={3}
         onClick={this.createElement}
-        permissions={['repair_program_version.review']}
+        permissions="repair_program_version.review"
         disabled={program_version_status !== 'sent_on_review'}
       />,
     ];

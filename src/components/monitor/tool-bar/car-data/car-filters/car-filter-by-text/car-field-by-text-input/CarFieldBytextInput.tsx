@@ -2,7 +2,6 @@ import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 
 import { connect } from 'react-redux';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { monitorPageChangeFilter } from 'components/monitor/redux-main/models/actions-monitor-page';
 import { carInfoSetGpsNumber } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -16,6 +15,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
   focusOn = (node) => {
@@ -40,7 +40,7 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
         {
           this.props.carFilterText ?
             <div className="input_text_action remove" onClick={this.props.resetCarFilterText}>
-              <Glyphicon glyph="remove" />
+              <EtsBootstrap.Glyphicon glyph="remove" />
             </div>
           :
           <DivNone />
@@ -48,7 +48,7 @@ class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, Stat
         {
           this.props.canFocusOnCar ?
             <div className="input_text_action show_tc" onClick={this.props.handleFocusOnCar}>
-              <Glyphicon glyph="screenshot" />
+              <EtsBootstrap.Glyphicon glyph="screenshot" />
               <span>Показать</span>
             </div>
           :

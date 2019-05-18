@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -8,6 +7,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import SelectTechnicalOperation from './select/SelectTechnicalOperation';
 import SelectMunicipalFacility from './select/SelectMunicipalFacility';
 import SelectRouteTypeAndFuncType from './select/norm/SelectRouteTypeAndFuncType';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelecteToMfRtFtStateProps = {
 };
@@ -35,17 +35,17 @@ const SelecteToMfRtFt: React.FC<SelecteToMfRtFtProps> = React.memo(
   (props) => {
     return (
       <ButtonContainer>
-        <Row>
-          <Col md={3}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <SelectTechnicalOperation registryKey={props.registryKey} />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <SelectMunicipalFacility registryKey={props.registryKey} />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <SelectRouteTypeAndFuncType registryKey={props.registryKey} />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ButtonContainer>
     );
   },

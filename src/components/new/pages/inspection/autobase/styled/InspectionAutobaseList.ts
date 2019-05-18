@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const InspectionListBlock = styled(Row)`
+export const InspectionListBlock = styled(EtsBootstrap.Row)`
 `;

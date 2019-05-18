@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   IPropsReportHeaderCommon,
@@ -40,8 +38,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = this.props;
 
     return (
-      <Row>
-        <Col mdOffset={3} md={6}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col mdOffset={3} md={6}>
           <DatePickerRange
             date_start_id="start_date"
             date_start_value={start_date}
@@ -52,16 +50,16 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
             onChange={this.props.handleChange}
           />
-        </Col>
-        <Col md={3}>
-          <Button
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={3}>
+          <EtsBootstrap.Button
             block
             bsSize="small"
             disabled={readOnly}
             onClick={this.handleSubmit}
-          >Сформировать отчёт</Button>
-        </Col>
-      </Row>
+          >Сформировать отчёт</EtsBootstrap.Button>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

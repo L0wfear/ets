@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsFilterButton = {
   active?: boolean;
@@ -16,9 +15,9 @@ class FilterButton extends React.PureComponent<PropsFilterButton, any> {
     } = this.props;
 
     return (
-      <Button bsSize="small" id="show-options-filter" disabled={disabled} active={active} onClick={this.props.onClick}>
-        <Glyphicon glyph="filter" />
-      </Button>
+      <EtsBootstrap.Button bsSize="small" id="show-options-filter" disabled={disabled} active={active} onClick={this.props.onClick}>
+        <EtsBootstrap.Glyphicon glyph="filter" />
+      </EtsBootstrap.Button>
     );
   }
 }

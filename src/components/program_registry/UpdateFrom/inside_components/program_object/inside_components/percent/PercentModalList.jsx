@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import moment from 'moment';
 import { isEmpty } from 'lodash';
 
@@ -8,9 +8,9 @@ import { connectToStores, staticProps } from 'utils/decorators';
 import UNSAFE_ElementsList from 'components/program_registry/UNSAFE_ElementsList';
 import ModalBody from 'components/ui/Modal';
 import {
-  ButtonCreate,
-  ButtonRead,
-  ButtonDelete,
+  ButtonCreateNew,
+  ButtonReadNew,
+  ButtonDeleteNew,
 } from 'components/ui/buttons/CRUD';
 
 import PercentModalTable from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
@@ -96,30 +96,30 @@ class PercentModalList extends UNSAFE_ElementsList {
     } = propsButton;
 
     buttons.push(
-      <ButtonCreate
+      <ButtonCreateNew
         buttonName={BCbuttonName}
         key={buttons.length}
         onClick={this.createElement}
-        permissions={[`${entity}.create`]}
+        permissions={`${entity}.create`}
         disabled={!isPermittedByStatus}
       />,
     );
     buttons.push(
-      <ButtonRead
+      <ButtonReadNew
         buttonName={BRbuttonName}
         key={buttons.length}
         onClick={this.showForm}
         disabled={this.checkDisabledRead() || !isPermittedByStatus}
-        permissions={[`${entity}.read`]}
+        permissions={`${entity}.read`}
       />,
     );
     buttons.push(
-      <ButtonDelete
+      <ButtonDeleteNew
         buttonName={BDbuttonName}
         key={buttons.length}
         onClick={this.removeElement}
         disabled={this.checkDisabledDelete() || !isPermittedByStatus}
-        permissions={[`${entity}.delete`]}
+        permissions={`${entity}.delete`}
       />,
     );
 
@@ -174,21 +174,25 @@ class PercentModalList extends UNSAFE_ElementsList {
 
   render() {
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-percent-list"
         show={this.props.show}
         onHide={this.props.onHide}
         bsSize="lg"
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{'Проставление процента выполнения работ'}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>
+            {'Проставление процента выполнения работ'}
+          </EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         {super.render()}
         <ModalBody />
-        <Modal.Footer>
-          <Button onClick={this.props.onHide}>Закрыть</Button>
-        </Modal.Footer>
-      </Modal>
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button onClick={this.props.onHide}>
+            Закрыть
+          </EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

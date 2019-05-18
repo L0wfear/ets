@@ -1,8 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
@@ -65,31 +62,31 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
 
   render() {
     return (
-      <Modal id="modal-column-assignment" show onHide={this.props.hideColumnAssignmentMissionTemplate}>
-        <Modal.Header closeButton>
-          <Modal.Title>Прикрепление заданий к ПЛ</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-column-assignment" show onHide={this.props.hideColumnAssignmentMissionTemplate}>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Прикрепление заданий к ПЛ</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBody>
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <label>Транспортное средство</label>
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           {
             Object.values(this.props.missions).map(({ id, car_ids }) => (
               <div key={id}>
                 {
                   car_ids.map((car_id, index) => (
-                    <Row key={car_id}>
-                      <Col md={6}>
+                    <EtsBootstrap.Row key={car_id}>
+                      <EtsBootstrap.Col md={6}>
                         <ExtField
                           id={`car-number-${index}`}
                           type="string"
                           value={makeCarOptionLabel(this.props.carsList.find(({ asuods_id }) => asuods_id === car_id))}
                           readOnly
                         />
-                      </Col>
-                      <Col md={6}>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={6}>
                         <ExtField
                           id={`assign-to-waybill-${index}`}
                           type="select"
@@ -99,25 +96,25 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
                           onChange={this.handleChange}
                           boundKeys={[id, car_id]}
                         />
-                      </Col>
-                    </Row>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
                   ))
                 }
               </div>
             ))
           }
         </ModalBody>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div className="pr-object-data">
             <div>
             {
-              this.state.showBackButton && <Button id="m-back" onClick={this.props.hideColumnAssignmentMissionTemplate}>Назад</Button>
+              this.state.showBackButton && <EtsBootstrap.Button id="m-back" onClick={this.props.hideColumnAssignmentMissionTemplate}>Назад</EtsBootstrap.Button>
             }
             </div>
-            <Button id="m-submit" onClick={this.handleSubmit}>Сохранить</Button>
+            <EtsBootstrap.Button id="m-submit" onClick={this.handleSubmit}>Сохранить</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

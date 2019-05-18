@@ -12,7 +12,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { Row, Col } from 'react-bootstrap';
+
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { get } from 'lodash';
 import { getRegistryState } from 'redux-main/reducers/selectors';
@@ -20,6 +20,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { hasMotohours } from 'utils/functions';
 import { CarWrap } from '../../../@types/CarForm';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type TechMaintenanceListStateProps = {
   arrayExtra: OneRegistryData['list']['data']['arrayExtra'];
@@ -62,26 +63,26 @@ const TechMaintenanceList: React.FC<TechMaintenanceListProps> = (props) => {
 
   return (
     <>
-      <Row>
-        <Col md={12}>
-          <Col md={6}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={12}>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label={selectedCarHasMotohours ? 'Срок по пробегу, м/ч:' : 'Срок до ТО по пробегу, км:'}
               readOnly
               value={get(arrayExtra, 'car_interval_probeg', '') || 'Не указано'}
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Срок по времени, дней:"
               readOnly
               value={get(arrayExtra, 'car_interval_time', '') || 'Не указано'}
             />
-          </Col>
-        </Col>
-      </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
       <Registry registryKey={registryKey} />
       <TechMaintenanceFormLazy registryKey={registryKey} selectedCarData={selectedCarData} />
     </>

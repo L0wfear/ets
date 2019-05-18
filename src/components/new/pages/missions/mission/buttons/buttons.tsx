@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
@@ -11,11 +11,11 @@ export const PermittedMissionFormLazy = withRequirePermissionsNew({
 
 export const ButtonCreateMission = withRequirePermissionsNew({
   permissions: 'mission.create',
-})(Button);
+})(EtsBootstrap.Button);
 
 export const ButtenUpdateMission = withRequirePermissionsNew({
   permissions: 'mission.update',
-})(Button);
+})(EtsBootstrap.Button);
 
 export const LinkToOpenMissionInfoForm = withRequirePermissionsNew({
   permissions: 'mission.read',

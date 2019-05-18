@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { omit } from 'lodash';
 
 import { ColorForTable } from 'components/reports/operational/route_odh_coverage/styled';
@@ -68,9 +66,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       .map((t) => ({ value: t.id, label: t.name }));
 
     return (
-      <Row className="headerRow">
+      <EtsBootstrap.Row className="headerRow">
         <ColorForTable />
-        <Col lg={10} md={9}>
+        <EtsBootstrap.Col lg={10} md={9}>
           <ExtField
             type="select"
             label="Технологическая операция"
@@ -81,13 +79,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             boundKeys={'technical_operations_ids'}
             disabled={readOnly}
           />
-        </Col>
-        <Col lg={2} md={3} style={{ marginTop: 25 }}>
-          <Button block onClick={this.handleSubmit} disabled={readOnly}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col lg={2} md={3} style={{ marginTop: 25 }}>
+          <EtsBootstrap.Button block onClick={this.handleSubmit} disabled={readOnly}>
             Сформировать отчет
-          </Button>
-        </Col>
-      </Row>
+          </EtsBootstrap.Button>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

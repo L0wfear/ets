@@ -1,7 +1,8 @@
 import * as React from 'react';
 import useForm from 'components/new/utils/context/form/useFormData';
-import { Modal } from 'react-bootstrap';
+
 import ButtonBlock from './button_block/ButtonBlock';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type DefaultModalFooterProps = {
   formDataKey: string;
@@ -14,13 +15,13 @@ const DefaultModalFooter: React.FC<DefaultModalFooterProps> = React.memo(
     return React.useMemo(
       () => {
         return (
-          <Modal.Footer>
+          <EtsBootstrap.ModalFooter>
             {
               formDataFooterValue.buttons.map((_: any, index) => (
                 <ButtonBlock key={index + 1} indexBlock={index} formDataKey={props.formDataKey} />
               ))
             }
-          </Modal.Footer>
+          </EtsBootstrap.ModalFooter>
         );
       },
       [formDataFooterValue.buttons, props.formDataKey],

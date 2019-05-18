@@ -1,6 +1,6 @@
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 
 export const ButtonUpdateMainCarpool = withRequirePermissionsNew({
   permissions: 'carpool.update',
-})(Button);
+})(EtsBootstrap.Button);

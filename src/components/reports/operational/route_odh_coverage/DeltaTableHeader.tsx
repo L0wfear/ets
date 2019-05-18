@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 interface IPropsDeltaTableHeader {
   tooltip?: string;
@@ -22,7 +22,7 @@ const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) =
         overlay={popover}
         placement="left"
       >
-        <Glyphicon
+        <EtsBootstrap.Glyphicon
           glyph="info-sign"
         />
       </OverlayTrigger>

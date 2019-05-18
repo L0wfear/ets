@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import moment from 'moment';
 import _ from 'lodash';
 import cx from 'classnames';
@@ -890,9 +889,11 @@ export default class DataTable extends React.Component {
                 />
               )}
               {refreshable && (
-                <Button bsSize="small" onClick={this.props.onRefresh}>
-                  <Glyphicon glyph="refresh" />
-                </Button>
+                <EtsBootstrap.Button
+                  bsSize="small"
+                  onClick={this.props.onRefresh}>
+                  <EtsBootstrap.Glyphicon glyph="refresh" />
+                </EtsBootstrap.Button>
               )}
               {!noCustomButton && this.props.children}
             </div>

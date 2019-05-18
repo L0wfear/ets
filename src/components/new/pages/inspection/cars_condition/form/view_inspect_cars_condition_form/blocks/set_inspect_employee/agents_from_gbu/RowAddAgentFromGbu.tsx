@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { Row, Col, Button } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone, FooterEnd } from 'global-styled/global-styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
@@ -48,27 +48,27 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
 
     return (
       <div>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             {
               props.isPermitted
                 ? (
                   <FooterEnd>
-                    <Button disabled={Boolean(newAgent)} onClick={handleClickAddTemplateAgent}>Добавить проверяющего</Button>
+                    <EtsBootstrap.Button disabled={Boolean(newAgent)} onClick={handleClickAddTemplateAgent}>Добавить проверяющего</EtsBootstrap.Button>
                   </FooterEnd>
                 )
                 : (
                   <DivNone />
                 )
             }
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         {
           newAgent && props.isPermitted
             ? (
               <div>
-                <Row>
-                  <Col md={12}>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={12}>
                     <ExtField
                       type="string"
                       label="Должность"
@@ -87,13 +87,13 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                     />
                     <br />
                     <FooterEnd>
-                      <Button
+                      <EtsBootstrap.Button
                         disabled={!newAgent.fio || !newAgent.position}
                         onClick={handleClickAddAgentFromGbu}
-                      >Сохранить</Button>
+                      >Сохранить</EtsBootstrap.Button>
                     </FooterEnd>
-                  </Col>
-                </Row>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
               </div>
             )
             : (

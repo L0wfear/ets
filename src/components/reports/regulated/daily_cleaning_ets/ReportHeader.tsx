@@ -1,7 +1,5 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { omit, uniqBy } from 'lodash';
 
 import {
@@ -107,8 +105,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <>
-        <Row className="report-page__header">
-          <Col md={3}>
+        <EtsBootstrap.Row className="report-page__header">
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Объекты"
@@ -119,8 +117,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               clearable={false}
               disabled={readOnly}
             />
-          </Col>
-          <Col md={2}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={2}>
             <ExtField type="select"
               label="Элемент"
               options={GEOZONE_ELEMENTS[geozone_type]}
@@ -130,8 +128,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               boundKeys="element_type"
               clearable={false}
             />
-          </Col>
-          <Col md={4}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={4}>
             <label htmlFor=" ">Период формирования</label>
             <DatePickerRange
               date_start_id="date_start"
@@ -142,8 +140,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               disabled={readOnly}
               onChange={this.props.handleChange}
             />
-          </Col>
-          <Col md={3} className={'vehicle-types-container'}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3} className={'vehicle-types-container'}>
             <ExtField
               type="select"
               label="Типы ТС"
@@ -154,18 +152,18 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               boundKeys="car_func_types_ids"
               disabled={readOnly}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3} mdOffset={9}>
-            <Button
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3} mdOffset={9}>
+            <EtsBootstrap.Button
               block
               bsSize="small"
               onClick={this.handleSubmit}
               disabled={readOnly}
-            >Сформировать отчет</Button>
-          </Col>
-        </Row>
+            >Сформировать отчет</EtsBootstrap.Button>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </>
     );
   }

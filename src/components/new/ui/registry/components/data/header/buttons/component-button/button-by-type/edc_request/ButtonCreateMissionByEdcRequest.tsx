@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -36,7 +35,7 @@ type ButtonCreateMissionByEdcRequestProps = (
 ) & WithSearchProps;
 
 class ButtonCreateMissionByEdcRequest extends React.PureComponent<ButtonCreateMissionByEdcRequestProps, {}> {
-  handleClick: React.MouseEventHandler<Button> = () => {
+  handleClick = () => {
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_create_mission,
@@ -50,9 +49,9 @@ class ButtonCreateMissionByEdcRequest extends React.PureComponent<ButtonCreateMi
     const can_create_mission = get(props.selectedRow, 'can_create_mission', false);
 
     return (
-      <Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_mission}>
-        <Glyphicon glyph="plus" /> Создать децентрализованное задание
-      </Button>
+      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_mission}>
+        <EtsBootstrap.Glyphicon glyph="plus" /> Создать децентрализованное задание
+      </EtsBootstrap.Button>
     );
   }
 }

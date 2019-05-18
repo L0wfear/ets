@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
 import useFormData from 'components/new/utils/context/form/useFormData';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ButtonCancelFormProps = {
   formDataKey: string;
@@ -11,7 +11,7 @@ const ButtonCancelForm: React.FC<ButtonCancelFormProps> = React.memo(
     const handleHide = useFormData.useFormDataSchemaHandleHide(props.formDataKey);
 
     return (
-      <Button onClick={handleHide}>Отменить</Button>
+      <EtsBootstrap.Button onClick={handleHide}>Отменить</EtsBootstrap.Button>
     );
   },
 );

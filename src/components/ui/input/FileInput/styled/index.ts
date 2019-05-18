@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const ButtonRemoveFile = styled(Button)`
+export const ButtonRemoveFile = styled(EtsBootstrap.Button)`
   &&& {
     float: initial;
     margin-right: 10px;

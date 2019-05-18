@@ -6,11 +6,12 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { Row, Col } from 'react-bootstrap';
+
 import SelectRouteType from './SelectRouteType';
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
 import SelectFuncType from './SelectFuncType';
 import { actionGetNormsByParams } from 'redux-main/reducers/modules/norm_registry/actions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelectRouteTypeAndFuncTypeStateProps = {
   municipalFacilityList: IStateSomeUniq['municipalFacilityList'];
@@ -91,20 +92,20 @@ class SelectRouteTypeAndFuncType extends React.PureComponent<SelectRouteTypeAndF
 
   render() {
     return (
-      <Row>
-        <Col md={6}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={6}>
           <SelectRouteType
             registryKey={this.props.registryKey}
             normList={this.state.normList}
           />
-        </Col>
-        <Col md={6}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
           <SelectFuncType
             registryKey={this.props.registryKey}
             normList={this.state.normList}
           />
-        </Col>
-      </Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

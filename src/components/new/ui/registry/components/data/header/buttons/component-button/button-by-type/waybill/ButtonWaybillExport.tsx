@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { DropdownWrap } from './styled';
 import { Dropdown, MenuItem } from 'react-bootstrap';
 import WaybillExportForm from './print_form';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsButtonWaybillExport = {
   registryKey: string;
@@ -33,7 +33,7 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
     <React.Fragment>
       <DropdownWrap key="print" id="dropdown-print" pullRight>
         <Dropdown.Toggle noCaret bsSize="small">
-          <Glyphicon glyph="download-alt" />
+          <EtsBootstrap.Glyphicon glyph="download-alt" />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <MenuItem eventKey="byDate" onSelect={showPrintForm}>

@@ -1,7 +1,4 @@
 import React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 
 import * as queryString from 'query-string';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
@@ -21,6 +18,7 @@ import {
   techInspection,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
 import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -193,31 +191,31 @@ class UserNotificationForm extends UNSAFE_Form {
     }
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         show={this.props.show}
         onHide={this.props.onHide}
         backdrop="static">
-        <Modal.Header closeButton>
+        <EtsBootstrap.ModalHeader closeButton>
           <div style={{ fontWeight: 'bold' }}>
             <span>{state.title}</span>
             <span style={{ marginRight: 10 }} className="pull-right">
               <DateFormatter date={state.created_at} />
             </span>
           </div>
-        </Modal.Header>
+        </EtsBootstrap.ModalHeader>
         <ModalBody>
-          <Row>
-            <Col md={12}>{state.description}</Col>
-            <Col md={12} style={{ marginTop: 10 }}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>{state.description}</EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12} style={{ marginTop: 10 }}>
               <NotificationDesc
                 {...this.getDataForUserNotification(state.type_code, state)}
                 {...otherProps}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBody>
-        <Modal.Footer />
-      </Modal>
+        <EtsBootstrap.ModalFooter />
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

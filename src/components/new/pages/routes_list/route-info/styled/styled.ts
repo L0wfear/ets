@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Row } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const RouteInfoContainerDiv = styled(Row)`
+export const RouteInfoContainerDiv = styled(EtsBootstrap.Row)`
   margin: 10px -15px;
 `;
 

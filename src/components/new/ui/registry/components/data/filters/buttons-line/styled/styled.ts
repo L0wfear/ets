@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const EtsFiltersButtonsLine = styled.div`
   display: flex;
@@ -21,6 +21,6 @@ export const EtsFiltersCloseContainer = styled.div`
 
 export const EtsFilterActionButtonConteiner = styled.div``;
 
-export const EtsFilterActionButton = styled(Button)`
+export const EtsFilterActionButton = styled(EtsBootstrap.Button)`
   margin: 0 5px;
 `;

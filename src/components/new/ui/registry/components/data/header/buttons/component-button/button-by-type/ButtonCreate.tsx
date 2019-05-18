@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -43,9 +42,9 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   );
 
   return (
-    <Button id="open-create-form" bsSize="small" onClick={handleClick}>
-      <Glyphicon glyph="plus" /> Создать
-    </Button>
+    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
+      <EtsBootstrap.Glyphicon glyph="plus" /> Создать
+    </EtsBootstrap.Button>
   );
 };
 

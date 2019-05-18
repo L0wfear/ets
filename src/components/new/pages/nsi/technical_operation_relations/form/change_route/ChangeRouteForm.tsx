@@ -1,6 +1,5 @@
 import * as React from 'react';
-import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal, Row, Col } from 'react-bootstrap';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
   ButtonCreateRoute,
@@ -19,6 +18,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { isBoolean } from 'util';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ChangeRouteFormStateProps = {};
 type ChangeRouteFormDispatchProps = {
@@ -158,16 +158,16 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
 
   return (
     <React.Fragment>
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-technical-operation"
         show
         onHide={props.handleHide}
         bsSize="large"
         backdrop="static"
       >
-          <Modal.Header closeButton>
-            <Modal.Title>Маршруты</Modal.Title>
-          </Modal.Header>
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>Маршруты</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
           <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
             <ChangeRouteTable
               data={element.routes}
@@ -183,8 +183,8 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
                 Удалить маршрут
               </ButtonDeleteRoute>
             </ChangeRouteTable>
-            <Row>
-              <Col md={3} mdOffset={9}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={3} mdOffset={9}>
                 <ButtonUpdateRoute
                   block
                   id="change-route"
@@ -193,10 +193,10 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
                   onClick={handleChangeRoute}>
                   Изменить
                 </ButtonUpdateRoute>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </ModalBodyPreloader>
-        </EtsModal>
+        </EtsBootstrap.ModalContainer>
         <RouteFormWrap
           element={routeElement}
           handleHide={onRouteFormHide}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { bindActionCreators } from 'redux';
@@ -36,7 +35,7 @@ const OrderTableChilrend: React.FC<any> = (props) => (
       {'Создать наряд-задание по шаблону'}
     </ButtonCheckPermission>
     <span style={marginLeft}>
-      <DropdownButton
+      <EtsBootstrap.DropdownButton
         disabled={props.disabledButtonsMenu}
         onSelect={props.selectDownload}
         pullRight
@@ -46,7 +45,7 @@ const OrderTableChilrend: React.FC<any> = (props) => (
         <EtsBootstrap.MenuItem eventKey={TypeDownload.new}>
           Расшифровка централизованного задания
         </EtsBootstrap.MenuItem>
-      </DropdownButton>
+      </EtsBootstrap.DropdownButton>
     </span>
   </>
 );

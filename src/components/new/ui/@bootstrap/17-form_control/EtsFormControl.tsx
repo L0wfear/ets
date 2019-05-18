@@ -4,7 +4,7 @@ import * as FormControl from 'react-bootstrap/lib/FormControl';
 
 export const FormControlStyled = styled(FormControl)``;
 
-type EtsFormControlProps = any;
+export type EtsFormControlProps = any;
 
 const EtsFormControl: React.FC<EtsFormControlProps> = React.memo(
   (props) => {

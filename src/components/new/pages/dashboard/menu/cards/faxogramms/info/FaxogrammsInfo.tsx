@@ -128,10 +128,15 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           )
         }
         <RightButtonBlockContainer needMarginBottom>
-          <EtsBootstrap.DropdownButton id="save-faxogramm" onSelect={this.seclectDownload} title={<EtsBootstrap.Glyphicon glyph="download-alt" />} pullRight>
-            <EtsBootstrap.MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
-            <EtsBootstrap.MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
-          </EtsBootstrap.DropdownButton>
+          <EtsBootstrap.Dropdown
+            id="save-faxogramm"
+            toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
+          >
+            <EtsBootstrap.DropdownMenu pullRight>
+              <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={this.seclectDownload}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
+              <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={this.seclectDownload}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
+            </EtsBootstrap.DropdownMenu>
+          </EtsBootstrap.Dropdown>
           <ButtonReadOrder onClick={this.showPDFViewModal}><EtsBootstrap.Glyphicon glyph="info-sign" /></ButtonReadOrder>
           <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
             <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>

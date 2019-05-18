@@ -4,7 +4,7 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 
 export const ModalTitleStyled = styled(Modal.Title)``;
 
-type EtsModalTitleProps = any;
+export type EtsModalTitleProps = any;
 
 const EtsModalTitle: React.FC<EtsModalTitleProps> = React.memo(
   (props) => {

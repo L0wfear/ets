@@ -1,15 +1,59 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import styled, { css } from 'styled-components';
 
-export const DropdownMenuStyled = styled(Dropdown.Menu)``;
+const pullRightCss = css`
+  right: 0;
+  left: auto;
+`;
 
-type EtsDropdownMenuProps = any;
+const dropupCss = css`
+  top: auto;
+  bottom: 100%;
+  margin-bottom: 2px;
+`;
+
+const EtsDropdownMenuContainer = styled.ul`
+  position: absolute;
+  z-index: 1000;
+
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  font-size: 14px;
+  text-align: left;
+  display: block;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+
+  ${({ pullRight }) => (
+    pullRight && pullRightCss
+  )}
+
+  ${({ dropup }) => (
+    dropup && dropupCss
+  )}
+`;
+
+type EtsDropdownMenuProps = {
+  pullRight?: boolean;
+  dropup?: boolean;
+};
 
 const EtsDropdownMenu: React.FC<EtsDropdownMenuProps> = React.memo(
   (props) => {
     return (
-      <DropdownMenuStyled {...props} />
+      <EtsDropdownMenuContainer {...props} />
     );
   },
 );

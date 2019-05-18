@@ -2,13 +2,11 @@ import { createGlobalStyle } from 'styled-components';
 import {
   GlobalModalFooterCss,
   GlobalModalZIndexStyle,
-  GlobalDropupCss,
 } from './modal';
 
 const EtsGlobalStyle = createGlobalStyle`
   ${GlobalModalZIndexStyle}
   ${GlobalModalFooterCss}
-  ${GlobalDropupCss}
 
   .glyphicon.glyphicon-info-sign {
     position: inherit;

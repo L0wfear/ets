@@ -17,13 +17,13 @@ import { compose } from 'recompose';
 import { getStyleForLineMeasure } from 'components/monitor/layers/measure/feature-style';
 
 import {
-  ButtonContainer,
   ButtonDraw,
   OverlayInsideMeasureContainer,
   EtsOverlayMeasureContainer,
   EtsOverlayMeasureTitleContainer,
   EtsTriangleMeasure,
 } from 'components/monitor/layers/measure/styled/styled';
+import { ButtonContainer } from '../polygon_buffer/styled/styled';
 
 type PropsLayerParkingPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -283,12 +283,10 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
           ))
         }
         <ButtonContainer>
-          <EtsBootstrap.ButtonGroup vertical>
-            <ButtonDraw disabled={this.state.activeDraw || this.props.drawActiveAll} onClick={this.toggleMeasureActive} />
-            <EtsBootstrap.Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
-              <EtsBootstrap.Glyphicon glyph="remove" />
-            </EtsBootstrap.Button>
-          </EtsBootstrap.ButtonGroup>
+          <ButtonDraw disabled={this.state.activeDraw || this.props.drawActiveAll} onClick={this.toggleMeasureActive} />
+          <EtsBootstrap.Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
+            <EtsBootstrap.Glyphicon glyph="remove" />
+          </EtsBootstrap.Button>
         </ButtonContainer>
       </>
     );

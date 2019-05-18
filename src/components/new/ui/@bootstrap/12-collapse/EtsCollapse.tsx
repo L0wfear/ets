@@ -4,7 +4,7 @@ import * as Collapse from 'react-bootstrap/lib/Collapse';
 
 export const CollapseStyled = styled(Collapse)``;
 
-type EtsCollapseProps = any;
+export type EtsCollapseProps = any;
 
 const EtsCollapse: React.FC<EtsCollapseProps> = React.memo(
   (props) => {

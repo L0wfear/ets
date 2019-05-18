@@ -8,7 +8,6 @@ import EtsRow from 'components/new/ui/@bootstrap/06-row/EtsRow';
 import EtsCol from 'components/new/ui/@bootstrap/07-col/EtsCol';
 import EtsModalBody from 'components/new/ui/@bootstrap/08-modal_body/EtsModalBody';
 import EtsDropdown from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
-import EtsDropdownToggle from 'components/new/ui/@bootstrap/10-dropdown_toggle/EtsDropdownToggle';
 import EtsDropdownMenu from 'components/new/ui/@bootstrap/11-dropdown_menu/EtsDropdownMenu';
 import EtsCollapse from 'components/new/ui/@bootstrap/12-collapse/EtsCollapse';
 import EtsNav from 'components/new/ui/@bootstrap/13-nav/EtsNav';
@@ -17,7 +16,6 @@ import EtsMenuItem from 'components/new/ui/@bootstrap/15-menu_item/EtsMenuItem';
 import EtsLabel from 'components/new/ui/@bootstrap/16-label/EtsLabel';
 import EtsFormControl from 'components/new/ui/@bootstrap/17-form_control/EtsFormControl';
 import EtsButtonGroup from 'components/new/ui/@bootstrap/18-button_group/EtsButtonGroup';
-import EtsDropdownButton from 'components/new/ui/@bootstrap/19-dropdown_button/EtsDropdownButton';
 import EtsPanel from 'components/new/ui/@bootstrap/20-panel/EtsPanel';
 import EtsPanelBody from 'components/new/ui/@bootstrap/21-panel_body/EtsPanelBody';
 import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/EtsPanelCollapse';
@@ -39,7 +37,6 @@ const EtsBootstrap = {
   Row: EtsRow,
   Col: EtsCol,
   Dropdown: EtsDropdown,
-  DropdownToggle: EtsDropdownToggle,
   DropdownMenu: EtsDropdownMenu,
   Collapse: EtsCollapse,
   Nav: EtsNav,
@@ -48,7 +45,6 @@ const EtsBootstrap = {
   Label: EtsLabel,
   FormControl: EtsFormControl,
   ButtonGroup: EtsButtonGroup,
-  DropdownButton: EtsDropdownButton,
   Panel: EtsPanel,
   PanelBody: EtsPanelBody,
   PanelCollapse: EtsPanelCollapse,

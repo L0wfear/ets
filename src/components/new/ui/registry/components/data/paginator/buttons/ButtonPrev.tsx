@@ -27,7 +27,7 @@ class ButtonPrev extends React.PureComponent<PropsButtonPrev, StatePaginator> {
   }
   render() {
     return (
-      <ButtonPaginatorWrap disabled={!this.props.show} onClick={this.handleButtonClick} className="pagination-control">
+      <ButtonPaginatorWrap themeName="paginator" disabled={!this.props.show} onClick={this.handleButtonClick} className="pagination-control">
         <EtsBootstrap.Glyphicon glyph="chevron-left" />
       </ButtonPaginatorWrap>
     );

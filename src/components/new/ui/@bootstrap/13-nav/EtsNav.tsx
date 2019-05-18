@@ -4,7 +4,7 @@ import * as Nav from 'react-bootstrap/lib/Nav';
 
 export const NavStyled = styled(Nav)``;
 
-type EtsNavProps = any;
+export type EtsNavProps = any;
 
 const EtsNav: React.FC<EtsNavProps> = React.memo(
   (props) => {

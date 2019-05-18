@@ -17,12 +17,15 @@ import './assets/main.scss';
 import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
 import './config/raven';
+import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
 const store = configureStore();
 
 ReactDom.render(
   <Provider store={store}>
-    <AppContainer />
+    <EtsThemeProvider>
+      <AppContainer />
+    </EtsThemeProvider>
   </Provider>,
   document.getElementById('container'),
 );

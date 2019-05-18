@@ -4,7 +4,7 @@ import * as Popover from 'react-bootstrap/lib/Popover';
 
 export const PopoverStyled = styled(Popover)``;
 
-type EtsPopoverProps = any;
+export type EtsPopoverProps = any;
 
 const EtsPopover: React.FC<EtsPopoverProps> = React.memo(
   (props) => {

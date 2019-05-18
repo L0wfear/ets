@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
-import { DropdownWrap } from './styled';
 import WaybillExportForm from './print_form';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -28,13 +27,17 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
     [],
   );
 
+  const toggleElement = <EtsBootstrap.Glyphicon glyph="download-alt" />;
+
   return (
     <React.Fragment>
-      <DropdownWrap key="print" id="dropdown-print" pullRight>
-        <EtsBootstrap.DropdownToggle noCaret bsSize="small">
-          <EtsBootstrap.Glyphicon glyph="download-alt" />
-        </EtsBootstrap.DropdownToggle>
-        <EtsBootstrap.DropdownMenu>
+      <EtsBootstrap.Dropdown
+        id="dropdown-print"
+
+        toggleElement={toggleElement}
+        toggleElementSize="small"
+      >
+        <EtsBootstrap.DropdownMenu pullRight>
           <EtsBootstrap.MenuItem eventKey="byDate" onSelect={showPrintForm}>
             Журнал путевых листов (ТМФ №8)
           </EtsBootstrap.MenuItem>
@@ -42,7 +45,7 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
             Отчет по выработке ТС
           </EtsBootstrap.MenuItem>
         </EtsBootstrap.DropdownMenu>
-      </DropdownWrap>
+      </EtsBootstrap.Dropdown>
       {
         typeExportForm && (
           <WaybillExportForm

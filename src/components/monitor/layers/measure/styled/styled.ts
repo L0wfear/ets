@@ -33,54 +33,10 @@ export const EtsTriangleMeasure = styled(EtsTriangleContainer)`
   border-top-color: ${({ active }: PropsOverlay) => !active ? 'rgba(255, 204, 51, 0.5)' : 'rgba(0, 0, 0, 0.55)'};
 `;
 
-export const ButtonContainer = styled.div`
-  pointer-events: all;
-  background-color: rgba(0, 0, 0, 0.75);;
-  box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
-  border-radius: 4px;
-  padding: 2px;
-
-  &&& {
-    button {
-      height: 25px;
-      width: 25px;
-      margin:0;
-    }
-  }
-
-  /* from ol-control */
-  button {
-    display: block;
-    margin: 1px;
-    padding: 0;
-    color: #fff;
-    font-size: 1.14em;
-    font-weight: 700;
-    text-decoration: none;
-    text-align: center;
-
-    line-height: .4em;
-    background-color: rgba(0,60,136,.5);
-    border: none;
-    border-radius: 2px;
-  }
-  /* end ol-control */
-
-  button.btn.btn-default {
-    background-color: inherit;
-    color: white;
-
-    :hover {
-      background-color: initial;
-      color: white;
-    }
-  }
-`;
-
 export const ButtonDraw = styled(EtsBootstrap.Button).attrs({ className: 'ruler' })`
   &.ruler {
     background-image: url(${ruler});
-    background-blend-mode: difference;
+    background-blend-mode: hard-light;;
     background-size: cover;
   }
 `;

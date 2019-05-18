@@ -82,16 +82,16 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
         <CardContainer>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>
-            <ButtonCreateWaybill onClick={setShowWaybillForm}>
+            <ButtonCreateWaybill whiteSpace="normal" onClick={setShowWaybillForm}>
               Создать путевой лист
             </ButtonCreateWaybill>
             <LinkToOrder to="/orders">
-              <EtsBootstrap.Button active>Исполнение централизованного задания</EtsBootstrap.Button>
+              <EtsBootstrap.Button whiteSpace="normal" active>Исполнение централизованного задания</EtsBootstrap.Button>
             </LinkToOrder>
-            <ButtonCreateMission onClick={setShowMissionForm}>
+            <ButtonCreateMission whiteSpace="normal" onClick={setShowMissionForm}>
               Создать децентрализованное задание
             </ButtonCreateMission>
-            <ButtonCreateDutyMission onClick={setShowDutyMissionForm}>
+            <ButtonCreateDutyMission whiteSpace="normal" onClick={setShowDutyMissionForm}>
               Создать наряд-задание
             </ButtonCreateDutyMission>
           </CardBodyContainer>

@@ -4,7 +4,7 @@ import * as NavDropdown from 'react-bootstrap/lib/NavDropdown';
 
 export const NavDropdownStyled = styled(NavDropdown)``;
 
-type EtsNavDropdownProps = any;
+export type EtsNavDropdownProps = any;
 
 const EtsNavDropdown: React.FC<EtsNavDropdownProps> = React.memo(
   (props) => {

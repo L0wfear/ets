@@ -18,37 +18,44 @@ import ButtonCheckPermission from 'components/ui/buttons/ButtonCheckPermission';
 
 const marginLeft = { marginLeft: 10 };
 
-const title: any = <EtsBootstrap.Glyphicon glyph="download-alt" />;
+const toggleElement = <EtsBootstrap.Glyphicon glyph="download-alt" />;
 
-const OrderTableChilrend: React.FC<any> = (props) => (
-  <>
-    <ButtonCheckPermission
-      permissions={permissions_mission_template.create}
-      disabled={props.disabledTemplateMission}
-      onClick={props.handleClickOnCMTemplate}>
-      {'Создать задание по шаблону'}
-    </ButtonCheckPermission>
-    <ButtonCheckPermission
-      permissions={dutyMissionTemplatePermissions.create}
-      disabled={props.disabledTemplateDutyMission}
-      onClick={props.handleClickOnCDMTemplate}>
-      {'Создать наряд-задание по шаблону'}
-    </ButtonCheckPermission>
-    <span style={marginLeft}>
-      <EtsBootstrap.DropdownButton
-        disabled={props.disabledButtonsMenu}
-        onSelect={props.selectDownload}
-        pullRight
-        title={title}
-        id="bg-nested-dropdown">
-        <EtsBootstrap.MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
-        <EtsBootstrap.MenuItem eventKey={TypeDownload.new}>
-          Расшифровка централизованного задания
-        </EtsBootstrap.MenuItem>
-      </EtsBootstrap.DropdownButton>
-    </span>
-  </>
-);
+const OrderTableChilrend: React.FC<any> = (props) => {
+  return (
+    <React.Fragment>
+      <ButtonCheckPermission
+        permissions={permissions_mission_template.create}
+        disabled={props.disabledTemplateMission}
+        onClick={props.handleClickOnCMTemplate}>
+        {'Создать задание по шаблону'}
+      </ButtonCheckPermission>
+      <ButtonCheckPermission
+        permissions={dutyMissionTemplatePermissions.create}
+        disabled={props.disabledTemplateDutyMission}
+        onClick={props.handleClickOnCDMTemplate}>
+        {'Создать наряд-задание по шаблону'}
+      </ButtonCheckPermission>
+      <span style={marginLeft}>
+        <EtsBootstrap.Dropdown
+          id="bg-nested-dropdown"
+          disabled={props.disabledButtonsMenu}
+
+          toggleElement={toggleElement}
+          toggleElementSize="small"
+        >
+          <EtsBootstrap.DropdownMenu pullRight>
+            <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={props.selectDownload}>
+              Скан-копия факсограммы
+            </EtsBootstrap.MenuItem>
+            <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={props.selectDownload}>
+              Расшифровка централизованного задания
+            </EtsBootstrap.MenuItem>
+          </EtsBootstrap.DropdownMenu>
+        </EtsBootstrap.Dropdown>
+      </span>
+    </React.Fragment>
+  );
+};
 
 const mapStateToProps = (state) => ({
   selectedElementOrder: state.order.selectedElementOrder,

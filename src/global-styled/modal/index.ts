@@ -27,9 +27,3 @@ export const GlobalModalFooterCss = css`
     }
   }
 `;
-
-export const GlobalDropupCss = css`
-  .dropup>button.btn {
-    border-radius: 3px;
-  }
-`;

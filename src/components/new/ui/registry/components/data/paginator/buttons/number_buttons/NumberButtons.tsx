@@ -36,6 +36,7 @@ const NumberButtons: React.FC<NumberButtonsProps> = React.memo(
     );
     return (
       <EtsBootstrap.Button
+        themeName="paginator"
         active={props.active}
         onClick={handleClick}
       >

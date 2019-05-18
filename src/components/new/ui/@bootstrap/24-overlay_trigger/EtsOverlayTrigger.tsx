@@ -4,7 +4,7 @@ import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 export const OverlayTriggerStyled = styled(OverlayTrigger)``;
 
-type EtsOverlayTriggerProps = any;
+export type EtsOverlayTriggerProps = any;
 
 const EtsOverlayTrigger: React.FC<EtsOverlayTriggerProps> = React.memo(
   (props) => {

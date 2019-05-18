@@ -1,10 +1,7 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
-
-import {
-  ButtonContainer,
-} from 'components/monitor/layers/measure/styled/styled';
+import { ButtonContainer } from 'components/monitor/layers/polygon_buffer/styled/styled';
 
 type PropsLayerZoom = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -27,14 +24,10 @@ class LayerZoom extends React.PureComponent<PropsLayerZoom, {}> {
 
   render() {
     return (
-      <div>
-        <ButtonContainer>
-          <EtsBootstrap.ButtonGroup vertical>
-            <EtsBootstrap.Button onClick={this.handleClickInc}>+</EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={this.handleClickDec}>-</EtsBootstrap.Button>
-          </EtsBootstrap.ButtonGroup>
-        </ButtonContainer>
-      </div>
+      <ButtonContainer>
+        <EtsBootstrap.Button onClick={this.handleClickInc}>+</EtsBootstrap.Button>
+        <EtsBootstrap.Button onClick={this.handleClickDec}>-</EtsBootstrap.Button>
+      </ButtonContainer>
     );
   }
 }

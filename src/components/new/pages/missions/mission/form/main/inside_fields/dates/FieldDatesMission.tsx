@@ -16,7 +16,6 @@ import {
   ColStartDatePickerWithDropdown,
   ColDividerDatePicker,
   ColEndDatePicker,
-  DropdownDateEnd,
   ExtFieldDateStartWrap,
   FieldDatesMissionContainer,
 } from './styled';
@@ -139,27 +138,25 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
               disabled={!isPermitted || this.props.disabled}
               onChange={this.handleChangeDateStart}
             />
-            <DropdownDateEnd
+            <EtsBootstrap.Dropdown
               id="date-end-dropdown"
               disabled={
                 !isPermitted
                 || !date_start
                 || this.props.disabled
               }
-              onSelect={this.handleChangeHoursDateEnd}
               title="Продолжительность задания, ч"
+              toggleElement={<EtsBootstrap.Glyphicon id="select-date_end" glyph="time" />}
+              toggleElementSize="input"
             >
-              <EtsBootstrap.DropdownToggle disabled={false}>
-                <EtsBootstrap.Glyphicon id="select-date_end" glyph="time" />
-              </EtsBootstrap.DropdownToggle>
-              <EtsBootstrap.DropdownMenu className="select-date-end-custom">
-                <EtsBootstrap.MenuItem eventKey={1}>1</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem eventKey={2}>2</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem eventKey={3}>3</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem eventKey={4}>4</EtsBootstrap.MenuItem>
-                <EtsBootstrap.MenuItem eventKey={5}>5</EtsBootstrap.MenuItem>
+              <EtsBootstrap.DropdownMenu>
+                <EtsBootstrap.MenuItem eventKey={1} onSelect={this.handleChangeHoursDateEnd}>1</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={2} onSelect={this.handleChangeHoursDateEnd}>2</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={3} onSelect={this.handleChangeHoursDateEnd}>3</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={4} onSelect={this.handleChangeHoursDateEnd}>4</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={5} onSelect={this.handleChangeHoursDateEnd}>5</EtsBootstrap.MenuItem>
               </EtsBootstrap.DropdownMenu>
-            </DropdownDateEnd>
+            </EtsBootstrap.Dropdown>
           </ColStartDatePickerWithDropdown>
           <ColDividerDatePicker md={2}>
             <div>—</div>

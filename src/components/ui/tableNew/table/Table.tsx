@@ -1,11 +1,11 @@
 import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
 import Thead from 'components/ui/tableNew/table/thead/Thead';
 import Tbody from 'components/ui/tableNew/table/tbody/Tbody';
 import Paginator from 'components/ui/new/paginator/Paginator';
 import { setStickyThead } from 'utils/stickyTableHeader';
 
 import { makeData, makeDataByPagination } from 'components/ui/tableNew/utils';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const PaginatorTsx: any = Paginator;
 
@@ -193,7 +193,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     return (
       <>
         <div className="custom-table-container">
-          <Table striped condensed className={'custom-data-table'}>
+          <EtsBootstrap.Table striped condensed className={'custom-data-table'}>
             <Thead
               tableMeta={[this.props.tableMeta]}
               handleClick={this.handleClickTh}
@@ -211,7 +211,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
               offset={pagination.offset * pagination.perPageCount}
               hasData={this.props.hasData}
             />
-          </Table>
+          </EtsBootstrap.Table>
         </div>
         <PaginatorTsx
           firstLastButtons

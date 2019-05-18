@@ -1,9 +1,9 @@
 import * as React from 'react';
-import * as Table from 'react-bootstrap/lib/Table';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import {
   EtsTheadTh,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const EtsTheadThL: any = EtsTheadTh;
 
@@ -71,7 +71,7 @@ class TablePrev extends React.Component<any, any> {
         </div>
         {
           !!bodyData.length &&
-          <Table {...tableProps} responsive>
+          <EtsBootstrap.Table {...tableProps} responsive>
             <thead>
               <tr>
                 {
@@ -103,7 +103,7 @@ class TablePrev extends React.Component<any, any> {
                 ))
               }
             </tbody>
-          </Table>
+          </EtsBootstrap.Table>
         }
         </div>
     );

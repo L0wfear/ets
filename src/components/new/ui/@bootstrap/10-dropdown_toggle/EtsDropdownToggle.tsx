@@ -4,7 +4,7 @@ import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 
 export const DropdownToggleStyled = styled(Dropdown.Toggle)``;
 
-type EtsDropdownToggleProps = any;
+export type EtsDropdownToggleProps = any;
 
 const EtsDropdownToggle: React.FC<EtsDropdownToggleProps> = React.memo(
   (props) => {

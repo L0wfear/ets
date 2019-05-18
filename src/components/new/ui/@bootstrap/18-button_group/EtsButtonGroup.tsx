@@ -4,7 +4,7 @@ import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 export const ButtonGroupStyled = styled(ButtonGroup)``;
 
-type EtsButtonGroupProps = any;
+export type EtsButtonGroupProps = any;
 
 const EtsButtonGroup: React.FC<EtsButtonGroupProps> = React.memo(
   (props) => {

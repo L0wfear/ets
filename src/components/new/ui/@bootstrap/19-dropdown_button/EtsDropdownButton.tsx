@@ -4,7 +4,7 @@ import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
 
 export const DropdownButtonStyled = styled(DropdownButton)``;
 
-type EtsDropdownButtonProps = any;
+export type EtsDropdownButtonProps = any;
 
 const EtsDropdownButton: React.FC<EtsDropdownButtonProps> = React.memo(
   (props) => {

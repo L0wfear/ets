@@ -4,7 +4,7 @@ import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 
 export const MenuItemStyled = styled(MenuItem)``;
 
-type EtsMenuItemProps = any;
+export type EtsMenuItemProps = any;
 
 const EtsMenuItem: React.FC<EtsMenuItemProps> = React.memo(
   (props) => {

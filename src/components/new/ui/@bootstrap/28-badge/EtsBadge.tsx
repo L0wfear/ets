@@ -4,7 +4,7 @@ import * as Badge from 'react-bootstrap/lib/Badge';
 
 export const BadgeStyled = styled(Badge)``;
 
-type EtsBadgeProps = any;
+export type EtsBadgeProps = any;
 
 const EtsBadge: React.FC<EtsBadgeProps> = React.memo(
   (props) => {

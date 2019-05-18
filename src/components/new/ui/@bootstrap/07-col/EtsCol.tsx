@@ -4,7 +4,7 @@ import * as Col from 'react-bootstrap/lib/Col';
 
 export const ColStyled = styled(Col)``;
 
-type EtsColProps = any;
+export type EtsColProps = any;
 
 const EtsCol: React.FC<EtsColProps> = React.memo(
   (props) => {

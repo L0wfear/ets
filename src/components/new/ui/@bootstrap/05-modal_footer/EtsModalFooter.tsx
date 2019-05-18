@@ -4,7 +4,7 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 
 export const ModalFooterStyled = styled(Modal.Footer)``;
 
-type EtsModalFooterProps = any;
+export type EtsModalFooterProps = any;
 
 const EtsModalFooter: React.FC<EtsModalFooterProps> = React.memo(
   (props) => {

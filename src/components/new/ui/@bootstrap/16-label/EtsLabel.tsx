@@ -4,7 +4,7 @@ import * as Label from 'react-bootstrap/lib/Label';
 
 export const LabelStyled = styled(Label)``;
 
-type EtsLabelProps = any;
+export type EtsLabelProps = any;
 
 const EtsLabel: React.FC<EtsLabelProps> = React.memo(
   (props) => {

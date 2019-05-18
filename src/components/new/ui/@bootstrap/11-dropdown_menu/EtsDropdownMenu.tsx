@@ -4,7 +4,7 @@ import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 
 export const DropdownMenuStyled = styled(Dropdown.Menu)``;
 
-type EtsDropdownMenuProps = any;
+export type EtsDropdownMenuProps = any;
 
 const EtsDropdownMenu: React.FC<EtsDropdownMenuProps> = React.memo(
   (props) => {

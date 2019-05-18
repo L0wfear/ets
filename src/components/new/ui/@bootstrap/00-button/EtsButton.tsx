@@ -4,7 +4,7 @@ import * as Button from 'react-bootstrap/lib/Button';
 
 export const ButtonStyled = styled(Button)``;
 
-type EtsButtonProps = any;
+export type EtsButtonProps = any;
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
   (props) => (

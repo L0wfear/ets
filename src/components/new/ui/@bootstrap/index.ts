@@ -18,6 +18,9 @@ import EtsLabel from 'components/new/ui/@bootstrap/16-label/EtsLabel';
 import EtsFormControl from 'components/new/ui/@bootstrap/17-form_control/EtsFormControl';
 import EtsButtonGroup from 'components/new/ui/@bootstrap/18-button_group/EtsButtonGroup';
 import EtsDropdownButton from 'components/new/ui/@bootstrap/19-dropdown_button/EtsDropdownButton';
+import EtsPanel from 'components/new/ui/@bootstrap/20-panel/EtsPanel';
+import EtsPanelBody from 'components/new/ui/@bootstrap/21-panel_body/EtsPanelBody';
+import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/EtsPanelCollapse';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -40,6 +43,9 @@ const EtsBootstrap = {
   FormControl: EtsFormControl,
   ButtonGroup: EtsButtonGroup,
   DropdownButton: EtsDropdownButton,
+  Panel: EtsPanel,
+  PanelBody: EtsPanelBody,
+  PanelCollapse: EtsPanelCollapse,
 };
 
 export default EtsBootstrap;

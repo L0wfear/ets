@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
 
 import { connect, DispatchProp } from 'react-redux';
 
@@ -11,6 +10,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import { OneRegistryData } from '../../../module/registry';
 import { DivNone } from 'global-styled/global-styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FiltersWrapStateProps = {
   isOpen: OneRegistryData['filter']['isOpen'];
@@ -57,11 +57,11 @@ class FiltersWrap extends React.PureComponent<FiltersWrapProps, StateFiltersWrap
       this.props.fields.length
        ? (
           <PanelWrap expanded={this.props.isOpen} onToggle={this.handleToggle}>
-            <Panel.Collapse>
+            <EtsBootstrap.PanelCollapse>
               <PanelBodyWrap>
                 <Filters registryKey={registryKey} wasFirstOpen={this.state.wasFirstOpen} />
               </PanelBodyWrap>
-            </Panel.Collapse>
+            </EtsBootstrap.PanelCollapse>
           </PanelWrap>
         )
         : (

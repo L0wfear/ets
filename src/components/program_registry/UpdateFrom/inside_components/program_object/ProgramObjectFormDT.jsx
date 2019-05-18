@@ -2,7 +2,6 @@ import React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as NavItem from 'react-bootstrap/lib/NavItem';
-import * as Panel from 'react-bootstrap/lib/Panel';
 
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
@@ -516,7 +515,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
-                <Panel>
+                <EtsBootstrap.Panel>
                   <EtsBootstrap.Col
                     md={12}
                     style={{ fontWeight: 600, marginBottom: 5 }}>
@@ -553,7 +552,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                       />
                     </EtsBootstrap.Col>
                   </div>
-                </Panel>
+                </EtsBootstrap.Panel>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Nav

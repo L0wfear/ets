@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as Panel from 'react-bootstrap/lib/Panel';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const EtsFilterCntainer = styled.form`
   margin: 10px 15px;
@@ -13,7 +13,7 @@ export const EtsFilterCntainer = styled.form`
   flex-direction: column;
 `;
 
-export const PanelWrap = styled(Panel)`
+export const PanelWrap = styled(EtsBootstrap.Panel)`
   &.panel-default {
     border-color: rgba(0, 0, 0, 0);
     margin: 0;
@@ -24,7 +24,7 @@ export const PanelWrap = styled(Panel)`
   }
 `;
 
-export const PanelBodyWrap = styled(Panel.Body)`
+export const PanelBodyWrap = styled(EtsBootstrap.PanelBody)`
   &.panel-body {
     padding: 0px;
   }

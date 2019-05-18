@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Panel from 'react-bootstrap/lib/Panel';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as moment from 'moment';
@@ -95,7 +94,7 @@ class HistoryOrderList extends React.Component<any, any> {
     return (
       <Div hidden={this.props.hidden}>
         <EtsBootstrap.Row>
-          <Panel>
+          <EtsBootstrap.Panel>
             <HistoryOrderListPanelTitleCol
               md={12}
               onClick={this.toggleHistoryTable}>
@@ -150,7 +149,7 @@ class HistoryOrderList extends React.Component<any, any> {
                 </div>
               </Div>
             </Div>
-          </Panel>
+          </EtsBootstrap.Panel>
         </EtsBootstrap.Row>
       </Div>
     );

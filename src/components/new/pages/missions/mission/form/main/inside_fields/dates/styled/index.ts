@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Dropdown } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -15,7 +14,7 @@ export const ColStartDatePicker = styled(EtsBootstrap.Col)`
   }
 `;
 
-export const DropdownDateEnd = styled(Dropdown)`
+export const DropdownDateEnd = styled(EtsBootstrap.Dropdown)`
   >button {
     height: 38px;
   }

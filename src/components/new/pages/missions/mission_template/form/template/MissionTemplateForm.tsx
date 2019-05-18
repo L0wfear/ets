@@ -25,7 +25,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
 
@@ -294,19 +294,19 @@ class MissionTemplateForm extends React.PureComponent<
             <DisplayFlexAlignCenterFooterForm>
               <BtnGroupWrapper>
                 <BtnPart>
-                  <Dropdown
+                  <EtsBootstrap.Dropdown
                     id="mission_template-print-dropdown"
                     dropup
                     onSelect={this.handlePrint}
                     disabled={!this.props.canSave}>
-                    <Dropdown.Toggle>
+                    <EtsBootstrap.DropdownToggle>
                       <EtsBootstrap.Glyphicon id="m-print" glyph="print" />
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
+                    </EtsBootstrap.DropdownToggle>
+                    <EtsBootstrap.DropdownMenu>
                       <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
                       <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                    </EtsBootstrap.DropdownMenu>
+                  </EtsBootstrap.Dropdown>
                 </BtnPart>
                 <BtnPart>
                   <EtsBootstrap.Button

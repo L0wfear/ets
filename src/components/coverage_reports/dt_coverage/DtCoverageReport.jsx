@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as BootstrapMenuItem from 'react-bootstrap/lib/MenuItem';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
 
@@ -112,20 +111,20 @@ class DtCoverageReport extends React.Component {
               />
             </div>
           </div>
-          <Dropdown id="dropdown-print" pullRight>
-            <Dropdown.Toggle noCaret bsSize="small">
+          <EtsBootstrap.Dropdown id="dropdown-print" pullRight>
+            <EtsBootstrap.DropdownToggle noCaret bsSize="small">
               <EtsBootstrap.Glyphicon
                 disabled={isExporting}
                 glyph={exportGlyph}
               />
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
+            </EtsBootstrap.DropdownToggle>
+            <EtsBootstrap.DropdownMenu>
               {/* <MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem> */}
               <MenuItem bindOnClick={2} onClick={this.showForm}>
                 Отчет за заданный период
               </MenuItem>
-            </Dropdown.Menu>
-          </Dropdown>
+            </EtsBootstrap.DropdownMenu>
+          </EtsBootstrap.Dropdown>
         </DtCoverageReportTable>
         <DtCoverageReportPrintForm
           showForm={this.state.showForm}

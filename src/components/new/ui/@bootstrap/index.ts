@@ -7,6 +7,10 @@ import EtsModalFooter from 'components/new/ui/@bootstrap/05-modal_footer/EtsModa
 import EtsRow from 'components/new/ui/@bootstrap/06-row/EtsRow';
 import EtsCol from 'components/new/ui/@bootstrap/07-col/EtsCol';
 import EtsModalBody from 'components/new/ui/@bootstrap/08-modal_body/EtsModalBody';
+import EtsDropdown from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
+import EtsDropdownToggle from 'components/new/ui/@bootstrap/10-dropdown_toggle/EtsDropdownToggle';
+import EtsDropdownMenu from 'components/new/ui/@bootstrap/11-dropdown_menu/EtsDropdownMenu';
+import EtsCollapse from 'components/new/ui/@bootstrap/12-collapse/EtsCollapse';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -18,6 +22,10 @@ const EtsBootstrap = {
   ModalBody: EtsModalBody,
   Row: EtsRow,
   Col: EtsCol,
+  Dropdown: EtsDropdown,
+  DropdownToggle: EtsDropdownToggle,
+  DropdownMenu: EtsDropdownMenu,
+  Collapse: EtsCollapse,
 };
 
 export default EtsBootstrap;

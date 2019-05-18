@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Dropdown } from 'react-bootstrap';
 import { borderRadiusButton } from 'global-styled/global-constants';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const DropdownWrap = styled(Dropdown)`
+export const DropdownWrap = styled(EtsBootstrap.Dropdown)`
   &&& {
     button {
       float: initial;

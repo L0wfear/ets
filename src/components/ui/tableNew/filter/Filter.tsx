@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import Div from 'components/ui/Div';
-import * as Collapse from 'react-bootstrap/lib/Collapse';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
@@ -114,7 +114,7 @@ class Fiter extends React.Component<any, any> {
   render() {
     return (
       <form onSubmit={this.submit}>
-        <Collapse in={this.props.show}>
+        <EtsBootstrap.Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
               <EtsBootstrap.Button type="submit">Применить</EtsBootstrap.Button>
@@ -135,7 +135,7 @@ class Fiter extends React.Component<any, any> {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </Div>
-        </Collapse>
+        </EtsBootstrap.Collapse>
       </form>
     );
   }

@@ -2,8 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { withRouter } from 'react-router-dom';
 import * as queryString from 'query-string';
 import {
@@ -549,9 +548,9 @@ class ReportContainer extends React.Component<
       this.props.reportDataFetching ||
       this.state.exportFetching) && <Preloader typePreloader="mainpage" />;
     const moveUpButton = moveUpIsPermitted && (
-      <Button bsSize="small" onClick={this.handleMoveUp}>
+      <EtsBootstrap.Button bsSize="small" onClick={this.handleMoveUp}>
         На уровень выше
-      </Button>
+      </EtsBootstrap.Button>
     );
 
     const isSummaryEnable =
@@ -627,12 +626,12 @@ class ReportContainer extends React.Component<
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
           {...this.props.tableProps}>
-          <Button
+          <EtsBootstrap.Button
             bsSize="small"
             disabled={isListEmpty}
             onClick={this.handleReportPrint}>
-            <Glyphicon glyph="download-alt" />
-          </Button>
+            <EtsBootstrap.Glyphicon glyph="download-alt" />
+          </EtsBootstrap.Button>
           {moveUpButton}
         </Table>
         {summaryTable}

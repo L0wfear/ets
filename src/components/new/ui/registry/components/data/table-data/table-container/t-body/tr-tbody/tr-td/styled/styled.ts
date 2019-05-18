@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
-import { Button } from 'react-bootstrap';
+
 import { constantColor } from 'global-styled/global-constants';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const redColor = css`
   color: red;
@@ -54,13 +55,13 @@ const cssNotActiveButton = css`
   background-color: ${constantColor.colorGray} !important;;
 `;
 
-export const ButtonGreenActive = styled(Button)`
+export const ButtonGreenActive = styled(EtsBootstrap.Button)`
   &&& {
     ${({ active }) => active ? cssActiveGreenButton : cssNotActiveButton}
   }
 `;
 
-export const ButtonRedActive = styled(Button)`
+export const ButtonRedActive = styled(EtsBootstrap.Button)`
   &&& {
     ${({ active }) => active ? cssActiveRedButton : cssNotActiveButton}
   }

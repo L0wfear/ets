@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
 import { compose, withProps } from 'recompose';
@@ -8,6 +6,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type AsigmentViewProps = {
   handleChange: any;
@@ -27,16 +26,16 @@ const AsigmentView: React.FC<AsigmentViewProps> = (props) => {
   } = props;
 
   return <>
-    <Col md={12}>
-      <Row>
-        <Col md={12}>
+    <EtsBootstrap.Col md={12}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={12}>
           <h3>
             Информация о доверенности
           </h3>
-        </Col>
-      </Row>
-    </Col>
-    <Col md={6}>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
+    </EtsBootstrap.Col>
+    <EtsBootstrap.Col md={6}>
       <ExtField
         id="assignment"
         type="string"
@@ -47,8 +46,8 @@ const AsigmentView: React.FC<AsigmentViewProps> = (props) => {
         onChange={props.handleChange}
         boundKeys="assignment"
       />
-    </Col>
-    <Col md={6}>
+    </EtsBootstrap.Col>
+    <EtsBootstrap.Col md={6}>
       <DatePickerRange
         date_start_id="assignment_date_start"
         date_start_value={formState.assignment_date_start}
@@ -63,8 +62,8 @@ const AsigmentView: React.FC<AsigmentViewProps> = (props) => {
         disabled={!isPermitted}
         onChange={props.handleChange}
       />
-    </Col>
-    <Col md={12}>
+    </EtsBootstrap.Col>
+    <EtsBootstrap.Col md={12}>
       <FileField
         button_id="button-assignment_files"
         id="assignment_files"
@@ -76,7 +75,7 @@ const AsigmentView: React.FC<AsigmentViewProps> = (props) => {
         boundKeys="assignment_files"
         disabled={!isPermitted}
       />
-    </Col>
+    </EtsBootstrap.Col>
   </>;
 };
 

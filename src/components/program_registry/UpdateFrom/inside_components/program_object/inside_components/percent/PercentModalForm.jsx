@@ -1,8 +1,6 @@
 import React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
@@ -28,17 +26,17 @@ export default class PercentModalForm extends UNSAFE_Form {
     if (IS_CREATING) title = 'Добавление записи';
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-percent"
         show={this.props.show}
         onHide={this.props.onHide}
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <Div style={{ padding: 15 }}>
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="date"
                 label="Дата осмотра"
@@ -66,20 +64,20 @@ export default class PercentModalForm extends UNSAFE_Form {
                 boundKeys="comment"
                 disabled={!isPermitted || !IS_CREATING}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </Div>
         <ModalBody />
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <Div hidden={!IS_CREATING}>
-            <Button
+            <EtsBootstrap.Button
               disabled={!this.props.canSave}
               onClick={this.handleSubmitWrap}>
               Сохранить
-            </Button>
+            </EtsBootstrap.Button>
           </Div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

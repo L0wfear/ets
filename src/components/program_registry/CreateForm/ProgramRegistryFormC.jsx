@@ -1,8 +1,5 @@
 import React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 import ModalBody from 'components/ui/Modal';
@@ -89,17 +86,17 @@ class ProgramRegistryForm extends UNSAFE_Form {
     const title = 'Создание программы ремонта';
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-program-registry-c"
         show={this.props.show}
         onHide={this.props.onHide}
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <Div style={{ padding: 15 }}>
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
                 label="Гос. программа"
@@ -162,16 +159,18 @@ class ProgramRegistryForm extends UNSAFE_Form {
                 boundKeys="plan_date_end"
                 disabled={!isPermitted}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </Div>
         <ModalBody />
-        <Modal.Footer>
-          <Button disabled={!this.props.canSave} onClick={this.props.onSubmit}>
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button
+            disabled={!this.props.canSave}
+            onClick={this.props.onSubmit}>
             Далее
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          </EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

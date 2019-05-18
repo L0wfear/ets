@@ -5,9 +5,8 @@ import Draw from 'ol/interaction/Draw';
 import { omit } from 'lodash';
 
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import Overlay from 'components/new/ui/map/overlay/Overlay';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
@@ -287,9 +286,9 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
         <ButtonContainer>
           <ButtonGroup vertical>
             <ButtonDraw disabled={this.state.activeDraw || this.props.drawActiveAll} onClick={this.toggleMeasureActive} />
-            <Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
-              <Glyphicon glyph="remove" />
-            </Button>
+            <EtsBootstrap.Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
+              <EtsBootstrap.Glyphicon glyph="remove" />
+            </EtsBootstrap.Button>
           </ButtonGroup>
         </ButtonContainer>
       </>

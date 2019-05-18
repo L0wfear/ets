@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { connect } from 'react-redux';
 import GeoobjectData from 'components/monitor/info/geoobjects-info/GeoobjectData';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
@@ -63,7 +63,7 @@ class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobject
           )
         }
         <div className="data_container-make-small" onClick={this.toggleShortVersion}>
-          <Button title={`${shortVersion ? 'Показать' : 'Скрыть'} выбранные геообъекты`}>{shortVersion ? '<<' : '>>'}</Button>
+          <EtsBootstrap.Button title={`${shortVersion ? 'Показать' : 'Скрыть'} выбранные геообъекты`}>{shortVersion ? '<<' : '>>'}</EtsBootstrap.Button>
         </div>
       </div>
     );

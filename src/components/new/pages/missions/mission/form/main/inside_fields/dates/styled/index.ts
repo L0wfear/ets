@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import * as Col from 'react-bootstrap/lib/Col';
 import { Dropdown } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const FieldDatesMissionContainer = styled.div`
   margin-bottom: 15px;
 `;
 
-export const ColStartDatePicker = styled(Col)`
+export const ColStartDatePicker = styled(EtsBootstrap.Col)`
   &&& {
     @media (min-width: 992px) {
       width: 49%;
@@ -28,7 +28,7 @@ export const ColStartDatePickerWithDropdown = styled(ColStartDatePicker)`
   display: flex;
   justify-content: space-between;
 `;
-export const ColDividerDatePicker = styled(Col)`
+export const ColDividerDatePicker = styled(EtsBootstrap.Col)`
   &&& {
     visibility: hidden;
     @media (min-width: 992px) {

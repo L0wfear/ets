@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
-import * as Col from 'react-bootstrap/lib/Col';
 
 import {
   EtsPageWrap,
 } from 'global-styled/global-styled';
 import { constantColor } from 'global-styled/global-constants';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const EtsPageWrapRoute = styled(EtsPageWrap)`
   padding: 0px;
@@ -19,7 +19,7 @@ export const RouteListContainer = styled.div`
   width: 100%;
 `;
 
-export const RoutesTreeColWrap = styled(Col)`
+export const RoutesTreeColWrap = styled(EtsBootstrap.Col)`
   background-color: #eee;
   height: 100%;
   &&& {

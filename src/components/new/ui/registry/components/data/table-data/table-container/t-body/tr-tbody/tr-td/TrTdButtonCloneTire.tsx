@@ -3,7 +3,7 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
-import { Button } from 'react-bootstrap';
+
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { registryLoadDataByKey, registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type TrTdButtonCloneTireStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -63,7 +64,7 @@ const TrTdButtonCloneTire: React.FC<TrTdButtonCloneTireProps> = React.memo(
 
     return (
       <EtsTbodyTrTd>
-        <Button block onClick={handleClick}>Создать копированием</Button>
+        <EtsBootstrap.Button block onClick={handleClick}>Создать копированием</EtsBootstrap.Button>
       </EtsTbodyTrTd>
     );
   },

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import RouteInfoMap from 'components/new/pages/routes_list/route-info/map/RouteInfoMap';
 
 import { PropsRouteInfoForm } from 'components/new/pages/routes_list/route-info/RouteInfoForm.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
   render() {
@@ -12,11 +13,11 @@ class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
     const { route } = props;
 
     return (
-      <Modal bsSize="large" show id="modal-current-duty-mission-route" onHide={props.onHide} backdrop="static">
+      <EtsBootstrap.ModalContainer bsSize="large" show id="modal-current-duty-mission-route" onHide={props.onHide} backdrop="static">
 
-        <Modal.Header closeButton>
-          <Modal.Title>{props.title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{props.title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
 
         <ModalBodyPreloader>
           <RouteInfoMap
@@ -27,7 +28,7 @@ class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
           />
         </ModalBodyPreloader>
 
-      </Modal>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

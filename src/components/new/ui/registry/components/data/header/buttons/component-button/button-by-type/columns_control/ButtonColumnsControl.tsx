@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as ClickOutHandler from 'react-onclickout';
 import { ReduxState } from 'redux-main/@types/state';
 import ColumnsPopup from './column_popup/ColumnsPopup';
@@ -43,9 +42,9 @@ const ButtonColumnsControl: React.FC<ButtonColumnsControlProps> = (props) => {
 
   return (
     <ClickOutHandler onClickOut={closePopup}>
-      <Button bsSize="small" active={showConfigPopup || props.hasHiddenField} onClick={toggleShowPopup}>
-        <Glyphicon glyph="cog" />
-      </Button>
+      <EtsBootstrap.Button bsSize="small" active={showConfigPopup || props.hasHiddenField} onClick={toggleShowPopup}>
+        <EtsBootstrap.Glyphicon glyph="cog" />
+      </EtsBootstrap.Button>
       {
         showConfigPopup
           && (

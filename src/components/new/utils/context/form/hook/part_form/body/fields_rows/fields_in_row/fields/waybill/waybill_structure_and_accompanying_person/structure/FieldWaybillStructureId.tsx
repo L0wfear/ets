@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { connect, DispatchProp } from 'react-redux';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import useStructureOptions from 'components/new/utils/hooks/services/useOptions/useStructureOptions';
-import { Col } from 'react-bootstrap';
 import { FieldDataWaybillStuctureId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
-import { connect, DispatchProp } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillStructureIdStateProps = {
   userStructureId: InitialStateSession['userData']['structure_id'];
@@ -74,7 +74,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
         return (
           structurePickData.STRUCTURE_FIELD_VIEW
             && (
-              <Col md={props.fieldData.md || 12}>
+              <EtsBootstrap.Col md={props.fieldData.md || 12}>
                 {
                   !isDisabled
                     ? (
@@ -101,7 +101,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
                       />
                     )
                 }
-              </Col>
+              </EtsBootstrap.Col>
             )
         );
       },

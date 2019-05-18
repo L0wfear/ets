@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { Row, Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const TemplateDashboardContainer = styled(EtsPageWrap)`
   opacity: 0.5;
@@ -27,11 +27,11 @@ export const TemplateDashboardTime = styled(MaintTemplateComponent)`
   height: 40px;
   width: 300px;
 `;
-export const TempateDashboardCards = styled(Row)`
+export const TempateDashboardCards = styled(EtsBootstrap.Row)`
   height: 100;
 `;
 
-export const TempateDashboardCardWrap = styled(Col).attrs({ md: 3 })`
+export const TempateDashboardCardWrap = styled(EtsBootstrap.Col).attrs({ md: 3 })`
   padding: 10px;
   height: 300px;
 `;

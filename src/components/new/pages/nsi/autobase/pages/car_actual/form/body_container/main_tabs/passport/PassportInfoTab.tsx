@@ -5,11 +5,12 @@ import { get } from 'lodash';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../@types/CarForm';
-import { Col, Row } from 'react-bootstrap';
+
 import { CarPassporntData } from 'redux-main/reducers/modules/autobase/car/@types';
 import { DivNone } from 'global-styled/global-styled';
 import GtnSelectFields from './by_type/gtn/GtnSelectFields';
 import GibddSelectFields from './by_type/gibdd/GibddSelectFields';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PassportInfoTabProps = {
   isPermitted: boolean;
@@ -58,9 +59,9 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
     return (
       <>
         <MarginTopRow>
-          <Col md={12}>
-            <Row>
-              <Col md={6}>
+          <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="GIBDD"
                   type="boolean"
@@ -71,8 +72,8 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   boundKeys="GIBDD"
                   disabled={!props.isPermitted}
                 />
-              </Col>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   id="GTN"
                   type="boolean"
@@ -83,10 +84,10 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   boundKeys="GTN"
                   disabled={!props.isPermitted}
                 />
-              </Col>
-            </Row>
-          </Col>
-          <Col md={12}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             {
               passport_data.type === 'GIBDD'
                 ? (
@@ -121,7 +122,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   <DivNone />
                 )
             }
-          </Col>
+          </EtsBootstrap.Col>
         </MarginTopRow>
       </>
     );

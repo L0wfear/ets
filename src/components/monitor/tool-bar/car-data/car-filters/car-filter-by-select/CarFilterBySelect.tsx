@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as ClickOutHandler from 'react-onclickout';
 import * as cx from 'classnames';
 
@@ -18,6 +17,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const placeholder = {
   carFilterMultyType: 'Тип техники',
@@ -77,7 +77,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
           <div className={cx('tool_bar-block', { active: this.props.active })}>
             <div className="default_cube dark flex-row map-car-filter multi">
               <div className="button-toggle" onClick={this.toggleHidden} >
-                <Glyphicon glyph="filter" />
+                <EtsBootstrap.Glyphicon glyph="filter" />
               </div>
                 {
                   this.state.hidden ?

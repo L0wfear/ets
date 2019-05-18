@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import EtsBootstrap from '../../@bootstrap';
 
-export const ButtonTableInput = styled(Button)<{ width: number }>`
+export const ButtonTableInput = styled(EtsBootstrap.Button)<{ width: number }>`
   &&& {
     width: ${({ width }) => width ? `${width}px` : 'initial'};
   }

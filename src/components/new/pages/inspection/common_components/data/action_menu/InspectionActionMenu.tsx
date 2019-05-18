@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { Row, Col } from 'react-bootstrap';
 import { makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { DispatchProp, connect } from 'react-redux';
@@ -18,6 +17,7 @@ import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspec
 import useLastInpectSatus, { INSPECT_STATUS } from './useLastInpectSatus';
 import { getLastConductingInspect, getLastCompletedInspect } from '../../../autobase/@selectors';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;
@@ -85,11 +85,11 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
   return (
     <BoxContainer>
       <h4>
-        <Row>
-          <Col md={6} sm={6}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6} sm={6}>
             Информация о текущей проверке
-          </Col>
-          <Col md={6} sm={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6} sm={6}>
             {
               currentDate
                 ? (
@@ -99,10 +99,10 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
                   '-'
                 )
             }
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </h4>
-      <Row>
+      <EtsBootstrap.Row>
         <InspectInfo>
           <LineData>
             Статус проверки: <StatusLabel>{status_text}</StatusLabel>
@@ -175,7 +175,7 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
               )
           }
         </InspectInfo>
-      </Row>
+      </EtsBootstrap.Row>
     </BoxContainer>
   );
 };

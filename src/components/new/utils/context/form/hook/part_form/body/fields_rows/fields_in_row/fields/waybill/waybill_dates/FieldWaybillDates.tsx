@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { FieldDataName } from 'components/new/utils/context/form/@types/fields/string';
-import { Col, Row } from 'react-bootstrap';
 import FieldWaybillPlanDates from './plan_dates/FieldWaybillPlanDates';
 import FieldWaybillFactDates from './fact_dates/FieldWaybillFactDates';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillDates = {
   fieldData: FieldDataName;
@@ -14,16 +14,16 @@ const FieldWaybillDates: React.FC<FieldWaybillDates> = React.memo(
     return React.useMemo(
       () => {
         return (
-          <Col md={props.fieldData.md}>
-            <Row>
-              <Col md={12}>
+          <EtsBootstrap.Col md={props.fieldData.md}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <FieldWaybillPlanDates formDataKey={props.formDataKey} />
-              </Col>
-              <Col md={12}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={12}>
                 <FieldWaybillFactDates formDataKey={props.formDataKey} />
-              </Col>
-            </Row>
-          </Col>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
         );
       },
       [props],

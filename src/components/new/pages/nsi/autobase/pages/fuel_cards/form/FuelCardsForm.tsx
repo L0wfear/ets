@@ -1,8 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -31,7 +28,6 @@ import FieldStructureDutyMission from 'components/new/pages/missions/duty_missio
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
 import { getDefaultFuelCardsElement } from './utils';
@@ -108,17 +104,17 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
       IS_CREATING && companiesFieldIsDisable ? userCompanyId : state.company_id;
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-fuel-cards"
         show
         onHide={this.props.hideWithoutChanges}
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={9}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={9}>
               <ExtField
                 type="string"
                 label="Номер"
@@ -128,8 +124,8 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 boundKeys="number"
                 disabled={!isPermitted}
               />
-            </Col>
-            <Col md={3}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
               <FuelCardsIsCommonWrapper>
                 <ExtField
                   id="is_common"
@@ -146,12 +142,12 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                   trigger={['hover', 'focus']}
                   overlay={popover}
                   placement="bottom">
-                  <Glyphicon glyph="question-sign" />
+                  <EtsBootstrap.Glyphicon glyph="question-sign" />
                 </OverlayTrigger>
               </FuelCardsIsCommonWrapper>
-            </Col>
+            </EtsBootstrap.Col>
 
-            <Col md={12}>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
                 label="Тип топлива"
@@ -186,28 +182,28 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 boundKeys="company_id"
                 disabled={!isPermitted || companiesFieldIsDisable}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div>
             {
               isPermitted
                 ? (
-                  <Button
+                  <EtsBootstrap.Button
                     disabled={!this.props.canSave}
                     onClick={this.handleSubmit}
                   >
                     Сохранить
-                  </Button>
+                  </EtsBootstrap.Button>
                 ) : (
                   <DivNone />
                 )
             }
-            <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
+            <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -47,7 +46,7 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
-  handleClick: React.MouseEventHandler<Button> = () => {
+  handleClick = () => {
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
     }),
@@ -58,9 +57,9 @@ class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
     const { props } = this;
 
     return (
-      <Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
-        <Glyphicon glyph="search" /> Просмотреть
-      </Button>
+      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
+        <EtsBootstrap.Glyphicon glyph="search" /> Просмотреть
+      </EtsBootstrap.Button>
     );
   }
 }

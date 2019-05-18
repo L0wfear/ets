@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
@@ -109,19 +106,19 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
       : 'Изменение нормы на расход расходных материалов';
 
   return (
-    <Modal
+    <EtsBootstrap.ModalContainer
       id="modal-consumption-rate"
       show
       onHide={props.hideWithoutChanges}
       backdrop="static"
       bsSize="large">
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
 
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="select"
               label="Технологическая операция"
@@ -132,10 +129,10 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
               boundKeys="technical_operation_id"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="select"
               label="Расходный материал"
@@ -146,10 +143,10 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
               boundKeys="consumable_material_id"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Сезон"
@@ -163,8 +160,8 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
               boundKeys="season_id"
               disabled={!isPermitted}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Категория"
@@ -174,8 +171,8 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
               onChange={handleChangeCategory}
               disabled={!isPermitted}
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="select"
               label="Подкатегория"
@@ -186,8 +183,8 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
               onChange={props.handleChange}
               boundKeys="clean_subcategory_id"
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="Норма"
@@ -197,17 +194,17 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
               boundKeys="value"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
-        <Button
+      <EtsBootstrap.ModalFooter>
+        <EtsBootstrap.Button
           disabled={!props.canSave || !isPermitted}
           onClick={props.defaultSubmit}>
           Сохранить
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </EtsBootstrap.Button>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

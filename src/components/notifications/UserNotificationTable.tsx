@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
 import { IDataTableSchema, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
@@ -8,6 +7,7 @@ import { IUserNotification } from 'api/@types/services/index.h';
 import { READ_NOT_SELECT_OPTIONS_INT } from 'constants/dictionary';
 import DataTableComponent from 'components/ui/table/DataTable';
 import DateFormatter from 'components/ui/DateFormatter';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -103,14 +103,14 @@ const glyph = {
 
 const Icon = ({ type }) =>
   <div style={glyph[type]}>
-    <Glyphicon glyph="exclamation-sign"/>
+    <EtsBootstrap.Glyphicon glyph="exclamation-sign"/>
   </div>;
 
 const renderers: ISchemaRenderer<IUserNotification> = {
   created_at: ({ data }) => <DateFormatter date={data} />,
   is_read: (meta) =>
     <div style={statusStyle}>
-      {!meta.rowData.is_read && <Glyphicon glyph="envelope"/>}
+      {!meta.rowData.is_read && <EtsBootstrap.Glyphicon glyph="envelope"/>}
       {meta.rowData.priority === 'alert' && <Icon type="alert" />}
       {meta.rowData.priority === 'warning' && <Icon type="warning" />}
       {meta.rowData.priority === 'info' && <Icon type="info" />}

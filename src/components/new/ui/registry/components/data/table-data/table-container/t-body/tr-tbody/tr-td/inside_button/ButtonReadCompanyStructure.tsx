@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
-import { Button } from 'react-bootstrap';
 import { registryLoadDataByKey, registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
@@ -10,6 +9,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ButtonReadCompanyStructureStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -48,7 +48,7 @@ const ButtonReadCompanyStructure: React.FC<ButtonReadCompanyStructureProps> = Re
     );
 
     return (
-      <Button onClick={handleClickOnRead}>Редактировать</Button>
+      <EtsBootstrap.Button onClick={handleClickOnRead}>Редактировать</EtsBootstrap.Button>
     );
   },
 );

@@ -7,12 +7,9 @@ import dutyDutyMissionTemplatePermissions from 'components/new/pages/missions/du
 import { getDefaultDutyMissionTemplateElement, checkMissionsOnStructureIdBrigade } from './utils';
 import { dutyDutyMissionTemplateCreatingFormSchema } from './schema';
 
-import EtsModal from 'components/new/ui/modal/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 import {
   getEmployeeState,
@@ -100,19 +97,19 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
   );
 
   return (
-    <EtsModal
+    <EtsBootstrap.ModalContainer
       id="modal-duty-mission-template-creating"
       show
       onHide={props.hideWithoutChanges}
       bsSize="large"
       backdrop="static"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <FieldDatesDutyMission
               isPermitted={isPermitted}
               plan_date_start={state.plan_date_start}
@@ -124,8 +121,8 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
               page={page}
               path={path}
             />
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             <FieldMissionSourceMission
               value={state.mission_source_id}
               name={state.mission_source_name}
@@ -136,21 +133,21 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
               page={page}
               path={path}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         {isPermitted ? ( // либо обновление, либо создание
-          <Button
+          <EtsBootstrap.Button
             disabled={!props.canSave}
             onClick={handleSubmit}>
             Сохранить
-          </Button>
+          </EtsBootstrap.Button>
         ) : (
           <DivNone />
         )}
-      </Modal.Footer>
-    </EtsModal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

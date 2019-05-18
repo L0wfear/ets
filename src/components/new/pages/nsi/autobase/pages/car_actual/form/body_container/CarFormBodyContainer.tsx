@@ -5,7 +5,8 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../@types/CarForm';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type CarFormBodyContainerOwnProps = {
   isPermitted: boolean;
@@ -24,7 +25,7 @@ type CarFormBodyContainerProps = (
 const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
   (props) => {
     return (
-      <Row>
+      <EtsBootstrap.Row>
         <Switch>
           {
             carFormTabKey.map(({ tabKey: tabKeyScheme, title, ...other }) => {
@@ -36,7 +37,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
                       path={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${tabKeyChildScheme}${path}`}
                       render={
                         () => (
-                          <Col md={12}>
+                          <EtsBootstrap.Col md={12}>
                             <childrenOther.component
                               formState={props.formState}
                               formErrors={props.formErrors}
@@ -47,7 +48,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
                               page={props.page}
                               path={props.path}
                             />
-                          </Col>
+                          </EtsBootstrap.Col>
                         )
                       } />
                   ))
@@ -72,7 +73,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
           }
           <Redirect to={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${mainInfo.tabKey}`} />
         </Switch>
-      </Row>
+      </EtsBootstrap.Row>
     );
 });
 

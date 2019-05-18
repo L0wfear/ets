@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { keyBy, get } from 'lodash';
@@ -32,7 +32,6 @@ import {
 } from 'components/new/ui/mission_info_form/MissionInfoForm.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { ReduxState } from 'redux-main/@types/state';
-import EtsModal from '../modal/Modal';
 import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 
 /**
@@ -258,7 +257,7 @@ class MissionInfoForm extends React.Component<
     const title = makeTitle(element);
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-mission-info"
         show
         onHide={onFormHide}
@@ -266,9 +265,9 @@ class MissionInfoForm extends React.Component<
         className="mission-info-modal"
         backdrop="static">
         <form onSubmit={onFormHide}>
-          <Modal.Header closeButton>
-            <Modal.Title>{title}</Modal.Title>
-          </Modal.Header>
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
           <ModalBodyPreloader
             page="any"
             path="missionInfoForm"
@@ -320,11 +319,11 @@ class MissionInfoForm extends React.Component<
               </SideContainerDiv>
             </FormContainer>
           </ModalBodyPreloader>
-          <Modal.Footer>
-            <Button type="submit">Закрыть</Button>
-          </Modal.Footer>
+          <EtsBootstrap.ModalFooter>
+            <EtsBootstrap.Button type="submit">Закрыть</EtsBootstrap.Button>
+          </EtsBootstrap.ModalFooter>
         </form>
-      </EtsModal>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

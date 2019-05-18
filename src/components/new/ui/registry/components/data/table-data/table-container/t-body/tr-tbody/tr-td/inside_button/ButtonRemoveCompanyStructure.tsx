@@ -2,13 +2,14 @@ import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
-import { Button } from 'react-bootstrap';
+
 import { registryLoadDataByKey, registrySetSelectedRowToShowInForm, registryRemoveSelectedRows } from 'components/new/ui/registry/module/actions-registy';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ButtonRemoveCompanyStructureStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -66,7 +67,7 @@ const ButtonRemoveCompanyStructure: React.FC<ButtonRemoveCompanyStructureProps> 
 
     return (
       <React.Fragment>
-        <Button onClick={handleClickOpenForm}>Удалить</Button>
+        <EtsBootstrap.Button onClick={handleClickOpenForm}>Удалить</EtsBootstrap.Button>
         <ModalYesNo
           show={isOpenModalRemove}
           handleHide={handleClickCloseForm}

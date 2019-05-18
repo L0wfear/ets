@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   isEmpty,
@@ -378,10 +377,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     const hasMissionForColumn = Object.values(checkedElements).some((mission: any) => mission.for_column);
 
     return (
-      <Modal id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={loadingPage} typePreloader="mainpage">
           <LoadingOverlayLegacy />
           {
@@ -424,7 +423,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
               )
           }
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <Div className="inline-block">
             <Div hidden={typeClick === typeTemplate.missionDutyTemplate || hasMissionForColumn} className="inline-block assignToWaybillCheck" style={{ width: '300px', textAlign: 'left !important', height: '22px', marginRight: '20px' }}>
               <ReactSelect
@@ -435,10 +434,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
                 onChange={this.handleChangeTypePrint}
               />
             </Div>
-            <Button disabled={this.checkDisabledSubmit()} onClick={this.handleSubmit}>{'Сформировать'}</Button>
+            <EtsBootstrap.Button disabled={this.checkDisabledSubmit()} onClick={this.handleSubmit}>{'Сформировать'}</EtsBootstrap.Button>
           </Div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -2,10 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { connect } from 'react-redux';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
 
@@ -130,20 +127,20 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
     );
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-battery-brand"
         show
         onHide={this.props.onHide}
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>Изменить версию API</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Изменить версию API</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader
           page={modalKey}
           path="none"
           typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="version_api"
                 type="select"
@@ -155,8 +152,8 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
                 modalKey={modalKey}
                 emptyValue={null}
               />
-            </Col>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 id="version_api"
                 type="select"
@@ -168,13 +165,13 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
                 modalKey={modalKey}
                 emptyValue={null}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
-          <Button onClick={this.refresh}>Перезагрузить страницу</Button>
-        </Modal.Footer>
-      </Modal>
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button onClick={this.refresh}>Перезагрузить страницу</EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

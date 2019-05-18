@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillFactDatesOwnProps = {
   formDataKey: string;
@@ -43,8 +43,8 @@ const FieldWaybillFactDates: React.FC<FieldWaybillFactDatesOwnProps> = React.mem
         );
 
         return (
-          <Col md={12}>
-            <Row>
+          <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Row>
               {
                 IS_CLOSE_OR_IS_ACTIVE
                   && (
@@ -67,8 +67,8 @@ const FieldWaybillFactDates: React.FC<FieldWaybillFactDatesOwnProps> = React.mem
                     />
                   )
               }
-            </Row>
-          </Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
         );
       },
       [

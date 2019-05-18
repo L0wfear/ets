@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { CarGtnPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
 import { FileField } from 'components/ui/input/fields';
@@ -7,6 +6,7 @@ import usePropulsionTypeOptions from './usePropulsionTypeOptions';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { autobaseGetSetPropulsionType } from 'redux-main/reducers/modules/autobase/actions_by_type/propulsion_type/actions';
 import { ReduxState } from 'redux-main/@types/state';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type GtnSelectFieldsStateProps = {};
 type GtnSelectFieldsDispatchProps = {
@@ -55,8 +55,8 @@ const GtnSelectFields: React.FC<GtnSelectFieldsProps> = React.memo(
     );
 
     return (
-      <Row>
-        <Col md={6}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={6}>
           <ExtField
             type="string"
             label="Серия и номер паспорта"
@@ -140,8 +140,8 @@ const GtnSelectFields: React.FC<GtnSelectFieldsProps> = React.memo(
             boundKeys="dimensions"
             disabled={!isPermitted || disabled}
           />
-        </Col>
-        <Col md={6}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
           <ExtField
             type="string"
             label="Предприятие и изготовитель"
@@ -214,8 +214,8 @@ const GtnSelectFields: React.FC<GtnSelectFieldsProps> = React.memo(
             boundKeys="max_speed"
             disabled={!isPermitted || disabled}
           />
-        </Col>
-        <Col md={12}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={12}>
           <FileField
             label="Файл"
             multiple
@@ -224,8 +224,8 @@ const GtnSelectFields: React.FC<GtnSelectFieldsProps> = React.memo(
             boundKeys="files"
             disabled={!isPermitted || disabled}
           />
-        </Col>
-      </Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   },
 );

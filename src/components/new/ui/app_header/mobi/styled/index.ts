@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { DefaultSecondLvlMenu, DefaultFirstDt, DefaultFirstLvlMenu } from 'components/new/ui/app_header/styled/index';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
-import { Button } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const MobiContainer = styled.div`
   display: flex;
@@ -82,7 +82,7 @@ export const SecondMenuItemContainerMobi = styled(SecondMenuItemContainer)`
   }
 `;
 
-export const MenuButton = styled(Button)`
+export const MenuButton = styled(EtsBootstrap.Button)`
   &&& {
     padding: 0 15px;
   }

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   IPropsReportHeaderCommon,
@@ -58,8 +57,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 
     return (
       <>
-        <Row className="report-page__header">
-          <Col md={4}>
+        <EtsBootstrap.Row className="report-page__header">
+          <EtsBootstrap.Col md={4}>
             <ExtField
               type="select"
               label="Объекты"
@@ -70,13 +69,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               clearable={false}
               disabled={readOnly}
             />
-          </Col>
-          <Col md={8}>
-            <Row>
-              <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={8}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <label htmlFor=" ">Период формирования</label>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
             <DatePickerRange
               date_start_id="date_start"
               date_start_value={date_start}
@@ -86,18 +85,18 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               disabled={readOnly}
               onChange={this.props.handleChange}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3} mdOffset={9}>
-            <Button
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3} mdOffset={9}>
+            <EtsBootstrap.Button
               block
               bsSize="small"
               onClick={this.handleSubmit}
               disabled={readOnly}
-            >Сформировать отчет</Button>
-          </Col>
-        </Row>
+            >Сформировать отчет</EtsBootstrap.Button>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </>
     );
   }

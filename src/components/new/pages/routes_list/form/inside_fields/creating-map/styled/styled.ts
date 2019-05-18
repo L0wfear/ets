@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { Flex } from 'global-styled/global-styled';
 
 export const ButtonOdhContainer = styled.div`
@@ -12,14 +12,14 @@ export const CreatingMapContainer = styled.div`
   position: relative;
 `;
 
-export const ButtonCheckRoute = styled(Button)`
+export const ButtonCheckRoute = styled(EtsBootstrap.Button)`
   &&& {
     width: 100%;
     margin-bottom: 15px;
   }
 `;
 
-export const ButtonCheckTypeSelect = styled(Button)`
+export const ButtonCheckTypeSelect = styled(EtsBootstrap.Button)`
   width: 120px;
 `;
 

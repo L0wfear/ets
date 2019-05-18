@@ -1,17 +1,17 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
 
 import config from 'config';
 import { PropsModalTP } from 'components/new/ui/modal_tp/ModalTP.h';
+import EtsBootstrap from '../@bootstrap';
 
 class ModalTP extends React.PureComponent<PropsModalTP, {}> {
   render() {
     return (
-      <Modal show={this.props.show} onHide={this.props.onHide} dialogClassName="custom-modalTP">
-        <Modal.Header closeButton>
-          <Modal.Title>Техническая поддержка</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <EtsBootstrap.ModalContainer show={this.props.show} onHide={this.props.onHide} dialogClassName="custom-modalTP">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Техническая поддержка</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
+        <EtsBootstrap.ModalBody>
           <div>
             <div>
               <label>
@@ -24,8 +24,8 @@ class ModalTP extends React.PureComponent<PropsModalTP, {}> {
             <label><a href={`${config.docs}Общие_рекомендации_по_обращению.docx`}>Общие рекомендации по обращению</a></label>
 
           </div>
-        </Modal.Body>
-      </Modal>
+        </EtsBootstrap.ModalBody>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -19,7 +19,6 @@ import contractorPermissions from '../_config-data/permissions';
 import { contractorFormSchema } from './schema';
 import { getDefaultContractorElement } from './utils';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { Row, Col } from 'react-bootstrap';
 import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 import { actionCreateContractor, actionUpdateContractor } from 'redux-main/reducers/modules/repair/contractor/actions_contractor';
 
@@ -40,13 +39,13 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
   );
 
   return (
-    <Modal id="modal-contractor" show onHide={props.hideWithoutChanges} backdrop="static" bsSize="large">
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
+    <EtsBootstrap.ModalContainer id="modal-contractor" show onHide={props.hideWithoutChanges} backdrop="static" bsSize="large">
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={6}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Наименование"
@@ -55,10 +54,10 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="name"
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="ИНН"
@@ -67,8 +66,8 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="inn"
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="КПП"
@@ -77,8 +76,8 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="kpp"
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="ОГРН"
@@ -87,8 +86,8 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="ogrn"
             />
-          </Col>
-          <Col md={3}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={3}>
             <ExtField
               type="string"
               label="ОКПО"
@@ -97,10 +96,10 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="okpo"
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={8}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={8}>
             <ExtField
               type="string"
               label="Почтовый адрес"
@@ -109,8 +108,8 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="postal_address"
             />
-          </Col>
-          <Col md={4}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={4}>
             <ExtField
               type="string"
               label="Электронный адрес"
@@ -119,10 +118,10 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="email"
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={4}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={4}>
             <ExtField
               type="string"
               label="Телефон"
@@ -131,8 +130,8 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="phone"
             />
-          </Col>
-          <Col md={4}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={4}>
             <ExtField
               type="string"
               label="Факс"
@@ -141,8 +140,8 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="fax"
             />
-          </Col>
-          <Col md={4}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={4}>
             <ExtField
               type="string"
               label="БИК"
@@ -151,24 +150,24 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
               onChange={props.handleChange}
               boundKeys="bik"
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         <div>
           {
             isPermitted // либо обновление, либо создание
             ? (
-              <Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
             )
             : (
               <DivNone />
             )
           }
-          <Button onClick={props.hideWithoutChanges}>Отменить</Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </div>
-      </Modal.Footer>
-    </Modal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

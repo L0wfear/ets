@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import IAVisibleWarning from 'components/new/pages/inspection/autobase/components/vsible_warning/IAVisibleWarning';
@@ -19,6 +18,7 @@ import ViewAddInspectEmployee, {
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type InitialState = {
   selectedInspect: InspectAutobase,
@@ -191,7 +191,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
     ? (
       <>
         <ContainerForm>
-          <Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
+          <EtsBootstrap.Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
             <BoxContainer>
               <ExtField
                 type="string"
@@ -220,11 +220,11 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
                 filedToCheck={filedToCheck}
               />
             </BoxContainer>
-            <Row>
+            <EtsBootstrap.Row>
             {
               props.type === INSPECT_AUTOBASE_TYPE_FORM.list || state.selectedInspect.data.photos_of_supporting_documents.length
                 ? (
-                  <Col md={6}>
+                  <EtsBootstrap.Col md={6}>
                     <FileField
                       id="file"
                       label="Фотографии подтверждающих документов"
@@ -234,7 +234,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
                       disabled={!isPermittedChangeListParams}
                       boundKeys="photos_of_supporting_documents"
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                 )
                 : (
                   <DivNone />
@@ -243,7 +243,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
             {
               props.type === INSPECT_AUTOBASE_TYPE_FORM.list || state.selectedInspect.data.photos_defect.length
                 ? (
-                  <Col md={6}>
+                  <EtsBootstrap.Col md={6}>
                     <FileField
                       id="file"
                       label="Фотографии дефектов"
@@ -253,14 +253,14 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
                       disabled={!isPermittedChangeListParams}
                       boundKeys="photos_defect"
                     />
-                  </Col>
+                  </EtsBootstrap.Col>
                 )
                 : (
                   <DivNone />
                 )
             }
-            </Row>
-          </Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
           <ViewAddInspectEmployee
             type={props.type}
             isPermitted={props.isPermitted}
@@ -281,7 +281,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               selectedInspectAutobase={state.selectedInspect}
               loadingPage={props.loadingPage}
             />
-            <Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</Button>
+            <EtsBootstrap.Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </>

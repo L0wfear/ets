@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
@@ -88,8 +88,8 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
     return (
       <div className="car_info-charts">
         <div className="car_info-chart_buttons_row">
-          <Button data-number="1" active={selectedTab === 1} onClick={this.handleClick} >Датчики топлива</Button>
-          <Button data-number="2" active={selectedTab === 2} onClick={this.handleClick} >Датчики скорости</Button>
+          <EtsBootstrap.Button data-number="1" active={selectedTab === 1} onClick={this.handleClick} >Датчики топлива</EtsBootstrap.Button>
+          <EtsBootstrap.Button data-number="2" active={selectedTab === 2} onClick={this.handleClick} >Датчики скорости</EtsBootstrap.Button>
         </div>
         <div className="car_info_block tab-data">
           {

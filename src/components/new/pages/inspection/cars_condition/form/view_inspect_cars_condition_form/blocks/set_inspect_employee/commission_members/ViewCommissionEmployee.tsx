@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { Glyphicon, Button } from 'react-bootstrap';
+
 import { DivNone } from 'global-styled/global-styled';
 import { CommissionMembersDataContainer } from './styled';
 import { createValidDate } from 'utils/dates';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ViewCommissionEmployeeProps = (
   (
@@ -42,15 +43,15 @@ const ViewCommissionEmployee: React.FC<ViewCommissionEmployeeProps> = React.memo
     return (
       <CommissionMembersDataContainer>
         <div>
-          <Glyphicon glyph="minus" /> {text}
+          <EtsBootstrap.Glyphicon glyph="minus" /> {text}
         </div>
         <div>
           {
             props.canRemove
               ? (
-                <Button onClick={handleClick}>
-                  <Glyphicon glyph="remove" />
-                </Button>
+                <EtsBootstrap.Button onClick={handleClick}>
+                  <EtsBootstrap.Glyphicon glyph="remove" />
+                </EtsBootstrap.Button>
               )
               : (
                 <DivNone />

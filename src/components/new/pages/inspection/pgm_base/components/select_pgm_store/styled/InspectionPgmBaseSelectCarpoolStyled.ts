@@ -1,16 +1,16 @@
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const InstectionBlockSelect = styled(Row)`
+export const InstectionBlockSelect = styled(EtsBootstrap.Row)`
   margin-top: 10px;
   margin-bottom: 10px;
 
   padding: 0 40px;
 `;
 
-export const SelectLabel = styled(Col)`
+export const SelectLabel = styled(EtsBootstrap.Col)`
   min-width: 100px;
 `;
 
-export const SelectField = styled(Col)`
+export const SelectField = styled(EtsBootstrap.Col)`
 `;

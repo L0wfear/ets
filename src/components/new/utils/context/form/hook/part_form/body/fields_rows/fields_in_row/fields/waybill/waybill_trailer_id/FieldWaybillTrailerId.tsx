@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FieldDataWaybillTrailerId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillTrailerIdProps = {
   formDataKey: string;
@@ -14,14 +14,14 @@ const FieldWaybillTrailerId: React.FC<FieldWaybillTrailerIdProps> = React.memo(
     return React.useMemo(
       () => {
         return (
-          <Col md={props.fieldData.md || 12}>
+          <EtsBootstrap.Col md={props.fieldData.md || 12}>
             <ExtField
               type="select"
               label={`${props.fieldData.title} (поиск по рег. номер  ТС)`}
               value={null}
               options={[]}
             />
-          </Col>
+          </EtsBootstrap.Col>
         );
       },
       [props],

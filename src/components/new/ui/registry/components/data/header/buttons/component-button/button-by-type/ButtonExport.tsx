@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { registyLoadPrintForm } from 'components/new/ui/registry/module/actions-registy';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsButtonExport = {
   registryKey: string;
@@ -12,13 +11,13 @@ type PropsButtonExport = {
 class ButtonExport extends React.PureComponent<PropsButtonExport, {}> {
   render() {
     return (
-      <Button
+      <EtsBootstrap.Button
         id="regestry-download-alt"
         bsSize="small"
         onClick={this.props.handleClick}
       >
-        <Glyphicon glyph="download-alt" />
-      </Button>
+        <EtsBootstrap.Glyphicon glyph="download-alt" />
+      </EtsBootstrap.Button>
     );
   }
 }

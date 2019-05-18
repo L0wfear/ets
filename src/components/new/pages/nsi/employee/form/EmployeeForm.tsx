@@ -1,8 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
 import { compose } from 'recompose';
@@ -215,15 +212,15 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <Modal id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-battery-registry" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="last_name"
                     type="string"
@@ -234,8 +231,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="last_name"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="personnel_number"
                     type="string"
@@ -246,12 +243,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="personnel_number"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="first_name"
                     type="string"
@@ -262,8 +259,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="first_name"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="special_license"
                     type="string"
@@ -274,12 +271,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.handleChangeWithValidate}
                     boundKeys="special_license"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="middle_name"
                     type="string"
@@ -290,8 +287,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="middle_name"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="category_special_license"
                     type="select"
@@ -305,12 +302,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="category_special_license"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="birthday"
                     type="date"
@@ -322,8 +319,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="birthday"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="special_license_date_end"
                     type="date"
@@ -335,12 +332,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.handleChangeDateEnd}
                     boundKeys="special_license_date_end"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="phone"
                     type="string"
@@ -351,8 +348,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="phone"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="drivers_license"
                     type="string"
@@ -363,12 +360,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.handleChangeWithValidate}
                     boundKeys="drivers_license"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="position_id"
                     type="select"
@@ -382,8 +379,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     boundKeys="position_id"
                     clearable={false}
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="category_drivers_license"
                     type="select"
@@ -397,12 +394,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="category_drivers_license"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="active"
                     type="select"
@@ -416,8 +413,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     clearable={false}
                     boundKeys="active"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="drivers_license_date_end"
                     type="date"
@@ -429,12 +426,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.handleChangeDateEnd}
                     boundKeys="drivers_license_date_end"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="special_marks"
                     type="string"
@@ -446,12 +443,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="special_marks"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="prefer_car"
                     type="select"
@@ -464,8 +461,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.handleChangeCar}
                     boundKeys="prefer_car"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="secondary_car"
                     type="select"
@@ -479,12 +476,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="secondary_car"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="company_structure_id"
                     type="select"
@@ -497,8 +494,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="company_structure_id"
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="medical_certificate"
                     type="string"
@@ -509,12 +506,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="medical_certificate"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="is_common"
                     type="select"
@@ -527,8 +524,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     boundKeys="is_common"
                     clearable={false}
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="medical_certificate_date"
                     type="date"
@@ -540,12 +537,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     onChange={this.props.handleChange}
                     boundKeys="medical_certificate_date"
                   />
-                </Col>
-              </Row>
-            </Col>
-            <Col md={12}>
-              <Row>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={6}>
                   <FileField
                     button_id="button-medical_certificate_files"
                     id="medical_certificate_files"
@@ -557,8 +554,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     boundKeys="medical_certificate_files"
                     disabled={!isPermitted}
                   />
-                </Col>
-                <Col md={6}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>
                   <FileField
                     button_id="button-driver_license_files"
                     id="driver_license_files"
@@ -570,9 +567,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     boundKeys="driver_license_files"
                     disabled={!isPermitted}
                   />
-                </Col>
-              </Row>
-            </Col>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
             <AsigmentView
               handleChange = {this.props.handleChange}
               state = {state}
@@ -582,20 +579,20 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
               path= {path}
             >
             </AsigmentView>
-          </Row>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
         {
           isPermitted // либо обновление, либо создание
           ? (
-            <Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+            <EtsBootstrap.Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
           : (
             <DivNone />
           )
         }
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

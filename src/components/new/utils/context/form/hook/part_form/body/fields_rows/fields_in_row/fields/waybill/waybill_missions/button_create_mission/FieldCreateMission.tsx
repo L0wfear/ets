@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col, Button } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldCreateMissionProps = {
   formDataKey: string;
@@ -11,9 +11,9 @@ const FieldCreateMission: React.FC<FieldCreateMissionProps> = React.memo(
     return React.useMemo(
       () => {
         return (
-          <Col md={12}>
-            <Button>Создать задание</Button>
-          </Col>
+          <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Button>Создать задание</EtsBootstrap.Button>
+          </EtsBootstrap.Col>
         );
       },
       [props],

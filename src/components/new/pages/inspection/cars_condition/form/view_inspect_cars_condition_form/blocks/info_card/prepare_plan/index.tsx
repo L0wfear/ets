@@ -1,9 +1,5 @@
 import * as React from 'react';
-// import { ExtField } from 'components/ui/new/field/ExtField';
-// import { get } from 'lodash';
-// import { DivNone } from 'global-styled/global-styled';
-// import { Button } from 'react-bootstrap';
-// import { ButtonGroupWrapperMargin } from 'global-styled/global-styled';
+
 import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
 import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
 import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';

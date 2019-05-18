@@ -2,12 +2,13 @@ import * as React from 'react';
 import { EtsTable, EtsTableWrapNoScroll } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import TableInputThead from './thead/TableInputThead';
 import TableInputTbody from './tbody/TableInputTbody';
-import { Row } from 'react-bootstrap';
+
 import { EtsHeaderTitle } from '../registry/components/data/header/title/styled/styled';
 import { EtsHeaderContainer } from '../registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from '../registry/components/data/header/buttons/styled/styled';
 import { EtsTableDataContainer } from '../registry/components/data/table-data/styled/styled';
 import { ButtonTableInput } from './styled';
+import EtsBootstrap from '../@bootstrap';
 
 export type TableMeta<F> = {
   key: string;
@@ -96,7 +97,7 @@ const TableInput: React.FC<TableInputProps> = React.memo(
 
     return (
       <React.Fragment>
-        <Row>
+        <EtsBootstrap.Row>
           <EtsHeaderContainer>
             <EtsHeaderTitle>
               {props.title}
@@ -139,7 +140,7 @@ const TableInput: React.FC<TableInputProps> = React.memo(
                 </EtsTableDataContainer>
               )
           }
-        </Row>
+        </EtsBootstrap.Row>
       </React.Fragment>
     );
   },

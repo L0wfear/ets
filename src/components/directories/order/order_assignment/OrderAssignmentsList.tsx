@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {
@@ -23,7 +22,7 @@ import missionPermissions from 'components/new/pages/missions/mission/_config-da
 
 const OrderAssignmentsList: React.FC<any> = (props) => (
   <Div className="data-table data-other" hidden={props.hidden} >
-    <Row>
+    <EtsBootstrap.Row>
       <ColOrderAssignmentHeaderTitleContainer md={8}>
         <TitleText>Расшифровка централизованного задания</TitleText>
         <div>
@@ -31,13 +30,13 @@ const OrderAssignmentsList: React.FC<any> = (props) => (
           <ButtonOrderAssignment permissions={dutyMissionPermissions.create} onClick={props.setDutyMissionData} disabled={props.disabledAssignmentButtonDutyMission}>Создать наряд-задание</ButtonOrderAssignment>
         </div>
       </ColOrderAssignmentHeaderTitleContainer>
-      <Col md={8}>
+      <EtsBootstrap.Col md={8}>
         <OrderAssignmentsInfoTable />
-      </Col>
-      <Col md={4}>
+      </EtsBootstrap.Col>
+      <EtsBootstrap.Col md={4}>
         <OrderInfoTable />
-      </Col>
-    </Row>
+      </EtsBootstrap.Col>
+    </EtsBootstrap.Row>
   </Div>
 );
 

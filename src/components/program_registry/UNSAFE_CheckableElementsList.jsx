@@ -1,8 +1,7 @@
 import React from 'react';
 import * as PropTypes from 'prop-types';
 
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { cloneDeep, find } from 'lodash';
 import UNSAFE_ElementsList from 'components/program_registry/UNSAFE_ElementsList';
 import {
@@ -20,6 +19,7 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
     return {
       onListStateChange: PropTypes.func,
       exportable: PropTypes.bool,
+      userData: PropTypes.any,
     };
   }
 
@@ -126,9 +126,12 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
     }
     if (this.props.exportable) {
       buttons.push(
-        <Button key={buttons.length} bsSize="small" onClick={this.handleExport}>
-          <Glyphicon glyph="download-alt" />
-        </Button>,
+        <EtsBootstrap.Button
+          key={buttons.length}
+          bsSize="small"
+          onClick={this.handleExport}>
+          <EtsBootstrap.Glyphicon glyph="download-alt" />
+        </EtsBootstrap.Button>,
       );
     }
     return buttons;

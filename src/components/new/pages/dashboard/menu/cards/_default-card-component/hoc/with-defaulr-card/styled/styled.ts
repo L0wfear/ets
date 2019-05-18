@@ -1,5 +1,5 @@
 import styled, { keyframes, css } from 'styled-components';
-import { Glyphicon } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsCardBodyContainer = {
   isLoading?: boolean;
@@ -72,7 +72,7 @@ export const CardTitleContainerWrap = styled.div`
   }
 `;
 
-export const GlyphiconWithNonAnimation = styled(Glyphicon)<{ isLoading: boolean }>`
+export const GlyphiconWithNonAnimation = styled(EtsBootstrap.Glyphicon)<{ isLoading: boolean }>`
   &&& {
     ${({ isLoading }) => isLoading ? AnimationSpin : AnimationNone};
   }

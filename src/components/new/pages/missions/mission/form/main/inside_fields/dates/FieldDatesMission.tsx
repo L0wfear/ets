@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -22,10 +20,11 @@ import {
   ExtFieldDateStartWrap,
   FieldDatesMissionContainer,
 } from './styled';
-import { Dropdown, Glyphicon, MenuItem } from 'react-bootstrap';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates } from 'utils/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, StateFieldDatesMission> {
   componentDidMount() {
@@ -125,12 +124,12 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
 
     return (
       <FieldDatesMissionContainer>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <label>Время выполнения:</label>
-          </Col>
-        </Row>
-        <Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
           <ColStartDatePickerWithDropdown md={5}>
             <ExtFieldDateStartWrap
               id="date-start"
@@ -152,7 +151,7 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
               title="Продолжительность задания, ч"
             >
               <Dropdown.Toggle disabled={false}>
-                <Glyphicon id="select-date_end" glyph="time" />
+                <EtsBootstrap.Glyphicon id="select-date_end" glyph="time" />
               </Dropdown.Toggle>
               <Dropdown.Menu className="select-date-end-custom">
                 <MenuItem eventKey={1}>1</MenuItem>
@@ -181,7 +180,7 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
               boundKeys="date_end"
             />
           </ColEndDatePicker>
-        </Row>
+        </EtsBootstrap.Row>
       </FieldDatesMissionContainer>
     );
   }

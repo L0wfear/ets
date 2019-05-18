@@ -1,8 +1,6 @@
 import React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as Nav from 'react-bootstrap/lib/Nav';
 import * as NavItem from 'react-bootstrap/lib/NavItem';
 import * as Panel from 'react-bootstrap/lib/Panel';
@@ -445,18 +443,18 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     };
 
     return (
-      <Modal
+      <EtsBootstrap.ModalContainer
         id="modal-program-object-dt"
         show={this.props.show}
         onHide={this.props.onHide}
         bsSize="lg"
         backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <Div style={{ padding: 15 }}>
-          <Row>
-            <Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
                 label="Наименование ДТ"
@@ -468,8 +466,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 disabled={!IS_CREATING || !isPermitted}
                 clearable={false}
               />
-            </Col>
-            <Col mdOffset={3} md={3}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col mdOffset={3} md={3}>
               <ExtField
                 hidden={!state.id}
                 type="select"
@@ -479,55 +477,57 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 value={state.id}
                 clearable={false}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           <div>
-            <Row style={{ marginBottom: 20 }}>
-              <Col md={12}>
+            <EtsBootstrap.Row style={{ marginBottom: 20 }}>
+              <EtsBootstrap.Col md={12}>
                 <PanelObjectInfo>
-                  <Col md={12}>
+                  <EtsBootstrap.Col md={12}>
                     <span style={{ fontWeight: 600 }}>
                       Информация об объекте
                     </span>
-                  </Col>
-                  <Col md={4}>
-                    <Col md={12}>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={4}>
+                    <EtsBootstrap.Col md={12}>
                       <span>{`Общая площадь по паспорту, кв.м.: ${Number(
                         total_area,
                       )}`}</span>
-                    </Col>
-                    <Col md={12}>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={12}>
                       <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
-                    </Col>
-                  </Col>
-                  <Col md={4}>
-                    <Col md={12}>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={4}>
+                    <EtsBootstrap.Col md={12}>
                       <span>{`Площадь проезда, кв.м.: ${0}`}</span>
-                    </Col>
-                    <Col md={12}>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={12}>
                       <span>{`Площадь проезда, кв.м.: ${0}`}</span>
-                    </Col>
-                  </Col>
-                  <Col md={4}>
-                    <Col md={12}>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={4}>
+                    <EtsBootstrap.Col md={12}>
                       <span>{`Заказчик: ${company_name
                         || prCompanyName}`}</span>
-                    </Col>
-                  </Col>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Col>
                 </PanelObjectInfo>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <Panel>
-                  <Col md={12} style={{ fontWeight: 600, marginBottom: 5 }}>
+                  <EtsBootstrap.Col
+                    md={12}
+                    style={{ fontWeight: 600, marginBottom: 5 }}>
                     <span>Подрядчик</span>
-                  </Col>
+                  </EtsBootstrap.Col>
                   <div>
-                    <Col md={2}>
+                    <EtsBootstrap.Col md={2}>
                       <SpanContractor>Номер контракта</SpanContractor>
-                    </Col>
-                    <Col md={3}>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={3}>
                       <ExtField
                         type="string"
                         value={state.contract_number}
@@ -536,11 +536,13 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                         boundKeys="contract_number"
                         disabled={!isPermitted}
                       />
-                    </Col>
-                    <Col mdOffset={2} md={1}>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col mdOffset={2} md={1}>
                       <SpanContractor>Подрядчик</SpanContractor>
-                    </Col>
-                    <Col style={{ position: 'relative', top: -20 }} md={4}>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col
+                      style={{ position: 'relative', top: -20 }}
+                      md={4}>
                       <ExtField
                         type="select"
                         error={errors.contractor_id}
@@ -550,11 +552,11 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                         boundKeys="contractor_id"
                         disabled={!isPermitted}
                       />
-                    </Col>
+                    </EtsBootstrap.Col>
                   </div>
                 </Panel>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
             <Nav
               style={{ marginBottom: 20 }}
               bsStyle="tabs"
@@ -565,14 +567,14 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
             </Nav>
             <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
-              <Row style={{ marginBottom: 20 }}>
-                <Col md={3}>
+              <EtsBootstrap.Row style={{ marginBottom: 20 }}>
+                <EtsBootstrap.Col md={3}>
                   <div className="pr-object-data">
                     <span>Процент выполнения</span>
                     <span>{state.percent}</span>
                   </div>
-                </Col>
-                <Col md={3}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={3}>
                   <div className="pr-object-data">
                     <span>Дата осмотра</span>
                     <span>
@@ -585,18 +587,18 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                         : '---'}
                     </span>
                   </div>
-                </Col>
-                <Col md={2} xsOffset={1}>
-                  <Col md={12}>
-                    <Button {...buttonPercentProps}>
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={2} xsOffset={1}>
+                  <EtsBootstrap.Col md={12}>
+                    <EtsBootstrap.Button {...buttonPercentProps}>
                       <div style={{ width: 200, textAlign: 'center' }}>%</div>
-                    </Button>
-                  </Col>
-                </Col>
-              </Row>
+                    </EtsBootstrap.Button>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
             </Div>
-            <Row>
-              <Col md={7}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={7}>
                 <TabInfo
                   isPermitted={!(!asuods_id || !isPermitted)}
                   whatSelectedTab={tabKey}
@@ -607,8 +609,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                   pushElement={this.pushElement}
                   selectedObj={selectedObj}
                 />
-              </Col>
-              <Col md={5}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={5}>
                 <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
@@ -629,8 +631,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                     }
                   />
                 </Div>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </div>
         </Div>
         <Div hidden={!showPercentForm}>
@@ -642,14 +644,14 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           />
         </Div>
         <ModalBody />
-        <Modal.Footer>
-          <Button
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button
             disabled={!this.props.canSave}
             onClick={isPermitted ? this.handleSubmitWrap : this.props.onHide}>
             {isPermitted ? 'Сохранить' : 'Закрыть'}
-          </Button>
-        </Modal.Footer>
-      </Modal>
+          </EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

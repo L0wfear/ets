@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 interface Paginator {
   maxPage: number;
@@ -78,7 +78,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
       options.push(
         <li className="aui-nav-previous" key="prev">
           <a className="pointer pagination-control" onClick={this.previous}>
-            <Glyphicon glyph="chevron-left" />
+            <EtsBootstrap.Glyphicon glyph="chevron-left" />
           </a>
         </li>,
       );
@@ -113,7 +113,7 @@ class Paginator extends React.PureComponent<Paginator, any> {
           <a
             className={nextClasses}
             onClick={this.next.bind(this, !(currentPage < maxPage - 1))}>
-            <Glyphicon glyph="chevron-right" />
+            <EtsBootstrap.Glyphicon glyph="chevron-right" />
           </a>
         </li>,
       );

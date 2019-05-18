@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -40,7 +40,7 @@ class OdhNotCoveredByRoutesInfo extends React.PureComponent<PropsOdhNotCoveredBy
         </ul>
         <RightButtonBlockContainer>
           <LinkToRouteListPermitted to={`/routes-list/?technical_operation_id=${infoData.technical_operation_id}`}>
-            <Button onClick={this.gotoRoute}>Перейти к маршрутам</Button>
+            <EtsBootstrap.Button onClick={this.gotoRoute}>Перейти к маршрутам</EtsBootstrap.Button>
           </LinkToRouteListPermitted>
         </RightButtonBlockContainer>
       </InfoCard>

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
-import { Modal } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isArray } from 'highcharts';
 import { DefaultHeaderType } from 'components/new/utils/context/form/@types';
 
@@ -37,9 +37,9 @@ const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
       ),
       [props, title],
     );

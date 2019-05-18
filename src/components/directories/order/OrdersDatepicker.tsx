@@ -1,15 +1,14 @@
 import * as React from 'react';
-import * as Row from 'react-bootstrap/lib/Row';
 import { connect } from 'react-redux';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { getOrders } from 'redux-main/reducers/modules/order/action-order';
 
-import { Col } from 'react-bootstrap';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 const OrdersDatepicker: React.FC<any> = (props) => (
-  <Row>
-    <Col md={6} mdOffset={3} sm={6} smOffset={3}>
+  <EtsBootstrap.Row>
+    <EtsBootstrap.Col md={6} mdOffset={3} sm={6} smOffset={3}>
       <DatePickerRange
         date_start_id="date_start"
         date_start_value={props.date_start}
@@ -18,8 +17,8 @@ const OrdersDatepicker: React.FC<any> = (props) => (
 
         onChange={props.getOrders}
       />
-    </Col>
-  </Row>
+    </EtsBootstrap.Col>
+  </EtsBootstrap.Row>
 );
 
 const mapStateToProps = (state) => ({

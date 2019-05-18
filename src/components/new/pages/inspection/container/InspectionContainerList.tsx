@@ -14,10 +14,10 @@ import { OwnInspectContainerProps, DispatchPropsInspectContainer, StatePropsInsp
 import { ReduxState } from 'redux-main/@types/state';
 import IAVisibleWarningContainer from './filed_to_check/IAVisibleWarningContainer';
 import InspectContainerRegistry from './registry/InspectContainerRegistry';
-import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal, Button, Row, Col } from 'react-bootstrap';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class InspectionContainerList extends React.Component<PropsInspectContainerForm> {
   addToActionRow = (action) => {
@@ -52,19 +52,19 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
     const isPermitted = true;
 
     return (
-      <EtsModal
+      <EtsBootstrap.ModalContainer
         id="modal-inspect_container-mission"
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
         backdrop="static"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>Карточка емкости</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>Карточка емкости</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <IAVisibleWarningContainer
                 onChange={this.props.handleChange}
                 data={state}
@@ -80,7 +80,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                 filedToCheck={filedToCheckContainerSecond}
               />
               <br/>
-              <Row>
+              <EtsBootstrap.Row>
                 <InspectContainerRegistry
                   actions={state.actions}
                   page={this.props.page}
@@ -88,25 +88,25 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                   addToActionRow={this.addToActionRow}
                   removeActionByIndex={this.removeActionByIndex}
                 />
-              </Row>
-            </Col>
-          </Row>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
             <div>
-              <Button
+              <EtsBootstrap.Button
                 disabled={!this.props.canSave}
                 onClick={this.props.defaultSubmit}>
                 Сохранить
-              </Button>
+              </EtsBootstrap.Button>
             </div>
           ) : (
             <DivNone />
           )}
-          <Button onClick={this.props.hideWithoutChanges}>Отмена</Button>
-        </Modal.Footer>
-      </EtsModal>
+          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

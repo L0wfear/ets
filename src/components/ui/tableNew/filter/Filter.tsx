@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import Div from 'components/ui/Div';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Collapse from 'react-bootstrap/lib/Collapse';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
 import FilterRow from 'components/ui/tableNew/filter/FilterRow';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
+
 import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
 
 const FilterRowTSX: any = FilterRow;
@@ -119,23 +117,23 @@ class Fiter extends React.Component<any, any> {
         <Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
-              <Button type="submit">Применить</Button>
-              <Button
+              <EtsBootstrap.Button type="submit">Применить</EtsBootstrap.Button>
+              <EtsBootstrap.Button
                 onClick={this.reset}
                 disabled={!this.props.haveActiveFilter}>
                 Сброс
-              </Button>
+              </EtsBootstrap.Button>
               <span className="filter-close" onClick={this.props.toggleFilter}>
-                <Glyphicon glyph="remove" />
+                <EtsBootstrap.Glyphicon glyph="remove" />
               </span>
             </Div>
-            <Row>
-              <Col md={12}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <FilterRowsContainerDataTable>
                   {this.props.tableMeta.cols.map(this.renderFilterRow)}
                 </FilterRowsContainerDataTable>
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </Div>
         </Collapse>
       </form>

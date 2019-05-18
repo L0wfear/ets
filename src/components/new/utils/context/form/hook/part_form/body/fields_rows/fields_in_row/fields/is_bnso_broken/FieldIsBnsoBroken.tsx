@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import { FieldDataIsBnsoBroken } from 'components/new/utils/context/form/@types/fields/string';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldIsBnsoBrokenProps = {
   fieldData: FieldDataIsBnsoBroken;
@@ -31,7 +31,7 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <Col md={props.fieldData.md || 12}>
+        <EtsBootstrap.Col md={props.fieldData.md || 12}>
           <ExtField
             id={`${path}_${key}`}
             type="string"
@@ -41,7 +41,7 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
             onChange={handleChangeWrap}
             disabled={!isPermitted}
           />
-        </Col>
+        </EtsBootstrap.Col>
       ),
       [props, path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
     );

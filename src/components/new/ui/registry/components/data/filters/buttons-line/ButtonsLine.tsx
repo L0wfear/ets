@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { connect } from 'react-redux';
 import {
   registryToggleIsOpenFilter,
@@ -20,6 +19,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsButtonsLIne = {
   registryKey: string;
@@ -57,7 +57,7 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
           </EtsFilterActionButton>
         </EtsFilterActionButtonConteiner>
         <EtsFiltersCloseContainer onClick={props.handleClose}>
-          <Glyphicon glyph="remove" />
+          <EtsBootstrap.Glyphicon glyph="remove" />
         </EtsFiltersCloseContainer>
       </EtsFiltersButtonsLine>
     );

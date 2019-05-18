@@ -17,8 +17,9 @@ import { isInspectIsConducting } from 'redux-main/reducers/modules/inspect/inspe
 
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { HiddenPageEtsContainer, PopupBottomForm, TitleForm } from './styled';
-import { Button, Glyphicon } from 'react-bootstrap';
+
 import { createPortal } from 'react-dom';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type WithInspectFormWrapCheckConfig = {
   loadingPage: string;
@@ -193,7 +194,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
                 <React.Fragment>
                   <TitleForm md={12} sm={12}>
                     <h4>{config.title}</h4>
-                    <Button onClick={handleCloseForm}><Glyphicon glyph="remove" /></Button>
+                    <EtsBootstrap.Button onClick={handleCloseForm}><EtsBootstrap.Glyphicon glyph="remove" /></EtsBootstrap.Button>
                   </TitleForm>
                   <Component
                     selectedInspect={selectedInspect}

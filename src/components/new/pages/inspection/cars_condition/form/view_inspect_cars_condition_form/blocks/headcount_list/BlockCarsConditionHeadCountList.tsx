@@ -3,9 +3,9 @@ import { BoxContainer } from 'components/new/pages/inspection/autobase/component
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
-import { Row, Col } from 'react-bootstrap';
 import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionHeadCountListProps = {
   onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
@@ -39,11 +39,11 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
     return (
       <BoxContainer>
         <h4>Штатная и списочная численность</h4>
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <h5>По штатному расписанию.</h5>
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="staff_drivers"
               type="number"
@@ -54,8 +54,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               error={errors.staff_drivers}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="staff_mechanics"
               type="number"
@@ -66,13 +66,13 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               error={errors.staff_mechanics}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <h5>Списочное количество.</h5>
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="list_drivers"
               type="number"
@@ -83,8 +83,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               error={errors.list_drivers}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="list_mechanics"
               type="number"
@@ -95,13 +95,13 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               error={errors.list_mechanics}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <h5>Укомплектованность.</h5>
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="staffing_drivers"
               type="number"
@@ -112,8 +112,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               error={errors.staffing_drivers}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               id="staffing_mechanics"
               type="number"
@@ -124,8 +124,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               error={errors.staffing_mechanics}
               disabled={!isActiveInspect || !isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </BoxContainer>
     );
   },

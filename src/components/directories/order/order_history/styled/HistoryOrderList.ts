@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const HistoryOrderListPanelTitleCol = styled(Col)`
+export const HistoryOrderListPanelTitleCol = styled(EtsBootstrap.Col)`
   cursor: pointer;
   padding: 20px;
 `;
@@ -12,6 +12,6 @@ export const HistoryOrderListPanelTitleH4 = styled.h4`
   margin: 0px;
 `;
 
-export const HistoryOrderListPanelTitleColSelect = styled(Col)`
+export const HistoryOrderListPanelTitleColSelect = styled(EtsBootstrap.Col)`
   display: flex;
 `;

@@ -1,11 +1,11 @@
 import React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
 
 import LoadingOverlay from 'components/ui/LoadingOverlay';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export default (props) => (
-  <Modal.Body {...props}>
+  <EtsBootstrap.ModalBody {...props}>
     <LoadingOverlay />
     {props.children}
-  </Modal.Body>
+  </EtsBootstrap.ModalBody>
 );

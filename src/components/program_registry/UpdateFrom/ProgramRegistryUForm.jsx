@@ -1,9 +1,5 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBody from 'components/ui/Modal';
@@ -28,16 +24,16 @@ import { DivNone } from 'global-styled/global-styled';
 
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
-  <Row>
-    <Col md={12} style={styleTextMakeVersion}>
+  <EtsBootstrap.Row>
+    <EtsBootstrap.Col md={12} style={styleTextMakeVersion}>
       После создания новой версии программы ремонта, текущая версия станет
       недействующей и недоступной для ввода данных.
-    </Col>
-    <Col md={12} style={styleTextMakeVersion}>
+    </EtsBootstrap.Col>
+    <EtsBootstrap.Col md={12} style={styleTextMakeVersion}>
       Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию
       документа, на основании которого создается новая версия.
-    </Col>
-  </Row>
+    </EtsBootstrap.Col>
+  </EtsBootstrap.Row>
 );
 
 const getTitleByStatus = (status) => {
@@ -98,9 +94,9 @@ class ProgramRegistryForm extends UNSAFE_Form {
 
   getButton = (key, onClick, text, show = false, canSave = true) =>
     show && (
-      <Button key={key} disabled={!canSave} onClick={onClick}>
+      <EtsBootstrap.Button key={key} disabled={!canSave} onClick={onClick}>
         {text}
-      </Button>
+      </EtsBootstrap.Button>
     );
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
@@ -174,18 +170,18 @@ class ProgramRegistryForm extends UNSAFE_Form {
           onHide={this.hideMakeVersionForm}
           onSubmit={this.handleMakeVersionClick}
         />
-        <Modal
+        <EtsBootstrap.ModalContainer
           id="modal-program-registry-u"
           show={this.props.show && !makeVersionIsVisible}
           onHide={this.props.onHide}
           bsSize="lg"
           backdrop="static">
-          <Modal.Header closeButton>
-            <Modal.Title>{title}</Modal.Title>
-          </Modal.Header>
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
           <Div style={{ padding: '0px 15px' }}>
-            <Row>
-              <Col md={5} xsOffset={7}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={5} xsOffset={7}>
                 <Field
                   type="select"
                   label="Версии"
@@ -194,10 +190,10 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   onChange={this.props.changeVersion}
                   clearable={false}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="select"
                   label="Гос. программа"
@@ -209,36 +205,36 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                   clearable={false}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="Тип ремонта"
                   value={state.repair_type_name}
                   readOnly
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   type="string"
                   label="Тип объектов ремонта"
                   value={state.object_type_name}
                   readOnly
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   type="string"
                   label="Заказчик"
                   value={state.company_name}
                   readOnly
                 />
-              </Col>
-            </Row>
-            <Row style={{ paddingTop: 15 }}>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row style={{ paddingTop: 15 }}>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="Наименование программы"
@@ -248,8 +244,8 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   boundKeys="name"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   type="date"
                   label="Плановые сроки:"
@@ -260,8 +256,8 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   boundKeys="plan_date_start"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   type="date"
                   label=""
@@ -272,18 +268,18 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   boundKeys="plan_date_end"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="Статус"
                   value={state.status_name}
                   readOnly
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   type="date"
                   label="Фактические сроки:"
@@ -294,8 +290,8 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   boundKeys="fact_date_start"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-              <Col md={3}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={3}>
                 <ExtField
                   type="date"
                   label=""
@@ -306,20 +302,20 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   boundKeys="fact_date_end"
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="Процент выполнения"
                   value={`${state.percent} %`}
                   readOnly
                 />
-              </Col>
-            </Row>
-            <Row style={{ paddingTop: 15 }}>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row style={{ paddingTop: 15 }}>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="select"
                   label="Подрядчик"
@@ -332,8 +328,8 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     !isPermitted || !isPermittetForContractorL || !is_active
                   }
                 />
-              </Col>
-              <Col md={6}>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
                 <ExtField
                   type="string"
                   label="№ контракта"
@@ -345,10 +341,10 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     !isPermitted || !isPermittetForContractorL || !is_active
                   }
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={10}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={10}>
                 <ExtField
                   type="text"
                   label="Примечание"
@@ -359,10 +355,10 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   textAreaStyle={{ resize: 'none' }}
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-            </Row>
-            <Row>
-              <Col md={12}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <FileField
                   multiple
                   label="Файл"
@@ -373,11 +369,11 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   isLoading={this.props.onOverlayLoading}
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
-              </Col>
-            </Row>
-            <Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row>
               {state.id ? (
-                <Col md={12}>
+                <EtsBootstrap.Col md={12}>
                   <ProgramObjectList
                     program_version_id={state.id}
                     program_version_status={state.status}
@@ -398,21 +394,21 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     program_version_status={state.status}
                     isPermittedByStatus={isPermittedByStatus}
                   />
-                </Col>
+                </EtsBootstrap.Col>
               ) : (
                 <DivNone />
               )}
-            </Row>
+            </EtsBootstrap.Row>
           </Div>
           <ModalBody />
-          <Modal.Footer>
-            <Row>
-              <Col md={12}>
+          <EtsBootstrap.ModalFooter>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 {[
                   this.getButton(
                     0,
                     this.props.handleExportVersion,
-                    <Glyphicon glyph="download-alt" />,
+                    <EtsBootstrap.Glyphicon glyph="download-alt" />,
                     false && permissionForButton.exportPDF,
                   ),
                   this.getButton(
@@ -458,10 +454,10 @@ class ProgramRegistryForm extends UNSAFE_Form {
                       && mainButtonEnable,
                   ),
                 ]}
-              </Col>
-            </Row>
-            <Row style={{ marginTop: 5 }}>
-              <Col md={12}>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+            <EtsBootstrap.Row style={{ marginTop: 5 }}>
+              <EtsBootstrap.Col md={12}>
                 {[
                   this.getButton(
                     20,
@@ -485,10 +481,10 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     this.props.canSave && state.status === 'accepted',
                   ),
                 ]}
-              </Col>
-            </Row>
-          </Modal.Footer>
-        </Modal>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
       </div>
     );
   }

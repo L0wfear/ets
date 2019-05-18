@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
-import { Col } from 'react-bootstrap';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillActivatedByEmployeeNameProps = {
   formDataKey: string;
@@ -16,7 +16,7 @@ const FieldWaybillActivatedByEmployeeName: React.FC<FieldWaybillActivatedByEmplo
 
     return React.useMemo(
       () => (
-        <Col md={12}>
+        <EtsBootstrap.Col md={12}>
           <ExtField
             id={`${path}_${key}`}
             type="string"
@@ -24,7 +24,7 @@ const FieldWaybillActivatedByEmployeeName: React.FC<FieldWaybillActivatedByEmplo
             value={activated_by_employee_name}
             readOnly
           />
-        </Col>
+        </EtsBootstrap.Col>
       ),
       [path, key, activated_by_employee_name],
     );

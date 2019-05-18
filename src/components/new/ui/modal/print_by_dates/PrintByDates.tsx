@@ -1,8 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as moment from 'moment';
 
@@ -63,31 +61,31 @@ class PrintByDates extends React.Component<IPropsPrintByDates, any> {
   }
   render() {
     return (
-      <Modal id="modal-print-from" show={this.props.show} onHide={this.props.onHide} bsSize="small" >
+      <EtsBootstrap.ModalContainer id="modal-print-from" show={this.props.show} onHide={this.props.onHide} bsSize="small" >
 
-        <Modal.Header>
-          <Modal.Title>{this.props.title}</Modal.Title>
-        </Modal.Header>
+        <EtsBootstrap.ModalHeader>
+          <EtsBootstrap.ModalTitle>{this.props.title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
 
         <ModalBody>
           <span style={{ marginBottom: 10, display: 'block' }}>Выберите период:</span>
-          <Row>
-            <Col md={12} style={{ marginBottom: 5 }}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12} style={{ marginBottom: 5 }}>
               <Datepicker time={false} date={this.state.date_from} onChange={(v) => this.handleChange('date_from', v)} />
-            </Col>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <Datepicker time={false} date={this.state.date_to} onChange={(v) => this.handleChange('date_to', v)} />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBody>
 
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <Div className="inline-block">
-            <Button onClick={this.handleSubmit}>ОК</Button>
-            <Button onClick={this.handleHide}>Отмена</Button>
+            <EtsBootstrap.Button onClick={this.handleSubmit}>ОК</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.handleHide}>Отмена</EtsBootstrap.Button>
           </Div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { CenterCol, FlexRow } from './styled';
 import config from 'config';
@@ -12,6 +11,7 @@ import { CarWrap } from '../../../@types/CarForm';
 import FieldSelectDriverCar from './inside_fields/drivers_data/FieldSelectDriverCar';
 import { MarginTopRow } from '../registration/styled';
 import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type MainInfoTab = {
   isPermitted: boolean;
@@ -45,7 +45,7 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
 
     return (
       <MarginTopRow>
-        <Col md={12}>
+        <EtsBootstrap.Col md={12}>
           <FlexRow>
             <CenterCol md={6}>
               {
@@ -66,8 +66,8 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
               <ExtField inline type="string" label="Группа техники" readOnly value={state.car_group_name || 'Не указано'} />
             </CenterCol>
           </FlexRow>
-          <Row>
-            <Col md={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="date"
                 time={false}
@@ -104,8 +104,8 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 disabled={!isPermitted}
                 error={errors.parking_address}
               />
-            </Col>
-            <Col md={6}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6}>
               <ExtField
                 type="number"
                 label="Поправочный коэффициент"
@@ -133,8 +133,8 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 boundKeys="is_common"
                 disabled={!isPermitted}
               />
-            </Col>
-            <Col md={12}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
               <FieldSelectDriverCar
                 gov_number={state.gov_number}
                 drivers_data={state.drivers_data}
@@ -144,9 +144,9 @@ const MainInfoTab: React.FC<MainInfoTab> = React.memo(
                 page={props.page}
                 path={props.path}
               />
-            </Col>
-          </Row>
-        </Col>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </EtsBootstrap.Col>
       </MarginTopRow>
     );
   },

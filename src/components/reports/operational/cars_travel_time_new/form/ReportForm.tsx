@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import MapContainer from 'components/new/ui/mission_info_form/form-components/map-contaienr/MapContainer';
@@ -20,7 +19,6 @@ import {
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 import { get } from 'lodash';
-import { Row, Col, } from 'react-bootstrap';
 import DataTable from 'components/ui/table/DataTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
@@ -32,6 +30,7 @@ import {
   PropsCarsTravelTimeModal,
   CarsTravelTimeModalOwnProps,
 } from 'components/reports/operational/cars_travel_time_new/form/@types/CarsTravelTime.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
 
@@ -174,13 +173,13 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   }, [selectedElement]);
 
   return (
-    <Modal id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large" backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{modalTitle}</Modal.Title>
-      </Modal.Header>
+    <EtsBootstrap.ModalContainer id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large" backdrop="static">
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{modalTitle}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader>
-        <Row>
-          <Col md={6}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
             <MapContainer
                 gov_number={gov_number}
                 gps_code={gps_code}
@@ -194,8 +193,8 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
                 has_mkad={has_mkad}
                 object_type_name={type}
               />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <ReportFormRightWrapper>
               {
                 props.carsTravelTimeList.length ?
@@ -217,10 +216,10 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
             </ReportFormRightWrapper>
             <b>{distance_out_mission_text} <br/>
             {travel_time_out_mission_text}</b>
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-    </Modal>
+    </EtsBootstrap.ModalContainer>
   );
 
 };

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Button } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const LineData = styled.div`
   display: flex;
@@ -27,7 +27,7 @@ export const StatusLabel = styled.b`
   padding: 0 15px;
 `;
 
-export const BigPaddingButton = styled(Button)`
+export const BigPaddingButton = styled(EtsBootstrap.Button)`
   &&& {
     white-space: pre-wrap;
   }

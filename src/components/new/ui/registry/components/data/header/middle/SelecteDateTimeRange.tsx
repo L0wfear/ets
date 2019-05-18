@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -7,6 +6,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelecteDateTimeRangeStateProps = {
 };
@@ -25,7 +25,7 @@ type SelecteDateTimeRangeProps = (
   & WithSearchProps
 );
 
-const ButtonWrap = styled(Button)``;
+const ButtonWrap = styled(EtsBootstrap.Button)``;
 
 const ButtonContainer = styled.div`
   flex-grow: 1;

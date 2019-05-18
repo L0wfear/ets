@@ -1,6 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import * as cx from 'classnames';
 
@@ -173,7 +172,7 @@ class TitleTrackTab extends React.Component<
               boundKeys="date_end"
               disabled={forToday || this.props.disabledForToday}
             />
-            <Button
+            <EtsBootstrap.Button
               title="Перезагрузить данные"
               className="reload-button"
               onClick={this.reloadTrackAndMissions}
@@ -183,8 +182,8 @@ class TitleTrackTab extends React.Component<
                 disbledByTrackPlayStatys ||
                 !!errorDates
               }>
-              <Glyphicon glyph="repeat" />
-            </Button>
+              <EtsBootstrap.Glyphicon glyph="repeat" />
+            </EtsBootstrap.Button>
           </div>
           <div>
             <span className={'error'}>{errorDates}</span>

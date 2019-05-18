@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as Col from 'react-bootstrap/lib/Col';
 
 import { IPropsMapInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.h';
 import RouteCreatingMap from 'components/new/pages/routes_list/form/inside_fields/creating-map/map/RouteCreatingMap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class MapInfo extends React.Component<IPropsMapInfo, any> {
   handleFeatureClick = ({ id }) => {
@@ -50,27 +50,27 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
 
     return (
       <div>
-        <Col md={12}>
-          <Col md={12}>
+        <EtsBootstrap.Col md={12}>
+          <EtsBootstrap.Col md={12}>
             <label>Отрисовка границ ремонта</label>
-          </Col>
-          <Col md={12} style={{ marginBottom: 15 }}>
-            <Col md={6} onClick={this.setManualOnFalse} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12} style={{ marginBottom: 15 }}>
+            <EtsBootstrap.Col md={6} onClick={this.setManualOnFalse} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
               <input
                 disabled={!isPermitted}
                 type="radio"
                 checked={!manual}
               />Отрисовать весь объект
-            </Col>
-            <Col md={6} onClick={this.setManualOnTrue} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={6} onClick={this.setManualOnTrue} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
               <input
                 disabled={!isPermitted}
                 type="radio"
                 checked={manual}
               />Отрисовать границы ремонта
-            </Col>
-          </Col>
-          <Col md={12}>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             <div style={{ minHeight: 500 }}>
               <RouteCreatingMap
                 objectsType={objectsType}
@@ -88,8 +88,8 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 disabled={!isPermittedMap}
               />
             </div>
-          </Col>
-        </Col>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Col>
       </div>
     );
   }

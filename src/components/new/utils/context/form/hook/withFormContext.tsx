@@ -9,7 +9,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import EtsModal from 'components/new/ui/modal/Modal';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FormStateProps = {
   permissionsSet: InitialStateSession['userData']['permissionsSet'];    // пермишены для валидации, пока сессия на redux
@@ -103,11 +103,11 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
       return React.useMemo(
         () => {
           return handleHide && (
-            <EtsModal id={`modal-${formData.key}}`}show onHide={handleHide} backdrop="static" bsSize={formData.bsSizeForm}>
+            <EtsBootstrap.ModalContainer id={`modal-${formData.key}}`}show onHide={handleHide} backdrop="static" bsSize={formData.bsSizeForm}>
               <ModalFormHeader formDataKey={formData.key} />
               <ModalFormBody formDataKey={formData.key} />
               <ModalFormFooter formDataKey={formData.key} />
-            </EtsModal>
+            </EtsBootstrap.ModalContainer>
           );
         },
         [handleHide], // так проще, тк formData меняется, но это изменение здесь не нужно

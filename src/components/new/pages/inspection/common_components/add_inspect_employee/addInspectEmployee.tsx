@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Row, Col, Glyphicon } from 'react-bootstrap';
+
 import { DivNone } from 'global-styled/global-styled';
 import { ViewInspectAutobaseOwnProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
 import {get} from 'lodash';
@@ -23,6 +23,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { ViewInspectPgmBaseOwnProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type ViewAddInspectEmployeeProps = {
   type: ViewInspectAutobaseOwnProps['type'] | ViewInspectPgmBaseOwnProps['type'];
@@ -410,9 +411,9 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
   return type !== get(props.inspectTypeForm, 'list', null)
     ? (
       <ViewAddInspectEmployeeWrapper>
-        <Col md={6} sm={6}>
-          <Row>
-            <Col md={12}>
+        <EtsBootstrap.Col md={6} sm={6}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="date"
                 label="Срок, до которого необходимо устранить недостатки"
@@ -423,16 +424,16 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 boundKeys="resolve_to"
                 disabled={resolveToIsDisabled}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
           <ViewInspectSingleBlock>
-            <Row>
-              <Col md={12}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <h4>Члены комиссии:</h4>
                 {
                   state.commission_members.map((employeeData, index) => (
-                    <Row key={index}>
-                      <Col md={12}>
+                    <EtsBootstrap.Row key={index}>
+                      <EtsBootstrap.Col md={12}>
                         <EmpRow highlight={employeeData.clearable}>
                           <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>
                           {
@@ -440,11 +441,11 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                               ? (
                                 <>
                                   &nbsp;
-                                  <Button disabled={!props.canRemoveEmployee} className="close" onClick={() => { dispatch(actionRemoveMembers(employeeData)); } }>
+                                  <EtsBootstrap.Button disabled={!props.canRemoveEmployee} className="close" onClick={() => { dispatch(actionRemoveMembers(employeeData)); } }>
                                     <span aria-hidden="true">
                                       ×
                                     </span>
-                                  </Button>
+                                  </EtsBootstrap.Button>
                                 </>
                               )
                               : (
@@ -452,17 +453,17 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                               )
                           }
                         </EmpRow>
-                      </Col>
-                    </Row>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
                   ))
                 }
                 {
                   state.showMemberAdd ? (
-                    <Row>
-                      <Col md={12}>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={12}>
                         <ShowBlockWrapper>
-                          <Row>
-                            <Col md={6}>
+                          <EtsBootstrap.Row>
+                            <EtsBootstrap.Col md={6}>
                               <FieldWrap>
                                 <ExtField
                                   type="string"
@@ -473,8 +474,8 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                                   error={state.errors.member_position}
                                 />
                               </FieldWrap>
-                            </Col>
-                            <Col md={6}>
+                            </EtsBootstrap.Col>
+                            <EtsBootstrap.Col md={6}>
                               <FieldWrap>
                                 <ExtField
                                   type="string"
@@ -485,21 +486,21 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                                   error={state.errors.member_fio}
                                 />
                               </FieldWrap>
-                            </Col>
-                          </Row>
+                            </EtsBootstrap.Col>
+                          </EtsBootstrap.Row>
                           <Div>
-                            <Button disabled={!state.canSaveMember} onClick={ () => dispatch(actionAddMembers(newMember, true)) }>
+                            <EtsBootstrap.Button disabled={!state.canSaveMember} onClick={ () => dispatch(actionAddMembers(newMember, true)) }>
                               Сохранить
-                            </Button>
+                            </EtsBootstrap.Button>
                           </Div>
-                          <Button className="close" onClick={ () => dispatch(actionShowMembersAdd(false)) }>
+                          <EtsBootstrap.Button className="close" onClick={ () => dispatch(actionShowMembersAdd(false)) }>
                             <span aria-hidden="true">
                               ×
                             </span>
-                          </Button>
+                          </EtsBootstrap.Button>
                         </ShowBlockWrapper>
-                      </Col>
-                    </Row>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
                   ) : (
                     <DivNone />
                   )
@@ -507,35 +508,35 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 {
                   isPermittedChangeCloseParams
                     ? (
-                      <Row>
-                        <Col md={12}>
-                          <Button
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Button
                             disabled={!props.canAddMembers || state.showMemberAdd}
                             onClick={ () => dispatch(actionShowMembersAdd(true)) }>
-                            <Glyphicon glyph="plus"/>&nbsp;Добавить проверяющего
-                          </Button>
-                        </Col>
-                      </Row>
+                            <EtsBootstrap.Glyphicon glyph="plus"/>&nbsp;Добавить проверяющего
+                          </EtsBootstrap.Button>
+                        </EtsBootstrap.Col>
+                      </EtsBootstrap.Row>
                     )
                     : (
                       <DivNone />
                     )
                 }
-              </Col>
-            </Row>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           </ViewInspectSingleBlock>
           <ViewInspectSingleBlock>
-            <Row>
-              <Col md={12}>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
                 <h4>
                   От ГБУ:&nbsp;{`${props.selectedInspect.company_name}`}
                 </h4>
-              </Col>
+              </EtsBootstrap.Col>
               {
                 state.agents_from_gbu.map((employeeData, index) => (
-                  <Col md={12} key={index}>
-                    <Row>
-                      <Col md={12}>
+                  <EtsBootstrap.Col md={12} key={index}>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={12}>
                         <EmpRow highlight={employeeData.clearable}>
                           <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>
                           {
@@ -543,11 +544,11 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                               ? (
                                 <>
                                   &nbsp;
-                                  <Button disabled={!props.canRemoveEmployee} className="close" onClick={() => { dispatch(actionRemoveAgents(employeeData)); } }>
+                                  <EtsBootstrap.Button disabled={!props.canRemoveEmployee} className="close" onClick={() => { dispatch(actionRemoveAgents(employeeData)); } }>
                                     <span aria-hidden="true">
                                       ×
                                     </span>
-                                  </Button>
+                                  </EtsBootstrap.Button>
                                 </>
                               )
                               : (
@@ -555,17 +556,17 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                               )
                           }
                         </EmpRow>
-                      </Col>
-                    </Row>
-                  </Col>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
+                  </EtsBootstrap.Col>
                 ))
               }
               {
                 state.showAgentAdd ? (
-                  <Col md={12}>
+                  <EtsBootstrap.Col md={12}>
                     <ShowBlockWrapper>
-                      <Row>
-                        <Col md={6}>
+                      <EtsBootstrap.Row>
+                        <EtsBootstrap.Col md={6}>
                           <FieldWrap>
                             <ExtField
                               type="string"
@@ -576,8 +577,8 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                               error={state.errors.agent_from_gbu_position}
                             />
                           </FieldWrap>
-                        </Col>
-                        <Col md={6}>
+                        </EtsBootstrap.Col>
+                        <EtsBootstrap.Col md={6}>
                           <FieldWrap>
                             <ExtField
                               type="string"
@@ -588,20 +589,20 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                               error={state.errors.agent_from_gbu_fio}
                             />
                           </FieldWrap>
-                        </Col>
-                      </Row>
+                        </EtsBootstrap.Col>
+                      </EtsBootstrap.Row>
                       <Div>
-                        <Button disabled={!state.canSaveAgent} onClick={ () => dispatch(actionAddAgent(newAgent, true)) }>
+                        <EtsBootstrap.Button disabled={!state.canSaveAgent} onClick={ () => dispatch(actionAddAgent(newAgent, true)) }>
                           Сохранить
-                        </Button>
+                        </EtsBootstrap.Button>
                       </Div>
-                      <Button className="close" onClick={ () => dispatch(actionShowAgentAdd(false)) }>
+                      <EtsBootstrap.Button className="close" onClick={ () => dispatch(actionShowAgentAdd(false)) }>
                         <span aria-hidden="true">
                           ×
                         </span>
-                      </Button>
+                      </EtsBootstrap.Button>
                     </ShowBlockWrapper>
-                  </Col>
+                  </EtsBootstrap.Col>
                 ) : (
                   <DivNone />
                 )
@@ -609,22 +610,22 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
               {
                 isPermittedChangeCloseParams
                   ? (
-                    <Col md={12}>
-                      <Button
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Button
                         disabled={!props.canAddCompanyAgent || state.showAgentAdd}
                         onClick={ () => dispatch(actionShowAgentAdd(true)) }>
-                        <Glyphicon glyph="plus"/>
+                        <EtsBootstrap.Glyphicon glyph="plus"/>
                         &nbsp;
                         Добавить представителя ГБУ
-                      </Button>
-                    </Col>
+                      </EtsBootstrap.Button>
+                    </EtsBootstrap.Col>
                   ) : (
                     <DivNone />
                   )
               }
-            </Row>
+            </EtsBootstrap.Row>
           </ViewInspectSingleBlock>
-        </Col>
+        </EtsBootstrap.Col>
       </ViewAddInspectEmployeeWrapper>
     )
     : (

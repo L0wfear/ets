@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const MarginTopRow = styled(Row)`
+export const MarginTopRow = styled(EtsBootstrap.Row)`
   margin-top: 20px;
 `;
 
@@ -13,6 +13,6 @@ export const FlexRow = styled(MarginTopRow)`
   flex-direction: row-reverse;
 `;
 
-export const CenterCol = styled(Col)`
+export const CenterCol = styled(EtsBootstrap.Col)`
   text-align: center;
 `;

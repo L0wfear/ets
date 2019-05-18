@@ -1,8 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import Div from 'components/ui/Div';
 import { loadingOverlay } from 'components/ui/LoadingOverlay';
@@ -35,14 +33,14 @@ class MakeFileModal extends React.Component<any, any> {
     const { TextBody } = this.props;
 
     return (
-      <Modal {...this.props} id="modal-make-version" onHide={this.onHide} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{this.props.title}</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer {...this.props} id="modal-make-version" onHide={this.onHide} backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{this.props.title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <Div style={{ padding: '0px 15px' }}>
           {TextBody}
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <FileField
                 label="Файл"
                 value={this.state.files}
@@ -50,14 +48,14 @@ class MakeFileModal extends React.Component<any, any> {
                 boundKeys="files"
                 isLoading={this.props.onOverlayLoading}
               />
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </Div>
         <ModalBody />
-        <Modal.Footer>
-          <Button disabled={!canSave} onClick={this.onSubmit}>{this.props.btName}</Button>
-        </Modal.Footer>
-      </Modal>
+        <EtsBootstrap.ModalFooter>
+          <EtsBootstrap.Button disabled={!canSave} onClick={this.onSubmit}>{this.props.btName}</EtsBootstrap.Button>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as queryString from 'query-string';
 
@@ -14,9 +13,6 @@ import {
   ButtonCreateNew,
   ButtonReadNew,
   ButtonDeleteNew,
-  ButtonCreate,
-  ButtonRead,
-  ButtonDelete,
 } from 'components/ui/buttons/CRUD';
 
 /**
@@ -32,6 +28,7 @@ class ElementsList extends React.Component {
       location: PropTypes.object,
       exportable: PropTypes.bool,
       export: PropTypes.func,
+      userData: PropTypes.any,
     };
   }
 
@@ -231,7 +228,6 @@ class ElementsList extends React.Component {
   getButtons(propsButton = {}) {
     // Операции, заданные в статической переменной operations класса-наследника
     const operations = this.constructor.operations || [];
-    const entity = this.constructor.entity;
     const buttons = [];
 
     const {
@@ -242,65 +238,35 @@ class ElementsList extends React.Component {
 
     if (operations.indexOf('CREATE') > -1) {
       buttons.push(
-        this.permissions.create ? (
-          <ButtonCreateNew
-            key="button-create"
-            buttonName={BCbuttonName}
-            onClick={this.createElement}
-            permission={this.permissions.create}
-            disabled={this.state.showForm}
-          />
-        ) : (
-          <ButtonCreate
-            buttonName={BCbuttonName}
-            key={buttons.length}
-            onClick={this.createElement}
-            permissions={[`${entity}.create`]}
-            disabled={this.state.showForm}
-          />
-        ),
+        <ButtonCreateNew
+          key="button-create"
+          buttonName={BCbuttonName}
+          onClick={this.createElement}
+          permission={this.permissions.create}
+          disabled={this.state.showForm}
+        />,
       );
     }
     if (operations.indexOf('READ') > -1) {
       buttons.push(
-        this.permissions.read ? (
-          <ButtonReadNew
-            key="button-read"
-            buttonName={BRbuttonName}
-            onClick={this.showForm}
-            permission={this.permissions.read}
-            disabled={this.checkDisabledRead()}
-          />
-        ) : (
-          <ButtonRead
-            buttonName={BRbuttonName}
-            key={buttons.length}
-            onClick={this.showForm}
-            disabled={this.checkDisabledRead()}
-            permissions={[`${entity}.read`]}
-          />
-        ),
+        <ButtonReadNew
+          key="button-read"
+          buttonName={BRbuttonName}
+          onClick={this.showForm}
+          permission={this.permissions.read}
+          disabled={this.checkDisabledRead()}
+        />,
       );
     }
     if (operations.indexOf('DELETE') > -1) {
       buttons.push(
-        this.permissions.read ? (
-          <ButtonDeleteNew
-            key="button-delete"
-            buttonName={BDbuttonName}
-            onClick={this.removeElement}
-            permission={this.permissions.delete}
-            disabled={this.checkDisabledDelete()}
-          />
-        ) : (
-          <ButtonDelete
-            buttonName={BDbuttonName}
-            key={buttons.length}
-            onClick={this.removeElement}
-            disabled={this.checkDisabledDelete()}
-            permissions={[`${entity}.delete`]}
-          />
-        ),
+        <ButtonDeleteNew
+          key="button-delete"
+          buttonName={BDbuttonName}
+          onClick={this.removeElement}
+          permission={this.permissions.delete}
+          disabled={this.checkDisabledDelete()}
+        />,
       );
     }
     if (this.props.exportable) {
@@ -308,14 +274,14 @@ class ElementsList extends React.Component {
         = this.props[this.mainListName]
         && this.props[this.mainListName].length === 0;
       buttons.push(
-        <Button
+        <EtsBootstrap.Button
           id="regestry-download-alt"
           disabled={isEmptyList || this.state.showForm}
           key={buttons.length}
           bsSize="small"
           onClick={this.handleExport}>
-          <Glyphicon glyph="download-alt" />
-        </Button>,
+          <EtsBootstrap.Glyphicon glyph="download-alt" />
+        </EtsBootstrap.Button>,
       );
     }
     return buttons;

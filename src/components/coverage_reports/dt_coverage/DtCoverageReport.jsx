@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as BootstrapMenuItem from 'react-bootstrap/lib/MenuItem';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
@@ -114,7 +114,10 @@ class DtCoverageReport extends React.Component {
           </div>
           <Dropdown id="dropdown-print" pullRight>
             <Dropdown.Toggle noCaret bsSize="small">
-              <Glyphicon disabled={isExporting} glyph={exportGlyph} />
+              <EtsBootstrap.Glyphicon
+                disabled={isExporting}
+                glyph={exportGlyph}
+              />
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {/* <MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem> */}

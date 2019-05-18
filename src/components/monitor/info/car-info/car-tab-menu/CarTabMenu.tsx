@@ -2,7 +2,7 @@ import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   fetchTrack,
   fetchCarInfo,
@@ -55,15 +55,15 @@ const CarTabMenu: React.FC<PropsCarTabMenu> = (props) => {
     }
   }, [asuods_id, odh_mkad]);
 
-  const handleSelectInfo = React.useCallback<React.MouseEventHandler<Button>>(
+  const handleSelectInfo = React.useCallback(
     () => setTabNum(1),
     [],
   );
-  const handleSelectChart = React.useCallback<React.MouseEventHandler<Button>>(
+  const handleSelectChart = React.useCallback(
     () => setTabNum(2),
     [],
   );
-  const handleSelectTrack = React.useCallback<React.MouseEventHandler<Button>>(
+  const handleSelectTrack = React.useCallback(
     () => setTabNum(3),
     [],
   );
@@ -73,19 +73,19 @@ const CarTabMenu: React.FC<PropsCarTabMenu> = (props) => {
       <CarInfoButtonsRow>
         <BtnGroupWrapper fullWidth={true}>
           <BtnPart>
-            <Button active={tabNum === 1} onClick={handleSelectInfo}>
+            <EtsBootstrap.Button active={tabNum === 1} onClick={handleSelectInfo}>
               Информация
-            </Button>
+            </EtsBootstrap.Button>
           </BtnPart>
           <BtnPart>
-            <Button active={tabNum === 2} onClick={handleSelectChart}>
+            <EtsBootstrap.Button active={tabNum === 2} onClick={handleSelectChart}>
               Графики
-            </Button>
+            </EtsBootstrap.Button>
           </BtnPart>
           <BtnPart>
-            <Button active={tabNum === 3} onClick={handleSelectTrack}>
+            <EtsBootstrap.Button active={tabNum === 3} onClick={handleSelectTrack}>
                 Трекинг
-            </Button>
+            </EtsBootstrap.Button>
           </BtnPart>
         </BtnGroupWrapper>
       </CarInfoButtonsRow>

@@ -5,8 +5,7 @@ import {
   getListData,
   getFilterData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { registryToggleIsOpenFilter } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
@@ -32,14 +31,14 @@ type ButtonToggleFilterProps = (
 
 const ButtonToggleFilter: React.FC<ButtonToggleFilterProps> = (props) => {
   return (
-    <Button
+    <EtsBootstrap.Button
       id="show-options-filter"
       bsSize="small"
       active={props.hasFilters}
       onClick={props.handleClick}
     >
-      <Glyphicon glyph="filter" />
-    </Button>
+      <EtsBootstrap.Glyphicon glyph="filter" />
+    </EtsBootstrap.Button>
   );
 };
 

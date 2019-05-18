@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
 
@@ -86,7 +86,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
               Создать путевой лист
             </ButtonCreateWaybill>
             <LinkToOrder to="/orders">
-              <Button active>Исполнение централизованного задания</Button>
+              <EtsBootstrap.Button active>Исполнение централизованного задания</EtsBootstrap.Button>
             </LinkToOrder>
             <ButtonCreateMission onClick={setShowMissionForm}>
               Создать децентрализованное задание

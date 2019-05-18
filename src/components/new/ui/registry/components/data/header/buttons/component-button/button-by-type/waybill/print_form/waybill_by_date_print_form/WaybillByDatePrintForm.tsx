@@ -1,6 +1,6 @@
 import * as React from 'react';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { Modal, Row, Col, Button } from 'react-bootstrap';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
@@ -15,6 +15,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { saveData } from 'utils/functions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
   (props) => {
@@ -90,13 +91,13 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
     );
 
     return (
-      <Modal id="modal-waybill_journal_report" show onHide={props.hideWithoutChanges} backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-waybill_journal_report" show onHide={props.hideWithoutChanges} backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
                 label="Период формирования"
@@ -148,16 +149,16 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
                     />
                 )
               }
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div>
-            <Button disabled={!props.canSave} onClick={handleSubmit}>Ок</Button>
-            <Button onClick={props.hideWithoutChanges}>Отменить</Button>
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={handleSubmit}>Ок</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   },
 );

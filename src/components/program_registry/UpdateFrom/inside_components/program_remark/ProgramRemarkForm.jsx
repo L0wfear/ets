@@ -1,8 +1,6 @@
 import React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
@@ -41,18 +39,18 @@ export default class SparePartForm extends UNSAFE_Form {
 
     if (allowCreateRemark || allowCreateComment) {
       return (
-        <Modal
+        <EtsBootstrap.ModalContainer
           id="modal-program-remark"
           show={this.props.show}
           onHide={this.props.onHide}
           backdrop="static">
-          <Modal.Header closeButton>
-            <Modal.Title>{title}</Modal.Title>
-          </Modal.Header>
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
           <Div style={{ padding: 15 }}>
-            <Row>
+            <EtsBootstrap.Row>
               <Div hidden={!allowCreateRemark}>
-                <Col md={12}>
+                <EtsBootstrap.Col md={12}>
                   <ExtField
                     type="text"
                     label="Замечание"
@@ -62,10 +60,10 @@ export default class SparePartForm extends UNSAFE_Form {
                     boundKeys="remark"
                     disabled={!(IS_CREATING || allowChangeRemark)}
                   />
-                </Col>
+                </EtsBootstrap.Col>
               </Div>
               <Div hidden={!allowCreateComment}>
-                <Col md={12}>
+                <EtsBootstrap.Col md={12}>
                   <ExtField
                     type="text"
                     label="Комментарий"
@@ -75,24 +73,24 @@ export default class SparePartForm extends UNSAFE_Form {
                     boundKeys="comment"
                     disabled={!(IS_CREATING || allowChangeComment)}
                   />
-                </Col>
+                </EtsBootstrap.Col>
               </Div>
-            </Row>
+            </EtsBootstrap.Row>
           </Div>
           <ModalBody />
-          <Modal.Footer>
+          <EtsBootstrap.ModalFooter>
             <Div
               hidden={
                 !(IS_CREATING || allowChangeRemark || allowChangeComment)
               }>
-              <Button
+              <EtsBootstrap.Button
                 disabled={!this.props.canSave}
                 onClick={this.handleSubmitWrap}>
                 Сохранить
-              </Button>
+              </EtsBootstrap.Button>
             </Div>
-          </Modal.Footer>
-        </Modal>
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
       );
     }
     return null;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { staticProps } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
@@ -104,20 +104,20 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
 
     if (checkedItems.length > 0) {
       buttons.push(
-        <Button
+        <EtsBootstrap.Button
           key="makeIsRead"
           onClick={this.handleMarkAsRead.bind(null, checkedItems)}>
           Отметить как прочитанное
-        </Button>,
+        </EtsBootstrap.Button>,
       );
     }
     buttons.push(
-      <Button
+      <EtsBootstrap.Button
         disabled={allNotIsRead}
         key="makeIsReadAll"
         onClick={this.handleMarkAllAsRead}>
         Отметить все как прочитанные
-      </Button>,
+      </EtsBootstrap.Button>,
     );
     buttons.push(...baseButtons);
 

@@ -4,7 +4,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
 import { FieldDataMeasureUnitId } from 'components/new/utils/context/form/@types/fields/valueOfArray';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldMeasureUnitIdProps = {
   fieldData: FieldDataMeasureUnitId;
@@ -40,7 +40,7 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <Col md={props.fieldData.md || 12}>
+        <EtsBootstrap.Col md={props.fieldData.md || 12}>
           <ExtField
             id={`${path}_${key}`}
             type="select"
@@ -54,7 +54,7 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
 
             etsIsLoading={isLoading}
           />
-        </Col>
+        </EtsBootstrap.Col>
       ),
       [props, path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],
     );

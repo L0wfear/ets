@@ -1,10 +1,7 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -109,13 +106,13 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     );
 
     return (
-      <Modal id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
-        <Modal.Header closeButton>
-          <Modal.Title>{ title }</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <Row>
-            <Col md={12}>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <ExtField
                 type="select"
                 label="Модель шины"
@@ -148,14 +145,14 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 !IS_CREATING
                   ? (
                     <>
-                      <Col sm={6} md={6}>
+                      <EtsBootstrap.Col sm={6} md={6}>
                         <label htmlFor=" ">Пробег, км:</label>
                         <InlineSpanValue>{state.odometr_diff}</InlineSpanValue>
-                      </Col>
-                      <Col sm={6} md={6}>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col sm={6} md={6}>
                         <label htmlFor=" ">Наработка, мч:</label>
                         <InlineSpanValue>{state.motohours_diff}</InlineSpanValue>
-                      </Col>
+                      </EtsBootstrap.Col>
                     </>
                   )
                   : (
@@ -192,24 +189,24 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                     <DivNone />
                   )
               }
-            </Col>
-          </Row>
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <div>
             {
               isPermitted // либо обновление, либо создание
               ? (
-                <Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</Button>
+                <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
               )
               : (
                 <DivNone />
               )
             }
-            <Button onClick={this.props.hideWithoutChanges}>Отмена</Button>
+            <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
           </div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

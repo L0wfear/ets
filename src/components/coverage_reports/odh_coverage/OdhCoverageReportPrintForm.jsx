@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/ui/Modal';
 import { getYesterday9am, getToday859am } from 'utils/dates';
@@ -38,10 +37,14 @@ export default class OdhCoverageReportPrintForm extends React.Component {
   render() {
     const { exportType } = this.props;
     return (
-      <Modal id="modal-odh-coverage-report-print" show={this.props.showForm}>
-        <Modal.Header>
-          <Modal.Title>Печать отчета за заданный период</Modal.Title>
-        </Modal.Header>
+      <EtsBootstrap.ModalContainer
+        id="modal-odh-coverage-report-print"
+        show={this.props.showForm}>
+        <EtsBootstrap.ModalHeader>
+          <EtsBootstrap.ModalTitle>
+            Печать отчета за заданный период
+          </EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBody>
           {exportType === 1 ? (
             <div style={{ textAlign: 'center' }}>
@@ -68,13 +71,15 @@ export default class OdhCoverageReportPrintForm extends React.Component {
             </div>
           )}
         </ModalBody>
-        <Modal.Footer>
+        <EtsBootstrap.ModalFooter>
           <Div className="inline-block">
-            <Button onClick={this.export}>ОК</Button>
-            <Button onClick={this.props.onFormHide}>Отмена</Button>
+            <EtsBootstrap.Button onClick={this.export}>ОК</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.props.onFormHide}>
+              Отмена
+            </EtsBootstrap.Button>
           </Div>
-        </Modal.Footer>
-      </Modal>
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
     );
   }
 }

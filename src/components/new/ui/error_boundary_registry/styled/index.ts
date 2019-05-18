@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { EtsPageWrap } from 'global-styled/global-styled';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const cat = require('assets/images/cat.jpeg');
 
@@ -24,7 +24,7 @@ export const ErorTextTimeOut = styled(ErorText)`
   flex-wrap: wrap;
 `;
 
-export const ButtonRefreshRegistry = styled(Button)`
+export const ButtonRefreshRegistry = styled(EtsBootstrap.Button)`
   &&& {
     font-size: 20px;
     margin: 0 10px;

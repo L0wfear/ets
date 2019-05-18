@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
+
 import styled from 'styled-components';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
@@ -8,6 +8,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getServiceData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelectedOdhDtDisabledStateProps = {
   Service: OneRegistryData['Service'];
@@ -26,7 +27,7 @@ type SelectedOdhDtDisabledMergedProps = (
 
 type SelectedOdhDtDisabledProps = SelectedOdhDtDisabledMergedProps;
 
-const ButtonWrap = styled(Button)``;
+const ButtonWrap = styled(EtsBootstrap.Button)``;
 
 const ButtonContainer = styled.div`
   flex-grow: 1;

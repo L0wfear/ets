@@ -3,9 +3,9 @@ import * as React from 'react';
 import { connectToStores, staticProps } from 'utils/decorators';
 import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
 import {
-  ButtonCreate,
-  ButtonRead,
-  ButtonDelete,
+  ButtonCreateNew,
+  ButtonReadNew,
+  ButtonDeleteNew,
 } from 'components/ui/buttons/CRUD';
 
 import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
@@ -189,7 +189,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     ).slug;
 
     const buttons = [
-      <ButtonDelete
+      <ButtonDeleteNew
         buttonName={'Удалить'}
         key={0}
         onClick={this.removeCheckedElements}
@@ -198,24 +198,24 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           || program_version_status === 'accepted'
           || !isPermittedByStatus
         }
-        permissions={[`${entity}.delete`]}
+        permissions={`${entity}.delete`}
       />,
-      <ButtonRead
+      <ButtonReadNew
         buttonName={'Посмотреть'}
         key={1}
         onClick={this.showForm}
         disabled={this.checkDisabledRead() || !isPermittedByStatus}
-        permissions={[`${entity}.update`]}
+        permissions={`${entity}.update`}
       />,
     ];
 
     if (slugTypeObjectPr === 'dt') {
       buttons.push(
-        <ButtonCreate
+        <ButtonCreateNew
           buttonName={'Добавить ДТ'}
           key={2}
           onClick={this.createDT}
-          permissions={[`${entity}.update`]}
+          permissions={`${entity}.update`}
           disabled={
             program_version_status === 'accepted'
             || repair_type_name !== 'Капитальный'
@@ -226,14 +226,14 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     }
     if (slugTypeObjectPr === 'odh') {
       buttons.push(
-        <ButtonCreate
+        <ButtonCreateNew
           buttonName={'Добавить ОДХ'}
           key={3}
           onClick={this.createODH}
           disabled={
             program_version_status === 'accepted' || !isPermittedByStatus
           }
-          permissions={[`${entity}.false`]}
+          permissions={`${entity}.false`}
         />,
       );
     }

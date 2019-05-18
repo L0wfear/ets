@@ -2,9 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
 import Div from 'components/ui/Div';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { oldReportGetAnalytics } from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
 import companyActions from 'redux-main/reducers/modules/company/actions';
@@ -134,8 +132,8 @@ class Analytics extends React.Component {
     return (
       <EtsPageWrap>
         <Div>
-          <Col mdOffset={1} md={4}>
-            <Row>
+          <EtsBootstrap.Col mdOffset={1} md={4}>
+            <EtsBootstrap.Row>
               <Div>
                 <label>Период формирования:</label>
               </Div>
@@ -146,21 +144,21 @@ class Analytics extends React.Component {
                 date_end_value={this.state.date_to}
                 onChange={this.handleChange}
               />
-            </Row>
+            </EtsBootstrap.Row>
             <br />
-            <Row>
+            <EtsBootstrap.Row>
               <Div>
                 <label>Выбрать отчет:</label>
               </Div>
               {reportsList}
-            </Row>
+            </EtsBootstrap.Row>
             <br />
-            <Row>
-              <Button
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Button
                 disabled={!this.state.report_ids.length}
                 onClick={this.handleSubmit.bind(this)}>
                 Выгрузить
-              </Button>
+              </EtsBootstrap.Button>
               <input
                 style={{ marginRight: '5px', marginLeft: '10px' }}
                 type="checkbox"
@@ -178,9 +176,9 @@ class Analytics extends React.Component {
                 }}>
                 c расшифровкой
               </span>
-            </Row>
-          </Col>
-          <Col md={5}>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={5}>
             <Div>
               <Field
                 type="select"
@@ -191,8 +189,8 @@ class Analytics extends React.Component {
                 onChange={this.handleChange.bind(this, 'companies_ids')}
               />
             </Div>
-          </Col>
-          <Col md={2} />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={2} />
         </Div>
       </EtsPageWrap>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type FieldDefaultProps = {
   fieldData: any;
@@ -8,9 +8,9 @@ export type FieldDefaultProps = {
 
 const FieldDefault: React.FC<FieldDefaultProps> = React.memo(
   (props) => (
-    <Col md={props.fieldData.md || 12}>
+    <EtsBootstrap.Col md={props.fieldData.md || 12}>
       {props.fieldData.key}
-    </Col>
+    </EtsBootstrap.Col>
   ),
 );
 

@@ -8,9 +8,10 @@ import { carsConditionCarFormSchema } from './schema';
 import BlockCarInfoMainData from './blocks/main_data/BlockCarInfoMainData';
 import BlockCarInfoMainCheckData from './blocks/check_data/BlockCarInfoMainCheckData';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
-import { Button } from 'react-bootstrap';
+
 import { DivNone, FooterEnd } from 'global-styled/global-styled';
 import { actionCreateCarsConditionsCar, actionUpdateCarsConditionsCar, actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
   (props) => {
@@ -50,13 +51,13 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           {
             isPermitted
               ? (
-                <Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</Button>
+                <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
               )
               : (
                 <DivNone />
               )
           }
-          <Button onClick={props.hideWithoutChanges}>Закрыть</Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Закрыть</EtsBootstrap.Button>
         </FooterEnd>
       </div>
     );

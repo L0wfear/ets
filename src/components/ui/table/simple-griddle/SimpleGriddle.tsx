@@ -1,10 +1,10 @@
 import * as React from 'react';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import * as cx from 'classnames';
-import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
 import { isNullOrUndefined, isArray } from 'util';
+import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 require('components/ui/table/simple-griddle/SimpleGriddle.scss');
 
@@ -121,7 +121,7 @@ class SimpleGriddle extends React.Component<any, any> {
         {field.displayName}
         {
           this.state.initialSort === sortByName ?
-            <Glyphicon glyph={`sort-by-attributes${!this.state.initialSortAscending ? '-alt' : ''}`} />
+            <EtsBootstrap.Glyphicon glyph={`sort-by-attributes${!this.state.initialSortAscending ? '-alt' : ''}`} />
           :
             <span></span>
         }

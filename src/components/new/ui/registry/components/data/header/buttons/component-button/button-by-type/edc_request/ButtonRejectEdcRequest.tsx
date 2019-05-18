@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -35,7 +35,7 @@ type ButtonRejectEdcRequestProps = (
 ) & WithSearchProps;
 
 class ButtonRejectEdcRequest extends React.PureComponent<ButtonRejectEdcRequestProps, {}> {
-  handleClick: React.MouseEventHandler<Button> = () => {
+  handleClick = () => {
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_reject,
@@ -49,9 +49,9 @@ class ButtonRejectEdcRequest extends React.PureComponent<ButtonRejectEdcRequestP
     const can_reject = get(props.selectedRow, 'can_reject', false);
 
     return (
-      <Button id="open-cancel_edc_reject--form" bsSize="small" onClick={this.handleClick} disabled={!can_reject}>
+      <EtsBootstrap.Button id="open-cancel_edc_reject--form" bsSize="small" onClick={this.handleClick} disabled={!can_reject}>
         Отклонить
-      </Button>
+      </EtsBootstrap.Button>
     );
   }
 }

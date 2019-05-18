@@ -10,7 +10,7 @@ import { EtsThead } from 'components/new/ui/registry/components/data/table-data/
 import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
-import { Row } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export default class Table extends React.Component {
   static get propTypes() {
@@ -104,7 +104,7 @@ export default class Table extends React.Component {
     ));
 
     return (
-      <Row>
+      <EtsBootstrap.Row>
         <EtsTableDataContainer>
           <EtsTableWrapNoScroll className="ets_table_wrap">
             <EtsTable fixedWidth>
@@ -113,7 +113,7 @@ export default class Table extends React.Component {
             </EtsTable>
           </EtsTableWrapNoScroll>
         </EtsTableDataContainer>
-      </Row>
+      </EtsBootstrap.Row>
     );
   }
 }

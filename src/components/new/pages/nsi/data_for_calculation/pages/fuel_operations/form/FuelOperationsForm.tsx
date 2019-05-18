@@ -1,6 +1,6 @@
 import * as React from 'react';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Button from 'react-bootstrap/lib/Button';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -44,10 +44,10 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
   );
 
   return (
-    <Modal id="modal-fuel-operation" show onHide={props.hideWithoutChanges} backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{ title }</Modal.Title>
-      </Modal.Header>
+    <EtsBootstrap.ModalContainer id="modal-fuel-operation" show onHide={props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <ExtField
           type="string"
@@ -89,21 +89,21 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
           className="checkbox-input flex-reverse"
         />
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         <div>
           {
             isPermitted // либо обновление, либо создание
             ? (
-              <Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</Button>
+              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
             )
             : (
               <DivNone />
             )
           }
-          <Button onClick={props.hideWithoutChanges}>Отменить</Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </div>
-      </Modal.Footer>
-    </Modal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

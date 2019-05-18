@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import PrintByDates from 'components/new/ui/modal/print_by_dates/PrintByDates';
 
 type PropsButtonExportDutyMission = {
@@ -44,13 +43,13 @@ const ButtonExportDutyMission: React.FC<PropsButtonExportDutyMission> = (props) 
 
   return (
     <React.Fragment>
-      <Button
+      <EtsBootstrap.Button
         id="regestry-download-alt"
         bsSize="small"
         onClick={handleClickOpenForm}
       >
-        <Glyphicon glyph="download-alt" />
-      </Button>
+        <EtsBootstrap.Glyphicon glyph="download-alt" />
+      </EtsBootstrap.Button>
       <PrintByDates
         show={isOpenModalRemove}
         onHide={handleClickCloseForm}

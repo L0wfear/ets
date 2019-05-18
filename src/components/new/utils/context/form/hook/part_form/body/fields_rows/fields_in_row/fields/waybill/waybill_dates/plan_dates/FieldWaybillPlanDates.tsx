@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillPlanDatesOwnProps = {
   formDataKey: string;
@@ -42,8 +42,8 @@ const FieldWaybillPlanDates: React.FC<FieldWaybillPlanDatesOwnProps> = React.mem
         );
 
         return (
-          <Col md={12}>
-            <Row>
+          <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Row>
               <DatePickerRange
                 date_start_id={`${path}_plan_departure_date`}
                 date_start_key="plan_departure_date"
@@ -61,8 +61,8 @@ const FieldWaybillPlanDates: React.FC<FieldWaybillPlanDatesOwnProps> = React.mem
                 disabled={isDisabled}
                 onChange={handleChangeWrap}
               />
-            </Row>
-          </Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
         );
       },
       [

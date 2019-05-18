@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { Button, Row } from 'react-bootstrap';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
 import { ExtFieldContainer } from './styled';
 import { DivNone } from 'global-styled/global-styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionSelectCarOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
@@ -95,18 +95,18 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
         {
           props.isActiveInspect
             ? (
-              <Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>Создать карточку</Button>
+              <EtsBootstrap.Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>Создать карточку</EtsBootstrap.Button>
             )
             : (
               <DivNone />
             )
         }
         <br />
-        <Row>
+        <EtsBootstrap.Row>
           <BlockCarsConditionSelectCarList
             carsConditionCarsList={carsConditionCarsList}
           />
-        </Row>
+        </EtsBootstrap.Row>
         <ExtField
           type="string"
           label="Проверено ТС:"

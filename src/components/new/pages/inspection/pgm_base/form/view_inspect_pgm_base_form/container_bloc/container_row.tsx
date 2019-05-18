@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Button, Glyphicon } from 'react-bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 import { CheckContainerRow, CheckContainerTd, ButtonBlock } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ContainerRowProps = {
   container: any;
@@ -40,12 +40,12 @@ const ContainerRow: React.FC<ContainerRowProps> = (props) => {
           ? (
             <CheckContainerTd>
               <ButtonBlock>
-                <Button bsSize="small" onClick={handleEditContainer}>
-                  <Glyphicon glyph="pencil" />
-                </Button>
-                <Button bsSize="small" onClick={handleRemoveContainer}>
-                  <Glyphicon glyph="trash" />
-                </Button>
+                <EtsBootstrap.Button bsSize="small" onClick={handleEditContainer}>
+                  <EtsBootstrap.Glyphicon glyph="pencil" />
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button bsSize="small" onClick={handleRemoveContainer}>
+                  <EtsBootstrap.Glyphicon glyph="trash" />
+                </EtsBootstrap.Button>
               </ButtonBlock>
             </CheckContainerTd>
           )

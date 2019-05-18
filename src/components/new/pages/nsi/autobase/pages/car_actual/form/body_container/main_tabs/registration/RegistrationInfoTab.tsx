@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../@types/CarForm';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type RegistrationInfoTabProps = {
   isPermitted: boolean;
@@ -51,7 +51,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
     return (
       <>
         <MarginTopRow>
-          <Col md={6}>
+          <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
               label="Номер свидетельства о регистрации"
@@ -90,7 +90,7 @@ const RegistrationInfoTab: React.FC<RegistrationInfoTabProps> = React.memo(
               disabled={!isPermitted || registration_data.disabled}
               error={errors.note}
             />
-          </Col>
+          </EtsBootstrap.Col>
           <CenterCol md={6}>
             {
               state.type_image_name

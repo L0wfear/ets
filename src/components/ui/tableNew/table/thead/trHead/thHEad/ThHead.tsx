@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Div from 'components/ui/Div';
 import * as cx from 'classnames';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const EtsTheadThL: any = EtsTheadTh;
 
@@ -33,7 +33,7 @@ class ThHead extends React.Component<any, any> {
           </Div>
           { !thData.notAvailableSort &&
             <Div className={className}>
-              <Glyphicon glyph={`sort-by-attributes${this.props.sortAscending ? '-alt' : ''}`} />
+              <EtsBootstrap.Glyphicon glyph={`sort-by-attributes${this.props.sortAscending ? '-alt' : ''}`} />
             </Div>
           }
         </Div>

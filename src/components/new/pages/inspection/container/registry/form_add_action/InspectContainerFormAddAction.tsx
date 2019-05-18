@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
-import EtsModal from 'components/new/ui/modal/Modal';
-import { Modal, Button } from 'react-bootstrap';
+
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { createValidDate, diffDates } from 'utils/dates';
 import { get } from 'lodash';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type InspectContainerFormAddActionProps = {
   addAction: (obj: ValuesOf<InspectContainer['actions']>) => void;
@@ -60,15 +60,15 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
   );
 
   return (
-    <EtsModal
+    <EtsBootstrap.ModalContainer
       id="modal-mission"
       show
       onHide={props.hideWithoutChanges}
       backdrop="static"
     >
-      <Modal.Header closeButton>
-        <Modal.Title>Добавление записи</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>Добавление записи</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader>
         <ExtField
           id="name"
@@ -100,19 +100,19 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
           modalKey="container_add_action"
         />
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         <div>
-          <Button
+          <EtsBootstrap.Button
             id="container_add_action_submit"
             disabled={Object.values(errors).some((error) => Boolean(error))}
             onClick={handleSubmit}
           >
             Добавить
-          </Button>
-          <Button onClick={props.hideWithoutChanges}>Отмена</Button>
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
         </div>
-      </Modal.Footer>
-    </EtsModal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

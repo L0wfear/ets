@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -45,7 +45,7 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class ButtonReadCarsConditionsCar extends React.Component<ButtonReadCarsConditionsCarProps, {}> {
-  handleClick: React.MouseEventHandler<Button> = () => {
+  handleClick = () => {
     this.props.setParams({
       typeRightView: 'car_info',
       selectedCarsConditionsCar: get(this.props.selectedRow, this.props.uniqKey, null),
@@ -57,9 +57,9 @@ class ButtonReadCarsConditionsCar extends React.Component<ButtonReadCarsConditio
     const { props } = this;
 
     return (
-      <Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
+      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
         Просмотреть карточку
-      </Button>
+      </EtsBootstrap.Button>
     );
   }
 }

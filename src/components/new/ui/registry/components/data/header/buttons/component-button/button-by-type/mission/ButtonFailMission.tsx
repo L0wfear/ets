@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
-import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -69,9 +68,9 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
 
   return (
     <>
-      <Button id="duty_mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
-        <Glyphicon glyph="ban-circle" /> Отметка о невыполнении
-      </Button>
+      <EtsBootstrap.Button id="duty_mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
+        <EtsBootstrap.Glyphicon glyph="ban-circle" /> Отметка о невыполнении
+      </EtsBootstrap.Button>
       {
         showForm
           ? (

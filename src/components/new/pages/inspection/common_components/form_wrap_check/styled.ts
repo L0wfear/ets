@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Col } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const TitleForm = styled(Col)`
+export const TitleForm = styled(EtsBootstrap.Col)`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -21,7 +21,7 @@ export const ContainerForm = styled.div`
   overflow: auto;
 `;
 
-export const FooterForm = styled(Col)`
+export const FooterForm = styled(EtsBootstrap.Col)`
   border-top: 1px solid black;
   background-color: #e9f0f5;
   padding: 5px 20px;

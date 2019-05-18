@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -107,12 +107,12 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
                 <CardTitleContainerWrap>
                   <div>{title}</div>
                   <div className="button_refresh">
-                    <Button onClick={this.loadData} disabled={isLoading}>
+                    <EtsBootstrap.Button onClick={this.loadData} disabled={isLoading}>
                       <GlyphiconWithNonAnimation
                         isLoading={isLoading}
                         glyph="refresh"
                       />
-                    </Button>
+                    </EtsBootstrap.Button>
                   </div>
                 </CardTitleContainerWrap>
               </CardTitleContainer>

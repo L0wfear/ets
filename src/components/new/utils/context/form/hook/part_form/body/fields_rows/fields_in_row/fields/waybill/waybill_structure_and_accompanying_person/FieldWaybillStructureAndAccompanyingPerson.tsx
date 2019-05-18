@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Col, Row } from 'react-bootstrap';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
 import { FieldDataWaybillStructureAndAccompanyingPerson } from 'components/new/utils/context/form/@types/fields/waybill';
 import FieldWaybillStructureId from './structure/FieldWaybillStructureId';
 import FieldWaybillAccompanyingPersonId from './accompanying_person_id/FieldWaybillAccompanyingPersonId';
 import { FieldDataWaybillStuctureId, FieldDataWaybillAccompanyingPersonId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillStructureAndAccompanyingPersonProps = {
   fieldData: FieldDataWaybillStructureAndAccompanyingPerson;
@@ -28,12 +28,12 @@ const FieldWaybillStructureAndAccompanyingPerson: React.FC<FieldWaybillStructure
     return React.useMemo(
       () => {
         return (
-          <Col md={IS_CLOSE_OR_IS_ACTIVE ? 4 : 6}>
-            <Row>
+          <EtsBootstrap.Col md={IS_CLOSE_OR_IS_ACTIVE ? 4 : 6}>
+            <EtsBootstrap.Row>
               <FieldWaybillStructureId formDataKey={props.formDataKey} fieldData={FieldDataStructureId} />
               <FieldWaybillAccompanyingPersonId formDataKey={props.formDataKey} fieldData={FieldDataAccompanyingPersonId} />
-            </Row>
-          </Col>
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
         );
       },
       [props, IS_CLOSE_OR_IS_ACTIVE, props.formDataKey],

@@ -1,16 +1,15 @@
 import styled from 'styled-components';
-import * as Col from 'react-bootstrap/lib/Col';
-import { Row } from 'react-bootstrap';
 import { mobiSize } from 'global-styled/global-constants';
+import EtsBootstrap from '../../@bootstrap';
 
-export const ColStartDatePickerRange = styled(Col)`
+export const ColStartDatePickerRange = styled(EtsBootstrap.Col)`
   &&& {
     @media (min-width: 992px) {
       width: 49.5%;
     }
   }
 `;
-export const ColDividerDatePickerRange = styled(Col)<{ label: any; date_start_label: any }>`
+export const ColDividerDatePickerRange = styled(EtsBootstrap.Col)<{ label: any; date_start_label: any }>`
   &&& {
     display: none;
     text-align: center;
@@ -27,7 +26,7 @@ export const ColDividerDatePickerRange = styled(Col)<{ label: any; date_start_la
 `;
 export const ColEndDatePickerRange = styled(ColStartDatePickerRange)``;
 
-export const DatePickerRangeContainer = styled(Row)<{ allWidth?: boolean }>`
+export const DatePickerRangeContainer = styled(EtsBootstrap.Row)<{ allWidth?: boolean }>`
   width: ${({ allWidth }) => allWidth ? '100%' : 'initial'};
   margin-bottom: 5px;
   position: relative;
@@ -38,7 +37,7 @@ export const DatePickerRangeContainer = styled(Row)<{ allWidth?: boolean }>`
   }
 `;
 
-export const WithDatePickerRangeRegistry = styled(Row)`
+export const WithDatePickerRangeRegistry = styled(EtsBootstrap.Row)`
   padding: 15px;
   padding-bottom: 0;
 

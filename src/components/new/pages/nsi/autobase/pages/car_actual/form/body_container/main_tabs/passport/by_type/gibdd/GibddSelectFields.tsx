@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Row, Col } from 'react-bootstrap';
+
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { CarGibddPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
 import { FileField } from 'components/ui/input/fields';
@@ -7,6 +7,7 @@ import useCarTypesOptions from 'components/new/utils/hooks/services/useOptions/u
 import useCountryOptions from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
 import useAutobaseCarCategoryOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseCarCategoryOptions';
 import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type GibddSelectFieldsStateProps = {};
 type GibddSelectFieldsDispatchProps = {
@@ -46,8 +47,8 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
     const countryOptionData = useCountryOptions();
 
     return (
-      <Row>
-        <Col md={6}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={6}>
           <ExtField
             type="string"
             label="Серия и номер паспорта"
@@ -163,8 +164,8 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             boundKeys="company_address"
             disabled={!isPermitted || disabled}
           />
-        </Col>
-        <Col md={6}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
           <ExtField
             type="select"
             label="Тип транспортного средства"
@@ -271,8 +272,8 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             disabled={!isPermitted || disabled}
             makeGoodFormat
           />
-        </Col>
-        <Col md={12}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={12}>
           <FileField
             label="Файл"
             multiple
@@ -281,8 +282,8 @@ const GibddSelectFields: React.FC<GibddSelectFieldsProps> = React.memo(
             boundKeys="files"
             disabled={!isPermitted || disabled}
           />
-        </Col>
-      </Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   },
 );

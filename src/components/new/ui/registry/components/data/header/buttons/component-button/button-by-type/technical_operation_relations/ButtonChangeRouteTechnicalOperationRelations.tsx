@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -77,9 +77,9 @@ const ButtonChangeRouteTechnicalOperationRelations: React.FC<ButtonChangeRouteTe
   );
 
   return (
-    <Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+    <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
       Изменить маршрут
-    </Button>
+    </EtsBootstrap.Button>
   );
 };
 

@@ -15,9 +15,10 @@ import {
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { makeOptionsByMissionSourceForMission } from './makeOptions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types/index';
-import { Row, Col } from 'react-bootstrap';
+
 import { DivNone } from 'global-styled/global-styled';
 import { isOrderSource } from 'components/new/pages/missions/utils';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSourceMission, StateFieldMissionSourceMission> {
   state = {
@@ -52,8 +53,8 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
     } = this.state;
 
     return (
-      <Row>
-        <Col md={request_id ? 6 : 12}>
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={request_id ? 6 : 12}>
           <ExtField
             id="mission-source-id"
             type="select"
@@ -65,8 +66,8 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
             value={props.value}
             onChange={this.handleChange}
           />
-        </Col>
-        <Col md={request_id ? 6 : 0}>
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={request_id ? 6 : 0}>
           {
             request_id
               ? (
@@ -81,8 +82,8 @@ class FieldMissionSourceMission extends React.PureComponent<PropsFieldMissionSou
                 <DivNone />
               )
           }
-        </Col>
-      </Row>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   }
 }

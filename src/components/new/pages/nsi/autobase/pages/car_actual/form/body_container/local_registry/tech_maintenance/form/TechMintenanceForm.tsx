@@ -1,10 +1,7 @@
 import * as React from 'react';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import * as Modal from 'react-bootstrap/lib/Modal';
-import * as Row from 'react-bootstrap/lib/Row';
-import * as Col from 'react-bootstrap/lib/Col';
-import * as Button from 'react-bootstrap/lib/Button';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
   MultiSelectField,
@@ -35,7 +32,7 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { hasMotohours } from 'utils/functions';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import EtsModal from 'components/new/ui/modal/Modal';
+
 import { getDefaultTechMaintenanceElement } from './utils';
 import { techMaintFormSchema } from './shema';
 import techMaintenancePermissions from '../_config-data/permissions';
@@ -92,18 +89,18 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
   );
 
   return (
-    <EtsModal
+    <EtsBootstrap.ModalContainer
       id="modal-tech-maint"
       show
 
       onHide={props.hideWithoutChanges}
       backdrop="static">
-      <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
-      </Modal.Header>
+      <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <Row>
-          <Col md={12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="select"
               label="Исполнитель ремонта"
@@ -114,8 +111,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="repair_company_id"
             />
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             <MultiSelectField
               integer
               label="Регламент ТО"
@@ -126,8 +123,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="tech_maintenance_order_ids"
             />
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="string"
               label="Номер документа"
@@ -137,8 +134,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="number"
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <DataTimeField
               time={false}
               label="Плановая дата начала"
@@ -148,8 +145,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="plan_date_start"
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <DataTimeField
               time={false}
               label="Плановая дата окончания"
@@ -159,8 +156,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="plan_date_end"
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <DataTimeField
               time={false}
               label="Фактическая дата начала"
@@ -170,8 +167,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="fact_date_start"
             />
-          </Col>
-          <Col md={6}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
             <DataTimeField
               time={false}
               label="Фактическая дата окончания"
@@ -181,8 +178,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="fact_date_end"
             />
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             {!hasMotohours(state.gov_number) ? (
               <ExtField
                 type="number"
@@ -196,8 +193,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             ) : (
               <DivNone />
             )}
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             {hasMotohours(state.gov_number) ? (
               <ExtField
                 type="number"
@@ -211,8 +208,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             ) : (
               <DivNone />
             )}
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="string"
               label="Примечание"
@@ -222,8 +219,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               onChange={props.handleChange}
               boundKeys="note"
             />
-          </Col>
-          <Col md={12}>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={12}>
             <FileField
               multiple
               label="Файл"
@@ -233,21 +230,21 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
               boundKeys="files"
               disabled={!isPermitted}
             />
-          </Col>
-        </Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </ModalBodyPreloader>
-      <Modal.Footer>
+      <EtsBootstrap.ModalFooter>
         {isPermitted ? ( // либо обновление, либо создание
-          <Button
+          <EtsBootstrap.Button
             disabled={!props.canSave}
             onClick={props.defaultSubmit}>
             Сохранить
-          </Button>
+          </EtsBootstrap.Button>
         ) : (
           <DivNone />
         )}
-      </Modal.Footer>
-    </EtsModal>
+      </EtsBootstrap.ModalFooter>
+    </EtsBootstrap.ModalContainer>
   );
 };
 

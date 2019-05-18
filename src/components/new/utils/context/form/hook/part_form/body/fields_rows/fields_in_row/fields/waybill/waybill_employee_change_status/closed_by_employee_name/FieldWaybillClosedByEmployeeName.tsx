@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
-import { Col } from 'react-bootstrap';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillClosedByEmployeeNameProps = {
   formDataKey: string;
@@ -18,7 +18,7 @@ const FieldWaybillClosedByEmployeeName: React.FC<FieldWaybillClosedByEmployeeNam
 
     return React.useMemo(
       () => IS_CLOSED && (
-        <Col md={12}>
+        <EtsBootstrap.Col md={12}>
           <ExtField
             id={`${path}_${key}`}
             type="string"
@@ -26,7 +26,7 @@ const FieldWaybillClosedByEmployeeName: React.FC<FieldWaybillClosedByEmployeeNam
             value={closed_by_employee_name}
             readOnly
           />
-        </Col>
+        </EtsBootstrap.Col>
       ),
       [path, key, closed_by_employee_name, IS_CLOSED],
     );

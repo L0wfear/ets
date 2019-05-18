@@ -10,6 +10,7 @@ import EtsModalBody from 'components/new/ui/@bootstrap/08-modal_body/EtsModalBod
 import EtsDropdown from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
 import EtsDropdownToggle from 'components/new/ui/@bootstrap/10-dropdown_toggle/EtsDropdownToggle';
 import EtsDropdownMenu from 'components/new/ui/@bootstrap/11-dropdown_menu/EtsDropdownMenu';
+import EtsCollapse from 'components/new/ui/@bootstrap/12-collapse/EtsCollapse';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -24,6 +25,7 @@ const EtsBootstrap = {
   Dropdown: EtsDropdown,
   DropdownToggle: EtsDropdownToggle,
   DropdownMenu: EtsDropdownMenu,
+  Collapse: EtsCollapse,
 };
 
 export default EtsBootstrap;

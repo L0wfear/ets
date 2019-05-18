@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as Collapse from 'react-bootstrap/lib/Collapse';
+
 import { DivNone, MarkNewRegistry } from 'global-styled/global-styled';
 import { isObject } from 'util';
 import { withRouterMatchUrl, showHeaderMenu, isActivemenu } from 'components/new/ui/app_header/utils';
@@ -8,6 +8,7 @@ import * as ClickOutHandler from 'react-onclickout';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
 import { SecondMenuContainerMobi, DefaultSecondLvlMenuMobi } from 'components/new/ui/app_header/mobi/styled';
 import { compose } from 'recompose';
+import EtsBootstrap from '../../@bootstrap';
 
 class OneMenu extends React.Component<any, any> {
   state = {
@@ -100,13 +101,13 @@ class OneMenu extends React.Component<any, any> {
           {
             isObject(data.children)
             ? (
-              <Collapse in={showChildren}>
+              <EtsBootstrap.Collapse in={showChildren}>
                 <div>
                   <SecondMenuContainerMobi>
                     { Object.entries(data.children).map(this.mapRWithP) }
                   </SecondMenuContainerMobi>
                 </div>
-              </Collapse>
+              </EtsBootstrap.Collapse>
             )
             : (
               <DivNone />

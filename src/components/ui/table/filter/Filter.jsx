@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as Collapse from 'react-bootstrap/lib/Collapse';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
@@ -188,7 +188,7 @@ export default class Filter extends React.Component {
 
     return (
       <form onSubmit={this.submit}>
-        <Collapse in={this.props.show}>
+        <EtsBootstrap.Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
               <EtsBootstrap.Button id="apply-filter" type="submit">
@@ -215,7 +215,7 @@ export default class Filter extends React.Component {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </Div>
-        </Collapse>
+        </EtsBootstrap.Collapse>
       </form>
     );
   }

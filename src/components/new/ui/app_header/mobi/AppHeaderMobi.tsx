@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { MobiContainer, FirstLvlMobi, SecondMenuContainerMobiFirst, ChangeRoleContainerWithButton, SecondMenuItemContainerMobi, MenuButton } from 'components/new/ui/app_header/mobi/styled';
 import EtsLogo from 'components/new/ui/app_header/desktop/left/ets_logo/EtsLogo';
-import * as Collapse from 'react-bootstrap/lib/Collapse';
+
 import rWithP from 'constants/routerAndPermission';
 import BackToGorod from 'components/new/ui/app_header/desktop/right/back_to_gorod/BackToGorod';
 import ChangeRole from 'components/new/ui/app_header/desktop/right/change_role/ChangeRole';
@@ -12,6 +12,7 @@ import docs from 'components/new/pages/doc_header/_config-data/index';
 
 import OneMenuWrap from 'components/new/ui/app_header/mobi/OneMenu';
 import * as ClickOutHandler from 'react-onclickout';
+import EtsBootstrap from '../../@bootstrap';
 
 class AppHeader extends React.Component<any, any> {
   state = {
@@ -49,7 +50,7 @@ class AppHeader extends React.Component<any, any> {
             <EtsLogo />
             <MenuButton active={showChildren} onClick={this.toggleShowMenu}>Меню</MenuButton>
           </FirstLvlMobi>
-          <Collapse in={showChildren}>
+          <EtsBootstrap.Collapse in={showChildren}>
             <div>
               <SecondMenuContainerMobiFirst>
                 {
@@ -71,7 +72,7 @@ class AppHeader extends React.Component<any, any> {
 
               </SecondMenuContainerMobiFirst>
             </div>
-          </Collapse>
+          </EtsBootstrap.Collapse>
         </MobiContainer>
       </ClickOutHandler>
     );

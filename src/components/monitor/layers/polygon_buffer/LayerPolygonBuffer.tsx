@@ -146,12 +146,10 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     return (
       <>
         <ButtonContainer>
-          <EtsBootstrap.ButtonGroup vertical>
-            <ButtonDraw disabled={this.state.activeDraw } onClick={this.toggleMeasureActive} />
-            <EtsBootstrap.Button disabled={this.state.activeDraw || !this.props.featureBufferPolygon} onClick={this.handleClickRemove}>
-              <EtsBootstrap.Glyphicon glyph="remove" />
-            </EtsBootstrap.Button>
-          </EtsBootstrap.ButtonGroup>
+          <ButtonDraw disabled={this.state.activeDraw } onClick={this.toggleMeasureActive} />
+          <EtsBootstrap.Button disabled={this.state.activeDraw || !this.props.featureBufferPolygon} onClick={this.handleClickRemove}>
+            <EtsBootstrap.Glyphicon glyph="remove" />
+          </EtsBootstrap.Button>
         </ButtonContainer>
         <LayerDraw
           map={this.props.map}

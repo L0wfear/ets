@@ -3,6 +3,8 @@ import * as React from 'react';
 import Report from 'components/reports/operational/cars_travel_time_new/report';
 import ReportFormWrap from 'components/reports/operational/cars_travel_time_new/form/ReportFormWrap';
 
+const ReportTsx: any = Report;
+
 type ReportContainerWithFormProps = {
   onRowDoubleClick: any;
   selectedElement?: number; // <<< required
@@ -17,7 +19,7 @@ const ReportContainerWithForm: React.FC<ReportContainerWithFormProps> = (props) 
   const [selectedElement, setSelectedElement] = React.useState(null);
   // между компоенентами даннми обмениваться как во вью, через функцию setSomething
 
-  const onRowDoubleClick = React.useCallback(({props: {data}}) => {
+  const onRowDoubleClick: any = React.useCallback(({props: {data}}) => {
     setSelectedElement(data);
     setShowForm(true);
   }, []);
@@ -28,10 +30,10 @@ const ReportContainerWithForm: React.FC<ReportContainerWithFormProps> = (props) 
 
   return (
     <>
-      <Report
-        onRowDoubleClick = {onRowDoubleClick}
-        setDateRange = {setDateRange}
-      ></Report>
+      <ReportTsx
+        onRowDoubleClick={onRowDoubleClick}
+        setDateRange={setDateRange}
+      />
       <ReportFormWrap
         showForm={showForm}
         onFormHide={onMapFormHide}

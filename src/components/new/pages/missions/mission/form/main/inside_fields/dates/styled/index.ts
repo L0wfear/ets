@@ -14,11 +14,6 @@ export const ColStartDatePicker = styled(EtsBootstrap.Col)`
   }
 `;
 
-export const DropdownDateEnd = styled(EtsBootstrap.Dropdown)`
-  >button {
-    height: 38px;
-  }
-`;
 export const ExtFieldDateStartWrap: any = styled(ExtField)`
   width: 100%;
 `;

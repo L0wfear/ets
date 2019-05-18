@@ -721,16 +721,12 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                         <EtsBootstrap.Dropdown
                           id="waybill-print-dropdown"
                           dropup
-                          disabled={
-                            !this.props.canSave
-                          }
-                          onSelect={this.handlePrint}>
-                          <EtsBootstrap.DropdownToggle>
-                            <EtsBootstrap.Glyphicon id="m-print" glyph="print" />
-                          </EtsBootstrap.DropdownToggle>
-                          <EtsBootstrap.DropdownMenu>
-                            <EtsBootstrap.MenuItem eventKey={1}>Экспорт в файл</EtsBootstrap.MenuItem>
-                            <EtsBootstrap.MenuItem eventKey={2}>Печать</EtsBootstrap.MenuItem>
+                          disabled={!this.props.canSave}
+                          toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
+                        >
+                          <EtsBootstrap.DropdownMenu dropup>
+                            <EtsBootstrap.MenuItem eventKey={1} onSelect={this.handlePrint}>Экспорт в файл</EtsBootstrap.MenuItem>
+                            <EtsBootstrap.MenuItem eventKey={2} onSelect={this.handlePrint}>Печать</EtsBootstrap.MenuItem>
                           </EtsBootstrap.DropdownMenu>
                         </EtsBootstrap.Dropdown>
                       </BtnPart>

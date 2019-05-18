@@ -12,7 +12,7 @@ import {
 } from 'components/new/ui/map/overlay/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const ruler = require('components/monitor/layers/polygon_buffer/styled/image/polygon.png');
+const polygon = require('components/monitor/layers/polygon_buffer/styled/image/polygon.png');
 
 export const OverlayInsideMeasureContainer = styled(OverlayInsideContainer)`
   font-size: 12px;
@@ -48,43 +48,19 @@ export const ButtonContainer = styled.div`
       background-size: 19px;
       background-position: center;
       background-repeat: no-repeat;
+      padding: 0;
+      display: block;
+      font-size: 1.14em;
+      text-align: center;
     }
   }
 
-  /* from ol-control */
-  button {
-    display: block;
-    margin: 1px;
-    padding: 0;
-    color: #fff;
-    font-size: 1.14em;
-    font-weight: 700;
-    text-decoration: none;
-    text-align: center;
-
-    line-height: .4em;
-    background-color: rgba(0,60,136,.5);
-    border: none;
-    border-radius: 2px;
-  }
-  /* end ol-control */
-
-  button.btn.btn-default {
-    background-color: inherit;
-    color: white;
-
-    :hover {
-      background-color: initial;
-      color: white;
-    }
-  }
 `;
 
 export const ButtonDraw = styled(EtsBootstrap.Button).attrs({ className: 'ruler' })`
   &.ruler {
-    color: red;
-    background-image: url(${ruler});
-    background-blend-mode: difference;
+    background-image: url(${polygon});
+    background-blend-mode: hard-light;;
     background-size: cover;
   }
 `;

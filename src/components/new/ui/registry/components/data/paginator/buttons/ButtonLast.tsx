@@ -24,6 +24,7 @@ class ButtonLast extends React.PureComponent<PropsButtonLast, StatePaginator> {
 
     return (
       <ButtonPaginatorWrap
+        themeName="paginator"
         disabled={this.props.active}
         data-index={index}
         onClick={this.props.handleButtonClick}

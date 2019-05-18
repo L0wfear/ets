@@ -21,6 +21,7 @@ class ButtonFirst extends React.PureComponent<PropsButtonFirst, StatePaginator> 
   render() {
     return (
       <ButtonPaginatorWrap
+        themeName="paginator"
         disabled={this.props.active}
         onClick={this.props.handleButtonClick}
       >

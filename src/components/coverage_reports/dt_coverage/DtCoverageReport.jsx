@@ -11,7 +11,6 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { bindable } from 'utils/decorators';
 import { getToday9am, getFormattedDateTime } from 'utils/dates';
 import { saveData } from 'utils/functions';
 
@@ -19,8 +18,6 @@ import { EtsPageWrap } from 'global-styled/global-styled';
 
 import DtCoverageReportTable from 'components/coverage_reports/dt_coverage/DtCoverageReportTable';
 import DtCoverageReportPrintForm from 'components/coverage_reports/dt_coverage/DtCoverageReportPrintForm';
-
-const BindableMenuItem = bindable(EtsBootstrap.MenuItem);
 
 const page = 'dt_coverage_report';
 
@@ -108,17 +105,16 @@ class DtCoverageReport extends React.Component {
               />
             </div>
           </div>
-          <EtsBootstrap.Dropdown id="dropdown-print" pullRight>
-            <EtsBootstrap.DropdownToggle noCaret bsSize="small">
-              <EtsBootstrap.Glyphicon
-                disabled={isExporting}
-                glyph={exportGlyph}
-              />
-            </EtsBootstrap.DropdownToggle>
-            <EtsBootstrap.DropdownMenu>
-              <BindableMenuItem bindOnClick={2} onClick={this.showForm}>
+          <EtsBootstrap.Dropdown
+            id="dropdown-print"
+            noCaret
+            disabled={isExporting}
+            toggleElement={<EtsBootstrap.Glyphicon glyph={exportGlyph} />}
+            toggleElementSize="small">
+            <EtsBootstrap.DropdownMenu pullRight>
+              <EtsBootstrap.MenuItem eventKey={2} onSelect={this.showForm}>
                 Отчет за заданный период
-              </BindableMenuItem>
+              </EtsBootstrap.MenuItem>
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
         </DtCoverageReportTable>

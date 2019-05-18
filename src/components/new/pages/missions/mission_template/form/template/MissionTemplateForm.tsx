@@ -296,14 +296,12 @@ class MissionTemplateForm extends React.PureComponent<
                   <EtsBootstrap.Dropdown
                     id="mission_template-print-dropdown"
                     dropup
-                    onSelect={this.handlePrint}
-                    disabled={!this.props.canSave}>
-                    <EtsBootstrap.DropdownToggle>
-                      <EtsBootstrap.Glyphicon id="m-print" glyph="print" />
-                    </EtsBootstrap.DropdownToggle>
-                    <EtsBootstrap.DropdownMenu>
-                      <EtsBootstrap.MenuItem eventKey={printMapKeyBig}>Формате А3</EtsBootstrap.MenuItem>
-                      <EtsBootstrap.MenuItem eventKey={printMapKeySmall}>Формате А4</EtsBootstrap.MenuItem>
+                    disabled={!this.props.canSave}
+                    toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
+                  >
+                    <EtsBootstrap.DropdownMenu dropup>
+                      <EtsBootstrap.MenuItem eventKey={printMapKeyBig} onSelect={this.handlePrint}>Формате А3</EtsBootstrap.MenuItem>
+                      <EtsBootstrap.MenuItem eventKey={printMapKeySmall} onSelect={this.handlePrint}>Формате А4</EtsBootstrap.MenuItem>
                     </EtsBootstrap.DropdownMenu>
                   </EtsBootstrap.Dropdown>
                 </BtnPart>

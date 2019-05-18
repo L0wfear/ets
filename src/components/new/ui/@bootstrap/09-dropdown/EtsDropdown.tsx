@@ -1,15 +1,79 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
+import * as ClickOutHandler from 'react-onclickout';
+import EtsButton, { EtsButtonProps } from '../00-button/EtsButton';
+import EtsGlyphicon from '../01-glyphicon/EtsGlyphicon';
 
-export const DropdownStyled = styled(Dropdown)``;
+export type EtsDropdownProps = {
+  id?: string;
+  toggleElement: any;
+  toggleElementSize?: EtsButtonProps['bsSize'];
+  title?: EtsButtonProps['title'];
+  noCaret?: boolean;
+  disabled?: boolean;
+  dropup?: boolean;
 
-export type EtsDropdownProps = any;
+  className?: string;
+};
+
+const EtsDropdownContainer = styled.div`
+  position: relative;
+`;
+
+const EtsDropdownCaretContainer = styled.span`
+  margin-left: 5px;
+  font-size: 10px;
+`;
 
 const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
   (props) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const handleClick = React.useCallback(
+      () => {
+        setIsOpen((state) => !state);
+      },
+      [],
+    );
+
+    const handleClickClose = React.useCallback(
+      () => {
+        if (isOpen) {
+          setIsOpen(false);
+        }
+      },
+      [isOpen],
+    );
+
+    let glyphDirection = !isOpen;
+    if (props.dropup) {
+      glyphDirection = !glyphDirection;
+    }
+
     return (
-      <DropdownStyled {...props} />
+      <EtsDropdownContainer>
+        <ClickOutHandler onClickOut={handleClickClose}>
+          <EtsButton bsSize={props.toggleElementSize} disabled={props.disabled} onClick={handleClick} title={props.title}>
+            {props.toggleElement}
+            {
+              !props.noCaret  && (
+                <EtsDropdownCaretContainer>
+                  <EtsGlyphicon
+                    glyph={
+                      glyphDirection
+                        ? 'triangle-bottom'
+                        : 'triangle-top'}
+                      />
+                </EtsDropdownCaretContainer>
+              )
+            }
+          </EtsButton>
+        </ClickOutHandler>
+        {
+          isOpen
+            && props.children
+        }
+      </EtsDropdownContainer>
     );
   },
 );

@@ -366,42 +366,6 @@ body.application {
   }
 }
 
-.btn, .btn-default {
-  background-color: $colorButton;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  box-shadow: none !important;
-
-  &.disabled, &[disabled] {
-    background-color: #ddd !important;
-    color: $colorGray;
-  }
-
-  &.active {
-    background-color: $colorGreen!important;
-    color: #fff!important;
-  }
-  &:not(.disabled):not([disabled]):hover, &:focus{
-    background-color: $colorGreenDarker;
-    color: #fff;
-  }
-}
-.btn-group .btn,
-.btn-group .btn-default {
-  border-radius: 0px;
-}
-
-.btn-primary {
-  background-color: #000;
-  color: #fff;
-}
-
-.btn-sm {
-  padding: 5px 20px;
-  font-size: 14px;
-}
-
 .company-switcher {
   width: 250px;
 
@@ -829,32 +793,6 @@ body.application {
 
 /** ETS TABLE */
 
-.ets-table {
-  width:100%;
-
-  padding-top: 8px;
-  table {
-    width: 100%;
-  }
-  &-row {
-    cursor:pointer;
-    td {
-      border:1px solid #ccc;
-      padding:2px 5px;
-      white-space: nowrap;
-    }
-    &.selected {
-      background-color: #DEDEFF;
-    }
-  }
-  &-header-cell {
-    font-size: 12px;
-    padding: 5px 5px;
-    background-color: #eee;
-    border: 1px solid #ccc;
-  }
-}
-
 .some-header {
   font-size: 18px;
   line-height: 40px;
@@ -866,6 +804,7 @@ body.application {
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
+  font-size: 14px;
 
   >* {
     margin-left: 10px;
@@ -912,9 +851,6 @@ body.application {
   margin-bottom: 50px;
   .form-group {
     margin-bottom: 0;
-  }
-  .ets-table {
-    margin-top: 16px;
   }
 
   .taxes-result {
@@ -980,10 +916,6 @@ body.application {
   margin-bottom: 10px;
   padding: 1% 1% 5px 1%;
   text-align: center;
-  .btn {
-    margin-right: 5px;
-    margin-left: 5px;
-  }
 }
 
 .filter-close {
@@ -1209,21 +1141,6 @@ div.none {
   outline: none !important;
 }
 
-.btn-default.btn-xs {
-  border-radius: 3px;
-  padding: 4px 10px;
-}
-.odh-generation, .odh-filters {
-  .btn-primary, .btn-default {
-    margin-top: 24px;
-  }
-}
-.odh-filters {
-  .btn-primary, .btn-default {
-    display: inline-block;
-  }
-}
-
 .width120 {
   width: 120px !important;
 }
@@ -1233,30 +1150,9 @@ div.none {
 .width200 {
   width: 200px !important;
 }
-.min-width200 {
-  min-width: 200px !important;
-}
-.min-width250 {
-  min-width: 250px !important;
-}
 
-.width10-200 {
-  width: 200px;
-  max-width: 200px !important;
-}
 .width300 {
   width: 300px !important;
-}
-.width300justify {
-  width: 300px !important;
-  text-align: justify !important;
-}
-.width1000 {
-  width: 1000px !important;
-}
-.width1000justify {
-  width: 1000px !important;
-  text-align: justify !important;
 }
 .width60 {
   width: 60px !important;
@@ -1272,21 +1168,6 @@ div.none {
 
 .width80 {
   width: 80px !important;
-}
-.width90 {
-  width: 90px !important;
-}
-.width10 {
-  width: 10px !important;
-}
-
-.width20 {
-  width: 20px !important;
-}
-
-.width-nowrap {
-  white-space: nowrap !important;
-  width: 20px !important;
 }
 
 .car-form-image {
@@ -1333,69 +1214,6 @@ div.none {
   flex-wrap: wrap;
 }
 
-.company-structure .griddle-body table tbody {
-  & tr.standard-row>td:first-child {
-    padding-left: 15px !important;
-  }
-  & tr:not(:first-child).child-row {
-    &> td:first-child {
-      padding-left: 30px !important;
-    }
-    &> td:not(:first-child) {
-      padding: 5px !important;
-    }
-  }
-}
-
-.company-structure .griddle-body {
-  tbody {
-    &:nth-child(even) {
-      background-color: #f7f7f7;
-    }
-   
-    tr {
-      &.expanded > td {
-        background-color: $colorGreen !important;
-        color: white !important;
-      }
-      
-      &:nth-of-type(n+2) {
-        cursor: pointer;
-
-        &:nth-child(even) > td {
-          background-color: #f7f7f7;
-        }
-
-        &:hover > td, &.selected-row > td {
-          background-color: $colorGreen !important;
-          color: white !important;
-        }
-
-        &.child-row:hover > td, &.highlighted-row > td {
-          background-color: $colorYellow !important;
-        }
-      }
-    }
-
-    td {
-      vertical-align: top;
-      background-color: transparent;
-      word-break: break-all;
-    }
-  }
-}
-
-.action-button {
-  &:not(.disabled):not([disabled]):hover, &:focus, &.active {
-    background-color: $colorBadge;
-    color: #fff;
-  }
-  & + .action-button {
-    margin-left: 10px;
-  }
-
-}
-
 .reports-date {
   max-width: 48%;
   & + .reports-date {
@@ -1410,16 +1228,6 @@ div.none {
 
 .griddle:focus {
   outline: none;
-}
-
-.half-visible {
-  opacity: 0.5;
-}
-
-.equipment-fuel-checkbox {
-  .form-group {
-    display: inline-block;
-  }
 }
 
 .daily-cleaning-report-period {
@@ -1445,20 +1253,6 @@ div.none {
 
 .btn-toolbar {
   margin-left: 5px !important;
-}
-
-.cleaning-rate-header {
-  position: absolute;
-  top: 25px;
-  left: 520px;
-  button {
-    width: 54px;
-  }
-}
-
-.dropdown-menu > .open.dropdown > .dropdown-menu {
-  left: 100%;
-  margin-top: -32px;
 }
 
 .yellow {
@@ -1507,9 +1301,6 @@ div.none {
   resize: vertical;
 }
 
-.colorRed {
-  color: red;
-}
 
 .colorGreen {
   color: green;
@@ -1552,20 +1343,9 @@ div.none {
 .display-none {
   display: none;
 }
-.colorRed {
-  color: red;
-}
 
 .colorGreen {
   color: green;
-}
-
-.date-label {
-  font-weight: 600;
-}
-
-.select-date-end-custom {
-  min-width: 50px;
 }
 
 div.car-movement-time-report {
@@ -1617,10 +1397,6 @@ div.car-movement-time-report {
 
 .headerRow{
   position: relative;
-}
-
-.taxi-calc-block .ets-table{
-  margin-bottom: 15px;
 }
 
 .default-boolean-input {

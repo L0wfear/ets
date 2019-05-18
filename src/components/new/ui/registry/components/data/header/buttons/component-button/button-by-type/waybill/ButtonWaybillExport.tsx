@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { registyLoadPrintForm, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import { DropdownWrap } from './styled';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import WaybillExportForm from './print_form';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -32,17 +32,17 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
   return (
     <React.Fragment>
       <DropdownWrap key="print" id="dropdown-print" pullRight>
-        <Dropdown.Toggle noCaret bsSize="small">
+        <EtsBootstrap.DropdownToggle noCaret bsSize="small">
           <EtsBootstrap.Glyphicon glyph="download-alt" />
-        </Dropdown.Toggle>
-        <Dropdown.Menu>
+        </EtsBootstrap.DropdownToggle>
+        <EtsBootstrap.DropdownMenu>
           <MenuItem eventKey="byDate" onSelect={showPrintForm}>
             Журнал путевых листов (ТМФ №8)
           </MenuItem>
           <MenuItem eventKey="interval" onSelect={showPrintForm}>
             Отчет по выработке ТС
           </MenuItem>
-        </Dropdown.Menu>
+        </EtsBootstrap.DropdownMenu>
       </DropdownWrap>
       {
         typeExportForm && (

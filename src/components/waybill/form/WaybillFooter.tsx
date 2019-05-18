@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as Dropdown from 'react-bootstrap/lib/Dropdown';
 import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
@@ -67,30 +66,30 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
         <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? waybillPermissions.plate : undefined}>
           <BtnGroupWrapper>
             <BtnPart>
-              <Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
-                <Dropdown.Toggle disabled={!props.canSave}>
+              <EtsBootstrap.Dropdown id="waybill-print-dropdown_ptint" className="print" dropup disabled={!props.canSave || !props.state.id} onSelect={props.handlePrintFromMiniButton}>
+                <EtsBootstrap.DropdownToggle disabled={!props.canSave}>
                   <EtsBootstrap.Glyphicon glyph="print" />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
+                </EtsBootstrap.DropdownToggle>
+                <EtsBootstrap.DropdownMenu>
                   <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
                   <MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
                   <MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
                   <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
-                </Dropdown.Menu>
-              </Dropdown>
+                </EtsBootstrap.DropdownMenu>
+              </EtsBootstrap.Dropdown>
             </BtnPart>
             <BtnPart>
-              <Dropdown id="waybill-print-dropdown_save" className="pdf" dropup pullRight disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
-                <Dropdown.Toggle disabled={!props.canSave}>
+              <EtsBootstrap.Dropdown id="waybill-print-dropdown_save" className="pdf" dropup pullRight disabled={!props.canSave} onSelect={props.handlePrint.bind(null, props.state.status !== 'draft' && !props.isCreating)}>
+                <EtsBootstrap.DropdownToggle disabled={!props.canSave}>
                   <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
+                </EtsBootstrap.DropdownToggle>
+                <EtsBootstrap.DropdownMenu>
                   <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
                   <MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
                   <MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
                   <MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
-                </Dropdown.Menu>
-              </Dropdown>&nbsp;
+                </EtsBootstrap.DropdownMenu>
+              </EtsBootstrap.Dropdown>&nbsp;
             </BtnPart>
           </BtnGroupWrapper>
         </Div>

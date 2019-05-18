@@ -20,7 +20,7 @@ import {
   ExtFieldDateStartWrap,
   FieldDatesMissionContainer,
 } from './styled';
-import { Dropdown, MenuItem } from 'react-bootstrap';
+import { MenuItem } from 'react-bootstrap';
 import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates } from 'utils/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
@@ -150,16 +150,16 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
               onSelect={this.handleChangeHoursDateEnd}
               title="Продолжительность задания, ч"
             >
-              <Dropdown.Toggle disabled={false}>
+              <EtsBootstrap.DropdownToggle disabled={false}>
                 <EtsBootstrap.Glyphicon id="select-date_end" glyph="time" />
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="select-date-end-custom">
+              </EtsBootstrap.DropdownToggle>
+              <EtsBootstrap.DropdownMenu className="select-date-end-custom">
                 <MenuItem eventKey={1}>1</MenuItem>
                 <MenuItem eventKey={2}>2</MenuItem>
                 <MenuItem eventKey={3}>3</MenuItem>
                 <MenuItem eventKey={4}>4</MenuItem>
                 <MenuItem eventKey={5}>5</MenuItem>
-              </Dropdown.Menu>
+              </EtsBootstrap.DropdownMenu>
             </DropdownDateEnd>
           </ColStartDatePickerWithDropdown>
           <ColDividerDatePicker md={2}>

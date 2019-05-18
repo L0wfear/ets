@@ -16,6 +16,7 @@ import EtsNavDropdown from 'components/new/ui/@bootstrap/14-nav_dropdown/EtsNavD
 import EtsMenuItem from 'components/new/ui/@bootstrap/15-menu_item/EtsMenuItem';
 import EtsLabel from 'components/new/ui/@bootstrap/16-label/EtsLabel';
 import EtsFormControl from 'components/new/ui/@bootstrap/17-form_control/EtsFormControl';
+import EtsButtonGroup from 'components/new/ui/@bootstrap/18-button_group/EtsButtonGroup';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -36,6 +37,7 @@ const EtsBootstrap = {
   MenuItem: EtsMenuItem,
   Label: EtsLabel,
   FormControl: EtsFormControl,
+  ButtonGroup: EtsButtonGroup,
 };
 
 export default EtsBootstrap;

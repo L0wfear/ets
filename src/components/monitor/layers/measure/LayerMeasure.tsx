@@ -6,7 +6,6 @@ import { omit } from 'lodash';
 
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as ButtonGroup from 'react-bootstrap/lib/ButtonGroup';
 
 import Overlay from 'components/new/ui/map/overlay/Overlay';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
@@ -284,12 +283,12 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
           ))
         }
         <ButtonContainer>
-          <ButtonGroup vertical>
+          <EtsBootstrap.ButtonGroup vertical>
             <ButtonDraw disabled={this.state.activeDraw || this.props.drawActiveAll} onClick={this.toggleMeasureActive} />
             <EtsBootstrap.Button disabled={this.checkRemoveFromActiveDraw()} onClick={this.handleClickRemove}>
               <EtsBootstrap.Glyphicon glyph="remove" />
             </EtsBootstrap.Button>
-          </ButtonGroup>
+          </EtsBootstrap.ButtonGroup>
         </ButtonContainer>
       </>
     );

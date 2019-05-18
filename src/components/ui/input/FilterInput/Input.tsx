@@ -1,8 +1,8 @@
 import * as React from 'react';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
 import * as R from 'ramda';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export interface IPropsExtendedInput {
   type: string;
@@ -86,7 +86,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     return (
       <div className="inputs">
         <div className="form-group">
-          <FormControl
+          <EtsBootstrap.FormControl
             id={idValueBeg}
             type="number"
             min="0"
@@ -98,7 +98,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
         </div>
         {this.props.interval &&
           <div className="form-group">
-            <FormControl
+            <EtsBootstrap.FormControl
               id={idValueEnd}
               type="number"
               min="0"
@@ -119,7 +119,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     return (
       <div className="inputs">
         <div className="form-group">
-          <FormControl
+          <EtsBootstrap.FormControl
             id={idValueBeg}
             type="text"
             value={this.props.value[0] || ''}
@@ -128,7 +128,7 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
         </div>
         {this.props.interval &&
           <div className="form-group">
-            <FormControl
+            <EtsBootstrap.FormControl
               id={idValueEnd}
               type="text"
               value={this.props.value[1] || ''}

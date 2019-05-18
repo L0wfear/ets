@@ -2,8 +2,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import * as FormControl from 'react-bootstrap/lib/FormControl';
-
 import {
   oldReportGetOdhCoverageReport,
   oldReportExportOdhCoverageReport,
@@ -102,7 +100,7 @@ class OdhCoverageReport extends React.Component {
           <div className="daily-cleaning-report-period">
             Период формирования:
             <div className="form-group">
-              <FormControl
+              <EtsBootstrap.FormControl
                 type="text"
                 readOnly
                 value={getFormattedDateTime(date_start)}
@@ -110,7 +108,7 @@ class OdhCoverageReport extends React.Component {
             </div>
             <span> — </span>
             <div className="form-group">
-              <FormControl
+              <EtsBootstrap.FormControl
                 type="text"
                 readOnly
                 value={getFormattedDateTime(date_end)}

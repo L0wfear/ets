@@ -1,13 +1,13 @@
 import * as React from 'react';
 import _ from 'lodash';
 import * as PropTypes from 'prop-types';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
 import { isArray } from 'util';
 import Div from 'components/ui/Div';
 import FilterInput from 'components/ui/input/FilterInput/FilterInput';
 import IntervalPicker from 'components/ui/input/IntervalPicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import { ColFilter } from 'components/ui/tableNew/filter/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class FilterRow extends React.Component {
   static get propTypes() {
@@ -58,7 +58,7 @@ class FilterRow extends React.Component {
 
     let input = (
       <div className="form-group">
-        <FormControl
+        <EtsBootstrap.FormControl
           id={idValue}
           type="text"
           value={value || ''}

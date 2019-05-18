@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
@@ -71,10 +70,10 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
                   <EtsBootstrap.Glyphicon glyph="print" />
                 </EtsBootstrap.DropdownToggle>
                 <EtsBootstrap.DropdownMenu>
-                  <MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
-                  <MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
-                  <MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
-                  <MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
+                  <EtsBootstrap.MenuItem id="print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem id="print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem id="print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem id="print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</EtsBootstrap.MenuItem>
                 </EtsBootstrap.DropdownMenu>
               </EtsBootstrap.Dropdown>
             </BtnPart>
@@ -84,10 +83,10 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
                   <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
                 </EtsBootstrap.DropdownToggle>
                 <EtsBootstrap.DropdownMenu>
-                  <MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</MenuItem>
-                  <MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</MenuItem>
-                  <MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</MenuItem>
-                  <MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</MenuItem>
+                  <EtsBootstrap.MenuItem id="save-print-plate_special" eventKey={'plate_bus'}>Форма №1 (автобус)</EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem id="save_print-plate_truck" eventKey={'plate_truck'}>Форма №2 (грузовое ТС)</EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem id="save-print-plate_car" eventKey={'plate_car'}>Форма №3 (легковое ТС)</EtsBootstrap.MenuItem>
+                  <EtsBootstrap.MenuItem id="save-print-plate_special" eventKey={'plate_special'}>Форма №4 (самоходная машина)</EtsBootstrap.MenuItem>
                 </EtsBootstrap.DropdownMenu>
               </EtsBootstrap.Dropdown>&nbsp;
             </BtnPart>

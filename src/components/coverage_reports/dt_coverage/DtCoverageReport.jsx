@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import * as BootstrapMenuItem from 'react-bootstrap/lib/MenuItem';
 import * as FormControl from 'react-bootstrap/lib/FormControl';
 
 import {
@@ -23,7 +22,7 @@ import { EtsPageWrap } from 'global-styled/global-styled';
 import DtCoverageReportTable from 'components/coverage_reports/dt_coverage/DtCoverageReportTable';
 import DtCoverageReportPrintForm from 'components/coverage_reports/dt_coverage/DtCoverageReportPrintForm';
 
-const MenuItem = bindable(BootstrapMenuItem);
+const BindableMenuItem = bindable(EtsBootstrap.MenuItem);
 
 const page = 'dt_coverage_report';
 
@@ -119,10 +118,9 @@ class DtCoverageReport extends React.Component {
               />
             </EtsBootstrap.DropdownToggle>
             <EtsBootstrap.DropdownMenu>
-              {/* <MenuItem bindOnClick={1} onClick={this.export}>Ежедневный отчет</MenuItem> */}
-              <MenuItem bindOnClick={2} onClick={this.showForm}>
+              <BindableMenuItem bindOnClick={2} onClick={this.showForm}>
                 Отчет за заданный период
-              </MenuItem>
+              </BindableMenuItem>
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
         </DtCoverageReportTable>

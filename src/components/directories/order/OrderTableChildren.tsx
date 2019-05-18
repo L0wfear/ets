@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { bindActionCreators } from 'redux';
@@ -43,10 +42,10 @@ const OrderTableChilrend: React.FC<any> = (props) => (
         pullRight
         title={title}
         id="bg-nested-dropdown">
-        <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
-        <MenuItem eventKey={TypeDownload.new}>
+        <EtsBootstrap.MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
+        <EtsBootstrap.MenuItem eventKey={TypeDownload.new}>
           Расшифровка централизованного задания
-        </MenuItem>
+        </EtsBootstrap.MenuItem>
       </DropdownButton>
     </span>
   </>

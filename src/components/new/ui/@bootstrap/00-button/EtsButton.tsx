@@ -1,8 +1,8 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import * as Button from 'react-bootstrap/lib/Button';
 
-export const ButtonStyled = styled(EtsBootstrap.Button)``;
+export const ButtonStyled = styled(Button)``;
 
 type EtsButtonProps = any;
 

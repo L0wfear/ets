@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Label } from 'react-bootstrap';
 
 import {
   PropsDutyMissionForm,
@@ -242,9 +241,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     ) : (
       <div>
         {`Наряд-задание № ${state.number || ''}`}
-        <Label bsStyle="default" style={{ marginLeft: 10 }}>
+        <EtsBootstrap.Label bsStyle="default" style={{ marginLeft: 10 }}>
           {DUTY_MISSION_STATUS_LABELS[state.status]}
-        </Label>
+        </EtsBootstrap.Label>
       </div>
     );
 

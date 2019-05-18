@@ -22,6 +22,7 @@ import EtsPanel from 'components/new/ui/@bootstrap/20-panel/EtsPanel';
 import EtsPanelBody from 'components/new/ui/@bootstrap/21-panel_body/EtsPanelBody';
 import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/EtsPanelCollapse';
 import EtsPopover from 'components/new/ui/@bootstrap/23-popover/EtsPopover';
+import EtsOverlayTrigger from 'components/new/ui/@bootstrap/24-overlay_trigger/EtsOverlayTrigger';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -48,6 +49,7 @@ const EtsBootstrap = {
   PanelBody: EtsPanelBody,
   PanelCollapse: EtsPanelCollapse,
   Popover: EtsPopover,
+  OverlayTrigger: EtsOverlayTrigger,
 };
 
 export default EtsBootstrap;

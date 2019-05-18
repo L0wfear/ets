@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 interface IPropsDeltaTableHeader {
@@ -16,7 +16,7 @@ const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) =
   return (
     <div>
       <span>{name}</span>
-      <OverlayTrigger
+      <EtsBootstrap.OverlayTrigger
         trigger={['hover', 'focus']}
         overlay={popover}
         placement="left"
@@ -24,7 +24,7 @@ const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) =
         <EtsBootstrap.Glyphicon
           glyph="info-sign"
         />
-      </OverlayTrigger>
+      </EtsBootstrap.OverlayTrigger>
     </div>
   );
 };

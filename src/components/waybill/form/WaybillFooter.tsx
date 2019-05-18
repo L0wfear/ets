@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 import { isEmpty } from 'utils/functions';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
@@ -57,9 +56,9 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
     return (
       <DisplayFlexAlignCenterFooterForm>
         <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
-          <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
-          <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><EtsBootstrap.Glyphicon glyph="refresh" /></EtsBootstrap.Button>
-          </OverlayTrigger>
+          <EtsBootstrap.OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
+            <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><EtsBootstrap.Glyphicon glyph="refresh" /></EtsBootstrap.Button>
+          </EtsBootstrap.OverlayTrigger>
         </Div>
         <Div hidden={!props.isPermittedByKey.update} className="inline-block" permissions={(props.state.status !== 'closed' && props.state.status !== 'active') ? waybillPermissions.plate : undefined}>
           <BtnGroupWrapper>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -10,9 +9,9 @@ interface IPropsDeltaTableHeader {
 
 const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) => {
   const popover = (
-    <Popover id="route-odh-coverage-popover" className="car-usage-report-title__popover">
+    <EtsBootstrap.Popover id="route-odh-coverage-popover" className="car-usage-report-title__popover">
       {tooltip}
-    </Popover>
+    </EtsBootstrap.Popover>
   );
   return (
     <div>

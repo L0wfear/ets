@@ -21,6 +21,7 @@ import EtsDropdownButton from 'components/new/ui/@bootstrap/19-dropdown_button/E
 import EtsPanel from 'components/new/ui/@bootstrap/20-panel/EtsPanel';
 import EtsPanelBody from 'components/new/ui/@bootstrap/21-panel_body/EtsPanelBody';
 import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/EtsPanelCollapse';
+import EtsPopover from 'components/new/ui/@bootstrap/23-popover/EtsPopover';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -46,6 +47,7 @@ const EtsBootstrap = {
   Panel: EtsPanel,
   PanelBody: EtsPanelBody,
   PanelCollapse: EtsPanelCollapse,
+  Popover: EtsPopover,
 };
 
 export default EtsBootstrap;

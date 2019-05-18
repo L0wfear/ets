@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 
 import { isEmpty } from 'utils/functions';
@@ -46,9 +45,9 @@ interface IPropsWaybillFooter {
 const message = 'Автоматическое обновление полей: Одометр.Выезд из гаража, Счетчик моточасов. Выезд из гаража, Счетчик моточасов оборудования. Выезд из гаража, Топливо.Выезд, из предыдущего, последнего по времени выдачи, закрытого ПЛ на указанное ТС';
 
 const popoverHoverFocus = (
-  <Popover id="popover-trigger-hover-focus" title="Внимание!">
+  <EtsBootstrap.Popover id="popover-trigger-hover-focus" title="Внимание!">
    {message}
-  </Popover>
+  </EtsBootstrap.Popover>
 );
 
 class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {

@@ -26,7 +26,6 @@ import {
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import FieldStructureDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import * as Popover from 'react-bootstrap/lib/Popover';
 import * as OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger';
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
@@ -34,7 +33,7 @@ import { getDefaultFuelCardsElement } from './utils';
 import { FuelCardsIsCommonWrapper } from './styled';
 
 const popover = (
-  <Popover
+  <EtsBootstrap.Popover
     id="fuel_card-popover"
     className="car-usage-report-title__popover"
   >
@@ -43,7 +42,7 @@ const popover = (
     топливная карта доступна тому подразделению, которое указано в карточке.
     Если подразделение не указано и не установлен признак "Общая", то
     топливная карта доступна только головной организации.
-  </Popover>
+  </EtsBootstrap.Popover>
 );
 
 class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {

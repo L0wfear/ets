@@ -34,7 +34,6 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import FieldMissionSourceMission from './inside_fields/mission_source_id/FieldMissionSourceMission';
 
 import { diffDates } from 'utils/dates';
-import { MenuItem } from 'react-bootstrap';
 import FieldAssignToWaybillMission from './inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
 import ColumnAssignmentFormLazy from './column_assignment';
 import FieldNormIdMission from './inside_fields/norm_id/FieldNormIdMission';
@@ -730,8 +729,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                             <EtsBootstrap.Glyphicon id="m-print" glyph="print" />
                           </EtsBootstrap.DropdownToggle>
                           <EtsBootstrap.DropdownMenu>
-                            <MenuItem eventKey={1}>Экспорт в файл</MenuItem>
-                            <MenuItem eventKey={2}>Печать</MenuItem>
+                            <EtsBootstrap.MenuItem eventKey={1}>Экспорт в файл</EtsBootstrap.MenuItem>
+                            <EtsBootstrap.MenuItem eventKey={2}>Печать</EtsBootstrap.MenuItem>
                           </EtsBootstrap.DropdownMenu>
                         </EtsBootstrap.Dropdown>
                       </BtnPart>

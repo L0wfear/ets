@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as Badge from 'react-bootstrap/lib/Badge';
 
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -14,6 +13,7 @@ import {
   OwnPropsNotificationBadge,
   PropsNotificationBadge,
 } from 'components/notifications/@types/NotificationBadge.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 /* ETS2 */
 class NotificationBadge extends React.PureComponent<PropsNotificationBadge, StateNotificationBadge> {
@@ -38,7 +38,7 @@ class NotificationBadge extends React.PureComponent<PropsNotificationBadge, Stat
 
   render() {
     const { countNotRead = 0 } = this.props;
-    return <Badge>{countNotRead}</Badge>;
+    return <EtsBootstrap.Badge>{countNotRead}</EtsBootstrap.Badge>;
   }
 }
 

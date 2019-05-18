@@ -13,7 +13,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 
 import { get } from 'lodash';
-import { FormControl } from 'react-bootstrap';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsAdvancedStringLikeFilter = {
   filterData: {
@@ -59,7 +59,7 @@ class AdvancedStringLikeFilter extends React.PureComponent<PropsAdvancedStringLi
       <EtsFilter>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
-          <FormControl
+          <EtsBootstrap.FormControl
             value={value}
             onChange={this.handleChange}
             disabled={this.props.filterData.disabled}

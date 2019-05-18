@@ -25,7 +25,6 @@ import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import { MenuItem } from 'react-bootstrap';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { printData } from 'utils/functions';
 
@@ -303,8 +302,8 @@ class MissionTemplateForm extends React.PureComponent<
                       <EtsBootstrap.Glyphicon id="m-print" glyph="print" />
                     </EtsBootstrap.DropdownToggle>
                     <EtsBootstrap.DropdownMenu>
-                      <MenuItem eventKey={printMapKeyBig}>Формате А3</MenuItem>
-                      <MenuItem eventKey={printMapKeySmall}>Формате А4</MenuItem>
+                      <EtsBootstrap.MenuItem eventKey={printMapKeyBig}>Формате А3</EtsBootstrap.MenuItem>
+                      <EtsBootstrap.MenuItem eventKey={printMapKeySmall}>Формате А4</EtsBootstrap.MenuItem>
                     </EtsBootstrap.DropdownMenu>
                   </EtsBootstrap.Dropdown>
                 </BtnPart>

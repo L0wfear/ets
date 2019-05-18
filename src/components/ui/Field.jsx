@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
 import cx from 'classnames';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
@@ -9,6 +8,7 @@ import FileInput from 'components/ui/input/FileInput/FileInput';
 import Preloader from 'components/ui/new/preloader/Preloader';
 
 import Div from 'components/ui/Div';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const checkboxStyle = { fontSize: '20px', margin: '5px' };
 
@@ -66,7 +66,7 @@ function StringField(props) {
             <span>{label}</span>
           </label>
         )}
-        <FormControl
+        <EtsBootstrap.FormControl
           type="text"
           disabled={disabled}
           className={inputClassName}
@@ -206,7 +206,7 @@ export default class Field extends React.Component {
               <span>{this.props.label}</span>
             </label>
           )}
-          <FormControl
+          <EtsBootstrap.FormControl
             lang="en"
             type="number"
             className={inputClassName}

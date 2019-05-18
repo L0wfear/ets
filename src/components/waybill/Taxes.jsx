@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import Table from 'components/waybill/Table';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
 
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 
@@ -169,7 +168,7 @@ export default class Taxes extends React.Component {
                 <span>{'label'}</span>
               </label>
             )}
-            <FormControl
+            <EtsBootstrap.FormControl
               {...factValueProps}
               onChange={this.handleFactValueChange.bind(this, index)}
             />

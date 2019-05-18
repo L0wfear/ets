@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DivNone } from 'global-styled/global-styled';
 import * as cx from 'classnames';
-import { FormControl } from 'react-bootstrap';
 import { InputContainer } from 'components/new/ui/field/styled/styled';
+import EtsBootstrap from '../@bootstrap';
 
 type PropsInputNumber = {
   error?: string;
@@ -43,7 +43,7 @@ class InputNumber extends React.PureComponent<PropsInputNumber, {}> {
                 <DivNone />
               )
             }
-            <FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
+            <EtsBootstrap.FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
           </InputContainer>
           {
             !noShowError ? (

@@ -20,7 +20,6 @@ import {
   ExtFieldDateStartWrap,
   FieldDatesMissionContainer,
 } from './styled';
-import { MenuItem } from 'react-bootstrap';
 import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates } from 'utils/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
@@ -154,11 +153,11 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
                 <EtsBootstrap.Glyphicon id="select-date_end" glyph="time" />
               </EtsBootstrap.DropdownToggle>
               <EtsBootstrap.DropdownMenu className="select-date-end-custom">
-                <MenuItem eventKey={1}>1</MenuItem>
-                <MenuItem eventKey={2}>2</MenuItem>
-                <MenuItem eventKey={3}>3</MenuItem>
-                <MenuItem eventKey={4}>4</MenuItem>
-                <MenuItem eventKey={5}>5</MenuItem>
+                <EtsBootstrap.MenuItem eventKey={1}>1</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={2}>2</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={3}>3</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={4}>4</EtsBootstrap.MenuItem>
+                <EtsBootstrap.MenuItem eventKey={5}>5</EtsBootstrap.MenuItem>
               </EtsBootstrap.DropdownMenu>
             </DropdownDateEnd>
           </ColStartDatePickerWithDropdown>

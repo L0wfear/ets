@@ -1,7 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as DropdownButton from 'react-bootstrap/lib/DropdownButton';
-import * as MenuItem from 'react-bootstrap/lib/MenuItem';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -34,8 +32,6 @@ import {
 } from 'global-styled/global-styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-
-const DropdownButtonTSX: any = DropdownButton;
 
 const TypeDownload = {
   old: 'old',
@@ -132,10 +128,10 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           )
         }
         <RightButtonBlockContainer needMarginBottom>
-          <DropdownButtonTSX id="save-faxogramm" onSelect={this.seclectDownload} title={<EtsBootstrap.Glyphicon glyph="download-alt" />} pullRight>
-            <MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</MenuItem>
-            <MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</MenuItem>
-          </DropdownButtonTSX>
+          <EtsBootstrap.DropdownButton id="save-faxogramm" onSelect={this.seclectDownload} title={<EtsBootstrap.Glyphicon glyph="download-alt" />} pullRight>
+            <EtsBootstrap.MenuItem eventKey={TypeDownload.old}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
+            <EtsBootstrap.MenuItem eventKey={TypeDownload.new}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
+          </EtsBootstrap.DropdownButton>
           <ButtonReadOrder onClick={this.showPDFViewModal}><EtsBootstrap.Glyphicon glyph="info-sign" /></ButtonReadOrder>
           <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
             <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>

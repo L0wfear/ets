@@ -1,9 +1,6 @@
 import React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as Nav from 'react-bootstrap/lib/Nav';
-import * as NavItem from 'react-bootstrap/lib/NavItem';
-import * as Panel from 'react-bootstrap/lib/Panel';
 
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
@@ -517,7 +514,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
-                <Panel>
+                <EtsBootstrap.Panel>
                   <EtsBootstrap.Col
                     md={12}
                     style={{ fontWeight: 600, marginBottom: 5 }}>
@@ -554,18 +551,22 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                       />
                     </EtsBootstrap.Col>
                   </div>
-                </Panel>
+                </EtsBootstrap.Panel>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            <Nav
+            <EtsBootstrap.Nav
               style={{ marginBottom: 20 }}
               bsStyle="tabs"
               activeKey={tabKey}
               onSelect={this.props.handleTabSelect}
               id="refs-car-tabs">
-              <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
-              <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
-            </Nav>
+              <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.PLAN}>
+                План
+              </EtsBootstrap.NavItem>
+              <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.FACT}>
+                Факт
+              </EtsBootstrap.NavItem>
+            </EtsBootstrap.Nav>
             <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <EtsBootstrap.Row style={{ marginBottom: 20 }}>
                 <EtsBootstrap.Col md={3}>

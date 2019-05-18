@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import * as Panel from 'react-bootstrap/lib/Panel';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export const PanelWrap = styled(Panel)`
+export const PanelWrap = styled(EtsBootstrap.Panel)`
   &&& {
     margin: 0;
     border: none;
@@ -10,10 +10,10 @@ export const PanelWrap = styled(Panel)`
   }
 `;
 
-export const PanelCollapseWrap = styled(Panel.Collapse)`
+export const PanelCollapseWrap = styled(EtsBootstrap.PanelCollapse)`
 `;
 
-export const PanelBodyWrap = styled(Panel.Body)`
+export const PanelBodyWrap = styled(EtsBootstrap.PanelBody)`
   &&& {
     padding: 0px;
   }

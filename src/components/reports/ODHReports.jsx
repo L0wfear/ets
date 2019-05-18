@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
-import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
@@ -132,14 +131,14 @@ class ODHReports extends Component {
                     </EtsBootstrap.Row>
                   </EtsBootstrap.Col>
                   <EtsBootstrap.Col md={4}>
-                    <ButtonToolbar>
+                    <EtsBootstrap.ButtonToolbar>
                       <EtsBootstrap.Button bsStyle="primary">
                         Применить
                       </EtsBootstrap.Button>
                       <EtsBootstrap.Button bsStyle="default">
                         Очистить
                       </EtsBootstrap.Button>
-                    </ButtonToolbar>
+                    </EtsBootstrap.ButtonToolbar>
                   </EtsBootstrap.Col>
                 </EtsBootstrap.Row>
               </div>

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
@@ -47,10 +46,10 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
     return (
       <div className="date-table-input">
          <div className="pull-right">
-          <ButtonToolbar>
+          <EtsBootstrap.ButtonToolbar>
             <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
             <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
-          </ButtonToolbar>
+          </EtsBootstrap.ButtonToolbar>
         </div>
         <DataTable
           title=""

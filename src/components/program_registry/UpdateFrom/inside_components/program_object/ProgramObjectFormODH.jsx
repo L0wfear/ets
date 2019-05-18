@@ -1,6 +1,5 @@
 import React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as NavItem from 'react-bootstrap/lib/NavItem';
 
 import connectToStores from 'flummox/connect';
 import moment from 'moment';
@@ -492,8 +491,12 @@ class ProgramObjectFormodh extends UNSAFE_Form {
               activeKey={tabKey}
               onSelect={this.props.handleTabSelect}
               id="refs-car-tabs">
-              <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
-              <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
+              <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.PLAN}>
+                План
+              </EtsBootstrap.NavItem>
+              <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.FACT}>
+                Факт
+              </EtsBootstrap.NavItem>
             </EtsBootstrap.Nav>
             <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <EtsBootstrap.Row style={{ marginBottom: 20 }}>

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Nav, NavDropdown } from 'react-bootstrap';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
-import carFormTabKey from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
 import { Link } from 'react-router-dom';
+import carFormTabKey from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type CarFormBodyHeaderOwnProps = {
   isPermitted: boolean;
@@ -15,7 +15,7 @@ type CarFormBodyHeaderProps = (
 
 const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
   return (
-    <Nav
+    <EtsBootstrap.Nav
       bsStyle="tabs"
       id="refs-car-tabs"
     >
@@ -23,7 +23,7 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
         carFormTabKey.map(({ tabKey: tabKeyScheme, title, ...other }) => {
           if ('children' in other) {
             return (
-              <NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title}>
+              <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title}>
                 {
                   other.children.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
                     <li role="presentation" key={tabKeyChildScheme}>
@@ -31,7 +31,7 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
                     </li>
                   ))
                 }
-              </NavDropdown>
+              </EtsBootstrap.NavDropdown>
             );
           }
 
@@ -42,7 +42,7 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
           );
         })
       }
-    </Nav>
+    </EtsBootstrap.Nav>
   );
 };
 

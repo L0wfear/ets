@@ -1,6 +1,5 @@
 import React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as Nav from 'react-bootstrap/lib/Nav';
 import * as NavItem from 'react-bootstrap/lib/NavItem';
 
 import connectToStores from 'flummox/connect';
@@ -487,7 +486,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
                 />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            <Nav
+            <EtsBootstrap.Nav
               style={{ marginBottom: 20 }}
               bsStyle="tabs"
               activeKey={tabKey}
@@ -495,7 +494,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
               id="refs-car-tabs">
               <NavItem eventKey={OBJ_TAB_INDEX.PLAN}>План</NavItem>
               <NavItem eventKey={OBJ_TAB_INDEX.FACT}>Факт</NavItem>
-            </Nav>
+            </EtsBootstrap.Nav>
             <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
               <EtsBootstrap.Row style={{ marginBottom: 20 }}>
                 <EtsBootstrap.Col md={3}>

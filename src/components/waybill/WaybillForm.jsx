@@ -775,7 +775,7 @@ class WaybillForm extends UNSAFE_Form {
 
     if (changeObj.structure_id) {
       changeObj.car_refill = [];
-      changeObj.fuel_given = null;
+      changeObj.fuel_given = 0;
       changeObj.equipment_refill = [];
       changeObj.equipment_fuel_given = null;
     }

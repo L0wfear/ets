@@ -21,18 +21,6 @@ html, body {
   color: #000;
 }
 
-.car_info_block {
-  border: medium none;
-  box-shadow: 0 1px 3px rgba(0,0,0,.1);
-  background: #ffffff;
-  padding: 0px 5px;
-  border-radius: 3px;
-}
-
-.flex_basis_100 {
-  flex-basis: 100%;
-}
-
 .map_info-title_container {
   display: flex;
   justify-content: space-between;
@@ -100,52 +88,6 @@ html, body {
 
 .all-width {
   width: 100%;
-}
-
-.car_info-main_data_container {
-  >.car_info_block {
-    padding: 10px;
-  }
-
-  .legend-color {
-    display: flex;
-    align-items: center;
-    font-weight: 200;
-    >div {
-      margin: 0px 2px;
-    }
-  }
-  .car_info-legend-color {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
-
-    &.red {
-      background-color: rgb(255, 0, 51);;
-    }
-    &.green {
-      background-color: rgb(102, 204, 0);;
-    }
-  }
-}
-
-.car_info_block {
-  display: flex;
-  &.column {
-    flex-direction: column;
-  }
-  >div {
-    flex: 1 1 auto;
-  }
-  >div.car_info-img {
-    flex: 3 1 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  &.tab-data {
-    margin-top: 10px;
-  }
 }
 
 .car_info-attributes {
@@ -1041,10 +983,6 @@ body.application {
 .pr-object-data {
   display: flex;
   justify-content: space-between;
-}
-
-div.none {
-  display: none !important;
 }
 
 .pagination>li>a, .pagination>li>span {

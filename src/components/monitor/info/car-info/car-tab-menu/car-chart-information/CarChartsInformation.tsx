@@ -12,6 +12,7 @@ import {
   OwnPropsCarFuelChart,
   OwnPropsCarSpeedChart,
 } from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
+import { CarInfoBlockTabData } from 'components/monitor/styled';
 
 type PropsCarChartsInformation = {
   centerOn: any;
@@ -91,7 +92,7 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
           <EtsBootstrap.Button data-number="1" active={selectedTab === 1} onClick={this.handleClick} >Датчики топлива</EtsBootstrap.Button>
           <EtsBootstrap.Button data-number="2" active={selectedTab === 2} onClick={this.handleClick} >Датчики скорости</EtsBootstrap.Button>
         </div>
-        <div className="car_info_block tab-data">
+        <CarInfoBlockTabData>
           {
             selectedTab === 1
             ? (
@@ -119,7 +120,7 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
               <DivNone />
             )
           }
-        </div>
+        </CarInfoBlockTabData>
       </div>
     );
   }

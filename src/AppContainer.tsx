@@ -11,16 +11,20 @@ import configureStore from 'redux-main/create';
 const flux = new Flux();
 const store = configureStore();
 
+const AppWithRoute = hot(() => (
+  <HashRouter>
+    <Switch>
+      <Route path="*" render={(props) => (<App {...props} flux={flux} />)} />
+    </Switch>
+  </HashRouter>
+));
+
 const AppConteiner = () => (
   <Provider store={store}>
     <EtsThemeProvider>
-      <HashRouter>
-        <Switch>
-          <Route path="*" render={(props) => (<App {...props} flux={flux} />)} />
-        </Switch>
-      </HashRouter>
+      <AppWithRoute />
     </EtsThemeProvider>
   </Provider>
 );
 
-export default hot(AppConteiner);
+export default AppConteiner;

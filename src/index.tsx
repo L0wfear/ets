@@ -5,9 +5,7 @@
  */
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-main/create';
-import AppContainer from './AppContainer';
+import PreloaderComponent from 'components/ui/new/preloader/Preloader';
 
  /* 3rd party js */
 import './assets/main.scss';
@@ -17,15 +15,14 @@ import './assets/main.scss';
 import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
 import './config/raven';
-import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
-const store = configureStore();
+const AppContainer = React.lazy(() => (
+  import(/* webpackChunkName: "app" */ './AppContainer')
+));
 
 ReactDom.render(
-  <Provider store={store}>
-    <EtsThemeProvider>
-      <AppContainer />
-    </EtsThemeProvider>
-  </Provider>,
+  <React.Suspense fallback={<PreloaderComponent typePreloader="mainpage" />}>
+    <AppContainer />
+  </React.Suspense>,
   document.getElementById('container'),
 );

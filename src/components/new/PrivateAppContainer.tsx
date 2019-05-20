@@ -9,22 +9,23 @@ import UserNotificationWs from 'components/notifications/UserNotificationWs';
 import AppHeader from 'components/new/ui/app_header/AppHeader';
 import AppFooter from 'components/new/ui/app_footer/AppFooter';
 import withCheckPrivateRouteMain from 'components/new/utils/hoc/check_private_route_main/withCheckPrivateRouteMain';
+import { AppStyled, AppContent, AppContentContainer } from './styled';
 
 const MainApp: React.FC<{}> = React.memo(
   () => (
-    <div className="app">
+    <AppStyled>
       <AppHeader />
-      <div className="app-content">
-        <div className="app-content-absolute">
+      <AppContent>
+        <AppContentContainer>
           <Routes />
           <LoadingOverlayLegacy main />
           <NotifiactionOrders />
           <AdmNotification />
           <UserNotificationWs />
-        </div>
-      </div>
+        </AppContentContainer>
+      </AppContent>
       <AppFooter />
-    </div>
+    </AppStyled>
   ),
 );
 

@@ -20,25 +20,6 @@ html, body {
   height: 100%;
   color: #000;
 }
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.app-content-absolute {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
-
-.app-content {
-  justify-self: flex-start;
-  flex: 1 1 auto;
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
 
 .car_info_block {
   border: medium none;
@@ -253,17 +234,6 @@ button {
   }
 }
 
-.car_info-track_date_title {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #d7d7d7;
-  align-items: baseline;
-  padding: 5px;
-  font-weight: 200;
-  input {
-    margin-right: 5px;
-  }
-}
 .car_info-toggle_for_today {
   cursor: pointer;
 

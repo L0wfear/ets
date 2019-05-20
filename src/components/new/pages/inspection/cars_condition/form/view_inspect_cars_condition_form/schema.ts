@@ -8,12 +8,10 @@ const headBalanceHolderBaseSchema: SchemaType<InspectCarsCondition['head_balance
     fio: {
       type: 'string',
       title: 'Руководитель предприятия:',
-      required: true,
     },
     tel: {
       type: 'string',
       title: 'Телефон:',
-      required: true,
     },
   },
 };
@@ -23,12 +21,10 @@ const headOperatingBaseSchema: SchemaType<InspectCarsCondition['head_operating_b
     fio: {
       type: 'string',
       title: 'Руководитель предприятия:',
-      required: true,
     },
     tel: {
       type: 'string',
       title: 'Телефон:',
-      required: true,
     },
   },
 };
@@ -104,7 +100,6 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
       },
       type: 'string',
       title: 'Устранены ранее выявленные недостатки',
-      required: true,
     },
     drawbacks_new: {
       validateIf: {
@@ -113,7 +108,6 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
       },
       type: 'string',
       title: 'Новые замечани',
-      required: true,
     },
   },
 };

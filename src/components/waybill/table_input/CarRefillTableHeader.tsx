@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Button, Row, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Row, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
 import { isNullOrUndefined } from 'util';
 import ButtonCreateFuelCard from './fuel_card/ButtonCreateFuelCard';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
@@ -7,6 +7,7 @@ import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/h
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { SpanRed } from 'global-styled/global-styled';
+import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 
 type CarRefillTableHeaderProps = {
   selectedRowIndex: number;
@@ -25,6 +26,7 @@ type CarRefillTableHeaderProps = {
   canEditIfClose: boolean;
   title: string;
   noHasFuelCardIdOptions: boolean;
+  buttonWidth: number;
 };
 
 const popover = (
@@ -83,13 +85,13 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
             {
               props.visibleButtons
                 && (
-                  <Button onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</Button>
+                  <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
                 )
             }
             {
               props.visibleButtons
                 && (
-                  <Button onClick={handleRemoveRow} disabled={isNullOrUndefined(props.selectedRowIndex) || props.disabled}>Удалить заправку</Button>
+                  <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow}  disabled={isNullOrUndefined(props.selectedRowIndex) || props.disabled}>Удалить заправку</ButtonTableInput>
                 )
             }
             {
@@ -99,6 +101,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                   structure_id={props.structure_id}
                   fuel_type={props.fuel_type}
                   disabled={props.disabled && !props.canEditIfClose}
+                  buttonWidth={props.buttonWidth}
                   page={props.page}
                 />
               )

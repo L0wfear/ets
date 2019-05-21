@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
 import { compose } from 'recompose';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import fuelCardsPermissions from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/permissions';
@@ -9,6 +8,7 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 
 type ButtonCreateFuelCardOwnProps = {
   handleUpdateFuelCards: () => any;
@@ -16,6 +16,7 @@ type ButtonCreateFuelCardOwnProps = {
   page: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
+  buttonWidth: number;
 };
 
 type ButtonCreateFuelCardProps = (
@@ -59,7 +60,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 
     return (
       <React.Fragment>
-        <Button onClick={handleCreateFuelCard} disabled={props.disabled}>Создать топл. карту</Button>
+        <ButtonTableInput block width={props.buttonWidth} onClick={handleCreateFuelCard} disabled={props.disabled}>Создать топл. карту</ButtonTableInput>
         {
           !props.disabled && showStatus && (
             <ErrorBoundaryForm>

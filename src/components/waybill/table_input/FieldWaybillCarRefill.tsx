@@ -1,18 +1,24 @@
 import * as React from 'react';
 import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_input/TableInput';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { DisplayFlexAlignCenterFooterForm, DivNone, FooterEnd } from 'global-styled/global-styled';
-import { getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import CarRefillTableHeader from './CarRefillTableHeader';
+import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 type FieldWaybillCarRefillStateProps = {
   fuelCardsList: IStateAutobase['fuelCardsList'];
   refillTypeList: IStateSomeUniq['refillTypeList'],
+  userCompanyId: InitialStateSession['userData']['company_id'];
+  userStructureId: InitialStateSession['userData']['structure_id'];
 };
 type FieldWaybillCarRefillDispatchProps = {
+  fuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof fuelCardsGetAndSetInStore>;
 };
 type FieldWaybillCarRefillOwnProps = {
   array: Waybill['car_refill'] | Waybill['equipment_refill'];
@@ -26,6 +32,10 @@ type FieldWaybillCarRefillOwnProps = {
   disabled?: boolean;
   page: string;
   path?: string;
+  structure_id: Waybill['structure_id'];
+  fuel_type: Waybill['fuel_type'];
+
+  canEditIfClose: boolean;
 };
 type FieldWaybillCarRefillMergedProps = (
   FieldWaybillCarRefillStateProps
@@ -78,15 +88,49 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_r
 
 const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
   (props) => {
+    const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
+
     const fuelCardIdOptions = React.useMemo(
       () => {
-        return props.fuelCardsList.map((rowData) => ({
-          value: rowData.id,
-          label: rowData.number,
-          rowData,
-        }));
+        return props.fuelCardsList.reduce(
+          (newArr, rowData) => {
+            const triggerOnShow = (
+              (
+                props.fuel_type === rowData.fuel_type
+                || !props.fuel_type
+              ) && (
+                rowData.company_id === props.userCompanyId
+                && (
+                  !props.userStructureId
+                  || props.userStructureId === rowData.structure_id
+                  || rowData.is_common
+                )
+              ) || (
+                props.array.some((refill) => refill.fuel_card_id === rowData.id)
+              )
+            );
+
+            if (triggerOnShow) {
+              newArr.push({
+                value: rowData.id,
+                label: rowData.number,
+                rowData,
+              });
+            }
+
+            return newArr;
+          },
+          [],
+        );
       },
-      [props.fuelCardsList],
+      [
+        props.fuelCardsList,
+        props.structure_id,
+        props.userCompanyId,
+        props.userStructureId,
+        props.array,
+        props.fuel_type,
+      ],
     );
 
     const typeIdOptions = React.useMemo(
@@ -120,6 +164,19 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
       [fuelCardIdOptions, typeIdOptions, props.array],
     );
 
+    const handleUpdateFuelCards = React.useCallback(
+      () => {
+        props.fuelCardsGetAndSetInStore(
+          {},
+          {
+            page: props.page,
+            path: props.path,
+          },
+        );
+      },
+      [],
+    );
+
     return (
       <div>
         <TableInput
@@ -128,13 +185,26 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           meta={metaCarRefillRaw}
           onChange={props.handleChange}
 
-          title={props.title}
+          header={
+            <CarRefillTableHeader
+              title={props.title}
+              selectedRowIndex={selectedRowIndex}
+              array={props.array}
+              meta={metaCarRefillRaw}
+              onChange={props.handleChange}
+              visibleButtons={props.IS_DRAFT_OR_ACTIVE}
+              structure_id={props.structure_id}
+              fuel_type={props.fuel_type}
+              noHasFuelCardIdOptions={!fuelCardIdOptions.length}
 
-          addName="Добавить заправку"
-          visibleAdd={props.IS_DRAFT_OR_ACTIVE}
-
-          removeName="Удалить заправку"
-          visibleRemove={props.IS_DRAFT_OR_ACTIVE}
+              handleUpdateFuelCards={handleUpdateFuelCards}
+              disabled={props.disabled}
+              page={props.page}
+              canEditIfClose={props.canEditIfClose}
+            />
+          }
+          selectedRowIndex={selectedRowIndex}
+          setSelectedRowIndex={setSelectedRowIndex}
 
           disabled={props.disabled}
         />
@@ -161,5 +231,14 @@ export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDis
   (state) => ({
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
+    userCompanyId: getSessionState(state).userData.company_id,
+    userStructureId: getSessionState(state).userData.structure_id,
+  }),
+  (dispatch: any) => ({
+    fuelCardsGetAndSetInStore: (...arg) => (
+      dispatch(
+        fuelCardsGetAndSetInStore(...arg),
+      )
+    ),
   }),
 )(FieldWaybillCarRefill);

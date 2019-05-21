@@ -35,6 +35,8 @@ export type OwnFuelCardsProps = {
   handleHide: OnFormHideType;
   page: string;
   path?: string;
+
+  fromWaybill?: boolean;
 };
 
 export type PropsFuelCardsWithForm = StatePropsFuelCards &

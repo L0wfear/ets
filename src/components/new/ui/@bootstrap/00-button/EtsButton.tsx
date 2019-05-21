@@ -12,7 +12,7 @@ export type EtsButtonProps = {
   id?: string;
   onClick?: (event?: any) => void;
   title?: string;
-  type?: 'submit';
+  type?: 'submit' | 'button';
   whiteSpace?: 'normal';
 };
 
@@ -145,7 +145,10 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
   (props) => (
-    <ButtonStyled {...props} />
+    <ButtonStyled
+      {...props}
+      type={props.type || 'button'}
+    />
   ),
 );
 

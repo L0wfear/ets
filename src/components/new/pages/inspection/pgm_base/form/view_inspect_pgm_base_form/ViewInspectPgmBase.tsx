@@ -242,7 +242,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             <BoxContainer>
               <ExtField
                 type="string"
-                label="Адрес базы:"
+                label="Адрес и тип базы:"
                 value={`${state.selectedInspect.data.address_base}${base_type ? ` (${base_type})` : ''}`}
                 readOnly
                 inline

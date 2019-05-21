@@ -29,13 +29,18 @@ export const promiseGetTracksCaching = async (payload: PromiseGetTracksCachingPa
     odh_mkad,
   } = payload;
 
+  const sensors = get(payload, 'sensors', 1);
   const payloadToTrack = {
     version,
     car_id,
     from_dt: makeUnixTime(date_start),
     to_dt: date_end ? makeUnixTime(date_end) + 86340 : makeUnixTime(date_end), // <<< исправить
-    sensors: 1,
+    sensors,
   };
+
+  if (Number(sensors) === 0) {
+    delete payloadToTrack.sensors;
+  }
 
   try {
     response = await TrackService.get(payloadToTrack).then(

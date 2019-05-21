@@ -116,6 +116,7 @@ export const promiseSetTestDataToDatabase = async (id: number) => {
         is_emergency_service_has_cabinet: true,
         external_system_message: null,
     };
+
     // console.log('set testData === ', testData);
     response = await EdcRequestImportService.post(testData, false, 'json');
   } catch (error) {

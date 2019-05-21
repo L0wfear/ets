@@ -7,6 +7,7 @@ import { FieldDataWaybillCarId, FieldDataWaybillTrailerId, FieldDataWaybillWorkM
 export type FieldDataWaybillEemployeeChangeStatus = FieldCommon<'waybill_employee_change_status'>;
 export type FieldDataWaybillStructureAndAccompanyingPerson = FieldCommon<'waybill_structure_and_accompanying_person'>;
 export type FieldDataWaybillMissions = FieldCommon<'waybill_missions'>;
+export type FieldDataWaybillIdleTimeOnLine = FieldCommon<'waybill_idle_time_on_line'>;
 
 export type FieldDataWaybillDates= FieldCommon<'waybill_dates'>;
 /**
@@ -22,4 +23,5 @@ export type FieldsWaybill = (
   | FieldDataWaybillDriverId
   | FieldDataWaybillWorkModeId
   | FieldDataWaybillIsBnsoBroken
+  | FieldDataWaybillIdleTimeOnLine
 );

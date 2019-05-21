@@ -58,6 +58,13 @@ export const waybillFormSchema: SchemaFormContext<Waybill> = {
           title: 'Задание',
         },
       ],
+      [
+        {
+          key: 'waybill_idle_time_on_line',
+          title: 'Простои на линии, ч.',
+          md: 8,
+        },
+      ],
     ],
   },
   footer: {

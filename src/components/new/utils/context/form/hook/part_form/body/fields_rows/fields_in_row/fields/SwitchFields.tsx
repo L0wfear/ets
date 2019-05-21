@@ -12,6 +12,8 @@ import FieldWaybillTrailerId from './waybill/waybill_trailer_id/FieldWaybillTrai
 import FieldIsBnsoBroken from './is_bnso_broken/FieldIsBnsoBroken';
 import FieldWaybillWorkModeId from './waybill/waybill_work_mode_id/FieldWaybillWorkModeId';
 import FieldWaybillDriverId from './waybill/waybill_driver_id/FieldWaybillDriverId';
+import FieldWaybillIdleTimeOnLine from './waybill/waybill_idle_time_on_line/FieldWaybillIdleTimeOnLine';
+import FieldOnLineString from './waybill/waybill_idle_time_on_line/field_on_line_string/FieldOnLineString';
 
 type SwitchFieldsProps = {
   fieldData: ContextFormField;
@@ -30,6 +32,11 @@ const ComponentsByKey: Record<ContextFormField['key'], React.ComponentType<Switc
   is_bnso_broken: FieldIsBnsoBroken,
   waybill_driver_id: FieldWaybillDriverId,
   waybill_work_mode_id: FieldWaybillWorkModeId,
+  waybill_idle_time_on_line: FieldWaybillIdleTimeOnLine,
+  downtime_hours_work: FieldOnLineString,
+  downtime_hours_duty: FieldOnLineString,
+  downtime_hours_dinner: FieldOnLineString,
+  downtime_hours_repair: FieldOnLineString,
 };
 
 const SwitchFields: React.FC<SwitchFieldsProps> = React.memo(

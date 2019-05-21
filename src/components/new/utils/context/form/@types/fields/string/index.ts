@@ -33,9 +33,53 @@ export type FieldDataIsBnsoBroken = FieldStringCommon<
 >;
 
 /**
+ * Тип поля downtime_hours_work
+ * возможно стоит вынести
+ */
+export type FieldDataDowntimeHoursWork = FieldStringCommon<
+  Waybill
+  | any,
+  'downtime_hours_work'
+>;
+
+/**
+ * Тип поля downtime_hours_duty
+ * возможно стоит вынести
+ */
+export type FieldDataDowntimeHoursDuty = FieldStringCommon<
+  Waybill
+  | any,
+  'downtime_hours_duty'
+>;
+
+/**
+ * Тип поля downtime_hours_dinner
+ * возможно стоит вынести
+ */
+export type FieldDataDowntimeHoursDinner = FieldStringCommon<
+  Waybill
+  | any,
+  'downtime_hours_dinner'
+>;
+
+/**
+ * Тип поля downtime_hours_repair
+ * возможно стоит вынести
+ */
+export type FieldDataDowntimeHoursRepair = FieldStringCommon<
+  Waybill
+  | any,
+  'downtime_hours_repair'
+>;
+
+/**
  * Все типы string полей
  */
 export type FieldsString = (
   FieldDataName
   | FieldDataIsBnsoBroken
+  | FieldDataDowntimeHoursWork
+  | FieldDataDowntimeHoursDuty
+  | FieldDataDowntimeHoursDinner
+  | FieldDataDowntimeHoursRepair
 );

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import FormContext from '../FormContext';
+import FormContext, { OneFormDataByKey } from '../FormContext';
 
 /* _______________ селекторы хуки _______________ */
 
 /**
  * formData по ключу
  */
-const useFormData = <T extends any, Store extends Record<string, any>>(formDataKey: string) => {
+const useFormData = <T extends any, Store extends Record<string, any>>(formDataKey: string): OneFormDataByKey<T, any> => {
   const context = React.useContext(FormContext);
 
   return context.formDataByKey[formDataKey];
@@ -153,16 +153,16 @@ const useFormDataSchemaPath = <T extends any>(formDataKey: string) => {
 const useFormDataFormState = <T extends any>(formDataKey: string) => {
   const formData = useFormData<T, any>(formDataKey);
 
-  return formData ? formData.formState : null;
+  return formData.formState;
 };
 
 /**
  * получение состояния значения формы (formState) по ключу (key)
  */
-const useFormDataFormStatePickValue = <T extends any>(formDataKey: string, key: keyof T) => {
+const useFormDataFormStatePickValue = <T extends object>(formDataKey: string, key: keyof T) => {
   const formState = useFormDataFormState<T>(formDataKey);
 
-  return formState ? formState[key] : null;
+  return formState[key];
 };
 
 /**

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import useForm from '../useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 
 /**
  * является ли открытый ПЛ черновиком (IS_DRAFT)
@@ -43,6 +45,27 @@ const useFormDataIsActiveOrIsClosed = (formDataKey: string) => {
   const IS_CLOSED = useFormDataIsClosed(formDataKey);
 
   return IS_ACTIVE || IS_CLOSED;
+};
+
+/**
+ * можно ли редактировать закрытый ПЛ | можно, если нет он последний и нет активного для выбранного тс
+ */
+const useFormDataCanEditIfClose = (formDataKey: string, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
+  const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
+  const IS_CLOSED = useFormDataIsClosed(formDataKey);
+
+  const canEditIfClose = React.useMemo(
+    () => {
+      return (
+        IS_CLOSED
+          && formState.closed_editable
+          && permissionsSet.has(waybillPermissions.update_closed)
+      );
+    },
+    [formState.closed_editable, IS_CLOSED, permissionsSet],
+  );
+
+  return canEditIfClose;
 };
 
 /**
@@ -92,6 +115,7 @@ const useWaybillFormData = {
   useFormDataIsClosed,
   useFormDataIsActiveOrIsClosed,
   useWaybillPickStructureData,
+  useFormDataCanEditIfClose,
 };
 
 export default useWaybillFormData;

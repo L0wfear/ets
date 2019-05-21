@@ -102,6 +102,12 @@ export const config: TypeConfigData<EdcRequest> = {
           title: '№',
         },
         {
+          key: 'edc_request_info',
+          title: 'Возврат',
+          sortable: false,
+          width: 100,
+        },
+        {
           key: 'status_name',
           title: 'Статус',
           width: 100,

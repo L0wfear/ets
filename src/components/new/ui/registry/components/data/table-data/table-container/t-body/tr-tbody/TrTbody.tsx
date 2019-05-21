@@ -38,6 +38,7 @@ import { missionsStatusBySlag } from 'components/waybill/constant/table';
 import TrTdButtonServicesActionsOnOff from './tr-td/TrTdButtonServicesActionsOnOff';
 import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
+import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -143,6 +144,16 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'button_show_action_log') {
       return (
         <TrTdServiceButtonShowActionLog
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'edc_request_info') {
+      return (
+        <TrTdButtonEdcRequestInfo
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}

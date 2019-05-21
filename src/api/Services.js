@@ -362,6 +362,9 @@ export const InspectCarsService = ETS_API_FACTORY.createApiServiceAdapter(
 export const EdcRequestService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc_request',
 );
+export const EdcRequestImportService = ETS_API_FACTORY.createApiServiceAdapter(
+  'import/edc_request',
+);
 export const EdcRequestChangeStatusService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc/request',
 );

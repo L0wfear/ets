@@ -32,7 +32,7 @@ export const withSpecificPermissions = (user) => {
   // permissions.push(...getFullAccess('inspect.pgm_base'));
   // permissions.push(...getFullAccess('inspect.cars_condition'));
 
-  // permissions.push(...getFullAccess('edc_request'));
+  permissions.push(...getFullAccess('edc_request')); // <<< удалить перед выкатом!!!!!!
   // permissions.push(...getFullAccess('fuel_cards_report'));
   // permissions.push(...getFullAccess('track_events_report')); // <<< УДАЛИТЬ перед выкатом на дев
 

@@ -20,6 +20,7 @@ import {
 import { OverlayLineInfoContainer } from 'components/new/ui/map/overlay/styled/styled';
 
 import { DivNone } from 'global-styled/global-styled';
+import { OverlayLineObjectsStringContainer } from 'components/monitor/layers/track/points/styled/styled';
 
 class OverlayTrackPoint extends React.Component<any, any> {
   state = {
@@ -103,7 +104,13 @@ class OverlayTrackPoint extends React.Component<any, any> {
         coordsMsk={coords_msk}
         hidePopup={this.props.hidePopup}
       >
-        <OverlayLineInfoContainer>{objectsString ? objectsString : <Preloader typePreloader="field" />}</OverlayLineInfoContainer>
+        <OverlayLineObjectsStringContainer>
+          {
+            objectsString
+              ? objectsString
+              : <Preloader typePreloader="field" />
+          }
+        </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
           <div>{`Задание №${missionNumber}`}</div>
         </OverlayLineInfoContainer>

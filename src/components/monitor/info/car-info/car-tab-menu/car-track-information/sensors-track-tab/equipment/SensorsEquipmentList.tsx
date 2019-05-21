@@ -83,7 +83,7 @@ const SensorsEquipmentList: React.FC<
               </div>
             );
           })}
-          {hasSomeData ? (
+          {hasSomeData && (
             <div className="car_info-sensors_legend">
               {[['zero'], ...sensors_equipment].map(([key], index) => (
                 <div
@@ -94,8 +94,6 @@ const SensorsEquipmentList: React.FC<
                 </div>
               ))}
             </div>
-          ) : (
-            <div className="none" />
           )}
         </div>
       )}

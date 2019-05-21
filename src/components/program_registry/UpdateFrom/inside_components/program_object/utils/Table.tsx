@@ -3,9 +3,6 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import {
   EtsTheadTh,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-
-const EtsTheadThL: any = EtsTheadTh;
 
 class TablePrev extends React.Component<any, any> {
   handleChange = (numRow, field, value) => {
@@ -71,12 +68,12 @@ class TablePrev extends React.Component<any, any> {
         </div>
         {
           !!bodyData.length &&
-          <EtsBootstrap.Table {...tableProps} responsive>
+          <table {...tableProps}>
             <thead>
               <tr>
                 {
                   headerData.map(({ title: titleTH }, i) => (
-                    <EtsTheadThL canClick key={i}>{titleTH}</EtsTheadThL>
+                    <EtsTheadTh canClick key={i}>{titleTH}</EtsTheadTh>
                   ))
                 }
               </tr>
@@ -103,7 +100,7 @@ class TablePrev extends React.Component<any, any> {
                 ))
               }
             </tbody>
-          </EtsBootstrap.Table>
+          </table>
         }
         </div>
     );

@@ -9,6 +9,8 @@ import {
   BtnGroupWrapper,
   BtnPart,
 } from 'global-styled/global-styled';
+import { CarInfoBlock } from 'components/monitor/styled';
+import { CarInfoMainDataContainer } from '.';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;
@@ -30,8 +32,8 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
     } = this.props;
 
     return (
-      <div className="car_info-main_data_container">
-        <div className="car_info_block">
+      <CarInfoMainDataContainer>
+        <CarInfoBlock>
           <div>
             <div className="legend-color">
               <div className="car_info-legend-color green"></div>
@@ -66,8 +68,8 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
               </BtnPart>
             </BtnGroupWrapper>
           </div>
-        </div>
-      </div>
+        </CarInfoBlock>
+      </CarInfoMainDataContainer>
     );
   }
 }

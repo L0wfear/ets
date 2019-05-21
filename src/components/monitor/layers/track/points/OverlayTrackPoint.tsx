@@ -158,7 +158,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
         <OverlayLineObjectsStringContainer>
           {
             objectsString
-              ? objectsString
+            ? objectsString
               : <Preloader typePreloader="field" />
           }
         </OverlayLineObjectsStringContainer>

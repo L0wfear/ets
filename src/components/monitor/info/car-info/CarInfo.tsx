@@ -8,6 +8,7 @@ import { carInfoSetGpsNumber } from 'components/monitor/info/car-info/redux-main
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
+import { DataContainer } from 'components/monitor/styled';
 
 export type StateCarInfo = {
 };
@@ -34,11 +35,11 @@ class CarInfo extends React.Component<PropsCarInfo, StateCarInfo> {
 
   render() {
     return (
-      <div className="data_container car_info">
+      <DataContainer className="car_info">
         <TitleBlock />
         <CarMainDataBlock map={this.props.map} centerOn={this.props.centerOn} />
         <CarTabMenu map={this.props.map} centerOn={this.props.centerOn} />
-      </div>
+      </DataContainer>
     );
   }
 }

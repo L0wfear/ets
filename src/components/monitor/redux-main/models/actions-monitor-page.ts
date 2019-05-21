@@ -92,7 +92,7 @@ export const monitorPageRemoveFromSelectedGeoobjects = (serverName, id = '') => 
   },
 });
 
-export const monitorPageRemoveAllFromSelectedGeoobjects = () => ({
+export const monitorPageRemoveAllFromSelectedGeoobjects: any = () => ({
   type: MONITOR_PAGE_REMOVE_ALL_FROM_SELECTED_GEOMETRY,
   payload: {},
 });

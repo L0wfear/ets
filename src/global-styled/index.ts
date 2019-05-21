@@ -8,6 +8,11 @@ const EtsGlobalStyle = createGlobalStyle`
   ${GlobalModalZIndexStyle}
   ${GlobalModalFooterCss}
 
+  html, body {
+    height: 100%;
+    color: #000;
+  }
+
   .glyphicon.glyphicon-info-sign {
     position: inherit;
   }

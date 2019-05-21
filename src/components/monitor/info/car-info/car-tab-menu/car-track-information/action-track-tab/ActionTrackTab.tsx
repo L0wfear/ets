@@ -9,6 +9,8 @@ import {
 } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import { connect } from 'react-redux';
+import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
 
 type PropsActionTrackTab = {
   gps_code: number;
@@ -82,10 +84,10 @@ class ActionTrackTab extends React.Component<
     } = this.props;
 
     return (
-      <div className="car_info_block column tab-data">
-        <div className="car_info-track_date_title">
+      <CarInfoBlockTabDataColumn>
+        <CarInfoTrackDateTitle>
           <div>Проигрывание трека</div>
-        </div>
+        </CarInfoTrackDateTitle>
         <div className="car_info-track_player">
           <EtsBootstrap.Button
             disabled={
@@ -102,7 +104,7 @@ class ActionTrackTab extends React.Component<
             <EtsBootstrap.Glyphicon glyph="stop" />
           </EtsBootstrap.Button>
         </div>
-        {status !== 'stop' ? (
+        {status !== 'stop' && (
           <div>
             <dl className="car-info-play-info">
               <dt>Координаты:</dt>
@@ -125,10 +127,8 @@ class ActionTrackTab extends React.Component<
               <dd>{track[trackPointIndex].speed_avg}</dd>
             </dl>
           </div>
-        ) : (
-          <div className="none" />
         )}
-      </div>
+      </CarInfoBlockTabDataColumn>
     );
   }
 }

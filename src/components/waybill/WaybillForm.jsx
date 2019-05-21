@@ -110,17 +110,20 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
         = lastCarUsedWaybill.motohours_equip_end;
     }
 
-    fieldsToChange.equipment_fuel_type
-      = lastCarUsedWaybill.equipment_fuel_type
-      || getDefaultBill({}).equipment_fuel_type;
     fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank;
+
+    if (!fieldsToChange.is_one_fuel_tank) {
+      fieldsToChange.equipment_fuel_type
+        = lastCarUsedWaybill.equipment_fuel_type
+        || getDefaultBill({}).equipment_fuel_type;
+    }
 
     fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
       fieldsToChange,
       fieldToCheckHasData,
     );
   } else {
-    fieldsToChange.equipment_fuel_type = getDefaultBill({}).equipment_fuel_type;
+    fieldsToChange.equipment_fuel_type = null;
     fieldsToChange.equipment_fuel_end = null;
     fieldsToChange.is_one_fuel_tank = true;
   }
@@ -672,9 +675,7 @@ class WaybillForm extends UNSAFE_Form {
         fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
         equipment_fuel: getDefaultBill({}).equipment_fuel,
-        equipment_fuel_type: car_id
-          ? getDefaultBill({}).equipment_fuel_type
-          : null,
+        equipment_fuel_type: null,
       };
 
       if (!isEmpty(car_id)) {
@@ -774,7 +775,7 @@ class WaybillForm extends UNSAFE_Form {
 
     if (changeObj.structure_id) {
       changeObj.car_refill = [];
-      changeObj.fuel_given = null;
+      changeObj.fuel_given = 0;
       changeObj.equipment_refill = [];
       changeObj.equipment_fuel_given = null;
     }
@@ -1861,10 +1862,13 @@ class WaybillForm extends UNSAFE_Form {
                           title="Заправка топлива"
                           handleChange={this.handleChangeCarReFill}
                           fuel_given={state.fuel_given}
+                          structure_id={state.structure_id}
+                          fuel_type={state.fuel_type}
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
                           }
-                          disabled={IS_CLOSED}
+                          disabled={IS_CLOSED && !this.state.canEditIfClose}
+                          canEditIfClose={this.state.canEditIfClose}
                           page={this.props.page}
                           path={this.props.path}
                         />
@@ -2087,12 +2091,15 @@ class WaybillForm extends UNSAFE_Form {
                                 title="Заправка топлива"
                                 handleChange={this.handleChangeEquipmentRefill}
                                 fuel_given={state.equipment_fuel_given}
+                                structure_id={state.structure_id}
+                                fuel_type={state.equipment_fuel_type}
                                 IS_DRAFT_OR_ACTIVE={
                                   IS_CREATING || IS_DRAFT || IS_ACTIVE
                                 }
                                 disabled={IS_CLOSED}
                                 page={this.props.page}
                                 path={this.props.path}
+                                canEditIfClose={this.state.canEditIfClose}
                               />
                             </EtsBootstrap.Col>
                           </EtsBootstrap.Col>

@@ -4,7 +4,9 @@ import * as Modal from 'react-bootstrap/lib/Modal';
 
 export const ModalHeaderStyled = styled(Modal.Header)``;
 
-export type EtsModalHeaderProps = any;
+export type EtsModalHeaderProps = {
+  closeButton?: boolean;
+};
 
 const EtsModalHeader: React.FC<EtsModalHeaderProps> = React.memo(
   (props) => {

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import * as cx from 'classnames';
 
 import { connect } from 'react-redux';
 import {
@@ -17,6 +16,9 @@ import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
 import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/redux-main/modules/car-info';
+import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
+import { CarInfoToggleForToday } from './styled';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -134,16 +136,19 @@ class TitleTrackTab extends React.Component<
     const { errorDates } = this.state;
 
     return (
-      <div className="car_info_block column tab-data">
-        <div className="car_info-track_date_title">
+      <CarInfoBlockTabDataColumn>
+        <CarInfoTrackDateTitle>
           <div>Трекинг</div>
-          <div
-            className={cx('car_info-toggle_for_today', {
-              disabled:
-                (!this.props.loadingTrack && this.props.disabledForToday) ||
-                disbledByTrackPlayStatys,
-            })}
-            onClick={this.carInfoToggleForToday}>
+          <CarInfoToggleForToday
+            isDisabled={
+              disbledByTrackPlayStatys
+              || (
+                !this.props.loadingTrack
+                && this.props.disabledForToday
+              )
+            }
+            onClick={this.carInfoToggleForToday}
+          >
             <input
               type="checkbox"
               checked={forToday}
@@ -151,8 +156,8 @@ class TitleTrackTab extends React.Component<
               disabled={this.props.disabledForToday || disbledByTrackPlayStatys}
             />
             <span>За сегодня</span>
-          </div>
-        </div>
+          </CarInfoToggleForToday>
+        </CarInfoTrackDateTitle>
         <div className="car_info-track_date_control">
           <div className={'flex-line-unset'}>
             <ExtField
@@ -190,7 +195,7 @@ class TitleTrackTab extends React.Component<
           </div>
           <DistanceAgg />
         </div>
-      </div>
+      </CarInfoBlockTabDataColumn>
     );
   }
 }

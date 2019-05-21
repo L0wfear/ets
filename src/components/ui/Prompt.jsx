@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
 const promptDiv = document.createElement('div');
 promptDiv.id = 'prompt';
@@ -62,27 +63,31 @@ class Prompt extends React.Component {
 
   render() {
     return (
-      <EtsBootstrap.ModalContainer
-        show={this.state.isVisible}
-        bsSize={this.state.bsSize}
-        id="delete-form">
-        <EtsBootstrap.ModalHeader>{this.state.title}</EtsBootstrap.ModalHeader>
-        <EtsBootstrap.ModalBody>
-          {typeof this.state.body === 'function'
-            ? this.state.body(this)
-            : this.state.body}
-        </EtsBootstrap.ModalBody>
-        <EtsBootstrap.ModalFooter>
-          <div>
-            <EtsBootstrap.Button onClick={this.ok}>
-              {this.state.okName || 'Ок'}
-            </EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={this.cancel}>
-              {this.state.cancelName || 'Отмена'}
-            </EtsBootstrap.Button>
-          </div>
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
+      <EtsThemeProvider>
+        <EtsBootstrap.ModalContainer
+          show={this.state.isVisible}
+          bsSize={this.state.bsSize}
+          id="delete-form">
+          <EtsBootstrap.ModalHeader>
+            {this.state.title}
+          </EtsBootstrap.ModalHeader>
+          <EtsBootstrap.ModalBody>
+            {typeof this.state.body === 'function'
+              ? this.state.body(this)
+              : this.state.body}
+          </EtsBootstrap.ModalBody>
+          <EtsBootstrap.ModalFooter>
+            <div>
+              <EtsBootstrap.Button onClick={this.ok}>
+                {this.state.okName || 'Ок'}
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button onClick={this.cancel}>
+                {this.state.cancelName || 'Отмена'}
+              </EtsBootstrap.Button>
+            </div>
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
+      </EtsThemeProvider>
     );
   }
 }

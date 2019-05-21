@@ -2,92 +2,93 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import * as moment from 'moment';
+import { getToday9am, diffDates, getTomorrow9am, addTime, createValidDateTime } from 'utils/dates';
+import DatePickerRange from '../../date_picker/DatePickerRange';
 
-import Div from 'components/ui/Div';
-import ModalBody from 'components/ui/Modal';
-import Datepicker from 'components/ui/input/date-picker/DatePicker';
-import { getToday9am, getTomorrow9am, createValidDateTime, addTime } from 'utils/dates';
-
-export interface IPropsPrintByDates {
-  show: boolean;
-  onHide(): void;
-  onExport(payload: any);
+export type IPropsPrintByDates = {
+  onHide: (...arg: any[]) => any;
+  onExport: (payload: any) => any;
   title: string;
-}
+};
 
-export interface IStatePrintByDates {
-  date_from: Date;
-  date_to: Date;
-}
+const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
+  (props) => {
+    const [datesData, setDatesData] = React.useState({
+      date_from: createValidDateTime(getToday9am()),
+      date_to: createValidDateTime(getTomorrow9am()),
+      error: '',
+    });
 
-class PrintByDates extends React.Component<IPropsPrintByDates, any> {
-  constructor(props) {
-    super(props);
+    const handleSubmit = React.useCallback(
+      () => {
+        const { date_from, date_to } = datesData;
 
-    this.state = {
-      date_from: getToday9am(),
-      date_to: getTomorrow9am(),
-    };
-  }
-  handleHide = () => {
-    this.setState({
-      date_from: getToday9am(),
-      date_to: getTomorrow9am(),
-    }, () => this.props.onHide());
-  }
-  handleSubmit = async () => {
-    const { date_from = null, date_to = null } = this.state;
+        const diffMonths = diffDates(date_to, date_from, 'months', true);
 
-    const dateFromMs = date_from === null ? -Infinity : moment(date_from).unix();
-    const dateToMs = date_to === null ? Infinity : moment(date_to).unix();
-    const diffMonths = moment.duration(dateToMs - dateFromMs, 'seconds').asMonths();
+        if (diffMonths >= 12) {
+          global.NOTIFICATION_SYSTEM.notify('Период выгрузки должен быть ограничен 12 месяцами', 'warning');
+          return;
+        }
 
-    if (diffMonths >= 12) {
-      global.NOTIFICATION_SYSTEM.notify('Период выгрузки должен быть ограничен 12 месяцами', 'warning');
-      return;
-    }
+        const exportPayload = {
+          date_from: createValidDateTime(date_from),
+          date_to: createValidDateTime(addTime(date_to, 1, 'days')),
+        };
 
-    const exportPayload = {
-      date_from: createValidDateTime(date_from),
-      date_to: createValidDateTime(addTime(date_to, 1, 'days')),
-    };
+        props.onExport(exportPayload);
+      },
+      [datesData, props.onExport],
+    );
 
-    this.handleHide();
-    this.props.onExport(exportPayload);
-  }
-  handleChange = (field, value) => {
-    this.setState({ [field]: value });
-  }
-  render() {
+    const handleChange = React.useCallback(
+      (field, value) => {
+        const newState = {
+          ...datesData,
+          [field]: value,
+        };
+
+        newState.error = (
+          diffDates(newState.date_from, newState.date_to) > 0
+            ? 'Дата окончания дололжна быть позже'
+            : ''
+        );
+
+        setDatesData(newState);
+      },
+      [datesData],
+    );
+
     return (
-      <EtsBootstrap.ModalContainer id="modal-print-from" show={this.props.show} onHide={this.props.onHide} bsSize="small" >
+      <EtsBootstrap.ModalContainer id="modal-print-from" show onHide={props.onHide} >
 
-        <EtsBootstrap.ModalHeader>
-          <EtsBootstrap.ModalTitle>{this.props.title}</EtsBootstrap.ModalTitle>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{props.title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
 
-        <ModalBody>
-          <span style={{ marginBottom: 10, display: 'block' }}>Выберите период:</span>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12} style={{ marginBottom: 5 }}>
-              <Datepicker time={false} date={this.state.date_from} onChange={(v) => this.handleChange('date_from', v)} />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
-              <Datepicker time={false} date={this.state.date_to} onChange={(v) => this.handleChange('date_to', v)} />
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-        </ModalBody>
+        <EtsBootstrap.ModalBody>
+          <DatePickerRange
+            label="Выберите период:"
+            date_start_id="date_from"
+            date_start_value={datesData.date_from}
+            date_start_error={false}
+            date_end_id="date_to"
+            date_end_value={datesData.date_to}
+            date_end_error={datesData.error}
+            date_start_time={false}
+            date_end_time={false}
 
+            onChange={handleChange}
+          />
+        </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
-          <Div className="inline-block">
-            <EtsBootstrap.Button onClick={this.handleSubmit}>ОК</EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={this.handleHide}>Отмена</EtsBootstrap.Button>
-          </Div>
+          <EtsBootstrap.ButtonGroup>
+            <EtsBootstrap.Button onClick={handleSubmit} disabled={Boolean(datesData.error)}>ОК</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.onHide}>Отмена</EtsBootstrap.Button>
+          </EtsBootstrap.ButtonGroup>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default PrintByDates;

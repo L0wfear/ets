@@ -18,12 +18,10 @@ type CarRefillTableHeaderProps = {
   addName?: string;
   removeName?: string;
   visibleButtons?: boolean;
-  disabled?: boolean;
   page: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
   handleUpdateFuelCards: any;
-  canEditIfClose: boolean;
   title: string;
   noHasFuelCardIdOptions: boolean;
   buttonWidth: number;
@@ -85,22 +83,21 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
             {
               props.visibleButtons
                 && (
-                  <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
+                  <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow}>Добавить заправку</ButtonTableInput>
                 )
             }
             {
               props.visibleButtons
                 && (
-                  <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow}  disabled={isNullOrUndefined(props.selectedRowIndex) || props.disabled}>Удалить заправку</ButtonTableInput>
+                  <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
                 )
             }
             {
-              (props.visibleButtons || props.canEditIfClose) && (
+              props.visibleButtons && (
                 <ButtonCreateFuelCard
                   handleUpdateFuelCards={props.handleUpdateFuelCards}
                   structure_id={props.structure_id}
                   fuel_type={props.fuel_type}
-                  disabled={props.disabled && !props.canEditIfClose}
                   buttonWidth={props.buttonWidth}
                   page={props.page}
                 />

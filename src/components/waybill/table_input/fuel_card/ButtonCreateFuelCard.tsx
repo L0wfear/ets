@@ -12,7 +12,6 @@ import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 
 type ButtonCreateFuelCardOwnProps = {
   handleUpdateFuelCards: () => any;
-  disabled?: boolean;
   page: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
@@ -60,9 +59,9 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 
     return (
       <React.Fragment>
-        <ButtonTableInput block width={props.buttonWidth} onClick={handleCreateFuelCard} disabled={props.disabled}>Создать топл. карту</ButtonTableInput>
+        <ButtonTableInput block width={props.buttonWidth} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
         {
-          !props.disabled && showStatus && (
+          showStatus && (
             <ErrorBoundaryForm>
               <React.Suspense fallback={<LoadingComponent />}>
                 <FuelCardsFormLazy

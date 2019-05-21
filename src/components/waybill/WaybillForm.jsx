@@ -1842,7 +1842,7 @@ class WaybillForm extends UNSAFE_Form {
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
                           }
-                          disabled={IS_CLOSED}
+                          disabled={IS_CLOSED && !this.state.canEditIfClose}
                           canEditIfClose={this.state.canEditIfClose}
                           page={this.props.page}
                           path={this.props.path}

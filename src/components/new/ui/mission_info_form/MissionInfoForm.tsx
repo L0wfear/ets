@@ -122,6 +122,7 @@ class MissionInfoForm extends React.Component<
       date_end: element.mission_data.date_end,
       odh_mkad: {},
       cars_sensors: {},
+      sensors: 0,
     };
 
     if (this.props.element.route_data.has_mkad) {

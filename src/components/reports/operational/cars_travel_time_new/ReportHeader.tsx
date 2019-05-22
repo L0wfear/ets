@@ -52,6 +52,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       };
     }
 
+    if (diffDate >= 10) {
+      return {
+        error:
+          'Период формирования отчета не должен превышать 10 суток.',
+      };
+    }
+
     return {
       error: '',
     };

@@ -138,6 +138,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
         car_id,
         gps_code,
         odh_mkad,
+        sensors: 0,
       }, { page, path });
 
       props.actionGetAndSetInStoreCarsTravelTime({

@@ -233,7 +233,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       const newElement: Partial<FuelCards> = {
         ...props.element,
         company_id: companiesDefaultValue,
-        structure_id: IS_CREATING ? userStructureId : null,
+        structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : null,
       };
 
       return getDefaultFuelCardsElement(newElement);

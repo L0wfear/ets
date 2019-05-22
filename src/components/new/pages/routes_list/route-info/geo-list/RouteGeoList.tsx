@@ -59,8 +59,12 @@ const RouteGeoList: React.FC<PropsRouteGeoList> = React.memo(
       [props.polys],
     );
 
-    const draw_object_list = React.useMemo(
+    const draw_object_list: any = React.useMemo(
       () => {
+        if (!props.draw_object_list) {
+          return null;
+        }
+
         return props.draw_object_list.map((objectData) => ({
           ...objectData,
           isInvalid: !get(props.polys, `${objectData.objectData}.is_valid_company_structure`, true),
@@ -106,7 +110,7 @@ const RouteGeoList: React.FC<PropsRouteGeoList> = React.memo(
             <DivNone />
           </>
         )}
-        {draw_object_list && draw_object_list.length ? (
+        {draw_object_list ? (
           <div>
             <NameListLineContainer>
               <TitleList>{nameDrawObjectList}</TitleList>

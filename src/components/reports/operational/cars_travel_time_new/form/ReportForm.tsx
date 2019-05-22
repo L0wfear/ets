@@ -67,18 +67,48 @@ export const tableMeta = {
 
 const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
 
-  const [geoobjects, setGeoobjects] = React.useState(null);
+  const [geoobjects, setGeoobjects] = React.useState({});
   const [track, setTrack] = React.useState(null);
+  const [selectedElement, setSelectedElement] = React.useState(null);
 
   const gov_number = get(props.selectedElement, 'gov_number', null);
   const gps_code = get(props.selectedElement, 'gps_code', null);
   const has_mkad = get(props.selectedElement, 'has_mkad', false);
   const type = '';
-  const front_parkings = get(props.tracksCaching, 'parkings', []);
+  const front_parkings = get(props.tracksCaching, 'front_parkings', []);
   const cars_sensors = get(props.tracksCaching, 'sensors', []);
   const distance_out_mission_text = `Дистанция не по объектам задания: ${get(props.selectedElement, 'distance_out_mission', null)} км.`;
   const travel_time_out_mission_text = `Время не по объектам задания: ${get(props.selectedElement, 'travel_time_out_mission', null)} ч.`;
   const modalTitle = `Детализация объектов, по которым двигалось ТС: ${gov_number}`;
+
+  const setGeoobjectsValidValue = React.useCallback(() => {
+    if (Object.values(props.carsTravelTimeList).length) {
+      const typeLayer = 'any';
+      const selectedFrontKey = `${typeLayer}/${get(selectedElement, 'id', null)}`;
+      const newGeoobjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
+        const front_key = `${typeLayer}/${currentElem.id}`;
+        const { shape, type: someType, frontIsSelected, ...someElem } = currentElem;
+        return {
+          [front_key]: {
+            shape: JSON.parse(shape),
+            front_key,
+            front_id: currentElem.id,
+            object_id: currentElem.id,
+            type: typeLayer,
+            state: 2, // влияет на окраску одх/дт
+            frontIsSelected: selectedFrontKey === front_key ? true : false, // выделение объекта на карте (заливка)
+            ...someElem,
+          },
+          ...newElem,
+        };
+      }, {});
+      setGeoobjects({
+        [typeLayer]: {
+          ...newGeoobjects,
+        },
+      });
+    }
+  }, [selectedElement, props.carsTravelTimeList]);
 
   React.useEffect( () => {
     const page = 'cars_travel_time_new';
@@ -136,34 +166,21 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   }, []);
 
   React.useEffect(() => {
-    const typeLayer = 'any';
-    const geoObjects = props.carsTravelTimeList.reduce((newElem, currentElem) => {
-      const front_key = `${typeLayer}/${currentElem.id}`;
-      const { shape, type: someType, ...someElem } = currentElem;
-      return {
-        [front_key]: {
-          shape: JSON.parse(shape),
-          front_key,
-          front_id: currentElem.id,
-          object_id: currentElem.id,
-          type: typeLayer,
-          state: 2, // влияет на окраску одх/дт
-          ...someElem,
-        },
-        ...newElem,
-      };
-    }, {});
-    setGeoobjects({
-      [typeLayer]: {
-        ...geoObjects,
-      },
-    });
-
+    setGeoobjectsValidValue();
   }, [props.carsTravelTimeList]);
 
   React.useEffect(() => {
     setTrack(get(props.tracksCaching, 'track', null));
   }, [props.tracksCaching]);
+
+  const handleSelectedElementChange = React.useCallback((selectedRow) => {
+    const selectedRowElement = get(selectedRow, 'props.data', null);
+    setSelectedElement(selectedRowElement);
+  }, [geoobjects]);
+
+  React.useEffect(() => { // для перевода фокуса на объект ОДХ/ДТ
+    setGeoobjectsValidValue();
+  }, [selectedElement]);
 
   return (
     <Modal id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large" backdrop="static">
@@ -193,12 +210,14 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
                 props.carsTravelTimeList.length ?
                   (
                     <Table
-                      title={false}
+                      noTitle={true}
                       noFilter
                       results={props.carsTravelTimeList}
                       enumerated={false}
                       tableMeta={tableMeta}
                       className="report-time-table"
+                      onRowSelected={handleSelectedElementChange}
+                      selected={selectedElement}
                     />
                   ) : (
                     <div>У данной ТС за выбранный промежуток времени заданий по ОДХ / ДТ не было</div>

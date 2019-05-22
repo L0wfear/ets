@@ -30,7 +30,10 @@ export const promiseGetTracksCaching = async (payload) => {
   };
 
   try {
-    response = await TrackService.get(payloadToTrack);
+    response = await TrackService.get(payloadToTrack).then((ans) => ({
+      ...ans,
+      ...checkAndModifyTrack(ans, odh_mkad),
+    }));
   } catch (error) {
     console.warn(error); //tslint:disable-line
     response = null;
@@ -39,7 +42,6 @@ export const promiseGetTracksCaching = async (payload) => {
   return {
     data: {
       ...response,
-      ...checkAndModifyTrack(response, odh_mkad),
     },
   };
 };

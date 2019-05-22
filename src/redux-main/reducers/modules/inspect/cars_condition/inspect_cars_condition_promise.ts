@@ -6,7 +6,7 @@ import {
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
 import { InspectCarsService } from "api/Services";
-import { createValidDate } from "utils/dates";
+import { createValidDateTime } from "utils/dates";
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -67,7 +67,23 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
-  inspectCarsCondition.data.preparing_cars_check.order_issued_at = createValidDate(inspectCarsCondition.data.preparing_cars_check.order_issued_at);
+  inspectCarsCondition.data.preparing_cars_check.order_issued_at = createValidDateTime(inspectCarsCondition.data.preparing_cars_check.order_issued_at);
+  return inspectCarsCondition;
+};
+
+export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
+  const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionFront);
+
+  inspectCarsCondition.data.types_cars = inspectCarsConditionFront.data.types_cars.map((rowData, index) => {
+      delete rowData.customId;
+      delete rowData.disabled;
+      return rowData;
+    });
+  inspectCarsCondition.data.types_harvesting_unit = inspectCarsConditionFront.data.types_harvesting_unit.map((rowData, index) => {
+      delete rowData.customId;
+      return rowData;
+    });
+
   return inspectCarsCondition;
 };
 

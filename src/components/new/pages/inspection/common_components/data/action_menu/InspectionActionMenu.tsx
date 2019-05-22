@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { Row, Col } from 'react-bootstrap';
-import { getDateWithMoscowTz, makeDate, makeTime } from 'utils/dates';
+import { makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { DispatchProp, connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -17,6 +17,7 @@ import ButtonCreateInspectAutobase from './components/button_inspect_autobase/Bu
 import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 import useLastInpectSatus, { INSPECT_STATUS } from './useLastInpectSatus';
 import { getLastConductingInspect, getLastCompletedInspect } from '../../../autobase/@selectors';
+import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;
@@ -41,6 +42,7 @@ type InspectionActionMenuMenuProps = (
 );
 
 const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props) => {
+  const [currentDate, setCurrentDate] = React.useState(null);
   const {
     lastConductingInspect,
     lastCompletedInspect,
@@ -54,6 +56,32 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
     lastCompletedInspect,
   );
 
+  React.useEffect(
+    () => {
+      const loadDate = async () => {
+        const {
+          time: { date },
+        } = await loadMoscowTime();
+
+        setCurrentDate(
+          getDateWithMoscowTzByTimestamp(date),
+        );
+      };
+
+      loadDate();
+
+      const itervalId = setInterval(
+        () => {
+          loadDate();
+        },
+        60 * 1000,
+      );
+
+      return () => clearInterval(itervalId);
+    },
+    [],
+  );
+
   return (
     <BoxContainer>
       <h4>
@@ -62,7 +90,15 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
             Информация о текущей проверке
           </Col>
           <Col md={6} sm={6}>
-            {makeDate(getDateWithMoscowTz())}
+            {
+              currentDate
+                ? (
+                  makeDate(currentDate)
+                )
+                : (
+                  '-'
+                )
+            }
           </Col>
         </Row>
       </h4>

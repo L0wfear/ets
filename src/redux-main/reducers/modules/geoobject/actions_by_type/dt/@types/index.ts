@@ -6,8 +6,10 @@ export type Dt = {
   bti_okrug_id: number | null;
   clean_area: number | null;
   company_name: string;
-  company_structure_id: number | null;
-  company_structure_name: string | null;
+  company_structures: {
+    id: number;
+    name: string;
+  }[];
   developer: string;
   district_id: number | null;
   dt_id: number | null;

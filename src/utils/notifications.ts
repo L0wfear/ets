@@ -118,6 +118,7 @@ export const changeCompanyStructureIdNotyfication = {
   dismissible: true,
   position: 'tr',
   autoDismiss: 0,
+  uid: 'change_geoobject_company_structure_id',
 };
 
 export const notifications = {

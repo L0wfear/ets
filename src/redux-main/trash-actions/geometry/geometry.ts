@@ -1,14 +1,12 @@
+import { get } from 'lodash';
 import {
   GormostService,
   GeozonesService,
   FuelEvent,
-  GeozoneMunicipalFacilityService,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
 
 import { GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects-new';
-import { polyState } from 'constants/polygons';
-import { keyBy, get } from 'lodash';
 
 const CACHE_GEOMETRY = {};
 
@@ -126,46 +124,3 @@ export const loadFuelEvents = (type, typeEvent, dates) => ({
     loading: true,
   },
 });
-
-export const loadGeozoneMunicipalFacility: any = (type, ownPayload, metaProps) => {
-  const payload = {
-    municipal_facility_id: ownPayload.municipal_facility_id,
-    technical_operation_id: ownPayload.technical_operation_id,
-    object_type_id: ownPayload.object_type_id,
-  };
-
-  return {
-    type,
-    payload: GeozoneMunicipalFacilityService.get(payload)
-      .catch((error) => {
-        // tslint:disable-next-line
-        console.warn(error);
-
-        return {
-          result: [],
-        };
-      })
-      .then(({ result }) => {
-      const geozone_municipal_facility = result.map((geo) => {
-        try {
-          geo.shape = JSON.parse(geo.shape);
-        } catch {
-          geo.shape = {};
-        }
-        geo.state = polyState.ENABLE;
-
-        return geo;
-      });
-
-      return {
-        geozone_municipal_facility,
-        geozone_municipal_facility_by_id: keyBy(geozone_municipal_facility, 'id'),
-      };
-    }),
-    meta: {
-      promise: true,
-      page: metaProps.page,
-      path: metaProps.path,
-    },
-  };
-};

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const RouteGeoListContainer = styled.div<{ height?: string }>`
   max-height: ${({ height }) => height ? height : '500px'};
@@ -13,4 +13,13 @@ export const TitleList = styled.div`
   font-size: 15px;
   margin-bottom: 15px;
   font-weight: 800;
+`;
+
+const notValidStyle = css`
+  background-color: rgba(226, 0, 255, 0.08);
+  border: 1px solid rgba(226, 0, 255, 0.24);
+`;
+
+export const LiRouteManual = styled.li`
+  ${({ isInvalid }) => isInvalid && notValidStyle};
 `;

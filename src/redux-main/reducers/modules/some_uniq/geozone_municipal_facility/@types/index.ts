@@ -10,4 +10,5 @@ export type GeozoneMunicipalFacility = {
   name: string;
   roadway_area: number;
   shape: string;
+  is_valid_company_structure: boolean;
 };

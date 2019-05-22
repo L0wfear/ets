@@ -48,7 +48,6 @@ import {
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { getDefaultRouteElement } from './utils';
 
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const path = 'routeForm';
@@ -233,6 +232,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
               type={type}
               municipal_facility_id={municipal_facility_id}
               technical_operation_id={technical_operation_id}
+              structure_id={formState.structure_id}
               onChange={this.props.handleChange}
               checkRoute={this.checkRoute}
               bridges={this.state.bridges}
@@ -307,14 +307,6 @@ export default compose<PropsRouteForm, InputRouteFormProps>(
             page,
             path,
           }),
-        ),
-      actionGetAndSetInStoreGeozoneMunicipalFacility: (
-        ...arg // проверить
-      ) =>
-        dispatch(
-          someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility(
-            ...arg,
-          ),
         ),
     }),
   ),

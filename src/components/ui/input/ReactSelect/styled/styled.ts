@@ -1,5 +1,5 @@
 import { components } from 'react-select';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const ClearIndicator = styled(components.ClearIndicator)`
 `;
@@ -37,7 +37,18 @@ export const LoadingMessage = styled(components.LoadingMessage)`
 export const MenuPortal = styled(components.MenuPortal)`
 `;
 
+const notValidStyle = css`
+  background-color: rgba(226, 0, 255, 0.08);
+  border: 1px solid rgba(226, 0, 255, 0.24);
+`;
+
 export const MultiValue = styled(components.MultiValue)`
+  &&& {
+    ${({ data: { is_invalid } }) => (
+        is_invalid && notValidStyle
+      )
+    }
+  }
 `;
 
 export const MultiValueContainer = styled(components.MultiValueContainer)`

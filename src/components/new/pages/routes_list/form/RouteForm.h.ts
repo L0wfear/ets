@@ -5,7 +5,6 @@ import { Route } from 'redux-main/reducers/modules/routes/@types';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
 export type PropsRouteFormWrap = InputRouteFormProps & {
   showForm: boolean;
@@ -22,9 +21,6 @@ export type DispatchRouteFormProps = {
     typeof routesActions.actionValidateRoute
   >;
   loadGeozones: (serverName: string, company_id?: number | null) => any;
-  actionGetAndSetInStoreGeozoneMunicipalFacility: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility
-  >;
 };
 
 export type InputRouteFormProps = {

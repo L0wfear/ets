@@ -3,7 +3,7 @@ import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { DisplayFlexAlignCenterFooterForm, DivNone } from 'global-styled/global-styled';
+import { DisplayFlexAlignCenterFooterForm, DivNone, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -17,6 +17,7 @@ type FieldWaybillCarRefillDispatchProps = {
 type FieldWaybillCarRefillOwnProps = {
   array: Waybill['car_refill'] | Waybill['equipment_refill'];
   errors: any[];
+  title: string;
   handleChange: TableInputProps['onChange'];
 
   IS_DRAFT_OR_ACTIVE: boolean;
@@ -127,10 +128,14 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           meta={metaCarRefillRaw}
           onChange={props.handleChange}
 
+          title={props.title}
+
           addName="Добавить заправку"
+          addWidth={160}
           visibleAdd={props.IS_DRAFT_OR_ACTIVE}
 
           removeName="Удалить заправку"
+          removeWidth={160}
           visibleRemove={props.IS_DRAFT_OR_ACTIVE}
 
           disabled={props.disabled}
@@ -139,7 +144,10 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           {
             Boolean(props.array) && Boolean(props.array.length)
               ? (
-                <span>{`Итого ${props.fuel_given.toFixed(3)}`}</span>
+                <FooterEnd margin={30}>
+                  <div><b>{'Итого '}</b></div>
+                  <div><b>{props.fuel_given.toFixed(3)}</b></div>
+                </FooterEnd>
               )
               : (
                 <DivNone />

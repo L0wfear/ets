@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 import ButtonCreateFuelCard from './fuel_card/ButtonCreateFuelCard';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-import { SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { isNullOrUndefined } from 'util';
 
 type CarRefillTableHeaderProps = {
   selectedRowIndex: number;
@@ -26,12 +25,6 @@ type CarRefillTableHeaderProps = {
   noHasFuelCardIdOptions: boolean;
   buttonWidth: number;
 };
-
-const popover = (
-  <EtsBootstrap.Popover>
-    Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или по кнопке "Создать топл.карту"
-  </EtsBootstrap.Popover>
-);
 
 const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
   (props) => {
@@ -62,22 +55,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
       <EtsBootstrap.Row>
         <EtsHeaderContainer>
           <EtsHeaderTitle>
-            <span>
-              {props.title}&nbsp;
-            </span>
-            {
-              props.noHasFuelCardIdOptions && (
-                <EtsBootstrap.OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={popover}
-                  placement="top"
-                >
-                  <SpanRed>
-                    <EtsBootstrap.Glyphicon glyph="exclamation-sign" />
-                  </SpanRed>
-                </EtsBootstrap.OverlayTrigger>
-              )
-            }
+            {props.title}
           </EtsHeaderTitle>
           <EtsButtonsContainer>
             {

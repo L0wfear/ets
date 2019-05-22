@@ -113,17 +113,20 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
         = lastCarUsedWaybill.motohours_equip_end;
     }
 
-    fieldsToChange.equipment_fuel_type
-      = lastCarUsedWaybill.equipment_fuel_type
-      || getDefaultBill({}).equipment_fuel_type;
     fieldsToChange.is_one_fuel_tank = lastCarUsedWaybill.is_one_fuel_tank;
+
+    if (!fieldsToChange.is_one_fuel_tank) {
+      fieldsToChange.equipment_fuel_type
+        = lastCarUsedWaybill.equipment_fuel_type
+        || getDefaultBill({}).equipment_fuel_type;
+    }
 
     fieldsToChange.equipment_fuel = hasWaybillEquipmentData(
       fieldsToChange,
       fieldToCheckHasData,
     );
   } else {
-    fieldsToChange.equipment_fuel_type = getDefaultBill({}).equipment_fuel_type;
+    fieldsToChange.equipment_fuel_type = null;
     fieldsToChange.equipment_fuel_end = null;
     fieldsToChange.is_one_fuel_tank = true;
   }
@@ -675,9 +678,7 @@ class WaybillForm extends UNSAFE_Form {
         fuel_to_give: null,
         ...setEmptyFieldByKey(fieldToCheckHasData),
         equipment_fuel: getDefaultBill({}).equipment_fuel,
-        equipment_fuel_type: car_id
-          ? getDefaultBill({}).equipment_fuel_type
-          : null,
+        equipment_fuel_type: null,
       };
 
       if (!isEmpty(car_id)) {

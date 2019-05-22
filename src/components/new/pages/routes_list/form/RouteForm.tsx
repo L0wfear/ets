@@ -228,7 +228,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
             <CreatingMap
               input_lines={formState.input_lines}
               object_list={formState.object_list}
-              error={formErrors.object_list}
+              error={formErrors.object_list || formErrors.draw_object_list || formErrors.input_lines}
               draw_object_list={formState.draw_object_list}
               type={type}
               municipal_facility_id={municipal_facility_id}

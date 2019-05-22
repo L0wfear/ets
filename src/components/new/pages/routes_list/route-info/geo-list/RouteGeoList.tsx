@@ -67,7 +67,7 @@ const RouteGeoList: React.FC<PropsRouteGeoList> = React.memo(
 
         return props.draw_object_list.map((objectData) => ({
           ...objectData,
-          isInvalid: !get(props.polys, `${objectData.objectData}.is_valid_company_structure`, true),
+          isInvalid: !get(props.polys, `${objectData.object_id}.is_valid_company_structure`, true),
         }));
       },
       [props.polys, props.draw_object_list],
@@ -114,7 +114,7 @@ const RouteGeoList: React.FC<PropsRouteGeoList> = React.memo(
           <div>
             <NameListLineContainer>
               <TitleList>{nameDrawObjectList}</TitleList>
-              {uniqBy(draw_object_list, (o) => o.name + o.state).map(
+              {uniqBy(draw_object_list, (o: any) => o.name + o.state).map(
                 ({ type, ...data }, key) => {
                   let title = data.name;
 

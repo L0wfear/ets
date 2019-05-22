@@ -6,31 +6,49 @@ import { getTrailers } from 'components/waybill/utils';
 import { get } from 'lodash';
 import { isArray } from 'util';
 import memoizeOne from 'memoize-one';
+import { makeFuelCardIdOptions } from 'components/waybill/table_input/utils';
 
-const checkCarRefill = memoizeOne((car_refill, refillTypeList) => {
-  return car_refill.map((rowData) => {
-    return {
-      type_id: !rowData.type_id
-        ? 'Поле "Способ заправки" должно быть заполнено'
-        : '',
-      fuel_card_id:
-        !rowData.fuel_card_id
-        && get(
-          refillTypeList.find(({ id }) => id === rowData.type_id),
-          'is_fuel_card_required',
-          false,
-        )
-          ? 'Поле "Топливная карта" должно быть заполнено'
+const checkCarRefill = memoizeOne(
+  (
+    car_refill,
+    refillTypeList,
+    fuelCardsList,
+    fuel_type,
+    userCompanyId,
+    userStructureId,
+  ) => {
+    return car_refill.map((rowData) => {
+      return {
+        type_id: !rowData.type_id
+          ? 'Поле "Способ заправки" должно быть заполнено'
           : '',
-      value:
-        !rowData.value && rowData.value !== 0
-          ? 'Поле "Выдано, л" должно быть заполнено'
-          : rowData.value < 0
-            ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+        fuel_card_id:
+          !rowData.fuel_card_id
+          && get(
+            refillTypeList.find(({ id }) => id === rowData.type_id),
+            'is_fuel_card_required',
+            false,
+          )
+            ? !makeFuelCardIdOptions(
+              fuelCardsList,
+              car_refill,
+              fuel_type,
+              userCompanyId,
+              userStructureId,
+            ).length
+              ? 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту'
+              : 'Поле "Топливная карта" должно быть заполнено'
             : '',
-    };
-  });
-});
+        value:
+          !rowData.value && rowData.value !== 0
+            ? 'Поле "Выдано, л" должно быть заполнено'
+            : rowData.value < 0
+              ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+              : '',
+      };
+    });
+  },
+);
 
 export const waybillSchema = {
   properties: [
@@ -171,15 +189,37 @@ export const waybillSchema = {
   dependencies: {
     car_refill: [
       {
-        validator: (car_refill, formStatet, { refillTypeList }) => {
-          return checkCarRefill(car_refill, refillTypeList);
+        validator: (
+          car_refill,
+          formStatet,
+          { refillTypeList, fuelCardsList, userCompanyId, userStructureId },
+        ) => {
+          return checkCarRefill(
+            car_refill,
+            refillTypeList,
+            fuelCardsList,
+            formStatet.fuel_type,
+            userCompanyId,
+            userStructureId,
+          );
         },
       },
     ],
     equipment_refill: [
       {
-        validator: (equipment_refill, formStatet, { refillTypeList }) => {
-          return checkCarRefill(equipment_refill, refillTypeList);
+        validator: (
+          equipment_refill,
+          formStatet,
+          { refillTypeList, fuelCardsList, userCompanyId, userStructureId },
+        ) => {
+          return checkCarRefill(
+            equipment_refill,
+            refillTypeList,
+            fuelCardsList,
+            formStatet.fuel_type,
+            userCompanyId,
+            userStructureId,
+          );
         },
       },
     ],

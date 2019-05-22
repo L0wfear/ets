@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Row, Glyphicon, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { isNullOrUndefined } from 'util';
 import ButtonCreateFuelCard from './fuel_card/ButtonCreateFuelCard';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-import { SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 
 type CarRefillTableHeaderProps = {
@@ -28,12 +27,6 @@ type CarRefillTableHeaderProps = {
   noHasFuelCardIdOptions: boolean;
   buttonWidth: number;
 };
-
-const popover = (
-  <Popover>
-    Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или по кнопке "Создать топл.карту"
-  </Popover>
-);
 
 const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
   (props) => {
@@ -64,22 +57,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
       <Row>
         <EtsHeaderContainer>
           <EtsHeaderTitle>
-            <span>
-              {props.title}&nbsp;
-            </span>
-            {
-              props.noHasFuelCardIdOptions && (
-                <OverlayTrigger
-                  trigger={['hover', 'focus']}
-                  overlay={popover}
-                  placement="top"
-                >
-                  <SpanRed>
-                    <Glyphicon glyph="exclamation-sign" />
-                  </SpanRed>
-                </OverlayTrigger>
-              )
-            }
+            {props.title}
           </EtsHeaderTitle>
           <EtsButtonsContainer>
             {

@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import {
   getAutobaseState,
   getSomeUniqState,
+  getSessionState,
 } from 'redux-main/reducers/selectors';
 import connectToStores from 'flummox/connect';
 import {
@@ -771,6 +772,8 @@ class WaybillFormWrap extends React.Component {
 export default connect(
   (state) => ({
     currentUser: state.session.userData,
+    userCompanyId: getSessionState(state).userData.company_id,
+    userStructureId: getSessionState(state).userData.structure_id,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
   }),

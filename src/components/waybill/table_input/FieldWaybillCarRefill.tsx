@@ -10,6 +10,7 @@ import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/auto
 import CarRefillTableHeader from './CarRefillTableHeader';
 import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { makeFuelCardIdOptions } from './utils';
 
 type FieldWaybillCarRefillStateProps = {
   fuelCardsList: IStateAutobase['fuelCardsList'];
@@ -92,35 +93,12 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 
     const fuelCardIdOptions = React.useMemo(
       () => {
-        return props.fuelCardsList.reduce(
-          (newArr, rowData) => {
-            const triggerOnShow = (
-              (
-                props.fuel_type === rowData.fuel_type
-                || !props.fuel_type
-              ) && (
-                rowData.company_id === props.userCompanyId
-                && (
-                  !props.userStructureId
-                  || props.userStructureId === rowData.structure_id
-                  || rowData.is_common
-                )
-              ) || (
-                props.array.some((refill) => refill.fuel_card_id === rowData.id)
-              )
-            );
-
-            if (triggerOnShow) {
-              newArr.push({
-                value: rowData.id,
-                label: rowData.number,
-                rowData,
-              });
-            }
-
-            return newArr;
-          },
-          [],
+        return makeFuelCardIdOptions(
+          props.fuelCardsList,
+          props.array,
+          props.fuel_type,
+          props.userCompanyId,
+          props.userStructureId,
         );
       },
       [

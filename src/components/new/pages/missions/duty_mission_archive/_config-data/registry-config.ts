@@ -144,6 +144,9 @@ export const config: TypeConfigData<DutyMission> = {
           typeAns: 'result',
           valueKey: 'id',
           labelKey: 'car_mission_name',
+          payload: {
+            for_archive: true,
+          },
         },
       },
       {

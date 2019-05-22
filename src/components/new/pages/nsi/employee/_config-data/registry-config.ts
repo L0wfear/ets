@@ -160,7 +160,7 @@ export const config: TypeConfigData<Employee> = {
         {
           key: 'full_name',
           title: 'Фамилия Имя Отчество',
-          width: 450,
+          width: 300,
         },
         {
           key: 'birthday',

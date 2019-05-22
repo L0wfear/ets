@@ -12,6 +12,8 @@ export const EtsTbodyTrTd = styled.td`
     padding: 8px;
     border: 1px solid white;
     vertical-align: top;
+
+    word-break: break-word;
     input {
       cursor: pointer;
     }

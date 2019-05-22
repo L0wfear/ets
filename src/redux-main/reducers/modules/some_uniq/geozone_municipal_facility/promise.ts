@@ -2,8 +2,13 @@ import { GeozoneMunicipalFacilityService } from 'api/Services';
 import { polyState } from 'constants/polygons';
 import { keyBy, get } from 'lodash';
 
-export const promiseGetGeozoneMunicipalFacility = async (payload) => {
+export const promiseGetGeozoneMunicipalFacility = async (payloadOwn) => {
   let response = null;
+
+  const payload = { ...payloadOwn };
+  if (!payloadOwn.structure_id) {
+    delete payloadOwn.structure_id;
+  }
 
   try {
     response = await GeozoneMunicipalFacilityService.get(payload);

@@ -67,7 +67,7 @@ export const config: TypeConfigData<Dt> = {
         step: 0.01,
       },
       {
-        valueKey: 'company_structure_name',
+        valueKey: 'company_structures',
         title: 'Подразделение',
         type: 'multiselect',
       },
@@ -129,9 +129,10 @@ export const config: TypeConfigData<Dt> = {
           width: 250,
         },
         {
-          key: 'company_structure_name',
+          key: 'company_structures',
           title: 'Подразделение',
-          width: 150,
+          width: 400,
+          format: 'array_of_object_name',
         },
       ],
     },

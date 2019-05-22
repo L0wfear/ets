@@ -1,3 +1,5 @@
+import { get } from 'lodash';
+import { isBoolean, isNullOrUndefined } from 'util';
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,
@@ -8,7 +10,6 @@ import {
   OneRegistryData,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
-import { get } from 'lodash';
 
 import { makeProcessedArray } from 'components/new/ui/registry/module/utils/processed';
 
@@ -29,7 +30,7 @@ import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-import { isBoolean, isNullOrUndefined } from 'util';
+
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';

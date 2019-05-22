@@ -206,6 +206,9 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       if (format === 'array') {
         value = isArray(value) ? value.join(', ') : '';
       }
+      if (format === 'array_of_object_name') {
+        value = isArray(value) ? value.map(({ name }) => name).join(', ') : '';
+      }
       if (format === 'workOrNot') {
         value = value ? 'Работает' : 'Не работает';
       }

@@ -32,10 +32,10 @@ export type OneGeozoneMunicipalFacility = {
   name: string;
   shape: ol.GlobalObject;
   state: number;
+
+  is_valid_company_structure: boolean;
 };
 
 export type GeozoneMunicipalFacility = OneGeozoneMunicipalFacility[];
 
-export type GeozoneMunicipalFacilityById = {
-  [id: string]: OneGeozoneMunicipalFacility;
-};
+export type GeozoneMunicipalFacilityById = Record<string, OneGeozoneMunicipalFacility>;

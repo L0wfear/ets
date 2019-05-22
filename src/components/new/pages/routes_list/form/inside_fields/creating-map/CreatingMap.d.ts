@@ -10,6 +10,7 @@ import {
 import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 export type StateCreatingMap = {
   technical_operations_object_list: TechnicalOperationObjectsList;
@@ -37,6 +38,7 @@ export type DispatchPropsCreatingMap = {
 export type OwnPropsCreatingMap = {
   municipal_facility_id: number | null;
   technical_operation_id: number | null;
+  structure_id: Route['structure_id'];
   bridges?: ModifyBridgesForRoute;
   input_lines: any[];
   object_list: any[];

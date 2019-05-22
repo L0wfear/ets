@@ -18,3 +18,4 @@ export type AutobaseActualTiresOnCarApi = LoadingServiceGeneric<'autobase/actual
 export type MeasureUnitApi = LoadingServiceGeneric<'measure_unit', object, MeasureUnit[]>;
 export type CompanyStructureLinearApi = LoadingServiceGeneric<'company_structure', { linear: true }, CompanyStructureLinear[]>;
 export type EmployeeApi = LoadingServiceGeneric<'employee', object, Employee[]>;
+export type CompanyStructureLinearForUserListApi = LoadingServiceGeneric<'company_structure', { linear: number, descendants_by_user: boolean }, CompanyStructureLinear[]>;

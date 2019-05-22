@@ -89,9 +89,10 @@ export const makeObjectListOptions = (
   geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id'],
 ) => {
   return Object.values(geozone_municipal_facility_by_id).map(
-    ({ id, name }) => ({
+    ({ id, name, is_valid_company_structure }) => ({
       value: id,
       label: name,
+      is_invalid: !is_valid_company_structure,
     }),
   );
 };

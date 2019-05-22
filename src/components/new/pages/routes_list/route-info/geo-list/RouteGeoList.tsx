@@ -1,11 +1,12 @@
 import * as React from 'react';
 import { PropsRouteGeoList } from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList.h';
-import { uniqBy } from 'lodash';
+import { get, uniqBy } from 'lodash';
 
 import {
   RouteGeoListContainer,
   NameListLineContainer,
   TitleList,
+  LiRouteManual,
 } from 'components/new/pages/routes_list/route-info/geo-list/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
 import { routeTypesByKey } from 'constants/route';
@@ -32,10 +33,9 @@ const makeNameByProps = (type: PropsRouteGeoList['type']) => {
   };
 };
 
-class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
-  render() {
-    const { props } = this;
-    const { object_list, draw_object_list, makeFailList } = props;
+const RouteGeoList: React.FC<PropsRouteGeoList> = React.memo(
+  (props) => {
+    const { object_list, makeFailList } = props;
 
     const {
       nameObjectList,
@@ -43,18 +43,38 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
       nameFailList,
     } = makeNameByProps(props.type);
 
-    let fail_list = [];
-    if (makeFailList && isArray(object_list)) {
-      const objectIndex = keyBy(object_list, 'object_id');
-      const drawObjectListIndex = keyBy(draw_object_list, 'object_id');
+    const fail_list: any = React.useMemo(
+      () => {
+        if (makeFailList && isArray(object_list)) {
+          const objectIndex = keyBy(object_list, 'object_id');
+          const drawObjectListIndex = keyBy(draw_object_list, 'object_id');
 
-      fail_list = Object.values(props.polys).filter(
-        ({ id }) => !objectIndex[id] && !drawObjectListIndex[id],
-      );
-    }
+          return Object.values(props.polys).filter(
+            ({ id }) => !objectIndex[id] && !drawObjectListIndex[id],
+          );
+        }
+
+        return null;
+      },
+      [props.polys],
+    );
+
+    const draw_object_list: any = React.useMemo(
+      () => {
+        if (!props.draw_object_list) {
+          return null;
+        }
+
+        return props.draw_object_list.map((objectData) => ({
+          ...objectData,
+          isInvalid: !get(props.polys, `${objectData.object_id}.is_valid_company_structure`, true),
+        }));
+      },
+      [props.polys, props.draw_object_list],
+    );
 
     return (
-      <RouteGeoListContainer height={this.props.height}>
+      <RouteGeoListContainer height={props.height}>
         {object_list && object_list.length ? (
           <div>
             <NameListLineContainer>
@@ -90,11 +110,11 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
             <DivNone />
           </>
         )}
-        {draw_object_list && draw_object_list.length ? (
+        {draw_object_list ? (
           <div>
             <NameListLineContainer>
               <TitleList>{nameDrawObjectList}</TitleList>
-              {uniqBy(draw_object_list, (o) => o.name + o.state).map(
+              {uniqBy(draw_object_list, (o: any) => o.name + o.state).map(
                 ({ type, ...data }, key) => {
                   let title = data.name;
 
@@ -109,7 +129,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
                     title = `Пункт назначения №${key + 1} (${title})`;
                   }
 
-                  return <li key={key}>{title}</li>;
+                  return <LiRouteManual key={key} isInvalid={data.isInvalid}>{title}</LiRouteManual>;
                 },
               )}
             </NameListLineContainer>
@@ -117,7 +137,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
         ) : (
           <DivNone />
         )}
-        {makeFailList && fail_list.length ? (
+        {fail_list ? (
           <div>
             <NameListLineContainer>
               <TitleList>{nameFailList}</TitleList>
@@ -131,7 +151,7 @@ class RouteGeoList extends React.PureComponent<PropsRouteGeoList, {}> {
         )}
       </RouteGeoListContainer>
     );
-  }
-}
+  },
+);
 
 export default RouteGeoList;

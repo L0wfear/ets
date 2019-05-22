@@ -11,6 +11,7 @@ import {
   MeasureUnitApi,
   CompanyStructureLinearApi,
   EmployeeApi,
+  CompanyStructureLinearForUserListApi,
 } from "./all";
 
 type UrlValues = (
@@ -24,6 +25,7 @@ type UrlValues = (
   | MeasureUnitApi['url']
   | CompanyStructureLinearApi['url']
   | EmployeeApi['url']
+  | CompanyStructureLinearForUserListApi['url']
 );
 
 export type LoadingService = (url: UrlValues) => {

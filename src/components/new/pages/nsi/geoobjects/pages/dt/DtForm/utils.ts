@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Dt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/@types';
 
-export type GetDefaultDtElement = (dt: Dt | null) => Dt;
-
 export const defaultDt: Dt = {
   ab_area: null,
   auto_area: null,
@@ -11,8 +9,7 @@ export const defaultDt: Dt = {
   bti_okrug_id: null,
   clean_area: null,
   company_name: '',
-  company_structure_id: null,
-  company_structure_name: null,
+  company_structures: [],
   developer: '',
   district_id: null,
   dt_id: null,
@@ -46,7 +43,7 @@ export const defaultDt: Dt = {
   yard_owner_id: null,
 };
 
-export const getDefaultDtFormElement: GetDefaultDtElement = (element) => {
+export const getDefaultDtFormElement = (element: Partial<Dt>): Dt => {
   const newElement = { ...defaultDt };
   if (isObject(element)) {
     Object.keys(defaultDt).forEach((key) => {

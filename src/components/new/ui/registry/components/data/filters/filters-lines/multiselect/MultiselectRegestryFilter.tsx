@@ -108,7 +108,15 @@ const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey:
 
     if (isArray(value)) {
       value.forEach((oneValue) => {
-        const newItem = getOption(oneValue, oneValue);
+        let valueOfOption = oneValue;
+        let labelOfOption = oneValue;
+
+        if ('id' in oneValue && 'name' in oneValue) {
+          valueOfOption = oneValue.id;
+          labelOfOption = oneValue.name;
+        }
+
+        const newItem = getOption(valueOfOption, labelOfOption);
         if (newItem) {
           newArr.push(newItem);
         }

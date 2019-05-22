@@ -50,13 +50,6 @@ const makeRoute = (route_data) => {
 
         return object;
       });
-
-      route.object_list.forEach((objData, i) => {
-        if (objData.from_vectors) {
-          route.input_lines.push(objData);
-          route.object_list.splice(i, 1);
-        }
-      });
     }
     const shapes = get(route, 'shapes', {});
 

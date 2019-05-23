@@ -23,7 +23,7 @@ import Paginator from 'components/directories/order/Paginator';
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { isString } from 'util';
 
-import { sessionSetAppConfig } from 'redux-main/reducers/modules/session/action_get_config';
+import { actionLoadAppConfig } from 'redux-main/reducers/modules/session/action_get_config';
 
 require('components/directories/order/Order.scss');
 
@@ -43,7 +43,7 @@ class OrderList extends React.Component<any, any> {
     const { flux } = this.context;
     flux.getActions('employees').getEmployees({ active: true });
     flux.getActions('objects').getCars();
-    this.props.sessionSetAppConfig();
+    this.props.actionLoadAppConfig();
     const {
       location: { search },
     } = this.props;
@@ -128,7 +128,7 @@ const mapDispatchToProps = (dispatch) => ({
       getOrders,
       resetOrder,
       setSelectedElementOrder,
-      sessionSetAppConfig,
+      actionLoadAppConfig,
     },
     dispatch,
   ),

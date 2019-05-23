@@ -70,7 +70,6 @@ const AsigmentView: React.FC<AsigmentViewProps> = (props) => {
         id="assignment_files"
         label="Файл/скан доверенности"
         modalKey={path}
-        multiple
         value={formState.assignment_files}
         onChange={props.handleChange}
         boundKeys="assignment_files"

@@ -44,6 +44,10 @@ const validDateRange = (date_from, date_to): {} => {
     date_end_error = 'При выборе даты периода отчета нельзя выбирать текущие и будущие дни';
   }
 
+  if (diffDate >= 10) {
+    date_start_error = 'Период формирования отчета не должен превышать 10 суток.';
+  }
+
   return {
     date_start_error,
     date_end_error,
@@ -66,13 +70,6 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     } = nextProps;
 
     const error = validDateRange(date_from, date_to);
-
-    if (diffDate >= 10) {
-      return {
-        error:
-          'Период формирования отчета не должен превышать 10 суток.',
-      };
-    }
 
     return {
       error,

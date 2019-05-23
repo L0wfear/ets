@@ -3,6 +3,7 @@ import useForm from '../useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 
 /**
  * является ли открытый ПЛ черновиком (IS_DRAFT)
@@ -109,6 +110,50 @@ const useWaybillPickStructureData = (options: Array<any>, userStructureId: numbe
   );
 };
 
+const useFormDataFetSelectedCar = (formDataKey: string) => {
+  const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
+  const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
+
+  const selectedCar = React.useMemo(
+    () => {
+      const selectedCarFind = store.carActualList.options.find(
+        ({ rowData }) => rowData.asuods_id === formState.car_id,
+      );
+
+      if (selectedCarFind) {
+        return selectedCarFind.rowData;
+      }
+
+      return null;
+    },
+    [store.carActualList, formState.car_id],
+  );
+
+  return selectedCar;
+};
+
+const useFormDataFetSelectedTrailer = (formDataKey: string) => {
+  const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
+  const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
+
+  const selectedTrailer = React.useMemo(
+    () => {
+      const selectedTrailerFind = store.carActualList.options.find(
+        ({ rowData }) => rowData.asuods_id === formState.trailer_id,
+      );
+
+      if (selectedTrailerFind) {
+        return selectedTrailerFind.rowData;
+      }
+
+      return null;
+    },
+    [store.carActualList, formState.trailer_id],
+  );
+
+  return selectedTrailer;
+};
+
 const useWaybillFormData = {
   useFormDataIsDraft,
   useFormDataIsActive,
@@ -116,6 +161,8 @@ const useWaybillFormData = {
   useFormDataIsActiveOrIsClosed,
   useWaybillPickStructureData,
   useFormDataCanEditIfClose,
+  useFormDataFetSelectedCar,
+  useFormDataFetSelectedTrailer,
 };
 
 export default useWaybillFormData;

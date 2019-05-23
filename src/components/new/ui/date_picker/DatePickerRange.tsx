@@ -64,8 +64,8 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
       )
   );
   const labelDatePickerEnd = (
-    'date_start_label' in props
-      ? props.date_start_label
+    'date_end_label' in props
+      ? props.date_end_label
       : (
         labelDatePickerStart
           ? ''

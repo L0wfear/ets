@@ -10,10 +10,9 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
-import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
-import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
 import { diffDates } from 'utils/dates';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 type FieldIsBnsoBrokenStateProps = {
   token: InitialStateSession['token'];
@@ -36,20 +35,20 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
     const {
       fieldData: { key, title },
     } = props;
-    const page = useForm.useFormDataSchemaPage<any>(props.formDataKey);
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<any>(props.formDataKey);
-    const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
-    const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
-    const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
-    const waybillFormStore = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(props.formDataKey);
+    const page = useForm.useFormDataSchemaPage<Waybill>(props.formDataKey);
+    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
+    const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
+    const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
+    const selectedCar = useWaybillFormData.useFormDataFetSelectedCar(props.formDataKey);
 
     const wsStateDataUse = useWsCarPoints();
     const moscowTimeData = useMoscowTime(page, path);
 
     React.useEffect(
       () => {
-        if (!IS_CLOSE_OR_IS_ACTIVE) {
+        if (IS_DRAFT) {
           wsStateDataUse.openConnection(
             props.points_ws,
             props.token,
@@ -58,7 +57,7 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
 
         return wsStateDataUse.closeConnection();
       },
-      [IS_CLOSE_OR_IS_ACTIVE],
+      [IS_DRAFT],
     );
 
     /**
@@ -67,17 +66,28 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
     const gps_code = React.useMemo(
       () => {
         return get(
-          waybillFormStore.carList.options.find(( { rowData }) => rowData.asuods_id === formState.asuods_id),
+          selectedCar,
           'gps_code',
           null,
         );
       },
-      [waybillFormStore.carList, formState.asuods_id],
+      [selectedCar],
     );
 
     React.useEffect(
       () => {
-        if (!IS_CLOSE_OR_IS_ACTIVE && !moscowTimeData.isLoading && gps_code) {
+        if (!formState.car_id) {
+          handleChange({
+            is_bnso_broken: null,
+          });
+        }
+      },
+      [formState.car_id],
+    );
+
+    React.useEffect(
+      () => {
+        if (IS_DRAFT && !moscowTimeData.isLoading && gps_code) {
           const point = get(wsStateDataUse.wsStateData.wsState, gps_code, null);
 
           if (point) {
@@ -88,27 +98,36 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
             );
 
             const is_bnso_broken = timeFromLastActive > 1;
-            if (is_bnso_broken !== formState[key]) {
+
+            if (is_bnso_broken !== formState.is_bnso_broken) {
               handleChange({
-                [key]: is_bnso_broken,
+                is_bnso_broken,
+              });
+            }
+          } else if (gps_code) {
+            const is_bnso_broken = true;
+
+            if (is_bnso_broken !== formState.is_bnso_broken) {
+              handleChange({
+                is_bnso_broken,
               });
             }
           }
         }
       },
-      [IS_CLOSE_OR_IS_ACTIVE, wsStateDataUse.wsStateData.wsState, formState[key], gps_code, moscowTimeData, key, formState[key]],
+      [IS_DRAFT, wsStateDataUse.wsStateData.wsState, formState.is_bnso_broken, gps_code, moscowTimeData],
     );
 
     const is_bnso_broken_text = React.useMemo(
       () => {
-        if (formState[key] === false) {
+        if (formState.is_bnso_broken === false) {
           return 'Исправен';
         }
-        if (formState[key] === true) {
+        if (formState.is_bnso_broken === true) {
           return 'Датчик ГЛОНАСС не исправен';
         }
       },
-      [formState[key]],
+      [formState.is_bnso_broken],
     );
 
     return React.useMemo(

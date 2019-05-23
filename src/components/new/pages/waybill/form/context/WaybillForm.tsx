@@ -37,7 +37,7 @@ export default withFormContext<Waybill, DefaultPropsWithFormContext<Waybill>, Wa
       options: [],
       isLoading: false,
     },
-    carList: {
+    carActualList: {
       options: [],
       isLoading: true,
     },

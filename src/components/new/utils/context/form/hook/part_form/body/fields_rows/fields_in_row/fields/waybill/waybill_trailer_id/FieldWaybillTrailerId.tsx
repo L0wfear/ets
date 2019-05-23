@@ -1,30 +1,100 @@
 import * as React from 'react';
+import { Row } from 'react-bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { FieldDataWaybillTrailerId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
+import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import useWaybillCarActualOptions from './useWaybillCarActualOptions';
+import FieldWaybillTrailerIdString from './FieldWaybillTrailerIdString';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 type FieldWaybillTrailerIdProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillTrailerId;
+  fieldData: FieldDataWaybillCarId;
 };
 
 const FieldWaybillTrailerId: React.FC<FieldWaybillTrailerIdProps> = React.memo(
   (props) => {
+    const {
+      fieldData: { title, clearable, key },
+    } = props;
+
+    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
+    const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
+    const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
+
+    const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
+
+    const carActualOptionData = useWaybillCarActualOptions(props.formDataKey, formState.trailer_id, formState.structure_id);
+
+    const handleChangeWrap = React.useCallback(
+      (_, value) => {
+        handleChange({
+          trailer_id: value,
+        });
+      },
+      [handleChange],
+    );
+
+    const previosStructure = usePrevious(formState.structure_id);
+
+    React.useEffect(
+      () => {
+        if (previosStructure !== formState.structure_id) {
+          if (formState.structure_id) {
+            handleChangeWrap('trailer_id', null);
+          }
+        }
+      },
+      [previosStructure, formState.structure_id, handleChangeWrap],
+    );
 
     return React.useMemo(
       () => {
         return (
           <EtsBootstrap.Col md={props.fieldData.md || 12}>
-            <ExtField
-              type="select"
-              label={`${props.fieldData.title} (поиск по рег. номер  ТС)`}
-              value={null}
-              options={[]}
-            />
+            {
+              IS_DRAFT
+                ? (
+                  <ExtField
+                    id={`${path}_${key}`}
+                    type="select"
+                    clearable={clearable}
+                    label={title}
+                    value={formState.trailer_id}
+                    error={formErrors.trailer_id}
+                    options={carActualOptionData.options}
+                    onChange={handleChangeWrap}
+                    disabled={!isPermitted}
+
+                    etsIsLoading={carActualOptionData.isLoading}
+                    boundKeys="trailer_id"
+                  />
+                )
+                : (
+                  <Row>
+                    <FieldWaybillTrailerIdString
+                      formDataKey={props.formDataKey}
+                      fieldData={props.fieldData}
+                    />
+                  </Row>
+                  )
+            }
           </EtsBootstrap.Col>
         );
       },
-      [props],
+      [
+        props,
+        IS_DRAFT,
+        formState.trailer_id,
+        formErrors.trailer_id,
+        isPermitted,
+        carActualOptionData,
+      ],
     );
   },
 );

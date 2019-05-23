@@ -19,3 +19,4 @@ export type MeasureUnitApi = LoadingServiceGeneric<'measure_unit', object, Measu
 export type CompanyStructureLinearApi = LoadingServiceGeneric<'company_structure', { linear: true }, CompanyStructureLinear[]>;
 export type EmployeeApi = LoadingServiceGeneric<'employee', object, Employee[]>;
 export type CompanyStructureLinearForUserListApi = LoadingServiceGeneric<'company_structure', { linear: number, descendants_by_user: boolean }, CompanyStructureLinear[]>;
+export type CarActualApi = LoadingServiceGeneric<'car_actual', null, Car[]>;

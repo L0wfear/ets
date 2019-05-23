@@ -16,6 +16,8 @@ const MAP_INITIAL_CENTER: InitialStateSession['userData']['map_config']['coordin
 const MAP_INITIAL_ZOOM = 3;
 
 export const CONFIG_INITIAL: InitialStateSession['appConfig'] = {
+  env: 'dev',
+  map_track_days: 10,                                                   // максимальный интервал загрузки трека
   // дефолтное значение конфигурации
   api_versions: [],
   category_license: {

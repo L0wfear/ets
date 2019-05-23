@@ -36,17 +36,11 @@ const DOC_URL = {
 
 const config = {
   develop: {
-    ws: `${WS_PROTO}//ets${
-      STAND !== 'prod' ? '-test' : ''
-    }.mos.ru/services/stream`,
     images: 'https://ets.mos.ru/ets/data/images/',
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    ws: `${WS_PROTO}//ets${
-      STAND !== 'prod' ? '-test' : ''
-    }.mos.ru/services/stream`,
     images: `https://ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin,
     admin: ADMIN_URL.origin,
@@ -76,7 +70,6 @@ export const configApi = {
 };
 
 const configs = {
-  ws: config.develop.ws,
   images: config.develop.images,
   docs: config.develop.docs,
   admin: config.develop.admin,
@@ -89,7 +82,6 @@ const configs = {
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
 try {
-  configs.ws = config[pathToConfig].ws;
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;
   configs.admin = config[pathToConfig].admin;

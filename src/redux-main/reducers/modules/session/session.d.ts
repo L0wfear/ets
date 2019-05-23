@@ -39,6 +39,8 @@ export type InitialStateSession = {
   };
   token: string | null;
   appConfig: {
+    env: string;
+    map_track_days: number,
     api_versions: string[];
     category_license: {
       category_drivers_license: [];

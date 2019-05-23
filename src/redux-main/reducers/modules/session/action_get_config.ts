@@ -4,6 +4,8 @@ import {
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService } from 'api/Services';
+import { initSentry } from 'config/raven';
+import { InitialStateSession } from './session.d';
 
 export const sessionSetAppConfig = () => ({
   type: SESSION_SET_CONFIG,
@@ -14,11 +16,10 @@ export const sessionSetAppConfig = () => ({
 
       return CONFIG_INITIAL;
     })
-    .then((appConfigRaw) => {
-      const appConfig = appConfigRaw;
+    .then((appConfig: InitialStateSession['appConfig']) => {
 
       // appConfig.points_ws = 'wss://ets-test.mos.ru/services/stream'; для теста
-
+      initSentry(appConfig.env);
       return {
         appConfig,
       };

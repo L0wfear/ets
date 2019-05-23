@@ -141,8 +141,6 @@ export const sessionSetData: any = (
     );
   }
 
-  setUserContext(userData);
-
   await Promise.all([
     dispatch(sessionSetAppConfig()),
     dispatch(sessionLoadTracksCachingConfig()),
@@ -153,6 +151,8 @@ export const sessionSetData: any = (
       ),
     ),
   ]);
+
+  setUserContext(userData);
 
   return dispatch({
     type: SESSION_SET_DATA,

@@ -23,21 +23,24 @@ const FieldCompanyStructureId: React.FC<FieldCompanyStructureIdProps> = React.me
       (key, _, options: typeof companyStructureOptionData.options) => {
         global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
 
-        const setIds = options.reduce(
-          (set, { rowData }) => {
-            set.add(rowData.id);
+        const addItem = options.length > props.value.length;
+        let valueNew = [];
 
-            if (isNumber(rowData.parent_id)) {
-              set.add(rowData.parent_id);
-            }
+        if (addItem) {
+          const setIds = options.reduce(
+            (set, { rowData }) => {
+              set.add(rowData.id);
 
-            return set;
-          },
-          new Set(),
-        );
+              if (isNumber(rowData.parent_id)) {
+                set.add(rowData.parent_id);
+              }
 
-        props.handleChange({
-          [key]: companyStructureOptionData.options.reduce(
+              return set;
+            },
+            new Set(),
+          );
+
+          valueNew = companyStructureOptionData.options.reduce(
             (newArr, { rowData }) => {
               if (setIds.has(rowData.id)) {
                 newArr.push({
@@ -49,10 +52,43 @@ const FieldCompanyStructureId: React.FC<FieldCompanyStructureIdProps> = React.me
               return newArr;
             },
             [],
-          ),
+          );
+        } else {
+          const newOptionSet = options.reduce(
+            (newSet, { rowData }) => {
+              newSet.add(rowData.id);
+
+              return newSet;
+            },
+            new Set(),
+          );
+          const removedItem = props.value.find(
+            ({ id }) => !Boolean(
+              newOptionSet.has(id),
+            ),
+          );
+
+          valueNew = options.reduce(
+            (newArr, { rowData }) => {
+              if (rowData.parent_id !== removedItem.id) {
+                newArr.push({
+                  id: rowData.id,
+                  name: rowData.name,
+                });
+              }
+
+              return newArr;
+            },
+            [],
+          );
+        }
+
+        props.handleChange({
+          [key]: valueNew,
         });
+
       },
-      [props.handleChange, companyStructureOptionData],
+      [props.handleChange, companyStructureOptionData, props.value],
     );
 
     const value = React.useMemo(

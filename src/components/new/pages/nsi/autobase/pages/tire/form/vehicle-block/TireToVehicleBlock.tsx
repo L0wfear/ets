@@ -12,6 +12,7 @@ import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autoba
 
 interface IPropsTireToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
   tireId: number;
+  errors: any;
 }
 
 class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> {
@@ -25,6 +26,7 @@ class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> 
       <DataTableInput
         tableSchema={meta}
         renderers={renderers}
+        errors={this.props.errors}
         validationSchema={validationSchema}
         addButtonLabel="Добавить ТС"
         removeButtonLable="Удалить ТС"

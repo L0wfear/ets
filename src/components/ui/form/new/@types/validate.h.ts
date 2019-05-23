@@ -67,16 +67,20 @@ export type ObjectProperty<K, P> = {
   type: 'schema';
   schema: SchemaType<K, P>;
 };
-export type ArrayOfObjectProperty<K, P> = {
-  type: 'arrayOfObjectShmeta';
-  schema: SchemaType<K, P>;
+export type AnyProperty<K, F, P> = CommonPropertie<K, F, P> & {
+  title?: string
+  type: 'any';
 };
 
 export type FormErrorType<Shema extends SchemaType<any, any>> = {
   [K in keyof Shema['properties']]: (
     Shema['properties'][K] extends ObjectProperty<any, any>
       ? FormErrorType<Shema['properties'][K]['schema']>
-      : string
+      : (
+        Shema['properties'][K] extends AnyProperty<any, any, any>
+          ? any
+          : any
+      )
   );
 };
 
@@ -84,6 +88,7 @@ export type PropertieFieldValidatorArrType<F, P, K = F[keyof F]> = (
   K extends Array<any>
     ? (
       MultiValueOfArrayPropertie<K, F, P>
+      | AnyProperty<K, F, P>
     )
     : (
       K extends { [k: string]: any }
@@ -97,6 +102,7 @@ export type PropertieFieldValidatorArrType<F, P, K = F[keyof F]> = (
           | DatePropertie<K, F, P>
           | DateTimePropertie<K, F, P>
           | BooleanPropertie<K, F, P>
+          | AnyProperty<K, F, P>
         )
     )
 );

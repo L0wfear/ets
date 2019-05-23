@@ -178,6 +178,8 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                         boundKeys="tire_to_car"
                         inputList={state.tire_to_car}
                         onValidation={this.handleTireToCarValidity}
+                        outerValidate
+                        errors={errors.tire_to_car}
                         disabled={!isPermitted}
                         tireId={state.id}
                         selectField="customId"

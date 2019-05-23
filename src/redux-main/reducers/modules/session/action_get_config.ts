@@ -1,30 +1,82 @@
+import { get } from 'lodash';
 import {
   SESSION_SET_CONFIG,
   CONFIG_INITIAL,
+  SESSION_SET_TRACK_CONFIG,
+  TRACK_CONFIG_INITIAL,
 } from 'redux-main/reducers/modules/session/session';
 
-import { ConfigService } from 'api/Services';
-import { initSentry } from 'config/raven';
+import { ConfigService, ConfigTrackService } from 'api/Services';
 import { InitialStateSession } from './session.d';
+import config from 'config';
 
-export const sessionSetAppConfig = () => ({
+const actionSetAppConfig = (appConfig: InitialStateSession['appConfig']) => ({
   type: SESSION_SET_CONFIG,
-  payload: ConfigService.get()
-    .catch((errorData) => {
-      // tslint:disable-next-line
-      console.warn(errorData);
-
-      return CONFIG_INITIAL;
-    })
-    .then((appConfig: InitialStateSession['appConfig']) => {
-
-      // appConfig.points_ws = 'wss://ets-test.mos.ru/services/stream'; для теста
-      initSentry(appConfig.env);
-      return {
-        appConfig,
-      };
-    }),
-  meta: {
-    loading: true,
+  payload: {
+    appConfig,
   },
 });
+
+export const actionSetAppConfigTracksCaching = (appConfigTracksCaching: InitialStateSession['appConfigTracksCaching']) => ({
+  type: SESSION_SET_TRACK_CONFIG,
+  payload: {
+    appConfigTracksCaching,
+  },
+});
+
+export const actionLoadAppConfig = () => async (dispatch) => {
+  let appConfig: InitialStateSession['appConfig'] = null;
+
+  try {
+    appConfig = await ConfigService.get();
+  } catch (error) {
+    appConfig = CONFIG_INITIAL;
+  }
+
+  dispatch(
+    actionSetAppConfig(appConfig),
+  );
+
+  return appConfig;
+};
+
+const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['appConfigTracksCaching']) => {
+  const { api_version_stable } = appConfigTracksCaching;
+
+  let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+  if (!versions) {
+    versions = {};
+  }
+
+  const versionFromLocalStorage = Number(
+    get(
+      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      config.tracksCaching,
+      '',
+    ),
+  );
+  if (versionFromLocalStorage !== api_version_stable) {
+    console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
+
+    versions[config.tracksCaching] = api_version_stable.toString();
+  }
+
+  localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+};
+
+export const actionLoadAppConfigTracksCaching = async () => async (dispatch) => {
+  let appConfigTracksCaching: InitialStateSession['appConfigTracksCaching'] = null;
+
+  try {
+    appConfigTracksCaching = await ConfigTrackService.get();
+  } catch (e) {
+    appConfigTracksCaching = TRACK_CONFIG_INITIAL;
+  }
+  setVersionInLocalStorage(appConfigTracksCaching);
+
+  dispatch(
+    actionSetAppConfigTracksCaching(appConfigTracksCaching),
+  );
+
+  return appConfigTracksCaching;
+};

@@ -19,6 +19,8 @@ import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/red
 import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
 import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
 import { CarInfoToggleForToday } from './styled';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -36,6 +38,8 @@ type PropsTitleTrackTab = {
   track: any;
   status: string;
   loadingTrack: boolean;
+
+  map_track_days: InitialStateSession['appConfig']['map_track_days'];
 };
 
 type StateTitleTrackTab = {
@@ -102,12 +106,9 @@ class TitleTrackTab extends React.Component<
       if (diffDates(dates.date_end, dates.date_start, 'minutes', false) <= 0) {
         errorDates = 'Дата начала должна быть раньше даты окончания';
       } else if (
-        diffDates(dates.date_end, dates.date_start, 'days') >
-        (process.env.STAND === 'prod' ? 10 : 30)
+        diffDates(dates.date_end, dates.date_start, 'days') > this.props.map_track_days
       ) {
-        errorDates = `Период формирования трека не должен превышать ${
-          process.env.STAND === 'prod' ? 10 : 30
-        } суток`;
+        errorDates = `Период формирования трека не должен превышать ${this.props.map_track_days} суток`;
       } else {
         errorDates = '';
       }
@@ -201,6 +202,7 @@ class TitleTrackTab extends React.Component<
 }
 
 const mapStateToProps = (state) => ({
+  map_track_days: getSessionState(state).appConfig.map_track_days,
   forToday: state.monitorPage.carInfo.forToday,
   date_start: state.monitorPage.carInfo.date_start,
   date_end: state.monitorPage.carInfo.date_end,

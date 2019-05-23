@@ -15,17 +15,22 @@ import { isObject } from 'util';
 import { isArray } from 'highcharts';
 
 const hasError = (errorsData: any) => {
-  if (isObject(errorsData)) {
-    return Object.values(errorsData).every((error) => hasError(error));
-  }
   if (isArray(errorsData)) {
     return errorsData.every((error) => hasError(error));
+  }
+
+  if (isObject(errorsData)) {
+    return Object.values(errorsData).some((error) => hasError(error));
   }
 
   return Boolean(errorsData);
 };
 
 const mergeErrors = (errorOld: any, error: any) => {
+  if (!errorOld) {
+    return error;
+  }
+
   if (isObject(errorOld)) {
     return Object.entries(errorOld).reduce(
       (errorNew, [key, value]) => {
@@ -127,17 +132,20 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
             formError[key] = validate<F[keyof F], P, RootFormState>((fieldData as any).schema, formState[key], props, rootFormState);
             break;
           }
+          case 'any': {
+            formError[key] = '';
+            break;
+          }
           default:
             throw new Error('Нужно определить функцию для валидации');
         }
 
-        if (fieldData.dependencies && !hasError(formError[key])) {
+        if (fieldData.dependencies) {
           fieldData.dependencies.some((dependencieValidator) => {
             const error = dependencieValidator(formState[key], formState, props, rootFormState);
-            if (hasError(error)) {
-              formError[key] = mergeErrors(formError[key], error);
-              return true;
-            }
+
+            formError[key] = mergeErrors(formError[key], error);
+            return true;
           });
         }
       }

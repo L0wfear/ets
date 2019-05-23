@@ -9,6 +9,8 @@ import { ISharedPropsDataTableInput } from 'components/ui/table/DataTableInput/D
 export interface IExternalPropsDataTableInputWrapper {
   stackOrder?: boolean;
   validationSchema?: IValidationSchema;
+  outerValidate?: boolean;
+  errors?: any[];
   onValidation?(options: IStateDataTableInputWrapper): void;
   onChange(value: any, isValidInput?: boolean): void;
 }
@@ -27,7 +29,7 @@ export interface IPropsDataTableInputWrapper {
   onRowSelected?(selectedRow: IDataTableSelectedRow): void;
 }
 export interface IStateDataTableInputWrapper {
-  outputListErrors?: ETSCore.Types.IStringKeyHashTable<string>[];
+  outputListErrors?: any[];
   isValidInput?: boolean;
   selectedIndex?: number;
 }

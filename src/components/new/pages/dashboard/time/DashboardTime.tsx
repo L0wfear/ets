@@ -4,6 +4,7 @@ import {
   formatDate,
   getFormattedTimeWithSecond,
   getDateWithMoscowTz,
+  getDateWithMoscowTzByTimestamp,
 } from 'utils/dates';
 
 import {
@@ -21,15 +22,19 @@ const DashboardTimeNew: React.FC<{ page: string }> = React.memo(
 
     React.useEffect(
       () => {
-        const timestamp = get(moscowTime, 'timestamp', null);
+        const timestamp = get(moscowTime.data, 'timestamp', null);
         let intervalIdtemp = null;
         let countInc = 0;
 
         if (timestamp) {
+          const currentDate = getDateWithMoscowTzByTimestamp(timestamp * 1000);
+          currentDate.setSeconds(currentDate.getSeconds() + countInc);
+          setDate(currentDate);
+
           intervalIdtemp = setInterval(
             () => {
               countInc = countInc + 1;
-              const newDate = new Date(date);
+              const newDate = getDateWithMoscowTzByTimestamp(timestamp * 1000);
               newDate.setSeconds(newDate.getSeconds() + countInc);
               setDate(newDate);
             },

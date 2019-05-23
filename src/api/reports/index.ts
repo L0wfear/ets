@@ -90,7 +90,7 @@ export const CarsTravelTimeReport = ETS_API_FACTORY.createApiServiceAdapter(
   'cars_travel_time',
 );
 
-export const CarsTravelTimeReportNew = ETS_API_FACTORY.createApiServiceAdapter( // <<< newReport
+export const CarsTravelTimeReportNew = ETS_API_FACTORY.createApiServiceAdapter(
   'cars_travel_time_new',
 );
 

@@ -24,9 +24,39 @@ interface IPropsReportHeader
   date_to: string;
 }
 
+const validDateRange = (date_from, date_to): {} => {
+  const diffDate = diffDates(date_to, date_from, 'days');
+  const diffDateEnd = diffDates(date_to, getToday0am(), 'days');
+  const diffDateStart = diffDates(date_from, getToday0am(), 'days');
+
+  let date_start_error = '';
+  let date_end_error = '';
+
+  if (diffDate < 0) {
+    date_start_error = 'Дата окончания не может быть меньше даты начала';
+  }
+
+  if (diffDateStart >= 0) {
+    date_start_error = 'При выборе даты периода отчета нельзя выбирать текущие и будущие дни';
+  }
+
+  if (diffDateEnd >= 0) {
+    date_end_error = 'При выборе даты периода отчета нельзя выбирать текущие и будущие дни';
+  }
+
+  return {
+    date_start_error,
+    date_end_error,
+  };
+
+};
+
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
   state = {
-    error: '',
+    error: {
+      date_start_error: '',
+      date_end_error: '',
+    },
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -35,22 +65,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_to = getYesterday2359(),
     } = nextProps;
 
-    const diffDate = diffDates(date_to, date_from, 'days');
-    const diffDateEnd = diffDates(date_to, getToday0am(), 'days');
-    const diffDateStart = diffDates(date_from, getToday0am(), 'days');
-
-    if (diffDate < 0) {
-      return {
-        error: 'Дата окончания не может быть меньше даты начала',
-      };
-    }
-
-    if (diffDateEnd >= 0 || diffDateStart >= 0) {
-      return {
-        error:
-          'При выборе даты периода отчета нельзя выбирать текущие и будущие дни',
-      };
-    }
+    const error = validDateRange(date_from, date_to);
 
     if (diffDate >= 10) {
       return {
@@ -60,9 +75,10 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     }
 
     return {
-      error: '',
+      error,
     };
   }
+
   handleSubmit = () => {
     const {
       date_from = getYesterdayYesterday0am(),
@@ -96,7 +112,8 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
           <DatePickerRange
             date_start_id="date_from"
             date_start_value={date_from}
-            date_start_error={error}
+            date_start_error={error.date_start_error}
+            date_end_error={error.date_end_error}
             date_start_time={false}
             date_end_id="date_to"
             date_end_value={date_to}
@@ -109,7 +126,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
         <EtsBootstrap.Col md={3}>
           <EtsBootstrap.Button
             block
-            disabled={this.props.readOnly || Boolean(error)}
+            disabled={this.props.readOnly || Boolean(error.date_end_error || Boolean(error.date_start_error))}
             onClick={this.handleSubmit}
           >
             Сформировать отчёт

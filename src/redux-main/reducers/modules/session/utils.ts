@@ -34,7 +34,7 @@ export const withSpecificPermissions = (user) => {
 
   // permissions.push(...getFullAccess('edc_request'));
   // permissions.push(...getFullAccess('fuel_cards_report'));
-  // permissions.push(...getFullAccess('track_events_report')); // <<< УДАЛИТЬ перед выкатом на дев
+  // permissions.push(...getFullAccess('track_events_report'));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {

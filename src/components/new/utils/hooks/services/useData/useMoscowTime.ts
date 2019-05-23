@@ -1,8 +1,8 @@
 import { TimeApi } from 'components/new/utils/context/loading/@types/all';
-import useLoadListData from './common/useLoadListData';
+import useLoadData from './common/useLoadData';
 
 const useMoscowTime = (page: string, path?: string) => {
-  return useLoadListData<TimeApi>('time', null, page, path);
+  return useLoadData<TimeApi>('time', null, page, path);
 };
 
 export default useMoscowTime;

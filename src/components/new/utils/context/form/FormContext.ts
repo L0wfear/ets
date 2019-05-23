@@ -72,7 +72,7 @@ export type InitialFormContextValue = {
   removeFormData: <T extends any, Store extends Record<string, any>>(formDataKey: OneFormDataByKey<T, Store>['key']) => void;                                       // удаление данных формы из контекста
   handleChangeFormState: <T extends any, Store extends Record<string, any>>(formDataKey: string, obj: Partial<OneFormDataByKey<T, Store>['formState']>) => void;    // изменение состояния формы в контексте по ключу
   handleChangeStore: <T extends any, Store extends Record<string, any>>(formDataKey: string, obj: Partial<OneFormDataByKey<T, Store>['store']>) => void;            // изменение состояния стора в контексте по ключу
-  formDataByKey: Record<string, OneFormDataByKey<any, Record<string, any>>>;                                                                                        // сами формы
+  formDataByKey: Record<string, OneFormDataByKey<any, any>>;                                                                                        // сами формы
 };
 
 // дефолтный контекст

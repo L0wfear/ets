@@ -6,7 +6,7 @@ import FormContext, { OneFormDataByKey } from '../FormContext';
 /**
  * formData по ключу
  */
-const useFormData = <T extends any, Store extends Record<string, any>>(formDataKey: string): OneFormDataByKey<T, any> => {
+const useFormData = <T, Store extends object>(formDataKey: string): OneFormDataByKey<T, Store> => {
   const context = React.useContext(FormContext);
 
   return context.formDataByKey[formDataKey];
@@ -197,10 +197,10 @@ const useFormDataIsPermitted = <T extends any>(formDataKey: string) => {
 /**
  * получение глобального стора формы
  */
-const useFormDataStore = <T extends any, Store extends Record<string, any>>(formDataKey: string) => {
+const useFormDataStore = <T extends any, Store extends object>(formDataKey: string) => {
   const formData = useFormData<T, Store>(formDataKey);
 
-  return formData ? formData.store : null;
+  return formData.store;
 };
 
 /**

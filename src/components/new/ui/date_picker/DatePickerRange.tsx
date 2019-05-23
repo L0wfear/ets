@@ -87,7 +87,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           disabled={props.disabled}
         />
       </ColStartDatePickerRange>
-      <ColDividerDatePickerRange md={2} label={labelDatePickerStart} date_start_label={'date_start_label' in props}>
+      <ColDividerDatePickerRange md={2} label={labelDatePickerStart} date_start_label={'date_start_label' in props && ''}>
         —
       </ColDividerDatePickerRange>
       <ColEndDatePickerRange md={5}>

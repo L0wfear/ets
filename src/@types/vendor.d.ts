@@ -13,6 +13,9 @@ declare namespace NodeJS {
     SESSION_KEY2: string;
     SESSION_KEY_ETS_TEST_BY_DEV2: string;
     API__KEY2: string;
+    SESSION_KEY: string;
+    SESSION_KEY_ETS_TEST_BY_DEV: string;
+    API__KEY: string;
     window: any;
     APP_DATE_FORMAT: string;
     NOTIFICATION_READ_ARR: string;

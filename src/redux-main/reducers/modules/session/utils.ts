@@ -21,21 +21,6 @@ export const withSpecificPermissions = (user) => {
   permissions.push(...getFullAccess('docs_create_mission_by_order'));
   permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
   /* end docs */
-  // permissions.push('administration');
-  // permissions.push(...getFullAccess('services'));
-
-  // permissions.push(...getFullAccess('odh_norm_data_summer'));
-  // permissions.push(...getFullAccess('efficiency'));
-
-  // permissions.push(...getFullAccess('inspect.autobase'));
-  // permissions.push(...getFullAccess('inspect.container'));
-  // permissions.push(...getFullAccess('inspect.pgm_base'));
-  // permissions.push(...getFullAccess('inspect.cars_condition'));
-
-  // permissions.push(...getFullAccess('edc_request'));
-  // permissions.push(...getFullAccess('fuel_cards_report'));
-  // permissions.push(...getFullAccess('track_events_report'));
-  // permissions.push(...getFullAccess('cars_travel_time_report'));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {

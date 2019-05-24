@@ -13,9 +13,20 @@ global.NODE_ENV = process.env.NODE_ENV;
 global.APP_DATE_FORMAT = 'DD.MM.YYYY';
 global.APP_TIME_FORMAT = 'HH:mm';
 global.APP_TIME_WITH_SECOND_FORMAT = `${global.APP_TIME_FORMAT}:ss`;
-global.SESSION_KEY2 = `${partial_key}-ets-session`;
-global.SESSION_KEY_ETS_TEST_BY_DEV2 = `${partial_key}-ets_test_by_dev-session`;
-global.API__KEY2 = `${partial_key}-ets-api-version`;
+// old
+global.SESSION_KEY2 = `${location.host}${location.pathname}-ets-session-${
+  process.env.STAND
+}2`;
+global.SESSION_KEY_ETS_TEST_BY_DEV2 = `${location.host}${
+  location.pathname
+}-ets_test_by_dev-session-${process.env.STAND}2`;
+global.API__KEY2 = `${location.host}${location.pathname}-ets-api-version-${
+  process.env.STAND
+}2`;
+// new
+global.SESSION_KEY = `${partial_key}-ets-session`;
+global.SESSION_KEY_ETS_TEST_BY_DEV = `${partial_key}-ets_test_by_dev-session`;
+global.API__KEY = `${partial_key}-ets-api-version`;
 
 import LoginPageWrap from 'components/new/pages/login/LoginPageWrap';
 import { compose } from 'recompose';

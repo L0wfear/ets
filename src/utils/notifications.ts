@@ -121,6 +121,16 @@ export const changeCompanyStructureIdNotyfication = {
   uid: 'change_geoobject_company_structure_id',
 };
 
+export const addParentCompanyStructureIdNotyfication = (dek, dey) => ({
+  title: '',
+  message: `Подразделение ${dek} добавлено автоматически, т.к. является родительским подразделением у ${dey}`,
+  level: 'info',
+  dismissible: true,
+  position: 'tr',
+  autoDismiss: 0,
+  uid: 'add_parent_geoobject_company_structure_id',
+});
+
 export const notifications = {
   missionCreateSuccessNotification,
   missionFuelRateByCarUpdateNotification,

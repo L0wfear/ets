@@ -193,6 +193,8 @@ export const checkToken: any = () => async (dispatch, getState) => {
 export const sessionResetData: any = () => (dispatch) => {
   localStorage.removeItem(global.SESSION_KEY2);
   localStorage.removeItem(global.API__KEY2);
+  localStorage.removeItem(global.SESSION_KEY);
+  localStorage.removeItem(global.API__KEY);
   localStorage.removeItem('featureBufferPolygon');
 
   dispatch({

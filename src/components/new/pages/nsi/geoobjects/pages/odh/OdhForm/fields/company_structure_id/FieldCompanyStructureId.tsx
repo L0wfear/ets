@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
+import { changeCompanyStructureIdNotyfication, addParentCompanyStructureIdNotyfication } from 'utils/notifications';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import useCompanyStructureLinearForUserOptions from 'components/new/utils/hooks/services/useOptions/useCompanyStructureLinearForUserOptions';
-import { isNumber } from 'util';
 
 type FieldCompanyStructureIdProps = {
   value: Odh['company_structures'];
@@ -23,70 +22,56 @@ const FieldCompanyStructureId: React.FC<FieldCompanyStructureIdProps> = React.me
       (key, _, options: typeof companyStructureOptionData.options) => {
         global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
 
-        const addItem = options.length > props.value.length;
-        let valueNew = [];
+        const companyStructureOptionDataObject = companyStructureOptionData.options.reduce(
+          (newObj, { rowData }) => {
+            newObj[rowData.id] = rowData;
 
-        if (addItem) {
-          const setIds = options.reduce(
-            (set, { rowData }) => {
-              set.add(rowData.id);
+            return newObj;
+          },
+          {},
+        );
 
-              if (isNumber(rowData.parent_id)) {
-                set.add(rowData.parent_id);
-              }
+        const optionsObject = options.reduce(
+          (newObj, { rowData }) => {
+            newObj[rowData.id] = rowData;
 
-              return set;
-            },
-            new Set(),
-          );
+            return newObj;
+          },
+          {},
+        );
 
-          valueNew = companyStructureOptionData.options.reduce(
-            (newArr, { rowData }) => {
-              if (setIds.has(rowData.id)) {
-                newArr.push({
-                  id: rowData.id,
-                  name: rowData.name,
-                });
-              }
+        const valueOldObj = props.value.reduce(
+          (newObj, rowData) => {
+            newObj[rowData.id] = rowData;
 
-              return newArr;
-            },
-            [],
-          );
-        } else {
-          const newOptionSet = options.reduce(
-            (newSet, { rowData }) => {
-              newSet.add(rowData.id);
-
-              return newSet;
-            },
-            new Set(),
-          );
-          const removedItem = props.value.find(
-            ({ id }) => !Boolean(
-              newOptionSet.has(id),
-            ),
-          );
-
-          valueNew = options.reduce(
-            (newArr, { rowData }) => {
-              if (rowData.parent_id !== removedItem.id) {
-                newArr.push({
-                  id: rowData.id,
-                  name: rowData.name,
-                });
-              }
-
-              return newArr;
-            },
-            [],
-          );
-        }
+            return newObj;
+          },
+          {},
+        );
 
         props.handleChange({
-          [key]: valueNew,
-        });
+          [key]: options.reduce(
+            (newValue, { rowData }) => {
+              newValue.push({
+                id: rowData.id,
+                name: rowData.name,
+              });
 
+              if (rowData.parent_id && !optionsObject[rowData.parent_id] && !valueOldObj[rowData.parent_id]) {
+                const parent = companyStructureOptionDataObject[rowData.parent_id];
+                global.NOTIFICATION_SYSTEM.notify(addParentCompanyStructureIdNotyfication(parent.name, rowData.name));
+
+                newValue.push({
+                  id: parent.id,
+                  name: parent.name,
+                });
+              }
+
+              return newValue;
+            },
+            [],
+          ),
+        });
       },
       [props.handleChange, companyStructureOptionData, props.value],
     );

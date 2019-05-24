@@ -28,9 +28,8 @@ export const getConfig = (array: EdcRequestInfo['missions']): TypeConfigData<Val
           title: '№',
         },
         {
-          key: 'Задание/Наряд-задание',
-          title: 'Процент выполнения (%)',
-          format: '',                         // вместо renderers
+          key: 'title_name',
+          title: 'Задание/Наряд-задание',
           dashIfEmpty: true,                  // '-', если пустота
           width: 200,
           sortable: false,
@@ -38,6 +37,31 @@ export const getConfig = (array: EdcRequestInfo['missions']): TypeConfigData<Val
         {
           key: 'current_percentage',
           title: 'Процент выполнения (%)',
+          dashIfEmpty: true,                  // '-', если пустота
+          width: 200,
+        },
+        {
+          key: 'status_name',
+          title: 'Статус',
+          dashIfEmpty: true,                  // '-', если пустота
+          width: 200,
+        },
+        {
+          key: 'date_end',
+          title: 'Дата завершения',
+          format: 'datetime',
+          dashIfEmpty: true,                  // '-', если пустота
+          width: 200,
+        },
+        {
+          key: 'employee',
+          title: 'Водитель/Бригадир',
+          dashIfEmpty: true,                  // '-', если пустота
+          width: 200,
+        },
+        {
+          key: 'transport_name',
+          title: 'Транспортное средство',
           dashIfEmpty: true,                  // '-', если пустота
           width: 200,
         },

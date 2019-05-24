@@ -3,23 +3,22 @@ import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
   registryKey,
-  // getConfig,
+  getConfig,
 } from 'components/new/pages/edc_request/form/requestInfo/table/_config_data/registry-config';
 
 const TableExample: React.FC<any> = React.memo(
   (props) => {
-    /*
-      React.useEffect(
-        () => {
-          props.registryAddInitialData(getConfig(props.edcRequestInfo.missions));
 
-          return () => {
-            props.registryRemoveData(registryKey);
-          };
-        },
-        [propa.array],
-      );
-    */
+    React.useEffect(
+      () => {
+        props.registryAddInitialData(getConfig(props.edcRequestInfo.missions));
+
+        return () => {
+          props.registryRemoveData(registryKey);
+        };
+      },
+      [props.array],
+    );
 
     return (
       <React.Fragment>

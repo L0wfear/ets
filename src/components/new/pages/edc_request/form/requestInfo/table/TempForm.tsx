@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import withFormRegistrySearch from "components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch";
+// import withFormRegistrySearch from "components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch";
 import { DivNone } from "global-styled/global-styled";
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';

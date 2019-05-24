@@ -62,6 +62,7 @@ import { getDefaultBill } from 'stores/WaybillsStore';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import FuelType from './form/FuelType';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -914,17 +915,6 @@ class WaybillForm extends UNSAFE_Form {
     structures.map(defaultSelectListMapper),
   );
 
-  handleFuelTypeChange = (value) => {
-    this.props.handleMultipleChange({
-      fuel_type: value,
-    });
-  };
-
-  handleEquipmentFuelTypeChange = (value) => {
-    this.props.handleMultipleChange({
-      equipment_fuel_type: value,
-    });
-  };
   // очистка данных по топливу спецоборудования
   // возвращает true/false, да/нет в диалоговом окне
   clearFuelEquipmentData = async (
@@ -1747,16 +1737,16 @@ class WaybillForm extends UNSAFE_Form {
                         </EtsBootstrap.Row>
                         <EtsBootstrap.Row>
                           <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel-type"
-                              type="select"
+                            <FuelType
                               modalKey={modalKey}
-                              label="Тип топлива"
+                              keyField="fuel_type"
+                              value={state.fuel_type}
                               error={errors.fuel_type}
                               disabled={IS_CLOSED || !isPermittedByKey.update}
                               options={FUEL_TYPES}
-                              value={state.fuel_type}
-                              onChange={this.handleFuelTypeChange}
+                              keyRefill="car_refill"
+                              refill={state.car_refill}
+                              handleChange={this.props.handleMultipleChange}
                             />
                           </EtsBootstrap.Col>
                           <EtsBootstrap.Col md={4}>
@@ -1975,18 +1965,19 @@ class WaybillForm extends UNSAFE_Form {
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
                                 <EtsBootstrap.Col md={4}>
-                                  <ExtField
-                                    id="equipment-fuel-type"
-                                    type="select"
-                                    label="Тип топлива"
+                                  <FuelType
+                                    modalKey={modalKey}
+                                    keyField="equipment_fuel_type"
+                                    value={state.equipment_fuel_type}
                                     error={errors.equipment_fuel_type}
                                     disabled={
                                       IS_CLOSED || !isPermittedByKey.update
                                     }
                                     options={FUEL_TYPES}
-                                    value={state.equipment_fuel_type}
-                                    onChange={
-                                      this.handleEquipmentFuelTypeChange
+                                    keyRefill="equipment_refill"
+                                    refill={state.equipment_refill}
+                                    handleChange={
+                                      this.props.handleMultipleChange
                                     }
                                   />
                                 </EtsBootstrap.Col>

@@ -10,7 +10,10 @@ import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/auto
 import CarRefillTableHeader from './CarRefillTableHeader';
 import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { makeFuelCardIdOptions } from './utils';
+import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
+import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
 type FieldWaybillCarRefillStateProps = {
   fuelCardsList: IStateAutobase['fuelCardsList'];
@@ -22,13 +25,11 @@ type FieldWaybillCarRefillDispatchProps = {
   fuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof fuelCardsGetAndSetInStore>;
 };
 type FieldWaybillCarRefillOwnProps = {
-  array: Waybill['car_refill'] | Waybill['equipment_refill'];
   errors: any[];
   title: string;
   handleChange: TableInputProps['onChange'];
 
   IS_DRAFT_OR_ACTIVE: boolean;
-  fuel_given: Waybill['fuel_given'] | Waybill['equipment_fuel_given'];
 
   disabled?: boolean;
   page: string;
@@ -37,7 +38,17 @@ type FieldWaybillCarRefillOwnProps = {
   fuel_type: Waybill['fuel_type'];
 
   canEditIfClose: boolean;
-};
+} & (
+  {
+    array: Waybill['car_refill'];
+    fuel_given: Waybill['fuel_given'];
+    fuel_type: Waybill['fuel_type'];
+  } | {
+    array: Waybill['equipment_refill'];
+    fuel_given: Waybill['equipment_fuel_given'];
+    fuel_type: Waybill['equipment_fuel_type'];
+  }
+);
 type FieldWaybillCarRefillMergedProps = (
   FieldWaybillCarRefillStateProps
   & FieldWaybillCarRefillDispatchProps
@@ -153,6 +164,37 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
         );
       },
       [],
+    );
+
+    const previosFuelType = usePrevious(props.fuel_type);
+    React.useEffect(
+      () => {
+        if (props.fuel_type && props.fuel_type !== previosFuelType) {
+          const availabelFuelCars = (makeFuelCardStrickOptions(
+            props.fuelCardsList,
+            props.fuel_type,
+            props.userCompanyId,
+            props.userStructureId,
+          ) as DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]).reduce(
+            (newSet, { rowData }) => {
+              newSet.add(rowData.id);
+
+              return newSet;
+            },
+            new Set(),
+          );
+
+          props.handleChange(
+            props.array.map(
+              (rowData) => ({
+                ...rowData,
+                fuel_card_id: availabelFuelCars.has(rowData.fuel_card_id) ? rowData.fuel_card_id : null,
+              }),
+            ),
+          );
+        }
+      },
+      [previosFuelType, props.fuel_type, props.fuelCardsList, props.userCompanyId, props.userStructureId, props.array, props.handleChange],
     );
 
     return (

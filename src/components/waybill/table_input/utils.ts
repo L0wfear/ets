@@ -4,6 +4,45 @@ import memoizeOne from 'memoize-one';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
+export const makeFuelCardStrickOptions = memoizeOne(
+  (
+    fuelCardsList: FuelCards[],
+    fuel_type: Waybill['fuel_type'],
+    userCompanyId: InitialStateSession['userData']['company_id'],
+    userStructureId: InitialStateSession['userData']['structure_id'],
+  ) => {
+    return fuelCardsList.reduce<DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]>(
+      (newArr, rowData) => {
+        const triggerOnShow = (
+          (
+            fuel_type === rowData.fuel_type
+            || !fuel_type
+          ) && (
+            !userCompanyId
+            || rowData.company_id === userCompanyId
+            && (
+              !userStructureId
+              || userStructureId === rowData.structure_id
+              || rowData.is_common
+            )
+          )
+        );
+
+        if (triggerOnShow) {
+          newArr.push({
+            value: rowData.id,
+            label: rowData.number,
+            rowData,
+          });
+        }
+
+        return newArr;
+      },
+      [],
+    );
+  },
+);
+
 export const makeFuelCardIdOptions = memoizeOne(
   (
     fuelCardsList: FuelCards[],

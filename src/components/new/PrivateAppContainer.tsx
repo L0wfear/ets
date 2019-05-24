@@ -12,21 +12,36 @@ import withCheckPrivateRouteMain from 'components/new/utils/hoc/check_private_ro
 import { AppStyled, AppContent, AppContentContainer } from './styled';
 
 const MainApp: React.FC<{}> = React.memo(
-  () => (
-    <AppStyled>
-      <AppHeader />
-      <AppContent>
-        <AppContentContainer>
-          <Routes />
-          <LoadingOverlayLegacy main />
-          <NotifiactionOrders />
-          <AdmNotification />
-          <UserNotificationWs />
-        </AppContentContainer>
-      </AppContent>
-      <AppFooter />
-    </AppStyled>
-  ),
+  () => {
+    React.useEffect(
+      () => {
+        const SESSION_KEY2 = window.localStorage.getItem(global.SESSION_KEY2);
+        localStorage.setItem(global.SESSION_KEY, SESSION_KEY2);
+
+        const SESSION_KEY_ETS_TEST_BY_DEV2 = window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2);
+        localStorage.setItem(global.SESSION_KEY_ETS_TEST_BY_DEV, SESSION_KEY_ETS_TEST_BY_DEV2);
+
+        const versions = localStorage.getItem(global.API__KEY2) || '{}';
+        localStorage.setItem(global.API__KEY, JSON.stringify(versions));
+      },
+      [],
+    );
+    return (
+      <AppStyled>
+        <AppHeader />
+        <AppContent>
+          <AppContentContainer>
+            <Routes />
+            <LoadingOverlayLegacy main />
+            <NotifiactionOrders />
+            <AdmNotification />
+            <UserNotificationWs />
+          </AppContentContainer>
+        </AppContent>
+        <AppFooter />
+      </AppStyled>
+    );
+  },
 );
 
 export default withCheckPrivateRouteMain(MainApp);

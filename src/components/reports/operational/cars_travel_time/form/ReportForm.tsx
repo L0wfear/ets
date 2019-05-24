@@ -23,13 +23,13 @@ import DataTable from 'components/ui/table/DataTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { ReportFormRightWrapper } from 'components/reports/operational/cars_travel_time_new/styled';
+import { ReportFormRightWrapper } from 'components/reports/operational/cars_travel_time/styled';
 import {
   CarsTravelTimeModalStateProps,
   CarsTravelTimeModalDispatchProps,
   PropsCarsTravelTimeModal,
   CarsTravelTimeModalOwnProps,
-} from 'components/reports/operational/cars_travel_time_new/form/@types/CarsTravelTime.h';
+} from 'components/reports/operational/cars_travel_time/form/@types/CarsTravelTime.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -111,8 +111,8 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
 
   React.useEffect( () => {
     const loadFunc = async () => {
-      const page = 'cars_travel_time_new';
-      const path = 'cars_travel_time_new';
+      const page = 'cars_travel_time';
+      const path = 'cars_travel_time';
       const {
         date_from,
         date_to,
@@ -138,6 +138,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
         car_id,
         gps_code,
         odh_mkad,
+        sensors: 0,
       }, { page, path });
 
       props.actionGetAndSetInStoreCarsTravelTime({

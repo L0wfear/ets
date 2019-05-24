@@ -49,7 +49,9 @@ export const CarInfoService = ETS_API_FACTORY.createApiServiceAdapter(
   'car_info',
 );
 export const CarService = ETS_API_FACTORY.createApiServiceAdapter('car');
-export const FuelCards = ETS_API_FACTORY.createApiServiceAdapter('fuel_cards');
+export const FuelCardsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'fuel_cards',
+);
 
 /* Рабочий стол */
 export const OwnersService = ETS_API_FACTORY.createApiServiceAdapter('owners');
@@ -390,7 +392,7 @@ export const ServicesService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 
 export const CarsTravelTimeDetailService = ETS_API_FACTORY.createApiServiceAdapter(
-  'cars_travel_time_new/detail', // <<< newReport заменить на cars_travel_time после выката
+  'cars_travel_time_new/detail',
 );
 
 export const EdcRequestInfoDetailService = ETS_API_FACTORY.createApiServiceAdapter(

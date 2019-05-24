@@ -1,7 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import * as cx from 'classnames';
 
 import { connect } from 'react-redux';
 import {
@@ -17,6 +16,11 @@ import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
 import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/redux-main/modules/car-info';
+import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
+import { CarInfoToggleForToday } from './styled';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -34,6 +38,8 @@ type PropsTitleTrackTab = {
   track: any;
   status: string;
   loadingTrack: boolean;
+
+  map_track_days: InitialStateSession['appConfig']['map_track_days'];
 };
 
 type StateTitleTrackTab = {
@@ -100,12 +106,9 @@ class TitleTrackTab extends React.Component<
       if (diffDates(dates.date_end, dates.date_start, 'minutes', false) <= 0) {
         errorDates = 'Дата начала должна быть раньше даты окончания';
       } else if (
-        diffDates(dates.date_end, dates.date_start, 'days') >
-        (process.env.STAND === 'prod' ? 10 : 30)
+        diffDates(dates.date_end, dates.date_start, 'days') > this.props.map_track_days
       ) {
-        errorDates = `Период формирования трека не должен превышать ${
-          process.env.STAND === 'prod' ? 10 : 30
-        } суток`;
+        errorDates = `Период формирования трека не должен превышать ${this.props.map_track_days} суток`;
       } else {
         errorDates = '';
       }
@@ -134,16 +137,19 @@ class TitleTrackTab extends React.Component<
     const { errorDates } = this.state;
 
     return (
-      <div className="car_info_block column tab-data">
-        <div className="car_info-track_date_title">
+      <CarInfoBlockTabDataColumn>
+        <CarInfoTrackDateTitle>
           <div>Трекинг</div>
-          <div
-            className={cx('car_info-toggle_for_today', {
-              disabled:
-                (!this.props.loadingTrack && this.props.disabledForToday) ||
-                disbledByTrackPlayStatys,
-            })}
-            onClick={this.carInfoToggleForToday}>
+          <CarInfoToggleForToday
+            isDisabled={
+              disbledByTrackPlayStatys
+              || (
+                !this.props.loadingTrack
+                && this.props.disabledForToday
+              )
+            }
+            onClick={this.carInfoToggleForToday}
+          >
             <input
               type="checkbox"
               checked={forToday}
@@ -151,8 +157,8 @@ class TitleTrackTab extends React.Component<
               disabled={this.props.disabledForToday || disbledByTrackPlayStatys}
             />
             <span>За сегодня</span>
-          </div>
-        </div>
+          </CarInfoToggleForToday>
+        </CarInfoTrackDateTitle>
         <div className="car_info-track_date_control">
           <div className={'flex-line-unset'}>
             <ExtField
@@ -190,12 +196,13 @@ class TitleTrackTab extends React.Component<
           </div>
           <DistanceAgg />
         </div>
-      </div>
+      </CarInfoBlockTabDataColumn>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
+  map_track_days: getSessionState(state).appConfig.map_track_days,
   forToday: state.monitorPage.carInfo.forToday,
   date_start: state.monitorPage.carInfo.date_start,
   date_end: state.monitorPage.carInfo.date_end,

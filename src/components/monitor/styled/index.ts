@@ -1,93 +1,95 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const MonitorPageContainer = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
+`;
 
-  .layer-container {
-    height: 100%;
-    width: 100%;
-    pointer-events: none;
-    position: relative;
-    &.measure {
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-    }
+export const DataContainer = styled.div`
+  overflow-y: auto;
+  pointer-events: all;
+  flex: 1 1 auto;
+  max-width: 500px;
+  background-color: hsla(0,0%,95%,.8);
+  border-left: 1px solid rgba(0,0,0,.3);
+  height: 100%;
+
+  &:last-child {
+    box-shadow: -1px 0 30px rgba(0,0,0,.3);
+    border-left: none;
   }
 
-  .map_info-container {
-    position: absolute;
-    top: 0;
+  &.geoobjects_info {
+    max-width: 350px;
+  }
+
+  >div {
+    margin: 10px;
+  }
+  .center-preloader {
     width: 100%;
-    height: 100%;
-    pointer-events: none;
+    text-align: center;
+    padding: 20px;
+  }
+`;
+
+export const CarInfoBlock = styled.div`
+  border: medium none;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  background: #ffffff;
+  padding: 0px 5px;
+  border-radius: 3px;
+  display: flex;
+
+  >div {
+    flex: 1 1 auto;
+  }
+  >div.car_info-img {
+    flex: 3 1 auto;
     display: flex;
-    flex-direction: row-reverse;
-    >.icon-map-help {
-      flex: 1 1;
-      margin: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+  }
+`;
 
-      >div {
-        position: relative;
-        margin: 10px;
-      }
+const tabDataCss = css`
+  margin-top: 10px;
+`;
+
+export const CarInfoBlockTabData = styled(CarInfoBlock)`
+  ${tabDataCss};
+`;
+
+export const CarInfoBlockColumn = styled(CarInfoBlock)`
+  flex-direction: column;
+`;
+
+export const CarInfoBlockTabDataColumn = styled(CarInfoBlockColumn)`
+  ${tabDataCss};
+`;
+
+export const CarInfoTitleSpanContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  white-space: pre-wrap;
+`;
+
+export const CarInfoClose = styled.span`
+  display: flex;
+  justify-content: flex-end;
+  >div {
+    cursor: pointer;
+    transition: transform 0.5s, background-color 0.5s;
+    will-change: transform, background-color;
+    >span {
+      position: relative;
+      transform: translateY(-6%);
     }
-
-    >.data_container-wrap {
-      height: 100%;
-      display: flex;
-      flex-direction: row-reverse;
-      overflow: hidden;
-
-      .data_container-make-small {
-        width: 50px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: hsla(0,0%,95%,.8);
-        overflow-y: scroll;
-        border: 1px solid rgba(0,0,0,.3);
-        position: relative;
-        transform: translate(1px, -1px);
-        pointer-events: all;
-        cursor: pointer;
-        font-weight: bold;
-        overflow: hidden;
-      }
-    }
-    >.data_container, >.data_container-wrap>.data_container {
-      overflow-y: auto;
-      pointer-events: all;
-      flex: 1 1 auto;
-      max-width: 500px;
-      background-color: hsla(0,0%,95%,.8);
-      border-left: 1px solid rgba(0,0,0,.3);
-      height: 100%;
-
-      &:last-child {
-        box-shadow: -1px 0 30px rgba(0,0,0,.3);
-        border-left: none;
-      }
-
-      &.geoobjects_info {
-        max-width: 350px;
-      }
-
-      >div {
-        margin: 10px;
-      }
-      .center-preloader {
-        width: 100%;
-        text-align: center;
-        padding: 20px;
-      }
+    &:hover {
+      transform: scale3d(1.1, 1.1, 1);
+      background-color: red;
+      color: white;
     }
   }
 `;

@@ -12,7 +12,7 @@ export type EtsButtonProps = {
   id?: string;
   onClick?: (event?: any) => void;
   title?: string;
-  type?: 'submit';
+  type?: 'submit' | 'button';
   whiteSpace?: 'normal';
 };
 
@@ -45,7 +45,7 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
     outline-offset: -2px;
     line-height: 1.5;
 
-    border-radius: ${({ theme, themeName }) => theme.button[themeName || 'default'].borderRadius.default};
+    border-radius: ${({ theme, themeName }) => theme.button[themeName || 'default'].borderRadius.default };
     border: ${({ theme, themeName }) => theme.button[themeName || 'default'].border.default};
     box-shadow: ${({ theme, themeName }) => theme.button[themeName || 'default'].boxShadow.default};
 
@@ -145,7 +145,10 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
   (props) => (
-    <ButtonStyled {...props} />
+    <ButtonStyled
+      {...props}
+      type={props.type || 'button'}
+    />
   ),
 );
 

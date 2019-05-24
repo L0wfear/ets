@@ -5,14 +5,15 @@ import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { geoJSON } from 'utils/ol';
 import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
+import { CarInfoBlock, CarInfoClose } from 'components/monitor/styled';
 
 const InfoDt: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>
     {data.object_address}
     <h5>Общая площадь</h5>
@@ -23,9 +24,9 @@ const InfoODh: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>
     {data.name}
     <h5>Общая площадь</h5>
@@ -48,9 +49,9 @@ const InfoSsp: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>
     {data.name}
     <h5>Адрес</h5>
@@ -65,9 +66,9 @@ const InfoCarpool: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>
     {data.name}
     <h5>Адрес</h5>
@@ -80,9 +81,9 @@ const InfoDangerZone: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Адрес</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>
     {data.address_comm}
     <h5>Площадь на проезжей части, м2</h5>
@@ -97,9 +98,9 @@ const InfoPgm: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>
     {data.name}
     <h5>Адрес</h5>
@@ -118,9 +119,9 @@ const InfoBridges: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>{data.name}
     <h5>Район</h5>{data.district}
     <h5>Местоположение объекта</h5>{data.location}
@@ -133,9 +134,9 @@ const InfoPedestrianTunnels: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>{data.name}
     <h5>Административный округ</h5>{data.adm_area}
     <h5>Район</h5>{data.district}
@@ -146,9 +147,9 @@ const InfoPedestrianTunnelExits: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>{data.name}
     <h5>Административный округ</h5>{data.adm_area}
     <h5>Район</h5>{data.district}
@@ -158,9 +159,9 @@ const FountainsInfo: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>
     <h5 className="title">
       <span>Наименование</span>
-      <span className="car_info-close">
-        <div className="car_info_block" onClick={props.handleClickOnClose}><span>x</span></div>
-      </span>
+      <CarInfoClose>
+        <CarInfoBlock onClick={props.handleClickOnClose}><span>x</span></CarInfoBlock>
+      </CarInfoClose>
     </h5>{data.name}
     <h5>Административный округ</h5>{data.adm_area}
     <h5>Район</h5>{data.district}

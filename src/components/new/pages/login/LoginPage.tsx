@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { get } from 'lodash';
-import { withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import {
   LoginPageContainer,
   LoginPageFormWrap,
@@ -10,87 +10,91 @@ import {
   LoginPageFormContent,
   DitLogo,
   LoginPageFormContentLabel,
-  LoginPageFormContentInput,
   LoginPageFormContentButton,
   HrLine,
   TpMessangeContainer,
 } from 'components/new/pages/login/styled/styled';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
+import FieldLogin from './fields/FieldLogin';
+import FieldPassword from './fields/FieldPassword';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { sessionLogin } from 'redux-main/reducers/modules/session/actions-session';
 
-class LoginPage extends React.PureComponent<any, any> {
-  state = {
-    login: '',
-    password: '',
-  };
+type LoginPageStateProps = {};
+type LoginPageDispatchProps = {
+  loginUser: HandleThunkActionCreator<typeof sessionLogin>;
+};
+type LoginPageOwnProps = {};
 
-  onSigninClick = async (e) => {
-    e.preventDefault();
-    const { login, password } = this.state;
-    const user = {
-      login,
-      password,
-    };
+type LoginPageProps = (
+  LoginPageStateProps
+  & LoginPageDispatchProps
+  & LoginPageOwnProps
+  & WithSearchProps
+);
 
-    try {
-      const { userData } = await this.props.sessionLogin(user);
+const LoginPage: React.FC<LoginPageProps> = React.memo(
+  (props) => {
+    const [user, setUser] = React.useState({ login: '', password: '' });
 
-      if (userData.isGlavControl) {
-        this.props.history.push('/change-company');
-      }
-    } catch (e) {
-      //
-    }
-  };
+    const handleChange = React.useCallback(
+      (objChange) => {
+        setUser(
+          (oldState) => ({
+            ...oldState,
+            ...objChange,
+          }),
+        );
+      },
+      [],
+    );
 
-  handleChangeLogin = (event) => {
-    this.setState({
-      login: get(event, 'target.value', event),
-    });
-  };
+    const onSigninClick = React.useCallback(
+      async (e) => {
+        e.preventDefault();
 
-  handleChangePassword = (event) => {
-    this.setState({
-      password: get(event, 'target.value', event),
-    });
-  };
+        try {
+          const userData = await props.loginUser(
+            user,
+            { page: 'mainpage' },
+          );
 
-  render() {
-    const { login, password } = this.state;
-    const disabled = login.length === 0 || password.length === 0;
+          if (userData.isGlavControl) {
+            props.history.push('/change-company');
+          }
+        } catch (e) {
+          //
+        }
+      },
+      [user],
+    );
+
+    const disabled = !user.login || !user.password;
 
     return (
       <LoginPageContainer>
         <LoginPageFormWrap>
-          <LoginPageForm id="form-login" onSubmit={this.onSigninClick}>
+          <LoginPageForm id="form-login" onSubmit={onSigninClick}>
             <LoginPageFormContainer>
               <LoginPageFormHeader>ЕТС</LoginPageFormHeader>
               <LoginPageFormContent>
                 <LoginPageFormContentLabel>
                   Система мониторинга
                 </LoginPageFormContentLabel>
-                <LoginPageFormContentInput
-                  id="login"
-                  type="text"
-                  className="form-control"
-                  placeholder="Логин"
-                  value={login}
-                  onChange={this.handleChangeLogin}
+                <FieldLogin
+                  login={user.login}
+                  handleChange={handleChange}
                 />
-                <LoginPageFormContentInput
-                  id="password"
-                  type="password"
-                  className="form-control"
-                  placeholder="Пароль"
-                  value={password}
-                  onChange={this.handleChangePassword}
+                <FieldPassword
+                  password={user.password}
+                  handleChange={handleChange}
                 />
                 <LoginPageFormContentButton
+                  block
                   id="submit"
                   disabled={disabled}
-                  type="submit">
+                  type="submit"
+                >
                   Войти
                 </LoginPageFormContentButton>
                 <TpMessangeContainer>
@@ -106,15 +110,19 @@ class LoginPage extends React.PureComponent<any, any> {
         </LoginPageFormWrap>
       </LoginPageContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<any, any>(
-  withRouter,
-  connect<any, any, any, ReduxState>(
+export default compose<LoginPageProps, LoginPageOwnProps>(
+  connect<LoginPageStateProps, LoginPageDispatchProps, LoginPageOwnProps, ReduxState>(
     null,
-    (dispatch) => ({
-      sessionLogin: (user) => dispatch(sessionLogin(user, { page: 'any' })),
+    (dispatch: any) => ({
+      loginUser: (...arg) => (
+        dispatch(
+          sessionLogin(...arg),
+        )
+      ),
     }),
   ),
+  withSearch,
 )(LoginPage);

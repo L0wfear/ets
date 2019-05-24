@@ -1,6 +1,5 @@
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
-import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -15,10 +14,8 @@ export type PropsOdhFormWrap = {
 };
 
 export type StatePropsOdhForm = {
-  companyStructureDescendantsByUserList: IStateCompanyStructure['companyStructureDescendantsByUserList'];
 };
 export type DispatchPropsOdhForm = {
-  getAndSetInStoreCompanyStructureDescendantsByUser: any;
 };
 export type OwnPropsOdhForm = {
   element: Odh | null;

@@ -5,6 +5,7 @@ import { TimeData } from "./by_service/time";
 import { ActualBatteriesOnCar } from "redux-main/reducers/modules/autobase/actions_by_type/actual_batteries_on_car/@types";
 import { ActualTiresOnCar } from "redux-main/reducers/modules/autobase/actions_by_type/actual_tires_on_car/@types";
 import { MeasureUnit } from "redux-main/reducers/modules/some_uniq/measure_unit/@types";
+import { CompanyStructureLinear } from "redux-main/reducers/modules/company_structure/@types/company_structure.h";
 
 export type CountryApi = LoadingServiceGeneric<'country', object, Country[]>;
 export type TypesApi = LoadingServiceGeneric<'types', object, CarFuncTypes[]>;
@@ -14,3 +15,4 @@ export type TimeApi = LoadingServiceGeneric<'time', object, TimeData>;
 export type AutobaseActualBatteriesOnCarApi = LoadingServiceGeneric<'autobase/actual_batteries_on_car', { car_id: Car['asuods_id'] }, ActualBatteriesOnCar>;
 export type AutobaseActualTiresOnCarApi = LoadingServiceGeneric<'autobase/actual_tires_on_car', { car_id: Car['asuods_id'] }, ActualTiresOnCar>;
 export type MeasureUnitApi = LoadingServiceGeneric<'measure_unit', object, MeasureUnit[]>;
+export type CompanyStructureLinearForUserListApi = LoadingServiceGeneric<'company_structure', { linear: number, descendants_by_user: boolean }, CompanyStructureLinear[]>;

@@ -11,11 +11,10 @@ export const ColStartDatePickerRange = styled(EtsBootstrap.Col)`
 `;
 export const ColDividerDatePickerRange = styled(EtsBootstrap.Col)<{label: any}>`
   &&& {
-    visibility: hidden;
+    display: none;
     text-align: center;
     bottom: ${(props) => props.label ? '-24px' : '0px'};
     @media (min-width: 992px) {
-      visibility: initial;
       width: 2%;
       margin: 0;
       padding: 8px 0 0 0;

@@ -48,8 +48,7 @@ export const getToConfig = (): TypeConfigData<FuelRate> => {
           type: 'advanced-date',
         },
         {
-          valueKey: 'operation_id',
-          labelKey: 'operation_name',
+          valueKey: 'operation_name',
           title: 'Операция',
           type: 'multiselect',
         },

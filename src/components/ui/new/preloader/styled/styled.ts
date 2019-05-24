@@ -59,7 +59,7 @@ export const CssloadLoader = styled.div`
     z-index: 0;
     opacity: 1;
     transform-origin: 100% 0%;
-    animation: ${cssload} 11.5s ease-in-out infinite;
+    animation: ${cssload} 8s ease-in-out infinite;
   }
 `;
 

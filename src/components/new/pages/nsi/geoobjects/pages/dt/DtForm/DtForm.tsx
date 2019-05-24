@@ -1,5 +1,4 @@
 import * as React from 'react';
-import memoize from 'memoize-one';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/ui/new/field/ExtField';
@@ -10,70 +9,33 @@ import { dtFormSchema } from 'components/new/pages/nsi/geoobjects/pages/dt/DtFor
 
 import { getDefaultDtFormElement } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsDtForm,
   PropsDtForm,
-  StateDtForm,
-  StatePropsDtForm,
-  DispatchPropsDtForm,
   PropsDtFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/@types/DtForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Dt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/@types';
-import { getCompanyStructureState } from 'redux-main/reducers/selectors';
-import { getAndSetInStoreCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
-import { companyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { changeCompanyStructureIdNotyfication } from 'utils/notifications';
+import FieldCompanyStructureId from '../../odh/OdhForm/fields/company_structure_id/FieldCompanyStructureId';
 
-class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
-  componentDidMount() {
-    this.props.getAndSetInStoreCompanyStructureDescendantsByUser();
-  }
-
-  handleChangeCompanyStructure = (key, value) => {
-    global.NOTIFICATION_SYSTEM.notify(changeCompanyStructureIdNotyfication);
-
-    this.props.handleChange({
-      [key]: value,
-    });
-  }
-
-  makeOptionFromCarpoolList = (
-    memoize(
-      (companyStructureDescendantsByUserList: companyStructureDescendantsByUser[]) => (
-        companyStructureDescendantsByUserList
-          .map(
-            defaultSelectListMapper,
-          )
-      ),
-    )
-  );
-
-  render() {
+const DtForm: React.FC<PropsDtForm> = React.memo(
+  (props) => {
     const {
       formState: state,
       formErrors: errors,
       page,
       path,
-      companyStructureDescendantsByUserList,
-    } = this.props;
+      isPermitted,
+    } = props;
 
     const IS_CREATING = !state.yard_id;
 
     const title = !IS_CREATING ? 'Дворовая территория' : 'Дворовая территория';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-
-    const companyStructureOptions = this.makeOptionFromCarpoolList(
-      companyStructureDescendantsByUserList,
-    );
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-dt" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-dt" show onHide={props.hideWithoutChanges} backdrop="static">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -110,15 +72,14 @@ class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
                 value={state.auto_area}
                 readOnly
               />
-              <ExtField
-                type="select"
-                label="Учреждение"
-                value={state.company_structure_id}
-                error={errors.company_structure_id}
-                options={companyStructureOptions}
-                emptyValue={null}
-                onChange={this.handleChangeCompanyStructure}
-                boundKeys="company_structure_id"
+              <FieldCompanyStructureId
+                value={state.company_structures}
+                error={errors.company_structures}
+                handleChange={props.handleChange}
+                isPermitted={isPermitted}
+
+                page={props.page}
+                path={props.path}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -127,7 +88,7 @@ class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
         {
           isPermitted // либо обновление, либо создание
           ? (
-            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
           : (
             <DivNone />
@@ -136,25 +97,10 @@ class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsDtForm, OwnPropsDtForm>(
-  connect<StatePropsDtForm, DispatchPropsDtForm, OwnPropsDtForm, ReduxState>(
-    (state) => ({
-      companyStructureDescendantsByUserList: getCompanyStructureState(state).companyStructureDescendantsByUserList,
-    }),
-    (dispatch, { page, path }) => ({
-      getAndSetInStoreCompanyStructureDescendantsByUser: () => (
-        dispatch(
-          getAndSetInStoreCompanyStructureDescendantsByUser(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-    }),
-  ),
   withForm<PropsDtFormWithForm, Dt>({
     uniqField: 'yard_id',
     createAction: geoobjectActions.actionCreateDt,

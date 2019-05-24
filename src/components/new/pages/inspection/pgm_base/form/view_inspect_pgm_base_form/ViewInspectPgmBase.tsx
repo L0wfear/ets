@@ -108,7 +108,7 @@ const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
       const { selectedInspect } = payload;
-      selectedInspect.data.address_base = selectedInspect.base_address; // <<< Переделать хардкод
+      selectedInspect.data.address_base = selectedInspect.base_address;
       selectedInspect.data.balance_holder_base = selectedInspect.company_name;
       selectedInspect.data.operating_base = selectedInspect.company_name;
 
@@ -242,7 +242,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             <BoxContainer>
               <ExtField
                 type="string"
-                label="Адрес базы:"
+                label="Адрес и тип базы:"
                 value={`${state.selectedInspect.data.address_base}${base_type ? ` (${base_type})` : ''}`}
                 readOnly
                 inline

@@ -9,23 +9,39 @@ import UserNotificationWs from 'components/notifications/UserNotificationWs';
 import AppHeader from 'components/new/ui/app_header/AppHeader';
 import AppFooter from 'components/new/ui/app_footer/AppFooter';
 import withCheckPrivateRouteMain from 'components/new/utils/hoc/check_private_route_main/withCheckPrivateRouteMain';
+import { AppStyled, AppContent, AppContentContainer } from './styled';
 
 const MainApp: React.FC<{}> = React.memo(
-  () => (
-    <div className="app">
-      <AppHeader />
-      <div className="app-content">
-        <div className="app-content-absolute">
-          <Routes />
-          <LoadingOverlayLegacy main />
-          <NotifiactionOrders />
-          <AdmNotification />
-          <UserNotificationWs />
-        </div>
-      </div>
-      <AppFooter />
-    </div>
-  ),
+  () => {
+    React.useEffect(
+      () => {
+        const SESSION_KEY2 = window.localStorage.getItem(global.SESSION_KEY2);
+        localStorage.setItem(global.SESSION_KEY, SESSION_KEY2);
+
+        const SESSION_KEY_ETS_TEST_BY_DEV2 = window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2);
+        localStorage.setItem(global.SESSION_KEY_ETS_TEST_BY_DEV, SESSION_KEY_ETS_TEST_BY_DEV2);
+
+        const versions = localStorage.getItem(global.API__KEY2) || '{}';
+        localStorage.setItem(global.API__KEY, JSON.stringify(versions));
+      },
+      [],
+    );
+    return (
+      <AppStyled>
+        <AppHeader />
+        <AppContent>
+          <AppContentContainer>
+            <Routes />
+            <LoadingOverlayLegacy main />
+            <NotifiactionOrders />
+            <AdmNotification />
+            <UserNotificationWs />
+          </AppContentContainer>
+        </AppContent>
+        <AppFooter />
+      </AppStyled>
+    );
+  },
 );
 
 export default withCheckPrivateRouteMain(MainApp);

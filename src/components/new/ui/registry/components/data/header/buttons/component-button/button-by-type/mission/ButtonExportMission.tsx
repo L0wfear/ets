@@ -50,12 +50,16 @@ const ButtonExportMission: React.FC<PropsButtonExportMission> = (props) => {
       >
         <EtsBootstrap.Glyphicon glyph="download-alt" />
       </EtsBootstrap.Button>
-      <PrintByDates
-        show={isOpenModalRemove}
-        onHide={handleClickCloseForm}
-        onExport={handleExport}
-        title="Печать журнала заданий"
-      />
+      {
+        isOpenModalRemove && (
+          <PrintByDates
+            onHide={handleClickCloseForm}
+            onExport={handleExport}
+            title="Печать журнала заданий"
+          />
+        )
+      }
+
     </React.Fragment>
   );
 };

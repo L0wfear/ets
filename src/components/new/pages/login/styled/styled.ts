@@ -94,24 +94,12 @@ export const LoginPageFormContentInput = styled.input`
 `;
 
 export const LoginPageFormContentButton = styled(EtsBootstrap.Button)`
-  &&& {
-    width: 100%;
-    background: #706b77;
-    color: white;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-family: 'Roboto', sans-serif;
-    padding: 15px;
-    height: 44px;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-    &:hover {
-      background: #9994a1 !important;
-    }
-    &[disabled] {
-      background: #a6a6a6 !important;
-    }
-  }
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif;
+  padding: 15px;
+  height: 44px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
 `;
 
 export const TpMessangeContainer = styled.div`

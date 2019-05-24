@@ -126,6 +126,13 @@ export function makeDateFromUnix(date) {
   return moment.unix(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
+export function makeUnixFromDate(date) {
+  if (!date) {
+    return -Infinity;
+  }
+  return moment(date).unix();
+}
+
 // смены за вчера, сегодня, завтра
 
 export function getYesterday0am() {

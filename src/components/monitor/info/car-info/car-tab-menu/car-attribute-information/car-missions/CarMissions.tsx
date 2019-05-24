@@ -11,6 +11,8 @@ import {
 import { fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { ReduxState } from 'redux-main/@types/state';
+import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
 
 type CarMissionsDispatchProps = {
   actionGetMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetMissionById>;
@@ -105,10 +107,10 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
     const { missionToShow, missionToShowInfo } = this.state;
 
     return (
-      <div className="car_info_block column tab-data">
-        <div className="car_info-track_date_title">
+      <CarInfoBlockTabDataColumn>
+        <CarInfoTrackDateTitle>
           <div>Задания</div>
-        </div>
+        </CarInfoTrackDateTitle>
         <MissionsList
           showMissionInfoForm={this.showMissionInfoForm}
           showMissionForm={this.showMissionForm}
@@ -126,7 +128,7 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           element={missionToShowInfo}
           fromMonitor
         />
-      </div>
+      </CarInfoBlockTabDataColumn>
     );
   }
 }

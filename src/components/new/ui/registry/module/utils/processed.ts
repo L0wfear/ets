@@ -1,7 +1,15 @@
-import { isNullOrUndefined, isArray, isString } from 'util';
+import { isNullOrUndefined, isArray, isString, isObject } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { diffDatesByDays, diffDates } from 'utils/dates';
 import { get } from 'lodash';
+
+const makeStirngNameFormArray = (item: string | Record<string, any> & { name: string }) => {
+  if (isString(item)) {
+    return item;
+  }
+
+  return item.name;
+};
 
 export const sortArray = (firstRowData, secondRowData, field) => {
   let [
@@ -12,8 +20,8 @@ export const sortArray = (firstRowData, secondRowData, field) => {
     secondRowData[field],
   ];
 
-  first = Array.isArray(first) ? first.reduce((newFirst, item) => `${newFirst}, ${item}`, '') : first;
-  second = Array.isArray(second) ? second.reduce((newSecond, item) => `${newSecond}, ${item}`, '') : second;
+  first = Array.isArray(first) ? first.reduce((newFirst, item) => `${newFirst}, ${makeStirngNameFormArray(item)}`, '') : first;
+  second = Array.isArray(second) ? second.reduce((newSecond, item) => `${newSecond}, ${makeStirngNameFormArray(item)}`, '') : second;
 
   const firstIsNumber = !isNaN(Number(first));
   const secondIsNumber = !isNaN(Number(second));
@@ -75,6 +83,9 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
           switch (fieldsAsObj[valueKey].type) {
             case 'multiselect': {
               if (isArray(row[valueKey])) {
+                if (row[valueKey][0] && isObject(row[valueKey][0]) && 'id' in row[valueKey][0]) {
+                  return value.every((oneValue) => !row[valueKey].some(({ id }) => id === oneValue));
+                }
                 return value.every((oneValue) => !row[valueKey].includes(oneValue));
               }
               return !value.includes(row[valueKey]);

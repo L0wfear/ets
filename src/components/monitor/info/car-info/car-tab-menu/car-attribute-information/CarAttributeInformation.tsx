@@ -12,6 +12,7 @@ import { makeDate, makeTime } from 'utils/dates';
 import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
 import CarCreateMission from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/CreateMission';
+import { CarInfoBlockTabData } from 'components/monitor/styled';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);
@@ -24,7 +25,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) 
 
   return (
     <div>
-      <div className="car_info_block tab-data">
+      <CarInfoBlockTabData>
         <div className="car_info-attributes" >
           {
             attributeList.map((attr) => {
@@ -60,7 +61,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) 
             )
           }
         </div>
-      </div>
+      </CarInfoBlockTabData>
       <CarMissions />
       <CarCreateMission
         gps_code={gps_code}

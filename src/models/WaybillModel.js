@@ -6,31 +6,92 @@ import { getTrailers } from 'components/waybill/utils';
 import { get } from 'lodash';
 import { isArray } from 'util';
 import memoizeOne from 'memoize-one';
+import { makeFuelCardIdOptions } from 'components/waybill/table_input/utils';
 
-const checkCarRefill = memoizeOne((car_refill, refillTypeList) => {
-  return car_refill.map((rowData) => {
-    return {
-      type_id: !rowData.type_id
-        ? 'Поле "Способ заправки" должно быть заполнено'
-        : '',
-      fuel_card_id:
-        !rowData.fuel_card_id
-        && get(
-          refillTypeList.find(({ id }) => id === rowData.type_id),
-          'is_fuel_card_required',
-          false,
-        )
-          ? 'Поле "Топливная карта" должно быть заполнено'
+const validateFuelCardId = (
+  rowData,
+  car_refill,
+  refillTypeList,
+  fuelCardsList,
+  fuel_type,
+  userCompanyId,
+  userStructureId,
+) => {
+  let fuel_card_id = '';
+  const needSelectFuelCard
+    = !rowData.fuel_card_id
+    && get(
+      refillTypeList.find(({ id }) => id === rowData.type_id),
+      'is_fuel_card_required',
+      false,
+    );
+
+  const availableFuelCard = makeFuelCardIdOptions(
+    fuelCardsList,
+    car_refill,
+    fuel_type,
+    userCompanyId,
+    userStructureId,
+  );
+
+  if (needSelectFuelCard) {
+    if (!availableFuelCard.length) {
+      fuel_card_id
+        = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту';
+    } else {
+      fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
+    }
+  } else {
+    const currentFuelCardData = availableFuelCard.find(
+      (optionData) => optionData.rowData.id === rowData.fuel_card_id,
+    );
+
+    const fuel_type_selected_fuel_card = get(
+      currentFuelCardData,
+      'rowData.fuel_type',
+    );
+    if (fuel_type_selected_fuel_card !== fuel_type) {
+      fuel_card_id
+        = 'Необходимо выбрать топливную карту с типом топлива, указанным в путевом листе';
+    }
+  }
+
+  return fuel_card_id;
+};
+
+const checkCarRefill = memoizeOne(
+  (
+    car_refill,
+    refillTypeList,
+    fuelCardsList,
+    fuel_type,
+    userCompanyId,
+    userStructureId,
+  ) => {
+    return car_refill.map((rowData) => {
+      return {
+        type_id: !rowData.type_id
+          ? 'Поле "Способ заправки" должно быть заполнено'
           : '',
-      value:
-        !rowData.value && rowData.value !== 0
-          ? 'Поле "Выдано, л" должно быть заполнено'
-          : rowData.value < 0
-            ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
-            : '',
-    };
-  });
-});
+        fuel_card_id: validateFuelCardId(
+          rowData,
+          car_refill,
+          refillTypeList,
+          fuelCardsList,
+          fuel_type,
+          userCompanyId,
+          userStructureId,
+        ),
+        value:
+          !rowData.value && rowData.value !== 0
+            ? 'Поле "Выдано, л" должно быть заполнено'
+            : rowData.value < 0
+              ? 'Поле "Выдано, л" должно быть больше не отрицательным числом'
+              : '',
+      };
+    });
+  },
+);
 
 export const waybillSchema = {
   properties: [
@@ -171,15 +232,37 @@ export const waybillSchema = {
   dependencies: {
     car_refill: [
       {
-        validator: (car_refill, formStatet, { refillTypeList }) => {
-          return checkCarRefill(car_refill, refillTypeList);
+        validator: (
+          car_refill,
+          formState,
+          { refillTypeList, fuelCardsList, userCompanyId, userStructureId },
+        ) => {
+          return checkCarRefill(
+            car_refill,
+            refillTypeList,
+            fuelCardsList,
+            formState.fuel_type,
+            userCompanyId,
+            userStructureId,
+          );
         },
       },
     ],
     equipment_refill: [
       {
-        validator: (equipment_refill, formStatet, { refillTypeList }) => {
-          return checkCarRefill(equipment_refill, refillTypeList);
+        validator: (
+          equipment_refill,
+          formStatet,
+          { refillTypeList, fuelCardsList, userCompanyId, userStructureId },
+        ) => {
+          return checkCarRefill(
+            equipment_refill,
+            refillTypeList,
+            fuelCardsList,
+            formStatet.equipment_fuel_type,
+            userCompanyId,
+            userStructureId,
+          );
         },
       },
     ],

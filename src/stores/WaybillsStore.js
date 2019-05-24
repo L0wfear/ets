@@ -23,5 +23,6 @@ export function getDefaultBill({ company_id = null }) {
     equipment_refill: [],
     company_id,
     is_one_fuel_tank: true,
+    fuel_given: 0,
   };
 }

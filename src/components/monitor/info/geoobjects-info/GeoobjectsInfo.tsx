@@ -4,80 +4,69 @@ import { connect } from 'react-redux';
 import GeoobjectData from 'components/monitor/info/geoobjects-info/GeoobjectData';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { monitorPageRemoveAllFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
-import * as cx from 'classnames';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
+import { CarInfoBlock, DataContainer, CarInfoTitleSpanContainer, CarInfoClose } from 'components/monitor/styled';
+import { ReduxState } from 'redux-main/@types/state';
+import { ContainerButtonToggleShowGeoobjectList, GeoobjectListContainer } from './styled';
 
 type PropsGeoobjectsInfo = {
-  handleClickOnClose: any;
+  monitorPageRemoveAllFromSelectedGeoobjects: typeof monitorPageRemoveAllFromSelectedGeoobjects;
   centerOn: any;
 };
 
-type StateGeoobjectsInfo = {
-};
-
-class GeoobjectsInfo extends React.Component<PropsGeoobjectsInfo, StateGeoobjectsInfo> {
-  state = {
-    shortVersion: false,
-  };
-  toggleShortVersion: any = () => {
-    this.setState({
-      shortVersion: !this.state.shortVersion,
-    });
-  }
-  render() {
-    const { shortVersion } = this.state;
+const GeoobjectsInfo: React.FC<PropsGeoobjectsInfo> = React.memo(
+  (props) => {
+    const [shortVersion, setShortVersion] = React.useState(false);
+    const toggleShortVersion = React.useCallback(
+      () => {
+        setShortVersion((state) => !state);
+      },
+      [],
+    );
 
     return (
-      <div className={cx('data_container-wrap', 'geoobjects_info', { 'map_info-hidden': shortVersion })}>
+      <GeoobjectListContainer className="geoobjects_info">
         {
-          shortVersion ?
-          (
-            <DivNone />
-          )
-          :
-          (
-            <div className="data_container geoobjects_info">
+          !shortVersion && (
+            <DataContainer className="geoobjects_info">
               <div className="map_info-title_container geoobject_title">
-                <div className="car_info-gov_number">
-                  <div className="car_info_block">
+                <CarInfoTitleSpanContainer>
+                  <CarInfoBlock>
                     <span>Список выбранных геообъектов</span>
-                  </div>
-                </div>
-                <div className="car_info-close">
-                  <div className="car_info_block" onClick={this.props.handleClickOnClose}>
+                  </CarInfoBlock>
+                </CarInfoTitleSpanContainer>
+                <CarInfoClose>
+                  <CarInfoBlock onClick={props.monitorPageRemoveAllFromSelectedGeoobjects}>
                     <span>x</span>
-                  </div>
-                </div>
+                  </CarInfoBlock>
+                </CarInfoClose>
               </div>
               <div>
                 {
                   Object.values(GEOOBJECTS_OBJ).map(({ serverName }) => (
-                    <GeoobjectData key={serverName} serverName={serverName} centerOn={this.props.centerOn} />
+                    <GeoobjectData key={serverName} serverName={serverName} centerOn={props.centerOn} />
                   ))
                 }
               </div>
-            </div>
+            </DataContainer>
           )
         }
-        <div className="data_container-make-small" onClick={this.toggleShortVersion}>
+        <ContainerButtonToggleShowGeoobjectList onClick={toggleShortVersion}>
           <EtsBootstrap.Button title={`${shortVersion ? 'Показать' : 'Скрыть'} выбранные геообъекты`}>{shortVersion ? '<<' : '>>'}</EtsBootstrap.Button>
-        </div>
-      </div>
+        </ContainerButtonToggleShowGeoobjectList>
+      </GeoobjectListContainer>
     );
-  }
-}
+  },
+);
 
-const mapDispatchToProps = (dispatch) => ({
-  handleClickOnClose: () => dispatch(
-    monitorPageRemoveAllFromSelectedGeoobjects(),
-  ),
-});
-
-export default connect(
+export default connect<any, any, any, ReduxState>(
   null,
-  mapDispatchToProps,
+  (dispatch: any) => ({
+    monitorPageRemoveAllFromSelectedGeoobjects: (...arg) => (
+      dispatch(
+        monitorPageRemoveAllFromSelectedGeoobjects(...arg),
+      )
+    ),
+  }),
 )
 (GeoobjectsInfo);

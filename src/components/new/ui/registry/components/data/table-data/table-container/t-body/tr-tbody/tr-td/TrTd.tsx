@@ -11,22 +11,47 @@ export type PropsTrTd = {
 
 const TrTd: React.FC<PropsTrTd> = React.memo(
   (props) => {
+    const [showAll, setShowAll] = React.useState(false);
+
     const value = React.useMemo(
       () => {
-        if (isString(props.value)) {
-          return (
-            props.value
+        let valueRaw = props.value;
+
+        if (isString(valueRaw)) {
+          valueRaw = (
+            valueRaw
               .split('\n')
-              .map((oneLineComment, i) => <div key={i}>{oneLineComment}</div>)
+              .map(
+                (oneLineComment, i) => {
+                  let text = oneLineComment;
+
+                  if (!showAll) {
+                    const shortTest = valueRaw.slice(0, 300);
+                    if (shortTest.length >= 300) {
+                      text = `${shortTest} ...`;
+                    }
+                  }
+
+                  return (
+                    <div key={i}>{text}</div>
+                  );
+                },
+              )
           );
         }
 
-        return props.value;
+        return valueRaw;
       },
-      [props.value],
+      [props.value, showAll],
     );
+
+    const handleClick = React.useCallback(
+      () => setShowAll((state) => !state),
+      [],
+    );
+
     return (
-      <EtsTbodyTrTd>{value}</EtsTbodyTrTd>
+      <EtsTbodyTrTd onClick={handleClick}>{value}</EtsTbodyTrTd>
     );
   },
 );

@@ -359,14 +359,7 @@ export default class Taxes extends React.Component {
             </EtsButtonsContainer>
           </EtsHeaderContainer>
         </EtsBootstrap.Row>
-        {!(fuelRates.length || !!hasTaxes) && (
-          <EtsBootstrap.Row>
-            <EtsHeaderContainer>
-              <EtsHeaderTitle>{noDataMessage}</EtsHeaderTitle>
-              <EtsButtonsContainer />
-            </EtsHeaderContainer>
-          </EtsBootstrap.Row>
-        )}
+        {!(fuelRates.length || !!hasTaxes) && <h5>{noDataMessage}</h5>}
         <Div hidden={!hasTaxes}>
           <Table
             title="Расчет топлива по норме"

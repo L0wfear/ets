@@ -1,45 +1,25 @@
 import {
   SESSION_SET_DATA,
   SESSION_RESET_DATA,
-  SESSION_SET_TRACK_CONFIG,
 } from 'redux-main/reducers/modules/session/session';
 import User from 'models/User';
 
 import {
   AuthService,
   ChangeRoleService,
-  ConfigTrackService,
   AuthCheckService,
   AuthServiceEtsTest,
   ChangeRoleServiceEtsTest,
   AuthCheckServiceEtsTest,
 } from 'api/Services';
 
-import { TRACK_CONFIG_INITIAL } from 'redux-main/reducers/modules/session/session';
-import config from 'config';
-import { get } from 'lodash';
-import { setUserContext } from 'config/raven';
+import { setUserContext, initSentry } from 'config/raven';
 import { isObject } from 'util';
 import { makeUserData } from './utils';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-import { sessionSetAppConfig } from './action_get_config';
-
-export const sessionGetTracksCachingAppConfig = () => ({
-  type: SESSION_SET_TRACK_CONFIG,
-  payload: ConfigTrackService.get()
-    .catch((errorData) => {
-      // tslint:disable-next-line
-      console.error(errorData);
-
-      return TRACK_CONFIG_INITIAL;
-    })
-    .then((appConfigTracksCaching) => ({
-      appConfigTracksCaching,
-    })),
-  meta: {
-    promise: true,
-  },
-});
+import { actionLoadAppConfig, actionLoadAppConfigTracksCaching } from './action_get_config';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const sessionCahngeCompanyOnAnother: any = (
   company_id,
@@ -85,33 +65,23 @@ export const sessionCahngeCompanyOnAnother: any = (
   };
 };
 
-export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
-  const {
-    payload: { payload: userDataRaw, token },
-  } = await dispatch({
-    type: 'none',
-    payload: AuthService.post(user, false, 'json'),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const sessionLogin = (user: { login: string; password: string }, meta: LoadingMeta) => async (dispatch) => {
+  const { payload: userDataRaw, token } = await etsLoadingCounter(
+    dispatch,
+    AuthService.post(user, false, 'json'),
+    meta,
+  );
 
   let sessionEtsTest = '';
 
   if (process.env.STAND === 'gost_stage') {
     const {
       payload: { token: sessionEtsTestToken },
-    } = await dispatch({
-      type: 'none',
-      payload: AuthServiceEtsTest.post(user, false, 'json'),
-      meta: {
-        promise: true,
-        page,
-        path,
-      },
-    });
+    } = await etsLoadingCounter(
+      dispatch,
+      AuthServiceEtsTest.post(user, false, 'json'),
+      meta,
+    );
 
     sessionEtsTest = sessionEtsTestToken;
   }
@@ -121,10 +91,7 @@ export const sessionLogin: any = (user, { page, path }) => async (dispatch) => {
 
   await dispatch(sessionSetData(userData, token, sessionEtsTest));
 
-  return {
-    userData,
-    token,
-  };
+  return userData;
 };
 
 export const sessionSetData: any = (
@@ -141,11 +108,9 @@ export const sessionSetData: any = (
     );
   }
 
-  setUserContext(userData);
-
-  await Promise.all([
-    dispatch(sessionSetAppConfig()),
-    dispatch(sessionLoadTracksCachingConfig()),
+  const [appConfig] = await Promise.all([
+    dispatch(actionLoadAppConfig()),
+    dispatch(actionLoadAppConfigTracksCaching()),
     dispatch(
       someUniqActions.actionGetAndSetInStoreMissionSource(
         {},
@@ -154,6 +119,10 @@ export const sessionSetData: any = (
     ),
   ]);
 
+  initSentry(appConfig.env);
+
+  setUserContext(userData);
+
   return dispatch({
     type: SESSION_SET_DATA,
     payload: {
@@ -161,33 +130,6 @@ export const sessionSetData: any = (
       userData: new User(userData),
     },
   });
-};
-
-export const sessionLoadTracksCachingConfig: any = () => async (dispatch) => {
-  const {
-    payload: { appConfigTracksCaching },
-  } = await dispatch(sessionGetTracksCachingAppConfig());
-
-  const { api_version_stable } = appConfigTracksCaching;
-  let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
-  if (!versions) {
-    versions = {};
-  }
-
-  const versionFromLocalStorage = Number(
-    get(
-      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
-      config.tracksCaching,
-      '',
-    ),
-  );
-  if (versionFromLocalStorage !== api_version_stable) {
-    console.log(`API SET VERSION ${config.tracksCaching}`, api_version_stable); // tslint:disable-line:no-console
-
-    versions[config.tracksCaching] = api_version_stable.toString();
-  }
-
-  localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
 };
 
 export const checkToken: any = () => async (dispatch, getState) => {
@@ -251,6 +193,8 @@ export const checkToken: any = () => async (dispatch, getState) => {
 export const sessionResetData: any = () => (dispatch) => {
   localStorage.removeItem(global.SESSION_KEY2);
   localStorage.removeItem(global.API__KEY2);
+  localStorage.removeItem(global.SESSION_KEY);
+  localStorage.removeItem(global.API__KEY);
   localStorage.removeItem('featureBufferPolygon');
 
   dispatch({

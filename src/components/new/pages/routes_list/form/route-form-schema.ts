@@ -95,8 +95,26 @@ export const routeFormSchema: SchemaType<
       dependencies: [
         (value, formState) => {
           const { object_list, type } = formState;
+          if (type !== 'mixed' && !object_list.length && !value.length) {
+            const title = get(routeTypesByKey, `${type}.title`, null);
+            if (title) {
+              return `Поле "Список выбранных "${
+                  title
+                }" должно быть заполнено`;
+            }
+          }
 
-          if (type && !object_list.length && !value.length) {
+          return '';
+        },
+      ],
+    },
+    input_lines: {
+      type: 'multiValueOfArray',
+      title: 'Список объектов, построенных вручную',
+      dependencies: [
+        (value, formState) => {
+          const { object_list, type } = formState;
+          if (!object_list.length && type === 'mixed' && !value.length) {
             const title = get(routeTypesByKey, `${type}.title`, null);
             if (title) {
               return `Поле "Список выбранных "${

@@ -72,7 +72,12 @@ class CreatingMap extends React.PureComponent<
     const { object_list, type } = nextProps;
     let changeObj = null;
 
-    if (object_list !== prevState.object_list || nextProps.geozone_municipal_facility_by_id !== prevState.geozone_municipal_facility_by_id) {
+    const trigger = (
+      object_list !== prevState.object_list
+      || nextProps.geozone_municipal_facility_by_id !== prevState.geozone_municipal_facility_by_id
+    );
+
+    if (trigger) {
       const { geozone_municipal_facility_by_id } = mergeStateFromObjectList(
         object_list,
         prevState.geozone_municipal_facility_by_id,
@@ -108,14 +113,17 @@ class CreatingMap extends React.PureComponent<
       type: prevType,
       municipal_facility_id: prevMunicipalFacilityId,
       technical_operation_id: prevTechnicalOperationId,
+      structure_id: prevStructureId,
     } = prevProps;
 
-    const { type, municipal_facility_id, technical_operation_id } = this.props;
+    const { type, municipal_facility_id, technical_operation_id, structure_id } = this.props;
 
-    const trigger =
-      prevType !== type ||
-      prevMunicipalFacilityId !== municipal_facility_id ||
-      technical_operation_id !== prevTechnicalOperationId;
+    const trigger = (
+      prevType !== type
+      || prevMunicipalFacilityId !== municipal_facility_id
+      || technical_operation_id !== prevTechnicalOperationId
+      || structure_id !== prevStructureId
+    );
 
     if (trigger) {
       if (type && municipal_facility_id && technical_operation_id) {
@@ -186,6 +194,7 @@ class CreatingMap extends React.PureComponent<
             municipal_facility_id: props.municipal_facility_id,
             technical_operation_id: props.technical_operation_id,
             object_type_id: typeData.id,
+            structure_id: props.structure_id,
           },
           { page, path },
         );

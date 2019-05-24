@@ -7,7 +7,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { PropsFuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
 import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
-const FuelCardsFrom = React.lazy(() => (
+export const FuelCardsFormLazy = React.lazy(() => (
   import(/* webpackChunkName: "fuel_cards_form" */ 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm')
 ));
 
@@ -21,7 +21,7 @@ const FuelCardsFormWrap: React.FC<PropsFuelCardsFormLazy> = React.memo(
         ? (
           <ErrorBoundaryForm>
             <React.Suspense fallback={<LoadingComponent />}>
-              <FuelCardsFrom
+              <FuelCardsFormLazy
                 element={props.element}
                 handleHide={props.onFormHide}
 

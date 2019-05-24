@@ -1,8 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 
-export type GetDefaultOdhElement = (odh: Odh | null) => Odh;
-
 export const defaultOdh: Odh = {
   auto_footway_area: null,
   auto_roadway_clean_area: null,
@@ -10,8 +8,7 @@ export const defaultOdh: Odh = {
   cleaning_area: null,
   company_id: null,
   company_name: '',
-  company_structure_id: null,
-  company_structure_name: '',
+  company_structures: [],
   customer_id: null,
   distance: null,
   footway_area: null,
@@ -29,7 +26,7 @@ export const defaultOdh: Odh = {
   total_manual_clean_area: null,
 };
 
-export const getDefaultOdhFormElement: GetDefaultOdhElement = (element) => {
+export const getDefaultOdhFormElement = (element: Partial<Odh>): Odh => {
   const newElement = { ...defaultOdh };
   if (isObject(element)) {
     Object.keys(defaultOdh).forEach((key) => {

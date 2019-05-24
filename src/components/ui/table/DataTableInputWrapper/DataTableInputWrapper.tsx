@@ -99,6 +99,7 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
         <SourceComponent
           {...this.props}
           {...this.state}
+          outputListErrors={this.props.outerValidate ? this.props.errors : this.state.outputListErrors}
           onItemChange={this.handleItemChange}
           onItemAdd={this.handleItemAdd}
           onItemRemove={this.handleItemRemove}

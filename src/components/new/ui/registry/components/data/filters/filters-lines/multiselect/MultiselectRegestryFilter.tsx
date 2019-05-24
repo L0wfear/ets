@@ -22,7 +22,7 @@ import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import Preloader from 'components/ui/new/preloader/Preloader';
 import { DivNone } from 'global-styled/global-styled';
-import { isNumber, isBoolean, isArray } from 'util';
+import { isNumber, isBoolean, isArray, isObject } from 'util';
 
 type PropsMultiselectRegestryFilter = {
   filterData: {
@@ -111,9 +111,11 @@ const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey:
         let valueOfOption = oneValue;
         let labelOfOption = oneValue;
 
-        if ('id' in oneValue && 'name' in oneValue) {
-          valueOfOption = oneValue.id;
-          labelOfOption = oneValue.name;
+        if (isObject(oneValue)) {
+          if ('id' in oneValue && 'name' in oneValue) {
+            valueOfOption = oneValue.id;
+            labelOfOption = oneValue.name;
+          }
         }
 
         const newItem = getOption(valueOfOption, labelOfOption);

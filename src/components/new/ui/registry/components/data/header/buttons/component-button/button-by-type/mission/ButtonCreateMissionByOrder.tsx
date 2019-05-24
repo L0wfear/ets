@@ -33,7 +33,7 @@ const ButtonCreateMissionByOrder: React.FC<ButtonCreateMissionByOrderProps> = (p
 
   return (
     <EtsBootstrap.Button id="open-create-form" bsSize="small" active onClick={handleClick}>
-      <EtsBootstrap.Glyphicon glyph="plus" /> Создать централизованное задание
+      <EtsBootstrap.Glyphicon glyph="plus" /> Исполнение централизованного задания
     </EtsBootstrap.Button>
   );
 };

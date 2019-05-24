@@ -151,6 +151,7 @@ export const mergeListPermissions = (permissions: OneRegistryData['list']['permi
 export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, otherData: OtherData) => {
   const {
     fields = registryDefaultObj.list.meta.fields,
+    row_double_click = registryDefaultObj.list.meta.row_double_click,
   } = meta || {};
 
   const fieldsFiltred = fields.reduce(
@@ -187,7 +188,10 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
     [],
   );
 
-  return makerDataMetaField(fieldsFiltred);
+  return {
+    ...makerDataMetaField(fieldsFiltred),
+    row_double_click,
+  };
 };
 
 export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator']) => (

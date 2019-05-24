@@ -21,7 +21,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import { compose } from 'recompose';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getRegistryState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -291,7 +291,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
-    if (props.isPermitted && props.buttons.includes(buttonsTypes.read)) {
+    if (props.isPermitted && (props.buttons.includes(buttonsTypes.read) || props.row_double_click)) {
       this.props.setParams({
         [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
       });
@@ -341,6 +341,7 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       userData: getSessionState(state).userData,
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
       buttons: getHeaderData(state.registry, registryKey).buttons,
+      row_double_click: getListData(getRegistryState(state), registryKey).meta.row_double_click,
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

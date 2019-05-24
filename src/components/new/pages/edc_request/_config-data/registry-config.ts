@@ -96,6 +96,7 @@ export const config: TypeConfigData<EdcRequest> = {
       fixedWidth: true,
     },
     meta: {
+      row_double_click: true,
       fields: [
         {
           key: 'enumerated',

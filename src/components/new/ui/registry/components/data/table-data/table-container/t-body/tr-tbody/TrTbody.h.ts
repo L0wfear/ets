@@ -14,6 +14,7 @@ export interface StatePropsTrTbody {
   permissions: OneRegistryData['list']['permissions']['read'][];
   userData: InitialStateSession['userData'];
   buttons: OneRegistryData['header']['buttons'];
+  row_double_click: OneRegistryData['list']['meta']['row_double_click'];
 }
 
 export type DipatchPropsTrTbody = {

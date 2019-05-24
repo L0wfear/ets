@@ -177,6 +177,7 @@ export type TypeConfigData<F> = {
       perPage?: number,
     },
     meta: {
+      row_double_click?: boolean;
       fields: TypeFields<F>[];
     },
   };

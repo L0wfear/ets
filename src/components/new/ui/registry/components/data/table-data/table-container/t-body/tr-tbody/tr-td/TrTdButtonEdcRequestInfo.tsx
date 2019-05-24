@@ -20,6 +20,7 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 import { get } from 'lodash';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 // import { ButtonGroupWrapperMargin } from 'global-styled/global-styled';
 
@@ -56,6 +57,7 @@ const TrTdButtonEdcRequestInfo: React.FC<TrTdButtonEdcRequestInfoProps> = React.
       async () => {
         props.setParams({
           [props.uniqKeyForParams]: get(props.rowData, props.uniqKey, null),
+          type: buttonsTypes.edc_request_info,
         });
       },
       [rowData, props.setParams],

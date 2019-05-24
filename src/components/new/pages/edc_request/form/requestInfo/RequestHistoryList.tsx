@@ -19,6 +19,8 @@ import { get } from 'lodash';
 import { compose } from 'recompose';
 // import DataTable from 'components/ui/tableNew/DataTable';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import TableExample from './table/TableExample';
+import TempForm from './table/TempForm';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 
@@ -84,32 +86,31 @@ export const tableMeta = {
 //     </div>,
 // };
 
-const RequestHistoryList: React.FC<RequestHistoryListProps> = (props) => {
-  const request_id = get(props, 'requestElement.id', null);
+const RequestHistoryList: React.FC<RequestHistoryListProps> = React.memo(
+  (props) => {
+    const request_id = get(props, 'requestElement.id', null);
 
-  React.useEffect( () => {
-    props.actionGetAndSetInStoreEdcRequestInfo({
-      id: request_id,
-      original: true,
-    }, {page: props.page });
-  }, []);
+    React.useEffect( () => {
+      props.actionGetAndSetInStoreEdcRequestInfo({
+        id: request_id,
+        original: true,
+      }, {page: props.page });
+    }, []);
 
-  return (
-    <>
-      {/* <DataTable
-        noTitle={true}
-        noFilter
-        results={props.edcRequestInfoList}
-        enumerated={true}
-        tableMeta={tableMeta}
-        className="report-request-history-table"
-        renderers={renderers}
-        // onRowSelected={handleSelectedElementChange}
-        // selected={selectedElement}
-      /> */}
-    </>
-  );
-};
+    return (
+      <React.Fragment>
+        {
+          props.edcRequestInfoList.map(
+            (rowData, index) => (
+              <TableExample key={index + 1} edcRequestInfo={rowData} index={index} />
+            ),
+          )
+        }
+        <TempForm edcRequestInfoList={props.edcRequestInfoList} />
+      </React.Fragment>
+    );
+  },
+);
 
 export default compose<RequestHistoryListProps, RequestHistoryListOwnProps>(
   withPreloader({

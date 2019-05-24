@@ -41,7 +41,7 @@ const validateFuelCardId = (
     } else {
       fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
     }
-  } else {
+  } else if (fuel_card_id) {
     const currentFuelCardData = availableFuelCard.find(
       (optionData) => optionData.rowData.id === rowData.fuel_card_id,
     );

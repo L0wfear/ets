@@ -153,6 +153,12 @@ class WaybillFormWrap extends React.Component {
     };
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props !== prevProps) {
+      this.handleMultipleChange({});
+    }
+  }
+
   componentDidMount() {
     this.props.actionLoadRefillTypeAndSetInStore(
       {},

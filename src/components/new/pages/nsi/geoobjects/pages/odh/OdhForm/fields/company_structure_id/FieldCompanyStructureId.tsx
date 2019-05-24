@@ -54,33 +54,10 @@ const FieldCompanyStructureId: React.FC<FieldCompanyStructureIdProps> = React.me
             [],
           );
         } else {
-          const newOptionSet = options.reduce(
-            (newSet, { rowData }) => {
-              newSet.add(rowData.id);
-
-              return newSet;
-            },
-            new Set(),
-          );
-          const removedItem = props.value.find(
-            ({ id }) => !Boolean(
-              newOptionSet.has(id),
-            ),
-          );
-
-          valueNew = options.reduce(
-            (newArr, { rowData }) => {
-              if (rowData.parent_id !== removedItem.id) {
-                newArr.push({
-                  id: rowData.id,
-                  name: rowData.name,
-                });
-              }
-
-              return newArr;
-            },
-            [],
-          );
+          valueNew = options.map(({ rowData }) => ({
+            id: rowData.id,
+            name: rowData.name,
+          }));
         }
 
         props.handleChange({

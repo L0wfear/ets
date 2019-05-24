@@ -1,32 +1,36 @@
 import * as React from 'react';
-import Registry from 'components/new/ui/registry/components/Registry';
+
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
 
 import {
   registryKey,
-  getConfig,
 } from 'components/new/pages/administration/services/form/service_history/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { HandleThunkActionCreator } from "react-redux";
-import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
-import RequestInfoFormLazy from 'components/new/pages/edc_request/form/requestInfo';
 
-export type RequestHistoryListStateProps = {};
+import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
+import { get } from 'lodash';
+import { compose } from 'recompose';
+// import DataTable from 'components/ui/tableNew/DataTable';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+
+// Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
+
+export type RequestHistoryListStateProps = {
+  edcRequestInfoList: IStateSomeUniq['edcRequestInfoList'];
+};
 export type RequestHistoryListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-  actionChangeGlobalPaylaodInServiceData: HandleThunkActionCreator<typeof actionChangeGlobalPaylaodInServiceData>;
+  actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreEdcRequestInfo>;
 };
 export type RequestHistoryListOwnProps = {
-  service_id: Service['id'];
-  service_name: Service['name'];
+  requestElement: EdcRequest;
+  page: string;
 };
 export type RequestHistoryListMergedProps = (
   RequestHistoryListStateProps
@@ -37,57 +41,72 @@ export type RequestHistoryListProps = (
   RequestHistoryListMergedProps
 );
 
+export const tableMeta = {
+  cols: [
+    {
+      name: 'technical_operation_name',
+      displayName: 'Задание/Наряд-задание',
+      type: 'string',
+      filter: false,
+    },
+    {
+      name: 'current_percentage',
+      displayName: 'Процент выполнения (%)',
+      type: 'number',
+      filter: false,
+    },
+    {
+      name: 'time_by_objects',
+      displayName: 'Время нахождения на объекте, ч.мин',
+      type: 'string',
+      filter: false,
+    },
+  ],
+};
+
+// const renderers: any = {
+//   technical_operation_name: ({ rowData }) =>
+//     <div>
+//       {
+//         `
+//           № ${get(rowData, 'number', '-')}
+//           (${
+//             get(rowData, 'technical_operation_name', '-')
+//           })
+//         `
+//       }
+//     </div>,
+//   current_percentage: ({ rowData }) =>
+//     <div>
+//       {
+//         get(rowData, 'current_percentage', '-')
+//       }
+//     </div>,
+// };
+
 const RequestHistoryList: React.FC<RequestHistoryListProps> = (props) => {
-  const date_start: string = props.searchState.date_from;
-  const date_end: string = props.searchState.date_to;
+  const request_id = get(props, 'requestElement.id', null);
 
-  React.useEffect(
-    () => {
-      props.registryAddInitialData(
-        getConfig(
-          props.service_id,
-          props.service_name,
-          date_start || createValidDateTime(getToday0am()),
-          date_end || createValidDateTime(getToday2359()),
-        ),
-      );
-      return () => {
-        props.registryRemoveData(registryKey);
-      };
-    },
-    [props.service_id, props.service_name],
-  );
-
-  React.useEffect(
-    () => {
-      if (date_start && date_end) {
-        const date_start_value = date_start || createValidDateTime(getToday0am());
-        const date_end_value = date_end || createValidDateTime(getToday2359());
-
-        if (diffDates(date_end_value, date_start_value) > 0) {
-          const payload = {
-            getRegistryData: {
-              date_start: date_start_value,
-              date_end: date_end_value,
-            },
-            getBlobData: {
-              format: 'xls',
-              date_start: date_start_value,
-              date_end: date_end_value,
-            },
-          };
-
-          props.actionChangeGlobalPaylaodInServiceData(registryKey, payload);
-        }
-      }
-    },
-    [date_start, date_end],
-  );
+  React.useEffect( () => {
+    props.actionGetAndSetInStoreEdcRequestInfo({
+      id: request_id,
+      original: true,
+    }, {page: props.page });
+  }, []);
 
   return (
     <>
-      <Registry registryKey={registryKey} />
-      <RequestInfoFormLazy registryKey={registryKey} />
+      {/* <DataTable
+        noTitle={true}
+        noFilter
+        results={props.edcRequestInfoList}
+        enumerated={true}
+        tableMeta={tableMeta}
+        className="report-request-history-table"
+        renderers={renderers}
+        // onRowSelected={handleSelectedElementChange}
+        // selected={selectedElement}
+      /> */}
     </>
   );
 };
@@ -98,21 +117,13 @@ export default compose<RequestHistoryListProps, RequestHistoryListOwnProps>(
     typePreloader: 'mainpage',
   }),
   connect<RequestHistoryListStateProps, RequestHistoryListDispatchProps, RequestHistoryListOwnProps, ReduxState>(
-    null,
+    (state) => ({
+      edcRequestInfoList: getSomeUniqState(state).edcRequestInfoList,
+    }),
     (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
+      actionGetAndSetInStoreEdcRequestInfo: (...args) => (
         dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-      actionChangeGlobalPaylaodInServiceData: (...arg) => (
-        dispatch(
-          actionChangeGlobalPaylaodInServiceData(...arg),
+          someUniqActions.actionGetAndSetInStoreEdcRequestInfo(...args),
         )
       ),
     }),

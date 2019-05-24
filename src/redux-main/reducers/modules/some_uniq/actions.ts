@@ -15,6 +15,7 @@ import * as workKindActions from 'redux-main/reducers/modules/some_uniq/work_kin
 import * as technicalOperationObjectsActions from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/technical_operation_objects_actions';
 import * as technicalOperationTypesActions from 'redux-main/reducers/modules/some_uniq/technical_operation_types/technical_operation_types_actions';
 import * as sensorTypeActions from 'redux-main/reducers/modules/some_uniq/sensor_type/sensor_type_actions';
+import edcRequestInfoListActions from 'redux-main/reducers/modules/some_uniq/edc_request_info/actions';
 
 const someUniqActions = {
   ...special_model,
@@ -34,6 +35,7 @@ const someUniqActions = {
   ...sensorTypeActions,
   ...carsTravelTimeListActions,
   ...TracksCachingActions,
+  ...edcRequestInfoListActions,
 };
 
 export default someUniqActions;

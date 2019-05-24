@@ -14,6 +14,7 @@ import { SensorType } from '../sensor_type/@types/sensor_type';
 import { MeasureUnit } from '../measure_unit/@types';
 import { RefillType } from '../../refill_type/@types/refillType';
 import { CarsTravelTime } from '../cars_travel_time/@types';
+import { EdcRequestInfo } from '../edc_request_info/@types';
 import { TracksCaching } from '../tracks_caching/@types';
 
 export type ModelElement = {
@@ -60,5 +61,6 @@ export type IStateSomeUniq = {
   refillTypeList: RefillType[];
 
   carsTravelTimeList: CarsTravelTime[];
+  edcRequestInfoList: EdcRequestInfo[];
   tracksCaching: TracksCaching;
 };

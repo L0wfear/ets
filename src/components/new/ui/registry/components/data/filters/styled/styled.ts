@@ -20,7 +20,6 @@ export const PanelWrap = styled(EtsBootstrap.Panel)`
     border: none;
     box-shadow: none;
     position: relative;
-    z-index: 2;
   }
 `;
 

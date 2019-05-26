@@ -7,7 +7,7 @@ const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
   otherToken: true,
   headers: () => {
     const token = JSON.parse(
-      window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+      window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2) || null,
     );
     return {
       "Authorization": `Token ${token}`,

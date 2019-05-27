@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import {
   OwnFuelCardsProps,
   PropsFuelCards,
-  StateFuelCards,
   StatePropsFuelCards,
   DispatchPropsFuelCards,
   PropsFuelCardsWithForm,
@@ -50,36 +49,39 @@ const popover = (
   </Popover>
 );
 
-class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> {
-  handleSubmit = async () => {
-    const {
-      originalFormState,
-      formState,
-      userStructureId,
-    } = this.props;
+const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
+  (props) => {
+    const handleSubmit = React.useCallback(
+      async () => {
+        const {
+          originalFormState,
+          formState,
+          userStructureId,
+        } = props;
 
-    if (
-      originalFormState.is_common
-      && !formState.is_common
-      && formState.structure_id !== userStructureId
-      && userStructureId
-    ) {
-      try {
-        await global.confirmDialog({
-          title: 'Внимание',
-          body: 'При сохранении карточки Вам не будет больше доступна данная топливная карта. Продолжить?',
-          okName: 'Да',
-          cancelName: 'Нет',
-        });
-      } catch (e) {
-        return;
-      }
-    }
+        if (
+          originalFormState.is_common
+          && !formState.is_common
+          && formState.structure_id !== userStructureId
+          && userStructureId
+        ) {
+          try {
+            await global.confirmDialog({
+              title: 'Внимание',
+              body: 'При сохранении карточки Вам не будет больше доступна данная топливная карта. Продолжить?',
+              okName: 'Да',
+              cancelName: 'Нет',
+            });
+          } catch (e) {
+            return;
+          }
+        }
 
-    this.props.defaultSubmit();
-  }
+        props.defaultSubmit();
+      },
+      [],
+    );
 
-  render() {
     const {
       formState: state,
       formErrors: errors,
@@ -89,7 +91,8 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
       userCompanyId,
       fuelTypeOptions,
       STRUCTURE_FIELD_VIEW,
-    } = this.props;
+      isPermitted,
+    } = props;
 
     const IS_CREATING = !state.id;
     const title = (
@@ -97,10 +100,6 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
         ? 'Изменение записи'
         : 'Создание записи'
     );
-
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
 
@@ -111,7 +110,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
       <Modal
         id="modal-fuel-cards"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
@@ -124,7 +123,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 label="Номер"
                 value={state.number}
                 error={errors.number}
-                onChange={this.props.handleChange}
+                onChange={props.handleChange}
                 boundKeys="number"
                 disabled={!isPermitted}
               />
@@ -138,7 +137,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                   value={state.is_common}
                   error={errors.is_common}
                   disabled={!isPermitted}
-                  onChange={this.props.handleChangeBoolean}
+                  onChange={props.handleChangeBoolean}
                   boundKeys="is_common"
                   modalKey={page}
                 />
@@ -158,7 +157,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 error={errors.fuel_type}
                 options={fuelTypeOptions}
                 value={state.fuel_type}
-                onChange={this.props.handleChange}
+                onChange={props.handleChange}
                 boundKeys="fuel_type"
                 disabled={!isPermitted}
               />
@@ -168,7 +167,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                   name={state.structure_name}
                   error={errors.structure_id}
                   isPermitted={isPermitted}
-                  onChange={this.props.handleChange}
+                  onChange={props.handleChange}
                   page={page}
                   path={path}
                   disabled={!isPermitted}
@@ -182,7 +181,7 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                 error={errors.company_id}
                 options={companyOptions}
                 value={companiesDefaultValue}
-                onChange={this.props.handleChange}
+                onChange={props.handleChange}
                 boundKeys="company_id"
                 disabled={!isPermitted || companiesFieldIsDisable}
               />
@@ -195,8 +194,8 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
               isPermitted
                 ? (
                   <Button
-                    disabled={!this.props.canSave}
-                    onClick={this.handleSubmit}
+                    disabled={!props.canSave}
+                    onClick={handleSubmit}
                   >
                     Сохранить
                   </Button>
@@ -204,13 +203,13 @@ class FuelCardsForm extends React.PureComponent<PropsFuelCards, StateFuelCards> 
                   <DivNone />
                 )
             }
-            <Button onClick={this.props.hideWithoutChanges}>Отменить</Button>
+            <Button onClick={props.hideWithoutChanges}>Отменить</Button>
           </div>
         </Modal.Footer>
       </Modal>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsFuelCards, OwnFuelCardsProps>(
   connect<StatePropsFuelCards, DispatchPropsFuelCards, OwnFuelCardsProps, ReduxState>((state) => ({
@@ -226,9 +225,9 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     createAction: autobaseActions.autobaseCreateFuelCards,
     updateAction: autobaseActions.fuelCardsUpdate,
     mergeElement: (props) => {
-      const { companyOptions, userCompanyId } = props;
+      const { companyOptions, userCompanyId, userStructureId } = props;
 
-      const IS_CREATING = !get(props, ['element', 'id'], null);
+      const IS_CREATING = !get(props, 'element.id', null);
       const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
 
       const companiesDefaultValue =
@@ -236,9 +235,10 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
           ? userCompanyId
           : props.element.company_id;
 
-      const newElement = {
+      const newElement: Partial<FuelCards> = {
         ...props.element,
         company_id: companiesDefaultValue,
+        structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : null,
       };
 
       return getDefaultFuelCardsElement(newElement);

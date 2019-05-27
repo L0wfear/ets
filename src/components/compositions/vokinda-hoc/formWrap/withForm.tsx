@@ -328,6 +328,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             canSave: this.state.canSave,
           };
 
+          console.log('ERROR CHANGE STATE', formErrors); // tslint:disable-line:no-console
           return {
             ...newState,
             canSave: this.canSave({

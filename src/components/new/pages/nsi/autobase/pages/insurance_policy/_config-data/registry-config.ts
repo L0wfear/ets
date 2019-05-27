@@ -1,7 +1,6 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import insurancePolicyPermissions from './permissions';
 
 export const registryKey = 'insurancePolicyRegistry';
@@ -49,12 +48,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
         {
           valueKey: 'car_id',
           labelKey: 'gov_number',
-          title: [
-            {
-              title: 'Транспортное средство',
-              displayIf: displayIfContant.carActualAsuodsIdInParams,
-            },
-          ],
+          title: 'Транспортное средство',
           type: 'multiselect',
         },
         {
@@ -115,12 +109,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<InsurancePolicy> =>
           },
           {
             key: 'gov_number',
-            title: [
-              {
-                title: 'Транспортное средство',
-                displayIf: displayIfContant.carActualAsuodsIdInParams,
-              },
-            ],
+            title: 'Транспортное средство',
             width: 200,
           },
           {

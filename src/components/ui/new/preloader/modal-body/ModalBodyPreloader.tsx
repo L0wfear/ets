@@ -9,14 +9,14 @@ type PropsModalBodyPreloader = {
   page?: string;
 };
 
-class ModalBodyPreloader extends React.Component<PropsModalBodyPreloader, {}> {
-  render() {
+const ModalBodyPreloader: React.FC<PropsModalBodyPreloader> = React.memo(
+  (props) => {
     return (
-      <EtsBootstrap.ModalBody {...this.props}>
-        {this.props.children}
+      <EtsBootstrap.ModalBody {...props}>
+        {props.children}
       </EtsBootstrap.ModalBody>
     );
-  }
-}
+  },
+);
 
 export default withPreloader({})(ModalBodyPreloader);

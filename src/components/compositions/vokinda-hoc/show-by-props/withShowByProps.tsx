@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 import {
   DivNone,
@@ -21,13 +21,13 @@ const HiddenComponent: React.FC<any> = ({ type }) => {
   if (type === 'loader-field') {
     return (
       <div className="center-preloader">
-        <Preloader typePreloader="field" />
+        <PreloadNew typePreloader="field" />
       </div>
     );
   }
   if (type === 'small-loader-field') {
     return (
-      <Preloader typePreloader="field" />
+      <PreloadNew typePreloader="field" />
     );
   }
   return <DivNone />;

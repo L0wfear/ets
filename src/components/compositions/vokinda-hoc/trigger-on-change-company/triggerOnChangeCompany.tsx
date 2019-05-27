@@ -1,5 +1,6 @@
 import * as React from 'react';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
@@ -41,7 +42,7 @@ const triggerOnChangeCompany = (Component) => (
 
       render() {
         if (this.state.loading) {
-          return <Preloader typePreloader="mainpage" />;
+          return <PreloadNew typePreloader="mainpage" />;
         }
 
         return (

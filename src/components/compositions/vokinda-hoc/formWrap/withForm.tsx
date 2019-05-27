@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import PreloaderComponent from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -464,7 +464,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             />
           )
           : (
-            <PreloaderComponent typePreloader="mainpage" />
+            <PreloadNew typePreloader="mainpage" />
           );
       }
     },

@@ -3,14 +3,12 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import Div from 'components/ui/Div';
-import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 import ModalBody from 'components/ui/Modal';
 /**
  * @todo
  * Описать stage & props
  */
-@loadingOverlay
 class MakeFileModal extends React.Component<any, any> {
   state = {
     files: [],
@@ -46,7 +44,6 @@ class MakeFileModal extends React.Component<any, any> {
                 value={this.state.files}
                 onChange={this.handleChange}
                 boundKeys="files"
-                isLoading={this.props.onOverlayLoading}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>

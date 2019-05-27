@@ -2,17 +2,15 @@ import * as React from 'react';
 import {
   MainPageLoader,
   CssloadLoader,
-  GostWeakLoadingOverlay,
 } from 'components/ui/new/preloader/styled/styled';
 
-type PropsPreloaderComponent = {
-  typePreloader: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
+export type PropsPreloadNew = {
+  typePreloader: 'mainpage' | 'field' | 'lazy';
 };
 
-const preloaderGif = require('assets/images/infinity.gif');
 const preloaderFieldGif = require('assets/images/preloader-field.gif');
 
-class PreloaderComponent extends React.Component<PropsPreloaderComponent, {}> {
+class PreloadNew extends React.Component<PropsPreloadNew, {}> {
   render() {
     const {
       typePreloader,
@@ -20,24 +18,15 @@ class PreloaderComponent extends React.Component<PropsPreloaderComponent, {}> {
 
     switch (typePreloader) {
       case 'mainpage':
+      case 'lazy':
         return (
           <MainPageLoader id="loadingOverlay">
             <CssloadLoader />
           </MainPageLoader>
         );
-      case 'graph':
-        return (
-          <img id="preloader-graph" src={preloaderGif} alt="Идет загрузка" />
-        );
       case 'field':
         return (
           <img id="preloader-field" src={preloaderFieldGif} alt="Идет загрузка" />
-        );
-      case 'lazy':
-        return (
-          <GostWeakLoadingOverlay>
-            <img id="preloader-lazy" src={preloaderFieldGif} alt="Идет загрузка" />Загрузка...
-          </GostWeakLoadingOverlay>
         );
       default:
         return <div id="preloader-custom" className="custom-preloader" />;
@@ -45,4 +34,4 @@ class PreloaderComponent extends React.Component<PropsPreloaderComponent, {}> {
   }
 }
 
-export default PreloaderComponent;
+export default PreloadNew;

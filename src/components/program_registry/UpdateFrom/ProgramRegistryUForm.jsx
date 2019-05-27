@@ -7,7 +7,6 @@ import { connectToStores } from 'utils/decorators';
 import Div from 'components/ui/Div';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { loadingOverlay } from 'components/ui/LoadingOverlay';
 import { FileField } from 'components/ui/input/fields';
 
 import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
@@ -53,7 +52,6 @@ const getTitleByStatus = (status) => {
   }
 };
 
-@loadingOverlay
 @connectToStores(['repair', 'objects'])
 class ProgramRegistryForm extends UNSAFE_Form {
   constructor(props) {
@@ -366,7 +364,6 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   error={errors.files}
                   onChange={this.handleChange}
                   boundKeys="files"
-                  isLoading={this.props.onOverlayLoading}
                   disabled={!isPermitted || !isPermittedByStatus || !is_active}
                 />
               </EtsBootstrap.Col>

@@ -2,9 +2,10 @@ import * as React from 'react';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { PropsPreloadNew } from '../PreloadNew';
 
 type PropsModalBodyPreloader = {
-  typePreloader?: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
+  typePreloader?: PropsPreloadNew['typePreloader'];
   path?: string;
   page?: string;
 };

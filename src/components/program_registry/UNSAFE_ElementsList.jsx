@@ -4,7 +4,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as queryString from 'query-string';
 
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { FluxContext } from 'utils/decorators';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
@@ -441,7 +442,7 @@ class ElementsList extends React.Component {
     const forms = this.getForms();
     const additionalRender = this.additionalRender();
     const preloader = this.state.exportFetching && (
-      <Preloader typePreloader="mainpage" />
+      <PreloadNew typePreloader="mainpage" />
     );
 
     return (

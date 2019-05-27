@@ -4,7 +4,7 @@ import PDF from 'react-pdf-js';
 import * as Raven from 'raven-js';
 
 import ModalBody from 'components/ui/Modal';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 import {
   PropsPDFViewModal,
@@ -43,7 +43,7 @@ class PDFViewModal extends React.Component<
       <EtsBootstrap.ModalContainer show onHide={this.props.onHide}>
         <ModalBody bsClass="null">
           {!this.state.url ? (
-            <Preloader typePreloader="mainpage" />
+            <PreloadNew typePreloader="mainpage" />
           ) : (
             <PDF file={this.state.url} />
           )}

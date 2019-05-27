@@ -33,7 +33,8 @@ import {
   IReportTableMeta,
 } from 'components/reports/redux-main/modules/@types/report.h';
 
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import {
   getServerErrorNotification,
   noItemsInfoNotification,
@@ -546,7 +547,7 @@ class ReportContainer extends React.Component<
 
     const preloader = (this.props.reportMetaFetching ||
       this.props.reportDataFetching ||
-      this.state.exportFetching) && <Preloader typePreloader="mainpage" />;
+      this.state.exportFetching) && <PreloadNew typePreloader="mainpage" />;
     const moveUpButton = moveUpIsPermitted && (
       <EtsBootstrap.Button bsSize="small" onClick={this.handleMoveUp}>
         На уровень выше

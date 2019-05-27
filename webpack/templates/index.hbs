@@ -41,9 +41,10 @@
 
       .loading-container .title {
         margin: 5px;
+        margin-bottom: 300px;
       }
 
-      .loading-container .play_dot_container {
+      .play_dot_container {
         display: flex;
         margin: 5px;
       }
@@ -57,7 +58,10 @@
       }
 
       .dot {
+        -webkit-animation: playDot 2s infinite ease;
+        -moz-animation: playDot 2s infinite ease;
         animation: playDot 2s infinite ease;
+        
       }
       .dot.one {
         animation-delay: 0.4s;

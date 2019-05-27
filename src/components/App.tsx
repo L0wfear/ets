@@ -102,10 +102,20 @@ class App extends React.Component<any, any> {
       );
     }
 
-    const el = document.getElementById('main-background');
+    const el = document.getElementById('main-loading');
 
     if (el) {
-      document.body.removeChild(el);
+      el.style.opacity = '0';
+
+      setTimeout(
+        () => {
+          const el2 = document.getElementById('main-loading');
+          if (el2) {
+            document.body.removeChild(el);
+          }
+        },
+        300,
+      );
     }
   };
 

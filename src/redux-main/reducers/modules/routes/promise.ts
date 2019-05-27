@@ -39,6 +39,8 @@ const makeRoute = (route_data) => {
       } else {
         route.input_lines = [];
       }
+      route.draw_object_list = route.draw_object_list || [];
+
       route.draw_object_list.forEach((object: DrawData) => {
         const start = [object.begin.x_msk, object.begin.y_msk];
         const end = [object.end.x_msk, object.end.y_msk];

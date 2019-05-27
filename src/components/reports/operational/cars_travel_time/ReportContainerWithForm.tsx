@@ -1,11 +1,11 @@
 import * as React from 'react';
 
-import Report from 'components/reports/operational/cars_travel_time_new/report';
-import ReportFormWrap from 'components/reports/operational/cars_travel_time_new/form/ReportFormWrap';
+import Report from 'components/reports/operational/cars_travel_time/report';
+import ReportFormWrap from 'components/reports/operational/cars_travel_time/form/ReportFormWrap';
 
 type ReportContainerWithFormProps = {
   onRowDoubleClick: any;
-  selectedElement?: number; // <<< required
+  selectedElement?: number;
 };
 
 const ReportContainerWithForm: React.FC<ReportContainerWithFormProps> = (props) => {
@@ -15,7 +15,6 @@ const ReportContainerWithForm: React.FC<ReportContainerWithFormProps> = (props) 
     date_to: '',
   });
   const [selectedElement, setSelectedElement] = React.useState(null);
-  // между компоенентами даннми обмениваться как во вью, через функцию setSomething
 
   const onRowDoubleClick = React.useCallback(({props: {data}}) => {
     setSelectedElement(data);

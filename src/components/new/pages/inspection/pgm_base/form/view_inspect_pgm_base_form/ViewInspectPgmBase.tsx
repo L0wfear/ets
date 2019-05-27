@@ -108,7 +108,7 @@ const reducer = (state: InitialState, { type, payload }) => {
   switch (type) {
     case SET_INITIAL_STATE: {
       const { selectedInspect } = payload;
-      selectedInspect.data.address_base = selectedInspect.base_address; // <<< Переделать хардкод
+      selectedInspect.data.address_base = selectedInspect.base_address;
       selectedInspect.data.balance_holder_base = selectedInspect.company_name;
       selectedInspect.data.operating_base = selectedInspect.company_name;
 

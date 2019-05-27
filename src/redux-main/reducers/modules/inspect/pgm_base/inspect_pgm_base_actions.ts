@@ -274,16 +274,16 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
 };
 
 const inspectionPgmBaseActions = {
-  actionSetInspectPgmBaseInspectPgmBaseList, // <<< tut
+  actionSetInspectPgmBaseInspectPgmBaseList,
   actionCompanySetNewData,
   actionGetAndSetInStoreCompany,
-  actionGetAndSetInStorePgmBase, // << tut
-  actionGetGetInspectPgmBase, // << tut
-  actionGetInspectPgmBaseById, // << tut
-  actionGetAndSetInStoreInspectPgmBase, // << tut
+  actionGetAndSetInStorePgmBase,
+  actionGetGetInspectPgmBase,
+  actionGetInspectPgmBaseById,
+  actionGetAndSetInStoreInspectPgmBase,
   actionResetInspectPgmBase,
-  actionResetInspectPgmBaseList, // << tut
-  actionResetCompanyAndCarpool, // << tut
+  actionResetInspectPgmBaseList,
+  actionResetCompanyAndCarpool,
   actionCreateInspectPgmBase,
   actionUpdateInspectPgmBase,
   actionCloseInspectPgmBase,

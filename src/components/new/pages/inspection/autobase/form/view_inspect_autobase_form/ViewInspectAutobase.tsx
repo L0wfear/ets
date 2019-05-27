@@ -142,6 +142,19 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
   const isPermittedChangeListParams = (
     props.isPermitted
     && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
+    || (
+      props.isPermittedToUpdateClose
+      && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+    )
+  );
+
+  const isPermittedChangeCloseParams = (
+    props.isPermitted
+    && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+    || (
+      props.isPermittedToUpdateClose
+      && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+    )
   );
 
   const onChangeData = React.useCallback(
@@ -169,11 +182,6 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
     [state.selectedInspect, isPermittedChangeListParams],
   );
 
-  const closeWithoutChanges = React.useCallback(
-    () => props.handleHide(false),
-    [],
-  );
-
   const setComissionAndMembers = React.useCallback(
     (agents_from_gbu, commission_members, resolve_to) => {
       dispatch(
@@ -196,7 +204,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               <ExtField
                 type="string"
                 label="Организация:"
-                value={state.selectedInspect.company_name}
+                value={state.selectedInspect.company_short_name}
                 readOnly
                 inline
               />
@@ -222,7 +230,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
             </BoxContainer>
             <EtsBootstrap.Row>
             {
-              props.type === INSPECT_AUTOBASE_TYPE_FORM.list || state.selectedInspect.data.photos_of_supporting_documents.length
+              isPermittedChangeListParams || state.selectedInspect.data.photos_of_supporting_documents.length
                 ? (
                   <EtsBootstrap.Col md={6}>
                     <FileField
@@ -241,7 +249,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
                 )
             }
             {
-              props.type === INSPECT_AUTOBASE_TYPE_FORM.list || state.selectedInspect.data.photos_defect.length
+              isPermittedChangeListParams || state.selectedInspect.data.photos_defect.length
                 ? (
                   <EtsBootstrap.Col md={6}>
                     <FileField
@@ -263,7 +271,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
           </EtsBootstrap.Col>
           <ViewAddInspectEmployee
             type={props.type}
-            isPermitted={props.isPermitted}
+            isPermittedChangeCloseParams={isPermittedChangeCloseParams}
             canAddMembers={true}
             canAddCompanyAgent={true}
             canRemoveEmployee={true}
@@ -279,9 +287,10 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
               type={props.type}
               handleHide={props.handleHide}
               selectedInspectAutobase={state.selectedInspect}
+              isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               loadingPage={props.loadingPage}
             />
-            <EtsBootstrap.Button onClick={closeWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </>

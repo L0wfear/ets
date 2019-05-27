@@ -24,6 +24,8 @@ type ViewInspectCarsConditionButtonSubmitOwnProps = {
   selectedInspectCarsCondition: InspectCarsCondition;
   canSave: boolean;
   loadingPage: string;
+
+  isPermittedToUpdateClose: boolean;
 };
 
 type ViewInspectCarsConditionButtonSubmitProps = (
@@ -90,6 +92,8 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
+      handleSubmitClosed={handleSubmit}
+      isPermittedToUpdateClose={props.isPermittedToUpdateClose}
       handleCloseAndGetAct={handleCloseAndCarsConditionAct}
       handleGetAct={handleGetCarsConditionAct}
       type={props.type}

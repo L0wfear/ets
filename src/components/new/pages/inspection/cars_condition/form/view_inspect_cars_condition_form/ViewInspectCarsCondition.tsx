@@ -25,6 +25,7 @@ import { ColScroll } from './styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { INSPECT_PGM_BASE_TYPE_FORM } from '../../../pgm_base/global_constants';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
@@ -36,11 +37,36 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       formErrors: errors,
       page,
       path,
-      isPermitted,
     } = props;
 
     const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
-    const isActiveInspect = props.type === INSPECT_AUTOBASE_TYPE_FORM.list; // разное отображение по типу проверки
+
+    const isPermittedChangeListParams = (
+      props.isPermitted
+      && props.type === INSPECT_PGM_BASE_TYPE_FORM.list
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
+      )
+    );
+
+    const isPermittedChangeCloseParams = (
+      props.isPermitted
+      && props.type === INSPECT_PGM_BASE_TYPE_FORM.close
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
+      )
+    );
+
+    // разное отображение по типу проверки
+    const isActiveInspect = (
+      props.type === INSPECT_AUTOBASE_TYPE_FORM.list
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
+      )
+    );
 
     const callBackToLoadCars = React.useCallback(
       () => {
@@ -72,15 +98,6 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       [],
     );
 
-    const handleCloseWithLoadregistry = React.useCallback(
-      () => {
-        props.handleHide(
-          props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed,
-        );
-      },
-      [props.handleHide, props.type],
-    );
-
     const handleChangeData = React.useCallback(
       (ownObj: Partial<InspectCarsCondition['data']>) => {
         props.handleChange({
@@ -104,9 +121,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               error_head_balance_holder_base={errors.head_balance_holder_base}
               error_head_operating_base={errors.head_operating_base}
 
-              isPermitted={isPermitted}
+              isPermitted={isPermittedChangeListParams}
               isActiveInspect={isActiveInspect}
-              company_name={state.company_name}
+              company_short_name={state.company_short_name}
               monitoring_kind_text={state.monitoring_kind_text}
               checks_type_text={state.checks_type_text}
               checks_period_text={state.checks_period_text}
@@ -119,7 +136,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                     preparing_cars_check={state.data.preparing_cars_check}
                     error_preparing_cars_check={errors.data.preparing_cars_check}
                     onChange={handleChangeData}
-                    isPermitted={isPermitted}
+                    isPermitted={isPermittedChangeListParams}
                     isActiveInspect={isActiveInspect}
                   />
                 )
@@ -129,7 +146,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                       headcount_list={state.data.headcount_list}
                       error_headcount_list={errors.data.headcount_list}
 
-                      isPermitted={isPermitted}
+                      isPermitted={isPermittedChangeListParams}
                       isActiveInspect={isActiveInspect}
 
                       onChange={handleChangeData}
@@ -139,7 +156,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                       carsConditionCarsList={carsConditionCarsList}
                       error_cars_use={errors.data.cars_use}
 
-                      isPermitted={isPermitted}
+                      isPermitted={isPermittedChangeListParams}
                       isActiveInspect={isActiveInspect}
                       onChange={handleChangeData}
                     />
@@ -147,19 +164,19 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                 )
             }
             <BlockCarsConditionSelectCar
-              isPermitted={isPermitted}
+              isPermitted={isPermittedChangeListParams}
               isActiveInspect={isActiveInspect}
               carsConditionCarsList={carsConditionCarsList}
             />
             <BlockCarsConditionSelectPhotosOfSupportingDocuments
               files={state.files}
-              isPermitted={isPermitted}
+              isPermitted={isPermittedChangeListParams}
               isActiveInspect={isActiveInspect}
               onChange={props.handleChange}
             />
             <BlockCarsConditionSetInspectEmployee
               type={props.type}
-              isPermitted={props.isPermitted}
+              isPermittedChangeCloseParams={isPermittedChangeCloseParams}
 
               close_employee_fio={state.close_employee_fio}
               close_employee_position={state.close_employee_position}
@@ -198,12 +215,13 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
             <ViewInspectCarsConditionButtonSubmit
               type={props.type}
               handleSubmit={props.defaultSubmit}
+              isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}
               canSave={props.canSave && preparePlanCanSave}
               loadingPage={props.loadingPage}
             />
-            <EtsBootstrap.Button onClick={handleCloseWithLoadregistry}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>

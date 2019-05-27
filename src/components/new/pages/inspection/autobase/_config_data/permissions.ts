@@ -4,6 +4,8 @@ const inspectAutobasePermissions = {
   read: 'inspect.autobase.read',
   update: 'inspect.autobase.update',
   delete: 'inspect.autobase.delete',
+
+  update_closed: 'inspect.autobase_closed.update', // редактирование закрытой проверки
 };
 
 export default inspectAutobasePermissions;

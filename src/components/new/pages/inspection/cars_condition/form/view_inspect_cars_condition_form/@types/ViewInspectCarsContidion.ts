@@ -15,6 +15,7 @@ export type ViewInspectCarsConditionOwnProps = {
   element: InspectCarsCondition;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
   handleHide: OnFormHideType;
+  handleCloseWithoutChanges: any;
 
   loadingPage: string;
   page: string;
@@ -25,7 +26,9 @@ type ViewInspectCarsConditionMergedProps = (
   ViewInspectCarsConditionStateProps
   & ViewInspectCarsConditionDispatchProps
   & ViewInspectCarsConditionOwnProps
-);
+) & {
+  isPermittedToUpdateClose: boolean;
+};
 
 export type PropsViewInspectCarsConditionWithForm = ViewInspectCarsConditionMergedProps;
 

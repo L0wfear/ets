@@ -25,6 +25,8 @@ export type ViewInspectPgmBaseOwnProps = {
   selectedInspect: InspectPgmBase;
   handleHide: (isSubmitted: boolean, inspectAuotbase?: InspectPgmBase) => any;
   isPermitted: boolean;
+  isPermittedToUpdateClose: boolean;
+  handleCloseWithoutChanges: any;
 
   loadingPage: string;
   page: string;

@@ -236,6 +236,47 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
   return inspectionPgmBase;
 };
 
+export const actionUpdateInspectPgmBaseClosed = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionPgmBase>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const data = cloneDeep(inspectPgmBase.data);
+  const {
+    agents_from_gbu,
+    commission_members,
+    resolve_to,
+  } = inspectPgmBase;
+  delete data.files;
+  delete data.photos_of_supporting_documents;
+  delete data.photos_defect;
+  delete data.pgm_volume_sum;
+  delete data.summ_capacity;
+  delete data.containers_counter;
+
+  const payload = {
+    data,
+    agents_from_gbu,
+    commission_members,
+    resolve_to: createValidDateTime(resolve_to),
+  };
+
+  const inspectionPgmBase = await dispatch(
+    actionUpdateInspect(
+      inspectPgmBase.id,
+      data,
+      makeFilesForBackend(inspectPgmBase.data),
+      'pgm_base',
+      meta,
+      payload,
+    ),
+  );
+
+  dispatch(
+    actionPushDataInInspectPgmBaseList(
+      inspectionPgmBase,
+    ),
+  );
+
+  return inspectionPgmBase;
+};
+
 const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const data = cloneDeep(inspectPgmBase.data);
   const {
@@ -286,6 +327,7 @@ const inspectionPgmBaseActions = {
   actionResetCompanyAndCarpool,
   actionCreateInspectPgmBase,
   actionUpdateInspectPgmBase,
+  actionUpdateInspectPgmBaseClosed,
   actionCloseInspectPgmBase,
 };
 

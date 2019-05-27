@@ -25,6 +25,8 @@ export type ViewInspectAutobaseOwnProps = {
   selectedInspect: InspectAutobase;
   handleHide: (isSubmitted: boolean, inspectAuotbase?: InspectAutobase) => any;
   isPermitted: boolean;
+  isPermittedToUpdateClose: boolean;
+  handleCloseWithoutChanges: any;
 
   loadingPage: string;
   page: string;

@@ -14,6 +14,7 @@ import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_comp
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
   actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobase>;
+  actionUpdateInspectAutobaseClosed: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobaseClosed>;
   actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionCloseInspectAutobase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
@@ -25,6 +26,8 @@ type ViewInspectAutobaseButtonSubmitOwnProps = {
   selectedInspectAutobase: InspectAutobase;
   canSave: boolean;
   loadingPage: string;
+
+  isPermittedToUpdateClose: boolean;
 };
 
 type ViewInspectAutobaseButtonSubmitProps = (
@@ -40,6 +43,24 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
       if (canSave) {
         try {
           await props.actionUpdateInspectAutobase(
+            selectedInspectAutobase,
+            { page: props.loadingPage },
+          );
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
+
+        props.handleHide(true);
+      }
+    },
+    [selectedInspectAutobase, canSave],
+  );
+
+  const handleSubmitClosed = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.actionUpdateInspectAutobaseClosed(
             selectedInspectAutobase,
             { page: props.loadingPage },
           );
@@ -94,6 +115,8 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
+      handleSubmitClosed={handleSubmitClosed}
+      isPermittedToUpdateClose={props.isPermittedToUpdateClose}
       handleCloseAndGetAct={handleCloseAndAutobaseAct}
       handleGetAct={handleGetAutobaseAct}
       type={props.type}
@@ -110,6 +133,11 @@ export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobase
       actionUpdateInspectAutobase: (...arg) => (
         dispatch(
           inspectionAutobaseActions.actionUpdateInspectAutobase(...arg),
+        )
+      ),
+      actionUpdateInspectAutobaseClosed: (...arg) => (
+        dispatch(
+          inspectionAutobaseActions.actionUpdateInspectAutobaseClosed(...arg),
         )
       ),
       actionCloseInspectAutobase: (...arg) => (

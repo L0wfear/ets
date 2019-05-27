@@ -46,6 +46,7 @@ export type InspectAutobase = {
   close_employee_id: number | null;
   company_id: number;
   company_name: string;
+  company_short_name: string;
   data: InspectAutobaseData;
   date_start: string | null;
   id: number;

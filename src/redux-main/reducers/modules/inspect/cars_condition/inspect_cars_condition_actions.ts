@@ -88,31 +88,64 @@ export const actionCreateInspectCarsCondition = (payloadOwn: Parameters<typeof p
 };
 
 export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionCarsCondition>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
-  const data = cloneDeep(inspectCarsCondition.data);
+  if (inspectCarsConditionOwn.status !== 'completed') {
+    const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
+    const data = cloneDeep(inspectCarsCondition.data);
 
-  delete inspectCarsCondition.data;
+    delete inspectCarsCondition.data;
 
-  const isHasPeriod = Boolean(inspectCarsConditionOwn.checks_period); // разное отображение по типу проверки
-  if (isHasPeriod) {
-    delete data.cars_use;
-    delete data.headcount_list;
+    const isHasPeriod = Boolean(inspectCarsConditionOwn.checks_period); // разное отображение по типу проверки
+    if (isHasPeriod) {
+      delete data.cars_use;
+      delete data.headcount_list;
+    } else {
+      delete data.preparing_cars_check;
+    }
+
+    const inspectionCarsCondition = await dispatch(
+      actionUpdateInspect(
+        inspectCarsCondition.id,
+        data,
+        inspectCarsCondition.files,
+        'cars_condition',
+        meta,
+        inspectCarsCondition,
+      ),
+    );
+
+    return inspectionCarsCondition;
   } else {
-    delete data.preparing_cars_check;
+    const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
+    inspectCarsCondition.resolve_to = createValidDateTime(inspectCarsCondition.resolve_to);
+
+    const payload = {
+      data: inspectCarsCondition.data,
+      agents_from_gbu: inspectCarsCondition.agents_from_gbu,
+      commission_members: inspectCarsCondition.commission_members,
+      resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+    };
+
+    const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки
+    if (isHasPeriod) {
+      delete payload.data.cars_use;
+      delete payload.data.headcount_list;
+    } else {
+      delete payload.data.preparing_cars_check;
+    }
+
+    const inspectionCarsCondition = await dispatch(
+      actionUpdateInspect(
+        inspectCarsCondition.id,
+        payload.data,
+        inspectCarsCondition.files,
+        'cars_condition',
+        meta,
+        inspectCarsCondition,
+      ),
+    );
+
+    return inspectionCarsCondition;
   }
-
-  const inspectionCarsCondition = await dispatch(
-    actionUpdateInspect(
-      inspectCarsCondition.id,
-      data,
-      inspectCarsCondition.files,
-      'cars_condition',
-      meta,
-      inspectCarsCondition,
-    ),
-  );
-
-  return inspectionCarsCondition;
 };
 
 const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {

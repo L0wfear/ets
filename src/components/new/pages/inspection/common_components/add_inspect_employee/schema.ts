@@ -6,7 +6,6 @@ export const addInspectEmployeeSchema: SchemaType<Partial<ViewAddInspectEmployee
     resolve_to: {
       title: 'Срок, до которого необходимо устранить недостатки',
       type: 'date',
-      required: true,
     },
     member_fio: {
       title: 'ФИО',

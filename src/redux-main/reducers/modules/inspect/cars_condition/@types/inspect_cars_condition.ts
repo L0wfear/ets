@@ -74,6 +74,7 @@ export type InspectCarsCondition = {
   commission_members: CommissionMembers[];
   company_id: number;
   company_name: string;
+  company_short_name: string;
   date_start: string;
   id: number;
   inspection_company_id: number;

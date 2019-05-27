@@ -118,7 +118,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
             !this.props.disabled
               ? (
                 <BootstrapButton
-                  disabled={this.props.disabled}
+                  disabled={this.props.disabled || Boolean(!multiple && value.length)}
                   onClick={this.handleFilePick}
                   id={button_id}
                 >{buttonName}</BootstrapButton>

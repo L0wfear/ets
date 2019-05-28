@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { CarsConditionCars, InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
@@ -10,6 +10,9 @@ import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionSelectCarOwnProps = {
+  cars_cnt: InspectCarsCondition['cars_cnt'];
+  checked_cars_cnt: InspectCarsCondition['checked_cars_cnt'];
+  error_checked_cars_cnt: string;
   carsConditionCarsList: CarsConditionCars[];
   isActiveInspect: boolean;
   isPermitted: boolean;
@@ -60,12 +63,10 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             label: `${carData.gov_number} [${carData.was_resaved ? 'Проверено' : 'Ожидает проверки'}]${carData.fact_status_text ? `[${carData.fact_status_text}]` : ''}`,
             rowData: carData,
           }),
-        ).filter(({ value }) => value);
+        );
 
         return {
           carsConditionCarsOptions,
-          cars_cnt: carsConditionCarsOptions.length,
-          checked_cars_cnt: carsConditionCarsOptions.reduce((summ, { rowData }) => summ + Number(rowData.was_resaved), 0),
         };
       },
       [carsConditionCarsList],
@@ -110,17 +111,19 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
         <ExtField
           type="string"
           label="Проверено ТС:"
-          value={carsData.checked_cars_cnt}
+          value={props.checked_cars_cnt}
           readOnly
           inline
         />
         <ExtField
           type="string"
           label="Ожидают проверки:"
-          value={carsData.cars_cnt}
+          value={props.cars_cnt}
           readOnly
           inline
+          error="hello"
         />
+        <span className="error">{props.error_checked_cars_cnt}</span>
       </BoxContainer>
     );
   },

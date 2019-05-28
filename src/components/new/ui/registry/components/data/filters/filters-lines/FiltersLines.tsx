@@ -15,7 +15,6 @@ import { isArray } from 'util';
 import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import AdvancedStringLikeFilter from './advanced-string-like/AdvancedStringLikeFilter';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import AdvancedSelectLikeFilter from './advanced-select-like/AdvancedSelectLikeFilter';
@@ -55,14 +54,6 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
 
         if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return titleSomeValue.title;
-        }
-
-        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
-          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
-
-          if (!car_actual_asuods_id) {
-            return titleSomeValue.title;
-          }
         }
 
         return filtredTitle;

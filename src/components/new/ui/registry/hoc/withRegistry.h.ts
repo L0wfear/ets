@@ -15,7 +15,6 @@ export type TypeOneDisplayIf = (
   'isKgh'
   | 'isOkrug'
   | 'lenghtStructureMoreOne'
-  | 'carActualAsuodsIdInParams'
   | false
 );
 

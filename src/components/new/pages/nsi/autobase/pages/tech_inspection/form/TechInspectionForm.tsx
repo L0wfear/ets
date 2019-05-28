@@ -62,7 +62,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
 
   React.useEffect(
     () => {
-      if (IS_CREATING && !car_id) {
+      if (!car_id) {
         props.autobaseGetSetCar({}, { page, path }).then(
           ({ data }) => (
             setCarListOptions(
@@ -110,7 +110,7 @@ const TechInspectionForm: React.FC<PropsTechInspection> = (props) => {
       <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
         <Row>
           <Col md={12}>
-            {IS_CREATING && !car_id && (
+            {!car_id && (
               <ExtField
                 id="car_id"
                 type="select"

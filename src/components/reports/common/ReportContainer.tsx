@@ -88,10 +88,10 @@ class ReportContainer extends React.Component<
       this.getTableMetaInfo();
     }
 
-    if (this.props.title) {
+    if (this.props.titleText || this.props.title) {
       const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
       if (document) {
-        document.title = `${etsName} ${this.props.title}`;
+        document.title = `${etsName} ${this.props.titleText || this.props.title}`;
       }
     }
   }

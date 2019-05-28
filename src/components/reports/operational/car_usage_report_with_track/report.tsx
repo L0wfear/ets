@@ -17,7 +17,7 @@ const schemaMakers = {};
 const renderers = {};
 
 const infoMessage = 'Отчет строится по назначенным заданиям на ТС, попадающим в период формирования отчета. Если хотя бы одна координата поступала от ТС, то ТС учитывается в отчете.';
-const titleText = 'Статистика выхода техники';
+const titleText = 'Отчет по статистике выхода техники';
 
 const title = (
   <Title
@@ -28,6 +28,7 @@ const title = (
 
 const reportProps: IReportProps = {
   title,
+  titleText,
   serviceName,
   reportUrl,
   serviceUrl,

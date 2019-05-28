@@ -9,7 +9,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 
 type BlockCarsConditionSetInspectEmployeeProps = {
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
-  isPermitted: boolean;
+  isPermittedChangeCloseParams: boolean;
 
   close_employee_assignment: InspectCarsCondition['close_employee_assignment'];
   close_employee_assignment_date_start: InspectCarsCondition['close_employee_assignment_date_start'];
@@ -32,7 +32,7 @@ type BlockCarsConditionSetInspectEmployeeProps = {
 
 const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspectEmployeeProps> = React.memo(
   (props) => {
-    const isPermittedToChange = props.isPermitted && props.type === INSPECT_AUTOBASE_TYPE_FORM.close;
+    const { isPermittedChangeCloseParams } = props;
 
     return props.type !== INSPECT_AUTOBASE_TYPE_FORM.list && (
       <BlockEmployeeContainer>
@@ -42,7 +42,7 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
           value={props.resolve_to}
           time={false}
           error={props.error_resolve_to}
-          disabled={!isPermittedToChange}
+          disabled={!isPermittedChangeCloseParams}
           onChange={props.handleChange}
           boundKeys="resolve_to"
           makeGoodFormat
@@ -52,7 +52,7 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
           close_employee_position={props.close_employee_position}
           close_employee_assignment={props.close_employee_assignment}
           close_employee_assignment_date_start={props.close_employee_assignment_date_start}
-          isPermittedToChange={isPermittedToChange}
+          isPermittedToChange={isPermittedChangeCloseParams}
 
           commission_members={props.commission_members}
           company_id={props.company_id}
@@ -62,7 +62,7 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
         />
         <br />
         <AgentsFromGbu
-          isPermittedToChange={isPermittedToChange}
+          isPermittedToChange={isPermittedChangeCloseParams}
           agents_from_gbu={props.agents_from_gbu}
           company_name={props.company_name}
           handleChange={props.handleChange}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import TrTh from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/TrTh';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
@@ -13,7 +12,6 @@ import {
   PropsTrHead,
   StateTrHead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
@@ -27,11 +25,8 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
       formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
         const { displayIf } = titleSomeValue;
 
-        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
-          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
-          if (!car_actual_asuods_id) {
-            return titleSomeValue.title;
-          }
+        if (displayIf === 'test') {
+          return 'test';
         }
 
         return filtredTitle;

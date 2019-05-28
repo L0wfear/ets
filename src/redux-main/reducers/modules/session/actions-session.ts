@@ -75,9 +75,7 @@ export const sessionLogin = (user: { login: string; password: string }, meta: Lo
   let sessionEtsTest = '';
 
   if (process.env.STAND === 'gost_stage') {
-    const {
-      payload: { token: sessionEtsTestToken },
-    } = await etsLoadingCounter(
+    const { token: sessionEtsTestToken } = await etsLoadingCounter(
       dispatch,
       AuthServiceEtsTest.post(user, false, 'json'),
       meta,
@@ -151,26 +149,32 @@ export const checkToken: any = () => async (dispatch, getState) => {
   );
 
   if (process.env.STAND === 'gost_stage') {
+    let tokenString = localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2);
+    if (tokenString === 'undefined') {
+      tokenString = null;
+    }
     sessionEtsTest = JSON.parse(
-      localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+      tokenString,
     );
 
-    const {
-      payload: { data: dataEtsTest },
-    } = await dispatch({
-      type: 'none',
-      payload: AuthCheckServiceEtsTest.get(),
-      meta: {
-        promise: true,
-      },
-    });
+    if (tokenString) {
+      const { data: dataEtsTest } = await etsLoadingCounter(
+        dispatch,
+        AuthCheckServiceEtsTest.get(),
+        {
+          page: 'mainpage', path: '',
+        },
+      );
 
-    triggreOnSave = (
-      triggreOnSave
-      && Boolean(sessionEtsTest)
-      && isObject(dataEtsTest)
-      && Boolean(Object.keys(dataEtsTest).length)
-    );
+      triggreOnSave = (
+        triggreOnSave
+        && Boolean(sessionEtsTest) && sessionEtsTest !== 'undefined'
+        && isObject(dataEtsTest)
+        && Boolean(Object.keys(dataEtsTest).length)
+      );
+    } else {
+      triggreOnSave = false;
+    }
   }
 
   if (triggreOnSave) {
@@ -191,6 +195,8 @@ export const checkToken: any = () => async (dispatch, getState) => {
 };
 
 export const sessionResetData: any = () => (dispatch) => {
+  localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV2);
+  localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
   localStorage.removeItem(global.SESSION_KEY2);
   localStorage.removeItem(global.API__KEY2);
   localStorage.removeItem(global.SESSION_KEY);

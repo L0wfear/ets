@@ -2,7 +2,8 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { connect } from 'react-redux';
 import config from 'config';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { getMaxSpeedToLegend } from 'components/monitor/info/car-info/car-main-data-block/utils';
 import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import {
@@ -49,7 +50,7 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
             type_image_name !== '' ?
             <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
             :
-            <Preloader typePreloader="field" />
+            <PreloadNew typePreloader="field" />
           }
           </div>
           <div>

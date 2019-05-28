@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { carInfoSetTrackPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { makeDate, makeTime } from 'utils/dates';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { getCarMissionsByTimestamp } from 'redux-main/trash-actions/car';
 import { get } from 'lodash';
@@ -159,14 +160,14 @@ class OverlayTrackPoint extends React.Component<any, any> {
           {
             objectsString
             ? objectsString
-              : <Preloader typePreloader="field" />
+              : <PreloadNew typePreloader="field" />
           }
         </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>
           {
             missions === undefined ?
             (
-              <Preloader typePreloader="field" />
+              <PreloadNew typePreloader="field" />
             )
             :
             (

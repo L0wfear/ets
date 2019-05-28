@@ -35,6 +35,7 @@ type LoginPageProps = (
 
 const LoginPage: React.FC<LoginPageProps> = React.memo(
   (props) => {
+    const [inLoadingStatus, setInLoadingStatus] = React.useState(false);
     const [user, setUser] = React.useState({ login: '', password: '' });
 
     const handleChange = React.useCallback(
@@ -52,7 +53,7 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
     const onSigninClick = React.useCallback(
       async (e) => {
         e.preventDefault();
-
+        setInLoadingStatus(true);
         try {
           const userData = await props.loginUser(
             user,
@@ -65,6 +66,7 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
         } catch (e) {
           //
         }
+        setInLoadingStatus(false);
       },
       [user],
     );
@@ -84,18 +86,20 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
                 <FieldLogin
                   login={user.login}
                   handleChange={handleChange}
+                  disabled={inLoadingStatus}
                 />
                 <FieldPassword
                   password={user.password}
                   handleChange={handleChange}
+                  disabled={inLoadingStatus}
                 />
                 <LoginPageFormContentButton
                   block
                   id="submit"
-                  disabled={disabled}
+                  disabled={disabled || inLoadingStatus}
                   type="submit"
                 >
-                  Войти
+                  <span>Войти</span>
                 </LoginPageFormContentButton>
                 <TpMessangeContainer>
                   <span>Служба технической поддержки</span>

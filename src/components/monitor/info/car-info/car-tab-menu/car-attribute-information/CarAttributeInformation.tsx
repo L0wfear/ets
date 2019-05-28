@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { attributeList } from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/attribute-list';
 import {
   TypeLastPoint,
@@ -36,7 +37,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) 
                   <span className="car_info-attr_title">{`${attr.title}: `}</span>
                   {
                     !value && value !== null ?
-                      <Preloader typePreloader="field" />
+                      <PreloadNew typePreloader="field" />
                     :
                       <span className="car_info-attr_value">{value || '-'}</span>
                   }
@@ -53,7 +54,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) 
                 'Ошибка загрузки трека'
               )
               : (
-                <Preloader typePreloader="field" />
+                <PreloadNew typePreloader="field" />
               )
             )
             : (

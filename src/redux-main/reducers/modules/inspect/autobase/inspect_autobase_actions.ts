@@ -222,6 +222,48 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   return inspectionAutobase;
 };
 
+export const actionUpdateInspectAutobaseClosed = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const data = cloneDeep(inspectAutobase.data);
+  const {
+    agents_from_gbu,
+    commission_members,
+    resolve_to,
+  } = inspectAutobase;
+  delete data.files;
+  delete data.photos_of_supporting_documents;
+  delete data.photos_defect;
+
+  if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
+    commission_members.shift();
+  }
+
+  const payload = {
+    data,
+    agents_from_gbu,
+    commission_members,
+    resolve_to: createValidDateTime(resolve_to),
+  };
+
+  const inspectionAutobase = await dispatch(
+    actionUpdateInspect(
+      inspectAutobase.id,
+      data,
+      makeFilesForBackend(inspectAutobase.data),
+      'autobase',
+      meta,
+      payload,
+    ),
+  );
+
+  dispatch(
+    actionPushDataInInspectAutobaseList(
+      inspectionAutobase,
+    ),
+  );
+
+  return inspectionAutobase;
+};
+
 const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const data = cloneDeep(inspectAutobase.data);
   const {
@@ -273,6 +315,7 @@ const inspectionAutobaseActions = {
   actionResetCompanyAndCarpool,
   actionCreateInspectAutobase,
   actionUpdateInspectAutobase,
+  actionUpdateInspectAutobaseClosed,
   actionCloseInspectAutobase,
 };
 

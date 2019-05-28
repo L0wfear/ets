@@ -2,6 +2,7 @@ import { ISchemaRenderer, ISchemaMaker, IDataTableColSchema } from 'components/u
 
 export interface IReportProps {
   title: string | JSX.Element | null;
+  titleText?: string;
   serviceName: string;
   serviceUrl: string;
   reportUrl: string;

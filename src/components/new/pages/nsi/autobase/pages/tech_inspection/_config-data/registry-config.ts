@@ -1,7 +1,6 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import techInspectionPermissions from './permissions';
 
 export const registryKey = 'techInspectionRegistry';
@@ -56,12 +55,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
         {
           valueKey: 'car_id',
           labelKey: 'gov_number',
-          title: [
-            {
-              title: 'Транспортное средство',
-              displayIf: displayIfContant.carActualAsuodsIdInParams,
-            },
-          ],
+          title: 'Транспортное средство',
           type: 'multiselect',
         },
         {
@@ -111,12 +105,7 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
           },
           {
             key: 'gov_number',
-            title: [
-              {
-                title: 'Транспортное средство',
-                displayIf: displayIfContant.carActualAsuodsIdInParams,
-              },
-            ],
+            title: 'Транспортное средство',
             width: 200,
           },
           {

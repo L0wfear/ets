@@ -38,7 +38,7 @@ const SelectCarpoolCompany: React.FC<SelectCarpoolCompanyProps> = (props) => {
         props.companyList.map(
           (company) => ({
             value: company.company_id,
-            label: company.company_name,
+            label: company.short_name,
             rowData: company,
           }),
         ).filter(({ value }) => value)

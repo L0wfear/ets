@@ -247,6 +247,10 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'schema',
       schema: dataSchema,
     },
+    cars_cnt: {
+      type: 'number',
+      title: 'Количество ТС',
+    },
     checked_cars_cnt: {
       type: 'number',
       title: 'Количество проверенных ТС',
@@ -254,7 +258,7 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
         (checked_cars_cnt, { cars_cnt }, props) => {
           if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
             if (checked_cars_cnt !== cars_cnt) {
-              return 'error';
+              return 'Необходимо проверить все ТС';
             }
           }
         },
@@ -263,13 +267,6 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
     resolve_to: {
       type: 'date',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
-      dependencies: [
-        (resolve_to, _, props) => {
-          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close && !resolve_to) {
-            return 'Поле "Срок, до которого необходимо представить отчет об устранении выявленных недостатков" необходимо заполнить';
-          }
-        },
-      ],
     },
   },
 };

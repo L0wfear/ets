@@ -14,6 +14,7 @@ import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_comp
 
 type ViewInspectPgmBaseButtonSubmitDispatchProps = {
   actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
+  actionUpdateInspectPgmBaseClosed: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBaseClosed>;
   actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionCloseInspectPgmBase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
@@ -25,6 +26,8 @@ type ViewInspectPgmBaseButtonSubmitOwnProps = {
   selectedInspectPgmBase: InspectPgmBase;
   canSave: boolean;
   loadingPage: string;
+
+  isPermittedToUpdateClose: boolean;
 };
 
 type ViewInspectPgmBaseButtonSubmitProps = (
@@ -40,6 +43,22 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
       if (canSave) {
         try {
           await props.actionUpdateInspectPgmBase(
+            selectedInspectPgmBase,
+            { page: props.loadingPage },
+          );
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
+        props.handleHide(true);
+      }
+    },
+    [selectedInspectPgmBase, canSave],
+  );
+  const handleSubmitClosed = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.actionUpdateInspectPgmBaseClosed(
             selectedInspectPgmBase,
             { page: props.loadingPage },
           );
@@ -93,6 +112,8 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
+      isPermittedToUpdateClose={props.isPermittedToUpdateClose}
+      handleSubmitClosed={handleSubmitClosed}
       handleCloseAndGetAct={handleCloseAndPgmBaseAct}
       handleGetAct={handleGetPgmBaseAct}
       type={props.type}
@@ -109,6 +130,11 @@ export default compose<ViewInspectPgmBaseButtonSubmitProps, ViewInspectPgmBaseBu
       actionUpdateInspectPgmBase: (...arg) => (
         dispatch(
           inspectionPgmBaseActions.actionUpdateInspectPgmBase(...arg),
+        )
+      ),
+      actionUpdateInspectPgmBaseClosed: (...arg) => (
+        dispatch(
+          inspectionPgmBaseActions.actionUpdateInspectPgmBaseClosed(...arg),
         )
       ),
       actionCloseInspectPgmBase: (...arg) => (

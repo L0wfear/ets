@@ -20,7 +20,8 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getJSON } from 'api/adapter';
 import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { DivNone } from 'global-styled/global-styled';
 import { isNumber, isBoolean, isArray, isObject } from 'util';
 
@@ -326,7 +327,7 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
             this.state.isLoading
               ? (
                 <EtsPreloaderFieldContainer>
-                  <Preloader typePreloader="field" />
+                  <PreloadNew typePreloader="field" />
                 </EtsPreloaderFieldContainer>
               )
               : (

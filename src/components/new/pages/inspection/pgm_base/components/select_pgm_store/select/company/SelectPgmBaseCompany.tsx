@@ -59,7 +59,7 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
     [okrugId, companyId, props.companyList, searchState],
   );
 
-  const compnayOptions = React.useMemo(
+  const companyOptions = React.useMemo(
     () => {
       if (okrugId) {
         return filterCompanyByOkrug(
@@ -68,7 +68,7 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
         ).map(
           (company) => ({
             value: company.company_id,
-            label: company.company_name,
+            label: company.short_name,
             rowData: company,
           }),
         ).filter(({ value }) => value);
@@ -104,7 +104,7 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
             type="select"
             label={false}
             value={companyId}
-            options={compnayOptions}
+            options={companyOptions}
             onChange={setCompanyId}
             clearable={false}
             disabled={!okrugId}

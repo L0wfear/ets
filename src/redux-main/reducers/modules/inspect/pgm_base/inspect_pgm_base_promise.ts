@@ -118,6 +118,7 @@ export const promiseGetInspectPgmBaseById = async (id: number) => {
   );
 
   if (inspectPgmBase) {
+    inspectPgmBase.agents_from_gbu = inspectPgmBase.agents_from_gbu || [];
     const headData = {
       head_balance_holder_base_fio: get(inspectPgmBase, 'head_balance_holder_base.fio', null),
       head_balance_holder_base_tel: get(inspectPgmBase, 'head_balance_holder_base.tel', null),

@@ -43,14 +43,21 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
     const callBackToLoadCars = React.useCallback(
       () => {
+        const loadData = async () => {
+          try {
+            const result = await props.autobaseGetCarsConditionCars(state.id, { page, path });
+            setCarsConditionCarsList(result);
+            props.handleChange({
+              cars_cnt: result.length,
+              checked_cars_cnt: result.reduce((summ, { was_resaved }) => summ + Number(was_resaved), 0),
+            });
+          } catch (error) {
+            console.error(error); //tslint:disable-line
+          }
+        };
+
         setCarsConditionCarsList([]);
-        props.autobaseGetCarsConditionCars(state.id, { page, path }).then(
-          (result) => (
-            setCarsConditionCarsList(result)
-          ),
-        ).catch((error) => {
-          console.error(error); //tslint:disable-line
-        });
+        loadData();
       },
       [state.id],
     );
@@ -149,6 +156,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               isPermitted={isPermitted}
               isActiveInspect={isActiveInspect}
               carsConditionCarsList={carsConditionCarsList}
+              cars_cnt={state.cars_cnt}
+              checked_cars_cnt={state.checked_cars_cnt}
+              error_checked_cars_cnt={errors.checked_cars_cnt}
             />
             <BlockCarsConditionSelectPhotosOfSupportingDocuments
               files={state.files}

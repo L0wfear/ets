@@ -253,6 +253,10 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'schema',
       schema: dataSchema,
     },
+    cars_cnt: {
+      type: 'number',
+      title: 'Количество ТС',
+    },
     checked_cars_cnt: {
       type: 'number',
       title: 'Количество проверенных ТС',
@@ -260,7 +264,7 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
         (checked_cars_cnt, { cars_cnt }, props) => {
           if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
             if (checked_cars_cnt !== cars_cnt) {
-              return 'error';
+              return 'Необходимо проверить все ТС';
             }
           }
         },

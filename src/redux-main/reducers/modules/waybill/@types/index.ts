@@ -19,6 +19,9 @@ export type Waybill = {
   car_id: number;
   car_model_id: number;
   car_model_name: string;
+  car_type_id: number;
+  car_type_name: string;
+  car_gps_code: string;
   car_refill: WaybillCarRefill[]
   car_special_model_id: number;
   car_special_model_name: string;
@@ -76,6 +79,14 @@ export type Waybill = {
   tax_data: any[];
   track_length: number;
   trailer_id: number;
+  trailer_type_id: number;
+  trailer_type_name: string;
+  trailer_gps_code: string;
+  trailer_gov_number: string;
+  trailer_model_id: number;
+  trailer_model_name: string;
+  trailer_special_model_id: number;
+  trailer_special_model_name: string;
   work_mode_id: number;
   work_mode_name: string;
   work_mode_text: string;

@@ -20,13 +20,15 @@ import { HiddenPageEtsContainer, PopupBottomForm, TitleForm } from './styled';
 
 import { createPortal } from 'react-dom';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { INSPECT_PGM_BASE_TYPE_FORM } from '../../pgm_base/global_constants';
 
 type WithInspectFormWrapCheckConfig = {
   loadingPage: string;
   loadInpectById: any;
   inspectPermissions: (
     {
-      update: string | string [];
+      update: string | string[];
+      update_closed: string | string[];
     } & Record<string, string | string[]>
   );
   title: React.ReactNode;
@@ -51,6 +53,7 @@ type InspectionFormWrapProps = (
   & WithSearchProps
   & {
     isPermitted: boolean;
+    isPermittedToUpdateClose: boolean;
   }
 );
 
@@ -134,8 +137,6 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       [props.match.url,  props.location.search],
     );
 
-    useEscapeEvent(handleCloseForm);
-
     React.useEffect(
       () => {
         inspectionListDidUpdate(
@@ -185,6 +186,31 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       }
     }, [inspectId, inspectType, selectedInspect]);
 
+    const handleCloseWithoutChanges = React.useCallback(
+      async () => {
+        if (inspectType !== INSPECT_PGM_BASE_TYPE_FORM.closed) {
+          try {
+            await global.confirmDialog({
+              title: 'Покинуть страницу?',
+              body: 'Возможно, внесенные изменения не сохранятся.',
+              okName: 'Закрыть',
+              cancelName: 'Остаться',
+            });
+          } catch (error) {
+            // no
+            return;
+          }
+        }
+
+        handleCloseForm(
+          inspectType !== INSPECT_AUTOBASE_TYPE_FORM.closed,
+        );
+      },
+      [inspectType, handleCloseForm],
+    );
+
+    useEscapeEvent(handleCloseWithoutChanges);
+
     return createPortal(
       <HiddenPageEtsContainer>
         <PopupBottomForm show={Boolean(selectedInspect) && Boolean(inspectId) && inspectType}>
@@ -194,14 +220,16 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
                 <React.Fragment>
                   <TitleForm md={12} sm={12}>
                     <h4>{config.title}</h4>
-                    <EtsBootstrap.Button onClick={handleCloseForm}><EtsBootstrap.Glyphicon glyph="remove" /></EtsBootstrap.Button>
+                    <EtsBootstrap.Button onClick={handleCloseWithoutChanges}><EtsBootstrap.Glyphicon glyph="remove" /></EtsBootstrap.Button>
                   </TitleForm>
                   <Component
                     selectedInspect={selectedInspect}
                     element={selectedInspect}
                     type={inspectType}
                     handleHide={handleCloseForm}
-                    isPermitted={props.isPermitted}
+                    handleCloseWithoutChanges={handleCloseWithoutChanges}
+                    isPermitted={inspectType === INSPECT_AUTOBASE_TYPE_FORM.closed ? props.isPermittedToUpdateClose : props.isPermitted}
+                    isPermittedToUpdateClose={props.isPermittedToUpdateClose}
 
                     page={props.loadingPage}
                     loadingPage={props.loadingPage}
@@ -247,6 +275,11 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
     withRequirePermissionsNew({
       permissions: config.inspectPermissions.update,
       withIsPermittedProps: true,
+    }),
+    withRequirePermissionsNew({
+      permissions: config.inspectPermissions.update_closed,
+      withIsPermittedProps: true,
+      permissionName: 'isPermittedToUpdateClose',
     }),
   )(InspectionFormWrap);
 };

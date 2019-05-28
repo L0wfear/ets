@@ -27,7 +27,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type ViewAddInspectEmployeeProps = {
   type: ViewInspectAutobaseOwnProps['type'] | ViewInspectPgmBaseOwnProps['type'];
-  isPermitted: boolean;
+  isPermittedChangeCloseParams: boolean;
   canAddMembers: boolean;
   canAddCompanyAgent: boolean;
   canRemoveEmployee: boolean;
@@ -293,12 +293,6 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
     viewAddInspectEmployeeInitialState,
   );
 
-  const isPermittedChangeCloseParams = (
-    props.isPermitted
-    // && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-    && props.type === get(props.inspectTypeForm, 'close', null)
-  );
-
   const onChangeData = React.useCallback(
     (key, valueEvent) => {
       const shemaElemByKey = addInspectEmployeeSchema.properties[key];
@@ -362,15 +356,13 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
         ? [...props.selectedInspect.commission_members, userMember]
         : [userMember];
 
-      if ( props.type === get(props.inspectTypeForm, 'closed', null) || props.type === get(props.inspectTypeForm, 'list', null) ) {
-        dispatch(
-          actionChangeData({
-            resolve_to: props.selectedInspect.resolve_to,
-            commission_members,
-            agents_from_gbu: props.selectedInspect.agents_from_gbu,
-          }),
-        );
-      }
+      dispatch(
+        actionChangeData({
+          resolve_to: props.selectedInspect.resolve_to,
+          commission_members,
+          agents_from_gbu: props.selectedInspect.agents_from_gbu,
+        }),
+      );
     },
     [],
   );
@@ -405,9 +397,6 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
     clearable: true,
   };
 
-  // const showAgentFromGbu = (state.agents_from_gbu.fio && state.agents_from_gbu.position);
-  const resolveToIsDisabled = (type === get(props.inspectTypeForm, 'closed', null));
-
   return type !== get(props.inspectTypeForm, 'list', null)
     ? (
       <ViewAddInspectEmployeeWrapper>
@@ -422,7 +411,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 onChange={onChangeData}
                 error={state.errors.resolve_to}
                 boundKeys="resolve_to"
-                disabled={resolveToIsDisabled}
+                disabled={!props.isPermittedChangeCloseParams}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -437,7 +426,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                         <EmpRow highlight={employeeData.clearable}>
                           <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>
                           {
-                            employeeData.clearable && isPermittedChangeCloseParams
+                            employeeData.clearable && props.isPermittedChangeCloseParams
                               ? (
                                 <>
                                   &nbsp;
@@ -506,7 +495,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                   )
                 }
                 {
-                  isPermittedChangeCloseParams
+                  props.isPermittedChangeCloseParams
                     ? (
                       <EtsBootstrap.Row>
                         <EtsBootstrap.Col md={12}>
@@ -540,7 +529,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                         <EmpRow highlight={employeeData.clearable}>
                           <EmpInfo>{employeeData.fio}, {employeeData.position}</EmpInfo>
                           {
-                            employeeData.clearable && isPermittedChangeCloseParams
+                            employeeData.clearable && props.isPermittedChangeCloseParams
                               ? (
                                 <>
                                   &nbsp;
@@ -608,7 +597,7 @@ const ViewAddInspectEmployee: React.FC<ViewAddInspectEmployeeProps> = (props) =>
                 )
               }
               {
-                isPermittedChangeCloseParams
+                props.isPermittedChangeCloseParams
                   ? (
                     <EtsBootstrap.Col md={12}>
                       <EtsBootstrap.Button

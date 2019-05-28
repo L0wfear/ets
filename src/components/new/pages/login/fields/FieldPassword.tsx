@@ -7,6 +7,7 @@ import {
 type LoginPageProps = {
   password: string;
   handleChange: (arg: object) => any;
+  disabled: boolean;
 };
 
 const FieldPassword: React.FC<LoginPageProps> = React.memo(
@@ -28,6 +29,7 @@ const FieldPassword: React.FC<LoginPageProps> = React.memo(
         placeholder="Пароль"
         value={props.password}
         onChange={handleChange}
+        disabled={props.disabled}
       />
     );
   },

@@ -10,7 +10,7 @@ import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectC
 type BlockCarSConditionInfoProps = {
   head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'],
   head_operating_base: InspectCarsCondition['head_operating_base'],
-  company_name: InspectCarsCondition['company_name'],
+  company_short_name: InspectCarsCondition['company_short_name'],
   monitoring_kind_text: InspectCarsCondition['monitoring_kind_text'],
   checks_period_text: InspectCarsCondition['checks_period_text'],
   checks_type_text: InspectCarsCondition['checks_type_text'],
@@ -60,7 +60,7 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
         <ExtField
           type="string"
           label="Организация:"
-          value={props.company_name}
+          value={props.company_short_name}
           readOnly
           inline
         />

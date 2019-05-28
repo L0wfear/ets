@@ -62,17 +62,3 @@ export const CssloadLoader = styled.div`
     animation: ${cssload} 8s ease-in-out infinite;
   }
 `;
-
-export const GostWeakLoadingOverlay = styled.div`
-  position: fixed;
-  left: 70px;
-  bottom: 50px;
-  width: 120px;
-  background-color: rgba(255, 255, 255, 0.7);
-  border: 1px solid #666;
-  border-radius: 8px;
-  text-align: center;
-  padding: 10px;
-  color: #777;
-  z-index: 4;
-`;

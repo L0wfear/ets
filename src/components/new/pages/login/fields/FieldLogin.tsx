@@ -7,6 +7,7 @@ import {
 type LoginPageProps = {
   login: string;
   handleChange: (arg: object) => any;
+  disabled: boolean;
 };
 
 const FieldLogin: React.FC<LoginPageProps> = React.memo(
@@ -28,6 +29,7 @@ const FieldLogin: React.FC<LoginPageProps> = React.memo(
         placeholder="Логин"
         value={props.login}
         onChange={handleChange}
+        disabled={props.disabled}
       />
     );
   },

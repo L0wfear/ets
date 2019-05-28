@@ -4,7 +4,7 @@ import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 import { get } from 'lodash';
 import { EtsPreloaderFieldContainer } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 import {
   onChangeSelectLegacy,
@@ -254,7 +254,7 @@ export default class ReactSelect extends React.Component<any, any> {
           etsIsLoading
             && (
               <EtsPreloaderFieldContainer>
-                <Preloader typePreloader="field" />
+                <PreloadNew typePreloader="field" />
               </EtsPreloaderFieldContainer>
             )
         }

@@ -19,6 +19,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   commission_members: [],
   company_id: null,
   company_name: '',
+  company_short_name: '',
   head_balance_holder_base: {
     fio: '',
     tel: '',

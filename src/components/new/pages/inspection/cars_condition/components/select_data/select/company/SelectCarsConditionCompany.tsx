@@ -39,7 +39,7 @@ const SelectCarsConditionCompany: React.FC<SelectCarsConditionCompanyProps> = (p
         props.companyList.map(
           (company) => ({
             value: company.company_id,
-            label: company.company_name,
+            label: company.short_name,
             rowData: company,
           }),
         ).filter(

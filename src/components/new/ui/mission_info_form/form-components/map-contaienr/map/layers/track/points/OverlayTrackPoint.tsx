@@ -3,7 +3,8 @@ import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { makeDate, makeTime } from 'utils/dates';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
@@ -108,7 +109,7 @@ class OverlayTrackPoint extends React.Component<any, any> {
           {
             objectsString
               ? objectsString
-              : <Preloader typePreloader="field" />
+              : <PreloadNew typePreloader="field" />
           }
         </OverlayLineObjectsStringContainer>
         <OverlayLineInfoContainer>

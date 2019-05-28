@@ -109,8 +109,8 @@ const reducer = (state: InitialState, { type, payload }) => {
     case SET_INITIAL_STATE: {
       const { selectedInspect } = payload;
       selectedInspect.data.address_base = selectedInspect.base_address;
-      selectedInspect.data.balance_holder_base = selectedInspect.company_name;
-      selectedInspect.data.operating_base = selectedInspect.company_name;
+      selectedInspect.data.balance_holder_base = selectedInspect.company_short_name;
+      selectedInspect.data.operating_base = selectedInspect.company_short_name;
 
       const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: payload.type }, selectedInspect);
 
@@ -187,6 +187,19 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
   const isPermittedChangeListParams = (
     props.isPermitted
     && props.type === INSPECT_PGM_BASE_TYPE_FORM.list
+    || (
+      props.isPermittedToUpdateClose
+      && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
+    )
+  );
+
+  const isPermittedChangeCloseParams = (
+    props.isPermitted
+    && props.type === INSPECT_PGM_BASE_TYPE_FORM.close
+    || (
+      props.isPermittedToUpdateClose
+      && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
+    )
   );
 
   const onChangeData = React.useCallback(
@@ -212,11 +225,6 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
       }
     },
     [state.selectedInspect, isPermittedChangeListParams],
-  );
-
-  const closeWithoutChanges = React.useCallback(
-    () => props.handleHide(false),
-    [],
   );
 
   const setComissionAndMembers = React.useCallback(
@@ -340,7 +348,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
           </EtsBootstrap.Col>
           <ViewAddInspectEmployee
             type={props.type}
-            isPermitted={props.isPermitted}
+            isPermittedChangeCloseParams={isPermittedChangeCloseParams}
             canAddMembers={true}
             canAddCompanyAgent={true}
             canRemoveEmployee={true}
@@ -355,11 +363,12 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             <ViewInspectPgmBaseButtonSubmit
               canSave={state.canSave}
               type={props.type}
+              isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectPgmBase={state.selectedInspect}
               loadingPage={props.loadingPage}
             />
-            <EtsBootstrap.Button onClick={closeWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>

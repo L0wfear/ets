@@ -5,7 +5,7 @@ import cx from 'classnames';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import FileInput from 'components/ui/input/FileInput/FileInput';
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 import Div from 'components/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -48,7 +48,7 @@ function StringField(props) {
         )}
         )
         <br />
-        <Preloader typePreloader="field" />
+        <PreloadNew typePreloader="field" />
       </Div>
     );
   }

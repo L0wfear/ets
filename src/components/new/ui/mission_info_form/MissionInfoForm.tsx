@@ -272,7 +272,7 @@ class MissionInfoForm extends React.Component<
           <ModalBodyPreloader
             page="any"
             path="missionInfoForm"
-            typePreloader="lazy">
+            typePreloader="mainpage">
             <FormContainer>
               <SideContainerDiv>
                 <MapContainer

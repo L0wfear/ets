@@ -61,7 +61,6 @@ export default class LoadingStore extends Store {
 
     this.state = {
       operationsCount: 0,
-      lazyOperationsCount: 0,
     };
   }
 
@@ -69,35 +68,23 @@ export default class LoadingStore extends Store {
     actions.forEach((action) =>
       this.registerAsync(
         action,
-        () => this.inc(action, lazy),
-        () => this.dec(lazy),
-        () => this.dec(lazy),
+        () => this.inc(),
+        () => this.dec(),
+        () => this.dec(),
       ),
     );
   }
 
-  inc(action, lazy) {
-    if (lazy) {
-      let { lazyOperationsCount } = this.state;
-      lazyOperationsCount += 1;
-      this.setState({ lazyOperationsCount });
-    } else {
-      let { operationsCount } = this.state;
-      operationsCount += 1;
-      this.setState({ operationsCount });
-    }
+  inc() {
+    let { operationsCount } = this.state;
+    operationsCount += 1;
+    this.setState({ operationsCount });
   }
 
-  dec(lazy) {
-    if (lazy) {
-      let { lazyOperationsCount } = this.state;
-      lazyOperationsCount -= 1;
-      this.setState({ lazyOperationsCount });
-    } else {
-      let { operationsCount } = this.state;
-      operationsCount -= 1;
-      this.setState({ operationsCount });
-    }
+  dec() {
+    let { operationsCount } = this.state;
+    operationsCount -= 1;
+    this.setState({ operationsCount });
   }
 
   isLoading() {
@@ -112,9 +99,5 @@ export default class LoadingStore extends Store {
       }
     }
     return this.state.operationsCount > 0;
-  }
-
-  isLazyLoading() {
-    return this.state.lazyOperationsCount > 0;
   }
 }

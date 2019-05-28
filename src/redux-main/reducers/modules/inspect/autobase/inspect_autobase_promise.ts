@@ -99,6 +99,8 @@ export const promiseGetInspectAutobaseById = async (id: number) => {
   );
 
   if (inspectAutobase) {
+    inspectAutobase.agents_from_gbu = inspectAutobase.agents_from_gbu || [];
+
     inspectAutobase.data = {
       ...(inspectAutobase.data || defaultInspectAutobaseData),
       ...makeFilesForFront(inspectAutobase),

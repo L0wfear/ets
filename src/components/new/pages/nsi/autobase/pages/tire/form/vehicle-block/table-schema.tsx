@@ -77,33 +77,52 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
 
 const InstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, onChange, index, outputListErrors, isPermitted }) => (
-  <ExtField
-    type="date"
-    label={false}
-    date={value}
-    time={false}
-    error={get(outputListErrors[index], 'installed_at', '')}
-    onChange={onChange}
-    boundKeys={[index, 'installed_at']}
-    disabled={!isPermitted}
-  />
-);
+> = ({ value, onChange, index, outputListErrors, isPermitted }) => {
+  const handleChange = React.useCallback(
+    (key, valueNew) => {
+      onChange(index, key, valueNew);
+    },
+    [index],
+  );
+  return (
+    <ExtField
+      type="date"
+      label={false}
+      date={value}
+      time={false}
+      error={get(outputListErrors[index], 'installed_at', '')}
+      onChange={handleChange}
+      boundKeys="installed_at"
+      disabled={!isPermitted}
+      makeGoodFormat
+    />
+  );
+};
 
 const UninstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, onChange, index, isPermitted, outputListErrors }) => (
-  <ExtField
-    type="date"
-    label={false}
-    date={value}
-    time={false}
-    onChange={onChange}
-    boundKeys={[index, 'uninstalled_at']}
-    disabled={!isPermitted}
-    error={get(outputListErrors[index], 'uninstalled_at', '')}
-  />
-);
+> = ({ value, onChange, index, isPermitted, outputListErrors }) => {
+  const handleChange = React.useCallback(
+    (key, valueNew) => {
+      onChange(index, key, valueNew);
+    },
+    [index],
+  );
+
+  return (
+    <ExtField
+      type="date"
+      label={false}
+      date={value}
+      time={false}
+      onChange={handleChange}
+      boundKeys="uninstalled_at"
+      disabled={!isPermitted}
+      error={get(outputListErrors[index], 'uninstalled_at', '')}
+      makeGoodFormat
+    />
+  );
+};
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
   const vehicleList = props.tireAvailableCarList.map(

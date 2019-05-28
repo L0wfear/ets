@@ -37,11 +37,11 @@ const validateFuelCardId = (
   if (needSelectFuelCard) {
     if (!availableFuelCard.length) {
       fuel_card_id
-        = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту';
+        = 'Необходимо добавить топливную карту в справочнике "НСИ-Транспортные средства-Реестр топливных карт" или создать по кнопке "Создать топл.карту"';
     } else {
       fuel_card_id = 'Поле "Топливная карта" должно быть заполнено';
     }
-  } else {
+  } else if (fuel_card_id) {
     const currentFuelCardData = availableFuelCard.find(
       (optionData) => optionData.rowData.id === rowData.fuel_card_id,
     );

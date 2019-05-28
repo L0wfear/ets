@@ -6,12 +6,12 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-import Preloader from 'components/ui/new/preloader/Preloader';
+import PreloadNew, { PropsPreloadNew } from 'components/ui/new/preloader/PreloadNew';
 
 import { ReduxState } from 'redux-main/@types/state';
 
 type TypeConfig = {
-  typePreloader?: 'mainpage' | 'graph' | 'field' | 'lazy' | void;
+  typePreloader?: PropsPreloadNew['typePreloader'];
   page?: string;
   path?: string;
   withPagePath?: boolean;
@@ -42,7 +42,7 @@ const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
             {
               isLoading ?
               (
-                <Preloader typePreloader={configWithPreloader.typePreloader || typePreloader} />
+                <PreloadNew typePreloader={configWithPreloader.typePreloader || typePreloader} />
               )
               :
               (

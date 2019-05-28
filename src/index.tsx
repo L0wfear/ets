@@ -5,7 +5,7 @@
  */
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import PreloaderComponent from 'components/ui/new/preloader/Preloader';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
  /* 3rd party js */
 import './assets/main.scss';
@@ -21,7 +21,7 @@ const AppContainer = React.lazy(() => (
 ));
 
 ReactDom.render(
-  <React.Suspense fallback={<PreloaderComponent typePreloader="mainpage" />}>
+  <React.Suspense fallback={<PreloadNew typePreloader="mainpage" />}>
     <AppContainer />
   </React.Suspense>,
   document.getElementById('container'),

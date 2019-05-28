@@ -26,7 +26,6 @@ import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from '
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
 import { TIME_MEASURES, MISSION_STATUS_LABELS } from 'constants/dictionary';
 import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
@@ -175,12 +174,6 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
         }
         if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
           return true;
-        }
-        if (displayIf === displayIfContant.carActualAsuodsIdInParams) {
-          const car_actual_asuods_id = getNumberValueFromSerch(this.props.match.params.car_actual_asuods_id);
-          if (!car_actual_asuods_id) {
-            return true;
-          }
         }
         return filtredTitle;
       }, null);

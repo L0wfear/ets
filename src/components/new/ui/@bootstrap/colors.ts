@@ -34,7 +34,7 @@ export const defaultEtsTheme = {
     },
     paginator: {
       backgroundColor: {
-        default: 'white',
+        default: 'initial',
         disabled: '#ddd',
         hover: '#3c763d',
         focus: darken(0.05, '#3c763d'),

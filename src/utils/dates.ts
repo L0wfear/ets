@@ -63,6 +63,13 @@ export function createValidDate(date) {
   return moment(date).format('YYYY-MM-DD');
 }
 
+export function createValidDateDots(date) {
+  if (!date) {
+    return null;
+  }
+  return moment(date).format('DD.MM.YYYY');
+}
+
 export function createValidDateHM(date) {
   if (!date) {
     return null;

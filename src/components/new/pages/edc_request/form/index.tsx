@@ -207,6 +207,9 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
         element={props.element}
         registryKey={page}
         onFormHide={props.onFormHide}
+
+        page={page}
+        path={path}
       />
     );
   }

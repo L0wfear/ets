@@ -15,34 +15,46 @@ export const promiseGetEdcRequestInfo = async (payload: {id: number, original: b
     response = null;
   }
 
-  const data: (Mission | DutyMission)[] = get(response, 'result.rows', []).map(
-    (rowData) => {
-      const number = get(rowData, 'number', '');
-      const technical_operation_name = get(rowData, 'technical_operation_name', '');
-      const gov_number = get(rowData, 'gov_number', '');
-      const car_model_name = get(rowData, 'car_model_name', '');
-      const car_special_model_name = get(rowData, 'car_special_model_name', '');
-      const type_name = get(rowData, 'type_name', '');
+  const data: (Mission | DutyMission)[] = get(response, 'result.rows', []).reduce(
+    (newData, currentRequest) => {
+      const missions = get(currentRequest, 'missions', []).map((mission, index) => {
+        const number = get(mission, 'number', '');
+        const technical_operation_name = get(mission, 'technical_operation_name', '');
+        const front_custom_id = get(mission, 'id', null); // unique key
+        const title_name = `№${number} (${technical_operation_name})`;
+        let transport_name = '-';
 
-      rowData.type_mission = 'current_percentage' in rowData ? 'mission' : 'duty_mission'; // <<< выпилить, когда сделают бек
-      rowData.title_name = `№ ${number} (${technical_operation_name})`;
-      // Рег. номер [Модель / марка / Тип ТС]
-      rowData.transport_name = `${gov_number} [${car_model_name} / ${car_special_model_name} / ${type_name}]`;
+        if ( get(mission, 'type_mission', null) === 'mission' ) {
+          const gov_number = get(mission, 'gov_number', '');
+          const car_model_name = get(mission, 'car_model_name', '');
+          const car_special_model_name = get(mission, 'car_special_model_name', '');
+          const type_name = get(mission, 'type_name', '');
+          // Рег. номер [Модель / марка / Тип ТС]
+          transport_name = `${gov_number} [${car_model_name} / ${car_special_model_name} / ${type_name}]`;
+        }
 
-      return rowData;
-    },
+        return {
+          ...mission,
+          front_custom_id,
+          title_name,
+          transport_name,
+        };
+      });
+
+      const edc_date = get(currentRequest, 'edc_date', null);
+
+      return [
+        {
+          edc_date,
+          missions,
+          // missions: [...missions, ...missions, ...missions, ...missions, ...missions, ...missions, ...missions, ...missions],
+        },
+        ...newData,
+      ];
+    }, [],
   );
 
   return {
-    data: [
-      {
-        edc_date: '1',      // Ранее завершенные работы по заявке от <дата создания предыдущей заявки в формате дд.мм.гггг>
-        missions: data,
-      },
-      {
-        edc_date: '1',      // Ранее завершенные работы по заявке от <дата создания предыдущей заявки в формате дд.мм.гггг>
-        missions: data,
-      },
-    ],
+    data,
   };
 };

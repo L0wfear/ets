@@ -12,6 +12,9 @@ type RequestInfoFormLazyProps = {
   registryKey: string;
   element: EdcRequest;
   onFormHide: (isSubmitted: boolean | any, result?: any) => any;
+
+  page: string;
+  path: string;
 };
 
 const RequestInfoFormLazy: React.FC<RequestInfoFormLazyProps> = React.memo(
@@ -24,8 +27,8 @@ const RequestInfoFormLazy: React.FC<RequestInfoFormLazyProps> = React.memo(
               element={props.element}
               handleHide={props.onFormHide}
 
-              page={props.registryKey}
-              path={`${props.registryKey}`}
+              page={props.page}
+              path={props.path}
             />
           </React.Suspense>
         </ErrorBoundaryForm>

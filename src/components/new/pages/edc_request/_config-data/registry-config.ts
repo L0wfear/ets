@@ -86,6 +86,15 @@ export const config: TypeConfigData<EdcRequest> = {
         type: 'advanced-date',
         title: 'Передано в ППОЗ',
       },
+      {
+        valueKey: 'rework',
+        type: 'multiselect',
+        title: 'Возвращена на доработку',
+        options: [
+          { value: true, label: 'Да' },
+          { value: false, label: 'Нет' },
+        ],
+      },
     ],
   },
   list: {

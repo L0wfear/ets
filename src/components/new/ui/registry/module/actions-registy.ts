@@ -306,6 +306,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     }
 
     let processedArray = array;
+
     let processedTotalCount = 0;
 
     if (!userServerFilters) {

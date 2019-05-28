@@ -2,12 +2,14 @@ import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
 import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 
-export const registryKey = 'requestHistoryList';
+export const registryKey = 'requestHistoryList'; // Формировать из пропсов
 
-export const getConfig = (array: EdcRequestInfo['missions']): TypeConfigData<ValuesOf<EdcRequestInfo['missions']>> => ({
+export const getRegistryKey = (regIndex: number) => `${registryKey}_${regIndex}`;
+
+export const getConfig = (array: EdcRequestInfo['missions'], index: number): TypeConfigData<ValuesOf<EdcRequestInfo['missions']>> => ({
   noInitialLoad: true,
   Service: {},
-  registryKey,
+  registryKey: getRegistryKey(index),
   header: {
     title: '',
     buttons: [],

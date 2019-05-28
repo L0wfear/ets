@@ -12,7 +12,7 @@ import {
 } from 'components/reports/operational/cars_travel_time/triggerDate';
 
 const serviceUrl = 'cars_travel_time';
-const reportUrl = 'cars_travel_time';
+const reportUrl = 'cars_travel_time_new';
 const serviceName = 'CarsTravelTimeReportNew';
 
 const schemaMakers = {

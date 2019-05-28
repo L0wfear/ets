@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
 import { isArray, isBoolean, isObject, isString, isNumber } from 'util';
 import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/filter';
@@ -214,8 +215,7 @@ export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator
 );
 
 export const mergeListProcessed = (processed: Partial<OneRegistryData['list']['processed']>) => {
-
-  let processedNew = registryDefaultObj.list.processed;
+  let processedNew = cloneDeep(registryDefaultObj.list.processed);
 
   if (processed) {
     processedNew = Object.entries(registryDefaultObj.list.processed).reduce((newObj, [key, value]: any) => {

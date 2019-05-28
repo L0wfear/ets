@@ -40,8 +40,9 @@ const RequestInfoForm: React.FC<RequestInfoFormProps> = React.memo(
           <EtsBootstrap.ModalTitle>{titleModal}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={props.page} path={props.path} typePreloader="mainpage">
-          {/* <RequestHistoryList service_id={props.element.id} service_name={props.element.name}/> */}
-          Адрес: { house_address ? house_address : '-'}
+          <h4>
+            Адрес: { house_address ? house_address : '-'}
+          </h4>
           <RequestHistoryList
             requestElement = {props.element}
             page = {props.page}
@@ -56,15 +57,3 @@ const RequestInfoForm: React.FC<RequestInfoFormProps> = React.memo(
 );
 
 export default RequestInfoForm;
-// export default connect<StatePropsRequestInfoForm, DispatchPropsRequestInfoForm, any, ReduxState>(
-//   (state) => ({
-//     edcRequestInfoList: getSomeUniqState(state).edcRequestInfoList,
-//   }),
-//   (dispatch: any) => ({
-//     actionGetAndSetInStoreEdcRequestInfo: (...args) => (
-//       dispatch(
-//         someUniqActions.actionGetAndSetInStoreEdcRequestInfo(...args),
-//       )
-//     ),
-//   }),
-// )(RequestInfoForm);

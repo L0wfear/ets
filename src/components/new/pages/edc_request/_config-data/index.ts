@@ -6,7 +6,7 @@ import { getConfig } from 'components/new/pages/edc_request/form/requestInfo/tab
 
 export default {
   path: '/edc_request',
-  routePath: `/edc_request/:${config.list.data.uniqKeyForParams}?/:type?/:${getConfig([]).list.data.uniqKeyForParams}?`,
+  routePath: `/edc_request/:${config.list.data.uniqKeyForParams}?/:type?/:${getConfig([], 0).list.data.uniqKeyForParams}?`,
   title: 'Заявки',
   isNewRegistry: true,
   entyity: 'edc_request',

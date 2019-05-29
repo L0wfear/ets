@@ -83,8 +83,8 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
 
   const TECH_MAINT_ORDERS = React.useMemo(
     () => (
-      techMaintOrderList.map(({ tech_maintenance_type_name, id }) => ({
-        label: tech_maintenance_type_name,
+      techMaintOrderList.map(({ tech_maintenance_type_name, id, measure_unit_run_name }) => ({
+        label: `${tech_maintenance_type_name}, ${measure_unit_run_name}`,
         value: id,
       }))
     ),

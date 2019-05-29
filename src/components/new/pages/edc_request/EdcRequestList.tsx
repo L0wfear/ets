@@ -17,12 +17,13 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 import EdcRequestFormLazy from 'components/new/pages/edc_request/form';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+// import { promiseSetTestDataToDatabase } from 'redux-main/reducers/modules/edc_request/edc_request_promise';
 
 const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {
   React.useEffect(
     () => {
       props.registryAddInitialData(config);
-
+      // promiseSetTestDataToDatabase(123);
       return () => {
         props.registryRemoveData(registryKey);
       };
@@ -31,7 +32,7 @@ const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {
   );
 
   return (
-      <>
+    <>
       <Registry registryKey={registryKey} />
       <EdcRequestFormLazy registryKey={registryKey} />
     </>

@@ -35,6 +35,8 @@ export const initialState: IStateSomeUniq = {
   refillTypeList: [],
   carsTravelTimeList: [],
   tracksCaching: null,
+
+  edcRequestInfoList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

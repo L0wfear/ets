@@ -86,6 +86,15 @@ export const config: TypeConfigData<EdcRequest> = {
         type: 'advanced-date',
         title: 'Передано в ППОЗ',
       },
+      {
+        valueKey: 'rework',
+        type: 'multiselect',
+        title: 'Возвращена на доработку',
+        options: [
+          { value: true, label: 'Да' },
+          { value: false, label: 'Нет' },
+        ],
+      },
     ],
   },
   list: {
@@ -96,10 +105,18 @@ export const config: TypeConfigData<EdcRequest> = {
       fixedWidth: true,
     },
     meta: {
+      row_double_click: true,
       fields: [
         {
           key: 'enumerated',
           title: '№',
+        },
+        {
+          key: 'edc_request_info',
+          title: 'Возврат',
+          sortable: false,
+          width: 100,
+          displayIfPermission: [edcRequestPermissions.list, edcRequestPermissions.read],
         },
         {
           key: 'status_name',

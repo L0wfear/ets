@@ -90,6 +90,7 @@ export type TypeFields<F extends any> = {
     | 'waybill_status_name'
   );
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+  displayIfPermission?: string | string[];
 } | {
   title: string;
   childrenFields?: TypeFields<F>[];
@@ -176,6 +177,7 @@ export type TypeConfigData<F> = {
       perPage?: number,
     },
     meta: {
+      row_double_click?: boolean;
       fields: TypeFields<F>[];
     },
   };

@@ -16,33 +16,35 @@ import memoizeOne from 'memoize-one';
 import { EtsTrTbody } from './tr-tbody/styled/styled';
 import { EtsTbodyTrTd } from './tr-tbody/tr-td/styled/styled';
 
-const Tbody: React.FC<PropsTbody> = (props) => {
-  return (
-    <tbody>
-      {
-        props.showArray.map((rowData, indexRow) => (
-          <TrTbody
-            key={rowData[props.uniqKey]}
-            rowData={rowData}
-            registryKey={props.registryKey}
-            indexRow={indexRow}
-          />
-        ))
-      }
-      {
-        !props.showArray.length && props.rowFields.length
-          ? (
-            <EtsTrTbody>
-              <EtsTbodyTrTd colSpan={3}>Нет данных</EtsTbodyTrTd>
-            </EtsTrTbody>
-          )
-          : (
-            <tr><td></td></tr>
-          )
-      }
-    </tbody>
-  );
-};
+const Tbody: React.FC<PropsTbody> = React.memo(
+  (props) => {
+    return (
+      <tbody>
+        {
+          props.showArray.map((rowData, indexRow) => (
+            <TrTbody
+              key={rowData[props.uniqKey]}
+              rowData={rowData}
+              registryKey={props.registryKey}
+              indexRow={indexRow}
+            />
+          ))
+        }
+        {
+          !props.showArray.length && props.rowFields.length
+            ? (
+              <EtsTrTbody>
+                <EtsTbodyTrTd colSpan={3}>Нет данных</EtsTbodyTrTd>
+              </EtsTrTbody>
+            )
+            : (
+              <tr><td></td></tr>
+            )
+        }
+      </tbody>
+    );
+  },
+);
 
 const makeShowArray = memoizeOne(
   (processedArray, paginator, Service) => {

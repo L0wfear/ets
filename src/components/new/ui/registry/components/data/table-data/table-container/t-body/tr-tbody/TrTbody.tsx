@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
-import { isNumber, isArray } from 'util';
+import { isNumber, isArray, isNullOrUndefined } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdCheckbox';
@@ -21,7 +21,7 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import { compose } from 'recompose';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { getSessionState, getRegistryState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -37,6 +37,8 @@ import { missionsStatusBySlag } from 'components/waybill/constant/table';
 import TrTdButtonServicesActionsOnOff from './tr-td/TrTdButtonServicesActionsOnOff';
 import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
+import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
+import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -52,13 +54,20 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, title, format, dashIfEmpty }, index) => {
+  renderRow = ({ key, title, format, dashIfEmpty, displayIfPermission }, index) => {
     const { props } = this;
 
     const {
       rowData,
       registryKey,
     } = props;
+
+    const permissionsSet = get(props, 'userData.permissionsSet', new Set());
+    if ( !isNullOrUndefined(displayIfPermission) ) {
+      if (!validatePermissions(displayIfPermission, permissionsSet)) {
+        return null;
+      }
+    }
 
     if (key === 'checkbox') {
       return (
@@ -142,6 +151,16 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'button_show_action_log') {
       return (
         <TrTdServiceButtonShowActionLog
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'edc_request_info') {
+      return (
+        <TrTdButtonEdcRequestInfo
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}
@@ -273,7 +292,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
-    if (props.isPermitted && props.buttons.includes(buttonsTypes.read)) {
+    if (props.isPermitted && (props.buttons.includes(buttonsTypes.read) || props.row_double_click)) {
       this.props.setParams({
         [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
       });
@@ -323,6 +342,7 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       userData: getSessionState(state).userData,
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
       buttons: getHeaderData(state.registry, registryKey).buttons,
+      row_double_click: getListData(getRegistryState(state), registryKey).meta.row_double_click,
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

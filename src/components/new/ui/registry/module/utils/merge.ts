@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
 import { isArray, isBoolean, isObject, isString, isNumber } from 'util';
 import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/filter';
@@ -151,6 +152,7 @@ export const mergeListPermissions = (permissions: OneRegistryData['list']['permi
 export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, otherData: OtherData) => {
   const {
     fields = registryDefaultObj.list.meta.fields,
+    row_double_click = registryDefaultObj.list.meta.row_double_click,
   } = meta || {};
 
   const fieldsFiltred = fields.reduce(
@@ -187,7 +189,10 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
     [],
   );
 
-  return makerDataMetaField(fieldsFiltred);
+  return {
+    ...makerDataMetaField(fieldsFiltred),
+    row_double_click,
+  };
 };
 
 export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator']) => (
@@ -210,8 +215,7 @@ export const mergeListPaginator = (paginator: OneRegistryData['list']['paginator
 );
 
 export const mergeListProcessed = (processed: Partial<OneRegistryData['list']['processed']>) => {
-
-  let processedNew = registryDefaultObj.list.processed;
+  let processedNew = cloneDeep(registryDefaultObj.list.processed);
 
   if (processed) {
     processedNew = Object.entries(registryDefaultObj.list.processed).reduce((newObj, [key, value]: any) => {

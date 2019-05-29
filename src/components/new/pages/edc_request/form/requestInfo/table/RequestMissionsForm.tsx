@@ -31,13 +31,15 @@ const RequestMissionsForm: React.FC<RequestMissionsFormProps> = React.memo(
     );
 
     const element = React.useMemo(() => {
-      return get(props.edcRequestInfoList.map(
-        (elem) =>
-          elem.missions.find(
-            (mission) =>
-              mission.front_custom_id === id,
-          ),
-      ), '0', null );
+      return props.edcRequestInfoList.reduce((newArr, elem) => {
+        return [
+          ...newArr,
+          ...elem.missions,
+        ];
+      }, []).find(
+        (mission) =>
+          mission.front_custom_id === id,
+      );
     }, [props.edcRequestInfoList, id]);
 
     const rawElement = React.useMemo(

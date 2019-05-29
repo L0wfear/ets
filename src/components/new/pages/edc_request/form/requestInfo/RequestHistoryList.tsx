@@ -29,6 +29,7 @@ export type RequestHistoryListDispatchProps = {
 export type RequestHistoryListOwnProps = {
   requestElement: EdcRequest;
   page: string;
+  path?: string;
 };
 export type RequestHistoryListMergedProps = (
   RequestHistoryListStateProps
@@ -47,7 +48,7 @@ const RequestHistoryList: React.FC<RequestHistoryListProps> = React.memo(
       props.actionGetAndSetInStoreEdcRequestInfo({
         id: request_id,
         original: true,
-      }, {page: props.page });
+      }, {page: props.page, path: props.path });
     }, []);
 
     return (

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
-import { isNumber, isArray } from 'util';
+import { isNumber, isArray, isNullOrUndefined } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdCheckbox';
@@ -38,6 +38,7 @@ import TrTdButtonServicesActionsOnOff from './tr-td/TrTdButtonServicesActionsOnO
 import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
 import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
+import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -53,13 +54,20 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, title, format, dashIfEmpty }, index) => {
+  renderRow = ({ key, title, format, dashIfEmpty, displayIfPermission }, index) => {
     const { props } = this;
 
     const {
       rowData,
       registryKey,
     } = props;
+
+    const permissionsSet = get(props, 'userData.permissionsSet', new Set());
+    if ( !isNullOrUndefined(displayIfPermission) ) {
+      if (!validatePermissions(displayIfPermission, permissionsSet)) {
+        return null;
+      }
+    }
 
     if (key === 'checkbox') {
       return (

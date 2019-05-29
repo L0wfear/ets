@@ -46,8 +46,8 @@ export const promiseGetEdcRequestInfo = async (payload: {id: number, original: b
       return [
         {
           edc_date,
-          missions,
-          // missions: [...missions, ...missions, ...missions, ...missions, ...missions, ...missions, ...missions, ...missions],
+          // missions,
+          missions: [...missions, ...missions, ...missions, ...missions, ...missions, ...missions, ...missions, ...missions],
         },
         ...newData,
       ];

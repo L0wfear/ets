@@ -27,7 +27,6 @@ export type Formmm = {
 
 const RequestInfoForm: React.FC<RequestInfoFormProps> = React.memo(
   (props) => {
-    // console.log('RequestInfoForm props === ', props);
 
     const request_number = get(props, 'element.request_number', '');
     const create_date = createValidDateHM(get(props, 'element.create_date', null));
@@ -46,6 +45,7 @@ const RequestInfoForm: React.FC<RequestInfoFormProps> = React.memo(
           <RequestHistoryList
             requestElement = {props.element}
             page = {props.page}
+            path = {props.path}
           ></RequestHistoryList>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>

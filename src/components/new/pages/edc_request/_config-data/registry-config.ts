@@ -116,6 +116,7 @@ export const config: TypeConfigData<EdcRequest> = {
           title: 'Возврат',
           sortable: false,
           width: 100,
+          displayIfPermission: [edcRequestPermissions.list, edcRequestPermissions.read],
         },
         {
           key: 'status_name',

@@ -110,7 +110,7 @@ const RouteGeoList: React.FC<PropsRouteGeoList> = React.memo(
             <DivNone />
           </>
         )}
-        {draw_object_list ? (
+        {draw_object_list && draw_object_list.length  ? (
           <div>
             <NameListLineContainer>
               <TitleList>{nameDrawObjectList}</TitleList>

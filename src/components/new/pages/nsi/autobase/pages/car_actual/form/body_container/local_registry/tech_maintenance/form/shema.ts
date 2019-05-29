@@ -8,6 +8,11 @@ import { diffDates } from 'utils/dates';
 
 export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenance> = {
   properties: {
+    car_id: {
+      title: 'Регистрационный номер',
+      type: 'valueOfArray',
+      required: true,
+    },
     tech_maintenance_order_ids: {
       title: 'Регламент ТО',
       type: 'multiValueOfArray',

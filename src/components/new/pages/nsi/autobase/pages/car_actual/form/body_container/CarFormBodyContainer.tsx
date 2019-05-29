@@ -39,6 +39,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
                           <Col md={12}>
                             <childrenOther.component
                               formState={props.formState}
+                              selectedCarData={props.formState}
                               formErrors={props.formErrors}
                               onChange={props.onChange}
                               onChangeBoolean={props.onChangeBoolean}

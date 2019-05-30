@@ -12,6 +12,8 @@ import { compose } from 'recompose';
 import { get } from 'lodash';
 import { actionCompleteMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { DivNone } from 'global-styled/global-styled';
+import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 type ButtonCompleteMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -36,6 +38,10 @@ type ButtonCompleteMissionProps = (
 );
 
 const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
+  const [showChangeStatusRequesFormLazy, setShowChangeStatusRequesFormLazy] = React.useState(false);
+  const requestFormHide = React.useCallback(() => {
+    setShowChangeStatusRequesFormLazy(false);
+  }, []);
   const handleClickComplete = React.useCallback(
     async () => {
       const itemToRemove = props.checkedRows;
@@ -45,7 +51,9 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
       }
 
       try {
-        await props.actionCompleteMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
+        // const response = await props.actionCompleteMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
+        setShowChangeStatusRequesFormLazy(true);
+        // console.log('ButtonCompleteMission response === ', {response});
       } catch (error) {
         console.error(error); // tslint:disable-line
         //
@@ -67,11 +75,21 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
     disabled = !can_be_closed;
   }
 
+  // console.log('ButtonCompleteMissionProps === ', {props, showChangeStatusRequesFormLazy});
   return (
     <>
       <EtsBootstrap.Button id="duty_mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="ok" /> Выполнено
       </EtsBootstrap.Button>
+      {
+        showChangeStatusRequesFormLazy
+          ? <ChangeStatusRequesFormLazy
+              // showForm={showChangeStatusRequesFormLazy}
+              onFormHide={requestFormHide}
+              checkedRows={props.checkedRows}
+            />
+          : <DivNone />
+      }
     </>
   );
 };

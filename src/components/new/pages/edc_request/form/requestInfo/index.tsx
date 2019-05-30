@@ -4,7 +4,7 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 
-const RequestForm = React.lazy(() =>
+const RequestInfoForm = React.lazy(() =>
   import(/* webpackChunkName: "request_history" */ 'components/new/pages/edc_request/form/requestInfo/requestInfoForm'),
 );
 
@@ -23,7 +23,7 @@ const RequestInfoFormLazy: React.FC<RequestInfoFormLazyProps> = React.memo(
       props.element && (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
-            <RequestForm
+            <RequestInfoForm
               element={props.element}
               handleHide={props.onFormHide}
 

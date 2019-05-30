@@ -15,7 +15,7 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import memoizeOne from 'memoize-one';
+import * as memoizeOne from 'memoize-one';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { edc_form_permitted_type_reverse } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/constant';
 import EdcRequestCancelFormLazy from './cancel';

@@ -1,6 +1,5 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import { DefaultPartInspect } from '../../@types/inspect_reducer';
 
 type InspectAutobaseData = {
@@ -14,7 +13,7 @@ type InspectAutobaseData = {
   is_not_protected: boolean;
   protection_is_carried: string;
   lack_of_video_surveillance: boolean;
-  is_hard_surface: string;
+  is_hard_surface: string[];
   surface_in_poor_condition: boolean;
   surface_area_of_destruction: number | null;
   presence_of_pits_potholes: boolean;
@@ -23,7 +22,7 @@ type InspectAutobaseData = {
   lack_control_room: boolean;
   lack_repair_areas: boolean;
   cnt_repair_posts: number | null;
-  repair_posts_in_poor_condition: boolean;
+  repair_posts_in_poor_condition: number;
   lack_of_storage_facilities: boolean;
   lack_of_a_canopy_for_pgm: boolean;
   lack_of_washing: boolean;
@@ -34,9 +33,7 @@ type InspectAutobaseData = {
   lack_of_sanitation: boolean;
   lack_of_toilets: boolean;
   lack_shower_cabins: boolean;
-  files: any[];
-  photos_of_supporting_documents: any[],
-  photos_defect: any[],
+  comments: string;
 };
 
 export type InspectAutobase = {
@@ -54,10 +51,13 @@ export type InspectAutobase = {
   open_employee_fio: string;
   open_employee_id: number | null;
   status_text: string;
-  agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
-  commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
-  resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
+  agents_from_gbu: any;
+  commission_members: any;
+  resolve_to: any;
   close_employee_position: string | null;
+  close_employee_assignment: string;
+  close_employee_assignment_date_start: string;
+  files: any[],
 } & DefaultPartInspect;
 
 export type IStateInspectAutobase = {

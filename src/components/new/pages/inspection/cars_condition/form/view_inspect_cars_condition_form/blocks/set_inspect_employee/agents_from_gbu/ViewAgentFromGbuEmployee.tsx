@@ -10,7 +10,7 @@ type ViewAgentFromGbuEmployeeProps = (
       canRemove: boolean;
       index: number;
       handleRemove: (index: number) => any;
-      company_name: InspectCarsCondition['company_name'];
+      company_short_name: InspectCarsCondition['company_short_name'];
     }
   ) & (
     ValuesOf<InspectCarsCondition['agents_from_gbu']>
@@ -19,7 +19,7 @@ type ViewAgentFromGbuEmployeeProps = (
 
 const ViewAgentFromGbuEmployee: React.FC<ViewAgentFromGbuEmployeeProps> = React.memo(
   (props) => {
-    const text = ` От ${props.company_name} ${props.position} ${props.fio}`;
+    const text = ` От ${props.company_short_name} ${props.position} ${props.fio}`;
 
     const handleClick = React.useCallback(
       () => {

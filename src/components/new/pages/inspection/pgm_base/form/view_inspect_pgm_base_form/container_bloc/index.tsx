@@ -1,5 +1,4 @@
 import * as React from 'react';
-import IAVisibleWarning from '../../../components/vsible_warning/IAVisibleWarning';
 import { filedToCheckContainersInfo, filedToCheckContainersFail } from '../filed_to_check/filedToCheck';
 
 import ContainerFormLazy from 'components/new/pages/inspection/container';
@@ -14,6 +13,7 @@ import { compose } from 'recompose';
 import { CheckContainerTable } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
 
 type ContainerBlockStateProps = {};
 type ContainerBlockDispatchProps = {
@@ -24,7 +24,7 @@ type ContainerBlockOwnProps = {
   selectedInspectPgmBase: InspectPgmBase;
   errors: any;
   isPermittedChangeListParams: boolean;
-  onChangeData: (obj: any, canChangeWithoutPermission: boolean) => void;
+  onChangeData: (obj: any, canChangeWithoutPermission?: boolean) => void;
 
   page: string;
 };
@@ -53,15 +53,20 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
         { page: props.page },
       ).then((ans) => {
         setContainerList(ans.sort((a, b) => b.id - a.id));
-
-        props.onChangeData({
-          containers_counter: ans.length,
-          summ_capacity: ans.reduce((summ, { capacity }) => summ + capacity, 0),
-          pgm_volume_sum: ans.reduce((summ, { pgm_volume }) => summ + pgm_volume, 0),
-        }, true);
       });
     },
     [props.selectedInspectPgmBase],
+  );
+
+  const containerListData = React.useMemo(
+    () => {
+      return {
+        containers_counter: containerList.length,
+        summ_capacity: containerList.reduce((summ, { capacity }) => summ + capacity, 0),
+        pgm_volume_sum: containerList.reduce((summ, { pgm_volume }) => summ + pgm_volume, 0),
+      };
+    },
+    [containerList],
   );
 
   const handleCreateContainer = React.useCallback(
@@ -112,10 +117,9 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
     <React.Fragment>
       <h4>Готовность емкостей для хранения ПГМ</h4>
       <BoxContainer>
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={props.onChangeData}
-          data={props.selectedInspectPgmBase.data}
-          errors={props.errors}
+          data={containerListData}
           isPermitted={props.isPermittedChangeListParams}
           filedToCheck={filedToCheckContainersInfo}
         />
@@ -124,7 +128,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
         <h4>
           Выявленные нарушения
         </h4>
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={props.onChangeData}
           data={props.selectedInspectPgmBase.data}
           errors={props.errors}

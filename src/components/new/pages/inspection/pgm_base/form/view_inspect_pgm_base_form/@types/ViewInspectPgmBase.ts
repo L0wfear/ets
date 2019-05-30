@@ -1,39 +1,36 @@
-import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
+import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
-export type ViewInspectPgmBaseWrapOwnProps = {
-  loadingPage: string;
-  onFormHide: (isSubmitted: boolean, inspectAuotbase?: InspectPgmBase) => any;
-  selectedInspect: InspectPgmBase;
-};
+import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type ViewInspectPgmBaseWrapProps = (
-  WithSearchProps
-  & ViewInspectPgmBaseWrapOwnProps
-  & {
-    isPermitted: boolean;
-  }
-);
+export type OnFormHideType = (isSubmitted: any, result?: any) => void;
 
-export type ViewInspectPgmBaseStateProps = {
-};
-export type ViewInspectPgmBaseDispatchProps = {
-};
+export type ViewInspectPgmBaseStateProps = {};
+export type ViewInspectPgmBaseDispatchProps = {};
 export type ViewInspectPgmBaseOwnProps = {
-  type: keyof typeof INSPECT_PGM_BASE_TYPE_FORM;
-  selectedInspect: InspectPgmBase;
-  handleHide: (isSubmitted: boolean, inspectAuotbase?: InspectPgmBase) => any;
-  isPermitted: boolean;
-  isPermittedToUpdateClose: boolean;
+  element: InspectPgmBase;
+  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  handleHide: OnFormHideType;
   handleCloseWithoutChanges: any;
 
   loadingPage: string;
   page: string;
+  path?: string;
 };
 
-export type ViewInspectPgmBaseProps = (
+type ViewInspectPgmBaseMergedProps = (
   ViewInspectPgmBaseStateProps
   & ViewInspectPgmBaseDispatchProps
   & ViewInspectPgmBaseOwnProps
-);
+) & {
+  isPermittedToUpdateClose: boolean;
+};
+
+export type PropsViewInspectPgmBaseWithForm = ViewInspectPgmBaseMergedProps;
+
+export type ViewInspectPgmBaseProps = OutputWithFormProps<
+  PropsViewInspectPgmBaseWithForm,
+  InspectPgmBase,
+  [ InspectPgmBase ],
+  any
+>;

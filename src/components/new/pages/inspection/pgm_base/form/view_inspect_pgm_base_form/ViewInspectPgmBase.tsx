@@ -1,276 +1,92 @@
 import * as React from 'react';
-import { get } from 'lodash';
-import IAVisibleWarning from 'components/new/pages/inspection/pgm_base/components/vsible_warning/IAVisibleWarning';
-import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { FooterEnd, DivNone } from 'global-styled/global-styled';
-import { FileField } from 'components/ui/input/fields';
-import { ViewInspectPgmBaseProps, ViewInspectPgmBaseWrapOwnProps, ViewInspectPgmBaseStateProps, ViewInspectPgmBaseDispatchProps } from './@types/ViewInspectPgmBase';
 import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
 import ViewInspectPgmBaseButtonSubmit from './button_sumbit/ViewInspectPgmBaseButtonSubmit';
-import { Reducer } from 'redux';
-import { inspectAutobaeSchema } from './inspect_pgm_base_schema';
-import { validate } from 'components/ui/form/new/validate';
-import ViewAddInspectEmployee, {
-  ViewAddInspectEmployeeInitialState,
-  viewAddInspectEmployeeInitialState,
-} from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import {
-  filedToCheckMonitoring,
   filedToCheckFall,
   filedToCheckFallHardPgm,
 } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/filed_to_check/filedToCheck';
-import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import ContainerBlock from './container_bloc';
-import { BoxContainer } from '../../../autobase/components/data/styled/InspectionAutobaseData';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { ExtField } from 'components/ui/new/field/ExtField';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
+import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import inspectPgmBasePermissions from '../../_config_data/permissions';
+import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { ViewInspectPgmBaseProps, PropsViewInspectPgmBaseWithForm, ViewInspectPgmBaseOwnProps } from './@types/ViewInspectPgmBase';
+import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
+import { BoxContainer } from '../../../autobase/components/data/styled/InspectionAutobaseData';
+import BlockInspectAutobaseDataFiles from '../../../autobase/form/view_inspect_autobase_form/blocks/block_data_files/BlockInspectAutobaseDataFiles';
+import { getDefaultInspectPgmBaseElement } from './utils';
+import BlockCarsConditionSetInspectEmployee from '../../../cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
+import { inspectPgmBaseSchema } from './schema';
+import BlockInspectPgmBaseMainInfo from './blocks/block_main_info/BlockInspectPgmBaseMainInfo';
+import IAVisibleWarningContainer from '../../../container/filed_to_check/IAVisibleWarningContainer';
 
-type InitialState = {
-  selectedInspect: InspectPgmBase,
-  errors: Partial<Record<keyof InspectPgmBase['data'], string>>;
-  canSave: boolean;
-  type: keyof typeof INSPECT_PGM_BASE_TYPE_FORM;
-  agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
-  commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
-  resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
-  containerElement: Partial<InspectContainer> | null;
-  containerElementList: Partial<InspectContainer>[] | null;
-  showDutyMissionForm: boolean;
-};
+const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      formErrors: errors,
+    } = props;
 
-const containerElementInitialState: InitialState['containerElement'] = {
-  inspection_id: null,
-  number: null,
-  capacity: null,
-  capacity_percent: null,
-  pgm_volume: null,
-  pgm_marka: null,
-  last_checked_at: null,
-  diagnostic_result: null,
-  id: null, // бэк ещё не присылает
-  data: {
-    equipment_pipeline_in_poor_condition: null,
-    control_measuring_instruments_in_poor_condition: null,
-  },
-};
+    const isPermittedChangeListParams = (
+      props.isPermitted
+      && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+      )
+    );
 
-const initialState: InitialState = {
-  selectedInspect: null,
-  errors: {},
-  canSave: false,
-  type: 'list',
-  agents_from_gbu: viewAddInspectEmployeeInitialState.agents_from_gbu,
-  commission_members: viewAddInspectEmployeeInitialState.commission_members,
-  resolve_to: viewAddInspectEmployeeInitialState.resolve_to,
-  containerElement: containerElementInitialState,
-  containerElementList: [],
-  showDutyMissionForm: false,
-};
+    const isPermittedChangeCloseParams = (
+      props.isPermitted
+      && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+      )
+    );
 
-const CHANGE_DATA = 'CHANGE_DATA';
-const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
-const SET_COMISSION_AND_MEMBERS = 'SET_COMISSION_AND_MEMBERS';
-const CHANGE_STATE = 'CHANGE_STATE';
+    const onChangeData = React.useCallback(
+      (newPartialData) => {
+        props.handleChange({
+          data: {
+            ...state.data,
+            ...newPartialData,
+          },
+        });
+      },
+      [props.handleChange, state.data],
+    );
 
-const actionChangeSelectedInspectPgmBaseData = (data: InspectPgmBase['data']) => ({
-  type: CHANGE_DATA,
-  payload: {
-    data,
-  },
-});
-
-const actionSetSelectedInspectPgmBaseData = (selectedInspect: InitialState['selectedInspect'], type: InitialState['type']) => ({
-  type: SET_INITIAL_STATE,
-  payload: {
-    selectedInspect,
-    type,
-  },
-});
-
-const actionSetComissionAndMembers = (
-  data: {
-    agents_from_gbu: InitialState['agents_from_gbu'];
-    commission_members: InitialState['commission_members'];
-    resolve_to: InitialState['resolve_to'];
-  }) => ({
-    type: SET_COMISSION_AND_MEMBERS,
-    payload: {
-      data,
-    },
-  });
-
-const reducer = (state: InitialState, { type, payload }) => {
-  switch (type) {
-    case SET_INITIAL_STATE: {
-      const { selectedInspect } = payload;
-      selectedInspect.data.address_base = selectedInspect.base_address;
-      selectedInspect.data.balance_holder_base = selectedInspect.company_short_name;
-      selectedInspect.data.operating_base = selectedInspect.company_short_name;
-
-      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: payload.type }, selectedInspect);
-
-      return {
-        ...state,
-        selectedInspect,
-        type: payload.type,
-        errors,
-        canSave: Object.values(errors).every((error) => !error),
-      };
-    }
-    case CHANGE_STATE: {
-      return {
-        ...state,
-        ...payload,
-      };
-    }
-    case CHANGE_DATA: {
-      const selectedInspect = {
-        ...state.selectedInspect,
-        data: {
-          ...state.selectedInspect.data,
-          ...payload.data,
-        },
-      };
-      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: state.type }, selectedInspect);
-
-      return {
-        ...state,
-        selectedInspect,
-        errors,
-        canSave: Object.values(errors).every((error) => !error),
-      };
-    }
-    case SET_COMISSION_AND_MEMBERS: {
-      const {
-        commission_members,
-        agents_from_gbu,
-        resolve_to,
-      } = payload.data;
-      const selectedInspect = {
-        ...state.selectedInspect,
-        commission_members,
-        agents_from_gbu,
-        resolve_to,
-      };
-      return {
-        ...state,
-        selectedInspect,
-      };
-    }
-    default: return state;
-  }
-};
-
-const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
-  const [state, dispatch] = React.useReducer<Reducer<InitialState, any>>(
-    reducer,
-    initialState,
-  );
-
-  React.useEffect(
-    () => {
-      dispatch(
-        actionSetSelectedInspectPgmBaseData(
-          props.selectedInspect,
-          props.type,
-        ),
-      );
-    },
-    [props.type, props.selectedInspect],
-  );
-
-  const isPermittedChangeListParams = (
-    props.isPermitted
-    && props.type === INSPECT_PGM_BASE_TYPE_FORM.list
-    || (
-      props.isPermittedToUpdateClose
-      && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
-    )
-  );
-
-  const isPermittedChangeCloseParams = (
-    props.isPermitted
-    && props.type === INSPECT_PGM_BASE_TYPE_FORM.close
-    || (
-      props.isPermittedToUpdateClose
-      && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
-    )
-  );
-
-  const onChangeData = React.useCallback(
-    (data, canChangeWithoutPermission: boolean = false) => {
-      if (isPermittedChangeListParams || canChangeWithoutPermission) {
-        dispatch(
-          actionChangeSelectedInspectPgmBaseData(data),
-        );
-      }
-    },
-    [state.selectedInspect, isPermittedChangeListParams],
-  );
-
-  const onChangeFile = React.useCallback(
-    (key, value) => {
-      if (isPermittedChangeListParams) {
-        dispatch(
-          actionChangeSelectedInspectPgmBaseData({
-            ...state.selectedInspect.data,
-            [key]: value,
-          }),
-        );
-      }
-    },
-    [state.selectedInspect, isPermittedChangeListParams],
-  );
-
-  const setComissionAndMembers = React.useCallback(
-    (agents_from_gbu, commission_members, resolve_to) => {
-      dispatch(
-        actionSetComissionAndMembers({
-          agents_from_gbu,
-          commission_members,
-          resolve_to,
-        }),
-      );
-    },
-    [state.agents_from_gbu, state.commission_members, state.resolve_to],
-  );
-
-  const base_type = get(state.selectedInspect, 'base_type', null);
-
-  return state.selectedInspect
-    ? (
+    return (
       <React.Fragment>
         <ContainerForm>
           <EtsBootstrap.Col md={6} sm={12}>
-            <BoxContainer>
-              <ExtField
-                type="string"
-                label="Адрес и тип базы:"
-                value={`${state.selectedInspect.data.address_base}${base_type ? ` (${base_type})` : ''}`}
-                readOnly
-                inline
-              />
-              <IAVisibleWarning
-                onChange={onChangeData}
-                data={state.selectedInspect.data}
-                errors={state.errors}
-                isPermitted={isPermittedChangeListParams}
-                filedToCheck={filedToCheckMonitoring}
-              />
-            </BoxContainer>
+            <BlockInspectPgmBaseMainInfo
+              base_address={state.base_address}
+              base_type={state.base_type}
+
+              head_balance_holder_base={state.head_balance_holder_base}
+              errors_head_balance_holder_base={errors.head_balance_holder_base}
+              head_operating_base={state.head_operating_base}
+              errors_head_operating_base={errors.head_operating_base}
+
+              onChange={props.handleChange}
+
+              isPermitted={isPermittedChangeListParams}
+            />
             <BoxContainer>
               <h4>
                 Выявленные нарушения на базе:
               </h4>
-              <IAVisibleWarning
+              <IAVisibleWarningContainer
                 onChange={onChangeData}
-                data={state.selectedInspect.data}
-                errors={state.errors}
+                data={state.data}
+                errors={errors.data}
                 isPermitted={isPermittedChangeListParams}
                 filedToCheck={filedToCheckFall}
               />
@@ -279,23 +95,23 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
               <h4>
                 Нарушения, связанные с хранением твердых ПГМ:
               </h4>
-              <IAVisibleWarning
+              <IAVisibleWarningContainer
                 onChange={onChangeData}
-                data={state.selectedInspect.data}
-                errors={state.errors}
+                data={state.data}
+                errors={errors.data}
                 isPermitted={isPermittedChangeListParams}
                 filedToCheck={filedToCheckFallHardPgm}
               />
             </BoxContainer>
           </EtsBootstrap.Col>
           {
-            state.selectedInspect.can_have_container ? (
+            state.can_have_container ? (
               <EtsBootstrap.Col md={6} sm={12}>
                 <ContainerBlock
-                  selectedInspectPgmBase={state.selectedInspect}
+                  selectedInspectPgmBase={state}
                   onChangeData={onChangeData}
                   isPermittedChangeListParams={isPermittedChangeListParams}
-                  errors={state.errors}
+                  errors={errors}
 
                   page={props.loadingPage}
                 />
@@ -306,82 +122,66 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = (props) => {
             )
           }
           <EtsBootstrap.Col md={6} sm={12}>
-            <EtsBootstrap.Row>
-              { (props.type === INSPECT_PGM_BASE_TYPE_FORM.closed && state.selectedInspect.data.photos_of_supporting_documents.length)
-                || props.type === INSPECT_PGM_BASE_TYPE_FORM.list
-                ? (
-                  <EtsBootstrap.Col md={6}>
-                    <FileField
-                      id="file"
-                      label="Фотографии подтверждающих документов"
-                      multiple
-                      value={state.selectedInspect.data.photos_of_supporting_documents}
-                      onChange={onChangeFile}
-                      disabled={!isPermittedChangeListParams}
-                      boundKeys="photos_of_supporting_documents"
-                    />
-                  </EtsBootstrap.Col>
-                ) : (
-                  <DivNone />
-                )
-              }
-              {
-                (props.type === INSPECT_PGM_BASE_TYPE_FORM.closed && state.selectedInspect.data.photos_defect.length)
-                || props.type === INSPECT_PGM_BASE_TYPE_FORM.list
-                ? (
-                  <EtsBootstrap.Col md={6}>
-                    <FileField
-                      id="file"
-                      label="Фотографии дефектов"
-                      multiple
-                      value={state.selectedInspect.data.photos_defect}
-                      onChange={onChangeFile}
-                      disabled={!isPermittedChangeListParams}
-                      boundKeys="photos_defect"
-                    />
-                  </EtsBootstrap.Col>
-                ) : (
-                  <DivNone />
-                )
-              }
-            </EtsBootstrap.Row>
+            <BlockInspectAutobaseDataFiles
+              files={state.files}
+
+              isPermittedChangeListParams={isPermittedChangeListParams}
+              onChange={props.handleChange}
+            />
           </EtsBootstrap.Col>
-          <ViewAddInspectEmployee
-            type={props.type}
-            isPermittedChangeCloseParams={isPermittedChangeCloseParams}
-            canAddMembers={true}
-            canAddCompanyAgent={true}
-            canRemoveEmployee={true}
-            selectedInspect={state.selectedInspect}
-            setComissionAndMembers={setComissionAndMembers}
-            inspectTypeForm={INSPECT_PGM_BASE_TYPE_FORM}
-          >
-          </ViewAddInspectEmployee>
+          <EtsBootstrap.Col md={6} sm={12}>
+            <BlockCarsConditionSetInspectEmployee
+              type={props.type}
+              isPermittedChangeCloseParams={isPermittedChangeCloseParams}
+
+              close_employee_fio={state.close_employee_fio}
+              close_employee_position={state.close_employee_position}
+              close_employee_assignment={state.close_employee_assignment}
+              close_employee_assignment_date_start={state.close_employee_assignment_date_start}
+
+              commission_members={state.commission_members}
+              company_id={state.company_id}
+              error_agents_from_gbu={errors.agents_from_gbu}
+              agents_from_gbu={state.agents_from_gbu}
+              company_short_name={state.company_short_name}
+              resolve_to={state.resolve_to}
+              error_resolve_to={errors.resolve_to}
+              handleChange={props.handleChange}
+              page={props.page}
+              path={props.path}
+            />
+          </EtsBootstrap.Col>
         </ContainerForm>
         <FooterForm md={12} sm={12}>
           <FooterEnd>
             <ViewInspectPgmBaseButtonSubmit
-              canSave={state.canSave}
+              canSave={props.canSave}
               type={props.type}
+              handleSubmit={props.defaultSubmit}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
-              selectedInspectPgmBase={state.selectedInspect}
+              selectedInspectPgmBase={state}
               loadingPage={props.loadingPage}
             />
             <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>
-    )
-    : (
-      <DivNone />
     );
-};
+  },
+);
 
-export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseWrapOwnProps>(
-  connect<ViewInspectPgmBaseStateProps, ViewInspectPgmBaseDispatchProps, ViewInspectPgmBaseWrapOwnProps, ReduxState>(
-    null,
-  ),
+export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseOwnProps>(
+  withForm<PropsViewInspectPgmBaseWithForm, InspectPgmBase>({
+    uniqField: 'id',
+    updateAction: inspectionPgmBaseActions.actionUpdateInspectPgmBase,
+    withThrow: true,
+    mergeElement: (props) => {
+      return getDefaultInspectPgmBaseElement(props.element);
+    },
+    permissions: inspectPgmBasePermissions,
+    schema: inspectPgmBaseSchema,
+  }),
   withPreloader({
     typePreloader: 'mainpage',
     withPagePath: true,

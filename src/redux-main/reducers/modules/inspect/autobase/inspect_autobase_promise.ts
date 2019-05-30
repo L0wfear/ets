@@ -1,10 +1,11 @@
-import { InspectAutobase } from "./@types/inspect_autobase";
+import { InspectAutobase } from './@types/inspect_autobase';
 import {
   promiseGetInspectRegistry,
   promiseCreateInspection,
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
-import { get, keyBy } from 'lodash';
+import { get, keyBy, cloneDeep } from 'lodash';
+import { isNullOrUndefined } from 'util';
 
 export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   is_under_construction: false,
@@ -17,7 +18,7 @@ export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   is_not_protected: false,
   protection_is_carried: null,
   lack_of_video_surveillance: false,
-  is_hard_surface: null,
+  is_hard_surface: [],
   surface_in_poor_condition: false,
   surface_area_of_destruction: null,
   presence_of_pits_potholes: null,
@@ -26,7 +27,7 @@ export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   lack_control_room: false,
   lack_repair_areas: false,
   cnt_repair_posts: null,
-  repair_posts_in_poor_condition: false,
+  repair_posts_in_poor_condition: null,
   lack_of_storage_facilities: false,
   lack_of_a_canopy_for_pgm: false,
   lack_of_washing: false,
@@ -37,33 +38,26 @@ export const defaultInspectAutobaseData: InspectAutobase['data'] = {
   lack_of_sanitation: false,
   lack_of_toilets: false,
   lack_shower_cabins: false,
-  files: [],
-  photos_of_supporting_documents: [],
-  photos_defect: [],
+  comments: '',
 };
 
-export const makeFilesForFront = (data: InspectAutobase) => {
-  const files = get(data, 'files', []);
+const makeInspectAutobase = (inspect: any): InspectAutobase => {
+  const inspectAutobase: InspectAutobase = cloneDeep(inspect);
 
-  return {
-    photos_of_supporting_documents: files.filter(({ kind }) => kind === 'photos_of_supporting_documents'),
-    photos_defect: files.filter(({ kind }) => kind === 'photos_defect'),
-  };
-};
+  inspectAutobase.agents_from_gbu = inspectAutobase.agents_from_gbu || [];
+  inspectAutobase.commission_members = inspectAutobase.commission_members || [];
+  inspectAutobase.files = inspectAutobase.files || [];
 
-export const makeFilesForBackend = (data: InspectAutobase['data']) => {
-  return [
-    ...data.photos_of_supporting_documents.map((files: any) => {
-      files.kind = 'photos_of_supporting_documents';
+  inspectAutobase.data = cloneDeep(defaultInspectAutobaseData);
+  Object.keys(inspectAutobase.data).forEach(
+    (key) => {
+      if (!isNullOrUndefined(get(inspect, `data.${key}`))) {
+        inspectAutobase.data[key] = get(inspect, `data.${key}`);
+      }
+    },
+  );
 
-      return files;
-    }),
-    ...data.photos_defect.map((files: any) => {
-      files.kind = 'photos_defect';
-
-      return files;
-    }),
-  ];
+  return inspectAutobase;
 };
 
 export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) => {
@@ -73,14 +67,7 @@ export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) 
   });
 
   const data: InspectAutobase[] = response.data.map((inspectAutobase: InspectAutobase) => {
-    inspectAutobase.data = {
-      ...(inspectAutobase.data || defaultInspectAutobaseData),
-      ...makeFilesForFront(inspectAutobase),
-    };
-
-    delete inspectAutobase.data.files;
-
-    return inspectAutobase;
+    return makeInspectAutobase(inspectAutobase);
   }).sort((a, b) => a.id - b.id);
 
   return {
@@ -93,38 +80,27 @@ export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) 
  * @todo вынести в inspect_promise
  */
 export const promiseGetInspectAutobaseById = async (id: number) => {
-  const inspectAutobase: InspectAutobase = await promiseGetInspectionByIdType(
+  let inspectAutobase: InspectAutobase = await promiseGetInspectionByIdType(
     id,
     'autobase',
   );
 
   if (inspectAutobase) {
-    inspectAutobase.agents_from_gbu = inspectAutobase.agents_from_gbu || [];
-
-    inspectAutobase.data = {
-      ...(inspectAutobase.data || defaultInspectAutobaseData),
-      ...makeFilesForFront(inspectAutobase),
-    };
-
-    delete inspectAutobase.data.files;
-
+    inspectAutobase = makeInspectAutobase(inspectAutobase);
   }
 
   return inspectAutobase;
 };
 
 export const promiseCreateInspectionAutobase = async (payload: { carpoolId: number; companyId: number }) => {
-  const inspectAutobase: InspectAutobase = await promiseCreateInspection({
+  let inspectAutobase: InspectAutobase = await promiseCreateInspection({
     base_id: payload.carpoolId,
     company_id: payload.companyId,
     type: 'autobase',
   });
 
   if (inspectAutobase) {
-    inspectAutobase.data = {
-      ...(inspectAutobase.data || defaultInspectAutobaseData),
-      ...makeFilesForFront(inspectAutobase),
-    };
+    inspectAutobase = makeInspectAutobase(inspectAutobase);
   }
 
   return inspectAutobase;

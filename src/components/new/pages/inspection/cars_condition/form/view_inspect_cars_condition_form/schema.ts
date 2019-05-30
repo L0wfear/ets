@@ -251,6 +251,23 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'number',
       title: 'Количество ТС',
     },
+    agents_from_gbu: {
+      type: 'multiValueOfArray',
+      title: 'Представители ГБУ',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!agents_from_gbu.length) {
+              return `* для ${
+                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+                  ? 'завершения'
+                  : 'изменения'
+              } проверки необходимо добавить хотя бы одного представителя`;
+            }
+          }
+        },
+      ],
+    },
     checked_cars_cnt: {
       type: 'number',
       title: 'Количество проверенных ТС',

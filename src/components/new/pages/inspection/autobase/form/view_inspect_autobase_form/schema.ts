@@ -1,8 +1,10 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
-import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
-export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM }> = {
+import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
+import { INSPECT_AUTOBASE_TYPE_FORM } from '../../global_constants';
+
+const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWithForm> = {
   properties: {
     is_under_construction: {
       title: 'Автобаза находится на стадии строительства',
@@ -58,7 +60,7 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     },
     is_hard_surface: {
       title: 'Твердое покрытие',
-      type: 'valueOfArray',
+      type: 'multiValueOfArray',
       required: true,
     },
     surface_in_poor_condition: {
@@ -120,6 +122,17 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
       type: 'number',
+      dependencies: [
+        (value, { lack_repair_areas }, { type }) => {
+          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!lack_repair_areas && !value) {
+              return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
+            }
+          }
+
+          return '';
+        },
+      ],
     },
     lack_of_storage_facilities: {
       title: 'Отсутствие складских помещений на базе',
@@ -160,6 +173,36 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     lack_shower_cabins: {
       title: 'Отсутствие душевых кабин (в помещении/на открытой площадке)',
       type: 'boolean',
+    },
+    comments: {
+      title: 'Замечания',
+      type: 'string',
+    },
+  },
+};
+
+export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspectAutobaseWithForm> = {
+  properties: {
+    data: {
+      type: 'schema',
+      schema: dataSchema,
+    },
+    agents_from_gbu: {
+      type: 'multiValueOfArray',
+      title: 'Представители ГБУ',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!agents_from_gbu.length) {
+              return `* для ${
+                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+                  ? 'завершения'
+                  : 'изменения'
+              } проверки необходимо добавить хотя бы одного представителя`;
+            }
+          }
+        },
+      ],
     },
   },
 };

@@ -6,6 +6,8 @@ import { BlockEmployeeContainer } from './styled';
 import CommissionMembers from './commission_members';
 import AgentsFromGbu from './agents_from_gbu';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
+import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 
 type BlockCarsConditionSetInspectEmployeeProps = {
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
@@ -19,9 +21,10 @@ type BlockCarsConditionSetInspectEmployeeProps = {
   company_id: InspectCarsCondition['company_id'];
 
   agents_from_gbu: InspectCarsCondition['agents_from_gbu'];
-  company_name: InspectCarsCondition['company_name'];
+  error_agents_from_gbu: string;
+  company_short_name: InspectCarsCondition['company_short_name'];
 
-  handleChange: ViewInspectCarsConditionProps['handleChange'];
+  handleChange: ViewInspectCarsConditionProps['handleChange'] | ViewInspectAutobaseProps['handleChange'] | ViewInspectPgmBaseProps['handleChange'];
 
   resolve_to: InspectCarsCondition['resolve_to'];
   error_resolve_to: string;
@@ -64,7 +67,8 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
         <AgentsFromGbu
           isPermittedToChange={isPermittedChangeCloseParams}
           agents_from_gbu={props.agents_from_gbu}
-          company_name={props.company_name}
+          error={props.error_agents_from_gbu}
+          company_short_name={props.company_short_name}
           handleChange={props.handleChange}
         />
       </BlockEmployeeContainer>

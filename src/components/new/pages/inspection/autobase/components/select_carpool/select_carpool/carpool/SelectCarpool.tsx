@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 import { SelectLabel, InstectionBlockSelect, SelectField } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { IStateInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 
 type SelectCarpoolStateProps = {
   companyList: IStateInspectAutobase['companyList'];
@@ -68,7 +67,11 @@ const SelectCarpool: React.FC<SelectCarpoolProps> = (props) => {
           props.carpoolList,
           companyId,
         ).map(
-          (defaultSelectListMapper),
+          (rowData) => ({
+            value: rowData.id,
+            label: rowData.address,
+            rowData,
+          }),
         ).filter(({ value }) => value);
       }
 

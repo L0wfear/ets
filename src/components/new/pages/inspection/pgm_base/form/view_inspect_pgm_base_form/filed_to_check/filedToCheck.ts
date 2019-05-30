@@ -1,43 +1,7 @@
-import { FiledToCheck } from "components/new/pages/inspection/pgm_base/components/vsible_warning/@types/visibleWarning";
+import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
+import { InspectPgmBase } from "redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base";
 
-export const filedToCheckMonitoring: FiledToCheck = [
-  {
-    key: 'balance_holder_base', // Организация из селекта на первом экране
-    title: 'Балансодержатель базы:',
-    type: 'string',
-    readOnly: true,
-    inline: true,
-  },
-  {
-    key: 'head_balance_holder_base_fio',
-    title: 'Руководитель балансодержателя',
-    type: 'string',
-  },
-  {
-    key: 'head_balance_holder_base_tel',
-    title: 'Телефон руководителя балансодержателя',
-    type: 'string',
-  },
-  {
-    key: 'operating_base', // Организация из селекта на первом экране
-    title: 'Организация, эксплуатирующая базу:',
-    type: 'string',
-    readOnly: true,
-    inline: true,
-  },
-  {
-    key: 'head_operating_base_fio',
-    title: 'Руководитель организации, эксплуатирующей базу',
-    type: 'string',
-  },
-  {
-    key: 'head_operating_base_tel',
-    title: 'Телефон руководителя организации, эксплуатирующей базу',
-    type: 'string',
-  },
-];
-
-export const filedToCheckFall: FiledToCheck = [
+export const filedToCheckFall: FiledToCheck<InspectPgmBase['data']> = [
   {
     key: 'lack_traffic_scheme_at_entrance',
     title: 'Отсутствие схемы движения автотранспорта при въезде на базу',
@@ -48,8 +12,18 @@ export const filedToCheckFall: FiledToCheck = [
   {
     key: 'type_of_base_coverage',
     title: 'Вид покрытия базы',
-    type: 'string',
+    type: 'select',
+    multi: true,
     sub_header: 'Территория базы и подъездные пути',
+    options: [
+      { value: 'Щебень', label: 'Щебень' },
+      { value: 'Фрезерованный асфальт', label: 'Фрезерованный асфальт' },
+      { value: 'Асфальт', label: 'Асфальт' },
+      { value: 'Дорожные плиты', label: 'Дорожные плиты' },
+      { value: 'Гравий', label: 'Гравий' },
+      { value: 'Песок', label: 'Песок' },
+      { value: 'Другое', label: 'Другое' },
+    ],
   },
   {
     key: 'access_roads_in_poor_condition',
@@ -133,9 +107,14 @@ export const filedToCheckFall: FiledToCheck = [
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
+  {
+    key: 'comments',
+    title: 'Замечания',
+    type: 'text',
+  },
 ];
 
-export const filedToCheckFallHardPgm: FiledToCheck = [
+export const filedToCheckFallHardPgm: FiledToCheck<InspectPgmBase['data']> = [
   {
     key: 'lack_of_height_restriction_sign',
     title: 'Отсутствие над въездными воротами знака ограничения высоты',
@@ -146,7 +125,17 @@ export const filedToCheckFallHardPgm: FiledToCheck = [
   {
     key: 'type_coverage_in_hangar',
     title: 'Вид покрытия в ангаре',
-    type: 'string',
+    type: 'select',
+    multi: true,
+    options: [
+      { value: 'Щебень', label: 'Щебень' },
+      { value: 'Фрезерованный асфальт', label: 'Фрезерованный асфальт' },
+      { value: 'Асфальт', label: 'Асфальт' },
+      { value: 'Дорожные плиты', label: 'Дорожные плиты' },
+      { value: 'Гравий', label: 'Гравий' },
+      { value: 'Песок', label: 'Песок' },
+      { value: 'Другое', label: 'Другое' },
+    ],
   },
   {
     key: 'lack_of_lighting_in_hangars',
@@ -174,7 +163,7 @@ export const filedToCheckFallHardPgm: FiledToCheck = [
   },
   {
     key: 'pgm_in_hangars',
-    title: 'Наличие ПГМ в ангарах на момент проверки (тонн)',
+    title: 'Наличие ПГМ в ангарах на момент проверки (куб.м)',
     type: 'number',
   },
 
@@ -193,12 +182,12 @@ export const filedToCheckFallHardPgm: FiledToCheck = [
   },
   {
     key: 'pgm_on_open_area',
-    title: 'Наличие ПГМ на открытой площадке на момент проверки (тонн)',
+    title: 'Наличие ПГМ на открытой площадке на момент проверки (куб.м)',
     type: 'number',
   },
 ];
 
-export const filedToCheckContainersInfo: FiledToCheck = [
+export const filedToCheckContainersInfo: FiledToCheck<any> = [
   {
     key: 'containers_counter',
     title: 'Количество емкостей:',
@@ -215,14 +204,14 @@ export const filedToCheckContainersInfo: FiledToCheck = [
   },
   {
     key: 'pgm_volume_sum',
-    title: 'Наличие ПГМ в емкостях на момент проверки(тонн):',
+    title: 'Наличие ПГМ в емкостях на момент проверки (куб.м):',
     type: 'string',
     readOnly: true,
     inline: true,
   },
 ];
 
-export const filedToCheckContainersFail: FiledToCheck = [
+export const filedToCheckContainersFail: FiledToCheck<InspectPgmBase['data']> = [
   {
     key: 'equipment_and_piping_in_poor_condition',
     title: 'Оборудование и трубопровод находятся в неуд. состоянии',
@@ -236,24 +225,3 @@ export const filedToCheckContainersFail: FiledToCheck = [
     className: 'checkbox-input flex-reverse',
   },
 ];
-
-// export const filedToCheckContainersCheck: FiledToCheck = [
-//   {
-//     key: 'number',
-//     title: 'Инвентарный/порядковый номер емкости',
-//     readOnly: true,
-//     inline: true,
-//   },
-//   {
-//     key: 'containers_in_poor_condition',
-//     title: 'Емкости находятся в неуд. состоянии (визуально)',
-//     type: 'boolean',
-//     className: 'checkbox-input flex-reverse',
-//   },
-//   {
-//     key: 'containers_in_poor_condition',
-//     title: 'Дата, в которую была заполнена карточка емкости',
-//     type: 'boolean',
-//     className: 'checkbox-input flex-reverse',
-//   },
-// ];

@@ -1,39 +1,36 @@
-import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { InspectAutobase } from "redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase";
+import { INSPECT_AUTOBASE_TYPE_FORM } from "components/new/pages/inspection/autobase/global_constants";
 
-export type ViewInspectAutobaseWrapOwnProps = {
-  loadingPage: string;
-  onFormHide: (isSubmitted: boolean, inspectAuotbase?: InspectAutobase) => any;
-  selectedInspect: InspectAutobase;
-};
+import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
-export type ViewInspectAutobaseWrapProps = (
-  WithSearchProps
-  & ViewInspectAutobaseWrapOwnProps
-  & {
-    isPermitted: boolean;
-  }
-);
+export type OnFormHideType = (isSubmitted: any, result?: any) => void;
 
-export type ViewInspectAutobaseStateProps = {
-};
-export type ViewInspectAutobaseDispatchProps = {
-};
+export type ViewInspectAutobaseStateProps = {};
+export type ViewInspectAutobaseDispatchProps = {};
 export type ViewInspectAutobaseOwnProps = {
+  element: InspectAutobase;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
-  selectedInspect: InspectAutobase;
-  handleHide: (isSubmitted: boolean, inspectAuotbase?: InspectAutobase) => any;
-  isPermitted: boolean;
-  isPermittedToUpdateClose: boolean;
+  handleHide: OnFormHideType;
   handleCloseWithoutChanges: any;
 
   loadingPage: string;
   page: string;
+  path?: string;
 };
 
-export type ViewInspectAutobaseProps = (
+type ViewInspectAutobaseMergedProps = (
   ViewInspectAutobaseStateProps
   & ViewInspectAutobaseDispatchProps
   & ViewInspectAutobaseOwnProps
-);
+) & {
+  isPermittedToUpdateClose: boolean;
+};
+
+export type PropsViewInspectAutobaseWithForm = ViewInspectAutobaseMergedProps;
+
+export type ViewInspectAutobaseProps = OutputWithFormProps<
+  PropsViewInspectAutobaseWithForm,
+  InspectAutobase,
+  [ InspectAutobase ],
+  any
+>;

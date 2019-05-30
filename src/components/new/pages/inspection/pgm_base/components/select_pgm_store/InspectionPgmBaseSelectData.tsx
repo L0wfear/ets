@@ -5,8 +5,9 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import SelectPgmBaseOkrug from './select/okrug/SelectPgmBaseOkrug';
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import SelectPgmBaseCompany from './select/company/SelectPgmBaseCompany';
-import SelectPgmBase from './select/pgm_store/SelectPgmBase';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import SelectPgmBaseAddress from './select/address/SelectPgmBaseAddress';
+import SelectPgmBaseTypeId from './select/pgm_store_type_id/SelectPgmBaseTypeId';
 
 type InspectionPgmBaseSelectCarpoolStateProps = {};
 type InspectionPgmBaseSelectCarpoolDispatchProps = {
@@ -43,7 +44,8 @@ const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps>
     <>
       <SelectPgmBaseOkrug />
       <SelectPgmBaseCompany />
-      <SelectPgmBase />
+      <SelectPgmBaseTypeId />
+      <SelectPgmBaseAddress />
     </>
   );
 };

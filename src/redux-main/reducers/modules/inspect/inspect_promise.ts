@@ -1,12 +1,12 @@
-import { InspectRegistryService, InspectionService, InspectionActService } from "api/Services";
+import { InspectRegistryService, InspectionService, InspectionActService } from 'api/Services';
 import {
   get,
   keyBy,
 } from 'lodash';
-import { InspectAutobase } from "./autobase/@types/inspect_autobase";
-import { ViewAddInspectEmployeeInitialState } from "components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee";
-import { TypeOfInspect } from "./@types/inspect_reducer";
-import { InspectPgmBase } from "./pgm_base/@types/inspect_pgm_base";
+import { InspectAutobase } from './autobase/@types/inspect_autobase';
+import { TypeOfInspect } from './@types/inspect_reducer';
+import { InspectPgmBase } from './pgm_base/@types/inspect_pgm_base';
+import { InspectCarsCondition } from './cars_condition/@types/inspect_cars_condition';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -79,64 +79,18 @@ export const promiseUpdateInspection = async (id: number, data: InspectAutobase[
 export const promiseCloseInspection = async (
     id: number,
     payload: {
-      data: InspectAutobase['data'] & InspectPgmBase['data'];
-      agents_from_gbu: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
-      commission_members: ViewAddInspectEmployeeInitialState['commission_members'];
-      resolve_to: ViewAddInspectEmployeeInitialState['resolve_to'];
+      data: InspectAutobase['data'] | InspectPgmBase['data'] | InspectCarsCondition['data'];
+      agents_from_gbu: any[];
+      commission_members: any[];
+      resolve_to: string;
     },
     type: TypeOfInspect,
   ) => {
 
-  const {
-    data,
-    agents_from_gbu,
-    resolve_to,
-  } = payload;
-
-  const commission_members = get(payload, 'commission_members', []).filter((el) => el.id !== 0); // <<< удаляем текущего пользака из членов комисии, попытаться договорится с беком что бы не писать такую дичь
-
-  const {
-    head_balance_holder_base_fio,
-    head_balance_holder_base_tel,
-    head_operating_base_fio,
-    head_operating_base_tel,
-  } = data;
-
-  // <<< переделать, не добовлять новые атрибуты в data на фронте
-  delete data.head_balance_holder_base_fio;
-  delete data.head_balance_holder_base_tel;
-  delete data.head_operating_base_fio;
-  delete data.head_operating_base_tel;
-  delete data.address_base;
-  delete data.balance_holder_base;
-  delete data.operating_base;
-  delete data.head_balance_holder_base;
-  delete data.head_operating_base;
-
-  const responsePayload =
-    type === 'pgm_base'
-    ? {
-      type,
-      data,
-      agents_from_gbu,
-      commission_members,
-      resolve_to,
-      head_balance_holder_base: {
-        fio: head_balance_holder_base_fio,
-        tel: head_balance_holder_base_tel,
-      },
-      head_operating_base: {
-        fio: head_operating_base_fio,
-        tel: head_operating_base_tel,
-      },
-    }
-    : {
-      type,
-      data,
-      agents_from_gbu,
-      commission_members,
-      resolve_to,
-    };
+  const responsePayload = {
+    type,
+    ...payload,
+  };
   const response = await InspectionService.path(id).path('close').put(
     {
       ...responsePayload,

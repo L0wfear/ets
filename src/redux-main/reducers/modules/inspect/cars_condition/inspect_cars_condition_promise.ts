@@ -48,8 +48,8 @@ const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionBackend);
 
-  inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', deafult_head_balance_holder_base);
-  inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', default_head_operating_base);
+  inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', cloneDeep(deafult_head_balance_holder_base));
+  inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', cloneDeep(default_head_operating_base));
 
   inspectCarsCondition.data = {
     types_cars: get(inspectCarsCondition, 'data.types_cars', []).map((rowData, index) => {
@@ -61,9 +61,9 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
       rowData.customId = index + 1;
       return rowData;
     }),
-    preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', default_preparing_cars_check),
-    headcount_list: get(inspectCarsCondition, 'data.headcount_list', default_headcount_list),
-    cars_use: get(inspectCarsCondition, 'data.cars_use', default_cars_use),
+    preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
+    headcount_list: get(inspectCarsCondition, 'data.headcount_list', cloneDeep(default_headcount_list)),
+    cars_use: get(inspectCarsCondition, 'data.cars_use', cloneDeep(default_cars_use)),
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 

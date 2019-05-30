@@ -195,8 +195,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
               commission_members={state.commission_members}
               company_id={state.company_id}
+              error_agents_from_gbu={errors.agents_from_gbu}
               agents_from_gbu={state.agents_from_gbu}
-              company_name={state.company_name}
+              company_short_name={state.company_short_name}
               resolve_to={state.resolve_to}
               error_resolve_to={errors.resolve_to}
               handleChange={props.handleChange}

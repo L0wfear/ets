@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import * as Raven from 'raven-js';
 
 import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
@@ -21,7 +23,6 @@ import {
   OwnPropsCarInOveral,
 } from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/CarInWorkOverall.h';
 import { DivNone } from 'global-styled/global-styled';
-import { compose } from 'recompose';
 import {
   getDashboardState,
   getSessionState,
@@ -29,10 +30,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import * as Raven from 'raven-js';
-
-import { loadCarActualIndex } from 'redux-main/trash-actions/car';
-import { MONITOR_PAGE_SET_CAR_ACTUAL_INDEX } from 'components/monitor/redux-main/models/monitor-page';
+import { actionMonitorPageLoadCarActual } from 'components/monitor/redux-main/models/actions-monitor-page';
 
 class CarInWorkOverall extends React.Component<
   PropsCarInWorkOverall,
@@ -84,7 +82,7 @@ class CarInWorkOverall extends React.Component<
   }
 
   componentDidMount() {
-    this.props.loadCarActualIndex();
+    this.props.actionMonitorPageLoadCarActual();
   }
 
   componentWillUnmount() {
@@ -184,11 +182,17 @@ export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
       points_ws: getSessionState(state).appConfig.points_ws,
       carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
     }),
-    (dispatch) => ({
-      setInfoData: (infoData) =>
-        dispatch(dashboardSetInfoDataInCarInWorkOverall(infoData)),
-      loadCarActualIndex: () =>
-        dispatch(loadCarActualIndex(MONITOR_PAGE_SET_CAR_ACTUAL_INDEX)),
+    (dispatch: any) => ({
+      setInfoData: (infoData) => (
+        dispatch(
+          dashboardSetInfoDataInCarInWorkOverall(infoData),
+        )
+      ),
+      actionMonitorPageLoadCarActual: (...arg) => (
+        dispatch(
+          actionMonitorPageLoadCarActual(...arg),
+        )
+      ),
     }),
   ),
 )(CarInWorkOverall);

@@ -8,7 +8,6 @@ import { makeDate, makeTime } from 'utils/dates';
 import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
-import { getCarMissionsByTimestamp } from 'redux-main/trash-actions/car';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
 import { getDateWithMoscowTzByTimestamp } from 'utils/dates';
@@ -29,8 +28,12 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import LoadingContext from 'components/new/utils/context/loading/LoadingContext';
+import { getCarMissionsByTimestamp } from 'redux-main/trash-actions/car/car';
 
 class OverlayTrackPoint extends React.Component<any, any> {
+  static contextType = LoadingContext;
+
   state = {
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
@@ -242,6 +245,11 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  getCarMissionsByTimestamp: (...arg: [any, any, any, any]) => (
+    dispatch(
+      getCarMissionsByTimestamp(...arg),
+    )
+  ),
   hidePopup: () => (
     dispatch(
       carInfoSetTrackPoint(),
@@ -250,11 +258,6 @@ const mapDispatchToProps = (dispatch) => ({
   getVectorObject: (points) => (
     dispatch(
       getVectorObject('NONE', points),
-    )
-  ),
-  getCarMissionsByTimestamp: (asuods_id, timestamp) => (
-    dispatch(
-      getCarMissionsByTimestamp('NONE', asuods_id, timestamp),
     )
   ),
 });

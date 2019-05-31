@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { FieldDataIsBnsoBroken } from 'components/new/utils/context/form/@types/fields/string';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWsCarPoints from 'components/new/utils/hooks/services/useWs/useWsCarPoints';
@@ -9,7 +9,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
 import { diffDates } from 'utils/dates';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';

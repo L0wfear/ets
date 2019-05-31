@@ -1,6 +1,11 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 
+type EtsDropdownMenuProps = {
+  pullRight?: boolean;
+  dropup?: boolean;
+};
+
 const pullRightCss = css`
   right: 0;
   left: auto;
@@ -12,7 +17,7 @@ const dropupCss = css`
   margin-bottom: 2px;
 `;
 
-const EtsDropdownMenuContainer = styled.ul`
+const EtsDropdownMenuContainer = styled.ul<EtsDropdownMenuProps>`
   position: absolute;
   z-index: 1000;
 
@@ -44,11 +49,6 @@ const EtsDropdownMenuContainer = styled.ul`
     dropup && dropupCss
   )}
 `;
-
-type EtsDropdownMenuProps = {
-  pullRight?: boolean;
-  dropup?: boolean;
-};
 
 const EtsDropdownMenu: React.FC<EtsDropdownMenuProps> = React.memo(
   (props) => {

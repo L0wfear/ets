@@ -3,6 +3,8 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ViewInspectCarsConditionProps } from '../../../@types/ViewInspectCarsContidion';
 import ViewCommissionEmployee from './ViewCommissionEmployee';
 import RowAddCommissionMembers from './RowAddCommissionMembers';
+import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
+import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 
 type CommissionMembersProps = {
   close_employee_assignment: InspectCarsCondition['close_employee_assignment'];
@@ -13,7 +15,11 @@ type CommissionMembersProps = {
   isPermittedToChange: boolean;
   commission_members: InspectCarsCondition['commission_members'];
   company_id: InspectCarsCondition['company_id'];
-  handleChange: ViewInspectCarsConditionProps['handleChange'];
+  handleChange: (
+    ViewInspectCarsConditionProps['handleChange']
+    | ViewInspectAutobaseProps['handleChange']
+    | ViewInspectPgmBaseProps['handleChange']
+  );
 
   page: string;
   path?: string;
@@ -44,9 +50,9 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
 
     return (
       <React.Fragment>
-        <h4>Осмотр техники производили:</h4>
+        <h4>Подписанты:</h4>
         <div>
-          <h5>От ГБУ "Доринвест":</h5>
+          <h5>Проверяющие от Доринвеста:</h5>
           <div>
             <ViewCommissionEmployee
               fio={props.close_employee_fio}
@@ -69,16 +75,18 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
                 />
               ))
             }
-            <br />
-            <RowAddCommissionMembers
-              isPermitted={props.isPermittedToChange}
-              handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
-              commission_members={props.commission_members}
-              company_id={props.company_id}
+            {
+              props.isPermittedToChange && (
+                <RowAddCommissionMembers
+                  handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
+                  commission_members={props.commission_members}
+                  company_id={props.company_id}
 
-              page={props.page}
-              path={props.path}
-            />
+                  page={props.page}
+                  path={props.path}
+                />
+              )
+            }
           </div>
         </div>
       </React.Fragment>

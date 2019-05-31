@@ -1,52 +1,48 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
-import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import { PropsViewInspectPgmBaseWithForm } from './@types/ViewInspectPgmBase';
+import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
 
-export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: keyof typeof INSPECT_PGM_BASE_TYPE_FORM }> = {
+const headBalanceHolderBaseSchema: SchemaType<InspectPgmBase['head_balance_holder_base'], PropsViewInspectPgmBaseWithForm> = {
   properties: {
-    head_balance_holder_base_fio: {
+    fio: {
+      type: 'string',
       title: 'Руководитель балансодержателя',
-      type: 'string',
-      dependencies: [
-        (value, _, { type }) => {
-          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
-              return 'Поле "Руководитель балансодержателя" должно быть заполнено';
-          }
-          return '';
-        },
-      ],
+      required: true,
     },
-    head_balance_holder_base_tel: {
+    tel: {
+      type: 'string',
       title: 'Телефон руководителя балансодержателя',
-      type: 'string',
     },
-    head_operating_base_fio: {
+  },
+};
+
+const headOperatingBaseSchema: SchemaType<InspectPgmBase['head_operating_base'], PropsViewInspectPgmBaseWithForm> = {
+  properties: {
+    fio: {
+      type: 'string',
       title: 'Руководитель организации, эксплуатирующей базу',
-      type: 'string',
-      dependencies: [
-        (value, _, { type }) => {
-          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
-              return 'Поле "Руководитель организации, эксплуатирующей базу" должно быть заполнено';
-          }
-          return '';
-        },
-      ],
+      required: true,
     },
-    head_operating_base_tel: {
+    tel: {
+      type: 'string',
       title: 'Телефон руководителя организации, эксплуатирующей базу',
-      type: 'string',
     },
-    // Выявленные нарушения на базе:
+  },
+};
+
+const dataSchema: SchemaType<InspectPgmBase['data'], PropsViewInspectPgmBaseWithForm> = {
+  properties: {
     lack_traffic_scheme_at_entrance: {
       title: 'Отсутствие схемы движения автотранспорта при въезде на базу',
       type: 'boolean',
     },
     type_of_base_coverage: {
       title: 'Вид покрытия базы',
-      type: 'string',
+      type: 'multiValueOfArray',
       dependencies: [
-        (value, _, { type }) => {
-          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+        (value) => {
+          if (!value.length) {
               return 'Поле "Вид покрытия базы" должно быть заполнено';
           }
           return '';
@@ -105,6 +101,10 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       title: 'Отсутствие эстакад, лестниц',
       type: 'boolean',
     },
+    comments: {
+      title: 'Замечания',
+      type: 'string',
+    },
     // Нарушения, связанные с хранением твердых ПГМ:
     lack_of_height_restriction_sign: {
       title: 'Отсутствие над въездными воротами знака ограничения высоты',
@@ -112,10 +112,10 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
     },
     type_coverage_in_hangar: {
       title: 'Вид покрытия в ангаре',
-      type: 'string',
+      type: 'multiValueOfArray',
       dependencies: [
-        (value, _, { type }) => {
-          if (type === INSPECT_PGM_BASE_TYPE_FORM.list && !value) {
+        (value) => {
+          if (!value.length) {
               return 'Поле "Вид покрытия в ангаре" должно быть заполнено';
           }
           return '';
@@ -139,7 +139,7 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       type: 'boolean',
     },
     pgm_in_hangars: {
-      title: 'Наличие ПГМ в ангарах на момент проверки (тонн)',
+      title: 'Наличие ПГМ в ангарах на момент проверки (куб.м)',
       type: 'number',
     },
     insufficient_availability_of_wooden_pallets: {
@@ -151,8 +151,42 @@ export const inspectAutobaeSchema: SchemaType<InspectPgmBase['data'], { type: ke
       type: 'boolean',
     },
     pgm_on_open_area: {
-      title: 'Наличие ПГМ на открытой площадке на момент проверки (тонн)',
+      title: 'Наличие ПГМ на открытой площадке на момент проверки (куб.м)',
       type: 'number',
+    },
+  },
+};
+
+export const inspectPgmBaseSchema: SchemaType<InspectPgmBase, PropsViewInspectPgmBaseWithForm> = {
+  properties: {
+    head_balance_holder_base: {
+      type: 'schema',
+      schema: headBalanceHolderBaseSchema,
+    },
+    head_operating_base: {
+      type: 'schema',
+      schema: headOperatingBaseSchema,
+    },
+    data: {
+      type: 'schema',
+      schema: dataSchema,
+    },
+    agents_from_gbu: {
+      type: 'multiValueOfArray',
+      title: 'Представители ГБУ',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
+            if (!agents_from_gbu.length) {
+              return `* для ${
+                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+                  ? 'завершения'
+                  : 'изменения'
+              } проверки необходимо добавить хотя бы одного представителя`;
+            }
+          }
+        },
+      ],
     },
   },
 };

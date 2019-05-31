@@ -1,3 +1,6 @@
+import { keyBy } from 'lodash';
+import { AnyAction } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 import {
   MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
@@ -19,6 +22,8 @@ import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
 } from 'components/monitor/redux-main/models/monitor-page';
+import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { ReduxState } from 'redux-main/@types/state';
 
 export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
@@ -26,6 +31,24 @@ export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) =
     carActualGpsNumberIndex,
   },
 });
+
+export const actionMonitorPageLoadCarActual = (): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseActions.autobaseGetSetCar(
+      {},
+      { page: 'mainpage', path: '' },
+    ),
+  );
+
+  dispatch(
+    monitorPageSetcarActualGpsNumberIndex(
+      keyBy(
+        result.data,
+        'gps_code',
+      ),
+    ),
+  );
+};
 
 export const monitoPageChangeCarsByStatus = (carsByStatus) => ({
   type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,

@@ -32,6 +32,13 @@ export const initialState = {
     missions: -1,
     mkad_speed_lim: initialMaxSpeed,
     speed_lim: initialMaxSpeed,
+
+    carTabInfo: {
+      contractor_name: null,
+      customer_name: null,
+      ownership: null,
+    },
+    isLoading: true,
   },
   trackCaching: {
     error: false,
@@ -118,6 +125,8 @@ export default (state: any = initialState, { type, payload }: any) => {
             missions: payload.missions,
             mkad_speed_lim: payload.mkad_speed_lim,
             speed_lim: payload.speed_lim,
+
+            carTabInfo: payload.carTabInfo,
           },
         };
       }

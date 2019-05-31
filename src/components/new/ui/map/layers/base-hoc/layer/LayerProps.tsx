@@ -1,9 +1,11 @@
 import * as React from 'react';
-import sourceVector from 'ol/source/Vector';
-import layerVector from 'ol/layer/Vector';
+import SourceVector from 'ol/source/Vector';
+import LayerVector from 'ol/layer/Vector';
+import Feature from 'ol/Feature';
+import Map from 'ol/Map';
 
 type PropsLayerProps = {
-  map: ol.Map;
+  map: Map;
   center?: [number, number];
   zoom?: number,
   centerOn?: any;
@@ -11,8 +13,8 @@ type PropsLayerProps = {
 };
 
 type StateLayerProps = {
-  vectorSource: ol.source.Vector | null;
-  olLayer: ol.layer.Vector | null;
+  vectorSource: SourceVector | null;
+  olLayer: LayerVector | null;
 };
 
 type TypeConfig = {
@@ -30,9 +32,9 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
 
     addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
       return new Promise((res) => {
-        const vectorSource = new sourceVector();
+        const vectorSource = new SourceVector();
 
-        const olLayer = new layerVector({
+        const olLayer = new LayerVector({
           source: vectorSource,
           renderMode,
         });
@@ -80,7 +82,7 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
         if (all) {
           vectorSource.clear();
         } else {
-          const featureArr: ol.Feature[] = Array.isArray(features) ? features : [features as ol.Feature];
+          const featureArr: Feature[] = Array.isArray(features) ? features : [features as Feature];
           try {
             featureArr.forEach((feature) => this.state.vectorSource.removeFeature(feature));
           } catch (e) {

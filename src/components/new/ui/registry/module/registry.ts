@@ -45,6 +45,7 @@ export interface OneRegistryData {
       [otherKey: string]: string | boolean;
     };
     meta: {
+      row_double_click: boolean;
       fields: any[],
       fieldsInDeepArr: any[],
       rowFields: any[],

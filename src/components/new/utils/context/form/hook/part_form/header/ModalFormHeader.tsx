@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import DefaultModalHeader from './default/DefaultHeader';
 import WaybillHeader from './waybill/WaybillHeader';
 import { SchemaFormContextHeader } from 'components/new/utils/context/form/@types';

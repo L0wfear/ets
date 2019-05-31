@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { FieldDataName } from 'components/new/utils/context/form/@types/fields/string';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

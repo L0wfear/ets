@@ -3,6 +3,7 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone, FooterEnd } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { AgentsFromGbuDataContainerAddMember } from './styled';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
@@ -24,6 +25,13 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
         setNewAgent(null);
       },
       [newAgent],
+    );
+
+    const handleClickClose = React.useCallback(
+      () => {
+        setNewAgent(null);
+      },
+      [setNewAgent],
     );
 
     const handleClickAddTemplateAgent = React.useCallback(
@@ -53,9 +61,13 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
             {
               props.isPermitted
                 ? (
-                  <FooterEnd>
-                    <EtsBootstrap.Button disabled={Boolean(newAgent)} onClick={handleClickAddTemplateAgent}>Добавить проверяющего</EtsBootstrap.Button>
-                  </FooterEnd>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col mdOffset={6} md={6}>
+                      <EtsBootstrap.Button block disabled={Boolean(newAgent)} onClick={handleClickAddTemplateAgent}>
+                        <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
+                      </EtsBootstrap.Button>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
                 )
                 : (
                   <DivNone />
@@ -66,9 +78,14 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
         {
           newAgent && props.isPermitted
             ? (
-              <div>
+              <AgentsFromGbuDataContainerAddMember md={12}>
                 <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={12}>
+                    <FooterEnd>
+                      <EtsBootstrap.Glyphicon glyph="remove" onClick={handleClickClose} />
+                    </FooterEnd>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={6}>
                     <ExtField
                       type="string"
                       label="Должность"
@@ -77,6 +94,8 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                       onChange={handleChangeNewAgent}
                       boundKeys="position"
                     />
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={6}>
                     <ExtField
                       type="string"
                       label="ФИО"
@@ -85,16 +104,15 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                       onChange={handleChangeNewAgent}
                       boundKeys="fio"
                     />
-                    <br />
-                    <FooterEnd>
-                      <EtsBootstrap.Button
-                        disabled={!newAgent.fio || !newAgent.position}
-                        onClick={handleClickAddAgentFromGbu}
-                      >Сохранить</EtsBootstrap.Button>
-                    </FooterEnd>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={12}>
+                    <EtsBootstrap.Button
+                      disabled={!newAgent.fio || !newAgent.position}
+                      onClick={handleClickAddAgentFromGbu}
+                    >Сохранить</EtsBootstrap.Button>
                   </EtsBootstrap.Col>
                 </EtsBootstrap.Row>
-              </div>
+              </AgentsFromGbuDataContainerAddMember>
             )
             : (
               <DivNone />

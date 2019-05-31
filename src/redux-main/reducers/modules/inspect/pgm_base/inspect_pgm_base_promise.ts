@@ -4,33 +4,19 @@ import {
   promiseCreateInspection,
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
-import { get, keyBy } from 'lodash';
+import { get, keyBy, cloneDeep } from 'lodash';
+import { isNullOrUndefined } from "util";
 
 export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
-  address_base: null,
-  balance_holder_base: null,
-  head_balance_holder_base_fio: null,
-  head_balance_holder_base_tel: null,
-  operating_base: null,
-  head_operating_base_fio: null,
-  head_operating_base_tel: null,
-  head_balance_holder_base: {
-    tel: null,
-    fio: null,
-  },
-  head_operating_base: {
-    tel: null,
-    fio: null,
-  },
   lack_traffic_scheme_at_entrance: false,
-  type_of_base_coverage: null,
+  type_of_base_coverage: [],
   access_roads_in_poor_condition: false,
   lack_of_lighting: false,
   lack_of_personal_protection: false,
   lack_of_records_in_training_logs: false,
   lack_of_technical_passport: false,
   lack_of_documents_on_pgm: false,
-  lack_of_documents_etc: null,
+  lack_of_documents_etc: '',
   lack_of_shower: false,
   lack_of_changing_rooms: false,
   lack_of_rest_rooms: false,
@@ -39,50 +25,39 @@ export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
   lack_of_ramps_stairs: false,
 
   lack_of_height_restriction_sign: false,
-  type_coverage_in_hangar: null,
+  type_coverage_in_hangar: [],
   lack_of_lighting_in_hangars: false,
   lack_of_schema_slinging: false,
   lack_of_wooden_pallets: false,
   hangar_is_not_sealed: false,
-  pgm_in_hangars: null,
+  pgm_in_hangars: '',
   insufficient_availability_of_wooden_pallets: false,
   lack_of_shelter_for_solid_pgm: false,
-  pgm_on_open_area: null,
-
-  containers_counter: 0,
-  summ_capacity: 0,
-  pgm_volume_sum: 0,
+  pgm_on_open_area: '',
 
   equipment_and_piping_in_poor_condition: false,
   containers_in_poor_condition: false,
 
-  files: [],
-  photos_of_supporting_documents: [],
-  photos_defect: [],
+  comments: '',
 };
 
-export const makeFilesForFront = (data: InspectPgmBase) => {
-  const files = get(data, 'files', []);
+const makeInspectPgmBase = (inspect: any): InspectPgmBase => {
+  const inspectAutobase: InspectPgmBase = cloneDeep(inspect);
 
-  return {
-    photos_of_supporting_documents: files.filter(({ kind }) => kind === 'photos_of_supporting_documents'),
-    photos_defect: files.filter(({ kind }) => kind === 'photos_defect'),
-  };
-};
+  inspectAutobase.agents_from_gbu = inspectAutobase.agents_from_gbu || [];
+  inspectAutobase.commission_members = inspectAutobase.commission_members || [];
+  inspectAutobase.files = inspectAutobase.files || [];
 
-export const makeFilesForBackend = (data: InspectPgmBase['data']) => {
-  return [
-    ...data.photos_of_supporting_documents.map((files: any) => {
-      files.kind = 'photos_of_supporting_documents';
+  inspectAutobase.data = cloneDeep(defaultInspectPgmBaseData);
+  Object.keys(inspectAutobase.data).forEach(
+    (key) => {
+      if (!isNullOrUndefined(get(inspect, `data.${key}`))) {
+        inspectAutobase.data[key] = get(inspect, `data.${key}`);
+      }
+    },
+  );
 
-      return files;
-    }),
-    ...data.photos_defect.map((files: any) => {
-      files.kind = 'photos_defect';
-
-      return files;
-    }),
-  ];
+  return inspectAutobase;
 };
 
 export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number }) => {
@@ -92,14 +67,7 @@ export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number }) =
   });
 
   const data: InspectPgmBase[] = response.data.map((inspectPgmBase: InspectPgmBase) => {
-    inspectPgmBase.data = {
-      ...(inspectPgmBase.data || defaultInspectPgmBaseData),
-      ...makeFilesForFront(inspectPgmBase),
-    };
-
-    delete inspectPgmBase.data.files;
-
-    return inspectPgmBase;
+    return makeInspectPgmBase(inspectPgmBase);
   }).sort((a, b) => a.id - b.id);
 
   return {
@@ -112,44 +80,27 @@ export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number }) =
  * @todo вынести в inspect_promise
  */
 export const promiseGetInspectPgmBaseById = async (id: number) => {
-  const inspectPgmBase: InspectPgmBase = await promiseGetInspectionByIdType(
+  let inspectPgmBase: InspectPgmBase = await promiseGetInspectionByIdType(
     id,
     'pgm_base',
   );
 
   if (inspectPgmBase) {
-    inspectPgmBase.agents_from_gbu = inspectPgmBase.agents_from_gbu || [];
-    const headData = {
-      head_balance_holder_base_fio: get(inspectPgmBase, 'head_balance_holder_base.fio', null),
-      head_balance_holder_base_tel: get(inspectPgmBase, 'head_balance_holder_base.tel', null),
-      head_operating_base_fio: get(inspectPgmBase, 'head_operating_base.fio', null),
-      head_operating_base_tel: get(inspectPgmBase, 'head_operating_base.tel', null),
-    };
-    inspectPgmBase.data = {
-      ...(inspectPgmBase.data || defaultInspectPgmBaseData),
-      ...makeFilesForFront(inspectPgmBase),
-      ...headData,
-    };
-
-    delete inspectPgmBase.data.files;
-
+    inspectPgmBase = makeInspectPgmBase(inspectPgmBase);
   }
 
   return inspectPgmBase;
 };
 
 export const promiseCreateInspectionPgmBase = async (payload: { pgmBaseId: number; companyId: number }) => {
-  const inspectPgmBase: InspectPgmBase = await promiseCreateInspection({
+  let inspectPgmBase: InspectPgmBase = await promiseCreateInspection({
     base_id: payload.pgmBaseId,
     company_id: payload.companyId,
     type: 'pgm_base',
   });
 
   if (inspectPgmBase) {
-    inspectPgmBase.data = {
-      ...(inspectPgmBase.data || defaultInspectPgmBaseData),
-      ...makeFilesForFront(inspectPgmBase),
-    };
+    inspectPgmBase = makeInspectPgmBase(inspectPgmBase);
   }
 
   return inspectPgmBase;

@@ -73,7 +73,7 @@ class TablePrev extends React.Component<any, any> {
               <tr>
                 {
                   headerData.map(({ title: titleTH }, i) => (
-                    <EtsTheadTh canClick key={i}>{titleTH}</EtsTheadTh>
+                    <EtsTheadTh canClick width={400} key={i}>{titleTH}</EtsTheadTh>
                   ))
                 }
               </tr>

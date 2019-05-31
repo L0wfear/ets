@@ -3,14 +3,14 @@ import { get } from 'lodash';
 import { connect, DispatchProp } from 'react-redux';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import {
   FieldDataDowntimeHoursWork,
   FieldDataDowntimeHoursDuty,
   FieldDataDowntimeHoursDinner,
   FieldDataDowntimeHoursRepair,
 } from 'components/new/utils/context/form/@types/fields/string';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';

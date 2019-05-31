@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillCarActualOptions from './useWaybillCarActualOptions';
 import usePrevious from 'components/new/utils/hooks/usePrevious';

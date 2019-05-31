@@ -4,6 +4,7 @@ import { get } from 'lodash';
 import { darken } from 'polished';
 import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
 import { FileInputWrapper } from 'components/ui/input/FileInput/styled';
+import { isBoolean } from 'util';
 
 const getColorTd = (rowData) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
@@ -16,6 +17,10 @@ const getColorTd = (rowData) => {
 
   if (!!get(rowData, 'parent_id', null)) {
     return constantColor.colorChildRegistry;
+  }
+
+  if (isBoolean(get(rowData, 'is_actual', null)) && !get(rowData, 'is_actual', null)) {
+    return constantColor.redRegisry;
   }
 
   return 'white';

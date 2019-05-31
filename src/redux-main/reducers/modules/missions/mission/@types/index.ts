@@ -46,6 +46,7 @@ export type Mission = {
   order_status: string;
   passes_count: number | null;
   reason_id: string;
+  reason_name: string;
   request_id?: number;
   request_number?: string;
   route_id: number | null;
@@ -75,8 +76,9 @@ export type GetMissionPayload = {
   is_archive?: boolean;
   column_id?: number;
 
-  limit?: number,
-  offset?: number,
-  sort_by?: string,
+  limit?: number;
+  offset?: number;
+  sort_by?: string;
   filter?: string; // JSON.stringify(filterValues),
+  request_id?: number; //
 };

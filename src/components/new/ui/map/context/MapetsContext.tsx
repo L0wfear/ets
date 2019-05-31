@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Map from 'ol/Map';
+
 import { StateMapEtsProvider } from 'components/new/ui/map/context/MapetsContext.h';
 import { resizeBase64 } from 'utils/functions';
 
@@ -26,7 +28,7 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
     };
   }
 
-  setMapToContext = (key: string, map: ol.Map) => {
+  setMapToContext = (key: string, map: Map) => {
     setTimeout(() => {
       console.log('SET MAP INTO CONTEXT', key); // tslint:disable-line:no-console
 
@@ -49,14 +51,14 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
     this.setState({ mapByKeys });
   }
 
-  getMapImageInBase64ByKey = (key: string) => {
+  getMapImageInBase64ByKey = (key: string): Promise<object> => {
     return new Promise((res, rej) => {
       const { mapByKeys: { [key]: map } } = this.state;
 
       if (map) {
         map.once('postcompose', (event) => {
-          resizeBase64((event as any).context.canvas.toDataURL('image/png'))
-            .then((imageObj) => res(imageObj));
+          resizeBase64(event.context.canvas.toDataURL('image/png'))
+            .then((imageObj: any) => res(imageObj));
         });
         map.render();
       } else {

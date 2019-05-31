@@ -20,7 +20,7 @@ type SwitchFieldsProps = {
   formDataKey: string;
 };
 
-const ComponentsByKey: Record<ContextFormField['key'], React.ComponentType<SwitchFieldsProps>> = {
+const ComponentsByKey: Record<ContextFormField['key'], React.ComponentType<any>> = {
   name: FieldName,
   measure_unit_id: FieldMeasureUnitId,
   waybill_employee_change_status: FieldWaybillEmployeeChangeStatus,

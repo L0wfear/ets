@@ -1,306 +1,157 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import IAVisibleWarning from 'components/new/pages/inspection/autobase/components/vsible_warning/IAVisibleWarning';
-import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { FooterEnd, DivNone } from 'global-styled/global-styled';
-import { FileField } from 'components/ui/input/fields';
-import { ViewInspectAutobaseProps } from './@types/ViewInspectAutobase';
+import { FooterEnd } from 'global-styled/global-styled';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';
-import { Reducer } from 'redux';
-import { inspectAutobaeSchema } from './inspect_autobase_schema';
-import { validate } from 'components/ui/form/new/validate';
-import ViewAddInspectEmployee, {
-  ViewAddInspectEmployeeInitialState,
-  viewAddInspectEmployeeInitialState,
-} from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps, PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import inspectAutobasePermissions from '../../_config_data/permissions';
+import { inspectAutobaseSchema } from './schema';
+import { getDefaultInspectAutobaseElement } from './utils';
+import BlockInspectAutobaseDataFiles from './blocks/block_data_files/BlockInspectAutobaseDataFiles';
+import BlockCarsConditionSetInspectEmployee from '../../../cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
+import IAVisibleWarningContainer from '../../../container/filed_to_check/IAVisibleWarningContainer';
 
-type InitialState = {
-  selectedInspect: InspectAutobase,
-  errors: Partial<Record<keyof InspectAutobase['data'], string>>;
-  canSave: boolean;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
-  agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
-  commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
-  resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
-};
+const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      formErrors: errors,
+    } = props;
 
-const initialState: InitialState = {
-  selectedInspect: null,
-  errors: {},
-  canSave: false,
-  type: 'list',
-  agents_from_gbu: viewAddInspectEmployeeInitialState.agents_from_gbu,
-  commission_members: viewAddInspectEmployeeInitialState.commission_members,
-  resolve_to: viewAddInspectEmployeeInitialState.resolve_to,
-};
-
-const CHANGE_DATA = 'CHANGE_DATA';
-const SET_INITIAL_STATE = 'SET_INITIAL_STATE';
-const SET_COMISSION_AND_MEMBERS = 'SET_COMISSION_AND_MEMBERS';
-
-const actionChangeSelectedInspectAutobaseData = (data: InspectAutobase['data']) => ({
-  type: CHANGE_DATA,
-  payload: {
-    data,
-  },
-});
-
-const actionSetSelectedInspectAutobaseData = (selectedInspect: InitialState['selectedInspect'], type: InitialState['type']) => ({
-  type: SET_INITIAL_STATE,
-  payload: {
-    selectedInspect,
-    type,
-  },
-});
-
-const actionSetComissionAndMembers = (
-  data: {
-    agents_from_gbu: InitialState['agents_from_gbu'];
-    commission_members: InitialState['commission_members'];
-    resolve_to: InitialState['resolve_to'];
-  }) => ({
-    type: SET_COMISSION_AND_MEMBERS,
-    payload: {
-      data,
-    },
-  });
-
-const reducer = (state: InitialState, { type, payload }) => {
-  switch (type) {
-    case SET_INITIAL_STATE: {
-      const errors = validate(inspectAutobaeSchema, payload.selectedInspect.data, { type: payload.type }, payload.selectedInspect);
-
-      return {
-        selectedInspect: payload.selectedInspect,
-        type: payload.type,
-        errors,
-        canSave: Object.values(errors).every((error) => !error),
-      };
-    }
-    case CHANGE_DATA: {
-      const selectedInspect = {
-        ...state.selectedInspect,
-        data: {
-          ...state.selectedInspect.data,
-          ...payload.data,
-        },
-      };
-      const errors = validate(inspectAutobaeSchema, selectedInspect.data, { type: state.type }, selectedInspect);
-
-      return {
-        ...state,
-        selectedInspect,
-        errors,
-        canSave: Object.values(errors).every((error) => !error),
-      };
-    }
-    case SET_COMISSION_AND_MEMBERS: {
-      const {
-        commission_members,
-        agents_from_gbu,
-        resolve_to,
-      } = payload.data;
-      const selectedInspect = {
-        ...state.selectedInspect,
-        commission_members,
-        agents_from_gbu,
-        resolve_to,
-      };
-      return {
-        ...state,
-        selectedInspect,
-      };
-    }
-    default: return state;
-  }
-};
-
-const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = (props) => {
-  const [state, dispatch] = React.useReducer<Reducer<InitialState, any>>(
-    reducer,
-    initialState,
-  );
-
-  React.useEffect(
-    () => {
-      dispatch(
-        actionSetSelectedInspectAutobaseData(
-          props.selectedInspect,
-          props.type,
-        ),
-      );
-    },
-    [props.type, props.selectedInspect],
-  );
-
-  const isPermittedChangeListParams = (
-    props.isPermitted
-    && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
-    || (
-      props.isPermittedToUpdateClose
-      && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
-    )
-  );
-
-  const isPermittedChangeCloseParams = (
-    props.isPermitted
-    && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-    || (
-      props.isPermittedToUpdateClose
-      && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
-    )
-  );
-
-  const onChangeData = React.useCallback(
-    (data) => {
-      if (isPermittedChangeListParams) {
-        dispatch(
-          actionChangeSelectedInspectAutobaseData(data),
-        );
-      }
-    },
-    [state.selectedInspect, isPermittedChangeListParams],
-  );
-
-  const onChangeFile = React.useCallback(
-    (key, value) => {
-      if (isPermittedChangeListParams) {
-        dispatch(
-          actionChangeSelectedInspectAutobaseData({
-            ...state.selectedInspect.data,
-            [key]: value,
-          }),
-        );
-      }
-    },
-    [state.selectedInspect, isPermittedChangeListParams],
-  );
-
-  const setComissionAndMembers = React.useCallback(
-    (agents_from_gbu, commission_members, resolve_to) => {
-      dispatch(
-        actionSetComissionAndMembers({
-          agents_from_gbu,
-          commission_members,
-          resolve_to,
-        }),
-      );
-    },
-    [state.agents_from_gbu, state.commission_members, state.resolve_to],
-  );
-
-  return state.selectedInspect
-    ? (
-      <>
-        <ContainerForm>
-          <EtsBootstrap.Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
-            <BoxContainer>
-              <ExtField
-                type="string"
-                label="Организация:"
-                value={state.selectedInspect.company_short_name}
-                readOnly
-                inline
-              />
-              <ExtField
-                type="string"
-                label="Адрес базы:"
-                value={state.selectedInspect.base_address}
-                readOnly
-                inline
-              />
-            </BoxContainer>
-            <BoxContainer>
-              <h4>
-                Выявленные нарушения:
-              </h4>
-              <IAVisibleWarning
-                onChange={onChangeData}
-                data={state.selectedInspect.data}
-                errors={state.errors}
-                isPermitted={isPermittedChangeListParams}
-                filedToCheck={filedToCheck}
-              />
-            </BoxContainer>
-            <EtsBootstrap.Row>
-            {
-              isPermittedChangeListParams || state.selectedInspect.data.photos_of_supporting_documents.length
-                ? (
-                  <EtsBootstrap.Col md={6}>
-                    <FileField
-                      id="file"
-                      label="Фотографии подтверждающих документов"
-                      multiple
-                      value={state.selectedInspect.data.photos_of_supporting_documents}
-                      onChange={onChangeFile}
-                      disabled={!isPermittedChangeListParams}
-                      boundKeys="photos_of_supporting_documents"
-                    />
-                  </EtsBootstrap.Col>
-                )
-                : (
-                  <DivNone />
-                )
-            }
-            {
-              isPermittedChangeListParams || state.selectedInspect.data.photos_defect.length
-                ? (
-                  <EtsBootstrap.Col md={6}>
-                    <FileField
-                      id="file"
-                      label="Фотографии дефектов"
-                      multiple
-                      value={state.selectedInspect.data.photos_defect}
-                      onChange={onChangeFile}
-                      disabled={!isPermittedChangeListParams}
-                      boundKeys="photos_defect"
-                    />
-                  </EtsBootstrap.Col>
-                )
-                : (
-                  <DivNone />
-                )
-            }
-            </EtsBootstrap.Row>
-          </EtsBootstrap.Col>
-          <ViewAddInspectEmployee
-            type={props.type}
-            isPermittedChangeCloseParams={isPermittedChangeCloseParams}
-            canAddMembers={true}
-            canAddCompanyAgent={true}
-            canRemoveEmployee={true}
-            selectedInspect={state.selectedInspect}
-            setComissionAndMembers={setComissionAndMembers}
-            inspectTypeForm={INSPECT_AUTOBASE_TYPE_FORM}
-          />
-        </ContainerForm>
-        <FooterForm md={12} sm={12}>
-          <FooterEnd>
-            <ViewInspectAutobaseButtonSubmit
-              canSave={state.canSave}
-              type={props.type}
-              handleHide={props.handleHide}
-              selectedInspectAutobase={state.selectedInspect}
-              isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-              loadingPage={props.loadingPage}
-            />
-            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
-          </FooterEnd>
-        </FooterForm>
-      </>
-    )
-    : (
-      <DivNone />
+    const isPermittedChangeListParams = (
+      props.isPermitted
+      && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+      )
     );
-};
 
-export default withPreloader({
-  typePreloader: 'mainpage',
-  withPagePath: true,
-})(ViewInspectAutobase);
+    const isPermittedChangeCloseParams = (
+      props.isPermitted
+      && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+      || (
+        props.isPermittedToUpdateClose
+        && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+      )
+    );
+
+    const onChangeData = React.useCallback(
+      (newPartialData) => {
+        props.handleChange({
+          data: {
+            ...state.data,
+            ...newPartialData,
+          },
+        });
+      },
+      [props.handleChange, state.data],
+    );
+
+    return (
+        <React.Fragment>
+          <ContainerForm>
+            <EtsBootstrap.Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
+              <BoxContainer>
+                <ExtField
+                  type="string"
+                  label="Организация:"
+                  value={state.company_short_name}
+                  readOnly
+                  inline
+                />
+                <ExtField
+                  type="string"
+                  label="Адрес базы:"
+                  value={state.base_address}
+                  readOnly
+                  inline
+                />
+              </BoxContainer>
+              <BoxContainer>
+                <h4>
+                  Выявленные нарушения:
+                </h4>
+                <IAVisibleWarningContainer
+                  onChange={onChangeData}
+                  data={state.data}
+                  errors={errors.data}
+                  isPermitted={isPermittedChangeListParams}
+                  filedToCheck={filedToCheck}
+                />
+              </BoxContainer>
+              <BlockInspectAutobaseDataFiles
+                files={state.files}
+
+                isPermittedChangeListParams={isPermittedChangeListParams}
+                onChange={props.handleChange}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 0 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 0 : 6}>
+              <BlockCarsConditionSetInspectEmployee
+                type={props.type}
+                isPermittedChangeCloseParams={isPermittedChangeCloseParams}
+
+                close_employee_fio={state.close_employee_fio}
+                close_employee_position={state.close_employee_position}
+                close_employee_assignment={state.close_employee_assignment}
+                close_employee_assignment_date_start={state.close_employee_assignment_date_start}
+
+                commission_members={state.commission_members}
+                company_id={state.company_id}
+                error_agents_from_gbu={errors.agents_from_gbu}
+                agents_from_gbu={state.agents_from_gbu}
+                company_short_name={state.company_short_name}
+                resolve_to={state.resolve_to}
+                error_resolve_to={errors.resolve_to}
+                handleChange={props.handleChange}
+                page={props.page}
+                path={props.path}
+              />
+            </EtsBootstrap.Col>
+          </ContainerForm>
+          <FooterForm md={12} sm={12}>
+            <FooterEnd>
+              <ViewInspectAutobaseButtonSubmit
+                type={props.type}
+                handleSubmit={props.defaultSubmit}
+                isPermittedToUpdateClose={props.isPermittedToUpdateClose}
+                handleHide={props.handleHide}
+                selectedInspectAutobase={state}
+                canSave={props.canSave}
+                loadingPage={props.loadingPage}
+              />
+              <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            </FooterEnd>
+          </FooterForm>
+        </React.Fragment>
+      );
+  },
+);
+
+export default compose<ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps>(
+  withForm<PropsViewInspectAutobaseWithForm, InspectAutobase>({
+    uniqField: 'id',
+    updateAction: inspectionAutobaseActions.actionUpdateInspectAutobase,
+    withThrow: true,
+    mergeElement: (props) => {
+      return getDefaultInspectAutobaseElement(props.element);
+    },
+    permissions: inspectAutobasePermissions,
+    schema: inspectAutobaseSchema,
+  }),
+  withPreloader({
+    typePreloader: 'mainpage',
+    withPagePath: true,
+  }),
+)(ViewInspectAutobase);

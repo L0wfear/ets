@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import useEmployeeFullNameOptions from 'components/new/utils/hooks/services/useOptions/useEmployeeFullNameOptions';
 import { FieldDataWaybillAccompanyingPersonId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

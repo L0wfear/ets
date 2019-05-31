@@ -23,7 +23,6 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
   )
 
   render() {
-
     const { missions: { length }, missions } = this.props;
 
     return (

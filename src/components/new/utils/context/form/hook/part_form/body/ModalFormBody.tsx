@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import FieldsRows from './fields_rows/FieldsRows';
 

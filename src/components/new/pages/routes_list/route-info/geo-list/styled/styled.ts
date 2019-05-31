@@ -20,6 +20,6 @@ const notValidStyle = css`
   border: 1px solid rgba(226, 0, 255, 0.24);
 `;
 
-export const LiRouteManual = styled.li`
+export const LiRouteManual = styled.li<{ isInvalid: boolean }>`
   ${({ isInvalid }) => isInvalid && notValidStyle};
 `;

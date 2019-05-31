@@ -21,6 +21,7 @@ import { edc_form_permitted_type_reverse } from 'components/new/ui/registry/comp
 import EdcRequestCancelFormLazy from './cancel';
 import { EdcRequestCancel } from './cancel/@types/EdcRequestCancel';
 import EdcRequestRejectFormLazy from './reject';
+import RequestInfoFormLazy from './requestInfo';
 
 type EdcRequestFormLazyDispatchProps = {
   actionSetDependenceEdcRequestForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceEdcRequestForMission>;
@@ -192,6 +193,19 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
         showForm
         element={getDefaultEdcRequestCancelElement(props.element)}
         edcReques={props.element}
+        onFormHide={props.onFormHide}
+
+        page={page}
+        path={path}
+      />
+    );
+  }
+
+  if (type === buttonsTypes.edc_request_info) {
+    return (
+      <RequestInfoFormLazy
+        element={props.element}
+        registryKey={page}
         onFormHide={props.onFormHide}
 
         page={page}

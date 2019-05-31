@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 import useCarActualOptions from 'components/new/utils/hooks/services/useOptions/useCarActualOptions';
 

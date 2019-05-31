@@ -33,6 +33,7 @@ export const defaultWaybill: Waybill = {
   downtime_hours_repair: null,
   downtime_hours_work: null,
   driver_id: null,
+  driver_fio: '',
   equipment_fact_fuel_end: null,
   equipment_fuel: null,
   equipment_fuel_end: null,

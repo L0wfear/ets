@@ -254,9 +254,6 @@ export default compose<PropsRepair, OwnRepairProps>(
       userCompanyId: getSessionState(state).userData.company_id,
     }),
     (dispatch: any, { page, path }) => ({
-      autobaseGetSetCar: (...arg) => (
-        dispatch(autobaseActions.autobaseGetSetCar(...arg))
-      ),
       autobaseGetRepairCompany: () => (
         dispatch(
           autobaseActions.autobaseGetSetRepairCompany({}, { page, path }),

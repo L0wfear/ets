@@ -30,11 +30,11 @@ const EtsThemeProvider: React.FC<EtsThemeProviderProps> = React.memo(
     );
 
     return (
-      <EtsThemeContext.Provider value={value}>
-        <ThemeProvider theme={etsThemes[value.themeName]}>
+      <ThemeProvider theme={etsThemes[value.themeName]}>
+        <EtsThemeContext.Provider value={value}>
           { props.children }
-        </ThemeProvider>
-      </EtsThemeContext.Provider>
+        </EtsThemeContext.Provider>
+      </ThemeProvider>
     );
   },
 );

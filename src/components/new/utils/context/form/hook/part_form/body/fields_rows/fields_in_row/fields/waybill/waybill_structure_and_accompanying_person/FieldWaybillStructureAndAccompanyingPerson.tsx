@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import { FieldDataWaybillStructureAndAccompanyingPerson } from 'components/new/utils/context/form/@types/fields/waybill';
 import FieldWaybillStructureId from './structure/FieldWaybillStructureId';
 import FieldWaybillAccompanyingPersonId from './accompanying_person_id/FieldWaybillAccompanyingPersonId';

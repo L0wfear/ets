@@ -4,10 +4,10 @@ import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { stateExploitationOptions } from './options';
 import { get } from 'lodash';
-import IAVisibleWarning from 'components/new/pages/inspection/autobase/components/vsible_warning/IAVisibleWarning';
 import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataDocs, filedToCheckDefectDataOtherSecond, filedToCheckDefectDataOtherFirst } from './filedToCheckCarInfoMainCheckData';
 import BlockCarsConditionCarSelectPhotoDefect from './photo_defect/BlockCarsConditionCarSelectPhotoDefect';
 import FieldCarsConditionsCarSelectFactStatus from './fact_status_and_other/FieldCarsConditionsCarSelectFactStatus';
+import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
 
 type BlockCarInfoMainCheckDataProps = (
   {
@@ -82,7 +82,7 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
           disabled={!props.isPermitted}
         />
         <h5>Выявленные дефекты ТС при внешнем осмотре:</h5>
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={handleChangeDataForIA}
           data={state.data}
           errors={errors.data}
@@ -91,7 +91,7 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
         />
         <br />
         <h5>Выявленные дефекты при пробном пуске ТС:</h5>
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={handleChangeDataForIA}
           data={state.data}
           errors={errors.data}
@@ -100,7 +100,7 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
         />
         <br />
         <h5>Проверка документации:</h5>
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={handleChangeDataForIA}
           data={state.data}
           errors={errors.data}
@@ -109,7 +109,7 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
         />
         <br />
         <h5>Прочее:</h5>
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={handleChangeDataForIA}
           data={state.data}
           errors={errors.data}
@@ -128,7 +128,7 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
           boundKeys="state_exploitation"
           disabled={!isPermitted}
         />
-        <IAVisibleWarning
+        <IAVisibleWarningContainer
           onChange={handleChangeDataForIA}
           data={state.data}
           errors={errors.data}

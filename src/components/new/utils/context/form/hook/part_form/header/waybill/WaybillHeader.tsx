@@ -1,7 +1,7 @@
 import * as React from 'react';
-import useWaybillFormData from '../../../../hoc_selectors/waybill/useWaybillForm';
+import useWaybillFormData from '../../../../hook_selectors/waybill/useWaybillForm';
 import { getTitleByStatus } from './utils';
-import useForm from '../../../../hoc_selectors/useForm';
+import useForm from '../../../../hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

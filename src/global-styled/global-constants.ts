@@ -13,6 +13,7 @@ export const constantColor = {
   navbarHeight: '64px',
   navbarPaddingA: '22px',
   orange: 'orange',
+  redRegisry: '#ffabab',
 };
 
 export const mobiSize = 768;

@@ -1,6 +1,6 @@
+import { get } from 'lodash';
 import { InspectContainer } from "./@types/container";
 import { InspectContainerService } from "api/Services";
-import { get } from 'lodash';
 import { PgmStore } from "../../geoobject/actions_by_type/pgm_store/@types";
 
 export const promiseGetInspectContainer = async (inspection_id: PgmStore['id']) => {

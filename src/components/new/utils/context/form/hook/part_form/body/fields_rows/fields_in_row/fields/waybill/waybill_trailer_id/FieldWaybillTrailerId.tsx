@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
-import useWaybillFormData from 'components/new/utils/context/form/hoc_selectors/waybill/useWaybillForm';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import FieldWaybillTrailerIdString from './FieldWaybillTrailerIdString';
 import FieldWaybillTrailerIdArray from './FieldWaybillTrailerIdArray';
 

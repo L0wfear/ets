@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/hoc_selectors/useForm';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isArray } from 'highcharts';
 import { DefaultHeaderType } from 'components/new/utils/context/form/@types';

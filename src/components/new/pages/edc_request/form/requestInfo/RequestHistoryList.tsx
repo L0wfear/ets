@@ -20,6 +20,11 @@ import {
   RequestHistoryListRegistry,
 } from 'components/new/pages/edc_request/form/requestInfo/styled/styled';
 
+import {
+  getConfig,
+  getRegistryKey,
+} from 'components/new/pages/edc_request/form/requestInfo/table/_config_data/registry-config';
+
 export type RequestHistoryListStateProps = {
   edcRequestInfoList: IStateSomeUniq['edcRequestInfoList'];
 };
@@ -62,6 +67,8 @@ const RequestHistoryList: React.FC<RequestHistoryListProps> = React.memo(
                     key={index + 1}
                     edcRequestInfo={rowData}
                     index={index}
+                    getConfig={getConfig}
+                    registryKeyIndex={getRegistryKey(index)}
                   />
                 </RequestHistoryListRegistry>
               ),

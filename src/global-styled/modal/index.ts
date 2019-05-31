@@ -20,7 +20,7 @@ export const GlobalModalFooterCss = css`
     text-align: left;
 
     &>* {
-      margin-right: 20px;
+      margin-right: 10px;
       &:last-child {
         margin-right: 0;
       }

@@ -15,7 +15,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { DivNone } from 'global-styled/global-styled';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
-type ButtonCompleteMissionStateProps = {
+export type ButtonCompleteMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
   checkedRows: OneRegistryData['list']['data']['checkedRows'];
@@ -39,6 +39,7 @@ type ButtonCompleteMissionProps = (
 
 const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
   const [showChangeStatusRequesFormLazy, setShowChangeStatusRequesFormLazy] = React.useState(false);
+  const [lastSelectedRow, setLastSelectedRow] = React.useState(null);
   const requestFormHide = React.useCallback(() => {
     setShowChangeStatusRequesFormLazy(false);
   }, []);
@@ -49,6 +50,8 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
       if (!Object.values(itemToRemove).length) {
         itemToRemove[props.uniqKey] = props.selectedRow;
       }
+
+      setLastSelectedRow(props.selectedRow);
 
       try {
         // const response = await props.actionCompleteMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
@@ -74,7 +77,7 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
     const can_be_closed = get(props.selectedRow, 'can_be_closed', false);
     disabled = !can_be_closed;
   }
-
+  disabled = false; // <<< удалить
   // console.log('ButtonCompleteMissionProps === ', {props, showChangeStatusRequesFormLazy});
   return (
     <>
@@ -84,9 +87,9 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
       {
         showChangeStatusRequesFormLazy
           ? <ChangeStatusRequesFormLazy
-              // showForm={showChangeStatusRequesFormLazy}
               onFormHide={requestFormHide}
               checkedRows={props.checkedRows}
+              selectedRow={lastSelectedRow}
             />
           : <DivNone />
       }

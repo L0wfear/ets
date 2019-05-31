@@ -1,10 +1,6 @@
 import * as React from 'react';
 import Registry from 'components/new/ui/registry/components/Registry';
 
-import {
-  getConfig,
-  getRegistryKey,
-} from 'components/new/pages/edc_request/form/requestInfo/table/_config_data/registry-config';
 import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 import { get } from 'lodash';
 import { createValidDateDots } from 'utils/dates';
@@ -22,9 +18,13 @@ export type TableMissionsRequestDispatchProps = {
 };
 
 export type TableMissionsRequestOwnProps = {
-  key: number;
+  key: number | string;
   edcRequestInfo: EdcRequestInfo;
   index: number;
+  original?: boolean;
+  getRegistryKey?: any; // <<< изменить, если будет время
+  getConfig: any; // <<< изменить, если будет время
+  registryKeyIndex: number | string;
 };
 
 export type TableMissionsRequestProps = (
@@ -37,13 +37,14 @@ const TableMissionsRequest: React.FC<TableMissionsRequestProps> = React.memo(
   (props) => {
     const missionsList = get(props, 'edcRequestInfo.missions', null);
     const edc_date = get(props, 'edcRequestInfo.edc_date', null);
+    const registryKeyIndex = get(props, 'registryKeyIndex', null);
 
-    const registryKeyIndex = getRegistryKey(props.index);
+    // console.log('TableMissionsRequest props === ', props);
 
     React.useEffect(
       () => {
         props.registryAddInitialData(
-          getConfig(
+          props.getConfig(
             missionsList,
             props.index,
           ),

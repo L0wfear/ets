@@ -37,9 +37,7 @@ const getRightRus = (count) => {
   return 'датчиков';
 };
 
-const SensorsEquipmentList: React.FC<
-  PropsSensorsEquipmentList
-> = (props) => {
+const SensorsEquipmentList: React.FC<PropsSensorsEquipmentList> = (props) => {
   const { track } = props;
   const sensors_equipment = Object.entries(props.front_cars_sensors_equipment);
 
@@ -130,7 +128,7 @@ const mergedProps = (stateProps, { dispatch }) => ({
   },
 });
 
-export default compose(
+export default compose<PropsSensorsEquipmentList, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'loader-field',

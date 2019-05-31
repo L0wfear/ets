@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { omit } from 'lodash';
+import Map from 'ol/Map';
+import Draw from 'ol/interaction/Draw';
 
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
@@ -45,7 +47,7 @@ type PropsLayerPolygonBuffer = {
   addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  map: ol.Map;
+  map: Map;
 
   monitorPageTogglePolygonBufferActive: any;
   monitorPageFalsePolygonBufferActive: any;
@@ -57,7 +59,7 @@ type PropsLayerPolygonBuffer = {
 };
 
 type StateLayerPolygonBuffer = {
-  interactionDraw: ol.interaction.Draw | void;
+  interactionDraw: Draw | void;
   activeDraw: boolean;
 };
 
@@ -133,7 +135,7 @@ class LayerPolygonBuffer extends React.PureComponent<PropsLayerPolygonBuffer, St
     this.handleClickRemove();
   }
 
-  handleEndDraw = (feature: ol.Feature) => { // конец рисования буфера
+  handleEndDraw = (feature: Feature) => { // конец рисования буфера
     const buffer = createBuffer(feature, 1000);
     this.drawBufferToMap(buffer);
     this.setState({ activeDraw: false });

@@ -10,6 +10,7 @@ export const defaultCompanyStructure: CompanyStructure = {
   note: '',
   parent_id: null,
   type: null,
+  type_display: '',
   children: [],
 };
 

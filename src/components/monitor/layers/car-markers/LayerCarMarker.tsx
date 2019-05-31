@@ -386,8 +386,8 @@ class LayerCarMarker extends React.PureComponent<
       Object.entries(data).forEach(
         ([gps_code, { coords, coords_msk, ...dataOther }]) => {
           let point = {
-            coords_msk: [...coords_msk].reverse() as ol.Coordinate,
-            coords: [...coords].reverse() as ol.Coordinate,
+            coords_msk: [...coords_msk].reverse(),
+            coords: [...coords].reverse(),
             ...dataOther,
             front_status: getFrontStatus(dataOther.status).slug,
           };

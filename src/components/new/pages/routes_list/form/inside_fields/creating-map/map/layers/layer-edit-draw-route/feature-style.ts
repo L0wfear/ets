@@ -1,4 +1,4 @@
-import Style from 'ol/style/Style';
+import Style, { StyleFunction } from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
@@ -132,7 +132,7 @@ const makeCacheStyle = ({ type, state = polyState.SELECTED }) => {
   }
 };
 
-export const inputLineStyleFunc: ol.StyleFunction  = (feature) => {
+export const inputLineStyleFunc: StyleFunction  = (feature) => {
   const state = feature.get('state');
   const style = [
     getCasheStyleForGeoobject(TYPES_STYLE.input_lines, state),

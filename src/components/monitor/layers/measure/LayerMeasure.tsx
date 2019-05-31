@@ -3,6 +3,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import Draw from 'ol/interaction/Draw';
 import { omit } from 'lodash';
+import Map from 'ol/Map';
 
 import { connect } from 'react-redux';
 import * as Button from 'react-bootstrap/lib/Button';
@@ -26,6 +27,7 @@ import {
   EtsOverlayMeasureTitleContainer,
   EtsTriangleMeasure,
 } from 'components/monitor/layers/measure/styled/styled';
+import GeometryType from 'ol/geom/GeometryType';
 
 type PropsLayerParkingPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -34,7 +36,7 @@ type PropsLayerParkingPoints = {
   addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  map: ol.Map;
+  map: Map;
 
   monitorPageToggleMeasureActive: any;
   monitorPageFalseMeasureActive: any;
@@ -49,7 +51,7 @@ type OneLine = {
 
 type StateLayerParkingPoints = {
   lines: OneLine[];
-  interactionDraw: ol.interaction.Draw | void;
+  interactionDraw: Draw | void;
   activeDraw: boolean;
 };
 
@@ -82,7 +84,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
     if (!this.props.measureActive) {
       const interactionDraw = new Draw({
         source: this.props.getVectorSource(),
-        type: 'LineString',
+        type: GeometryType.LINE_STRING,
         style: getStyleForLineMeasure({ type: 'template' }),
       });
 

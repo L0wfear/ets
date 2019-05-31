@@ -185,7 +185,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
-    const missionArr = Object.values(checkedElements);
+    const missionArr: any = Object.values(checkedElements);
     const hasMissionForColumn = missionArr.some((mission: any) => mission.for_column);
 
     if (hasMissionForColumn && missionArr.length > 1) {
@@ -200,14 +200,17 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     if (hasMissionForColumn) {
       this.setState({
         showColumnAssignment: true,
-        assign_to_waybill_for_column: missionArr.reduce((newObj, { id, car_ids }) => {
-          newObj[id] = car_ids.reduce((newObjByCarId, car_id) => {
-            newObjByCarId[car_id] = 'assign_to_new_draft';
-            return newObjByCarId;
-          }, {});
+        assign_to_waybill_for_column: missionArr.reduce(
+          (newObj, { id, car_ids }) => {
+            newObj[id] = car_ids.reduce((newObjByCarId, car_id) => {
+              newObjByCarId[car_id] = 'assign_to_new_draft';
+              return newObjByCarId;
+            }, {});
 
-          return newObj;
-        }, {}),
+            return newObj;
+          },
+          {},
+        ),
       });
       return 'колонна';
     }

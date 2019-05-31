@@ -166,7 +166,7 @@ export const config: TypeConfigData<Norm> = {
           width: 100,
         },
         {
-          key: 'use_in_reports',
+          key: 'use_in_report',
           title: 'Учет в отчетах',
           width: 100,
           format: 'boolean',

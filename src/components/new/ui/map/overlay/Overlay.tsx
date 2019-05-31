@@ -21,6 +21,7 @@ import {
 import {
   DivNone,
 } from 'global-styled/global-styled';
+import OverlayPositioning from 'ol/OverlayPositioning';
 
 class Overlay extends React.Component<PropsOverlay, StateOverlay> {
   node: any;
@@ -38,7 +39,7 @@ class Overlay extends React.Component<PropsOverlay, StateOverlay> {
     try {
       const marker = makeOverlay({
         position: this.props.coordsMsk,
-        positioning: 'bottom-center',
+        positioning: OverlayPositioning.BOTTOM_CENTER,
         element: this.state.container,
         stopEvent: false,
       });

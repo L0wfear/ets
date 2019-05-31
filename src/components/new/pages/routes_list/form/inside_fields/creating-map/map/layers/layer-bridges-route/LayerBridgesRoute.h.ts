@@ -1,3 +1,6 @@
+import Map from 'ol/Map';
+import Feature from 'ol/Feature';
+
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 import { ModifyBridgesForRoute } from 'components/new/pages/routes_list/form/RouteForm.h';
@@ -11,7 +14,7 @@ export type PropsLayerBridgesRoute = {
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  map: ol.Map;
+  map: Map;
 };
 
 export type StateLayerBridgesRoute = {
@@ -59,14 +62,14 @@ export namespace LayerGeoobjectsUtilsTypes {
     id: string,
     geoobj: GeozonesDataByIndex & { state: number },
     geoobj_old: GeozonesDataByIndex & { state: number },
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 
   export type checkShowTrueHasOldFeatureFunc = (
     geoobj: GeozonesDataByIndex & { state: number },
     geoobj_old: GeozonesDataByIndex & { state: number },
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
   ) => void;
 
   export type checkShowTrueHasNotOldFeatureFunc = (

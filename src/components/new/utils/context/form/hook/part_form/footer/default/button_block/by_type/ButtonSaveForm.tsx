@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { Button } from 'react-bootstrap';
-import useFormData from 'components/new/utils/context/form/useFormData';
 import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { Button } from 'react-bootstrap';
 
-type ButtonSaveFormStateProps = void;
-type ButtonSaveFormDispatchProps = DispatchProp;
-type ButtonSaveFormStateOwnProps = {
+import useFormData from 'components/new/utils/context/form/useFormData';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { ReduxState } from 'redux-main/@types/state';
+
+type StateProps = {};
+type OwnProps = {
   formDataKey: string;
 };
 
 type ButtonSaveFormProps = (
-  ButtonSaveFormStateProps
-  & ButtonSaveFormDispatchProps
-  & ButtonSaveFormStateOwnProps
+  StateProps
+  & DispatchProp
+  & OwnProps
 );
 
 const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
@@ -57,6 +57,6 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
   },
 );
 
-export default connect<ButtonSaveFormStateProps, ButtonSaveFormDispatchProps, ButtonSaveFormStateOwnProps, ReduxState>(
+export default connect<StateProps, DispatchProp, OwnProps, ReduxState>(
   null,
 )(ButtonSaveForm);

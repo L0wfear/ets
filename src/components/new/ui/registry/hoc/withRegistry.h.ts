@@ -49,10 +49,15 @@ export type OneFilterType<F> = {
     options?: FilterOptionType<F>[];
     getRegistryData?: {
       entity: string;
+      payload?: object;
       typeAns?: 'result.rows' | 'result',
       valueKey: string;
       labelKey?: string;
       mergeWithArray?: boolean;
+      format?: (
+        'short_employee_name'
+        | 'work_mode_label'
+      );
     }
   } | {
     type: 'advanced-select-like',
@@ -124,6 +129,9 @@ export type TypeFields<F extends any> = {
   title: string,
   sortable?: boolean;
   width: number;
+} | {
+  key: 'buttonCloneTire',
+  title: string;
 };
 
 export type TypeConfigData<F> = {

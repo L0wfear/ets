@@ -1,3 +1,6 @@
+import Map from 'ol/Map';
+import Feature from 'ol/Feature';
+
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
@@ -11,7 +14,7 @@ export type PropsLayerPlayPoint = {
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   geoobjectsArr: any[];
   inputLines: any[];
-  map: ol.Map;
+  map: Map;
 
   centerOn: any;
 };
@@ -23,7 +26,7 @@ export type TypeSelectedGeoobj = {
 };
 
 export type PropsOverlayLayerRouteInfoGeometry = TypeSelectedGeoobj & {
-  map: ol.Map;
+  map: Map;
   hidePopup: any;
 };
 
@@ -73,14 +76,14 @@ export namespace LayerGeoobjectsUtilsTypes {
     id: string,
     geoobj: GeozonesDataByIndex & { state: number },
     geoobj_old: GeozonesDataByIndex & { state: number },
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 
   export type checkShowTrueHasOldFeatureFunc = (
     geoobj: GeozonesDataByIndex & { state: number },
     geoobj_old: GeozonesDataByIndex & { state: number },
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
   ) => void;
 
   export type checkShowTrueHasNotOldFeatureFunc = (

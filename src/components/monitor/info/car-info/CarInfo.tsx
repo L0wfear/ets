@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import Map from 'ol/Map';
+
 import TitleBlock from 'components/monitor/info/car-info/title-block/TitleBlock';
 import CarMainDataBlock from 'components/monitor/info/car-info/car-main-data-block/CarMainDataBlock';
 import CarTabMenu from 'components/monitor/info/car-info/car-tab-menu/CarTabMenu';
@@ -17,7 +19,7 @@ export type DispatchPropsCarInfo = {
   carInfoSetGpsNumber: () => any;
 };
 export type OwnPropsCarInfo = {
-  map: ol.Map,
+  map: Map,
   centerOn: any;
 };
 

@@ -1,3 +1,5 @@
+import Map from 'ol/Map';
+
 export type TypeLastPoint = {
   timestamp: number;
   coords_msk: [number, number],
@@ -13,6 +15,6 @@ export type PropsCarAttributeInformation = {
   model_name: string,
   lastPoint: TypeLastPoint,
   errorInLoadTrack: boolean;
-  map: ol.Map;
+  map: Map;
   carActualGpsNumberIndex: any;
 };

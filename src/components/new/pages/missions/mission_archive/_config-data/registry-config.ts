@@ -208,7 +208,6 @@ export const config: TypeConfigData<Mission> = {
           key: 'status',
           title: 'Статус',
           width: 150,
-          format: 'mission_status_name',
         },
         {
           key: 'number',

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
+import Map from 'ol/Map';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
@@ -23,7 +24,7 @@ type PropsLayerTrackPoints = {
   lastPoint: any;
   mkad_speed_lim: number;
   speed_lim: number;
-  map: ol.Map;
+  map: Map;
   SHOW_TRACK: boolean;
 
   carInfoSetTrackPoint: any;

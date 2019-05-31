@@ -1,6 +1,9 @@
+import Map from 'ol/Map';
+import Overlay, { Options } from 'ol/Overlay';
+
 export type PropsOverlay = {
   coordsMsk?: [number, number];
-  map: ol.Map;
+  map: Map;
   hidePopup?: () => void;
   title?: React.ReactNode;
   OverlayInside?: any;
@@ -14,22 +17,22 @@ export type PropsOverlay = {
 };
 
 export type StateOverlay = {
-  marker: ol.Overlay | null;
+  marker: Overlay | null;
   container: HTMLDivElement;
 };
 
 export namespace OverlayUtils {
   export type hideOverlay = (
-    marker: ol.Overlay,
-    map: ol.Map,
+    marker: Overlay,
+    map: Map,
   ) => void;
 
   export type setMakerPosition = (
-    marker: ol.Overlay,
-    coordsMsk: ol.Coordinate,
+    marker: Overlay,
+    coordsMsk: number[],
   ) => void;
 
   export type makeOverlay = (
-    props: ol.olx.OverlayOptions,
-  ) => ol.Overlay;
+    props: Options,
+  ) => Overlay;
 }

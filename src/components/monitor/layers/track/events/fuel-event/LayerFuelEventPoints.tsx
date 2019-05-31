@@ -1,3 +1,5 @@
+import Map from 'ol/Map';
+
 import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
@@ -20,7 +22,7 @@ type PropsLayerFuelEventPoints = {
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   zoom: number,
-  map: ol.Map;
+  map: Map;
 
   front_events_list: any[];
   front_cars_sensors_level: any,

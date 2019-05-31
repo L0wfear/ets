@@ -44,8 +44,8 @@ export type OneWsDataCardata = {
 export type OneWsData = {
   car: OneWsDataCardata;
   connection_status_date: number | void;
-  coords: ol.Coordinate;
-  coords_msk: ol.Coordinate;
+  coords: number[];
+  coords_msk: number[];
   direction: number | void;
   distance: number;
   id: string;

@@ -114,7 +114,21 @@ export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {
   const newElement = { ...defaultCar };
   if (isObject(element)) {
     Object.keys(newElement).forEach((key) => {
-      if (key === 'drivers_data' || key === 'registration_data' || key === 'passport_data') {
+      if (key === 'drivers_data') {
+        newElement[key] = defaultCar[key];
+        if (isObject(element[key])) {
+          Object.keys(newElement[key]).forEach((key2) => {
+            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : defaultCar[key][key2];
+          });
+        }
+      } else if (key === 'registration_data') {
+        newElement[key] = defaultCar[key];
+        if (isObject(element[key])) {
+          Object.keys(newElement[key]).forEach((key2) => {
+            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : defaultCar[key][key2];
+          });
+        }
+      } else if (key === 'passport_data') {
         newElement[key] = defaultCar[key];
         if (isObject(element[key])) {
           Object.keys(newElement[key]).forEach((key2) => {

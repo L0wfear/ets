@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Map from 'ol/Map';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import { connect } from 'react-redux';
@@ -21,7 +22,7 @@ type PropsCarTabMenu = {
   asuods_id: number | void;
   gps_code: number | void;
   odh_mkad: -1 | null | any[];
-  map: ol.Map;
+  map: Map;
 
   centerOn: any;
 };

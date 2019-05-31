@@ -3,10 +3,11 @@ import styled, { css } from 'styled-components';
 import { defaultEtsTheme } from '../colors';
 
 export type EtsButtonProps = {
+  bsClass?: string;
   themeName?: keyof typeof defaultEtsTheme['button'];
   active?: boolean;
   block?: boolean;
-  bsSize?: 'small' | 'input';
+  bsSize?: 'small' | 'input' | 'xsmall';
   className?: string;
   disabled?: boolean;
   id?: string;

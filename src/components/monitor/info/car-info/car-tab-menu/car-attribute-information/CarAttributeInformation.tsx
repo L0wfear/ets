@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import Map from 'ol/Map';
 import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 import { getStatusById } from 'constants/statuses';
 
@@ -32,7 +33,7 @@ export type PropsCarAttributeInformation = {
   model_name: string,
   lastPoint: TypeLastPoint,
   errorInLoadTrack: boolean;
-  map: ol.Map;
+  map: Map;
   carActualGpsNumberIndex: any;
 
   missionsData: any;

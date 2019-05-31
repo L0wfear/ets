@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import Feature from 'ol/Feature';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
@@ -32,7 +32,7 @@ class LayerSelectedGeooobjects extends React.PureComponent<PropsLayerSelectedGeo
     this.props.removeLayer();
   }
 
-  singleclick = (feature: ol.Feature) => {
+  singleclick = (feature: Feature) => {
     this.props.monitorPageRemoveFromSelectedGeoobjects(
       feature.get('serverName'),
       (feature as any).getId(),

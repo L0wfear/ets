@@ -149,7 +149,7 @@ const EtsButton: React.FC<EtsButtonProps> = React.memo(
 
     const handleClick = React.useCallback(
       (...arg) => {
-        if (!props.disabled) {
+        if (!props.disabled && props.onClick) {
           props.onClick(...arg);
         }
       },

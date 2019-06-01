@@ -6,6 +6,7 @@ import { ImageListContainer } from './styled';
 import ImgListHeader from './header/ImgListHeader';
 import ImgListBody from './body/ImgListBody';
 import ImgListFooter from './footer/ImgListFooter';
+import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 
 type ImgListPortalProps = {
   images: any[];
@@ -43,6 +44,8 @@ const ImgListPortal: React.FC<ImgListPortalProps> = React.memo(
       },
       [img_url, props.onClose],
     );
+
+    useEscapeEvent(props.onClose);
 
     return Boolean(img_url) && img_url !== '1' && ReactDom.createPortal(
       <ImageListContainer>

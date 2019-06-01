@@ -12,6 +12,8 @@ type NextImageProps = {
 
 const NextImage: React.FC<NextImageProps> = React.memo(
   (props) => {
+    const [next, setShowNext] = React.useState(false);
+
     const disabled = (
       props.disabled
       || (
@@ -21,9 +23,35 @@ const NextImage: React.FC<NextImageProps> = React.memo(
 
     const handleClick = React.useCallback(
       () => {
-        props.setIndexImage(props.indexImage + 1);
+        if (!disabled) {
+          props.setIndexImage(props.indexImage + 1);
+        }
       },
-      [props.indexImage],
+      [props.indexImage, disabled],
+    );
+
+    React.useEffect(() => {
+      const escFunction = (event: KeyboardEvent) => {
+        if (event.key === 'ArrowRight') {
+          setShowNext(true);
+        }
+      };
+
+      document.addEventListener("keydown", escFunction, false);
+
+      return () => {
+        document.removeEventListener("keydown", escFunction, false);
+      };
+    });
+
+    React.useEffect(
+      () => {
+        if (next) {
+          setShowNext(false);
+          handleClick();
+        }
+      },
+      [next, handleClick],
     );
 
     return (

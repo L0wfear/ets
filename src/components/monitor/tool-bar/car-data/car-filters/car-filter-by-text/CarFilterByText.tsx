@@ -36,7 +36,7 @@ class CarFilterByText extends React.Component<PropsCarFilterByText, StateCarFilt
       <span>
         <ClickOutHandler onClickOut={this.handleClickOut}>
           <div className={cx('tool_bar-block', { active: this.props.active })}>
-            <div className="default_cube dark flex-row map-car-filter">
+            <div className="default_cube flex-row map-car-filter">
               <div className="button-toggle" onClick={this.toggleHidden} >
                 <EtsBootstrap.Glyphicon glyph="search" />
               </div>

@@ -145,12 +145,25 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
 `;
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
-  (props) => (
-    <ButtonStyled
-      {...props}
-      type={props.type || 'button'}
-    />
-  ),
+  (props) => {
+
+    const handleClick = React.useCallback(
+      (...arg) => {
+        if (!props.disabled && props.onClick) {
+          props.onClick(...arg);
+        }
+      },
+      [Boolean(props.disabled), props.onClick],
+    );
+
+    return (
+      <ButtonStyled
+        {...props}
+        type={props.type || 'button'}
+        onClick={handleClick}
+      />
+    );
+  },
 );
 
 export default EtsButton;

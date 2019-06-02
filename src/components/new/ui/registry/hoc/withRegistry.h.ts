@@ -89,7 +89,6 @@ export type TypeFields<F extends any> = {
     | 'checkOrExpect'
     | 'efficiencySource'
     | 'floor'
-    | 'mission_status_name'
     | 'company_structure_actions'
     | 'waybill_all_missions_status'
     | 'waybill_status_name'

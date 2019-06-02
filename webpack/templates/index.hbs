@@ -16,6 +16,19 @@
         margin: 0;
         font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
       }
+       #image_container {
+        margin: 0;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      }
+
+      ::selection {
+        background: #7fc650; /* WebKit/Blink Browsers */
+        color: white;
+      }
+      ::-moz-selection {
+        background: #7fc650; /* Gecko Browsers */
+        color: white;
+      }
       #main-loading {
         position: absolute;
         top: 0;
@@ -75,6 +88,7 @@
   </head>
   <body>
     <div id="container"></div>
+    <div id="image_container"></div>
     <div id="main-loading">
       <div class="loading-container">
         <div class="title">Идёт загрузка</div>

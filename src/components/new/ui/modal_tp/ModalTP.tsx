@@ -7,7 +7,7 @@ import EtsBootstrap from '../@bootstrap';
 class ModalTP extends React.PureComponent<PropsModalTP, {}> {
   render() {
     return (
-      <EtsBootstrap.ModalContainer show={this.props.show} onHide={this.props.onHide} dialogClassName="custom-modalTP">
+      <EtsBootstrap.ModalContainer id="tp" show={this.props.show} onHide={this.props.onHide} position="center">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Техническая поддержка</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

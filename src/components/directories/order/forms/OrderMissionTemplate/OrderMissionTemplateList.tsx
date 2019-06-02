@@ -380,7 +380,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     const hasMissionForColumn = Object.values(checkedElements).some((mission: any) => mission.for_column);
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="lg">
+      <EtsBootstrap.ModalContainer id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

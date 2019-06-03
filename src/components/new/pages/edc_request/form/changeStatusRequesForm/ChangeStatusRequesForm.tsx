@@ -4,7 +4,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { get } from 'lodash';
 import { ChangeStatusRequesFormLazyOwnProps } from 'components/new/pages/edc_request/form/changeStatusRequesForm/index';
-import { ButtonCompleteMissionStateProps } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/ButtonCompleteMission';
 import {
   RequestHistoryListWrapper,
   RequestHistoryListRegistry,
@@ -27,7 +26,9 @@ import {
 type ChangeStatusRequesFormOwnProps = {
   onFormHide: (isSubmitted: boolean | any, result?: any) => any;
   checkedRows: ChangeStatusRequesFormLazyOwnProps['checkedRows'];
-  selectedRow: ButtonCompleteMissionStateProps['selectedRow'];
+  itemToRemove: ChangeStatusRequesFormLazyOwnProps['itemToRemove'];
+  contentIndex: ChangeStatusRequesFormLazyOwnProps['contentIndex'];
+  element: any; // <<< заменить
 
   page: string;
   path?: string;
@@ -39,6 +40,7 @@ type ChangeStatusRequesFormStateProps = {
 
 type ChangeStatusRequesFormDispatchProps = {
   actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreEdcRequestInfo>;
+  actionResetEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionResetEdcRequestInfo>;
 };
 
 type ChangeStatusRequesFormProps = (
@@ -50,20 +52,28 @@ type ChangeStatusRequesFormProps = (
 const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo(
   (props) => {
 
-    // console.log('ChangeStatusRequesForm props', props);
     const original = false;
+    const request_id = get(props, 'element.request_id', '');
+    const request_number = get(props, 'element.request_number', '');
+
     React.useEffect( () => {
       props.actionGetAndSetInStoreEdcRequestInfo({
         id: request_id,
         original,
       }, {page: props.page, path: props.path });
+      return () => props.actionResetEdcRequestInfo();
     }, []);
 
-    const request_id = get(props, 'selectedRow.request_id', '');
-    const request_number = get(props, 'selectedRow.request_number', '');
+    const setStatusResolve = React.useCallback(() => {
+      // console.log('ResolveBtn Cliked');
+      // тут делать запрос на бек для изменения статуса заявки
+      props.onFormHide(true);
+    }, []);
+
     const titleModal = `Заявка ЕДЦ №${request_number}`;
-    const edcRequestInfoListItem = get(props, 'edcRequestInfoList.0', null);
+    const edcRequestInfoListItem = get(props, 'edcRequestInfoList.0', null); // !!!!Пустой!!!
     const registryKeyIndex = 'lastRequestMissionInfo';
+    // console.log('ChangeStatusRequesForm___ props', props);
 
     return (
       <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.onFormHide} backdrop="static" bgsize="medium">
@@ -88,7 +98,7 @@ const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo
           Установить заявке статус "Решена" или оставить в статусе "В работе"
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button onClick={props.onFormHide}>Установить статус "Решена"</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={setStatusResolve}>Установить статус "Решена"</EtsBootstrap.Button>
           <EtsBootstrap.Button onClick={props.onFormHide}>Оставить в статусе "В работе"</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
@@ -105,6 +115,11 @@ export default compose<ChangeStatusRequesFormProps, ChangeStatusRequesFormOwnPro
       actionGetAndSetInStoreEdcRequestInfo: (...args) => (
         dispatch(
           someUniqActions.actionGetAndSetInStoreEdcRequestInfo(...args),
+        )
+      ),
+      actionResetEdcRequestInfo: (...args) => (
+        dispatch(
+          someUniqActions.actionResetEdcRequestInfo(...args),
         )
       ),
     }),

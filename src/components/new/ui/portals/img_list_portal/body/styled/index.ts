@@ -47,7 +47,7 @@ export const NavigationImageContainer = styled.div<{ type: 'left' | 'right'}>`
       type === 'right'
         ? cssRight
         : (
-          type === 'right'
+          type === 'left'
             ? cssLeft
             : null
         )

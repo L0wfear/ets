@@ -25,7 +25,7 @@ export const actionResetEdcRequestInfo = (): ThunkAction<
 > => async (dispatch) => {
   dispatch(actionSetEdcRequestInfo([]));
 
-  return null;
+  return [];
 };
 
 /* --------------- запрос --------------- */

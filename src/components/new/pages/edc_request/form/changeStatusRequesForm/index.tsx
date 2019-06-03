@@ -11,6 +11,8 @@ import {
 } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { ButtonCompleteMissionStateProps } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/ButtonCompleteMission';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { get } from 'lodash';
 
 const ChangeStatusRequesForm = React.lazy(() =>
   import(/* webpackChunkName: "request_history" */ 'components/new/pages/edc_request/form/changeStatusRequesForm/ChangeStatusRequesForm'),
@@ -22,7 +24,10 @@ export type ChangeStatusRequesFormLazyDispatchProps = {
 export type ChangeStatusRequesFormLazyOwnProps = {
   checkedRows: ButtonCompleteMissionStateProps['checkedRows'];
   onFormHide: (isSubmitted: boolean | any, result?: any) => any;
-  selectedRow: ButtonCompleteMissionStateProps['selectedRow'];
+  itemToRemove: {
+    [k: number]: OneRegistryData['list']['data']['selectedRow'],
+  };
+  contentIndex: number | null;
 };
 
 type ChangeStatusRequesFormLazyProps = (
@@ -35,6 +40,14 @@ const ChangeStatusRequesFormLazy: React.FC<ChangeStatusRequesFormLazyProps> = Re
 
     const page = 'ChangeStatusRequesForm';
     const path = 'ChangeStatusRequesForm';
+    const [requestFormElement, setRequestFormElement] = React.useState({});
+
+    React.useEffect(() => {
+      const element = get(Object.values(props.itemToRemove), `${props.contentIndex}`, {});
+      setRequestFormElement(element);
+    }, [props.contentIndex, props.itemToRemove]);
+
+    // console.log('ChangeStatusRequesFormLazy === ', {props, requestFormElement});
 
     return (
       props.checkedRows && (
@@ -43,7 +56,9 @@ const ChangeStatusRequesFormLazy: React.FC<ChangeStatusRequesFormLazyProps> = Re
             <ChangeStatusRequesForm
               checkedRows={props.checkedRows}
               onFormHide={props.onFormHide}
-              selectedRow={props.selectedRow}
+              itemToRemove={props.itemToRemove}
+              contentIndex={props.contentIndex}
+              element={requestFormElement}
 
               page={page}
               path={path}

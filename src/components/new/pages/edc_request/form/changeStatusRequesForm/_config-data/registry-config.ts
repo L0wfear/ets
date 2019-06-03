@@ -5,8 +5,17 @@ import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_reques
 export const registryKey = 'lastRequestMissionInfo';
 
 export const getConfig = (array: EdcRequestInfo['missions']): TypeConfigData<ValuesOf<EdcRequestInfo['missions']>> => ({
-  noInitialLoad: true,
-  Service: {},
+  noInitialLoad: true, // удалить, если подрубить напрямую к реестру
+  Service: {
+    // getRegistryData: {
+    //   entity: `edc/request/${request_id}/info`,
+    //   typeAns: 'result.rows.missions',
+    //   typeExtra: 'result.rows.edc_date',
+    //   payload: {
+    //     original: false,
+    //   },
+    // },
+  },
   registryKey,
   header: {
     title: '',

@@ -39,30 +39,41 @@ type ButtonCompleteMissionProps = (
 
 const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
   const [showChangeStatusRequesFormLazy, setShowChangeStatusRequesFormLazy] = React.useState(false);
-  const [lastSelectedRow, setLastSelectedRow] = React.useState(null);
+  const [contentIndex, setContentIndex] = React.useState(0); // индекс, элемента в itemToRemove, который отображается в форме
+
+  const [itemToRemove, setItemToRemove] = React.useState({});
+
+  React.useEffect( () => {
+    const itemToRemoveTmp = { ...props.checkedRows };
+    if (!Object.values(itemToRemoveTmp).length) {
+      itemToRemoveTmp[props.uniqKey] = props.selectedRow;
+    }
+    // console.log('itemToRemoveTmp === ', props.checkedRows);
+    setItemToRemove(itemToRemoveTmp);
+  }, [props.selectedRow, props.checkedRows] );
+
   const requestFormHide = React.useCallback(() => {
-    setShowChangeStatusRequesFormLazy(false);
+    const itemToRemoveLength = Object.values(itemToRemove).length;
+    if (itemToRemoveLength && itemToRemoveLength > contentIndex) {
+      setContentIndex(contentIndex + 1);
+    } else {
+      setShowChangeStatusRequesFormLazy(false);
+    }
   }, []);
+
   const handleClickComplete = React.useCallback(
     async () => {
-      const itemToRemove = props.checkedRows;
-
-      if (!Object.values(itemToRemove).length) {
-        itemToRemove[props.uniqKey] = props.selectedRow;
-      }
-
-      setLastSelectedRow(props.selectedRow);
-
       try {
         // const response = await props.actionCompleteMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
         setShowChangeStatusRequesFormLazy(true);
         // console.log('ButtonCompleteMission response === ', {response});
+        // console.log('itemToRemove response === ', {itemToRemove});
       } catch (error) {
         console.error(error); // tslint:disable-line
         //
       }
 
-      props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      // props.actionUnselectSelectedRowToShow(props.registryKey, true); /// <<< подумать, куда это запихать, это сброс выжеденных строк
       props.registryLoadDataByKey(props.registryKey);
     },
     [props.selectedRow, props.checkedRows],
@@ -89,7 +100,8 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
           ? <ChangeStatusRequesFormLazy
               onFormHide={requestFormHide}
               checkedRows={props.checkedRows}
-              selectedRow={lastSelectedRow}
+              itemToRemove={itemToRemove}
+              contentIndex={contentIndex}
             />
           : <DivNone />
       }

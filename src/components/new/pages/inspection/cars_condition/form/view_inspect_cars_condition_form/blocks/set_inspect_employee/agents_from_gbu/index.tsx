@@ -3,13 +3,21 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ViewInspectCarsConditionProps } from '../../../@types/ViewInspectCarsContidion';
 import ViewAgentFromGbuEmployee from './ViewAgentFromGbuEmployee';
 import RowAddRowAddAgentFromGbu from './RowAddAgentFromGbu';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
+import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 
 type AgentsFromGbuProps = {
   isPermittedToChange: boolean;
 
   agents_from_gbu: InspectCarsCondition['agents_from_gbu'];
-  company_name: InspectCarsCondition['company_name'];
-  handleChange: ViewInspectCarsConditionProps['handleChange'];
+  error: string;
+  company_short_name: InspectCarsCondition['company_short_name'];
+  handleChange: (
+    ViewInspectCarsConditionProps['handleChange']
+    | ViewInspectAutobaseProps['handleChange']
+    | ViewInspectPgmBaseProps['handleChange']
+  );
 };
 
 const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
@@ -37,7 +45,12 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
 
     return (
       <React.Fragment>
-        <h5>Проверяющие:</h5>
+        <h5>Представители ГБУ:</h5>
+        {
+          Boolean(props.error) && (
+            <EtsBootstrap.Col md={12}><div className="error">{props.error}</div></EtsBootstrap.Col>
+          )
+        }
         <div>
           {
             props.agents_from_gbu.map((agent, index) => (
@@ -46,14 +59,13 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
                 canRemove={props.isPermittedToChange}
                 index={index}
                 handleRemove={handleRemoveAgent}
-                company_name={props.company_name}
+                company_short_name={props.company_short_name}
 
                 fio={agent.fio}
                 position={agent.position}
               />
             ))
           }
-          <br />
           <RowAddRowAddAgentFromGbu
             isPermitted={props.isPermittedToChange}
             handleAddChangeRowAddAgentFromGbu={handleAddChangeRowAddAgentFromGbu}

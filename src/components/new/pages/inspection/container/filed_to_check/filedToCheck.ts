@@ -1,6 +1,7 @@
 import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
+import { InspectContainer } from "redux-main/reducers/modules/inspect/container/@types/container";
 
-export const filedToCheckContainerFirst: FiledToCheck = [
+export const filedToCheckContainerFirst: FiledToCheck<InspectContainer> = [
   {
     key: 'number',
     title: 'Порядковый и/или инвентарный номер емкости',
@@ -23,7 +24,7 @@ export const filedToCheckContainerFirst: FiledToCheck = [
   },
   {
     key: 'pgm_volume',
-    title: 'Объем ПГМ в емкости (тонн)',
+    title: 'Объем ПГМ в емкости (куб.м)',
     type: 'number',
   },
   {
@@ -39,7 +40,7 @@ export const filedToCheckContainerFirst: FiledToCheck = [
   },
 ];
 
-export const filedToCheckContainerSecond: FiledToCheck = [
+export const filedToCheckContainerSecond: FiledToCheck<InspectContainer['data']> = [
   {
     key: 'equipment_pipeline_in_poor_condition',
     title: 'Неуд. состояние оборудования и трубопровода',

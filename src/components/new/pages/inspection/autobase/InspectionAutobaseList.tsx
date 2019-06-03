@@ -12,14 +12,14 @@ const loadingPage = 'inspectAutobase';
 
 const InspectionAutobaseList: React.FC<InspectionAutobaseListProps> = (props) => {
   return (
-    <>
+    <React.Fragment>
       <EtsPageWrap>
-        <InspectionTitle  title="Мониторинг обустройства автобаз" />
+        <InspectionTitle title="Мониторинг обустройства автобаз" />
         <InspectionAutobaseSelectCarpool loadingPage={loadingPage} />
         <InspectionAutobaseData loadingPage={loadingPage} />
       </EtsPageWrap>
       <InspectionAutobaseFormLazy loadingPage={loadingPage} {...props}/>
-    </>
+    </React.Fragment>
   );
 };
 

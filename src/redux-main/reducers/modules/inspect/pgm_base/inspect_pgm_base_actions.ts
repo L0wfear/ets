@@ -14,12 +14,12 @@ import {
   promiseGetInspectPgmBase,
   promiseCreateInspectionPgmBase,
   promiseGetInspectPgmBaseById,
-  makeFilesForBackend,
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import pgmStoreActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
 import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
+import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBase>): ThunkAction<IStateInspectPgmBase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectPgmBaseOld = getInspectPgmBase(getState());
@@ -195,107 +195,87 @@ export const actionCreateInspectPgmBase = (payloadOwn: Parameters<typeof promise
 };
 
 export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionPgmBase>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const data = cloneDeep(inspectPgmBase.data);
+  if (inspectPgmBase.status === 'conducting') {
+    const data = cloneDeep(inspectPgmBase.data);
 
-  delete data.files;
-  delete data.photos_of_supporting_documents;
-  delete data.photos_defect;
-  delete data.head_balance_holder_base_tel;
-  delete data.head_balance_holder_base_fio;
-  delete data.head_operating_base_tel;
-  delete data.head_operating_base_fio;
+    const payload = {
+      head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
+      head_operating_base: inspectPgmBase.head_operating_base,
+    };
 
-  const payload = {
-    head_balance_holder_base: {
-      tel: inspectPgmBase.data.head_balance_holder_base_tel,
-      fio: inspectPgmBase.data.head_balance_holder_base_fio,
-    },
-    head_operating_base: {
-      tel: inspectPgmBase.data.head_operating_base_tel,
-      fio: inspectPgmBase.data.head_operating_base_fio,
-    },
-  };
+    const inspectionPgmBase = await dispatch(
+      actionUpdateInspect(
+        inspectPgmBase.id,
+        data,
+        inspectPgmBase.files,
+        'pgm_base',
+        meta,
+        payload,
+      ),
+    );
 
-  const inspectionPgmBase = await dispatch(
-    actionUpdateInspect(
-      inspectPgmBase.id,
+    dispatch(
+      actionPushDataInInspectPgmBaseList(
+        inspectionPgmBase,
+      ),
+    );
+
+    return inspectionPgmBase;
+  } else {
+    const data = cloneDeep(inspectPgmBase.data);
+    const {
+      agents_from_gbu,
+      commission_members,
+      resolve_to,
+    } = inspectPgmBase;
+
+    const payload = {
       data,
-      makeFilesForBackend(inspectPgmBase.data),
-      'pgm_base',
-      meta,
-      payload,
-    ),
-  );
+      agents_from_gbu,
+      commission_members,
+      resolve_to: createValidDateTime(resolve_to),
+      head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
+      head_operating_base: inspectPgmBase.head_operating_base,
+    };
 
-  dispatch(
-    actionPushDataInInspectPgmBaseList(
-      inspectionPgmBase,
-    ),
-  );
+    const inspectionPgmBase = await dispatch(
+      actionUpdateInspect(
+        inspectPgmBase.id,
+        data,
+        inspectPgmBase.files,
+        'pgm_base',
+        meta,
+        payload,
+      ),
+    );
 
-  return inspectionPgmBase;
-};
+    dispatch(
+      actionPushDataInInspectPgmBaseList(
+        inspectionPgmBase,
+      ),
+    );
 
-export const actionUpdateInspectPgmBaseClosed = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionPgmBase>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const data = cloneDeep(inspectPgmBase.data);
-  const {
-    agents_from_gbu,
-    commission_members,
-    resolve_to,
-  } = inspectPgmBase;
-  delete data.files;
-  delete data.photos_of_supporting_documents;
-  delete data.photos_defect;
-  delete data.pgm_volume_sum;
-  delete data.summ_capacity;
-  delete data.containers_counter;
-
-  const payload = {
-    data,
-    agents_from_gbu,
-    commission_members,
-    resolve_to: createValidDateTime(resolve_to),
-  };
-
-  const inspectionPgmBase = await dispatch(
-    actionUpdateInspect(
-      inspectPgmBase.id,
-      data,
-      makeFilesForBackend(inspectPgmBase.data),
-      'pgm_base',
-      meta,
-      payload,
-    ),
-  );
-
-  dispatch(
-    actionPushDataInInspectPgmBaseList(
-      inspectionPgmBase,
-    ),
-  );
-
-  return inspectionPgmBase;
+    return inspectionPgmBase;
+  }
 };
 
 const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const data = cloneDeep(inspectPgmBase.data);
+  removeEmptyString(data);  // мутирует data
+
   const {
     agents_from_gbu,
     commission_members,
     resolve_to,
   } = inspectPgmBase;
-  delete data.files;
-  delete data.photos_of_supporting_documents;
-  delete data.photos_defect;
-  delete data.pgm_volume_sum;
-  delete data.summ_capacity;
-  delete data.containers_counter;
 
   const payload = {
     data,
     agents_from_gbu,
     commission_members,
     resolve_to: createValidDateTime(resolve_to),
+    head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
+    head_operating_base: inspectPgmBase.head_operating_base,
   };
 
   const result = await dispatch(
@@ -327,7 +307,6 @@ const inspectionPgmBaseActions = {
   actionResetCompanyAndCarpool,
   actionCreateInspectPgmBase,
   actionUpdateInspectPgmBase,
-  actionUpdateInspectPgmBaseClosed,
   actionCloseInspectPgmBase,
 };
 

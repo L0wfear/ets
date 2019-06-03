@@ -18,6 +18,14 @@ type TypeCarsSensors = {
   };
 };
 
+export const getCarTabInfo = (carInfoData: any) => {
+  return {
+    contractor_name: carInfoData.contractor_name,
+    customer_name: carInfoData.customer_name,
+    ownership: carInfoData.ownership,
+  };
+};
+
 export const getMaxSpeeds = (missions) =>
   missions.length
     ? missions.reduce(

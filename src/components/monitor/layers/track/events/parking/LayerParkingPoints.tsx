@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
+import Map from 'ol/Map';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
@@ -17,7 +18,7 @@ type PropsLayerParkingPoints = {
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
   zoom: number,
-  map: ol.Map;
+  map: Map;
 
   front_parkings: any;
   carInfoSetParkingPoint: any;

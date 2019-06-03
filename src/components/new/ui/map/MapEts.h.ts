@@ -1,10 +1,14 @@
+import Map from 'ol/Map';
+import View, { FitOptions, ViewOptions } from 'ol/View';
+import { Extent } from 'ol/extent';
+
 import {
   SetMapToContextType,
   RemoveMapToContextType,
 } from 'components/new/ui/map/context/MapetsContext.h';
 
 export type StateMapEts = {
-  map: ol.Map,
+  map: Map,
   center: [number, number];
   zoom: number,
 
@@ -29,18 +33,18 @@ export type PropsMapEts = {
 
 export namespace MapUtils {
   export type getViewFunc = (
-    props: ol.olx.ViewOptions,
-  ) => ol.View;
+    props: ViewOptions,
+  ) => View;
 
   export type getMapViewFunc = (
-    center: ol.Coordinate,
+    center: number[],
     zoom: number,
-  ) => ol.View;
+  ) => View;
 
   export type getMapFunc = (
-    center: ol.Coordinate,
+    center: number[],
     zoom?: number,
-  ) => ol.Map;
+  ) => Map;
 
   export type defaultRetValType = {
     hasChange: boolean;
@@ -49,13 +53,13 @@ export namespace MapUtils {
 
   export type triggerOnEnableInteractionsFunc = (
     enableInteractions: boolean,
-    map: ol.Map,
+    map: Map,
   ) => void;
 
   export type checkOnEnableInteractionsFunc = (
     enableInteractions: boolean,
     enableInteractions_old: boolean,
-    map: ol.Map,
+    map: Map,
   ) => defaultRetValType;
 
   export type calcChangedDataFunc = (
@@ -68,13 +72,13 @@ export namespace MapUtils {
   ) => defaultRetValType;
 
   export type checkOnHitByEventFunc = (
-    map: ol.Map,
-    pixel: ol.Pixel,
+    map: Map,
+    pixel: number[],
   ) => boolean;
 
   export type olEvent = {
-    map: ol.Map;
-    pixel: ol.Pixel;
+    map: Map;
+    pixel: number[];
   };
 
   export type mousePointerMoveFunc = (
@@ -92,11 +96,11 @@ export namespace MapUtils {
   ) => void;
 
   export type centerOnFunc = (
-    map: ol.Map,
+    map: Map,
     disabledCenterOn: boolean,
     fitProps: {
-      extent: ol.Extent,
-      opt_options: ol.olx.view.FitOptions,
+      extent: Extent,
+      opt_options: FitOptions,
     },
     noCheckDisabledCenterOn?: boolean,
   ) => boolean;

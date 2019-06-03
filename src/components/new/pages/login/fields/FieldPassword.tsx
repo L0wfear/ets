@@ -22,7 +22,6 @@ const FieldPassword: React.FC<LoginPageProps> = React.memo(
     );
     return (
       <LoginPageFormContentInput
-        autoComplete
         id="password"
         type="password"
         className="form-control"

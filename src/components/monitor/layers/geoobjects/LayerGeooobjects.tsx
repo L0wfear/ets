@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Feature from 'ol/Feature';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -39,7 +40,7 @@ class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateL
     this.props.removeLayer();
   }
 
-  singleclick = (feature: ol.Feature) => {
+  singleclick = (feature: Feature) => {
     const serverName = feature.get('serverName');
     const id = feature.getId();
 

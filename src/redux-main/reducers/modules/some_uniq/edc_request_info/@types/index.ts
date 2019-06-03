@@ -23,6 +23,7 @@ export type EdcDutyMissionData = {
   employee: string;
   id: number;
   municipal_facility_name: string;
+  current_percentage: never;
   name: string;
   number: number;
   status: string;

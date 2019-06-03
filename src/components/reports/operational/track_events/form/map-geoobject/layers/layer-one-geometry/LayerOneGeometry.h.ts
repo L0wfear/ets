@@ -1,3 +1,4 @@
+import Feature from 'ol/Feature';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
@@ -55,14 +56,14 @@ export namespace LayerGeoobjectsUtilsTypes {
     id: string,
     geoobj: GeozonesDataByIndex & { state: number },
     geoobj_old: GeozonesDataByIndex & { state: number },
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
     thisProps: checkShowTrueFuncThisProps,
   ) => void;
 
   export type checkShowTrueHasOldFeatureFunc = (
     geoobj: GeozonesDataByIndex & { state: number },
     geoobj_old: GeozonesDataByIndex & { state: number },
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
   ) => void;
 
   export type checkShowTrueHasNotOldFeatureFunc = (

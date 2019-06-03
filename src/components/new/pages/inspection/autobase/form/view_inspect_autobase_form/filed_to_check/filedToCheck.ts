@@ -1,6 +1,7 @@
 import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
+import { InspectAutobase } from "redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase";
 
-export const filedToCheck: FiledToCheck = [
+export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
   {
     key: 'is_under_construction',
     title: 'Автобаза находится на стадии строительства',
@@ -69,11 +70,14 @@ export const filedToCheck: FiledToCheck = [
     key: 'is_hard_surface',
     title: 'Твердое покрытие',
     type: 'select',
+    multi: true,
     options: [
       { value: 'Щебень', label: 'Щебень' },
       { value: 'Фрезерованный асфальт', label: 'Фрезерованный асфальт' },
       { value: 'Асфальт', label: 'Асфальт' },
       { value: 'Дорожные плиты', label: 'Дорожные плиты' },
+      { value: 'Гравий', label: 'Гравий' },
+      { value: 'Песок', label: 'Песок' },
       { value: 'Другое', label: 'Другое' },
     ],
   },
@@ -197,5 +201,10 @@ export const filedToCheck: FiledToCheck = [
     title: 'Отсутствие душевых кабин (в помещении/на открытой площадке)',
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
+  },
+  {
+    key: 'comments',
+    title: 'Замечания',
+    type: 'text',
   },
 ];

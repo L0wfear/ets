@@ -1,106 +1,88 @@
 import { Company } from 'redux-main/reducers/modules/company/@types';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { ViewAddInspectEmployeeInitialState } from 'components/new/pages/inspection/common_components/add_inspect_employee/addInspectEmployee';
 import { DefaultPartInspect } from '../../@types/inspect_reducer';
+import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
 
 export type InspectPgmBaseData = {
-  address_base: string;
-  balance_holder_base: string | null;
-  head_balance_holder_base_fio: string;
-  head_balance_holder_base_tel: string | null;
-  operating_base: number | null;
-  head_operating_base_fio: string;
-  head_operating_base_tel: string | null;
-  head_balance_holder_base: {
-    tel: string | null;
-    fio: string | null;
-  }
-  head_operating_base: {
-    tel: string | null;
-    fio: string | null;
-  }
-  lack_traffic_scheme_at_entrance: boolean | null;
-  type_of_base_coverage: string;
-  access_roads_in_poor_condition: boolean | null;
-  lack_of_lighting: boolean | null;
-  lack_of_personal_protection: boolean | null;
-  lack_of_records_in_training_logs: boolean | null;
-  lack_of_technical_passport: boolean | null;
-  lack_of_documents_on_pgm: boolean | null;
-  lack_of_documents_etc: string | null;
-  lack_of_shower: boolean | null;
-  lack_of_changing_rooms: boolean | null;
-  lack_of_rest_rooms: boolean | null;
-  lack_of_information_stands: boolean | null;
-  lack_of_loading_unloading_mechanisms: boolean | null;
-  lack_of_ramps_stairs: boolean | null;
-
-  lack_of_height_restriction_sign: boolean | null;
-  type_coverage_in_hangar: string;
-  lack_of_lighting_in_hangars: boolean | null;
-  lack_of_schema_slinging: boolean | null;
-  lack_of_wooden_pallets: boolean | null;
-  hangar_is_not_sealed: boolean | null;
-  pgm_in_hangars: number | null;
-  insufficient_availability_of_wooden_pallets: boolean | null;
-  lack_of_shelter_for_solid_pgm: boolean | null;
-  pgm_on_open_area: number | null;
-
-  containers_counter: number | null;
-  summ_capacity: number | null;
-  pgm_volume_sum: number | null;
-
-  equipment_and_piping_in_poor_condition: boolean | null;
-  containers_in_poor_condition: boolean | null;
-
-  files: any[]; // может не надо
-  photos_of_supporting_documents: any[],
-  photos_defect: any[],
+  access_roads_in_poor_condition: boolean,
+  containers_in_poor_condition: boolean,
+  equipment_and_piping_in_poor_condition: boolean,
+  hangar_is_not_sealed: boolean,
+  insufficient_availability_of_wooden_pallets: boolean,
+  lack_of_changing_rooms: boolean,
+  lack_of_documents_etc: string;
+  lack_of_documents_on_pgm: boolean,
+  lack_of_height_restriction_sign: boolean,
+  lack_of_information_stands: boolean,
+  lack_of_lighting: boolean,
+  lack_of_lighting_in_hangars: boolean,
+  lack_of_loading_unloading_mechanisms: boolean,
+  lack_of_personal_protection: boolean,
+  lack_of_ramps_stairs: boolean,
+  lack_of_records_in_training_logs: boolean,
+  lack_of_rest_rooms: boolean,
+  lack_of_schema_slinging: boolean,
+  lack_of_shelter_for_solid_pgm: boolean,
+  lack_of_shower: boolean,
+  lack_of_technical_passport: boolean,
+  lack_of_wooden_pallets: boolean,
+  lack_traffic_scheme_at_entrance: boolean,
+  pgm_in_hangars: string;
+  pgm_on_open_area: string;
+  type_coverage_in_hangar: string[];
+  type_of_base_coverage: string[];
+  comments: string;
 };
 
 export type InspectPgmBase = {
+  agents_from_gbu: any[];
   base_address: string;
-  base_id: number | null;
-  can_have_container: boolean;
+  base_id: number
+  base_type: string;
+  can_have_container: boolean
+  capacity_cnt: number;
+  close_employee_assignment: string
+  close_employee_assignment_date_start: string
   close_employee_fio: string;
-  close_employee_id: number | null;
+  close_employee_id: number;
+  close_employee_position: string;
+  commission_members: any[];
   company_id: number;
   company_name: string;
+  company_short_name: string;
+  created_at: string;
   data: InspectPgmBaseData;
-  date_start: string | null;
+  date_start: string;
+  head_balance_holder_base: {
+    fio: string;
+    tel: string;
+  };
+  head_operating_base: {
+    fio: string;
+    tel: string;
+  };
   id: number;
   inspection_company_id: number;
+  inspection_company_name: string;
+  okrug_id: number;
+  okrug_name: string;
   open_employee_fio: string;
-  open_employee_id: number | null;
-  status_text: 'Проводится';
-  agents_from_gbu?: ViewAddInspectEmployeeInitialState['agents_from_gbu'];
-  commission_members?: ViewAddInspectEmployeeInitialState['commission_members'];
-  resolve_to?: ViewAddInspectEmployeeInitialState['resolve_to'];
-  okrug_name: string | null;
-  okrug_id: string | null;
-  base_type_text: string | null;
-  base_type: string | null;
-  volume_capacity_sum: number | string | null;
-  pgm_volume_sum: number | string | null;
-  pgm_into_vol: number | string | null;
-  row_number: number | null;
-  capacity_cnt: number | null;
-  head_balance_holder_base: {
-    tel: string | null;
-    fio: string | null;
-  }
-  head_operating_base: {
-    tel: string | null;
-    fio: string | null;
-  },
-  close_employee_position: string | null;
+  open_employee_id: number;
+  pgm_volume_sum: number;
+  resolve_to: string;
+  status_text: 'Проводится'
+  type: 'pgm_base';
+  updated_at: string;
+  volume_capacity_sum: number;
+  was_resaved: boolean;
+  files: any[];
 } & DefaultPartInspect;
 
 export type IStateInspectPgmBase = {
   companyList: Company[],
   okrugList: any[],
   carpoolList: Carpool[],
-  pgmBaseList: any[],
+  pgmBaseList: PgmStore[],
   inspectPgmBaseList: InspectPgmBase[];
   lastConductingInspect: InspectPgmBase;
   lastCompletedInspect: InspectPgmBase;

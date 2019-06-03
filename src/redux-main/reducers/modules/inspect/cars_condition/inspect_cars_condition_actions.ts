@@ -20,6 +20,7 @@ import { cloneDeep } from 'lodash';
 import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { createValidDateTime } from 'utils/dates';
+import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): ThunkAction<IStateInspectCarsCondition, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectCarsConditionOld = getInspectCarsCondition(getState());
@@ -151,8 +152,11 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
 const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
 
+  const data = cloneDeep(inspectCarsCondition.data);
+  removeEmptyString(data);  // мутирует data
+
   const payload = {
-    data: inspectCarsCondition.data,
+    data,
     agents_from_gbu: inspectCarsCondition.agents_from_gbu,
     commission_members: inspectCarsCondition.commission_members,
     resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),

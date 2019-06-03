@@ -1,5 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { InspectCarsCondition } from "redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition";
+import { cloneDeep } from 'lodash';
+import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
 export const defaultInspectCarsCondition: InspectCarsCondition = {
   agents_from_gbu: [],
@@ -74,7 +75,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
 };
 
 export const getDefaultInspectCarsConditionElement = (element: Partial<InspectCarsCondition>) => {
-  const newElement = { ...defaultInspectCarsCondition };
+  const newElement = cloneDeep(defaultInspectCarsCondition);
 
   if (isObject(element)) {
     Object.keys(defaultInspectCarsCondition).forEach((key) => {

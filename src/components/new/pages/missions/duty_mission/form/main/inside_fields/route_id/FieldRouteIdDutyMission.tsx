@@ -133,9 +133,13 @@ class FieldRouteIdDutyMission extends React.PureComponent<
             prevProps.municipalFacilityForDutyMissionList.length);
 
       if (triggerOne) {
-        if (technical_operation_id && municipal_facility_id) {
+                if (technical_operation_id && municipal_facility_id) {
           this.getRoutes(technical_operation_id, municipal_facility_id);
         }
+      }
+
+      if (!technical_operation_id || !municipal_facility_id) {
+        this.handleRouteIdChange(null);
       }
 
       if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {

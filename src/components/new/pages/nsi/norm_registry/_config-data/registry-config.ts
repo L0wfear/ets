@@ -2,7 +2,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/nsi/norm_registry/_config-data/permissions';
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'normRegistry';
 
@@ -75,12 +74,6 @@ export const config: TypeConfigData<Norm> = {
           valueKey: 'short_name', // id for server filter
           labelKey: 'short_name',
         },
-      },
-      {
-        valueKey: 'use_in_report',
-        title: 'Учет в отчетах',
-        type: 'multiselect',
-        options: YES_NO_SELECT_OPTIONS_BOOL,
       },
       {
         valueKey: 'car_func_types_ids',
@@ -164,12 +157,6 @@ export const config: TypeConfigData<Norm> = {
           key: 'objects_text',
           title: 'Объект',
           width: 100,
-        },
-        {
-          key: 'use_in_reports',
-          title: 'Учет в отчетах',
-          width: 100,
-          format: 'boolean',
         },
         {
           key: 'car_func_types_text',

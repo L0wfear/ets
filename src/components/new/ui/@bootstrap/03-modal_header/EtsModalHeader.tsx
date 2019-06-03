@@ -1,17 +1,35 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as Modal from 'react-bootstrap/lib/Modal';
+import ModalHeaderCloseButton from './styled/ModalHeaderCloseButton';
+import themeModal from '../@themes/default/modal/themeModal';
 
-export const ModalHeaderStyled = styled(Modal.Header)``;
+export const ModalHeaderStyled = styled.div.attrs({
+  className: 'modal_header',
+})`
+  background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.header.default };
+  padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.header.default };
+  border-top-left-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.header.default };
+  border-top-right-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.header.default };
+
+  display: flex;
+  justify-content: space-between;
+
+  align-items: baseline;
+`;
 
 export type EtsModalHeaderProps = {
   closeButton?: boolean;
+  onHide?: (...arg: any) => any;
+  themeName?: keyof typeof themeModal;
 };
 
 const EtsModalHeader: React.FC<EtsModalHeaderProps> = React.memo(
   (props) => {
     return (
-      <ModalHeaderStyled {...props} />
+      <ModalHeaderStyled themeName={props.themeName}>
+        { props.children }
+        { Boolean(props.closeButton) && <ModalHeaderCloseButton onHide={props.onHide} /> }
+      </ModalHeaderStyled>
     );
   },
 );

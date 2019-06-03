@@ -39,7 +39,7 @@ export default compose<any, any>(
     (state) => ({
       infoData: getDashboardState(state).car_in_work_overall.infoData,
     }),
-    (dispatch) => ({
+    (dispatch: any) => ({
       handleClose: () => (
         dispatch(
           dashboardSetInfoDataInCarInWorkOverall(null),

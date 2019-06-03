@@ -14,12 +14,12 @@ import {
   promiseGetInspectAutobase,
   promiseCreateInspectionAutobase,
   promiseGetInspectAutobaseById,
-  makeFilesForBackend,
 } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
+import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -195,85 +195,78 @@ export const actionCreateInspectAutobase = (payloadOwn: Parameters<typeof promis
 };
 
 export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const data = cloneDeep(inspectAutobase.data);
+  if (inspectAutobase.status !== 'completed') {
+    const data = cloneDeep(inspectAutobase.data);
 
-  delete data.files;
-  delete data.photos_defect;
-  delete data.photos_of_supporting_documents;
-  const payload = {};
+    const payload = {};
 
-  const inspectionAutobase = await dispatch(
-    actionUpdateInspect(
-      inspectAutobase.id,
+    const inspectionAutobase = await dispatch(
+      actionUpdateInspect(
+        inspectAutobase.id,
+        data,
+        inspectAutobase.files,
+        'autobase',
+        meta,
+        payload,
+      ),
+    );
+
+    dispatch(
+      actionPushDataInInspectAutobaseList(
+        inspectionAutobase,
+      ),
+    );
+
+    return inspectionAutobase;
+  } else {
+    const data = cloneDeep(inspectAutobase.data);
+    const {
+      agents_from_gbu,
+      commission_members,
+      resolve_to,
+    } = inspectAutobase;
+
+    if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
+      commission_members.shift();
+    }
+
+    const payload = {
       data,
-      makeFilesForBackend(inspectAutobase.data),
-      'autobase',
-      meta,
-      payload,
-    ),
-  );
+      agents_from_gbu,
+      commission_members,
+      resolve_to: createValidDateTime(resolve_to),
+    };
 
-  dispatch(
-    actionPushDataInInspectAutobaseList(
-      inspectionAutobase,
-    ),
-  );
+    const inspectionAutobase = await dispatch(
+      actionUpdateInspect(
+        inspectAutobase.id,
+        data,
+        inspectAutobase.files,
+        'autobase',
+        meta,
+        payload,
+      ),
+    );
 
-  return inspectionAutobase;
-};
+    dispatch(
+      actionPushDataInInspectAutobaseList(
+        inspectionAutobase,
+      ),
+    );
 
-export const actionUpdateInspectAutobaseClosed = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const data = cloneDeep(inspectAutobase.data);
-  const {
-    agents_from_gbu,
-    commission_members,
-    resolve_to,
-  } = inspectAutobase;
-  delete data.files;
-  delete data.photos_of_supporting_documents;
-  delete data.photos_defect;
-
-  if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
-    commission_members.shift();
+    return inspectionAutobase;
   }
-
-  const payload = {
-    data,
-    agents_from_gbu,
-    commission_members,
-    resolve_to: createValidDateTime(resolve_to),
-  };
-
-  const inspectionAutobase = await dispatch(
-    actionUpdateInspect(
-      inspectAutobase.id,
-      data,
-      makeFilesForBackend(inspectAutobase.data),
-      'autobase',
-      meta,
-      payload,
-    ),
-  );
-
-  dispatch(
-    actionPushDataInInspectAutobaseList(
-      inspectionAutobase,
-    ),
-  );
-
-  return inspectionAutobase;
 };
 
 const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const data = cloneDeep(inspectAutobase.data);
+  removeEmptyString(data);  // мутирует data
+
   const {
     agents_from_gbu,
     commission_members,
     resolve_to,
   } = inspectAutobase;
-  delete data.files;
-  delete data.photos_of_supporting_documents;
-  delete data.photos_defect;
 
   if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
     commission_members.shift();
@@ -315,7 +308,6 @@ const inspectionAutobaseActions = {
   actionResetCompanyAndCarpool,
   actionCreateInspectAutobase,
   actionUpdateInspectAutobase,
-  actionUpdateInspectAutobaseClosed,
   actionCloseInspectAutobase,
 };
 

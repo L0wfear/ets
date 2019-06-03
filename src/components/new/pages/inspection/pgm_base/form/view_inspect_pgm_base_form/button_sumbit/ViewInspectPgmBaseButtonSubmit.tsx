@@ -13,8 +13,6 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
 
 type ViewInspectPgmBaseButtonSubmitDispatchProps = {
-  actionUpdateInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBase>;
-  actionUpdateInspectPgmBaseClosed: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionUpdateInspectPgmBaseClosed>;
   actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionCloseInspectPgmBase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
@@ -26,6 +24,8 @@ type ViewInspectPgmBaseButtonSubmitOwnProps = {
   selectedInspectPgmBase: InspectPgmBase;
   canSave: boolean;
   loadingPage: string;
+
+  handleSubmit: any;
 
   isPermittedToUpdateClose: boolean;
 };
@@ -42,33 +42,14 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
     async () => {
       if (canSave) {
         try {
-          await props.actionUpdateInspectPgmBase(
-            selectedInspectPgmBase,
-            { page: props.loadingPage },
-          );
+          await props.handleSubmit();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
         }
         props.handleHide(true);
       }
     },
-    [selectedInspectPgmBase, canSave],
-  );
-  const handleSubmitClosed = React.useCallback(
-    async () => {
-      if (canSave) {
-        try {
-          await props.actionUpdateInspectPgmBaseClosed(
-            selectedInspectPgmBase,
-            { page: props.loadingPage },
-          );
-        } catch (error) {
-          props.registryLoadDataByKey(props.loadingPage);
-        }
-        props.handleHide(true);
-      }
-    },
-    [selectedInspectPgmBase, canSave],
+    [props.handleSubmit, canSave],
   );
 
   const handleGetPgmBaseAct = React.useCallback(
@@ -113,7 +94,7 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-      handleSubmitClosed={handleSubmitClosed}
+      handleSubmitClosed={handleSubmit}
       handleCloseAndGetAct={handleCloseAndPgmBaseAct}
       handleGetAct={handleGetPgmBaseAct}
       type={props.type}
@@ -127,16 +108,6 @@ export default compose<ViewInspectPgmBaseButtonSubmitProps, ViewInspectPgmBaseBu
   connect<{}, ViewInspectPgmBaseButtonSubmitDispatchProps, ViewInspectPgmBaseButtonSubmitOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
-      actionUpdateInspectPgmBase: (...arg) => (
-        dispatch(
-          inspectionPgmBaseActions.actionUpdateInspectPgmBase(...arg),
-        )
-      ),
-      actionUpdateInspectPgmBaseClosed: (...arg) => (
-        dispatch(
-          inspectionPgmBaseActions.actionUpdateInspectPgmBaseClosed(...arg),
-        )
-      ),
       actionCloseInspectPgmBase: (...arg) => (
         dispatch(
           inspectionPgmBaseActions.actionCloseInspectPgmBase(...arg),

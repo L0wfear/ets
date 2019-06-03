@@ -224,17 +224,6 @@ const NormForm: React.FC<PropsNorm> = (props) => {
               disabled={!isPermittedHardcode}
             />
           </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={3}>
-            <ExtField
-              id="use_in_report"
-              type="boolean"
-              label="Учёт в отчетах"
-              checked={!!state.use_in_report}
-              onChange={props.handleChangeBoolean}
-              boundKeys="use_in_report"
-              disabled={!isPermittedHardcode}
-            />
-          </EtsBootstrap.Col>
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
         <EtsBootstrap.Col md={3}>

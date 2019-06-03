@@ -38,7 +38,7 @@ const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
         const { isLoading, dispatch, page, path, typePreloader, ...props } = this.props;
 
         return (
-          <>
+          <React.Fragment>
             {
               isLoading ?
               (
@@ -54,7 +54,7 @@ const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
                 page={configWithPreloader.withPagePath ? page : undefined}
                 path={configWithPreloader.withPagePath ? path : undefined}
             />
-          </>
+          </React.Fragment>
         );
       }
     },

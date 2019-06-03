@@ -36,6 +36,7 @@ export type Waybill = {
   downtime_hours_repair: number;
   downtime_hours_work: number;
   driver_id: number;
+  driver_fio: string;
   equipment_fact_fuel_end: number;
   equipment_fuel: true
   equipment_fuel_end: number;

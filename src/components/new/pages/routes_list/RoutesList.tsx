@@ -81,10 +81,10 @@ const makeMainGroupRoute = ([...INPUT_ROUTES]) => {
       .groupBy((r) => r.structure_name || EMPTY_STUCTURE)
       .value();
 
-    Object.entries(ROUTES[key1]).forEach(([key2, arr2]) => {
+    Object.entries(ROUTES[key1]).forEach(([key2, arr2]: any) => {
       ROUTES[key1][key2] = groupBy(arr2, (r: any) => r.front_work_type_name);
 
-      Object.entries(ROUTES[key1][key2]).forEach(([key, arr]) => {
+      Object.entries(ROUTES[key1][key2]).forEach(([key, arr]: any) => {
         ROUTES[key1][key2][key] = groupBy(
           arr,
           (r: any) => r.technical_operation_name,

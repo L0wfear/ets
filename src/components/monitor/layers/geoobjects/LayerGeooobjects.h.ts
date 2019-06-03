@@ -1,3 +1,4 @@
+import Feature from 'ol/Feature';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
@@ -59,7 +60,7 @@ export namespace LayerGeoobjectsUtilsTypes {
     show: boolean,
     geoobj: GeozonesDataByIndex,
     geoobj_old: GeozonesDataByIndex,
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
     thisProps: checkShowTrueFuncThisProps,
     selected: boolean,
     isManyCompany?: boolean,
@@ -68,7 +69,7 @@ export namespace LayerGeoobjectsUtilsTypes {
   export type checkShowTrueHasOldFeatureFunc = (
     geoobj: GeozonesDataByIndex,
     geoobj_old: GeozonesDataByIndex,
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
   ) => void;
 
   export type checkShowTrueHasNotOldFeatureFunc = (
@@ -137,7 +138,7 @@ export namespace LayerGeoobjectsUtilsTypes {
 
   export type checkShowFalseFunc = (
     show: boolean,
-    oldFeature: ol.Feature,
+    oldFeature: Feature,
     thisProps: checkShowFalseFuncThisProps,
   ) => void;
 }

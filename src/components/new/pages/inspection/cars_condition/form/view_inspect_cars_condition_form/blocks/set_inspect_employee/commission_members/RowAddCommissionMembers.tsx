@@ -2,20 +2,11 @@ import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
-import useEmployeeOptions from './useEmployeeOptions';
-import { ReduxState } from 'redux-main/@types/state';
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
-import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import useInspectAuditorsOptions from 'components/new/utils/hooks/services/useOptions/useInspectAuditorsOptions';
 
-type RowAddCommissionMembersDispatchProps = {
-  employeeEmployeeGetSetEmployee: HandleThunkActionCreator<typeof employeeEmployeeGetSetEmployee>;
-};
-
-type RowAddCommissionMembersOwnProps = {
-  isPermitted: boolean;
+type RowAddCommissionMembersProps = {
   handleAddChangeCommissionMembers: (commission_members: ValuesOf<InspectCarsCondition['commission_members']>) => any;
   commission_members: InspectCarsCondition['commission_members'];
   company_id: InspectCarsCondition['company_id']
@@ -23,13 +14,6 @@ type RowAddCommissionMembersOwnProps = {
   page: string;
   path?: string;
 };
-
-type RowAddCommissionMembersMergedProps = (
-  RowAddCommissionMembersDispatchProps
-  & RowAddCommissionMembersOwnProps
-);
-
-type RowAddCommissionMembersProps = RowAddCommissionMembersMergedProps;
 
 const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.memo(
   (props) => {
@@ -49,11 +33,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
       [selectedEmployee],
     );
 
-    const options = useEmployeeOptions(
-      props.employeeEmployeeGetSetEmployee,
-      { company_id: props.company_id },
-      props.page,
-    );
+    const optionData = useInspectAuditorsOptions();
 
     const filterOption = React.useCallback(
       (option) => {
@@ -63,40 +43,32 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
     );
 
     return (
-      props.isPermitted
-        ? (
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
-              <ExtField
-                type="select"
-                value={selectedEmployee}
-                label={false}
-                error=""
-                options={options}
-                onChange={setSelectedEmployee}
-                legacy={false}
-                filterOption={filterOption}
-              />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={6}>
-              <EtsBootstrap.Button block disabled={!selectedEmployee} onClick={handleClickAddCommissionEmployee}>Добавить представителя ГБУ</EtsBootstrap.Button>
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-        )
-        : (
-          <DivNone />
-        )
+      <EtsBootstrap.Row>
+        <EtsBootstrap.Col md={6}>
+          <ExtField
+            type="select"
+            value={selectedEmployee}
+            label={false}
+            error=""
+            options={optionData.options}
+            onChange={setSelectedEmployee}
+            legacy={false}
+            filterOption={filterOption}
+            etsIsLoading={optionData.isLoading}
+          />
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={6}>
+          <EtsBootstrap.Button
+            block
+            disabled={!selectedEmployee}
+            onClick={handleClickAddCommissionEmployee}
+          >
+            <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить представителя ГБУ'}
+          </EtsBootstrap.Button>
+        </EtsBootstrap.Col>
+      </EtsBootstrap.Row>
     );
   },
 );
 
-export default connect<{}, RowAddCommissionMembersDispatchProps, RowAddCommissionMembersOwnProps, ReduxState>(
-  null,
-  (dispatch: any) => ({
-    employeeEmployeeGetSetEmployee: (...arg) => (
-      dispatch(
-        employeeEmployeeGetSetEmployee(...arg),
-      )
-    ),
-  }),
-)(RowAddCommissionMembers);
+export default RowAddCommissionMembers;

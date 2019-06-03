@@ -1,26 +1,21 @@
 import * as React from 'react';
-import { PropsMissionFormTitle } from "./MissionFormTitle.h";
-import { DivNone } from "global-styled/global-styled";
+import { PropsMissionFormTitle } from './MissionFormTitle.h';
 import { MISSION_STATUS_LABELS } from 'constants/dictionary';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {
   if (props.IS_CREATING) {
     return (
-      <div>
+      <React.Fragment>
         <span>Создание задания</span>
         {
-          !props.MISSION_IS_ORDER_SOURCE
-            ? (
-              <span style={{ marginLeft: 10, color: 'red' }}>
-                Данное задание не будет учитываться по централизованным заданиям
-              </span>
-            )
-            : (
-              <DivNone />
-            )
+          !Boolean(props.MISSION_IS_ORDER_SOURCE) && (
+            <span style={{ marginLeft: 10, color: 'red' }}>
+              Данное задание не будет учитываться по централизованным заданиям
+            </span>
+          )
         }
-      </div>
+      </React.Fragment>
     );
   }
 
@@ -31,12 +26,12 @@ const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       <span>{title}</span>
       <EtsBootstrap.Label bsStyle="default" style={{ marginLeft: 10 }}>
         {MISSION_STATUS_LABELS[props.status]}
       </EtsBootstrap.Label>
-    </>
+    </React.Fragment>
   );
 };
 

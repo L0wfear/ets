@@ -1,7 +1,8 @@
+
 type FuncAddLayerProps = {
   id: number | string;
   zIndex?: number;
-  renderMode?: ol.olx.layer.VectorRenderType,
+  renderMode?: any,
 };
 
 declare namespace ETSCore {
@@ -9,13 +10,13 @@ declare namespace ETSCore {
     export namespace InjectetLayerProps {
       type FuncAddLayer = (props: FuncAddLayerProps) => Promise<{}>;
       type FuncRemoveLayer = () => void;
-      type FuncGetVectorSource = () => ol.source.Vector;
-      type FuncGetOlLayer = () => ol.layer.Vector;
-      type FuncAddFeaturesToSource = (features: ol.Feature | ol.Feature[]) => void;
-      type FuncRemoveFeaturesFromSource = (features?: ol.Feature | ol.Feature[] | void, all?: boolean) => void;
-      type FuncGetFeatureById = (id: string) => ol.Feature;
+      type FuncGetVectorSource = () => any;
+      type FuncGetOlLayer = () => any;
+      type FuncAddFeaturesToSource = (features: any | any[]) => void;
+      type FuncRemoveFeaturesFromSource = (features?: any | any[] | void, all?: boolean) => void;
+      type FuncGetFeatureById = (id: string) => any;
       type FuncSetDataInLayer = (name: string, value: any) => void;
-      type FuncGetAllFeatures = () => ol.Feature[];
+      type FuncGetAllFeatures = () => any[];
     }
   }
 }

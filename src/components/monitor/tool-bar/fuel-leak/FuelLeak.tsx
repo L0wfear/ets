@@ -92,7 +92,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
     return (
       <span>
         <div className="tool_bar-block">
-          <div className="default_cube dark">
+          <div className="default_cube">
             <div className={getActiveClassName(show)} onClick={this.toggleIsOpen}>
               <input type="checkbox" checked={show} readOnly onClick={this.toggleShow} />
               <span>{`Сливы ${isOpen ? ' \u25BC' : ' \u25BA'}`}</span>

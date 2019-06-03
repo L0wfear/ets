@@ -6,6 +6,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { UserDataMenu, UserDataContainer, UserHeaderData, UserFio } from 'components/new/ui/app_header/desktop/right/user_info/styled';
 import { UserImg } from './styled/index';
+import ChangeThemePortal from 'components/new/ui/portals/change_theme/ChangeThemePortal';
 
 const ROLES = {
   master: 'Мастер',
@@ -15,6 +16,10 @@ const ROLES = {
 };
 
 class UserInfo extends React.Component<any, {}> {
+  state = {
+    showThemes: false,
+  };
+
   node = React.createRef<any>();
 
   getSnapshotBeforeUpdate(prevProps) {
@@ -36,6 +41,18 @@ class UserInfo extends React.Component<any, {}> {
     }
   }
 
+  handleDoubleClick = () => {
+    if (__DEVELOPMENT__) {
+      this.setState({ showThemes: true });
+    }
+  }
+
+  handleCloseShowThemes = () => {
+    if (__DEVELOPMENT__) {
+      this.setState({ showThemes: false });
+    }
+  }
+
   componentDidMount() {
     const { current } = this.node;
 
@@ -53,15 +70,22 @@ class UserInfo extends React.Component<any, {}> {
 
     const role = get(ROLES, userRole, '');
     return (
-      <DefaultFirstDt ref={this.node}>
-        <UserDataMenu id="info-user-data">
-          <UserImg />
-          <UserDataContainer>
-            <UserHeaderData>{role}</UserHeaderData>
-            <UserFio short={!role}>{userFio}</UserFio>
-          </UserDataContainer>
-        </UserDataMenu>
-      </DefaultFirstDt>
+      <React.Fragment>
+        <DefaultFirstDt ref={this.node} onDoubleClick={this.handleDoubleClick}>
+          <UserDataMenu id="info-user-data">
+            <UserImg />
+            <UserDataContainer>
+              <UserHeaderData>{role}</UserHeaderData>
+              <UserFio short={!role}>{userFio}</UserFio>
+            </UserDataContainer>
+          </UserDataMenu>
+        </DefaultFirstDt>
+        {
+          this.state.showThemes && (
+            <ChangeThemePortal onClose={this.handleCloseShowThemes} />
+          )
+        }
+      </React.Fragment>
     );
   }
 }

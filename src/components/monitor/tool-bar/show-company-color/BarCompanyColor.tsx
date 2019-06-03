@@ -58,7 +58,7 @@ class BarCompanyColor extends React.Component<PropsBarCompanyColor, StateBarComp
       (
         <span>
           <div className="tool_bar-block">
-            <div className="default_cube dark companies">
+            <div className="default_cube companies">
               <div className="legen_option" onClick={this.toggleOpen}>
                 <span>Цветовая гамма геообъектов</span>
               </div>

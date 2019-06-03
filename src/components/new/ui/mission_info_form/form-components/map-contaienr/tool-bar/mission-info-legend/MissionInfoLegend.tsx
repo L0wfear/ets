@@ -21,7 +21,7 @@ class MissionInfoLegend extends React.PureComponent<any, any> {
     return (
       <span>
         <div className="tool_bar-block">
-          <div className="default_cube dark">
+          <div className="default_cube">
             <div data-type="SHOW_TRACK" className={getClassNameByType(this.props, 'SHOW_TRACK')} onClick={this.handleClick}>
               <div className={`car_data-color track_green`}></div>
               <div>Трек</div>

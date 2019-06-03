@@ -2,7 +2,7 @@ export interface GeozonesDataByIndex {
   front_key: string;
   front_id: string;
   company_id: number;
-  shape: (Document | Node | ol.GlobalObject | string);
+  shape: (Document | Node | any | string);
   frontIsSelected?: boolean;
   [key: string]: any;
 }
@@ -30,7 +30,7 @@ export type OneGeozoneMunicipalFacility = {
   geozone_type: string;
   id: number;
   name: string;
-  shape: ol.GlobalObject;
+  shape: any;
   state: number;
 
   is_valid_company_structure: boolean;

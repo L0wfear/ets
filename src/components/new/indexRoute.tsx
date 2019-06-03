@@ -9,7 +9,7 @@ const renderRoutes = (newRoutesArr, data) => {
     if (data.path) {
       if (data.children) {
         newRoutesArr.push(
-          ...Object.values(data.children).reduce(renderRoutes, []),
+          ...(Object.values(data.children) as any).reduce(renderRoutes, []),
         );
       } else {
         newRoutesArr.push(
@@ -21,7 +21,7 @@ const renderRoutes = (newRoutesArr, data) => {
         );
       }
     } else if (!data.divider && !data.hiddenNav) {
-      newRoutesArr.push(...Object.values(data.children).reduce(renderRoutes, []));
+      newRoutesArr.push(...(Object.values(data.children) as any).reduce(renderRoutes, []));
     }
   }
 

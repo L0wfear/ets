@@ -18,7 +18,7 @@ class BarGeoobjectLegend extends React.Component<any, any> {
     return (
       <span>
         <div className="tool_bar-block">
-          <div className="default_cube dark">
+          <div className="default_cube">
             <div data-type="SHOW_TRACK" onClick={this.props.toggleShowStatus} className={getClassNameByType(this.props, 'SHOW_TRACK')}>
               <input readOnly type="checkbox" checked={this.props.SHOW_TRACK} />
               <div>Трек</div>

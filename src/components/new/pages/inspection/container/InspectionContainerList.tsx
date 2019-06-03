@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { DivNone } from 'global-styled/global-styled';
 
-import IAVisibleWarning from '../autobase/components/vsible_warning/IAVisibleWarning';
-import { inspectContainerSchema } from './filed_to_check/inspect_autobase_schema';
+import { inspectContainerSchema } from './filed_to_check/container_schema';
 import { filedToCheckContainerFirst, filedToCheckContainerSecond } from './filed_to_check/filedToCheck';
 import inspectContainerPermissions from './_config_data/permissions';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
@@ -73,7 +72,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                 filedToCheck={filedToCheckContainerFirst}
               />
               <br/>
-              <IAVisibleWarning
+              <IAVisibleWarningContainer
                 onChange={this.handleChangeData}
                 data={state.data}
                 isPermitted={isPermitted}

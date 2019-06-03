@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import Map from 'ol/Map';
 import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import { getStatusById } from 'constants/statuses';
 
-import { attributeList } from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/attribute-list';
-import {
-  TypeLastPoint,
-  PropsCarAttributeInformation,
-} from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation.h';
 import CarMissions from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/CarMissions';
 import { makeDate, makeTime } from 'utils/dates';
 
@@ -21,8 +18,100 @@ const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   return `${makeDate(dt)} ${makeTime(dt, true)} [${roundCoordinates(lastPoint.coords_msk)}]`;
 };
 
+export type TypeLastPoint = {
+  timestamp: number;
+  coords_msk: [number, number],
+};
+
+export type PropsCarAttributeInformation = {
+  company_name: string,
+  gov_number: string,
+  garage_number: string,
+  gps_code: number,
+  status: number,
+  type_name: string,
+  model_name: string,
+  lastPoint: TypeLastPoint,
+  errorInLoadTrack: boolean;
+  map: Map;
+  carActualGpsNumberIndex: any;
+
+  missionsData: any;
+};
+
+type OneAtt<P> = {
+  key?: string,
+  title: string,
+  value: (props: P) => string | number | JSX.Element | JSX.Element[],
+  loader?: boolean;
+  carActualGpsNumberIndex?: boolean;
+  missionsData?: boolean;
+};
+
+export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
+  {
+    key: 'company_name',
+    title: 'Организация',
+    value: ({ company_name }) => company_name,
+    carActualGpsNumberIndex: true,
+  },
+  {
+    key: 'test',
+    title: 'Заказчик',
+    value: ({ missionsData: { carTabInfo: { test } } }) => test,
+    missionsData: true,
+  },
+  {
+    key: 'test2',
+    title: 'Подрядчик',
+    value: ({ missionsData: { carTabInfo: { test2 } } }) => test2,
+    missionsData: true,
+  },
+  {
+    key: 'test3',
+    title: 'Владелец техники',
+    value: ({ missionsData: { carTabInfo: { test3 } } }) => test3,
+    missionsData: true,
+  },
+  {
+    key: 'gov_number',
+    title: 'Рег. номер ТС',
+    value: ({ gov_number }) => gov_number,
+    carActualGpsNumberIndex: true,
+  },
+  {
+    key: 'garage_number',
+    title: 'Гаражный номер',
+    value: ({ garage_number }) => garage_number,
+    carActualGpsNumberIndex: true,
+  },
+  {
+    key: 'gps_code',
+    title: 'ID БНСО',
+    value: ({ gps_code }) => gps_code,
+    carActualGpsNumberIndex: true,
+  },
+  {
+    key: 'status',
+    title: 'Статус',
+    value: ({ status }) => status && getStatusById(status).title,
+  },
+  {
+    key: 'type_name',
+    title: 'Тип техники',
+    value: ({ type_name }) => type_name,
+    carActualGpsNumberIndex: true,
+  },
+  {
+    key: 'model_name',
+    title: 'Шасси',
+    value: ({ model_name }) => model_name,
+    carActualGpsNumberIndex: true,
+  },
+];
+
 const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) => {
-  const { lastPoint, errorInLoadTrack, gps_code } = props;
+  const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
 
   return (
     <div>
@@ -36,10 +125,9 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) 
                 <div key={attr.title}>
                   <span className="car_info-attr_title">{`${attr.title}: `}</span>
                   {
-                    !value && value !== null ?
-                      <PreloadNew typePreloader="field" />
-                    :
-                      <span className="car_info-attr_value">{value || '-'}</span>
+                    (attr.missionsData ? missionsData.isLoading : (!value && value !== null))
+                      ? <PreloadNew typePreloader="field" />
+                      : <span className="car_info-attr_value">{value || '-'}</span>
                   }
                 </div>
               );
@@ -85,6 +173,7 @@ const mapStateToProps = (state) => ({
   lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
   errorInLoadTrack: state.monitorPage.carInfo.trackCaching.error,
   carActualGpsNumberIndex: state.monitorPage.carActualGpsNumberIndex,
+  missionsData: state.monitorPage.carInfo.missionsData,
 });
 
 export default connect<any, any, any, ReduxState>(

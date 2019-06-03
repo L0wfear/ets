@@ -9,18 +9,16 @@ import { saveData } from 'utils/functions';
 import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionAutobaseActions from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
 
 type ViewInspectAutobaseButtonSubmitDispatchProps = {
-  actionUpdateInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobase>;
-  actionUpdateInspectAutobaseClosed: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionUpdateInspectAutobaseClosed>;
   actionCloseInspectAutobase: HandleThunkActionCreator<typeof inspectionAutobaseActions.actionCloseInspectAutobase>;
   actionGetBlobActInspect: HandleThunkActionCreator<typeof inspectionActions.actionGetBlobActInspect>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 
 type ViewInspectAutobaseButtonSubmitOwnProps = {
+  handleSubmit: any;
   type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectAutobase: InspectAutobase;
@@ -42,28 +40,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     async () => {
       if (canSave) {
         try {
-          await props.actionUpdateInspectAutobase(
-            selectedInspectAutobase,
-            { page: props.loadingPage },
-          );
-        } catch (error) {
-          props.registryLoadDataByKey(props.loadingPage);
-        }
-
-        props.handleHide(true);
-      }
-    },
-    [selectedInspectAutobase, canSave],
-  );
-
-  const handleSubmitClosed = React.useCallback(
-    async () => {
-      if (canSave) {
-        try {
-          await props.actionUpdateInspectAutobaseClosed(
-            selectedInspectAutobase,
-            { page: props.loadingPage },
-          );
+          await props.handleSubmit();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
         }
@@ -115,7 +92,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
-      handleSubmitClosed={handleSubmitClosed}
+      handleSubmitClosed={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
       handleCloseAndGetAct={handleCloseAndAutobaseAct}
       handleGetAct={handleGetAutobaseAct}
@@ -126,20 +103,9 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
 };
 
 export default compose<ViewInspectAutobaseButtonSubmitProps, ViewInspectAutobaseButtonSubmitOwnProps>(
-  withSearch,
   connect<{}, ViewInspectAutobaseButtonSubmitDispatchProps, ViewInspectAutobaseButtonSubmitOwnProps, ReduxState>(
     null,
     (dispatch: any) => ({
-      actionUpdateInspectAutobase: (...arg) => (
-        dispatch(
-          inspectionAutobaseActions.actionUpdateInspectAutobase(...arg),
-        )
-      ),
-      actionUpdateInspectAutobaseClosed: (...arg) => (
-        dispatch(
-          inspectionAutobaseActions.actionUpdateInspectAutobaseClosed(...arg),
-        )
-      ),
       actionCloseInspectAutobase: (...arg) => (
         dispatch(
           inspectionAutobaseActions.actionCloseInspectAutobase(...arg),

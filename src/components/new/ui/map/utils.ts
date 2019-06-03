@@ -176,7 +176,7 @@ export const mouseSingleClick: MapUtils.mouseSingleClickFunc = (eventOl, disable
  * @param fitProps пропсы для map.fit
  * @param noCheckDisabledCenterOn игнорирование дисейбла
  */
-export const centerOn: MapUtils.centerOnFunc = (map: ol.Map, disabledCenterOn, fitProps, noCheckDisabledCenterOn) => {
+export const centerOn: MapUtils.centerOnFunc = (map: Map, disabledCenterOn, fitProps, noCheckDisabledCenterOn) => {
   if (noCheckDisabledCenterOn || !disabledCenterOn) {
     const {
       extent,

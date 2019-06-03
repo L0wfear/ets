@@ -19,7 +19,7 @@ import {
   initialState,
 } from 'components/monitor/info/car-info/redux-main/modules/car-info';
 import { createValidDateTime } from 'utils/dates';
-import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad } from 'components/monitor/info/car-info/redux-main/modules/utils';
+import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad, getCarTabInfo } from 'components/monitor/info/car-info/redux-main/modules/utils';
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 
 import {
@@ -69,12 +69,14 @@ export const carInfoSetTrack = (trackCaching, gps_code, odh_mkad) => ({
   },
 });
 
-export const carInfoSetMissionsData = ({ missions }, gps_code) => ({
+export const carInfoSetMissionsData = ({ missions, carTabInfo }, gps_code) => ({
   type: CAR_INFO_SET_MISSIONS_DATA,
   payload: {
     missions,
     ...getMaxSpeeds(missions),
+    carTabInfo,
     gps_code,
+    isLoading: false,
   },
 });
 
@@ -177,11 +179,13 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) 
       car_id: payloadData.asuods_id,
       date_start: createValidDateTime(payloadData.date_start || date_start),
       date_end: createValidDateTime(payloadData.date_end || date_end),
-    }).then(({ result: { missions } }) => {
+    }).then(({ result }) => {
       return {
-        missions,
-        ...getMaxSpeeds(missions),
+        missions: result.missions,
+        ...getMaxSpeeds(result.missions),
         gps_code: payloadData.gps_code,
+        carTabInfo: getCarTabInfo(result),
+        isLoading: false,
       };
     })
     .catch((error) => {
@@ -189,6 +193,7 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) 
         ...initialState.missionsData,
         error: true,
         gps_code: payloadData.gps_code,
+        isLoading: false,
       };
     }),
     meta,

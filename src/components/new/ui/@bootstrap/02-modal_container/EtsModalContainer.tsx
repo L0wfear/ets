@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components';
 
 import ModalFormContainer from './styled/ModalFormContainer';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
+import themeModal from '../@themes/default/modal/themeModal';
 
 const timeAnimation = 0.3;
 
@@ -24,7 +25,6 @@ const bsSizeLargeCss = css`
 export const ModalFormStyled = styled.div`
   width: auto;
   position: relative;
-  background-color: white;
   margin-bottom: 300px;
   margin-top: 30px;
   margin-left: 30px;
@@ -55,6 +55,7 @@ export type EtsModalContainerProps = {
   onHide: (...arg: any[]) => any;                   // ясно понятно
   bsSize?: 'large' | 'small';                       // размер формы | small - дефолт
   backdrop?: 'static';                              // можно ли закрыти форму кликом вне
+  themeName?: keyof typeof themeModal;
 
   position?: 'center' | 'default';                  // положение формы
 };
@@ -100,6 +101,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
                           React.cloneElement(child, {
                             ...child.props,
                             onHide: handleHide,
+                            themeName: props.themeName || 'default',
                           })
                         ),
                       )

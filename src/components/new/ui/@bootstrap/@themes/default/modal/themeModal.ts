@@ -1,0 +1,7 @@
+import themeModalDefault from 'components/new/ui/@bootstrap/@themes/default/modal/default/themeModalDefault';
+
+const themeModal = {
+  default: themeModalDefault,
+};
+
+export default themeModal;

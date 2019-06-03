@@ -62,36 +62,30 @@ export type EtsModalContainerProps = {
 
 const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
   (props) => {
-    /* анимация открытия/ закрытия формы */
-    const [show, setShow] = React.useState(false);
-
     const handleHide = React.useCallback(
       (...arg) => {
-        setShow(false);
-        const timeId = setTimeout(
-          () => props.onHide(...arg),
-          timeAnimation * 1000,
-        );
-
-        return () => clearTimeout(timeId);
+        props.onHide(...arg);
       },
       [props.onHide],
     );
 
-    React.useEffect(
-      () => setShow(true),
-      [],
+    const handleHideContainer = React.useCallback(
+      (...arg) => {
+        if (props.backdrop !== 'static') {
+          handleHide();
+        }
+      },
+      [handleHide, props.backdrop],
     );
-    /* анимация открытия/ закрытия формы */
 
     useEscapeEvent(handleHide);
 
     return (
       ReactDOM.createPortal(
         <div role="dialog">
-          <ModalFormContainer id={props.id} position={props.position} show={show}>
-            <ModalFormStyled show={show} bsSize={props.bsSize}>
-              <ClickOutHandler onClickOut={props.backdrop !== 'static' ? handleHide : undefined}>
+          <ModalFormContainer id={props.id} position={props.position} show>
+            <ModalFormStyled show bsSize={props.bsSize}>
+              <ClickOutHandler onClickOut={handleHideContainer}>
                 {
                   React.useMemo(
                     () => (
@@ -100,7 +94,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
                         (child: any) => (
                           React.cloneElement(child, {
                             ...child.props,
-                            onHide: handleHide,
+                            onHide: props.onHide,
                             themeName: props.themeName || 'default',
                           })
                         ),

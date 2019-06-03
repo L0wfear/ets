@@ -2,7 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import ModalHeaderCloseButton from './styled/ModalHeaderCloseButton';
 
-export const ModalHeaderStyled = styled.div`
+export const ModalHeaderStyled = styled.div.attrs({
+  className: 'modal_header',
+})`
   background-color: #e9f0f5;
   min-height: 16.43px;
   padding: 15px;

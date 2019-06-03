@@ -1,10 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as Modal from 'react-bootstrap/lib/Modal';
 
-export const ModalBodyStyled = styled(Modal.Body)``;
+export const ModalBodyStyled = styled.div.attrs({
+  className: 'modal_body',
+})`
+  position: relative;
+  padding: 15px;
+`;
 
-export type EtsModalBodyProps = any;
+export type EtsModalBodyProps = {
+  onHide?: (...arg: any[]) => any;
+};
 
 const EtsModalBody: React.FC<EtsModalBodyProps> = React.memo(
   (props) => {

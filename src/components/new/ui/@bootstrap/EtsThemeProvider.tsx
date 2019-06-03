@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ThemeProvider } from 'styled-components';
-import etsThemes from './colors';
+import etsThemes from 'components/new/ui/@bootstrap/@themes/etsThemes';
 
 type EtsThemeContextValue = {
   changeThemeName: (name: keyof typeof etsThemes) => void,

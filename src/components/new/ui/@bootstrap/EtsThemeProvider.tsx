@@ -12,7 +12,7 @@ const defaultEtsThemeContext: EtsThemeContextValue = {
   themeName: 'defaultEtsTheme',
 };
 
-const EtsThemeContext = React.createContext<EtsThemeContextValue>(defaultEtsThemeContext);
+export const EtsThemeContext = React.createContext<EtsThemeContextValue>(defaultEtsThemeContext);
 
 type EtsThemeProviderProps = {}; // тк провайдер глобальный, то пока ничего не ждёт
 

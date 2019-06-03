@@ -1,10 +1,10 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { defaultEtsTheme } from '../colors';
+import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
 
 export type EtsButtonProps = {
   bsClass?: string;
-  themeName?: keyof typeof defaultEtsTheme['button'];
+  themeName?: keyof typeof themeButton;
   active?: boolean;
   block?: boolean;
   bsSize?: 'small' | 'input' | 'xsmall';

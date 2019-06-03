@@ -9,10 +9,8 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import { get } from 'lodash';
 import { actionCompleteMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { DivNone } from 'global-styled/global-styled';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 export type ButtonCompleteMissionStateProps = {
@@ -38,56 +36,61 @@ type ButtonCompleteMissionProps = (
 );
 
 const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
-  const [showChangeStatusRequesFormLazy, setShowChangeStatusRequesFormLazy] = React.useState(false);
-  const [contentIndex, setContentIndex] = React.useState(0); // индекс, элемента в itemToRemove, который отображается в форме
+  const [edcRequestIds, setEdcRequestIds] = React.useState(null);
 
-  const [itemToRemove, setItemToRemove] = React.useState({});
-
-  React.useEffect( () => {
-    const itemToRemoveTmp = { ...props.checkedRows };
-    if (!Object.values(itemToRemoveTmp).length) {
-      itemToRemoveTmp[props.uniqKey] = props.selectedRow;
-    }
-    // console.log('itemToRemoveTmp === ', props.checkedRows);
-    setItemToRemove(itemToRemoveTmp);
-  }, [props.selectedRow, props.checkedRows] );
-
-  const requestFormHide = React.useCallback(() => {
-    const itemToRemoveLength = Object.values(itemToRemove).length;
-    if (itemToRemoveLength && itemToRemoveLength > contentIndex) {
-      setContentIndex(contentIndex + 1);
-    } else {
-      setShowChangeStatusRequesFormLazy(false);
-    }
-  }, []);
-
-  const handleClickComplete = React.useCallback(
-    async () => {
-      try {
-        // const response = await props.actionCompleteMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
-        setShowChangeStatusRequesFormLazy(true);
-        // console.log('ButtonCompleteMission response === ', {response});
-        // console.log('itemToRemove response === ', {itemToRemove});
-      } catch (error) {
-        console.error(error); // tslint:disable-line
-        //
+  const checkedRowsAsArray = React.useMemo(
+    () => {
+      const checkedRowsAsArrayTemp = Object.values(props.checkedRows);
+      if (!checkedRowsAsArrayTemp.length && props.selectedRow) {
+        checkedRowsAsArrayTemp.push(props.selectedRow);
       }
 
-      // props.actionUnselectSelectedRowToShow(props.registryKey, true); /// <<< подумать, куда это запихать, это сброс выжеденных строк
-      props.registryLoadDataByKey(props.registryKey);
+      return checkedRowsAsArrayTemp;
     },
     [props.selectedRow, props.checkedRows],
   );
 
-  let disabled = false;
+  const requestFormHide = React.useCallback(
+    () => {
+      setEdcRequestIds(null);
 
-  const checkedRowsAsArray = Object.values(props.checkedRows);
-  if (checkedRowsAsArray.length) {
-    disabled = checkedRowsAsArray.some((mission: Mission) => !mission.can_be_closed);
-  } else {
-    const can_be_closed = get(props.selectedRow, 'can_be_closed', false);
-    disabled = !can_be_closed;
-  }
+      props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      props.registryLoadDataByKey(props.registryKey);
+    },
+    [],
+  );
+
+  const handleClickComplete = React.useCallback(
+    async () => {
+      try {
+        const response = await props.actionCompleteMissionByIds(
+          checkedRowsAsArray.map(({ [props.uniqKey]: id }) => id),
+          { page: props.registryKey },
+        );
+        const successEdcRequestIds = response.filter(
+          (value) => value,
+        ).filter(
+          ({ close_request }) => close_request,
+        ).map(
+          ({ request_id, request_number }) => ({ request_id, request_number }),
+        );
+
+        if (successEdcRequestIds.length) {
+          setEdcRequestIds(successEdcRequestIds);
+          return;
+        }
+      } catch (error) {
+        console.error(error); // tslint:disable-line
+        //
+      }
+      props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      props.registryLoadDataByKey(props.registryKey);
+    },
+    [checkedRowsAsArray],
+  );
+
+  let disabled = checkedRowsAsArray.some((mission: Mission) => !mission.can_be_closed);
+
   disabled = false; // <<< удалить
   // console.log('ButtonCompleteMissionProps === ', {props, showChangeStatusRequesFormLazy});
   return (
@@ -96,14 +99,12 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
         <EtsBootstrap.Glyphicon glyph="ok" /> Выполнено
       </EtsBootstrap.Button>
       {
-        showChangeStatusRequesFormLazy
-          ? <ChangeStatusRequesFormLazy
-              onFormHide={requestFormHide}
-              checkedRows={props.checkedRows}
-              itemToRemove={itemToRemove}
-              contentIndex={contentIndex}
-            />
-          : <DivNone />
+        Boolean(edcRequestIds) && (
+          <ChangeStatusRequesFormLazy
+            onHide={requestFormHide}
+            array={edcRequestIds}
+          />
+        )
       }
     </>
   );

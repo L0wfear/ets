@@ -18,10 +18,8 @@ export type TableMissionsRequestDispatchProps = {
 };
 
 export type TableMissionsRequestOwnProps = {
-  key: number | string;
   edcRequestInfo: EdcRequestInfo;
   index: number;
-  original?: boolean;
   getRegistryKey?: any; // <<< изменить, если будет время
   getConfig: any; // <<< изменить, если будет время
   registryKeyIndex: number | string;
@@ -53,7 +51,7 @@ const TableMissionsRequest: React.FC<TableMissionsRequestProps> = React.memo(
           props.registryRemoveData(registryKeyIndex);
         };
       },
-      [],
+      [missionsList, props.index],
     );
 
     const date_text = `Ранее завершенные работы по заявке от ${createValidDateDots(edc_date)}:`;

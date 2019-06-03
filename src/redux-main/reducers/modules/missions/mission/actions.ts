@@ -423,7 +423,7 @@ const actionRemoveMission: any = (
   return payload;
 };
 
-export const actionCompleteMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
   // формировать новый массив объектов
   return Promise.all(
@@ -438,7 +438,7 @@ export const actionCompleteMissionByIds: any = (id: Mission['id'] | Mission['id'
   );
 };
 
-export const actionCompleteMissionById: any = (id: Mission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
   const mission = await dispatch(
     actionGetMissionById(
       id,

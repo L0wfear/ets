@@ -3,7 +3,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { get } from 'lodash';
-import { ChangeStatusRequesFormLazyOwnProps } from 'components/new/pages/edc_request/form/changeStatusRequesForm/index';
 import {
   RequestHistoryListWrapper,
   RequestHistoryListRegistry,
@@ -25,9 +24,6 @@ import {
 
 type ChangeStatusRequesFormOwnProps = {
   onFormHide: (isSubmitted: boolean | any, result?: any) => any;
-  checkedRows: ChangeStatusRequesFormLazyOwnProps['checkedRows'];
-  itemToRemove: ChangeStatusRequesFormLazyOwnProps['itemToRemove'];
-  contentIndex: ChangeStatusRequesFormLazyOwnProps['contentIndex'];
   element: any; // <<< заменить
 
   page: string;
@@ -51,18 +47,24 @@ type ChangeStatusRequesFormProps = (
 
 const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo(
   (props) => {
-
-    const original = false;
     const request_id = get(props, 'element.request_id', '');
     const request_number = get(props, 'element.request_number', '');
 
-    React.useEffect( () => {
-      props.actionGetAndSetInStoreEdcRequestInfo({
-        id: request_id,
-        original,
-      }, {page: props.page, path: props.path });
-      return () => props.actionResetEdcRequestInfo();
-    }, []);
+    React.useEffect(
+      () => {
+        if (request_id) {
+          props.actionGetAndSetInStoreEdcRequestInfo(
+            {
+              id: request_id,
+              original: false,
+            },
+            { page: props.page, path: props.path },
+          );
+        }
+        return () => props.actionResetEdcRequestInfo();
+      },
+      [request_id],
+    );
 
     const setStatusResolve = React.useCallback(() => {
       // console.log('ResolveBtn Cliked');
@@ -76,19 +78,17 @@ const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo
     // console.log('ChangeStatusRequesForm___ props', props);
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.onFormHide} backdrop="static" bgsize="medium">
+      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.onFormHide} backdrop="static">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{titleModal}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={props.page} path={props.path} typePreloader="mainpage">
           <h4>Все прикрепленные задания ЕДЦ №{request_number}</h4>
           <RequestHistoryListWrapper>
-            <RequestHistoryListRegistry key={ `RequestHistoryListRegistry_0`}>
+            <RequestHistoryListRegistry>
               <TableMissionsRequest
-                key={`ChangeStatusRequesForm_0`}
                 edcRequestInfo={edcRequestInfoListItem}
                 index={0}
-                original={original}
                 getConfig={getConfig}
                 registryKeyIndex={registryKeyIndex}
               />

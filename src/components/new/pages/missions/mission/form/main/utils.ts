@@ -63,7 +63,8 @@ export const makeDefaultMission = (...arg: any[]): Mission => ({
   route_id: null,
   route_type: '',
   route_name: '',
-  status: '', // @todo
+  status: '',
+  status_name: '',
   structure_id: null,
   structure_name: '',
   technical_operation_id: null,

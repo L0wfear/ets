@@ -4,7 +4,11 @@ import * as Row from 'react-bootstrap/lib/Row';
 
 export const RowStyled = styled(Row)``;
 
-export type EtsRowProps = any;
+export type EtsRowProps = {
+  id?: string;
+
+  className?: string;
+};
 
 const EtsRow: React.FC<EtsRowProps> = React.memo(
   (props) => {

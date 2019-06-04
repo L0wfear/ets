@@ -139,6 +139,12 @@ export type TypeFields<F extends any> = {
   sortable?: boolean;
   width: number;
   displayIfPermission?: string | string[];
+} | {
+  key: 'show_img_button',
+  title: string;
+} | {
+  key: 'show_edc_comments',
+  title: string;
 };
 
 export type TypeConfigData<F> = {

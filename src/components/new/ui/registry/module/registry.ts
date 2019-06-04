@@ -15,6 +15,7 @@ export interface OneRegistryData {
   Service: any;
   header?: {
     title?: any;
+    titlePopover?: string;
     format?: (
       'default'
       | 'select_odh/dt(disabled)'

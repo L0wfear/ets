@@ -147,6 +147,7 @@ export type TypeConfigData<F> = {
   registryKey: string;
   header: {
     title: string;
+    titlePopover?: string;
     format?: (
       'default'
       | 'select_odh/dt(disabled)'

@@ -389,5 +389,5 @@ export const ServicesService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 
 export const CarsTravelTimeDetailService = ETS_API_FACTORY.createApiServiceAdapter(
-  'cars_travel_time_new/detail',
+  'cars_travel_time/detail',
 );

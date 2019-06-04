@@ -153,7 +153,7 @@ export const checkAndModifyTrack = (
 
   const front_events_list = Object.values(events)
     .reduce<any[]>((newArr, eventData: any[]) => {
-      const timestampStart = get(event, ['start_point', 'timestamp'], null);
+      const timestampStart = get(eventData, ['start_point', 'timestamp'], null);
 
       if (timestampStart) {
         newArr.push(

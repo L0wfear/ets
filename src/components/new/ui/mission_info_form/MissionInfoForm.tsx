@@ -264,7 +264,6 @@ class MissionInfoForm extends React.Component<
         onHide={onFormHide}
         bsSize="large"
         backdrop="static">
-        <form onSubmit={onFormHide}>
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
@@ -320,9 +319,8 @@ class MissionInfoForm extends React.Component<
             </FormContainer>
           </ModalBodyPreloader>
           <EtsBootstrap.ModalFooter>
-            <EtsBootstrap.Button type="submit">Закрыть</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.props.onFormHide}>Закрыть</EtsBootstrap.Button>
           </EtsBootstrap.ModalFooter>
-        </form>
       </EtsBootstrap.ModalContainer>
     );
   }

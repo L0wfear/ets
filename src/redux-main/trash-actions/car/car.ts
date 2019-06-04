@@ -5,14 +5,14 @@ import {
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 import { getCarGpsNumberByDateTime } from 'redux-main/trash-actions/car/promise/promise';
 
-export const getCarMissionsByTimestamp = (type, car_id, point_timestamp, meta = { loading: true } as TypeMeta) => {
+export const getCarMissionsByTimestamp: any = (car_id, point_timestamp, meta = { loading: true } as TypeMeta) => (dispatch) => {
   const payload = {
     car_id,
     point_timestamp,
   };
 
-  return {
-    type,
+  return dispatch({
+    type: '',
     payload: CarInfoService.get(payload)
       .catch((error) => {
         // tslint:disable-next-line
@@ -28,7 +28,7 @@ export const getCarMissionsByTimestamp = (type, car_id, point_timestamp, meta = 
     meta: {
       ...meta,
     },
-  };
+  });
 };
 
 export const loadCarGpsCode = (type, { asuods_id, date_start}, { page, path}) => ({

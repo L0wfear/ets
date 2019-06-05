@@ -33,6 +33,7 @@ const NextImage: React.FC<NextImageProps> = React.memo(
     React.useEffect(() => {
       const escFunction = (event: KeyboardEvent) => {
         if (event.key === 'ArrowRight') {
+          event.preventDefault();
           setShowNext(true);
         }
       };

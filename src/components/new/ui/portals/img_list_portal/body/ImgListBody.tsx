@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ImgListBodyContainer, ImgContainer, ImgBackground } from './styled';
 import PrevImage from './prev_image/PrevImage';
 import NextImage from './next_image/NextImage';
+import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 type ImgListBodyProps = {
   img_url: string;
@@ -12,6 +13,17 @@ type ImgListBodyProps = {
 
 const ImgListBody: React.FC<ImgListBodyProps> = React.memo(
   (props) => {
+    const [img, setImg] = React.useState(null);
+
+    React.useEffect(
+      () => {
+        const imgNew = new Image();
+        imgNew.onload = () => setImg(imgNew);
+        imgNew.src = props.img_url;
+      },
+      [props.img_url],
+    );
+
     return (
       <ImgListBodyContainer>
         <PrevImage
@@ -21,7 +33,15 @@ const ImgListBody: React.FC<ImgListBodyProps> = React.memo(
           disabled={false}
         />
         <ImgContainer>
-          <ImgBackground src={props.img_url} />
+        {
+          img
+          ? (
+            <ImgBackground src={img.src} />
+          )
+          : (
+            <PreloadNew typePreloader="mainpage" />
+          )
+        }
         </ImgContainer>
         <NextImage
           indexImage={props.indexImage}

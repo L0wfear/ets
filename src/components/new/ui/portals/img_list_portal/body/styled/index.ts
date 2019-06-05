@@ -9,6 +9,9 @@ export const ImgContainer = styled.div`
 
   width: 100%;
   height: 100%;
+
+  position: relative;
+  transform: translate(0, 0);
 `;
 
 export const ImgListBodyContainer = styled.div`

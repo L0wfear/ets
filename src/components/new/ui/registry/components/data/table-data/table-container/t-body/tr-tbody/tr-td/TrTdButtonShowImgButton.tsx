@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ImgListPortal from 'components/new/ui/portals/img_list_portal/ImgListPortal';
+import SimpleLinkA from 'components/new/ui/simple_a/link';
+import { saveData, isImgPath } from 'utils/functions';
 
 type TrTdButtonShowImgButtonProps = {
   registryKey: string;
@@ -11,17 +12,22 @@ type TrTdButtonShowImgButtonProps = {
 
 const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.memo(
   (props) => {
-    const [showImage, setShowImage] = React.useState(false);
+    const [filesToShow, setShowImage] = React.useState(
+      () => ({
+        images: null,
+        index: 0,
+      }),
+    );
 
     const { rowData } = props;
 
     const files = React.useMemo(
       () => {
-        if (rowData.files) {
+        if (rowData.files && rowData.files.length) {
           return rowData.files.map(
-            (rowDataFile: any) => ({
+            (rowDataFile) => ({
               ...rowDataFile,
-              url: rowDataFile.path,
+              name: rowDataFile.filename,
             }),
           );
         }
@@ -32,15 +38,30 @@ const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.me
     );
 
     const handleClick = React.useCallback(
-      () => {
-        setShowImage(true);
+      (aProps: any, event: React.MouseEvent) => {
+        const { file } = aProps;
+
+        if (isImgPath(file.path)) {
+          const filesImg = files.filter(({ path }) => isImgPath(path));
+          setShowImage({
+            images: filesImg,
+            index: filesImg.findIndex(({ path }) => file.path === path),
+          });
+        } else {
+          fetch(aProps.file.path)
+            .then((res) => res.blob())
+            .then((blob) => saveData(blob, aProps.file.filename));
+        }
       },
       [files],
     );
 
     const handleClose = React.useCallback(
       () => {
-        setShowImage(false);
+        setShowImage({
+          images: null,
+          index: 0,
+        });
       },
       [],
     );
@@ -50,16 +71,25 @@ const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.me
         {
           Boolean(files)
             ? (
-              <EtsBootstrap.Button block onClick={handleClick}>Просмотр</EtsBootstrap.Button>
+              <React.Fragment>
+                {
+                  files.map((file, index) => (
+                    <li key={file.path}>
+                      <SimpleLinkA onClick={handleClick} index={index} file={file}>{file.filename}</SimpleLinkA>
+                    </li>
+                  ))
+                }
+              </React.Fragment>
             )
             : (
               '-'
             )
         }
         {
-          showImage && (
+          filesToShow.images && (
             <ImgListPortal
-              images={files}
+              images={filesToShow.images}
+              indexToShow={filesToShow.index}
               onClose={handleClose}
             />
           )

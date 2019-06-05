@@ -4,11 +4,31 @@ type PropsSimpleLinkA = {
   id?: string;
   className?: string;
   title?: string;
-  href: string;
+  target?: string;
+  href?: string;
+  onClick?: (props: PropsSimpleLinkA, event: React.MouseEvent) => any;
+  [k: string]: any;
 };
 
-const SimpleLinkA: React.FC<PropsSimpleLinkA> = ({ id, className, title, children, href }) => (
-  <a id={id} className={className} href={href}>{title || children || href}</a>
+const SimpleLinkA: React.FC<PropsSimpleLinkA> = React.memo(
+  (props) => {
+    const { id, className, title, children, href } = props;
+
+    const handleClick = React.useCallback(
+      (event: React.MouseEvent) => {
+        if ('onClick' in props) {
+          event.preventDefault();
+
+          props.onClick(props, event);
+        }
+      },
+      [props],
+    );
+
+    return (
+      <a id={id} className={className} href={href} onClick={handleClick} target={props.target}>{title || children || href}</a>
+    );
+  },
 );
 
 export default SimpleLinkA;

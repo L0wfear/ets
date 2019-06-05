@@ -136,7 +136,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           canClick={false}
           rowSpan={colData.rowSpan}
           colSpan={colData.colSpan}
-          width={100}
+          width={250}
         >
           {formatedTitle}
         </EtsTheadTh>

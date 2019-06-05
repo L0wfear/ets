@@ -1087,9 +1087,21 @@ class WaybillForm extends UNSAFE_Form {
     const acceptedRejectMissionsIdList = rejectMissionList.map(
       async (rejectMission) => {
         try {
-          await this.context.flux
+          const response = await this.context.flux
             .getActions('missions')
             [rejectMission.handlerName](rejectMission.payload);
+          if (rejectMission.handlerName === 'updateMission') {
+            const successEdcRequestIds = response.result
+              .filter((value) => value)
+              .filter(({ close_request }) => close_request)
+              .map(({ request_id, request_number }) => ({
+                request_id,
+                request_number,
+              }));
+            if (successEdcRequestIds.length) {
+              this.props.setEdcRequestIds(successEdcRequestIds);
+            }
+          }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
           const missionId = get(rejectMission, 'id', '');
@@ -2209,6 +2221,7 @@ class WaybillForm extends UNSAFE_Form {
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
+                requestFormHide={this.requestFormHide}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>

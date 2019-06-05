@@ -23,6 +23,7 @@ import {
 import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
 import { validateField } from 'utils/validate/validateField';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -150,6 +151,8 @@ class WaybillFormWrap extends React.Component {
         update: false,
         departure_and_arrival_values: false,
       },
+      // edcRequestIds: [{ request_id: 37, request_number: '202020209', }],
+      edcRequestIds: null,
     };
   }
 
@@ -611,6 +614,10 @@ class WaybillFormWrap extends React.Component {
         return;
       }
 
+      if (this.state.edcRequestIds) {
+        // висит окно с заявкой ЕДЦ
+        return;
+      }
       this.props.onCallback({
         showWaybillFormWrap: false,
       });
@@ -748,29 +755,46 @@ class WaybillFormWrap extends React.Component {
       .then(({ blob }) => printData(blob))
       .catch(() => {});
   };
-
+  setEdcRequestIds = (edcRequestIds) => {
+    this.setState({ edcRequestIds });
+  };
+  requestFormHide = () => {
+    this.setState({ edcRequestIds: null });
+    this.props.onCallback({
+      showWaybillFormWrap: false,
+    });
+  };
   render() {
     const { entity } = this.props;
-
     return (
-      this.state.formState && (
-        <WaybillForm
-          formState={this.state.formState}
-          onSubmit={this.handleFormSubmit}
-          onSubmitActiveWaybill={this.submitActiveWaybill}
-          handlePrint={this.handlePrint}
-          handleClose={this.handleClose}
-          handleFormChange={this.handleFormStateChange}
-          handleMultipleChange={this.handleMultipleChange}
-          show
-          onHide={this.props.onFormHide}
-          entity={entity || 'waybill'}
-          handlePrintFromMiniButton={this.handlePrintFromMiniButton}
-          clearSomeData={this.clearSomeData}
-          isPermittedByKey={this.state.isPermittedByKey}
-          {...this.state}
-        />
-      )
+      <>
+        {this.state.formState && (
+          <WaybillForm
+            formState={this.state.formState}
+            onSubmit={this.handleFormSubmit}
+            onSubmitActiveWaybill={this.submitActiveWaybill}
+            handlePrint={this.handlePrint}
+            handleClose={this.handleClose}
+            handleFormChange={this.handleFormStateChange}
+            handleMultipleChange={this.handleMultipleChange}
+            show
+            onHide={this.props.onFormHide}
+            entity={entity || 'waybill'}
+            handlePrintFromMiniButton={this.handlePrintFromMiniButton}
+            clearSomeData={this.clearSomeData}
+            isPermittedByKey={this.state.isPermittedByKey}
+            setEdcRequestIds={this.setEdcRequestIds}
+            {...this.state}
+          />
+        )}
+        {this.state.edcRequestIds
+          && (Boolean(this.state.edcRequestIds) && (
+            <ChangeStatusRequesFormLazy
+              onHide={this.requestFormHide}
+              array={this.state.edcRequestIds}
+            />
+          ))}
+      </>
     );
   }
 }

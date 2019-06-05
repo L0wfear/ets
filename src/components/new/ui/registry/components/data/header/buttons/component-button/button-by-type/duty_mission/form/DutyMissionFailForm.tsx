@@ -41,7 +41,7 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
           comment,
         });
       },
-      [element, comment],
+      [element, comment, props.handleSubmit],
     );
 
     return (

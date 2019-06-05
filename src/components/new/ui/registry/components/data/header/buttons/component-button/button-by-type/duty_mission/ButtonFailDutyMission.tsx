@@ -54,17 +54,10 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
     [props.selectedRow, props.checkedRows],
   );
 
-  const handleSubmit = React.useCallback(
-    async (partialDutyMission) => {
-      await props.actionFailDutyMissionByPartialData(partialDutyMission);
-      handlePopMissionsFail();
-    },
-    [],
-  );
-
   const handlePopMissionsFail = React.useCallback(
     async () => {
       const missionsFailNew = missionsFail.slice(1);
+
       if (!missionsFailNew[0]) {
         props.actionUnselectSelectedRowToShow(props.registryKey, true);
         props.registryLoadDataByKey(props.registryKey);
@@ -75,6 +68,14 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
       );
     },
     [missionsFail],
+  );
+
+  const handleSubmit = React.useCallback(
+    async (partialDutyMission) => {
+      await props.actionFailDutyMissionByPartialData(partialDutyMission);
+      handlePopMissionsFail();
+    },
+    [handlePopMissionsFail],
   );
 
   let disabled = false;

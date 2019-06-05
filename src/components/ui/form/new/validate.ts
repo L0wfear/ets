@@ -11,8 +11,7 @@ import { validateDate } from 'components/ui/form/new/date/dateValidate';
 import { validateDatetime } from 'components/ui/form/new/datetime/datetimeValidate';
 import { validateBoolean } from 'components/ui/form/new/boolean/booleanValidate';
 
-import { isObject } from 'util';
-import { isArray } from 'highcharts';
+import { isObject, isArray } from 'util';
 
 const hasError = (errorsData: any) => {
   if (isArray(errorsData)) {

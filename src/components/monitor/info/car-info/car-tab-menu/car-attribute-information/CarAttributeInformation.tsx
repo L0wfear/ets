@@ -58,19 +58,19 @@ export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
   {
     key: 'customer_name',
     title: 'Заказчик',
-    value: ({ missionsData: { carTabInfo: { test } } }) => test,
+    value: ({ missionsData: { carTabInfo: { customer_name } } }) => customer_name,
     missionsData: true,
   },
   {
     key: 'contractor_name',
     title: 'Подрядчик',
-    value: ({ missionsData: { carTabInfo: { test2 } } }) => test2,
+    value: ({ missionsData: { carTabInfo: { contractor_name } } }) => contractor_name,
     missionsData: true,
   },
   {
     key: 'owner_name',
     title: 'Владелец техники',
-    value: ({ missionsData: { carTabInfo: { test3 } } }) => test3,
+    value: ({ missionsData: { carTabInfo: { owner_name } } }) => owner_name,
     missionsData: true,
   },
   {

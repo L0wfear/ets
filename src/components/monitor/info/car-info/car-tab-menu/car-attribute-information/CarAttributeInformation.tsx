@@ -56,19 +56,19 @@ export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
     carActualGpsNumberIndex: true,
   },
   {
-    key: 'test',
+    key: 'customer_name',
     title: 'Заказчик',
     value: ({ missionsData: { carTabInfo: { test } } }) => test,
     missionsData: true,
   },
   {
-    key: 'test2',
+    key: 'contractor_name',
     title: 'Подрядчик',
     value: ({ missionsData: { carTabInfo: { test2 } } }) => test2,
     missionsData: true,
   },
   {
-    key: 'test3',
+    key: 'owner_name',
     title: 'Владелец техники',
     value: ({ missionsData: { carTabInfo: { test3 } } }) => test3,
     missionsData: true,
@@ -133,22 +133,24 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) 
               );
             })
           }
-          <span className="car_info-attr_title">{'Последняя точка: '}</span>
-          {
-            !lastPoint && lastPoint !== null
-            ? (
-              errorInLoadTrack
+          <div>
+            <span className="car_info-attr_title">{'Последняя точка: '}</span>
+            {
+              !lastPoint && lastPoint !== null
               ? (
-                'Ошибка загрузки трека'
+                errorInLoadTrack
+                ? (
+                  'Ошибка загрузки трека'
+                )
+                : (
+                  <PreloadNew typePreloader="field" />
+                )
               )
               : (
-                <PreloadNew typePreloader="field" />
+                <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
               )
-            )
-            : (
-              <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
-            )
-          }
+            }
+          </div>
         </div>
       </CarInfoBlockTabData>
       <CarMissions />

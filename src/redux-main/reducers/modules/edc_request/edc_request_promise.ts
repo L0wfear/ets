@@ -21,16 +21,17 @@ export const promiseLoadEdcRequestById = async (id: number) => {
 };
 
 // для добавления в БД новой записи по заявке
-export const promiseSetTestDataToDatabase = async (id: number) => {
+export const promiseSetTestDataToDatabase = async () => {
   let response = null;
-
+  // tslint:disable-next-line:radix
+  const request_id = parseInt((Math.random() * 10000000).toFixed(0));
   try {
     const testData = {
-        request_id: "4545",
-        root_id: "34",
-        status_name: "На доработку", // на доработку
+        request_id,
+        root_id: null, // на доработку
+        status_name: "Новая", // на доработку
         rework: true, // только для заявок в статусе на доработку
-        request_number: "202020209",
+        request_number: request_id,
 
         bpm_operation: null,
         bpm_except: null,

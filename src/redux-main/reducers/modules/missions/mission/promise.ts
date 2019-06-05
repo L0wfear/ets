@@ -165,7 +165,7 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promis
 
   return {
     ...payloadOwn,
-    ...get(response, 'result', null),
+    ...get(response, 'result.0', null),
   };
 };
 

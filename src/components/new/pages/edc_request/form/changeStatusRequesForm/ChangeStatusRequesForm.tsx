@@ -21,6 +21,7 @@ import { compose } from 'recompose';
 import {
   getConfig,
 } from 'components/new/pages/edc_request/form/changeStatusRequesForm/_config-data/registry-config';
+import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 
 type ChangeStatusRequesFormOwnProps = {
   onFormHide: (isSubmitted: boolean | any, result?: any) => any;
@@ -37,6 +38,7 @@ type ChangeStatusRequesFormStateProps = {
 type ChangeStatusRequesFormDispatchProps = {
   actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreEdcRequestInfo>;
   actionResetEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionResetEdcRequestInfo>;
+  actionCloseEdcRequestById: HandleThunkActionCreator<typeof edcRequestActions.actionCloseEdcRequestById>;
 };
 
 type ChangeStatusRequesFormProps = (
@@ -66,11 +68,24 @@ const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo
       [request_id],
     );
 
-    const setStatusResolve = React.useCallback(() => {
-      // console.log('ResolveBtn Cliked');
-      // тут делать запрос на бек для изменения статуса заявки
-      props.onFormHide(true);
-    }, []);
+    // тут делать запрос на бек для изменения статуса заявки
+    const setStatusResolve = React.useCallback(
+      async () => {
+        if (request_id) {
+          try {
+            await props.actionCloseEdcRequestById(
+              request_id,
+              { page: props.page },
+            );
+            props.onFormHide(true);
+          } catch (error) {
+            console.error(error); // tslint:disable-line
+            return;
+          }
+        }
+      },
+      [request_id],
+    );
 
     const titleModal = `Заявка ЕДЦ №${request_number}`;
     const edcRequestInfoListItem = get(props, 'edcRequestInfoList.0', null); // !!!!Пустой!!!
@@ -94,8 +109,8 @@ const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo
               />
             </RequestHistoryListRegistry>
           </RequestHistoryListWrapper>
-          Все децентрализованные задания по заявке ЕДЦ №{request_id} закрыты.
-          Установить заявке статус "Решена" или оставить в статусе "В работе"
+          Все децентрализованные задания по заявке ЕДЦ №{request_number} закрыты.
+          Установить заявке статус "Решена" или оставить в статусе "В работе"?
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button onClick={setStatusResolve}>Установить статус "Решена"</EtsBootstrap.Button>
@@ -120,6 +135,11 @@ export default compose<ChangeStatusRequesFormProps, ChangeStatusRequesFormOwnPro
       actionResetEdcRequestInfo: (...args) => (
         dispatch(
           someUniqActions.actionResetEdcRequestInfo(...args),
+        )
+      ),
+      actionCloseEdcRequestById: (...arg) => (
+        dispatch(
+          edcRequestActions.actionCloseEdcRequestById(...arg),
         )
       ),
     }),

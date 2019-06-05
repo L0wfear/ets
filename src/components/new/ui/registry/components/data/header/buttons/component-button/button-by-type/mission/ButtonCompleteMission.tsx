@@ -13,6 +13,8 @@ import { actionCompleteMissionByIds } from 'redux-main/reducers/modules/missions
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
+// import { promiseSetTestDataToDatabase } from 'redux-main/reducers/modules/edc_request/edc_request_promise';
+
 export type ButtonCompleteMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
@@ -62,6 +64,7 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
 
   const handleClickComplete = React.useCallback(
     async () => {
+      // promiseSetTestDataToDatabase();
       try {
         const response = await props.actionCompleteMissionByIds(
           checkedRowsAsArray.map(({ [props.uniqKey]: id }) => id),
@@ -89,9 +92,9 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
     [checkedRowsAsArray],
   );
 
-  let disabled = checkedRowsAsArray.some((mission: Mission) => !mission.can_be_closed);
+  const disabled = checkedRowsAsArray.some((mission: Mission) => !mission.can_be_closed);
 
-  disabled = false; // <<< удалить
+  // disabled = false; // <<< удалить
   // console.log('ButtonCompleteMissionProps === ', {props, showChangeStatusRequesFormLazy});
   return (
     <>

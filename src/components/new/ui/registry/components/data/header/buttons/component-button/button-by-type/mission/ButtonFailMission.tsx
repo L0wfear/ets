@@ -14,6 +14,7 @@ import { DivNone } from 'global-styled/global-styled';
 import MissionRejectForm from './form/MissionRejectForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { createValidDateTime } from 'utils/dates';
+import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 type ButtonFailMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -38,6 +39,7 @@ type ButtonFailMissionProps = (
 
 const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
   const [showForm, setShowForm] = React.useState(false);
+  const [edcRequestIds, setEdcRequestIds] = React.useState(null);
 
   const handleClickFail = React.useCallback(
     async () => {
@@ -47,11 +49,22 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
   );
 
   const handleReject = React.useCallback(
-    (needUpdate) => {
+    (needUpdate, edcRequestIdsList) => {
       if (needUpdate) {
         props.registryLoadDataByKey(props.registryKey);
       }
+      setEdcRequestIds(edcRequestIdsList);
       setShowForm(false);
+    },
+    [],
+  );
+
+  const requestFormHide = React.useCallback(
+    () => {
+      setEdcRequestIds(null);
+
+      props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      props.registryLoadDataByKey(props.registryKey);
     },
     [],
   );
@@ -69,7 +82,7 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
   return (
     <>
       <EtsBootstrap.Button id="duty_mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
-        <EtsBootstrap.Glyphicon glyph="ban-circle" /> Отметка о невыполнении
+        <EtsBootstrap.Glyphicon glyph="ban-circle" /> Не выполнено / Отменено
       </EtsBootstrap.Button>
       {
         showForm
@@ -85,6 +98,14 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
           : (
             <DivNone />
           )
+      }
+      {
+        Boolean(edcRequestIds) && (
+          <ChangeStatusRequesFormLazy
+            onHide={requestFormHide}
+            array={edcRequestIds}
+          />
+        )
       }
     </>
   );

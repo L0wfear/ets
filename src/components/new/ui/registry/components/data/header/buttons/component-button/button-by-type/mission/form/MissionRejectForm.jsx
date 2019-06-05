@@ -67,6 +67,7 @@ class MissionRejectForm extends React.Component {
       car_func_types: [],
       needUpdateParent: false,
       reason_id: null, // изменить
+      edcRequestIds: null,
     };
   }
 
@@ -154,40 +155,13 @@ class MissionRejectForm extends React.Component {
     const { mIndex, missionList } = this.state;
     if (mIndex === 0) {
       const { needUpdateParent } = this.state;
-      this.props.onReject(needUpdateParent);
+      this.props.onReject(needUpdateParent, this.state.edcRequestIds);
     } else {
       this.setState({
         comment: '',
         car_id: null,
         mIndex: mIndex - 1,
         ...this.getPropsMission(missionList, mIndex - 1),
-      });
-    }
-  };
-
-  handleChangeCancelReason = async (car_id) => {
-    if (car_id) {
-      const { missionList, mIndex } = this.state;
-
-      const mission_id
-        = missionList[mIndex].mission_id || missionList[mIndex].id;
-      const payload = {
-        car_id,
-        mission_id,
-      };
-      const result = await this.context.flux
-        .getActions('missions')
-        .getMissionReassignationParameters(payload);
-      const data = result ? result.result : null;
-
-      this.setState({
-        car_id,
-        data,
-      });
-    } else {
-      this.setState({
-        car_id,
-        data: null,
       });
     }
   };
@@ -251,7 +225,13 @@ class MissionRejectForm extends React.Component {
         };
         handlerName = 'updateMission'; // рак
         if (!isWaybillForm) {
-          resolve = await this.props.actionUpdateMission(payload, {});
+          resolve = await this.props.actionUpdateMission(payload, {}); // Приходит объект, а не массив
+          const { request_id, request_number } = resolve;
+          const successEdcRequestIds = resolve.close_request
+            ? [{ request_id, request_number }]
+            : null;
+
+          this.setState({ edcRequestIds: successEdcRequestIds });
         }
       }
     } else {
@@ -320,7 +300,7 @@ class MissionRejectForm extends React.Component {
       global.NOTIFICATION_SYSTEM.notify(reassignMissionSuccessNotification);
 
       if (mIndex === 0) {
-        this.props.onReject(true);
+        this.props.onReject(true, this.state.edcRequestIds);
       } else {
         this.setState({
           needUpdateParent: true,
@@ -432,107 +412,109 @@ class MissionRejectForm extends React.Component {
       ));
 
     return (
-      <EtsBootstrap.ModalContainer
-        id="modal-mission-reject"
-        show={this.props.show}
-        onHide={this.props.onHide}
-        backdrop="static">
-        <EtsBootstrap.ModalHeader>
-          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
+      <>
+        <EtsBootstrap.ModalContainer
+          id="modal-mission-reject"
+          show={this.props.show}
+          onHide={this.props.onHide}
+          backdrop="static">
+          <EtsBootstrap.ModalHeader>
+            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
 
-        <ModalBody>
-          <Field
-            type="select"
-            label="Введите причину:"
-            value={state.reason_id}
-            error={errors.reason_id}
-            options={CANCEL_REASON}
-            onChange={this.handleChange.bind(this, 'reason_id')}
-          />
-          <Field
-            type="select"
-            label="Переназначить задание на ТС:"
-            error={errors.car_id}
-            options={CARS}
-            value={state.car_id}
-            onChange={this.handleChangeCarId}
-            clearable
-          />
-          <Field
-            type="string"
-            label="Примечание:"
-            value={state.comment}
-            error={errors.comment}
-            onChange={this.handleChangeComment}
-            placeholder="Поле ввода дополнительной информации"
-          />
-          <br />
-          {state.data && state.data.missions ? (
-            <Div>
-              <label style={{ marginBottom: '10px' }}>
-                {`Задание будет добавлено в п.л. №${
-                  state.data.waybill_number
-                } (Выезд: ${getFormattedDateTime(
-                  state.data.waybill_plan_departure_date,
-                )}, Возвращение: ${getFormattedDateTime(
-                  state.data.waybill_plan_arrival_date,
-                )})`}
-              </label>
-              <EtsBootstrap.Row style={{ marginBottom: '4px' }}>
-                <EtsBootstrap.Col md={4} style={{ paddingRight: '0' }}>
-                  <div
+          <ModalBody>
+            <Field
+              type="select"
+              label="Введите причину:"
+              value={state.reason_id}
+              error={errors.reason_id}
+              options={CANCEL_REASON}
+              onChange={this.handleChange.bind(this, 'reason_id')}
+            />
+            <Field
+              type="select"
+              label="Переназначить задание на ТС:"
+              error={errors.car_id}
+              options={CARS}
+              value={state.car_id}
+              onChange={this.handleChangeCarId}
+              clearable
+            />
+            <Field
+              type="string"
+              label="Примечание:"
+              value={state.comment}
+              error={errors.comment}
+              onChange={this.handleChangeComment}
+              placeholder="Поле ввода дополнительной информации"
+            />
+            <br />
+            {state.data && state.data.missions ? (
+              <Div>
+                <label style={{ marginBottom: '10px' }}>
+                  {`Задание будет добавлено в п.л. №${
+                    state.data.waybill_number
+                  } (Выезд: ${getFormattedDateTime(
+                    state.data.waybill_plan_departure_date,
+                  )}, Возвращение: ${getFormattedDateTime(
+                    state.data.waybill_plan_arrival_date,
+                  )})`}
+                </label>
+                <EtsBootstrap.Row style={{ marginBottom: '4px' }}>
+                  <EtsBootstrap.Col md={4} style={{ paddingRight: '0' }}>
+                    <div
+                      style={{
+                        paddingTop: '9px',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                      }}>
+                      Переносимое задание
+                    </div>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col
+                    md={8}
                     style={{
-                      paddingTop: '9px',
-                      textOverflow: 'ellipsis',
+                      textAlign: 'right',
+                      paddingLeft: '0',
                       whiteSpace: 'nowrap',
-                      overflow: 'hidden',
                     }}>
-                    Переносимое задание
-                  </div>
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col
-                  md={8}
-                  style={{
-                    textAlign: 'right',
-                    paddingLeft: '0',
-                    whiteSpace: 'nowrap',
-                  }}>
-                  <Div className="inline-block reports-date">
-                    <Datepicker
-                      date={state.date_start}
-                      onChange={this.handleChange.bind(this, 'date_start')}
-                    />
-                  </Div>
-                  {' — '}
-                  <Div className="inline-block reports-date">
-                    <Datepicker
-                      date={state.date_end}
-                      onChange={this.handleChange.bind(this, 'date_end')}
-                    />
-                  </Div>
-                </EtsBootstrap.Col>
-              </EtsBootstrap.Row>
-            </Div>
-          ) : (
-            ''
-          )}
-          {datePickers}
-        </ModalBody>
+                    <Div className="inline-block reports-date">
+                      <Datepicker
+                        date={state.date_start}
+                        onChange={this.handleChange.bind(this, 'date_start')}
+                      />
+                    </Div>
+                    {' — '}
+                    <Div className="inline-block reports-date">
+                      <Datepicker
+                        date={state.date_end}
+                        onChange={this.handleChange.bind(this, 'date_end')}
+                      />
+                    </Div>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
+              </Div>
+            ) : (
+              ''
+            )}
+            {datePickers}
+          </ModalBody>
 
-        <EtsBootstrap.ModalFooter>
-          <Div>
-            <EtsBootstrap.Button
-              disabled={!!errors.reason_id}
-              onClick={this.handleSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={this.reject}>
-              Отменить
-            </EtsBootstrap.Button>
-          </Div>
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
+          <EtsBootstrap.ModalFooter>
+            <Div>
+              <EtsBootstrap.Button
+                disabled={!!errors.reason_id}
+                onClick={this.handleSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button onClick={this.reject}>
+                Отменить
+              </EtsBootstrap.Button>
+            </Div>
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
+      </>
     );
   }
 }

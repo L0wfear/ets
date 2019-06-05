@@ -12,7 +12,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-type PropsSensorsTrackTab = {
+type PropsSensorsLevelList = {
   track: any;
   isPermitted: boolean;
   front_cars_sensors_level: {
@@ -24,7 +24,7 @@ type PropsSensorsTrackTab = {
   toggleSensorOnMap: any;
 };
 
-const SensorsLevelList: React.FC<PropsSensorsTrackTab> = (props) => {
+const SensorsLevelList: React.FC<PropsSensorsLevelList> = (props) => {
   const { track, isPermitted } = props;
   const sensors_level = Object.entries(props.front_cars_sensors_level);
 
@@ -96,7 +96,7 @@ const mergedProps = (stateProps, { dispatch }, { isPermitted }) => ({
   },
 });
 
-export default compose(
+export default compose<PropsSensorsLevelList, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'loader-field',

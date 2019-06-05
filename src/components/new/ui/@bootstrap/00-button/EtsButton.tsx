@@ -1,12 +1,13 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
-import { defaultEtsTheme } from '../colors';
+import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
 
 export type EtsButtonProps = {
-  themeName?: keyof typeof defaultEtsTheme['button'];
+  bsClass?: string;
+  themeName?: keyof typeof themeButton;
   active?: boolean;
   block?: boolean;
-  bsSize?: 'small' | 'input';
+  bsSize?: 'small' | 'input' | 'xsmall';
   className?: string;
   disabled?: boolean;
   id?: string;
@@ -144,12 +145,25 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
 `;
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
-  (props) => (
-    <ButtonStyled
-      {...props}
-      type={props.type || 'button'}
-    />
-  ),
+  (props) => {
+
+    const handleClick = React.useCallback(
+      (...arg) => {
+        if (!props.disabled && props.onClick) {
+          props.onClick(...arg);
+        }
+      },
+      [Boolean(props.disabled), props.onClick],
+    );
+
+    return (
+      <ButtonStyled
+        {...props}
+        type={props.type || 'button'}
+        onClick={handleClick}
+      />
+    );
+  },
 );
 
 export default EtsButton;

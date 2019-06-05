@@ -12,6 +12,17 @@ const WS_PROTO = (
 );
 const STAND = process.env.STAND;
 
+const urls = {
+  develop: {
+    dev: 'http://dev2-ets.gost-group.com/',
+    gost_stage: 'https://ets-stage.gost-group.com/',
+    ets_test: 'https://ets-test.mos.ru/',
+    ets_hotfix: 'https://ets-hotfix.mos.ru/',
+    prod: 'http://ets.mos.ru/',
+  },
+  origin: `${PROTO}//${HOST}${PATHNAME}`,
+};
+
 const ADMIN_URL = {
   develop: {
     dev: 'http://dev2-ets.gost-group.com/admin',
@@ -70,6 +81,7 @@ export const configApi = {
 };
 
 const configs = {
+  url: urls.develop.dev,
   images: config.develop.images,
   docs: config.develop.docs,
   admin: config.develop.admin,
@@ -82,6 +94,11 @@ const configs = {
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
 try {
+  configs.url = (
+    pathToConfig === 'develop'
+      ? urls[pathToConfig][STAND]
+      : urls.origin
+  );
   configs.images = config[pathToConfig].images;
   configs.docs = config[pathToConfig].docs;
   configs.admin = config[pathToConfig].admin;

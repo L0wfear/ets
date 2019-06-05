@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
+import Map from 'ol/Map';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { getStyleForTrackLine } from 'components/new/ui/mission_info_form/form-components/map-contaienr/map/layers/track/lines/feature-style';
@@ -19,7 +20,7 @@ type PropsLayerTrackPoints = {
   mkad_speed_lim: number;
   speed_lim: number;
   gov_number: string;
-  map: ol.Map;
+  map: Map;
   missionNumber: string | number;
   cars_sensors: object;
 

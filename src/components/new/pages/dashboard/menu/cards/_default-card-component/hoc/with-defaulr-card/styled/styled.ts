@@ -27,7 +27,8 @@ export const CardContainer = styled.div`
   background-color: #eee;
   border-radius: 4px;
 
-  box-shadow: 0px 1px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.2);
 
   ul {
     padding-left: 20px;
@@ -42,7 +43,10 @@ export const CardMainContainer = styled.div`
 `;
 
 export const CardMainContainerWrap = styled(CardContainer)`
-  margin: 20px;
+  margin: 10px;
+  @media screen and (max-width: 990px) {
+    margin: 5px 0;
+  }
 `;
 
 export const CardTitleContainer = styled.div`

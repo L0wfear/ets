@@ -41,8 +41,8 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
     }
 
     const displayIfPermission = get(colData, 'displayIfPermission', []);
-    const permissionsSet = get(this.props, 'permissionsSet', new Set());
-    if ( displayIfPermission.length ) {
+    const permissionsSet = get(this.props, 'permissionsSet');
+    if (permissionsSet &&  displayIfPermission.length ) {
       if (!validatePermissions(displayIfPermission, permissionsSet)) {
         return null;
       }

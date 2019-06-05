@@ -34,16 +34,13 @@ export const autobaseResetSetCar = () => (dispatch) => (
   )
 );
 export const autobaseGetSetCar = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof getCars>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: getCars(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
+  const result = await etsLoadingCounter(
+    dispatch,
+    getCars(payloadOwn),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
 export const carGetAndSetInStore = (payload = {}, meta: LoadingMeta) => async (dispatch) => {
   const { data } = await dispatch(

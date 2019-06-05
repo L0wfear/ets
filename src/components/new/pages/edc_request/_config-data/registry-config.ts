@@ -145,6 +145,19 @@ export const config: TypeConfigData<EdcRequest> = {
           width: 200,
         },
         {
+          key: 'description',
+          title: 'Описание проблемы',
+          width: 400,
+        },
+        {
+          key: 'show_img_button',
+          title: 'Фото',
+        },
+        {
+          key: 'show_edc_comments',
+          title: 'Чат',
+        },
+        {
           key: 'emergency_name',
           title: 'Срочность',
           width: 150,
@@ -185,28 +198,13 @@ export const config: TypeConfigData<EdcRequest> = {
           width: 200,
         },
         {
-          key: 'main_phone',
-          title: 'Осн.телефон',
-          width: 200,
-        },
-        {
-          key: 'additional_phone',
-          title: 'Доп.телефон',
-          width: 200,
-        },
-        {
-          key: 'name',
-          title: 'Контактное лицо',
-          width: 200,
-        },
-        {
           key: 'desired_time_from',
-          title: 'Желательное время с:',
+          title: 'Желательное время с',
           width: 200,
         },
         {
           key: 'desired_time_to',
-          title: 'Желательное время по:',
+          title: 'Желательное время по',
           width: 200,
         },
         {

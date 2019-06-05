@@ -121,7 +121,11 @@ function TextAreaField(props) {
 
   return (
     <Div hidden={hidden} className={wrapperClassName}>
-      <label>{label}</label>
+      {typeof label === 'string' && (
+        <label>
+          <span>{label}</span>
+        </label>
+      )}
       <textarea
         id={id}
         style={textAreaStyle}

@@ -22,7 +22,6 @@ const FieldLogin: React.FC<LoginPageProps> = React.memo(
     );
     return (
       <LoginPageFormContentInput
-        autoComplete
         id="login"
         type="text"
         className="form-control"

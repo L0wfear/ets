@@ -1,4 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
+import { cloneDeep } from 'lodash';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const defaultTire: Tire = {
@@ -8,7 +9,7 @@ export const defaultTire: Tire = {
   company_name: '',
   gov_number: '',
   id: null,
-  installed_at: null,
+  installed_at: '',
   motohours_diff: null,
   odometr_diff: null,
   tire_manufacturer_id: null,
@@ -19,13 +20,13 @@ export const defaultTire: Tire = {
   tire_size_name: '',
   tire_to_car: [],
   tire_to_car_id: null,
-  uninstalled_at: null,
+  uninstalled_at: '',
 };
 
 export const getDefaultTireElement = (element: Partial<Tire>): Tire => {
-  const newElement = { ...defaultTire };
+  const newElement = cloneDeep(defaultTire);
   if (isObject(element)) {
-    Object.keys(defaultTire).forEach((key: keyof Tire) => {
+    Object.keys(defaultTire).forEach((key) => {
       if (key === 'tire_to_car') {
         if (!isNullOrUndefined(element[key])) {
           newElement[key] = element[key].map((rowData, index) => {
@@ -38,7 +39,9 @@ export const getDefaultTireElement = (element: Partial<Tire>): Tire => {
           newElement[key] = defaultTire[key];
         }
       } else {
-        newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultTire[key];
+        if (!isNullOrUndefined(element[key])) {
+          newElement[key] = element[key];
+        }
       }
     });
   }

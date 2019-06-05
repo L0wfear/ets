@@ -46,12 +46,14 @@ export type Mission = {
   order_status: string;
   passes_count: number | null;
   reason_id: string;
+  reason_name: string;
   request_id?: number;
   request_number?: string;
   route_id: number | null;
   route_type: string;
   route_name: string;
   status: string; // @todo
+  status_name: string;
   structure_id: number | null;
   structure_name: string;
   technical_operation_id: number | null;

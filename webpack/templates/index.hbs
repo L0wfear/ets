@@ -16,6 +16,19 @@
         margin: 0;
         font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
       }
+       #image_container {
+        margin: 0;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      }
+
+      ::selection {
+        background: #7fc650; /* WebKit/Blink Browsers */
+        color: white;
+      }
+      ::-moz-selection {
+        background: #7fc650; /* Gecko Browsers */
+        color: white;
+      }
       #main-loading {
         position: absolute;
         top: 0;
@@ -50,10 +63,9 @@
       }
 
       @keyframes playDot {
-        from {transform: translateY(0px)}
-        15% {transform: translateY(-20px)}
-        30% {transform: translateY(0px)}
-        75% {transform: translateY(0px)}
+        from {transform: translateY(0px) scaleX(1)}
+        15% {transform: translateY(-20px) scaleX(0.5)}
+        30% {transform: translateY(0px) scaleX(1)}
         to {transform: translateY(0px)}
       }
 
@@ -76,6 +88,9 @@
   </head>
   <body>
     <div id="container"></div>
+    <div id="modal_container"></div>
+    <div id="image_container"></div>
+    <div id="notification_container"></div>
     <div id="main-loading">
       <div class="loading-container">
         <div class="title">Идёт загрузка</div>

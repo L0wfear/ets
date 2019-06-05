@@ -1,8 +1,10 @@
+import Map from 'ol/Map';
+
 export type MapByKeysType = {
-  [key: string]: ol.Map,
+  [key: string]: Map,
 };
 
-export type SetMapToContextType = (key: string, map: ol.Map) => void;
+export type SetMapToContextType = (key: string, map: Map) => void;
 export type RemoveMapToContextType = (key: string) => void;
 type GetMapImageInBase64ByKeyType = (key: string) => Promise<object>;
 

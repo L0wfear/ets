@@ -49,10 +49,15 @@ export type OneFilterType<F> = {
     options?: FilterOptionType<F>[];
     getRegistryData?: {
       entity: string;
+      payload?: object;
       typeAns?: 'result.rows' | 'result',
       valueKey: string;
       labelKey?: string;
       mergeWithArray?: boolean;
+      format?: (
+        'short_employee_name'
+        | 'work_mode_label'
+      );
     }
   } | {
     type: 'advanced-select-like',
@@ -84,7 +89,6 @@ export type TypeFields<F extends any> = {
     | 'checkOrExpect'
     | 'efficiencySource'
     | 'floor'
-    | 'mission_status_name'
     | 'company_structure_actions'
     | 'waybill_all_missions_status'
     | 'waybill_status_name'
@@ -126,6 +130,21 @@ export type TypeFields<F extends any> = {
   title: string,
   sortable?: boolean;
   width: number;
+} | {
+  key: 'buttonCloneTire',
+  title: string;
+} | {
+  key: 'edc_request_info',
+  title: string,
+  sortable?: boolean;
+  width: number;
+  displayIfPermission?: string | string[];
+} | {
+  key: 'show_img_button',
+  title: string;
+} | {
+  key: 'show_edc_comments',
+  title: string;
 };
 
 export type TypeConfigData<F> = {
@@ -134,6 +153,7 @@ export type TypeConfigData<F> = {
   registryKey: string;
   header: {
     title: string;
+    titlePopover?: string;
     format?: (
       'default'
       | 'select_odh/dt(disabled)'

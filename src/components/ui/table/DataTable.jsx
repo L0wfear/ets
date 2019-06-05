@@ -5,7 +5,6 @@ import moment from 'moment';
 import _ from 'lodash';
 import cx from 'classnames';
 
-import ClickOutHandler from 'react-onclickout';
 import { diffDates } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
 import SimpleGriddle from 'components/ui/table/simple-griddle/SimpleGriddle';
@@ -19,7 +18,6 @@ import {
   getFilterTypeByKey,
   makeData,
 } from 'components/ui/table/utils';
-import ColumnControl from 'components/ui/table/ColumnControl';
 import Filter from 'components/ui/table/filter/Filter';
 import FilterButton from 'components/ui/table/filter/FilterButton';
 import Div from 'components/ui/Div';
@@ -77,11 +75,6 @@ export default class DataTable extends React.Component {
       highlightClassColMapper: PropTypes.func,
       highlight: PropTypes.array,
 
-      columnControl: PropTypes.bool,
-      // TODO реализовать обработку вне
-      onColumnControlChange: PropTypes.func,
-      // TODO перенести на более высокий уровень абстракции
-      columnControlStorageName: PropTypes.string,
       normInitialData: PropTypes.bool,
       currentPage: PropTypes.any,
     };
@@ -123,11 +116,6 @@ export default class DataTable extends React.Component {
 
       tableMeta: {},
 
-      columnControl: false,
-      // TODO реализовать обработку вне
-      onColumnControlChange: () => {},
-      // TODO перенести на более высокий уровень абстракции
-      columnControlStorageName: 'ets-storage',
       normInitialData: false,
       currentPage: 0,
     };
@@ -138,9 +126,7 @@ export default class DataTable extends React.Component {
 
     this.state = {
       filterModalIsOpen: false,
-      columnControlModalIsOpen: false,
       filterValues: {},
-      columnControlValues: [],
       globalCheckboxState: false,
       isHierarchical: props.isHierarchical,
       firstUseExternalInitialSort: true,
@@ -206,15 +192,9 @@ export default class DataTable extends React.Component {
   }
 
   componentDidMount() {
-    const { filterValues, columnControl } = this.props;
+    const { filterValues } = this.props;
     if (filterValues) {
       this.setState({ filterValues: this.props.filterValues });
-    }
-    if (columnControl) {
-      const columnControlValues
-        = JSON.parse(localStorage.getItem(this.props.columnControlStorageName))
-        || [];
-      this.setState({ columnControlValues });
     }
     setStickyThead('.data-table .griddle', true);
   }
@@ -294,12 +274,6 @@ export default class DataTable extends React.Component {
     this.setState({ filterModalIsOpen: !this.state.filterModalIsOpen });
   };
 
-  toggleColumnControl = () => {
-    this.setState({
-      columnControlModalIsOpen: !this.state.columnControlModalIsOpen,
-    });
-  };
-
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
       console.info('SAVE FILTER', filterValues);
@@ -329,27 +303,6 @@ export default class DataTable extends React.Component {
       );
     }
     this.setState({ filterValues, globalCheckboxState: false });
-  };
-
-  closeColumnControl = () => {
-    if (this.state.columnControlModalIsOpen === true) {
-      this.setState({ columnControlModalIsOpen: false });
-    }
-  };
-
-  saveColumnControl = (column) => {
-    const { columnControlValues } = this.state;
-    const i = columnControlValues.indexOf(column);
-    if (i === -1) {
-      columnControlValues.push(column);
-    } else {
-      columnControlValues.splice(i, 1);
-    }
-    this.setState({ columnControlValues });
-    localStorage.setItem(
-      this.props.columnControlStorageName,
-      JSON.stringify(columnControlValues),
-    );
   };
 
   handleRowCheck = (id) => {
@@ -831,25 +784,17 @@ export default class DataTable extends React.Component {
       noHeader,
       noCustomButton = false,
       refreshable,
-      columnControl,
       highlight,
       serverPagination,
       externalChangeSort,
     } = this.props;
-    const {
-      initialSort,
-      initialSortAscending,
-      columnControlValues,
-      isHierarchical,
-    } = this.state;
+    const { initialSort, initialSortAscending, isHierarchical } = this.state;
 
     const tableMetaCols = tableMeta.cols;
     const { data } = this.state;
 
     const columnMetadata = this.initializeMetadata(tableMetaCols, renderers);
-    const tableCols = columnMetadata
-      .map((m) => m.columnName)
-      .filter((c) => columnControlValues.indexOf(c) === -1);
+    const tableCols = columnMetadata.map((m) => m.columnName);
     const rowMetadata = this.initializeRowMetadata();
     const tableClassName = cx('data-table', className);
 
@@ -870,17 +815,6 @@ export default class DataTable extends React.Component {
               {noTitle ? '' : title}
             </DataTableHeadLineTitle>
             <div className="waybills-buttons">
-              {columnControl && (
-                <ClickOutHandler onClickOut={this.closeColumnControl}>
-                  <ColumnControl
-                    show={this.state.columnControlModalIsOpen}
-                    onChange={this.saveColumnControl}
-                    onClick={this.toggleColumnControl}
-                    values={this.state.columnControlValues}
-                    options={tableMetaCols.filter((el) => el.display !== false)}
-                  />
-                </ClickOutHandler>
-              )}
               {!noFilter && (
                 <FilterButton
                   show={this.state.filterModalIsOpen}

@@ -1,6 +1,5 @@
 import { get, groupBy } from 'lodash';
-import { isArray } from 'highcharts';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isArray } from 'util';
 
 export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
 export const removeRedundantNumbers = (rowValue) => Math.round(rowValue * 1000) / 1000;

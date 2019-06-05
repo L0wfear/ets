@@ -1,10 +1,14 @@
 import * as React from 'react';
-import olInteractionDraw from 'ol/interaction/Draw';
-import olInteractionDoubleClickZoom from 'ol/interaction/DoubleClickZoom';
 import Feature from 'ol/Feature';
+import olInteractionDoubleClickZoom from 'ol/interaction/DoubleClickZoom';
+import Map from 'ol/Map';
+import Style from 'ol/style/Style';
+import Draw from 'ol/interaction/Draw';
 
-import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { isFunction } from 'util';
+
+import olInteractionDraw from 'ol/interaction/Draw';
+import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
 type PropsLayerLayerDraw = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -13,19 +17,19 @@ type PropsLayerLayerDraw = {
   addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
   setDataInLayer: ETSCore.Map.InjectetLayerProps.FuncSetDataInLayer,
-  map: ol.Map;
+  map: Map;
   initCallback?: any;
 
   inDraw: boolean;
-  type: 'LineString' | 'Point',
+  type: any;
   handleEndDraw: any;
   handleStartDraw?: any;
 
-  styles: ol.style.Style | ol.style.Style[];
+  styles: Style | Style[];
 };
 
 type StateLayerLayerDraw = {
-  interactionDraw: ol.interaction.Draw | void;
+  interactionDraw: Draw | void;
   activeDraw: boolean;
 };
 

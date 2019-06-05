@@ -1,7 +1,7 @@
 import {
   CheckByIdAndNameFunc,
-  MakeOptionsFunc,
 } from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const checkByIdAndName: CheckByIdAndNameFunc  = ({ ...store }, id, name) => {
   if (id && name && !store.obj[id]) {
@@ -15,7 +15,7 @@ const checkByIdAndName: CheckByIdAndNameFunc  = ({ ...store }, id, name) => {
   return store;
 };
 
-export const makeOptions: MakeOptionsFunc = (carActualGpsNumberIndex) => (
+export const makeOptions = (carActualGpsNumberIndex: Record<string, Car>) => (
   Object.values(carActualGpsNumberIndex).reduce((newObj, { type_id, type_name, company_structure_id, company_structure_name, owner_id, owner_name }) => {
     return {
       ...newObj,

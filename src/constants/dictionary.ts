@@ -8,7 +8,7 @@ export const MISSION_STATUS = {
   expired: 'expired',
   not_assigned: 'not_assigned',
   complete: 'complete',
-  fail: 'Не fail',
+  fail: 'fail',
   canceled: 'canceled',
 };
 

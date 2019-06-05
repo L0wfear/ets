@@ -27,7 +27,7 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';
-import { TIME_MEASURES, MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { TIME_MEASURES } from 'constants/dictionary';
 import TrTdButtonCloneTire from './tr-td/TrTdButtonCloneTire';
 import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
 import TrTdIsOpen from './tr-td/TrTdIsOpen';
@@ -39,6 +39,8 @@ import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
 import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
+import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
+import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -101,6 +103,26 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'buttonCloneTire') {
       return (
         <TrTdButtonCloneTire
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'show_img_button') {
+      return (
+        <TrTdButtonShowImgButton
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'show_edc_comments') {
+      return (
+        <TrTdButtonShowEdcComments
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}
@@ -256,9 +278,6 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
       if (format === 'floor') {
         value = value ? Math.floor(value) : '';
-      }
-      if (format === 'mission_status_name') {
-        value = MISSION_STATUS_LABELS[value];
       }
       if (format === 'waybill_all_missions_status') {
         value = get(missionsStatusBySlag, value, '');

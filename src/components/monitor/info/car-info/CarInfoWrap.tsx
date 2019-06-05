@@ -1,11 +1,12 @@
 import * as React from 'react';
+import Map from 'ol/Map';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { OwnPropsCarInfo } from 'components/monitor/info/car-info/CarInfo';
 
 type PropsCarInfoWrap = {
-  map: ol.Map,
+  map: Map,
   centerOn: any;
 };
 type StateCarInfoWrap = {

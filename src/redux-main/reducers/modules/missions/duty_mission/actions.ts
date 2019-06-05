@@ -269,7 +269,7 @@ export const actionCompleteDutyMissionById: any = (id: DutyMission['id'], meta: 
   );
 
   if (dutyMission) {
-    await dispatch(
+    const response = await dispatch(
       actionUpdateDutyMission(
         {
           ...dutyMission,
@@ -279,7 +279,7 @@ export const actionCompleteDutyMissionById: any = (id: DutyMission['id'], meta: 
       ),
     );
 
-    return true;
+    return response;
   }
 
   return false;
@@ -325,7 +325,7 @@ export const actionFailDutyMissionByPartialData: any = (partialDutyMission: Duty
   );
 
   if (dutyMission) {
-    await dispatch(
+    const response = await dispatch(
       actionUpdateDutyMission(
         {
           ...dutyMission,
@@ -336,7 +336,7 @@ export const actionFailDutyMissionByPartialData: any = (partialDutyMission: Duty
       ),
     );
 
-    return true;
+    return response;
   }
 
   return false;

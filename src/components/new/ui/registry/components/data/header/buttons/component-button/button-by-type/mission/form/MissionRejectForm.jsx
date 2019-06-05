@@ -226,8 +226,8 @@ class MissionRejectForm extends React.Component {
         handlerName = 'updateMission'; // рак
         if (!isWaybillForm) {
           resolve = await this.props.actionUpdateMission(payload, {}); // Приходит объект, а не массив
-          const { request_id, request_number } = resolve;
-          const successEdcRequestIds = resolve.close_request
+          const { request_id, request_number, close_request } = resolve;
+          const successEdcRequestIds = close_request
             ? [{ request_id, request_number }]
             : null;
 

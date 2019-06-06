@@ -1,6 +1,7 @@
 export type Mission = {
   author: string;
   can_be_closed: boolean;
+  can_be_closed_wb: boolean;
   can_edit_car_and_route: boolean;
   car_gov_number: string;
   car_gov_numbers: string[];

@@ -13,6 +13,7 @@ export type GetDefaultMissionElement = (companyStructure: Partial<Mission> | nul
 export const makeDefaultMission = (...arg: any[]): Mission => ({
   author: '',
   can_be_closed: false,
+  can_be_closed_wb: false,
   can_edit_car_and_route: false,
   car_gov_number: '',
   car_gov_numbers: [],

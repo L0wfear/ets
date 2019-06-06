@@ -63,7 +63,7 @@ class MissionField extends React.Component<any, any> {
         car_gov_number,
       };
 
-      if (rejectedMission.can_be_closed) {
+      if (rejectedMission.can_be_closed_wb) {
         this.rejectMission(rejectedMission);
         return;
       }

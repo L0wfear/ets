@@ -942,7 +942,8 @@ class WaybillForm extends UNSAFE_Form {
       'motohours_equip_start',
     ];
 
-    const fuelEquipmentChekedKeyList = Object.keys(fuelEquipmentChangeObj); // список полей, которые необходимо проверить на изменение
+    // список полей, которые необходимо проверить на изменение
+    const fuelEquipmentChekedKeyList = Object.keys(fuelEquipmentChangeObj);
     const fixedFloatKey = [
       // поля формата float, которые хранятся как строка "0.000"
       'equipment_fuel_end',
@@ -959,19 +960,21 @@ class WaybillForm extends UNSAFE_Form {
           : changeSelectorKey === 'is_one_fuel_tank'
             ? [...fuelEquipmentChekedKeyList]
             : [];
-
       formWillChange = Object.keys(changeObj).some((key) => {
         let isEqualData = false;
         if (Array.isArray(formState[key])) {
           isEqualData = !formState[key].length;
         } else {
           if (fixedFloatKey.includes(key)) {
-            isEqualData = parseFloat(formState[key]) === 0;
+            isEqualData = formState[key]
+              ? parseFloat(formState[key]) === 0
+              : true;
           } else {
             isEqualData
               = formState[key] === changeObj[key]
               || formState[key] === ''
-              || isNullOrUndefined(formState[key]);
+              || isNullOrUndefined(formState[key])
+              || formState[key] === 0;
           }
         }
         return !isEqualData && checkedList.includes(key);

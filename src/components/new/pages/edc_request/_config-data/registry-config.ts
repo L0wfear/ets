@@ -150,7 +150,7 @@ export const config: TypeConfigData<EdcRequest> = {
           width: 400,
         },
         {
-          key: 'show_img_button',
+          key: 'show_file_list',
           title: 'Фото',
         },
         {

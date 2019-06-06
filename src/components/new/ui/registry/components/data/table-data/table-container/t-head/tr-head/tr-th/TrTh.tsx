@@ -130,13 +130,13 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
       );
     }
 
-    if (colData.key === 'show_img_button') {
+    if (colData.key === 'show_file_list') {
       return (
         <EtsTheadTh
           canClick={false}
           rowSpan={colData.rowSpan}
           colSpan={colData.colSpan}
-          width={250}
+          width={350}
         >
           {formatedTitle}
         </EtsTheadTh>

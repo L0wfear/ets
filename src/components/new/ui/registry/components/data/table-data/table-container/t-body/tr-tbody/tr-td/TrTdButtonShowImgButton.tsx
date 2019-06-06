@@ -3,7 +3,7 @@ import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-d
 
 import ImgListPortal from 'components/new/ui/portals/img_list_portal/ImgListPortal';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
-import { saveData, isImgPath } from 'utils/functions';
+import { isImgPath } from 'utils/functions';
 
 type TrTdButtonShowImgButtonProps = {
   registryKey: string;
@@ -42,15 +42,12 @@ const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.me
         const { file } = aProps;
 
         if (isImgPath(file.path)) {
+          event.preventDefault();
           const filesImg = files.filter(({ path }) => isImgPath(path));
           setShowImage({
             images: filesImg,
             index: filesImg.findIndex(({ path }) => file.path === path),
           });
-        } else {
-          fetch(aProps.file.path)
-            .then((res) => res.blob())
-            .then((blob) => saveData(blob, aProps.file.filename));
         }
       },
       [files],
@@ -75,7 +72,7 @@ const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.me
                 {
                   files.map((file, index) => (
                     <li key={file.path}>
-                      <SimpleLinkA onClick={handleClick} index={index} file={file}>{file.filename}</SimpleLinkA>
+                      <SimpleLinkA onClick={handleClick} href={file.path} index={index} file={file} target="_blanc">{file.filename}</SimpleLinkA>
                     </li>
                   ))
                 }

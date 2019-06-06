@@ -140,7 +140,7 @@ export type TypeFields<F extends any> = {
   width: number;
   displayIfPermission?: string | string[];
 } | {
-  key: 'show_img_button',
+  key: 'show_file_list',
   title: string;
 } | {
   key: 'show_edc_comments',

@@ -17,8 +17,6 @@ const SimpleLinkA: React.FC<PropsSimpleLinkA> = React.memo(
     const handleClick = React.useCallback(
       (event: React.MouseEvent) => {
         if ('onClick' in props) {
-          event.preventDefault();
-
           props.onClick(props, event);
         }
       },

@@ -110,7 +110,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       );
     }
 
-    if (key === 'show_img_button') {
+    if (key === 'show_file_list') {
       return (
         <TrTdButtonShowImgButton
           key={key}

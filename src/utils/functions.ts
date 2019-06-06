@@ -79,6 +79,8 @@ export function isEmpty(value) {
   return false;
 }
 
+export const isImgPath = (name: string) => name.toLocaleLowerCase().match(/.(png|jpeg|jpg)$/);
+
 export function saveData(blob, fileName) {
   if (blob === null || fileName === null) {
     return;

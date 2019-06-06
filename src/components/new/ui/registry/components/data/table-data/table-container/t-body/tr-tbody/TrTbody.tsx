@@ -39,6 +39,8 @@ import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
 import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
+import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
+import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -101,6 +103,26 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (key === 'buttonCloneTire') {
       return (
         <TrTdButtonCloneTire
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'show_file_list') {
+      return (
+        <TrTdButtonShowImgButton
+          key={key}
+          registryKey={registryKey}
+          rowData={props.rowData}
+        />
+      );
+    }
+
+    if (key === 'show_edc_comments') {
+      return (
+        <TrTdButtonShowEdcComments
           key={key}
           registryKey={registryKey}
           rowData={props.rowData}

@@ -15,6 +15,7 @@ import { get } from 'lodash';
 import { actionFailDutyMissionByPartialData } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import { DivNone } from 'global-styled/global-styled';
 import DutyMissionFailForm from './form/DutyMissionFailForm';
+import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 type ButtonFailDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -40,6 +41,16 @@ type ButtonFailDutyMissionProps = (
 
 const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
   const [missionsFail, setMissionsFail] = React.useState<DutyMission[]>([]);
+  const [edcRequestIds, setEdcRequestIds] = React.useState(null);
+  const requestFormHide = React.useCallback(
+    () => {
+      setEdcRequestIds(null);
+
+      props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      props.registryLoadDataByKey(props.registryKey);
+    },
+    [],
+  );
 
   const handleClickFail = React.useCallback(
     async () => {
@@ -54,27 +65,40 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
     [props.selectedRow, props.checkedRows],
   );
 
-  const handleSubmit = React.useCallback(
-    async (partialDutyMission) => {
-      await props.actionFailDutyMissionByPartialData(partialDutyMission);
-      handlePopMissionsFail();
-    },
-    [],
-  );
-
   const handlePopMissionsFail = React.useCallback(
-    async () => {
+    () => {
       const missionsFailNew = missionsFail.slice(1);
-      if (!missionsFailNew[0]) {
+      if (!missionsFailNew.length) {
         props.actionUnselectSelectedRowToShow(props.registryKey, true);
         props.registryLoadDataByKey(props.registryKey);
       }
-
       setMissionsFail(
         missionsFailNew,
       );
     },
     [missionsFail],
+  );
+
+  const handleSubmit = React.useCallback(
+    async (partialDutyMission) => {
+      try {
+        const response = await props.actionFailDutyMissionByPartialData(partialDutyMission);
+        const { request_id, request_number, close_request } = response;
+
+        const successEdcRequestIds = close_request
+          ? [{request_id, request_number}]
+          : null;
+
+        if (successEdcRequestIds) {
+          setEdcRequestIds(successEdcRequestIds);
+          // return;
+        }
+        handlePopMissionsFail();
+      } catch (error) {
+        console.error(error);// tslint:disable-line
+      }
+    },
+    [handlePopMissionsFail],
   );
 
   let disabled = false;
@@ -86,7 +110,6 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
     const status = get(props.selectedRow, 'status', null);
     disabled = !status || status !== DUTY_MISSION_STATUS.assigned;
   }
-
   return (
     <>
       <EtsBootstrap.Button id="duty_mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
@@ -95,17 +118,27 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
       {
         missionsFail[0]
           ? (
-            <DutyMissionFailForm
-              element={missionsFail[0]}
-              handleHide={handlePopMissionsFail}
-              handleSubmit={handleSubmit}
+            <>
+              <DutyMissionFailForm
+                element={{...missionsFail[0]}}
+                handleHide={handlePopMissionsFail}
+                handleSubmit={handleSubmit}
 
-              page={props.registryKey}
-            />
+                page={props.registryKey}
+              />
+            </>
           )
           : (
             <DivNone />
           )
+      }
+      {
+        Boolean(edcRequestIds) && (
+          <ChangeStatusRequesFormLazy
+            onHide={requestFormHide}
+            array={edcRequestIds}
+          />
+        )
       }
     </>
   );

@@ -6,8 +6,6 @@ import { get } from 'lodash';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { createValidDateHM } from 'utils/dates';
 import RequestHistoryList from 'components/new/pages/edc_request/form/requestInfo/RequestHistoryList';
-import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
 type RequestInfoFormOwnProps = {
   handleHide: (isSubmitted: boolean | any, result?: any) => any;
@@ -20,10 +18,6 @@ type RequestInfoFormOwnProps = {
 type RequestInfoFormProps = (
   RequestInfoFormOwnProps
 );
-
-export type Formmm = {
-  missions: (Mission | DutyMission)[],
-}[];
 
 const RequestInfoForm: React.FC<RequestInfoFormProps> = React.memo(
   (props) => {

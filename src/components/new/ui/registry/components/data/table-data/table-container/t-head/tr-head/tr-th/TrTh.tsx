@@ -130,6 +130,32 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
       );
     }
 
+    if (colData.key === 'show_file_list') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={350}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
+    if (colData.key === 'show_edc_comments') {
+      return (
+        <EtsTheadTh
+          canClick={false}
+          rowSpan={colData.rowSpan}
+          colSpan={colData.colSpan}
+          width={75}
+        >
+          {formatedTitle}
+        </EtsTheadTh>
+      );
+    }
+
     if (colData.key === 'showMissionInfo') {
       return (
         <EtsTheadTh

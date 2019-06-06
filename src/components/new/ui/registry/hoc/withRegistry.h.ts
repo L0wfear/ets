@@ -139,6 +139,12 @@ export type TypeFields<F extends any> = {
   sortable?: boolean;
   width: number;
   displayIfPermission?: string | string[];
+} | {
+  key: 'show_file_list',
+  title: string;
+} | {
+  key: 'show_edc_comments',
+  title: string;
 };
 
 export type TypeConfigData<F> = {
@@ -147,6 +153,7 @@ export type TypeConfigData<F> = {
   registryKey: string;
   header: {
     title: string;
+    titlePopover?: string;
     format?: (
       'default'
       | 'select_odh/dt(disabled)'

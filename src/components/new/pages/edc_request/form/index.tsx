@@ -22,6 +22,7 @@ import EdcRequestCancelFormLazy from './cancel';
 import { EdcRequestCancel } from './cancel/@types/EdcRequestCancel';
 import EdcRequestRejectFormLazy from './reject';
 import RequestInfoFormLazy from './requestInfo';
+import RequestCommentsFormLazy from 'components/new/pages/edc_request/form/comments';
 
 type EdcRequestFormLazyDispatchProps = {
   actionSetDependenceEdcRequestForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceEdcRequestForMission>;
@@ -206,6 +207,20 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
       <RequestInfoFormLazy
         element={props.element}
         registryKey={page}
+        onFormHide={props.onFormHide}
+
+        page={page}
+        path={path}
+      />
+    );
+  }
+
+  if (type === buttonsTypes.edc_request_comments) {
+    return (
+      <RequestCommentsFormLazy
+        showForm
+
+        element={props.element}
         onFormHide={props.onFormHide}
 
         page={page}

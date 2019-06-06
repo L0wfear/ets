@@ -423,9 +423,9 @@ const actionRemoveMission: any = (
   return payload;
 };
 
-export const actionCompleteMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
-
+  // формировать новый массив объектов
   return Promise.all(
     ids.map((missionId) => (
       dispatch(
@@ -438,7 +438,7 @@ export const actionCompleteMissionByIds: any = (id: Mission['id'] | Mission['id'
   );
 };
 
-export const actionCompleteMissionById: any = (id: Mission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
   const mission = await dispatch(
     actionGetMissionById(
       id,
@@ -449,7 +449,7 @@ export const actionCompleteMissionById: any = (id: Mission['id'], meta: LoadingM
   const { time } = await loadMoscowTime();
 
   if (mission) {
-    await dispatch(
+    const response = await dispatch(
       actionUpdateMission(
         {
           ...mission,
@@ -460,7 +460,8 @@ export const actionCompleteMissionById: any = (id: Mission['id'], meta: LoadingM
       ),
     );
 
-    return true;
+    // console.log('actionCompleteMissionById response == ', { response });
+    return response;
   }
 
   return false;

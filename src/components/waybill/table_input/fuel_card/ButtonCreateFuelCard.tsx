@@ -30,7 +30,11 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 
     const handleCreateFuelCard = React.useCallback(
       () => {
-        setShowStatus(true);
+        if (props.isPermitted) {
+          setShowStatus(true);
+        } else {
+          global.NOTIFICATION_SYSTEM.notify('Недостаточно прав', 'warning', 'tr');
+        }
       },
       [],
     );
@@ -83,6 +87,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 export default compose<ButtonCreateFuelCardProps, ButtonCreateFuelCardOwnProps>(
   withRequirePermissionsNew({
     permissions: fuelCardsPermissions.create,
+    withIsPermittedProps: true,
   }),
   withSearch,
 )(ButtonCreateFuelCard);

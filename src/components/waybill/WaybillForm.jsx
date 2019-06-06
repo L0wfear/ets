@@ -47,7 +47,7 @@ import WaybillFooter from 'components/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionField from 'components/waybill/form/MissionFiled';
-import { isNullOrUndefined, isNumber, isBoolean } from 'util';
+import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import {
   getSessionState,
   getAutobaseState,
@@ -56,7 +56,6 @@ import {
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { BorderDash, DivNone } from 'global-styled/global-styled';
-import { isArray } from 'highcharts';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
@@ -1087,9 +1086,21 @@ class WaybillForm extends UNSAFE_Form {
     const acceptedRejectMissionsIdList = rejectMissionList.map(
       async (rejectMission) => {
         try {
-          await this.context.flux
+          const response = await this.context.flux
             .getActions('missions')
             [rejectMission.handlerName](rejectMission.payload);
+          if (rejectMission.handlerName === 'updateMission') {
+            const successEdcRequestIds = response.result
+              .filter((value) => value)
+              .filter(({ close_request }) => close_request)
+              .map(({ request_id, request_number }) => ({
+                request_id,
+                request_number,
+              }));
+            if (successEdcRequestIds.length) {
+              this.props.setEdcRequestIds(successEdcRequestIds);
+            }
+          }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
           const missionId = get(rejectMission, 'id', '');
@@ -1135,16 +1146,19 @@ class WaybillForm extends UNSAFE_Form {
           const { origMissionsList } = this.state;
           const { mission_id_list } = this.props.formState;
           const origMissionsIdList = origMissionsList.map((mis) => mis.id);
+
           // миссии, которые удалили из поля задание с бызовом rejectForm
           const rejectMissionIdList = rejectMissionList.map(
             (rejMission) => rejMission.payload.mission_id,
           );
+
           // задания, которые были удалены из формы без указания причины, т.к. они были отменены ранее
           const rejCanceled = origMissionsIdList.filter(
             (mission) =>
               !this.props.formState.mission_id_list.includes(mission)
               && !rejectMissionIdList.includes(mission),
           );
+
           // удаляем из старой mission_id_list миссии, которые удалось отменить
           const newMissionsList = origMissionsList.filter(
             // фильтруем исходные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены
@@ -2209,6 +2223,7 @@ class WaybillForm extends UNSAFE_Form {
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
+                requestFormHide={this.requestFormHide}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>

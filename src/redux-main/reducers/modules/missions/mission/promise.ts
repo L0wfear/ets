@@ -154,8 +154,8 @@ export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_
   return get(responce, 'result', null) as Partial<Mission>;
 };
 
-export const promiseUpdateMission = async (payloadOwn: Partial<Mission>) => {
-  const responce = await MissionService.put(
+export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promise<Partial<Mission>> => {
+  const response = await MissionService.put(
     {
       ...getBackMission(payloadOwn, 0),
     },
@@ -163,7 +163,10 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>) => {
     'json',
   );
 
-  return get(responce, 'result', null) as Partial<Mission>;
+  return {
+    ...payloadOwn,
+    ...get(response, 'result.0', null),
+  };
 };
 
 export const promiseChangeArchiveMissionStatus = async (

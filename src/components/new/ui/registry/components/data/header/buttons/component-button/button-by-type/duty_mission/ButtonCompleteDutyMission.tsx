@@ -13,6 +13,7 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
 import { actionCompleteDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
+import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 type ButtonCompleteDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -37,6 +38,18 @@ type ButtonCompleteDutyMissionProps = (
 );
 
 const ButtonCompleteDutyMission: React.FC<ButtonCompleteDutyMissionProps> = (props) => {
+  const [edcRequestIds, setEdcRequestIds] = React.useState(null);
+
+  const requestFormHide = React.useCallback(
+    () => {
+      setEdcRequestIds(null);
+
+      props.actionUnselectSelectedRowToShow(props.registryKey, true);
+      props.registryLoadDataByKey(props.registryKey);
+    },
+    [],
+  );
+
   const handleClickComplete = React.useCallback(
     async () => {
       const itemToRemove = props.checkedRows;
@@ -46,7 +59,19 @@ const ButtonCompleteDutyMission: React.FC<ButtonCompleteDutyMissionProps> = (pro
       }
 
       try {
-        await props.actionCompleteDutyMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
+        const response = await props.actionCompleteDutyMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
+        const successEdcRequestIds = response.filter(
+          (value) => value,
+        ).filter(
+          ({ close_request }) => close_request,
+        ).map(
+          ({ request_id, request_number }) => ({ request_id, request_number }),
+        );
+
+        if (successEdcRequestIds.length) {
+          setEdcRequestIds(successEdcRequestIds);
+          return;
+        }
       } catch (error) {
         console.error(error); // tslint:disable-line
         //
@@ -73,6 +98,14 @@ const ButtonCompleteDutyMission: React.FC<ButtonCompleteDutyMissionProps> = (pro
       <EtsBootstrap.Button id="duty_mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="ok" /> Отметка о выполнении
       </EtsBootstrap.Button>
+      {
+        Boolean(edcRequestIds) && (
+          <ChangeStatusRequesFormLazy
+            onHide={requestFormHide}
+            array={edcRequestIds}
+          />
+        )
+      }
     </>
   );
 };

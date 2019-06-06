@@ -1,15 +1,29 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import * as Modal from 'react-bootstrap/lib/Modal';
+import themeModal from '../@themes/default/modal/themeModal';
 
-export const ModalFooterStyled = styled(Modal.Footer)``;
+export const ModalFooterStyled = styled.div<{ themeName?: keyof typeof themeModal }>`
+  background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.footer.default };
+  padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.footer.default };
+  border-bottom-left-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.footer.default };
+  border-bottom-right-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.footer.default };
 
-export type EtsModalFooterProps = any;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+export type EtsModalFooterProps = {
+  onHide?: (...arg: any[]) => any;
+  themeName?: keyof typeof themeModal;
+};
 
 const EtsModalFooter: React.FC<EtsModalFooterProps> = React.memo(
   (props) => {
     return (
-      <ModalFooterStyled {...props} />
+      <ModalFooterStyled themeName={props.themeName}>
+        {props.children}
+      </ModalFooterStyled>
     );
   },
 );

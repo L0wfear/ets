@@ -18,6 +18,7 @@ const registryDefaultObj: OneRegistryData = {
     buttons: [],
     format: 'default',
     title: '',
+    titlePopover: '',
   },
   list: {
     data: {

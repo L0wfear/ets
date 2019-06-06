@@ -31,6 +31,7 @@ const PrevImage: React.FC<PrevImageProps> = React.memo(
     React.useEffect(() => {
       const escFunction = (event: KeyboardEvent) => {
         if (event.key === 'ArrowLeft') {
+          event.preventDefault();
           setShowNext(true);
         }
       };

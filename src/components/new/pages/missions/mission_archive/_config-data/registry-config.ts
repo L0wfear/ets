@@ -205,7 +205,7 @@ export const config: TypeConfigData<Mission> = {
           title: '№',
         },
         {
-          key: 'status',
+          key: 'status_name',
           title: 'Статус',
           width: 150,
         },

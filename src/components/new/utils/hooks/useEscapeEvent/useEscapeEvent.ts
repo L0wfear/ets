@@ -1,20 +1,39 @@
 import * as React from 'react';
 
 const useEscapeEvent = (handler: (...arg: any[]) => void) => {
-  React.useEffect(() => {
-    const escFunction = (event: KeyboardEvent) => {
+  const [saveEvent, setSaveEvent] = React.useState(null);
 
-      if (event.keyCode === 27) {
-        handler();
-      }
-    };
+  React.useEffect(
+    () => {
+      setSaveEvent(
+        (oldSaveEvent) => {
+          if (oldSaveEvent) {
+            document.removeEventListener("keydown", oldSaveEvent, false);
+          }
+          const escFunction = (event: KeyboardEvent) => {
 
-    document.addEventListener("keydown", escFunction, false);
+            if (event.keyCode === 27) {
+              handler();
+            }
+          };
 
-    return () => {
-      document.removeEventListener("keydown", escFunction, false);
-    };
-  });
+          document.addEventListener("keydown", escFunction, false);
+
+          return escFunction;
+        },
+      );
+    },
+    [handler],
+  );
+
+  React.useEffect(
+    () => {
+      return () => {
+        document.removeEventListener("keydown", saveEvent, false);
+      };
+    },
+    [saveEvent],
+  );
 };
 
 export default useEscapeEvent;

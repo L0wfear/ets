@@ -82,6 +82,10 @@ export const mergeHeader = (header: OneRegistryData['header']) => (
         newObj[key] = isString(header[key]) ? header[key] : value;
       }
 
+      if (key === 'titlePopover') {
+        newObj[key] = isString(header[key]) ? header[key] : value;
+      }
+
       if (key === 'format') {
         newObj[key] = isString(header[key]) ? header[key] : value;
       }

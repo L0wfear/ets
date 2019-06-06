@@ -1,5 +1,4 @@
 import { swapCoords } from 'utils/geo';
-import { get } from 'lodash';
 import * as insider from 'point-in-polygon';
 import { sensorsMapOptions } from 'constants/sensors';
 import { makeDate, makeTime } from 'utils/dates';
@@ -153,27 +152,23 @@ export const checkAndModifyTrack = (
 
   const front_events_list = Object.values(events)
     .reduce<any[]>((newArr, eventData: any[]) => {
-      const timestampStart = get(event, ['start_point', 'timestamp'], null);
-
-      if (timestampStart) {
-        newArr.push(
-          ...eventData.map((event) => {
-            return {
-              ...event,
-              start_coords: [event.start_lon, event.start_lat],
-              start_coords_msk: [event.start_y_msk, event.start_x_msk],
-              end_coords: [event.finish_lon, event.finish_lat],
-              end_coords_msk: [event.finish_y_msk, event.finish_x_msk],
-              date: `${makeDate(event.started_at_msk)} ${makeTime(
-                event.started_at_msk,
-                true,
-              )}`,
-              type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
-              value: `${Math.abs(Number(event.event_val.toFixed(2)))} л`,
-            };
-          }),
-        );
-      }
+      newArr.push(
+        ...eventData.map((event) => {
+          return {
+            ...event,
+            start_coords: [event.start_lon, event.start_lat],
+            start_coords_msk: [event.start_y_msk, event.start_x_msk],
+            end_coords: [event.finish_lon, event.finish_lat],
+            end_coords_msk: [event.finish_y_msk, event.finish_x_msk],
+            date: `${makeDate(event.started_at_msk)} ${makeTime(
+              event.started_at_msk,
+              true,
+            )}`,
+            type_name: event.event_type === 'leak' ? 'Слив' : 'Заправка',
+            value: `${Math.abs(Number(event.event_val.toFixed(2)))} л`,
+          };
+        }),
+      );
 
       return newArr;
     }, [])

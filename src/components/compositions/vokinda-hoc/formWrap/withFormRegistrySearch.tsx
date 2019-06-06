@@ -50,6 +50,7 @@ const findRecondInDeepArray = (array: any[], uniqKey, uniqKeyValue) => {
   )[uniqKeyValue];
 };
 
+// вызов тригерится на ключ в url
 export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySearchConfig) => (Component) => (
   compose<any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } } & P>(
     withSearch,

@@ -2,7 +2,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 
-export const GlyphiconStyled = styled(Glyphicon)``;
+export const GlyphiconStyled = styled(Glyphicon)`
+  &&& {
+    position: initial;
+  }`
+;
 
 export type EtsGlyphiconProps = any;
 

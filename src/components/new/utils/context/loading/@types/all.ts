@@ -8,6 +8,7 @@ import { MeasureUnit } from "redux-main/reducers/modules/some_uniq/measure_unit/
 import { CompanyStructureLinear } from "redux-main/reducers/modules/company_structure/@types/company_structure.h";
 import { Employee } from "redux-main/reducers/modules/employee/@types/employee.h";
 import { InspectAuditor } from "./by_service/inspect_auditor";
+import { EdcRequestComments } from 'components/new/utils/context/loading/@types/by_service/edc_request_comments';
 
 export type CountryApi = LoadingServiceGeneric<'country', object, Country[]>;
 export type TypesApi = LoadingServiceGeneric<'types', object, CarFuncTypes[]>;
@@ -22,3 +23,4 @@ export type EmployeeApi = LoadingServiceGeneric<'employee', object, Employee[]>;
 export type CompanyStructureLinearForUserListApi = LoadingServiceGeneric<'company_structure', { linear: number, descendants_by_user: boolean }, CompanyStructureLinear[]>;
 export type CarActualApi = LoadingServiceGeneric<'car_actual', null, Car[]>;
 export type InspectAuditorsApi = LoadingServiceGeneric<'inspect/auditors', object, InspectAuditor[]>;
+export type EdcRequestCommentsApi = LoadingServiceGeneric<string, object, EdcRequestComments[]>;

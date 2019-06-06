@@ -37,11 +37,13 @@ const highlightClassMapper = ({ status }) => {
 export const tableMeta = {
   cols: [
     {
-      name: 'number', // сделать номер
-      displayName: '№',
+      name: 'order_number',
+      displayName: 'Номер',
       type: 'string',
       cssClassName: 'width120',
-      filter: false,
+      filter: {
+        type: 'string',
+      },
     },
     {
       name: 'create_date',

@@ -1,17 +1,10 @@
 import styled from 'styled-components';
-import { CardContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 
 export const DashboardMenuButtonsContainer = styled.div`
   flex: 3 3 0px;
-  margin: 10px;
-  min-width: 200px;
+
   @media screen and (max-width: 990px) {
     min-width: 100%;
-    margin: 20px -10px;
-
-    >${CardContainer} {
-      margin: 0 10px;
-    }
   }
 `;
 

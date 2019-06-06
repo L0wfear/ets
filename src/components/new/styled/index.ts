@@ -13,9 +13,3 @@ export const AppContent = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
 `;
-
-export const AppContentContainer = styled.div`
-    position: absolute;
-    height: 100%;
-    width: 100%;
-`;

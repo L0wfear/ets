@@ -73,7 +73,7 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
 
   singleclick = (feature) => {
     const timestamp = (feature as any).getId();
-    const parkingPoint = this.props.front_events_list.find((point) => point.start_point.timestamp === timestamp);
+    const parkingPoint = this.props.front_events_list.find((point) => point.started_at_msk === timestamp);
 
     if (parkingPoint) {
       this.props.carInfoSetFuelEventPoint(parkingPoint);

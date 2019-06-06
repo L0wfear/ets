@@ -2,9 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import themeModal from '../@themes/default/modal/themeModal';
 
-export const ModalBodyStyled = styled.div.attrs({
-  className: 'modal_body',
-})`
+export const ModalBodyStyled = styled.div<{ themeName: keyof typeof themeModal }>`
   position: relative;
   background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.body.default };
   padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.body.default };

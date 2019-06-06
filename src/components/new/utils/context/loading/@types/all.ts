@@ -7,6 +7,7 @@ import { ActualTiresOnCar } from "redux-main/reducers/modules/autobase/actions_b
 import { MeasureUnit } from "redux-main/reducers/modules/some_uniq/measure_unit/@types";
 import { CompanyStructureLinear } from "redux-main/reducers/modules/company_structure/@types/company_structure.h";
 import { InspectAuditor } from "./by_service/inspect_auditor";
+import { EdcRequestComments } from 'components/new/utils/context/loading/@types/by_service/edc_request_comments';
 
 export type CountryApi = LoadingServiceGeneric<'country', object, Country[]>;
 export type TypesApi = LoadingServiceGeneric<'types', object, CarFuncTypes[]>;
@@ -18,3 +19,4 @@ export type AutobaseActualTiresOnCarApi = LoadingServiceGeneric<'autobase/actual
 export type MeasureUnitApi = LoadingServiceGeneric<'measure_unit', object, MeasureUnit[]>;
 export type CompanyStructureLinearForUserListApi = LoadingServiceGeneric<'company_structure', { linear: number, descendants_by_user: boolean }, CompanyStructureLinear[]>;
 export type InspectAuditorsApi = LoadingServiceGeneric<'inspect/auditors', object, InspectAuditor[]>;
+export type EdcRequestCommentsApi = LoadingServiceGeneric<string, object, EdcRequestComments[]>;

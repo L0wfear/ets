@@ -47,7 +47,7 @@ import WaybillFooter from 'components/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/waybill/form/BsnoStatus';
 
 import MissionField from 'components/waybill/form/MissionFiled';
-import { isNullOrUndefined, isNumber, isBoolean } from 'util';
+import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import {
   getSessionState,
   getAutobaseState,
@@ -56,7 +56,6 @@ import {
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { BorderDash, DivNone } from 'global-styled/global-styled';
-import { isArray } from 'highcharts';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';

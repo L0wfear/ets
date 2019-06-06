@@ -5,6 +5,7 @@ export const edc_form_permitted_type = {
   edc_request_cancel: 'cancel',
   edc_request_close: 'close',
   edc_request_info: 'info',
+  edc_request_comments: 'comments',
 };
 
 export const edc_form_permitted_type_reverse = Object.entries(edc_form_permitted_type).reduce(

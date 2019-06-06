@@ -12,6 +12,7 @@ import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import carActualListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
+import employeeListConfig from 'components/new/pages/nsi/employee/_config-data';
 
 import {
   insurancePolicy,
@@ -68,19 +69,21 @@ const insurance_policy = withRequirePermissionsNew({
 const tech_inspection = withRequirePermissionsNew({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
-})(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => (
-  <MainVehicleDesc
-    linkText={tech_inspection_reg_number}
-    textInfo="о государственном техосмотре"
-    handleClick={() =>
-      handleClick(
-        `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
-        {},
-        isPermitted,
-      )
-    }
-  />
-));
+})(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => {
+  return (
+    <MainVehicleDesc
+      linkText={tech_inspection_reg_number}
+      textInfo="о государственном техосмотре"
+      handleClick={() =>
+        handleClick(
+          `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+          {},
+          isPermitted,
+        )
+      }
+    />
+  );
+});
 
 const tech_maintenance = withRequirePermissionsNew({
   withIsPermittedProps: true,
@@ -122,7 +125,9 @@ const medical_certificate = withRequirePermissionsNew({
 })(({ employee_fio, employee_id, handleClick, isPermitted }) => (
   <MainEmployeeDesc
     linkText={employee_fio}
-    handleClick={() => handleClick(`employees/${employee_id}`, {}, isPermitted)}
+    handleClick={() =>
+      handleClick(`${employeeListConfig.path}/${employee_id}`, {}, isPermitted)
+    }
   />
 ));
 
@@ -137,7 +142,7 @@ class UserNotificationForm extends UNSAFE_Form {
   handleClick = (pathComponent, query, isPermitted) => {
     if (isPermitted) {
       this.props.history.push(
-        `/${pathComponent}?${queryString.stringify(query)}`,
+        `${pathComponent}?${queryString.stringify(query)}`,
       );
     } else {
       global.NOTIFICATION_SYSTEM.notify(

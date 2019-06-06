@@ -23,14 +23,13 @@ type PropsCarMainDataBlock = {
   carInfoToggleStatusTCShowTrack: any;
 };
 
-class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
-  render() {
+const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
+  (props) => {
     const {
       type_image_name,
       maxSpeed,
       STATUS_TC_FOLLOW_ON_CAR,
-      ...props
-    } = this.props;
+    } = props;
 
     return (
       <CarInfoMainDataContainer>
@@ -72,8 +71,8 @@ class CarMainDataBlock extends React.Component<PropsCarMainDataBlock, {}> {
         </CarInfoBlock>
       </CarInfoMainDataContainer>
     );
-  }
-}
+  },
+);
 
 const mapStateToProps = (state) => ({
   type_image_name: (state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code] || { type_image_name: ''}).type_image_name,

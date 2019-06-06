@@ -2,9 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import themeModal from '../@themes/default/modal/themeModal';
 
-export const ModalFooterStyled = styled.div.attrs({
-  className: 'modal_footer',
-})`
+export const ModalFooterStyled = styled.div<{ themeName?: keyof typeof themeModal }>`
   background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.footer.default };
   padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.footer.default };
   border-bottom-left-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.footer.default };

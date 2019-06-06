@@ -1,8 +1,8 @@
 import * as React from 'react';
 import useForm from 'components/new/utils/context/form/useFormData';
-import { isArray } from 'highcharts';
 import { DefaultHeaderType } from 'components/new/utils/context/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { isArray } from 'util';
 
 type DefaultModalHeaderProps = {
   formDataKey: string;

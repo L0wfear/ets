@@ -4,7 +4,13 @@ import styled from 'styled-components';
 
 const timeAnimation = 0.3;
 
-export const ModalFormContainerStyled = styled.div`
+export type ModalFormContainerProps = {
+  id: string;
+  show: boolean;
+  position?: 'center' | 'default';
+};
+
+export const ModalFormContainerStyled = styled.div<ModalFormContainerProps>`
   position: fixed;
   top: 0;
   right: 0;
@@ -19,12 +25,6 @@ export const ModalFormContainerStyled = styled.div`
   background-color: ${({ show }) => `rgba(0, 0, 0, ${show ? 0.7 : 0})`};
   transition: background-color ${timeAnimation}s;
 `;
-
-export type ModalFormContainerProps = {
-  id: string;
-  show: boolean;
-  position?: 'center' | 'default';
-};
 
 const ModalFormContainer: React.FC<ModalFormContainerProps> = React.memo(
   (props) => {

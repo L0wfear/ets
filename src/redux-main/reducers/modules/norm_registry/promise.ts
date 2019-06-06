@@ -5,8 +5,8 @@ import {
 import {
   Norm, NormRegistrySensorTypes,
 } from 'redux-main/reducers/modules/norm_registry/@types';
-import { isString } from 'highcharts';
 import { CleaningNormRegistryService } from 'api/Services';
+import { isString } from 'util';
 
 export const getFrontNorm = (normRaw: any, index) => {
   if (normRaw) {

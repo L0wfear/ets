@@ -22,7 +22,7 @@ const bsSizeLargeCss = css`
   }
 `;
 
-export const ModalFormStyled = styled.div`
+export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' }>`
   width: auto;
   position: relative;
   margin-bottom: 300px;
@@ -80,9 +80,17 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
 
     useEscapeEvent(handleHide);
 
+    const handleDoubleClick = React.useCallback(
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      [],
+    );
+
     return (
       ReactDOM.createPortal(
-        <div role="dialog">
+        <div role="dialog" onDoubleClick={handleDoubleClick}>
           <ModalFormContainer id={props.id} position={props.position} show>
             <ModalFormStyled show bsSize={props.bsSize}>
               <ClickOutHandler onClickOut={handleHideContainer}>

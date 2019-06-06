@@ -32,6 +32,7 @@ export const config: TypeConfigData<Mission> = {
   registryKey,
   header: {
     title: 'Журнал заданий',
+    titlePopover: 'Задания в статусах «Выполнено», «Не выполнено»,«Отменено», «Не назначено» через 30 календарных дней автоматически переносятся в архив (Задания -> Архив заданий)',
     buttons: [
       buttonsTypes.filter,
       buttonsTypes.mission_create,

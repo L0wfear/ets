@@ -10,12 +10,13 @@ import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeE
 
 type ImgListPortalProps = {
   images: any[];
+  indexToShow?: number;
   onClose: () => any;
 };
 
 const ImgListPortal: React.FC<ImgListPortalProps> = React.memo(
   (props) => {
-    const [indexImage, setIndexImage] = React.useState(0);
+    const [indexImage, setIndexImage] = React.useState(() => props.indexToShow);
 
     const countImages = React.useMemo(
       () => props.images.length,
@@ -27,6 +28,10 @@ const ImgListPortal: React.FC<ImgListPortalProps> = React.memo(
         if (props.images && props.images[indexImage] && props.images[indexImage].url) {
           return `${__DEVELOPMENT__ ? configs.url : ''}${props.images[indexImage].url.slice(1)}`;
         }
+        if (props.images && props.images[indexImage] && props.images[indexImage].path) {
+          return props.images[indexImage].path;
+        }
+
         if (props.images && props.images[indexImage] && props.images[indexImage].base64) {
           return props.images[indexImage].base64;
         }

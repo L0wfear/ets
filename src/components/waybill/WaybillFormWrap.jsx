@@ -756,7 +756,13 @@ class WaybillFormWrap extends React.Component {
       .catch(() => {});
   };
   setEdcRequestIds = (edcRequestIds) => {
-    this.setState({ edcRequestIds });
+    if (this.state.edcRequestIds) {
+      this.setState({
+        edcRequestIds: [...this.state.edcRequestIds, ...edcRequestIds],
+      });
+    } else {
+      this.setState({ edcRequestIds });
+    }
   };
   requestFormHide = () => {
     this.setState({ edcRequestIds: null });

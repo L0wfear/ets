@@ -1147,16 +1147,19 @@ class WaybillForm extends UNSAFE_Form {
           const { origMissionsList } = this.state;
           const { mission_id_list } = this.props.formState;
           const origMissionsIdList = origMissionsList.map((mis) => mis.id);
+
           // миссии, которые удалили из поля задание с бызовом rejectForm
           const rejectMissionIdList = rejectMissionList.map(
             (rejMission) => rejMission.payload.mission_id,
           );
+
           // задания, которые были удалены из формы без указания причины, т.к. они были отменены ранее
           const rejCanceled = origMissionsIdList.filter(
             (mission) =>
               !this.props.formState.mission_id_list.includes(mission)
               && !rejectMissionIdList.includes(mission),
           );
+
           // удаляем из старой mission_id_list миссии, которые удалось отменить
           const newMissionsList = origMissionsList.filter(
             // фильтруем исходные данные, исключаем оттуда миссии, которые были УСПЕШНО(200) отменены

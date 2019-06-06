@@ -53,7 +53,11 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
       if (needUpdate) {
         props.registryLoadDataByKey(props.registryKey);
       }
-      setEdcRequestIds(edcRequestIdsList);
+      if (edcRequestIdsList) {
+        setEdcRequestIds([ ...edcRequestIdsList, ...edcRequestIds ]);
+      } else {
+        setEdcRequestIds(edcRequestIdsList);
+      }
       setShowForm(false);
     },
     [],

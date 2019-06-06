@@ -19,7 +19,6 @@ import {
   CardTitleContainer,
   CardBodyContainer,
 } from 'components/new/pages/dashboard/menu/buttons/styled/styled';
-import { CardContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
@@ -79,7 +78,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
 
     return (
       <DashboardMenuButtonsContainer>
-        <CardContainer>
+        <EtsBootstrap.DashboardCard block>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>
             <ButtonCreateWaybill whiteSpace="normal" onClick={setShowWaybillForm}>
@@ -95,7 +94,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
               Создать наряд-задание
             </ButtonCreateDutyMission>
           </CardBodyContainer>
-        </CardContainer>
+        </EtsBootstrap.DashboardCard>
         {
           showWaybillForm
             && (

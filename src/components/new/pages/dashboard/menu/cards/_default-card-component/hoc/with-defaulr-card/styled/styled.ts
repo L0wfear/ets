@@ -22,33 +22,6 @@ const AnimationNone = css`
   animation: none !important;
 `;
 
-export const CardContainer = styled.div`
-  position: relative;
-  background-color: #eee;
-  border-radius: 4px;
-
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(0, 0, 0, 0.2);
-
-  ul {
-    padding-left: 20px;
-  }
-`;
-
-export const CardMainContainer = styled.div`
-  width: 33%;
-  @media screen and (max-width: 990px) {
-    min-width: 100%;
-  }
-`;
-
-export const CardMainContainerWrap = styled(CardContainer)`
-  margin: 10px;
-  @media screen and (max-width: 990px) {
-    margin: 5px 0;
-  }
-`;
-
 export const CardTitleContainer = styled.div`
   padding: 20px;
   padding-bottom: 5px;

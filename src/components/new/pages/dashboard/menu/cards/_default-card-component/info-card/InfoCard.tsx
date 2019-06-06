@@ -10,6 +10,7 @@ import {
   InfoCardWrapContainer,
   CardInfoContainer,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type PropsInfoCard = {
   title: React.ReactNode;
@@ -19,6 +20,7 @@ type PropsInfoCard = {
 const InfoCard: React.FC<PropsInfoCard> = (props) => (
   <InfoCardWrapContainer>
     <CardInfoContainer>
+      <EtsBootstrap.DashboardCard block>
       <CardTitleContainer>
         <CardTitleContainerWrap>
           <div>{props.title}</div>
@@ -28,6 +30,7 @@ const InfoCard: React.FC<PropsInfoCard> = (props) => (
       <CardBodyContainer>
         { props.children }
       </CardBodyContainer>
+      </EtsBootstrap.DashboardCard>
     </CardInfoContainer>
   </InfoCardWrapContainer>
 );

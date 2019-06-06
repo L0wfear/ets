@@ -6,7 +6,6 @@ export const DashboardTimeContainer = styled.div`
   justify-content: center;
   flex-direction: column;
   flex: 1 1 auto;
-  margin: 5px;
 `;
 
 export const TimeLineContainer = styled.div`

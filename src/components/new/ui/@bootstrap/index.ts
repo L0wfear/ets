@@ -25,6 +25,7 @@ import EtsNavItem from 'components/new/ui/@bootstrap/25-nav_item/EtsNavItem';
 import EtsButtonToolbar from 'components/new/ui/@bootstrap/26-button_toolbar/EtsButtonToolbar';
 import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
 import EtsBadge from 'components/new/ui/@bootstrap/28-badge/EtsBadge';
+import EtsDashboardCard from './29-dashboard_card/EtsDashboardCard';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -54,6 +55,7 @@ const EtsBootstrap = {
   ButtonToolbar: EtsButtonToolbar,
   Table: EtsTable,
   Badge: EtsBadge,
+  DashboardCard: EtsDashboardCard,
 };
 
 export default EtsBootstrap;

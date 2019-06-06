@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const EtsHeaderTitle = styled.div`
   font-size: 18px;
-  margin: 5px;
+  margin: 2.5px;
   display: flex;
   align-items: baseline;
   /* justify-content: unset; */

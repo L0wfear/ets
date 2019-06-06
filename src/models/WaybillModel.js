@@ -324,6 +324,19 @@ export const waybillSchema = {
     ],
     plan_arrival_date: [
       {
+        validator: (plan_arrival_date, { plan_departure_date }) => {
+          if (
+            plan_arrival_date
+            && plan_departure_date
+            && diffDates(plan_arrival_date, plan_departure_date, 'days', true) > 31
+          ) {
+            return 'Дата "Возвращение план." не должна превышать дату "Выезд план." больше чем на 31 день';
+          }
+
+          return false;
+        },
+      },
+      {
         type: 'gt',
         field: 'plan_departure_date',
       },

@@ -6,7 +6,7 @@ export const EtsHeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: self-end;
-  padding: 10px 10px 0px 10px;
+  padding: 10px 15px 0px 15px;
 
   @media screen and (max-width: ${mobiSize}px) {
     flex-wrap: wrap;

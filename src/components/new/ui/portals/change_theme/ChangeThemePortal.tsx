@@ -24,7 +24,7 @@ const ChangeThemePortal: React.FC<ChangeThemePortalProps> = React.memo(
     useEscapeEvent(props.onClose);
 
     return (
-      <EtsBootstrap.ModalContainer id="modal_change_theme" onHide={props.onClose} show>
+      <EtsBootstrap.ModalContainer id="modal_change_theme" onHide={props.onClose} show backdrop="static">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>
             Выбор темы

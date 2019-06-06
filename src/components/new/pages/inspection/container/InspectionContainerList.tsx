@@ -37,7 +37,10 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
 
   handleChangeData = (data) => {
     this.props.handleChange({
-      data,
+      data: {
+        ...this.props.formState.data,
+        ...data,
+      },
     });
   }
 

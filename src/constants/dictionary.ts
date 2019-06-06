@@ -98,3 +98,9 @@ export const WORK_NOT_SELECT_OPTIONS = [
   { value: true, label: 'Работает' },
   { value: false, label: 'Не работает' },
 ];
+
+export const OBJECT_TYPE_OPTION = [
+  {label: 'ОДХ', value: 'odh'},
+  {label: 'ДТ', value: 'dt'},
+  {label: 'Все', value: 'all'},
+];

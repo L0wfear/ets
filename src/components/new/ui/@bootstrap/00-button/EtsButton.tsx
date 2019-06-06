@@ -46,6 +46,8 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
     outline-offset: -2px;
     line-height: 1.5;
 
+    transition: all 0.5s;
+
     border-radius: ${({ theme, themeName }) => theme.button[themeName || 'default'].borderRadius.default };
     border: ${({ theme, themeName }) => theme.button[themeName || 'default'].border.default};
     box-shadow: ${({ theme, themeName }) => theme.button[themeName || 'default'].boxShadow.default};

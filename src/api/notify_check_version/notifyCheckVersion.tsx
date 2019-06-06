@@ -1,5 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
 interface IPropsNotifiVersionPopup {
   currV: string;
@@ -7,6 +8,7 @@ interface IPropsNotifiVersionPopup {
 }
 
 const getNotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
+  <EtsThemeProvider>
     <div className="check-version-notification">
       <div className="text-version-container">
         <div className="one-text-version">
@@ -20,6 +22,7 @@ const getNotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
       </div>
       <EtsBootstrap.Button onClick={() => global.window.location.reload()}><EtsBootstrap.Glyphicon glyph="refresh"/> Обновить</EtsBootstrap.Button>
     </div>
-  );
+  </EtsThemeProvider>
+);
 
 export default getNotifyCheckVersion;

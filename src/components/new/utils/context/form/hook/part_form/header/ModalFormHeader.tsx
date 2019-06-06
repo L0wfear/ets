@@ -6,6 +6,7 @@ import { SchemaFormContextHeader } from 'components/new/utils/context/form/@type
 
 type ModalFormHeaderProps = {
   formDataKey: string;
+  onHide?: (...arg: any) => any;
 };
 
 const ComponentsByKey: Record<SchemaFormContextHeader['type'], React.ComponentType<ModalFormHeaderProps>> = {
@@ -22,7 +23,7 @@ const ModalFormHeader: React.FC<ModalFormHeaderProps> = React.memo(
         const ComponentName = ComponentsByKey[formDataHeaderValue.type];
         if (ComponentName) {
           return (
-            <ComponentName formDataKey={props.formDataKey} />
+            <ComponentName formDataKey={props.formDataKey} onHide={props.onHide} />
           );
         }
         return <div>{`Определи тип шапки для ${formDataHeaderValue.type} в ModalFormHeader ComponentsByKey`}</div>;

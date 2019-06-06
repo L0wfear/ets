@@ -7,6 +7,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type WaybillHeaderProps = {
   formDataKey: string;
+  onHide?: (...arg: any) => any;
 };
 
 const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
@@ -27,7 +28,7 @@ const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalHeader closeButton onHide={props.onHide}>
           <EtsBootstrap.ModalTitle>{ titleText }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
       ),

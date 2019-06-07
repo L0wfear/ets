@@ -1103,9 +1103,11 @@ class WaybillForm extends UNSAFE_Form {
             if (successEdcRequestIds.length) {
               this.props.setEdcRequestIds(successEdcRequestIds);
             }
+            return get(response, 'result.0.id', null);
           }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
+          rejectMissionSubmitError = true;
           const missionId = get(rejectMission, 'id', '');
           if (!errorData.errorIsShow) {
             const errorText = get(
@@ -1119,20 +1121,27 @@ class WaybillForm extends UNSAFE_Form {
               ),
             );
           }
-          return rejectMission.payload.mission_id;
+        }
+        const mission_id = get(rejectMission, 'payload.mission_id', false);
+        if (mission_id) {
+          return mission_id;
+        } else {
+          return get(rejectMission, 'payload.id', null);
         }
       },
     );
-
     // чистим список с запросами на отмену заданий
     this.setState({
       rejectMissionList: [],
     });
+
     // rejectMissionHandler
-    return Promise.all(acceptedRejectMissionsIdList).then((res) => ({
-      acceptedRejectMissionsIdList: res,
-      rejectMissionSubmitError,
-    }));
+    return Promise.all(acceptedRejectMissionsIdList).then((res) => {
+      return {
+        acceptedRejectMissionsIdList: res,
+        rejectMissionSubmitError,
+      };
+    });
   };
 
   /**
@@ -1182,7 +1191,6 @@ class WaybillForm extends UNSAFE_Form {
               ...new Set([...newMission_id_list, ...mission_id_list]),
             ],
           });
-
           this.setState({
             missionsList: newMissionsList,
           });

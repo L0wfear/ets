@@ -341,10 +341,11 @@ class ReportContainer extends React.Component<
         } else {
           data.result.rows = filterFunction(rows, { filterValues });
         }
+        const reportKey = get(this.props, 'tableProps.reportKey', null);
 
         this.props.setReportDataWithSummerData({
           data,
-          props: { ...this.state },
+          props: { ...this.state, reportKey },
         });
       }
     }

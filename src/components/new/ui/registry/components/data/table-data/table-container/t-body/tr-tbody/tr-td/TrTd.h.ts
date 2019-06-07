@@ -22,9 +22,7 @@ export type StateTrTdEnumerated = {
 };
 
 export interface StatePropsTrTdCheckbox {
-  uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  checkedRows: OneRegistryData['list']['data']['checkedRows'];
-  paginator: OneRegistryData['list']['paginator'];
+  isChecked: boolean;
 }
 
 export type DispatchPropsTrTdCheckbox = {

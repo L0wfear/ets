@@ -1,0 +1,21 @@
+@import 'assets/variables.scss';
+
+.data-table.mission_template, .data-table.data-other {
+  tr {
+    &.yellow_line td {
+      background-color: rgba(255, 255, 0, 0.7) !important;
+    }
+    &.red_line td {
+      background-color: rgba(255, 0, 0, 0.8) !important;
+    }
+
+    &:hover {
+      &.yellow_line td {
+        background-color: $colorLightGreen !important;
+      }
+      &.red_line td {
+        background-color: $colorLightGreen !important;
+      }
+    }
+  }
+}

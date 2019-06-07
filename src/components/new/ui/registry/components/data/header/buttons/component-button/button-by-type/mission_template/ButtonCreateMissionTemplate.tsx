@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
+import { getWarningNotification } from 'utils/notifications';
 
 type ButtonCreateMissionTemplateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
@@ -42,10 +43,14 @@ const ButtonCreateMissionTemplate: React.FC<ButtonCreateMissionTemplateProps> = 
 
   const handleClick = React.useCallback(
     async () => {
-      props.registrySetSelectedRowToShowInForm(
-        props.registryKey,
-        {},
-      );
+      if (missionsAsArray.some(({ front_invalid_interval }) => front_invalid_interval)) {
+        global.NOTIFICATION_SYSTEM.notify(
+          getWarningNotification(
+            'Выбраны шаблоны, которые создадут одинаковые задания, с пересекающимся периодом. Необходимо исключить пересекающиеся шаблоны (выделены красным)',
+          ),
+        );
+        return;
+      }
 
       props.setParams({
         [props.uniqKeyForParams]: buttonsTypes.create,

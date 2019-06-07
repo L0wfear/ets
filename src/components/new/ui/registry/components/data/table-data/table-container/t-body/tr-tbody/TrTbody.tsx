@@ -287,6 +287,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           onClick={this.handleClick}
           onDoubleClick={this.handleDoubleClick}
           rowData={this.props.rowData}
+          checkData={this.props.checkData}
         >
           { props.rowFields.map(this.renderRow) }
         </EtsTrTbody>
@@ -308,7 +309,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
   withSearch,
   connect<StatePropsTrTbody, DipatchPropsTrTbody, OwnPropsTrTbody, ReduxState>(
-    (state, { registryKey }) => ({
+    (state, { registryKey, rowData }) => ({
       STRUCTURES: getSessionStructuresOptions(state),
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
@@ -317,6 +318,7 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       userData: getSessionState(state).userData,
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
       buttons: getHeaderData(state.registry, registryKey).buttons,
+      checkData: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

@@ -41,6 +41,7 @@ import { getFrontMission } from 'redux-main/reducers/modules/missions/mission/pr
 import { getListData } from './selectors-registry';
 import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
+import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
 
 /**
  * Да простят меня боги
@@ -682,17 +683,23 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dis
 };
 
 export const registryCheckLine: any = (registryKey, rowData) => (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const list: any = get(registryData, 'list', null);
+  const registryData: OneRegistryData = get(getState(), `registry.${registryKey}`, null);
+  const list = get(registryData, 'list');
   const uniqKey: any = get(list, 'data.uniqKey', null);
   const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
 
-  const checkedRowsNew = { ...checkedRowsCurrent };
+  let checkedRowsNew = { ...checkedRowsCurrent };
 
   if (!checkedRowsNew[rowData[uniqKey]]) {
     checkedRowsNew[rowData[uniqKey]] = rowData;
   } else {
     delete checkedRowsNew[rowData[uniqKey]];
+  }
+
+  if (list.data.proxyCheckData) {
+    if (list.data.proxyCheckData === 'mission_template') {
+      checkedRowsNew = validateMissionsByCheckedElements(checkedRowsNew, true);
+    }
   }
 
   dispatch(
@@ -734,6 +741,12 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
 
       return newObj;
     }, {});
+  }
+
+  if (list.data.proxyCheckData) {
+    if (list.data.proxyCheckData === 'mission_template') {
+      checkedRowsNew = validateMissionsByCheckedElements(checkedRowsNew, true);
+    }
   }
 
   dispatch(

@@ -181,6 +181,9 @@ export type TypeConfigData<F> = {
       uniqKeyForParams?: string;
       array?: F[];
       total_count?: number;
+      proxyCheckData?: (
+        'mission_template'
+      )
     },
     permissions: OneRegistryData['list']['permissions'];
     processed?: {

@@ -133,6 +133,7 @@ class SimpleGriddle extends React.Component<any, any> {
     <TrTable
       key={isNullOrUndefined(rowData[this.props.selectField]) ? index : rowData[this.props.selectField]}
       columns={this.props.columns}
+      checked={this.props.checked}
       rowData={rowData}
       index={index}
       rowMetadata={this.props.rowMetadata}

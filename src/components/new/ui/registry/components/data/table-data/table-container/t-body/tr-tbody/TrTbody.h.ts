@@ -15,6 +15,8 @@ export interface StatePropsTrTbody {
   userData: InitialStateSession['userData'];
   buttons: OneRegistryData['header']['buttons'];
   row_double_click: OneRegistryData['list']['meta']['row_double_click'];
+
+  checkData: any;
 }
 
 export type DipatchPropsTrTbody = {

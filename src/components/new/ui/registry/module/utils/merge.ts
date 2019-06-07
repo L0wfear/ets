@@ -105,6 +105,10 @@ export const mergeListData = (data: OneRegistryData['list']['data']) => (
       if (key === 'fixedWidth') {
         newObj[key] = isBoolean(data[key]) ? data[key] : value;
       }
+
+      if (key === 'proxyCheckData') {
+        newObj[key] = isString(data[key]) ? data[key] : value;
+      }
       if (key === 'array') {
         newObj[key] = isArray(data[key]) ? data[key] : value;
       }

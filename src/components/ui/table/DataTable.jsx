@@ -428,12 +428,15 @@ export default class DataTable extends React.Component {
   initializeRowMetadata() {
     const defaultClass = 'standard-row';
     return {
-      bodyCssClassName: (rowData) => {
+      bodyCssClassName: (rowData, checkedData) => {
         if (rowData.isSelected) {
           return 'selected-row';
         }
         if (typeof this.props.highlightClassMapper === 'function') {
-          return this.props.highlightClassMapper(rowData) || defaultClass;
+          return (
+            this.props.highlightClassMapper(rowData, checkedData)
+            || defaultClass
+          );
         }
         if (rowData.isHighlighted) {
           return 'highlighted-row';
@@ -839,7 +842,7 @@ export default class DataTable extends React.Component {
               onHide={this.closeFilter}
               values={this.state.filterValues}
               options={tableMetaCols.filter((el) => el.filter !== false)}
-              tableData={this.props.results}
+              tableData={this.props.defaulResult || this.props.results}
               entity={this.props.entity}
               reportKey={this.props.reportKey}
               loadDependecyData={this.props.loadDependecyData}
@@ -848,6 +851,7 @@ export default class DataTable extends React.Component {
         </Div>
         {/* lowerCaseSorting - сортировка в этом компоненте, а не в griddle.getDataForRender */}
         <SimpleGriddle
+          checked={this.props.checked}
           uniqKey={this.state.uniqKey}
           selectField={this.props.selectField}
           results={results}

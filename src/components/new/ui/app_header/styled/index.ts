@@ -8,6 +8,7 @@ export const AppHeaderNav = styled.nav`
   justify-content: space-between;
   z-index: 100; /* шапка выше загрузки */
   background-color: #292929;
+  flex-shrink: 0;
 `;
 
 export const PartHeaderContainer = styled.div`

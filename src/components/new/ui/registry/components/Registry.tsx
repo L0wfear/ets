@@ -6,6 +6,7 @@ import { getRootRegistry, getHeaderData } from '../module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { OneRegistryData } from '../module/registry';
+import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegistry';
 
 type RegistryStateProps = {
   hasData: boolean;
@@ -39,8 +40,13 @@ const Registry: React.FC<PropsRegistry> =  React.memo(
       },
     );
     return (
-      props.hasData &&
-        <Data registryKey={props.registryKey} />
+      props.hasData
+        ? (
+          <Data registryKey={props.registryKey} />
+        )
+        : (
+          <TemplateRegistry/>
+        )
     );
   },
 );

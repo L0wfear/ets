@@ -1,8 +1,18 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable';
 import { get } from 'lodash';
+import Table from 'components/ui/table/DataTable';
 
 const forColumnLabelFunction = for_column => for_column ? 'Да' : 'Нет';
+
+require('components/missions/mission_template/MissionTableStyle.scss');
+
+const highlightClassMapper = (_, checkdeData) => {
+  if (get(checkdeData, 'front_invalid_interval')) {
+    return 'standart-row red_line';
+  }
+
+  return 'standart-row';
+};
 
 export const getTableMeta = ({
   structures = [],
@@ -123,12 +133,14 @@ const renderers = {
 const MissionTemplatesTable = (props) => {
   return (
     <Table
+      className="mission_template"
       title="Шаблоны заданий"
       renderers={renderers}
       results={props.data}
       tableMeta={getTableMeta(props)}
       initialSort="number"
       initialSortAscending={false}
+      highlightClassMapper={highlightClassMapper}
       {...props}
     />
   );

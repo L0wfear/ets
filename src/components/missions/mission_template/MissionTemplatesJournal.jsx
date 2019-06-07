@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import _ from 'lodash';
+import _, { cloneDeep, find } from 'lodash';
 import * as Button from 'react-bootstrap/lib/Button';
 import * as Glyphicon from 'react-bootstrap/lib/Glyphicon';
 import CheckableElementsList from 'components/CheckableElementsList';
@@ -13,6 +13,7 @@ import MissionTemplateFormWrap from 'components/missions/mission_template/Missio
 import MissionTemplatesTable from 'components/missions/mission_template/MissionTemplatesTable';
 import { compose } from 'recompose';
 import { getWarningNotification } from 'utils/notifications';
+import { validateMissionsByCheckedElements } from './utils';
 
 const getMissionList = (checkedItems, selectedItem) => {
   if (Object.keys(checkedItems).length > 0) {
@@ -148,12 +149,21 @@ class MissionTemplatesJournal extends CheckableElementsList {
           'Для создания задания на колонну необходимо выбрать только 1 шаблон!',
         ),
       );
-    } else {
-      this.setState({
-        showForm: true,
-        formType: 'MissionsCreationForm',
-      });
+      return;
     }
+    if (allCheckedMissionInArr.some(({ front_invalid_interval }) => front_invalid_interval)) {
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification(
+          'Выбраны шаблоны, которые создадут одинаковые задания, с пересекающимся периодом. Необходимо исключить пересекающиеся шаблоны (выделены красным)',
+        ),
+      );
+      return;
+    }
+
+    this.setState({
+      showForm: true,
+      formType: 'MissionsCreationForm',
+    });
   }
 
   /**
@@ -253,6 +263,32 @@ class MissionTemplatesJournal extends CheckableElementsList {
       noDataMessage: this.props.payload.faxogramm_id ? 'Для выбранной централизованного задания нет подходящих шаблонов заданий' : null,
       data: missionTemplatesList,
     };
+  }
+
+  /**
+   * @override
+   */
+  checkAll = (rows, state) => {
+    let checkedElements = cloneDeep(this.state.checkedElements);
+    checkedElements = state ? rows : {};
+
+    this.setState({ checkedElements: validateMissionsByCheckedElements(checkedElements, true) }, this.stateChangeCallback.bind(this));
+  }
+
+  /**
+   * @override
+   */
+  checkElement = (id, state) => {
+    const elements = cloneDeep(this.state.checkedElements);
+    if (state) {
+      const checkedElement = find(this.state.elementsList, e => e[this.selectField] === parseInt(id, 10));
+      if (checkedElement) {
+        elements[parseInt(id, 10)] = checkedElement;
+      }
+    } else {
+      delete elements[id];
+    }
+    this.setState({ checkedElements: validateMissionsByCheckedElements(elements, true) }, this.stateChangeCallback.bind(this));
   }
 }
 

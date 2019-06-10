@@ -93,7 +93,7 @@ const ChangeStatusRequesForm: React.FC<ChangeStatusRequesFormProps> = React.memo
     // console.log('ChangeStatusRequesForm___ props', props);
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.onFormHide} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.onFormHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{titleModal}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

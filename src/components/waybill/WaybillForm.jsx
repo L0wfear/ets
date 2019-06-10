@@ -1357,8 +1357,7 @@ class WaybillForm extends UNSAFE_Form {
         id="modal-waybill"
         show={this.props.show}
         onHide={this.props.onHide}
-        bsSize="large"
-        backdrop="static">
+        bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>
             {title} {IS_DRAFT && '(возможна корректировка)'}{' '}

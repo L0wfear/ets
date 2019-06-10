@@ -58,7 +58,6 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-        backdrop="static"
       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Карточка емкости</EtsBootstrap.ModalTitle>

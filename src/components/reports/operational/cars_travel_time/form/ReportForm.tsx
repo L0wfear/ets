@@ -174,7 +174,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
   }, [selectedElement]);
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large" backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-geoobjects-map" show onHide={props.onFormHide} bsSize="large">
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{modalTitle}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

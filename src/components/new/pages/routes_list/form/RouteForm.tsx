@@ -161,7 +161,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

@@ -41,7 +41,7 @@ const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
   const title = 'Государственная программа ремонта';
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-state_program" show onHide={props.hideWithoutChanges} backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-state_program" show onHide={props.hideWithoutChanges}>
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

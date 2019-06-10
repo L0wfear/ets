@@ -131,7 +131,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
         id="modal-battery-brand"
         show
         onHide={this.props.onHide}
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Изменить версию API</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

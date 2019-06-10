@@ -91,7 +91,7 @@ const WaybillByDatePrintForm: React.FC<PropsWaybillByDatePrint> = React.memo(
     );
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-waybill_journal_report" show onHide={props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-waybill_journal_report" show onHide={props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

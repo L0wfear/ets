@@ -106,7 +106,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     );
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

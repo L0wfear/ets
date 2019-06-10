@@ -64,7 +64,6 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
       id="modal-mission"
       show
       onHide={props.hideWithoutChanges}
-      backdrop="static"
     >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>Добавление записи</EtsBootstrap.ModalTitle>

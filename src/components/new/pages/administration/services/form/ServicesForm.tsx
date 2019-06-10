@@ -16,7 +16,7 @@ type ServicesFormOwnProps = {
 const ServicesForm: React.FC<ServicesFormOwnProps> = React.memo(
   (props) => {
     return (
-      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.handleHide} backdrop="static" bsSize="large">
+      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.handleHide} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>История изменений сервисов</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

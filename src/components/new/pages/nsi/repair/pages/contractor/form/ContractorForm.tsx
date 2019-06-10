@@ -39,7 +39,7 @@ const ContractorForm: React.FC<PropsContractor> = (props) => {
   );
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-contractor" show onHide={props.hideWithoutChanges} backdrop="static" bsSize="large">
+    <EtsBootstrap.ModalContainer id="modal-contractor" show onHide={props.hideWithoutChanges} bsSize="large">
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

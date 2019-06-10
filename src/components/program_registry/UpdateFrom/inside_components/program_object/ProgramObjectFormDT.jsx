@@ -444,8 +444,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         id="modal-program-object-dt"
         show={this.props.show}
         onHide={this.props.onHide}
-        bsSize="lg"
-        backdrop="static">
+        bsSize="lg">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -581,9 +580,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                     <span>
                       {state.reviewed_at
                         ? moment(state.reviewed_at).format(
-                          `${global.APP_DATE_FORMAT} ${
-                            global.APP_TIME_FORMAT
-                          }`,
+                          `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
                         )
                         : '---'}
                     </span>

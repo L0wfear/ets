@@ -106,7 +106,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
         id="modal-fuel-cards"
         show
         onHide={props.hideWithoutChanges}
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

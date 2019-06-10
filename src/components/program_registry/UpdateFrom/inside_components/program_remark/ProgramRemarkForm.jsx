@@ -42,8 +42,7 @@ export default class SparePartForm extends UNSAFE_Form {
         <EtsBootstrap.ModalContainer
           id="modal-program-remark"
           show={this.props.show}
-          onHide={this.props.onHide}
-          backdrop="static">
+          onHide={this.props.onHide}>
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>

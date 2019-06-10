@@ -47,7 +47,7 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

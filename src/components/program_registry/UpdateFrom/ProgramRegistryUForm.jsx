@@ -172,8 +172,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
           id="modal-program-registry-u"
           show={this.props.show && !makeVersionIsVisible}
           onHide={this.props.onHide}
-          bsSize="lg"
-          backdrop="static">
+          bsSize="lg">
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>

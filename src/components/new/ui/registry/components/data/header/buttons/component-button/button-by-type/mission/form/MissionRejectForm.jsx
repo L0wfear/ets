@@ -416,8 +416,7 @@ class MissionRejectForm extends React.Component {
         <EtsBootstrap.ModalContainer
           id="modal-mission-reject"
           show={this.props.show}
-          onHide={this.props.onHide}
-          backdrop="static">
+          onHide={this.props.onHide}>
           <EtsBootstrap.ModalHeader>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>

@@ -106,7 +106,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
         id="modal-fuel-cards"
         show
         onHide={props.hideWithoutChanges}
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -184,7 +184,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div>
             {
               isPermitted
                 ? (
@@ -199,7 +198,6 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 )
             }
             <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-          </div>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

@@ -32,7 +32,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

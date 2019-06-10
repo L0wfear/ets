@@ -163,7 +163,6 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
         show
         onHide={props.handleHide}
         bsSize="large"
-        backdrop="static"
       >
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>Маршруты</EtsBootstrap.ModalTitle>

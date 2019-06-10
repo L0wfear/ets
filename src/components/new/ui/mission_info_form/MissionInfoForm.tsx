@@ -263,7 +263,7 @@ class MissionInfoForm extends React.Component<
         show
         onHide={onFormHide}
         bsSize="large"
-        backdrop="static">
+       >
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>

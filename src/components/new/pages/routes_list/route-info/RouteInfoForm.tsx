@@ -13,7 +13,7 @@ class RouteInfoForm extends React.PureComponent<PropsRouteInfoForm, {}> {
     const { route } = props;
 
     return (
-      <EtsBootstrap.ModalContainer bsSize="large" show id="modal-current-duty-mission-route" onHide={props.onHide} backdrop="static">
+      <EtsBootstrap.ModalContainer bsSize="large" show id="modal-current-duty-mission-route" onHide={props.onHide}>
 
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{props.title}</EtsBootstrap.ModalTitle>

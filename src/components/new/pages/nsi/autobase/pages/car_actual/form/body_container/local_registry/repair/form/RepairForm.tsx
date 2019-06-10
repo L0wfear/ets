@@ -89,7 +89,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
         id="modal-repair"
         show
         onHide={this.props.hideWithoutChanges}
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

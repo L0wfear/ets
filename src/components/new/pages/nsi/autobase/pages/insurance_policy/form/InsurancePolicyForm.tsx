@@ -79,7 +79,6 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       id="modal-insurance-policy"
       show
       onHide={props.hideWithoutChanges}
-      backdrop="static"
     >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>

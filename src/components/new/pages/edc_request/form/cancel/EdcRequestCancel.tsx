@@ -66,7 +66,6 @@ const EdcRequestCancelForm: React.FC<EdcRequestCancelFormProps> = (props) => {
       id="modal-edc_request_cancel-mission"
       show
       onHide={props.hideWithoutChanges}
-      backdrop="static"
     >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
@@ -89,17 +88,15 @@ const EdcRequestCancelForm: React.FC<EdcRequestCancelFormProps> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        <div>
-          <EtsBootstrap.Button
-            disabled={!props.canSave}
-            onClick={props.defaultSubmit}
-          >
-            Сохранить
-          </EtsBootstrap.Button>
-          <EtsBootstrap.Button onClick={props.hideWithoutChanges} >
-            Отмена
-          </EtsBootstrap.Button>
-        </div>
+        <EtsBootstrap.Button
+          disabled={!props.canSave}
+          onClick={props.defaultSubmit}
+        >
+          Сохранить
+        </EtsBootstrap.Button>
+        <EtsBootstrap.Button onClick={props.hideWithoutChanges} >
+          Отмена
+        </EtsBootstrap.Button>
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

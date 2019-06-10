@@ -112,7 +112,7 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
     const MEASURE_UNITS_RUN = this.makeOptionFromMeasureUnitRunList(this.props.measureUnitRunList);
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-tech-maint-order" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-tech-maint-order" show onHide={this.props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

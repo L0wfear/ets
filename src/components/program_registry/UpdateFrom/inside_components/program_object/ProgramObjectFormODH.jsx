@@ -393,8 +393,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
       <EtsBootstrap.ModalContainer
         id="modal-program-object-odh"
         show={this.props.show}
-        onHide={this.props.onHide}
-        backdrop="static">
+        onHide={this.props.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

@@ -105,14 +105,10 @@ class ColumnAssignmentMissionTemplate extends React.PureComponent<ColumnAssignme
           }
         </ModalBody>
         <EtsBootstrap.ModalFooter>
-          <div className="pr-object-data">
-            <div>
-            {
-              this.state.showBackButton && <EtsBootstrap.Button id="m-back" onClick={this.props.hideColumnAssignmentMissionTemplate}>Назад</EtsBootstrap.Button>
-            }
-            </div>
-            <EtsBootstrap.Button id="m-submit" onClick={this.handleSubmit}>Сохранить</EtsBootstrap.Button>
-          </div>
+          {
+            this.state.showBackButton && <EtsBootstrap.Button id="m-back" onClick={this.props.hideColumnAssignmentMissionTemplate}>Назад</EtsBootstrap.Button>
+          }
+          <EtsBootstrap.Button id="m-submit" onClick={this.handleSubmit}>Сохранить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

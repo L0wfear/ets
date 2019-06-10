@@ -29,8 +29,7 @@ export default class PercentModalForm extends UNSAFE_Form {
       <EtsBootstrap.ModalContainer
         id="modal-percent"
         show={this.props.show}
-        onHide={this.props.onHide}
-        backdrop="static">
+        onHide={this.props.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

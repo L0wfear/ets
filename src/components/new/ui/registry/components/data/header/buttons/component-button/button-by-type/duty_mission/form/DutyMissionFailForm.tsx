@@ -49,7 +49,7 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
         id="modal-duty-mission-reject"
         onHide={props.handleHide}
         show
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{`Введите причину для наряд-задания №${element.number}`}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -62,12 +62,10 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
           />
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div>
-            <EtsBootstrap.Button disabled={!comment} onClick={handleSubmit}>
-              Отметка о невыполнении
-            </EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
-          </div>
+          <EtsBootstrap.Button disabled={!comment} onClick={handleSubmit}>
+            Отметка о невыполнении
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

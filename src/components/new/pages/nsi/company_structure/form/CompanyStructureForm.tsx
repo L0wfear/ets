@@ -100,7 +100,7 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
     }
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-company-structure" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-company-structure" show onHide={this.props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

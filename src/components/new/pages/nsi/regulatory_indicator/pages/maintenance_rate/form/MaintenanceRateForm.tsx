@@ -105,8 +105,8 @@ export const MaintenanceRateForm: React.FC<
       id="modal-maintenance-rate"
       show
       onHide={props.hideWithoutChanges}
-      backdrop="static"
-      bsSize="large">
+      bsSize="large"
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>
           {!state.id ? 'Добавление' : 'Изменение'} нормы на содержание{' '}

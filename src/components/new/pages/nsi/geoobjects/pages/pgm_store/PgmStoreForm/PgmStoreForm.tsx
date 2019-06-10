@@ -49,7 +49,7 @@ class PgmStoreForm extends React.PureComponent<
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-        backdrop="static">
+       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

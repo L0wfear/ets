@@ -28,10 +28,8 @@ const ModalYesNo: React.FC<ModalYesNo> = React.memo(
           </span>
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
-          <div>
-            <EtsBootstrap.Button onClick={props.handleSubmit}>Ок</EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
-          </div>
+          <EtsBootstrap.Button onClick={props.handleSubmit}>Ок</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

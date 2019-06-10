@@ -225,6 +225,12 @@ export const config: TypeConfigData<Waybill> = {
         step: 0.01,
       },
       {
+        valueKey: 'equipment_fuel_given',
+        title: 'Топливо обор. Выдано',
+        type: 'advanced-number',
+        step: 0.01,
+      },
+      {
         valueKey: 'structure_id',
         labelKey: 'structure_name',
         type: 'multiselect',
@@ -408,6 +414,11 @@ export const config: TypeConfigData<Waybill> = {
           key: 'fuel_end',
           title: 'Топливо. Возврат',
           width: 200,
+        },
+        {
+          key: 'equipment_fuel_given',
+          title: 'Топливо обор. Выдано',
+          width: 250,
         },
         {
           key: 'structure_name',

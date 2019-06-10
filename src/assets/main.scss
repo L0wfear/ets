@@ -478,20 +478,17 @@ body.application {
                 position: absolute;
                 display: flex;
                 align-items: baseline;
-                &.show_tc {
-                  transform: translate(-130%, -50%);
-                }
-                &.remove {
-                  transform: translate(-110%, -50%);
-                }
                 background-color: white;
                 padding: 5px;
                 cursor: pointer;
                 &.show_tc {
                   transform: translate(-130%, -50%);
+                  min-width: 93px;
+                  background: transparent;
                 }
                 &.remove {
                   transform: translate(-110%, -50%);
+                  min-width: 29px;
                 }
                 >*:nth-child(n + 2) {
                   margin-left: 5px;

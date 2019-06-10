@@ -14,6 +14,7 @@ export const PanelCollapseWrap = styled(Panel.Collapse)`
 `;
 
 export const PanelBodyWrap = styled(Panel.Body)`
+  background-color: #eee!important;
   &&& {
     padding: 0px;
   }

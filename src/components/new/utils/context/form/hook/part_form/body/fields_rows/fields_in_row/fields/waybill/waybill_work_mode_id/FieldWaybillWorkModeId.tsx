@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+
 import { FieldDataWaybillWorkModeId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
+import FieldWaybillWorkModeIdString from './FieldWaybillWorkModeIdString';
+import FieldWaybillWorkModeIdArray from './FieldWaybillWorkModeIdArray';
 
 type FieldWaybillWorkModeIdProps = {
   formDataKey: string;
@@ -10,21 +12,23 @@ type FieldWaybillWorkModeIdProps = {
 
 const FieldWaybillWorkModeId: React.FC<FieldWaybillWorkModeIdProps> = React.memo(
   (props) => {
+    const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
 
     return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
-            <ExtField
-              type="select"
-              label={`${props.fieldData.title}` || 'Режим работы'}
-              value={null}
-              options={[]}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [props],
+      () => (
+        <React.Fragment>
+          {
+            IS_DRAFT
+              ? (
+                <FieldWaybillWorkModeIdArray {...props} />
+              )
+              : (
+                <FieldWaybillWorkModeIdString {...props} />
+              )
+          }
+        </React.Fragment>
+      ),
+      [IS_DRAFT, props],
     );
   },
 );

@@ -13,6 +13,8 @@ import {
   EmployeeApi,
   CompanyStructureLinearForUserListApi,
   CarActualApi,
+  MedicalStatsAllowedDriverApi,
+  WorkModeApi,
 } from "./all";
 
 type UrlValues = (
@@ -28,8 +30,12 @@ type UrlValues = (
   | EmployeeApi['url']
   | CompanyStructureLinearForUserListApi['url']
   | CarActualApi['url']
+  | MedicalStatsAllowedDriverApi['url']
+  | WorkModeApi['url']
+  | string
 );
 
 export type LoadingService = (url: UrlValues) => {
   get: <ApiConfig extends LoadingServiceGeneric<any, any, any>>(payload: ApiConfig['payload'], meta: LoadingMeta) => Promise<ApiConfig['result']>;
+  path: (addPath: string | number) => ReturnType<LoadingService>;
 };

@@ -35,9 +35,9 @@ export type Employee = {
   phone: string ;
   position_id: number ;
   position_name: string ;
-  prefer_car: string ;
+  prefer_car: number;
   prefer_car_text: string ;
-  secondary_car: string[]
+  secondary_car: number[]
   secondary_car_text: string ;
   special_license: string ;
   special_license_date_end: string ;

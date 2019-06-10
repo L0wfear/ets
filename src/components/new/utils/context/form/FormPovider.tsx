@@ -18,8 +18,8 @@ const FormProvider: React.FC<FormProviderProps> = React.memo(
 
     // добавление данных по форме в контекст
     const addFormData = React.useCallback<InitialFormContextValue['addFormData']>(
-      (formData, element) => {
-        dispatch(addFormDataToStore(formData, element));
+      (formData, element, sessionData) => {
+        dispatch(addFormDataToStore(formData, element, sessionData));
       },
       [],
     );

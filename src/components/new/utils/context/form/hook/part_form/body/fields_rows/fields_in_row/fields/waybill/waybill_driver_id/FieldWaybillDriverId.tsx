@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
 import { FieldDataWaybillDriverId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
+import FieldWaybillDriverIdString from './string/FieldWaybillDriverIdString';
+import FieldWaybillDriverIdArray from './array/FieldWaybillDriverIdArray';
 
 type FieldWaybillDriverIdProps = {
   formDataKey: string;
@@ -10,21 +11,23 @@ type FieldWaybillDriverIdProps = {
 
 const FieldWaybillDriverId: React.FC<FieldWaybillDriverIdProps> = React.memo(
   (props) => {
+    const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
 
     return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
-            <ExtField
-              type="select"
-              label={`${props.fieldData.title || 'Водитель'} (возможен поиск по табельному номеру)` || ''}
-              value={null}
-              options={[]}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [props],
+      () => (
+        <React.Fragment>
+          {
+            IS_DRAFT
+              ? (
+                <FieldWaybillDriverIdArray {...props} />
+              )
+              : (
+                <FieldWaybillDriverIdString {...props} />
+              )
+          }
+        </React.Fragment>
+      ),
+      [props, IS_DRAFT],
     );
   },
 );

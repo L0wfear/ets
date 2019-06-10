@@ -6,22 +6,32 @@ import { isArray } from 'util';
 
 export type ListData<ApiConfig extends LoadingServiceGeneric<any, any, any>> = { list: ApiConfig['result'], isLoading: boolean };
 
-const useLoadListData = <ApiConfig extends LoadingServiceGeneric<any, any, any>>(apiUrl: ApiConfig['url'], payload: ApiConfig['payload'], page: LoadingMeta['page'], path: LoadingMeta['path']) => {
+const useLoadListData = <ApiConfig extends LoadingServiceGeneric<any, any, any>>(apiUrl: ApiConfig['url'], partialPath: Array<string | number>, payload: ApiConfig['payload'], page: LoadingMeta['page'], path: LoadingMeta['path']) => {
   const [list, setList] = React.useState<ListData<ApiConfig>>({ list: [], isLoading: true });
   const context = React.useContext(LoadingContext);
 
   React.useEffect(
     () => {
-      context.loadService(apiUrl).get<ApiConfig>(payload || {}, { page, path }).then(
-        (listData) => (
+      const loadData = async () => {
+        let service = context.loadService(apiUrl);
+        partialPath.forEach(
+          (addPath) => {
+            service = service.path(addPath);
+          },
+        );
+
+        try {
+          const listData = await service.get<ApiConfig>(payload || {}, { page, path });
           setList({
             list: isArray(listData) ? listData : [listData],
             isLoading: false,
-          })
-        ),
-      ).catch((error) => {
-        console.error(error); //tslint:disable-line
-      });
+          });
+        } catch (error) {
+          console.error(error); //tslint:disable-line
+        }
+      };
+
+      loadData();
     },
     [],
   );

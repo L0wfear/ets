@@ -27,6 +27,9 @@ export const loadingService = (dispatch: any): LoadingService => (url) => {
         ),
       );
     },
+    path: (partialPath: string | number) => {
+      return loadingService(dispatch)(`${url}/${partialPath}`);
+    },
   };
 };
 

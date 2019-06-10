@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -27,9 +29,10 @@ const FieldWaybillCarIdArray: React.FC<FieldWaybillCarIdArrayProps> = React.memo
     const carActualOptionData = useWaybillCarActualOptions(props.formDataKey, formState.car_id, formState.structure_id);
 
     const handleChangeWrap = React.useCallback(
-      (_, value) => {
+      (_, value, option?) => {
         handleChange({
           car_id: value,
+          gov_number: get(option, 'rowData.gov_number', null),
         });
       },
       [handleChange],

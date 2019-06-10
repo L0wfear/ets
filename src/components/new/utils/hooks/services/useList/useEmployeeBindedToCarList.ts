@@ -1,0 +1,43 @@
+import * as React from 'react';
+import { EmployeeBindedToCarApi } from 'components/new/utils/context/loading/@types/all';
+import { ListData } from './common/useLoadListData';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import LoadingContext from 'components/new/utils/context/loading/LoadingContext';
+
+const useEmployeeBindedToCarApiList = (car_id: Car['asuods_id'], page: string = '', path: string = '') => {
+  const [list, setList] = React.useState<ListData<EmployeeBindedToCarApi>>({ list: [], isLoading: true });
+  const context = React.useContext(LoadingContext);
+
+  React.useEffect(
+    () => {
+      const loadData = async () => {
+        if (car_id) {
+          try {
+            setList({
+              list: [],
+              isLoading: true,
+            });
+            const listData = await context.loadService('employee_binded_to_car').path(car_id).get<EmployeeBindedToCarApi>({}, { page, path });
+            setList({
+              list: listData,
+              isLoading: false,
+            });
+          } catch (error) {
+            console.error(error); //tslint:disable-line
+          }
+        } else {
+          setList({
+            list: [],
+            isLoading: false,
+          });
+        }
+      };
+      loadData();
+    },
+    [car_id],
+  );
+
+  return list;
+};
+
+export default useEmployeeBindedToCarApiList;

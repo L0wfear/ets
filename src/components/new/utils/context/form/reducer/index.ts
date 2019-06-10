@@ -1,14 +1,17 @@
 import { InitialFormContextValue, ConfigFormDataForAdd } from '../FormContext';
 import { validate, canSaveTest } from './validate';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 type AddFormDataToStore<T = any, Store = Record<string, any>> = (
   formData: ConfigFormDataForAdd<T, Store>,
   element: Partial<T>,
+  sessionData: InitialStateSession,
 ) => {
   type: 'ADD_FORM_CONTEXT_FORM_DATA';
   payload: {
     formData: ConfigFormDataForAdd<T, Store>;
     element: Partial<T>;
+    sessionData: InitialStateSession,
   },
 };
 
@@ -69,11 +72,12 @@ export const initialFormProviderState: React.ReducerState<ReducerFormProvider> =
 };
 
 // экшен добавления formData в formDataByKey
-export const addFormDataToStore: AddFormDataToStore = (formData, element) => ({
+export const addFormDataToStore: AddFormDataToStore = (formData, element, sessionData) => ({
   type: ADD_FORM_CONTEXT_FORM_DATA,
   payload: {
     formData,
     element,
+    sessionData,
   },
 });
 
@@ -107,7 +111,7 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
   if (action.type === ADD_FORM_CONTEXT_FORM_DATA) {
     const formDataByKey = { ...state.formDataByKey };
 
-    const formState = action.payload.formData.mergeElement(action.payload.element);
+    const formState = action.payload.formData.mergeElement(action.payload.element, action.payload.sessionData);
     const formErrors = validate<typeof formState>(action.payload.formData.schema.body, formState);
     const canSave = canSaveTest(formErrors);
 

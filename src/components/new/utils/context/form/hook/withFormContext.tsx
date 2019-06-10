@@ -10,8 +10,10 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 type FormStateProps = {
+  sessionData: InitialStateSession;
   permissionsSet: InitialStateSession['userData']['permissionsSet'];    // пермишены для валидации, пока сессия на redux
 };
 type FormDispatchProps = DispatchProp;
@@ -90,6 +92,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
                 store,
               },
               element,                                            // новый элемент
+              props.sessionData,
             );
           };
 
@@ -117,7 +120,8 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
 
   return connect<FormStateProps, FormDispatchProps, FormOwnProps<InnerProps>, ReduxState>(
     (state) => ({
-      permissionsSet: state.session.userData.permissionsSet,
+      sessionData: getSessionState(state),
+      permissionsSet: getSessionState(state).userData.permissionsSet,
     }),
   )(Form as any);
 };

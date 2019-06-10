@@ -11,7 +11,7 @@ const useLoadListDataByCarId = <ApiConfig extends LoadingServiceGeneric<any, any
     },
     [car_id],
   );
-  return useLoadListData<ApiConfig>(apiUrl, payload, page, path);
+  return useLoadListData<ApiConfig>(apiUrl, [], payload, page, path);
 };
 
 export default useLoadListDataByCarId;

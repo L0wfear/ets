@@ -34,12 +34,25 @@ export default withFormContext<Waybill, DefaultPropsWithFormContext<Waybill>, Wa
       isLoading: false,
     },
     employee: {
+      listIndex: {},
       options: [],
       isLoading: false,
     },
     carActualList: {
       options: [],
-      isLoading: true,
+      isLoading: false,
+    },
+    employeeBindedToCar: {
+      list: [],
+      isLoading: false,
+    },
+    medicalStatsAllowedDrivers: {
+      list: [],
+      isLoading: false,
+    },
+    workModeOptions: {
+      options: [],
+      isLoading: false,
     },
   },
 });

@@ -4,7 +4,7 @@ import { EdcRequestCommentsApi } from 'components/new/utils/context/loading/@typ
 import useLoadListData from './common/useLoadListData';
 
 const useEdcRequestCommentsList = (id: EdcRequest['id'], page?: string, path?: string) => {
-  return useLoadListData<EdcRequestCommentsApi>(`edc_request/${id}/comments`, null, page, path);
+  return useLoadListData<EdcRequestCommentsApi>(`edc_request/${id}/comments`, [],  null, page, path);
 };
 
 export default useEdcRequestCommentsList;

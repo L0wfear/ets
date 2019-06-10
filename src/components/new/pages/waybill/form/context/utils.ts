@@ -1,8 +1,9 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'utils/dates';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
-export const defaultWaybill: Waybill = {
+export const getDefaultWaybill = (company_id): Waybill => ({
   accompanying_person_id: null,
   accompanying_person_name: '',
   activated_by_employee_id: null,
@@ -24,7 +25,7 @@ export const defaultWaybill: Waybill = {
   closed_editable: false,
   closing_date: '',
   comment: '',
-  company_id: null,            // нужно брать из стора
+  company_id,
   created_by_employee_id: null,
   created_by_employee_name: '',
   date_create: '',
@@ -85,13 +86,13 @@ export const defaultWaybill: Waybill = {
   work_mode_id: null,
   work_mode_name: '',
   work_mode_text: '',
-};
+});
 
-export const getDefaultWaybillElement = (element: Partial<Waybill>): Waybill => {
-  const newElement = { ...defaultWaybill };
+export const getDefaultWaybillElement = (element: Partial<Waybill>, sessionData: InitialStateSession): Waybill => {
+  const newElement = { ...getDefaultWaybill(sessionData.userData.company_id) };
   if (isObject(element)) {
-    Object.keys(defaultWaybill).forEach((key) => {
-      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultWaybill[key];
+    Object.keys(newElement).forEach((key) => {
+      newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : newElement[key];
     });
   }
 

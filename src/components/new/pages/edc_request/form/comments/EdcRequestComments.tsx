@@ -29,7 +29,6 @@ const EdcRequestComments: React.FC<EdcRequestCommentsProps> = (props) => {
       id="modal-edc_request_cancel-mission"
       show
       onHide={props.handleHide}
-      backdrop="static"
     >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>Комментарии</EtsBootstrap.ModalTitle>

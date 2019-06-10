@@ -330,7 +330,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
           show
           onHide={this.props.hideWithoutChanges}
           bsSize="large"
-          backdrop="static"
         >
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>

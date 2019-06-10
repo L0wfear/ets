@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DivNone } from 'global-styled/global-styled';
 
 import { inspectContainerSchema } from './filed_to_check/container_schema';
 import { filedToCheckContainerFirst, filedToCheckContainerSecond } from './filed_to_check/filedToCheck';
@@ -37,7 +36,10 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
 
   handleChangeData = (data) => {
     this.props.handleChange({
-      data,
+      data: {
+        ...this.props.formState.data,
+        ...data,
+      },
     });
   }
 
@@ -56,7 +58,6 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
         show
         onHide={this.props.hideWithoutChanges}
         bsSize="large"
-        backdrop="static"
       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Карточка емкости</EtsBootstrap.ModalTitle>
@@ -92,17 +93,15 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted ? ( // либо обновление, либо создание
-            <div>
+          {
+            Boolean(isPermitted) && ( // либо обновление, либо создание
               <EtsBootstrap.Button
                 disabled={!this.props.canSave}
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </EtsBootstrap.Button>
-            </div>
-          ) : (
-            <DivNone />
-          )}
+            )
+          }
           <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>

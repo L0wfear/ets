@@ -48,7 +48,7 @@ const ConsumableMaterialForm: React.FC<PropsConsumableMaterial> = (props) => {
   );
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-consumable_material" show onHide={props.hideWithoutChanges} backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-consumable_material" show onHide={props.hideWithoutChanges}>
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
@@ -74,18 +74,16 @@ const ConsumableMaterialForm: React.FC<PropsConsumableMaterial> = (props) => {
         />
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        <div>
-          {
-            isPermitted // либо обновление, либо создание
-            ? (
-              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
-          }
-          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-        </div>
+        {
+          isPermitted // либо обновление, либо создание
+          ? (
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

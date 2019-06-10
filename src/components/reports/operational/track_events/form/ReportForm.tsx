@@ -56,7 +56,7 @@ class GeoObjectsMapModalNew extends React.PureComponent<PropsGeoObjectsMapModalN
 
   render() {
     return (
-      <EtsBootstrap.ModalContainer id="modal-geoobjects-map" show onHide={this.props.onFormHide} bsSize="large" backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-geoobjects-map" show onHide={this.props.onFormHide} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Просмотр объекта</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

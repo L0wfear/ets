@@ -15,6 +15,8 @@ type PropsTrTable = {
   currentPage: number;
   resultsPerPage: number;
   columns: string[];
+
+  checked: any;
 };
 
 class TrTable extends React.Component<PropsTrTable, any> {
@@ -56,7 +58,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
             'parent-row': rowData._isParent,
             'child-row': rowData._parentId,
           },
-          this.props.rowMetadata.bodyCssClassName(rowData),
+          this.props.rowMetadata.bodyCssClassName(rowData, this.props.checked[rowData[this.props.selectField]]),
         )}
         onClick={this.handleClickTbodyTr}
         onDoubleClick={this.handleDoubleClickTbodyTr}

@@ -257,7 +257,6 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         show
         onHide={this.handleHideFom}
         bsSize="large"
-        backdrop="static"
       >
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>

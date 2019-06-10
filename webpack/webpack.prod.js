@@ -22,7 +22,8 @@ const getNameFavicon = (stand) => {
 module.exports = {
   entry: [
     'whatwg-fetch',
-    '@babel/polyfill',
+    'core-js/stable',
+    'regenerator-runtime/runtime',
     './src/index',
   ],
   mode: 'production',

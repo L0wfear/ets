@@ -4,6 +4,8 @@ import ModalHeaderCloseButton from './styled/ModalHeaderCloseButton';
 import themeModal from '../@themes/default/modal/themeModal';
 
 export const ModalHeaderStyled = styled.div<{ themeName?: keyof typeof themeModal }>`
+  transition: all 0.5s;
+
   background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.header.default };
   padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.header.default };
   border-top-left-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.header.default };

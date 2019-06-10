@@ -103,7 +103,7 @@ const NormForm: React.FC<PropsNorm> = (props) => {
   const isPermittedHardcode = false;
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-technical-operation" show onHide={props.hideWithoutChanges} bsSize="large" backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-technical-operation" show onHide={props.hideWithoutChanges} bsSize="large">
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

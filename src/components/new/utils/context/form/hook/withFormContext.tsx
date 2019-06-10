@@ -103,7 +103,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
       return React.useMemo(
         () => {
           return handleHide && (
-            <EtsBootstrap.ModalContainer id={`modal-${formData.key}}`}show onHide={handleHide} backdrop="static" bsSize={formData.bsSizeForm}>
+            <EtsBootstrap.ModalContainer id={`modal-${formData.key}}`} show onHide={handleHide} bsSize={formData.bsSizeForm}>
               <ModalFormHeader formDataKey={formData.key} />
               <ModalFormBody formDataKey={formData.key} />
               <ModalFormFooter formDataKey={formData.key} />

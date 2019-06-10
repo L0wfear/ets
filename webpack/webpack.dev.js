@@ -11,7 +11,8 @@ const NODE_ENV = process.env.NODE_ENV;
 module.exports = {
   entry: [
     'whatwg-fetch',
-    '@babel/polyfill',
+    'core-js/stable',
+    'regenerator-runtime/runtime',
     './src/index',
   ],
   mode: 'development',

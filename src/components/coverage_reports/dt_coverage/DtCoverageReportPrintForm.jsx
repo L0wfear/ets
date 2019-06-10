@@ -6,7 +6,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBody from 'components/ui/Modal';
 import { getYesterday9am, getToday859am } from 'utils/dates';
 import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Div from 'components/ui/Div';
 
 export default class DtCoverageReportPrintForm extends React.Component {
   static propTypes = {
@@ -70,12 +69,10 @@ export default class DtCoverageReportPrintForm extends React.Component {
           )}
         </ModalBody>
         <EtsBootstrap.ModalFooter>
-          <Div className="inline-block">
-            <EtsBootstrap.Button onClick={this.export}>ОК</EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={this.props.onFormHide}>
-              Отмена
-            </EtsBootstrap.Button>
-          </Div>
+          <EtsBootstrap.Button onClick={this.export}>ОК</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.props.onFormHide}>
+            Отмена
+          </EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

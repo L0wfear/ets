@@ -33,7 +33,7 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-car-func-types" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-car-func-types" show onHide={this.props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

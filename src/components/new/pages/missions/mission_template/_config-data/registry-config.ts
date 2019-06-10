@@ -112,6 +112,8 @@ export const config: TypeConfigData<MissionTemplate> = {
       uniqKey: 'id',
       fixedWidth: true,
       uniqKeyForParams: 'mission_template_id',
+
+      proxyCheckData: 'mission_template',
     },
     meta: {
       fields: [

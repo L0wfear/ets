@@ -42,7 +42,7 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
     } = firstOrderNotify;
 
     return (
-      <EtsBootstrap.ModalContainer id="notifiaction_orders" show onHide={this.onHide} backdrop="static">
+      <EtsBootstrap.ModalContainer id="notifiaction_orders" show onHide={this.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <div className="flex-space-between">
             <span>{title}</span>

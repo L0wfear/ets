@@ -1,12 +1,10 @@
 import { createGlobalStyle } from 'styled-components';
 import {
-  GlobalModalFooterCss,
   GlobalModalZIndexStyle,
 } from './modal';
 
 const EtsGlobalStyle = createGlobalStyle`
   ${GlobalModalZIndexStyle}
-  ${GlobalModalFooterCss}
 
   html, body {
     height: 100%;

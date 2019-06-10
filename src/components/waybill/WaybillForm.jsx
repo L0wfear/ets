@@ -942,7 +942,8 @@ class WaybillForm extends UNSAFE_Form {
       'motohours_equip_start',
     ];
 
-    const fuelEquipmentChekedKeyList = Object.keys(fuelEquipmentChangeObj); // список полей, которые необходимо проверить на изменение
+    // список полей, которые необходимо проверить на изменение
+    const fuelEquipmentChekedKeyList = Object.keys(fuelEquipmentChangeObj);
     const fixedFloatKey = [
       // поля формата float, которые хранятся как строка "0.000"
       'equipment_fuel_end',
@@ -959,19 +960,21 @@ class WaybillForm extends UNSAFE_Form {
           : changeSelectorKey === 'is_one_fuel_tank'
             ? [...fuelEquipmentChekedKeyList]
             : [];
-
       formWillChange = Object.keys(changeObj).some((key) => {
         let isEqualData = false;
         if (Array.isArray(formState[key])) {
           isEqualData = !formState[key].length;
         } else {
           if (fixedFloatKey.includes(key)) {
-            isEqualData = parseFloat(formState[key]) === 0;
+            isEqualData = formState[key]
+              ? parseFloat(formState[key]) === 0
+              : true;
           } else {
             isEqualData
               = formState[key] === changeObj[key]
               || formState[key] === ''
-              || isNullOrUndefined(formState[key]);
+              || isNullOrUndefined(formState[key])
+              || formState[key] === 0;
           }
         }
         return !isEqualData && checkedList.includes(key);
@@ -1100,9 +1103,11 @@ class WaybillForm extends UNSAFE_Form {
             if (successEdcRequestIds.length) {
               this.props.setEdcRequestIds(successEdcRequestIds);
             }
+            return get(response, 'result.0.id', null);
           }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
+          rejectMissionSubmitError = true;
           const missionId = get(rejectMission, 'id', '');
           if (!errorData.errorIsShow) {
             const errorText = get(
@@ -1116,20 +1121,27 @@ class WaybillForm extends UNSAFE_Form {
               ),
             );
           }
-          return rejectMission.payload.mission_id;
+        }
+        const mission_id = get(rejectMission, 'payload.mission_id', false);
+        if (mission_id) {
+          return mission_id;
+        } else {
+          return get(rejectMission, 'payload.id', null);
         }
       },
     );
-
     // чистим список с запросами на отмену заданий
     this.setState({
       rejectMissionList: [],
     });
+
     // rejectMissionHandler
-    return Promise.all(acceptedRejectMissionsIdList).then((res) => ({
-      acceptedRejectMissionsIdList: res,
-      rejectMissionSubmitError,
-    }));
+    return Promise.all(acceptedRejectMissionsIdList).then((res) => {
+      return {
+        acceptedRejectMissionsIdList: res,
+        rejectMissionSubmitError,
+      };
+    });
   };
 
   /**
@@ -1179,7 +1191,6 @@ class WaybillForm extends UNSAFE_Form {
               ...new Set([...newMission_id_list, ...mission_id_list]),
             ],
           });
-
           this.setState({
             missionsList: newMissionsList,
           });
@@ -1346,8 +1357,7 @@ class WaybillForm extends UNSAFE_Form {
         id="modal-waybill"
         show={this.props.show}
         onHide={this.props.onHide}
-        bsSize="large"
-        backdrop="static">
+        bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>
             {title} {IS_DRAFT && '(возможна корректировка)'}{' '}
@@ -1814,31 +1824,21 @@ class WaybillForm extends UNSAFE_Form {
                               handleChange={this.props.handleMultipleChange}
                             />
                           </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel-to-give"
-                              type="number"
-                              label="Выдать, л"
-                              error={errors.fuel_to_give}
-                              value={state.fuel_to_give}
-                              disabled={
-                                IS_ACTIVE
-                                || IS_CLOSED
-                                || !isPermittedByKey.update
-                              }
-                              onChange={this.handleChange}
-                              boundKeys="fuel_to_give"
-                            />
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fuel-given"
-                              type="number"
-                              label="Выдано, л"
-                              error={errors.fuel_given}
-                              value={state.fuel_given}
-                              disabled
-                            />
+                          <EtsBootstrap.Col md={8}>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={6}>
+                                {!(IS_DRAFT || IS_CREATING) && (
+                                  <ExtField
+                                    id="fuel-end"
+                                    type="number"
+                                    label="Возврат по таксировке, л"
+                                    error={errors.fuel_end}
+                                    value={state.fuel_end}
+                                    disabled
+                                  />
+                                )}
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                         <EtsBootstrap.Row>
@@ -1858,48 +1858,45 @@ class WaybillForm extends UNSAFE_Form {
                               boundKeys="fuel_start"
                             />
                           </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            {!(IS_DRAFT || IS_CREATING) ? (
-                              <ExtField
-                                id="fuel-end"
-                                type="number"
-                                label="Возврат по таксировке, л"
-                                error={errors.fuel_end}
-                                value={state.fuel_end}
-                                disabled
-                              />
-                            ) : (
-                              <DivNone />
-                            )}
-                          </EtsBootstrap.Col>
-                          <EtsBootstrap.Col md={4}>
-                            <ExtField
-                              id="fact-fuel-end"
-                              type="number"
-                              modalKey={modalKey}
-                              label="Возврат фактический, л"
-                              error={errors.fact_fuel_end}
-                              value={state.fact_fuel_end}
-                              hidden={!(IS_ACTIVE || IS_CLOSED)}
-                              disabled={
-                                !(IS_ACTIVE || this.state.canEditIfClose)
-                                || !isPermittedByKey.update
-                              }
-                              onChange={this.handleChange}
-                              boundKeys="fact_fuel_end"
-                              showRedBorder={
-                                state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
-                              }
-                            />
+                          <EtsBootstrap.Col md={8}>
+                            <EtsBootstrap.Row>
+                              <EtsBootstrap.Col md={6}>
+                                <ExtField
+                                  id="fact-fuel-end"
+                                  type="number"
+                                  modalKey={modalKey}
+                                  label="Возврат фактический, л"
+                                  error={errors.fact_fuel_end}
+                                  value={state.fact_fuel_end}
+                                  hidden={!(IS_ACTIVE || IS_CLOSED)}
+                                  disabled={
+                                    !(IS_ACTIVE || this.state.canEditIfClose)
+                                    || !isPermittedByKey.update
+                                  }
+                                  onChange={this.handleChange}
+                                  boundKeys="fact_fuel_end"
+                                  showRedBorder={
+                                    state.fact_fuel_end <= (IS_KAMAZ ? 15 : 5)
+                                  }
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Row>
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                         <EtsBootstrap.Row>
-                          <EtsBootstrap.Col md={8} mdOffset={4}>
-                            {IS_ACTIVE || IS_CLOSED ? (
-                              'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
-                            ) : (
-                              <DivNone />
-                            )}
+                          <EtsBootstrap.Col md={4}>
+                            <ExtField
+                              id="fuel-given"
+                              type="number"
+                              label="Выдано, л"
+                              error={errors.fuel_given}
+                              value={state.fuel_given}
+                              disabled
+                            />
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={8}>
+                            {Boolean(IS_ACTIVE || IS_CLOSED)
+                              && 'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
@@ -2047,29 +2044,15 @@ class WaybillForm extends UNSAFE_Form {
                                   />
                                 </EtsBootstrap.Col>
                                 <EtsBootstrap.Col md={4}>
-                                  <ExtField
-                                    id="equipment-fuel-to-give"
-                                    type="number"
-                                    label="Выдать, л"
-                                    error={errors.equipment_fuel_to_give}
-                                    value={state.equipment_fuel_to_give}
-                                    disabled={
-                                      IS_ACTIVE
-                                      || IS_CLOSED
-                                      || !isPermittedByKey.update
-                                    }
-                                    onChange={this.handleChange}
-                                    boundKeys="equipment_fuel_to_give"
-                                  />
-                                </EtsBootstrap.Col>
-                                <EtsBootstrap.Col md={4}>
-                                  <ExtField
-                                    id="equipment-fuel-given"
-                                    type="number"
-                                    label="Выдано, л"
-                                    value={state.equipment_fuel_given}
-                                    disabled
-                                  />
+                                  {!(IS_DRAFT || IS_CREATING) && (
+                                    <ExtField
+                                      id="equipment-fuel-end"
+                                      type="number"
+                                      label="Возврат по таксировке, л"
+                                      value={state.equipment_fuel_end}
+                                      disabled
+                                    />
+                                  )}
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
@@ -2086,19 +2069,6 @@ class WaybillForm extends UNSAFE_Form {
                                     onChange={this.handleChange}
                                     boundKeys="equipment_fuel_start"
                                   />
-                                </EtsBootstrap.Col>
-                                <EtsBootstrap.Col md={4}>
-                                  {!(IS_DRAFT || IS_CREATING) ? (
-                                    <ExtField
-                                      id="equipment-fuel-end"
-                                      type="number"
-                                      label="Возврат по таксировке, л"
-                                      value={state.equipment_fuel_end}
-                                      disabled
-                                    />
-                                  ) : (
-                                    <DivNone />
-                                  )}
                                 </EtsBootstrap.Col>
                                 <EtsBootstrap.Col md={4}>
                                   <ExtField
@@ -2120,12 +2090,18 @@ class WaybillForm extends UNSAFE_Form {
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                               <EtsBootstrap.Row>
-                                <EtsBootstrap.Col md={8} mdOffset={4}>
-                                  {IS_ACTIVE || IS_CLOSED ? (
-                                    'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'
-                                  ) : (
-                                    <DivNone />
-                                  )}
+                                <EtsBootstrap.Col md={4}>
+                                  <ExtField
+                                    id="equipment-fuel-given"
+                                    type="number"
+                                    label="Выдано, л"
+                                    value={state.equipment_fuel_given}
+                                    disabled
+                                  />
+                                </EtsBootstrap.Col>
+                                <EtsBootstrap.Col md={8}>
+                                  {Boolean(IS_ACTIVE || IS_CLOSED)
+                                    && 'Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.'}
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                             </EtsBootstrap.Col>

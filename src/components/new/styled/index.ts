@@ -5,17 +5,3 @@ export const AppStyled = styled.div`
   flex-direction: column;
   height: 100vh;
 `;
-
-export const AppContent = styled.div`
-  justify-self: flex-start;
-  flex: 1 1 auto;
-  position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
-
-export const AppContentContainer = styled.div`
-    position: absolute;
-    height: 100%;
-    width: 100%;
-`;

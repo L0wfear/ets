@@ -62,7 +62,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={this.props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={this.props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -130,18 +130,16 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div>
-            {
-              isPermitted // либо обновление, либо создание
-              ? (
-                <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-              )
-              : (
-                <DivNone />
-              )
-            }
-            <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-          </div>
+          {
+            isPermitted // либо обновление, либо создание
+            ? (
+              <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            )
+            : (
+              <DivNone />
+            )
+          }
+          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

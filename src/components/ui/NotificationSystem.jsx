@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import NotificationSystem from 'react-notification-system';
+import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
 const notificationsDiv = document.createElement('div');
 notificationsDiv.id = 'notifications';
@@ -46,7 +47,9 @@ class AppNotificationSystem extends React.Component {
 
   render() {
     return (
-      <NotificationSystem ref={(node) => (this._notificationSystem = node)} />
+      <EtsThemeProvider>
+        <NotificationSystem ref={(node) => (this._notificationSystem = node)} />
+      </EtsThemeProvider>
     );
   }
 }

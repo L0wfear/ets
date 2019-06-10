@@ -15,8 +15,6 @@ import {
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 import {
-  CardMainContainer,
-  CardMainContainerWrap,
   CardTitleContainer,
   CardTitleContainerWrap,
   CardBodyContainer,
@@ -101,8 +99,8 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
       render() {
         const { isLoading, title, loadData, dateLoad, ...props } = this.props;
         return (
-          <CardMainContainer>
-            <CardMainContainerWrap>
+          <EtsBootstrap.DashboardCard>
+            <div>
               <CardTitleContainer>
                 <CardTitleContainerWrap>
                   <div>{title}</div>
@@ -119,6 +117,8 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
               <CardBodyContainer isLoading={isLoading}>
                 <Component {...props} />
               </CardBodyContainer>
+            </div>
+            <div>
               {
                 InfoComponent ?
                 (
@@ -129,8 +129,9 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
                   <DivNone />
                 )
               }
-            </CardMainContainerWrap>
-          </CardMainContainer>
+            </div>
+
+          </EtsBootstrap.DashboardCard>
         );
       }
     },

@@ -36,6 +36,9 @@ export interface OneRegistryData {
       selectedRowToShow?: object | null;
       checkedRows?: object | null;
       fixedWidth: boolean;
+      proxyCheckData?: (
+        'mission_template'
+      )
     },
     permissions: {
       list: string | boolean;

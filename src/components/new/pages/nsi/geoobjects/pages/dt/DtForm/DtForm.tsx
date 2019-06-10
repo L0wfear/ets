@@ -35,7 +35,7 @@ const DtForm: React.FC<PropsDtForm> = React.memo(
     const title = !IS_CREATING ? 'Дворовая территория' : 'Дворовая территория';
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-dt" show onHide={props.hideWithoutChanges} backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-dt" show onHide={props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

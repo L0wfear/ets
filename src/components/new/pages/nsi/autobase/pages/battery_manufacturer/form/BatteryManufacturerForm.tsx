@@ -36,7 +36,7 @@ const BatteryManufacturerForm: React.FC<PropsBatteryManufacturer> = (props) => {
   const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-battery-manufacturer" show onHide={props.hideWithoutChanges} backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-battery-manufacturer" show onHide={props.hideWithoutChanges}>
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

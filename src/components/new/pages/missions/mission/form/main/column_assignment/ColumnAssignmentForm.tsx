@@ -59,24 +59,22 @@ class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm
           }
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div className="pr-object-data">
-            {
-              this.state.showBackButton
-                ? (
-                  <div>
-                    <EtsBootstrap.Button id="m-back" onClick={this.props.hideColumnAssignment}>
-                      Назад
-                    </EtsBootstrap.Button>
-                  </div>
-                )
-                : (
-                  <DivNone />
-                )
-            }
-            <EtsBootstrap.Button id="m-submit" onClick={this.handleSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          </div>
+          {
+            this.state.showBackButton
+              ? (
+                <div>
+                  <EtsBootstrap.Button id="m-back" onClick={this.props.hideColumnAssignment}>
+                    Назад
+                  </EtsBootstrap.Button>
+                </div>
+              )
+              : (
+                <DivNone />
+              )
+          }
+          <EtsBootstrap.Button id="m-submit" onClick={this.handleSubmit}>
+            Сохранить
+          </EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

@@ -74,7 +74,6 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
       show
       onHide={props.hideWithoutChanges}
       bsSize="large"
-      backdrop="static"
     >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>

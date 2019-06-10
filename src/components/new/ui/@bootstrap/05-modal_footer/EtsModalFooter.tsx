@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import themeModal from '../@themes/default/modal/themeModal';
 
 export const ModalFooterStyled = styled.div<{ themeName?: keyof typeof themeModal }>`
+  transition: all 0.5s;
+
   background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.footer.default };
   padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.footer.default };
   border-bottom-left-radius: ${({ theme, themeName }) => theme.modal[themeName || 'default'].borderRadius.footer.default };
@@ -11,6 +13,10 @@ export const ModalFooterStyled = styled.div<{ themeName?: keyof typeof themeModa
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  &>* {
+    margin: 2.5px;
+  }
 `;
 
 export type EtsModalFooterProps = {

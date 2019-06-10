@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import themeModal from '../@themes/default/modal/themeModal';
 
 export const ModalBodyStyled = styled.div<{ themeName: keyof typeof themeModal }>`
+  transition: all 0.5s;
+
   position: relative;
   background-color: ${({ theme, themeName }) => theme.modal[themeName || 'default'].backgroundColor.body.default };
   padding: ${({ theme, themeName }) => theme.modal[themeName || 'default'].padding.body.default };

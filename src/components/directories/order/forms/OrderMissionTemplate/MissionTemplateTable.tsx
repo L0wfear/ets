@@ -10,6 +10,16 @@ import DateFormatter from 'components/ui/DateFormatter';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OneSessionStructure } from 'redux-main/reducers/modules/session/session.d';
 
+require('components/directories/order/forms/OrderMissionTemplate/MissionTableStyle.scss');
+
+const highlightClassMapper = (_, checkdeData) => {
+  if (get(checkdeData, 'front_invalid_interval')) {
+    return 'standart-row red_line';
+  }
+
+  return 'standart-row';
+};
+
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
 const forColumnLabelFunction = (for_column) => for_column ? 'Да' : 'Нет';
@@ -167,6 +177,7 @@ type MissionTemplateOrderTableProps = {
 const Table: React.FC<MissionTemplateOrderTableProps> = (props) => {
   return (
     <DataTable
+      className="order_mission_template"
       multiSelection={true}
       results={props.data}
       renderers={renderers}
@@ -178,6 +189,7 @@ const Table: React.FC<MissionTemplateOrderTableProps> = (props) => {
       initialSort="frontId"
       selectField="frontId"
       checked={props.checked}
+      highlightClassMapper={highlightClassMapper}
     />
   );
 };

@@ -20,7 +20,7 @@ const themeModalDefault: ThemeModal = {
       default: '15px',
     },
     footer: {
-      default: '15px',
+      default: '10px',
     },
   },
   borderRadius: {

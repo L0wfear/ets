@@ -244,35 +244,33 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
         </ModalBodyPreloader>
 
         <EtsBootstrap.ModalFooter>
-          <div>
-            {
-              isPermitted
-                ? (
-                  <>
+          {
+            isPermitted
+              ? (
+                <>
+                  <EtsBootstrap.Button
+                    id="route-submit-tempalte"
+                    disabled={!canSave}
+                    onClick={this.handleSaveAsTemplate}>
+                    {this.props.fromMission && !this.props.fromMissionTemplate
+                      ? 'Сохранить как шаблон'
+                      : 'Сохранить'}
+                  </EtsBootstrap.Button>
+                  {this.props.fromMission && !this.props.fromMissionTemplate ? (
                     <EtsBootstrap.Button
-                      id="route-submit-tempalte"
+                      id="route-submit"
                       disabled={!canSave}
-                      onClick={this.handleSaveAsTemplate}>
-                      {this.props.fromMission && !this.props.fromMissionTemplate
-                        ? 'Сохранить как шаблон'
-                        : 'Сохранить'}
+                      onClick={this.handleSubmitForMission}>
+                      Создать
                     </EtsBootstrap.Button>
-                    {this.props.fromMission && !this.props.fromMissionTemplate ? (
-                      <EtsBootstrap.Button
-                        id="route-submit"
-                        disabled={!canSave}
-                        onClick={this.handleSubmitForMission}>
-                        Создать
-                      </EtsBootstrap.Button>
-                    ) : (
-                      <DivNone />
-                    )}
-                  </>
-                ) : (
-                  <DivNone />
-                )
-            }
-          </div>
+                  ) : (
+                    <DivNone />
+                  )}
+                </>
+              ) : (
+                <DivNone />
+              )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

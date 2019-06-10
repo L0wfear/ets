@@ -77,14 +77,12 @@ class Prompt extends React.Component {
               : this.state.body}
           </EtsBootstrap.ModalBody>
           <EtsBootstrap.ModalFooter>
-            <div>
-              <EtsBootstrap.Button onClick={this.ok}>
-                {this.state.okName || 'Ок'}
-              </EtsBootstrap.Button>
-              <EtsBootstrap.Button onClick={this.cancel}>
-                {this.state.cancelName || 'Отмена'}
-              </EtsBootstrap.Button>
-            </div>
+            <EtsBootstrap.Button onClick={this.ok}>
+              {this.state.okName || 'Ок'}
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.cancel}>
+              {this.state.cancelName || 'Отмена'}
+            </EtsBootstrap.Button>
           </EtsBootstrap.ModalFooter>
         </EtsBootstrap.ModalContainer>
       </EtsThemeProvider>

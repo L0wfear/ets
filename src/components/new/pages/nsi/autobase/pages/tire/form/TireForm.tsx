@@ -195,18 +195,16 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div>
-            {
-              isPermitted // либо обновление, либо создание
-              ? (
-                <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-              )
-              : (
-                <DivNone />
-              )
-            }
-            <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
-          </div>
+          {
+            isPermitted // либо обновление, либо создание
+            ? (
+              <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+            )
+            : (
+              <DivNone />
+            )
+          }
+          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

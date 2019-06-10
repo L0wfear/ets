@@ -502,16 +502,14 @@ class MissionRejectForm extends React.Component {
           </ModalBody>
 
           <EtsBootstrap.ModalFooter>
-            <Div>
-              <EtsBootstrap.Button
-                disabled={!!errors.reason_id}
-                onClick={this.handleSubmit}>
-                Сохранить
-              </EtsBootstrap.Button>
-              <EtsBootstrap.Button onClick={this.reject}>
-                Отменить
-              </EtsBootstrap.Button>
-            </Div>
+            <EtsBootstrap.Button
+              disabled={!!errors.reason_id}
+              onClick={this.handleSubmit}>
+              Сохранить
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.reject}>
+              Отменить
+            </EtsBootstrap.Button>
           </EtsBootstrap.ModalFooter>
         </EtsBootstrap.ModalContainer>
       </>

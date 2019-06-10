@@ -96,10 +96,8 @@ const WaybillIntervalPrintForm: React.FC<PropsWaybillIntervalPrint> = React.memo
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div>
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={handleSubmit}>Ок</EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-          </div>
+          <EtsBootstrap.Button disabled={!props.canSave} onClick={handleSubmit}>Ок</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

@@ -89,17 +89,15 @@ const EdcRequestCancelForm: React.FC<EdcRequestCancelFormProps> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        <div>
-          <EtsBootstrap.Button
-            disabled={!props.canSave}
-            onClick={props.defaultSubmit}
-          >
-            Сохранить
-          </EtsBootstrap.Button>
-          <EtsBootstrap.Button onClick={props.hideWithoutChanges} >
-            Отмена
-          </EtsBootstrap.Button>
-        </div>
+        <EtsBootstrap.Button
+          disabled={!props.canSave}
+          onClick={props.defaultSubmit}
+        >
+          Сохранить
+        </EtsBootstrap.Button>
+        <EtsBootstrap.Button onClick={props.hideWithoutChanges} >
+          Отмена
+        </EtsBootstrap.Button>
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

@@ -105,18 +105,16 @@ const CleaningRateForm: React.FC<PropsCleaningRate> = (props) => {
         />
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        <div>
-          {
-            isPermitted // либо обновление, либо создание
-            ? (
-              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
-          }
-          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-        </div>
+        {
+          isPermitted // либо обновление, либо создание
+          ? (
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

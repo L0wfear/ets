@@ -62,12 +62,10 @@ const DutyMissionFailForm: React.FC<DutyMissionFailFormProps> = React.memo(
           />
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          <div>
-            <EtsBootstrap.Button disabled={!comment} onClick={handleSubmit}>
-              Отметка о невыполнении
-            </EtsBootstrap.Button>
-            <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
-          </div>
+          <EtsBootstrap.Button disabled={!comment} onClick={handleSubmit}>
+            Отметка о невыполнении
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

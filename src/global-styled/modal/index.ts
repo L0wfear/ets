@@ -11,19 +11,3 @@ export const GlobalModalZIndexStyle = css`
     z-index: 10000000; /* модалка выше всего */
   }
 `;
-
-export const GlobalModalFooterCss = css`
-  .modal-footer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    text-align: left;
-
-    &>* {
-      margin-right: 10px;
-      &:last-child {
-        margin-right: 0;
-      }
-    }
-  }
-`;

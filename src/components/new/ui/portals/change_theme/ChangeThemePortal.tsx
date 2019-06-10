@@ -41,9 +41,7 @@ const ChangeThemePortal: React.FC<ChangeThemePortalProps> = React.memo(
           />
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
-          <div>
-            <EtsBootstrap.Button onClick={props.onClose}>Закрыть</EtsBootstrap.Button>
-          </div>
+          <EtsBootstrap.Button onClick={props.onClose}>Закрыть</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

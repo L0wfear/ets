@@ -101,16 +101,14 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
         />
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        <div>
-          <EtsBootstrap.Button
-            id="container_add_action_submit"
-            disabled={Object.values(errors).some((error) => Boolean(error))}
-            onClick={handleSubmit}
-          >
-            Добавить
-          </EtsBootstrap.Button>
-          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
-        </div>
+        <EtsBootstrap.Button
+          id="container_add_action_submit"
+          disabled={Object.values(errors).some((error) => Boolean(error))}
+          onClick={handleSubmit}
+        >
+          Добавить
+        </EtsBootstrap.Button>
+        <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

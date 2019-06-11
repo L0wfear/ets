@@ -2,7 +2,6 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
-import { FieldDataIsBnsoBroken } from 'components/new/utils/context/form/@types/fields/string';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWsCarPoints from 'components/new/utils/hooks/services/useWs/useWsCarPoints';
 import { connect, DispatchProp } from 'react-redux';
@@ -20,8 +19,8 @@ type FieldIsBnsoBrokenStateProps = {
 };
 type FieldIsBnsoBrokenDispatchProps = DispatchProp;
 type FieldIsBnsoBrokenOwnProps = {
-  fieldData: FieldDataIsBnsoBroken;
   formDataKey: string;
+  md?: number;
 };
 
 type FieldIsBnsoBrokenProps = (
@@ -32,9 +31,6 @@ type FieldIsBnsoBrokenProps = (
 
 const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
   (props) => {
-    const {
-      fieldData: { key, title },
-    } = props;
     const page = useForm.useFormDataSchemaPage<Waybill>(props.formDataKey);
     const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -132,14 +128,14 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <EtsBootstrap.Col md={props.fieldData.md || 12}>
+        <EtsBootstrap.Col md={props.md || 12}>
           <ExtField
-            id={`${path}_${key}`}
+            id={`${path}_is_bnso_broken`}
             type="string"
-            label={title}
+            label="Исправность датчика ГЛОНАСС"
             value={is_bnso_broken_text}
             error={
-              is_bnso_broken_text && formState[key]
+              is_bnso_broken_text && formState.is_bnso_broken
                 ? 'Выполненные работы не будут учтены в системе'
                 : ''
             }
@@ -150,11 +146,9 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
       [
         props,
         path,
-        key,
-        title,
         is_bnso_broken_text,
-        formState[key],
-        formErrors[key],
+        formState.is_bnso_broken,
+        formErrors.is_bnso_broken,
       ],
     );
   },

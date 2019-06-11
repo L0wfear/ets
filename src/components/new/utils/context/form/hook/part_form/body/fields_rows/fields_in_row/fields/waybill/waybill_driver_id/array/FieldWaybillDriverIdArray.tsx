@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { FieldDataWaybillDriverId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
@@ -10,7 +9,7 @@ import { useWaybillDrivers } from './useWaybillDrivers';
 
 type FieldWaybillDriverIdArrayProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillDriverId;
+  md?: number;
 };
 
 const sortingDrivers = (a, b) => {
@@ -65,12 +64,12 @@ const FieldWaybillDriverIdArray: React.FC<FieldWaybillDriverIdArrayProps> = Reac
     return React.useMemo(
       () => {
         return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
+          <EtsBootstrap.Col md={props.md || 12}>
             <ExtField
               id="driver-id"
               type="select"
               placeholder={notSelectedCarId ? 'Выберите Транспортное средство' : undefined}
-              label={`${props.fieldData.title || 'Водитель'} (возможен поиск по табельному номеру)` || ''}
+              label={'Водитель (возможен поиск по табельному номеру)'}
               error={error}
               sortingFunction={sortingDrivers}
               options={employeeBindedToCarOptionData.options}

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
@@ -9,15 +8,11 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 type FieldWaybillTrailerIdArrayProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillCarId;
+  md?: number;
 };
 
 const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = React.memo(
   (props) => {
-    const {
-      fieldData: { title, clearable, key },
-    } = props;
-
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
@@ -51,12 +46,11 @@ const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = Re
     return React.useMemo(
       () => {
         return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
+          <EtsBootstrap.Col md={props.md || 12}>
             <ExtField
-              id={`${path}_${key}`}
+              id={`${path}_trailer_id`}
               type="select"
-              clearable={clearable}
-              label={title}
+              label="Прицеп"
               value={formState.trailer_id}
               error={formErrors.trailer_id}
               options={carActualOptionData.options}

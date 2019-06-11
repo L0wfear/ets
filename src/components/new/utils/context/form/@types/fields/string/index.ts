@@ -23,16 +23,6 @@ export type FieldDataName = FieldStringCommon<
 >;
 
 /**
- * Тип поля is_bnso_broken
- * возможно стоит вынести
- */
-export type FieldDataIsBnsoBroken = FieldStringCommon<
-  Waybill
-  | any,
-  'is_bnso_broken'
->;
-
-/**
  * Тип поля downtime_hours_work
  * возможно стоит вынести
  */
@@ -77,7 +67,6 @@ export type FieldDataDowntimeHoursRepair = FieldStringCommon<
  */
 export type FieldsString = (
   FieldDataName
-  | FieldDataIsBnsoBroken
   | FieldDataDowntimeHoursWork
   | FieldDataDowntimeHoursDuty
   | FieldDataDowntimeHoursDinner

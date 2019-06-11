@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { FieldDataWaybillDriverId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import FieldWaybillDriverIdString from './string/FieldWaybillDriverIdString';
 import FieldWaybillDriverIdArray from './array/FieldWaybillDriverIdArray';
 
 type FieldWaybillDriverIdProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillDriverId;
+  md?: number;
 };
 
 const FieldWaybillDriverId: React.FC<FieldWaybillDriverIdProps> = React.memo(
@@ -19,10 +18,10 @@ const FieldWaybillDriverId: React.FC<FieldWaybillDriverIdProps> = React.memo(
           {
             IS_DRAFT
               ? (
-                <FieldWaybillDriverIdArray {...props} />
+                <FieldWaybillDriverIdArray formDataKey={props.formDataKey} md={props.md} />
               )
               : (
-                <FieldWaybillDriverIdString {...props} />
+                <FieldWaybillDriverIdString formDataKey={props.formDataKey} md={props.md} />
               )
           }
         </React.Fragment>

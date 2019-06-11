@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { FieldDataWaybillIdleTimeOnLine } from 'components/new/utils/context/form/@types/fields/waybill';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FieldDataDowntimeHoursWork, FieldDataDowntimeHoursDuty, FieldDataDowntimeHoursRepair, FieldDataDowntimeHoursDinner } from 'components/new/utils/context/form/@types/fields/string';
 import FieldOnLineString from './field_on_line_string/FieldOnLineString';
 
 type FieldWaybillIdleTimeOnLineProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillIdleTimeOnLine;
+  md?: number;
 };
 
 const fieldDataDowntimeHoursWork: FieldDataDowntimeHoursWork = {
@@ -32,14 +31,13 @@ const fieldDataDowntimeHoursRepair: FieldDataDowntimeHoursRepair = {
 
 const FieldWaybillIdleTimeOnLine: React.FC<FieldWaybillIdleTimeOnLineProps> = React.memo(
   (props) => {
-    const { fieldData: { title } } = props;
     return React.useMemo(
       () => {
         return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
+          <EtsBootstrap.Col md={props.md || 12}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={8}>
-                <h4>{title}</h4>
+                <h4>Простои на линии, ч.</h4>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>

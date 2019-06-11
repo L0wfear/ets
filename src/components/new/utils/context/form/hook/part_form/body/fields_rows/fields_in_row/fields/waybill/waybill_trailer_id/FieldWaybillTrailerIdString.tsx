@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
@@ -8,15 +7,11 @@ import { carActualOptionLabel } from '../waybill_car_id/useWaybillCarActualOptio
 
 type FieldWaybillTrailerIdStringProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillCarId;
+  md?: number;
 };
 
 const FieldWaybillTrailerIdString: React.FC<FieldWaybillTrailerIdStringProps> = React.memo(
   (props) => {
-    const {
-      fieldData: { title, key },
-    } = props;
-
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
 
@@ -45,11 +40,11 @@ const FieldWaybillTrailerIdString: React.FC<FieldWaybillTrailerIdStringProps> = 
     return React.useMemo(
       () => {
         return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
+          <EtsBootstrap.Col md={props.md || 12}>
             <ExtField
-              id={`${path}_${key}`}
+              id={`${path}_trailer_id`}
               type="string"
-              label={title}
+              label="Прицеп"
               readOnly
               value={value}
             />

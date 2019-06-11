@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { FieldDataName } from 'components/new/utils/context/form/@types/fields/string';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import FieldWaybillActivatedByEmployeeName from './activated_by_employee_name/FieldWaybillActivatedByEmployeeName';
 import FieldWaybillClosedByEmployeeName from './closed_by_employee_name/FieldWaybillClosedByEmployeeName';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillEmployeeChangeStatusProps = {
-  fieldData: FieldDataName;
   formDataKey: string;
 };
 

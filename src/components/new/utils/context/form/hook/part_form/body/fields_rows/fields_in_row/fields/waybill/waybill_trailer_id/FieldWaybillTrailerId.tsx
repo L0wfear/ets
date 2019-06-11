@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { FieldDataWaybillCarId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import FieldWaybillTrailerIdString from './FieldWaybillTrailerIdString';
 import FieldWaybillTrailerIdArray from './FieldWaybillTrailerIdArray';
 
 type FieldWaybillTrailerIdProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillCarId;
+  md?: number;
 };
 
 const FieldWaybillTrailerId: React.FC<FieldWaybillTrailerIdProps> = React.memo(
@@ -20,13 +19,13 @@ const FieldWaybillTrailerId: React.FC<FieldWaybillTrailerIdProps> = React.memo(
             ? (
               <FieldWaybillTrailerIdArray
                   formDataKey={props.formDataKey}
-                  fieldData={props.fieldData}
+                  md={props.md}
                 />
             )
             : (
                 <FieldWaybillTrailerIdString
                   formDataKey={props.formDataKey}
-                  fieldData={props.fieldData}
+                  md={props.md}
                 />
             )
         );

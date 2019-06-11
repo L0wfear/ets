@@ -1,21 +1,16 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { FieldDataWaybillWorkModeId } from 'components/new/utils/context/form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 
 type FieldWaybillWorkModeIdStringProps = {
   formDataKey: string;
-  fieldData: FieldDataWaybillWorkModeId;
+  md?: number;
 };
 
 const FieldWaybillWorkModeIdString: React.FC<FieldWaybillWorkModeIdStringProps> = React.memo(
   (props) => {
-    const {
-      fieldData: { title, key, md },
-    } = props;
-
     const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
 
     const { work_mode_name } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -23,22 +18,20 @@ const FieldWaybillWorkModeIdString: React.FC<FieldWaybillWorkModeIdStringProps> 
     return React.useMemo(
       () => {
         return (
-          <EtsBootstrap.Col md={md || 12}>
+          <EtsBootstrap.Col md={props.md || 12}>
             <ExtField
-              id={`${path}_${key}`}
+              id={`${path}_work_mode_id`}
               type="string"
               readOnly
-              label={`${title}` || 'Режим работы'}
+              label="Режим работы"
               value={work_mode_name}
             />
           </EtsBootstrap.Col>
         );
       },
       [
-        md,
-        title,
+        props.md,
         work_mode_name,
-        key,
         path,
       ],
     );

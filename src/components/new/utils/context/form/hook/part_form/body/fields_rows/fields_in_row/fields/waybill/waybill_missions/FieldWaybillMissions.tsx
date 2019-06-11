@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { FieldDataWaybillMissions } from 'components/new/utils/context/form/@types/fields/waybill';
 import FieldSelectMission from './select_mission/FieldSelectMission';
 import FieldCreateMission from './button_create_mission/FieldCreateMission';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillMissionsProps = {
-  fieldData: FieldDataWaybillMissions;
   formDataKey: string;
 };
 

@@ -36,7 +36,7 @@ export const initialState = {
     carTabInfo: {
       contractor_name: null,
       customer_name: null,
-      ownership: null,
+      owner_name: null,
     },
     isLoading: true,
   },

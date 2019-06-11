@@ -31,7 +31,7 @@ class MakeFileModal extends React.Component<any, any> {
     const { TextBody } = this.props;
 
     return (
-      <EtsBootstrap.ModalContainer show={this.props.show} id="modal-make-version" onHide={this.onHide} backdrop="static">
+      <EtsBootstrap.ModalContainer show={this.props.show} id="modal-make-version" onHide={this.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{this.props.title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

@@ -13,6 +13,10 @@ export const ModalFooterStyled = styled.div<{ themeName?: keyof typeof themeModa
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+  &>* {
+    margin: 2.5px;
+  }
 `;
 
 export type EtsModalFooterProps = {

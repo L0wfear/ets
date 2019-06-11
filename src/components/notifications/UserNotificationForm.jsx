@@ -198,8 +198,7 @@ class UserNotificationForm extends UNSAFE_Form {
     return (
       <EtsBootstrap.ModalContainer
         show={this.props.show}
-        onHide={this.props.onHide}
-        backdrop="static">
+        onHide={this.props.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <div style={{ fontWeight: 'bold' }}>
             <span>{state.title}</span>

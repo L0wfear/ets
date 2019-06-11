@@ -110,8 +110,8 @@ export const MaterialConsumptionRateForm: React.FC<PropsMaterialConsumptionRate>
       id="modal-consumption-rate"
       show
       onHide={props.hideWithoutChanges}
-      backdrop="static"
-      bsSize="large">
+      bsSize="large"
+    >
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

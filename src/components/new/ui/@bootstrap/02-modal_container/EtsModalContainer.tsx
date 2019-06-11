@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import * as ClickOutHandler from 'react-onclickout';
 
 import styled, { css } from 'styled-components';
 
@@ -54,7 +53,6 @@ export type EtsModalContainerProps = {
   show: boolean;                                    // ясно понятно
   onHide: (...arg: any[]) => any;                   // ясно понятно
   bsSize?: 'large' | 'small';                       // размер формы | small - дефолт
-  backdrop?: 'static';                              // можно ли закрыти форму кликом вне
   themeName?: keyof typeof themeModal;
 
   position?: 'center' | 'default';                  // положение формы
@@ -67,15 +65,6 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
         props.onHide(...arg);
       },
       [props.onHide],
-    );
-
-    const handleHideContainer = React.useCallback(
-      (...arg) => {
-        if (props.backdrop !== 'static') {
-          handleHide();
-        }
-      },
-      [handleHide, props.backdrop],
     );
 
     useEscapeEvent(handleHide);
@@ -93,25 +82,23 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
         <div role="dialog" onDoubleClick={handleDoubleClick}>
           <ModalFormContainer id={props.id} position={props.position} show>
             <ModalFormStyled show bsSize={props.bsSize}>
-              <ClickOutHandler onClickOut={handleHideContainer}>
-                {
-                  React.useMemo(
-                    () => (
-                      React.Children.map(
-                        props.children,
-                        (child: any) => (
-                          React.cloneElement(child, {
-                            ...child.props,
-                            onHide: props.onHide,
-                            themeName: props.themeName || 'default',
-                          })
-                        ),
-                      )
-                    ),
-                    [props.children, handleHide],
-                  )
-                }
-              </ClickOutHandler>
+              {
+                React.useMemo(
+                  () => (
+                    React.Children.map(
+                      props.children,
+                      (child: any) => (
+                        React.cloneElement(child, {
+                          ...child.props,
+                          onHide: props.onHide,
+                          themeName: props.themeName || 'default',
+                        })
+                      ),
+                    )
+                  ),
+                  [props.children, handleHide],
+                )
+              }
             </ModalFormStyled>
           </ModalFormContainer>
         </div>,

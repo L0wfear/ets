@@ -45,7 +45,7 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
     // const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-carpool" show onHide={this.props.hideWithoutChanges} bsSize="large" backdrop="static">
+      <EtsBootstrap.ModalContainer id="modal-carpool" show onHide={this.props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

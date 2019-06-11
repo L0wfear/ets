@@ -53,7 +53,7 @@ const TireModelForm: React.FC<PropsTireModel> = (props) => {
   );
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-tire_model" show onHide={props.hideWithoutChanges} backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-tire_model" show onHide={props.hideWithoutChanges}>
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>

@@ -28,7 +28,7 @@ const RequestInfoForm: React.FC<RequestInfoFormProps> = React.memo(
     const titleModal = `Заявка № ${request_number} была возвращена на доработку ${create_date}`;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.handleHide} backdrop="static" bsSize="large">
+      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={props.handleHide} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{titleModal}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>

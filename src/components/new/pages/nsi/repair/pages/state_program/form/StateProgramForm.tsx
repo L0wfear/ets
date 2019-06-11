@@ -41,7 +41,7 @@ const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
   const title = 'Государственная программа ремонта';
 
   return (
-    <EtsBootstrap.ModalContainer id="modal-state_program" show onHide={props.hideWithoutChanges} backdrop="static">
+    <EtsBootstrap.ModalContainer id="modal-state_program" show onHide={props.hideWithoutChanges}>
       <EtsBootstrap.ModalHeader closeButton>
         <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
       </EtsBootstrap.ModalHeader>
@@ -72,18 +72,16 @@ const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
         </EtsBootstrap.Row>
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
-        <div>
-          {
-            isPermitted // либо обновление, либо создание
-            ? (
-              <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
-          }
-          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-        </div>
+        {
+          isPermitted // либо обновление, либо создание
+          ? (
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+          )
+          : (
+            <DivNone />
+          )
+        }
+        <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
       </EtsBootstrap.ModalFooter>
     </EtsBootstrap.ModalContainer>
   );

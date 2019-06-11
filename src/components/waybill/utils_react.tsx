@@ -3,11 +3,13 @@ import { isEmpty } from 'lodash';
 
 export const confirmDialogChangeDate = (missionsNum) => {
   if (missionsNum.length) {
+    const moreThenOne = missionsNum.length > 1;
+
     return global.confirmDialog({
       title: 'Внимание!',
       body: (
         <div>
-          <p>{`Привязанные ${missionsNum.join(', ')} будут исключены из ПЛ, поскольку выходят за период действия ПЛ.`}</p>
+          <p>{`Привязанн${moreThenOne ? 'ые' : 'ое'} ${missionsNum.join(', ')} буд${moreThenOne ? 'ут' : 'ет' } исключен${moreThenOne ? 'ы' : 'о' } из ПЛ, поскольку выход${moreThenOne ? 'ят' : 'ит' } за период действия ПЛ.`}</p>
           <p>Вы уверены, что хотите продолжить?</p>
         </div>
       ),

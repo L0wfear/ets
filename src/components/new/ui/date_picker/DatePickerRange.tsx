@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import { DatePickerRangeContainer, ColStartDatePickerRange, ColDividerDatePickerRange, ColEndDatePickerRange } from './styled';
+import { DatePickerRangeContainer, DividerDatePickerRange } from './styled';
 import { isBoolean } from 'util';
+import EtsBootstrap from '../@bootstrap';
 
 type DatePickerRangeProps = {
   date_start_id: string;
@@ -75,7 +76,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
 
   return (
     <DatePickerRangeContainer allWidth={props.allWidth}>
-      <ColStartDatePickerRange md={5}>
+      <EtsBootstrap.Col md={6}>
         <ExtField
           id={props.date_start_id}
           type="date"
@@ -86,11 +87,11 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           error={props.date_start_error}
           disabled={props.disabled}
         />
-      </ColStartDatePickerRange>
-      <ColDividerDatePickerRange md={2} label={labelDatePickerStart} date_start_label={'date_start_label' in props && ''}>
+      </EtsBootstrap.Col>
+      <DividerDatePickerRange label={labelDatePickerStart} date_start_label={'date_start_label' in props && ''}>
         —
-      </ColDividerDatePickerRange>
-      <ColEndDatePickerRange md={5}>
+      </DividerDatePickerRange>
+      <EtsBootstrap.Col md={6}>
         <ExtField
           id={props.date_end_id}
           type="date"
@@ -101,7 +102,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           error={props.date_end_error}
           disabled={props.disabled}
         />
-      </ColEndDatePickerRange>
+      </EtsBootstrap.Col>
     </DatePickerRangeContainer>
   );
 };

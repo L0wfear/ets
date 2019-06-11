@@ -59,7 +59,7 @@ const SelectCarsConditionMonitoringKind: React.FC<SelectCarsConditionMonitoringK
     () => {
       let newValue = null;
       if (!monitoringKind || !monitoringKindOptions.find(({ value }) => value === monitoringKind)) {
-        newValue = get(monitoringKindOptions, '0.value');
+        newValue = get(monitoringKindOptions, '1.value');
       }
       if (status === INSPECT_STATUS.conditionLast) {
         newValue = (get(lastConductingInspect, 'monitoring_kind', null));

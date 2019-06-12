@@ -10,6 +10,9 @@ import FieldWaybillDriverId from './waybill_driver_id/FieldWaybillDriverId';
 import FieldWaybillWorkModeId from './waybill_work_mode_id/FieldWaybillWorkModeId';
 import FieldWaybillIdleTimeOnLine from './waybill_idle_time_on_line/FieldWaybillIdleTimeOnLine';
 import FieldWaybillMissions from './waybill_missions/FieldWaybillMissions';
+import FieldWaybillEquipmentFuel from './waybill_equipment_fuel/FieldWaybillEquipmentFuel';
+import FieldWaybillIsOneFuelTank from './waybill_is_one_fuel_tank/FieldWaybillIsOneFuelTank';
+import FieldWaybillCommonFuelStart from './waybill_common_fuel_start/FieldWaybillCommonFuelStart';
 
 type WaybillFormBodyProps = {
   formDataKey: string;
@@ -36,6 +39,11 @@ const WaybillFormBody: React.FC<WaybillFormBodyProps> = React.memo(
         <EtsBootstrap.Row>
           <FieldWaybillDriverId formDataKey={formDataKey} md={6} />
           <FieldWaybillWorkModeId formDataKey={formDataKey} md={6} />
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <FieldWaybillEquipmentFuel formDataKey={formDataKey} md={4} />
+          <FieldWaybillIsOneFuelTank formDataKey={formDataKey} md={4} />
+          <FieldWaybillCommonFuelStart formDataKey={formDataKey} md={4} />
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <FieldWaybillMissions formDataKey={formDataKey} />

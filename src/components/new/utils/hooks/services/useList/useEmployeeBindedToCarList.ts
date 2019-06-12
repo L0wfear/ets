@@ -10,14 +10,20 @@ const useEmployeeBindedToCarApiList = (car_id: Car['asuods_id'], page: string = 
 
   React.useEffect(
     () => {
+      let timeId = null;
       const loadData = async () => {
         if (car_id) {
+          timeId = setTimeout(
+            () => setList((oldList) => ({ ...oldList, isLoading: true })),
+            300,
+          );
           try {
             setList({
               list: [],
               isLoading: true,
             });
             const listData = await context.loadService('employee_binded_to_car').path(car_id).get<EmployeeBindedToCarApi>({}, { page, path });
+            clearTimeout(timeId);
             setList({
               list: listData,
               isLoading: false,
@@ -33,6 +39,10 @@ const useEmployeeBindedToCarApiList = (car_id: Car['asuods_id'], page: string = 
         }
       };
       loadData();
+
+      return () => {
+        clearTimeout(timeId);
+      };
     },
     [car_id],
   );

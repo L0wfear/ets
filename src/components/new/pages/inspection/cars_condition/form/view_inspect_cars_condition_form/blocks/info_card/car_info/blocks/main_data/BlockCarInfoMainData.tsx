@@ -134,7 +134,6 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           type="string"
           label="VIN:"
           value={state.vin}
-          readOnly={!IS_CREATING}
           onChange={props.handleChange}
           error={errors.vin}
           boundKeys="vin"

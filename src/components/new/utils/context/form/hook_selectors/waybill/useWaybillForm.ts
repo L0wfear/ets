@@ -1,10 +1,9 @@
 import * as React from 'react';
 import useForm from '../useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
-import { useSelector, shallowEqual } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
@@ -55,9 +54,8 @@ const useFormDataIsActiveOrIsClosed = (formDataKey: string) => {
  * можно ли редактировать закрытый ПЛ | можно, если нет он последний и нет активного для выбранного тс
  */
 const useFormDataCanEditIfClose = (formDataKey: string) => {
-  const userData = useSelector<ReduxState, InitialStateSession['userData']>(
-    (state) => getSessionState(state).userData,
-    shallowEqual,
+  const userData = useSelector(
+    (state: ReduxState) => getSessionState(state).userData,
   );
 
   const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
@@ -163,9 +161,8 @@ const useFormDataFetSelectedTrailer = (formDataKey: string) => {
 };
 
 const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string) => {
-  const userData = useSelector<ReduxState, InitialStateSession['userData']>(
-    (state) => getSessionState(state).userData,
-    shallowEqual,
+  const userData = useSelector(
+    (state: ReduxState) => getSessionState(state).userData,
   );
 
   const waybillFormData = useForm.useFormData<Waybill, WaybillFormStoreType>(formDataKey);

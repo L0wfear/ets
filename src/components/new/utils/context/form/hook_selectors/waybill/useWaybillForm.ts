@@ -4,6 +4,9 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
+import { useSelector, shallowEqual } from 'react-redux';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
 
 /**
  * является ли открытый ПЛ черновиком (IS_DRAFT)
@@ -51,7 +54,12 @@ const useFormDataIsActiveOrIsClosed = (formDataKey: string) => {
 /**
  * можно ли редактировать закрытый ПЛ | можно, если нет он последний и нет активного для выбранного тс
  */
-const useFormDataCanEditIfClose = (formDataKey: string, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
+const useFormDataCanEditIfClose = (formDataKey: string) => {
+  const userData = useSelector<ReduxState, InitialStateSession['userData']>(
+    (state) => getSessionState(state).userData,
+    shallowEqual,
+  );
+
   const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
   const IS_CLOSED = useFormDataIsClosed(formDataKey);
 
@@ -60,10 +68,10 @@ const useFormDataCanEditIfClose = (formDataKey: string, permissionsSet: InitialS
       return (
         IS_CLOSED
           && formState.closed_editable
-          && permissionsSet.has(waybillPermissions.update_closed)
+          && userData.permissionsSet.has(waybillPermissions.update_closed)
       );
     },
-    [formState.closed_editable, IS_CLOSED, permissionsSet],
+    [formState.closed_editable, IS_CLOSED, userData.permissionsSet],
   );
 
   return canEditIfClose;
@@ -154,16 +162,21 @@ const useFormDataFetSelectedTrailer = (formDataKey: string) => {
   return selectedTrailer;
 };
 
-const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
+const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string) => {
+  const userData = useSelector<ReduxState, InitialStateSession['userData']>(
+    (state) => getSessionState(state).userData,
+    shallowEqual,
+  );
+
   const waybillFormData = useForm.useFormData<Waybill, WaybillFormStoreType>(formDataKey);
 
   return React.useMemo(
     () => {
       return (
-        permissionsSet.has(waybillFormData.permissions.departure_and_arrival_values)
+        userData.permissionsSet.has(waybillFormData.permissions.departure_and_arrival_values)
       );
     },
-    [waybillFormData.permissions.departure_and_arrival_values, permissionsSet],
+    [waybillFormData.permissions.departure_and_arrival_values, userData.permissionsSet],
   );
 };
 

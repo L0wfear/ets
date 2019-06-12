@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -7,24 +6,11 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
-import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
-type StateProps = {
-  permissionsSet: InitialStateSession['userData']['permissionsSet'];
-};
-type DispatchProps = DispatchProp;
-type OwnProps = {
+type WaybillFieldOdometrEndProps = {
   formDataKey: string;
   md?: number;
 };
-
-type WaybillFieldOdometrEndProps = (
-  StateProps
-  & DispatchProps
-  & OwnProps
-);
 
 const WaybillFieldOdometrEnd: React.FC<WaybillFieldOdometrEndProps> = React.memo(
   (props) => {
@@ -35,8 +21,8 @@ const WaybillFieldOdometrEnd: React.FC<WaybillFieldOdometrEndProps> = React.memo
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
-    const canEditIfClose = useWaybillFormData.useFormDataCanEditIfClose(props.formDataKey, props.permissionsSet);
-    const isPermittedForDepartureAndArrivalValues = useWaybillFormData.useFormDataIsPermittedForDepartureAndArrivalValues(props.formDataKey, props.permissionsSet);
+    const canEditIfClose = useWaybillFormData.useFormDataCanEditIfClose(props.formDataKey);
+    const isPermittedForDepartureAndArrivalValues = useWaybillFormData.useFormDataIsPermittedForDepartureAndArrivalValues(props.formDataKey);
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
@@ -92,8 +78,4 @@ const WaybillFieldOdometrEnd: React.FC<WaybillFieldOdometrEndProps> = React.memo
   },
 );
 
-export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
-  (state) => ({
-    permissionsSet: getSessionState(state).userData.permissionsSet,
-  }),
-)(WaybillFieldOdometrEnd);
+export default WaybillFieldOdometrEnd;

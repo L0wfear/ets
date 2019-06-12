@@ -3,12 +3,14 @@ import { validate, canSaveTest } from './validate';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 type AddFormDataToStore<T = any, Store = Record<string, any>> = (
+  formDataKey: string,
   formData: ConfigFormDataForAdd<T, Store>,
   element: Partial<T>,
   sessionData: InitialStateSession,
 ) => {
   type: 'ADD_FORM_CONTEXT_FORM_DATA';
   payload: {
+    formDataKey: string;
     formData: ConfigFormDataForAdd<T, Store>;
     element: Partial<T>;
     sessionData: InitialStateSession,
@@ -72,9 +74,10 @@ export const initialFormProviderState: React.ReducerState<ReducerFormProvider> =
 };
 
 // экшен добавления formData в formDataByKey
-export const addFormDataToStore: AddFormDataToStore = (formData, element, sessionData) => ({
+export const addFormDataToStore: AddFormDataToStore = (formDataKey, formData, element, sessionData) => ({
   type: ADD_FORM_CONTEXT_FORM_DATA,
   payload: {
+    formDataKey,
     formData,
     element,
     sessionData,
@@ -132,76 +135,77 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
       formDataByKey,
     };
   }
+  if (action.payload.formDataKey in state.formDataByKey) {
+    if (action.type === REMOVE_FORM_CONTEXT_FORM_DATA) {
+      console.log('❌❌❌❌❌❌❌❌❌❌'); // tslint:disable-line:no-console
+      const formDataByKey = { ...state.formDataByKey };
+      delete formDataByKey[action.payload.formDataKey];
 
-  if (action.type === REMOVE_FORM_CONTEXT_FORM_DATA) {
-    console.log('❌❌❌❌❌❌❌❌❌❌'); // tslint:disable-line:no-console
-    const formDataByKey = { ...state.formDataByKey };
-    delete formDataByKey[action.payload.formDataKey];
-
-    return {
-      ...state,
-      formDataByKey,
-    };
-  }
-
-  console.log('----'); // tslint:disable-line:no-console
-  if (action.type === CHANGE_FORM_CONTEXT_FORM_STATE) {
-    const formDataByKey = { ...state.formDataByKey };
-    const formData = { ...formDataByKey[action.payload.formDataKey] };
-
-    const formState = {
-      ...formData.formState,
-      ...action.payload.partialFormState,
-    };
-    const formErrors = validate<typeof formState>(formData.schema.body, formState);
-    const canSave = canSaveTest(formErrors);
-
-    let partialFormStateToShow: object | string = action.payload.partialFormState;
-    let formErrorsToShow: object | string = formErrors;
-
-    if (!__DEVELOPMENT__) {
-      partialFormStateToShow = JSON.stringify(partialFormStateToShow);
-      formErrorsToShow = JSON.stringify(formErrorsToShow);
+      return {
+        ...state,
+        formDataByKey,
+      };
     }
 
-    console.log('⚙️ FORM CHANGE FORM STATE', partialFormStateToShow); // tslint:disable-line:no-console
-    console.log('⚙️ FORM CHANGE FORM ERRORS', formErrorsToShow); // tslint:disable-line:no-console
-    console.log('⚙️ FORM CANSAVE', canSave); // tslint:disable-line:no-console
+    console.log('----'); // tslint:disable-line:no-console
+    if (action.type === CHANGE_FORM_CONTEXT_FORM_STATE) {
+      const formDataByKey = { ...state.formDataByKey };
+      const formData = { ...formDataByKey[action.payload.formDataKey] };
 
-    formData.formState = formState;
-    formData.formErrors = formErrors;
-    formData.canSave = canSave;
+      const formState = {
+        ...formData.formState,
+        ...action.payload.partialFormState,
+      };
+      const formErrors = validate<typeof formState>(formData.schema.body, formState);
+      const canSave = canSaveTest(formErrors);
 
-    formDataByKey[action.payload.formDataKey] = formData;
+      let partialFormStateToShow: object | string = action.payload.partialFormState;
+      let formErrorsToShow: object | string = formErrors;
 
-    return {
-      ...state,
-      formDataByKey,
-    };
-  }
+      if (!__DEVELOPMENT__) {
+        partialFormStateToShow = JSON.stringify(partialFormStateToShow);
+        formErrorsToShow = JSON.stringify(formErrorsToShow);
+      }
 
-  if (action.type === CHANGE_FORM_CONTEXT_STORE) {
-    const formDataByKey = { ...state.formDataByKey };
-    const formData = { ...formDataByKey[action.payload.formDataKey] };
-    formData.store = {
-      ...formData.store,
-      ...action.payload.partialStore,
-    };
+      console.log('⚙️ FORM CHANGE FORM STATE', partialFormStateToShow); // tslint:disable-line:no-console
+      console.log('⚙️ FORM CHANGE FORM ERRORS', formErrorsToShow); // tslint:disable-line:no-console
+      console.log('⚙️ FORM CANSAVE', canSave); // tslint:disable-line:no-console
 
-    let storeToShow: object | string = formData.store;
+      formData.formState = formState;
+      formData.formErrors = formErrors;
+      formData.canSave = canSave;
 
-    if (!__DEVELOPMENT__) {
-      storeToShow = JSON.stringify(storeToShow);
+      formDataByKey[action.payload.formDataKey] = formData;
+
+      return {
+        ...state,
+        formDataByKey,
+      };
     }
 
-    console.log('⚙️ FORM CHANGE STORE', storeToShow); // tslint:disable-line:no-console
+    if (action.type === CHANGE_FORM_CONTEXT_STORE) {
+      const formDataByKey = { ...state.formDataByKey };
+      const formData = { ...formDataByKey[action.payload.formDataKey] };
+      formData.store = {
+        ...formData.store,
+        ...action.payload.partialStore,
+      };
 
-    formDataByKey[action.payload.formDataKey] = formData;
+      let storeToShow: object | string = formData.store;
 
-    return {
-      ...state,
-      formDataByKey,
-    };
+      if (!__DEVELOPMENT__) {
+        storeToShow = JSON.stringify(storeToShow);
+      }
+
+      console.log('⚙️ FORM CHANGE STORE', storeToShow); // tslint:disable-line:no-console
+
+      formDataByKey[action.payload.formDataKey] = formData;
+
+      return {
+        ...state,
+        formDataByKey,
+      };
+    }
   }
 
   return state;

@@ -13,6 +13,7 @@ import FieldWaybillMissions from './waybill_missions/FieldWaybillMissions';
 import FieldWaybillEquipmentFuel from './waybill_equipment_fuel/FieldWaybillEquipmentFuel';
 import FieldWaybillIsOneFuelTank from './waybill_is_one_fuel_tank/FieldWaybillIsOneFuelTank';
 import FieldWaybillCommonFuelStart from './waybill_common_fuel_start/FieldWaybillCommonFuelStart';
+import WaybillCarFuelBlock from './waybill_car_fuel_block/WaybillCarFuelBlock';
 
 type WaybillFormBodyProps = {
   formDataKey: string;
@@ -44,6 +45,9 @@ const WaybillFormBody: React.FC<WaybillFormBodyProps> = React.memo(
           <FieldWaybillEquipmentFuel formDataKey={formDataKey} md={4} />
           <FieldWaybillIsOneFuelTank formDataKey={formDataKey} md={4} />
           <FieldWaybillCommonFuelStart formDataKey={formDataKey} md={4} />
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <WaybillCarFuelBlock formDataKey={formDataKey} md={12} />
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <FieldWaybillMissions formDataKey={formDataKey} />

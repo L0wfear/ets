@@ -98,7 +98,7 @@ const useFormDataSchemaHandleHide = <T extends any>(formDataKey: string) => {
 const useFormDataHandleChange = <T extends any>(formDataKey: string) => {
   const formData = useFormData<T, any>(formDataKey);
 
-  return formData ? formData.handleChange : null;
+  return formData.handleChange;
 };
 
 /**

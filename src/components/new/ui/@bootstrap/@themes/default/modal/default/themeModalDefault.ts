@@ -9,7 +9,7 @@ const themeModalDefault: ThemeModal = {
       default: 'white',
     },
     footer: {
-      default: '##7fc650',
+      default: '#e9f0f5',
     },
   },
   padding: {

@@ -154,6 +154,19 @@ const useFormDataFetSelectedTrailer = (formDataKey: string) => {
   return selectedTrailer;
 };
 
+const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
+  const waybillFormData = useForm.useFormData<Waybill, WaybillFormStoreType>(formDataKey);
+
+  return React.useMemo(
+    () => {
+      return (
+        permissionsSet.has(waybillFormData.permissions.departure_and_arrival_values)
+      );
+    },
+    [waybillFormData.permissions.departure_and_arrival_values, permissionsSet],
+  );
+};
+
 const useWaybillFormData = {
   useFormDataIsDraft,
   useFormDataIsActive,
@@ -163,6 +176,7 @@ const useWaybillFormData = {
   useFormDataCanEditIfClose,
   useFormDataFetSelectedCar,
   useFormDataFetSelectedTrailer,
+  useFormDataIsPermittedForDepartureAndArrivalValues,
 };
 
 export default useWaybillFormData;

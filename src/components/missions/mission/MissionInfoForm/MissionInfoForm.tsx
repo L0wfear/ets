@@ -168,7 +168,7 @@ class MissionInfoForm extends React.Component <PropsMissionInfoForm, StateMissio
       this.setState({
         polys: {
           points: missionReport.reduce((newObj, data, index) => {
-            newObj[`points/${index}`] = {
+            newObj[`points/${index + 1}`] = {
               ...data,
               ...route_data.object_list[index],
               frontIsSelected: false,

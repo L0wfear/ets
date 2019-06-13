@@ -249,7 +249,7 @@ export default class Field extends React.Component {
           date={date || value}
           className={dateClassName}
         />
-        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
+        <Div hidden={!error} className="error" style={{ marginTop: 0 }}>
           {error}
         </Div>
       </Div>
@@ -272,7 +272,7 @@ export default class Field extends React.Component {
           </label>
         )}
         <FileInput {...props} errorClassName={errorClassName} />
-        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
+        <Div hidden={!error} className="error" style={{ marginTop: 0 }}>
           {error}
         </Div>
       </Div>
@@ -299,7 +299,7 @@ export default class Field extends React.Component {
           disabled={readOnly || this.props.disabled}
           className={selectClassName}
         />
-        <Div hidden={!error} className="error" style={{ marginTop: 4 }}>
+        <Div hidden={!error} className="error" style={{ marginTop: 0 }}>
           {error}
         </Div>
       </Div>

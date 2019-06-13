@@ -77,7 +77,17 @@ export type Waybill = {
   status: 'draft' | any;
   structure_id: number;
   structure_name: string;
-  tax_data: any[];
+  tax_data: {
+    FACT_VALUE: number;
+    FUEL_RATE: number;
+    OPERATION: number;
+    RESULT: string;       // number.toFixed(3)
+    comment: string;
+    fuel_correction_rate: number;
+    is_excluding_mileage: boolean;
+    measure_unit_name: string;
+    operation_name: string;
+  }[];
   track_length: number;
   trailer_id: number;
   trailer_type_id: number;

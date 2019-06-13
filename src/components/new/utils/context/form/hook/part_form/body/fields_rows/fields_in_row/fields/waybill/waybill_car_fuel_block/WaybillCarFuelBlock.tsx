@@ -4,6 +4,7 @@ import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { BorderDash } from 'global-styled/global-styled';
 import WaybillBlockIndicator from './waybill_block_indicator/WaybillBlockIndicator';
+import WaybillBlockFuel from './waybill_block_fuel/WaybillBlockFuel';
 
 type WaybillCarFuelBlockProps = {
   formDataKey: string;
@@ -26,6 +27,7 @@ const WaybillCarFuelBlock: React.FC<WaybillCarFuelBlockProps> = React.memo(
               <EtsBootstrap.Row>
                 <EtsBootstrap.Col md={12}>
                   <WaybillBlockIndicator formDataKey={props.formDataKey} md={4} />
+                  <WaybillBlockFuel formDataKey={props.formDataKey} md={8} />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
             </BorderDash>

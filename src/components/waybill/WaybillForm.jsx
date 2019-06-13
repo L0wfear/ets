@@ -921,20 +921,71 @@ class WaybillForm extends UNSAFE_Form {
   // очистка данных по топливу спецоборудования
   // возвращает true/false, да/нет в диалоговом окне
   clearFuelEquipmentData = async (
-    changedFieldsData,
-    withConfirmDialog,
-    dialogBody,
+    changedFieldsData, // поля, которые ещё необходимо изменить
+    withConfirmDialog, // показывать окно подтверждения очистки
+    dialogBody, // текст сообщения
+    changeSelectorKey, // ключ поля, из-за которого тригерится всплывашка
   ) => {
-    const changeObj = {
+    //is_one_fuel_tank, equipment_fuel
+    const fuelEquipmentChangeObj = {
       equipment_refill: [],
       equipment_fuel_given: null,
       equipment_fuel_type: null,
       equipment_fuel_to_give: null,
       equipment_fuel_start: null,
       equipment_fuel_end: null,
+    };
+
+    const changeObj = {
+      ...fuelEquipmentChangeObj,
       ...changedFieldsData,
     };
-    if (withConfirmDialog) {
+
+    const equipmentCheckedKeyList = [
+      // список полей, которые необходимо проверить на изменение
+      'motohours_equip_start',
+    ];
+
+    // список полей, которые необходимо проверить на изменение
+    const fuelEquipmentChekedKeyList = Object.keys(fuelEquipmentChangeObj);
+    const fixedFloatKey = [
+      // поля формата float, которые хранятся как строка "0.000"
+      'equipment_fuel_end',
+    ];
+
+    let formWillChange = false; // проверяем изменяются ли значения в форме
+
+    const formState = get(this, 'props.formState', null);
+
+    if (formState) {
+      const checkedList
+        = changeSelectorKey === 'equipment_fuel' // поля, которые может поменять пользак
+          ? [...equipmentCheckedKeyList, ...fuelEquipmentChekedKeyList]
+          : changeSelectorKey === 'is_one_fuel_tank'
+            ? [...fuelEquipmentChekedKeyList]
+            : [];
+      formWillChange = Object.keys(changeObj).some((key) => {
+        let isEqualData = false;
+        if (Array.isArray(formState[key])) {
+          isEqualData = !formState[key].length;
+        } else {
+          if (fixedFloatKey.includes(key)) {
+            isEqualData = formState[key]
+              ? parseFloat(formState[key]) === 0
+              : true;
+          } else {
+            isEqualData
+              = formState[key] === changeObj[key]
+              || formState[key] === ''
+              || isNullOrUndefined(formState[key])
+              || formState[key] === 0;
+          }
+        }
+        return !isEqualData && checkedList.includes(key);
+      });
+    }
+
+    if (withConfirmDialog && formWillChange) {
       try {
         await confirmDialog({
           title: 'Внимание',
@@ -964,6 +1015,7 @@ class WaybillForm extends UNSAFE_Form {
         changeObj,
         true,
         'Очистить введенные данные по топливу спецоборудования?',
+        'is_one_fuel_tank',
       );
     }
     if (!dialogIsConfirmed && !changeObj.is_one_fuel_tank) {
@@ -1012,6 +1064,8 @@ class WaybillForm extends UNSAFE_Form {
             ...setEmptyFieldByKey(fieldToCheckHasData),
           },
           true,
+          false,
+          'equipment_fuel',
         );
       }
     }

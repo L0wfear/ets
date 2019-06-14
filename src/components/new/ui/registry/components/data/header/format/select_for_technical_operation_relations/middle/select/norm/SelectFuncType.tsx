@@ -46,7 +46,7 @@ const makeOptions = memoizeOne(
             (newArr, rowData) => {
               rowData.car_func_types.forEach((itemRowData) => {
                 newArr.push({
-                  value: itemRowData.asuods_id,
+                  value: itemRowData.asuods_id, // <<< asuods_id swap cleaning/norm_registry
                   label: itemRowData.name || itemRowData.short_name,
                   rowData,
                   itemRowData,

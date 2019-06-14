@@ -2,11 +2,11 @@ import {
   FuelCardsService,
 } from 'api/Services';
 import { get } from 'lodash';
-import { FuelCards } from '../@types/fuelcards.h';
+import { FuelCard } from '../@types/fuelcards.h';
 
-export const createFuelCards = async (rawFuelCards) => {
+export const createFuelCard = async (rawFuelCard): Promise<FuelCard> => {
   const payload = {
-    ...rawFuelCards,
+    ...rawFuelCard,
   };
 
   const response = await FuelCardsService.post(
@@ -15,15 +15,14 @@ export const createFuelCards = async (rawFuelCards) => {
     'json',
   );
 
-  const fuelCardsRes = get(response, ['result', 0],  null);
-
   return {
-    fuelCardsRes,
+    ...rawFuelCard,
+    ...get(response, 'result.0', {}),
   };
 
 };
 
-export const updateFuelCards = async (fuelCards) => {
+export const updateFuelCard = async (fuelCards): Promise<FuelCard> => {
   const payload = {
     ...fuelCards,
   };
@@ -34,15 +33,13 @@ export const updateFuelCards = async (fuelCards) => {
     'json',
   );
 
-  const fuelCardsRes = get(response, ['result', 0],  null);
-
   return {
-    fuelCardsRes,
+    ...fuelCards,
+    ...get(response, 'result.0', {}),
   };
-
 };
 
-export const getFuelCards = async (payload: any): Promise<{ data: FuelCards[] }> => {
+export const getFuelCards = async (payload: any): Promise<{ data: FuelCard[] }> => {
   return FuelCardsService.get({ ...payload })
     .catch((error) => {
       console.log(error); // tslint:disable-line:no-console

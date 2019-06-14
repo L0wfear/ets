@@ -15,7 +15,7 @@ import {
   DispatchPropsFuelCards,
   PropsFuelCardsWithForm,
 } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import {
@@ -28,7 +28,7 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 
 import fuelCardsPermissions from '../_config-data/permissions';
 import { fuelCardsFormSchema } from './schema';
-import { getDefaultFuelCardsElement } from './utils';
+import { getDefaultFuelCardElement } from './utils';
 import { FuelCardsIsCommonWrapper } from './styled';
 
 const popover = (
@@ -213,9 +213,9 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       .STRUCTURE_FIELD_VIEW,
     userStructureId: getSessionState(state).userData.structure_id,
   })),
-  withForm<PropsFuelCardsWithForm, FuelCards>({
+  withForm<PropsFuelCardsWithForm, FuelCard>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateFuelCards,
+    createAction: autobaseActions.autobaseCreateFuelCard,
     updateAction: autobaseActions.fuelCardsUpdate,
     mergeElement: (props) => {
       const { companyOptions, userCompanyId, userStructureId } = props;
@@ -228,13 +228,13 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
           ? userCompanyId
           : props.element.company_id;
 
-      const newElement: Partial<FuelCards> = {
+      const newElement: Partial<FuelCard> = {
         ...props.element,
         company_id: companiesDefaultValue,
         structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : null,
       };
 
-      return getDefaultFuelCardsElement(newElement);
+      return getDefaultFuelCardElement(newElement);
     },
     schema: fuelCardsFormSchema,
     permissions: fuelCardsPermissions,

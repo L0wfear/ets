@@ -37,7 +37,7 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
     const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
     const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
-    const selectedCar = useWaybillFormData.useFormDataFetSelectedCar(props.formDataKey);
+    const selectedCar = useWaybillFormData.useFormDataGetSelectedCar(props.formDataKey);
 
     const wsStateDataUse = useWsCarPoints();
     const moscowTimeData = useMoscowTime(page, path);

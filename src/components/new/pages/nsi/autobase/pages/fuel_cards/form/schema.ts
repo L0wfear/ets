@@ -1,8 +1,8 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsFuelCards } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
-export const fuelCardsFormSchema: SchemaType<FuelCards, PropsFuelCards> = {
+export const fuelCardsFormSchema: SchemaType<FuelCard, PropsFuelCards> = {
   properties: {
     number: {
       title: 'Номер',

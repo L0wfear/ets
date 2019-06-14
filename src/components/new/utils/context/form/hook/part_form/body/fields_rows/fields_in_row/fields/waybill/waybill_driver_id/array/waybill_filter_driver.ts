@@ -62,6 +62,8 @@ const waybillFilterDrivers = memoizeOne(
     gov_number: string,
     car_id: number,
     structure_id: number,
+    driver_id?: number,
+    driver_fio?: string,
   ) => {
     const initialList = makeEmployeeList(
       employeeBindedToCarList,
@@ -86,10 +88,9 @@ const waybillFilterDrivers = memoizeOne(
       [],
     );
 
-    return (
-      driverWithSelectedCar.length
-        ? driverWithSelectedCar
-        : initialList
+    const options = (driverWithSelectedCar.length
+    ? driverWithSelectedCar
+    : initialList
     ).reduce(
       (newArr, employeeData) => {
         const validateByStructure = validateEmployeeByStructureId(structure_id, employeeData);
@@ -123,6 +124,16 @@ const waybillFilterDrivers = memoizeOne(
       },
       [],
     );
+
+    if (driver_id && driver_fio && !options.find(({ rowData }) => rowData.id === driver_id )) {
+      options.push({
+        value: driver_id,
+        label: driver_fio,
+        rowData: {},
+      });
+    }
+
+    return options;
   },
 );
 

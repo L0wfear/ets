@@ -12,6 +12,8 @@ import { EdcRequestComments } from 'components/new/utils/context/loading/@types/
 import { EmployeeBindedToCar } from "./by_service/employee_binded_to_car";
 import { MedicalStatsAllowedDriver } from "./by_service/medical_stats_allowed_drivers";
 import { WorkMode } from "./by_service/work_mode";
+import { RefillType } from "./by_service/refill_type";
+import { FuelCard } from "redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h";
 
 export type CountryApi = LoadingServiceGeneric<'country', object, Country[]>;
 export type TypesApi = LoadingServiceGeneric<'types', object, CarFuncTypes[]>;
@@ -30,3 +32,5 @@ export type EdcRequestCommentsApi = LoadingServiceGeneric<string, object, EdcReq
 export type EmployeeBindedToCarApi = LoadingServiceGeneric<'employee_binded_to_car', object, EmployeeBindedToCar[]>;
 export type MedicalStatsAllowedDriverApi = LoadingServiceGeneric<'medical_stats/allowed_drivers', { company_id: number, date_from: string, date_to: string, type: 'before' }, MedicalStatsAllowedDriver[]>;
 export type WorkModeApi = LoadingServiceGeneric<'work_mode', null, WorkMode[]>;
+export type RefillTypeApi = LoadingServiceGeneric<'refill_type', null, RefillType[]>;
+export type FuelCardsApi = LoadingServiceGeneric<'fuel_cards', null, FuelCard[]>;

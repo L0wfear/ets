@@ -81,7 +81,7 @@ const useFormDataCanEditIfClose = (formDataKey: string) => {
  * STRUCTURE_FIELD_READONLY - дизейбл
  * STRUCTURE_FIELD_DELETABLE - возможность удалить
  */
-const useWaybillPickStructureData = (options: Array<any>, userStructureId: number) => {
+const useFormDataPickStructureData = (options: Array<any>, userStructureId: number) => {
   return React.useMemo(
     () => {
       let STRUCTURE_FIELD_VIEW = false;
@@ -116,7 +116,7 @@ const useWaybillPickStructureData = (options: Array<any>, userStructureId: numbe
   );
 };
 
-const useFormDataFetSelectedCar = (formDataKey: string) => {
+const useFormDataGetSelectedCar = (formDataKey: string) => {
   const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
   const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
 
@@ -138,7 +138,7 @@ const useFormDataFetSelectedCar = (formDataKey: string) => {
   return selectedCar;
 };
 
-const useFormDataFetSelectedTrailer = (formDataKey: string) => {
+const useFormDataGetSelectedTrailer = (formDataKey: string) => {
   const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
   const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
 
@@ -182,10 +182,10 @@ const useWaybillFormData = {
   useFormDataIsActive,
   useFormDataIsClosed,
   useFormDataIsActiveOrIsClosed,
-  useWaybillPickStructureData,
+  useFormDataPickStructureData,
   useFormDataCanEditIfClose,
-  useFormDataFetSelectedCar,
-  useFormDataFetSelectedTrailer,
+  useFormDataGetSelectedCar,
+  useFormDataGetSelectedTrailer,
   useFormDataIsPermittedForDepartureAndArrivalValues,
 };
 

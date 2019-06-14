@@ -78,6 +78,7 @@ export const BorderDash = styled.div<{
     const { width = 1, borderStyle = 'solid', color = 'black' } = props;
     return `${width}px ${borderStyle} ${color}`;
   }};
+  padding: 5px 0;
 `;
 
 export const BtnPart = styled.div`

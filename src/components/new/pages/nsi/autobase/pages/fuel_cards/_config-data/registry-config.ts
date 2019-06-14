@@ -1,13 +1,13 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import fuelCardsPermissions from './permissions';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 
 export const registryKey = 'fuelCardsRegistry';
 
-export const getToConfig = (): TypeConfigData<FuelCards> => {
+export const getToConfig = (): TypeConfigData<FuelCard> => {
   return {
     Service: {
       getRegistryData: {

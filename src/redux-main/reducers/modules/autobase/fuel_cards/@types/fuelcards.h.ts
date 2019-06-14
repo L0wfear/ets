@@ -1,4 +1,4 @@
-export type FuelCards = {
+export type FuelCard = {
   id: number | null;
   number: string | null; // Поле "Номер"
   fuel_type: string | null; // Поле «Тип топлива»
@@ -12,22 +12,12 @@ export type FuelCards = {
 };
 
 export type StateFuelCards = {
-  fuelCardsList: FuelCards[];
+  fuelCardsList: FuelCard[];
 };
 
 export type FuelType = {
   id: string;
   name: string | null;
 };
-
-export type AutobaseCreateFuelCards = (
-  fuelCardsOld: FuelCards & { id?: number },
-  { page, path }: { page: string; path?: string },
-) => Promise<any>;
-
-export type AutobaseUpdateFuelCards = (
-  fuelCardsOld: FuelCards,
-  { page, path }: { page: string; path?: string },
-) => Promise<any>;
 
 export type getFuelType = () => any;

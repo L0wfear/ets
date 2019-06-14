@@ -1,7 +1,7 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
-export const defaultFuelCards: FuelCards = {
+export const defaultFuelCard: FuelCard = {
   id: null,
   number: null,
   fuel_type: null,
@@ -14,13 +14,13 @@ export const defaultFuelCards: FuelCards = {
   structure_name: null,
 };
 
-export const getDefaultFuelCardsElement = (element: Partial<FuelCards>): FuelCards => {
-  const newElement = { ...defaultFuelCards };
+export const getDefaultFuelCardElement = (element: Partial<FuelCard>): FuelCard => {
+  const newElement = { ...defaultFuelCard };
   if (isObject(element)) {
-    Object.keys(defaultFuelCards).forEach((key) => {
+    Object.keys(defaultFuelCard).forEach((key) => {
       newElement[key] = !isNullOrUndefined(element[key])
         ? element[key]
-        : defaultFuelCards[key];
+        : defaultFuelCard[key];
     });
   }
 

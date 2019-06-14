@@ -48,7 +48,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
       useStructureOptions(),
     );
 
-    const structurePickData = useWaybillFormData.useWaybillPickStructureData(
+    const structurePickData = useWaybillFormData.useFormDataPickStructureData(
       options,
       props.userStructureId,
     );

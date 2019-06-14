@@ -12,7 +12,7 @@ import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
 type FieldWaybillCarRefillStateProps = {
@@ -153,7 +153,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
       [fuelCardIdOptions, typeIdOptions, props.array],
     );
 
-    const handleUpdateFuelCards = React.useCallback(
+    const handleUpdateFuelCard = React.useCallback(
       () => {
         props.fuelCardsGetAndSetInStore(
           {},
@@ -175,7 +175,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
             props.fuel_type,
             props.userCompanyId,
             props.userStructureId,
-          ) as DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]).reduce(
+          ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]).reduce(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
 
@@ -217,7 +217,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
               fuel_type={props.fuel_type}
               noHasFuelCardIdOptions={!fuelCardIdOptions.length}
 
-              handleUpdateFuelCards={handleUpdateFuelCards}
+              handleUpdateFuelCard={handleUpdateFuelCard}
               page={props.page}
 
               buttonWidth={160}

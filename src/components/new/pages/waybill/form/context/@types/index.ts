@@ -6,6 +6,8 @@ import { Car } from "redux-main/reducers/modules/autobase/@types/autobase.h";
 import { EmployeeBindedToCar } from "components/new/utils/context/loading/@types/by_service/employee_binded_to_car";
 import { MedicalStatsAllowedDriver } from "components/new/utils/context/loading/@types/by_service/medical_stats_allowed_drivers";
 import { WorkMode } from "components/new/utils/context/loading/@types/by_service/work_mode";
+import { RefillType } from "components/new/utils/context/loading/@types/by_service/refill_type";
+import { FuelCard } from "redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h";
 
 export type WaybillFormStoreType = {
   mission_reject_list: {
@@ -53,4 +55,30 @@ export type WaybillFormStoreType = {
     }[]
     isLoading: boolean;
   };
+  refillTypeList: {
+    list: RefillType[],
+    isLoading: boolean;
+  },
+  refillTypeOptions: {
+    options: {
+      value: RefillType['id'];
+      label: RefillType['name'];
+      isNotVisible: boolean;
+      rowData: RefillType;
+    }[]
+    isLoading: boolean;
+  };
+  fuelCardsList: {
+    list: FuelCard[];
+    isLoading: boolean;
+  };
+  carRefillFuelCardsOptions: {
+    listIndex: Record<FuelCard['id'], FuelCard>,
+    options: {
+      value: FuelCard['id'];
+      label: FuelCard['number'];
+      rowData: FuelCard;
+    }[]
+    isLoading: boolean;
+  },
 };

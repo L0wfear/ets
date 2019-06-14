@@ -29,11 +29,6 @@ const FieldWaybillDriverIdArray: React.FC<FieldWaybillDriverIdArrayProps> = Reac
     const {
       driver_id: value,
       car_id,
-      gov_number,
-      plan_departure_date,
-      plan_arrival_date,
-      company_id,
-      structure_id,
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const {
       driver_id: error,
@@ -42,18 +37,12 @@ const FieldWaybillDriverIdArray: React.FC<FieldWaybillDriverIdArrayProps> = Reac
 
     const employeeBindedToCarOptionData = useWaybillDrivers(
       props.formDataKey,
-      car_id,
-      plan_departure_date,
-      plan_arrival_date,
-      company_id,
-      gov_number,
-      structure_id,
     );
 
     const notSelectedCarId = !car_id;
 
     const handleChangeWrap = React.useCallback(
-      (keyName, valueNew, option) => {
+      (keyName, valueNew) => {
         handleChange({
           [keyName]: valueNew,
         });

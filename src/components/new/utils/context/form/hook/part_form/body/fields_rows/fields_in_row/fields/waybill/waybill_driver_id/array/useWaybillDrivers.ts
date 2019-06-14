@@ -9,7 +9,18 @@ import useMedicalStatsAllowedDriverList from "components/new/utils/hooks/service
 import waybillFilterDrivers from './waybill_filter_driver';
 import useEmployeeBindedToCarApiList from 'components/new/utils/hooks/services/useList/useEmployeeBindedToCarList';
 
-export const useWaybillDrivers = (formDataKey: string, car_id: Waybill['car_id'], plan_departure_date: Waybill['plan_departure_date'], plan_arrival_date: Waybill['plan_arrival_date'], company_id: Waybill['company_id'], gov_number: Waybill['gov_number'], structure_id: Waybill['structure_id']) => {
+export const useWaybillDrivers = (formDataKey: string) => {
+  const {
+    car_id,
+    gov_number,
+    plan_departure_date,
+    plan_arrival_date,
+    company_id,
+    structure_id,
+    driver_id,
+    driver_fio,
+  } = useForm.useFormDataFormState<Waybill>(formDataKey);
+
   const employeeBindedToCarListData = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'employeeBindedToCar'>(
     formDataKey,
     'employeeBindedToCar',
@@ -40,13 +51,15 @@ export const useWaybillDrivers = (formDataKey: string, car_id: Waybill['car_id']
 
       if (!isLoading) {
         if (employeeBindedToCarListData.list.length) {
-          options = waybillFilterDrivers(
+        options = waybillFilterDrivers(
             uniqBy(employeeBindedToCarListData.list, 'employee_id'),
             medicalStatsAllowedDriversListData.list,
             employeeListData.listIndex,
             gov_number,
             car_id,
             structure_id,
+            driver_id,
+            driver_fio,
           );
         }
       }
@@ -60,6 +73,11 @@ export const useWaybillDrivers = (formDataKey: string, car_id: Waybill['car_id']
       employeeBindedToCarListData,
       medicalStatsAllowedDriversListData,
       employeeListData,
+      gov_number,
+      car_id,
+      structure_id,
+      driver_id,
+      driver_fio,
     ],
   );
 

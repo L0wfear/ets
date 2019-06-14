@@ -20,7 +20,7 @@ type CarRefillTableHeaderProps = {
   page: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
-  handleUpdateFuelCards: any;
+  handleUpdateFuelCard: any;
   title: string;
   noHasFuelCardIdOptions: boolean;
   buttonWidth: number;
@@ -73,7 +73,7 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
             {
               props.visibleButtons && (
                 <ButtonCreateFuelCard
-                  handleUpdateFuelCards={props.handleUpdateFuelCards}
+                  handleUpdateFuelCard={props.handleUpdateFuelCard}
                   structure_id={props.structure_id}
                   fuel_type={props.fuel_type}
                   buttonWidth={props.buttonWidth}

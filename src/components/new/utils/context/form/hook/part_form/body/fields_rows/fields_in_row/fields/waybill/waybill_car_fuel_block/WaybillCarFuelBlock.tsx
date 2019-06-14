@@ -5,6 +5,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { BorderDash } from 'global-styled/global-styled';
 import WaybillBlockIndicator from './waybill_block_indicator/WaybillBlockIndicator';
 import WaybillBlockFuel from './waybill_block_fuel/WaybillBlockFuel';
+import WaybillBlockCarRefill from './waybill_block_car_refill/WaybillBlockCarRefill';
 
 type WaybillCarFuelBlockProps = {
   formDataKey: string;
@@ -28,6 +29,9 @@ const WaybillCarFuelBlock: React.FC<WaybillCarFuelBlockProps> = React.memo(
                 <EtsBootstrap.Col md={12}>
                   <WaybillBlockIndicator formDataKey={props.formDataKey} md={4} />
                   <WaybillBlockFuel formDataKey={props.formDataKey} md={8} />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={12}>
+                  <WaybillBlockCarRefill formDataKey={props.formDataKey} md={12} />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
             </BorderDash>

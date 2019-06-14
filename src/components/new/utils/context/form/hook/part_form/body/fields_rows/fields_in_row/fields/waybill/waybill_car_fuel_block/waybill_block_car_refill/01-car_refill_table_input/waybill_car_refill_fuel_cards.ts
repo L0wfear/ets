@@ -1,6 +1,7 @@
+import memoizeOne from 'memoize-one';
+
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import memoizeOne from 'memoize-one';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
@@ -51,7 +52,7 @@ export const makeFuelCardIdOptions = memoizeOne(
     userCompanyId: InitialStateSession['userData']['company_id'],
     userStructureId: InitialStateSession['userData']['structure_id'],
   ) => {
-    return fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
+    return fuelCardsList.reduce<{ value: FuelCard['id'], label: FuelCard['number'], rowData: FuelCard }[]>(
       (newArr, rowData) => {
         const triggerOnShow = (
           (

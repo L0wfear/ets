@@ -15,6 +15,8 @@ import {
   CarActualApi,
   MedicalStatsAllowedDriverApi,
   WorkModeApi,
+  RefillTypeApi,
+  FuelCardsApi,
 } from "./all";
 
 type UrlValues = (
@@ -32,6 +34,8 @@ type UrlValues = (
   | CarActualApi['url']
   | MedicalStatsAllowedDriverApi['url']
   | WorkModeApi['url']
+  | RefillTypeApi['url']
+  | FuelCardsApi['url']
   | string
 );
 

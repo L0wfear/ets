@@ -54,5 +54,22 @@ export default withFormContext<Waybill, DefaultPropsWithFormContext<Waybill>, Wa
       options: [],
       isLoading: false,
     },
+    carRefillFuelCardsOptions: {
+      listIndex: {},
+      options: [],
+      isLoading: false,
+    },
+    fuelCardsList: {
+      list: [],
+      isLoading: false,
+    },
+    refillTypeList: {
+      list: [],
+      isLoading: false,
+    },
+    refillTypeOptions: {
+      options: [],
+      isLoading: false,
+    },
   },
 });

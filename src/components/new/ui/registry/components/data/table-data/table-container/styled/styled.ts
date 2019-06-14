@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 
 export const EtsTableWrapNoScroll = styled.div`
-  overflow: auto;
   margin: 5px;
   min-height: 100px;
+  overflow-x: auto;
 `;
 
 export const EtsTableWrap = styled(EtsTableWrapNoScroll)<{ addToMinusHeight?: number }>`
+  overflow-y: auto;
   max-height: ${({ addToMinusHeight }) => `calc(100vh - ${250 + (addToMinusHeight || 0)}px)`};
 `;
 

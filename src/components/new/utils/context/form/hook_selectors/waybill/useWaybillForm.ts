@@ -81,7 +81,11 @@ const useFormDataCanEditIfClose = (formDataKey: string) => {
  * STRUCTURE_FIELD_READONLY - дизейбл
  * STRUCTURE_FIELD_DELETABLE - возможность удалить
  */
-const useFormDataPickStructureData = (options: Array<any>, userStructureId: number) => {
+const useFormDataPickStructureData = (options: Array<any>) => {
+  const userStructureId = useSelector(
+    (state: ReduxState) => getSessionState(state).userData.structure_id,
+  );
+
   return React.useMemo(
     () => {
       let STRUCTURE_FIELD_VIEW = false;

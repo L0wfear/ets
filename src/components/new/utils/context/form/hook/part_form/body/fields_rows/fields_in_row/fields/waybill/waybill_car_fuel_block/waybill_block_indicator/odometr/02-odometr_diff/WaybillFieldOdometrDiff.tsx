@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
 import { isNumber } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -7,24 +6,11 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
-import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
-type StateProps = {
-  permissionsSet: InitialStateSession['userData']['permissionsSet'];
-};
-type DispatchProps = DispatchProp;
-type OwnProps = {
+type WaybillFieldOdometrDiffProps = {
   formDataKey: string;
   md?: number;
 };
-
-type WaybillFieldOdometrDiffProps = (
-  StateProps
-  & DispatchProps
-  & OwnProps
-);
 
 const WaybillFieldOdometrDiff: React.FC<WaybillFieldOdometrDiffProps> = React.memo(
   (props) => {
@@ -71,8 +57,4 @@ const WaybillFieldOdometrDiff: React.FC<WaybillFieldOdometrDiffProps> = React.me
   },
 );
 
-export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
-  (state) => ({
-    permissionsSet: getSessionState(state).userData.permissionsSet,
-  }),
-)(WaybillFieldOdometrDiff);
+export default WaybillFieldOdometrDiff;

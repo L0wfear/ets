@@ -8,6 +8,9 @@ import {
   reducerFormProvider,
   changeFormDataStore,
 } from './reducer';
+import { useSelector } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 type FormProviderProps = {}; // тк провайдер глобальный, то пока ничего не ждёт
 
@@ -15,13 +18,14 @@ const FormProvider: React.FC<FormProviderProps> = React.memo(
   (props) => {
     // state - { formDataByKey: Record<string, OneFormDataByKey<any>>; }
     const [state, dispatch] = React.useReducer(reducerFormProvider, initialFormProviderState);
+    const sessionData = useSelector((reduxState: ReduxState) => getSessionState(reduxState));
 
     // добавление данных по форме в контекст
     const addFormData = React.useCallback<InitialFormContextValue['addFormData']>(
-      (formData, element, sessionData) => {
+      (formData, element) => {
         dispatch(addFormDataToStore(formData.key, formData, element, sessionData));
       },
-      [],
+      [sessionData],
     );
     // удаление данных формы из контекста
     const removeFormData = React.useCallback<InitialFormContextValue['removeFormData']>(

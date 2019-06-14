@@ -1,6 +1,7 @@
 import { InitialFormContextValue, ConfigFormDataForAdd } from '../FormContext';
 import { validate, canSaveTest } from './validate';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 
 type AddFormDataToStore<T = any, Store = Record<string, any>> = (
   formDataKey: string,
@@ -117,6 +118,8 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
     const formState = action.payload.formData.mergeElement(action.payload.element, action.payload.sessionData);
     const formErrors = validate<typeof formState>(action.payload.formData.schema.body, formState);
     const canSave = canSaveTest(formErrors);
+    const isPermittedToCreate = validatePermissions(action.payload.formData.permissions.create, action.payload.sessionData.userData.permissionsSet);     // разрешение на сохранение
+    const isPermittedToUpdate = validatePermissions(action.payload.formData.permissions.update, action.payload.sessionData.userData.permissionsSet);     // разрешение на изменение
 
     console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️'); // tslint:disable-line:no-console
     console.log('⚙️ FORM INIT FORM STATE', formState); // tslint:disable-line:no-console
@@ -128,6 +131,8 @@ export const reducerFormProvider: ReducerFormProvider = (state, action) => {
       formState,
       formErrors,
       canSave,
+      isPermittedToCreate,
+      isPermittedToUpdate,
     };
 
     return {

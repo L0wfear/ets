@@ -59,8 +59,6 @@ export type ConfigFormDataForAdd<F extends any, Store extends Record<string, any
     | 'handleHide'
     | 'page'
     | 'path'
-    | 'isPermittedToCreate'
-    | 'isPermittedToUpdate'
     | 'IS_CREATING'
     | 'uniqField'
     | 'store'
@@ -69,7 +67,7 @@ export type ConfigFormDataForAdd<F extends any, Store extends Record<string, any
 
 // что имеет контекст
 export type InitialFormContextValue = {
-  addFormData: <T extends any, Store extends Record<string, any>>(config: ConfigFormDataForAdd<T, Store>, element: Partial<T>, sessionData: InitialStateSession) => void;                             // добавление данных по форме в контекст
+  addFormData: <T extends any, Store extends Record<string, any>>(config: ConfigFormDataForAdd<T, Store>, element: Partial<T>) => void;                             // добавление данных по форме в контекст
   removeFormData: <T extends any, Store extends Record<string, any>>(formDataKey: OneFormDataByKey<T, Store>['key']) => void;                                       // удаление данных формы из контекста
   handleChangeFormState: <T extends any, Store extends Record<string, any>>(formDataKey: string, obj: Partial<OneFormDataByKey<T, Store>['formState']>) => void;    // изменение состояния формы в контексте по ключу
   handleChangeStore: <T extends any, Store extends Record<string, any>>(formDataKey: string, obj: Partial<OneFormDataByKey<T, Store>['store']>) => void;            // изменение состояния стора в контексте по ключу

@@ -1,20 +1,13 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
+
 import useFormData from 'components/new/utils/context/form/hook_selectors/useForm';
-import { connect, DispatchProp } from 'react-redux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ReduxState } from 'redux-main/@types/state';
 
-type StateProps = {};
-type OwnProps = {
+type ButtonSaveFormProps = {
   formDataKey: string;
 };
-
-type ButtonSaveFormProps = (
-  StateProps
-  & DispatchProp
-  & OwnProps
-);
 
 const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
   (props) => {
@@ -26,12 +19,14 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
     const page = useFormData.useFormDataSchemaPage(props.formDataKey);
     const path = useFormData.useFormDataSchemaPath(props.formDataKey);
 
+    const dispatch = useDispatch();
+
     const handleSubmit = React.useCallback(
       async () => {
         let response = null;
         try {
           response = await etsLoadingCounter(
-            props.dispatch,
+            dispatch,
             handleSubmitPromise(formState),
             { page, path },
           );
@@ -41,7 +36,7 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
 
         handleHide(true, response);
       },
-      [props.dispatch, handleHide, handleSubmitPromise, formState, page, path],
+      [dispatch, handleHide, handleSubmitPromise, formState, page, path],
     );
 
     return React.useMemo(
@@ -56,6 +51,4 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
   },
 );
 
-export default connect<StateProps, DispatchProp, OwnProps, ReduxState>(
-  null,
-)(ButtonSaveForm);
+export default ButtonSaveForm;

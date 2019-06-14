@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import FormContext, { OneFormDataByKey } from '../FormContext';
 
 /* _______________ селекторы хуки _______________ */
@@ -89,7 +91,7 @@ const useFormDataSchemaIsPermittedToUpdate = <T extends any>(formDataKey: string
 const useFormDataSchemaHandleHide = <T extends any>(formDataKey: string) => {
   const formData = useFormData<T, any>(formDataKey);
 
-  return formData ? formData.handleHide : null;
+  return get(formData, 'handleHide');
 };
 
 /**

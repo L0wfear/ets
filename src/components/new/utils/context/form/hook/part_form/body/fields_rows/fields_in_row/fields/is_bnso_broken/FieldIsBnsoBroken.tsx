@@ -4,30 +4,18 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWsCarPoints from 'components/new/utils/hooks/services/useWs/useWsCarPoints';
-import { connect, DispatchProp } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
 import { diffDates } from 'utils/dates';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
-type FieldIsBnsoBrokenStateProps = {
-  token: InitialStateSession['token'];
-  points_ws: InitialStateSession['appConfig']['points_ws'];
-};
-type FieldIsBnsoBrokenDispatchProps = DispatchProp;
-type FieldIsBnsoBrokenOwnProps = {
+type FieldIsBnsoBrokenProps = {
   formDataKey: string;
   md?: number;
 };
-
-type FieldIsBnsoBrokenProps = (
-  FieldIsBnsoBrokenStateProps
-  & FieldIsBnsoBrokenDispatchProps
-  & FieldIsBnsoBrokenOwnProps
-);
 
 const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
   (props) => {
@@ -42,18 +30,21 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
     const wsStateDataUse = useWsCarPoints();
     const moscowTimeData = useMoscowTime(page, path);
 
+    const token = useSelector((state: ReduxState) => getSessionState(state).token);
+    const points_ws = useSelector((state: ReduxState) => getSessionState(state).appConfig.points_ws);
+
     React.useEffect(
       () => {
         if (IS_DRAFT) {
           wsStateDataUse.openConnection(
-            props.points_ws,
-            props.token,
+            points_ws,
+            token,
           );
         }
 
         return wsStateDataUse.closeConnection();
       },
-      [IS_DRAFT],
+      [IS_DRAFT, token, points_ws],
     );
 
     /**
@@ -154,9 +145,4 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
   },
 );
 
-export default connect<FieldIsBnsoBrokenStateProps, FieldIsBnsoBrokenDispatchProps, FieldIsBnsoBrokenOwnProps, ReduxState>(
-  (state) => ({
-    token: getSessionState(state).token,
-    points_ws: getSessionState(state).appConfig.points_ws,
-  }),
-)(FieldIsBnsoBroken);
+export default FieldIsBnsoBroken;

@@ -1,29 +1,16 @@
 import * as React from 'react';
 import { get } from 'lodash';
+
 import FormContext, { ConfigFormData } from '../FormContext';
 import ModalFormHeader from './part_form/header/ModalFormHeader';
 import ModalFormFooter from './part_form/footer/ModalFormFooter';
 import ModalFormBody from './part_form/body/ModalFormBody';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { useDispatch } from 'react-redux';
+import useForm from '../hook_selectors/useForm';
 
-type FormStateProps = {
-  sessionData: InitialStateSession;
-  permissionsSet: InitialStateSession['userData']['permissionsSet'];    // пермишены для валидации, пока сессия на redux
-};
-type FormDispatchProps = DispatchProp;
-type FormOwnProps<P> = P;
-
-type FormProps<P> = (
-  FormStateProps
-  & FormDispatchProps
-  & FormOwnProps<P>
-);
+type FormProps<P> = P;
 
 // Дефолтные пропсы в создаваемом компоненте
 export type DefaultPropsWithFormContext<T extends any> = {
@@ -38,6 +25,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
   const Form: React.FC<FormProps<InnerProps>> = React.memo(
     (props) => {
       const context = React.useContext(FormContext);
+      const dispatch = useDispatch();
 
       React.useEffect(
         () => {
@@ -54,7 +42,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
             if (!IS_CREATING && formData.loadItemPromise) {
               try {
                 element = await etsLoadingCounter(
-                  props.dispatch,
+                  dispatch,
                   formData.loadItemPromise(element[uniqField]),
                   {
                     page: props.page,
@@ -83,8 +71,6 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
                     objChange,
                   );
                 },
-                isPermittedToCreate: validatePermissions(formData.permissions.create, props.permissionsSet),     // разрешение на сохранение
-                isPermittedToUpdate: validatePermissions(formData.permissions.update, props.permissionsSet),     // разрешение на изменение
                 page: props.page,
                 path: props.path,
                 uniqField,
@@ -92,7 +78,6 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
                 store,
               },
               element,                                            // новый элемент
-              props.sessionData,
             );
           };
 
@@ -101,7 +86,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
         [],
       );
 
-      const handleHide = get(context.formDataByKey[formData.key], 'handleHide', null);  // закрытие формы
+      const handleHide = useForm.useFormDataSchemaHandleHide(formData.key);
 
       return React.useMemo(
         () => {
@@ -118,12 +103,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
     },
   );
 
-  return connect<FormStateProps, FormDispatchProps, FormOwnProps<InnerProps>, ReduxState>(
-    (state) => ({
-      sessionData: getSessionState(state),
-      permissionsSet: getSessionState(state).userData.permissionsSet,
-    }),
-  )(Form as any);
+  return Form;
 };
 
 export default withFormContext;

@@ -9,7 +9,6 @@ import {
   fetchCarInfo,
 } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
-import { DivNone } from 'global-styled/global-styled';
 import { CarInfoButtonsRow } from './styled/index';
 import {
   BtnGroupWrapper,
@@ -91,17 +90,11 @@ const CarTabMenu: React.FC<PropsCarTabMenu> = (props) => {
         </BtnGroupWrapper>
       </CarInfoButtonsRow>
       <React.Suspense fallback={<LoadingComponent />}>
-        {tabNum === 1 ? (
+        <EtsBootstrap.ViewCarousel indexShow={tabNum - 1}>
           <CarAttributeInformation map={props.map} />
-        ) : (
-          <DivNone />
-        )}
-        {tabNum === 2 ? (
           <CarChartsInformation centerOn={props.centerOn} />
-        ) : (
-          <DivNone />
-        )}
-        {tabNum === 3 ? <CarTrackInformation map={props.map} /> : <DivNone />}
+          <CarTrackInformation map={props.map} />
+        </EtsBootstrap.ViewCarousel>
       </React.Suspense>
     </div>
   );

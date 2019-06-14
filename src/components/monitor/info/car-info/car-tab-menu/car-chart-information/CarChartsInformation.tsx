@@ -6,9 +6,6 @@ import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monit
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 
 import {
-  DivNone,
-} from 'global-styled/global-styled';
-import {
   OwnPropsCarFuelChart,
   OwnPropsCarSpeedChart,
 } from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
@@ -93,33 +90,17 @@ class CarChartsInformation extends React.Component<PropsCarChartsInformation, St
           <EtsBootstrap.Button data-number="2" active={selectedTab === 2} onClick={this.handleClick} >Датчики скорости</EtsBootstrap.Button>
         </div>
         <CarInfoBlockTabData>
-          {
-            selectedTab === 1
-            ? (
-              <React.Suspense fallback={<LoadingComponent />}>
-                <CarFuelChart
-                  handleChartClick={this.handleChartClick}
-                  handleEventClick={this.handleEventClick}
-                />
-              </React.Suspense>
-            )
-            : (
-              <DivNone />
-            )
-          }
-          {
-            selectedTab === 2
-            ? (
-              <React.Suspense fallback={<LoadingComponent />}>
-                <CarSpeedChart
-                  handleChartClick={this.handleChartClick}
-                />
-              </React.Suspense>
-            )
-            : (
-              <DivNone />
-            )
-          }
+          <React.Suspense fallback={<LoadingComponent />}>
+            <EtsBootstrap.ViewCarousel indexShow={selectedTab - 1}>
+              <CarFuelChart
+                handleChartClick={this.handleChartClick}
+                handleEventClick={this.handleEventClick}
+              />
+              <CarSpeedChart
+                handleChartClick={this.handleChartClick}
+              />
+            </EtsBootstrap.ViewCarousel>
+          </React.Suspense>
         </CarInfoBlockTabData>
       </div>
     );

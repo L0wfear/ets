@@ -28,6 +28,8 @@ export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 's
   margin-top: 30px;
   margin-left: 30px;
   margin-right: 30px;
+  overflow: auto;
+
   pointer-events: ${({ show }) => !show ? 'none' : 'all'};
 
   opacity: ${({ show }) => !show ? 0 : 1};

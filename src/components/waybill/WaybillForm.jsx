@@ -2255,74 +2255,80 @@ class WaybillForm extends UNSAFE_Form {
             <EtsBootstrap.Col md={12}>
               <h4>Простои на линии, ч.</h4>
             </EtsBootstrap.Col>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={8}>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    id="downtime-hours-work"
-                    type="string"
-                    label="Работа"
-                    disabled={
-                      (IS_CLOSED && !this.state.canEditIfClose)
-                      || !isPermittedByKey.update
-                    }
-                    value={state.downtime_hours_work}
-                    onChange={this.handleChange}
-                    boundKeys="downtime_hours_work"
-                    error={errors.downtime_hours_work}
-                  />
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={8}>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={6}>
+                      <ExtField
+                        id="downtime-hours-work"
+                        type="string"
+                        label="Работа"
+                        disabled={
+                          (IS_CLOSED && !this.state.canEditIfClose)
+                          || !isPermittedByKey.update
+                        }
+                        value={state.downtime_hours_work}
+                        onChange={this.handleChange}
+                        boundKeys="downtime_hours_work"
+                        error={errors.downtime_hours_work}
+                      />
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={6}>
+                      <ExtField
+                        id="downtime-hours-duty"
+                        type="string"
+                        label="Дежурство"
+                        disabled={
+                          (IS_CLOSED && !this.state.canEditIfClose)
+                          || !isPermittedByKey.update
+                        }
+                        value={state.downtime_hours_duty}
+                        onChange={this.handleChange}
+                        boundKeys="downtime_hours_duty"
+                        error={errors.downtime_hours_duty}
+                      />
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
                 </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    id="downtime-hours-duty"
-                    type="string"
-                    label="Дежурство"
-                    disabled={
-                      (IS_CLOSED && !this.state.canEditIfClose)
-                      || !isPermittedByKey.update
-                    }
-                    value={state.downtime_hours_duty}
-                    onChange={this.handleChange}
-                    boundKeys="downtime_hours_duty"
-                    error={errors.downtime_hours_duty}
-                  />
+              </EtsBootstrap.Row>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={8}>
+                  <EtsBootstrap.Row>
+                    <EtsBootstrap.Col md={6}>
+                      <ExtField
+                        id="downtime-hours-dinner"
+                        type="string"
+                        label="Обед"
+                        disabled={
+                          (IS_CLOSED && !this.state.canEditIfClose)
+                          || !isPermittedByKey.update
+                        }
+                        value={state.downtime_hours_dinner}
+                        onChange={this.handleChange}
+                        boundKeys="downtime_hours_dinner"
+                        error={errors.downtime_hours_dinner}
+                      />
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={6}>
+                      <ExtField
+                        id="downtime-hours-repair"
+                        type="string"
+                        label="Ремонт"
+                        disabled={
+                          (IS_CLOSED && !this.state.canEditIfClose)
+                          || !isPermittedByKey.update
+                        }
+                        value={state.downtime_hours_repair}
+                        onChange={this.handleChange}
+                        boundKeys="downtime_hours_repair"
+                        error={errors.downtime_hours_repair}
+                      />
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Row>
                 </EtsBootstrap.Col>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={8}>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    id="downtime-hours-dinner"
-                    type="string"
-                    label="Обед"
-                    disabled={
-                      (IS_CLOSED && !this.state.canEditIfClose)
-                      || !isPermittedByKey.update
-                    }
-                    value={state.downtime_hours_dinner}
-                    onChange={this.handleChange}
-                    boundKeys="downtime_hours_dinner"
-                    error={errors.downtime_hours_dinner}
-                  />
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    id="downtime-hours-repair"
-                    type="string"
-                    label="Ремонт"
-                    disabled={
-                      (IS_CLOSED && !this.state.canEditIfClose)
-                      || !isPermittedByKey.update
-                    }
-                    value={state.downtime_hours_repair}
-                    onChange={this.handleChange}
-                    boundKeys="downtime_hours_repair"
-                    error={errors.downtime_hours_repair}
-                  />
-                </EtsBootstrap.Col>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBody>
         <EtsBootstrap.ModalFooter>

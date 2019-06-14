@@ -23,7 +23,7 @@ export const onChangeWithKeys = compose<any, any>(
   })),
   withHandlers({
     onChange: ({ onChange, boundKeys = [], ...other}) => (e, ...otherOther) => {
-      if (isFunction(onChange)) {
+      if (!other.disabled && isFunction(onChange)) {
         if (isArray(boundKeys)) {
           return onChange(...boundKeys, e, ...otherOther);
         } else {
@@ -32,7 +32,7 @@ export const onChangeWithKeys = compose<any, any>(
       }
     },
     onClick: ({ onClick, boundKeys = [], ...other}) => (e, ...otherOther) => {
-      if (isFunction(onClick)) {
+      if (!other.disabled && isFunction(onClick)) {
         if (isArray(boundKeys)) {
           return onClick(...boundKeys, e, ...otherOther);
         } else {

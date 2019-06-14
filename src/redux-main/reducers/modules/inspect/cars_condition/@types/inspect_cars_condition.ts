@@ -124,7 +124,9 @@ export type CarsConditionCars = {
   was_resaved: boolean;
   state_exploitation: string;
   vin: string;
-  mileage: number;
+  mileage: number | null;
+  motohours: number | null;
+  status_at_check: string;
   osago: string;
   osago_finished_at: string;
   diagnostic_card: string;

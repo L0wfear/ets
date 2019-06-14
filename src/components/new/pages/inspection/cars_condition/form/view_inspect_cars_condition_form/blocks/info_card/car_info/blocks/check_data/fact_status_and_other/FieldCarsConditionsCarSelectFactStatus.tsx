@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BlockCarInfoProps } from '../../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { factStatusOptions } from '../options';
+import { factStatusOptions, statusAtCheckOptions } from '../options';
 import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
 
@@ -50,6 +50,18 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
           options={factStatusOptions}
           onChange={props.handleChange}
           boundKeys="fact_status"
+          disabled={!isPermitted}
+        />
+        <ExtField
+          id="status_at_check"
+          type="select"
+          label="Нахождение ТС на момент проверки:"
+          clearable={false}
+          value={state.status_at_check}
+          error={errors.status_at_check}
+          options={statusAtCheckOptions}
+          onChange={props.handleChange}
+          boundKeys="status_at_check"
           disabled={!isPermitted}
         />
         {

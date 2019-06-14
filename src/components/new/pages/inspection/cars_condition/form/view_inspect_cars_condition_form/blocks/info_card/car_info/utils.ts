@@ -14,6 +14,8 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   state_exploitation: '',
   vin: '',
   mileage: null,
+  motohours: null,
+  status_at_check: '',
   osago: '',
   osago_finished_at: null,
   diagnostic_card: '',

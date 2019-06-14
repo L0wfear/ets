@@ -42,8 +42,13 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     },
     mileage: {
       type: 'number',
-      title: 'Пробег на дату/счетчик моточасов',
-      required: true,
+      title: 'Пробег на дату проведения последнего ТО',
+      required: false,
+    },
+    motohours: {
+      type: 'number',
+      title: 'Наработка м/ч на дату проведения последнего ТО',
+      required: false,
     },
     osago: {
       type: 'string',
@@ -85,6 +90,11 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     fact_status: {
       type: 'valueOfArray',
       title: 'Фактический статус ТС',
+      required: true,
+    },
+    status_at_check: {
+      type: 'valueOfArray',
+      title: 'Нахождение ТС на момент проверки',
       required: true,
     },
     state_exploitation: {

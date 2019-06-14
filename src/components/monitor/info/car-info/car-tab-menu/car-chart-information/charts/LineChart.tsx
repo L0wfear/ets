@@ -24,7 +24,9 @@ class LineChart extends React.Component<PropsLineChart, StateLineChart> {
     /**
      * Кол-во серий данных +1, так как навигатор под графиком тоже включен в серию данных.
      */
-    this.props.data.forEach((newSeries, i) => this.chart.series[i].update(newSeries));
+    if (this.chart &&  this.chart.series) {
+      this.props.data.forEach((newSeries, i) => this.chart.series[i].update(newSeries));
+    }
   }
 
   componentWillUnmount() {

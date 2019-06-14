@@ -29,7 +29,7 @@ const CarSpeedChart = React.lazy<React.ComponentType<OwnPropsCarSpeedChart>>(() 
   import(/* webpackChunkName: "car_speed_Chart" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart')
 ));
 
-class CarChartsInformation extends React.Component<PropsCarChartsInformation, StateCarChartsInformation> {
+class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation, StateCarChartsInformation> {
   state = {
     selectedTab: 1,
   };

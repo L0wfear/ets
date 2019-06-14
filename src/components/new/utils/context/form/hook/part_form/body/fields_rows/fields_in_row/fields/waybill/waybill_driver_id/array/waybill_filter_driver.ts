@@ -88,9 +88,10 @@ const waybillFilterDrivers = memoizeOne(
       [],
     );
 
-    const options = (driverWithSelectedCar.length
-    ? driverWithSelectedCar
-    : initialList
+    const options = (
+      driverWithSelectedCar.length
+        ? driverWithSelectedCar
+        : initialList
     ).reduce(
       (newArr, employeeData) => {
         const validateByStructure = validateEmployeeByStructureId(structure_id, employeeData);

@@ -72,13 +72,33 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
           disabled={!props.isPermitted}
         />
         <ExtField
-          id="data-fact_mileage"
+          id="mileage"
           type="number"
-          label="Фактический пробег / счётчик моточасов:"
-          value={state.data.fact_mileage}
-          error={errors.data.fact_mileage}
+          label="Пробег на дату проведения проверки:"
+          value={state.mileage}
+          error={errors.mileage}
+          onChange={props.handleChange}
+          boundKeys="mileage"
+          disabled={!props.isPermitted}
+        />
+        <ExtField
+          id="motohours"
+          type="number"
+          label="Наработка м/ч на дату проверки:"
+          value={state.motohours}
+          error={errors.motohours}
+          onChange={props.handleChange}
+          boundKeys="motohours"
+          disabled={!props.isPermitted}
+        />
+        <ExtField
+          id="data-comments"
+          type="text"
+          label="Замечания:"
+          value={state.data.comments}
+          error={errors.data.comments}
           onChange={handleChangeData}
-          boundKeys="fact_mileage"
+          boundKeys="comments"
           disabled={!props.isPermitted}
         />
         <h5>Выявленные дефекты ТС при внешнем осмотре:</h5>

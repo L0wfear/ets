@@ -124,17 +124,21 @@ export type CarsConditionCars = {
   was_resaved: boolean;
   state_exploitation: string;
   vin: string;
-  mileage: number;
+  odometr_fact: number | null;
+  motohours_fact: number | null;
+  status_at_check: string;
   osago: string;
   osago_finished_at: string;
   diagnostic_card: string;
   diagnostic_card_finished_at: string;
   last_tech_inspection_date: string;
+  last_inspection_equipment: string;
+  mileage: number;
+  motohours: number;
   updated_at: string;
   season: string;
   data: {
     no_status_docs: boolean;
-    fact_mileage: number;
     defects_body: boolean;
     defects_chassis: boolean;
     defects_attachments: boolean;

@@ -200,10 +200,10 @@ export const filedToCheckDefectDataOtherSecond: FiledToCheck<CarsConditionCars['
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
-  {
-    key: 'comments',
-    title: 'Замечания',
-    type: 'text',
-    className: 'checkbox-input flex-reverse',
-  },
+  // {
+  //   key: 'comments',
+  //   title: 'Замечания',
+  //   type: 'text',
+  //   className: 'checkbox-input flex-reverse',
+  // },
 ];

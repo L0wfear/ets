@@ -81,7 +81,7 @@ export const config: TypeConfigData<Norm> = {
         type: 'multiselect',
         getRegistryData: {
           entity: 'types',
-          valueKey: 'asuods_id', // <<< asuods_id swap
+          valueKey: 'asuods_id',
           labelKey: 'short_name',
           mergeWithArray: true,
         },

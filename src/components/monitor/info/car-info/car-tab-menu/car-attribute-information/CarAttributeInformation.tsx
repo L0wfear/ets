@@ -110,56 +110,58 @@ export const attributeList: OneAtt<PropsCarAttributeInformation>[] = [
   },
 ];
 
-const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = (props) => {
-  const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
+const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.memo(
+  (props) => {
+    const { lastPoint, errorInLoadTrack, gps_code, missionsData } = props;
 
-  return (
-    <div>
-      <CarInfoBlockTabData>
-        <div className="car_info-attributes" >
-          {
-            attributeList.map((attr) => {
-              const value = attr.value(props);
-
-              return (
-                <div key={attr.title}>
-                  <span className="car_info-attr_title">{`${attr.title}: `}</span>
-                  {
-                    (attr.missionsData ? missionsData.isLoading : (!value && value !== null))
-                      ? <PreloadNew typePreloader="field" />
-                      : <span className="car_info-attr_value">{value || '-'}</span>
-                  }
-                </div>
-              );
-            })
-          }
-          <div>
-            <span className="car_info-attr_title">{'Последняя точка: '}</span>
+    return (
+      <div>
+        <CarInfoBlockTabData>
+          <div className="car_info-attributes" >
             {
-              !lastPoint && lastPoint !== null
-              ? (
-                errorInLoadTrack
+              attributeList.map((attr) => {
+                const value = attr.value(props);
+
+                return (
+                  <div key={attr.title}>
+                    <span className="car_info-attr_title">{`${attr.title}: `}</span>
+                    {
+                      (attr.missionsData ? missionsData.isLoading : (!value && value !== null))
+                        ? <PreloadNew typePreloader="field" />
+                        : <span className="car_info-attr_value">{value || '-'}</span>
+                    }
+                  </div>
+                );
+              })
+            }
+            <div>
+              <span className="car_info-attr_title">{'Последняя точка: '}</span>
+              {
+                !lastPoint && lastPoint !== null
                 ? (
-                  'Ошибка загрузки трека'
+                  errorInLoadTrack
+                  ? (
+                    'Ошибка загрузки трека'
+                  )
+                  : (
+                    <PreloadNew typePreloader="field" />
+                  )
                 )
                 : (
-                  <PreloadNew typePreloader="field" />
+                  <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
                 )
-              )
-              : (
-                <span className="car_info-attr_value">{lastPoint && makeLastPointString(lastPoint) || '-'}</span>
-              )
-            }
+              }
+            </div>
           </div>
-        </div>
-      </CarInfoBlockTabData>
-      <CarMissions />
-      <CarCreateMission
-        gps_code={gps_code}
-      />
-    </div>
-  );
-};
+        </CarInfoBlockTabData>
+        <CarMissions />
+        <CarCreateMission
+          gps_code={gps_code}
+        />
+      </div>
+    );
+  },
+);
 
 const mapStateToProps = (state) => ({
   ...attributeList.reduce((newObj, attr) => {

@@ -215,12 +215,23 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <ExtField
           type="date"
           time={false}
-          label="Дата прохождения последнего ТО:"
+          label="Дата прохождения последнего ТО шасси:"
           value={state.last_tech_inspection_date}
           makeGoodFormat
           onChange={props.handleChange}
           error={errors.last_tech_inspection_date}
           boundKeys="last_tech_inspection_date"
+          disabled={!props.isPermitted}
+        />
+        <ExtField
+          type="date"
+          time={false}
+          label="Дата прохождения последнего ТО спецоборудования:"
+          value={state.last_inspection_equipment}
+          makeGoodFormat
+          onChange={props.handleChange}
+          error={errors.last_inspection_equipment}
+          boundKeys="last_inspection_equipment"
           disabled={!props.isPermitted}
         />
         {/* { DITETS-6089 попросили просто скрыть

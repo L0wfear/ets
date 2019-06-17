@@ -91,7 +91,6 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
       },
       [handleChangeData],
     );
-
     return (
       <React.Fragment>
         <ExtField

@@ -33,7 +33,7 @@ export const HiddenPageEtsContainer = styled.div`
   width: 100%;
   top: 0;
   padding: 0;
-  pointer-events: none;
+  /* pointer-events: none; */
   z-index: 2;
   height: 100%;
   overflow: hidden;

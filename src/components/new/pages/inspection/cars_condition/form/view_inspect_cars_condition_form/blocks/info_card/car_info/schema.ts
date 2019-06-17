@@ -40,12 +40,12 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'VIN',
       maxLength: 17,
     },
-    mileage: {
+    odometr_fact: {
       type: 'number',
       title: 'Пробег на дату проведения последнего ТО',
       required: false,
     },
-    motohours: {
+    motohours_fact: {
       type: 'number',
       title: 'Наработка м/ч на дату проведения последнего ТО',
       required: false,

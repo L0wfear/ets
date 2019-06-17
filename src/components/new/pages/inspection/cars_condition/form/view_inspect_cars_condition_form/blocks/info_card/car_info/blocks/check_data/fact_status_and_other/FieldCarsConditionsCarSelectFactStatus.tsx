@@ -4,6 +4,7 @@ import { ExtField } from 'components/ui/new/field/ExtField';
 import { factStatusOptions, statusAtCheckOptions } from '../options';
 import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
+import { isNullOrUndefined } from 'util';
 
 type FieldCarsConditionsCarSelectFactStatusProps = (
   {
@@ -29,6 +30,59 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
         });
       },
       [state.data, props.handleChange],
+    );
+
+    const handleChangeStatusAtCheck = React.useCallback(
+      (key, event) => {
+        let fact_status = null;
+
+        const statusAtCheck = get(event, 'target.value', event);
+
+        if (
+          statusAtCheck === 'on_line'
+          || statusAtCheck === 'not_passed_maintenance'
+          || statusAtCheck === 'off_osago'
+          || statusAtCheck === 'not_reregistered'
+        ) {
+          fact_status = 'on_line';
+        } else if (
+          statusAtCheck === 'maintenance'
+          || statusAtCheck === 'storage'
+          || statusAtCheck === 'transmitted'
+          || statusAtCheck === 'used_third_parties'
+          || statusAtCheck === 'off_driver_mechanic'
+          || statusAtCheck === 'off_mission'
+          || statusAtCheck === 'not_used'
+          || statusAtCheck === 'not_retooled'
+          || statusAtCheck === 'write_off'
+        ) {
+          fact_status = 'not_used';
+        } else if ( statusAtCheck === 'repair' ) {
+          fact_status = 'repair';
+        } else if ( statusAtCheck === 'not_submitted' ) {
+          fact_status = '';
+        }
+
+        let newObj = {};
+        if (!isNullOrUndefined(fact_status)) {
+          newObj = {
+            fact_status,
+            [key]: get(event, 'target.value', event),
+            data: {
+              ...state.data,
+            },
+          };
+        } else {
+          newObj = {
+            [key]: get(event, 'target.value', event),
+            data: {
+              ...state.data,
+            },
+          };
+        }
+        props.handleChange(newObj);
+      },
+      [props.handleChange, state],
     );
 
     const handleChangeDataBoolean = React.useCallback(
@@ -60,7 +114,7 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
           value={state.status_at_check}
           error={errors.status_at_check}
           options={statusAtCheckOptions}
-          onChange={props.handleChange}
+          onChange={handleChangeStatusAtCheck}
           boundKeys="status_at_check"
           disabled={!isPermitted}
         />

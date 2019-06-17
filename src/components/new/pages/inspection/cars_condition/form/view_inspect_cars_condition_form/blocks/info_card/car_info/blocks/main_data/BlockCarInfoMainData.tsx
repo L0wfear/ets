@@ -143,20 +143,20 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <ExtField
           type="string"
           label="Пробег на дату проведения последнего ТО:"
-          value={state.mileage}
+          value={state.odometr_fact}
           onChange={props.handleChange}
-          error={errors.mileage}
-          boundKeys="mileage"
+          error={errors.odometr_fact}
+          boundKeys="odometr_fact"
           disabled={!props.isPermitted}
           inline
         />
         <ExtField
           type="string"
           label="Наработка м/ч на дату проведения последнего ТО:"
-          value={state.motohours}
+          value={state.motohours_fact}
           onChange={props.handleChange}
-          error={errors.motohours}
-          boundKeys="motohours"
+          error={errors.motohours_fact}
+          boundKeys="motohours_fact"
           disabled={!props.isPermitted}
           inline
         />

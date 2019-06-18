@@ -33,7 +33,8 @@ export type OwnPropsFieldRouteIdDutyMission = {
   technical_operation_id: DutyMission['technical_operation_id'];
   technical_operation_name: DutyMission['technical_operation_name'];
   request_id?: DutyMission['request_id'];
-
+  fromMission: boolean;
+  fromMissionTemplate: boolean;
   DUTY_MISSION_IS_ORDER_SOURCE: boolean;
 
   isPermitted: boolean;

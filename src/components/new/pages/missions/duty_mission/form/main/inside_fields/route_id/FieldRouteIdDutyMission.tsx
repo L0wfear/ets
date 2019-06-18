@@ -328,6 +328,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<
       dependeceTechnicalOperation,
       request_id,
       edcRequest,
+      fromMission,
+      fromMissionTemplate,
     } = this.props;
 
     const {
@@ -394,8 +396,8 @@ class FieldRouteIdDutyMission extends React.PureComponent<
                   municipal_facility_id,
                 )
             )}
-            fromMission
-            fromMissionTemplate
+            fromMission={fromMission}
+            fromMissionTemplate={fromMissionTemplate}
             page={page}
           />
         ) : (

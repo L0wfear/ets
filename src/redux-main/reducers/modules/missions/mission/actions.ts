@@ -321,7 +321,7 @@ const actionLoadOrderAndTechnicalOperationByIdForMission = (
 
 const actionCreateMission = (
   missionRaw: Partial<Mission>,
-  assign_to_waybill: string[],
+  assign_to_waybill: string[] | string,
   meta: LoadingMeta,
 ): ThunkAction<
   ReturnType<typeof promiseCreateMission>,

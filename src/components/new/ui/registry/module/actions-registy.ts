@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { isBoolean, isNullOrUndefined } from 'util';
+import { isBoolean } from 'util';
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,

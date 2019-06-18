@@ -47,6 +47,8 @@ const TrTdButtonCloneTire: React.FC<TrTdButtonCloneTireProps> = React.memo(
           response = await props.autobaseCloneTire(rowData.id, { page: props.registryKey });
           global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
         } catch (error) {
+          props.registrySetSelectedRowToShowInForm(props.registryKey);
+          await props.registryLoadDataByKey(props.registryKey);
           return;
         }
 

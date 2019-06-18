@@ -5,7 +5,7 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { isFourDigitGovNumber } from 'utils/functions';
 import { diffDates } from 'utils/dates';
 
-export const defaultCar: CarWrap = {
+export const getDefaultCar = (): CarWrap => ({
   asuods_id: null,
   available: null,
   available_to_bind: null,
@@ -108,35 +108,35 @@ export const defaultCar: CarWrap = {
     disabled: false,
     files: [],
   },
-};
+});
 
 export const getDefaultCarElement = (element: Partial<CarWrap>): CarWrap => {
-  const newElement = { ...defaultCar };
+  const newElement = { ...getDefaultCar() };
   if (isObject(element)) {
     Object.keys(newElement).forEach((key) => {
       if (key === 'drivers_data') {
-        newElement[key] = defaultCar[key];
+        newElement[key] = getDefaultCar()[key];
         if (isObject(element[key])) {
           Object.keys(newElement[key]).forEach((key2) => {
-            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : defaultCar[key][key2];
+            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : getDefaultCar()[key][key2];
           });
         }
       } else if (key === 'registration_data') {
-        newElement[key] = defaultCar[key];
+        newElement[key] = getDefaultCar()[key];
         if (isObject(element[key])) {
           Object.keys(newElement[key]).forEach((key2) => {
-            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : defaultCar[key][key2];
+            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : getDefaultCar()[key][key2];
           });
         }
       } else if (key === 'passport_data') {
-        newElement[key] = defaultCar[key];
+        newElement[key] = getDefaultCar()[key];
         if (isObject(element[key])) {
           Object.keys(newElement[key]).forEach((key2) => {
-            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : defaultCar[key][key2];
+            newElement[key][key2] = !isNullOrUndefined(element[key][key2]) ? element[key][key2] : getDefaultCar()[key][key2];
           });
         }
       } else {
-        newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : defaultCar[key];
+        newElement[key] = !isNullOrUndefined(element[key]) ? element[key] : getDefaultCar()[key];
       }
     });
   }

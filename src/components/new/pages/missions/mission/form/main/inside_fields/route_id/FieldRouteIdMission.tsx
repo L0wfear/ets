@@ -420,6 +420,8 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       for_column,
       request_id,
       edcRequest,
+      fromMissionTemplate,
+      fromMission,
     } = this.props;
 
     const {
@@ -504,8 +506,8 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
                         )
                   )
                 }
-                fromMission
-                fromMissionTemplate
+                fromMission={fromMission}
+                fromMissionTemplate={fromMissionTemplate}
                 page={page}
               />
             )

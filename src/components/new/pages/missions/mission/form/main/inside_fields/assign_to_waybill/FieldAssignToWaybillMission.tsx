@@ -22,27 +22,29 @@ const WrapExtField: any = styled(ExtField)`
   flex-grow: 1;
 `;
 
-const FieldAssignToWaybillMission: React.FC<PropsFieldAssignToWaybillMission> = (props) => {
-  const handleChange = React.useCallback(
-    (value: string | null) => {
-      props.onChange(value ? [value] : []);
-    },
-    [],
-  );
+const FieldAssignToWaybillMission: React.FC<PropsFieldAssignToWaybillMission> = React.memo(
+  (props) => {
+    const handleChange = React.useCallback(
+      (value: string | null) => {
+        props.onChange(value ? [value] : []);
+      },
+      [],
+    );
 
-  return (
-    <WrapExtField
-      id="assign_to_waybill"
-      modalKey={props.page}
-      type="select"
-      label={props.label}
-      options={ASSIGN_OPTIONS}
-      value={props.value}
-      error={false}
-      onChange={handleChange}
-      clearable={false}
-    />
-  );
-};
+    return (
+      <WrapExtField
+        id="assign_to_waybill"
+        modalKey={props.page}
+        type="select"
+        label={props.label}
+        options={ASSIGN_OPTIONS}
+        value={props.value}
+        error={false}
+        onChange={handleChange}
+        clearable={false}
+      />
+    );
+  },
+);
 
-export default React.memo(FieldAssignToWaybillMission);
+export default FieldAssignToWaybillMission;

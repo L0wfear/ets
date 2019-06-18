@@ -46,6 +46,9 @@ export type OwnPropsFieldRouteIdMission = {
 
   onChange: (obj: Partial<Mission | MissionTemplate | any>) => void;
 
+  fromMissionTemplate: boolean;
+  fromMission: boolean;
+
   page: string;
   path: string;
 };

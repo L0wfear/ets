@@ -63,7 +63,7 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
       type: 'datetime',
       required: true,
       dependencies: [
-        (value, { plan_date_end }, { dependeceOrder, dependeceTechnicalOperation }) => {
+        (value, { plan_date_end, status }, { dependeceOrder, dependeceTechnicalOperation }) => {
           if (value) {
             if (plan_date_end && diffDates(value, plan_date_end) >= 0) {
               return 'Дата планируемого начала должна быть раньше даты планируемого окончания';
@@ -94,7 +94,6 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
 
               const checkDateFrom = order_operation_date_from || order_date;
               const checkDateTo = order_operation_date_to || order_date_to;
-
               if (diffDates(value, checkDateFrom) < 0 || diffDates(value, checkDateTo) > 0) {
                 return 'Дата не должна выходить за пределы действия поручения (факсограммы)';
               }
@@ -109,7 +108,7 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
       type: 'datetime',
       required: true,
       dependencies: [
-        (value, { plan_date_start, object_type_name, is_cleaning_norm }, { dependeceOrder, dependeceTechnicalOperation }) => {
+        (value, { plan_date_start, object_type_name, is_cleaning_norm, status }, { dependeceOrder, dependeceTechnicalOperation }) => {
           if (value) {
             if (dependeceOrder && dependeceTechnicalOperation) {
               const order_operation_date_from = get(
@@ -142,10 +141,10 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
               }
             }
 
-            if (is_cleaning_norm && plan_date_start && object_type_name) {
+            if (true || is_cleaning_norm && plan_date_start && object_type_name) {
               const time = get(routeTypesByTitle, `${object_type_name}.time`, null);
 
-              if (time && diffDates(value, plan_date_start, 'hours') > time) {
+              if (time && diffDates(value, plan_date_start, 'hours') > time && status === 'not_assigned') {
                 return `Время выполнения задания для ${object_type_name} должно составлять не более ${time} часов`;
               }
             }

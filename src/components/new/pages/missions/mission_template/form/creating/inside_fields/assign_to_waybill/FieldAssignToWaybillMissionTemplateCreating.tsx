@@ -40,7 +40,7 @@ const FieldAssignToWaybillMissionTemplateCreating: React.FC<FieldAssignToWaybill
         props.onChange({
           assign_to_waybill: Object.entries(props.assign_to_waybill).reduce(
             (newObj, [key, arrayData]) => {
-              newObj[key] = arrayData.map(() => assign_to_waybill);
+              newObj[key] = arrayData.map(() => assign_to_waybill[0]);
 
               return newObj;
             },

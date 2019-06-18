@@ -112,7 +112,7 @@ export const promiseGetMissionById = async (id: Mission['id']) => {
   return getFrontMission(mission);
 };
 
-export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_waybill: string[] | string, hidden: boolean) => {
+export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_waybill: string[], hidden: boolean) => {
   const payload: Partial<Mission> | any = cloneDeep(mission);
   payload.date_start = createValidDateTime(payload.date_start);
   payload.date_end = createValidDateTime(payload.date_end);
@@ -129,7 +129,7 @@ export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_
 
           const newObj = {
             ...payload,
-            assign_to_waybill: Array.isArray(assign_to_waybill[index]) ? assign_to_waybill[index] : assign_to_waybill,
+            assign_to_waybill: assign_to_waybill[index],
           };
 
           return getBackMission(newObj, index);

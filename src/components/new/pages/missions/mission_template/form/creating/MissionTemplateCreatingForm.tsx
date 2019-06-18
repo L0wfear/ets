@@ -101,10 +101,10 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
           if (missionsByCar[0].assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {                                  // Если первое задание идёт с привязкой к новому черновику ПЛ
             const hasError = await createMissionByTemplate(
               props.submitAction,
-              {...makePartialMission(
+              makePartialMission(
                 missionsByCar[0],
                 state,
-              ), assign_to_waybill_str: true, },
+              ),
               {
                 page, path,
               },
@@ -115,13 +115,13 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
                 missionsByCar.slice(1).map((missionData) => (
                   createMissionByTemplate(
                     props.submitAction,
-                    {...makePartialMission(
+                    makePartialMission(
                       {
                         ...missionData,
                         assign_to_waybill: missionData.assign_to_waybill.map(() => ASSING_BY_KEY.assign_to_available_draft),
                       },
                       state,
-                    ), assign_to_waybill_str: true},
+                    ),
                     {
                       page, path,
                     },
@@ -137,10 +137,10 @@ const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = 
             missionsByCar.map((missionData) => (
               createMissionByTemplate(
                 props.submitAction,
-                {...makePartialMission(
+                makePartialMission(
                   missionData,
                   state,
-                ), assign_to_waybill_str: true},
+                ),
                 {
                   page, path,
                 },

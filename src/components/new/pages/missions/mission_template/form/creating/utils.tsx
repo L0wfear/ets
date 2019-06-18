@@ -190,7 +190,7 @@ export const createMissionByTemplate = async (
         ...getDefaultMissionElement(null),
         ...elementRaw,
       },
-      element.assign_to_waybill_str ? element.assign_to_waybill[0] : element.assign_to_waybill,
+      element.assign_to_waybill,
       meta,
     );
     return false;

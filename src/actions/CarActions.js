@@ -7,12 +7,12 @@ import { InfoService } from 'api/Services';
 export default class CarActions extends Actions {
   getInfoFromCar(gps_code, from_dt, to_dt) {
     let version = get(
-      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
       [config.tracksCaching],
       '',
     );
     const test_version = get(
-      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
       [`TEST::${config.tracksCaching}`],
       '',
     );

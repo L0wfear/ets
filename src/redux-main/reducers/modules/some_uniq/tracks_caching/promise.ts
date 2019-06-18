@@ -16,8 +16,8 @@ type PromiseGetTracksCachingPayload = {
 
 export const promiseGetTracksCaching = async (payload: PromiseGetTracksCachingPayload) => {
   let response = null;
-  let version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [config.tracksCaching], '');
-  const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'), [`TEST::${config.tracksCaching}`], '');
+  let version = get(JSON.parse(localStorage.getItem(global.API__KEY) || '{}'), [config.tracksCaching], '');
+  const test_version = get(JSON.parse(localStorage.getItem(global.API__KEY) || '{}'), [`TEST::${config.tracksCaching}`], '');
   if (test_version) {
     version = test_version;
   }

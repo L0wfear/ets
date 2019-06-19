@@ -5,8 +5,8 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../@types/CarForm';
 import { Route, Switch, Redirect } from 'react-router-dom';
-
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import * as queryString from 'query-string';
 
 type CarFormBodyContainerOwnProps = {
   isPermitted: boolean;
@@ -24,6 +24,16 @@ type CarFormBodyContainerProps = (
 
 const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
   (props) => {
+    const carActualSearchStateString = React.useMemo(
+      () => {
+        return queryString.stringify({
+          CarActual_filters: props.searchState.CarActual_filters,
+          CarActual_page: props.searchState.CarActual_page,
+        });
+      },
+      [props.searchState.CarActual_filters, props.searchState.CarActual_page],
+    );
+
     return (
       <EtsBootstrap.Row>
         <Switch>
@@ -72,7 +82,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
               );
             })
           }
-          <Redirect to={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${mainInfo.tabKey}`} />
+          <Redirect to={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${mainInfo.tabKey}?${carActualSearchStateString}`} />
         </Switch>
       </EtsBootstrap.Row>
     );

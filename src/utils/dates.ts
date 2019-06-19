@@ -8,6 +8,25 @@ momentLocalizer();
 export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
   moment(dateA).diff(moment(dateB), typeDiff as any, float);
 
+export const isDateInInterval = (check_date, date_start, date_end) => {
+  return (
+    diffDates(date_end, check_date) > 0
+    && diffDates(check_date, date_start) > 0
+  );
+};
+
+export const isCrossDates = (first_date_start, first_date_end, second_date_start, second_date_end) => {
+  return (
+    (
+      diffDates(second_date_end, first_date_start) >= 0
+      && diffDates(first_date_start, second_date_start) >= 0
+    ) || (
+      diffDates(second_date_end, first_date_end) >= 0
+      && diffDates(first_date_end, second_date_start) >= 0
+    )
+  );
+};
+
 export const getDateWithMoscowTz = () => {
   const newDate = new Date();
   newDate.setTime(

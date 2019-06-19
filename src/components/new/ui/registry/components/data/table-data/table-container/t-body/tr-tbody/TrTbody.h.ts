@@ -14,6 +14,7 @@ export interface StatePropsTrTbody {
   permissions: OneRegistryData['list']['permissions']['read'][];
   userData: InitialStateSession['userData'];
   buttons: OneRegistryData['header']['buttons'];
+  checkData: any;
 }
 
 export type DipatchPropsTrTbody = {

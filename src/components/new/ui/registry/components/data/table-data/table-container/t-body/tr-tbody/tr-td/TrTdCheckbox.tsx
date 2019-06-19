@@ -22,10 +22,8 @@ const TrTdCheckbox: React.FC<PropsTrTdCheckbox> = (props) => {
         props.rowData,
       );
     },
-    [props.rowData],
+    [props.rowData, props.registryCheckLine, props.registryKey],
   );
-
-  const value = Boolean(get(props.checkedRows, props.rowData[props.uniqKey], false));
 
   return (
     <EtsTbodyTrTd onClick={onClick} >
@@ -33,8 +31,7 @@ const TrTdCheckbox: React.FC<PropsTrTdCheckbox> = (props) => {
         type="boolean"
         error={false}
         label={false}
-        value={value}
-        checkboxStyle={false}
+        value={props.isChecked}
         className="pointer"
       />
     </EtsTbodyTrTd>
@@ -42,10 +39,8 @@ const TrTdCheckbox: React.FC<PropsTrTdCheckbox> = (props) => {
 };
 
 export default connect<StatePropsTrTdCheckbox, DispatchPropsTrTdCheckbox, OwnPropsTrTdCheckbox, ReduxState>(
-  (state, { registryKey }) => ({
-    uniqKey: getListData(state.registry, registryKey).data.uniqKey,
-    checkedRows: getListData(state.registry, registryKey).data.checkedRows,
-    paginator: getListData(state.registry, registryKey).paginator,
+  (state, { registryKey, rowData }) => ({
+    isChecked: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
   }),
   (dispatch: any) => ({
     registryCheckLine: (...arg) => (

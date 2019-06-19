@@ -43,6 +43,7 @@ import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
 import {
   get,
 } from 'lodash';
+import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
 
 export const makePayloadFromState = (formState, type_id) => ({
   datetime: formState.date_start,
@@ -185,7 +186,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
-    const missionArr: any = Object.values(checkedElements);
+    let missionArr: any = Object.values(checkedElements);
     const hasMissionForColumn = missionArr.some((mission: any) => mission.for_column);
 
     if (hasMissionForColumn && missionArr.length > 1) {
@@ -196,6 +197,16 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       );
       return;
     }
+    if (typeClick === typeTemplate.missionTemplate && missionArr.some(({ front_invalid_interval }) => front_invalid_interval)) {
+      global.NOTIFICATION_SYSTEM.notify(
+        getWarningNotification(
+          'Выбраны шаблоны, которые создадут одинаковые задания, с пересекающимся периодом. Необходимо исключить пересекающиеся шаблоны (выделены красным)',
+        ),
+      );
+      return;
+    }
+
+    missionArr = missionArr.map(({ front_invalid_interval, ...other }) => other);
 
     if (hasMissionForColumn) {
       this.setState({
@@ -240,11 +251,15 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       if (goodResponse) {
         global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены');
 
-        this.setState({
-          selectedElement: undefined,
-          checkedElements: {},
-          canSubmit: true,
-        });
+        this.setState(
+          (oldState) => {
+            return {
+              selectedElement: undefined,
+              checkedElements: {},
+              canSubmit: true,
+            };
+          },
+        );
       } else {
         this.setState({
           canSubmit: true,
@@ -268,12 +283,28 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       delete checkedElements[frontId];
     }
 
-    this.setState({
-      checkedElements,
-    });
+    if (this.props.typeClick === typeTemplate.missionTemplate) {
+      this.setState({
+        checkedElements: validateMissionsByCheckedElements(checkedElements, false),
+      });
+      return;
+    } else {
+      this.setState({
+        checkedElements,
+      });
+    }
   }
 
-  onAllChecked = (checkedElements: object, state) => this.setState({ checkedElements: state ? checkedElements : {} });
+  onAllChecked = (checkedElements: object, state) => {
+    if (this.props.typeClick === typeTemplate.missionTemplate) {
+      this.setState({
+        checkedElements: validateMissionsByCheckedElements(state ? checkedElements : {}, false),
+      });
+      return;
+    }
+
+    this.setState({ checkedElements: state ? checkedElements : {} });
+  }
 
   checkDisabledSubmit = () => this.state.canSubmit && isEmpty(this.state.checkedElements);
 
@@ -307,7 +338,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       typeClick,
     } = this.props;
 
-    const missionArr = Object.values(checkedElements);
+    const missionArr = Object.values(checkedElements).map(({ front_invalid_interval, ...other }) => other);
 
     if (!checkStructureByTypeClick(this.props.typeClick, this.props as any, missionArr)) {
       this.setState({ canSubmit: false });

@@ -5,13 +5,17 @@ import { darken } from 'polished';
 import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
 import { FileInputWrapper } from 'components/ui/input/FileInput/styled';
 
-const getColorTd = (rowData) => {
+const getColorTd = (rowData, checkData) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
     return constantColor.orange;
   }
 
   if (get(rowData, 'status', null) === WAYBILL_STATUSES_KEY.active) {
     return constantColor.colorChildRegistry;
+  }
+
+  if (get(checkData, 'front_invalid_interval', null)) {
+    return constantColor.simpleRed;
   }
 
   if (!!get(rowData, 'parent_id', null)) {
@@ -21,16 +25,16 @@ const getColorTd = (rowData) => {
   return 'white';
 };
 
-export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowData?: any }>`
+export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowData?: any, checkData?: any }>`
   &&& {
     cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
     pointer-events: ${({ enable }) => enable ? 'all' : 'none'};
 
     &:nth-of-type(odd) {
-      background-color: ${(props) => getColorTd(props.rowData)};
+      background-color: ${(props) => getColorTd(props.rowData, props.checkData)};
     }
     &:nth-of-type(even) {
-      background-color: ${(props) => darken(0.02, getColorTd(props.rowData))};
+      background-color: ${(props) => darken(0.02, getColorTd(props.rowData, props.checkData))};
     }
 
     &:hover {

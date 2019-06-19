@@ -324,9 +324,10 @@ export const waybillSchema = {
     ],
     plan_arrival_date: [
       {
-        validator: (plan_arrival_date, { plan_departure_date }) => {
+        validator: (plan_arrival_date, { plan_departure_date, status }) => {
           if (
-            plan_arrival_date
+            !(status === 'active' || status === 'closed')
+            && plan_arrival_date
             && plan_departure_date
             && diffDates(plan_arrival_date, plan_departure_date, 'days', true) > 31
           ) {

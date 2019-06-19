@@ -634,6 +634,9 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                   technical_operation_name={state.technical_operation_name}
                   for_column={state.for_column}
 
+                  fromMissionTemplate={false}
+                  fromMission={true}
+
                   request_id={state.request_id}
                   MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}
                   disabled={

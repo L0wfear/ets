@@ -179,7 +179,8 @@ const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) 
           structure_id={state.structure_id}
           structure_name={state.structure_name}
           onChange={props.handleChange}
-
+          fromMission={true}
+          fromMissionTemplate={true}
           page={page}
           path={path}
         />

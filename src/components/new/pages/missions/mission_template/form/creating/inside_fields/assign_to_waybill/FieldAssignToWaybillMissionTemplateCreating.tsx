@@ -5,6 +5,7 @@ import {
 } from '../../@types/MissionTemplateCreatingForm';
 import FieldAssignToWaybillMission from 'components/new/pages/missions/mission/form/main/inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
 import { DivNone } from 'global-styled/global-styled';
+import { get } from 'lodash';
 
 type FieldAssignToWaybillMissionTemplateCreatingProps = {
   assign_to_waybill: MissionTemplateCreating['assign_to_waybill'];
@@ -30,7 +31,7 @@ const FieldAssignToWaybillMissionTemplateCreating: React.FC<FieldAssignToWaybill
 
         const assign_to_waybill_asArr = Object.values(props.assign_to_waybill);
 
-        return assign_to_waybill_asArr[0][0];
+        return get(assign_to_waybill_asArr, '0.0', null);
       },
       [not_visible, props.assign_to_waybill],
     );

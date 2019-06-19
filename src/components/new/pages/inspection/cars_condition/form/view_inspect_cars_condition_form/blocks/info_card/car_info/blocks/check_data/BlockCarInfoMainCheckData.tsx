@@ -26,7 +26,10 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
     const handleChangeDataForIA = React.useCallback(
       (data) => {
         props.handleChange({
-          data,
+          data: {
+            ...props.formState.data,
+            ...data,
+          },
         });
       },
       [state.data, props.handleChange],

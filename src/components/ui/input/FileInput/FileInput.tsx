@@ -46,7 +46,7 @@ const FileListItem: React.FC<any> = React.memo(
               disabled={props.disabled}
               children="×"
             />
-            <a href={props.url} target="_blanc">{props.name}</a>
+            <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
           </DisplayFlexAlignCenter>
           {
             (createdAt && withDateTime) ? (

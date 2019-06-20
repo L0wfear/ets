@@ -45,6 +45,11 @@ export const config: TypeConfigData<Norm> = {
         type: 'multiselect',
       },
       {
+        valueKey: 'type_oper_name',
+        title: 'Тип операции',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'work_type_id',
         labelKey: 'work_type_name',
         title: 'Способ уборки',
@@ -131,6 +136,11 @@ export const config: TypeConfigData<Norm> = {
         {
           key: 'kind_task_names_text',
           title: 'Способ выполнения',
+          width: 200,
+        },
+        {
+          key: 'type_oper_name',
+          title: 'Тип операции',
           width: 200,
         },
         {

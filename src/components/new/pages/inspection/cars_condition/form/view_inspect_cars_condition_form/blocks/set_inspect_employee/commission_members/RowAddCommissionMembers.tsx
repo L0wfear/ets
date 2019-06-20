@@ -35,11 +35,13 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
 
     const optionData = useInspectAuditorsOptions();
 
-    const filterOption = React.useCallback(
-      (option) => {
-        return !props.commission_members.find(({ employee_id }) => option.value === employee_id);
-      },
-      [props.commission_members],
+    const filterOptions = React.useMemo(
+      () => optionData.options.filter(
+        (option) => {
+          return !props.commission_members.find(({ employee_id }) => option.value === employee_id);
+        },
+      ),
+      [optionData.options, props.commission_members],
     );
 
     return (
@@ -50,10 +52,9 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
             value={selectedEmployee}
             label={false}
             error=""
-            options={optionData.options}
+            options={filterOptions}
             onChange={setSelectedEmployee}
             legacy={false}
-            filterOption={filterOption}
             etsIsLoading={optionData.isLoading}
           />
         </EtsBootstrap.Col>

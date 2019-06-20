@@ -1919,7 +1919,7 @@ class WaybillForm extends UNSAFE_Form {
                       </Col>
                     </Col>
                     <br />
-                    <Col md={12}>
+                    <Col md={12} style={{ zIndex: 0 }}>
                       <Col md={12}>
                         <Taxes
                           modalKey={modalKey}
@@ -2132,7 +2132,7 @@ class WaybillForm extends UNSAFE_Form {
                         ) : (
                           <DivNone />
                         )}
-                        <Col md={12}>
+                        <Col md={12} style={{ zIndex: 0 }}>
                           <Col md={12}>
                             <Taxes
                               modalKey={modalKey}

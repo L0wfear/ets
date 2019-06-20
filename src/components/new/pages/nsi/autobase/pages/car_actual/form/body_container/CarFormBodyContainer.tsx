@@ -34,6 +34,19 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
       [props.searchState.CarActual_filters, props.searchState.CarActual_page],
     );
 
+    const {
+      match,
+    } = props;
+
+    let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' ? null :  str);
+
+    const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
+    if (emptyIndex > 0) {
+      urlAsArray = urlAsArray.slice(0, emptyIndex);
+    }
+
+    const pathname = `${urlAsArray.join('/')}/${props.match.params.car_actual_asuods_id}`;
+
     return (
       <EtsBootstrap.Row>
         <Switch>
@@ -44,7 +57,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
                   other.children.map(({ tabKey: tabKeyChildScheme, path, ...childrenOther }) => (
                     <Route
                       key={tabKeyChildScheme}
-                      path={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${tabKeyChildScheme}${path}`}
+                      path={`${pathname}/${tabKeyChildScheme}${path}`}
                       render={
                         () => (
                           <EtsBootstrap.Col md={12}>
@@ -69,7 +82,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
               return (
                 <Route
                   key={tabKeyScheme}
-                  path={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${tabKeyScheme}${other.path}`}
+                  path={`${pathname}/${tabKeyScheme}${other.path}`}
                   render={
                     (routeProps) => (
                       <other.component
@@ -82,7 +95,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
               );
             })
           }
-          <Redirect to={`/nsi/autobase/car_actual/:car_actual_asuods_id?/${mainInfo.tabKey}?${carActualSearchStateString}`} />
+          <Redirect to={`${pathname}/${mainInfo.tabKey}?${carActualSearchStateString}`} />
         </Switch>
       </EtsBootstrap.Row>
     );

@@ -63,7 +63,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
             disabled={!selectedEmployee}
             onClick={handleClickAddCommissionEmployee}
           >
-            <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить представителя ГБУ'}
+            <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
           </EtsBootstrap.Button>
         </EtsBootstrap.Col>
       </EtsBootstrap.Row>

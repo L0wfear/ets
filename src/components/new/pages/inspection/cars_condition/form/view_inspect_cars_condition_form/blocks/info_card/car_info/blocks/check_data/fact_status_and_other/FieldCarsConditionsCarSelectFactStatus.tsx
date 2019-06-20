@@ -32,12 +32,22 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
       [state.data, props.handleChange],
     );
 
-    const handleChangeStatusAtCheck = React.useCallback(
-      (key, event) => {
+    React.useEffect(() => {
+      const fact_status = getFactStatusByCheckStatus(state.status_at_check);
+      if (!isNullOrUndefined(fact_status)) {
+        const newObj = {
+          fact_status,
+          data: {
+            ...state.data,
+          },
+        };
+        props.handleChange(newObj);
+      }
+    }, []);
+
+    const getFactStatusByCheckStatus = React.useCallback(
+      (statusAtCheck) => {
         let fact_status = null;
-
-        const statusAtCheck = get(event, 'target.value', event);
-
         if (
           statusAtCheck === 'on_line'
           || statusAtCheck === 'not_passed_maintenance'
@@ -62,6 +72,16 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
         } else if ( statusAtCheck === 'not_submitted' ) {
           fact_status = '';
         }
+        return fact_status;
+      }, [state],
+    );
+
+    const handleChangeStatusAtCheck = React.useCallback(
+      (key, event) => {
+
+        const statusAtCheck = get(event, 'target.value', event);
+
+        const fact_status = getFactStatusByCheckStatus(statusAtCheck);
 
         let newObj = {};
         if (!isNullOrUndefined(fact_status)) {

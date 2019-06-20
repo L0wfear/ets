@@ -6,7 +6,6 @@ export const factStatusOptions = [
 
 export const statusAtCheckOptions = [
   { value: 'on_line', label: 'На линии' },
-  { value: 'on_base', label: 'На базе' },
   { value: 'maintenance', label: 'Проводится ТО' },
   { value: 'repair', label: 'Проводится ремонт' },
   { value: 'permanent_storage', label: 'На постоянном хранении' },

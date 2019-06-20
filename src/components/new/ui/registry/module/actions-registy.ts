@@ -30,7 +30,6 @@ import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';

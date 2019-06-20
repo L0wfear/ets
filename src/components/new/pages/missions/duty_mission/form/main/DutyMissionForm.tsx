@@ -456,7 +456,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             structure_id={state.structure_id}
             structure_name={state.structure_name}
             onChange={this.props.handleChange}
-
+            fromMission={true}
+            fromMissionTemplate={false}
             page={page}
             path={path}
           />

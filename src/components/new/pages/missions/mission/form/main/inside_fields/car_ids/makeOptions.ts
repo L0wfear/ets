@@ -13,7 +13,19 @@ export const makeLabelForMissionCarOption = (carData: Partial<Car> & Pick<Car, '
   const type_name = get(carData, 'type_name', null);
 
   if (model_name || special_model_name || type_name) {
-    label = `${label} [${model_name || ''}${model_name ? '/' : ''}${special_model_name || ''}${type_name ? '/' : ''}${type_name || ''}]`;
+    label = `${
+      label
+    } [${
+      model_name || ''
+    }${
+      model_name ? '/' : ''
+    }${
+      special_model_name || ''
+    }${
+      type_name ? '/' : ''
+    }${
+      type_name || ''
+    }]`;
   }
 
   return label;

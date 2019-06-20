@@ -51,6 +51,7 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
   const handleReject = React.useCallback(
     (needUpdate, edcRequestIdsList) => {
       if (needUpdate) {
+        props.actionUnselectSelectedRowToShow(props.registryKey, true);
         props.registryLoadDataByKey(props.registryKey);
       }
       if (edcRequestIdsList) {

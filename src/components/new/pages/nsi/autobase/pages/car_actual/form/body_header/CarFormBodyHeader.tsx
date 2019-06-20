@@ -25,6 +25,19 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
     [props.searchState.CarActual_filters, props.searchState.CarActual_page],
   );
 
+  const {
+    match,
+  } = props;
+
+  let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' ? null :  str);
+
+  const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
+  if (emptyIndex > 0) {
+    urlAsArray = urlAsArray.slice(0, emptyIndex);
+  }
+
+  const pathname = `${urlAsArray.join('/')}/${props.match.params.car_actual_asuods_id}`;
+
   return (
     <Nav
       bsStyle="tabs"
@@ -38,7 +51,7 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
                 {
                   other.children.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
                     <li role="presentation" key={tabKeyChildScheme}>
-                      <Link role="menuitem" to={`/nsi/autobase/car_actual/${props.match.params.car_actual_asuods_id}/${tabKeyChildScheme}?${carActualSearchStateString}`}>{titleChild}</Link>
+                      <Link role="menuitem" to={`${pathname}/${tabKeyChildScheme}?${carActualSearchStateString}`}>{titleChild}</Link>
                     </li>
                   ))
                 }
@@ -48,7 +61,7 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
 
           return (
             <li key={tabKeyScheme} role="presentation">
-              <Link role="button" key={tabKeyScheme} to={`/nsi/autobase/car_actual/${props.match.params.car_actual_asuods_id}/${tabKeyScheme}?${carActualSearchStateString}`}>{title}</Link>
+              <Link role="button" key={tabKeyScheme} to={`${pathname}/${tabKeyScheme}?${carActualSearchStateString}`}>{title}</Link>
             </li>
           );
         })

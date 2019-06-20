@@ -17,5 +17,8 @@ export const FileInputWrapper = styled.div`
   }
   a {
     padding-left: 10px;
+    text-overflow: ellipsis;
+    max-width: 300px;
+    overflow: hidden;
   }
 `;

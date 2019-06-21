@@ -75,7 +75,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
             const result = await props.autobaseGetCarsConditionCars(state.id, { page, path });
             setCarsConditionCarsList(result);
             const checked_cars_cnt = result.reduce((summ, { was_resaved }) => summ + Number(was_resaved), 0);
-            const cars_cnt = result.length - checked_cars_cnt;
+            const cars_cnt = result.length;
             props.handleChange({
               cars_cnt,
               checked_cars_cnt,

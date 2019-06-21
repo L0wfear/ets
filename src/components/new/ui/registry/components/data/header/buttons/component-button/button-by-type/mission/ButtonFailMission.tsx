@@ -55,7 +55,8 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
         props.registryLoadDataByKey(props.registryKey);
       }
       if (edcRequestIdsList) {
-        setEdcRequestIds([ ...edcRequestIdsList, ...edcRequestIds ]);
+        const edcRequestIdsArr = Array.isArray(edcRequestIds) ? edcRequestIds : [];
+        setEdcRequestIds([ ...edcRequestIdsList, ...edcRequestIdsArr ]);
       } else {
         setEdcRequestIds(edcRequestIdsList);
       }

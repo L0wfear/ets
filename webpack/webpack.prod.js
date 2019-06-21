@@ -29,7 +29,7 @@ module.exports = {
   mode: 'production',
   context: path.resolve(__dirname, '..'),
   output: {
-    filename: 'app.[name].[hash].js',
+    filename: 'app.[name].[contenthash].js',
     path: path.join(__dirname, '..', 'dist'),
     publicPath: '/',
   },
@@ -219,7 +219,12 @@ module.exports = {
           test: /\.css$/,
           chunks: 'all',
           enforce: true
-        }
+        },
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all'
+        },
       }
     }
   },

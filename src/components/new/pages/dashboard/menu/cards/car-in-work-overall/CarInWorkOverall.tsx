@@ -44,7 +44,7 @@ class CarInWorkOverall extends React.Component<
 
     if (process.env.STAND === 'gost_stage') {
       token = JSON.parse(
-        localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+        localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV),
       );
     } else {
       token = this.props.token;

@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { isBoolean, isNullOrUndefined } from 'util';
+import { isBoolean } from 'util';
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,
@@ -30,7 +30,6 @@ import { getBlob, postBlob } from 'api/adapterBlob';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { processResponse } from 'api/APIService';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
-
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
@@ -238,7 +237,6 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     const typeExtra = get(getRegistryData, 'typeExtra', 'result.extra');
 
     processResponse(result);
-    const uniqKey: any = get(list, 'data.uniqKey', null);
     arrayRaw = get(result, typeAns, []);
     arrayExtra = get(result, typeExtra, {});
 
@@ -278,8 +276,6 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
         arrayRaw = arrayRaw.map(getFrontMission);
       }
     }
-
-    arrayRaw = arrayRaw.filter((data) => !isNullOrUndefined(data[uniqKey]));
 
     if (userServerFilters) {
       total_count = get(result, 'result.meta.total_count', 0) || get(result, 'meta.total_count', 0) || get(result, 'total_count', 0);

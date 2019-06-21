@@ -113,18 +113,12 @@ const SelectRenderer: React.FC<IPropsSelectRenderer> = ({
   />
 );
 
-const InputRenderer: React.FC<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted, fieldKey }) => (
-  <ExtField
-    id={fieldKey}
-    type="string"
-    label={false}
-    value={value}
-    error={get(outputListErrors[index], fieldKey, '')}
-    onChange={onChange}
-    boundKeys={[index, fieldKey]}
-    disabled={!isPermitted}
-  />
-);
+const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
+  const { value, onChange, index, outputListErrors, isPermitted, fieldKey } = values;
+  const properties = get(values , 'validationSchema.properties', []);
+  const inputType = get(properties.find((elem) => elem.key === fieldKey), 'type', 'string');
+  return (<ExtField id={fieldKey} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+};
 // "type": "ПУ", // Тип прицепа, навесного уборочного агрегата'
 // "will_checked_cnt": 10, // Всего подлежит подготовке
 // "season": "Лето", // Сезон (Всесезон, Лето, Зима)

@@ -32,18 +32,18 @@ const keyTracksCachingForTest = `TEST::${config.tracksCaching}`;
 class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersion, StateModalSwitchApiVersion> {
   state = {
     serviceValue: get(
-      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
       [config.backend],
       null,
     ),
     tracksCachingValue:
       get(
-        JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+        JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
         [keyTracksCachingForTest],
         null,
       ) ||
       get(
-        JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+        JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
         [config.tracksCaching],
         null,
       ),
@@ -56,14 +56,14 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   handleChangeService = (
     serviceValue: OneOptionInStateModalSwitchApiVersion['value'],
   ) => {
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY) || '{}');
 
     if (!versions) {
       versions = {};
     }
     versions[config.backend] =
       serviceValue === -1 || !serviceValue ? '' : serviceValue.toString();
-    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+    localStorage.setItem(global.API__KEY, JSON.stringify(versions));
     this.setState({
       serviceValue: serviceValue === -1 || !serviceValue ? '' : serviceValue,
     });
@@ -72,14 +72,14 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   handleChangeTracksCaching = (
     tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value'],
   ) => {
-    let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+    let versions = JSON.parse(localStorage.getItem(global.API__KEY) || '{}');
 
     if (!versions) {
       versions = {};
     }
     versions[keyTracksCachingForTest] =
       tracksCachingValue === -1 ? '' : tracksCachingValue.toString();
-    localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+    localStorage.setItem(global.API__KEY, JSON.stringify(versions));
     this.setState({
       tracksCachingValue: tracksCachingValue === -1 ? '' : tracksCachingValue,
     });

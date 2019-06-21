@@ -17,7 +17,7 @@
     "strictFunctionTypes": false,
     "lib": [
       "dom",
-      "es2017"
+      "esnext"
     ],
     "types": [
       "classnames",

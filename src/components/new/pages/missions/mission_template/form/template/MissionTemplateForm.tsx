@@ -263,6 +263,8 @@ class MissionTemplateForm extends React.PureComponent<
                 structure_name={state.structure_name}
                 mission_id={state.id}
                 onChange={this.props.handleChange}
+                fromMissionTemplate={true}
+                fromMission={true}
                 IS_TEMPLATE
 
                 hiddenMapConfig={hiddenMapConfig}

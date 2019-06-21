@@ -104,7 +104,7 @@ function httpMethod(
   const data = { ...dataOwn };
   const token = JSON.parse(
     window.localStorage.getItem(
-      otherToken ? global.SESSION_KEY_ETS_TEST_BY_DEV2 : global.SESSION_KEY2,
+      otherToken ? global.SESSION_KEY_ETS_TEST_BY_DEV : global.SESSION_KEY,
     ) || null,
   );
 

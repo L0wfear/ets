@@ -15,9 +15,8 @@ const FieldCarIdsMissionSelectOption = (props: any) => {
           available
             ? <AvailableCarImg height="20" />
             : <NotAvailableCarImg height="20" />
-          }
-          {label}
         }
+        {label}
       </div>
     </Option>
   );

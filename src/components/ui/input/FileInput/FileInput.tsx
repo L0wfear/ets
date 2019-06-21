@@ -46,7 +46,7 @@ const FileListItem: React.FC<any> = React.memo(
               disabled={props.disabled}
               children="×"
             />
-            <a href={props.url} target="_blanc">{props.name}</a>
+            <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
           </DisplayFlexAlignCenter>
           {
             (createdAt && withDateTime) ? (
@@ -107,6 +107,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
         />,
       );
 
+    const disabledIfSingleFile = fileList.length && !multiple;
     const ID = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-list` : undefined;
 
     return (
@@ -116,7 +117,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
             !this.props.disabled
               ? (
                 <EtsBootstrap.Button
-                  disabled={this.props.disabled || Boolean(!multiple && value.length)}
+                  disabled={this.props.disabled || disabledIfSingleFile}
                   onClick={this.handleFilePick}
                   id={button_id}
                   children={buttonName}

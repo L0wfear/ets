@@ -9,7 +9,6 @@ import {
   fetchCarInfo,
 } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 
-import { DivNone } from 'global-styled/global-styled';
 import { CarInfoButtonsRow } from './styled/index';
 import {
   BtnGroupWrapper,
@@ -39,73 +38,69 @@ const CarTrackInformation = React.lazy(() =>
   import(/* webpackChunkName: "car_track_information" */ 'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation'),
 );
 
-const CarTabMenu: React.FC<PropsCarTabMenu> = (props) => {
-  const { asuods_id, odh_mkad, gps_code } = props;
+const CarTabMenu: React.FC<PropsCarTabMenu> = React.memo(
+  (props) => {
+    const { asuods_id, odh_mkad, gps_code } = props;
 
-  const [tabNum, setTabNum] = React.useState(1);
-  React.useEffect(() => {
-    if (asuods_id && odh_mkad !== -1) {
-      props.fetchMissionsData({
-        asuods_id,
-        gps_code,
-      });
-      props.fetchTrack({
-        asuods_id,
-        gps_code,
-      });
-    }
-  }, [asuods_id, odh_mkad]);
+    const [tabNum, setTabNum] = React.useState(1);
+    React.useEffect(() => {
+      if (asuods_id && odh_mkad !== -1) {
+        props.fetchMissionsData({
+          asuods_id,
+          gps_code,
+        });
+        props.fetchTrack({
+          asuods_id,
+          gps_code,
+        });
+      }
+    }, [asuods_id, odh_mkad]);
 
-  const handleSelectInfo = React.useCallback(
-    () => setTabNum(1),
-    [],
-  );
-  const handleSelectChart = React.useCallback(
-    () => setTabNum(2),
-    [],
-  );
-  const handleSelectTrack = React.useCallback(
-    () => setTabNum(3),
-    [],
-  );
+    const handleSelectInfo = React.useCallback(
+      () => setTabNum(1),
+      [],
+    );
+    const handleSelectChart = React.useCallback(
+      () => setTabNum(2),
+      [],
+    );
+    const handleSelectTrack = React.useCallback(
+      () => setTabNum(3),
+      [],
+    );
 
-  return (
-    <div>
-      <CarInfoButtonsRow>
-        <BtnGroupWrapper fullWidth={true}>
-          <BtnPart>
-            <EtsBootstrap.Button active={tabNum === 1} onClick={handleSelectInfo}>
-              Информация
-            </EtsBootstrap.Button>
-          </BtnPart>
-          <BtnPart>
-            <EtsBootstrap.Button active={tabNum === 2} onClick={handleSelectChart}>
-              Графики
-            </EtsBootstrap.Button>
-          </BtnPart>
-          <BtnPart>
-            <EtsBootstrap.Button active={tabNum === 3} onClick={handleSelectTrack}>
-                Трекинг
-            </EtsBootstrap.Button>
-          </BtnPart>
-        </BtnGroupWrapper>
-      </CarInfoButtonsRow>
-      <React.Suspense fallback={<LoadingComponent />}>
-        {tabNum === 1 ? (
-          <CarAttributeInformation map={props.map} />
-        ) : (
-          <DivNone />
-        )}
-        {tabNum === 2 ? (
-          <CarChartsInformation centerOn={props.centerOn} />
-        ) : (
-          <DivNone />
-        )}
-        {tabNum === 3 ? <CarTrackInformation map={props.map} /> : <DivNone />}
-      </React.Suspense>
-    </div>
-  );
-};
+    return (
+      <div>
+        <CarInfoButtonsRow>
+          <BtnGroupWrapper fullWidth={true}>
+            <BtnPart>
+              <EtsBootstrap.Button active={tabNum === 1} onClick={handleSelectInfo}>
+                Информация
+              </EtsBootstrap.Button>
+            </BtnPart>
+            <BtnPart>
+              <EtsBootstrap.Button active={tabNum === 2} onClick={handleSelectChart}>
+                Графики
+              </EtsBootstrap.Button>
+            </BtnPart>
+            <BtnPart>
+              <EtsBootstrap.Button active={tabNum === 3} onClick={handleSelectTrack}>
+                  Трекинг
+              </EtsBootstrap.Button>
+            </BtnPart>
+          </BtnGroupWrapper>
+        </CarInfoButtonsRow>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <EtsBootstrap.ViewCarousel indexShow={tabNum - 1}>
+            <CarAttributeInformation map={props.map} />
+            <CarChartsInformation centerOn={props.centerOn} />
+            <CarTrackInformation map={props.map} />
+          </EtsBootstrap.ViewCarousel>
+        </React.Suspense>
+      </div>
+    );
+  },
+);
 
 const mapStateToProps = (state) => ({
   odh_mkad: state.monitorPage.geoobjects.odh_mkad.data,

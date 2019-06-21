@@ -9,12 +9,14 @@ type PropsCarTrackInformation = {
   map: Map;
 };
 
-const CarTrackInformation: React.FC<PropsCarTrackInformation> = (props) => (
-  <div>
-    <TitleTrackTab />
-    <ActionTrackTab />
-    <SensorsTrackTab />
-  </div>
+const CarTrackInformation: React.FC<PropsCarTrackInformation> = React.memo(
+  () => (
+    <div>
+      <TitleTrackTab />
+      <ActionTrackTab />
+      <SensorsTrackTab />
+    </div>
+  ),
 );
 
 export default CarTrackInformation;

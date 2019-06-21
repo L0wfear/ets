@@ -4,17 +4,17 @@ import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_cond
 
 export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'], BlockCarInfoProps> = {
   properties: {
-    fact_mileage: {
-      type: 'number',
-      title: 'Фактический пробег / счетчик моточасов',
-      required: true,
-    },
   },
 };
 
 export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarInfoProps> = {
   properties: {
     gov_number: {
+      validateIf: {
+        type: 'has_data',
+        path: 'id',
+        reverse: true,
+      },
       type: 'string',
       title: 'Гос. номер',
       required: true,
@@ -40,10 +40,15 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'VIN',
       maxLength: 17,
     },
-    mileage: {
+    odometr_fact: {
       type: 'number',
-      title: 'Пробег на дату/счетчик моточасов',
-      required: true,
+      title: 'Пробег на дату проведения последнего ТО',
+      required: false,
+    },
+    motohours_fact: {
+      type: 'number',
+      title: 'Наработка м/ч на дату проведения последнего ТО',
+      required: false,
     },
     osago: {
       type: 'string',
@@ -79,12 +84,29 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     },
     last_tech_inspection_date: {
       type: 'date',
-      title: 'Дата прохождения последнего ТО',
+      title: 'Дата прохождения последнего ТО шасси',
       required: true,
+    },
+    last_inspection_equipment: {
+      type: 'date',
+      title: 'Дата прохождения последнего ТО спецоборудования',
+    },
+    mileage: {
+      type: 'number',
+      title: 'Пробег на дату проведения проверки',
+    },
+    motohours: {
+      type: 'number',
+      title: 'Наработка м/ч на дату проверки',
     },
     fact_status: {
       type: 'valueOfArray',
       title: 'Фактический статус ТС',
+      required: true,
+    },
+    status_at_check: {
+      type: 'valueOfArray',
+      title: 'Нахождение ТС на момент проверки',
       required: true,
     },
     state_exploitation: {

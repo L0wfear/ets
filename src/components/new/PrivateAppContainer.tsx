@@ -15,19 +15,6 @@ import { AppContentContainer } from './ui/@bootstrap/@global/AppContent';
 
 const MainApp: React.FC<{}> = React.memo(
   () => {
-    React.useEffect(
-      () => {
-        const SESSION_KEY2 = window.localStorage.getItem(global.SESSION_KEY2) || null;
-        localStorage.setItem(global.SESSION_KEY, SESSION_KEY2);
-
-        const SESSION_KEY_ETS_TEST_BY_DEV2 = window.localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2) || null;
-        localStorage.setItem(global.SESSION_KEY_ETS_TEST_BY_DEV, SESSION_KEY_ETS_TEST_BY_DEV2);
-
-        const versions = localStorage.getItem(global.API__KEY2) || '{}';
-        localStorage.setItem(global.API__KEY, versions);
-      },
-      [],
-    );
     return (
       <AppStyled>
         <AppHeader />

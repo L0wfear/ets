@@ -64,7 +64,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                   <EtsBootstrap.Row>
                     <EtsBootstrap.Col mdOffset={6} md={6}>
                       <EtsBootstrap.Button block disabled={Boolean(newAgent)} onClick={handleClickAddTemplateAgent}>
-                        <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
+                        <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить представителей ГБУ'}
                       </EtsBootstrap.Button>
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Row>

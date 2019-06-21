@@ -2,8 +2,8 @@ import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import { makeDate, makeTime } from 'utils/dates';
-import { DivNone } from 'global-styled/global-styled';
+// import { makeDate, makeTime } from 'utils/dates';
+// import { DivNone } from 'global-styled/global-styled';
 import FieldCarsConditionsCarMarka from './inside_fields/marka/FieldCarsConditionsCarMarka';
 import FieldCarsConditionsCarModel from './inside_fields/model/FieldCarsConditionsCarModel';
 import FieldCarsConditionsCarType from './inside_fields/type/FieldCarsConditionsCarType';
@@ -142,11 +142,21 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         />
         <ExtField
           type="string"
-          label="Пробег на дату/счётчик моточасов:"
-          value={state.mileage}
+          label="Пробег на дату проведения последнего ТО:"
+          value={state.odometr_fact}
           onChange={props.handleChange}
-          error={errors.mileage}
-          boundKeys="mileage"
+          error={errors.odometr_fact}
+          boundKeys="odometr_fact"
+          disabled={!props.isPermitted}
+          inline
+        />
+        <ExtField
+          type="string"
+          label="Наработка м/ч на дату проведения последнего ТО:"
+          value={state.motohours_fact}
+          onChange={props.handleChange}
+          error={errors.motohours_fact}
+          boundKeys="motohours_fact"
           disabled={!props.isPermitted}
           inline
         />
@@ -205,7 +215,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         <ExtField
           type="date"
           time={false}
-          label="Дата прохождения последнего ТО:"
+          label="Дата прохождения последнего ТО шасси:"
           value={state.last_tech_inspection_date}
           makeGoodFormat
           onChange={props.handleChange}
@@ -213,7 +223,18 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           boundKeys="last_tech_inspection_date"
           disabled={!props.isPermitted}
         />
-        {
+        <ExtField
+          type="date"
+          time={false}
+          label="Дата прохождения последнего ТО спецоборудования:"
+          value={state.last_inspection_equipment}
+          makeGoodFormat
+          onChange={props.handleChange}
+          error={errors.last_inspection_equipment}
+          boundKeys="last_inspection_equipment"
+          disabled={!props.isPermitted}
+        />
+        {/* { DITETS-6089 попросили просто скрыть
           !IS_CREATING && state.updated_at
             ? (
               <p>ТС проверено {makeDate(state.updated_at)} в {makeTime(state.updated_at)}</p>
@@ -221,7 +242,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             : (
               <DivNone />
             )
-        }
+        } */}
       </BoxContainer>
     );
   },

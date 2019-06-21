@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const EtsFilterCntainer = styled.form`
-  margin: 10px 15px;
+  margin: 5px 12.5px;
   display: flex;
   background-color: #eee;
   border: 1px solid #ddd;

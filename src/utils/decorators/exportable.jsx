@@ -31,7 +31,7 @@ export default function exportable(options) {
 
       exportFunction = (payloadOwn = {}, useRouteParams) => {
         const token = JSON.parse(
-          window.localStorage.getItem(global.SESSION_KEY2),
+          window.localStorage.getItem(global.SESSION_KEY),
         );
         let id = '';
         if (useRouteParams) {
@@ -43,7 +43,7 @@ export default function exportable(options) {
           format: 'xls',
         };
         const version = get(
-          JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+          JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
           [config.backend],
           '',
         );
@@ -80,10 +80,10 @@ export default function exportable(options) {
 
       exportByPostFunction = (bodyPayload = {}, urlPayload = {}) => {
         const token = JSON.parse(
-          window.localStorage.getItem(global.SESSION_KEY2),
+          window.localStorage.getItem(global.SESSION_KEY),
         );
         const version = get(
-          JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+          JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
           [config.backend],
           '',
         );

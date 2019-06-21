@@ -147,7 +147,7 @@ export default class APIService {
   }
 
   getUrlData() {
-    const apiVersions = localStorage.getItem(global.API__KEY2) || '{}';
+    const apiVersions = localStorage.getItem(global.API__KEY) || '{}';
 
     const version = get(JSON.parse(apiVersions), this._apiUrl, '');
 

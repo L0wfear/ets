@@ -133,7 +133,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
     const id = `filter_${props.filterData.valueKey}`;
 
     return (
-      <EtsFilter>
+      <EtsFilter htmlFor="">
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>

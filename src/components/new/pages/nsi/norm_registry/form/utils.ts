@@ -44,6 +44,7 @@ export const defaultEmployee: Norm = {
   work_class_id: null,
   work_type_id: null,
   work_type_name: '',
+  type_oper_name: '',
 };
 
 export const getDefaultNormElement = (element: Partial<Norm>): Norm => {

@@ -67,4 +67,5 @@ export type Norm = {
   work_class_id: number;
   work_type_id: number;
   work_type_name: string;
+  type_oper_name: string;
 };

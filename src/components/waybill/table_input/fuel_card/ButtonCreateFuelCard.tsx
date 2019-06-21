@@ -16,6 +16,8 @@ type ButtonCreateFuelCardOwnProps = {
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
   buttonWidth: number;
+
+  disabled: boolean;
 };
 
 type ButtonCreateFuelCardProps = (
@@ -63,7 +65,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 
     return (
       <React.Fragment>
-        <ButtonTableInput block width={props.buttonWidth} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
+        <ButtonTableInput block width={props.buttonWidth} disabled={props.disabled} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
         {
           showStatus && (
             <ErrorBoundaryForm>

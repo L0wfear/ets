@@ -220,6 +220,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
               page={props.page}
 
               buttonWidth={160}
+              disabled={props.disabled}
             />
           }
           selectedRowIndex={selectedRowIndex}

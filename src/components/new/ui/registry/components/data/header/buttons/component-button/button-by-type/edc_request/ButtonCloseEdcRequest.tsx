@@ -7,7 +7,7 @@ import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
+import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { get } from 'lodash';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
@@ -20,6 +20,7 @@ type ButtonCloseEdcRequestStateProps = {
 type ButtonCloseEdcRequestDispatchProps = {
   actionCloseEdcRequestById: HandleThunkActionCreator<typeof edcRequestActions.actionCloseEdcRequestById>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
 type ButtonCloseEdcRequestOwnProps = {
   registryKey: string;
@@ -45,10 +46,10 @@ const ButtonCloseEdcRequest: React.FC<ButtonCloseEdcRequestProps> = (props) => {
             { page: props.registryKey },
           );
         } catch (error) {
-          console.error(error); // tslint:disable-line
-          return;
+          //
         }
 
+        props.actionUnselectSelectedRowToShow(props.registryKey, true);
         props.registryLoadDataByKey(props.registryKey);
       }
     },
@@ -84,6 +85,11 @@ export default compose<ButtonCloseEdcRequestProps, ButtonCloseEdcRequestOwnProps
           registryLoadDataByKey(
             ...arg,
           ),
+        )
+      ),
+      actionUnselectSelectedRowToShow: (...arg) => (
+        dispatch(
+          actionUnselectSelectedRowToShow(...arg),
         )
       ),
     }),

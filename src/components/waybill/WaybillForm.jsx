@@ -1928,7 +1928,7 @@ class WaybillForm extends UNSAFE_Form {
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
                     <br />
-                    <EtsBootstrap.Col md={12}>
+                    <EtsBootstrap.Col md={12} style={{ zIndex: 0 }}>
                       <EtsBootstrap.Col md={12}>
                         <Taxes
                           modalKey={modalKey}
@@ -2141,7 +2141,7 @@ class WaybillForm extends UNSAFE_Form {
                         ) : (
                           <DivNone />
                         )}
-                        <EtsBootstrap.Col md={12}>
+                        <EtsBootstrap.Col md={12} style={{ zIndex: 0 }}>
                           <EtsBootstrap.Col md={12}>
                             <Taxes
                               modalKey={modalKey}

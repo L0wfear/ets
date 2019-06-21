@@ -1665,7 +1665,7 @@ class WaybillForm extends UNSAFE_Form {
                   value={state.equipment_fuel}
                   options={YES_NO_SELECT_OPTIONS_BOOL}
                   onChange={this.handleEquipmentFuel}
-                  disabled={IS_CLOSED}
+                  disabled={IS_CLOSED || !isPermittedByKey.update}
                   clearable={false}
                   modalKey={modalKey}
                 />
@@ -1680,7 +1680,7 @@ class WaybillForm extends UNSAFE_Form {
                       value={state.is_one_fuel_tank}
                       options={YES_NO_SELECT_OPTIONS_BOOL}
                       onChange={this.handleIsOneFuelTank}
-                      disabled={IS_CLOSED}
+                      disabled={IS_CLOSED || !isPermittedByKey.update}
                       clearable={false}
                       modalKey={modalKey}
                     />
@@ -1920,7 +1920,10 @@ class WaybillForm extends UNSAFE_Form {
                           IS_DRAFT_OR_ACTIVE={
                             IS_CREATING || IS_DRAFT || IS_ACTIVE
                           }
-                          disabled={IS_CLOSED && !this.state.canEditIfClose}
+                          disabled={
+                            (IS_CLOSED && !this.state.canEditIfClose)
+                            || !isPermittedByKey.update
+                          }
                           canEditIfClose={this.state.canEditIfClose}
                           page={this.props.page}
                           path={this.props.path}
@@ -2130,7 +2133,8 @@ class WaybillForm extends UNSAFE_Form {
                                   IS_CREATING || IS_DRAFT || IS_ACTIVE
                                 }
                                 disabled={
-                                  IS_CLOSED && !this.state.canEditIfClose
+                                  (IS_CLOSED && !this.state.canEditIfClose)
+                                  || !isPermittedByKey.update
                                 }
                                 page={this.props.page}
                                 path={this.props.path}

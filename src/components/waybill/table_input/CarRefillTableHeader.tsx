@@ -24,6 +24,8 @@ type CarRefillTableHeaderProps = {
   title: string;
   noHasFuelCardIdOptions: boolean;
   buttonWidth: number;
+
+  disabled: boolean;
 };
 
 const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
@@ -61,13 +63,13 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
             {
               props.visibleButtons
                 && (
-                  <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow}>Добавить заправку</ButtonTableInput>
+                  <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
                 )
             }
             {
               props.visibleButtons
                 && (
-                  <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
+                  <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={props.disabled || isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
                 )
             }
             {
@@ -78,6 +80,8 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                   fuel_type={props.fuel_type}
                   buttonWidth={props.buttonWidth}
                   page={props.page}
+
+                  disabled={props.disabled}
                 />
               )
             }

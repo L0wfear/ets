@@ -1894,7 +1894,7 @@ class WaybillForm extends UNSAFE_Form {
                       </Col>
                     </Col>
                     <br />
-                    <Col md={12}>
+                    <Col md={12} style={{ zIndex: 2 }}>
                       <Col md={12}>
                         <FieldWaybillCarRefill
                           array={state.car_refill}
@@ -1919,7 +1919,7 @@ class WaybillForm extends UNSAFE_Form {
                       </Col>
                     </Col>
                     <br />
-                    <Col md={12} style={{ zIndex: 0 }}>
+                    <Col md={12} style={{ zIndex: 1 }}>
                       <Col md={12}>
                         <Taxes
                           modalKey={modalKey}
@@ -2103,7 +2103,7 @@ class WaybillForm extends UNSAFE_Form {
                         </Col>
                         <br />
                         {!state.is_one_fuel_tank ? (
-                          <Col md={12}>
+                          <Col md={12} style={{ zIndex: 2 }}>
                             <Col md={12}>
                               <FieldWaybillCarRefill
                                 array={state.equipment_refill}
@@ -2132,7 +2132,7 @@ class WaybillForm extends UNSAFE_Form {
                         ) : (
                           <DivNone />
                         )}
-                        <Col md={12} style={{ zIndex: 0 }}>
+                        <Col md={12} style={{ zIndex: 1 }}>
                           <Col md={12}>
                             <Taxes
                               modalKey={modalKey}

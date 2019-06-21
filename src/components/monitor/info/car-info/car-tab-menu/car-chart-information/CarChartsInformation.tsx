@@ -91,15 +91,21 @@ class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation
         </div>
         <CarInfoBlockTabData>
           <React.Suspense fallback={<LoadingComponent />}>
-            <EtsBootstrap.ViewCarousel indexShow={selectedTab - 1}>
-              <CarFuelChart
-                handleChartClick={this.handleChartClick}
-                handleEventClick={this.handleEventClick}
-              />
-              <CarSpeedChart
-                handleChartClick={this.handleChartClick}
-              />
-            </EtsBootstrap.ViewCarousel>
+            {
+              selectedTab === 1 && (
+                <CarFuelChart
+                  handleChartClick={this.handleChartClick}
+                  handleEventClick={this.handleEventClick}
+                />
+              )
+            }
+            {
+              selectedTab === 2 && (
+                <CarSpeedChart
+                  handleChartClick={this.handleChartClick}
+                />
+              )
+            }
           </React.Suspense>
         </CarInfoBlockTabData>
       </div>

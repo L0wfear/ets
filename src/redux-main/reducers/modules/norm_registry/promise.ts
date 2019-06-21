@@ -23,7 +23,7 @@ export const getFrontNorm = (normRaw: any, index) => {
 
     norm.elements_ids = norm.elements.map(({ id }) => id);
     norm.objects_ids = norm.objects.map(({ id }) => id);
-    norm.car_func_types_ids = norm.car_func_types.map(({ id }) => id);
+    norm.car_func_types_ids = norm.car_func_types.map(({ asuods_id }) => asuods_id);
 
     norm.objects_text_array = isString(norm.objects_text) ? norm.objects_text.split(', ') : [],
 

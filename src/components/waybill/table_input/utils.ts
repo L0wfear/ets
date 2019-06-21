@@ -9,7 +9,7 @@ export const makeFuelCardStrickOptions = memoizeOne(
     fuelCardsList: FuelCards[],
     fuel_type: Waybill['fuel_type'],
     userCompanyId: InitialStateSession['userData']['company_id'],
-    userStructureId: InitialStateSession['userData']['structure_id'],
+    structure_id: Waybill['structure_id'],
   ) => {
     return fuelCardsList.reduce<DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]>(
       (newArr, rowData) => {
@@ -21,8 +21,8 @@ export const makeFuelCardStrickOptions = memoizeOne(
             !userCompanyId
             || rowData.company_id === userCompanyId
             && (
-              !userStructureId
-              || userStructureId === rowData.structure_id
+              !structure_id
+              || structure_id === rowData.structure_id
               || rowData.is_common
             )
           )
@@ -49,7 +49,7 @@ export const makeFuelCardIdOptions = memoizeOne(
     car_refill: Waybill['car_refill'] | Waybill['equipment_refill'],
     fuel_type: Waybill['fuel_type'],
     userCompanyId: InitialStateSession['userData']['company_id'],
-    userStructureId: InitialStateSession['userData']['structure_id'],
+    structure_id: Waybill['structure_id'],
   ) => {
     return fuelCardsList.reduce<DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]>(
       (newArr, rowData) => {
@@ -61,8 +61,8 @@ export const makeFuelCardIdOptions = memoizeOne(
             !userCompanyId
             || rowData.company_id === userCompanyId
             && (
-              !userStructureId
-              || userStructureId === rowData.structure_id
+              !structure_id
+              || structure_id === rowData.structure_id
               || rowData.is_common
             )
           ) || (

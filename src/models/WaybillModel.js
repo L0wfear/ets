@@ -15,7 +15,7 @@ const validateFuelCardId = (
   fuelCardsList,
   fuel_type,
   userCompanyId,
-  userStructureId,
+  structure_id,
 ) => {
   let fuel_card_id = '';
   const needSelectFuelCard
@@ -31,7 +31,7 @@ const validateFuelCardId = (
     car_refill,
     fuel_type,
     userCompanyId,
-    userStructureId,
+    structure_id,
   );
 
   if (needSelectFuelCard) {
@@ -66,7 +66,7 @@ const checkCarRefill = memoizeOne(
     fuelCardsList,
     fuel_type,
     userCompanyId,
-    userStructureId,
+    structure_id,
   ) => {
     return car_refill.map((rowData) => {
       return {
@@ -80,7 +80,7 @@ const checkCarRefill = memoizeOne(
           fuelCardsList,
           fuel_type,
           userCompanyId,
-          userStructureId,
+          structure_id,
         ),
         value:
           !rowData.value && rowData.value !== 0
@@ -235,7 +235,7 @@ export const waybillSchema = {
         validator: (
           car_refill,
           formState,
-          { refillTypeList, fuelCardsList, userCompanyId, userStructureId },
+          { refillTypeList, fuelCardsList, userCompanyId },
         ) => {
           return checkCarRefill(
             car_refill,
@@ -243,7 +243,7 @@ export const waybillSchema = {
             fuelCardsList,
             formState.fuel_type,
             userCompanyId,
-            userStructureId,
+            formState.structure_id,
           );
         },
       },

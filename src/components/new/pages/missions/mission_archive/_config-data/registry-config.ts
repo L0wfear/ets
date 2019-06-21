@@ -300,6 +300,10 @@ export const config: TypeConfigData<Mission> = {
           width: 200,
         },
         {
+          key: 'showMissionInfo',
+          title: 'Показать на карте',
+        },
+        {
           key: 'structure_name',
           title: [
             {

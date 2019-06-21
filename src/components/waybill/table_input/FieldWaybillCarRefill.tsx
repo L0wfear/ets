@@ -109,14 +109,13 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           props.array,
           props.fuel_type,
           props.userCompanyId,
-          props.userStructureId,
+          props.structure_id,
         );
       },
       [
         props.fuelCardsList,
         props.structure_id,
         props.userCompanyId,
-        props.userStructureId,
         props.array,
         props.fuel_type,
       ],
@@ -174,7 +173,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
             props.fuelCardsList,
             props.fuel_type,
             props.userCompanyId,
-            props.userStructureId,
+            props.structure_id,
           ) as DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]).reduce(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
@@ -194,7 +193,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           );
         }
       },
-      [previosFuelType, props.fuel_type, props.fuelCardsList, props.userCompanyId, props.userStructureId, props.array, props.handleChange],
+      [previosFuelType, props.fuel_type, props.fuelCardsList, props.userCompanyId, props.userStructureId, props.array, props.handleChange, props.structure_id],
     );
 
     return (

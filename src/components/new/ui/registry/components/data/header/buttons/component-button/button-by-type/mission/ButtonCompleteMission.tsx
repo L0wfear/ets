@@ -12,7 +12,7 @@ import { compose } from 'recompose';
 import { actionCompleteMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
-
+import { get } from 'lodash';
 // import { promiseSetTestDataToDatabase } from 'redux-main/reducers/modules/edc_request/edc_request_promise';
 
 export type ButtonCompleteMissionStateProps = {
@@ -92,10 +92,14 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
     [checkedRowsAsArray],
   );
 
-  const disabled = checkedRowsAsArray.some((mission: Mission) => !mission.can_be_closed);
+  let disabled = false;
+  if (checkedRowsAsArray.length) {
+    disabled = checkedRowsAsArray.some((mission: Mission) => !mission.can_be_closed);
+  } else {
+    const can_be_closed = get(props.selectedRow, 'can_be_closed', false);
+    disabled = !can_be_closed;
+  }
 
-  // disabled = false; // <<< удалить
-  // console.log('ButtonCompleteMissionProps === ', {props, showChangeStatusRequesFormLazy});
   return (
     <>
       <EtsBootstrap.Button id="duty_mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>

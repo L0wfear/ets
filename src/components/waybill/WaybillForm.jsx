@@ -1903,7 +1903,7 @@ class WaybillForm extends UNSAFE_Form {
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
                     <br />
-                    <EtsBootstrap.Col md={12}>
+                    <EtsBootstrap.Col md={12} style={{ zIndex: 2 }}>
                       <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
                           array={state.car_refill}
@@ -1931,7 +1931,7 @@ class WaybillForm extends UNSAFE_Form {
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
                     <br />
-                    <EtsBootstrap.Col md={12} style={{ zIndex: 0 }}>
+                    <EtsBootstrap.Col md={12} style={{ zIndex: 1 }}>
                       <EtsBootstrap.Col md={12}>
                         <Taxes
                           modalKey={modalKey}
@@ -2115,7 +2115,7 @@ class WaybillForm extends UNSAFE_Form {
                         </EtsBootstrap.Col>
                         <br />
                         {!state.is_one_fuel_tank ? (
-                          <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Col md={12} style={{ zIndex: 2 }}>
                             <EtsBootstrap.Col md={12}>
                               <FieldWaybillCarRefill
                                 array={state.equipment_refill}
@@ -2145,7 +2145,7 @@ class WaybillForm extends UNSAFE_Form {
                         ) : (
                           <DivNone />
                         )}
-                        <EtsBootstrap.Col md={12} style={{ zIndex: 0 }}>
+                        <EtsBootstrap.Col md={12} style={{ zIndex: 1 }}>
                           <EtsBootstrap.Col md={12}>
                             <Taxes
                               modalKey={modalKey}

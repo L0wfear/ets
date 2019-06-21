@@ -198,7 +198,7 @@ export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspect
                 props.type === INSPECT_AUTOBASE_TYPE_FORM.close
                   ? 'завершения'
                   : 'изменения'
-              } проверки необходимо добавить хотя бы одного представителя`;
+              } проверки необходимо добавить хотя бы одного представителя ГБУ`;
             }
           }
         },

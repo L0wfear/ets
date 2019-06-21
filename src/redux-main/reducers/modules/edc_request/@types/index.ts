@@ -84,6 +84,7 @@ export type EdcRequest = {
   duty_mission_numbers_text: string;
 
   peredano_v_ppoz: any;
+  reason_name: string;
 };
 
 export type IStateEdcRequest = {

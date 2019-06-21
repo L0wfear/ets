@@ -5,6 +5,7 @@ import {
   PropsMissionTemplateCreatingForm,
   MissionTemplateCreating,
 } from '../../@types/MissionTemplateCreatingForm';
+import { get } from 'lodash';
 
 type ColumnAssignmentFormWrapProps = {
   missionTemplates: MissionTemplateCreating['missionTemplates'],
@@ -23,7 +24,7 @@ const ColumnAssignmentFormWrap: React.FC<ColumnAssignmentFormWrapProps> = React.
       () => {
         const [mission] = Object.values(props.missionTemplates);
 
-        return mission.car_ids;
+        return get(mission, 'car_ids', null);
       },
       [props.missionTemplates],
     );

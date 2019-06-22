@@ -21,6 +21,7 @@ export type MissionListStateProps = {};
 export type MissionListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
+  actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 export type MissionListOwnProps = {};
 export type MissionListMergedProps = (

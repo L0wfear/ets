@@ -96,8 +96,18 @@ const TypeRenderer: React.FC<IPropsTypeRenderer> = ({
 const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
   const { value, onChange, index, outputListErrors, isPermitted, fieldKey } = values;
   const properties = get(values , 'validationSchema.properties', []);
-  const inputType = get(properties.find((elem) => elem.key === fieldKey), 'type', 'string');
-  return (<ExtField id={fieldKey} type={inputType} label={false} value={value} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+  const propertiesElem = properties.find(
+    (elem) => elem.key === fieldKey,
+  );
+  const inputType = get(propertiesElem, 'type', 'string');
+  const elemIsInteger = get(propertiesElem, 'integer', false);
+  const newVal = (inputType === 'number' && elemIsInteger && value) // <<< в state всё равно записывается строка, замена на число в handleChangeTypesCars
+  ? parseInt(value, 10)
+  : (inputType === 'number' && !elemIsInteger)
+    ? parseFloat(value)
+    : value;
+
+  return (<ExtField id={fieldKey} type={inputType} label={false} value={newVal} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
 };
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {

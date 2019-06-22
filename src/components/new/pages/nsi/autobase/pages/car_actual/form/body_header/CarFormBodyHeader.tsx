@@ -5,6 +5,7 @@ import carFormTabKey from 'components/new/pages/nsi/autobase/pages/car_actual/fo
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as queryString from 'query-string';
+import {get} from 'lodash';
 
 type CarFormBodyHeaderOwnProps = {
   isPermitted: boolean;
@@ -20,23 +21,47 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
       return queryString.stringify({
         CarActual_filters: props.searchState.CarActual_filters,
         CarActual_page: props.searchState.CarActual_page,
+        func_type_id: props.searchState.func_type_id,
+        municipal_facility_id: props.searchState.municipal_facility_id,
+        route_types: props.searchState.route_types,
+        technicalOperationRelationsRegistry_page: props.searchState.technicalOperationRelationsRegistry_page,
+        technical_operation_id: props.searchState.technical_operation_id,
       });
     },
-    [props.searchState.CarActual_filters, props.searchState.CarActual_page],
+    [
+      props.searchState.CarActual_filters,
+      props.searchState.CarActual_page,
+      props.searchState.func_type_id,
+      props.searchState.route_types,
+      props.searchState.technicalOperationRelationsRegistry_page,
+      props.searchState.technical_operation_id,
+    ],
   );
 
   const {
     match,
   } = props;
 
-  let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' ? null :  str);
+  let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' || str === ':technical_operation_relations_type_form?' ? null :  str);
 
   const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
   if (emptyIndex > 0) {
     urlAsArray = urlAsArray.slice(0, emptyIndex);
   }
 
-  const pathname = `${urlAsArray.join('/')}/${props.match.params.car_actual_asuods_id}`;
+  const technical_operation_relations_type_form = get(props, 'match.params.technical_operation_relations_type_form', '');
+  const car_actual_asuods_id = get(props, 'match.params.car_actual_asuods_id', '');
+
+  let formTypePath = '';
+
+  if (technical_operation_relations_type_form) {
+    formTypePath += `${technical_operation_relations_type_form}/`;
+  }
+  if (car_actual_asuods_id) {
+    formTypePath += car_actual_asuods_id;
+  }
+
+  const pathname = `${urlAsArray.join('/')}/${formTypePath}`;
 
   return (
     <EtsBootstrap.Nav

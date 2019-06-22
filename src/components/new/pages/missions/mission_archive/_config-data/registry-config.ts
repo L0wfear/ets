@@ -52,7 +52,8 @@ export const config: TypeConfigData<Mission> = {
       {
         valueKey: 'number',
         title: 'Номер задания',
-        type: 'advanced-string-like',
+        type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'waybill_number',

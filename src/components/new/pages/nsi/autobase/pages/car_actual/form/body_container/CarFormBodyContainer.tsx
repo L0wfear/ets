@@ -30,16 +30,28 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
         return queryString.stringify({
           CarActual_filters: props.searchState.CarActual_filters,
           CarActual_page: props.searchState.CarActual_page,
+          func_type_id: props.searchState.func_type_id,
+          municipal_facility_id: props.searchState.municipal_facility_id,
+          route_types: props.searchState.route_types,
+          technicalOperationRelationsRegistry_page: props.searchState.technicalOperationRelationsRegistry_page,
+          technical_operation_id: props.searchState.technical_operation_id,
         });
       },
-      [props.searchState.CarActual_filters, props.searchState.CarActual_page],
+      [
+        props.searchState.CarActual_filters,
+        props.searchState.CarActual_page,
+        props.searchState.func_type_id,
+        props.searchState.route_types,
+        props.searchState.technicalOperationRelationsRegistry_page,
+        props.searchState.technical_operation_id,
+      ],
     );
 
     const {
       match,
     } = props;
 
-    let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' ? null :  str);
+    let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' ? null : str);
 
     const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
     if (emptyIndex > 0) {

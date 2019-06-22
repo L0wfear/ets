@@ -52,18 +52,50 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
     );
   }, []);
 
+  const stringToFloat = React.useCallback((value: string) => {
+      return value
+        ? parseFloat(value)
+        : value;
+    },
+  []);
+
   const handleChangeTypesCars = React.useCallback(
     (types_cars) => {
+      const newTypesCars = types_cars.map((elem) => {
+        const allseason_use_cnt = stringToFloat(elem.allseason_use_cnt);
+        const checks_period_use_cnt = stringToFloat(elem.checks_period_use_cnt);
+        const will_checked_cnt = stringToFloat(elem.will_checked_cnt);
+
+        return {
+          ...elem,
+          allseason_use_cnt,
+          checks_period_use_cnt,
+          will_checked_cnt,
+        };
+      });
+
       props.handleChangeData({
-        types_cars,
+        types_cars: newTypesCars,
       });
     },
     [props.handleChangeData],
   );
   const handleChangeTypesHarvestingUnit = React.useCallback(
     (types_harvesting_unit) => {
+      const newTypesHarvestingUnit = types_harvesting_unit.map((elem) => {
+        const ready_cnt = stringToFloat(elem.ready_cnt);
+        const not_ready_cnt = stringToFloat(elem.not_ready_cnt);
+        const will_checked_cnt = stringToFloat(elem.will_checked_cnt);
+
+        return {
+          ...elem,
+          ready_cnt,
+          not_ready_cnt,
+          will_checked_cnt,
+        };
+      });
       props.handleChangeData({
-        types_harvesting_unit,
+        types_harvesting_unit: newTypesHarvestingUnit,
       });
     },
     [props.handleChangeData],

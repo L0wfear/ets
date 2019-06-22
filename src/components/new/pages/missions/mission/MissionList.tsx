@@ -9,7 +9,7 @@ import {
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
+import { registryAddInitialData, registryRemoveData, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
@@ -36,6 +36,7 @@ const MissionList: React.FC<MissionListProps> = (props) => {
   React.useEffect(
     () => {
       props.registryAddInitialData(config);
+      props.actionUnselectSelectedRowToShow(registryKey, true);
 
       return () => {
         props.registryRemoveData(registryKey);
@@ -68,6 +69,11 @@ export default compose<MissionListProps, MissionListOwnProps>(
       registryRemoveData: (registryKeyTemp: string) => (
         dispatch(
           registryRemoveData(registryKeyTemp),
+        )
+      ),
+      actionUnselectSelectedRowToShow: (...arg) => (
+        dispatch(
+          actionUnselectSelectedRowToShow(...arg),
         )
       ),
     }),

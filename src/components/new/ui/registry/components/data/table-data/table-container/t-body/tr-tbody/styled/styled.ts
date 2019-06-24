@@ -3,7 +3,8 @@ import { constantColor } from 'global-styled/global-constants';
 import { get } from 'lodash';
 import { darken } from 'polished';
 import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
-import { FileInputWrapper } from 'components/ui/input/FileInput/styled';
+// import { FileInputWrapper } from 'components/ui/input/FileInput/styled';
+
 import { isBoolean } from 'util';
 
 const getColorTd = (rowData, checkData) => {
@@ -54,12 +55,10 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       td {
         color: white;
       }
-      ${FileInputWrapper} {
-        a {
-          color: white;
-          &:hover {
-            text-decoration: none;
-          }
+      a {
+        color: white;
+        &:hover {
+          text-decoration: none;
         }
       }
     }
@@ -69,12 +68,9 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       background-color: ${({ selected }) => selected ? constantColor.colorGreen : 'initial'};
     }
 
-    ${FileInputWrapper} {
-      a {
-        color: ${({selected}) => selected ? 'white' : '#0081d6'};
-        text-decoration: ${({selected}) => selected ? 'underline' : 'underline'};
-      }
+    a {
+      color: ${({selected}) => selected ? 'white' : '#0081d6'};
+      text-decoration: ${({selected}) => selected ? 'underline' : 'underline'};
     }
-
   }
 `;

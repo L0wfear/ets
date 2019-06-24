@@ -134,8 +134,19 @@ export const promiseGetCarsConditionsCarById = async (id: CarsConditionCars['id'
   const response = await InspectCarsService.path(id).get();
 
   const result: CarsConditionCars = get(response, 'result.rows.0', []);
+  const oldData = get(result, 'data', {}) ? result.data : {}; // <<< костыль перед показом, убрать
+  const newData = {
+    ...oldData,
+    waybill_number: get(result, 'waybill_number', null),
+    mission_numbers: get(result, 'mission_numbers', null),
+  };
 
-  return result;
+  return {
+    ...result,
+    data: {
+      ...newData,
+    },
+  };
 };
 
 export const promiseCreateCarsConditionsCar = async (carsConditionsCarRaw: Partial<CarsConditionCars>) => {

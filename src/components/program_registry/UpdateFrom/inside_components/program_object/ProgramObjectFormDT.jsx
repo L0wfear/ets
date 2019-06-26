@@ -97,13 +97,11 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           changesState.dtPolys = dtPolysOut;
           changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(
             ({
-              data: {
-                yard_id: value,
-                object_address: label,
-                total_area,
-                id,
-                name,
-              },
+              yard_id: value,
+              object_address: label,
+              total_area,
+              id,
+              name,
             }) => ({
               value,
               label,

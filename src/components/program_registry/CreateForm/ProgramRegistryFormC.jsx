@@ -3,8 +3,9 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div';
+// import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import { connectToStores } from 'utils/decorators';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
@@ -93,7 +94,8 @@ class ProgramRegistryForm extends UNSAFE_Form {
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: 15 }}>
+        {/* <<< Добавить page, path */}
+        <ModalBodyPreloader style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
               <ExtField
@@ -160,7 +162,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-        </Div>
+        </ModalBodyPreloader>
         <ModalBody />
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button

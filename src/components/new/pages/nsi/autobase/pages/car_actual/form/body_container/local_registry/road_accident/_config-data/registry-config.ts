@@ -63,6 +63,16 @@ export const getToConfig = (car_id: number): TypeConfigData<RoadAccident> => {
           valueKey: 'is_guilty',
           title: 'Виновность',
           type: 'multiselect',
+          options: [
+            {
+              label: 'Да',
+              value: true,
+            },
+            {
+              label: 'Нет',
+              value: false,
+            },
+          ],
         },
         {
           valueKey: 'damage_price',

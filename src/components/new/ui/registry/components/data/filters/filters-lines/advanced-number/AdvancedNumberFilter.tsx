@@ -47,23 +47,23 @@ class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter
       optionsType: [
         {
           value: eq,
-          label: '=',
+          label: 'равно',
         },
         {
           value: ['gt'],
-          label: '>',
+          label: 'больше',
         },
         {
           value: ['lt'],
-          label: '<',
+          label: 'меньше',
         },
         {
           value: ['neq'],
-          label: '≠',
+          label: 'не равно',
         },
         {
           value: ['gt', 'lt'],
-          label: '><',
+          label: 'диапазон',
         },
       ],
     };

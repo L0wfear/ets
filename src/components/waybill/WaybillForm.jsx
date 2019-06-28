@@ -87,6 +87,9 @@ const fieldToCheckHasData = {
   equipment_tax_data: {
     type: 'array',
   },
+  tax_data: {
+    type: 'array',
+  },
   motohours_equip_end: {
     type: 'field',
   },
@@ -1961,6 +1964,7 @@ class WaybillForm extends UNSAFE_Form {
                           }
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
                         />
+                        <div className="error">{errors.tax_data}</div>
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Row>

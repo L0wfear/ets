@@ -32,6 +32,7 @@ const canSaveNotCheckField = [
   'distance',
   'motohours_equip_end',
   'equipment_tax_data',
+  'tax_data',
   'motohours_end',
   'odometr_end',
   'equipment_fact_fuel_end',

@@ -67,7 +67,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
             <ExtField
               id="staff_drivers"
               type="number"
-              label="Водителей:"
+              label="Водителей, чел."
               value={state.staff_drivers}
               onChange={handleChange}
               boundKeys="staff_drivers"
@@ -79,7 +79,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
             <ExtField
               id="staff_mechanics"
               type="number"
-              label="Механизаторов:"
+              label="Механизаторов, чел."
               value={state.staff_mechanics}
               onChange={handleChange}
               boundKeys="staff_mechanics"
@@ -96,7 +96,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
             <ExtField
               id="list_drivers"
               type="number"
-              label="Водителей:"
+              label="Водителей, чел."
               value={state.list_drivers}
               onChange={handleChange}
               boundKeys="list_drivers"
@@ -108,7 +108,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
             <ExtField
               id="list_mechanics"
               type="number"
-              label="Механизаторов:"
+              label="Механизаторов, чел."
               value={state.list_mechanics}
               onChange={handleChange}
               boundKeys="list_mechanics"
@@ -125,7 +125,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
             <ExtField
               id="staffing_drivers"
               type="number"
-              label="Водителей:"
+              label="Водителей, %"
               value={state.staffing_drivers}
               onChange={handleChange}
               boundKeys="staffing_drivers"
@@ -137,7 +137,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
             <ExtField
               id="staffing_mechanics"
               type="number"
-              label="Механизаторов:"
+              label="Механизаторов, %"
               value={state.staffing_mechanics}
               onChange={handleChange}
               boundKeys="staffing_mechanics"

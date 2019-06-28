@@ -141,7 +141,7 @@ export const dutyDutyMissionFormSchema: SchemaType<DutyMission, PropsDutyMission
               }
             }
 
-            if (true || is_cleaning_norm && plan_date_start && object_type_name) {
+            if (is_cleaning_norm && plan_date_start && object_type_name) {
               const time = get(routeTypesByTitle, `${object_type_name}.time`, null);
 
               if (time && diffDates(value, plan_date_start, 'hours') > time && status === 'not_assigned') {

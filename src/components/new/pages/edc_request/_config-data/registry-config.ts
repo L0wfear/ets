@@ -82,6 +82,11 @@ export const config: TypeConfigData<EdcRequest> = {
         },
       },
       {
+        valueKey: 'reason_name',
+        type: 'multiselect',
+        title: 'Причина отмены/отклонения',
+      },
+      {
         valueKey: 'request_send_at',
         type: 'advanced-date',
         title: 'Передано в ППОЗ',
@@ -210,6 +215,11 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'desired_date',
           title: 'Желательная дата',
+          width: 200,
+        },
+        {
+          key: 'reason_name',
+          title: 'Причина отмены/отклонения',
           width: 200,
         },
         {

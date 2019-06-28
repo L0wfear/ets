@@ -113,18 +113,22 @@ const SelectRenderer: React.FC<IPropsSelectRenderer> = ({
   />
 );
 
-const InputRenderer: React.FC<IPropsDataTableInputRenderer> = ({ value, onChange, index, outputListErrors, isPermitted, fieldKey }) => (
-  <ExtField
-    id={fieldKey}
-    type="string"
-    label={false}
-    value={value}
-    error={get(outputListErrors[index], fieldKey, '')}
-    onChange={onChange}
-    boundKeys={[index, fieldKey]}
-    disabled={!isPermitted}
-  />
-);
+const InputRenderer: React.FC<IPropsDataTableInputRenderer> = (values) => {
+  const { value, onChange, index, outputListErrors, isPermitted, fieldKey } = values;
+  const properties = get(values , 'validationSchema.properties', []);
+  const propertiesElem = properties.find(
+    (elem) => elem.key === fieldKey,
+  );
+  const inputType = get(propertiesElem, 'type', 'string');
+  const elemIsInteger = get(propertiesElem, 'integer', false);
+  const newVal = (inputType === 'number' && elemIsInteger && value) // <<< в state всё равно записывается строка, замена на число в handleChangeTypesHarvestingUnit
+  ? parseInt(value, 10)
+  : (inputType === 'number' && !elemIsInteger)
+    ? parseFloat(value)
+    : value;
+
+  return (<ExtField id={fieldKey} type={inputType} label={false} value={newVal} error={get(outputListErrors[index], fieldKey, '')} onChange={onChange} boundKeys={[index, fieldKey]} disabled={!isPermitted} />);
+};
 // "type": "ПУ", // Тип прицепа, навесного уборочного агрегата'
 // "will_checked_cnt": 10, // Всего подлежит подготовке
 // "season": "Лето", // Сезон (Всесезон, Лето, Зима)

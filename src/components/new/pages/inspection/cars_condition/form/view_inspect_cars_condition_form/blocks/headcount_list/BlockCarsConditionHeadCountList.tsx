@@ -36,6 +36,26 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
       [props.onChange, props.headcount_list],
     );
 
+    React.useEffect( () => {
+      let {
+        staffing_drivers,
+        staffing_mechanics,
+      } = state;
+      staffing_drivers = state.staff_drivers
+        ? Number((state.list_drivers / state.staff_drivers * 100).toFixed())
+        : staffing_drivers;
+      staffing_mechanics = state.staff_mechanics
+        ? Number((state.list_mechanics / state.staff_mechanics * 100).toFixed())
+        : staffing_mechanics;
+      props.onChange({
+        headcount_list: {
+          ...props.headcount_list,
+          staffing_drivers,
+          staffing_mechanics,
+        },
+      });
+    }, [state.staff_drivers, state.list_drivers, state.staff_mechanics, state.list_mechanics ]);
+
     return (
       <BoxContainer>
         <h4>Штатная и списочная численность</h4>

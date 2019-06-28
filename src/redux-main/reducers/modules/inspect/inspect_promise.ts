@@ -60,9 +60,19 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
 };
 
 export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect, payload: any) => {
+  const is_hard_surface = get(data, 'is_hard_surface', null);
+  let newData = { ...data };
+  if ( !Array.isArray(is_hard_surface) && is_hard_surface ) { // <<< были кривые данные с бека, костыль
+    const new_is_hard_surface = [is_hard_surface];
+    newData = {
+      ...newData,
+      is_hard_surface: new_is_hard_surface,
+    };
+  }
+
   const response = await InspectRegistryService.path(id).put(
     {
-      data,
+      data: newData,
       files,
       type,
       ...payload,

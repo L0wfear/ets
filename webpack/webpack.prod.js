@@ -11,11 +11,19 @@ const stand = process.env.STAND || 'dev';
 
 const getNameFavicon = (stand) => {
   switch (stand) {
-    case 'dev': return 'faviconDev.png';
+    case 'dev': return 'faviconBlue.svg';
     case 'gost_stage':
     case 'ets_test':
-    case 'ets_hotfix': return 'faviconStage.png';
+    case 'ets_hotfix': return 'faviconYellow.png';
     default: return 'favicon.png';
+  }
+};
+
+const getColor = (stand) => {
+  switch (getNameFavicon(stand)) {
+    case 'ets_dev': return '#0021FF';
+    case 'ets_hotfix': return '#FFE100';
+    default: return '#2ECC40';
   }
 };
 
@@ -163,7 +171,6 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
-    new ManifestPlugin(),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
@@ -191,12 +198,90 @@ module.exports = {
         from: path.join(__dirname, 'otherToDist', 'robots.txt'),
         to: 'robots.txt'
       },
+      {
+        from: path.resolve(__dirname, 'templates', 'sw.js'),
+        to: 'sw.js'
+      },
+      {
+        from: path.resolve(__dirname, 'templates', 'images', getNameFavicon(stand), 'icons'),
+        to: 'icons'
+      },
     ]),
+    new ManifestPlugin({
+      generate: (seed, files) => files.reduce(
+        (manifest, {name, path}) => {
+          if (name !== 'images/.DS_Store') {
+            return ({
+              ...manifest,
+              chunks: {
+                ...manifest.chunks || {},
+                [name]: path,
+              },
+            });
+          }
+
+          return manifest;
+        },
+        seed,
+      ),
+      seed: {
+        "short_name": 'ЕТС',
+        "name": 'ЕТС',
+        "start_url": "/",
+        "background_color": "black",
+        "theme_color": getColor(stand),
+        "display": "fullscreen",
+        "version": JSON.stringify(`${require(path.join(__dirname, '..', 'package.json')).version}`),
+        "icons": [
+          {
+            "src": "./icons/icon-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+          },
+          {
+            "src": "./icons/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+          }
+        ],
+      },
+    }),
     new HtmlWebpackPlugin({
       title: 'ЕТС',
-      favicon: path.resolve(__dirname, '..', 'src', 'assets', 'images', getNameFavicon(stand)),
+      favicon: path.resolve(__dirname, 'templates', 'images', getNameFavicon(stand), 'icons', 'icon-128x128.png'),
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
-      MANIFEST_FILENAME: 'manifest.json'
+      publicPath: '/',
+      themeColor: getColor(stand),
     }),
     new webpack.DefinePlugin({
       __CLIENT__: true,

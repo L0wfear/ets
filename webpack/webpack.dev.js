@@ -279,6 +279,7 @@ module.exports = {
       template: path.resolve(__dirname, 'templates', 'index.hbs'),
       publicPath: '/',
       themeColor: getColor(stand),
+      DEVELOPMENT: true,
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({

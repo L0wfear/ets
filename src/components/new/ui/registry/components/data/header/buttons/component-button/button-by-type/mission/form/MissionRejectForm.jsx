@@ -367,7 +367,7 @@ class MissionRejectForm extends React.Component {
       = missions
       && missions.map((oneM, i) => (
         <EtsBootstrap.Row style={{ marginBottom: '4px' }} key={i}>
-          <EtsBootstrap.Col md={3} style={{ paddingRight: '0' }}>
+          <EtsBootstrap.Col md={4} style={{ paddingRight: '0' }}>
             <div
               title={oneM.technical_operation_name}
               style={{
@@ -380,7 +380,7 @@ class MissionRejectForm extends React.Component {
             </div>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col
-            md={9}
+            md={8}
             style={{
               textAlign: 'right',
               paddingLeft: '0',
@@ -460,7 +460,7 @@ class MissionRejectForm extends React.Component {
                   )})`}
                 </label>
                 <EtsBootstrap.Row style={{ marginBottom: '4px' }}>
-                  <EtsBootstrap.Col md={3} style={{ paddingRight: '0' }}>
+                  <EtsBootstrap.Col md={4} style={{ paddingRight: '0' }}>
                     <div
                       style={{
                         paddingTop: '9px',
@@ -472,7 +472,7 @@ class MissionRejectForm extends React.Component {
                     </div>
                   </EtsBootstrap.Col>
                   <EtsBootstrap.Col
-                    md={9}
+                    md={8}
                     style={{
                       textAlign: 'right',
                       paddingLeft: '0',

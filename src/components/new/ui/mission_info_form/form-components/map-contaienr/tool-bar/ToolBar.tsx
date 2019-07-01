@@ -4,7 +4,7 @@ import MissionInfoLegend from 'components/new/ui/mission_info_form/form-componen
 
 const ToolBar: React.FC<any> = (props) => (
   <div className="tool_bar-wrap">
-    <div className="tool_bar">
+    <div className="tool_bar info">
       <MissionInfoLegend {...props} />
     </div>
   </div>

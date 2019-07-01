@@ -24,9 +24,9 @@ export const config: TypeConfigData<EdcRequest> = {
       buttonsTypes.filter,
       buttonsTypes.edc_request_create_mission,
       buttonsTypes.edc_request_create_duty_mission,
-      buttonsTypes.edc_request_cancel,
-      buttonsTypes.edc_request_reject,
       buttonsTypes.edc_request_close,
+      buttonsTypes.edc_request_reject,
+      buttonsTypes.edc_request_cancel,
     ],
   },
   filter: {

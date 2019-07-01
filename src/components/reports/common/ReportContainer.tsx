@@ -56,7 +56,6 @@ class ReportContainer extends React.Component<
   constructor(props) {
     super(props);
     this.state = {
-      filterResetting: false,
       fetchedBySubmitButton: false,
       fetchedByMoveDownButton: false,
       exportFetching: false,
@@ -90,41 +89,7 @@ class ReportContainer extends React.Component<
     }
   }
 
-  static getDerivedStateFromProps(
-    nextProps: IPropsReportContainer,
-    prevState: IStateReportContainer,
-  ) {
-
-    if (!nextProps.reportDataFetching) {
-      const { filterValues } = prevState;
-      const { list } = nextProps;
-      return {
-        filterValues: Object.entries(filterValues).reduce(
-          (newObj, [key, data]: any) => {
-            if (list.some((rowData) => key in rowData)) {
-              if (data.type === 'multiselect') {
-                if (list.some((rowData) => {
-                  const keyValue = rowData[key];
-                  return data.value.includes(keyValue);
-                })) {
-                  newObj[key] = data;
-                }
-              } else {
-                newObj[key] = data;
-              }
-            }
-
-            return newObj;
-          },
-          {},
-        ),
-      };
-    }
-
-    return null;
-  }
-
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const {
       location: { search },
     } = prevProps;
@@ -152,6 +117,85 @@ class ReportContainer extends React.Component<
       } else {
         this.getTableMetaInfo();
         this.props.setInitialState();
+      }
+    }
+
+    // удаляем из фильтров значения, которых нет в основном списке
+    if (this.props.data !== this.props.data) {
+      const { data: old_data } = this.props;
+      let rows = get(old_data, ['result', 'rows'], null);
+      const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
+      if (deepArr) {
+        rows = rows.reduce((newArr: any[], blockData) => {
+          newArr.push(...blockData.rows);
+
+          return newArr;
+        }, []);
+      }
+
+      if (!this.props.reportDataFetching) {
+        const { filterValues } = prevState;
+        this.setState({
+          filterValues: Object.entries(filterValues).reduce(
+            (newObj, [key, data]: any) => {
+              if (rows.some((rowData) => key in rowData)) {
+                if (data.type === 'multiselect') {
+                  if (rows.some((rowData) => {
+                    const keyValue = rowData[key];
+                    return data.value.includes(keyValue);
+                  })) {
+                    newObj[key] = data;
+                  }
+                } else {
+                  newObj[key] = data;
+                }
+              }
+
+              return newObj;
+            },
+            {},
+          ),
+        });
+      }
+    }
+
+    // фильтруем список
+    if (this.state.filterValues !== prevState.filterValues || this.props.data !== prevProps.data) {
+      if (this.props.notUseServerSummerTable) {
+        const { data: old_data } = this.props;
+        let rows = get(old_data, ['result', 'rows'], null);
+        const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
+        if (deepArr) {
+          rows = rows.reduce((newArr: any[], blockData) => {
+            newArr.push(...blockData.rows);
+
+            return newArr;
+          }, []);
+        }
+
+        if (rows) {
+          const data = {
+            ...old_data,
+            result: {
+              ...old_data.result,
+            },
+          };
+          if (deepArr) {
+            data.result.rows = data.result.rows.map((blockData) => ({
+              ...blockData,
+              rows: filterFunction(blockData.rows, { filterValues: this.state.filterValues }),
+            })).filter((blockData) => blockData.rows.length);
+          } else {
+            data.result.rows = filterFunction(rows, { filterValues: this.state.filterValues });
+          }
+
+          const reportKey = get(this.props, 'tableProps.reportKey', null);
+
+          this.props.setReportDataWithSummerData({
+            data,
+            props: { ...this.state, notUseServerSummerTable: this.props.notUseServerSummerTable, reportKey },
+          });
+        }
       }
     }
   }
@@ -313,42 +357,6 @@ class ReportContainer extends React.Component<
 
   externalFilter = (filterValues: any) => {
     this.setState({ filterValues });
-
-    if (this.props.notUseServerSummerTable) {
-      const { data: old_data } = this.props;
-      let rows = get(old_data, ['result', 'rows'], null);
-      const deepArr = rows && rows.some((blockData) => isArray(blockData.rows));
-      if (deepArr) {
-        rows = rows.reduce((newArr: any[], blockData) => {
-          newArr.push(...blockData.rows);
-
-          return newArr;
-        }, []);
-      }
-
-      if (rows) {
-        const data = {
-          ...old_data,
-          result: {
-            ...old_data.result,
-          },
-        };
-        if (deepArr) {
-          data.result.rows = data.result.rows.map((blockData) => ({
-            ...blockData,
-            rows: filterFunction(blockData.rows, { filterValues }),
-          })).filter((blockData) => blockData.rows.length);
-        } else {
-          data.result.rows = filterFunction(rows, { filterValues });
-        }
-        const reportKey = get(this.props, 'tableProps.reportKey', null);
-
-        this.props.setReportDataWithSummerData({
-          data,
-          props: { ...this.state, reportKey },
-        });
-      }
-    }
   };
 
   handleMoveDown = (selectedRow: IDataTableSelectedRow) => {
@@ -581,6 +589,8 @@ class ReportContainer extends React.Component<
       />
     );
 
+    const defaulResult = get(this.props, 'data.result.rows', null);
+
     return (
       <EtsPageWrap inheritDisplay>
         <Header
@@ -597,13 +607,13 @@ class ReportContainer extends React.Component<
           onRowSelected={this.handleMoveDown}
           enumerated={enumerated}
           enableSort={enableSort}
-          filterResetting={this.state.filterResetting}
           initialSort={initialSort || ''}
           externalFilter={this.externalFilter}
           needMyFilter={!this.props.notUseServerSummerTable}
           filterValues={this.state.filterValues}
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
+          defaulResult={defaulResult}
           {...this.props.tableProps}>
           <Button
             bsSize="small"

@@ -73,7 +73,6 @@ export default class DataTable extends React.Component {
 
       tableMeta: PropTypes.object,
       filterValues: PropTypes.object,
-      filterResetting: PropTypes.bool,
       externalFilter: PropTypes.func,
       highlightClassMapper: PropTypes.func,
       highlightClassColMapper: PropTypes.func,
@@ -120,7 +119,6 @@ export default class DataTable extends React.Component {
       noDataMessage: 'Нет данных',
 
       noFilter: false,
-      filterResetting: false,
       noHeader: false,
       noTitle: false,
 
@@ -188,9 +186,6 @@ export default class DataTable extends React.Component {
       }
       if (props.useServerFilter) {
         changesFields.filterValues = props.filterValues;
-      }
-      if (props.filterResetting) {
-        changesFields.filterValues = {};
       }
 
       if (Array.isArray(props.results)) {
@@ -266,9 +261,6 @@ export default class DataTable extends React.Component {
 
     if (nextProps.useServerFilter) {
       changesFields.filterValues = nextProps.filterValues;
-    }
-    if (nextProps.filterResetting) {
-      changesFields.filterValues = {};
     }
 
     if (

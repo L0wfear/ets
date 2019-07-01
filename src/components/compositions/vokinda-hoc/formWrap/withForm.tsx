@@ -46,6 +46,7 @@ type WithFormState<F, P> = {
 
   hasData: boolean;
   inLoading: boolean;
+  inSubmit: boolean;
 };
 
 type WithFormProps<P> = P & DispatchProp & {
@@ -159,6 +160,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             hasData,
           ),
           inLoading: false,
+          inSubmit: false,
         };
       }
 
@@ -338,13 +340,11 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           };
         });
       }
-      submitAction = async (...payload: any[]) => {
-        const uniqValue = (
-          !isBoolean(config.uniqField)
-            ? get(this.state.formState, config.uniqField, null)
-            : null
-        );
 
+      createAction = async (...payload) => {
+        const {
+          createAction,
+        } = config;
         const {
           page,
           path,
@@ -352,51 +352,108 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
         let result = null;
 
-        if (!uniqValue) {
-          const {
-            createAction,
-          } = config;
-
+        if (!this.state.inSubmit) {
           if (isFunction(createAction)) {
+            this.setState({
+              inSubmit: true,
+            });
+
             try {
               result = await this.props.dispatch(createAction(...payload, { page, path }));
-              if (!config.noMessage) {
-                global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
-              }
-            } catch (error) {
-              console.warn(error); // tslint:disable-line
-              if (config.withThrow) {
-                throw error;
-              }
-              return null;
-            }
-          } else {
-            throw new Error('Определи функцию createAction в конфиге withForm');
-          }
-        } else {
-          const {
-            updateAction,
-          } = config;
-
-          if (isFunction(updateAction)) {
-            try {
-              result = await this.props.dispatch(updateAction(...payload, { page, path }));
               if (!config.noMessage) {
                 global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
               }
             } catch (error) {
-              console.warn(error); // tslint:disable-line
-              if (config.withThrow) {
-                throw error;
-              }
-              return null;
+              this.setState({
+                inSubmit: false,
+              });
+              throw error;
             }
+
+            this.setState({
+              inSubmit: false,
+            });
           } else {
-            throw new Error('Определи функцию updateAction в конфиге withForm');
+            throw new Error('Определи функцию createAction в конфиге withForm');
           }
+        } else {
+          console.log('i want more request'); // tslint:disable-line
         }
 
         return result;
+      }
+
+      updateAction = async (...payload) => {
+        const {
+          updateAction,
+        } = config;
+        const {
+          page,
+          path,
+        } = this.props;
+
+        let result = null;
+
+        if (!this.state.inSubmit) {
+          if (isFunction(updateAction)) {
+            this.setState({
+              inSubmit: true,
+            });
+
+            try {
+              result = await this.props.dispatch(updateAction(...payload, { page, path }));
+              if (!config.noMessage) {
+                global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+              }
+            } catch (error) {
+              this.setState({
+                inSubmit: false,
+              });
+              throw error;
+            }
+
+            this.setState({
+              inSubmit: false,
+            });
+          } else {
+            throw new Error('Определи функцию updateAction в конфиге withForm');
+          }
+        } else {
+          console.log('i want more request'); // tslint:disable-line
+        }
+
+        return result;
+      }
+
+      submitAction = async (...payload: any[]) => {
+        const uniqValue = (
+          !isBoolean(config.uniqField)
+            ? get(this.state.formState, config.uniqField, null)
+            : null
+        );
+
+        let result = null;
+
+        try {
+          if (!uniqValue) {
+            result = await this.createAction(...payload);
+          } else {
+            result = await this.updateAction(...payload);
+          }
+
+          return result;
+        } catch (error) {
+          console.warn(error); // tslint:disable-line
+
+          this.setState({
+            inSubmit: false,
+          });
+
+          if (config.withThrow) {
+            throw error;
+          }
+          return null;
+        }
       }
 
       defaultSubmit: FormWithDefaultSubmit = async () => {
@@ -448,6 +505,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           ? (
             <Component
               {...this.props}
+              createAction={this.createAction}
+              updateAction={this.updateAction}
               isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
               isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
               isPermitted={isPermitted}

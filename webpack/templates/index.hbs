@@ -16,7 +16,7 @@
     
     <script>
       if ('serviceWorker' in navigator) {
-        if (!Boolean({{htmlWebpackPlugin.options.DEVELOPMENT}})) {
+        if (!Boolean({{htmlWebpackPlugin.options.DEVELOPMENT}}) && false) {
           window.addEventListener('load', function() {
             navigator.serviceWorker.register('sw.js', { scope: '{{htmlWebpackPlugin.options.publicPath}}' || '.' }).then(function(registration) {
               // Registration was successful

@@ -604,6 +604,8 @@ class ReportContainer extends React.Component<
       />
     );
 
+    const defaulResult = get(this.props, 'data.result.rows', null);
+
     return (
       <EtsPageWrap inheritDisplay>
         <Header
@@ -626,6 +628,7 @@ class ReportContainer extends React.Component<
           filterValues={this.state.filterValues}
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
+          defaulResult={defaulResult}
           {...this.props.tableProps}>
           <EtsBootstrap.Button
             bsSize="small"

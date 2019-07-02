@@ -44,7 +44,9 @@ const schemaMakers: ISchemaMaker = {
   }),
 };
 const renderers = {};
-const tableProps = {};
+const tableProps = {
+  reportKey: serviceUrl,
+};
 
 const reportProps: IReportProps = {
   title: 'Отчет посещения ОДХ и ДТ',
@@ -56,6 +58,7 @@ const reportProps: IReportProps = {
   headerComponent: ReportHeader,
   renderers,
   schemaMakers,
+  notUseServerSummerTable: true,
 };
 
 const ExportableReportContainer = exportable({

@@ -53,9 +53,7 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
       title: 'Внимание!',
       body: 'Вы уверены, что хотите отметить все уведомления как прочитанные?',
     })
-      .then(() => {
-        this.props.markAllAsRead();
-      })
+      .then(() => this.props.markAllAsRead())
       .then(() => this.updateCounterNotify())
       .catch(() => {});
   };

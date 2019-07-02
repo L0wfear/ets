@@ -107,7 +107,7 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
       }, []);
     }
 
-    if (reportKey === 'fuel_cards_report') {
+    if (reportKey === 'fuel_cards_report' || reportKey === 'mission_progress_report') {
       if (rows.length) {
         const cols_wsd = openFields(fields);
         const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);

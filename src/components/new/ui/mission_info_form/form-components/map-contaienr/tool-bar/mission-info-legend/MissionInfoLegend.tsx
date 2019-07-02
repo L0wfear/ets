@@ -37,7 +37,7 @@ class MissionInfoLegend extends React.PureComponent<any, any> {
                   <div>{`${speed_lim}+ км/ч`}</div>
                 </div>
                 {
-                  !has_mkad ?
+                  has_mkad ?
                   (
                     <>
                       <div key="devider">---------------------------</div>

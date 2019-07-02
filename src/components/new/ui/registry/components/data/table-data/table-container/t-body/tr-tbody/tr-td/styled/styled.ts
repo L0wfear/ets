@@ -7,6 +7,29 @@ const redColor = css`
   color: red;
 `;
 
+export const EtsTbodyScrollContainer = styled.div`
+  max-height: 120px;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+  }
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #4c4c4c;
+    opacity: 1;
+  }
+`;
+
 export const EtsTbodyTrTd = styled.td`
   &&& {
     padding: 8px;

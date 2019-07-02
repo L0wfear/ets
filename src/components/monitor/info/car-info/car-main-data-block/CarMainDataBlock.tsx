@@ -66,13 +66,6 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
                   Трек
                 </EtsBootstrap.Button>
               </BtnPart>
-              <BtnPart>
-                <ButtonExportCarInfo />
-                <EtsBootstrap.Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
-                  <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
-                  Трек
-                </EtsBootstrap.Button>
-              </BtnPart>
             </BtnGroupWrapper>
           </div>
         </CarInfoBlock>

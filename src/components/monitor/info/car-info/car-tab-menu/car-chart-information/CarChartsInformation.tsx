@@ -3,13 +3,10 @@ import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
 
-import {
-  OwnPropsCarFuelChart,
-  OwnPropsCarSpeedChart,
-} from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 import { CarInfoBlockTabData } from 'components/monitor/styled';
+import CarFuelChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart';
+import CarSpeedChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
 
 type PropsCarChartsInformation = {
   centerOn: any;
@@ -20,14 +17,6 @@ type PropsCarChartsInformation = {
 type StateCarChartsInformation = {
   selectedTab: number;
 };
-
-const CarFuelChart = React.lazy<React.ComponentType<OwnPropsCarFuelChart>>(() => (
-  import(/* webpackChunkName: "car_fuel_chart" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart')
-));
-
-const CarSpeedChart = React.lazy<React.ComponentType<OwnPropsCarSpeedChart>>(() => (
-  import(/* webpackChunkName: "car_speed_Chart" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart')
-));
 
 class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation, StateCarChartsInformation> {
   state = {
@@ -90,23 +79,15 @@ class CarChartsInformation extends React.PureComponent<PropsCarChartsInformation
           <EtsBootstrap.Button data-number="2" active={selectedTab === 2} onClick={this.handleClick} >Датчики скорости</EtsBootstrap.Button>
         </div>
         <CarInfoBlockTabData>
-          <React.Suspense fallback={<LoadingComponent />}>
-            {
-              selectedTab === 1 && (
-                <CarFuelChart
-                  handleChartClick={this.handleChartClick}
-                  handleEventClick={this.handleEventClick}
-                />
-              )
-            }
-            {
-              selectedTab === 2 && (
-                <CarSpeedChart
-                  handleChartClick={this.handleChartClick}
-                />
-              )
-            }
-          </React.Suspense>
+          <EtsBootstrap.ViewCarousel indexShow={selectedTab - 1}>
+            <CarFuelChart
+              handleChartClick={this.handleChartClick}
+              handleEventClick={this.handleEventClick}
+            />
+            <CarSpeedChart
+              handleChartClick={this.handleChartClick}
+            />
+          </EtsBootstrap.ViewCarousel>
         </CarInfoBlockTabData>
       </div>
     );

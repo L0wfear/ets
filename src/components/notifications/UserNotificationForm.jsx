@@ -202,7 +202,9 @@ class UserNotificationForm extends UNSAFE_Form {
         <EtsBootstrap.ModalHeader closeButton>
           <div style={{ fontWeight: 'bold' }}>
             <span>{state.title}</span>
-            <span style={{ marginRight: 10 }} className="pull-right">
+            <span
+              style={{ marginRight: 10, marginLeft: 4 }}
+              className="pull-right">
               <DateFormatter date={state.created_at} />
             </span>
           </div>

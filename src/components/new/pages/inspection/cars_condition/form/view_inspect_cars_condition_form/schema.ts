@@ -272,9 +272,9 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'number',
       title: 'Количество проверенных ТС',
       dependencies: [
-        (checked_cars_cnt, { cars_cnt }, props) => {
+        (_, { cars_cnt }, props) => {
           if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
-            if (checked_cars_cnt !== cars_cnt) {
+            if (!cars_cnt) {
               return 'Необходимо проверить все ТС';
             }
           }

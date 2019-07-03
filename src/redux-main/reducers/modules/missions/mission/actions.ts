@@ -328,17 +328,12 @@ const actionCreateMission = (
   ReduxState,
   {},
   AnyAction
-> => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateMission(missionRaw, assign_to_waybill, false),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
+> => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseCreateMission(missionRaw, assign_to_waybill, false),
+    meta,
+  );
 };
 const actionChangeArchiveMissionStatus = (
   missionId: Mission['id'],

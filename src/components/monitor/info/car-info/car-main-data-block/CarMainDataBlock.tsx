@@ -12,6 +12,7 @@ import {
 } from 'global-styled/global-styled';
 import { CarInfoBlock } from 'components/monitor/styled';
 import { CarInfoMainDataContainer } from '.';
+import ButtonExportCarData from './buttons/export_car_data/ButtonExportCarData';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;
@@ -47,7 +48,7 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
           <div className="car_info-img">
           {
             type_image_name !== '' ?
-            <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
+            <img id="car_info_image" role="presentation" className="car-info-image" src={'https://i.ibb.co/wd2FvRz/image.png' || (!!type_image_name ? `${config.images}${type_image_name}` : '')} />
             :
             <PreloadNew typePreloader="field" />
           }
@@ -65,6 +66,9 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
                   <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
                   Трек
                 </EtsBootstrap.Button>
+              </BtnPart>
+              <BtnPart>
+                <ButtonExportCarData disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} />
               </BtnPart>
             </BtnGroupWrapper>
           </div>

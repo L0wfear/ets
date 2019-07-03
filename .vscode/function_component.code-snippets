@@ -18,6 +18,6 @@
 			"export default FunctionComponent;",
 			"",
 		],
-		"description": "Log output to console"
+		"description": "default function component"
 	}
 }

@@ -117,7 +117,7 @@ const CarAttributeInformation: React.FC<PropsCarAttributeInformation> = React.me
     return (
       <div>
         <CarInfoBlockTabData>
-          <div className="car_info-attributes" >
+          <div id="car_main_data" className="car_info-attributes" >
             {
               attributeList.map((attr) => {
                 const value = attr.value(props);

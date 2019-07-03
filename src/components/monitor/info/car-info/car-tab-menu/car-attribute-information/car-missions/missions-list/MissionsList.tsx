@@ -36,9 +36,9 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
         )
         :
         (
-          missions.map((mission) => {
+          [...missions, ...missions].map((mission, index) => {
             return (
-              <div key={mission.id} className={'car_info_mission_container'}>
+              <div key={mission.id + index} className={'car_info_mission_container'}>
                 <div>
                   <div
                     data-id={mission.id}

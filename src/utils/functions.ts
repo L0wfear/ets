@@ -4,6 +4,7 @@
  */
 
 import { isPlainObject, every, includes } from 'lodash';
+import html2canvas from 'html2canvas';
 
 /**
  * Example
@@ -293,3 +294,33 @@ export function detectIE() {
   // other browser
   return false;
 }
+
+/**
+ * Получение каваса с текстом
+ * @param text текст
+ * @param style стиль ('font-size: 10px;color: red')
+ */
+export const getTextCanvas = async (text: string, style: string) => {
+  const temp = document.createElement("span");
+  temp.id = "temp";
+  temp.setAttribute('style', style);
+  temp.innerHTML = text;
+
+  const container = document.createElement("div");
+  container.setAttribute('style', 'height:0');
+  container.appendChild(temp);
+  document.body.appendChild(container);
+
+  const canvas = await html2canvas(document.getElementById('temp'));
+  document.body.removeChild(container);
+
+  return canvas;
+};
+
+/**
+ * Получение скрина элемента
+ * @param element элемента html
+ */
+export const getCanvasOfElement = (element: HTMLElement) => {
+  return html2canvas(element);
+};

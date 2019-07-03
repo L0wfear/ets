@@ -68,9 +68,24 @@ export const makeSummer = ([...newArr], [...data], [col, ...cols]: any[], allCol
       }
     });
 
-    allCols.filter(({ keyName, abs }) => {
+    allCols.filter(({ keyName, abs, percent }) => {
       if (abs) {
         newItem[keyName] = Math.abs(newItem[keyName]);
+      }
+      if (percent) {
+        const numerator: number = get(newItem, get(percent, '0'));
+        const denominator: number = get(newItem, get(percent, '1'));
+
+        try {
+          if (isNullOrUndefined(numerator) || isNullOrUndefined(denominator) || denominator <= 0) {
+            newItem[keyName] = 0;
+          } else {
+            const percentValue = numerator / denominator * 100;
+            newItem[keyName] = percentValue > 0 ? percentValue.toFixed(2) : 0;
+          }
+        } catch (e) {
+          newItem[keyName] = 0;
+        }
       }
     });
 
@@ -84,7 +99,7 @@ const makeRowsWithNoneStructure = (rows, colMeta) =>
   rows.map(({ ...row }) => ({ ...row, [colMeta.keyName]: '-' }));
 
 export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
-  if (data.result.meta.level === 'company') {
+  if (get(data, 'result.meta.summary.fields')) {
     let rows = get(data, 'result.rows', []);
     const {
       result: {

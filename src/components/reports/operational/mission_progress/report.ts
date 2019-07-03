@@ -49,7 +49,7 @@ const tableProps = {
 };
 
 const reportProps: IReportProps = {
-  title: 'Отчет посещения ОДХ и ДТ',
+  title: 'Отчет посещения ОДХ/ДТ уборочной техникой, оборудованной датчиками КБМ',
   serviceName,
   enumerated: true,
   tableProps,

@@ -19,7 +19,7 @@ const makeObjFromMemoise = memoizeOne(
 );
 
 const withSearch = <OwnProps extends any>(Component: React.ComponentType<any>) => (
-  withRouter<any>(
+  withRouter<any, any>(
     class extends React.PureComponent<RouteComponentProps<{}>, {}> {
       setDataInSearch: WithSearchProps['setDataInSearch'] = async (data) => {
         await Promise.resolve(true);

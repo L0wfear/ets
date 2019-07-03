@@ -189,7 +189,7 @@ class CarSpeedChart extends React.Component<
             <LineChart
               data={this.state.data}
               onClick={this.handleChartClick}
-              name="test"
+              name="speed-chart"
               showX
             />
           </div>

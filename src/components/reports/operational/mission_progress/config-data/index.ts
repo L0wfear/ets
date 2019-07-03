@@ -3,7 +3,7 @@ import component from 'components/reports/operational/mission_progress/config-da
 
 export default {
   path: '/mission-progress-report',
-  title: 'Отчет посещения ОДХ и ДТ',
+  title: 'Отчет посещения ОДХ/ДТ уборочной техникой, оборудованной датчиками КБМ',
   entyity: 'mission_progress_report',
   noDotList: false,
   component,

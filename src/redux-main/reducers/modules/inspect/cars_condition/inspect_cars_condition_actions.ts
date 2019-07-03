@@ -89,7 +89,7 @@ export const actionCreateInspectCarsCondition = (payloadOwn: Parameters<typeof p
 };
 
 export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionCarsCondition>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  if (inspectCarsConditionOwn.status !== 'completed') {
+  if (inspectCarsConditionOwn.status !== 'completed' && inspectCarsConditionOwn.status !== 'conducting') {
     const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
     const data = cloneDeep(inspectCarsCondition.data);
 

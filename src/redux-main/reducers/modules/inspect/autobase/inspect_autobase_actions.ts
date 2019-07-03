@@ -20,6 +20,8 @@ import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/mod
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/utils';
+import { get } from 'lodash';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): ThunkAction<IStateInspectAutobase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -195,67 +197,37 @@ export const actionCreateInspectAutobase = (payloadOwn: Parameters<typeof promis
 };
 
 export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionAutobase>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  if (inspectAutobase.status !== 'completed') {
-    const data = cloneDeep(inspectAutobase.data);
+  const data = cloneDeep(inspectAutobase.data);
+  const agents_from_gbu = get(inspectAutobase, 'agents_from_gbu', defaultInspectAutobase.agents_from_gbu);
+  const commission_members = get(inspectAutobase, 'commission_members', defaultInspectAutobase.commission_members);
+  const resolve_to = get(inspectAutobase, 'resolve_to', defaultInspectAutobase.resolve_to);
 
-    const payload = {};
-
-    const inspectionAutobase = await dispatch(
-      actionUpdateInspect(
-        inspectAutobase.id,
-        data,
-        inspectAutobase.files,
-        'autobase',
-        meta,
-        payload,
-      ),
-    );
-
-    dispatch(
-      actionPushDataInInspectAutobaseList(
-        inspectionAutobase,
-      ),
-    );
-
-    return inspectionAutobase;
-  } else {
-    const data = cloneDeep(inspectAutobase.data);
-    const {
-      agents_from_gbu,
-      commission_members,
-      resolve_to,
-    } = inspectAutobase;
-
-    if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
-      commission_members.shift();
-    }
-
-    const payload = {
-      data,
-      agents_from_gbu,
-      commission_members,
-      resolve_to: createValidDateTime(resolve_to),
-    };
-
-    const inspectionAutobase = await dispatch(
-      actionUpdateInspect(
-        inspectAutobase.id,
-        data,
-        inspectAutobase.files,
-        'autobase',
-        meta,
-        payload,
-      ),
-    );
-
-    dispatch(
-      actionPushDataInInspectAutobaseList(
-        inspectionAutobase,
-      ),
-    );
-
-    return inspectionAutobase;
+  if (commission_members.length && inspectAutobase.status === 'completed') { // Удаляем первого члена комиссии, бек его сам добавляет
+    commission_members.shift();
   }
+  const payload = {
+    agents_from_gbu,
+    commission_members,
+    resolve_to: createValidDateTime(resolve_to),
+  };
+
+  const inspectionAutobase = await dispatch(
+    actionUpdateInspect(
+      inspectAutobase.id,
+      data,
+      inspectAutobase.files,
+      'autobase',
+      meta,
+      payload,
+    ),
+  );
+  dispatch(
+    actionPushDataInInspectAutobaseList(
+      inspectionAutobase,
+    ),
+  );
+
+  return inspectionAutobase;
 };
 
 const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {

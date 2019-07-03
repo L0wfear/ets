@@ -45,8 +45,21 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
           props.registryLoadDataByKey(props.loadingPage);
           return;
         }
-
         props.handleHide(true);
+      }
+    },
+    [selectedInspectCarsCondition, canSave],
+  );
+
+  const handleSaveGetAct = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.handleSubmit();
+          await handleGetCarsConditionAct();
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
       }
     },
     [selectedInspectCarsCondition, canSave],
@@ -70,7 +83,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
     [selectedInspectCarsCondition, canSave],
   );
 
-  const handleCloseAndCarsConditionAct = React.useCallback( // хендлер на закрытие акта
+  const handleCloseCarsConditionAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
         try {
@@ -82,7 +95,6 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
           props.registryLoadDataByKey(props.loadingPage);
           return;
         }
-        await handleGetCarsConditionAct();
         props.handleHide(true);
       }
     },
@@ -94,10 +106,11 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
       handleSubmit={handleSubmit}
       handleSubmitClosed={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-      handleCloseAndGetAct={handleCloseAndCarsConditionAct}
+      handleCloseAct={handleCloseCarsConditionAct}
       handleGetAct={handleGetCarsConditionAct}
       type={props.type}
       canSave={props.canSave}
+      handleSaveGetAct={handleSaveGetAct}
     />
   );
 };

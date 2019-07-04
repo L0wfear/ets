@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { saveData, resizeBase64, getCanvasOfImgUrl } from 'utils/functions';
+import { saveData, getCanvasOfImgUrl } from 'utils/functions';
 
 type PropsSimpleSaveLinkA = {
   id?: string;

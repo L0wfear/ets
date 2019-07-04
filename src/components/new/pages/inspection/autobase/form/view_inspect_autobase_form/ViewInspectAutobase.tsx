@@ -130,6 +130,9 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
                 selectedInspectAutobase={state}
                 canSave={props.canSave}
                 loadingPage={props.loadingPage}
+
+                id={state.id}
+                registryPage={props.page}
               />
               <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
             </FooterEnd>

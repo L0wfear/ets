@@ -22,6 +22,7 @@ type ButtonReadDispatchProps = {
 };
 type ButtonReadOwnProps = {
   registryKey: string;
+  onClick?: (item: any) => any;
 };
 type ButtonReadMergeProps = {};
 
@@ -47,6 +48,11 @@ const getPermissionsReadUpdate = (permission) => {
 
 class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
   handleClick = () => {
+    if (this.props.onClick) {
+      this.props.onClick(this.props.selectedRow);
+      return;
+    }
+
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
     }),

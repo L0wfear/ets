@@ -2,7 +2,7 @@ import * as React from 'react';
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
-  registryKey,
+  registryWaybillKey,
   config,
 } from 'components/new/pages/waybill/_config-data/registry-config';
 
@@ -38,7 +38,7 @@ const WaybillList: React.FC<WaybillListProps> = (props) => {
       props.registryAddInitialData(config);
 
       return () => {
-        props.registryRemoveData(registryKey);
+        props.registryRemoveData(registryWaybillKey);
       };
     },
     [],
@@ -46,8 +46,8 @@ const WaybillList: React.FC<WaybillListProps> = (props) => {
 
   return (
     <>
-      <Registry registryKey={registryKey} />
-      <WaybilFormlLazy registryKey={registryKey} />
+      <Registry registryKey={registryWaybillKey} />
+      <WaybilFormlLazy registryKey={registryWaybillKey} />
     </>
   );
 };

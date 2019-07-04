@@ -29,6 +29,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
     header: {
       title: 'Журнал проверок',
       buttons: [
+        buttonsTypes.inspect_show_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.export,

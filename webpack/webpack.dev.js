@@ -71,7 +71,6 @@ module.exports = {
                 ],
                 'babel-plugin-styled-components',
                 '@babel/plugin-syntax-dynamic-import',
-                '@babel/plugin-transform-modules-amd',
                 'react-hot-loader/babel',
               ],
             },

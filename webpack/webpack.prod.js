@@ -80,7 +80,6 @@ module.exports = {
                   },
                 ],
                 '@babel/plugin-syntax-dynamic-import',
-                '@babel/plugin-transform-modules-amd',
               ],
             },
           },

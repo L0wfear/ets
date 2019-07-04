@@ -202,7 +202,7 @@ export function hexToRgba(hex, opacity) {
   return `rgba(${red}, ${green}, ${blue}, ${opacity})`;
 }
 
-export function resizeBase64(base64) {
+export const getCanvasOfImgUrl = (url: string): Promise<HTMLCanvasElement> => {
   return new Promise((res) => {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -222,10 +222,17 @@ export function resizeBase64(base64) {
         canvas.width,
         canvas.height,
       );
-      res(canvas.toDataURL('image/png'));
+      document.body.appendChild(canvas);
+      res(canvas);
     };
-    image.src = base64;
+
+    image.crossOrigin = "anonymous";
+    image.src = url;
   });
+};
+
+export function resizeBase64(base64) {
+  return getCanvasOfImgUrl(base64).then((canvas) => canvas.toDataURL('image/png'));
 }
 
 /**

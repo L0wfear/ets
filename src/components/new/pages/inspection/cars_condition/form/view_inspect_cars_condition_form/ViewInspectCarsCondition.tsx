@@ -234,6 +234,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               selectedInspectCarsCondition={state}
               canSave={props.canSave && preparePlanCanSave}
               loadingPage={props.loadingPage}
+
+              id={state.id}
+              registryPage={props.page}
             />
             <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>

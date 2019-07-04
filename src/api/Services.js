@@ -348,6 +348,9 @@ export const MissionCancelReasonsService = ETS_API_FACTORY.createApiServiceAdapt
 export const InspectionService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection',
 );
+export const InspectionActScanService = ETS_API_FACTORY.createApiServiceAdapter(
+  'inspection/act/scan',
+);
 export const InspectionActService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/act',
 );

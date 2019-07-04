@@ -18,10 +18,12 @@ import { validatePermissions } from 'components/util/RequirePermissionsNewRedux'
 import { get } from 'lodash';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
+//
 class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
   mapThDataRow = (colData) => {
     const { title } = colData;
 
+    //
     let formatedTitle = title;
 
     if (isArray(title)) {

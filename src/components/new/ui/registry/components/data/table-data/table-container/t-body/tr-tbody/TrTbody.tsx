@@ -41,6 +41,9 @@ import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
 import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
+import SimpleSaveLinkA from 'components/new/ui/simple_a/link save';
+
+import config from 'config';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -245,7 +248,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
 
       if (format === 'link') {
-        value = <a href={rowData.url}>{rowData.name}</a>;
+        value = <SimpleSaveLinkA href={`${__DEVELOPMENT__ ? config.url : '' }${rowData.url}`} title={rowData.name} />;
       }
       if (format === 'workOrNot') {
         value = value ? 'Работает' : 'Не работает';

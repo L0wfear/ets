@@ -340,6 +340,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           onDoubleClick={this.handleDoubleClick}
           rowData={this.props.rowData}
           checkData={this.props.checkData}
+          registryKey={props.registryKey}
         >
           { props.rowFields.map(this.renderRow) }
         </EtsTrTbody>

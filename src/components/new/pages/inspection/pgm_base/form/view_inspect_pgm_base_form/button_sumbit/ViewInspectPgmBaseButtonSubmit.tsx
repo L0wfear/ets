@@ -28,6 +28,9 @@ type ViewInspectPgmBaseButtonSubmitOwnProps = {
   handleSubmit: any;
 
   isPermittedToUpdateClose: boolean;
+
+  id: number;
+  registryPage: string;
 };
 
 type ViewInspectPgmBaseButtonSubmitProps = (
@@ -113,6 +116,9 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
       type={props.type}
       canSave={props.canSave}
       handleSaveGetAct={handleSaveGetAct}
+
+      id={props.id}
+      registryPage={props.registryPage}
     />
   );
 };

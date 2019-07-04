@@ -4,10 +4,10 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import Div from 'components/ui/Div';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 
@@ -172,11 +172,12 @@ class ProgramRegistryForm extends UNSAFE_Form {
           id="modal-program-registry-u"
           show={this.props.show && !makeVersionIsVisible}
           onHide={this.props.onHide}
-          bsSize="lg">
+          bsSize="large">
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
-          <Div style={{ padding: '0px 15px' }}>
+          {/* <<< Добавить page, path */}
+          <ModalBodyPreloader style={{ padding: '0px 15px' }}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={5} xsOffset={7}>
                 <Field
@@ -395,7 +396,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
                 <DivNone />
               )}
             </EtsBootstrap.Row>
-          </Div>
+          </ModalBodyPreloader>
           <ModalBody />
           <EtsBootstrap.ModalFooter>
             <EtsBootstrap.Row>

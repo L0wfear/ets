@@ -30,6 +30,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -96,13 +97,11 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           changesState.dtPolys = dtPolysOut;
           changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(
             ({
-              data: {
-                yard_id: value,
-                object_address: label,
-                total_area,
-                id,
-                name,
-              },
+              yard_id: value,
+              object_address: label,
+              total_area,
+              id,
+              name,
             }) => ({
               value,
               label,
@@ -138,14 +137,12 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               changesState.dtPolys,
             ).map(
               ({
-                data: {
-                  yard_id: value,
-                  object_address: label,
-                  total_area,
-                  id,
-                  name,
-                  company_name,
-                },
+                yard_id: value,
+                object_address: label,
+                total_area,
+                id,
+                name,
+                company_name,
               }) => ({
                 value,
                 label,
@@ -215,7 +212,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         object_list: [selectedShape],
       },
     } = this.props;
-    const { dtPolys: dtPolysOld } = this.props;
+    const { dtPolys: dtPolysOld } = this.state;
 
     const dtPolys = {
       [selectedShape.object_id]: {
@@ -325,9 +322,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         info: info_old,
         elements: elements_old,
       },
-      dtPolys: dtPolysOld = {},
       objectPropertyList = [],
     } = this.props;
+
+    const { dtPolys: dtPolysOld = {} } = this.state;
 
     const { OBJECT_OPTIONS = [] } = this.state;
 
@@ -351,6 +349,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
       dtPolys[object_id_old].state = 1;
     }
+
     dtPolys[object_id].state = 2;
 
     const selectedObj = dtPolys[object_id];
@@ -444,11 +443,11 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         id="modal-program-object-dt"
         show={this.props.show}
         onHide={this.props.onHide}
-        bsSize="lg">
+        bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: 15 }}>
+        <ModalBodyPreloader style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
@@ -632,7 +631,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </div>
-        </Div>
+        </ModalBodyPreloader>
         <Div hidden={!showPercentForm}>
           <PercentModalList
             object_id={id}

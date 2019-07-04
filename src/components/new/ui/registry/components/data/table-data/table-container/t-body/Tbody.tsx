@@ -33,7 +33,7 @@ const Tbody: React.FC<PropsTbody> = React.memo(
         {
           !props.showArray.length && props.rowFields.length
             ? (
-              <EtsTrTbody registryKey={props.registryKey}>
+              <EtsTrTbody>
                 <EtsTbodyTrTd colSpan={3}>Нет данных</EtsTbodyTrTd>
               </EtsTrTbody>
             )

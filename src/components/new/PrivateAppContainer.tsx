@@ -12,25 +12,21 @@ import withCheckPrivateRouteMain from 'components/new/utils/hoc/check_private_ro
 import { AppStyled } from './styled';
 
 import { AppContentContainer } from './ui/@bootstrap/@global/AppContent';
-import GlobalForms from './GlobalForms';
 
 const MainApp: React.FC<{}> = React.memo(
   () => {
     return (
-      <>
-        <AppStyled>
-          <AppHeader />
-          <AppContentContainer>
-            <Routes />
-            <LoadingOverlayLegacy main />
-            <NotifiactionOrders />
-            <AdmNotification />
-            <UserNotificationWs />
-          </AppContentContainer>
-          <AppFooter />
-        </AppStyled>
-        <GlobalForms />
-      </>
+      <AppStyled>
+        <AppHeader />
+        <AppContentContainer>
+          <Routes />
+          <LoadingOverlayLegacy main />
+          <NotifiactionOrders />
+          <AdmNotification />
+          <UserNotificationWs />
+        </AppContentContainer>
+        <AppFooter />
+      </AppStyled>
     );
   },
 );

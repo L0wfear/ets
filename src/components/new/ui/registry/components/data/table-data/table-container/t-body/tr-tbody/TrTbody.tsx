@@ -243,10 +243,6 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       if (format === 'array_of_object_name') {
         value = isArray(value) ? value.map(({ name }) => name).join(', ') : '';
       }
-
-      if (format === 'link') {
-        value = <a href={rowData.url}>{rowData.name}</a>;
-      }
       if (format === 'workOrNot') {
         value = value ? 'Работает' : 'Не работает';
       }
@@ -337,7 +333,6 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           onDoubleClick={this.handleDoubleClick}
           rowData={this.props.rowData}
           checkData={this.props.checkData}
-          registryKey={props.registryKey}
         >
           { props.rowFields.map(this.renderRow) }
         </EtsTrTbody>

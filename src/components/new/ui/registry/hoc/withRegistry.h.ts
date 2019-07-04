@@ -81,7 +81,6 @@ export type TypeFields<F extends any> = {
     | 'toFixed3'
     | 'array'
     | 'array_of_object_name'
-    | 'link'
     | 'workOrNot'
     | 'yesOrNot'
     | 'road_accident_driver_fio'

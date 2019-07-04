@@ -7,14 +7,12 @@ import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
 
 import { isBoolean } from 'util';
 
-import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
-
-const getColorTd = (rowData, checkData, registryKey) => {
+const getColorTd = (rowData, checkData) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
     return constantColor.orange;
   }
 
-  if (registryKey === registryWaybillKey && get(rowData, 'status', null) === WAYBILL_STATUSES_KEY.active) {
+  if (get(rowData, 'status', null) === WAYBILL_STATUSES_KEY.active) {
     return constantColor.colorChildRegistry;
   }
 
@@ -33,16 +31,16 @@ const getColorTd = (rowData, checkData, registryKey) => {
   return 'white';
 };
 
-export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowData?: any, checkData?: any, registryKey: string }>`
+export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowData?: any, checkData?: any }>`
   &&& {
     cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
     pointer-events: ${({ enable }) => enable ? 'all' : 'none'};
 
     &:nth-of-type(odd) {
-      background-color: ${(props) => getColorTd(props.rowData, props.checkData, props.registryKey)};
+      background-color: ${(props) => getColorTd(props.rowData, props.checkData)};
     }
     &:nth-of-type(even) {
-      background-color: ${(props) => darken(0.02, getColorTd(props.rowData, props.checkData, props.registryKey))};
+      background-color: ${(props) => darken(0.02, getColorTd(props.rowData, props.checkData))};
     }
 
     &:hover {

@@ -26,8 +26,6 @@ type ViewInspectAutobaseButtonSubmitOwnProps = {
   loadingPage: string;
 
   isPermittedToUpdateClose: boolean;
-  id: number;
-  registryPage: string;
 };
 
 type ViewInspectAutobaseButtonSubmitProps = (
@@ -114,9 +112,6 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
       type={props.type}
       canSave={props.canSave}
       handleSaveGetAct={handleSaveGetAct}
-
-      id={props.id}
-      registryPage={props.registryPage}
     />
   );
 };

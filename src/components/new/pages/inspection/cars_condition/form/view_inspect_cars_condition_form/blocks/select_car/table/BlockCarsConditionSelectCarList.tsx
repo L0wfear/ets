@@ -7,30 +7,39 @@ import {
 } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/_config-data/registry-config';
 
 import { compose } from 'recompose';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
+import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 
+import { HandleThunkActionCreator } from "react-redux";
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
-export type BlockCarsConditionSelectCarListProps = {
+export type BlockCarsConditionSelectCarListStateProps = {};
+export type BlockCarsConditionSelectCarListDispatchProps = {
+  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
+  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
+};
+export type BlockCarsConditionSelectCarListOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
 };
+export type BlockCarsConditionSelectCarListMergedProps = (
+  BlockCarsConditionSelectCarListStateProps
+  & BlockCarsConditionSelectCarListDispatchProps
+  & BlockCarsConditionSelectCarListOwnProps
+);
+export type BlockCarsConditionSelectCarListProps = (
+  BlockCarsConditionSelectCarListMergedProps
+);
 
 const BlockCarsConditionSelectCarList: React.FC<BlockCarsConditionSelectCarListProps> = (props) => {
-  const dispatch = useDispatch();
-
   React.useEffect(
     () => {
-      dispatch(
-        registryAddInitialData(getConfig(props.carsConditionCarsList)),
-      );
+      props.registryAddInitialData(getConfig(props.carsConditionCarsList));
 
       return () => {
-        dispatch(
-          registryRemoveData(registryKey),
-        );
+        props.registryRemoveData(registryKey);
       };
     },
     [props.carsConditionCarsList],
@@ -43,9 +52,24 @@ const BlockCarsConditionSelectCarList: React.FC<BlockCarsConditionSelectCarListP
   );
 };
 
-export default compose<BlockCarsConditionSelectCarListProps, BlockCarsConditionSelectCarListProps>(
+export default compose<BlockCarsConditionSelectCarListProps, BlockCarsConditionSelectCarListOwnProps>(
   withPreloader({
     page: registryKey,
     typePreloader: 'mainpage',
   }),
+  connect<BlockCarsConditionSelectCarListStateProps, BlockCarsConditionSelectCarListDispatchProps, BlockCarsConditionSelectCarListOwnProps, ReduxState>(
+    null,
+    (dispatch: any) => ({
+      registryAddInitialData: (...any) => (
+        dispatch(
+          registryAddInitialData(...any),
+        )
+      ),
+      registryRemoveData: (registryKeyTemp: string) => (
+        dispatch(
+          registryRemoveData(registryKeyTemp),
+        )
+      ),
+    }),
+  ),
 )(BlockCarsConditionSelectCarList);

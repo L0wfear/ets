@@ -29,7 +29,6 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
     header: {
       title: 'Журнал проверок',
       buttons: [
-        buttonsTypes.inspect_show_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.export,

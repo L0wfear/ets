@@ -63,9 +63,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
   (props) => {
     const handleHide = React.useCallback(
       (...arg) => {
-        if (props.onHide) {
-          props.onHide(...arg);
-        }
+        props.onHide(...arg);
       },
       [props.onHide],
     );

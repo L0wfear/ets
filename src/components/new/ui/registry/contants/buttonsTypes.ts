@@ -8,7 +8,6 @@ import { mission_types } from '../components/data/header/buttons/component-butto
 import { mission_template_types } from '../components/data/header/buttons/component-button/button-by-type/mission_template/constant';
 import { company_structure_types } from '../components/data/header/buttons/component-button/button-by-type/company_structure/constant';
 import { waybill_types } from '../components/data/header/buttons/component-button/button-by-type/waybill/constant';
-import { inspect_types } from '../components/data/header/buttons/component-button/button-by-type/inspect/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -18,7 +17,6 @@ const buttonsTypes =  {
   read: 'read',
   remove: 'remove',
   columns_control: 'columns_control',
-  ...inspect_types,
   ...waybill_types,
   ...mission_template_types,
   ...duty_mission_types,

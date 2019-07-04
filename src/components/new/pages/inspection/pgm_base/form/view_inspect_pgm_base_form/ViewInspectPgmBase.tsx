@@ -162,9 +162,6 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
               handleHide={props.handleHide}
               selectedInspectPgmBase={state}
               loadingPage={props.loadingPage}
-
-              id={state.id}
-              registryPage={props.page}
             />
             <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_PGM_BASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>

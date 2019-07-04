@@ -24,7 +24,7 @@ export const ContainerRegistryTr: React.FC<ContainerRegistryTrProps> = (props) =
   );
 
   return (
-    <EtsTrTbody onClick={handleClickRow} enable selected={props.isSelected} rowData={actionData} registryKey="">
+    <EtsTrTbody onClick={handleClickRow} enable selected={props.isSelected} rowData={actionData}>
       <EtsTbodyTrTd>{rowNumber}</EtsTbodyTrTd>
       <EtsTbodyTrTd>{actionData.name}</EtsTbodyTrTd>
       <EtsTbodyTrTd>{actionData.date_start}</EtsTbodyTrTd>

@@ -35,7 +35,7 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
       [props.rowData, props.rowIndex, props.onChange],
     );
     return (
-      <EtsTrTbody enable selected={props.isSelected} onClick={handleRowClick} registryKey="">
+      <EtsTrTbody enable selected={props.isSelected} onClick={handleRowClick}>
         {
           props.meta.map((metaData) => (
             <TableInputTbodyTrTd

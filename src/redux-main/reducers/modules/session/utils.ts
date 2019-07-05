@@ -22,8 +22,6 @@ export const withSpecificPermissions = (user) => {
   permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
   /* end docs */
 
-  permissions.push(...getFullAccess('inspect.act_scan'));
-
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {
       permissions.push(permission.replace(/^pgm\./, 'pgm_store.'));

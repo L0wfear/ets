@@ -222,7 +222,7 @@ export const getCanvasOfImgUrl = (url: string): Promise<HTMLCanvasElement> => {
         canvas.width,
         canvas.height,
       );
-      document.body.appendChild(canvas);
+
       res(canvas);
     };
 

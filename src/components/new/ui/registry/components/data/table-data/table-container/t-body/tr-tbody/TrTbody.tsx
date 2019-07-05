@@ -41,7 +41,7 @@ import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
 import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
-import SimpleSaveLinkA from 'components/new/ui/simple_a/link save';
+import SimpleSaveLinkA from 'components/new/ui/simple_a/link_save';
 
 import config from 'config';
 

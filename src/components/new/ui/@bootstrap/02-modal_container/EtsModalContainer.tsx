@@ -22,7 +22,7 @@ const bsSizeLargeCss = css`
 `;
 
 export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' }>`
-  width: auto;
+  width: 95%;
   position: relative;
   margin-bottom: 300px;
   margin-top: 30px;

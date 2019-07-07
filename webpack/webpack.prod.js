@@ -22,7 +22,8 @@ const getNameFavicon = (stand) => {
 module.exports = {
   entry: [
     'whatwg-fetch',
-    '@babel/polyfill',
+    'core-js/stable',
+    'regenerator-runtime/runtime',
     './src/index',
   ],
   mode: 'production',
@@ -59,8 +60,8 @@ module.exports = {
                       'firefox': '42',
                       'ie': '11',
                     },
-                    useBuiltIns: 'usage',
-                    corejs: '2.*.*',
+                    corejs: 3,
+                    useBuiltIns: 'entry', // 'usage' те функции, которые используются
                   },
                 ],
                 '@babel/preset-typescript',

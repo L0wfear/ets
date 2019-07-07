@@ -28,6 +28,7 @@ const getColor = (stand) => {
 
 module.exports = {
   entry: [
+    'react-hot-loader',
     'whatwg-fetch',
     'core-js/stable',
     'regenerator-runtime/runtime',
@@ -71,7 +72,13 @@ module.exports = {
               cacheDirectory: true,
               babelrc: false,
               presets: [
-                '@babel/preset-env',
+                [
+                  '@babel/preset-env',
+                  {
+                    corejs: 3,
+                    useBuiltIns: 'entry', // 'usage' те функции, которые используются
+                  },
+                ],
                 '@babel/preset-typescript',
                 '@babel/preset-react',
               ],

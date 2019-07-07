@@ -35,6 +35,7 @@ module.exports = {
     './src/index',
   ],
   mode: 'production',
+  devtool: 'eval',
   context: path.resolve(__dirname, '..'),
   output: {
     filename: 'app.[name].[contenthash].js',
@@ -66,9 +67,9 @@ module.exports = {
                     targets: {
                       'chrome': '47',
                       'firefox': '42',
-                      'ie': '11',
+                      'ie': '10',
                     },
-                    corejs: 3,
+                    corejs: { version: 3, proposals: true },
                     useBuiltIns: 'entry', // 'usage' те функции, которые используются
                   },
                 ],
@@ -88,7 +89,9 @@ module.exports = {
                     loose: true,
                   },
                 ],
+                'babel-plugin-styled-components',
                 '@babel/plugin-syntax-dynamic-import',
+                'react-hot-loader/babel',
               ],
             },
           },

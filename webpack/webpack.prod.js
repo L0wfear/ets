@@ -60,8 +60,8 @@ module.exports = {
                       'firefox': '42',
                       'ie': '11',
                     },
-                    useBuiltIns: 'usage',
-                    corejs: '3.*.*',
+                    corejs: 3,
+                    useBuiltIns: 'entry', // 'usage' те функции, которые используются
                   },
                 ],
                 '@babel/preset-typescript',

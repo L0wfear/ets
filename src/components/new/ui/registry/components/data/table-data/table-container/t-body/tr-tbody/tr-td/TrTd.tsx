@@ -8,6 +8,8 @@ export type PropsTrTd = {
   metaKey: string;
   value: any;
   selected: boolean;
+
+  style?: any; // not use
 };
 
 const TrTd: React.FC<PropsTrTd> = React.memo(

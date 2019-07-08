@@ -25,7 +25,6 @@ import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { get } from 'lodash';
 
 const getObjectsType = (slug) => {
@@ -399,7 +398,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <ModalBodyPreloader style={{ padding: 15 }}>
+        <ModalBody style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
@@ -562,7 +561,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </div>
-        </ModalBodyPreloader>
+        </ModalBody>
         <Div hidden={!showPercentForm}>
           <PercentModalList
             object_id={id}
@@ -570,7 +569,6 @@ class ProgramObjectFormodh extends UNSAFE_Form {
             updateObjectData={this.props.updateObjectData}
           />
         </Div>
-        <ModalBody />
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}

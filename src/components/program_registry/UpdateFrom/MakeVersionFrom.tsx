@@ -35,20 +35,23 @@ class MakeFileModal extends React.Component<any, any> {
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{this.props.title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: '0px 15px' }}>
-          {TextBody}
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
-              <FileField
-                label="Файл"
-                value={this.state.files}
-                onChange={this.handleChange}
-                boundKeys="files"
-              />
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-        </Div>
-        <ModalBody />
+        <ModalBody>
+          <Div style={{ padding: '0px 15px' }}>
+            {TextBody}
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={12}>
+                  <FileField
+                    label="Файл"
+                    value={this.state.files}
+                    onChange={this.handleChange}
+                    boundKeys="files"
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </EtsBootstrap.Row>
+          </Div>
+        </ModalBody>
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button disabled={!canSave} onClick={this.onSubmit}>{this.props.btName}</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>

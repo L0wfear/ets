@@ -7,6 +7,8 @@ export type PropsTrTd = {
   rowData: any;
   metaKey: string;
   value: any;
+
+  style?: any; // not use
 };
 
 const TrTd: React.FC<PropsTrTd> = React.memo(

@@ -32,6 +32,7 @@ const canSaveNotCheckField = [
   'distance',
   'motohours_equip_end',
   'equipment_tax_data',
+  'tax_data',
   'motohours_end',
   'odometr_end',
   'equipment_fact_fuel_end',
@@ -715,7 +716,6 @@ class WaybillFormWrap extends React.Component {
 
   handleClose = async (taxesControl) => {
     const { formState } = this.state;
-    const prevStatus = formState.status;
     if (!taxesControl) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
@@ -724,6 +724,7 @@ class WaybillFormWrap extends React.Component {
       );
       return;
     }
+    const prevStatus = formState.status;
 
     confirmDialog({
       title:
@@ -738,7 +739,7 @@ class WaybillFormWrap extends React.Component {
             .updateWaybill(formState);
           this.props.onCallback();
         } catch (e) {
-          formState.status = prevStatus;
+          formState.status = prevStatus; // eslint-disable-line
         }
       })
       .catch(() => {});

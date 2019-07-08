@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { saveData, getCanvasOfImgUrl } from 'utils/functions';
+import { useDispatch } from 'react-redux';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 type PropsSimpleSaveLinkA = {
   id?: string;
@@ -15,6 +17,8 @@ const SimpleSaveLinkA: React.FC<PropsSimpleSaveLinkA> = React.memo(
   (props) => {
     const { id, className, title, children, href } = props;
 
+    const dispatch = useDispatch();
+
     const handleClick = React.useCallback(
       async (event: React.MouseEvent) => {
         event.preventDefault();
@@ -22,19 +26,60 @@ const SimpleSaveLinkA: React.FC<PropsSimpleSaveLinkA> = React.memo(
           props.onClick(props, event);
         }
 
-        const canvas = await getCanvasOfImgUrl(props.href);
+        const loadPromise = () => {
+          return new Promise(
+            async (res) => {
+              const canvas = await getCanvasOfImgUrl(props.href);
+              canvas.toBlob(
+                (blob) => {
+                  saveData(blob, props.title);
+                  res(blob);
+                },
+              );
+            },
+          );
+        };
 
-        canvas.toBlob(
-          (blob) => {
-            saveData(blob, props.title);
+        await etsLoadingCounter(
+          dispatch,
+          loadPromise(),
+          {
+            page: 'main',
           },
         );
       },
-      [props],
+      [dispatch, props],
     );
 
-    return (
-      <a id={id} className={className} href={href} onClick={handleClick} target={props.target}>{title || children || href}</a>
+    const handleDoubleClick = React.useCallback(
+      async (event: React.MouseEvent) => {
+        event.preventDefault();
+      },
+      [],
+    );
+
+    return React.useMemo(
+      () => (
+        <a
+          id={id}
+          className={className}
+          href={href}
+          onClick={handleClick}
+          onDoubleClick={handleDoubleClick}
+          target={props.target}
+        >
+          {title || children || href}
+        </a>
+      ),
+      [
+        id,
+        className,
+        href,
+        handleClick,
+        handleDoubleClick,
+        props.target,
+        title || children || href,
+      ],
     );
   },
 );

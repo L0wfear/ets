@@ -26,11 +26,10 @@ export const getConfig = (inspection_id: number): TypeConfigData<InspectActScan>
     permissions: inspectActScanPermissions,
     data: {
       uniqKey: 'id',
-      uniqKeyForParams: 'edc_request_id',
       fixedWidth: true,
     },
     meta: {
-      row_double_click: true,
+      row_double_click: false,
       fields: [
         {
           key: 'enumerated',

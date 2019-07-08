@@ -716,7 +716,6 @@ class WaybillFormWrap extends React.Component {
 
   handleClose = async (taxesControl) => {
     const { formState } = this.state;
-    const prevStatus = formState.status;
     if (!taxesControl) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
@@ -725,6 +724,7 @@ class WaybillFormWrap extends React.Component {
       );
       return;
     }
+    const prevStatus = formState.status;
 
     confirmDialog({
       title:
@@ -739,7 +739,7 @@ class WaybillFormWrap extends React.Component {
             .updateWaybill(formState);
           this.props.onCallback();
         } catch (e) {
-          formState.status = prevStatus;
+          formState.status = prevStatus; // eslint-disable-line
         }
       })
       .catch(() => {});

@@ -30,6 +30,7 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import { getGeoobjectState } from 'redux-main/reducers/selectors';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -128,7 +129,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetGetDt().then(({ data }) => {
+          this.props.actionGetGetDt().then(({ dtList: data }) => {
             const changesState = { manual };
             changesState.dtPolys = keyBy(data, 'yard_id');
 
@@ -269,9 +270,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
   handleFeatureClick = ({ id: object_id }) => {
     const { dtPolys } = this.state;
-    const {
-      data: { yard_id: asuods_id },
-    } = dtPolys[object_id];
+    const { yard_id: asuods_id } = dtPolys[object_id];
 
     this.handleChangeInfoObject('asuods_id', asuods_id);
   };
@@ -361,7 +360,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         const { original_name } = objectPropertyList.find(
           ({ object_property_id }) => object_property_id === d.id,
         );
-        newD.value = selectedObj.data[original_name];
+        newD.value = selectedObj[original_name];
         return newD;
       }),
       info: {
@@ -652,11 +651,13 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 export default compose(
   tabable,
   connect(
-    null,
+    (state) => ({
+      dtPolys: getGeoobjectState(state).dtPolys,
+    }),
     (dispatch) => ({
       actionGetGetDt: () =>
         dispatch(
-          geoobjectActions.actionGetGetDt(null, {
+          geoobjectActions.actionGetAndSetInStoreDt(null, {
             page: null,
             path: null,
           }),

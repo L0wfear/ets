@@ -171,6 +171,11 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     this.props.actionReseSetDependenceMissionDataForDutyMissionForm();
   }
 
+  handleGetPrintFormWrap = async () => {
+    this.props.actionWrap(
+      () => this.handleGetPrintForm(),
+    );
+  }
   handleGetPrintForm = async () => {
     const { formState: state, page, path } = this.props;
 
@@ -182,6 +187,15 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     });
 
     if (result) {
+      if (!DUTY_MISSION_IS_DISPLAY) {
+        this.props.handleHide(true, result);
+      } else {
+        this.props.handleChange(result);
+        this.setState({
+          isChanged: true,
+        });
+      }
+
       let printFormData = null;
       try {
         printFormData = await this.props.actionPrintFormDutyMission(result.id, {
@@ -197,15 +211,6 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
           printFormData.blob,
           `Печатная форма наряд-задания №${result.id}.pdf`,
         );
-
-        if (!DUTY_MISSION_IS_DISPLAY) {
-          this.props.handleHide(true, result);
-        } else {
-          this.props.handleChange(result);
-          this.setState({
-            isChanged: true,
-          });
-        }
       }
     }
   };
@@ -509,7 +514,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
           {isPermitted ? ( // либо обновление, либо создание
             <div>
               <EtsBootstrap.Button
-                onClick={this.handleGetPrintForm}
+                onClick={this.handleGetPrintFormWrap}
                 disabled={!this.props.canSave}>
                 <EtsBootstrap.Glyphicon id="dm-download-all" glyph="download-alt" />{' '}
                 {DUTY_MISSION_IS_DISPLAY ? 'Просмотр' : 'Выдать'}

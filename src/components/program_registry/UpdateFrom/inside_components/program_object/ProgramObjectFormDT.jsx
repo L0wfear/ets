@@ -30,7 +30,6 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -447,7 +446,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <ModalBodyPreloader style={{ padding: 15 }}>
+        <ModalBody style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
@@ -631,7 +630,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </div>
-        </ModalBodyPreloader>
+        </ModalBody>
         <Div hidden={!showPercentForm}>
           <PercentModalList
             object_id={id}
@@ -640,7 +639,6 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             isPermittedByStatus={isPermittedByStatus}
           />
         </Div>
-        <ModalBody />
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}

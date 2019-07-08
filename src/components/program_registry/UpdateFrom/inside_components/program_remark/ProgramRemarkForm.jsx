@@ -6,7 +6,6 @@ import ModalBody from 'components/ui/Modal';
 import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 export default class SparePartForm extends UNSAFE_Form {
   handleSubmitWrap = () => this.handleSubmit();
@@ -47,7 +46,7 @@ export default class SparePartForm extends UNSAFE_Form {
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
-          <ModalBodyPreloader style={{ padding: 15 }}>
+          <ModalBody style={{ padding: 15 }}>
             <EtsBootstrap.Row>
               <Div hidden={!allowCreateRemark}>
                 <EtsBootstrap.Col md={12}>
@@ -76,8 +75,7 @@ export default class SparePartForm extends UNSAFE_Form {
                 </EtsBootstrap.Col>
               </Div>
             </EtsBootstrap.Row>
-          </ModalBodyPreloader>
-          <ModalBody />
+          </ModalBody>
           <EtsBootstrap.ModalFooter>
             <Div
               hidden={

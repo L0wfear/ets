@@ -19,7 +19,7 @@ export const PointStyles = {
       color: 'white',
     }),
     fill: new Fill({
-      color: 'red',
+      color: 'darkviolet',
     }),
   },
   [maskStatusPoint.any]: {
@@ -38,7 +38,7 @@ export const polyStyles = {
       color: 'rgba(0,0,0,0.2)',
     }),
     stroke: new Stroke({
-      color: '#333',
+      color: 'darkviolet',
       width: 1,
     }),
   },
@@ -47,7 +47,7 @@ export const polyStyles = {
       color: 'rgba(255,255,255,0.5)',
     }),
     stroke: new Stroke({
-      color: 'red',
+      color: 'darkviolet',
       width: 1,
     }),
   },

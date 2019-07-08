@@ -405,6 +405,10 @@ body.application {
     display: flex;
     flex-direction: column;
 
+    &.info {
+      margin: 0px;
+    }
+
     .car_filters-container-wrap {
       position: relative;
       width: 100%;
@@ -573,6 +577,10 @@ body.application {
   padding: 2px 0;
   font-size: small;
 
+  &.not_allow {
+    cursor: text;
+  }
+
   &.off {
     opacity: 0.5;
   }
@@ -620,7 +628,7 @@ body.application {
     }
 
     &.geoobject_un_select {
-      background-color: red;
+      background-color: darkviolet;
     }
 
     &.geoobject_select {

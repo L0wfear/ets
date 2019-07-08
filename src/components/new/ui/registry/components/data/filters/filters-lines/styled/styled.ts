@@ -66,7 +66,7 @@ export const AdvacedFirstLineContainer = styled.div`
   margin-bottom: 5px;
 
   ${AdvacedSelectContainer} {
-    width: 100px;
+    width: 155px;
   }
 
   ${AdvacedFirstInputContainer} {

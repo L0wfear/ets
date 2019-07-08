@@ -8,6 +8,7 @@ export const GEOOBJECT_SET_DATA = GEOOBJECT`SET_DATA`;
 export const geoobjectInitialState: IStateGeoobject = {
   carpoolList: [],
   dtList: [],
+  dtPolys: {},
   odhList: [],
   sspList: [],
   mspList: [],

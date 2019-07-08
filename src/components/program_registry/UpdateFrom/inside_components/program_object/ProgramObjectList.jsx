@@ -135,6 +135,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
       showForm: true,
       selectedElement: {
         type_slug: 'dt',
+        objectsType: 'simple_dt',
         program_version_id,
         contract_number,
         contractor_id,
@@ -160,6 +161,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
       showForm: true,
       selectedElement: {
         type_slug: 'odh',
+        objectsType: 'mixed',
         program_version_id,
         contract_number,
         contractor_id,

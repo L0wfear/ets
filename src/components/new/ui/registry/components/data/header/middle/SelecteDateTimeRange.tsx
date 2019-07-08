@@ -1,27 +1,16 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
 
-type SelecteDateTimeRangeStateProps = {
-};
-type SelecteDateTimeRangeDispatchProps = DispatchProp;
 type SelecteDateTimeRangeOwnProps = {
   registryKey: string;
 };
-type SelecteDateTimeRangeMergedProps = (
-  SelecteDateTimeRangeStateProps
-  & SelecteDateTimeRangeDispatchProps
-  & SelecteDateTimeRangeOwnProps
-);
-
 type SelecteDateTimeRangeProps = (
-  SelecteDateTimeRangeMergedProps
+  SelecteDateTimeRangeOwnProps
   & WithSearchProps
 );
 
@@ -65,9 +54,9 @@ const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
         };
 
         partialSerachState[key] = createValidDateTime(value) || partialSerachState[key];
-        props.setDataInSearch(partialSerachState);
+        props.setDataInSearch(partialSerachState, 'push');
       },
-      [props.searchState, props.setDataInSearch],
+      [props.searchState.date_from, props.searchState.date_to, props.setDataInSearch],
     );
 
     return (
@@ -88,8 +77,5 @@ const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
 );
 
 export default compose<SelecteDateTimeRangeProps, SelecteDateTimeRangeOwnProps>(
-  connect<SelecteDateTimeRangeStateProps, SelecteDateTimeRangeDispatchProps, SelecteDateTimeRangeOwnProps, ReduxState>(
-    null,
-  ),
   withSearch,
 )(SelecteDateTimeRange);

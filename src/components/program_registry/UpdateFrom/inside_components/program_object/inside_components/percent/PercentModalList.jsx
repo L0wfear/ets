@@ -176,7 +176,7 @@ class PercentModalList extends UNSAFE_ElementsList {
     return (
       <EtsBootstrap.ModalContainer
         id="modal-percent-list"
-        show={this.props.show}
+        show
         onHide={this.props.onHide}
         bsSize="lg">
         <EtsBootstrap.ModalHeader closeButton>

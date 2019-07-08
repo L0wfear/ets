@@ -30,6 +30,9 @@ import {
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import { getGeoobjectState } from 'redux-main/reducers/selectors';
+import { polyState } from 'constants/polygons';
+import memoizeOne from 'memoize-one';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -42,6 +45,17 @@ const getObjectsType = (slug) => {
   }
 };
 const log = {};
+
+const makeSelector = memoizeOne((dtPolys) =>
+  Object.entries(dtPolys).reduce((newObj, [key, data]) => {
+    newObj[key] = {
+      ...data,
+      state: polyState.ENABLE,
+    };
+
+    return newObj;
+  }, {}),
+);
 
 class ProgramObjectFormDT extends UNSAFE_Form {
   static defaultProps = {
@@ -132,7 +146,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         } else {
           this.props.actionGetGetDt().then(({ data }) => {
             const changesState = { manual };
-            changesState.dtPolys = keyBy(data, 'yard_id');
+            changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
 
             changesState.OBJECT_OPTIONS = Object.values(
               changesState.dtPolys,
@@ -349,9 +363,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         return;
       }
 
-      dtPolys[object_id_old].state = 1;
+      dtPolys[object_id_old].state = polyState.ENABLE;
     }
-    dtPolys[object_id].state = 2;
+
+    dtPolys[object_id].state = polyState.SELECTED;
 
     const selectedObj = dtPolys[object_id];
 
@@ -657,7 +672,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 export default compose(
   tabable,
   connect(
-    null,
+    (state) => ({
+      dtPolys: makeSelector(getGeoobjectState(state).dtPolys),
+    }),
     (dispatch) => ({
       actionGetGetDt: () =>
         dispatch(

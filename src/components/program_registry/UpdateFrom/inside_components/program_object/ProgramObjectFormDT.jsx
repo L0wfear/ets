@@ -431,11 +431,6 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     const CONTRACTOR_OPTIONS = contractorList.map(
       ({ id: value, name: label }) => ({ value, label }),
     );
-    const buttonPercentProps = {
-      className: !id ? undefined : 'active',
-      disabled: !id,
-      onClick: this.showPercentForm,
-    };
 
     return (
       <EtsBootstrap.ModalContainer
@@ -586,7 +581,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={2} xsOffset={1}>
                   <EtsBootstrap.Col md={12}>
-                    <EtsBootstrap.Button {...buttonPercentProps}>
+                    <EtsBootstrap.Button
+                      className={!id ? undefined : 'active'}
+                      disabled={!id}
+                      onClick={this.showPercentForm}>
                       <div style={{ width: 200, textAlign: 'center' }}>%</div>
                     </EtsBootstrap.Button>
                   </EtsBootstrap.Col>
@@ -631,14 +629,14 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             </EtsBootstrap.Row>
           </div>
         </ModalBody>
-        <Div hidden={!showPercentForm}>
+        {showPercentForm && (
           <PercentModalList
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
             isPermittedByStatus={isPermittedByStatus}
           />
-        </Div>
+        )}
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}

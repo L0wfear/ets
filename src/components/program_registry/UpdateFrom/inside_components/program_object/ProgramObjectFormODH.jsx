@@ -562,13 +562,13 @@ class ProgramObjectFormodh extends UNSAFE_Form {
             </EtsBootstrap.Row>
           </div>
         </ModalBody>
-        <Div hidden={!showPercentForm}>
+        {showPercentForm && (
           <PercentModalList
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
           />
-        </Div>
+        )}
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}

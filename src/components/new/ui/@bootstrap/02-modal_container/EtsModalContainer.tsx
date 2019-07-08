@@ -89,7 +89,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
                     React.Children.map(
                       props.children,
                       (child: any) => (
-                        React.cloneElement(child, {
+                        React.isValidElement(child) && React.cloneElement(child, {
                           ...child.props,
                           onHide: props.onHide,
                           themeName: props.themeName || 'default',

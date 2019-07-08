@@ -10,22 +10,22 @@ export const FILTER_VALUES = {
 export const FILTER_SELECT_TYPES = [
   {
     value: FILTER_VALUES.EQUAL,
-    label: '=',
+    label: 'равно',
   },
   {
     value: FILTER_VALUES.SMALLER,
-    label: '<',
+    label: 'меньше',
   },
   {
     value: FILTER_VALUES.GREATER,
-    label: '>',
+    label: 'больше',
   },
   {
     value: FILTER_VALUES.NOT_EQUAL,
-    label: '≠',
+    label: 'не равно',
   },
   {
     value: FILTER_VALUES.INTERVAL,
-    label: '><',
+    label: 'диапазон',
   },
 ];

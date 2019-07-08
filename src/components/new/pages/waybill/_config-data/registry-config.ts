@@ -136,6 +136,11 @@ export const config: TypeConfigData<Waybill> = {
         type: 'advanced-date',
       },
       {
+        valueKey: 'plan_arrival_date',
+        title: 'Возвращение план',
+        type: 'advanced-date',
+      },
+      {
         valueKey: 'fact_arrival_date',
         title: 'Возвращение факт',
         type: 'advanced-date',
@@ -346,6 +351,12 @@ export const config: TypeConfigData<Waybill> = {
         {
           key: 'fact_departure_date',
           title: 'Выезд факт',
+          format: 'datetime',
+          width: 150,
+        },
+        {
+          key: 'plan_arrival_date',
+          title: 'Возвращение план',
           format: 'datetime',
           width: 150,
         },

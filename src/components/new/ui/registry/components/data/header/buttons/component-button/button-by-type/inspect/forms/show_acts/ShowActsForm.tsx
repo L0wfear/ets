@@ -103,7 +103,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
                 </EtsBootstrap.Button>
                 <EtsButtonsContainer>
                   <ButtonReadWrap registryKey={registryKey} onClick={handleOpenFormEdit} />
-                  <ButtonRemove registryKey={registryKey} />
+                  <ButtonRemove registryKey={registryKey} format="yesno"/>
                 </EtsButtonsContainer>
               </EtsHeaderContainer>
               <TableData registryKey={registryKey} />

@@ -504,7 +504,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                       <span>{`Площадь проезда, кв.м.: ${0}`}</span>
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                      <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Col>
                   <EtsBootstrap.Col md={4}>

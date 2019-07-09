@@ -33,6 +33,17 @@ export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
       title: 'Особые отметки',
       maxLength: 150,
     },
+    snils: {
+      type: 'string',
+      title: 'СНИЛС',
+      dependencies: [
+        (snils) => {
+          if (snils && snils.length !== 14) {
+            return 'Поле "СНИЛС" должно содержать 11 цифр';
+          }
+        },
+      ],
+    },
     personnel_number: {
       title: 'Табельный номер',
       type: 'string',

@@ -39,6 +39,7 @@ export const defaultEmployee: Employee = {
   position_name: null,
   prefer_car: null,
   prefer_car_text: null,
+  snils: null,
   secondary_car: [],
   secondary_car_text: null,
   special_license: null,

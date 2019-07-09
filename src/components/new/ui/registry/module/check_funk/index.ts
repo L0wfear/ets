@@ -12,7 +12,7 @@ export const isAllChecked = (registryData: OneRegistryData) => {
 
   if (!userServerFilters) {
     const offset: any = get(list, 'paginator.currentPage', 0);
-    checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
+    checkArray = processedArray.slice(offset * MAX_ITEMS_PER_PAGE, (offset + 1) * MAX_ITEMS_PER_PAGE);
   }
 
   const count = checkArray.length;

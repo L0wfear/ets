@@ -98,6 +98,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
             label={false}
             value={this.props.allIsChecked}
             checkboxStyle={false}
+            className="pointer"
           />
         </EtsTheadTh>
       );

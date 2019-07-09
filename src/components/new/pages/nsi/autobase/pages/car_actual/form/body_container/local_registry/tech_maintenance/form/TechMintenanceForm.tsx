@@ -89,7 +89,7 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
     [techMaintOrderList],
   );
 
-  const gov_number = state.gov_number ? state.gov_number : selectedCarData.gov_number;
+  const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
 
   return (
     <EtsBootstrap.ModalContainer

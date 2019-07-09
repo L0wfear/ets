@@ -82,11 +82,10 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     cnt_defective_light: {
       title: 'Количество неисправных мачт освещения (шт.)',
       type: 'number',
-
       dependencies: [
         (value, { lack_of_lighting }, { type }) => {
           if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!lack_of_lighting && !value) {
+            if (!lack_of_lighting && !value && value !== 0) {
               return 'Поле "Количество неисправных мачт освещения (шт.)" должно быть заполнено';
             }
           }
@@ -106,11 +105,10 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     cnt_repair_posts: {
       title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
-
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
           if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!lack_repair_areas && !value) {
+            if (!lack_repair_areas && !value && value !== 0) {
               return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
             }
           }
@@ -125,7 +123,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
           if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!lack_repair_areas && !value) {
+            if (!lack_repair_areas && !value && value !== 0) {
               return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
             }
           }

@@ -48,6 +48,18 @@ export const meta: IDataTableSchema = {
       type: 'date',
       cssClassName: 'width200',
     },
+    {
+      name: 'odometr_diff',
+      displayName: 'Пробег, км',
+      type: 'text',
+      cssClassName: 'width200',
+    },
+    {
+      name: 'motohours_diff',
+      displayName: 'Наработка, мч',
+      type: 'text',
+      cssClassName: 'width200',
+    },
   ],
 };
 

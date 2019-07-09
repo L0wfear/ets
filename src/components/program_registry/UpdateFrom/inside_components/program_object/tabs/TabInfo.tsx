@@ -305,7 +305,7 @@ class PlanTab extends React.Component<any, any> {
             type="text"
             value={note}
             label={'Примечание'}
-            error={errors.name}
+            error={errors.note}
             onChange={this.props.handleChange}
             boundKeys="note"
             disabled={!isPermitted}

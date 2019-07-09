@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { saveData, getCanvasOfImgUrl } from 'utils/functions';
+import { saveData } from 'utils/functions';
 import { useDispatch } from 'react-redux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { getBlob } from 'api/adapterBlob';
 
 type PropsSimpleSaveLinkA = {
   id?: string;
@@ -29,19 +30,9 @@ const SimpleSaveLinkA: React.FC<PropsSimpleSaveLinkA> = React.memo(
         const loadPromise = () => {
           return new Promise(
             async (res) => {
-              const canvas = await getCanvasOfImgUrl(__DEVELOPMENT__ ? 'https://a.wattpad.com/cover/99141245-352-k673828.jpg' : props.href);
-              const div = document.createElement('div');
-              div.setAttribute('style', 'display:none;');
-              document.body.appendChild(div);
-              div.appendChild(canvas);
+              const { blob }: any = await getBlob(props.href, {});
 
-              canvas.toBlob(
-                (blob) => {
-                  saveData(blob, props.title);
-                  res(blob);
-                  document.body.removeChild(div);
-                },
-              );
+              saveData(blob, props.title);
 
             },
           );

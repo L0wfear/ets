@@ -8,7 +8,7 @@ const VirtualizedSelectList = (props: any) => {
     <VirtualizedOption title={props.options[index].label} key={key} style={style}>{rows[index]}</VirtualizedOption>
   );
   const rowHeight = 36;
-  const optionsCount = props.options.length - props.getValue().length; // <<< Если нет данных, проверить, что что-то есть!!!
+  const optionsCount = props.options.length - props.getValue().length;
   const menuHeight = optionsCount < 10
     ? (optionsCount) * rowHeight
     : rowHeight * 10;

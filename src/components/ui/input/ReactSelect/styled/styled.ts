@@ -38,8 +38,8 @@ export const MenuPortal = styled(components.MenuPortal)`
 `;
 
 const notValidStyle = css`
-  background-color: rgba(226, 0, 255, 0.08);
-  border: 1px solid rgba(226, 0, 255, 0.24);
+  background-color: rgba(234, 66, 255, 0.05);
+  border: 1px solid rgba(234, 66, 255, 0.24);
 `;
 
 export const MultiValue = styled(components.MultiValue)`

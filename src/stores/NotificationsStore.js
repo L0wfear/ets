@@ -24,13 +24,6 @@ export default class NotificationsStore extends Store {
       },
     ];
 
-    const removeNotificationQueue = [
-      {
-        actions: repairActions,
-        actionNames: ['removeProgramRegistry'],
-      },
-    ];
-
     saveNotificationQueue.forEach((opts) =>
       opts.actionNames.forEach((name) =>
         this.register(
@@ -44,12 +37,6 @@ export default class NotificationsStore extends Store {
             ),
           ),
         ),
-      ),
-    );
-
-    removeNotificationQueue.forEach((opts) =>
-      opts.actionNames.forEach((name) =>
-        this.register(opts.actions[name], this.handleRemove),
       ),
     );
 
@@ -90,9 +77,5 @@ export default class NotificationsStore extends Store {
 
   handleSave(text) {
     global.NOTIFICATION_SYSTEM.notify(text, 'success');
-  }
-
-  handleRemove() {
-    global.NOTIFICATION_SYSTEM.notify('Запись успешно удалена', 'success');
   }
 }

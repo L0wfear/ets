@@ -29,13 +29,20 @@ const SimpleSaveLinkA: React.FC<PropsSimpleSaveLinkA> = React.memo(
         const loadPromise = () => {
           return new Promise(
             async (res) => {
-              const canvas = await getCanvasOfImgUrl(props.href);
+              const canvas = await getCanvasOfImgUrl(__DEVELOPMENT__ ? 'https://a.wattpad.com/cover/99141245-352-k673828.jpg' : props.href);
+              const div = document.createElement('div');
+              div.setAttribute('style', 'display:none;');
+              document.body.appendChild(div);
+              div.appendChild(canvas);
+
               canvas.toBlob(
                 (blob) => {
                   saveData(blob, props.title);
                   res(blob);
+                  document.body.removeChild(div);
                 },
               );
+
             },
           );
         };

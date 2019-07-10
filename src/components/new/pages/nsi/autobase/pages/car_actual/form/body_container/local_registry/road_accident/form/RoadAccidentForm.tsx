@@ -12,12 +12,10 @@ import employeeActions from 'redux-main/reducers/modules/employee/actions-employ
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   OwnRoadAccidentProps,
   PropsRoadAccident,
-  StatePropsRoadAccident,
-  DispatchPropsRoadAccident,
   PropsRoadAccidentWithForm,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/@types/RoadAccident';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -26,10 +24,21 @@ import { FileField } from 'components/ui/input/fields';
 import { isNullOrUndefined } from 'util';
 import { getDefaultRoadAccidentElement } from './utils';
 import roadAccidentPermissions from '../_config-data/permissions';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { get } from 'lodash';
+import { getLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
+import { createValidDate } from 'utils/dates';
+import { filterDriverAccident } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
 
 const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const [roadAccidentCauseOptions, setRoadAccidentCauseOptions] = React.useState([]);
   const [driversOptions, setDriversOptions] = React.useState([]);
+  const [roadAccidentCauseIsLoading, setRoadAccidentCauseIsLoading] = React.useState(false);
+  const [employeeDriverIsLoading, setEmployeeDriverIsLoading] = React.useState(false);
+  const dispatch = useDispatch();
+  const userCompanyId = useSelector(
+    (stateRedux: ReduxState) => getSessionState(stateRedux).userData.company_id,
+  );
 
   const {
     formState: state,
@@ -39,8 +48,13 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   } = props;
 
   const IS_CREATING = !state.id;
+  const car_id = get(props, 'element.car_id', null);
+  const car_gov_number = get(props, 'element.car_gov_number', null);
 
-  const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+  const title = !IS_CREATING
+    ? 'Изменение записи'
+    : 'Создание записи';
+
   const ownIsPermitted = !IS_CREATING
     ? props.isPermittedToUpdate
     : props.isPermittedToCreate;
@@ -48,31 +62,93 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const isPermitted =
     ownIsPermitted &&
     (isNullOrUndefined(state.company_id) ||
-      state.company_id === props.userCompanyId);
+      state.company_id === userCompanyId);
+
+  const roadAccidentCauseOptionsLoad = React.useCallback (async () => {
+    try {
+      setRoadAccidentCauseIsLoading(true);
+      const RoadAccidentCauseOptionsData = await dispatch(
+        autobaseActions.autobaseGetSetRoadAccidentCause(
+          {},
+          { page, path },
+        ),
+      );
+
+      setRoadAccidentCauseOptions(
+        get(RoadAccidentCauseOptionsData, 'payload.data', []).map(defaultSelectListMapper),
+      );
+
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
+    setRoadAccidentCauseIsLoading(false);
+  }, []);
+
+  const employeeDriverOptionsLoad = React.useCallback (async () => {
+    try {
+      setEmployeeDriverIsLoading(true);
+      const employeeDriverGetSetDriverData = await dispatch(
+        employeeActions.employeeDriverGetSetDriver(
+          {},
+          { page, path },
+        ),
+      );
+
+      setDriversOptions(
+        get(employeeDriverGetSetDriverData, 'payload.data', [])
+          .filter((driverOpt) => {
+            return filterDriverAccident(
+              driverOpt,
+              car_gov_number,
+            );
+          })
+          .map((driver) => ({
+            value: driver.id,
+            label: driver.fio_license,
+            rowData: driver,
+          })),
+      );
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
+    setEmployeeDriverIsLoading(false);
+  }, [car_gov_number]);
 
   React.useEffect(
     () => {
-      props.autobaseGetAccidentCause().then(
-        ({ payload: { data } }) => {
-          setRoadAccidentCauseOptions(
-            data.map(defaultSelectListMapper),
-          );
-        },
-      );
-
-      props.employeeDriverGetSetDriver().then(
-        ({ payload: { data } }) => {
-          setDriversOptions(
-            data.map((driver) => ({
-              value: driver.id,
-              label: driver.fio_license,
-              rowData: driver,
-            })),
-          );
-        },
-      );
+      roadAccidentCauseOptionsLoad();
+      employeeDriverOptionsLoad();
     },
     [],
+  );
+
+  const getLatestWaybillDriverLoad = React.useCallback( async (road_accident_date) => {
+    let responseData = null;
+    try {
+      setEmployeeDriverIsLoading(true);
+      responseData = await dispatch(
+        getLatestWaybillDriver({
+          car_id,
+          road_accident_date: road_accident_date || createValidDate(state.accident_date),
+        }),
+      );
+    } catch (error) {
+      console.error(error); // tslint:disable-line
+    }
+    setEmployeeDriverIsLoading(false);
+    return responseData;
+  }, [state.accident_date, car_id]);
+
+  const accidentDateHandleChange = React.useCallback( (key, value) => {
+      props.handleChange(key, value);
+      if (IS_CREATING && !state.driver_id) {
+        const lastDriverData = get(getLatestWaybillDriverLoad(value), 'result', null);
+        const lastDriverId = get(lastDriverData, 'driver_id', null);
+        if (lastDriverId) {
+          props.handleChange('driver_id', lastDriverId);
+        }
+      }
+    }, [state.accident_date],
   );
 
   return (
@@ -94,10 +170,11 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
               date={state.accident_date}
               time={false}
               error={errors.accident_date}
-              onChange={props.handleChange}
+              onChange={accidentDateHandleChange}
               boundKeys="accident_date"
               disabled={!isPermitted}
               modalKey={page}
+              makeGoodFormat
             />
             <ExtField
               id="driver_id"
@@ -112,6 +189,7 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
               clearable={false}
               disabled={!isPermitted}
               modalKey={page}
+              etsIsLoading={employeeDriverIsLoading}
             />
             <ExtField
               id="cause_id"
@@ -126,6 +204,7 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
               clearable={false}
               disabled={!isPermitted}
               modalKey={page}
+              etsIsLoading={roadAccidentCauseIsLoading}
             />
             <ExtField
               id="accident_place"
@@ -201,23 +280,6 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
 };
 
 export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
-  connect<StatePropsRoadAccident, DispatchPropsRoadAccident, OwnRoadAccidentProps, ReduxState>(
-    (state) => ({
-      userCompanyId: state.session.userData.company_id,
-    }),
-    (dispatch, { page, path }) => ({
-      autobaseGetAccidentCause: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetRoadAccidentCause({}, { page, path }),
-        )
-      ),
-      employeeDriverGetSetDriver: () => (
-        dispatch(
-          employeeActions.employeeDriverGetSetDriver({}, { page, path }),
-        )
-      ),
-    }),
-  ),
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
     createAction: autobaseActions.autobaseCreateRoadAccident,

@@ -1,4 +1,4 @@
-import { WaybillService, WaybillJournalReportService, WaybillsReportService } from 'api/Services';
+import { WaybillService, WaybillJournalReportService, WaybillsReportService, LatestWaybillDriverService } from 'api/Services';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import {
   get,
@@ -119,4 +119,14 @@ export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: stri
     blob: get(response, 'blob', null),
     fileName,
   };
+};
+
+export const getLatestWaybillDriver = async (payload: {car_id?: number | null, driver_id?: number | null, road_accident_date?: string | null }) => {
+  let response = null;
+  try {
+    response = await LatestWaybillDriverService.get(payload);
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+  return response;
 };

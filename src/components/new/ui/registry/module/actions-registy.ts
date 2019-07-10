@@ -187,6 +187,9 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
   dispatch(
     actionSetLoadingStatus(registryKey, true),
   );
+  dispatch(
+    actionUnselectSelectedRowToShow(registryKey, true),
+  );
 
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);

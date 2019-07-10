@@ -107,6 +107,16 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       [state.data],
     );
 
+    const handleSubmit = React.useCallback(
+      async (action) => {
+        await props.handleChange({
+          action: action ? action : 'save',
+        });
+        props.defaultSubmit();
+      },
+      [props.handleChange, props.defaultSubmit, state.action],
+    );
+
     return (
       <React.Fragment>
         <ContainerForm>
@@ -210,7 +220,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
           <FooterEnd>
             <ViewInspectCarsConditionButtonSubmit
               type={props.type}
-              handleSubmit={props.defaultSubmit}
+              handleSubmit={handleSubmit}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}

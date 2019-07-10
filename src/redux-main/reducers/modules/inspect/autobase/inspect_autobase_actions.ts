@@ -16,7 +16,7 @@ import {
   promiseGetInspectAutobaseById,
 } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
-import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
+import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -201,6 +201,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   const agents_from_gbu = get(inspectAutobase, 'agents_from_gbu', defaultInspectAutobase.agents_from_gbu);
   const commission_members = get(inspectAutobase, 'commission_members', defaultInspectAutobase.commission_members);
   const resolve_to = get(inspectAutobase, 'resolve_to', defaultInspectAutobase.resolve_to);
+  const action = get(inspectAutobase, 'action', defaultInspectAutobase.action);
 
   if (commission_members.length && inspectAutobase.status === 'completed') { // Удаляем первого члена комиссии, бек его сам добавляет
     commission_members.shift();
@@ -209,6 +210,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
     agents_from_gbu,
     commission_members,
     resolve_to: createValidDateTime(resolve_to),
+    action,
   };
 
   const inspectionAutobase = await dispatch(
@@ -240,23 +242,22 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
     resolve_to,
   } = inspectAutobase;
 
-  if (commission_members.length) { // Удаляем первого члена комиссии, бек его сам добавляет
-    commission_members.shift();
-  }
-
   const payload = {
     data,
     agents_from_gbu,
     commission_members,
     resolve_to: createValidDateTime(resolve_to),
+    action: 'close',
   };
 
   const result = await dispatch(
-    actionCloseInspect(
+    actionUpdateInspect(
       inspectAutobase.id,
-      payload,
+      data,
+      inspectAutobase.files,
       'autobase',
       meta,
+      payload,
     ),
   );
 

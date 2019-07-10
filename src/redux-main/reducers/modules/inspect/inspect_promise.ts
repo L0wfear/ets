@@ -1,12 +1,10 @@
-import { InspectRegistryService, InspectionService, InspectionActService } from 'api/Services';
+import { InspectRegistryService, InspectionActService } from 'api/Services';
 import {
   get,
   keyBy,
 } from 'lodash';
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
-import { InspectPgmBase } from './pgm_base/@types/inspect_pgm_base';
-import { InspectCarsCondition } from './cars_condition/@types/inspect_cars_condition';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -65,37 +63,7 @@ export const promiseUpdateInspection = async (id: number, data: InspectAutobase[
       data,
       files,
       type,
-      action: 'save',
       ...payload,
-    },
-    false,
-    'json',
-  );
-
-  const inspectAutobase = get(response, 'result.rows.0', null);
-
-  return inspectAutobase;
-};
-
-export const promiseCloseInspection = async (
-    id: number,
-    payload: {
-      data: InspectAutobase['data'] | InspectPgmBase['data'] | InspectCarsCondition['data'];
-      agents_from_gbu: any[];
-      commission_members: any[];
-      resolve_to: string;
-    },
-    type: TypeOfInspect,
-  ) => {
-
-  const responsePayload = {
-    type,
-    ...payload,
-  };
-  const response = await InspectionService.path(id).put(
-    {
-      ...responsePayload,
-      action: 'close',
     },
     false,
     'json',

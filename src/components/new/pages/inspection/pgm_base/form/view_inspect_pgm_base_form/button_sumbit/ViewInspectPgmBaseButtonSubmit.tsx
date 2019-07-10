@@ -56,7 +56,7 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
     async () => {
       if (canSave) {
         try {
-          await props.handleSubmit();
+          await props.handleSubmit('signing');
           await handleGetPgmBaseAct();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);

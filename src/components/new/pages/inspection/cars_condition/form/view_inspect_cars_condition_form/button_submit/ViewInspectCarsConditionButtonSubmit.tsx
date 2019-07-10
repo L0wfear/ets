@@ -55,7 +55,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
     async () => {
       if (canSave) {
         try {
-          await props.handleSubmit();
+          await props.handleSubmit('signing');
           await handleGetCarsConditionAct();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);

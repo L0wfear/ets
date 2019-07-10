@@ -75,6 +75,7 @@ export const defaultInspectPgmBase: InspectPgmBase = {
   volume_capacity_sum: null,
   was_resaved: false,
   files: [],
+  action: 'save',
 };
 
 export const getDefaultInspectPgmBaseElement = (element: Partial<InspectPgmBase>) => {

@@ -53,6 +53,16 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
       [props.handleChange, state.data],
     );
 
+    const handleSubmit = React.useCallback(
+      async (action) => {
+        await props.handleChange({
+          action: action ? action : 'save',
+        });
+        props.defaultSubmit();
+      },
+      [props.handleChange, props.defaultSubmit, state.action],
+    );
+
     return (
       <React.Fragment>
         <ContainerForm>
@@ -141,7 +151,7 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
             <ViewInspectPgmBaseButtonSubmit
               canSave={props.canSave}
               type={props.type}
-              handleSubmit={props.defaultSubmit}
+              handleSubmit={handleSubmit}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectPgmBase={state}

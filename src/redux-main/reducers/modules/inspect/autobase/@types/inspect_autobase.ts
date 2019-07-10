@@ -57,6 +57,7 @@ export type InspectAutobase = {
   close_employee_position: string | null;
   close_employee_assignment: string;
   close_employee_assignment_date_start: string;
+  action: string;
   files: any[],
 } & DefaultPartInspect;
 

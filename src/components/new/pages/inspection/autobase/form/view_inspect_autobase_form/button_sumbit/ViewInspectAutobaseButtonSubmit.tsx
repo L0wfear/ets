@@ -40,7 +40,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     async () => {
       if (canSave) {
         try {
-          await props.handleSubmit();
+          await props.handleSubmit('save');
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
         }
@@ -55,7 +55,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     async () => {
       if (canSave) {
         try {
-          await props.handleSubmit();
+          await props.handleSubmit('signing');
           await handleGetAutobaseAct();
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);

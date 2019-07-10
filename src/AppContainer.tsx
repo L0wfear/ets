@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { hot } from 'react-hot-loader/root';
+import { hot } from 'react-hot-loader/root';
 import { Provider } from 'react-redux';
 import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
@@ -11,21 +11,13 @@ import configureStore from 'redux-main/create';
 const flux = new Flux();
 const store = configureStore();
 
-// const AppWithRoute = hot(() => (
-//   <HashRouter>
-//     <Switch>
-//       <Route path="*" render={(props) => (<App {...props} flux={flux} />)} />
-//     </Switch>
-//   </HashRouter>
-// ));
-
-const AppWithRoute = () => (
+const AppWithRoute = hot(() => (
   <HashRouter>
     <Switch>
       <Route path="*" render={(props) => (<App {...props} flux={flux} />)} />
     </Switch>
   </HashRouter>
-);
+));
 
 const AppConteiner = () => (
   <Provider store={store}>

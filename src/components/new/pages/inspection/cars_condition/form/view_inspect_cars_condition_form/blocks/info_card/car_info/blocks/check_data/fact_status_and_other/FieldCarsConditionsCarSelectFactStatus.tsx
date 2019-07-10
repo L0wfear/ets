@@ -114,18 +114,6 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
     return (
       <React.Fragment>
         <ExtField
-          id="status_at_check"
-          type="select"
-          label="Нахождение ТС на момент проверки:"
-          clearable={false}
-          value={state.status_at_check}
-          error={errors.status_at_check}
-          options={statusAtCheckOptions}
-          onChange={handleChangeStatusAtCheck}
-          boundKeys="status_at_check"
-          disabled={!isPermitted}
-        />
-        <ExtField
           id="fact_status"
           type="select"
           label="Фактический статус ТС:"
@@ -135,6 +123,18 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
           options={factStatusOptions}
           onChange={props.handleChange}
           boundKeys="fact_status"
+          disabled={!isPermitted}
+        />
+        <ExtField
+          id="status_at_check"
+          type="select"
+          label="Нахождение ТС на момент проверки:"
+          clearable={false}
+          value={state.status_at_check}
+          error={errors.status_at_check}
+          options={statusAtCheckOptions}
+          onChange={handleChangeStatusAtCheck}
+          boundKeys="status_at_check"
           disabled={!isPermitted}
         />
         {

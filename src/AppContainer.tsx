@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import { hot } from 'react-hot-loader/root';
+import { hot } from 'react-hot-loader/root';
 
 import Flux from 'config/flux';
 import { HashRouter, Switch, Route } from 'react-router-dom';
@@ -15,5 +15,4 @@ const AppConteiner = () => (
   </HashRouter>
 );
 
-// export default hot(AppConteiner);
-export default AppConteiner;
+export default hot(AppConteiner);

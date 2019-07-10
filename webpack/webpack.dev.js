@@ -10,7 +10,7 @@ const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
   entry: [
-    // 'react-hot-loader',
+    'react-hot-loader',
     'whatwg-fetch',
     'core-js/stable',
     'regenerator-runtime/runtime',
@@ -79,7 +79,7 @@ module.exports = {
                 ],
                 'babel-plugin-styled-components',
                 '@babel/plugin-syntax-dynamic-import',
-                // 'react-hot-loader/babel',
+                'react-hot-loader/babel',
               ],
             },
           },

@@ -106,6 +106,10 @@ class MissionTemplateForm extends React.PureComponent<
     }
   };
 
+  componentDidMount() {
+    this.props.handleChange('name', null);
+  }
+
   render() {
     const {
       formState: state,

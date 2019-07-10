@@ -4,12 +4,12 @@ import { DivNone } from 'global-styled/global-styled';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarInfo from './BlockCarInfo';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type BlockCarInfoWrapOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
   handleHide: (isSubmitted: boolean) => void;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
 
   page: string;
 };
@@ -31,7 +31,7 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
     React.useEffect(
       () => {
         if (selectedCarsConditionsCar === 'create') {
-          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+          if (props.type === INSPECT_TYPE_FORM.list) {
             setSelectedCar({
               inspection_id,
             });

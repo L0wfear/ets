@@ -102,6 +102,7 @@ export type InspectCarsCondition = {
     cars_use: CarsUse,
   };
   files: any[];
+  action: string;
 } & DefaultPartInspect;
 
 export type IStateInspectCarsCondition = {

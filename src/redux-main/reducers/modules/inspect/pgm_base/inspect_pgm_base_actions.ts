@@ -16,7 +16,7 @@ import {
   promiseGetInspectPgmBaseById,
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import pgmStoreActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
-import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
+import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -202,6 +202,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
     const agents_from_gbu = get(inspectPgmBase, 'agents_from_gbu', defaultInspectPgmBase.agents_from_gbu);
     const commission_members = get(inspectPgmBase, 'commission_members', defaultInspectPgmBase.commission_members);
     const resolve_to = get(inspectPgmBase, 'resolve_to', defaultInspectPgmBase.resolve_to);
+    const action = get(inspectPgmBase, 'action', defaultInspectPgmBase.action);
 
     const payload = {
       data,
@@ -210,6 +211,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
       resolve_to: createValidDateTime(resolve_to),
       head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
       head_operating_base: inspectPgmBase.head_operating_base,
+      action,
     };
 
     const inspectionPgmBase = await dispatch(
@@ -249,14 +251,17 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     resolve_to: createValidDateTime(resolve_to),
     head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
     head_operating_base: inspectPgmBase.head_operating_base,
+    action: 'close',
   };
 
   const result = await dispatch(
-    actionCloseInspect(
+    actionUpdateInspect(
       inspectPgmBase.id,
-      payload,
+      data,
+      inspectPgmBase.files,
       'pgm_base',
       meta,
+      payload,
     ),
   );
 

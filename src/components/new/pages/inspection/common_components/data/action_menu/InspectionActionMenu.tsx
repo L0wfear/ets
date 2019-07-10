@@ -7,7 +7,6 @@ import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { DivNone } from 'global-styled/global-styled';
-import ButtonCloseInspectAutobase from './components/button_inspect_autobase/ButtonCloseInspectAutobase';
 import { get } from 'lodash';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { LineData, StatusLabel, LineDataButtonLine, InspectInfo } from './styled/InspectionAutobaseDataActionMenu';
@@ -150,8 +149,6 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
                   }
                   <LineDataButtonLine>
                     <ButtonContinueInspectAutobase loadingPage={props.loadingPage} />
-                    <ButtonCloseInspectAutobase loadingPage={props.loadingPage} />
-                    <span>* При завершении проверки карточку базы нельзя будет отредактировать</span>
                   </LineDataButtonLine>
                 </>
               )

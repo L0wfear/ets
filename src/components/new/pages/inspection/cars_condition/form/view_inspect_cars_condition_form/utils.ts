@@ -72,6 +72,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   status: 'conducting',
   date_end: null,
   files: [],
+  action: 'save',
 };
 
 export const getDefaultInspectCarsConditionElement = (element: Partial<InspectCarsCondition>) => {

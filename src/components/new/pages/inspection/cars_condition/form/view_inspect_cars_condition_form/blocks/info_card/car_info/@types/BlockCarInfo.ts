@@ -1,12 +1,12 @@
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 export type BlockCarInfoOwnProps = {
   element: Partial<CarsConditionCars>;
   carsConditionCarsList: CarsConditionCars[];
   handleHide: (isSubmitted: boolean) => void;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
 
   page: string;
   path?: string;

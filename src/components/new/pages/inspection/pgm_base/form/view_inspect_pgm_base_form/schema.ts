@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { PropsViewInspectPgmBaseWithForm } from './@types/ViewInspectPgmBase';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
+import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectPgmBase['head_balance_holder_base'], PropsViewInspectPgmBaseWithForm> = {
   properties: {
@@ -171,19 +171,32 @@ export const inspectPgmBaseSchema: SchemaType<InspectPgmBase, PropsViewInspectPg
       type: 'schema',
       schema: dataSchema,
     },
+    commission_members: {
+      type: 'multiValueOfArray',
+      title: 'Проверяющие от Доринвеста',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного проверяющего от Доринвеста`;
+          }
+        },
+      ],
+    },
     agents_from_gbu: {
       type: 'multiValueOfArray',
       title: 'Представители ГБУ',
       dependencies: [
         (agents_from_gbu, _, props) => {
-          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!agents_from_gbu.length) {
-              return `* для ${
-                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-                  ? 'завершения'
-                  : 'изменения'
-              } проверки необходимо добавить хотя бы одного представителя ГБУ`;
-            }
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного представителя ГБУ`;
           }
         },
       ],

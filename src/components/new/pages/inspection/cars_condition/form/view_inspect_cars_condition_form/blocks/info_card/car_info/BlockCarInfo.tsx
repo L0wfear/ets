@@ -7,7 +7,7 @@ import inspectCarsConditionPermissions from 'components/new/pages/inspection/car
 import { carsConditionCarFormSchema } from './schema';
 import BlockCarInfoMainData from './blocks/main_data/BlockCarInfoMainData';
 import BlockCarInfoMainCheckData from './blocks/check_data/BlockCarInfoMainCheckData';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 import { DivNone, FooterEnd } from 'global-styled/global-styled';
 import { actionCreateCarsConditionsCar, actionUpdateCarsConditionsCar, actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
@@ -24,7 +24,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
 
     const isPermitted = (
       isPermittedOwn
-      && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
+      && props.type === INSPECT_TYPE_FORM.list
     );
 
     return (

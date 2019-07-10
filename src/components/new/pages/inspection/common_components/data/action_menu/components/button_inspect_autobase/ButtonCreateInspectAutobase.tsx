@@ -5,7 +5,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
@@ -43,7 +43,7 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
 
         props.setParams({
           id: inspectAutobase.id,
-          type: INSPECT_AUTOBASE_TYPE_FORM.list,
+          type: INSPECT_TYPE_FORM.list,
         });
       } catch (error) {
         await props.loadRegistryData();
@@ -54,7 +54,7 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
 
   return (
     <BigPaddingButton onClick={handleClickCreateInspectAutobase}>
-      Открыть проверку и перейти к заполнению карточки
+      Открыть проверку
     </BigPaddingButton>
   );
 };

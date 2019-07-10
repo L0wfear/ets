@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
+import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
 
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import { FooterEnd } from 'global-styled/global-styled';
@@ -17,14 +17,12 @@ import BlockCarSConditionInfo from './blocks/info/BlockCarSConditionInfo';
 import BlockCarSConditionPrepareCarToInspect from './blocks/prepare_car_to_inspect/BlockCarSConditionPrepareCarToInspect';
 import BlockCarsConditionSelectCar from './blocks/select_car/BlockCarSConditionSelectCar';
 import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
-import BlockCarsConditionSelectPhotosOfSupportingDocuments from './blocks/photos_of_supporting_documents/BlockCarsConditionSelectPhotosOfSupportingDocuments';
 import BlockCarsConditionHeadCountList from './blocks/headcount_list/BlockCarsConditionHeadCountList';
 import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUse';
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { INSPECT_PGM_BASE_TYPE_FORM } from '../../../pgm_base/global_constants';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
@@ -42,31 +40,21 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
     const isHasPeriod = Boolean(state.checks_period); // разное отображение по типу проверки
 
-    const isPermittedChangeListParams = (
-      props.isPermitted
-      && props.type === INSPECT_PGM_BASE_TYPE_FORM.list
-      || (
-        props.isPermittedToUpdateClose
-        && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
-      )
+    const isPermittedChangeCloseParams = (
+      props.isPermittedToUpdateClose
+      && props.type === INSPECT_TYPE_FORM.closed
     );
 
-    const isPermittedChangeCloseParams = (
+    const isPermittedChangeListParams = (
       props.isPermitted
-      && props.type === INSPECT_PGM_BASE_TYPE_FORM.close
-      || (
-        props.isPermittedToUpdateClose
-        && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
-      )
+      && props.type === INSPECT_TYPE_FORM.list
+      || isPermittedChangeCloseParams
     );
 
     // разное отображение по типу проверки
     const isActiveInspect = (
-      props.type === INSPECT_AUTOBASE_TYPE_FORM.list
-      || (
-        props.isPermittedToUpdateClose
-        && props.type === INSPECT_PGM_BASE_TYPE_FORM.closed
-      )
+      props.type === INSPECT_TYPE_FORM.list
+      || isPermittedChangeCloseParams
     );
 
     const callBackToLoadCars = React.useCallback(
@@ -118,6 +106,16 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
         });
       },
       [state.data],
+    );
+
+    const handleSubmit = React.useCallback(
+      async (action) => {
+        await props.handleChange({
+          action: action ? action : 'save',
+        });
+        props.defaultSubmit();
+      },
+      [props.handleChange, props.defaultSubmit, state.action],
     );
 
     return (
@@ -181,27 +179,22 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               checked_cars_cnt={state.checked_cars_cnt}
               error_checked_cars_cnt={errors.checked_cars_cnt}
             />
-            <BlockCarsConditionSelectPhotosOfSupportingDocuments
-              files={state.files}
-              isPermitted={isPermittedChangeListParams}
-              isActiveInspect={isActiveInspect}
-              onChange={props.handleChange}
-            />
             <BlockCarsConditionSetInspectEmployee
               type={props.type}
-              isPermittedChangeCloseParams={isPermittedChangeCloseParams}
-
-              close_employee_fio={state.close_employee_fio}
-              close_employee_position={state.close_employee_position}
-              close_employee_assignment={state.close_employee_assignment}
-              close_employee_assignment_date_start={state.close_employee_assignment_date_start}
+              isPermittedChangeListParams={isPermittedChangeListParams}
+              isPermittedListPhotosOfSupportingDocuments={isPermittedChangeListParams}
+              isPermittedListPhotosDefect={false}
 
               commission_members={state.commission_members}
               company_id={state.company_id}
               error_agents_from_gbu={errors.agents_from_gbu}
+              error_commission_members={errors.commission_members}
+
               agents_from_gbu={state.agents_from_gbu}
               company_short_name={state.company_short_name}
               resolve_to={state.resolve_to}
+              files={state.files}
+
               error_resolve_to={errors.resolve_to}
               handleChange={props.handleChange}
               page={props.page}
@@ -228,7 +221,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
           <FooterEnd>
             <ViewInspectCarsConditionButtonSubmit
               type={props.type}
-              handleSubmit={props.defaultSubmit}
+              handleSubmit={handleSubmit}
               isPermittedToUpdateClose={props.isPermittedToUpdateClose}
               handleHide={props.handleHide}
               selectedInspectCarsCondition={state}
@@ -238,7 +231,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               id={state.id}
               registryPage={props.page}
             />
-            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>

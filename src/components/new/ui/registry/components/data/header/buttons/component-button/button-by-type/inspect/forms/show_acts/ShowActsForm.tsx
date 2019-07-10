@@ -75,6 +75,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
     const handleHide = React.useCallback(
       (isSubmitted) => {
         changeElement(null);
+
         if (isSubmitted) {
           dispatch(
             registryLoadDataByKey(registryKey),

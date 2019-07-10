@@ -24,6 +24,10 @@ export const onChangeSelectLegacy = (sValue, multi) => {
     } else {
       newValue = sValue.value;
     }
+  } else {
+    if (multi) {
+      newValue = [];
+    }
   }
 
   return newValue;

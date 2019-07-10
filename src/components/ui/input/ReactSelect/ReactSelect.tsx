@@ -10,8 +10,8 @@ import {
   onChangeSelectLegacy,
   defaultSortingFunction,
 } from 'components/ui/input/ReactSelect/utils';
-import { SingleValueProps } from 'react-select/lib/components/SingleValue';
-import { MultiValueProps } from 'react-select/lib/components/MultiValue';
+import { SingleValueProps } from 'react-select/src/components/SingleValue';
+import { MultiValueProps } from 'react-select/src/components/MultiValue';
 import { isArray, isNullOrUndefined, isString, isObject } from 'util';
 import { SingleValue, MultiValue, MenuList } from 'components/ui/input/ReactSelect/styled/styled';
 import { DivRelative } from 'global-styled/global-styled';

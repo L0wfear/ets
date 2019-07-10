@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import * as components from 'components/ui/input/ReactSelect/styled/styled';
 import styled, { css } from 'styled-components';
-import { MultiValueProps } from 'react-select/lib/components/MultiValue';
+import { MultiValueProps } from 'react-select/src/components/MultiValue';
 
 const NotActiveEmployeeStyle = css`
   background-color: rgba(234, 66, 255, 0.05);

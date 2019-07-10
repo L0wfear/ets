@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { components } from 'react-select';
-import { MultiValueProps } from 'react-select/lib/components/MultiValue';
 import { DivNone } from 'global-styled/global-styled';
+import { MultiValueProps } from 'react-select/src/components/MultiValue';
 
 class MultiValueForDriver extends React.PureComponent<MultiValueProps<any>, {}> {
   render() {

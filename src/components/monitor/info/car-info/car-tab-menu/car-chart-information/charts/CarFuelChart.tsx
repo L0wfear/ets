@@ -125,7 +125,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
                       key="fuel-chart"
                       data={data}
                       onClick={this.handleChartClick}
-                      name="test"
+                      name="fuel-chart"
                       showX
                     />,
                     <div key="checkbox-fuel" className="chart-select_raw" onClick={this.handleClick}>

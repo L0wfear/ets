@@ -10,6 +10,11 @@ export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'
 export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarInfoProps> = {
   properties: {
     gov_number: {
+      validateIf: {
+        type: 'has_data',
+        path: 'id',
+        reverse: true,
+      },
       type: 'string',
       title: 'Гос. номер',
       required: true,

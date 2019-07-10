@@ -728,7 +728,7 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   let checkArray = processedArray;
 
   if (!getRegistryData || !userServerFilters) {
-    checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
+    checkArray = processedArray.slice(offset * MAX_ITEMS_PER_PAGE, (offset + 1) * MAX_ITEMS_PER_PAGE);
   }
 
   if (Object.keys(checkedRowsCurrent).length === checkArray.length) {

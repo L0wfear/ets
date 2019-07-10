@@ -10,6 +10,7 @@ const NODE_ENV = process.env.NODE_ENV;
 
 module.exports = {
   entry: [
+    // 'react-hot-loader',
     'whatwg-fetch',
     'core-js/stable',
     'regenerator-runtime/runtime',
@@ -55,6 +56,10 @@ module.exports = {
               presets: [
                 [
                   '@babel/preset-env',
+                  {
+                    corejs: { version: 3, proposals: true },
+                    useBuiltIns: 'entry', // 'usage' те функции, которые используются
+                  },
                 ],
                 '@babel/preset-typescript',
                 '@babel/preset-react',
@@ -74,7 +79,7 @@ module.exports = {
                 ],
                 'babel-plugin-styled-components',
                 '@babel/plugin-syntax-dynamic-import',
-                'react-hot-loader/babel',
+                // 'react-hot-loader/babel',
               ],
             },
           },

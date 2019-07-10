@@ -8,7 +8,7 @@ import memoizeOne from 'memoize-one';
 export type WithSearchProps = {
   setParams: (obj: { [key: string]: string | number }, typeAction?: 'replace' | 'push') => void;
   searchState: any;
-  setDataInSearch: (obj: any) => void;
+  setDataInSearch: (obj: any, type?: 'push' | 'replace') => void;
   setParamsAndSearch: (any) => void;
 } & RouteComponentProps<any>;
 
@@ -19,12 +19,12 @@ const makeObjFromMemoise = memoizeOne(
 );
 
 const withSearch = <OwnProps extends any>(Component: React.ComponentType<any>) => (
-  withRouter<any>(
+  withRouter<any, any>(
     class extends React.PureComponent<RouteComponentProps<{}>, {}> {
-      setDataInSearch: WithSearchProps['setDataInSearch'] = async (data) => {
+      setDataInSearch: WithSearchProps['setDataInSearch'] = async (data, type) => {
         await Promise.resolve(true);
 
-        this.props.history.replace(
+        this.props.history[type ? type : 'replace'](
           `${
             this.props.match.url
           }?${

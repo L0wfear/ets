@@ -1,0 +1,23 @@
+{
+	"Function Component": {
+		"prefix": "function_component",
+		"body": [
+			"import * as React from 'react';",
+			"",
+			"type Props = {};",
+			"",
+			"const FunctionComponent: React.FC<Props> = React.memo(",
+			"\t(props) => {",
+			"",
+			"\treturn (",
+			"\t\t<div>FunctionComponent</div>",
+			"\t);",
+			"\t},",
+			");",
+			"",
+			"export default FunctionComponent;",
+			"",
+		],
+		"description": "default function component"
+	}
+}

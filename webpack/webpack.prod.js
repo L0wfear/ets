@@ -27,6 +27,7 @@ module.exports = {
     './src/index',
   ],
   mode: 'production',
+  devtool: 'eval',
   context: path.resolve(__dirname, '..'),
   output: {
     filename: 'app.[name].[hash].js',
@@ -58,10 +59,10 @@ module.exports = {
                     targets: {
                       'chrome': '47',
                       'firefox': '42',
-                      'ie': '11',
+                      'ie': '10',
                     },
-                    useBuiltIns: 'usage',
-                    corejs: '3.*.*',
+                    corejs: { version: 3, proposals: true },
+                    useBuiltIns: 'entry', // 'usage' те функции, которые используются
                   },
                 ],
                 '@babel/preset-typescript',

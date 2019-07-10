@@ -8,7 +8,7 @@ import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autoba
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 
 type AgentsFromGbuProps = {
-  isPermittedToChange: boolean;
+  isPermittedChangeListParams: boolean;
 
   agents_from_gbu: InspectCarsCondition['agents_from_gbu'];
   error: string;
@@ -56,7 +56,7 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             props.agents_from_gbu.map((agent, index) => (
               <ViewAgentFromGbuEmployee
                 key={index + 1}
-                canRemove={props.isPermittedToChange}
+                canRemove={props.isPermittedChangeListParams}
                 index={index}
                 handleRemove={handleRemoveAgent}
                 company_short_name={props.company_short_name}
@@ -67,7 +67,7 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             ))
           }
           <RowAddRowAddAgentFromGbu
-            isPermitted={props.isPermittedToChange}
+            isPermitted={props.isPermittedChangeListParams}
             handleAddChangeRowAddAgentFromGbu={handleAddChangeRowAddAgentFromGbu}
           />
         </div>

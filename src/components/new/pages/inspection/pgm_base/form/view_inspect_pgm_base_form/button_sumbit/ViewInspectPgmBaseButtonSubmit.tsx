@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { INSPECT_PGM_BASE_TYPE_FORM } from 'components/new/pages/inspection/pgm_base/global_constants';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -11,6 +10,7 @@ import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type ViewInspectPgmBaseButtonSubmitDispatchProps = {
   actionCloseInspectPgmBase: HandleThunkActionCreator<typeof inspectionPgmBaseActions.actionCloseInspectPgmBase>;
@@ -19,7 +19,7 @@ type ViewInspectPgmBaseButtonSubmitDispatchProps = {
 };
 
 type ViewInspectPgmBaseButtonSubmitOwnProps = {
-  type: keyof typeof INSPECT_PGM_BASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectPgmBase: InspectPgmBase;
   canSave: boolean;

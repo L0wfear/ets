@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -19,7 +19,7 @@ type ViewInspectAutobaseButtonSubmitDispatchProps = {
 
 type ViewInspectAutobaseButtonSubmitOwnProps = {
   handleSubmit: any;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectAutobase: InspectAutobase;
   canSave: boolean;

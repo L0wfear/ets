@@ -4,7 +4,7 @@ import { compose } from 'recompose';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FooterEnd } from 'global-styled/global-styled';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
@@ -17,7 +17,6 @@ import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import inspectAutobasePermissions from '../../_config_data/permissions';
 import { inspectAutobaseSchema } from './schema';
 import { getDefaultInspectAutobaseElement } from './utils';
-import BlockInspectAutobaseDataFiles from './blocks/block_data_files/BlockInspectAutobaseDataFiles';
 import BlockCarsConditionSetInspectEmployee from '../../../cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import IAVisibleWarningContainer from '../../../container/filed_to_check/IAVisibleWarningContainer';
 
@@ -28,21 +27,16 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
       formErrors: errors,
     } = props;
 
-    const isPermittedChangeListParams = (
-      props.isPermitted
-      && props.type === INSPECT_AUTOBASE_TYPE_FORM.list
-      || (
-        props.isPermittedToUpdateClose
-        && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
-      )
+    const isPermittedChangeCloseParams = (
+      props.isPermittedToUpdateClose
+      && props.type === INSPECT_TYPE_FORM.closed
     );
 
-    const isPermittedChangeCloseParams = (
+    const isPermittedChangeListParams = (
       props.isPermitted
-      && props.type === INSPECT_AUTOBASE_TYPE_FORM.close
+      && props.type === INSPECT_TYPE_FORM.list
       || (
-        props.isPermittedToUpdateClose
-        && props.type === INSPECT_AUTOBASE_TYPE_FORM.closed
+        isPermittedChangeCloseParams
       )
     );
 
@@ -61,7 +55,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
     return (
         <React.Fragment>
           <ContainerForm>
-            <EtsBootstrap.Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 12 : 6}>
+            <EtsBootstrap.Col md={6} sm={6}>
               <BoxContainer>
                 <ExtField
                   type="string"
@@ -90,29 +84,24 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
                   filedToCheck={filedToCheck}
                 />
               </BoxContainer>
-              <BlockInspectAutobaseDataFiles
-                files={state.files}
-
-                isPermittedChangeListParams={isPermittedChangeListParams}
-                onChange={props.handleChange}
-              />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 0 : 6} sm={props.type === INSPECT_AUTOBASE_TYPE_FORM.list ? 0 : 6}>
+            <EtsBootstrap.Col md={6} sm={6}>
               <BlockCarsConditionSetInspectEmployee
                 type={props.type}
-                isPermittedChangeCloseParams={isPermittedChangeCloseParams}
-
-                close_employee_fio={state.close_employee_fio}
-                close_employee_position={state.close_employee_position}
-                close_employee_assignment={state.close_employee_assignment}
-                close_employee_assignment_date_start={state.close_employee_assignment_date_start}
+                isPermittedChangeListParams={isPermittedChangeListParams}
+                isPermittedListPhotosOfSupportingDocuments={isPermittedChangeListParams}
+                isPermittedListPhotosDefect={isPermittedChangeListParams}
 
                 commission_members={state.commission_members}
                 company_id={state.company_id}
                 error_agents_from_gbu={errors.agents_from_gbu}
+                error_commission_members={errors.commission_members}
+
                 agents_from_gbu={state.agents_from_gbu}
                 company_short_name={state.company_short_name}
                 resolve_to={state.resolve_to}
+                files={state.files}
+
                 error_resolve_to={errors.resolve_to}
                 handleChange={props.handleChange}
                 page={props.page}
@@ -131,7 +120,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
                 canSave={props.canSave}
                 loadingPage={props.loadingPage}
               />
-              <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_AUTOBASE_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+              <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
             </FooterEnd>
           </FooterForm>
         </React.Fragment>

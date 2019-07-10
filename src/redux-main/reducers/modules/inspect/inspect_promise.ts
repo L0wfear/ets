@@ -65,6 +65,7 @@ export const promiseUpdateInspection = async (id: number, data: InspectAutobase[
       data,
       files,
       type,
+      action: 'save',
       ...payload,
     },
     false,
@@ -91,9 +92,10 @@ export const promiseCloseInspection = async (
     type,
     ...payload,
   };
-  const response = await InspectionService.path(id).path('close').put(
+  const response = await InspectionService.path(id).put(
     {
       ...responsePayload,
+      action: 'close',
     },
     false,
     'json',

@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { PropsViewInspectCarsConditionWithForm } from './@types/ViewInspectCarsContidion';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
+import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectCarsCondition['head_balance_holder_base'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
@@ -251,19 +251,32 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'number',
       title: 'Количество ТС',
     },
+    commission_members: {
+      type: 'multiValueOfArray',
+      title: 'Проверяющие от Доринвеста',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного проверяющего от Доринвеста`;
+          }
+        },
+      ],
+    },
     agents_from_gbu: {
       type: 'multiValueOfArray',
       title: 'Представители ГБУ',
       dependencies: [
         (agents_from_gbu, _, props) => {
-          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!agents_from_gbu.length) {
-              return `* для ${
-                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-                  ? 'завершения'
-                  : 'изменения'
-              } проверки необходимо добавить хотя бы одного представителя ГБУ`;
-            }
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного представителя ГБУ`;
           }
         },
       ],
@@ -273,7 +286,7 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       title: 'Количество проверенных ТС',
       dependencies: [
         (_, { cars_cnt }, props) => {
-          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
+          if (props.type === INSPECT_TYPE_FORM.list && process.env.STAND === 'prod') {
             if (!cars_cnt) {
               return 'Необходимо проверить все ТС';
             }

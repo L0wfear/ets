@@ -9,7 +9,7 @@ import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type ViewInspectCarsConditionButtonSubmitDispatchProps = {
   actionCloseInspectCarsCondition: HandleThunkActionCreator<typeof inspectionCarsConditionActions.actionCloseInspectCarsCondition>;
@@ -19,7 +19,7 @@ type ViewInspectCarsConditionButtonSubmitDispatchProps = {
 
 type ViewInspectCarsConditionButtonSubmitOwnProps = {
   handleSubmit: any;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectCarsCondition: InspectCarsCondition;
   canSave: boolean;

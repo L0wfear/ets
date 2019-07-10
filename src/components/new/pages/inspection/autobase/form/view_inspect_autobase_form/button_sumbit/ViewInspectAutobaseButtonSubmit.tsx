@@ -51,6 +51,20 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     [selectedInspectAutobase, canSave],
   );
 
+  const handleSaveGetAct = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.handleSubmit();
+          await handleGetAutobaseAct();
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
+      }
+    },
+    [selectedInspectAutobase, canSave],
+  );
+
   const handleGetAutobaseAct = React.useCallback(
     async () => {
       if (canSave) {
@@ -69,7 +83,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     [selectedInspectAutobase, canSave],
   );
 
-  const handleCloseAndAutobaseAct = React.useCallback( // хендлер на закрытие акта
+  const handleCloseAutobaseAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
         try {
@@ -78,7 +92,6 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
             { page: props.loadingPage },
           );
           props.handleHide(true);
-          await handleGetAutobaseAct();
         } catch (error) {
           // tslint:disable-next-line:no-console
           console.error(error);
@@ -94,10 +107,11 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
       handleSubmit={handleSubmit}
       handleSubmitClosed={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-      handleCloseAndGetAct={handleCloseAndAutobaseAct}
+      handleCloseAct={handleCloseAutobaseAct}
       handleGetAct={handleGetAutobaseAct}
       type={props.type}
       canSave={props.canSave}
+      handleSaveGetAct={handleSaveGetAct}
     />
   );
 };

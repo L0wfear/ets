@@ -52,6 +52,20 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
     [props.handleSubmit, canSave],
   );
 
+  const handleSaveGetAct = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.handleSubmit();
+          await handleGetPgmBaseAct();
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
+      }
+    },
+    [selectedInspectPgmBase, canSave],
+  );
+
   const handleGetPgmBaseAct = React.useCallback(
     async () => {
       if (canSave) {
@@ -70,7 +84,7 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
     [selectedInspectPgmBase, canSave],
   );
 
-  const handleCloseAndPgmBaseAct = React.useCallback( // хендлер на закрытие акта
+  const handleClosePgmBaseAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
         try {
@@ -78,7 +92,6 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
             selectedInspectPgmBase,
             { page: props.loadingPage },
           );
-          await handleGetPgmBaseAct();
           props.handleHide(true);
         } catch (error) {
           // tslint:disable-next-line:no-console
@@ -95,10 +108,11 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
       handleSubmit={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
       handleSubmitClosed={handleSubmit}
-      handleCloseAndGetAct={handleCloseAndPgmBaseAct}
+      handleCloseAct={handleClosePgmBaseAct}
       handleGetAct={handleGetPgmBaseAct}
       type={props.type}
       canSave={props.canSave}
+      handleSaveGetAct={handleSaveGetAct}
     />
   );
 };

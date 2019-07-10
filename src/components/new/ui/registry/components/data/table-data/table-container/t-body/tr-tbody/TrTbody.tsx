@@ -248,7 +248,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       }
 
       if (format === 'link') {
-        value = <SimpleLinkA href={`${__DEVELOPMENT__ ? config.url : '' }${rowData.url}`} title={rowData.name} target="_black"/>;
+        value = <SimpleLinkA href={`${__DEVELOPMENT__ ? config.url : '' }${rowData.url}`} title={rowData.name} download={rowData.name} target="_black"/>;
       }
       if (format === 'workOrNot') {
         value = value ? 'Работает' : 'Не работает';

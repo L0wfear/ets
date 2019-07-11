@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EtsTbodyTrTd, EtsTbodyScrollContainer } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import { EtsTbodyTrTd, EtsTbodyScrollContainer, EtsTbodyTextContainer } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { isString } from 'util';
 
 export type PropsTrTd = {
@@ -21,7 +21,6 @@ const TrTd: React.FC<PropsTrTd> = React.memo(
     const value = React.useMemo(
       () => {
         let valueRaw = props.value;
-
         if (isString(valueRaw)) {
           valueRaw = (
             valueRaw
@@ -35,14 +34,17 @@ const TrTd: React.FC<PropsTrTd> = React.memo(
                     if (shortTest.length >= 300) {
                       text = `${shortTest} ...`;
                     }
+
+                  }
+                  if (text.length > 300) {
                     return (
-                      <div key={i}>{text}</div>
+                      <EtsTbodyScrollContainer key={i}>{text}</EtsTbodyScrollContainer>
+                    );
+                  } else {
+                    return (
+                      <EtsTbodyTextContainer key={i}>{text}</EtsTbodyTextContainer>
                     );
                   }
-
-                  return (
-                    <EtsTbodyScrollContainer key={i}>{text}</EtsTbodyScrollContainer>
-                  );
                 },
               )
           );

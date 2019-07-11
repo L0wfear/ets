@@ -30,6 +30,10 @@ export const EtsTbodyScrollContainer = styled.div`
   }
 `;
 
+export const EtsTbodyTextContainer = styled.div`
+  pointer-events: none;
+`;
+
 export const EtsTbodyTrTd = styled.td`
   &&& {
     padding: 8px;

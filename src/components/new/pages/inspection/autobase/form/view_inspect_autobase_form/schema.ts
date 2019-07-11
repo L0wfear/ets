@@ -122,17 +122,6 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
       type: 'number',
-      dependencies: [
-        (value, { lack_repair_areas }, { type }) => {
-          if (type === INSPECT_TYPE_FORM.list) {
-            if (!lack_repair_areas && !value && value !== 0) {
-              return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
-            }
-          }
-
-          return '';
-        },
-      ],
     },
     lack_of_storage_facilities: {
       title: 'Отсутствие складских помещений на базе',

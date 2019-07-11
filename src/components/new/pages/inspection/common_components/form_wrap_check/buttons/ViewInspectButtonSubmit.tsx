@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import ButtonInspectShowActs from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/ButtonInspectShowActs';
 
 type ViewInspectButtonSubmitProps = {
   type: keyof typeof INSPECT_TYPE_FORM;

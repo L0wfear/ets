@@ -19,7 +19,7 @@ const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) =
       <EtsBootstrap.OverlayTrigger
         trigger={['hover', 'focus']}
         overlay={popover}
-        placement="left"
+        placement="top"
       >
         <EtsBootstrap.Glyphicon
           glyph="info-sign"

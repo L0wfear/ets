@@ -80,6 +80,7 @@ class TablePrev extends React.Component<any, any> {
               {
                 bodyData.map((row, numRow) => (
                   <EtsTrTbody
+                    registryKey={this.props.page}
                     key={numRow + 1}
                     enable
                     selected={false}

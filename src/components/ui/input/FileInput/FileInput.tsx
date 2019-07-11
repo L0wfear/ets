@@ -133,7 +133,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
             !this.props.disabled
               ? (
                 <EtsBootstrap.Button
-                  disabled={this.props.disabled || disabledIfSingleFile}
+                  disabled={this.props.disabled || Boolean(!multiple && value.length) || disabledIfSingleFile}
                   onClick={this.handleFilePick}
                   id={button_id}
                   children={buttonName}

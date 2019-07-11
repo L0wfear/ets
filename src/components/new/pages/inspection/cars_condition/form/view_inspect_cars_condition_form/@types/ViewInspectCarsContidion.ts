@@ -4,7 +4,6 @@ import { INSPECT_TYPE_FORM } from "components/new/pages/inspection/autobase/glob
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import inspectionCarsConditionActions from "redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions";
-import { WithSearchProps } from "components/new/utils/hooks/hoc/withSearch";
 
 export type OnFormHideType = (isSubmitted: any, result?: any) => void;
 
@@ -27,7 +26,6 @@ type ViewInspectCarsConditionMergedProps = (
   ViewInspectCarsConditionStateProps
   & ViewInspectCarsConditionDispatchProps
   & ViewInspectCarsConditionOwnProps
-  & WithSearchProps
 ) & {
   isPermittedToUpdateClose: boolean;
 };

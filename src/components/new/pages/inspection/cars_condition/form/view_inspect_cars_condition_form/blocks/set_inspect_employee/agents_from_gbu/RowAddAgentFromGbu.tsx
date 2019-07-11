@@ -55,7 +55,8 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
     );
 
     return (
-        <RowAddRowAddAgentFromGbuWrapper>
+      <RowAddRowAddAgentFromGbuWrapper>
+        <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
             {
               props.isPermitted
@@ -114,7 +115,8 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
             )
           }
           </EtsBootstrap.Col>
-        </RowAddRowAddAgentFromGbuWrapper>
+        </EtsBootstrap.Row>
+      </RowAddRowAddAgentFromGbuWrapper>
     );
   },
 );

@@ -20,6 +20,7 @@ import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/
 import BlockCarsConditionHeadCountList from './blocks/headcount_list/BlockCarsConditionHeadCountList';
 import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUse';
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
+import { ColScroll } from './styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -29,7 +30,6 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
     const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(true);
-    const typeRightView = props.match.params.typeRightView;
 
     const {
       formState: state,
@@ -121,7 +121,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
     return (
       <React.Fragment>
         <ContainerForm>
-          <EtsBootstrap.Col md={typeRightView ? 6 : 12} sm={typeRightView ? 6 : 12}>
+          <ColScroll md={6} sm={6}>
             <BlockCarSConditionInfo
               head_balance_holder_base={state.head_balance_holder_base}
               head_operating_base={state.head_operating_base}
@@ -200,8 +200,8 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               page={props.page}
               path={props.path}
             />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={typeRightView ? 6 : 0} sm={typeRightView ? 6 : 0}>
+          </ColScroll>
+          <ColScroll md={6} sm={6}>
             <BlockInfoCard
               isHasPeriod={isHasPeriod}
               carsConditionCarsList={carsConditionCarsList}
@@ -215,7 +215,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               page={props.page}
               type={props.type}
             />
-          </EtsBootstrap.Col>
+          </ColScroll>
         </ContainerForm>
         <FooterForm md={12} sm={12}>
           <FooterEnd>
@@ -264,5 +264,4 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
     typePreloader: 'mainpage',
     withPagePath: true,
   }),
-  withSearch,
 )(ViewInspectCarsCondition);

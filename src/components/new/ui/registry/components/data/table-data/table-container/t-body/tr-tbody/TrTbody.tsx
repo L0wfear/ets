@@ -305,6 +305,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
         value={value}
         rowData={rowData}
         registryKey={registryKey}
+        selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
       />
     );
   }

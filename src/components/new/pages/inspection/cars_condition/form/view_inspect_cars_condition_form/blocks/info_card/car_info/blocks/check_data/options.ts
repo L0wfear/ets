@@ -7,7 +7,6 @@ export const factStatusOptions = [
 export const statusAtCheckOptions = [
   { value: 'on_line', label: 'На линии' },
   { value: 'maintenance', label: 'Проводится ТО' },
-  { value: 'temporary_storage', label: 'На временном хранении' },
   { value: 'storage', label: 'На хранении' },
   { value: 'transmitted', label: 'Передается' },
   { value: 'used_third_parties', label: 'В эксплуатации у третьих лиц' },

@@ -27,6 +27,13 @@ const InspectActFileForm: React.FC<PropsInspectActFileForm> = React.memo(
 
     const handleChangeFile = React.useCallback(
       (newFiles) => {
+        if (newFiles.action === 'delete') {
+          props.handleChange({
+            name: null,
+            base64: null,
+          });
+        }
+
         props.handleChange({
           name: get(newFiles, '0.name', ''),
           base64: get(newFiles, '0.base64', ''),

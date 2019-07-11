@@ -57,7 +57,6 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
           disabled={!isPermittedChangeListParams}
           onChange={props.handleChange}
           boundKeys="resolve_to"
-          makeGoodFormat
         />
         <CommissionMembers
           isPermittedChangeListParams={isPermittedChangeListParams}

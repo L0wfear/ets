@@ -5,15 +5,13 @@ import ViewCommissionEmployee from './ViewCommissionEmployee';
 import RowAddCommissionMembers from './RowAddCommissionMembers';
 import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type CommissionMembersProps = {
-  close_employee_assignment: InspectCarsCondition['close_employee_assignment'];
-  close_employee_assignment_date_start: InspectCarsCondition['close_employee_assignment_date_start'];
-  close_employee_fio: InspectCarsCondition['close_employee_fio'];
-  close_employee_position: InspectCarsCondition['close_employee_position'];
-
-  isPermittedToChange: boolean;
+  isPermittedChangeListParams: boolean;
   commission_members: InspectCarsCondition['commission_members'];
+  error: string;
+
   company_id: InspectCarsCondition['company_id'];
   handleChange: (
     ViewInspectCarsConditionProps['handleChange']
@@ -51,20 +49,21 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
     return (
       <React.Fragment>
         <h4>Подписанты:</h4>
+        {
+          Boolean(props.error) && (
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}><div className="error">{props.error}</div></EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          )
+        }
         <div>
           <h5>Проверяющие от Доринвеста:</h5>
           <div>
-            <ViewCommissionEmployee
-              fio={props.close_employee_fio}
-              assignment={props.close_employee_assignment}
-              assignment_date_start={props.close_employee_assignment_date_start}
-              position={props.close_employee_position}
-            />
             {
               props.commission_members.map((commissionEmployee, index) => (
                 <ViewCommissionEmployee
                   key={commissionEmployee.employee_id}
-                  canRemove={props.isPermittedToChange}
+                  canRemove={props.isPermittedChangeListParams}
                   index={index}
                   handleRemove={handleRemove}
 
@@ -76,7 +75,7 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
               ))
             }
             {
-              props.isPermittedToChange && (
+              props.isPermittedChangeListParams && (
                 <RowAddCommissionMembers
                   handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
                   commission_members={props.commission_members}

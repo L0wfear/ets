@@ -15,3 +15,10 @@ export const AgentsFromGbuDataContainerAddMember = styled(EtsBootstrap.Col)`
 
   margin: 5px 0;
 `;
+
+export const AgentsFromGbuWrapper = styled.div`
+  .error {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+`;

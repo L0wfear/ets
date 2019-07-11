@@ -76,6 +76,7 @@ export type InspectPgmBase = {
   volume_capacity_sum: number;
   was_resaved: boolean;
   files: any[];
+  action: string;
 } & DefaultPartInspect;
 
 export type IStateInspectPgmBase = {

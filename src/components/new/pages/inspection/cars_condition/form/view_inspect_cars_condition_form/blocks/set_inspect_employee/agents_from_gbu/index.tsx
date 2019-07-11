@@ -6,9 +6,10 @@ import RowAddRowAddAgentFromGbu from './RowAddAgentFromGbu';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
+import { AgentsFromGbuWrapper } from './styled';
 
 type AgentsFromGbuProps = {
-  isPermittedToChange: boolean;
+  isPermittedChangeListParams: boolean;
 
   agents_from_gbu: InspectCarsCondition['agents_from_gbu'];
   error: string;
@@ -44,11 +45,13 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
     );
 
     return (
-      <React.Fragment>
+      <AgentsFromGbuWrapper>
         <h5>Представители ГБУ:</h5>
         {
           Boolean(props.error) && (
-            <EtsBootstrap.Col md={12}><div className="error">{props.error}</div></EtsBootstrap.Col>
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}><div className="error">{props.error}</div></EtsBootstrap.Col>
+            </EtsBootstrap.Row>
           )
         }
         <div>
@@ -56,7 +59,7 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             props.agents_from_gbu.map((agent, index) => (
               <ViewAgentFromGbuEmployee
                 key={index + 1}
-                canRemove={props.isPermittedToChange}
+                canRemove={props.isPermittedChangeListParams}
                 index={index}
                 handleRemove={handleRemoveAgent}
                 company_short_name={props.company_short_name}
@@ -67,11 +70,11 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             ))
           }
           <RowAddRowAddAgentFromGbu
-            isPermitted={props.isPermittedToChange}
+            isPermitted={props.isPermittedChangeListParams}
             handleAddChangeRowAddAgentFromGbu={handleAddChangeRowAddAgentFromGbu}
           />
         </div>
-      </React.Fragment>
+      </AgentsFromGbuWrapper>
     );
   },
 );

@@ -1,28 +1,20 @@
 import * as React from 'react';
 import { FileField } from 'components/ui/input/fields';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
-import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 
-type BlockInspectAutobaseDataFilesProps = {
-  isPermittedChangeListParams: boolean;
-} & (
-  {
-    files: InspectAutobase['files'];
+type BlockDataFilesProps = {
+  isPermittedListPhotosOfSupportingDocuments: boolean;
+  isPermittedListPhotosDefect: boolean;
+  files: any[];
+  onChange: (obj: Partial<object>) => any;
+};
 
-    onChange: (obj: Partial<InspectAutobase>) => any;
-  } | {
-    files: InspectPgmBase['files'];
-
-    onChange: (obj: Partial<InspectPgmBase>) => any;
-  }
-);
-
-const BlockInspectAutobaseDataFiles: React.FC<BlockInspectAutobaseDataFilesProps> = React.memo(
+const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
   (props) => {
     const {
       files,
-      isPermittedChangeListParams,
+      isPermittedListPhotosOfSupportingDocuments,
+      isPermittedListPhotosDefect,
 
     } = props;
 
@@ -60,30 +52,30 @@ const BlockInspectAutobaseDataFiles: React.FC<BlockInspectAutobaseDataFilesProps
     return (
       <EtsBootstrap.Row>
         {
-          Boolean(isPermittedChangeListParams || valuePhotosOfSupportingDocuments.length) && (
-            <EtsBootstrap.Col md={6}>
+          Boolean(isPermittedListPhotosOfSupportingDocuments || valuePhotosOfSupportingDocuments.length) && (
+            <EtsBootstrap.Col md={12}>
               <FileField
                 id="file"
                 label="Фотографии подтверждающих документов"
                 multiple
                 value={valuePhotosOfSupportingDocuments}
                 onChange={onChangeDataFile}
-                disabled={!isPermittedChangeListParams}
+                disabled={!isPermittedListPhotosOfSupportingDocuments}
                 boundKeys="photos_of_supporting_documents"
               />
             </EtsBootstrap.Col>
           )
         }
         {
-          Boolean(isPermittedChangeListParams || valuePhotosDefect.length) && (
-            <EtsBootstrap.Col md={6}>
+          Boolean(isPermittedListPhotosDefect || valuePhotosDefect.length) && (
+            <EtsBootstrap.Col md={12}>
               <FileField
                 id="file"
                 label="Фотографии дефектов"
                 multiple
                 value={valuePhotosDefect}
                 onChange={onChangeDataFile}
-                disabled={!isPermittedChangeListParams}
+                disabled={!isPermittedListPhotosDefect}
                 boundKeys="photos_defect"
               />
             </EtsBootstrap.Col>
@@ -94,4 +86,4 @@ const BlockInspectAutobaseDataFiles: React.FC<BlockInspectAutobaseDataFilesProps
   },
 );
 
-export default BlockInspectAutobaseDataFiles;
+export default BlockDataFiles;

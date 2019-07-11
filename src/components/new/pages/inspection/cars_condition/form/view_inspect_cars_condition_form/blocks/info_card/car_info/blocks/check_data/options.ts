@@ -14,7 +14,9 @@ export const statusAtCheckOptions = [
   { value: 'used_third_parties', label: 'В эксплуатации у третьих лиц' },
   { value: 'off_driver_mechanic', label: 'Отсутствует водитель-механизатор' },
   { value: 'off_mission', label: 'Отсутствует задание' },
+  { value: 'not_used', label: 'Не используется' },
   { value: 'not_retooled', label: 'Не переоборудовано' },
+  { value: 'repair', label: 'Проводится ремонт' }, // new
   { value: 'write_off', label: 'Списание' },
   { value: 'not_passed_maintenance', label: 'Не пройден технический осмотр' },
   { value: 'off_osago', label: 'Отсутствует ОСАГО' },

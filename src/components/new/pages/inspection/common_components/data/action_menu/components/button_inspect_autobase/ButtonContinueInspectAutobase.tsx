@@ -5,7 +5,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
@@ -21,7 +21,7 @@ const ButtonContinueInspectAutobase: React.FC<ButtonContinueInspectAutobaseProps
       if (lastConductingInspect) {
         props.setParams({
           id: lastConductingInspect.id,
-          type: INSPECT_AUTOBASE_TYPE_FORM.list,
+          type: INSPECT_TYPE_FORM.list,
         });
       }
     },
@@ -30,7 +30,7 @@ const ButtonContinueInspectAutobase: React.FC<ButtonContinueInspectAutobaseProps
 
   return (
     <BigPaddingButton onClick={handleClickCreateInspectAutobase}>
-      Продолжить заполнение карточки
+      Продолжить проверку
     </BigPaddingButton>
   );
 };

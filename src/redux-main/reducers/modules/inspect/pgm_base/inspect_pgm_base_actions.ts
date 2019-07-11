@@ -16,10 +16,12 @@ import {
   promiseGetInspectPgmBaseById,
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import pgmStoreActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
-import { actionCloseInspect, actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
+import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { defaultInspectPgmBase } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/utils';
+import { get } from 'lodash';
 
 export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBase>): ThunkAction<IStateInspectPgmBase, ReduxState, {}, AnyAction> => (dispatch, getState) => {
   const stateInspectPgmBaseOld = getInspectPgmBase(getState());
@@ -195,39 +197,12 @@ export const actionCreateInspectPgmBase = (payloadOwn: Parameters<typeof promise
 };
 
 export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionPgmBase>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  if (inspectPgmBase.status === 'conducting') {
     const data = cloneDeep(inspectPgmBase.data);
 
-    const payload = {
-      head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
-      head_operating_base: inspectPgmBase.head_operating_base,
-    };
-
-    const inspectionPgmBase = await dispatch(
-      actionUpdateInspect(
-        inspectPgmBase.id,
-        data,
-        inspectPgmBase.files,
-        'pgm_base',
-        meta,
-        payload,
-      ),
-    );
-
-    dispatch(
-      actionPushDataInInspectPgmBaseList(
-        inspectionPgmBase,
-      ),
-    );
-
-    return inspectionPgmBase;
-  } else {
-    const data = cloneDeep(inspectPgmBase.data);
-    const {
-      agents_from_gbu,
-      commission_members,
-      resolve_to,
-    } = inspectPgmBase;
+    const agents_from_gbu = get(inspectPgmBase, 'agents_from_gbu', defaultInspectPgmBase.agents_from_gbu);
+    const commission_members = get(inspectPgmBase, 'commission_members', defaultInspectPgmBase.commission_members);
+    const resolve_to = get(inspectPgmBase, 'resolve_to', defaultInspectPgmBase.resolve_to);
+    const action = get(inspectPgmBase, 'action', defaultInspectPgmBase.action);
 
     const payload = {
       data,
@@ -236,6 +211,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
       resolve_to: createValidDateTime(resolve_to),
       head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
       head_operating_base: inspectPgmBase.head_operating_base,
+      action,
     };
 
     const inspectionPgmBase = await dispatch(
@@ -256,7 +232,6 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
     );
 
     return inspectionPgmBase;
-  }
 };
 
 const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
@@ -276,14 +251,17 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     resolve_to: createValidDateTime(resolve_to),
     head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
     head_operating_base: inspectPgmBase.head_operating_base,
+    action: 'close',
   };
 
   const result = await dispatch(
-    actionCloseInspect(
+    actionUpdateInspect(
       inspectPgmBase.id,
-      payload,
+      data,
+      inspectPgmBase.files,
       'pgm_base',
       meta,
+      payload,
     ),
   );
 

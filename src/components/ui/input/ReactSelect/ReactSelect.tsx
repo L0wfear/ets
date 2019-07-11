@@ -13,8 +13,9 @@ import {
 import { SingleValueProps } from 'react-select/lib/components/SingleValue';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
 import { isArray, isNullOrUndefined, isString, isObject } from 'util';
-import { SingleValue, MultiValue } from 'components/ui/input/ReactSelect/styled/styled';
+import { SingleValue, MultiValue, MenuList } from 'components/ui/input/ReactSelect/styled/styled';
 import { DivRelative } from 'global-styled/global-styled';
+import VirtualizedSelectList from '../VirtualizedSelectList/VirtualizedSelectList';
 
 require('components/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -59,6 +60,7 @@ export default class ReactSelect extends React.Component<any, any> {
         SingleValue: this.singleValueRender,
         MultiValue: this.multiValueRender,
         MultiValueContainer: this.multiValueContainerReander,
+        MenuList: this.menuListRender,
       },
     };
   }
@@ -94,6 +96,14 @@ export default class ReactSelect extends React.Component<any, any> {
       objectValue,
     );
   }
+
+  menuListRender = (props: any) => {
+    if (props.options.length > 500) {
+      return <VirtualizedSelectList {...props} />;
+    }
+    return <MenuList {...props} />;
+  }
+
   multiValueContainerReander = (props: any) => {
     if (this.props.multiValueContainerReander) {
       return this.props.multiValueContainerReander(props);

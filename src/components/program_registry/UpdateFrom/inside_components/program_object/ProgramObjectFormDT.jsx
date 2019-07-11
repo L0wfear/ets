@@ -110,13 +110,11 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           changesState.dtPolys = dtPolysOut;
           changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(
             ({
-              data: {
-                yard_id: value,
-                object_address: label,
-                total_area,
-                id,
-                name,
-              },
+              yard_id: value,
+              object_address: label,
+              total_area,
+              id,
+              name,
             }) => ({
               value,
               label,
@@ -144,7 +142,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetGetDt().then(({ data }) => {
+          this.props.actionGetGetDt().then(({ dtList: data }) => {
             const changesState = { manual };
             changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
 
@@ -152,14 +150,12 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               changesState.dtPolys,
             ).map(
               ({
-                data: {
-                  yard_id: value,
-                  object_address: label,
-                  total_area,
-                  id,
-                  name,
-                  company_name,
-                },
+                yard_id: value,
+                object_address: label,
+                total_area,
+                id,
+                name,
+                company_name,
               }) => ({
                 value,
                 label,
@@ -229,7 +225,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         object_list: [selectedShape],
       },
     } = this.props;
-    const { dtPolys: dtPolysOld } = this.props;
+    const { dtPolys: dtPolysOld } = this.state;
 
     const dtPolys = {
       [selectedShape.object_id]: {
@@ -287,9 +283,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
   handleFeatureClick = ({ id: object_id }) => {
     const { dtPolys } = this.state;
-    const {
-      data: { yard_id: asuods_id },
-    } = dtPolys[object_id];
+    const { yard_id: asuods_id } = dtPolys[object_id];
 
     this.handleChangeInfoObject('asuods_id', asuods_id);
   };
@@ -339,9 +333,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         info: info_old,
         elements: elements_old,
       },
-      dtPolys: dtPolysOld = {},
       objectPropertyList = [],
     } = this.props;
+
+    const { dtPolys: dtPolysOld = {} } = this.state;
 
     const { OBJECT_OPTIONS = [] } = this.state;
 
@@ -378,7 +373,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         const { original_name } = objectPropertyList.find(
           ({ object_property_id }) => object_property_id === d.id,
         );
-        newD.value = selectedObj.data[original_name];
+        newD.value = selectedObj[original_name];
         return newD;
       }),
       info: {
@@ -448,22 +443,17 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     const CONTRACTOR_OPTIONS = contractorList.map(
       ({ id: value, name: label }) => ({ value, label }),
     );
-    const buttonPercentProps = {
-      className: !id ? undefined : 'active',
-      disabled: !id,
-      onClick: this.showPercentForm,
-    };
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-program-object-dt"
         show={this.props.show}
         onHide={this.props.onHide}
-        bsSize="lg">
+        bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: 15 }}>
+        <ModalBody style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
@@ -514,7 +504,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                       <span>{`Площадь проезда, кв.м.: ${0}`}</span>
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                      <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Col>
                   <EtsBootstrap.Col md={4}>
@@ -603,7 +593,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={2} xsOffset={1}>
                   <EtsBootstrap.Col md={12}>
-                    <EtsBootstrap.Button {...buttonPercentProps}>
+                    <EtsBootstrap.Button
+                      className={!id ? undefined : 'active'}
+                      disabled={!id}
+                      onClick={this.showPercentForm}>
                       <div style={{ width: 200, textAlign: 'center' }}>%</div>
                     </EtsBootstrap.Button>
                   </EtsBootstrap.Col>
@@ -647,16 +640,15 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </div>
-        </Div>
-        <Div hidden={!showPercentForm}>
+        </ModalBody>
+        {showPercentForm && (
           <PercentModalList
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
             isPermittedByStatus={isPermittedByStatus}
           />
-        </Div>
-        <ModalBody />
+        )}
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}
@@ -678,7 +670,7 @@ export default compose(
     (dispatch) => ({
       actionGetGetDt: () =>
         dispatch(
-          geoobjectActions.actionGetGetDt(null, {
+          geoobjectActions.actionGetAndSetInStoreDt(null, {
             page: null,
             path: null,
           }),

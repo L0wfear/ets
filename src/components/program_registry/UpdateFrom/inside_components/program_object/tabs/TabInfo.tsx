@@ -150,7 +150,7 @@ class PlanTab extends React.Component<any, any> {
         const { measure_unit_name = null, original_name = null } = this.props.objectPropertyList.find(({ id }) => id === valueNew) || {};
 
         newLine.measure_unit_name = measure_unit_name;
-        newLine.value = this.props.selectedObj.data[original_name];
+        newLine.value = this.props.selectedObj[original_name];
         newLine.object_property_id = valueNew;
 
         return { ...newLine };
@@ -299,12 +299,13 @@ class PlanTab extends React.Component<any, any> {
             errors={errors}
           />
         </EtsBootstrap.Col>
+        <br />
         <EtsBootstrap.Col md={12}>
           <ExtField
             type="text"
             value={note}
             label={'Примечание'}
-            error={errors.name}
+            error={errors.note}
             onChange={this.props.handleChange}
             boundKeys="note"
             disabled={!isPermitted}

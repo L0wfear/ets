@@ -3,7 +3,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
 import ModalBody from 'components/ui/Modal';
-import Div from 'components/ui/Div';
+// import Div from 'components/ui/Div';
 import { ExtField } from 'components/ui/new/field/ExtField';
 
 import { connectToStores } from 'utils/decorators';
@@ -93,7 +93,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: 15 }}>
+        <ModalBody style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
               <ExtField
@@ -160,8 +160,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-        </Div>
-        <ModalBody />
+        </ModalBody>
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}

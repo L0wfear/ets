@@ -361,7 +361,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             try {
               result = await this.props.dispatch(createAction(...payload, { page, path }));
               if (!config.noMessage) {
-                global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+                global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
               }
             } catch (error) {
               this.setState({
@@ -403,7 +403,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
             try {
               result = await this.props.dispatch(updateAction(...payload, { page, path }));
               if (!config.noMessage) {
-                global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
+                global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
               }
             } catch (error) {
               this.setState({

@@ -5,6 +5,7 @@ import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h
 import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useInspectAuditorsOptions from 'components/new/utils/hooks/services/useOptions/useInspectAuditorsOptions';
+import { RowAddCommissionMembersWrapper } from './styled';
 
 type RowAddCommissionMembersProps = {
   handleAddChangeCommissionMembers: (commission_members: ValuesOf<InspectCarsCondition['commission_members']>) => any;
@@ -45,7 +46,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
     );
 
     return (
-      <EtsBootstrap.Row>
+      <RowAddCommissionMembersWrapper>
         <EtsBootstrap.Col md={6}>
           <ExtField
             type="select"
@@ -67,7 +68,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
             <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
           </EtsBootstrap.Button>
         </EtsBootstrap.Col>
-      </EtsBootstrap.Row>
+      </RowAddCommissionMembersWrapper>
     );
   },
 );

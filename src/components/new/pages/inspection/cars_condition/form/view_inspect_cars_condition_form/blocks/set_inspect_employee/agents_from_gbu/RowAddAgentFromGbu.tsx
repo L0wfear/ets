@@ -3,7 +3,7 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { DivNone, FooterEnd } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { AgentsFromGbuDataContainerAddMember } from './styled';
+import { AgentsFromGbuDataContainerAddMember, RowAddRowAddAgentFromGbuWrapper } from './styled';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
@@ -55,6 +55,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
     );
 
     return (
+      <RowAddRowAddAgentFromGbuWrapper>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
             {
@@ -115,6 +116,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
           }
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+      </RowAddRowAddAgentFromGbuWrapper>
     );
   },
 );

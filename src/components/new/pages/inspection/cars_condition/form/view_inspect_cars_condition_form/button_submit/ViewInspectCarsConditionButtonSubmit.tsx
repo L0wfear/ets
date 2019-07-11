@@ -26,6 +26,8 @@ type ViewInspectCarsConditionButtonSubmitOwnProps = {
   loadingPage: string;
 
   isPermittedToUpdateClose: boolean;
+  id: number;
+  registryPage: string;
 };
 
 type ViewInspectCarsConditionButtonSubmitProps = (
@@ -98,6 +100,9 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
       handleGetAct={handleGetCarsConditionAct}
       type={props.type}
       canSave={props.canSave}
+
+      id={props.id}
+      registryPage={props.registryPage}
     />
   );
 };

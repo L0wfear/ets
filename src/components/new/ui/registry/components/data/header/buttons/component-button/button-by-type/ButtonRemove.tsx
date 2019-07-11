@@ -22,6 +22,8 @@ type ButtonRemoveDispatchProps = {
 };
 type ButtonRemoveOwnProps = {
   registryKey: string;
+
+  format?: 'yesno' | 'default';
 };
 type ButtonRemoveMergeProps = {};
 
@@ -81,6 +83,9 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         handleSubmit={handleClickRemoveSelectedRows}
 
         message={`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
+
+        titleOk={props.format === 'yesno' ? 'Да' : null}
+        titleCancel={props.format === 'yesno' ? 'Нет' : null}
       />
     </>
   );

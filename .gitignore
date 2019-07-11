@@ -16,4 +16,3 @@ stats.json
 package-lock.json
 yarn.lock
 coverage
-.vscode

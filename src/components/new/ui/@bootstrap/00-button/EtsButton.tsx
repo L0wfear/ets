@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
+import { GlyphiconStyled } from '../01-glyphicon/EtsGlyphicon';
 
 export type EtsButtonProps = {
   bsClass?: string;
@@ -53,6 +54,15 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
     box-shadow: ${({ theme, themeName }) => theme.button[themeName || 'default'].boxShadow.default};
 
     cursor: ${({ disabled }) => !disabled ? 'pointer' : 'not-allowed'};
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 33px;
+
+    ${GlyphiconStyled} {
+      margin: 0 5px;
+    }
 
     background-color: ${({ theme, disabled, active, themeName }) => (
       !disabled

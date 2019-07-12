@@ -16,7 +16,7 @@ export type EtsDropdownProps = {
   className?: string;
 };
 
-const EtsDropdownContainer = styled.div`
+export const EtsDropdownContainer = styled.div`
   position: relative;
 `;
 

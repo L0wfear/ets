@@ -83,14 +83,14 @@ export const BorderDash = styled.div<{
 export const BtnPart = styled.div`
 `;
 
-export const BtnGroupWrapper = styled.div<{
-  fullWidth?: boolean;
-  vertical?: boolean;
-}>`
+export const BtnGroupWrapper = styled.div<{fullWidth?: boolean; vertical?: boolean; }>`
   display: flex;
   align-items: center;
   ${BtnPart} button{
     border-radius: 0px!important;
+    &:hover {
+      background: #3f3f3f!important;
+    }
   }
   ${BtnPart}:first-child button{
     border-radius: ${borderRadiusButton} 0px 0px ${borderRadiusButton}!important;
@@ -105,7 +105,7 @@ export const BtnGroupWrapper = styled.div<{
       return `
         width: 100%;
         ${BtnPart}{
-          flex: 1 1 auto;
+          flex: 1 1;
           button{
             width: 100%;
           }

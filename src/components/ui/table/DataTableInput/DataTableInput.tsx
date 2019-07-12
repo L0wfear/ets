@@ -55,7 +55,6 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
             <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
           </EtsButtonsContainer>
         </EtsHeaderContainer>
-
         <DataTable
           title=""
           results={this.props.inputList}

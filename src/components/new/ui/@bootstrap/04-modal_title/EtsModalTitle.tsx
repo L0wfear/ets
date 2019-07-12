@@ -3,6 +3,8 @@ import styled from 'styled-components';
 
 export const ModalTitleStyled = styled.h4`
   margin: 0;
+  display: inline-flex;
+  align-items: center;
 `;
 
 export type EtsModalTitleProps = {

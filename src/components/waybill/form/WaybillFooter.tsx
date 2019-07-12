@@ -6,10 +6,10 @@ import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedu
 import DivForEnhance from 'components/ui/Div';
 import {
   BtnGroupWrapper,
-  DisplayFlexAlignCenterFooterForm,
   BtnPart,
 } from 'global-styled/global-styled';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const Div = withRequirePermissionsNew({})(DivForEnhance);
 
@@ -61,8 +61,8 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
     );
 
     return (
-      <DisplayFlexAlignCenterFooterForm>
-        <Div className={'inline-block'} style={{ marginRight: 5 }} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
+      <EtsButtonsContainer>
+        <Div className={'inline-block'} hidden={!(props.isCreating || props.isDraft) || !props.isPermittedByKey.update}>
           <EtsBootstrap.OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
             <EtsBootstrap.Button id="waybill-refresh" onClick={props.refresh} disabled={isEmpty(props.state.car_id)}><EtsBootstrap.Glyphicon glyph="refresh" /></EtsBootstrap.Button>
           </EtsBootstrap.OverlayTrigger>
@@ -115,7 +115,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
         <Div permissions={waybillPermissions.update} className={'inline-block'} style={{ marginLeft: 4 }} hidden={props.state.status === 'closed' || !(props.formState.status && props.formState.status === 'active')}>
           <EtsBootstrap.Button id="close-waybill" onClick={() => props.handleClose(props.taxesControl)} disabled={!props.canClose}>Закрыть ПЛ</EtsBootstrap.Button>
         </Div>
-      </DisplayFlexAlignCenterFooterForm>
+      </EtsButtonsContainer>
     );
   }
 }

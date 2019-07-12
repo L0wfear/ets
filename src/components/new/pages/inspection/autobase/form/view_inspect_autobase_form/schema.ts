@@ -105,6 +105,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     cnt_repair_posts: {
       title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
+      minNotEqual: 0,
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
           if (type === INSPECT_TYPE_FORM.list) {
@@ -119,6 +120,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     },
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
+      min: 0,
       type: 'number',
     },
     lack_of_storage_facilities: {

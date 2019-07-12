@@ -194,7 +194,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
     payload.callback = this.context.flux.getActions('repair').programVersionPut;
     payload.outFormState = { ...this.state.formState };
 
-    this.props.defSendFromState(payload).then(() => {
+    this.props.defSendFromState(payload).then(async () => {
       if (close) {
         return this.props.handleHide();
       }

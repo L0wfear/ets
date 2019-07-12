@@ -54,6 +54,7 @@ type ExtFieldString<V = any> = ExtFieldCommon<V> & {
   readOnly?: boolean;
   inline?: boolean;
 
+  maxlength?: number;
   placeholder?: string;
 };
 

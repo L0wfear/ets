@@ -187,6 +187,9 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
   dispatch(
     actionSetLoadingStatus(registryKey, true),
   );
+  dispatch(
+    actionUnselectSelectedRowToShow(registryKey, true),
+  );
 
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
@@ -728,7 +731,7 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   let checkArray = processedArray;
 
   if (!getRegistryData || !userServerFilters) {
-    checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
+    checkArray = processedArray.slice(offset * MAX_ITEMS_PER_PAGE, (offset + 1) * MAX_ITEMS_PER_PAGE);
   }
 
   if (Object.keys(checkedRowsCurrent).length === checkArray.length) {

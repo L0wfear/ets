@@ -25,6 +25,7 @@ import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -128,15 +129,13 @@ class ProgramObjectFormodh extends UNSAFE_Form {
 
             changesState.OBJECT_OPTIONS = Object.values(
               changesState.odhPolys,
-            ).map(
-              ({ data: { id: value, name: label, total_area, id, name } }) => ({
-                value,
-                label,
-                total_area,
-                id,
-                name,
-              }),
-            );
+            ).map(({ id: value, name: label, total_area, id, name }) => ({
+              value,
+              label,
+              total_area,
+              id,
+              name,
+            }));
 
             this.setState({ ...changesState });
           });
@@ -370,15 +369,16 @@ class ProgramObjectFormodh extends UNSAFE_Form {
       id,
       name,
       asuods_id,
-      info: { total_area = null },
       objectsType,
       object_list: objectList,
       draw_object_list: drawObjectList,
     } = state;
 
+    const total_area = get(state, 'info.total_area', null);
+
     const title = IS_CREATING
-      ? 'Создание карточки ДТ капитального ремонта.'
-      : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
+      ? 'Создание карточки ОДХ капитального ремонта.'
+      : `Карточка ОДХ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
     const CONTRACTOR_OPTIONS = contractorList.map(
       ({ id: value, name: label }) => ({ value, label }),
@@ -393,16 +393,17 @@ class ProgramObjectFormodh extends UNSAFE_Form {
       <EtsBootstrap.ModalContainer
         id="modal-program-object-odh"
         show={this.props.show}
-        onHide={this.props.onHide}>
+        onHide={this.props.onHide}
+        bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: 15 }}>
+        <ModalBody style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
-                label="Наименование ДТ"
+                label="Наименование ОДХ"
                 error={errors.asuods_id}
                 options={OBJECT_OPTIONS}
                 value={state.asuods_id}
@@ -560,15 +561,14 @@ class ProgramObjectFormodh extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </div>
-        </Div>
-        <Div hidden={!showPercentForm}>
+        </ModalBody>
+        {showPercentForm && (
           <PercentModalList
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
           />
-        </Div>
-        <ModalBody />
+        )}
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}

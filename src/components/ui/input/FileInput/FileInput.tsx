@@ -65,7 +65,21 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
   fileInputNode: HTMLInputElement;
 
   handleFileRemove = (index) => {
-    const newFileList = this.props.value.filter((file, i) => i !== index);
+    const newFileList = this.props.value.reduce(
+      (newFiles, file, i) => {
+        if (i === index) {
+          if (file.action !== 'add') {
+            file.action = 'delete';
+            newFiles.push(file);
+          }
+        } else {
+          newFiles.push(file);
+        }
+
+        return newFiles;
+      },
+      [],
+    );
     this.props.onChange(newFileList);
   }
   handleFilePick = () => {
@@ -88,10 +102,12 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
     const serverErrorFile: IFileWrapper = {
       url: 'https://s1-ssl.dmcdn.net/Sp5Gv/1280x720-l9x.jpg',
       name: 'Ошибка на сервере. Невалидный файл.',
+      action: 'add',
     };
 
     const withDateTime = get(this.props, 'withDateTime', false); // флаг для отображения даты и времени
     const fileList = value
+      .filter((file) => file.action !== 'delete')
       .map((file) => file === null ? serverErrorFile : file)
       .map(({ name = 'Без названия', url, base64, created_at } = serverErrorFile, i) =>
         <FileListItem
@@ -107,6 +123,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
         />,
       );
 
+    const disabledIfSingleFile = fileList.length && !multiple;
     const ID = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-list` : undefined;
 
     return (
@@ -116,7 +133,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
             !this.props.disabled
               ? (
                 <EtsBootstrap.Button
-                  disabled={this.props.disabled || Boolean(!multiple && value.length)}
+                  disabled={this.props.disabled || Boolean(!multiple && value.length) || disabledIfSingleFile}
                   onClick={this.handleFilePick}
                   id={button_id}
                   children={buttonName}

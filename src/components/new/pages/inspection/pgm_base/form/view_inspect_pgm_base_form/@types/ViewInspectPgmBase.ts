@@ -1,5 +1,5 @@
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -9,7 +9,7 @@ export type ViewInspectPgmBaseStateProps = {};
 export type ViewInspectPgmBaseDispatchProps = {};
 export type ViewInspectPgmBaseOwnProps = {
   element: InspectPgmBase;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: OnFormHideType;
   handleCloseWithoutChanges: any;
 

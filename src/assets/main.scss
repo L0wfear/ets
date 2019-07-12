@@ -121,7 +121,7 @@ html, body {
 
 .chart-select_raw {
   position: relative;
-  transform: translate3d(20px, -90px, 0);
+  transform: translate3d(270px, -168px, 0);
   font-weight: 200;
   cursor: pointer;
   >span {
@@ -1039,10 +1039,8 @@ body.application {
 }
 
 .reports-date {
-  max-width: 48%;
-  & + .reports-date {
-    margin-left: 10px;
-  }
+  // max-width: 48%;
+  max-width: 192px;
 }
 
 .griddle:focus {

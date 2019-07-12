@@ -130,15 +130,6 @@ export default class RepairActions extends Actions {
     return ans;
   }
 
-  removeProgramRegistry(id) {
-    const { programVersion } = REPAIR;
-    return Repair.path(`${programVersion}/${id}`).delete(
-      {},
-      this.getRepairListByType.bind(null, 'programRegistry'),
-      'json',
-    );
-  }
-
   programVersionPut(formState) {
     const { programVersion } = REPAIR;
     const payload = {
@@ -156,11 +147,7 @@ export default class RepairActions extends Actions {
     });
 
     const path = parsePutPath(programVersion, 'put', payload);
-    return Repair.path(path).put(
-      payload,
-      this.getRepairListByType.bind(null, 'programRegistry'),
-      'json',
-    );
+    return Repair.path(path).put(payload, false, 'json');
   }
 
   programVersionPutOnlyFiles(formState) {
@@ -170,11 +157,7 @@ export default class RepairActions extends Actions {
     };
 
     const path = parsePutPath(programVersion, 'put', formState);
-    return Repair.path(path).patch(
-      payload,
-      this.getRepairListByType.bind(null, 'programRegistry'),
-      'json',
-    );
+    return Repair.path(path).patch(payload, false, 'json');
   }
 
   programVersionCreateVersion(formState) {
@@ -194,11 +177,7 @@ export default class RepairActions extends Actions {
     const { programVersion } = REPAIR;
 
     const path = parsePutPath(programVersion, 'post', formState);
-    return Repair.path(path).post(
-      payload,
-      this.getRepairListByType.bind(null, 'programRegistry'),
-      'json',
-    );
+    return Repair.path(path).post(payload, false, 'json');
   }
 
   programVersionSendToReview(formState) {
@@ -237,7 +216,7 @@ export default class RepairActions extends Actions {
     const path = parsePutPath(programVersion, 'put', formState);
     return Repair.path(`${path}/${type}`).put(
       withForm ? payload : {},
-      this.getRepairListByType.bind(null, 'programRegistry'),
+      false,
       'json',
     );
   }

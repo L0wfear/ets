@@ -24,7 +24,6 @@ class FieldNormIdDutyMission extends React.PureComponent<
 > {
   componentDidUpdate(prevProps: PropsFieldNormIdDutyMission) {
     const {
-      DUTY_MISSION_IS_ORDER_SOURCE,
       disabled,
       datetime,
       technical_operation_id,
@@ -33,7 +32,6 @@ class FieldNormIdDutyMission extends React.PureComponent<
     } = this.props;
 
     const triggerOnUpdate =
-      !DUTY_MISSION_IS_ORDER_SOURCE &&
       !disabled &&
       (datetime !== prevProps.datetime ||
         technical_operation_id !== prevProps.technical_operation_id ||

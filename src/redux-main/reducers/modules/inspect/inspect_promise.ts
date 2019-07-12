@@ -1,12 +1,11 @@
-import { InspectRegistryService, InspectionService, InspectionActService } from 'api/Services';
+import { InspectRegistryService, InspectionActService } from 'api/Services';
 import {
   get,
   keyBy,
 } from 'lodash';
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
-import { InspectPgmBase } from './pgm_base/@types/inspect_pgm_base';
-import { InspectCarsCondition } from './cars_condition/@types/inspect_cars_condition';
+import { createValidDateTime } from 'utils/dates';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -60,40 +59,18 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
 };
 
 export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect, payload: any) => {
+
+  const newPayload = {
+    ...payload,
+    resolve_to: createValidDateTime(payload.resolve_to),
+  };
+
   const response = await InspectRegistryService.path(id).put(
     {
       data,
       files,
       type,
-      ...payload,
-    },
-    false,
-    'json',
-  );
-
-  const inspectAutobase = get(response, 'result.rows.0', null);
-
-  return inspectAutobase;
-};
-
-export const promiseCloseInspection = async (
-    id: number,
-    payload: {
-      data: InspectAutobase['data'] | InspectPgmBase['data'] | InspectCarsCondition['data'];
-      agents_from_gbu: any[];
-      commission_members: any[];
-      resolve_to: string;
-    },
-    type: TypeOfInspect,
-  ) => {
-
-  const responsePayload = {
-    type,
-    ...payload,
-  };
-  const response = await InspectionService.path(id).path('close').put(
-    {
-      ...responsePayload,
+      ...newPayload,
     },
     false,
     'json',

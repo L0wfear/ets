@@ -28,4 +28,6 @@ export interface IFileWrapper {
   url?: string;
   base64?: string;
   created_at?: string;
+
+  action?: 'add' | 'delete'; // delete для удаления на бэке, такой файл не отображается
 }

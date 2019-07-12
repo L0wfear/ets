@@ -4,7 +4,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBody from 'components/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import Div from 'components/ui/Div';
 import Field from 'components/ui/Field';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { FileField } from 'components/ui/input/fields';
@@ -24,14 +23,16 @@ import { DivNone } from 'global-styled/global-styled';
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
   <EtsBootstrap.Row>
-    <EtsBootstrap.Col md={12} style={styleTextMakeVersion}>
-      После создания новой версии программы ремонта, текущая версия станет
-      недействующей и недоступной для ввода данных.
-    </EtsBootstrap.Col>
-    <EtsBootstrap.Col md={12} style={styleTextMakeVersion}>
-      Если Вы уверены, что хотите продолжить, то необходимо приложить скан-копию
-      документа, на основании которого создается новая версия.
-    </EtsBootstrap.Col>
+    <EtsBootstrap.Row>
+      <EtsBootstrap.Col md={12} style={styleTextMakeVersion}>
+        После создания новой версии программы ремонта, текущая версия станет
+        недействующей и недоступной для ввода данных.
+      </EtsBootstrap.Col>
+      <EtsBootstrap.Col md={12} style={styleTextMakeVersion}>
+        Если Вы уверены, что хотите продолжить, то необходимо приложить
+        скан-копию документа, на основании которого создается новая версия.
+      </EtsBootstrap.Col>
+    </EtsBootstrap.Row>
   </EtsBootstrap.Row>
 );
 
@@ -172,11 +173,12 @@ class ProgramRegistryForm extends UNSAFE_Form {
           id="modal-program-registry-u"
           show={this.props.show && !makeVersionIsVisible}
           onHide={this.props.onHide}
-          bsSize="lg">
+          bsSize="large">
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
-          <Div style={{ padding: '0px 15px' }}>
+          {/* <<< Добавить page, path */}
+          <ModalBody style={{ padding: '0px 15px' }}>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={5} xsOffset={7}>
                 <Field
@@ -395,8 +397,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
                 <DivNone />
               )}
             </EtsBootstrap.Row>
-          </Div>
-          <ModalBody />
+          </ModalBody>
           <EtsBootstrap.ModalFooter>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>

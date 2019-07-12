@@ -38,6 +38,7 @@ import ButtonCreateCompanyStructure from './button-by-type/company_structure/But
 import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumnsControl';
 import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
+import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 
 type PropsComponentButton = {
   type: string;
@@ -81,6 +82,7 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.company_structure_create: return ButtonCreateCompanyStructure;
     case buttonsTypes.columns_control: return ButtonColumnsControl;
     case buttonsTypes.waybill_print: return ButtonWaybillExport;
+    case buttonsTypes.inspect_show_acts: return ButtonInspectShowActs;
 
     default: return null;
   }

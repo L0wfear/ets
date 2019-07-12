@@ -40,7 +40,7 @@ const registryDefaultObj: OneRegistryData = {
       delete: false,
     },
     meta: {
-      row_double_click: false,
+      row_double_click: true,
       fields: [],
       fieldsInDeepArr: [],
       rowFields: [],

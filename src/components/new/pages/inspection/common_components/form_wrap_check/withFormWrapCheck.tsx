@@ -12,7 +12,7 @@ import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'componen
 import { isBoolean } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../autobase/global_constants';
+import { INSPECT_TYPE_FORM } from '../../autobase/global_constants';
 import { isInspectIsConducting } from 'redux-main/reducers/modules/inspect/inspect_utils';
 
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
@@ -20,7 +20,6 @@ import { HiddenPageEtsContainer, PopupBottomForm, TitleForm } from './styled';
 
 import { createPortal } from 'react-dom';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { INSPECT_PGM_BASE_TYPE_FORM } from '../../pgm_base/global_constants';
 
 type WithInspectFormWrapCheckConfig = {
   loadingPage: string;
@@ -60,7 +59,7 @@ type InspectionFormWrapProps = (
 export type withInspectFormWrapCheckOuterProps = {
   selectedInspect: any;
   element: any;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: any;
   isPermitted: boolean;
 
@@ -154,12 +153,11 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
         const tirregOnWrongType = (
           !inspectType
           || (
-            inspectType !== INSPECT_AUTOBASE_TYPE_FORM.list
-            && inspectType !== INSPECT_AUTOBASE_TYPE_FORM.close
-            && inspectType !== INSPECT_AUTOBASE_TYPE_FORM.closed
+            inspectType !== INSPECT_TYPE_FORM.list
+            && inspectType !== INSPECT_TYPE_FORM.closed
           )
           || (
-            inspectType === INSPECT_AUTOBASE_TYPE_FORM.closed
+            inspectType === INSPECT_TYPE_FORM.closed
             && isInspectIsConducting(selectedInspect.status)
           )
         );
@@ -167,17 +165,17 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
         if (tirregOnWrongType) {
           props.setParams(
             {
-              type: INSPECT_AUTOBASE_TYPE_FORM.list,
+              type: INSPECT_TYPE_FORM.list,
             },
             'replace',
           );
         }
 
-        if (inspectType === INSPECT_AUTOBASE_TYPE_FORM.list || inspectType === INSPECT_AUTOBASE_TYPE_FORM.close) {
+        if (inspectType === INSPECT_TYPE_FORM.list) {
           if (!isInspectIsConducting(selectedInspect.status)) {
             props.setParams(
               {
-                type: INSPECT_AUTOBASE_TYPE_FORM.closed,
+                type: INSPECT_TYPE_FORM.closed,
               },
               'replace',
             );
@@ -188,7 +186,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
 
     const handleCloseWithoutChanges = React.useCallback(
       async () => {
-        if (inspectType !== INSPECT_PGM_BASE_TYPE_FORM.closed) {
+        if (inspectType !== INSPECT_TYPE_FORM.closed) {
           try {
             await global.confirmDialog({
               title: 'Покинуть страницу?',
@@ -203,7 +201,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
         }
 
         handleCloseForm(
-          inspectType !== INSPECT_AUTOBASE_TYPE_FORM.closed,
+          inspectType !== INSPECT_TYPE_FORM.closed,
         );
       },
       [inspectType, handleCloseForm],
@@ -228,7 +226,7 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
                     type={inspectType}
                     handleHide={handleCloseForm}
                     handleCloseWithoutChanges={handleCloseWithoutChanges}
-                    isPermitted={inspectType === INSPECT_AUTOBASE_TYPE_FORM.closed ? props.isPermittedToUpdateClose : props.isPermitted}
+                    isPermitted={inspectType === INSPECT_TYPE_FORM.closed ? props.isPermittedToUpdateClose : props.isPermitted}
                     isPermittedToUpdateClose={props.isPermittedToUpdateClose}
 
                     page={props.loadingPage}

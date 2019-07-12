@@ -2,7 +2,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../global_constants';
+import { INSPECT_TYPE_FORM } from '../../global_constants';
 
 const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWithForm> = {
   properties: {
@@ -44,7 +44,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       type: 'string',
       dependencies: [
         (value, { is_not_protected }, { type }) => {
-          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+          if (type === INSPECT_TYPE_FORM.list) {
             if (!is_not_protected && !value) {
               return 'Поле "Охрану осуществляет" должно быть заполнено';
             }
@@ -84,7 +84,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       type: 'number',
       dependencies: [
         (value, { lack_of_lighting }, { type }) => {
-          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+          if (type === INSPECT_TYPE_FORM.list) {
             if (!lack_of_lighting && !value && value !== 0) {
               return 'Поле "Количество неисправных мачт освещения (шт.)" должно быть заполнено';
             }
@@ -107,7 +107,7 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       type: 'number',
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
-          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
+          if (type === INSPECT_TYPE_FORM.list) {
             if (!lack_repair_areas && !value && value !== 0) {
               return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
             }
@@ -120,17 +120,6 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
       type: 'number',
-      dependencies: [
-        (value, { lack_repair_areas }, { type }) => {
-          if (type === INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!lack_repair_areas && !value && value !== 0) {
-              return 'Поле "Количество постов для обслуживания, ремонта техники" должно быть заполнено';
-            }
-          }
-
-          return '';
-        },
-      ],
     },
     lack_of_storage_facilities: {
       title: 'Отсутствие складских помещений на базе',
@@ -185,19 +174,32 @@ export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspect
       type: 'schema',
       schema: dataSchema,
     },
+    commission_members: {
+      type: 'multiValueOfArray',
+      title: 'Проверяющие от Доринвеста',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного проверяющего от Доринвеста`;
+          }
+        },
+      ],
+    },
     agents_from_gbu: {
       type: 'multiValueOfArray',
       title: 'Представители ГБУ',
       dependencies: [
         (agents_from_gbu, _, props) => {
-          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!agents_from_gbu.length) {
-              return `* для ${
-                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-                  ? 'завершения'
-                  : 'изменения'
-              } проверки необходимо добавить хотя бы одного представителя ГБУ`;
-            }
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного представителя ГБУ`;
           }
         },
       ],

@@ -31,7 +31,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
       }
       props.onChange(props.date_start_id, value);
     },
-    [props.date_start_id, props.date_start_time],
+    [props.date_start_id, props.date_start_time, props.onChange],
   );
   const onChangeDateEnd = React.useCallback(
     (valueRaw) => {
@@ -43,7 +43,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
       props.onChange(props.date_end_id, value);
 
     },
-    [props.date_end_id, props.date_end_time],
+    [props.date_end_id, props.date_end_time, props.onChange],
   );
 
   const labelDatePickerStart = props.label ? props.label : false;

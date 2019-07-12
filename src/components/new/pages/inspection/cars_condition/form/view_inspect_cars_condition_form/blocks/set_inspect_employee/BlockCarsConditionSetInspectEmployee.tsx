@@ -1,28 +1,30 @@
 import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { ViewInspectCarsConditionProps } from '../../@types/ViewInspectCarsContidion';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
-import { BlockEmployeeContainer } from './styled';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import CommissionMembers from './commission_members';
 import AgentsFromGbu from './agents_from_gbu';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
+import BlockInspectAutobaseDataFiles from './block_data_files/BlockInspectAutobaseDataFiles';
 
 type BlockCarsConditionSetInspectEmployeeProps = {
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
-  isPermittedChangeCloseParams: boolean;
+  type: keyof typeof INSPECT_TYPE_FORM;
+  isPermittedChangeListParams: boolean;
+  isPermittedListPhotosOfSupportingDocuments: boolean;
+  isPermittedListPhotosDefect: boolean;
 
-  close_employee_assignment: InspectCarsCondition['close_employee_assignment'];
-  close_employee_assignment_date_start: InspectCarsCondition['close_employee_assignment_date_start'];
-  close_employee_fio: InspectCarsCondition['close_employee_fio'];
-  close_employee_position: InspectCarsCondition['close_employee_position'];
   commission_members: InspectCarsCondition['commission_members'];
   company_id: InspectCarsCondition['company_id'];
 
   agents_from_gbu: InspectCarsCondition['agents_from_gbu'];
   error_agents_from_gbu: string;
+  error_commission_members: string;
   company_short_name: InspectCarsCondition['company_short_name'];
+
+  files: InspectCarsCondition['files'];
 
   handleChange: ViewInspectCarsConditionProps['handleChange'] | ViewInspectAutobaseProps['handleChange'] | ViewInspectPgmBaseProps['handleChange'];
 
@@ -35,29 +37,33 @@ type BlockCarsConditionSetInspectEmployeeProps = {
 
 const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspectEmployeeProps> = React.memo(
   (props) => {
-    const { isPermittedChangeCloseParams } = props;
+    const { isPermittedChangeListParams } = props;
 
-    return props.type !== INSPECT_AUTOBASE_TYPE_FORM.list && (
-      <BlockEmployeeContainer>
+    return (
+      <BoxContainer>
+        <BlockInspectAutobaseDataFiles
+          files={props.files}
+
+          isPermittedListPhotosOfSupportingDocuments={props.isPermittedListPhotosOfSupportingDocuments}
+          isPermittedListPhotosDefect={props.isPermittedListPhotosDefect}
+          onChange={props.handleChange}
+        />
         <ExtField
           type="date"
           label="Срок, до которого необходимо представить отчет об устранении выявленных недостатков"
           value={props.resolve_to}
           time={false}
           error={props.error_resolve_to}
-          disabled={!isPermittedChangeCloseParams}
+          disabled={!isPermittedChangeListParams}
           onChange={props.handleChange}
           boundKeys="resolve_to"
-          makeGoodFormat
         />
         <CommissionMembers
-          close_employee_fio={props.close_employee_fio}
-          close_employee_position={props.close_employee_position}
-          close_employee_assignment={props.close_employee_assignment}
-          close_employee_assignment_date_start={props.close_employee_assignment_date_start}
-          isPermittedToChange={isPermittedChangeCloseParams}
+          isPermittedChangeListParams={isPermittedChangeListParams}
 
           commission_members={props.commission_members}
+          error={props.error_commission_members}
+
           company_id={props.company_id}
           handleChange={props.handleChange}
           page={props.page}
@@ -65,13 +71,13 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
         />
         <br />
         <AgentsFromGbu
-          isPermittedToChange={isPermittedChangeCloseParams}
+          isPermittedChangeListParams={isPermittedChangeListParams}
           agents_from_gbu={props.agents_from_gbu}
           error={props.error_agents_from_gbu}
           company_short_name={props.company_short_name}
           handleChange={props.handleChange}
         />
-      </BlockEmployeeContainer>
+      </BoxContainer>
     );
   },
 );

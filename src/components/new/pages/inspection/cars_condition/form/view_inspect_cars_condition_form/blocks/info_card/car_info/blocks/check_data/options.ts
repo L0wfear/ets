@@ -8,7 +8,6 @@ export const statusAtCheckOptions = [
   { value: 'on_line', label: 'На линии' },
   { value: 'maintenance', label: 'Проводится ТО' },
 
-  { value: 'not_used', label: 'Не используется' },
   { value: 'storage', label: 'На хранении' },
   { value: 'transmitted', label: 'Передается' },
   { value: 'used_third_parties', label: 'В эксплуатации у третьих лиц' },

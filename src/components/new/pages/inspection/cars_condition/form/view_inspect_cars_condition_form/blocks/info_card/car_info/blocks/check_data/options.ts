@@ -1,7 +1,7 @@
 export const factStatusOptions = [
   { value: 'on_line', label: 'На линии' },
   { value: 'not_used', label: 'Не используется' },
-  { value: 'repair', label: 'Проводится ремонт' },
+  { value: 'repair', label: 'Ремонт' },
 ];
 
 export const statusAtCheckOptions = [

@@ -18,6 +18,7 @@ export interface ISharedPropsDataTableInput {
   typesListOpt?: any[];
   page: string;
   path: string;
+  tableTitle?: string;
 }
 
 export interface IStateDataTableInput {

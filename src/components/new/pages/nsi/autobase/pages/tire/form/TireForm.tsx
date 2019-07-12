@@ -143,8 +143,8 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
               />
               {
                 !IS_CREATING
-                  ? (
-                    <>
+                  && (
+                    <EtsBootstrap.Row>
                       <EtsBootstrap.Col sm={6} md={6}>
                         <label htmlFor=" ">Пробег, км:</label>
                         <InlineSpanValue>{state.odometr_diff}</InlineSpanValue>
@@ -153,10 +153,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                         <label htmlFor=" ">Наработка, мч:</label>
                         <InlineSpanValue>{state.motohours_diff}</InlineSpanValue>
                       </EtsBootstrap.Col>
-                    </>
-                  )
-                  : (
-                    <DivNone />
+                    </EtsBootstrap.Row>
                   )
               }
               <ExtField
@@ -168,29 +165,19 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 onChange={this.props.handleChange}
                 boundKeys="comment"
               />
-              {
-                !IS_CREATING
-                  ? (
-                    <>
-                      <h4>Транспортное средство, на котором установлена шина</h4>
-                      <TireToVehicleBlock
-                        onChange={this.props.handleChange}
-                        boundKeys="tire_to_car"
-                        inputList={state.tire_to_car}
-                        onValidation={this.handleTireToCarValidity}
-                        outerValidate
-                        errors={errors.tire_to_car}
-                        disabled={!isPermitted}
-                        tireId={state.id}
-                        selectField="customId"
-                        isPermitted={isPermitted}
-                      />
-                    </>
-                  )
-                  : (
-                    <DivNone />
-                  )
-              }
+              <TireToVehicleBlock
+                onChange={this.props.handleChange}
+                boundKeys="tire_to_car"
+                inputList={state.tire_to_car}
+                onValidation={this.handleTireToCarValidity}
+                outerValidate
+                errors={errors.tire_to_car}
+                disabled={!isPermitted}
+                tireId={state.id}
+                selectField="customId"
+                isPermitted={isPermitted}
+                tableTitle="Транспортное средство, на котором установлена шина"
+              />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>

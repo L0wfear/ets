@@ -17,9 +17,10 @@ interface IPropsTireToVehicleBlock extends ISharedPropsDataTableInput, IExternal
 
 class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> {
   componentDidMount() {
-    this.props.tireAvailableCarGetAndSetInStore({
-      tire_id: this.props.tireId,
-    });
+    this.props.tireAvailableCarGetAndSetInStore(
+      this.props.tireId
+      ? {tire_id: this.props.tireId, }
+      : {});
   }
   render() {
     return (

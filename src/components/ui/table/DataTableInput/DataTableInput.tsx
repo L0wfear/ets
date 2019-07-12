@@ -7,6 +7,9 @@ import { IPropsDataTableInput, IStateDataTableInput } from 'components/ui/table/
 
 import DataTableComponent from 'components/ui/table/DataTable';
 import DataTableInputWrapper from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -45,12 +48,14 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
 
     return (
       <div className="date-table-input">
-         <div className="pull-right">
-          <EtsBootstrap.ButtonToolbar>
+        <EtsHeaderContainer padding={'0px'} alignItems={'center'}>
+          <EtsHeaderTitle>{this.props.tableTitle ? this.props.tableTitle : ''}</EtsHeaderTitle>
+          <EtsButtonsContainer marginContainerY={5}>
             <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
             <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
-          </EtsBootstrap.ButtonToolbar>
-        </div>
+          </EtsButtonsContainer>
+        </EtsHeaderContainer>
+
         <DataTable
           title=""
           results={this.props.inputList}

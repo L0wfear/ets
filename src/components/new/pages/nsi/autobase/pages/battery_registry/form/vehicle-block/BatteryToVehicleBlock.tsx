@@ -16,9 +16,11 @@ interface IPropsBatteryToVehicleBlock extends ISharedPropsDataTableInput, IExter
 
 class BatteryToVehicleBlock extends React.Component<IPropsBatteryToVehicleBlock, any> {
   componentDidMount() {
-    this.props.batteryAvailableCarGetAndSetInStore({
-      battery_id: this.props.batteryId,
-    });
+    this.props.batteryAvailableCarGetAndSetInStore(
+      this.props.batteryId
+        ? { battery_id: this.props.batteryId, }
+        : {},
+    );
   }
   render() {
     return (

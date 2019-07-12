@@ -156,28 +156,24 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled
                 modalKey={page}
               />
-              {!IS_CREATING && (
-                <EtsBootstrap.Col md={12}>
-                  <EtsBootstrap.Row>
-                    <h4>
-                      Транспортное средство, на котором установлен аккумулятор
-                    </h4>
-                    <BatteryVehicleBlock
-                      id="files"
-                      onChange={this.props.handleChange}
-                      boundKeys="battery_to_car"
-                      inputList={state.battery_to_car || []}
-                      onValidation={this.handleBatteryToCarValidity}
-                      batteryId={state.id}
-                      selectField="customId"
-                      modalKey={page}
-                      page={page}
-                      path={path}
-                      isPermitted={isPermitted}
-                    />
-                  </EtsBootstrap.Row>
-                </EtsBootstrap.Col>
-              )}
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Row>
+                  <BatteryVehicleBlock
+                    id="files"
+                    onChange={this.props.handleChange}
+                    boundKeys="battery_to_car"
+                    inputList={state.battery_to_car || []}
+                    onValidation={this.handleBatteryToCarValidity}
+                    batteryId={state.id}
+                    selectField="customId"
+                    modalKey={page}
+                    page={page}
+                    path={path}
+                    isPermitted={isPermitted}
+                    tableTitle="Транспортное средство, на котором установлен аккумулятор"
+                  />
+                </EtsBootstrap.Row>
+              </EtsBootstrap.Col>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>

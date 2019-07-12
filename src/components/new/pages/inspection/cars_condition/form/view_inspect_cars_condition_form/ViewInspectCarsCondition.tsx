@@ -24,7 +24,6 @@ import { ColScroll } from './styled';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {

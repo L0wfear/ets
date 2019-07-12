@@ -86,7 +86,6 @@ class TablePrev extends React.Component<any, any> {
                     selected={false}
                     onClick={this.handleClick}
                     className={selectedRow === numRow ? 'sm-active' : null}
-                    registryKey="main"
                   >
                     {
                       headerData.map(({ key, style, otherProps }, numOne) => (

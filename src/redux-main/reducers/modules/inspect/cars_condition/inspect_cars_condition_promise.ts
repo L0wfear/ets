@@ -63,7 +63,10 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
     }),
     preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
     headcount_list: get(inspectCarsCondition, 'data.headcount_list', cloneDeep(default_headcount_list)),
-    cars_use: get(inspectCarsCondition, 'data.cars_use', cloneDeep(default_cars_use)),
+    cars_use: {
+      ...cloneDeep(default_cars_use),
+      ...get(inspectCarsCondition, 'data.cars_use', {}),
+    },
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 

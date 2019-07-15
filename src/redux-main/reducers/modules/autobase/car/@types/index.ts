@@ -44,7 +44,7 @@ export type CarGibddPasspost = {
   manufacturer: string | number;
   max_speed: number;
   max_weight: number;
-  number: number;
+  number: string;
   origin_country_id: number;
   propulsion_type_id: number;
   seria_number: string;
@@ -86,7 +86,7 @@ export type CarGtnPasspost = {
   manufacturer: string | number;
   max_speed: number;
   max_weight: number;
-  number: number;
+  number: string;
   origin_country_id: number;
   propulsion_type_id: number;
   seria_number: string;

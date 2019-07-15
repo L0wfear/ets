@@ -5,7 +5,6 @@ import {
   LoginPageContainer,
   LoginPageFormWrap,
   LoginPageForm,
-  LoginPageFormContainer,
   LoginPageFormHeader,
   LoginPageFormContent,
   DitLogo,
@@ -77,39 +76,37 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
       <LoginPageContainer>
         <LoginPageFormWrap>
           <LoginPageForm id="form-login" onSubmit={onSigninClick}>
-            <LoginPageFormContainer>
-              <LoginPageFormHeader>ЕТС</LoginPageFormHeader>
-              <LoginPageFormContent>
-                <LoginPageFormContentLabel>
-                  Система мониторинга
-                </LoginPageFormContentLabel>
-                <FieldLogin
-                  login={user.login}
-                  handleChange={handleChange}
-                  disabled={inLoadingStatus}
-                />
-                <FieldPassword
-                  password={user.password}
-                  handleChange={handleChange}
-                  disabled={inLoadingStatus}
-                />
-                <LoginPageFormContentButton
-                  block
-                  id="submit"
-                  disabled={disabled || inLoadingStatus}
-                  type="submit"
-                >
-                  <span>Войти</span>
-                </LoginPageFormContentButton>
-                <TpMessangeContainer>
-                  <span>Служба технической поддержки</span>
-                  <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
-                  <a href="tel:84951501193">8(495) 150-11-93</a>
-                </TpMessangeContainer>
-                <HrLine />
-                <DitLogo />
-              </LoginPageFormContent>
-            </LoginPageFormContainer>
+            <LoginPageFormHeader>ЕТС</LoginPageFormHeader>
+            <LoginPageFormContent>
+              <LoginPageFormContentLabel>
+                Система мониторинга
+              </LoginPageFormContentLabel>
+              <FieldLogin
+                login={user.login}
+                handleChange={handleChange}
+                disabled={inLoadingStatus}
+              />
+              <FieldPassword
+                password={user.password}
+                handleChange={handleChange}
+                disabled={inLoadingStatus}
+              />
+              <LoginPageFormContentButton
+                block
+                id="submit"
+                disabled={disabled || inLoadingStatus}
+                type="submit"
+              >
+                <span>Войти</span>
+              </LoginPageFormContentButton>
+              <TpMessangeContainer>
+                <span>Служба технической поддержки</span>
+                <a href="mailto:ETS_support@mos.ru">ETS_support@mos.ru</a>
+                <a href="tel:84951501193">8(495) 150-11-93</a>
+              </TpMessangeContainer>
+              <HrLine />
+              <DitLogo />
+            </LoginPageFormContent>
           </LoginPageForm>
         </LoginPageFormWrap>
       </LoginPageContainer>

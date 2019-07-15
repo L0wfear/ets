@@ -37,6 +37,7 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
       },
       [handleChangeData],
     );
+
     return (
       <React.Fragment>
         <ExtField
@@ -77,7 +78,7 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
                 />
                 <ExtField
                   id="mission_numbers"
-                  type="number"
+                  type="string"
                   label="Активное задание:"
                   value={state.data.mission_numbers}
                   error={errors.data.mission_numbers}

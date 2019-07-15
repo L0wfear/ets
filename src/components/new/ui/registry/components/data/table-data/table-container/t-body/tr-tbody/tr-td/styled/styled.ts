@@ -12,7 +12,6 @@ export const EtsTbodyScrollContainer = styled.div`
   overflow: auto;
   &::-webkit-scrollbar {
     width: 10px;
-    background: red;
   }
   /* Track */
   &::-webkit-scrollbar-track {

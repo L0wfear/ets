@@ -27,6 +27,7 @@ export const withSpecificPermissions = (user) => {
       permissions.push(permission.replace(/^pgm\./, 'pgm_store.'));
     }
   });
+
   return permissions;
 };
 
@@ -41,6 +42,7 @@ export const makeUserData = (userDataRaw) => {
     ...userNotification,
     ...withSpecificPermissions(userDataRaw),
   ];
+
   // userData.permissions = userData.permissions.filter((p) => p !== 'inspect.autobase_closed.update')
   userData.permissionsSet = new Set(userData.permissions);
 

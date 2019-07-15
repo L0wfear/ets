@@ -48,8 +48,14 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           type: 'multiselect',
         },
         {
+          valueKey: 'initial_mileage',
+          title: 'Первоначальный пробег, км',
+          type: 'advanced-number',
+          step: 0.01,
+        },
+        {
           valueKey: 'odometr_diff',
-          title: 'Пробег, км',
+          title: 'Общий пробег, км',
           type: 'advanced-number',
           step: 1,
         },

@@ -22,7 +22,7 @@ import { Tire, TireSize, TireModel } from 'redux-main/reducers/modules/autobase/
 import { DivNone } from 'global-styled/global-styled';
 import TireToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/tire/form/vehicle-block/TireToVehicleBlock';
 import { onChangeWithKeys } from 'components/compositions/hoc';
-import { getAutobaseState } from 'redux-main/reducers/selectors';
+import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import { InlineSpanValue } from './styled';
 import { getDefaultTireElement } from './utils';
@@ -87,11 +87,13 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
       path,
       tireSizeList,
       tireModelList,
+      isPermitterToUpdateInitialMileage,
     } = this.props;
 
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
     const canSave = (
       this.state.canSave
@@ -141,12 +143,21 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 boundKeys="tire_size_id"
                 clearable={false}
               />
+              <ExtField
+                type="string"
+                label="Первоначальный пробег, км"
+                value={state.initial_mileage}
+                error={errors.initial_mileage}
+                disabled={IS_CREATING ? !isPermitted : !isPermitterToUpdateInitialMileage}
+                onChange={this.props.handleChange}
+                boundKeys="initial_mileage"
+              />
               {
                 !IS_CREATING
                   && (
                     <EtsBootstrap.Row>
                       <EtsBootstrap.Col sm={6} md={6}>
-                        <label htmlFor=" ">Пробег, км:</label>
+                        <label htmlFor=" ">Общий пробег, км:</label>
                         <InlineSpanValue>{state.odometr_diff}</InlineSpanValue>
                       </EtsBootstrap.Col>
                       <EtsBootstrap.Col sm={6} md={6}>
@@ -183,13 +194,13 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {
-            isPermitted // либо обновление, либо создание
-            ? (
-              <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
+            isPermitted || isPermitterToUpdateInitialMileage // либо обновление, либо создание
+              ? (
+                <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              )
+              : (
+                <DivNone />
+              )
           }
           <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
@@ -203,6 +214,7 @@ export default compose<PropsTire, OwnTireProps>(
     (state) => ({
       tireModelList: getAutobaseState(state).tireModelList,
       tireSizeList: getAutobaseState(state).tireSizeList,
+      isPermitterToUpdateInitialMileage: getSessionState(state).userData.permissionsSet.has(tirePermissions.update_mileage),
     }),
     (dispatch, { page, path }) => ({
       tireSizeGetAndSetInStore: () => (

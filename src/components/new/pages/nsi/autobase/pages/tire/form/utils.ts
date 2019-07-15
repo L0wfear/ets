@@ -9,6 +9,7 @@ export const defaultTire: Tire = {
   company_name: '',
   gov_number: '',
   id: null,
+  initial_mileage: 0,
   installed_at: '',
   motohours_diff: null,
   odometr_diff: null,

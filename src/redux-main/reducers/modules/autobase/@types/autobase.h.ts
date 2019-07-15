@@ -278,6 +278,7 @@ export type Tire = {
   company_name: string;
   gov_number: string;
   id?: number;
+  initial_mileage: number;
   installed_at: string;
   motohours_diff: number;
   odometr_diff: number;

@@ -40,6 +40,12 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
       maxLength: 4000,
       required: false,
     },
+    initial_mileage: {
+      title: 'Первоначальный пробег, км',
+      type: 'number',
+      min: 0,
+      required: true,
+    },
     tire_to_car: {
       title: 'Транспортное средство, на котором установлена шина',
       type: 'any',

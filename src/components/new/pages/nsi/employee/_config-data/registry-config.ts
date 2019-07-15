@@ -55,6 +55,11 @@ export const config: TypeConfigData<Employee> = {
         type: 'advanced-date',
       },
       {
+        valueKey: 'snils',
+        title: 'СНИЛС',
+        type: 'multiselect',
+      },
+      {
         valueKey: 'personnel_number',
         title: 'Табельный номер',
         type: 'multiselect',
@@ -167,6 +172,12 @@ export const config: TypeConfigData<Employee> = {
           title: 'Дата рождения',
           format: 'date',
           width: 150,
+        },
+        {
+          key: 'snils',
+          title: 'СНИЛС',
+          dashIfEmpty: true,
+          width: 200,
         },
         {
           key: 'personnel_number',

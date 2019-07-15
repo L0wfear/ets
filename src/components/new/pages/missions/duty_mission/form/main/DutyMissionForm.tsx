@@ -187,15 +187,6 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     });
 
     if (result) {
-      if (!DUTY_MISSION_IS_DISPLAY) {
-        this.props.handleHide(true, result);
-      } else {
-        this.props.handleChange(result);
-        this.setState({
-          isChanged: true,
-        });
-      }
-
       let printFormData = null;
       try {
         printFormData = await this.props.actionPrintFormDutyMission(result.id, {
@@ -204,6 +195,15 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         });
       } catch (error) {
         console.warn('Ошибка загрузки ПФ наряд-задания', result.id); // tslint:disable-line:no-console
+      }
+
+      if (!DUTY_MISSION_IS_DISPLAY) {
+        this.props.handleHide(true, result);
+      } else {
+        this.props.handleChange(result);
+        this.setState({
+          isChanged: true,
+        });
       }
 
       if (printFormData) {

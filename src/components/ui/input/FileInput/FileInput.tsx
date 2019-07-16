@@ -107,20 +107,28 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
 
     const withDateTime = get(this.props, 'withDateTime', false); // флаг для отображения даты и времени
     const fileList = value
-      .filter((file) => file.action !== 'delete')
       .map((file) => file === null ? serverErrorFile : file)
-      .map(({ name = 'Без названия', url, base64, created_at } = serverErrorFile, i) =>
-        <FileListItem
-          key={i}
-          index={i}
-          url={url || base64}
-          name={name}
-          onFileRemove={this.handleFileRemove}
-          disabled={this.props.disabled}
-          askBefoeRemove={this.props.askBefoeRemove}
-          created_at={created_at}
-          withDateTime={withDateTime}
-        />,
+      .reduce(
+        (newArr, { name = 'Без названия', url, base64, created_at, action } = serverErrorFile, i) => {
+          if (action !== 'delete') {
+            newArr.push(
+              <FileListItem
+                key={i}
+                index={i}
+                url={url || base64}
+                name={name}
+                onFileRemove={this.handleFileRemove}
+                disabled={this.props.disabled}
+                askBefoeRemove={this.props.askBefoeRemove}
+                created_at={created_at}
+                withDateTime={withDateTime}
+              />,
+            );
+          }
+
+          return newArr;
+        },
+        [],
       );
 
     const disabledIfSingleFile = fileList.length && !multiple;

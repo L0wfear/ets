@@ -899,6 +899,14 @@ body.application {
         &.selected-row > td {
           background-color: $colorGreen !important;
           color: white !important;
+          .error {
+            margin-top: 4px;
+            padding: 2px;
+            border-radius: 2px;
+            background: #ff0000;
+            color: white;
+            padding-left: 5px;
+          }
         }
       }
 
@@ -970,6 +978,7 @@ body.application {
   font-size: 12px;
   /* text-align: center; */
   margin-top: -10px;
+  transition: all .3s ease;
 }
 
 .form-control.has-error {

@@ -72,7 +72,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               onChange={handleChange}
               boundKeys="staff_drivers"
               error={errors.staff_drivers}
-              disabled={!isActiveInspect || !isPermitted}
+              disabled
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -84,7 +84,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               onChange={handleChange}
               boundKeys="staff_mechanics"
               error={errors.staff_mechanics}
-              disabled={!isActiveInspect || !isPermitted}
+              disabled
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -130,7 +130,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               onChange={handleChange}
               boundKeys="staffing_drivers"
               error={errors.staffing_drivers}
-              disabled={true}
+              disabled
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -142,7 +142,7 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               onChange={handleChange}
               boundKeys="staffing_mechanics"
               error={errors.staffing_mechanics}
-              disabled={true}
+              disabled
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

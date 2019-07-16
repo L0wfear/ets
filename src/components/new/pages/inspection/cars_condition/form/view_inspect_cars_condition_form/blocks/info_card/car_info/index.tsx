@@ -30,17 +30,6 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
 
     React.useEffect(
       () => {
-        if (selectedCarsConditionsCar === 'create') {
-          if (props.type === INSPECT_TYPE_FORM.list) {
-            setSelectedCar({
-              inspection_id,
-            });
-          } else {
-            props.handleHide(false);
-          }
-          return;
-        }
-
         const id = getNumberValueFromSerch(selectedCarsConditionsCar);
 
         if (id && carsConditionCarsList.length) {

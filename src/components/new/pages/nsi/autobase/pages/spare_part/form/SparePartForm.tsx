@@ -116,6 +116,8 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 disabled={!isPermitted}
               />
             </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
             <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
@@ -140,17 +142,19 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
-              <ExtField
-                type="date"
-                label="Дата поставки"
-                date={state.supplied_at}
-                time={false}
-                error={errors.supplied_at}
-                onChange={this.props.handleChange}
-                boundKeys="supplied_at"
-                disabled={!isPermitted}
-              />
-            </EtsBootstrap.Col>
+            <ExtField
+              type="date"
+              label="Дата поставки"
+              date={state.supplied_at}
+              time={false}
+              error={errors.supplied_at}
+              onChange={this.props.handleChange}
+              boundKeys="supplied_at"
+              disabled={!isPermitted}
+            />
+          </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
               <SpareToVehicleBlock
                 onChange={this.props.handleChange}

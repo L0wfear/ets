@@ -309,6 +309,7 @@ class WaybillForm extends UNSAFE_Form {
       const currentSeason = getCurrentSeason(
         this.props.appConfig.summer_start_date,
         this.props.appConfig.summer_end_date,
+        this.props.formState.activating_date,
       );
 
       Promise.all([

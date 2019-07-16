@@ -6,7 +6,6 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
 import { ExtFieldContainer } from './styled';
-import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionSelectCarOwnProps = {
@@ -48,13 +47,6 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
       [props.setParams],
     );
 
-    const handleCreateNewCardCar = React.useCallback(
-      () => {
-        handleSelectCar('create');
-      },
-      [handleSelectCar],
-    );
-
     const carsData = React.useMemo(
       () => {
         const carsConditionCarsOptions = carsConditionCarsList.map(
@@ -87,22 +79,6 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             onChange={handleSelectCar}
           />
         </ExtFieldContainer>
-        <div>
-          <span>
-            Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
-            После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
-          </span>
-        </div>
-        {
-          props.isActiveInspect
-            ? (
-              <EtsBootstrap.Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>Создать карточку</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
-            )
-        }
-        <br />
         <EtsBootstrap.Row>
           <BlockCarsConditionSelectCarList
             carsConditionCarsList={carsConditionCarsList}

@@ -158,19 +158,29 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
   (props) => {
+    // тк что-то где-то поддормаживает и дисейбл не сразу появляется
+    const [localDisabled, setLocalDisabled] = React.useState(false);
 
     const handleClick = React.useCallback(
       (...arg) => {
-        if (!props.disabled && props.onClick) {
+        if ((!localDisabled && !props.disabled) && props.onClick) {
+          setLocalDisabled(true);
+          setTimeout(
+            () => {
+              setLocalDisabled(false);
+            },
+            300,
+          );
           props.onClick(...arg);
         }
       },
-      [Boolean(props.disabled), props.onClick],
+      [Boolean(props.disabled), localDisabled, props.onClick],
     );
 
     return (
       <ButtonStyled
         {...props}
+        disabled={props.disabled}
         type={props.type || 'button'}
         onClick={handleClick}
       />

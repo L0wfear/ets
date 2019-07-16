@@ -183,8 +183,11 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
         path: 'checks_period_text',
         reverse: true,
       },
+      required: true,
       type: 'number',
       title: 'Водителей',
+      min: 0,
+      max: 9999,
     },
     list_mechanics: {
       validateIf: {
@@ -194,6 +197,9 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
       },
       type: 'number',
       title: 'Механизаторов',
+      required: true,
+      min: 0,
+      max: 9999,
     },
     staffing_drivers: {
       validateIf: {

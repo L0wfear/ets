@@ -27,6 +27,7 @@ export const getConfig = (array: CarsConditionCars[]): TypeConfigData<CarsCondit
       array,
     },
     meta: {
+      row_double_click: false,
       fields: [
         {
           key: 'enumerated',

@@ -8,6 +8,7 @@ import passportTabConfig from 'components/new/pages/nsi/autobase/pages/car_actua
 
 import actualBatteriesOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data';
 import actualTiresOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data';
+import actualSparePartOnCarListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_spare_part_on_car/_config-data';
 import insurancePolicyListConfig from 'components/new/pages/nsi/autobase/pages/insurance_policy/_config-data';
 import roadAccidentListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/_config-data';
 import techMaintenanceListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/_config-data';
@@ -82,6 +83,14 @@ export const battaryInfo: OneTabData = {
   isRegistry: true,
 };
 
+export const sparePartInfo: OneTabData = {
+  title: 'Запчасти',
+  tabKey: actualSparePartOnCarListConfig.item,
+  component: actualSparePartOnCarListConfig.component,
+  path: `/:${actualSparePartOnCarListConfig.id}?`,
+  isRegistry: true,
+};
+
 export const tireInfo: OneTabData = {
   title: 'Шины',
   tabKey: actualTiresOnCarListConfig.item,
@@ -144,6 +153,7 @@ const carFormTabKey: OneTabData[] = [
   main,
   battaryInfo,
   tireInfo,
+  sparePartInfo,
   insurancePolicy,
   roadAccident,
   tmAndR,

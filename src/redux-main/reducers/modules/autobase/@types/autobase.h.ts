@@ -15,6 +15,8 @@ export type SparePart = {
   spare_part_group_id: number;
   supplied_at: string;
   spare_part_to_car: any;
+  installed_at?: string;
+  count_part?: any;
 };
 
 export type MeasureUnit = {

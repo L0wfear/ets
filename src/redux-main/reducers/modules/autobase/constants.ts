@@ -1,5 +1,6 @@
 export const sparePart = 'sparePart';
 export const sparePartGroup = 'sparePartGroup';
+export const spareAvailableCar = 'spareAvailableCar';
 export const measureUnit = 'measureUnit';
 export const batteryBrand = 'batteryBrand';
 export const batteryManufacturer = 'batteryManufacturer';
@@ -54,6 +55,7 @@ export default {
   [tireNoRegistry]: 'tire',
   [tireSize]: 'tire_size',
   [tireAvailableCar]: 'tire_available_car',
+  [spareAvailableCar]: 'spare_part_available_car',
   [actualBatteriesOnCar]: 'actual_batteries_on_car',
   [actualTiresOnCar]: 'actual_tires_on_car',
   [techMaint]: 'tech_maintenance_registry',

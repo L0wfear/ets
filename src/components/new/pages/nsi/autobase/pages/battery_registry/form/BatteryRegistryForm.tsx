@@ -92,7 +92,7 @@ class BatteryRegistryForm extends React.PureComponent<
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="brand_id"
                 type="select"
@@ -106,14 +106,18 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
-                id="brand_name"
-                type={'string'}
-                label={'Изготовитель'}
-                value={state.brand_name}
-                disabled
-                modalKey={page}
+                  id="brand_name"
+                  type={'string'}
+                  label={'Изготовитель'}
+                  value={state.brand_name}
+                  disabled
+                  modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="serial_number"
                 type="string"
@@ -125,6 +129,10 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="lifetime_months"
                 type="string"
@@ -136,6 +144,8 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="released_at"
                 type="date"
@@ -148,6 +158,8 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="worked_months"
                 type="string"
@@ -156,6 +168,10 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
               <EtsBootstrap.Col md={12}>
                 <EtsBootstrap.Row>
                   <BatteryVehicleBlock

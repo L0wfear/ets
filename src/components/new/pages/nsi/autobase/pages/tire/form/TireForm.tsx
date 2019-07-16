@@ -24,7 +24,7 @@ import TireToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import { InlineSpanValue } from './styled';
+import { InlineSpanValue, DiffValueWrapper, DiffValueElem } from './styled';
 import { getDefaultTireElement } from './utils';
 import { tireFormSchema } from './schema';
 import tirePermissions from '../_config-data/permissions';
@@ -114,7 +114,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
                 label="Модель шины"
@@ -126,12 +126,16 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 boundKeys="tire_model_id"
                 clearable={false}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type={'string'}
                 label={'Производитель'}
                 value={state.tire_manufacturer_name}
                 disabled
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
                 label="Размер"
@@ -143,6 +147,8 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 boundKeys="tire_size_id"
                 clearable={false}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="string"
                 label="Первоначальный пробег, км"
@@ -152,21 +158,8 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 onChange={this.props.handleChange}
                 boundKeys="initial_mileage"
               />
-              {
-                !IS_CREATING
-                  && (
-                    <EtsBootstrap.Row>
-                      <EtsBootstrap.Col sm={6} md={6}>
-                        <label htmlFor=" ">Общий пробег, км:</label>
-                        <InlineSpanValue>{state.odometr_diff}</InlineSpanValue>
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col sm={6} md={6}>
-                        <label htmlFor=" ">Наработка, мч:</label>
-                        <InlineSpanValue>{state.motohours_diff}</InlineSpanValue>
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Row>
-                  )
-              }
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="string"
                 label="Комментарий"
@@ -176,6 +169,27 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 onChange={this.props.handleChange}
                 boundKeys="comment"
               />
+            </EtsBootstrap.Col>
+            {
+              !IS_CREATING
+                && (
+                  <React.Fragment>
+                    <EtsBootstrap.Col sm={6} md={4}>
+                      <DiffValueWrapper>
+                        <DiffValueElem>
+                          <label htmlFor=" ">Общий пробег, км:</label>
+                          <InlineSpanValue>{state.odometr_diff}</InlineSpanValue>
+                        </DiffValueElem>
+                        <DiffValueElem>
+                          <label htmlFor=" ">Наработка, мч:</label>
+                          <InlineSpanValue>{state.motohours_diff}</InlineSpanValue>
+                        </DiffValueElem>
+                      </DiffValueWrapper>
+                    </EtsBootstrap.Col>
+                  </React.Fragment>
+                )
+              }
+            <EtsBootstrap.Col md={12}>
               <TireToVehicleBlock
                 onChange={this.props.handleChange}
                 boundKeys="tire_to_car"

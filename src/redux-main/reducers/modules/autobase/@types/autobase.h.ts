@@ -14,6 +14,7 @@ export type SparePart = {
   quantity: number;
   spare_part_group_id: number;
   supplied_at: string;
+  spare_part_to_car: any;
 };
 
 export type MeasureUnit = {
@@ -308,6 +309,10 @@ export type TireAvailableCar = {
   car_id: number;
   gov_number: string;
 };
+export type SpareAvailableCar = {
+  car_id: number;
+  gov_number: string;
+};
 
 export type TechMaintenance = {
   can_edit: boolean;
@@ -416,6 +421,7 @@ export type IStateAutobase = {
   tireList: Tire[];
   tireSizeList: TireSize[];
   tireAvailableCarList: TireAvailableCar[];
+  spareAvailableCarList: SpareAvailableCar[];
   actualBatteriesOnCarList: ActualBatteriesOnCar[];
   actualTiresOnCarList: ActualTiresOnCar[];
   techMaintList: TechMaintenance[];

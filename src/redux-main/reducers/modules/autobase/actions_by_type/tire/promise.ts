@@ -30,11 +30,6 @@ export const getSetTire = async (...payload) => {
 export const createSetTire = (rawTire) => {
   const payload = {
     ...rawTire,
-    battery_to_car: get(rawTire, 'battery_to_car', []).map((item) => ({
-      car_id: item.car_id,
-      installed_at: createValidDate(item.installed_at),
-      uninstalled_at: createValidDate(item.uninstalled_at),
-    })),
     released_at: createValidDate(rawTire.released_at),
   };
 
@@ -57,11 +52,6 @@ export const cloneSetTire = async (tireId) => {
 export const updateSetTire = (oldTire) => {
   const payload = {
     ...oldTire,
-    battery_to_car: get(oldTire, 'battery_to_car', []).map((item) => ({
-      car_id: item.car_id,
-      installed_at: createValidDate(item.installed_at),
-      uninstalled_at: createValidDate(item.uninstalled_at),
-    })),
     released_at: createValidDate(oldTire.released_at),
   };
 

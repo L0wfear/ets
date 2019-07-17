@@ -17,7 +17,7 @@ import BlockCarSConditionInfo from './blocks/info/BlockCarSConditionInfo';
 import BlockCarSConditionPrepareCarToInspect from './blocks/prepare_car_to_inspect/BlockCarSConditionPrepareCarToInspect';
 import BlockCarsConditionSelectCar from './blocks/select_car/BlockCarSConditionSelectCar';
 import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
-import BlockCarsConditionHeadCountList from './blocks/headcount_list/BlockCarsConditionHeadCountList';
+import BlockCarsConditionHeadCountList from './blocks/headcount/BlockCarsConditionHeadCountList';
 import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUse';
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
 import { ColScroll } from './styled';
@@ -150,8 +150,8 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
                 : (
                   <React.Fragment>
                     <BlockCarsConditionHeadCountList
-                      headcount_list={state.data.headcount_list}
-                      error_headcount_list={errors.data.headcount_list}
+                      headcount={state.data.headcount}
+                      error_headcount={errors.data.headcount}
 
                       isPermitted={isPermittedChangeListParams}
                       isActiveInspect={isActiveInspect}

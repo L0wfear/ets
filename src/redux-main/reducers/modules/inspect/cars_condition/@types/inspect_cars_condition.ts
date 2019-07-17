@@ -98,7 +98,7 @@ export type InspectCarsCondition = {
     types_cars: TypesСar[],
     types_harvesting_unit: TypesHarvestingUnit[],
     preparing_cars_check: PreparingCarsCheck;
-    headcount_list: HeadcountList,
+    headcount: HeadcountList,
     cars_use: CarsUse,
   };
   files: any[];

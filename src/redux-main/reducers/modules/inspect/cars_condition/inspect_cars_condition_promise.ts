@@ -29,7 +29,7 @@ const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars
   drawbacks_eliminated: '',
   drawbacks_new: '',
 };
-const default_headcount_list: InspectCarsCondition['data']['headcount_list'] = {
+const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_drivers: null,
   staff_mechanics: null,
   list_drivers: null,
@@ -62,7 +62,7 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
       return rowData;
     }),
     preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
-    headcount_list: get(inspectCarsCondition, 'data.headcount_list', cloneDeep(default_headcount_list)),
+    headcount: get(inspectCarsCondition, 'data.headcount', cloneDeep(default_headcount)),
     cars_use: {
       ...cloneDeep(default_cars_use),
       ...get(inspectCarsCondition, 'data.cars_use', {}),

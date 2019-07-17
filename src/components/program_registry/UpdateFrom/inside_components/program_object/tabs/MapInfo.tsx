@@ -16,7 +16,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
     /* Смотри routeCreating */
   }
   handleAddDrawLines = (newInputLines) => {
-    this.props.handleDrawFeatureAdd(newInputLines);
+    this.props.handleAddDrawLines(newInputLines);
   }
   handleDrawFeatureClick = ({ index, state }) => {
     this.props.handleDrawFeatureClick({ index, state });

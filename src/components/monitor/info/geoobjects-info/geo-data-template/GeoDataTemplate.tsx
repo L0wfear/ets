@@ -18,6 +18,10 @@ const InfoDt: React.FC<any> = ({ data, ...props }) =>
     {data.object_address}
     <h5>Общая площадь</h5>
     {data.total_area}
+    <h5>Территория уборки усовершенствованных покрытий, все классы, механизированная, кв.м</h5>
+    {data.area_machine_sum}
+    <h5>Площадь усовершенствованных покрытий для ручной уборки, кв.м</h5>
+    {data.area_hand_improved_sum}
   </div>;
 
 const InfoODh: React.FC<any> = ({ data, ...props }) =>

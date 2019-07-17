@@ -41,6 +41,9 @@ export const defaultDt: Dt = {
   yard_id: null,
   yard_info: '',
   yard_owner_id: null,
+  area_machine_sum: null,
+  area_hand_improved_sum: null,
+  improved_cover_flag: null,
 };
 
 export const getDefaultDtFormElement = (element: Partial<Dt>): Dt => {

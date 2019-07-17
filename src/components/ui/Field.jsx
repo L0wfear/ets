@@ -9,6 +9,7 @@ import PreloadNew from 'components/ui/new/preloader/PreloadNew';
 
 import Div from 'components/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { isNumber } from 'util';
 
 const checkboxStyle = { fontSize: '20px', margin: '5px' };
 
@@ -227,7 +228,7 @@ export default class Field extends React.Component {
   }
 
   renderDate() {
-    const { label, error, modalKey, ...props } = this.props;
+    const { label, error, modalKey, minHeightLabel, ...props } = this.props;
     const { date, value, className = '' } = this.props;
 
     const id = this.props.id
@@ -241,7 +242,12 @@ export default class Field extends React.Component {
         className={className}
         style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
         {typeof label === 'string' && (
-          <label style={{ minHeight: 15 }}>{label}</label>
+          <label
+            style={{
+              minHeight: isNumber(minHeightLabel) ? minHeightLabel : 15,
+            }}>
+            {label}
+          </label>
         )}
         <DatePicker
           {...props}

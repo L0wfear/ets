@@ -92,6 +92,8 @@ class TablePrev extends React.Component<any, any> {
                           <EtsTbodyTrTd key={numOne + 1} style={{ ...style(numRow, row, errors) }}>
                             <ExtField
                               {...mainPropsFields[key]}
+                              label={""}
+                              minHeightLabel={0}
                               value={row[key]}
                               onChange={this.props.handleChange}
                               boundKeys={[numRow, key]}

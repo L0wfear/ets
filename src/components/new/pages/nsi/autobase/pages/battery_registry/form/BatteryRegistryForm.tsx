@@ -180,6 +180,8 @@ class BatteryRegistryForm extends React.PureComponent<
                     boundKeys="battery_to_car"
                     inputList={state.battery_to_car || []}
                     onValidation={this.handleBatteryToCarValidity}
+                    outerValidate
+                    errors={errors.battery_to_car}
                     batteryId={state.id}
                     selectField="customId"
                     modalKey={page}

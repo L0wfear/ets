@@ -41,6 +41,9 @@ export type Dt = {
   yard_id: number | null;
   yard_info: string;
   yard_owner_id: number | null;
+  area_machine_sum: number | null;
+  area_hand_improved_sum: number | null;
+  improved_cover_flag: boolean | null;
 };
 
 export type CreateDt = any;

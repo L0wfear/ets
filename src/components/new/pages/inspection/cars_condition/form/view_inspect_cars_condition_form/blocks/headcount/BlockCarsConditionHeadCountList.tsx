@@ -9,8 +9,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionHeadCountListProps = {
   onChange: (objChange: Partial<InspectCarsCondition['data']>) => any;
-  headcount_list: InspectCarsCondition['data']['headcount_list'];
-  error_headcount_list: FormErrorType<SchemaType<InspectCarsCondition['data']['headcount_list'], PropsViewInspectCarsConditionWithForm>>;
+  headcount: InspectCarsCondition['data']['headcount'];
+  error_headcount: FormErrorType<SchemaType<InspectCarsCondition['data']['headcount'], PropsViewInspectCarsConditionWithForm>>;
   isPermitted: boolean;
   isActiveInspect: boolean;
 };
@@ -18,8 +18,8 @@ type BlockCarsConditionHeadCountListProps = {
 const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListProps> = React.memo(
   (props) => {
     const {
-      headcount_list: state,
-      error_headcount_list: errors,
+      headcount: state,
+      error_headcount: errors,
       isPermitted,
       isActiveInspect,
     } = props;
@@ -27,13 +27,13 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
     const handleChange = React.useCallback(
       (key, event) => {
         props.onChange({
-          headcount_list: {
-            ...props.headcount_list,
+          headcount: {
+            ...props.headcount,
             [key]: get(event, 'target.value', event),
           },
         });
       },
-      [props.onChange, props.headcount_list],
+      [props.onChange, props.headcount],
     );
 
     React.useEffect( () => {
@@ -48,8 +48,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
         ? Number((state.list_mechanics / state.staff_mechanics * 100).toFixed())
         : staffing_mechanics;
       props.onChange({
-        headcount_list: {
-          ...props.headcount_list,
+        headcount: {
+          ...props.headcount,
           staffing_drivers,
           staffing_mechanics,
         },

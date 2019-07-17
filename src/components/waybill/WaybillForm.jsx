@@ -16,7 +16,7 @@ import {
   getWarningNotification,
   getServerErrorNotification,
 } from 'utils/notifications';
-import { diffDates, getCurrentSeason } from 'utils/dates';
+import { diffDates } from 'utils/dates';
 
 import {
   checkDateMission,
@@ -306,11 +306,8 @@ class WaybillForm extends UNSAFE_Form {
 
     if (IS_ACTIVE || IS_CLOSED) {
       this.getCarDistance(formState);
-      const currentSeason = getCurrentSeason(
-        this.props.appConfig.summer_start_date,
-        this.props.appConfig.summer_end_date,
-        this.props.formState.activating_date,
-      );
+
+      const currentSeason = this.props.formState.season;
 
       Promise.all([
         getFuelRatesByCarModel(

@@ -54,7 +54,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
       drawbacks_eliminated: '',
       drawbacks_new: '',
     },
-    headcount_list: {
+    headcount: {
       staff_drivers: null,
       staff_mechanics: null,
       list_drivers: null,

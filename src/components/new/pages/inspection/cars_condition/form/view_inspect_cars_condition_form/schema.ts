@@ -157,7 +157,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
   },
 };
 
-const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_list'], PropsViewInspectCarsConditionWithForm> = {
+const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     staff_drivers: {
       validateIf: {
@@ -228,7 +228,7 @@ const dataSchema: SchemaType<InspectCarsCondition['data'], PropsViewInspectCarsC
       type: 'schema',
       schema: preparingCarsCheckSchema,
     },
-    headcount_list: {
+    headcount: {
       type: 'schema',
       schema: headCountListSchema,
     },

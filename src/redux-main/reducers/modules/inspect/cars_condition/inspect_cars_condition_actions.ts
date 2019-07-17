@@ -98,7 +98,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     const isHasPeriod = Boolean(inspectCarsConditionOwn.checks_period); // разное отображение по типу проверки
     if (isHasPeriod) {
       delete data.cars_use;
-      delete data.headcount_list;
+      delete data.headcount;
     } else {
       delete data.preparing_cars_check;
     }
@@ -130,7 +130,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки
     if (isHasPeriod) {
       delete payload.data.cars_use;
-      delete payload.data.headcount_list;
+      delete payload.data.headcount;
     } else {
       delete payload.data.preparing_cars_check;
     }
@@ -168,7 +168,7 @@ const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCon
   const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки
   if (isHasPeriod) {
     delete payload.data.cars_use;
-    delete payload.data.headcount_list;
+    delete payload.data.headcount;
   } else {
     delete payload.data.preparing_cars_check;
   }

@@ -5,7 +5,10 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormBase from 'components/program_registry/UpdateFrom/ProgramRegistryUForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -148,14 +151,23 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
       program_id: this.props.element.id,
     };
 
+    this.props.setParams({
+      program_registry_registry_id: null,
+    });
+
     return this.props
       .defSendFromState(payload)
-      .then(() => {
+      .then((ans) => {
         global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
-
+        this.props.setParams({
+          program_registry_registry_id: get(ans, 'result.rows.0.id', null),
+        });
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
+        this.props.setParams({
+          program_registry_registry_id: this.props.element.id,
+        });
         !errorIsShow
           && global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
       });
@@ -209,9 +221,10 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
     ).programVersionPutOnlyFiles;
     payload.outFormState = { ...fileState };
 
-    return this.props
-      .defSendFromState(payload)
-      .then(() => this.updateVersionList({ id: this.props.element.id }));
+    return this.props.defSendFromState(payload).then((ans) => {
+      this.updateVersionList({ id: this.props.element.id });
+      return ans;
+    });
   };
 
   applyVersion = () => {
@@ -346,6 +359,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
 }
 
 export default compose(
+  withSearch,
   connect((state) => ({
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
   })),

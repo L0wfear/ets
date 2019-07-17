@@ -48,6 +48,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
       order_number: '',
       master_plan_approved: '',
       named_plan_approved: '',
+      no_order: false,
       planned_target: '',
       statements_defects_issued: '',
       statements_defects_not_issued_cnt: '',

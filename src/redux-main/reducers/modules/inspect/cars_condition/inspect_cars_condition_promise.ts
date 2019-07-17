@@ -23,6 +23,7 @@ const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars
   order_number: '',
   master_plan_approved: '',
   named_plan_approved: '',
+  no_order: false,
   planned_target: '',
   statements_defects_issued: '',
   statements_defects_not_issued_cnt: '',

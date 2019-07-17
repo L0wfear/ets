@@ -32,19 +32,33 @@ const headOperatingBaseSchema: SchemaType<InspectCarsCondition['head_operating_b
 const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['preparing_cars_check'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     order_issued_at: {
-      validateIf: {
-        type: 'has_data',
-        path: 'checks_period_text',
-      },
+      validateIf: [
+        {
+          type: 'has_data',
+          path: 'checks_period_text',
+        },
+        {
+          type: 'equal_to_value',
+          path: 'data.preparing_cars_check.no_order',
+          value: false,
+        },
+      ],
       type: 'date',
       title: 'Приказ о подготовке техники к сезону издан от',
       required: true,
     },
     order_number: {
-      validateIf: {
-        type: 'has_data',
-        path: 'checks_period_text',
-      },
+      validateIf: [
+        {
+          type: 'has_data',
+          path: 'checks_period_text',
+        },
+        {
+          type: 'equal_to_value',
+          path: 'data.preparing_cars_check.no_order',
+          value: false,
+        },
+      ],
       type: 'string',
       title: '№ приказа',
       required: true,

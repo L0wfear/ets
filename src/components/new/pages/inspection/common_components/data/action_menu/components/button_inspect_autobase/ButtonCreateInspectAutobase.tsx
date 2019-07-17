@@ -21,6 +21,16 @@ const ButtonCreateInspectAutobase: React.FC<ButtonCreateInspectAutobaseProps> = 
 
   const handleClickCreateInspectAutobase = React.useCallback(
     async () => {
+      try {
+        await global.confirmDialog({
+          title: 'Подтверждение действий',
+          body: 'Вы уверены, что хотите открыть проверку?',
+          okName: 'Подтвердить',
+          cancelName: 'Отмена',
+        });
+      } catch (e) {
+        return;
+      }
       const triggerKeyValue = getNumberValueFromSerch(searchState[triggerKey]);
       const companyId = getNumberValueFromSerch(searchState.companyId);
 

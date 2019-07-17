@@ -67,6 +67,27 @@ export const config: TypeConfigData<Dt> = {
         step: 0.01,
       },
       {
+        valueKey: 'area_machine_sum',
+        title: 'Территория уборки усовершенствованных покрытий, все классы, механизированная, кв.м',
+        type: 'advanced-number',
+        step: 0.01,
+      },
+      {
+        valueKey: 'area_hand_improved_sum',
+        title: 'Площадь усовершенствованных покрытий для ручной уборки, кв.м',
+        type: 'advanced-number',
+        step: 0.01,
+      },
+      {
+        valueKey: 'improved_cover_flag',
+        title: 'Признак наличия элемента «Усовершенствованное покрытие»',
+        type: 'multiselect',
+        options: [
+          { value: true, label: 'Да' },
+          { value: false, label: 'Нет' },
+        ],
+      },
+      {
         valueKey: 'company_structures',
         title: 'Подразделение',
         type: 'multiselect',
@@ -127,6 +148,22 @@ export const config: TypeConfigData<Dt> = {
           title: 'Площадь механизированной уборки (кв.м.)',
           format: 'toFixed2',
           width: 250,
+        },
+        {
+          key: 'area_machine_sum',
+          title: 'Территория уборки усовершенствованных покрытий, все классы, механизированная, кв.м',
+          width: 250,
+        },
+        {
+          key: 'area_hand_improved_sum',
+          title: 'Площадь усовершенствованных покрытий для ручной уборки, кв.м',
+          width: 250,
+        },
+        {
+          key: 'improved_cover_flag',
+          title: 'Признак наличия элемента «Усовершенствованное покрытие»',
+          width: 250,
+          format: 'yesOrNot',
         },
         {
           key: 'company_structures',

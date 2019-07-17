@@ -6,6 +6,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as queryString from 'query-string';
 import {get} from 'lodash';
+import { isNullOrUndefined } from 'util';
 
 type CarFormBodyHeaderOwnProps = {
   isPermitted: boolean;
@@ -62,17 +63,21 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
   }
 
   const pathname = `${urlAsArray.join('/')}/${formTypePath}`;
+  const activeTabKey = get(props, 'match.params.tabKey', null);
 
   return (
     <EtsBootstrap.Nav
       bsStyle="tabs"
       id="refs-car-tabs"
+      activeKey={activeTabKey}
     >
       {
         carFormTabKey.map(({ tabKey: tabKeyScheme, title, ...other }) => {
+          const isActiveChildren = get(other, 'children', []).find((elem) => elem.tabKey === activeTabKey);
+          const isActive = activeTabKey === tabKeyScheme ? true : false;
           if ('children' in other) {
             return (
-              <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title}>
+              <EtsBootstrap.NavDropdown key={tabKeyScheme} id={tabKeyScheme} eventKey={tabKeyScheme} title={title} active={!isNullOrUndefined(isActiveChildren) ? true : false}>
                 {
                   other.children.map(({ tabKey: tabKeyChildScheme, title: titleChild }) => (
                     <li role="presentation" key={tabKeyChildScheme}>
@@ -83,11 +88,10 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
               </EtsBootstrap.NavDropdown>
             );
           }
-
           return (
-            <li key={tabKeyScheme} role="presentation">
-              <Link role="button" key={tabKeyScheme} to={`${pathname}/${tabKeyScheme}?${carActualSearchStateString}`}>{title}</Link>
-            </li>
+            <EtsBootstrap.NavItem key={tabKeyScheme} role="button" active={isActive} href={`#${pathname}/${tabKeyScheme}?${carActualSearchStateString}`}>
+              {title}
+            </EtsBootstrap.NavItem>
           );
         })
       }

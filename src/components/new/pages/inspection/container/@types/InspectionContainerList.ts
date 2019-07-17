@@ -8,6 +8,7 @@ export type PropsInspectContainerFormLazy = {
   loadingPageName?: string;
   page?: string;
   path?: string;
+
 };
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;

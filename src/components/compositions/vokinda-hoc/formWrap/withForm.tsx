@@ -520,8 +520,8 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
               {...this.props}
               createAction={this.createAction}
               updateAction={this.updateAction}
-              isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
-              isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
+              isPermittedToCreate={isPermittedToCreate}
+              isPermittedToUpdate={isPermittedToUpdate}
               isPermitted={isPermitted}
               formState={this.state.formState}
               originalFormState={this.state.originalFormState}

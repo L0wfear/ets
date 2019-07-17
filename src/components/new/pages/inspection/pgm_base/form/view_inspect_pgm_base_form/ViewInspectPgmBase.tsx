@@ -115,6 +115,8 @@ const ViewInspectPgmBase: React.FC<ViewInspectPgmBaseProps> = React.memo(
                   errors={errors}
 
                   page={props.loadingPage}
+
+                  inspectIsClosed={props.inspectIsClosed}
                 />
               </EtsBootstrap.Col>
             )

@@ -231,6 +231,9 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
 
                     page={props.loadingPage}
                     loadingPage={props.loadingPage}
+
+                    inspectIsClosed={inspectType === INSPECT_TYPE_FORM.closed}
+                    inspectIsActive={inspectType === INSPECT_TYPE_FORM.list}
                   />
                 </React.Fragment>
               )

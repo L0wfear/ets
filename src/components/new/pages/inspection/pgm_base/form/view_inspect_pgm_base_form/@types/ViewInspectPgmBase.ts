@@ -9,6 +9,8 @@ export type ViewInspectPgmBaseStateProps = {};
 export type ViewInspectPgmBaseDispatchProps = {};
 export type ViewInspectPgmBaseOwnProps = {
   element: InspectPgmBase;
+  inspectIsActive: boolean;
+  inspectIsClosed: boolean;
   type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: OnFormHideType;
   handleCloseWithoutChanges: any;

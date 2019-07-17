@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { DivNone } from 'global-styled/global-styled';
 import { CheckContainerRow, CheckContainerTd, ButtonBlock } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -8,6 +7,8 @@ type ContainerRowProps = {
   onEditContainer: (container: any) => void;
   onRemoveContainer: (container: any) => void;
   isPermittedChangeListParams: boolean;
+
+  inspectIsClosed: boolean;
 };
 
 const ContainerRow: React.FC<ContainerRowProps> = (props) => {
@@ -35,24 +36,30 @@ const ContainerRow: React.FC<ContainerRowProps> = (props) => {
       <CheckContainerTd>
         На {container.updated_at_date}
       </CheckContainerTd>
-      {
-        props.isPermittedChangeListParams
-          ? (
-            <CheckContainerTd>
-              <ButtonBlock>
-                <EtsBootstrap.Button bsSize="small" onClick={handleEditContainer}>
-                  <EtsBootstrap.Glyphicon glyph="pencil" />
-                </EtsBootstrap.Button>
-                <EtsBootstrap.Button bsSize="small" onClick={handleRemoveContainer}>
-                  <EtsBootstrap.Glyphicon glyph="trash" />
-                </EtsBootstrap.Button>
-              </ButtonBlock>
-            </CheckContainerTd>
-          )
-          : (
-            <DivNone />
-          )
-      }
+      <CheckContainerTd>
+        <ButtonBlock>
+          {
+            props.isPermittedChangeListParams
+              ? (
+                <React.Fragment>
+                  <EtsBootstrap.Button bsSize="small" onClick={handleEditContainer}>
+                    <EtsBootstrap.Glyphicon glyph="pencil" />
+                  </EtsBootstrap.Button>
+                  <EtsBootstrap.Button bsSize="small" onClick={handleRemoveContainer}>
+                    <EtsBootstrap.Glyphicon glyph="trash" />
+                  </EtsBootstrap.Button>
+                </React.Fragment>
+              )
+              : (
+                props.inspectIsClosed && (
+                  <EtsBootstrap.Button bsSize="small" onClick={handleEditContainer}>
+                    <EtsBootstrap.Glyphicon glyph="search" />
+                  </EtsBootstrap.Button>
+                )
+              )
+          }
+        </ButtonBlock>
+      </CheckContainerTd>
     </CheckContainerRow>
   );
 };

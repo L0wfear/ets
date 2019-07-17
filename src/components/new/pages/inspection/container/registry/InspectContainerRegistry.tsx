@@ -19,6 +19,8 @@ type InspectContainerRegistryProps = {
 
   addToActionRow: (obj: ValuesOf<InspectContainer['actions']>) => void;
   removeActionByIndex: (index: number) => void;
+
+  isPermitted: boolean;
 };
 
 // нерабочий шаблон
@@ -35,9 +37,11 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
 
   const handleClickRow = React.useCallback(
     (selectedRowNumberNew) => {
-      setSelectedRowNumber(selectedRowNumberNew);
+      if (props.isPermitted) {
+        setSelectedRowNumber(selectedRowNumberNew);
+      }
     },
-    [],
+    [props.isPermitted],
   );
 
   const removeActionByIndex = React.useCallback(
@@ -74,8 +78,14 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
       <EtsHeaderContainer>
         <EtsHeaderTitle>Проведённые мероприятия по подготовке емкости к эксплуатации</EtsHeaderTitle>
         <EtsButtonsContainer>
-          <EtsBootstrap.Button onClick={setShowFormTrue}>Добавить</EtsBootstrap.Button>
-          <EtsBootstrap.Button onClick={removeActionByIndex} disabled={!selectedRowNumber}>Удалить</EtsBootstrap.Button>
+          {
+            props.isPermitted && (
+              <React.Fragment>
+                <EtsBootstrap.Button onClick={setShowFormTrue}>Добавить</EtsBootstrap.Button>
+                <EtsBootstrap.Button onClick={removeActionByIndex} disabled={!selectedRowNumber}>Удалить</EtsBootstrap.Button>
+              </React.Fragment>
+            )
+          }
         </EtsButtonsContainer>
       </EtsHeaderContainer>
       <EtsTableDataContainer>

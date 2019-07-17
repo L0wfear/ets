@@ -18,7 +18,7 @@ export interface IPropsMapInfo {
   setManualOnTrue: ISetManualOnTrue;
   setManualOnFalse: ISetManualOnFalse;
   handleFeatureClick: iHandleFeatureClick;
-  handleDrawFeatureAdd: IHandleDrawFeatureAdd;
+  handleAddDrawLines: IHandleDrawFeatureAdd;
   handleDrawFeatureClick: IHandleDrawFeatureClick;
   handleRemoveLastDrawFeature: IHandleRemoveLastDrawFeature;
 }

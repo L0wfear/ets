@@ -297,7 +297,7 @@ class PlanTab extends React.Component<any, any> {
             mainPropsFields={fieldProps}
             handleChange={this.handleChangeTable}
             handleRowClick={this.handleRowClick}
-            disabled={disabled}
+            isPermitted={!disabled}
             errors={errors}
           />
         </EtsBootstrap.Col>

@@ -40,6 +40,12 @@ export const getToConfig = (car_id: number): TypeConfigData<RoadAccident> => {
     filter: {
       fields: [
         {
+          valueKey: 'company_id',
+          labelKey: 'company_short_name',
+          title: 'Организация',
+          type: 'multiselect',
+        },
+        {
           valueKey: 'accident_date',
           title: 'Дата',
           type: 'advanced-date',
@@ -99,6 +105,11 @@ export const getToConfig = (car_id: number): TypeConfigData<RoadAccident> => {
           {
             key: 'enumerated',
             title: '№',
+            width: 200,
+          },
+          {
+            key: 'company_short_name',
+            title: 'Организация',
             width: 200,
           },
           {

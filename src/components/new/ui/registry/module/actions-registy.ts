@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { isBoolean } from 'util';
+import { isBoolean, isNullOrUndefined } from 'util';
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,
@@ -204,7 +204,15 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     let payload = {};
     if (getRegistryData.payload) {
       payload = {
-        ...getRegistryData.payload,
+        ...Object.entries(getRegistryData.payload).reduce(
+          (newObj, [key, value]) => {
+            if (!isNullOrUndefined(value)) {
+              newObj[key] = value;
+            }
+            return newObj;
+          },
+          {},
+        ),
       };
     }
     if (userServerFilters) {
@@ -581,7 +589,18 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
   let fileName = '';
 
   if (getBlobData) {
-    const payload = getBlobData.payload || { format: 'xls'};
+    const payload = {
+      ...Object.entries(getBlobData.payload || {}).reduce(
+        (newObj, [key, value]) => {
+          if (!isNullOrUndefined(value)) {
+            newObj[key] = value;
+          }
+          return newObj;
+        },
+        {},
+      ),
+      format: 'xls',
+    };
 
     if (useFiltredData) {
       const registryData = get(getState(), `registry.${registryKey}`, null);
@@ -609,7 +628,7 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
         dispatch,
         getBlob(
           `${configStand.backend}/${getBlobData.entity}`,
-          getBlobData.payload || { format: 'xls'},
+          payload,
         ),
         { page: registryKey },
       );

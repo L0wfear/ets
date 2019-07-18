@@ -52,10 +52,11 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   }
 `;
 
-export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string }>`
+export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string; alignItems?: string }>`
   display: flex;
   flex-wrap: ${({ isWrap }) => (isWrap ? 'wrap' : 'initial')};
   flex-direction: ${({ direction }) => (direction ? direction : 'initial')};
+  align-items: ${({ alignItems }) => alignItems || 'initial'};
 `;
 
 export const Flex = styled.div<{

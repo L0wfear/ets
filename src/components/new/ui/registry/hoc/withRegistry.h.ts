@@ -161,7 +161,9 @@ export type TypeConfigData<F> = {
       | 'select_odh/dt'
       | 'datetime_range_picker'
       | 'select_for_technical_operation_relations'
+      | 'is_current_structure'
     );
+    is_current_structure_popover?: string;
     buttons?: ButtonDefineType,
   },
   filter?: {

@@ -384,6 +384,9 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     updateObjectData={this.updateObjectData}
                     isPermittedByStatus={isPermittedByStatus}
                     changeVersion={this.props.changeVersion}
+                    isPermittetForObjectFact={
+                      this.props.isPermittetForObjectFact
+                    }
                   />
                   <ProgramRemarkList
                     isSupervisor={isSupervisor}

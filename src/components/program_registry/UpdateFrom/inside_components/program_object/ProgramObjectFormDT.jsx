@@ -607,6 +607,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               <EtsBootstrap.Col md={7}>
                 <TabInfo
                   isPermitted={!(!asuods_id || !isPermitted)}
+                  isPermittetForObjectFact={
+                    !(!asuods_id || !this.props.isPermittetForObjectFact)
+                  }
                   whatSelectedTab={tabKey}
                   state={state}
                   errors={errors}

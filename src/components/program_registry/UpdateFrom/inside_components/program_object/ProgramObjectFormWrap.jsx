@@ -171,6 +171,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
         updateObjectData={this.updateObjectData}
         isPermittedByStatus={this.props.isPermittedByStatus}
         changeVersionWithObject={this.props.changeVersionWithObject}
+        isPermittetForObjectFact={this.props.isPermittetForObjectFact}
       />
     );
   }
@@ -198,6 +199,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
         }
         updateObjectData={this.updateObjectData}
         isPermittedByStatus={this.props.isPermittedByStatus}
+        isPermittetForObjectFact={this.props.isPermittetForObjectFact}
       />
     );
   }

@@ -206,7 +206,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
         buttonName={'Посмотреть'}
         key={1}
         onClick={this.showForm}
-        disabled={this.checkDisabledRead() || !isPermittedByStatus}
+        disabled={this.checkDisabledRead()}
         permissions={`${entity}.update`}
       />,
     ];

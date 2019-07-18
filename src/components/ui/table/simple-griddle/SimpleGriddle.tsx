@@ -99,7 +99,7 @@ class SimpleGriddle extends React.Component<any, any> {
     );
   }
 
-  getGlobalCheckboxState = (shortResult) => !shortResult.some((item) => !item.isChecked);
+  getGlobalCheckboxState = (shortResult) => shortResult.length && !shortResult.some((item) => !item.isChecked);
 
   mapTheadTrTh = (columnNameOuter) => {
     // При переключении страницы, чекбокс не ставится

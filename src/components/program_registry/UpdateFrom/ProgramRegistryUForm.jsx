@@ -370,32 +370,34 @@ class ProgramRegistryForm extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
-              {state.id ? (
-                <EtsBootstrap.Col md={12}>
-                  <ProgramObjectList
-                    program_version_id={state.id}
-                    program_version_status={state.status}
-                    object_type_id={state.object_type_id}
-                    contract_number={state.contract_number}
-                    contractor_id={state.contractor_id}
-                    company_id={state.company_id}
-                    company_name={state.company_name}
-                    repair_type_name={state.repair_type_name}
-                    updateObjectData={this.updateObjectData}
-                    isPermittedByStatus={isPermittedByStatus}
-                    changeVersion={this.props.changeVersion}
-                  />
-                  <ProgramRemarkList
-                    isSupervisor={isSupervisor}
-                    isСustomer={isСustomer}
-                    program_version_id={state.id}
-                    program_version_status={state.status}
-                    isPermittedByStatus={isPermittedByStatus}
-                  />
-                </EtsBootstrap.Col>
-              ) : (
-                <DivNone />
-              )}
+              <EtsBootstrap.Row>
+                {state.id ? (
+                  <EtsBootstrap.Col md={12}>
+                    <ProgramObjectList
+                      program_version_id={state.id}
+                      program_version_status={state.status}
+                      object_type_id={state.object_type_id}
+                      contract_number={state.contract_number}
+                      contractor_id={state.contractor_id}
+                      company_id={state.company_id}
+                      company_name={state.company_name}
+                      repair_type_name={state.repair_type_name}
+                      updateObjectData={this.updateObjectData}
+                      isPermittedByStatus={isPermittedByStatus}
+                      changeVersion={this.props.changeVersion}
+                    />
+                    <ProgramRemarkList
+                      isSupervisor={isSupervisor}
+                      isСustomer={isСustomer}
+                      program_version_id={state.id}
+                      program_version_status={state.status}
+                      isPermittedByStatus={isPermittedByStatus}
+                    />
+                  </EtsBootstrap.Col>
+                ) : (
+                  <DivNone />
+                )}
+              </EtsBootstrap.Row>
             </EtsBootstrap.Row>
           </ModalBody>
           <EtsBootstrap.ModalFooter>

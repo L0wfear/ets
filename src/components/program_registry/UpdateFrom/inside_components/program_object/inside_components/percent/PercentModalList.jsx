@@ -39,7 +39,10 @@ class PercentModalList extends UNSAFE_ElementsList {
     this.context.flux
       .getActions('repair')
       .removePercent(id)
-      .then(this.checkMinVals);
+      .then(() => {
+        this.props.updateObjectData();
+        this.checkMinVals();
+      });
 
   init() {
     this.checkMinVals();

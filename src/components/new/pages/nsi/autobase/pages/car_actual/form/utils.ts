@@ -193,7 +193,7 @@ export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_nu
  * @param gov_number номер ТС
  */
 export const filterDriverAccident = (employeeData: any, gov_number: CarWrap['gov_number']) => {
-  if (employeeData && employeeData.is_driver) {
+  if (employeeData) {
     const isFourInGovNumver = isFourDigitGovNumber(gov_number);
 
     if (isFourInGovNumver) {

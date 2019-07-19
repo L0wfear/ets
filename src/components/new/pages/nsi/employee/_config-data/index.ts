@@ -10,7 +10,7 @@ export default {
   path: '/nsi/employees',
   pathFormMenu: `/nsi/employees?${
     queryString.stringify({
-      [filterKey]: JSON.stringify({ active__in: [true] }),
+      [filterKey]: encodeURIComponent(JSON.stringify({ active__in: [true] })),
     })}`,
   routePath: `/nsi/employees/:${config.list.data.uniqKeyForParams}?`,
   title: 'Реестр сотрудников',

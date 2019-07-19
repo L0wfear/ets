@@ -69,12 +69,12 @@ export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
                 ),
                 uninstalled_at: (
                   !d.uninstalled_at && index
-                    ? 'Поле "Дата демонтажа" должно быть заполнено'
-                    : (
+                    ? (
                       diffDates(d.installed_at, d.uninstalled_at) > 0
                         ? 'Поле "Дата демонтажа" должна быть позже даты монтажа'
                         : ''
                     )
+                    : ''
                 ),
               });
             },

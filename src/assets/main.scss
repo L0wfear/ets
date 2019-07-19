@@ -912,6 +912,9 @@ body.application {
             color: white;
             padding-left: 5px;
           }
+          .form-group {
+            margin-bottom: 0px;
+          }
         }
       }
 
@@ -983,7 +986,7 @@ body.application {
   font-size: 12px;
   /* text-align: center; */
   margin-top: -10px;
-  transition: all .3s ease;
+  transition: background-color .3s ease, color .3s ease;
 }
 
 .form-control.has-error {

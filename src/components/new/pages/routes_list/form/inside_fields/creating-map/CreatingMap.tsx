@@ -141,7 +141,14 @@ class CreatingMap extends React.PureComponent<
 
         const needUpdateObjectData = true;
 
-        this.loadGeometry(this.props, this.state, needUpdateObjectData);
+        this.loadGeometry(
+          {
+            ...this.props,
+            object_list: getCacheDataForRoute(type).object_list,
+          },
+          this.state,
+          needUpdateObjectData,
+        );
       } else if (
         prevType &&
         prevMunicipalFacilityId &&
@@ -208,7 +215,7 @@ class CreatingMap extends React.PureComponent<
           geozone_municipal_facility_by_id,
           objectList,
         } = mergeStateFromObjectList(
-          geozoneMunicipalFacility.list,
+          props.object_list,
           geozoneMunicipalFacility.byId,
         );
 

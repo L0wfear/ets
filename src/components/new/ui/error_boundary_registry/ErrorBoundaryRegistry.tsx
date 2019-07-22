@@ -28,10 +28,14 @@ class ErrorBoundaryRegistry extends React.Component<any, { hasError: boolean, co
   componentDidCatch(error, info) {
     console.log(error); // tslint:disable-line:no-console
     console.log(info); // tslint:disable-line:no-console
+
     Raven.captureException(new Error(error));
-    this.setState({
-      intervalId: setInterval(this.updateCountLeft, 1000),
-    });
+
+    if (!this.state.intervalId) {
+      this.setState({
+        intervalId: setInterval(this.updateCountLeft, 1000),
+      });
+    }
   }
 
   refreshNow = () => {

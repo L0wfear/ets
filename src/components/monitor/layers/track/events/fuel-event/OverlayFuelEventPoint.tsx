@@ -30,7 +30,7 @@ const OverlayFuelEventPoint: React.FC<any> = (props) => {
   const {
     event_type,
     sensor_id,
-    event_val,
+    value,
     start_coords_msk,
     started_at_msk,
     finished_at_msk,
@@ -49,7 +49,7 @@ const OverlayFuelEventPoint: React.FC<any> = (props) => {
         <span className="font-bold">Датчик: </span><span>{sensor_id}</span>
       </OverlayLineInfoContainer>
       <OverlayLineInfoContainer>
-        <span className="font-bold">Кол-во: </span><span>{event_val} л.</span>
+        <span className="font-bold">Кол-во: </span><span>{value}</span>
       </OverlayLineInfoContainer>
       <OverlayLineInfoContainer>
         <span className="font-bold">Дата и время: </span><span>{start}</span>

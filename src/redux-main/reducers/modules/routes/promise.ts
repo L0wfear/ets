@@ -5,6 +5,7 @@ import {
 import { get, keyBy, cloneDeep } from 'lodash';
 import { Route, OdhValidate, DrawData } from './@types';
 import { getErrorNotificationFromBack } from 'utils/notifications';
+import { isArray } from 'util';
 
 const makeRoute = (route_data) => {
   const route: Route = cloneDeep(route_data);
@@ -71,6 +72,26 @@ const makeRoute = (route_data) => {
   return route;
 };
 
+const makeRouteForBackend = (route: Partial<Route>): Partial<Route> => {
+  if (route) {
+    const route_temp: any = cloneDeep(route);
+
+    if (isArray(route_temp.object_list)) {
+      route_temp.object_list = route_temp.object_list.map(
+        (object_data) => {
+          delete object_data.shape;
+
+          return object_data;
+        },
+      );
+    }
+
+    return route_temp;
+  }
+
+  return route;
+};
+
 export const promiseLoadRoutes = async (payload: object) => {
   let response = null;
 
@@ -109,7 +130,7 @@ export const promiseLoadRouteById = async (id: Route['id']) => {
 };
 export const promiseCreateRoute = async (formState: Partial<Route>, isTemplate?: boolean) => {
   const payload = {
-    ...formState,
+    ...makeRouteForBackend(formState),
   };
   const params = {
     is_template: Number(isTemplate),
@@ -138,7 +159,7 @@ export const promiseCreateRoute = async (formState: Partial<Route>, isTemplate?:
 };
 export const promiseUpdateRoute = async (formState: Partial<Route>) => {
   const payload = {
-    ...formState,
+    ...makeRouteForBackend(formState),
   };
 
   const response = await RouteService.put(payload, false, 'json');

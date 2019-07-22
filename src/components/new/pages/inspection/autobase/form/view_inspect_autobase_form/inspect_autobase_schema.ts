@@ -20,6 +20,8 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
       title: 'Наличие дорожных знаков на территории базы (в соответствии со схемой движения)',
       type: 'number',
       required: true,
+      minNotEqual: -1,
+      integer: true,
     },
     lack_of_fire_fighting_equipment: {
       title: 'Отсутствие противопожарного оборудования',
@@ -80,6 +82,8 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     cnt_defective_light: {
       title: 'Количество неисправных мачт освещения (шт.)',
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
 
       dependencies: [
         (value, { lack_of_lighting }, { type }) => {
@@ -104,6 +108,8 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     cnt_repair_posts: {
       title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
 
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
@@ -120,6 +126,8 @@ export const inspectAutobaeSchema: SchemaType<InspectAutobase['data'], { type: k
     repair_posts_in_poor_condition: {
       title: 'Постов в неудовлетворительном состоянии (шт.)',
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
     },
     lack_of_storage_facilities: {
       title: 'Отсутствие складских помещений на базе',

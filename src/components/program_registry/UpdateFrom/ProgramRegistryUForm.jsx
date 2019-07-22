@@ -384,6 +384,9 @@ class ProgramRegistryForm extends UNSAFE_Form {
                       repair_type_name={state.repair_type_name}
                       updateObjectData={this.updateObjectData}
                       isPermittedByStatus={isPermittedByStatus}
+                      isPermittedPercentByStatus={
+                        this.props.isPermittedPercentByStatus
+                      }
                       changeVersion={this.props.changeVersion}
                       isPermittetForObjectFact={
                         this.props.isPermittetForObjectFact

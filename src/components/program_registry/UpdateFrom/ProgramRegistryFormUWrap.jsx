@@ -39,7 +39,6 @@ const checkIsPermittedByStatus = (status) => {
       return true;
   }
 };
-
 const checkIsPermittedByStatusForObjectFact = (status) => {
   switch (status) {
     case 'sent_on_review':
@@ -330,6 +329,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
 
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
     const isPermittedByStatus = checkIsPermittedByStatus(status);
+
     const isPermittetForContractorL = checkIsPermittedByStatusForContractorLine(
       status,
     );
@@ -337,6 +337,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
     const isPermittetForObjectFact = checkIsPermittedByStatusForObjectFact(
       status,
     );
+    const isPermittedPercentByStatus = isPermittetForObjectFact;
 
     return (
       <ProgramRegistryForm
@@ -346,6 +347,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
         entity={entity}
         addPermissionProp
         isPermittedByStatus={isPermittedByStatus}
+        isPermittedPercentByStatus={isPermittedPercentByStatus}
         isPermittetForContractorL={isPermittetForContractorL}
         isPermittetForObjectFact={isPermittetForObjectFact}
         canSave={canSave}

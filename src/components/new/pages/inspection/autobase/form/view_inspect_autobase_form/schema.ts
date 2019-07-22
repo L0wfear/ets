@@ -22,6 +22,8 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       title: 'Наличие дорожных знаков на территории базы (в соответствии со схемой движения)',
       type: 'number',
       required: true,
+      minNotEqual: -1,
+      integer: true,
     },
     lack_of_fire_fighting_equipment: {
       title: 'Отсутствие противопожарного оборудования',
@@ -82,6 +84,9 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     cnt_defective_light: {
       title: 'Количество неисправных мачт освещения (шт.)',
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
+
       dependencies: [
         (value, { lack_of_lighting }, { type }) => {
           if (type === INSPECT_TYPE_FORM.list) {
@@ -106,6 +111,8 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
       minNotEqual: 0,
+      integer: true,
+
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
           if (type === INSPECT_TYPE_FORM.list) {
@@ -122,6 +129,8 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
       title: 'Постов в неудовлетворительном состоянии (шт.)',
       min: 0,
       type: 'number',
+      minNotEqual: -1,
+      integer: true,
     },
     lack_of_storage_facilities: {
       title: 'Отсутствие складских помещений на базе',

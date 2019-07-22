@@ -187,7 +187,9 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
 
     return (
       !checkedItemsAsArray.length
-      || checkedItemsAsArray.some((objectData) => objectData.fact_date_start)
+      || checkedItemsAsArray.some(
+        (objectData) => objectData.fact_date_start || objectData.fact_date_end,
+      )
     );
   }
 

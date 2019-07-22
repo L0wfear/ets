@@ -83,7 +83,7 @@ class PercentModalList extends UNSAFE_ElementsList {
    * @override
    */
   getButtons(propsButton = {}) {
-    const { isPermittedByStatus } = this.props;
+    const { isPermittedPercentByStatus } = this.props;
 
     // Операции, заданные в статической переменной operations класса-наследника
     const entity = this.constructor.entity;
@@ -101,7 +101,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         key={buttons.length}
         onClick={this.createElement}
         permissions={`${entity}.create`}
-        disabled={!isPermittedByStatus}
+        disabled={!isPermittedPercentByStatus}
       />,
     );
     buttons.push(
@@ -109,7 +109,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         buttonName={BRbuttonName}
         key={buttons.length}
         onClick={this.showForm}
-        disabled={this.checkDisabledRead() || !isPermittedByStatus}
+        disabled={this.checkDisabledRead() || !isPermittedPercentByStatus}
         permissions={`${entity}.read`}
       />,
     );
@@ -118,7 +118,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         buttonName={BDbuttonName}
         key={buttons.length}
         onClick={this.removeElement}
-        disabled={this.checkDisabledDelete() || !isPermittedByStatus}
+        disabled={this.checkDisabledDelete() || !isPermittedPercentByStatus}
         permissions={`${entity}.delete`}
       />,
     );

@@ -646,7 +646,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
-            isPermittedByStatus={isPermittedByStatus}
+            isPermittedPercentByStatus={this.props.isPermittedPercentByStatus}
           />
         )}
         <EtsBootstrap.ModalFooter>

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/useFormData';
-import { DefaultHeaderType } from 'components/new/utils/context/@types';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { DefaultHeaderType } from 'components/new/utils/context/form/@types';
 import { isArray } from 'util';
 
 type DefaultModalHeaderProps = {
@@ -41,7 +41,7 @@ const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
       ),
-      [title],
+      [props, title],
     );
   },
 );

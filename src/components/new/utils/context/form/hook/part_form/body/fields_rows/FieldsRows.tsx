@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/useFormData';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import SwitchFields from './fields_in_row/fields/SwitchFields';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -9,23 +9,27 @@ type FieldsRowsProps = {
 
 const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
   (props) => {
-    const fields = useForm.useFormDataSchemaBodyFields(props.formDataKey);
+    const fields = useForm.useFormDataSchemaBodyFields<any>(props.formDataKey);
 
     return React.useMemo(
       () => {
         return (
-          <EtsBootstrap.Row>
+          <React.Fragment>
             {
-              Object.entries(fields).map(([fieldDataKey, fieldData]: any) => (
-                <EtsBootstrap.Col md={fieldData.md || 12} key={fieldDataKey}>
-                  <SwitchFields fieldData={fieldData} fieldDataKey={fieldDataKey} formDataKey={props.formDataKey} />
-                </EtsBootstrap.Col>
+              fields.map((fieldDataRow, indexRow) => (
+                <EtsBootstrap.Row key={indexRow + 1}>
+                  {
+                    fieldDataRow.map((fieldData) => (
+                      <SwitchFields key={fieldData.key} fieldData={fieldData} formDataKey={props.formDataKey} />
+                    ))
+                  }
+                </EtsBootstrap.Row>
               ))
             }
-          </EtsBootstrap.Row>
+          </React.Fragment>
         );
       },
-      [fields, props.formDataKey],
+      [fields, props],
     );
   },
 );

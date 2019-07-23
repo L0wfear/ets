@@ -12,7 +12,7 @@ import {
   TimeLineContainer,
   DateLineContainer,
 } from 'components/new/pages/dashboard/time/styled/styled';
-import useMoscowTime from 'components/new/utils/hooks/services/useList/useMoscowTime';
+import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
 
 const DashboardTimeNew: React.FC<{ page: string }> = React.memo(
   (props) => {
@@ -22,7 +22,7 @@ const DashboardTimeNew: React.FC<{ page: string }> = React.memo(
 
     React.useEffect(
       () => {
-        const timestamp = get(moscowTime.list, '0.timestamp', null);
+        const timestamp = get(moscowTime.data, 'timestamp', null);
         let intervalIdtemp = null;
         let countInc = 0;
 

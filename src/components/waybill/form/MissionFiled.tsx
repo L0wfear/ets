@@ -210,9 +210,10 @@ class MissionField extends React.Component<any, any> {
         label: `№${number} (${technical_operation_name})`,
         clearableValue: countMissionMoreOne,
         number,
-        className: 'yellow',
+        className: 'yellow',        // <<< не работает Сделать "в выпадающем списке и выбранном"
       }),
     );
+
     const missionOptions = [...MISSIONS, ...OUTSIDEMISSIONS].reduce(
       (newArr, item) => {
         if (!newArr.some((innerItem) => innerItem.value === item.value)) {

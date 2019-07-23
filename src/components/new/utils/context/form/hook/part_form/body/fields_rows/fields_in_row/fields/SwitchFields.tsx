@@ -1,36 +1,40 @@
 import * as React from 'react';
 import FieldName from './name/FieldName';
 import FieldMeasureUnitId from './measure_unit_id/FieldMeasureUnitId';
+import { ContextFormField } from 'components/new/utils/context/form/@types/fields';
+import FieldOnLineString from './waybill/waybill_idle_time_on_line/field_on_line_string/FieldOnLineString';
+import WaybillFormBody from './waybill/WaybillFormBody';
 
 type SwitchFieldsProps = {
-  fieldData: any;
-  fieldDataKey: string;
+  fieldData: ContextFormField;
   formDataKey: string;
+};
+
+const ComponentsByKey: Record<ContextFormField['key'], React.ComponentType<any>> = {
+  name: FieldName,
+  measure_unit_id: FieldMeasureUnitId,
+  downtime_hours_work: FieldOnLineString,
+  downtime_hours_duty: FieldOnLineString,
+  downtime_hours_dinner: FieldOnLineString,
+  downtime_hours_repair: FieldOnLineString,
+  waybill_form_body: WaybillFormBody,
 };
 
 const SwitchFields: React.FC<SwitchFieldsProps> = React.memo(
   (props) => {
-    if (props.fieldDataKey === 'name') {
+    const ComponentName = ComponentsByKey[props.fieldData.key];
+
+    if (ComponentName) {
       return (
-        <FieldName
+        <ComponentName
           fieldData={props.fieldData}
-          fieldDataKey={props.fieldDataKey}
-          formDataKey={props.formDataKey}
-        />
-      );
-    }
-    if (props.fieldDataKey === 'measure_unit_id') {
-      return (
-        <FieldMeasureUnitId
-          fieldData={props.fieldData}
-          fieldDataKey={props.fieldDataKey}
           formDataKey={props.formDataKey}
         />
       );
     }
 
     return (
-      <div>{`Определи поле для ${props.fieldData.key}`}</div>
+      <div>{`Определи поле для ${props.fieldData.key} в SwitchFields ComponentsByKey`}</div>
     );
   },
 );

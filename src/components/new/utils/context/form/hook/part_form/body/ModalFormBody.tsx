@@ -1,5 +1,5 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/useFormData';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import FieldsRows from './fields_rows/FieldsRows';
 
@@ -18,7 +18,7 @@ const ModalFormBody: React.FC<ModalFormBodyProps> = React.memo(
           <FieldsRows formDataKey={props.formDataKey} />
         </ModalBodyPreloader>
       ),
-      [page, path],
+      [page, path, props],
     );
   },
 );

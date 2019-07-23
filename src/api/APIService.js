@@ -256,8 +256,8 @@ export default class APIService {
     return this;
   }
 
-  log(method) {
-    this.logFunction(method);
+  log() {
+    // this.logFunction(method);
   }
 
   connectToLoggerService(fn) {

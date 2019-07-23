@@ -17,6 +17,10 @@
       border-left: #ccc 1px solid;
       border-top: #ccc 1px solid;
       border-bottom: #ccc 1px solid;
+      &.rw-input[disabled] {
+        background-color: #f8f8f8;
+        border-color: #cccccc;
+      }
     }
   }
   &.has-error>.rw-widget-picker.rw-widget-container {

@@ -1,4 +1,4 @@
-import { FuelCards, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ActualBatteriesOnCar } from '../actions_by_type/actual_batteries_on_car/@types';
 import { ActualTiresOnCar } from '../actions_by_type/actual_tires_on_car/@types';
 
@@ -431,7 +431,7 @@ export type IStateAutobase = {
   carCategoryList: CarCategory[];
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];
-  fuelCardsList: FuelCards[];
+  fuelCardsList: FuelCard[];
   fuelTypeList: FuelType[];
   typesAttrList: TypesAttr[];
 };

@@ -9,7 +9,6 @@ import {
   getSessionStructuresOptions,
 } from 'redux-main/reducers/modules/session/selectors';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 export type StateFieldStructureDutyMission = {};
 

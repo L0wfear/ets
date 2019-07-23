@@ -13,18 +13,21 @@ export type Waybill = {
   accompanying_person_name: string;
   activated_by_employee_id: number;
   activated_by_employee_name: string;
-  all_missions_completed_or_failed: boolean | null;
+  all_missions_completed_or_failed: boolean;
   all_missions_status: 'not_all_completed' | any;
   can_delete_missions: boolean;
   car_id: number;
   car_model_id: number;
   car_model_name: string;
+  car_type_id: number;
+  car_type_name: string;
+  car_gps_code: string;
   car_refill: WaybillCarRefill[]
   car_special_model_id: number;
   car_special_model_name: string;
   closed_by_employee_id: number;
   closed_by_employee_name: string;
-  closed_editable: boolean | false
+  closed_editable: boolean;
   closing_date: string;
   comment: string;
   company_id: number;
@@ -38,7 +41,7 @@ export type Waybill = {
   driver_id: number;
   driver_fio: string;
   equipment_fact_fuel_end: number;
-  equipment_fuel: true
+  equipment_fuel: boolean;
   equipment_fuel_end: number;
   equipment_fuel_given: number;
   equipment_fuel_start: number;
@@ -49,7 +52,7 @@ export type Waybill = {
   fact_arrival_date: string;
   fact_departure_date: string;
   fact_fuel_end: number;
-  failed_medical_stat_types: boolean | null;
+  failed_medical_stat_types: boolean;
   fuel_end: number;
   fuel_given: number;
   fuel_start: number;
@@ -58,7 +61,8 @@ export type Waybill = {
   garage_number: string;
   gov_number: string;
   id: number;
-  is_bnso_broken: boolean | null;
+  is_bnso_broken: boolean;
+  is_one_fuel_tank: boolean;
   mission_id_list: Mission['id'][];
   motohours_end: number;
   motohours_equip_end: number;
@@ -73,9 +77,27 @@ export type Waybill = {
   status: 'draft' | any;
   structure_id: number;
   structure_name: string;
-  tax_data: any[];
+  tax_data: {
+    FACT_VALUE: number;
+    FUEL_RATE: number;
+    OPERATION: number;
+    RESULT: string;       // number.toFixed(3)
+    comment: string;
+    fuel_correction_rate: number;
+    is_excluding_mileage: boolean;
+    measure_unit_name: string;
+    operation_name: string;
+  }[];
   track_length: number;
   trailer_id: number;
+  trailer_type_id: number;
+  trailer_type_name: string;
+  trailer_gps_code: string;
+  trailer_gov_number: string;
+  trailer_model_id: number;
+  trailer_model_name: string;
+  trailer_special_model_id: number;
+  trailer_special_model_name: string;
   work_mode_id: number;
   work_mode_name: string;
   work_mode_text: string;

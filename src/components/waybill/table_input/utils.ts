@@ -1,4 +1,4 @@
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import memoizeOne from 'memoize-one';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
@@ -6,12 +6,12 @@ import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
 
 export const makeFuelCardStrickOptions = memoizeOne(
   (
-    fuelCardsList: FuelCards[],
+    fuelCardsList: FuelCard[],
     fuel_type: Waybill['fuel_type'],
     userCompanyId: InitialStateSession['userData']['company_id'],
     structure_id: Waybill['structure_id'],
   ) => {
-    return fuelCardsList.reduce<DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]>(
+    return fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
       (newArr, rowData) => {
         const triggerOnShow = (
           (
@@ -45,13 +45,13 @@ export const makeFuelCardStrickOptions = memoizeOne(
 
 export const makeFuelCardIdOptions = memoizeOne(
   (
-    fuelCardsList: FuelCards[],
+    fuelCardsList: FuelCard[],
     car_refill: Waybill['car_refill'] | Waybill['equipment_refill'],
     fuel_type: Waybill['fuel_type'],
     userCompanyId: InitialStateSession['userData']['company_id'],
     structure_id: Waybill['structure_id'],
   ) => {
-    return fuelCardsList.reduce<DefaultSelectOption<FuelCards['id'], FuelCards['number'], FuelCards>[]>(
+    return fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
       (newArr, rowData) => {
         const triggerOnShow = (
           (

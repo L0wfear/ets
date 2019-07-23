@@ -76,7 +76,7 @@ export const Option = styled(components.Option)`
 
     background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.8)' : 'initial'};
     &:hover {
-      background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.65)' : 'rgba(222, 235, 255, 0.5)'};
+      background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.65)' : 'rgba(127, 198, 80, 0.5)'};
     }
   }
 `;

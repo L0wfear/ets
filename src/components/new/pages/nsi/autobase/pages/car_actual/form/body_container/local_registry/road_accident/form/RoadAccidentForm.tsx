@@ -28,13 +28,11 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
 import { getLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
 import { createValidDate } from 'utils/dates';
-import { filterDriverAccident } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
+import FieldRoadAccidentDriverId from './inside_fields/driver_id/FieldRoadAccidentDriverId';
 
 const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const [roadAccidentCauseOptions, setRoadAccidentCauseOptions] = React.useState([]);
-  const [driversOptions, setDriversOptions] = React.useState([]);
   const [roadAccidentCauseIsLoading, setRoadAccidentCauseIsLoading] = React.useState(false);
-  const [employeeDriverIsLoading, setEmployeeDriverIsLoading] = React.useState(false);
   const dispatch = useDispatch();
   const userCompanyId = useSelector(
     (stateRedux: ReduxState) => getSessionState(stateRedux).userData.company_id,
@@ -84,71 +82,11 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
     setRoadAccidentCauseIsLoading(false);
   }, []);
 
-  const employeeDriverOptionsLoad = React.useCallback (async () => {
-    try {
-      setEmployeeDriverIsLoading(true);
-      const employeeDriverGetSetDriverData = await dispatch(
-        employeeActions.employeeDriverGetSetDriver(
-          {},
-          { page, path },
-        ),
-      );
-
-      setDriversOptions(
-        get(employeeDriverGetSetDriverData, 'payload.data', [])
-          .filter((driverOpt) => {
-            return filterDriverAccident(
-              driverOpt,
-              car_gov_number,
-            );
-          })
-          .map((driver) => ({
-            value: driver.id,
-            label: driver.fio_license,
-            rowData: driver,
-          })),
-      );
-    } catch (error) {
-      console.error(error); // tslint:disable-line
-    }
-    setEmployeeDriverIsLoading(false);
-  }, [car_gov_number]);
-
   React.useEffect(
     () => {
       roadAccidentCauseOptionsLoad();
-      employeeDriverOptionsLoad();
     },
     [],
-  );
-
-  const getLatestWaybillDriverLoad = React.useCallback( async (road_accident_date) => {
-    let responseData = null;
-    try {
-      setEmployeeDriverIsLoading(true);
-      responseData = await dispatch(
-        getLatestWaybillDriver({
-          car_id,
-          road_accident_date: road_accident_date || createValidDate(state.accident_date),
-        }),
-      );
-    } catch (error) {
-      console.error(error); // tslint:disable-line
-    }
-    setEmployeeDriverIsLoading(false);
-    return responseData;
-  }, [state.accident_date, car_id]);
-
-  const accidentDateHandleChange = React.useCallback( (key, value) => {
-      props.handleChange(key, value);
-      if (IS_CREATING && !state.driver_id) {
-        const lastDriverData = get(getLatestWaybillDriverLoad(value), 'result', null);
-        const lastDriverId = get(lastDriverData, 'driver_id', null);
-        if (lastDriverId) {
-          props.handleChange('driver_id', lastDriverId);
-        }
-      }
-    }, [state.accident_date],
   );
 
   return (
@@ -170,26 +108,27 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
               date={state.accident_date}
               time={false}
               error={errors.accident_date}
-              onChange={accidentDateHandleChange}
+              onChange={props.handleChange}
               boundKeys="accident_date"
               disabled={!isPermitted}
               modalKey={page}
               makeGoodFormat
             />
-            <ExtField
-              id="driver_id"
-              type="select"
-              label="Водитель"
-              value={state.driver_id}
-              error={errors.driver_id}
-              options={driversOptions}
-              emptyValue={null}
-              onChange={props.handleChange}
-              boundKeys="driver_id"
-              clearable={false}
-              disabled={!isPermitted}
-              modalKey={page}
-              etsIsLoading={employeeDriverIsLoading}
+            <FieldRoadAccidentDriverId
+              driver_id={state.driver_id}
+              error_driver_id={errors.driver_id}
+              isPermitted={isPermitted}
+              handleChange={props.handleChange}
+              page={page}
+              path={path}
+              car_gov_number={car_gov_number}
+              car_id={state.car_id}
+
+              driver_fio={state.driver_fio}
+              employee_position_name={state.employee_position_name}
+              special_license={state.special_license}
+              drivers_license={state.drivers_license}
+              accident_date={state.accident_date}
             />
             <ExtField
               id="cause_id"

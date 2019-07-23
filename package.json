@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.30.247",
+    "version": "0.30.248",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -9,7 +9,7 @@
     "dependencies": {
         "bootstrap3": "=3.3.5",
         "classnames": "=2.2.6",
-        "flummox": "=3.6s.9",
+        "flummox": "=3.6.9",
         "highcharts": "=7.1.2",
         "history": "=4.9.0",
         "html2canvas": "^1.0.0-rc.3",

@@ -1297,8 +1297,6 @@ class WaybillForm extends UNSAFE_Form {
     const IS_DRAFT = state.status && state.status === 'draft';
     const IS_CLOSED = state.status && state.status === 'closed';
 
-    const car = carsIndex[state.car_id];
-    const trailer = carsIndex[state.trailer_id];
     const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '')
       .toLowerCase()
       .includes('камаз');
@@ -1546,15 +1544,11 @@ class WaybillForm extends UNSAFE_Form {
                 className="white-space-pre-wrap"
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
-                value={
-                  car
-                    ? `${car.gov_number} [${car.model_name || ''}${
-                      car.model_name ? '/' : ''
-                    }${car.special_model_name || ''}${
-                      car.type_name ? '/' : ''
-                    }${car.type_name || ''}]`
-                    : 'Н/Д'
-                }
+                value={`${state.gov_number} [${state.car_model_name || ''}${
+                  state.car_model_name ? '/' : ''
+                }${state.car_special_model_name || ''}${
+                  state.car_type_name ? '/' : ''
+                }${state.car_type_name || ''}]`}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
@@ -1581,11 +1575,12 @@ class WaybillForm extends UNSAFE_Form {
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
                 value={
-                  trailer
-                    ? `${trailer.gov_number} [${trailer.special_model_name
-                        || ''}${
-                      trailer.special_model_name ? '/' : ''
-                    }${trailer.model_name || ''}]`
+                  state.trailer_id
+                    ? `${
+                      state.trailer_gov_number
+                    } [${state.trailer_special_model_name || ''}${
+                      state.trailer_special_model_name ? '/' : ''
+                    }${state.trailer_model_name || ''}]`
                     : 'Н/Д'
                 }
               />

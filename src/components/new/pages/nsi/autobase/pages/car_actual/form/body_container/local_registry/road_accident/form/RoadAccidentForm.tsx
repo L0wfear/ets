@@ -7,7 +7,6 @@ import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/schema';
 
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
 import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -26,8 +25,6 @@ import { getDefaultRoadAccidentElement } from './utils';
 import roadAccidentPermissions from '../_config-data/permissions';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
-import { getLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
-import { createValidDate } from 'utils/dates';
 import FieldRoadAccidentDriverId from './inside_fields/driver_id/FieldRoadAccidentDriverId';
 
 const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
@@ -46,8 +43,6 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   } = props;
 
   const IS_CREATING = !state.id;
-  const car_id = get(props, 'element.car_id', null);
-  const car_gov_number = get(props, 'element.car_gov_number', null);
 
   const title = !IS_CREATING
     ? 'Изменение записи'
@@ -121,7 +116,7 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
               handleChange={props.handleChange}
               page={page}
               path={path}
-              car_gov_number={car_gov_number}
+              car_gov_number={state.car_gov_number}
               car_id={state.car_id}
 
               driver_fio={state.driver_fio}

@@ -635,6 +635,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                     handleFeatureClick={this.handleFeatureClick}
                     manual={manual}
                     polys={dtPolys}
+                    focusOnSelectedGeo
                     objectList={objectList}
                     objectsType={objectsType}
                     startDraw={this.startDraw}

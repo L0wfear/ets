@@ -19,6 +19,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const styleTextMakeVersion = { marginBottom: 5 };
 const TextMakeVersion = (
@@ -401,83 +402,87 @@ class ProgramRegistryForm extends UNSAFE_Form {
           <EtsBootstrap.ModalFooter>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
-                {[
-                  this.getButton(
-                    0,
-                    this.props.handleExportVersion,
-                    <EtsBootstrap.Glyphicon glyph="download-alt" />,
-                    false && permissionForButton.exportPDF,
-                  ),
-                  this.getButton(
-                    1,
-                    this.showMakeVersionForm,
-                    'Создать версию',
-                    permissionForButton.createVersion,
-                    this.props.canSave
-                      && state.status === 'accepted'
-                      && state.is_active
-                      && mainButtonEnable,
-                  ),
-                  this.getButton(
-                    2,
-                    this.sendToApply,
-                    'Сохранить и отправить на согласование',
-                    permissionForButton.sendToApply,
-                    this.props.canSave
-                      && (state.status === 'draft'
-                        || state.status === 'rejected')
-                      && mainButtonEnable,
-                  ),
-                  this.getButton(
-                    3,
-                    this.props.onSubmit,
-                    'Сохранить',
-                    permissionForButton.onSubmit,
-                    this.props.canSave
-                      && (state.status === 'draft'
-                        || state.status === 'rejected'
-                        || state.status === 'accepted')
-                      && mainButtonEnable,
-                  ),
-                  this.getButton(
-                    4,
-                    this.props.onSubmitAndContinue,
-                    'Сохранить и продолжить',
-                    permissionForButton.onSubmitAndContinue,
-                    this.props.canSave
-                      && (state.status === 'draft'
-                        || state.status === 'rejected'
-                        || state.status === 'accepted')
-                      && mainButtonEnable,
-                  ),
-                ]}
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-            <EtsBootstrap.Row style={{ marginTop: 5 }}>
-              <EtsBootstrap.Col md={12}>
-                {[
-                  this.getButton(
-                    20,
-                    this.props.applyVersion,
-                    'Согласовать',
-                    permissionForButton.applyVersion,
-                    this.props.canSave && state.status === 'sent_on_review',
-                  ),
-                  this.getButton(
-                    21,
-                    this.props.canselVersion,
-                    'Отклонить',
-                    permissionForButton.canselVersion,
-                    this.props.canSave && state.status === 'sent_on_review',
-                  ),
-                  this.getButton(
-                    22,
-                    this.props.closeVersion,
-                    'Закрыть программу (завершить)',
-                    permissionForButton.closeVersion,
-                    this.props.canSave && state.status === 'accepted',
-                  ),
-                ]}
+                <EtsButtonsContainer>
+                  {[
+                    this.getButton(
+                      0,
+                      this.props.handleExportVersion,
+                      <EtsBootstrap.Glyphicon glyph="download-alt" />,
+                      false && permissionForButton.exportPDF,
+                    ),
+                    this.getButton(
+                      1,
+                      this.showMakeVersionForm,
+                      'Создать версию',
+                      permissionForButton.createVersion,
+                      this.props.canSave
+                        && state.status === 'accepted'
+                        && state.is_active
+                        && mainButtonEnable,
+                    ),
+                    this.getButton(
+                      2,
+                      this.sendToApply,
+                      'Сохранить и отправить на согласование',
+                      permissionForButton.sendToApply,
+                      this.props.canSave
+                        && (state.status === 'draft'
+                          || state.status === 'rejected')
+                        && mainButtonEnable,
+                    ),
+                    this.getButton(
+                      3,
+                      this.props.onSubmit,
+                      'Сохранить',
+                      permissionForButton.onSubmit,
+                      this.props.canSave
+                        && (state.status === 'draft'
+                          || state.status === 'rejected'
+                          || state.status === 'accepted')
+                        && mainButtonEnable
+                        && state.is_active,
+                    ),
+                    this.getButton(
+                      4,
+                      this.props.onSubmitAndContinue,
+                      'Сохранить и продолжить',
+                      permissionForButton.onSubmitAndContinue,
+                      this.props.canSave
+                        && (state.status === 'draft'
+                          || state.status === 'rejected'
+                          || state.status === 'accepted')
+                        && mainButtonEnable
+                        && state.is_active,
+                    ),
+                  ]}
+                </EtsButtonsContainer>
+                <EtsButtonsContainer>
+                  {[
+                    this.getButton(
+                      20,
+                      this.props.applyVersion,
+                      'Согласовать',
+                      permissionForButton.applyVersion,
+                      this.props.canSave && state.status === 'sent_on_review',
+                    ),
+                    this.getButton(
+                      21,
+                      this.props.canselVersion,
+                      'Отклонить',
+                      permissionForButton.canselVersion,
+                      this.props.canSave && state.status === 'sent_on_review',
+                    ),
+                    this.getButton(
+                      22,
+                      this.props.closeVersion,
+                      'Закрыть программу (завершить)',
+                      permissionForButton.closeVersion,
+                      this.props.canSave
+                        && state.status === 'accepted'
+                        && state.is_active,
+                    ),
+                  ]}
+                </EtsButtonsContainer>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </EtsBootstrap.ModalFooter>

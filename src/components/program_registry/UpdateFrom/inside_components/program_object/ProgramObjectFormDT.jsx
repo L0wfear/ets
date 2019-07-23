@@ -341,7 +341,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
     const { OBJECT_OPTIONS = [] } = this.state;
 
-    const dtPolys = cloneDeep(dtPolysOld);
+    let dtPolys = cloneDeep(dtPolysOld);
 
     const {
       name,
@@ -352,17 +352,26 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     }
       = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
-    if (!isEmpty(object_list_old)) {
-      const [{ object_id: object_id_old }] = object_list_old;
+    if (!this.state.manual) {
+      if (!isEmpty(object_list_old)) {
+        const [{ object_id: object_id_old }] = object_list_old;
 
-      if (object_id_old === object_id) {
-        return;
+        if (object_id_old === object_id) {
+          return;
+        }
+
+        dtPolys[object_id_old].state = polyState.ENABLE;
       }
 
-      dtPolys[object_id_old].state = polyState.ENABLE;
+      dtPolys[object_id].state = polyState.SELECTED;
+    } else {
+      dtPolys = {
+        [object_id]: {
+          ...this.props.dtPolys[object_id],
+          state: polyState.SELECTED,
+        },
+      };
     }
-
-    dtPolys[object_id].state = polyState.SELECTED;
 
     const selectedObj = dtPolys[object_id];
 
@@ -394,7 +403,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       draw_object_list: [],
     };
 
-    this.setState({ selectedObj, dtPolys, manual: false });
+    this.setState({ selectedObj, dtPolys });
     this.props.handleMultiChange({ ...changeObject });
   };
 

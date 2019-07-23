@@ -130,11 +130,12 @@ class RouteCreatingMap extends React.PureComponent<PropsRouteCreatingMap, StateP
                       objectsType === 'mixed' || objectsType === 'simple_dt'
                       ? (
                         <LayerEditGeoobjRoute
+                          focusOnSelectedGeo={this.props.focusOnSelectedGeo}
                           map={map}
                           geoobjects={props.polys}
                           centerOn={centerOn}
                           handleFeatureClick={props.handleFeatureClick}
-                          />
+                        />
                       )
                       : (
                         <DivNone />

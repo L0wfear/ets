@@ -5,6 +5,7 @@ import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.
 import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
 
 export type PropsLayerEditGeoobjRoute = {
+  focusOnSelectedGeo?: boolean;
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
   getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer,
   removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,

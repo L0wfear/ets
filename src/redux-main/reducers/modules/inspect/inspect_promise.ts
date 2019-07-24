@@ -31,11 +31,11 @@ export const promiseGetInspectRegistry = async <T>(payload: object) => {
   };
 };
 
-export const promiseGetInspectionByIdType = async (id: number, type: TypeOfInspect) => {
+export const promiseGetInspectionByIdType = async (id: number) => {
   let response = null;
   try {
     response = await InspectRegistryService.path(id).get(
-      { type },
+      {},
     );
   } catch (error) {
     console.error(error); // tslint:disable-line

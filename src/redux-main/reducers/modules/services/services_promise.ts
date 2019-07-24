@@ -20,11 +20,11 @@ export const promiseChangeServiceActiveStatus = async (slug: string, is_active: 
   return result;
 };
 
-export const promisePostServiceFiles = async (id: Service['id'], files: any[]) => {
+export const promiseChangeServiceFiles = async (id: Service['id'], files: any[]) => {
   let response = null;
 
   try {
-    response = await ServicesService.path(id).path('files').post(
+    response = await ServicesService.path(id).put(
       {
         files,
       },
@@ -36,22 +36,4 @@ export const promisePostServiceFiles = async (id: Service['id'], files: any[]) =
   }
 
   return response;
-};
-
-export const promiseDeleteServiceFileById = async (id: Service['id'], file_id: number) => {
-  let response = null;
-
-  try {
-    response = await ServicesService.path(id).path('files').path(file_id).delete(
-      {},
-      false,
-      'json',
-    );
-  } catch (error) {
-    throw error;
-  }
-
-  const result: Service = get(response, 'result.rows.0', null);
-
-  return result;
 };

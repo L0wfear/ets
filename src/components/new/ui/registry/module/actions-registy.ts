@@ -286,6 +286,27 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       case 'mission': {
         arrayRaw = arrayRaw.map(getFrontMission);
       }
+      case 'inspect_act_scan': {
+        arrayRaw = arrayRaw.reduce(
+          (newArr, { files }) => {
+            files.forEach(
+              (file) => {
+                if (file.kind === 'act_scan') {
+                  newArr.push({
+                    id: file.id,
+                    files: [file],
+                    name: file.name,
+                    notes: file.notes,
+                  });
+                }
+              },
+            );
+
+            return newArr;
+          },
+          [],
+        );
+      }
     }
 
     if (userServerFilters) {

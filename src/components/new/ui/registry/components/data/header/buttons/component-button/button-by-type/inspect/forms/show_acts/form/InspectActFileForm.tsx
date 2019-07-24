@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { get } from 'lodash';
 
 import { InspectOneActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/ui/new/field/ExtField';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { actionLoadActFileData, actionPostActFileData, actionPutActFileData } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_actions';
+import { actionChangeActFiles } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_actions';
 import { PropsInspectActFileForm, OwnInspectActFileFormProps, PropsInspectActFileFormWithForm } from './@types/InspectActFileForm';
 import inspectActScanPermissions from '../registry/permissions';
 import { getDefaultInspectActFileElement } from './utils';
@@ -25,41 +24,6 @@ const InspectActFileForm: React.FC<PropsInspectActFileForm> = React.memo(
       IS_CREATING,
     } = props;
 
-    const handleChangeFile = React.useCallback(
-      (newFiles) => {
-        const action = get(newFiles, '0.action', '');
-
-        if (action === 'delete') {
-          props.handleChange({
-            name: null,
-            base64: null,
-          });
-        } else {
-          props.handleChange({
-            name: get(newFiles, '0.name', ''),
-            base64: get(newFiles, '0.base64', ''),
-          });
-        }
-      },
-      [props.handleChange],
-    );
-
-    const files = React.useMemo(
-      () => {
-        if (state.name && (state.base64 || state.url)) {
-          return [
-            {
-              name: state.name,
-              base64: state.base64,
-              url: state.url,
-            },
-          ];
-        }
-        return [];
-      },
-      [state.name, state.base64, state.url],
-    );
-
     return (
       <EtsBootstrap.ModalContainer id="modal-inspect-act-file" show onHide={props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
@@ -72,10 +36,11 @@ const InspectActFileForm: React.FC<PropsInspectActFileForm> = React.memo(
                 id="inspect_act_file_data"
                 modalKey={path}
                 label="Файл"
-                value={files}
-                error={errors.name}
-                onChange={handleChangeFile}
+                value={state.files}
+                error={errors.files}
+                onChange={props.handleChange}
                 disabled={!isPermitted || !IS_CREATING}
+                boundKeys="files"
               />
               <ExtField
                 type="string"
@@ -105,9 +70,8 @@ const InspectActFileForm: React.FC<PropsInspectActFileForm> = React.memo(
 export default compose<PropsInspectActFileForm, OwnInspectActFileFormProps>(
   withForm<PropsInspectActFileFormWithForm, InspectOneActScan>({
     uniqField: 'id',
-    getRecordAction: actionLoadActFileData,
-    createAction: actionPostActFileData,
-    updateAction: actionPutActFileData,
+    createAction: actionChangeActFiles,
+    updateAction: actionChangeActFiles,
     mergeElement: (props) => {
       return getDefaultInspectActFileElement(props.element);
     },

@@ -1,53 +1,23 @@
-import { get } from 'lodash';
 
-import { InspectActScan, InspectOneActScan } from "./@types/inspect_act_scan";
-import { InspectionActScanService } from "api/Services";
+import { InspectOneActScan } from "./@types/inspect_act_scan";
+import { InspectionService } from "api/Services";
 
-export const promiseLoadActFileData = async (file_id: InspectActScan['id']): Promise<InspectOneActScan> => {
-  let respose = null;
+export const promiseChangeActFiles = async (fileData: InspectOneActScan): Promise<InspectOneActScan> => {
+  let response = null;
 
-  try {
-    respose = await InspectionActScanService.path(file_id).get();
-  } catch (error) {
-    console.log(error); // tslint:disable-line
-  }
-
-  return {
-    id: file_id,
-    ...get(respose, 'result.rows.0', null),
-  };
-};
-
-export const promisePostActFileData = async (fileData: InspectOneActScan): Promise<InspectOneActScan> => {
-  const respose = await InspectionActScanService.post(
+  response = await InspectionService.path(fileData.inspection_id).path('files').put(
     {
-      id: fileData.id,
-      inspection_id: fileData.inspection_id,
-      name: fileData.name,
-      notes: fileData.notes,
-      base64: fileData.base64,
+      files: fileData.files.map(
+        (file) => ({
+          ...file,
+          notes: fileData.notes,
+          kind: 'act_scan',
+        }),
+      ),
     },
     false,
     'json',
   );
 
-  return {
-    ...fileData,
-    ...get(respose, 'result.rows.0', null),
-  };
-};
-
-export const promisePutActFileData = async (fileData: InspectOneActScan): Promise<InspectOneActScan> => {
-  const respose = await InspectionActScanService.path(fileData.id).put(
-    {
-      notes: fileData.notes,
-    },
-    false,
-    'json',
-  );
-
-  return {
-    ...fileData,
-    ...get(respose, 'result.rows.0', null),
-  };
+  return response;
 };

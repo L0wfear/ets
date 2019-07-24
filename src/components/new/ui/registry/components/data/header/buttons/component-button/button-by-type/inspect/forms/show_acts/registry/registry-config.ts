@@ -5,13 +5,14 @@ import { InspectActScan } from 'redux-main/reducers/modules/inspect/act_scan/@ty
 
 export const registryKey = 'inspect_acts';
 
-export const getConfig = (inspection_id: number): TypeConfigData<InspectActScan> => ({
+export const getConfig = (inspection_id: number, type: 'autobase' | 'pgm_base' | 'cars_condition'): TypeConfigData<InspectActScan> => ({
   Service: {
     getRegistryData: {
-      entity: `inspection/act/scan`,
+      entity: `inspect/registry/${inspection_id}`,
       payload: {
-        inspection_id,
+        type,
       },
+      format: 'inspect_act_scan',
     },
   },
   registryKey,

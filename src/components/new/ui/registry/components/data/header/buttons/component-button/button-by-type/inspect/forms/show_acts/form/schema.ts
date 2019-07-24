@@ -4,11 +4,16 @@ import { PropsInspectActFileForm } from './@types/InspectActFileForm';
 
 export const inspectActFileFormSchema: SchemaType<InspectOneActScan, PropsInspectActFileForm> = {
   properties: {
-    name: {
+    files: {
       title: 'Файл',
-      type: 'string',
-      required: true,
-      maxLength: 1024,
+      type: 'multiValueOfArray',
+      dependencies: [
+        (files) => {
+          if (!files.length) {
+            return 'Поле "Файл" должно быть заполнено';
+          }
+        },
+      ],
     },
     notes: {
       title: 'Примечание',

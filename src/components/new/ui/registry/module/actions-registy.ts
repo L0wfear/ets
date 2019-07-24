@@ -282,9 +282,11 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       }
       case 'duty_mission': {
         arrayRaw = arrayRaw.map(getFrontDutyMission);
+        break;
       }
       case 'mission': {
         arrayRaw = arrayRaw.map(getFrontMission);
+        break;
       }
       case 'inspect_act_scan': {
         arrayRaw = arrayRaw.reduce(
@@ -306,6 +308,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
           },
           [],
         );
+        break;
       }
     }
 

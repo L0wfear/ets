@@ -52,10 +52,11 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   }
 `;
 
-export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string }>`
+export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string; alignItems?: string }>`
   display: flex;
   flex-wrap: ${({ isWrap }) => (isWrap ? 'wrap' : 'initial')};
   flex-direction: ${({ direction }) => (direction ? direction : 'initial')};
+  align-items: ${({ alignItems }) => alignItems || 'initial'};
 `;
 
 export const Flex = styled.div<{
@@ -78,19 +79,20 @@ export const BorderDash = styled.div<{
     const { width = 1, borderStyle = 'solid', color = 'black' } = props;
     return `${width}px ${borderStyle} ${color}`;
   }};
+  padding: 5px 0;
 `;
 
 export const BtnPart = styled.div`
 `;
 
-export const BtnGroupWrapper = styled.div<{
-  fullWidth?: boolean;
-  vertical?: boolean;
-}>`
+export const BtnGroupWrapper = styled.div<{fullWidth?: boolean; vertical?: boolean; }>`
   display: flex;
   align-items: center;
   ${BtnPart} button{
     border-radius: 0px!important;
+    &:hover {
+      background: #3f3f3f!important;
+    }
   }
   ${BtnPart}:first-child button{
     border-radius: ${borderRadiusButton} 0px 0px ${borderRadiusButton}!important;
@@ -105,7 +107,7 @@ export const BtnGroupWrapper = styled.div<{
       return `
         width: 100%;
         ${BtnPart}{
-          flex: 1 1 auto;
+          flex: 1 1;
           button{
             width: 100%;
           }

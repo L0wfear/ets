@@ -15,9 +15,11 @@ export interface ISharedPropsDataTableInput {
   selectField?: string;
   batteryAvailableCarGetAndSetInStore?: any;
   tireAvailableCarGetAndSetInStore?: any;
+  spareAvailableCarGetAndSetInStore?: any;
   typesListOpt?: any[];
   page: string;
   path: string;
+  tableTitle?: string;
 }
 
 export interface IStateDataTableInput {

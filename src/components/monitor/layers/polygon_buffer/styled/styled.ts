@@ -44,12 +44,14 @@ export const ButtonContainer = styled.div`
     button {
       height: 25px;
       width: 25px;
-      margin:0;
+      min-width: 33px;
+      margin: 0;
+      display: flex;
+      align-items: center;
       background-size: 19px;
       background-position: center;
       background-repeat: no-repeat;
       padding: 0;
-      display: block;
       font-size: 1.14em;
       text-align: center;
     }

@@ -9,7 +9,7 @@ function urlencode(jsonObject) {
 
 function httpMethodBlob(urlOwn, data, method) {
   let url = urlOwn;
-  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY2));
+  const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
   const options = {
     method,

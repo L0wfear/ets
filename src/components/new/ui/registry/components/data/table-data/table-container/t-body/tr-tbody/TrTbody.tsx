@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
-import { isNumber, isArray, isNullOrUndefined } from 'util';
+import { isNumber, isArray, isNullOrUndefined, isBoolean } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdCheckbox';
@@ -41,6 +41,9 @@ import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
 import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
 import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
 import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
+import SimpleLinkA from 'components/new/ui/simple_a/link';
+
+import config from 'config';
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -243,6 +246,10 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       if (format === 'array_of_object_name') {
         value = isArray(value) ? value.map(({ name }) => name).join(', ') : '';
       }
+
+      if (format === 'link') {
+        value = <SimpleLinkA href={`${__DEVELOPMENT__ ? config.url : '' }${rowData.url}`} title={rowData.name} download={rowData.name} target="_black"/>;
+      }
       if (format === 'workOrNot') {
         value = value ? 'Работает' : 'Не работает';
       }
@@ -298,6 +305,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
         value={value}
         rowData={rowData}
         registryKey={registryKey}
+        selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
       />
     );
   }
@@ -311,7 +319,8 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
     const { props } = this;
-    if (props.isPermitted && (props.buttons.includes(buttonsTypes.read) || props.row_double_click)) {
+
+    if (props.isPermitted && (props.buttons.includes(buttonsTypes.read) && (isBoolean(props.row_double_click) ? props.row_double_click : true))) {
       this.props.setParams({
         [this.props.uniqKeyForParams]: get(props.rowData, this.props.uniqKey, null),
       });
@@ -332,6 +341,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
           onDoubleClick={this.handleDoubleClick}
           rowData={this.props.rowData}
           checkData={this.props.checkData}
+          registryKey={props.registryKey}
         >
           { props.rowFields.map(this.renderRow) }
         </EtsTrTbody>

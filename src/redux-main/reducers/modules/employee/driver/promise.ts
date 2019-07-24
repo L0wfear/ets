@@ -6,6 +6,10 @@ import createFio from 'utils/create-fio';
 
 export const getDriver = employeeLoadDriver;
 
+export const makeDriverFioLicenceLabel = (driverFio, position_name, drivers_license, special_license) => {
+  return `${driverFio} | ${position_name || ''} ${drivers_license ? `${drivers_license} ` : ''}${special_license || ''}`;
+};
+
 const withDriverFioPositionLicense = (rowData) => {
   const {
     position_name,
@@ -16,7 +20,7 @@ const withDriverFioPositionLicense = (rowData) => {
   const drivers_license = get(rowData, 'drivers_license', '') || '';
   const special_license = get(rowData, 'special_license', '') || '';
 
-  rowData.fio_license = `${driverFio} | ${position_name} ${drivers_license ? `${drivers_license} ` : ''}${special_license}`;
+  rowData.fio_license = makeDriverFioLicenceLabel(driverFio, position_name, drivers_license, special_license);
 
   return rowData;
 };

@@ -13,13 +13,9 @@ type FuelTypeProps = {
   {
     keyField: 'fuel_type';
     value: Waybill['fuel_type'];
-    keyRefill: 'car_refill';
-    refill: Waybill['car_refill'];
   } | {
     keyField: 'equipment_fuel_type';
     value: Waybill['equipment_fuel_type'];
-    keyRefill: 'equipment_refill';
-    refill: Waybill['equipment_refill']
   }
 );
 

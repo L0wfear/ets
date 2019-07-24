@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import configs from 'config';
 
-import { ImageListContainer } from './styled';
+import { ImageListContainer } from 'components/new/ui/portals/img_list_portal/styled/index';
 import ImgListHeader from './header/ImgListHeader';
 import ImgListBody from './body/ImgListBody';
 import ImgListFooter from './footer/ImgListFooter';
@@ -66,7 +66,10 @@ const ImgListPortal: React.FC<ImgListPortalProps> = React.memo(
           countImages={countImages}
           setIndexImage={setIndexImage}
         />
-        <ImgListFooter img_url={img_url}/>
+        <ImgListFooter
+          img_url={img_url}
+          img_data={props.images[indexImage]}
+        />
       </ImageListContainer>,
       document.getElementById('image_container'),
     );

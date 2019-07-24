@@ -36,7 +36,7 @@ export type TableMeta<F> = {
 export type TableInputProps = {
   meta: TableMeta<any>[];
   array: any[];
-  errors: any[];
+  errors?: any[];
   onChange: any;
 
   header: any;
@@ -61,12 +61,18 @@ const TableInput: React.FC<TableInputProps> = React.memo(
       [props.array.length, props.selectedRowIndex, props.setSelectedRowIndex],
     );
 
+    const errors = React.useMemo(
+      () => {
+        return props.errors || [];
+      },
+      [props.errors],
+    );
+
     return (
       <React.Fragment>
         {
           props.header
         }
-        <br />
         <EtsBootstrap.Row>
           {
             Boolean(props.array.length)
@@ -80,7 +86,7 @@ const TableInput: React.FC<TableInputProps> = React.memo(
                       <TableInputTbody
                         meta={props.meta}
                         array={props.array}
-                        errors={props.errors}
+                        errors={errors}
                         onChange={props.onChange}
                         selectedRowIndex={props.selectedRowIndex}
                         setSelectedRowIndex={props.setSelectedRowIndex}

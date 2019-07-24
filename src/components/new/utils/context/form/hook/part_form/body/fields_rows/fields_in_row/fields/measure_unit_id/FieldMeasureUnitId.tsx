@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import useForm from 'components/new/utils/context/form/useFormData';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
+import { FieldDataMeasureUnitId } from 'components/new/utils/context/form/@types/fields/valueOfArray';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldMeasureUnitIdProps = {
-  fieldData: any;
-  fieldDataKey: string;
+  fieldData: FieldDataMeasureUnitId;
   formDataKey: string;
 };
 
 const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
   (props) => {
     const {
-      fieldDataKey: key,
-      fieldData: { title, clearable },
+      fieldData: { title, clearable, key },
     } = props;
 
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
@@ -26,33 +26,37 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
     const {
       isLoading,
       options,
-    } = useMeasureUnitOptions('', '');
+    } = useMeasureUnitOptions();
 
     const handleChangeWrap = React.useCallback(
-      (event) => {
-        const value = get(event, 'target.value', event);
-        handleChange({ [key]: value });
+      (value, option) => {
+        handleChange({
+          measure_unit_id: value,
+          measure_unit_name: get(option, 'rowData.name', null),
+        });
       },
       [key, handleChange],
     );
 
     return React.useMemo(
       () => (
-        <ExtField
-          id={`${path}_${key}`}
-          type="select"
-          clearable={clearable}
-          label={title}
-          value={formState[key]}
-          error={formErrors[key]}
-          options={options}
-          onChange={handleChangeWrap}
-          disabled={!isPermitted}
+        <EtsBootstrap.Col md={props.fieldData.md || 12}>
+          <ExtField
+            id={`${path}_${key}`}
+            type="select"
+            clearable={clearable}
+            label={title}
+            value={formState[key]}
+            error={formErrors[key]}
+            options={options}
+            onChange={handleChangeWrap}
+            disabled={!isPermitted}
 
-          etsIsLoading={isLoading}
-        />
+            etsIsLoading={isLoading}
+          />
+        </EtsBootstrap.Col>
       ),
-      [path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],
+      [props, path, key, clearable, title, formState[key], formErrors[key], options, handleChangeWrap, isPermitted],
     );
   },
 );

@@ -113,6 +113,7 @@ export const loadFuelEvents = (type, typeEvent, dates) => ({
           coordinates: [...data.shape.coordinates].reverse(),
         };
         geom.front_key = front_key;
+        geom.value = Math.abs(Number(geom.value.toFixed(2)));
 
         return {
           ...newObj,

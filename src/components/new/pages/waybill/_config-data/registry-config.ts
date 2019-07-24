@@ -5,7 +5,7 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WAYBILL_STATUSES } from 'constants/statuses';
 
-export const registryKey = 'Waybills';
+export const registryWaybillKey = 'Waybills';
 
 export const config: TypeConfigData<Waybill> = {
   Service: {
@@ -25,7 +25,7 @@ export const config: TypeConfigData<Waybill> = {
       },
     },
   },
-  registryKey,
+  registryKey: registryWaybillKey,
   header: {
     title: 'Журнал путевых листов',
     buttons: [
@@ -133,6 +133,11 @@ export const config: TypeConfigData<Waybill> = {
       {
         valueKey: 'fact_departure_date',
         title: 'Выезд факт',
+        type: 'advanced-date',
+      },
+      {
+        valueKey: 'plan_arrival_date',
+        title: 'Возвращение план',
         type: 'advanced-date',
       },
       {
@@ -346,6 +351,12 @@ export const config: TypeConfigData<Waybill> = {
         {
           key: 'fact_departure_date',
           title: 'Выезд факт',
+          format: 'datetime',
+          width: 150,
+        },
+        {
+          key: 'plan_arrival_date',
+          title: 'Возвращение план',
           format: 'datetime',
           width: 150,
         },

@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { PropsViewInspectCarsConditionWithForm } from './@types/ViewInspectCarsContidion';
-import { INSPECT_AUTOBASE_TYPE_FORM } from '../../../autobase/global_constants';
+import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
 
 const headBalanceHolderBaseSchema: SchemaType<InspectCarsCondition['head_balance_holder_base'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
@@ -32,19 +32,33 @@ const headOperatingBaseSchema: SchemaType<InspectCarsCondition['head_operating_b
 const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['preparing_cars_check'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     order_issued_at: {
-      validateIf: {
-        type: 'has_data',
-        path: 'checks_period_text',
-      },
+      validateIf: [
+        {
+          type: 'has_data',
+          path: 'checks_period_text',
+        },
+        {
+          type: 'equal_to_value',
+          path: 'data.preparing_cars_check.no_order',
+          value: false,
+        },
+      ],
       type: 'date',
       title: 'Приказ о подготовке техники к сезону издан от',
       required: true,
     },
     order_number: {
-      validateIf: {
-        type: 'has_data',
-        path: 'checks_period_text',
-      },
+      validateIf: [
+        {
+          type: 'has_data',
+          path: 'checks_period_text',
+        },
+        {
+          type: 'equal_to_value',
+          path: 'data.preparing_cars_check.no_order',
+          value: false,
+        },
+      ],
       type: 'string',
       title: '№ приказа',
       required: true,
@@ -157,7 +171,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
   },
 };
 
-const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_list'], PropsViewInspectCarsConditionWithForm> = {
+const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'], PropsViewInspectCarsConditionWithForm> = {
   properties: {
     staff_drivers: {
       validateIf: {
@@ -183,8 +197,11 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
         path: 'checks_period_text',
         reverse: true,
       },
+      required: true,
       type: 'number',
       title: 'Водителей',
+      min: 0,
+      max: 9999,
     },
     list_mechanics: {
       validateIf: {
@@ -194,6 +211,9 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount_li
       },
       type: 'number',
       title: 'Механизаторов',
+      required: true,
+      min: 0,
+      max: 9999,
     },
     staffing_drivers: {
       validateIf: {
@@ -222,7 +242,7 @@ const dataSchema: SchemaType<InspectCarsCondition['data'], PropsViewInspectCarsC
       type: 'schema',
       schema: preparingCarsCheckSchema,
     },
-    headcount_list: {
+    headcount: {
       type: 'schema',
       schema: headCountListSchema,
     },
@@ -251,19 +271,32 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'number',
       title: 'Количество ТС',
     },
+    commission_members: {
+      type: 'multiValueOfArray',
+      title: 'Проверяющие от Доринвеста',
+      dependencies: [
+        (agents_from_gbu, _, props) => {
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного проверяющего от Доринвеста`;
+          }
+        },
+      ],
+    },
     agents_from_gbu: {
       type: 'multiValueOfArray',
       title: 'Представители ГБУ',
       dependencies: [
         (agents_from_gbu, _, props) => {
-          if (props.type !== INSPECT_AUTOBASE_TYPE_FORM.list) {
-            if (!agents_from_gbu.length) {
-              return `* для ${
-                props.type === INSPECT_AUTOBASE_TYPE_FORM.close
-                  ? 'завершения'
-                  : 'изменения'
-              } проверки необходимо добавить хотя бы одного представителя ГБУ`;
-            }
+          if (!agents_from_gbu.length) {
+            return `* для ${
+              props.type === INSPECT_TYPE_FORM.list
+                ? 'завершения'
+                : 'изменения'
+            } проверки необходимо добавить хотя бы одного представителя ГБУ`;
           }
         },
       ],
@@ -272,9 +305,9 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       type: 'number',
       title: 'Количество проверенных ТС',
       dependencies: [
-        (checked_cars_cnt, { cars_cnt }, props) => {
-          if (props.type === INSPECT_AUTOBASE_TYPE_FORM.close) {
-            if (checked_cars_cnt !== cars_cnt) {
+        (_, { cars_cnt }, props) => {
+          if (props.type === INSPECT_TYPE_FORM.list && process.env.STAND === 'prod') {
+            if (!cars_cnt) {
               return 'Необходимо проверить все ТС';
             }
           }

@@ -5,7 +5,10 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormBase from 'components/program_registry/UpdateFrom/ProgramRegistryUForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -30,6 +33,15 @@ const checkIsPermittedByStatus = (status) => {
   switch (status) {
     case 'sent_on_review':
     case 'accepted':
+    case 'closed':
+      return false;
+    default:
+      return true;
+  }
+};
+const checkIsPermittedByStatusForObjectFact = (status) => {
+  switch (status) {
+    case 'sent_on_review':
     case 'closed':
       return false;
     default:
@@ -148,14 +160,23 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
       program_id: this.props.element.id,
     };
 
+    this.props.setParams({
+      program_registry_registry_id: null,
+    });
+
     return this.props
       .defSendFromState(payload)
-      .then(() => {
+      .then((ans) => {
         global.NOTIFICATION_SYSTEM.notify('Версия создана', 'success');
-
+        this.props.setParams({
+          program_registry_registry_id: get(ans, 'result.rows.0.id', null),
+        });
         return this.updateVersionList({ id: this.props.element.id });
       })
       .catch(({ errorIsShow }) => {
+        this.props.setParams({
+          program_registry_registry_id: this.props.element.id,
+        });
         !errorIsShow
           && global.NOTIFICATION_SYSTEM.notify('Ошибка создания версии', 'error');
       });
@@ -194,7 +215,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
     payload.callback = this.context.flux.getActions('repair').programVersionPut;
     payload.outFormState = { ...this.state.formState };
 
-    this.props.defSendFromState(payload).then(() => {
+    this.props.defSendFromState(payload).then(async () => {
       if (close) {
         return this.props.handleHide();
       }
@@ -209,9 +230,10 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
     ).programVersionPutOnlyFiles;
     payload.outFormState = { ...fileState };
 
-    return this.props
-      .defSendFromState(payload)
-      .then(() => this.updateVersionList({ id: this.props.element.id }));
+    return this.props.defSendFromState(payload).then((ans) => {
+      this.updateVersionList({ id: this.props.element.id });
+      return ans;
+    });
   };
 
   applyVersion = () => {
@@ -307,9 +329,15 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
 
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
     const isPermittedByStatus = checkIsPermittedByStatus(status);
+
     const isPermittetForContractorL = checkIsPermittedByStatusForContractorLine(
       status,
     );
+
+    const isPermittetForObjectFact = checkIsPermittedByStatusForObjectFact(
+      status,
+    );
+    const isPermittedPercentByStatus = isPermittetForObjectFact;
 
     return (
       <ProgramRegistryForm
@@ -319,7 +347,9 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
         entity={entity}
         addPermissionProp
         isPermittedByStatus={isPermittedByStatus}
+        isPermittedPercentByStatus={isPermittedPercentByStatus}
         isPermittetForContractorL={isPermittetForContractorL}
+        isPermittetForObjectFact={isPermittetForObjectFact}
         canSave={canSave}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}
@@ -346,6 +376,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
 }
 
 export default compose(
+  withSearch,
   connect((state) => ({
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
   })),

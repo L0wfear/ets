@@ -36,10 +36,7 @@ const getAvailableRouteTypesMemo = memoize(getAvailableRouteTypes);
  * ТО/ Элемент или зависимое поручение дают возможность получения списка маршрутов по norm_id
  * если !isPermitted, то не будет запроса за ТО
  */
-class FieldRouteIdDutyMission extends React.PureComponent<
-  PropsFieldRouteIdDutyMission,
-  StateFieldRouteIdDutyMission
-> {
+class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyMission, StateFieldRouteIdDutyMission> {
   state = {
     showRouteForm: false,
     selectedRouteRaw: null,
@@ -106,7 +103,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
     }
   }
 
-  componentDidUpdate(prevProps: PropsFieldRouteIdDutyMission) {
+  async componentDidUpdate(prevProps: PropsFieldRouteIdDutyMission) {
     const { isPermitted } = this.props;
 
     if (isPermitted) {
@@ -133,8 +130,16 @@ class FieldRouteIdDutyMission extends React.PureComponent<
             prevProps.municipalFacilityForDutyMissionList.length);
 
       if (triggerOne) {
-                if (technical_operation_id && municipal_facility_id) {
-          this.getRoutes(technical_operation_id, municipal_facility_id);
+        if (technical_operation_id && municipal_facility_id) {
+          const routesList = await this.getRoutes(technical_operation_id, municipal_facility_id);
+          const ROUTE_OPTIONS = (makeOptionFromRouteList(routesList.data, structure_id));
+          const selectedRouteNotInOption = ROUTE_OPTIONS.find(
+            (routeOptionData) => routeOptionData.value === value,
+          );
+
+          if (!selectedRouteNotInOption) {
+            this.handleRouteIdChange(null);
+          }
         }
       }
 
@@ -175,7 +180,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<
       path,
     } = this.props;
 
-    this.props.actionLoadAndSetInStoreRoutes(
+    return this.props.actionLoadAndSetInStoreRoutes(
       {
         technical_operation_id,
         municipal_facility_id,

@@ -8,6 +8,9 @@ type ModalYesNo = {
 
   title?: string;
   message: string;
+
+  titleOk?: string;
+  titleCancel?: string;
 };
 
 const ModalYesNo: React.FC<ModalYesNo> = React.memo(
@@ -28,8 +31,8 @@ const ModalYesNo: React.FC<ModalYesNo> = React.memo(
           </span>
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button onClick={props.handleSubmit}>Ок</EtsBootstrap.Button>
-          <EtsBootstrap.Button onClick={props.handleHide}>Отмена</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.handleSubmit}>{props.titleOk || 'Ок'}</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={props.handleHide}>{props.titleCancel || 'Отмена'}</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

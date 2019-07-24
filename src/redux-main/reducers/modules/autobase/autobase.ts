@@ -31,6 +31,7 @@ export const autobaseInitialState: IStateAutobase = {
   tireList: [],
   tireSizeList: [],
   tireAvailableCarList: [],
+  spareAvailableCarList: [],
   actualBatteriesOnCarList: [],
   actualTiresOnCarList: [],
   techMaintList: [],

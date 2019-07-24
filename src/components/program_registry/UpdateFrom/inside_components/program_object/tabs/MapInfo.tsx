@@ -16,7 +16,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
     /* Смотри routeCreating */
   }
   handleAddDrawLines = (newInputLines) => {
-    this.props.handleDrawFeatureAdd(newInputLines);
+    this.props.handleAddDrawLines(newInputLines);
   }
   handleDrawFeatureClick = ({ index, state }) => {
     this.props.handleDrawFeatureClick({ index, state });
@@ -76,7 +76,10 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 objectsType={objectsType}
                 manual={manual}
                 canDraw={manual}
+
+                focusOnSelectedGeo={this.props.focusOnSelectedGeo}
                 polys={polys}
+
                 objectList={objectList}
                 drawObjectList={drawObjectList}
                 handleFeatureClick={this.handleFeatureClick}

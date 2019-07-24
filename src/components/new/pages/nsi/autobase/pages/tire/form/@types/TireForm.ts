@@ -16,6 +16,7 @@ export type PropsTireFormLazy = {
 export type StatePropsTire = {
   tireModelList: IStateAutobase['tireModelList'];
   tireSizeList: IStateAutobase['tireSizeList'];
+  isPermitterToUpdateInitialMileage: boolean;
 };
 export type DispatchPropsTire = {
   tireSizeGetAndSetInStore: any;

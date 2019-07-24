@@ -150,6 +150,7 @@ export const memoizeMergeElement = memoizeOne(
       return {
         ...element,
         car_id: selectedCarData.asuods_id,
+        car_gov_number: selectedCarData.gov_number,
       };
     }
 
@@ -181,6 +182,26 @@ export const filterDriver = (employeeData: Employee, gov_number: CarWrap['gov_nu
         && diffDates(employeeData.drivers_license_date_end, new Date()) > 0     // срок действия водительского удостоверения не закончился
       );
     }
+  }
+
+  return false;
+};
+
+/**
+ * Проверка водителя для карточки ТС вкладки ДТП
+ * @param employeeData данные по водителю из driver
+ * @param gov_number номер ТС
+ */
+export const filterDriverAccident = (employeeData: any, gov_number: CarWrap['gov_number']) => {
+  if (employeeData) {
+    const isFourInGovNumver = isFourDigitGovNumber(gov_number);
+
+    if (isFourInGovNumver) {
+      return employeeData.special_license;                                         // есть специальное удостоверение
+    }
+
+    return employeeData.drivers_license;                                            // есть водительское удостоверение
+
   }
 
   return false;

@@ -82,7 +82,6 @@ export const promiseGetInspectPgmBase = async (payload: { pgmBaseId: number }) =
 export const promiseGetInspectPgmBaseById = async (id: number) => {
   let inspectPgmBase: InspectPgmBase = await promiseGetInspectionByIdType(
     id,
-    'pgm_base',
   );
 
   if (inspectPgmBase) {

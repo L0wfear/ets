@@ -9,7 +9,7 @@ import { get } from 'lodash';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import ViewInspectButtonSubmit from 'components/new/pages/inspection/common_components/form_wrap_check/buttons/ViewInspectButtonSubmit';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type ViewInspectCarsConditionButtonSubmitDispatchProps = {
   actionCloseInspectCarsCondition: HandleThunkActionCreator<typeof inspectionCarsConditionActions.actionCloseInspectCarsCondition>;
@@ -19,13 +19,15 @@ type ViewInspectCarsConditionButtonSubmitDispatchProps = {
 
 type ViewInspectCarsConditionButtonSubmitOwnProps = {
   handleSubmit: any;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectCarsCondition: InspectCarsCondition;
   canSave: boolean;
   loadingPage: string;
 
   isPermittedToUpdateClose: boolean;
+  id: number;
+  registryPage: string;
 };
 
 type ViewInspectCarsConditionButtonSubmitProps = (
@@ -45,8 +47,21 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
           props.registryLoadDataByKey(props.loadingPage);
           return;
         }
-
         props.handleHide(true);
+      }
+    },
+    [selectedInspectCarsCondition, canSave],
+  );
+
+  const handleSaveGetAct = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.handleSubmit('signing');
+          await handleGetCarsConditionAct();
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
       }
     },
     [selectedInspectCarsCondition, canSave],
@@ -70,7 +85,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
     [selectedInspectCarsCondition, canSave],
   );
 
-  const handleCloseAndCarsConditionAct = React.useCallback( // хендлер на закрытие акта
+  const handleCloseCarsConditionAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
         try {
@@ -82,7 +97,6 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
           props.registryLoadDataByKey(props.loadingPage);
           return;
         }
-        await handleGetCarsConditionAct();
         props.handleHide(true);
       }
     },
@@ -94,10 +108,14 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
       handleSubmit={handleSubmit}
       handleSubmitClosed={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-      handleCloseAndGetAct={handleCloseAndCarsConditionAct}
+      handleCloseAct={handleCloseCarsConditionAct}
       handleGetAct={handleGetCarsConditionAct}
       type={props.type}
       canSave={props.canSave}
+      handleSaveGetAct={handleSaveGetAct}
+
+      id={props.id}
+      registryPage={props.registryPage}
     />
   );
 };

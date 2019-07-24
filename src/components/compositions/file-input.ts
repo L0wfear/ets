@@ -28,6 +28,7 @@ export const fileFormatter = withHandlers({
       fileArray.push({
         nativeFile: file,
         name: file.name,
+        action: 'add',
       });
     });
 

@@ -9,6 +9,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'utils/dates';
 import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -71,6 +72,8 @@ export type OutputWithFormProps<P, F, T extends any[], A> = (
     submitAction: FormWithSubmitAction;
     defaultSubmit: FormWithDefaultSubmit;
     hideWithoutChanges: (...arg: any[]) => void;
+
+    actionWrap: <PromiseAns extends any>(promiseFunc: () => Promise<PromiseAns>) => Promise<PromiseAns>;
   }
 );
 
@@ -341,6 +344,38 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         });
       }
 
+      actionWrap = async <T extends any>(promiseFunc: () => Promise<T>): Promise<T> => {
+        let result = null;
+        if (!this.state.inSubmit) {
+          this.setState({
+            inSubmit: true,
+          });
+
+          try {
+            result = await etsLoadingCounter(
+              this.props.dispatch,
+              promiseFunc(),
+              {
+                page: this.props.page,
+                path: this.props.path,
+              },
+            );
+          } catch (error) {
+            this.setState({
+              inSubmit: false,
+            });
+            throw error;
+          }
+          this.setState({
+            inSubmit: false,
+          });
+        } else {
+          console.log('i want more request'); // tslint:disable-line
+        }
+
+        return result;
+      }
+
       createAction = async (...payload) => {
         const {
           createAction,
@@ -352,32 +387,23 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
         let result = null;
 
-        if (!this.state.inSubmit) {
-          if (isFunction(createAction)) {
-            this.setState({
-              inSubmit: true,
-            });
-
-            try {
-              result = await this.props.dispatch(createAction(...payload, { page, path }));
-              if (!config.noMessage) {
-                global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
-              }
-            } catch (error) {
-              this.setState({
-                inSubmit: false,
-              });
-              throw error;
+        if (isFunction(createAction)) {
+          try {
+            result = await this.actionWrap(
+              () => this.props.dispatch(createAction(...payload, { page, path })),
+            );
+            if (!config.noMessage) {
+              global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
             }
-
-            this.setState({
-              inSubmit: false,
-            });
-          } else {
-            throw new Error('Определи функцию createAction в конфиге withForm');
+          } catch (error) {
+            throw error;
           }
+
+          this.setState({
+            inSubmit: false,
+          });
         } else {
-          console.log('i want more request'); // tslint:disable-line
+          throw new Error('Определи функцию createAction в конфиге withForm');
         }
 
         return result;
@@ -394,32 +420,19 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
         let result = null;
 
-        if (!this.state.inSubmit) {
-          if (isFunction(updateAction)) {
-            this.setState({
-              inSubmit: true,
-            });
-
-            try {
-              result = await this.props.dispatch(updateAction(...payload, { page, path }));
-              if (!config.noMessage) {
-                global.NOTIFICATION_SYSTEM.notify('Запись успешно добавлена', 'success');
-              }
-            } catch (error) {
-              this.setState({
-                inSubmit: false,
-              });
-              throw error;
+        if (isFunction(updateAction)) {
+          try {
+            result = await this.actionWrap(
+              () => this.props.dispatch(updateAction(...payload, { page, path })),
+            );
+            if (!config.noMessage) {
+              global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
             }
-
-            this.setState({
-              inSubmit: false,
-            });
-          } else {
-            throw new Error('Определи функцию updateAction в конфиге withForm');
+          } catch (error) {
+            throw error;
           }
         } else {
-          console.log('i want more request'); // tslint:disable-line
+          throw new Error('Определи функцию updateAction в конфиге withForm');
         }
 
         return result;
@@ -507,19 +520,20 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
               {...this.props}
               createAction={this.createAction}
               updateAction={this.updateAction}
-              isPermittedToCreate={this.props.isPermittedToCreate && !this.props.readOnly}
-              isPermittedToUpdate={this.props.isPermittedToUpdate && !this.props.readOnly}
+              isPermittedToCreate={isPermittedToCreate}
+              isPermittedToUpdate={isPermittedToUpdate}
               isPermitted={isPermitted}
               formState={this.state.formState}
               originalFormState={this.state.originalFormState}
               formErrors={this.state.formErrors}
-              canSave={this.state.canSave}
+              canSave={this.state.canSave && !this.state.inSubmit}
               handleChange={this.handleChange}
               handleChangeBoolean={this.handleChangeBoolean}
               submitAction={this.submitAction}
               defaultSubmit={this.defaultSubmit}
               hideWithoutChanges={this.hideWithoutChanges}
               IS_CREATING={IS_CREATING}
+              actionWrap={this.actionWrap}
             />
           )
           : (

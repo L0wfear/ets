@@ -97,11 +97,11 @@ export const sessionSetData: any = (
   session,
   sessionEtsTest,
 ) => async (dispatch) => {
-  localStorage.setItem(global.SESSION_KEY2, JSON.stringify(session));
+  localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
 
   if (process.env.STAND === 'gost_stage') {
     localStorage.setItem(
-      global.SESSION_KEY_ETS_TEST_BY_DEV2,
+      global.SESSION_KEY_ETS_TEST_BY_DEV,
       JSON.stringify(sessionEtsTest),
     );
   }
@@ -149,7 +149,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
   );
 
   if (process.env.STAND === 'gost_stage') {
-    let tokenString = localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2);
+    let tokenString = localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
     if (tokenString === 'undefined') {
       tokenString = null;
     }
@@ -181,7 +181,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
     dispatch(
       sessionSetData(
         makeUserData(data),
-        JSON.parse(localStorage.getItem(global.SESSION_KEY2)),
+        JSON.parse(localStorage.getItem(global.SESSION_KEY)),
         sessionEtsTest,
       ),
     );
@@ -195,13 +195,11 @@ export const checkToken: any = () => async (dispatch, getState) => {
 };
 
 export const sessionResetData: any = () => (dispatch) => {
-  localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV2);
-  localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
-  localStorage.removeItem(global.SESSION_KEY2);
-  localStorage.removeItem(global.API__KEY2);
-  localStorage.removeItem(global.SESSION_KEY);
-  localStorage.removeItem(global.API__KEY);
-  localStorage.removeItem('featureBufferPolygon');
+  // localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
+  // localStorage.removeItem(global.SESSION_KEY);
+  // localStorage.removeItem(global.API__KEY);
+  // localStorage.removeItem('featureBufferPolygon');
+  localStorage.clear();
 
   dispatch({
     type: SESSION_RESET_DATA,

@@ -22,7 +22,7 @@ const bsSizeLargeCss = css`
 `;
 
 export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' }>`
-  width: auto;
+  width: 95%;
   position: relative;
   margin-bottom: 300px;
   margin-top: 30px;
@@ -63,7 +63,9 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
   (props) => {
     const handleHide = React.useCallback(
       (...arg) => {
-        props.onHide(...arg);
+        if (props.onHide) {
+          props.onHide(...arg);
+        }
       },
       [props.onHide],
     );
@@ -89,7 +91,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
                     React.Children.map(
                       props.children,
                       (child: any) => (
-                        React.cloneElement(child, {
+                        React.isValidElement(child) && React.cloneElement(child, {
                           ...child.props,
                           onHide: props.onHide,
                           themeName: props.themeName || 'default',

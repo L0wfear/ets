@@ -65,34 +65,40 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
       const fieldData: any = properties[key];
 
       const {
-        validateIf,
+        validateIf: validateIfRaw,
       } = fieldData;
       let skipValidate = false;
 
-      if (validateIf) {
-        const {
-          type,
-        } = validateIf;
+      if (validateIfRaw) {
+        const validateIfArray = isArray(validateIfRaw) ? validateIfRaw : [validateIfRaw];
 
-        if (type === 'has_data') {
+        for (let i = 0, length = validateIfArray.length; i < length; i++) {
+          const validateIf = validateIfArray[i];
+
           const {
-            reverse = false,
+            type,
           } = validateIf;
-          const valueByPath = get(rootFormState, validateIf.path, false);
 
-          if (!reverse ? !valueByPath : valueByPath) {
-            skipValidate = true;
+          if (type === 'has_data') {
+            const {
+              reverse = false,
+            } = validateIf;
+            const valueByPath = get(rootFormState, validateIf.path, false);
+
+            if (!reverse ? !valueByPath : valueByPath) {
+              skipValidate = true;
+            }
           }
-        }
-        if (type === 'equal_to_value') {
-          const {
-            value,
-            reverse = false,
-          } = validateIf;
-          const valueByPath = get(rootFormState, validateIf.path, false);
+          if (type === 'equal_to_value') {
+            const {
+              value,
+              reverse = false,
+            } = validateIf;
+            const valueByPath = get(rootFormState, validateIf.path, false);
 
-          if (reverse ? valueByPath === value : valueByPath !== value) {
-            skipValidate = true;
+            if (reverse ? valueByPath === value : valueByPath !== value) {
+              skipValidate = true;
+            }
           }
         }
       }

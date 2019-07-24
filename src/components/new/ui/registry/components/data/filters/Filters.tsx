@@ -38,7 +38,7 @@ const Filters: React.FC<FiltersProps> = React.memo(
         const filterKey = `${props.registryKey}_filters`;
 
         props.setDataInSearch({
-          [filterKey]: JSON.stringify(applyFilterFromRaw({ rawFilterValues: props.rawFilterValues.rawFilterValues })),
+          [filterKey]: encodeURIComponent(JSON.stringify(applyFilterFromRaw({ rawFilterValues: props.rawFilterValues.rawFilterValues }))),
         });
       },
       [props.rawFilterValues, props.setDataInSearch, props.registryKey],

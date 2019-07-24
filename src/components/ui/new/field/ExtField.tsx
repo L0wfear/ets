@@ -1,6 +1,6 @@
+import * as React from 'react';
 import Field from 'components/ui/Field';
 import { onChangeWithKeys } from 'components/compositions/hoc';
-import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 type ExtFieldCommon<V = any> = {
   rel?: any;
@@ -22,6 +22,7 @@ type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   multi?: boolean,
   options: any; // DefaultSelectOption<V, any, any>[] | any[];
   placeholder?: string;
+  value_string?: string;
 
   sortingFunction?: any;
   multiValueContainerReander?: any; // плохо
@@ -54,6 +55,7 @@ type ExtFieldString<V = any> = ExtFieldCommon<V> & {
   readOnly?: boolean;
   inline?: boolean;
 
+  maxlength?: number;
   placeholder?: string;
 };
 
@@ -78,7 +80,19 @@ type ExtFieldType = (
 );
 
 export const ExtField: React.ComponentClass<ExtFieldType> = onChangeWithKeys(
-  withMergeProps(
-    ({ boundKeys, ...props }) => props,
-  )(Field as any),
+  ({ boundKeys, ...props }) => {
+    if (props.disabled && props.value_string) {
+      return (
+        <Field
+          {...props}
+          type="string"
+          value={props.value_string}
+        />
+      );
+    }
+
+    return (
+      <Field {...props} />
+    );
+  },
 );

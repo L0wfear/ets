@@ -1,25 +1,34 @@
 import * as React from 'react';
-import useForm from 'components/new/utils/context/form/useFormData';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import DefaultModalHeader from './default/DefaultHeader';
+import WaybillHeader from './waybill/WaybillHeader';
+import { SchemaFormContextHeader } from 'components/new/utils/context/form/@types';
 
 type ModalFormHeaderProps = {
   formDataKey: string;
+  onHide?: (...arg: any) => any;
+};
+
+const ComponentsByKey: Record<SchemaFormContextHeader['type'], React.ComponentType<ModalFormHeaderProps>> = {
+  default: DefaultModalHeader,
+  waybill: WaybillHeader,
 };
 
 const ModalFormHeader: React.FC<ModalFormHeaderProps> = React.memo(
   (props) => {
-    const formDataHeaderValue = useForm.useFormDataSchemaHeader(props.formDataKey);
+    const formDataHeaderValue = useForm.useFormDataSchemaHeader<any>(props.formDataKey);
 
     return React.useMemo(
       () => {
-        if (!formDataHeaderValue.type || formDataHeaderValue.type) {
+        const ComponentName = ComponentsByKey[formDataHeaderValue.type];
+        if (ComponentName) {
           return (
-            <DefaultModalHeader formDataKey={props.formDataKey} />
+            <ComponentName formDataKey={props.formDataKey} onHide={props.onHide} />
           );
         }
-        return <div>{`Определи тип шапки для ${formDataHeaderValue.type}`}</div>;
+        return <div>{`Определи тип шапки для ${formDataHeaderValue.type} в ModalFormHeader ComponentsByKey`}</div>;
       },
-      [formDataHeaderValue],
+      [props, formDataHeaderValue],
     );
   },
 );

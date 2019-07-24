@@ -101,6 +101,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 type="select"
                 label="Исполнитель ремонта"
                 value={state.repair_company_id}
+                value_string={state.repair_company_name}
                 error={errors.repair_company_id}
                 options={this.state.repairCompanyOptions}
                 emptyValue={null}
@@ -115,6 +116,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                 type="select"
                 label="Вид ремонта"
                 value={state.repair_type_id}
+                value_string={state.repair_type_name}
                 error={errors.repair_type_id}
                 options={this.state.repairTypeOptions}
                 emptyValue={null}
@@ -220,6 +222,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   type="select"
                   label="Итог проведенного ремонта"
                   value={state.status}
+                  value_string={AUTOBASE_REPAIR_STATUS[state.status].name}
                   error={errors.status}
                   options={statusOptions}
                   emptyValue={null}

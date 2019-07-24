@@ -39,8 +39,8 @@ const TrTdCheckbox: React.FC<PropsTrTdCheckbox> = (props) => {
 };
 
 export default connect<StatePropsTrTdCheckbox, DispatchPropsTrTdCheckbox, OwnPropsTrTdCheckbox, ReduxState>(
-  (state, { registryKey, rowData }) => ({
-    isChecked: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
+  (state, { registryKey, rowData }) =>  ({
+    isChecked: Boolean(get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false)),
   }),
   (dispatch: any) => ({
     registryCheckLine: (...arg) => (

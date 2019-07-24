@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import { TableMeta } from '../../TableInput';
 import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
 import TableInputTbodyTrTd from './td/TableInputTbodyTrTd';
@@ -35,7 +37,7 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
       [props.rowData, props.rowIndex, props.onChange],
     );
     return (
-      <EtsTrTbody enable selected={props.isSelected} onClick={handleRowClick}>
+      <EtsTrTbody enable selected={props.isSelected} onClick={handleRowClick} registryKey="">
         {
           props.meta.map((metaData) => (
             <TableInputTbodyTrTd
@@ -43,7 +45,7 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
               metaData={metaData}
               rowData={props.rowData}
               value={props.rowData[metaData.key]}
-              error={props.errors[metaData.key]}
+              error={get(props.errors, metaData.key, '')}
               onChange={handleChange}
               disabled={props.disabled}
             />

@@ -7,7 +7,7 @@ interface IPropsNotifiVersionPopup {
   nextV: string;
 }
 
-const getNotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
+const NotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
   <EtsThemeProvider>
     <div className="check-version-notification">
       <div className="text-version-container">
@@ -25,4 +25,4 @@ const getNotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
   </EtsThemeProvider>
 );
 
-export default getNotifyCheckVersion;
+export default NotifyCheckVersion;

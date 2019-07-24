@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled, { css } from 'styled-components';
 import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
+import { GlyphiconStyled } from '../01-glyphicon/EtsGlyphicon';
 
 export type EtsButtonProps = {
   bsClass?: string;
@@ -53,6 +54,15 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
     box-shadow: ${({ theme, themeName }) => theme.button[themeName || 'default'].boxShadow.default};
 
     cursor: ${({ disabled }) => !disabled ? 'pointer' : 'not-allowed'};
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 33px;
+
+    ${GlyphiconStyled} {
+      margin: 0 5px;
+    }
 
     background-color: ${({ theme, disabled, active, themeName }) => (
       !disabled
@@ -148,19 +158,29 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
 
 const EtsButton: React.FC<EtsButtonProps> = React.memo(
   (props) => {
+    // тк что-то где-то поддормаживает и дисейбл не сразу появляется
+    const [localDisabled, setLocalDisabled] = React.useState(false);
 
     const handleClick = React.useCallback(
       (...arg) => {
-        if (!props.disabled && props.onClick) {
+        if ((!localDisabled && !props.disabled) && props.onClick) {
+          setLocalDisabled(true);
+          setTimeout(
+            () => {
+              setLocalDisabled(false);
+            },
+            300,
+          );
           props.onClick(...arg);
         }
       },
-      [Boolean(props.disabled), props.onClick],
+      [Boolean(props.disabled), localDisabled, props.onClick],
     );
 
     return (
       <ButtonStyled
         {...props}
+        disabled={props.disabled}
         type={props.type || 'button'}
         onClick={handleClick}
       />

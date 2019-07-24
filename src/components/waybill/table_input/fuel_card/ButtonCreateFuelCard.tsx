@@ -7,11 +7,11 @@ import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { FuelCards } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 
 type ButtonCreateFuelCardOwnProps = {
-  handleUpdateFuelCards: () => any;
+  handleUpdateFuelCard: () => any;
   page: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
@@ -44,7 +44,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
     const onFormHide = React.useCallback(
       (isSubmitted?: boolean | any) => {
         if (isSubmitted) {
-          props.handleUpdateFuelCards();
+          props.handleUpdateFuelCard();
         }
         setShowStatus(false);
       },
@@ -52,7 +52,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
     );
     const element = React.useMemo(
       () => {
-        const partialFuelCard: Partial<FuelCards> = {};
+        const partialFuelCard: Partial<FuelCard> = {};
         if (showStatus) {
           partialFuelCard.structure_id = props.structure_id;
           partialFuelCard.fuel_type = props.fuel_type;

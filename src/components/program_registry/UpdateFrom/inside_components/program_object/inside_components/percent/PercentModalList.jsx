@@ -39,7 +39,10 @@ class PercentModalList extends UNSAFE_ElementsList {
     this.context.flux
       .getActions('repair')
       .removePercent(id)
-      .then(this.checkMinVals);
+      .then(() => {
+        this.props.updateObjectData();
+        this.checkMinVals();
+      });
 
   init() {
     this.checkMinVals();
@@ -83,7 +86,7 @@ class PercentModalList extends UNSAFE_ElementsList {
    * @override
    */
   getButtons(propsButton = {}) {
-    const { isPermittedByStatus } = this.props;
+    const { isPermittedPercentByStatus } = this.props;
 
     // Операции, заданные в статической переменной operations класса-наследника
     const entity = this.constructor.entity;
@@ -101,7 +104,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         key={buttons.length}
         onClick={this.createElement}
         permissions={`${entity}.create`}
-        disabled={!isPermittedByStatus}
+        disabled={!isPermittedPercentByStatus}
       />,
     );
     buttons.push(
@@ -109,7 +112,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         buttonName={BRbuttonName}
         key={buttons.length}
         onClick={this.showForm}
-        disabled={this.checkDisabledRead() || !isPermittedByStatus}
+        disabled={this.checkDisabledRead() || !isPermittedPercentByStatus}
         permissions={`${entity}.read`}
       />,
     );
@@ -118,7 +121,7 @@ class PercentModalList extends UNSAFE_ElementsList {
         buttonName={BDbuttonName}
         key={buttons.length}
         onClick={this.removeElement}
-        disabled={this.checkDisabledDelete() || !isPermittedByStatus}
+        disabled={this.checkDisabledDelete() || !isPermittedPercentByStatus}
         permissions={`${entity}.delete`}
       />,
     );
@@ -176,7 +179,7 @@ class PercentModalList extends UNSAFE_ElementsList {
     return (
       <EtsBootstrap.ModalContainer
         id="modal-percent-list"
-        show={this.props.show}
+        show
         onHide={this.props.onHide}
         bsSize="lg">
         <EtsBootstrap.ModalHeader closeButton>
@@ -184,8 +187,7 @@ class PercentModalList extends UNSAFE_ElementsList {
             {'Проставление процента выполнения работ'}
           </EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        {super.render()}
-        <ModalBody />
+        <ModalBody>{super.render()}</ModalBody>
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button onClick={this.props.onHide}>
             Закрыть

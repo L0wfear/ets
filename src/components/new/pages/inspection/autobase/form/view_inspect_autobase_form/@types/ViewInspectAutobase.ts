@@ -1,5 +1,5 @@
 import { InspectAutobase } from "redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase";
-import { INSPECT_AUTOBASE_TYPE_FORM } from "components/new/pages/inspection/autobase/global_constants";
+import { INSPECT_TYPE_FORM } from "components/new/pages/inspection/autobase/global_constants";
 
 import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 
@@ -9,7 +9,7 @@ export type ViewInspectAutobaseStateProps = {};
 export type ViewInspectAutobaseDispatchProps = {};
 export type ViewInspectAutobaseOwnProps = {
   element: InspectAutobase;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: OnFormHideType;
   handleCloseWithoutChanges: any;
 

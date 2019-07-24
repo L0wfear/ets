@@ -4,7 +4,7 @@ import component from 'components/new/pages/nsi/autobase/pages/tire/_config-data
 import { getToConfig } from 'components/new/pages/nsi/autobase/pages/tire/_config-data/registry-config';
 
 export const item = 'tire';
-export const id = getToConfig().list.data.uniqKeyForParams;
+export const id = getToConfig(null).list.data.uniqKeyForParams;
 export const patrialEndPath = `/${item}/:${id}?`;
 export const path = `/nsi/autobase/${item}`;
 export const routePath = `${path}/:${id}?`;

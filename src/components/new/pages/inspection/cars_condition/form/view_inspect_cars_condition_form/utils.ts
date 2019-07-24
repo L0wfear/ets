@@ -48,13 +48,14 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
       order_number: '',
       master_plan_approved: '',
       named_plan_approved: '',
+      no_order: false,
       planned_target: '',
       statements_defects_issued: '',
       statements_defects_not_issued_cnt: '',
       drawbacks_eliminated: '',
       drawbacks_new: '',
     },
-    headcount_list: {
+    headcount: {
       staff_drivers: null,
       staff_mechanics: null,
       list_drivers: null,
@@ -72,6 +73,7 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
   status: 'conducting',
   date_end: null,
   files: [],
+  action: 'save',
 };
 
 export const getDefaultInspectCarsConditionElement = (element: Partial<InspectCarsCondition>) => {

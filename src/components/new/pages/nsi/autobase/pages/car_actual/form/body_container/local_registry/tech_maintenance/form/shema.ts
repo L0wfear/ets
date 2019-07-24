@@ -1,3 +1,5 @@
+import { get } from 'lodash';
+
 import { SchemaType } from 'components/ui/form/new/@types/validate.h';
 import { PropsTechMaintenance } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/@types/TechMintenanceForm';
 
@@ -85,7 +87,9 @@ export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenan
       maxLength: 128,
       integer: true,
       dependencies: [
-        (value = null, { fact_date_start = null, fact_date_end = null, gov_number }) => {
+        (value = null, { fact_date_start = null, fact_date_end = null, ...state }, { selectedCarData }) => {
+          const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
+
           if (
             (fact_date_start || fact_date_end) &&
             !value &&
@@ -104,7 +108,9 @@ export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenan
       maxLength: 128,
       integer: true,
       dependencies: [
-        (value = null, { fact_date_start = null, fact_date_end = null, gov_number }) => {
+        (value = null, { fact_date_start = null, fact_date_end = null, ...state }, { selectedCarData }) => {
+          const gov_number = state.gov_number ? state.gov_number : get(selectedCarData, 'gov_number');
+
           if (
             (fact_date_start || fact_date_end) &&
             !value &&

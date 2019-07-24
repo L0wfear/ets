@@ -18,16 +18,16 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
     return `Вы уверены, что хотите удалить выбранн${
-      countCheckedElement === 1 ? 'ое' : 'ые'
-    } замечани${countCheckedElement === 1 ? 'е' : 'я'}?`;
+      countCheckedElement === 1 ? 'ый' : 'ые'
+    } объект${countCheckedElement === 1 ? '' : 'ы'}?`;
   },
 };
 
 const notifyTexts = {
   remove(countCheckedElement) {
-    return `Выбранн${countCheckedElement === 1 ? 'ое' : 'ые'} замечани${
-      countCheckedElement === 1 ? 'е' : 'я'
-    } удал${countCheckedElement === 1 ? 'ено' : 'ены'}`;
+    return `Выбранн${countCheckedElement === 1 ? 'ый' : 'ые'} объект${
+      countCheckedElement === 1 ? '' : 'ы'
+    } удал${countCheckedElement === 1 ? 'ен' : 'ены'}`;
   },
 };
 
@@ -60,7 +60,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
   }
 
   removeElementAction = (id) =>
-    this.context.flux.getActions('repair').removeProgramRemark(id, {
+    this.context.flux.getActions('repair').removeProgramObject(id, {
       program_version_id: this.props.program_version_id,
     });
 
@@ -135,6 +135,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
       showForm: true,
       selectedElement: {
         type_slug: 'dt',
+        objectsType: 'simple_dt',
         program_version_id,
         contract_number,
         contractor_id,
@@ -160,6 +161,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
       showForm: true,
       selectedElement: {
         type_slug: 'odh',
+        objectsType: 'mixed',
         program_version_id,
         contract_number,
         contractor_id,
@@ -169,6 +171,27 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
       },
     });
   };
+
+  checkDisabledDelete() {
+    const { selectedElement, checkedElements } = this.state;
+
+    let checkedItems = {};
+
+    if (selectedElement) {
+      checkedItems[selectedElement[this.selectField]] = selectedElement;
+    } else {
+      checkedItems = checkedElements || {};
+    }
+
+    const checkedItemsAsArray = Object.values(checkedItems);
+
+    return (
+      !checkedItemsAsArray.length
+      || checkedItemsAsArray.some(
+        (objectData) => objectData.fact_date_start || objectData.fact_date_end,
+      )
+    );
+  }
 
   /**
    * @override
@@ -204,7 +227,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
         buttonName={'Посмотреть'}
         key={1}
         onClick={this.showForm}
-        disabled={this.checkDisabledRead() || !isPermittedByStatus}
+        disabled={this.checkDisabledRead()}
         permissions={`${entity}.update`}
       />,
     ];

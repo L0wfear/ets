@@ -44,8 +44,8 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
     return (
       <EtsBootstrap.ModalContainer id="notifiaction_orders" show onHide={this.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
-          <div className="flex-space-between">
-            <span>{title}</span>
+          <div className="flex-space-between" style={{ fontWeight: 'bold' }}>
+            <span style={{ marginRight: 10, marginLeft: 4 }}>{title}</span>
             <span>{created_at ? makeDate(created_at) : ''}</span>
           </div>
         </EtsBootstrap.ModalHeader>

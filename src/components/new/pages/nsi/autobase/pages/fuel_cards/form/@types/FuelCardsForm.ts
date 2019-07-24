@@ -1,5 +1,5 @@
 import {
-  FuelCards,
+  FuelCard,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
@@ -12,7 +12,7 @@ import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWra
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
 export type PropsFuelCardsFormLazy = {
-  element: Partial<FuelCards>;
+  element: Partial<FuelCard>;
   onFormHide: OnFormHideType;
 
   registryKey?: string;
@@ -31,7 +31,7 @@ export type StatePropsFuelCards = {
 };
 export type DispatchPropsFuelCards = {};
 export type OwnFuelCardsProps = {
-  element: Partial<FuelCards>;
+  element: Partial<FuelCard>;
   handleHide: OnFormHideType;
   page: string;
   path?: string;
@@ -45,8 +45,8 @@ export type PropsFuelCardsWithForm = StatePropsFuelCards &
 
 export type PropsFuelCards = OutputWithFormProps<
   PropsFuelCardsWithForm,
-  FuelCards,
-  [FuelCards],
+  FuelCard,
+  [FuelCard],
   any
 >;
 export type StateFuelCards = {

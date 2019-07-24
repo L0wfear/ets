@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
@@ -19,13 +19,15 @@ type ViewInspectAutobaseButtonSubmitDispatchProps = {
 
 type ViewInspectAutobaseButtonSubmitOwnProps = {
   handleSubmit: any;
-  type: keyof typeof INSPECT_AUTOBASE_TYPE_FORM;
+  type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: (isSubmitted: boolean) => any;
   selectedInspectAutobase: InspectAutobase;
   canSave: boolean;
   loadingPage: string;
 
   isPermittedToUpdateClose: boolean;
+  id: number;
+  registryPage: string;
 };
 
 type ViewInspectAutobaseButtonSubmitProps = (
@@ -40,12 +42,26 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     async () => {
       if (canSave) {
         try {
-          await props.handleSubmit();
+          await props.handleSubmit('save');
         } catch (error) {
           props.registryLoadDataByKey(props.loadingPage);
         }
 
         props.handleHide(true);
+      }
+    },
+    [selectedInspectAutobase, canSave],
+  );
+
+  const handleSaveGetAct = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.handleSubmit('signing');
+          await handleGetAutobaseAct();
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+        }
       }
     },
     [selectedInspectAutobase, canSave],
@@ -69,7 +85,7 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
     [selectedInspectAutobase, canSave],
   );
 
-  const handleCloseAndAutobaseAct = React.useCallback( // хендлер на закрытие акта
+  const handleCloseAutobaseAct = React.useCallback( // хендлер на закрытие акта
     async () => {
       if (canSave) {
         try {
@@ -78,7 +94,6 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
             { page: props.loadingPage },
           );
           props.handleHide(true);
-          await handleGetAutobaseAct();
         } catch (error) {
           // tslint:disable-next-line:no-console
           console.error(error);
@@ -94,10 +109,14 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
       handleSubmit={handleSubmit}
       handleSubmitClosed={handleSubmit}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
-      handleCloseAndGetAct={handleCloseAndAutobaseAct}
+      handleCloseAct={handleCloseAutobaseAct}
       handleGetAct={handleGetAutobaseAct}
       type={props.type}
       canSave={props.canSave}
+      handleSaveGetAct={handleSaveGetAct}
+
+      id={props.id}
+      registryPage={props.registryPage}
     />
   );
 };

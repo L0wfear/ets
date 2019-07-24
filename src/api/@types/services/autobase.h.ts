@@ -19,3 +19,14 @@ export interface IBatteryAvailableCar {
   car_id: number;
   gov_number: string;
 }
+
+export interface ISpareToCar {
+  car_id: number;
+  installed_at: string;
+  uninstalled_at: string;
+}
+
+export interface ISpareAvailableCar {
+  car_id: number;
+  gov_number: string;
+}

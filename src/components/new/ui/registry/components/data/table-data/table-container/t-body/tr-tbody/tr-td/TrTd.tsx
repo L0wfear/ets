@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import { EtsTbodyTrTd, EtsTbodyScrollContainer, EtsTbodyTextContainer } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { isString } from 'util';
 
 export type PropsTrTd = {
@@ -7,16 +7,22 @@ export type PropsTrTd = {
   rowData: any;
   metaKey: string;
   value: any;
+  selected: boolean;
+
+  style?: any; // not use
 };
 
 const TrTd: React.FC<PropsTrTd> = React.memo(
   (props) => {
     const [showAll, setShowAll] = React.useState(false);
 
+    const {
+      selected,
+    } = props;
+
     const value = React.useMemo(
       () => {
         let valueRaw = props.value;
-
         if (isString(valueRaw)) {
           valueRaw = (
             valueRaw
@@ -25,16 +31,22 @@ const TrTd: React.FC<PropsTrTd> = React.memo(
                 (oneLineComment, i) => {
                   let text = oneLineComment;
 
-                  if (!showAll) {
+                  if (!showAll || !selected) {
                     const shortTest = valueRaw.slice(0, 300);
                     if (shortTest.length >= 300) {
                       text = `${shortTest} ...`;
                     }
-                  }
 
-                  return (
-                    <div key={i}>{text}</div>
-                  );
+                  }
+                  if (text.length > 300) {
+                    return (
+                      <EtsTbodyScrollContainer key={i}>{text}</EtsTbodyScrollContainer>
+                    );
+                  } else {
+                    return (
+                      <EtsTbodyTextContainer key={i}>{text}</EtsTbodyTextContainer>
+                    );
+                  }
                 },
               )
           );
@@ -42,12 +54,18 @@ const TrTd: React.FC<PropsTrTd> = React.memo(
 
         return valueRaw;
       },
-      [props.value, showAll],
+      [props.value, showAll, selected],
     );
 
     const handleClick = React.useCallback(
-      () => setShowAll((state) => !state),
-      [],
+      () => {
+        if ( !selected ) {
+          setShowAll(false);
+        } else {
+          setShowAll(!showAll);
+        }
+      },
+      [selected, showAll],
     );
 
     return (

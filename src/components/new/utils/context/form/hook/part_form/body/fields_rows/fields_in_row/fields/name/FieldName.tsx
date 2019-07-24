@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { ExtField } from 'components/ui/new/field/ExtField';
-import useForm from 'components/new/utils/context/form/useFormData';
+import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
+import { FieldDataName } from 'components/new/utils/context/form/@types/fields/string';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldNameProps = {
-  fieldData: any;
-  fieldDataKey: string;
+  fieldData: FieldDataName;
   formDataKey: string;
 };
 
 const FieldName: React.FC<FieldNameProps> = React.memo(
   (props) => {
     const {
-      fieldDataKey: key,
-      fieldData: { title },
+      fieldData: { key, title },
     } = props;
     const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<any>(props.formDataKey);
@@ -31,17 +31,19 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <ExtField
-          id={`${path}_${key}`}
-          type="string"
-          label={title}
-          value={formState[key]}
-          error={formErrors[key]}
-          onChange={handleChangeWrap}
-          disabled={!isPermitted}
-        />
+        <EtsBootstrap.Col md={props.fieldData.md || 12}>
+          <ExtField
+            id={`${path}_${key}`}
+            type="string"
+            label={title}
+            value={formState[key]}
+            error={formErrors[key]}
+            onChange={handleChangeWrap}
+            disabled={!isPermitted}
+          />
+        </EtsBootstrap.Col>
       ),
-      [path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
+      [props, path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
     );
   },
 );

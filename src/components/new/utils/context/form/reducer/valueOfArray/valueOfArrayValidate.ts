@@ -1,6 +1,6 @@
-import { FieldValueOFArray } from '../../../@types';
+import { FieldValueOFArrayCommon } from '../../@types/fields/valueOfArray';
 
-export const validateValueOfArray = <F, K extends keyof F>(key: keyof F, fieldData: FieldValueOFArray<F, K>, formState: F) => {
+export const validateValueOfArray = <F, K extends keyof F>(key: keyof F, fieldData: FieldValueOFArrayCommon<F, K>, formState: F) => {
   const {
     [key]: value,
   } = formState;

@@ -89,9 +89,12 @@ export const getToConfig = (car_id: number): TypeConfigData<Repair> => {
           valueKey: 'status',
           title: 'Статус',
           type: 'multiselect',
-          options: Object.entries(AUTOBASE_REPAIR_STATUS).map(([key, { name }]) => ({
-            value: key, label: name,
-          })),
+          options: Object.entries(AUTOBASE_REPAIR_STATUS).map(
+            ([key, { name }]) => ({
+              value: key,
+              label: name,
+            }),
+          ),
         },
       ],
     },
@@ -116,7 +119,7 @@ export const getToConfig = (car_id: number): TypeConfigData<Repair> => {
           {
             key: 'repair_type_name',
             title: 'Вид ремонта',
-            width: 100,
+            width: 200,
           },
           {
             key: 'number',

@@ -82,7 +82,6 @@ export const promiseGetInspectAutobase = async (payload: { carpoolId: number }) 
 export const promiseGetInspectAutobaseById = async (id: number) => {
   let inspectAutobase: InspectAutobase = await promiseGetInspectionByIdType(
     id,
-    'autobase',
   );
 
   if (inspectAutobase) {

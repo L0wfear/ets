@@ -17,25 +17,29 @@ export const LoginPageContainer = styled.div`
 `;
 
 export const LoginPageFormWrap = styled.div`
-  display: table;
+  display: flex;
   width: 100%;
   height: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const LoginPageForm = styled.form`
-  display: table-cell;
   width: 100%;
-  height: 100%;
-  vertical-align: middle;
-`;
-
-export const LoginPageFormContainer = styled.div`
-  margin: 0 auto;
   max-width: 400px;
-  padding: 0;
   background: #efefef;
-  box-shadow: 0px 0px 80px 0px rgba(0,0,0,0.4);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.4);
   user-select: none;
+  border-radius: 3px;
+
+  >*:first-child {
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+  }
+  >*:last-child {
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
 
   .form-control {
     position: relative;
@@ -73,8 +77,9 @@ export const DitLogo = styled.div`
   background: url(${jkh});
   background-position: center;
   background-repeat: no-repeat;
+  background-size: contain;
   width: 100%;
-  height: 77px;
+  height: 100px;
 `;
 
 export const LoginPageFormContentLabel = styled.label`

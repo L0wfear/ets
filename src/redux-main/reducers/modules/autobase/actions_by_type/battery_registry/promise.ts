@@ -28,6 +28,7 @@ export const createSetBatteryRegistry = (rawBatteryRegistry) => {
   const payload = {
     ...rawBatteryRegistry,
     battery_to_car: get(rawBatteryRegistry, 'battery_to_car', []).map((item) => ({
+      ...item,
       car_id: item.car_id,
       installed_at: createValidDate(item.installed_at),
       uninstalled_at: createValidDate(item.uninstalled_at),
@@ -43,6 +44,7 @@ export const updateSetBatteryRegistry = (oldBatteryRegistry) => {
   const payload = {
     ...oldBatteryRegistry,
     battery_to_car: get(oldBatteryRegistry, 'battery_to_car', []).map((item) => ({
+      ...item,
       car_id: item.car_id,
       installed_at: createValidDate(item.installed_at),
       uninstalled_at: createValidDate(item.uninstalled_at),

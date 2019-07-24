@@ -324,10 +324,9 @@ export const waybillSchema = {
     ],
     plan_arrival_date: [
       {
-        validator: (plan_arrival_date, { plan_departure_date, status }) => {
+        validator: (plan_arrival_date, { plan_departure_date }) => {
           if (
-            !(status === 'active' || status === 'closed')
-            && plan_arrival_date
+            plan_arrival_date
             && plan_departure_date
             && diffDates(plan_arrival_date, plan_departure_date, 'days', true) > 31
           ) {
@@ -578,6 +577,11 @@ const closingProperties = [
     title: 'Расчет топлива по норме для оборудования',
     type: 'array',
   },
+  {
+    key: 'tax_data',
+    title: 'Расчет топлива по норме',
+    type: 'array',
+  },
 ];
 
 const closingDependencies = {
@@ -716,7 +720,22 @@ const closingDependencies = {
                 (FACT_VALUE || FACT_VALUE === 0) && OPERATION,
             ).length)
         ) {
-          return 'В Поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
+          return 'В поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
+        }
+      },
+    },
+  ],
+  tax_data: [
+    {
+      validator: (value) => {
+        if (
+          !isArray(value)
+          || !value.filter(
+            ({ FACT_VALUE, OPERATION }) =>
+              (FACT_VALUE || FACT_VALUE === 0) && OPERATION,
+          ).length
+        ) {
+          return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
         }
       },
     },

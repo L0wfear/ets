@@ -26,8 +26,16 @@ class EtsFilterCheckSearch extends React.PureComponent<EtsFilterCheckSearchProps
     const filterKey = `${this.props.registryKey}_filters`;
     const filters = this.props.searchState[filterKey];
 
+    let filterValue = this.props.searchState[filterKey];
+
+    try {
+      filterValue = decodeURIComponent(filterValue);
+    } catch (e) {
+      //
+    }
+
     if (filters) {
-      const filtersValues = JSON.parse(this.props.searchState[filterKey] || '{}');
+      const filtersValues = JSON.parse(filterValue || '{}');
       this.props.applyFilterValues(
         this.props.registryKey,
         filtersValues,
@@ -40,8 +48,16 @@ class EtsFilterCheckSearch extends React.PureComponent<EtsFilterCheckSearchProps
     const filters = this.props.searchState[filterKey];
     const filtersPrev = prevProps.searchState[filterKey];
 
+    let filterValue = this.props.searchState[filterKey];
+
+    try {
+      filterValue = decodeURIComponent(filterValue);
+    } catch (e) {
+      //
+    }
+
     if (filtersPrev !== filters) {
-      const filtersValues = JSON.parse(this.props.searchState[filterKey] || '{}');
+      const filtersValues = JSON.parse(filterValue || '{}');
 
       this.props.applyFilterValues(
         this.props.registryKey,

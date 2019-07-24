@@ -1,5 +1,4 @@
-export const INSPECT_AUTOBASE_TYPE_FORM = {
+export const INSPECT_TYPE_FORM = {
   list: 'list',
-  close: 'close',
   closed: 'closed',
 };

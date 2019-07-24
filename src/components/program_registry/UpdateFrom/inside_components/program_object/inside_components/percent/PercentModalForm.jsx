@@ -33,7 +33,7 @@ export default class PercentModalForm extends UNSAFE_Form {
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <Div style={{ padding: 15 }}>
+        <ModalBody style={{ padding: 15 }}>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={12}>
               <ExtField
@@ -65,8 +65,7 @@ export default class PercentModalForm extends UNSAFE_Form {
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-        </Div>
-        <ModalBody />
+        </ModalBody>
         <EtsBootstrap.ModalFooter>
           <Div hidden={!IS_CREATING}>
             <EtsBootstrap.Button

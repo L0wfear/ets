@@ -126,11 +126,8 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
     <>
       {
         <div>
-          <h2>
-            План подготовки
-          </h2>
           <h3>
-            План подготовки ТС
+            План подготовки
           </h3>
           <CustomTableWrapper>
             <DataTableInput
@@ -147,12 +144,10 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
               onValidation={handleValidityTypesCars}
               selectField="customId"
               typesListOpt={typesListOpt}
+              tableTitle="План подготовки ТС"
               {...props}
             />
           </CustomTableWrapper>
-          <h3>
-            План и проверка готовности к сезону прицепных, навесных и уборочных агрегатов
-          </h3>
           <CustomTableWrapper>
             <DataTableInput
               tableSchema={TypesHarvestingUnit.meta}
@@ -167,6 +162,7 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
               isPermitted={true}
               onValidation={handleValidityTypesHarvestingUnit}
               selectField="customId"
+              tableTitle='План и проверка готовности к сезону прицепных, навесных и уборочных агрегатов'
               {...props}
             />
           </CustomTableWrapper>

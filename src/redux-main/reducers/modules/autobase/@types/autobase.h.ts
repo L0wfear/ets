@@ -1,4 +1,4 @@
-import { FuelCards, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ActualBatteriesOnCar } from '../actions_by_type/actual_batteries_on_car/@types';
 import { ActualTiresOnCar } from '../actions_by_type/actual_tires_on_car/@types';
 
@@ -14,6 +14,9 @@ export type SparePart = {
   quantity: number;
   spare_part_group_id: number;
   supplied_at: string;
+  spare_part_to_car: any;
+  installed_at?: string;
+  count_part?: any;
 };
 
 export type MeasureUnit = {
@@ -278,6 +281,7 @@ export type Tire = {
   company_name: string;
   gov_number: string;
   id?: number;
+  initial_mileage: number;
   installed_at: string;
   motohours_diff: number;
   odometr_diff: number;
@@ -304,6 +308,10 @@ export type TireSize = {
   name: string;
 };
 export type TireAvailableCar = {
+  car_id: number;
+  gov_number: string;
+};
+export type SpareAvailableCar = {
   car_id: number;
   gov_number: string;
 };
@@ -415,6 +423,7 @@ export type IStateAutobase = {
   tireList: Tire[];
   tireSizeList: TireSize[];
   tireAvailableCarList: TireAvailableCar[];
+  spareAvailableCarList: SpareAvailableCar[];
   actualBatteriesOnCarList: ActualBatteriesOnCar[];
   actualTiresOnCarList: ActualTiresOnCar[];
   techMaintList: TechMaintenance[];
@@ -422,7 +431,7 @@ export type IStateAutobase = {
   carCategoryList: CarCategory[];
   engineTypeList: EngineType[];
   propulsionTypeList: PropulsionType[];
-  fuelCardsList: FuelCards[];
+  fuelCardsList: FuelCard[];
   fuelTypeList: FuelType[];
   typesAttrList: TypesAttr[];
 };

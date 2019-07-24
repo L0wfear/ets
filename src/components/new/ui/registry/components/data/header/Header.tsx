@@ -3,7 +3,7 @@ import * as React from 'react';
 import Title from 'components/new/ui/registry/components/data/header/title/Title';
 import Buttons from 'components/new/ui/registry/components/data/header/buttons/Buttons';
 import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
-import { connect, DispatchProp } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getHeaderData } from '../../../module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
@@ -14,19 +14,9 @@ import SelectedOdhDt from './middle/SelectedOdhDt';
 import SelecteDateTimeRange from './middle/SelecteDateTimeRange';
 import SelectForTechnicalOperationRelations from './format/select_for_technical_operation_relations/SelectForTechnicalOperationRelations';
 
-type HeaderStateProps = {
-  format: OneRegistryData['header']['format'];
-};
-type HeaderDispatchProps = DispatchProp;
-type HeaderOwnProps = {
+type HeaderProps = {
   registryKey: string;
 };
-type HeaderMergedProps = (
-  HeaderStateProps
-  & HeaderDispatchProps
-  & HeaderOwnProps
-);
-type HeaderProps = HeaderMergedProps;
 
 const getMiddleBlockComponent = (format: OneRegistryData['header']['format']) => {
   switch (format) {
@@ -39,34 +29,45 @@ const getMiddleBlockComponent = (format: OneRegistryData['header']['format']) =>
 
 const Header: React.FC<HeaderProps> = React.memo(
   (props) => {
-    if (props.format === 'select_for_technical_operation_relations') {
-      return (
-        <SelectForTechnicalOperationRelations registryKey={props.registryKey} />
+    const format = useSelector(
+      (state: ReduxState) => getHeaderData(getRegistryState(state), props.registryKey).format,
+    );
+
+    if (format === 'select_for_technical_operation_relations') {
+      return React.useMemo(
+        () => (
+          <SelectForTechnicalOperationRelations registryKey={props.registryKey} />
+        ),
+        [props.registryKey],
       );
     }
 
-    const MiddleBlock = getMiddleBlockComponent(props.format);
+    return React.useMemo(
+      () => {
+        const MiddleBlock = getMiddleBlockComponent(format);
 
-    return (
-      <EtsHeaderContainer>
-        <Title registryKey={props.registryKey} />
-        {
-          MiddleBlock
-            ? (
-              <MiddleBlock registryKey={props.registryKey} />
-            )
-            : (
-              <DivNone />
-            )
-        }
-        <Buttons registryKey={props.registryKey} />
-      </EtsHeaderContainer>
+        return (
+          <EtsHeaderContainer>
+            <Title registryKey={props.registryKey} />
+            {
+              MiddleBlock
+                ? (
+                  <MiddleBlock registryKey={props.registryKey} />
+                )
+                : (
+                  <DivNone />
+                )
+            }
+            <Buttons registryKey={props.registryKey} />
+          </EtsHeaderContainer>
+        );
+      },
+      [
+        format,
+        props.registryKey,
+      ],
     );
   },
 );
 
-export default connect<HeaderStateProps, HeaderDispatchProps, HeaderOwnProps, ReduxState>(
-  (state, { registryKey }) => ({
-    format: getHeaderData(getRegistryState(state), registryKey).format,
-  }),
-)(Header);
+export default Header;

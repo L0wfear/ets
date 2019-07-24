@@ -311,8 +311,10 @@ export const markAllAsRead = () => async (dispatch) => {
     dispatch(userNotificationReadAll('none')),
   ]);
 
-  dispatch(getNotifications());
-  dispatch(getAdmNotifications());
+  await Promise.all([
+    dispatch(getNotifications()),
+    dispatch(getAdmNotifications()),
+  ]);
 };
 
 export const markAsRead = (readData = []) => async (dispatch) => {

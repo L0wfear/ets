@@ -17,6 +17,7 @@ const registryDefaultObj: OneRegistryData = {
   header: {
     buttons: [],
     format: 'default',
+    is_current_structure_popover: '',
     title: '',
     titlePopover: '',
   },
@@ -40,7 +41,7 @@ const registryDefaultObj: OneRegistryData = {
       delete: false,
     },
     meta: {
-      row_double_click: false,
+      row_double_click: true,
       fields: [],
       fieldsInDeepArr: [],
       rowFields: [],

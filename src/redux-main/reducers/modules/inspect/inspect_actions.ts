@@ -5,7 +5,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { AnyAction } from 'redux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { promiseGetBlobActInspection, promiseCloseInspection, promiseUpdateInspection, promiseCreateInspection } from './inspect_promise';
+import { promiseGetBlobActInspection, promiseUpdateInspection, promiseCreateInspection } from './inspect_promise';
 import { TypeOfInspect } from './@types/inspect_reducer';
 import inspectContainerActions from './container/container_actions';
 
@@ -39,7 +39,7 @@ export const actionCreateInspect = (payload: any, company_id: number, type: Type
   return result;
 };
 
-export const actionUpdateInspect = (id: number, data: any, files: any[], type: TypeOfInspect, meta: LoadingMeta, payload: any): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const actionUpdateInspect = (id: number, data: any, files: any[], type: TypeOfInspect, meta: LoadingMeta, payload: any ): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseUpdateInspection(
@@ -48,20 +48,6 @@ export const actionUpdateInspect = (id: number, data: any, files: any[], type: T
       files,
       type,
       payload,
-    ),
-    meta,
-  );
-
-  return result;
-};
-
-export const actionCloseInspect = (id: number, payload: any, type: TypeOfInspect, meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
-  const result = await etsLoadingCounter(
-    dispatch,
-    promiseCloseInspection(
-      id,
-      payload,
-      type,
     ),
     meta,
   );

@@ -38,8 +38,8 @@ export const MenuPortal = styled(components.MenuPortal)`
 `;
 
 const notValidStyle = css`
-  background-color: rgba(226, 0, 255, 0.08);
-  border: 1px solid rgba(226, 0, 255, 0.24);
+  background-color: rgba(234, 66, 255, 0.05);
+  border: 1px solid rgba(234, 66, 255, 0.24);
 `;
 
 export const MultiValue = styled(components.MultiValue)`
@@ -75,9 +75,8 @@ export const Option = styled(components.Option)`
     color: black;
 
     background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.8)' : 'initial'};
-
     &:hover {
-      background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.65)' : 'rgba(222, 235, 255, 0.5)'};
+      background-color: ${({ isSelected }: any) => isSelected ? 'rgba(222, 235, 255, 0.65)' : 'rgba(127, 198, 80, 0.5)'};
     }
   }
 `;

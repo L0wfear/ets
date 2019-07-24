@@ -92,7 +92,7 @@ class BatteryRegistryForm extends React.PureComponent<
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="brand_id"
                 type="select"
@@ -106,14 +106,18 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
-                id="brand_name"
-                type={'string'}
-                label={'Изготовитель'}
-                value={state.brand_name}
-                disabled
-                modalKey={page}
+                  id="brand_name"
+                  type={'string'}
+                  label={'Изготовитель'}
+                  value={state.brand_name}
+                  disabled
+                  modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="serial_number"
                 type="string"
@@ -125,6 +129,10 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="lifetime_months"
                 type="string"
@@ -136,6 +144,8 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="released_at"
                 type="date"
@@ -148,6 +158,8 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled={!isPermitted}
                 modalKey={page}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 id="worked_months"
                 type="string"
@@ -156,28 +168,30 @@ class BatteryRegistryForm extends React.PureComponent<
                 disabled
                 modalKey={page}
               />
-              {!IS_CREATING && (
-                <EtsBootstrap.Col md={12}>
-                  <EtsBootstrap.Row>
-                    <h4>
-                      Транспортное средство, на котором установлен аккумулятор
-                    </h4>
-                    <BatteryVehicleBlock
-                      id="files"
-                      onChange={this.props.handleChange}
-                      boundKeys="battery_to_car"
-                      inputList={state.battery_to_car || []}
-                      onValidation={this.handleBatteryToCarValidity}
-                      batteryId={state.id}
-                      selectField="customId"
-                      modalKey={page}
-                      page={page}
-                      path={path}
-                      isPermitted={isPermitted}
-                    />
-                  </EtsBootstrap.Row>
-                </EtsBootstrap.Col>
-              )}
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Row>
+                  <BatteryVehicleBlock
+                    id="files"
+                    onChange={this.props.handleChange}
+                    boundKeys="battery_to_car"
+                    inputList={state.battery_to_car || []}
+                    onValidation={this.handleBatteryToCarValidity}
+                    outerValidate
+                    errors={errors.battery_to_car}
+                    batteryId={state.id}
+                    selectField="customId"
+                    modalKey={page}
+                    page={page}
+                    path={path}
+                    isPermitted={isPermitted}
+                    tableTitle="Транспортное средство, на котором установлен аккумулятор"
+                  />
+                </EtsBootstrap.Row>
+              </EtsBootstrap.Col>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>

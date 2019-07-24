@@ -44,10 +44,12 @@ const schemaMakers: ISchemaMaker = {
   }),
 };
 const renderers = {};
-const tableProps = {};
+const tableProps = {
+  reportKey: serviceUrl,
+};
 
 const reportProps: IReportProps = {
-  title: 'Отчет посещения ОДХ и ДТ',
+  title: 'Отчет посещения ОДХ/ДТ уборочной техникой, оборудованной датчиками КБМ',
   serviceName,
   enumerated: true,
   tableProps,
@@ -56,6 +58,7 @@ const reportProps: IReportProps = {
   headerComponent: ReportHeader,
   renderers,
   schemaMakers,
+  notUseServerSummerTable: true,
 };
 
 const ExportableReportContainer = exportable({

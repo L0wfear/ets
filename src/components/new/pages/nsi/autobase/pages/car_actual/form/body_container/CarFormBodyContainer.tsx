@@ -5,7 +5,6 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../@types/CarForm';
 import { Route, Switch, Redirect } from 'react-router-dom';
-
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as queryString from 'query-string';
 

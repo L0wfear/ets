@@ -23,13 +23,14 @@ const default_preparing_cars_check: InspectCarsCondition['data']['preparing_cars
   order_number: '',
   master_plan_approved: '',
   named_plan_approved: '',
+  no_order: false,
   planned_target: '',
   statements_defects_issued: '',
   statements_defects_not_issued_cnt: '',
   drawbacks_eliminated: '',
   drawbacks_new: '',
 };
-const default_headcount_list: InspectCarsCondition['data']['headcount_list'] = {
+const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_drivers: null,
   staff_mechanics: null,
   list_drivers: null,
@@ -62,8 +63,11 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
       return rowData;
     }),
     preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
-    headcount_list: get(inspectCarsCondition, 'data.headcount_list', cloneDeep(default_headcount_list)),
-    cars_use: get(inspectCarsCondition, 'data.cars_use', cloneDeep(default_cars_use)),
+    headcount: get(inspectCarsCondition, 'data.headcount', cloneDeep(default_headcount)),
+    cars_use: {
+      ...cloneDeep(default_cars_use),
+      ...get(inspectCarsCondition, 'data.cars_use', {}),
+    },
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
@@ -106,7 +110,6 @@ export const promiseGetInspectCarsCondition = async (payload: { carsConditionId:
 export const promiseGetInspectCarsConditionById = async (id: number) => {
   const inspectCarsCondition: InspectCarsCondition = await promiseGetInspectionByIdType(
     id,
-    'cars_condition',
   );
 
   return makeInspectCarsConditionFront(inspectCarsCondition);

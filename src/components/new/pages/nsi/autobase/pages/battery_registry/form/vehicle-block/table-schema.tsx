@@ -97,11 +97,12 @@ const InstalledAtRenderer: React.FC<
 
 const UninstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
-> = ({ value, onChange, index, isPermitted }) => (
+> = ({ value, outputListErrors, onChange, index, isPermitted }) => (
   <ExtField
     type="date"
     label={false}
     date={value}
+    error={get(outputListErrors[index], 'uninstalled_at', '')}
     time={false}
     onChange={onChange}
     boundKeys={[index, 'uninstalled_at']}

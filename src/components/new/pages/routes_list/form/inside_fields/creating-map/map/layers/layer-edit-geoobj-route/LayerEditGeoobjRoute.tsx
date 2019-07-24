@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as extent from 'ol/extent';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 
@@ -42,6 +43,30 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
         this.props.removeFeaturesFromSource(null, true);
       }
     }
+
+    if (this.props.focusOnSelectedGeo) {
+      const selectedGeo = Object.entries(geoobjects).filter(
+        ([id, geo]) => geo.state !== polyState.ENABLE,
+      );
+      if (selectedGeo.length) {
+
+        const featExtent = this.props.getFeatureById(selectedGeo[0][0]).getGeometry().getExtent();
+        selectedGeo.forEach(
+          ([id]) => {
+            extent.extend(featExtent, this.props.getFeatureById(id).getGeometry().getExtent());
+          },
+        );
+
+        if (isFinite(featExtent[0])) {
+          setImmediate(() => {
+            this.props.centerOn({
+              extent: featExtent,
+              opt_options: { padding: [50, 50, 50, 50], maxZoom: 13 },
+            });
+          });
+        }
+      }
+    }
   }
 
   componentWillUnmount() {
@@ -49,12 +74,12 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
   }
 
   centerMapOnFeature() {
-    const extent = this.props.getOlLayer().getSource().getExtent();
+    const extentSource = this.props.getOlLayer().getSource().getExtent();
 
-    if (isFinite(extent[0])) {
+    if (isFinite(extentSource[0])) {
       setImmediate(() => {
         this.props.centerOn({
-          extent,
+          extent: extentSource,
           opt_options: { padding: [50, 50, 50, 50], maxZoom: 13 },
         });
       });
@@ -77,10 +102,7 @@ class LayerEditGeoobjRoute extends React.PureComponent<PropsLayerEditGeoobjRoute
   }
 
   render() {
-    return (
-      <div>
-      </div>
-    );
+    return null;
   }
 }
 

@@ -17,7 +17,7 @@ import {
   makeInspectCarsConditionBack,
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
-import { actionUpdateInspect, actionCloseInspect } from '../inspect_actions';
+import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { createValidDateTime } from 'utils/dates';
 import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
@@ -89,7 +89,7 @@ export const actionCreateInspectCarsCondition = (payloadOwn: Parameters<typeof p
 };
 
 export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateInspectionCarsCondition>, ReduxState, {}, AnyAction> => async (dispatch) => {
-  if (inspectCarsConditionOwn.status !== 'completed') {
+  if (inspectCarsConditionOwn.status !== 'completed' && inspectCarsConditionOwn.status !== 'conducting') {
     const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
     const data = cloneDeep(inspectCarsCondition.data);
 
@@ -98,7 +98,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     const isHasPeriod = Boolean(inspectCarsConditionOwn.checks_period); // разное отображение по типу проверки
     if (isHasPeriod) {
       delete data.cars_use;
-      delete data.headcount_list;
+      delete data.headcount;
     } else {
       delete data.preparing_cars_check;
     }
@@ -124,12 +124,13 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
       agents_from_gbu: inspectCarsCondition.agents_from_gbu,
       commission_members: inspectCarsCondition.commission_members,
       resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+      action: inspectCarsCondition.action ? inspectCarsCondition.action : 'save',
     };
 
     const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки
     if (isHasPeriod) {
       delete payload.data.cars_use;
-      delete payload.data.headcount_list;
+      delete payload.data.headcount;
     } else {
       delete payload.data.preparing_cars_check;
     }
@@ -151,6 +152,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
 
 const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): ThunkAction<any, ReduxState, {} , AnyAction> => async (dispatch, getState) => {
   const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
+  inspectCarsCondition.action = 'close';
 
   const data = cloneDeep(inspectCarsCondition.data);
   removeEmptyString(data);  // мутирует data
@@ -160,22 +162,25 @@ const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCon
     agents_from_gbu: inspectCarsCondition.agents_from_gbu,
     commission_members: inspectCarsCondition.commission_members,
     resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+    action: 'close',
   };
 
   const isHasPeriod = Boolean(inspectCarsCondition.checks_period); // разное отображение по типу проверки
   if (isHasPeriod) {
     delete payload.data.cars_use;
-    delete payload.data.headcount_list;
+    delete payload.data.headcount;
   } else {
     delete payload.data.preparing_cars_check;
   }
 
   const result = await dispatch(
-    actionCloseInspect(
+    actionUpdateInspect(
       inspectCarsCondition.id,
-      payload,
+      payload.data,
+      inspectCarsCondition.files,
       'cars_condition',
       meta,
+      inspectCarsCondition,
     ),
   );
 

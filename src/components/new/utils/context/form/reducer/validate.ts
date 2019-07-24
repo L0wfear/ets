@@ -1,23 +1,41 @@
 import { isObject, isArray } from 'util';
-import { SchemaFormContext, FormErrorBySchema, FieldString, FieldValueOFArray } from '../../@types';
+import { SchemaFormContext, FormErrorBySchema } from '../@types';
 import { validateString } from './string/stringValidate';
 import { validateValueOfArray } from './valueOfArray/valueOfArrayValidate';
+import { ContextFormField } from '../@types/fields';
 
-export const validate = <F, RF>(shemaBody: SchemaFormContext<F>['body'], formState: F): FormErrorBySchema<F, typeof shemaBody, RF> => {
-  const formError: FormErrorBySchema<F, typeof shemaBody, RF> = {};
+/**
+ * Set всех stirng полей
+ */
+const StringSet = new Set<ContextFormField['key']>([
+  'name',
+]);
 
-  for (const key in shemaBody.fields) {
-    if (key in shemaBody.fields) {
-      const fieldData = shemaBody.fields[key];
+/**
+ * Set всех valueOfArray полей
+ */
+const ValueOfArraySet = new Set<ContextFormField['key']>([
+  'measure_unit_id',
+]);
 
-      if (fieldData.type === 'string') {
-        formError[key] = validateString<F, any>(key, fieldData as FieldString<F, any>, formState);
-      }
-      if (fieldData.type === 'valueOfArray') {
-        formError[key] = validateValueOfArray<F, any>(key, fieldData as FieldValueOFArray<F, any>, formState);
-      }
-    }
-  }
+export const validate = <F>(shemaBody: SchemaFormContext<F>['body'], formState: F): FormErrorBySchema<F> => {
+  const formError: FormErrorBySchema<F> = {};
+
+  shemaBody.fields.forEach(
+    (fieldsRow) => {
+      fieldsRow.forEach(
+        (fieldData) => {
+          const key = fieldData.key;
+          if (StringSet.has(fieldData.key)) {
+            formError[key] = validateString<F, any>(key as keyof F, fieldData, formState);
+          }
+          if (ValueOfArraySet.has(fieldData.key)) {
+            formError[key] = validateValueOfArray<F, any>(key as keyof F, fieldData, formState);
+          }
+        },
+      );
+    },
+  );
 
   return formError;
 };

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -24,7 +25,6 @@ class FieldNormIdDutyMission extends React.PureComponent<
 > {
   componentDidUpdate(prevProps: PropsFieldNormIdDutyMission) {
     const {
-      DUTY_MISSION_IS_ORDER_SOURCE,
       disabled,
       datetime,
       technical_operation_id,
@@ -33,7 +33,6 @@ class FieldNormIdDutyMission extends React.PureComponent<
     } = this.props;
 
     const triggerOnUpdate =
-      !DUTY_MISSION_IS_ORDER_SOURCE &&
       !disabled &&
       (datetime !== prevProps.datetime ||
         technical_operation_id !== prevProps.technical_operation_id ||
@@ -68,16 +67,24 @@ class FieldNormIdDutyMission extends React.PureComponent<
         kind_task_ids: 3,
       };
 
-      const oneNorm = await this.props.actionLoadCleaningOneNorm(payload, {
-        page,
-        path,
-      });
+      try {
+        const oneNorm = await this.props.actionLoadCleaningOneNorm(payload, {
+          page,
+          path,
+        });
 
-      this.props.onChange({
-        norm_id: oneNorm.norm_id,
-        norm_text: oneNorm.name,
-        is_cleaning_norm: oneNorm.is_cleaning_norm,
-      });
+        this.props.onChange({
+          norm_id: get(oneNorm, 'norm_id', null),
+          norm_text: get(oneNorm, 'name', null),
+          is_cleaning_norm: get(oneNorm, 'is_cleaning_norm', null),
+        });
+      } catch (error) {
+        this.props.onChange({
+          norm_id: null,
+          norm_text: null,
+          is_cleaning_norm: false,
+        });
+      }
     } else if (value) {
       this.props.onChange({
         norm_id: null,

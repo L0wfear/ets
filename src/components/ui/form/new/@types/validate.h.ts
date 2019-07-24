@@ -21,7 +21,21 @@ export type CommonPropertie<K, F, P> = {
       value: any;
       reverse?: boolean;
     }
-  );
+  ) | (
+    Array<(
+      {
+        type: 'has_data';
+        path: string; // path.to.path | get(rootState, validateIf, false)
+        reverse?: boolean;
+      }
+      | {
+        type: 'equal_to_value';
+        path: string; // path.to.path | get(rootState, validateIf, false)
+        value: any;
+        reverse?: boolean;
+      }
+    )>
+  )
 
   dependencies?: DependenciesField<K, F, P>;
 };

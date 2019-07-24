@@ -17,7 +17,7 @@ const dropupCss = css`
   margin-bottom: 2px;
 `;
 
-const EtsDropdownMenuContainer = styled.ul<EtsDropdownMenuProps>`
+export const EtsDropdownMenuContainer = styled.ul<EtsDropdownMenuProps>`
   position: absolute;
   z-index: 1000;
 

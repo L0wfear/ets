@@ -44,7 +44,7 @@ class CarInWorkOverall extends React.Component<
 
     if (process.env.STAND === 'gost_stage') {
       token = JSON.parse(
-        localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV2),
+        localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV),
       );
     } else {
       token = this.props.token;
@@ -135,10 +135,12 @@ class CarInWorkOverall extends React.Component<
         'Общее количество ТС организации, не передающие данные с БНСО (более 1 часа)',
     };
 
-    items.splice(2, 1, customItem);
+    const itemsCopy = [...items];
+    itemsCopy.splice(2, 1, customItem);
     const counttoFirstShow = 2;
-    const firstTwoItem = items.slice(0, counttoFirstShow);
-    const collapsetItems = items.slice(counttoFirstShow);
+    const firstTwoItem = itemsCopy.slice(0, counttoFirstShow);
+    const collapsetItems = itemsCopy.slice(counttoFirstShow);
+
     return (
       <div>
         <List

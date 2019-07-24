@@ -15,6 +15,7 @@ import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/act
 export type IStateGeoobject = {
   carpoolList: Carpool[];
   dtList: Dt[];
+  dtPolys: Record<Dt['yard_id'], Dt>;
   odhList: Odh[];
   sspList: Ssp[];
   mspList: Msp[]

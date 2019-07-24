@@ -147,7 +147,7 @@ export default class APIService {
   }
 
   getUrlData() {
-    const apiVersions = localStorage.getItem(global.API__KEY2) || '{}';
+    const apiVersions = localStorage.getItem(global.API__KEY) || '{}';
 
     const version = get(JSON.parse(apiVersions), this._apiUrl, '');
 
@@ -256,8 +256,8 @@ export default class APIService {
     return this;
   }
 
-  log(method) {
-    this.logFunction(method);
+  log() {
+    // this.logFunction(method);
   }
 
   connectToLoggerService(fn) {

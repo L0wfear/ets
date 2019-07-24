@@ -6,11 +6,17 @@ import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../@types/CarForm';
 
-import { CarPassporntData } from 'redux-main/reducers/modules/autobase/car/@types';
 import { DivNone } from 'global-styled/global-styled';
 import GtnSelectFields from './by_type/gtn/GtnSelectFields';
 import GibddSelectFields from './by_type/gibdd/GibddSelectFields';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { isArray, isObject, isNullOrUndefined, isString } from 'util';
+import { getDefaultCar } from '../../../utils';
+
+const passportByKey = {
+  GIBDD: 'ГИБДД',
+  GTN: 'ГТН',
+};
 
 type PassportInfoTabProps = {
   isPermitted: boolean;
@@ -38,22 +44,75 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
     } = state;
 
     const onChange = React.useCallback(
-      (key: keyof CarPassporntData, value) => {
-        props.onChange({
-          passport_data: {
-            ...passport_data,
-            [key]: get(value, 'target.value', value),
-          },
-        });
+      (key: any, value?: any) => {
+        if (isObject(key)) {
+          props.onChange({
+            passport_data: {
+              ...passport_data,
+              ...key,
+            },
+          });
+        } else {
+          props.onChange({
+            passport_data: {
+              ...passport_data,
+              [key]: get(value, 'target.value', value),
+            },
+          });
+        }
       },
       [passport_data],
     );
 
     const onChangePassportType = React.useCallback(
-      (type) => {
-        onChange('type', type);
+      async (type) => {
+        if (!passport_data.type || passport_data.type !== type) {
+          let changeObj: Partial<CarWrap['passport_data']> = {
+            type,
+          };
+
+          if (passport_data.type && passport_data.type !== type) {
+            const hasInputData = Object.entries(passport_data).some(
+              ([key, value]: [any, any]) => {
+                if (key === 'disabled' || key === 'car_id' || key === 'type' || key === 'number' || key === 'seria_number') {
+                  return false;
+                }
+                if (key === 'files') {
+                  return isArray(value) && value.length > 0;
+                }
+
+                return isString(value) ? value !== '' : !isNullOrUndefined(value);
+              },
+            );
+
+            if (hasInputData) {
+              try {
+                await global.confirmDialog({
+                  title: 'Смена типа паспорта',
+                  body: `Будут очищены поля, который относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
+                });
+
+                changeObj = {
+                  ...getDefaultCar().passport_data,
+                  ...changeObj,
+                };
+              } catch (e) {
+                return;
+              }
+            }
+          }
+
+          if (type === 'GIBDD') {
+            changeObj.seria_number = passport_data.number;
+          }
+          if (type === 'GTN') {
+            changeObj.number = passport_data.seria_number;
+          }
+
+          onChange(changeObj);
+        }
       },
-      [onChange],
+      [onChange, passport_data],
     );
 
     return (
@@ -65,7 +124,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                 <ExtField
                   id="GIBDD"
                   type="boolean"
-                  label="ГИБДД "
+                  label={passportByKey.GIBDD}
                   value={passport_data.type === 'GIBDD'}
                   emptyValue={null}
                   onChange={onChangePassportType}
@@ -77,7 +136,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                 <ExtField
                   id="GTN"
                   type="boolean"
-                  label="ГТН (Гостехнадзор) "
+                  label={`${passportByKey.GTN} (Гостехнадзор)`}
                   value={passport_data.type === 'GTN'}
                   emptyValue={null}
                   onChange={onChangePassportType}

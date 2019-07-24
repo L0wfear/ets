@@ -7,6 +7,8 @@ type PropsSimpleLinkA = {
   target?: string;
   href?: string;
   onClick?: (props: PropsSimpleLinkA, event: React.MouseEvent) => any;
+
+  download?: string;
   [k: string]: any;
 };
 
@@ -24,7 +26,16 @@ const SimpleLinkA: React.FC<PropsSimpleLinkA> = React.memo(
     );
 
     return (
-      <a id={id} className={className} href={href} onClick={handleClick} target={props.target}>{title || children || href}</a>
+      <a
+        id={id}
+        className={className}
+        href={href}
+        onClick={handleClick}
+        download={props.download}
+        target={props.target}
+      >
+        {title || children || href}
+      </a>
     );
   },
 );

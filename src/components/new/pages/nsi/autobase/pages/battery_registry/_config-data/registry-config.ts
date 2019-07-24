@@ -5,11 +5,15 @@ import batteryRegistryPermissions from './permissions';
 
 export const registryKey = 'batteryRegistryRegistry';
 
-export const getToConfig = (): TypeConfigData<BatteryRegistry> => {
+export const getToConfig = (is_current_structure: boolean): TypeConfigData<BatteryRegistry> => {
   return {
+    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/battery_registry',
+        payload: {
+          is_current_structure,
+        },
       },
       removeOneData: {
         entity: 'autobase/battery_registry',
@@ -19,6 +23,10 @@ export const getToConfig = (): TypeConfigData<BatteryRegistry> => {
     registryKey,
     header: {
       title: 'Реестр аккумуляторов',
+
+      format: 'is_current_structure',
+      is_current_structure_popover: 'Отобразятся аккумуляторы, установленные на текущую дату на ТС Вашего подразделения',
+
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.create,

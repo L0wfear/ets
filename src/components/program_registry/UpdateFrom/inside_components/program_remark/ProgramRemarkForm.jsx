@@ -46,7 +46,7 @@ export default class SparePartForm extends UNSAFE_Form {
           <EtsBootstrap.ModalHeader closeButton>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
-          <Div style={{ padding: 15 }}>
+          <ModalBody style={{ padding: 15 }}>
             <EtsBootstrap.Row>
               <Div hidden={!allowCreateRemark}>
                 <EtsBootstrap.Col md={12}>
@@ -75,8 +75,7 @@ export default class SparePartForm extends UNSAFE_Form {
                 </EtsBootstrap.Col>
               </Div>
             </EtsBootstrap.Row>
-          </Div>
-          <ModalBody />
+          </ModalBody>
           <EtsBootstrap.ModalFooter>
             <Div
               hidden={

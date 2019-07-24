@@ -38,7 +38,7 @@ const ButtonCreateMissionTemplate: React.FC<ButtonCreateMissionTemplateProps> = 
 
   const disabled = (
     !missionsAsArray.length
-    || missionsAsArray.some(({ kind_task_ids = [] }) => !kind_task_ids.includes(3))
+    || missionsAsArray.some(({ kind_task_ids = [], is_actual }) => !kind_task_ids.includes(3) || !is_actual)
   );
 
   const handleClick = React.useCallback(

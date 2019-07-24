@@ -1,16 +1,51 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="Description" content="Author: GostGroup. Ets">
     <meta name="version" content={{htmlWebpackPlugin.options.version}} />
-    <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="-1">
-    <meta name="theme-color" content="#7fc650" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="#7fc650">
+    <link rel="manifest" href="{{htmlWebpackPlugin.options.publicPath}}manifest.json">
+    <meta http-equiv="Cache-Control" content="max-age=86400" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="{{htmlWebpackPlugin.options.themeColor}}">
+    <meta name="theme-color" content="{{htmlWebpackPlugin.options.themeColor}}" />
     <title>{{htmlWebpackPlugin.options.title}}</title>
+    
+    <script>
+      if ('serviceWorker' in navigator) {
+        if (!Boolean({{htmlWebpackPlugin.options.DEVELOPMENT}}) && false) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js', { scope: '{{htmlWebpackPlugin.options.publicPath}}' || '.' }).then(function(registration) {
+              // Registration was successful
+              registration.update();
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+              // registration failed :(
+              console.log('ServiceWorker registration failed: ', err);
+            }).catch(function(err) {
+              console.log(err)
+            });
+          });
+        }
+      } else {
+        // console.log('service worker is not supported');
+      }
+    </script>
     <style>
+      noscript {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100000;
+        background: white;
+      }
       html, body {
         height: 100%;
         margin: 0;
@@ -50,6 +85,8 @@
         align-items: baseline;
         padding: 20px;
         font-size: 40px;
+        color: rgb(127, 198, 80);
+        text-shadow: 1px 1px black;
       }
 
       .loading-container .title {
@@ -101,5 +138,6 @@
         </div>
       </div>
     </div>
+    <noscript><p>Ваш браузер не поддерживает javascript</p></noscript> 
   </body>
 </html>

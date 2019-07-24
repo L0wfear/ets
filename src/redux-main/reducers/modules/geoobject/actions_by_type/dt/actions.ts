@@ -8,11 +8,13 @@ import {
   promiseUpdateDt,
   promiseRemoveDt,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/promise';
+import { keyBy } from 'lodash';
 
 export const actionSetDt = (dtList: Dt[]) => (dispatch) => (
   dispatch(
     geoobjectSetNewData({
       dtList,
+      dtPolys: keyBy(dtList, 'yard_id'),
     }),
   )
 );

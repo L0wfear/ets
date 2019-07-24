@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { isBoolean } from 'util';
+import { isBoolean, isNullOrUndefined } from 'util';
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,
@@ -187,6 +187,9 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
   dispatch(
     actionSetLoadingStatus(registryKey, true),
   );
+  dispatch(
+    actionUnselectSelectedRowToShow(registryKey, true),
+  );
 
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
@@ -201,7 +204,15 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     let payload = {};
     if (getRegistryData.payload) {
       payload = {
-        ...getRegistryData.payload,
+        ...Object.entries(getRegistryData.payload).reduce(
+          (newObj, [key, value]) => {
+            if (!isNullOrUndefined(value)) {
+              newObj[key] = value;
+            }
+            return newObj;
+          },
+          {},
+        ),
       };
     }
     if (userServerFilters) {
@@ -271,9 +282,33 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       }
       case 'duty_mission': {
         arrayRaw = arrayRaw.map(getFrontDutyMission);
+        break;
       }
       case 'mission': {
         arrayRaw = arrayRaw.map(getFrontMission);
+        break;
+      }
+      case 'inspect_act_scan': {
+        arrayRaw = arrayRaw.reduce(
+          (newArr, { files = [] }) => {
+            files.forEach(
+              (file) => {
+                if (file.kind === 'act_scan') {
+                  newArr.push({
+                    id: file.id,
+                    files: [file],
+                    name: file.name,
+                    notes: file.notes,
+                  });
+                }
+              },
+            );
+
+            return newArr;
+          },
+          [],
+        );
+        break;
       }
     }
 
@@ -578,7 +613,18 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
   let fileName = '';
 
   if (getBlobData) {
-    const payload = getBlobData.payload || { format: 'xls'};
+    const payload = {
+      ...Object.entries(getBlobData.payload || {}).reduce(
+        (newObj, [key, value]) => {
+          if (!isNullOrUndefined(value)) {
+            newObj[key] = value;
+          }
+          return newObj;
+        },
+        {},
+      ),
+      format: 'xls',
+    };
 
     if (useFiltredData) {
       const registryData = get(getState(), `registry.${registryKey}`, null);
@@ -606,7 +652,7 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
         dispatch,
         getBlob(
           `${configStand.backend}/${getBlobData.entity}`,
-          getBlobData.payload || { format: 'xls'},
+          payload,
         ),
         { page: registryKey },
       );
@@ -728,7 +774,7 @@ export const registryGlobalCheck: any = (registryKey) => (dispatch, getState) =>
   let checkArray = processedArray;
 
   if (!getRegistryData || !userServerFilters) {
-    checkArray = processedArray.slice(offset, MAX_ITEMS_PER_PAGE);
+    checkArray = processedArray.slice(offset * MAX_ITEMS_PER_PAGE, (offset + 1) * MAX_ITEMS_PER_PAGE);
   }
 
   if (Object.keys(checkedRowsCurrent).length === checkArray.length) {

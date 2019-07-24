@@ -5,8 +5,6 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import ProgramRegistryFormCreate from 'components/program_registry/CreateForm/ProgramRegistryFormC';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 
 const firstStepFields = [
   'state_program_id',
@@ -37,8 +35,6 @@ class ProgramRegistryFormCreateWrap extends UNSAFE_FormWrap {
     this.props
       .defSendFromState(payload)
       .then(async ({ result: { rows: [createdPr] } }) => {
-        await this.props.registryLoadDataByKey(this.props.page);
-
         this.props.setParams({
           program_registry_registry_id: createdPr.version_id,
         });
@@ -94,11 +90,4 @@ class ProgramRegistryFormCreateWrap extends UNSAFE_FormWrap {
 export default compose(
   enhanceWithPermissions,
   withSearch,
-  connect(
-    null,
-    (dispatch) => ({
-      registryLoadDataByKey: (...arg) =>
-        dispatch(registryLoadDataByKey(...arg)),
-    }),
-  ),
 )(ProgramRegistryFormCreateWrap);

@@ -19,16 +19,11 @@ export interface IPropsExtendedInput {
 }
 
 interface IStateExtendedInput {
-  value: any[];
 }
 
 class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedInput> {
-  state = {
-    value: [],
-  };
-
   handleChange(index, e) {
-    const newValue = [...this.state.value];
+    const newValue = [...this.props.value];
 
     const getValue = R.cond([
       [
@@ -44,7 +39,6 @@ class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedI
     });
 
     newValue[index] = value;
-    this.setState({ value: newValue });
     this.props.onChange(newValue);
   }
   handleFirstInput = (e) => this.handleChange(0, e);

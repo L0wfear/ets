@@ -22,16 +22,26 @@ import { DivNone } from 'global-styled/global-styled';
 import sparePartPermissions from '../_config-data/permissions';
 import { sparePartFormSchema } from './schema';
 import { getDefaultSparePartElement } from './utils';
+import { onChangeWithKeys } from 'components/compositions/hoc';
+import SpareToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/spare_part/form/vehicle-block/SpareToVehicleBlock';
+
+const SpareToVehicleBlock: any = onChangeWithKeys(SpareToVehicleBlockComponent);
 
 class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> {
   state = {
     measureUnitOptions: [],
     sparePartGroupOptions: [],
+    canSave: true,
   };
 
   componentDidMount() {
     this.loadMeasureUnit();
     this.loadSparePartGroup();
+  }
+  handleSpareToCarValidity = ({ isValidInput }) => {
+    this.setState({
+      canSave: isValidInput,
+    });
   }
   async loadMeasureUnit() {
     const { payload: { data } } = await this.props.autobaseGetSetMeasureUnit();
@@ -60,15 +70,19 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const canSave = (
+      this.state.canSave
+      && this.props.canSave
+    );
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={this.props.hideWithoutChanges}>
+      <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={this.props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
                 label="Группа"
@@ -79,6 +93,8 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 boundKeys="spare_part_group_id"
                 disabled={!isPermitted}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="string"
                 label="Подгруппа"
@@ -88,6 +104,8 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 boundKeys="name"
                 disabled={!isPermitted}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="string"
                 label="Номер поставки"
@@ -97,6 +115,10 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 boundKeys="number"
                 disabled={!isPermitted}
               />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="select"
                 label="Единица измерения"
@@ -107,6 +129,8 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 boundKeys="measure_unit_id"
                 disabled={!isPermitted}
               />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
               <ExtField
                 type="string"
                 label="Количество"
@@ -116,15 +140,34 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 boundKeys="quantity"
                 disabled={!isPermitted}
               />
-              <ExtField
-                type="date"
-                label="Дата поставки"
-                date={state.supplied_at}
-                time={false}
-                error={errors.supplied_at}
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={4}>
+            <ExtField
+              type="date"
+              label="Дата поставки"
+              date={state.supplied_at}
+              time={false}
+              error={errors.supplied_at}
+              onChange={this.props.handleChange}
+              boundKeys="supplied_at"
+              disabled={!isPermitted}
+            />
+          </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <SpareToVehicleBlock
                 onChange={this.props.handleChange}
-                boundKeys="supplied_at"
+                boundKeys="spare_part_to_car"
+                inputList={state.spare_part_to_car}
+                onValidation={this.handleSpareToCarValidity}
+                outerValidate
+                errors={errors.spare_part_to_car}
                 disabled={!isPermitted}
+                tireId={state.id}
+                selectField="customId"
+                isPermitted={isPermitted}
+                tableTitle="Транспортные средства, на которые устанавливали запчасть"
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -133,7 +176,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
           {
             isPermitted // либо обновление, либо создание
             ? (
-              <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
+              <EtsBootstrap.Button disabled={!canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
             )
             : (
               <DivNone />

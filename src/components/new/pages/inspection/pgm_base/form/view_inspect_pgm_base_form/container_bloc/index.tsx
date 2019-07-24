@@ -27,6 +27,8 @@ type ContainerBlockOwnProps = {
   onChangeData: (obj: any, canChangeWithoutPermission?: boolean) => void;
 
   page: string;
+
+  inspectIsClosed: boolean;
 };
 type ContainerBlockMergedProps = (
   ContainerBlockStateProps
@@ -115,16 +117,15 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
 
   return (
     <React.Fragment>
-      <h4>Готовность емкостей для хранения ПГМ</h4>
       <BoxContainer>
+        <h4>Готовность емкостей для хранения ПГМ</h4>
         <IAVisibleWarningContainer
           onChange={props.onChangeData}
           data={containerListData}
           isPermitted={props.isPermittedChangeListParams}
           filedToCheck={filedToCheckContainersInfo}
         />
-      </BoxContainer>
-      <BoxContainer>
+        <br />
         <h4>
           Выявленные нарушения
         </h4>
@@ -135,8 +136,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
           isPermitted={props.isPermittedChangeListParams}
           filedToCheck={filedToCheckContainersFail}
         />
-      </BoxContainer>
-      <BoxContainer>
+        <br />
         <h4>
           Проверка емкостей
         </h4>
@@ -149,6 +149,8 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
                 onEditContainer={onEditContainer}
                 onRemoveContainer={onRemoveContainer}
                 isPermittedChangeListParams={props.isPermittedChangeListParams}
+
+                inspectIsClosed={props.inspectIsClosed}
               />
             ))
           }
@@ -170,7 +172,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
       <ContainerFormLazy
         element={selectedContainer}
         onFormHide={handleFormHide}
-        readOnly={!props.isPermittedChangeListParams}
+        readOnly={props.inspectIsClosed}
       />
     </React.Fragment>
   );

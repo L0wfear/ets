@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { inspectContainerSchema } from './filed_to_check/container_schema';
 import { filedToCheckContainerFirst, filedToCheckContainerSecond } from './filed_to_check/filedToCheck';
-import inspectContainerPermissions from './_config_data/permissions';
+import inspectPgmBasePermissions from '../pgm_base/_config_data/permissions';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { getDefaultInspectContainerElement } from './utils';
@@ -48,9 +48,8 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
       formState: state,
       formErrors: errors,
       page, path,
+      isPermitted,
     } = this.props;
-
-    const isPermitted = true;
 
     return (
       <EtsBootstrap.ModalContainer
@@ -87,6 +86,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
                   path={this.props.path}
                   addToActionRow={this.addToActionRow}
                   removeActionByIndex={this.removeActionByIndex}
+                  isPermitted={isPermitted}
                 />
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
@@ -102,7 +102,7 @@ class InspectionContainerList extends React.Component<PropsInspectContainerForm>
               </EtsBootstrap.Button>
             )
           }
-          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>Отмена</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.props.hideWithoutChanges}>{Boolean(isPermitted) ? 'Отмена' : 'Закрыть'}</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
@@ -121,6 +121,6 @@ export default compose<PropsInspectContainerForm, OwnInspectContainerProps>(
       return getDefaultInspectContainerElement(element);
     },
     schema: inspectContainerSchema,
-    permissions: inspectContainerPermissions,
+    permissions: inspectPgmBasePermissions,
   }),
 )(InspectionContainerList);

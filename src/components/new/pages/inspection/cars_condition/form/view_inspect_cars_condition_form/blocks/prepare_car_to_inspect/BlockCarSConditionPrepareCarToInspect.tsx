@@ -44,8 +44,12 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
         props.onChange({
           preparing_cars_check: {
             ...props.preparing_cars_check,
-            [key]: get(event, 'target.value', event),
-          },
+            [key]: (
+              key !== 'no_order'
+                ? get(event, 'target.value', event)
+                : get(event, 'target.checked', event)
+              ),
+            },
         });
       },
       [props.onChange, props.preparing_cars_check],
@@ -74,7 +78,7 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           error={errors.order_issued_at}
           onChange={handleChange}
           boundKeys="order_issued_at"
-          disabled={!isPermitted || !isActiveInspect}
+          disabled={!isPermitted || !isActiveInspect || state.no_order}
           makeGoodFormat
           preventDateTime
         />
@@ -86,6 +90,16 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           error={errors.order_number}
           onChange={handleChange}
           boundKeys="order_number"
+          disabled={!isPermitted || !isActiveInspect || state.no_order}
+        />
+        <ExtField
+          id="no_order"
+          type="boolean"
+          label="Приказ о подготовке техники отсутствует:"
+          value={state.no_order}
+          error={errors.no_order}
+          onChange={handleChange}
+          boundKeys="no_order"
           disabled={!isPermitted || !isActiveInspect}
         />
         <ExtField

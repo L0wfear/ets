@@ -43,14 +43,14 @@ export const actionLoadAppConfig = () => async (dispatch) => {
 const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['appConfigTracksCaching']) => {
   const { api_version_stable } = appConfigTracksCaching;
 
-  let versions = JSON.parse(localStorage.getItem(global.API__KEY2) || '{}');
+  let versions = JSON.parse(localStorage.getItem(global.API__KEY) || '{}');
   if (!versions) {
     versions = {};
   }
 
   const versionFromLocalStorage = Number(
     get(
-      JSON.parse(localStorage.getItem(global.API__KEY2) || '{}'),
+      JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
       config.tracksCaching,
       '',
     ),
@@ -61,7 +61,7 @@ const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['a
     versions[config.tracksCaching] = api_version_stable.toString();
   }
 
-  localStorage.setItem(global.API__KEY2, JSON.stringify(versions));
+  localStorage.setItem(global.API__KEY, JSON.stringify(versions));
 };
 
 export const actionLoadAppConfigTracksCaching = async () => async (dispatch) => {

@@ -5,11 +5,15 @@ import tirePermissions from './permissions';
 
 export const registryKey = 'tireRegistry';
 
-export const getToConfig = (): TypeConfigData<Tire> => {
+export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire> => {
   return {
+    noInitialLoad: true,
     Service: {
       getRegistryData: {
         entity: 'autobase/tire_registry',
+        payload: {
+          is_current_structure,
+        },
       },
       removeOneData: {
         entity: 'autobase/tire_registry',
@@ -19,6 +23,10 @@ export const getToConfig = (): TypeConfigData<Tire> => {
     registryKey,
     header: {
       title: 'Реестр шин',
+
+      format: 'is_current_structure',
+      is_current_structure_popover: 'Отобразятся шины, установленные на текущую дату на ТС Вашего подразделения',
+
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.create,
@@ -48,8 +56,14 @@ export const getToConfig = (): TypeConfigData<Tire> => {
           type: 'multiselect',
         },
         {
+          valueKey: 'initial_mileage',
+          title: 'Первоначальный пробег, км',
+          type: 'advanced-number',
+          step: 0.01,
+        },
+        {
           valueKey: 'odometr_diff',
-          title: 'Пробег, км',
+          title: 'Общий пробег, км',
           type: 'advanced-number',
           step: 1,
         },

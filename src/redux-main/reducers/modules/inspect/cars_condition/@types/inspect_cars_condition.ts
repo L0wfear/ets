@@ -35,6 +35,7 @@ export type PreparingCarsCheck = {
   order_number: string,
   master_plan_approved: string;
   named_plan_approved: string;
+  no_order: boolean;
   planned_target: string;
   statements_defects_issued: string;
   statements_defects_not_issued_cnt: string;
@@ -98,10 +99,11 @@ export type InspectCarsCondition = {
     types_cars: TypesСar[],
     types_harvesting_unit: TypesHarvestingUnit[],
     preparing_cars_check: PreparingCarsCheck;
-    headcount_list: HeadcountList,
+    headcount: HeadcountList,
     cars_use: CarsUse,
   };
   files: any[];
+  action: string;
 } & DefaultPartInspect;
 
 export type IStateInspectCarsCondition = {

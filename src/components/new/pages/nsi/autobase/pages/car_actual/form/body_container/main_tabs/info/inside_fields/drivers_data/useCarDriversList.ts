@@ -33,7 +33,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, pa
         },
       );
       driverPromise({}, { page, path }).then(
-        ({ payload: { data } }) => {
+        ({ data }) => {
           setDriverList(data);
         },
       );

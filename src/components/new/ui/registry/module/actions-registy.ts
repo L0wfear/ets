@@ -290,7 +290,7 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       }
       case 'inspect_act_scan': {
         arrayRaw = arrayRaw.reduce(
-          (newArr, { files }) => {
+          (newArr, { files = [] }) => {
             files.forEach(
               (file) => {
                 if (file.kind === 'act_scan') {

@@ -19,7 +19,6 @@ import { EtsButtonsContainer } from '../../../../../styled/styled';
 import ButtonRemove from '../../../ButtonRemove';
 import InspectActFileForm from './form/InspectActFileForm';
 import ButtonReadWrap from '../../../wrap/ButtonReadWrap';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 type Props = {
   element: { id: number };
@@ -27,20 +26,6 @@ type Props = {
 
   page: string;
   path: string;
-} & WithSearchProps;
-
-const getType = (pathname: string) => {
-  if (pathname.includes('autobase')) {
-    return 'autobase';
-  }
-
-  if (pathname.includes('pgm_base')) {
-    return 'pgm_base';
-  }
-
-  if (pathname.includes('cars_condition')) {
-    return 'cars_condition';
-  }
 };
 
 const ShowActsForm: React.FC<Props> = React.memo(
@@ -55,7 +40,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         dispatch(
-          registryAddInitialData(getConfig(props.element.id, getType(props.location.pathname))), // не сработает из других мест ЕТС
+          registryAddInitialData(getConfig(props.element.id)), // не сработает из других мест ЕТС
         );
 
         return () => {
@@ -151,4 +136,4 @@ const ShowActsForm: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(ShowActsForm);
+export default ShowActsForm;

@@ -118,23 +118,27 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
         this.getCars();
       }
 
-      if ((for_column !== prevProps.for_column) && value.length > 1) {
-        const car_gov_numbers_new = car_gov_numbers.slice(0, 1);
-        const car_type_ids_new = car_type_ids.slice(0, 1);
-        const car_model_names_new = car_model_names.slice(0, 1);
-        const car_special_model_names_new = car_special_model_names.slice(0, 1);
-        const car_type_names_new = car_type_names.slice(0, 1);
+      if ((for_column !== prevProps.for_column)) {
+        if (value.length > 1) {
+          const car_gov_numbers_new = car_gov_numbers.slice(0, 1);
+          const car_type_ids_new = car_type_ids.slice(0, 1);
+          const car_model_names_new = car_model_names.slice(0, 1);
+          const car_special_model_names_new = car_special_model_names.slice(0, 1);
+          const car_type_names_new = car_type_names.slice(0, 1);
 
-        this.props.onChange({
-          car_gov_numbers: car_gov_numbers_new,
-          car_gov_numbers_text: car_gov_numbers_new.join(', '),
-          car_ids: value.slice(0, 1),
-          car_type_ids: car_type_ids_new,
-          car_model_names: car_model_names_new,
-          car_special_model_names: car_special_model_names_new,
-          car_type_names: car_type_names_new,
-          car_type_names_text: car_type_names_new.join(', '),
-        });
+          this.props.onChange({
+            car_gov_numbers: car_gov_numbers_new,
+            car_gov_numbers_text: car_gov_numbers_new.join(', '),
+            car_ids: value.slice(0, 1),
+            car_type_ids: car_type_ids_new,
+            car_model_names: car_model_names_new,
+            car_special_model_names: car_special_model_names_new,
+            car_type_names: car_type_names_new,
+            car_type_names_text: car_type_names_new.join(', '),
+          });
+        }
+
+        this.getCars();
       }
       if (structure_id !== prevProps.structure_id && structure_id) {
         let hasSomeChange = false;
@@ -185,6 +189,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
       loadByNormId,
       dependeceTechnicalOperation,
       page, path,
+      for_column,
     } = this.props;
 
     const payload: any = {};
@@ -199,6 +204,10 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
 
     if (loadByNormId) {
       payload.norm_ids = norm_ids.toString();
+    }
+
+    if (for_column) {
+      payload.object_id = 1; // для маршрута типа ОДХ
     }
 
     const {

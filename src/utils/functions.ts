@@ -314,7 +314,7 @@ export const getTextCanvas = async (text: string, style: string) => {
   temp.innerHTML = text;
 
   const container = document.createElement("div");
-  container.setAttribute('style', 'height:0');
+  container.setAttribute('style', 'height:0px; position: absolute; z-index: -1; top:0');
   container.appendChild(temp);
   document.body.appendChild(container);
 

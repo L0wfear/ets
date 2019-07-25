@@ -13,14 +13,12 @@ import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPr
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-// import CarActualAddBatteryFormWrap from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/car_actual_add_battery_form/CarActualAddBatteryFormWrap';
 import BatteryRegistryFormLazy from 'components/new/pages/nsi/autobase/pages/battery_registry/form';
 import { CarActualRegistryFormContext } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/CarFormContext';
 import { get } from 'lodash';
 
 export type CarActualAddBatteryRegistryFormStateProps = {};
 export type CarActualAddBatteryRegistryFormDispatchProps = {
-  // registryProps
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
 };
@@ -76,9 +74,6 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
       </EtsBootstrap.ModalHeader>
       <ModalBodyPreloader page={props.page} typePreloader="mainpage">
         <Registry registryKey={registryKey} />
-        {/* <CarActualAddBatteryFormWrap
-          registryKey={registryKey}
-        /> */}
         <BatteryRegistryFormLazy registryKey={registryKey} handleHide={handleHideForm} />
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>

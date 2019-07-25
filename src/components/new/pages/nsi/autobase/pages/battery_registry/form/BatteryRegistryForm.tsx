@@ -28,6 +28,7 @@ import batteryRegistryPermissions from 'components/new/pages/nsi/autobase/pages/
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
+import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
 
 const BatteryVehicleBlock: any = onChangeWithKeys(
   BatteryToVehicleBlockComponent,
@@ -59,8 +60,8 @@ class BatteryRegistryForm extends React.PureComponent<
 
   addNewBatteryOnCar = () => {
     const newCarId = getNumberValueFromSerch(this.props.match.params[config.list.data.uniqKeyForParams]);
-    // const newCarId = null;
-    if ( newCarId ) {
+    const actualBatteriesOnCarId = this.props.match.params[uniqKeyForParams];
+    if ( newCarId && actualBatteriesOnCarId === 'create') {
       const customId = this.props.formState.battery_to_car.length + 1;
       this.props.handleChange(
         'battery_to_car',

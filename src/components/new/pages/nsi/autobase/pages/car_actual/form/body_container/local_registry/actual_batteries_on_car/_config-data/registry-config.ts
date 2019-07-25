@@ -5,6 +5,8 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 export const registryKey = 'batteryRegistryRegistry';
 
+export const uniqKeyForParams = 'actual_batteries_on_car_id';
+
 export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => {
   return {
     Service: {
@@ -78,7 +80,7 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'actual_batteries_on_car_id',
+        uniqKeyForParams,
       },
       meta: {
         row_double_click: true,

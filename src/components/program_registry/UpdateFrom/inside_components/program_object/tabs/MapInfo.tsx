@@ -60,6 +60,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 disabled={!isPermitted}
                 type="radio"
                 checked={!manual}
+                style={{marginRight: 5}}
               />Отрисовать весь объект
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={6} onClick={this.setManualOnTrue} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
@@ -67,6 +68,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 disabled={!isPermitted}
                 type="radio"
                 checked={manual}
+                style={{marginRight: 5}}
               />Отрисовать границы ремонта
             </EtsBootstrap.Col>
           </EtsBootstrap.Col>

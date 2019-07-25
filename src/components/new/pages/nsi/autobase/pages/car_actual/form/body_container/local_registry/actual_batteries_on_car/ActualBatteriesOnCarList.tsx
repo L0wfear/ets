@@ -12,6 +12,7 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 import { get } from 'lodash';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import ActualBatteriesOnCarForm from './form/ActualBatteriesOnCarForm';
 
 export type BatteryRegistryListStateProps = {};
 export type BatteryRegistryListDispatchProps = {
@@ -50,6 +51,7 @@ const BatteryRegistryList: React.FC<BatteryRegistryListProps> = (props) => {
   return (
     <>
       <Registry registryKey={registryKey} />
+      <ActualBatteriesOnCarForm registryKey={registryKey} />
     </>
   );
 };

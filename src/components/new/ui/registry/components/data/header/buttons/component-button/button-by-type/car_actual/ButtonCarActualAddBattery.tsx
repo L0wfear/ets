@@ -1,88 +1,71 @@
 import * as React from 'react';
+import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
-import { useSelector } from 'react-redux';
+import {
+  getListData,
+} from 'components/new/ui/registry/module/selectors-registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import CarActualAddBatteryRegistryForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/car_actual_add_battery_registry_form/CarActualAddBatteryRegistryForm';
-import batteryRegistryPermissions from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data/permissions';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
-type ButtonCarActualAddBatteryStateProps = {
-  uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  selectedRow: OneRegistryData['list']['data']['selectedRow'];
-  checkedRows: OneRegistryData['list']['data']['checkedRows'];
+type ButtonCreateStateProps = {
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
 };
-type ButtonCarActualAddBatteryDispatchProps = {
-  // registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  // actionCarActualAddBatteryByPartialData: HandleThunkActionCreator<typeof actionCarActualAddBatteryByPartialData>;
-  // actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
+type ButtonCreateDispatchProps = {
+  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCarActualAddBatteryOwnProps = {
+type ButtonCreateOwnProps = {
   registryKey: string;
 };
-type ButtonCarActualAddBatteryMergeProps = {};
+type ButtonCreateMergeProps = {};
 
-type ButtonCarActualAddBatteryProps = (
-  ButtonCarActualAddBatteryStateProps
-  & ButtonCarActualAddBatteryDispatchProps
-  & ButtonCarActualAddBatteryOwnProps
-  & ButtonCarActualAddBatteryMergeProps
-);
+type ButtonCreateProps = (
+  ButtonCreateStateProps
+  & ButtonCreateDispatchProps
+  & ButtonCreateOwnProps
+  & ButtonCreateMergeProps
+) & WithSearchProps;
 
-const ButtonCarActualAddBattery: React.FC<ButtonCarActualAddBatteryProps> = React.memo(
-  (props) => {
-    const [showCarActualAddBatteryRegistryForm, setShowCarActualAddBatteryRegistryForm] = React.useState(false);
-    const handleClickAddBattery = React.useCallback(
-      () => {
-        setShowCarActualAddBatteryRegistryForm(true);
-      },
-      [props.selectedRow],
-    );
-    const handleHide = React.useCallback(
-      () => {
-        setShowCarActualAddBatteryRegistryForm(false);
-      },
-      [props.selectedRow],
-    );
+const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
+  const handleClick = React.useCallback(
+    () => {
+      props.registrySetSelectedRowToShowInForm({});
+      props.setParams({
+        [props.uniqKeyForParams]: buttonsTypes.create,
+      });
+    },
+    [],
+  );
 
-    const disabled = false;
-    // const permissions = useSelector(
-    //   (state: ReduxState) => getListData(state.registry, props.registryKey).permissions.update,
-    // );
-    // const uniqKey = useSelector(
-    //   (state: ReduxState) => getListData(state.registry, props.registryKey).data.uniqKey,
-    // );
-    const selectedRow = useSelector(
-      (state: ReduxState) => getListData(state.registry, props.registryKey).data.selectedRow,
-    );
-    // const checkedRows = useSelector(
-    //   (state: ReduxState) => getListData(state.registry, props.registryKey).data.checkedRows,
-    // );
+  return (
+    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
+      <EtsBootstrap.Glyphicon glyph="plus" /> Добавить
+    </EtsBootstrap.Button>
+  );
+};
 
-    return (
-      <React.Fragment>
-        <EtsBootstrap.Button id="car_actual-add_battery" bsSize="small" onClick={handleClickAddBattery} disabled={disabled}>
-          <EtsBootstrap.Glyphicon glyph="plus" /> Добавить
-        </EtsBootstrap.Button>
-        {
-          showCarActualAddBatteryRegistryForm && (
-            <CarActualAddBatteryRegistryForm
-              element={selectedRow}
-              handleHide={handleHide}
-
-              page={props.registryKey}
-            />
-          )
-        }
-      </React.Fragment>
-    );
-  },
-);
-
-export default compose<ButtonCarActualAddBatteryProps, ButtonCarActualAddBatteryOwnProps>(
-  withRequirePermissionsNew({
-    permissions: batteryRegistryPermissions.update,
-  }),
-)(ButtonCarActualAddBattery);
+export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
+  withSearch,
+  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+    (state, { registryKey }) => ({
+      permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
+    }),
+  ),
+  withRequirePermissionsNew(),
+  connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ReduxState>(
+    (state, { registryKey }) => ({
+      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
+    }),
+    (dispatch: any, { registryKey }) => ({
+      registrySetSelectedRowToShowInForm: () => (
+        dispatch(
+          registrySetSelectedRowToShowInForm(registryKey),
+        )
+      ),
+    }),
+  ),
+)(ButtonCreate);

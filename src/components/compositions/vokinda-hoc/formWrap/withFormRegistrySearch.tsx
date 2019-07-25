@@ -6,7 +6,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isFunction } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -91,7 +91,13 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
       React.useEffect(
         () => {
           if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
-            if (props.buttons.includes(buttonsTypes.create) || props.buttons.includes(buttonsTypes.mission_create) || props.buttons.includes(buttonsTypes.company_structure_create) && !config.cantCreate) {
+            const hasButton = (
+              props.buttons.includes(buttonsTypes.create)
+              || props.buttons.includes(buttonsTypes.mission_create)
+              || props.buttons.includes(buttonsTypes.car_actual_add_battery)
+            );
+
+            if (hasButton || props.buttons.includes(buttonsTypes.company_structure_create) && !config.cantCreate) {
               setElement({});
             } else {
               global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
@@ -164,6 +170,10 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
           });
 
           registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
+
+          if (isFunction(props.handleHide)) {
+            props.handleHide(isSubmitted, response);
+          }
         },
         [uniqKeyForParams, props.setParamsAndSearch, props.match.params, props.searchState],
       );

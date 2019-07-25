@@ -71,7 +71,10 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
       ],
     },
     list: {
-      permissions: batteryRegistryPermissions,
+      permissions: {
+        ...batteryRegistryPermissions,
+        create: batteryRegistryPermissions.update,
+      },
       data: {
         uniqKey: 'id',
         fixedWidth: true,

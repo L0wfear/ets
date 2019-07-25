@@ -55,6 +55,15 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
     [],
   );
 
+  const handleHideForm = React.useCallback(
+    (isSubmitted) => {
+      if (isSubmitted) {
+        props.handleHide();
+      }
+    },
+    [props.handleHide],
+  );
+
   return (
     <EtsBootstrap.ModalContainer
       id="modal-duty-mission-reject"
@@ -70,7 +79,7 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
         {/* <CarActualAddBatteryFormWrap
           registryKey={registryKey}
         /> */}
-        <BatteryRegistryFormLazy registryKey={registryKey} />
+        <BatteryRegistryFormLazy registryKey={registryKey} handleHide={handleHideForm} />
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
         <EtsBootstrap.Button onClick={props.handleHide}>Закрыть</EtsBootstrap.Button>

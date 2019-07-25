@@ -70,7 +70,7 @@ const Title: React.FC<HeaderProps> = (props) => {
           value={is_current_structure}
           onChange={handleChange}
           label="Вывести данные по текущему подразделению"
-          className="checkbox-input flex-reverse"
+          className="checkbox-input flex-reverse default-boolean-input"
         />
         <EtsBootstrap.OverlayTrigger
           trigger={['hover', 'focus']}

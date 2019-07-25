@@ -57,7 +57,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
       urlAsArray = urlAsArray.slice(0, emptyIndex);
     }
 
-    const pathname = `${urlAsArray.join('/')}/${props.match.params.car_actual_asuods_id}`;
+    const pathname = `${urlAsArray.join('/')}/:car_actual_asuods_id?`;
 
     return (
       <EtsBootstrap.Row>

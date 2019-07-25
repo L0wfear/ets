@@ -17,6 +17,7 @@ import carActualPermissions from '../_config-data/permissions';
 import CarFormBodyHeader from './body_header/CarFormBodyHeader';
 import CarFormBodyContainer from './body_container/CarFormBodyContainer';
 import { actionUpdateCarWrap, actionsGetCarFormDataByAsuodsId } from 'redux-main/reducers/modules/autobase/car/actions';
+import { CarActualRegistryFormContext, CarActualRegistryFormContextType } from './body_container/CarFormContext';
 
 const CarForm: React.FC<PropsCar> = React.memo(
   (props) => {
@@ -31,8 +32,18 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
+    const contextValue: CarActualRegistryFormContextType = React.useMemo(
+      () => {
+        return {
+          currentSelectedCar: state,
+        };
+      },
+      [state],
+    );
+
     return (
-      <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
+      <CarActualRegistryFormContext.Provider value={contextValue}>
+        <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -61,6 +72,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
         }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
+      </CarActualRegistryFormContext.Provider>
     );
   },
 );

@@ -7,6 +7,7 @@ import ButtonExport from 'components/new/ui/registry/components/data/header/butt
 import ButtonToggleFilter from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonToggleFilter';
 import ButtonCreate from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonCreate';
 import ButtonRead from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonRead';
+import ButtonSelect from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonSelect';
 import ButtonRemove from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonRemove';
 import ButtonCreateMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateMissionByEdcRequest';
 import ButtonCreateDutyMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateDutyMissionByEdcRequest';
@@ -39,6 +40,7 @@ import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumns
 import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
+import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
 
 type PropsComponentButton = {
   type: string;
@@ -83,7 +85,8 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.columns_control: return ButtonColumnsControl;
     case buttonsTypes.waybill_print: return ButtonWaybillExport;
     case buttonsTypes.inspect_show_acts: return ButtonInspectShowActs;
-
+    case buttonsTypes.car_actual_add_battery: return ButtonCarActualAddBattery;
+    case buttonsTypes.select: return ButtonSelect;
     default: return null;
   }
 };

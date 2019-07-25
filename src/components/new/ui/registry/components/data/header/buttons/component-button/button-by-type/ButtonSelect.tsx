@@ -12,25 +12,25 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
 
-type ButtonReadStateProps = {
+type ButtonSelectStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
-type ButtonReadDispatchProps = {
+type ButtonSelectDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonReadOwnProps = {
+type ButtonSelectOwnProps = {
   registryKey: string;
   onClick?: (item: any) => any;
 };
-type ButtonReadMergeProps = {};
+type ButtonSelectMergeProps = {};
 
-type ButtonReadProps = (
-  ButtonReadStateProps
-  & ButtonReadDispatchProps
-  & ButtonReadOwnProps
-  & ButtonReadMergeProps
+type ButtonSelectProps = (
+  ButtonSelectStateProps
+  & ButtonSelectDispatchProps
+  & ButtonSelectOwnProps
+  & ButtonSelectMergeProps
 ) & WithSearchProps;
 
 let lasPermissions = {};
@@ -46,12 +46,13 @@ const getPermissionsReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
+class ButtonSelect extends React.PureComponent<ButtonSelectProps, {}> {
   handleClick = () => {
     if (this.props.onClick) {
       this.props.onClick(this.props.selectedRow);
       return;
     }
+
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
     }),
@@ -63,13 +64,13 @@ class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
 
     return (
       <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
-        <EtsBootstrap.Glyphicon glyph="search" /> Просмотреть
+        <EtsBootstrap.Glyphicon glyph="hand-up" /> Выбрать
       </EtsBootstrap.Button>
     );
   }
 }
 
-export default compose<ButtonReadProps, ButtonReadOwnProps>(
+export default compose<ButtonSelectProps, ButtonSelectOwnProps>(
   withSearch,
   connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
@@ -77,7 +78,7 @@ export default compose<ButtonReadProps, ButtonReadOwnProps>(
     }),
   ),
   withRequirePermissionsNew(),
-  connect<ButtonReadStateProps, ButtonReadDispatchProps, ButtonReadOwnProps, ReduxState>(
+  connect<ButtonSelectStateProps, ButtonSelectDispatchProps, ButtonSelectOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
@@ -91,4 +92,4 @@ export default compose<ButtonReadProps, ButtonReadOwnProps>(
       ),
     }),
   ),
-)(ButtonRead);
+)(ButtonSelect);

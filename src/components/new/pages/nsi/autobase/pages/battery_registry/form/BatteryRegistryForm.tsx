@@ -18,17 +18,30 @@ import {
   DispatchPropsBatteryRegistry,
   PropsBatteryRegistryWithForm,
 } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
-import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { BatteryRegistry, BatteryOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import BatteryToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/BatteryToVehicleBlock';
 import { onChangeWithKeys } from 'components/compositions/hoc';
 import { getDefaultBatteryRegistryElement } from './utils';
-import { batteryRegistryFormSchema } from './schema';
-import batteryRegistryPermissions from '../_config-data/permissions';
+import { batteryRegistryFormSchema } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
+import batteryRegistryPermissions from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data/permissions';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
 
 const BatteryVehicleBlock: any = onChangeWithKeys(
   BatteryToVehicleBlockComponent,
 );
+
+const defaultBatteryOnCarItem: BatteryOnCar = {
+  installed_at: null,
+  uninstalled_at: null,
+  customId: null,
+  car_id: null,
+  odometr_start: null,
+  isHighlighted: false,
+  isSelected: false,
+};
 
 class BatteryRegistryForm extends React.PureComponent<
   PropsBatteryRegistry,
@@ -41,7 +54,28 @@ class BatteryRegistryForm extends React.PureComponent<
 
   componentDidMount() {
     this.loadBatteryBrand();
+    this.addNewBatteryOnCar();
   }
+
+  addNewBatteryOnCar = () => {
+    const newCarId = getNumberValueFromSerch(this.props.match.params[config.list.data.uniqKeyForParams]);
+    // const newCarId = null;
+    if ( newCarId ) {
+      const customId = this.props.formState.battery_to_car.length + 1;
+      this.props.handleChange(
+        'battery_to_car',
+        [
+          {
+            ...defaultBatteryOnCarItem,
+            car_id: newCarId,
+            customId,
+          },
+          ...this.props.formState.battery_to_car,
+        ],
+      );
+    }
+  };
+
   async loadBatteryBrand() {
     const {
       payload: { data },
@@ -226,6 +260,7 @@ export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
         ),
     }),
   ),
+  withSearch,
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
     uniqField: 'id',
     createAction: autobaseActions.autobaseCreateBatteryRegistry,

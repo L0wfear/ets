@@ -41,10 +41,16 @@ export type BatteryManufacturer = {
 };
 export type BatteryOnCar = {
   car_id: number;
-  gov_number: string;
-  id: number;
+  gov_number?: string;
+  id?: number;
   installed_at: string;
   uninstalled_at: string;
+  // для таблички
+  customId?: number;
+  isChecked?: boolean;
+  isHighlighted?: boolean;
+  isSelected?: boolean;
+  odometr_start?: any;
 };
 
 export type BatteryRegistry = {

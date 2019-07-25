@@ -1,10 +1,10 @@
 import permissions from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/permissions';
 import component from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/components';
 
-import { getToConfig } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/car_actual_add_battery_registry_form/_config-data/registry-config';
+import { getToConfig } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
 
-export const item = 'actual_batteries_on_car';
-export const id = getToConfig(null, null).list.data.uniqKeyForParams;
+export const item = 'battery_registry_add_button';
+export const id = getToConfig(0).list.data.uniqKeyForParams;
 export const patrialEndPath = `/${item}/:${id}?`;
 export const path = `/nsi/autobase/${item}`;
 export const routePath = `${path}/:${id}?`;

@@ -93,7 +93,7 @@ const BlockInspectPgmBaseMainInfo: React.FC<BlockInspectPgmBaseMainInfoProps> = 
         <h5>Организация, эксплуатирующая базу:</h5>
         <ExtField
           type="string"
-          label="Руководитель балансодержателя:"
+          label="Руководитель организации, эксплуатирующей базу:"
           value={head_operating_base.fio}
           error={errors_head_operating_base.fio}
           onChange={handleChangeHeadOperatingBase}
@@ -102,7 +102,7 @@ const BlockInspectPgmBaseMainInfo: React.FC<BlockInspectPgmBaseMainInfoProps> = 
         />
         <ExtField
           type="string"
-          label="Телефон руководителя балансодержателя:"
+          label="Телефон руководителя организации, эксплуатирующей базу:"
           value={head_operating_base.tel}
           error={errors_head_operating_base.tel}
           onChange={handleChangeHeadOperatingBase}

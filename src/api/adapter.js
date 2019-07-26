@@ -91,7 +91,13 @@ function httpMethod(
   params = {},
   otherToken,
 ) {
-  const cacheKey = `${urlOwn}${dataOwn ? JSON.stringify(dataOwn) : ''}`;
+  const token = JSON.parse(
+    window.localStorage.getItem(
+      otherToken ? global.SESSION_KEY_ETS_TEST_BY_DEV : global.SESSION_KEY,
+    ) || null,
+  );
+
+  const cacheKey = `${token}${urlOwn}${dataOwn ? JSON.stringify(dataOwn) : ''}`;
 
   if (method === 'GET') {
     if (cachingPromise[cacheKey]) {
@@ -102,11 +108,6 @@ function httpMethod(
   let body;
   let url = urlOwn;
   const data = { ...dataOwn };
-  const token = JSON.parse(
-    window.localStorage.getItem(
-      otherToken ? global.SESSION_KEY_ETS_TEST_BY_DEV : global.SESSION_KEY,
-    ) || null,
-  );
 
   const options = {
     method,

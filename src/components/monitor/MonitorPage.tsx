@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { keyBy } from 'lodash';
 
 import { compose } from 'recompose';
 import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+import { connect, HandleThunkActionCreator, useDispatch } from 'react-redux';
 
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
@@ -11,7 +12,7 @@ import ToolBar from 'components/monitor/tool-bar/ToolBar';
 
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { getCompany } from 'redux-main/trash-actions/uniq';
-import { resetMonitorPageState, actionMonitorPageLoadCarActual } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { resetMonitorPageState, actionMonitorPageLoadCarActual, monitorPageSetcarActualGpsNumberIndex } from 'components/monitor/redux-main/models/actions-monitor-page';
 import {
   MONITOR_PAGE_SET_GEOMETRY,
   MONITOR_PAGE_SET_COMPANY,
@@ -42,13 +43,34 @@ type PropsMonitorPage = (
 
 const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
   (props) => {
+    const dispatch = useDispatch();
+
     React.useEffect(
       () => {
-        props.actionMonitorPageLoadCarActual();
+        let i_exist = true;
+
+        props.actionMonitorPageLoadCarActual().then(
+          (result) => {
+            if (i_exist) {
+              dispatch(
+                monitorPageSetcarActualGpsNumberIndex(
+                  keyBy(
+                    result.data,
+                    'gps_code',
+                  ),
+                ),
+              );
+            }
+          },
+        );
+
         props.loadGeozonesOdhMkad();
         props.getCompany();
 
-        return () => props.resetMonitorPageState();
+        return () => {
+          i_exist = false;
+          props.resetMonitorPageState();
+        };
       },
       [],
     );

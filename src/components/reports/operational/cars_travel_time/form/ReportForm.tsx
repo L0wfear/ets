@@ -31,6 +31,8 @@ import {
   CarsTravelTimeModalOwnProps,
 } from 'components/reports/operational/cars_travel_time/form/@types/CarsTravelTime.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { addTime } from 'utils/dates';
+
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
 
@@ -134,7 +136,7 @@ const CarsTravelTimeModal: React.FC<PropsCarsTravelTimeModal> = (props) => {
 
       props.actionGetAndSetInStoreTracksCaching({
         date_start: date_from,
-        date_end: date_to,
+        date_end: addTime(date_to, 1, 'day'),
         car_id,
         gps_code,
         odh_mkad,

@@ -79,7 +79,11 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
   }
 
   render() {
-    const { entity, isPermitted = false, isPermittedByStatus } = this.props;
+    const {
+      entity,
+      isPermitted = false,
+      isPermittedPercentByStatus,
+    } = this.props;
     const { saveButtonEnability = true } = this.state;
     const canSave = isPermitted && this.state.canSave && saveButtonEnability;
 
@@ -95,7 +99,7 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
         handleFormChange={this.handleFormStateChange.bind(this)}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
-        isPermittedByStatus={isPermittedByStatus}
+        isPermittedPercentByStatus={isPermittedPercentByStatus}
       />
     ) : null;
   }

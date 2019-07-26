@@ -6,8 +6,9 @@ import styled, { css } from 'styled-components';
 import { MultiValueProps } from 'react-select/lib/components/MultiValue';
 
 const NotActiveEmployeeStyle = css`
-  background-color: rgba(226, 0, 255, 0.08);
-  border: 1px solid rgba(226, 0, 255, 0.24);
+  background-color: #ff000087;
+  border: 1px solid #ff00004a!important;
+  color: white!important;
 `;
 
 const pathToActiveStatus = ['data', 'rowData', 'active_for_brigade'];

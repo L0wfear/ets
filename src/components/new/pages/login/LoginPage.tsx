@@ -57,7 +57,7 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
         try {
           const userData = await props.loginUser(
             user,
-            { page: 'mainpage' },
+            { page: 'main' },
           );
 
           if (userData.isGlavControl) {

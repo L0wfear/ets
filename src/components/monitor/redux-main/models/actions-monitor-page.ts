@@ -1,4 +1,3 @@
-import { keyBy } from 'lodash';
 import { AnyAction } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import {
@@ -32,22 +31,15 @@ export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) =
   },
 });
 
-export const actionMonitorPageLoadCarActual = (): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionMonitorPageLoadCarActual = (): ThunkAction<Promise<any>, ReduxState, {}, AnyAction> => async (dispatch) => {
   const result = await dispatch(
     autobaseActions.autobaseGetSetCar(
       {},
-      { page: 'mainpage', path: '' },
+      { page: 'main', path: '' },
     ),
   );
 
-  dispatch(
-    monitorPageSetcarActualGpsNumberIndex(
-      keyBy(
-        result.data,
-        'gps_code',
-      ),
-    ),
-  );
+  return result;
 };
 
 export const monitoPageChangeCarsByStatus = (carsByStatus) => ({

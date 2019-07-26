@@ -172,6 +172,27 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     });
   };
 
+  checkDisabledDelete() {
+    const { selectedElement, checkedElements } = this.state;
+
+    let checkedItems = {};
+
+    if (selectedElement) {
+      checkedItems[selectedElement[this.selectField]] = selectedElement;
+    } else {
+      checkedItems = checkedElements || {};
+    }
+
+    const checkedItemsAsArray = Object.values(checkedItems);
+
+    return (
+      !checkedItemsAsArray.length
+      || checkedItemsAsArray.some(
+        (objectData) => objectData.fact_date_start || objectData.fact_date_end,
+      )
+    );
+  }
+
   /**
    * @override
    */

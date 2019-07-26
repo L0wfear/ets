@@ -388,6 +388,9 @@ class ProgramRegistryForm extends UNSAFE_Form {
                       this.props.isPermittedPercentByStatus
                     }
                     changeVersion={this.props.changeVersion}
+                    isPermittetForObjectFact={
+                      this.props.isPermittetForObjectFact
+                    }
                   />
                   <ProgramRemarkList
                     isSupervisor={isSupervisor}

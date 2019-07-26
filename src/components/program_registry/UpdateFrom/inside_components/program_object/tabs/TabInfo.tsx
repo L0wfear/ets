@@ -209,6 +209,7 @@ class PlanTab extends React.Component<any, any> {
         ),
         tableMeta: TableMeta.filter(({ tabIncludes }) => tabIncludes.includes(OBJ_TAB_INDEX.PLAN)),
         fieldProps: getFieldProps({ state, objectPropertyList, typeTab: OBJ_TAB_INDEX.PLAN }),
+        disabled: !this.props.isPermitted,
       };
       case OBJ_TAB_INDEX.FACT: return {
         label: 'Фактические даты проведения ромента',
@@ -218,6 +219,7 @@ class PlanTab extends React.Component<any, any> {
         buttons: null,
         tableMeta: TableMeta.filter(({ tabIncludes }) => tabIncludes.includes(OBJ_TAB_INDEX.FACT)),
         fieldProps: getFieldProps({ state, objectPropertyList, typeTab: OBJ_TAB_INDEX.PLAN }),
+        disabled: !this.props.isPermittetForObjectFact,
       };
       default: return {
         label: null,
@@ -234,7 +236,6 @@ class PlanTab extends React.Component<any, any> {
   render() {
     const { selectedRow } = this.state;
     const {
-      isPermitted,
       state,
       state: {
         note,
@@ -251,6 +252,7 @@ class PlanTab extends React.Component<any, any> {
       buttons,
       tableMeta,
       fieldProps,
+      disabled,
     } = this.getDataByTypeTab();
 
     return (
@@ -268,7 +270,7 @@ class PlanTab extends React.Component<any, any> {
                 error={errors[date_from]}
                 onChange={this.props.handleChange}
                 boundKeys={date_from}
-                disabled={!isPermitted}
+                disabled={disabled}
               />
             </div>
             <div style={{ width: 40 }}>—</div>
@@ -280,7 +282,7 @@ class PlanTab extends React.Component<any, any> {
                 error={errors[date_to]}
                 onChange={this.props.handleChange}
                 boundKeys={date_to}
-                disabled={!isPermitted}
+                disabled={disabled}
               />
             </div>
           </div>
@@ -295,7 +297,7 @@ class PlanTab extends React.Component<any, any> {
             mainPropsFields={fieldProps}
             handleChange={this.handleChangeTable}
             handleRowClick={this.handleRowClick}
-            isPermitted={isPermitted}
+            isPermitted={!disabled}
             errors={errors}
           />
         </EtsBootstrap.Col>
@@ -308,7 +310,7 @@ class PlanTab extends React.Component<any, any> {
             error={errors.note}
             onChange={this.props.handleChange}
             boundKeys="note"
-            disabled={!isPermitted}
+            disabled={disabled}
           />
         </EtsBootstrap.Col>
       </div>

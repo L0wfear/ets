@@ -616,6 +616,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               <EtsBootstrap.Col md={7}>
                 <TabInfo
                   isPermitted={!(!asuods_id || !isPermitted)}
+                  isPermittetForObjectFact={
+                    !(!asuods_id || !this.props.isPermittetForObjectFact)
+                  }
                   whatSelectedTab={tabKey}
                   state={state}
                   errors={errors}
@@ -662,8 +665,14 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}
-            onClick={isPermitted ? this.handleSubmitWrap : this.props.onHide}>
-            {isPermitted ? 'Сохранить' : 'Закрыть'}
+            onClick={
+              isPermitted || this.props.isPermittetForObjectFact
+                ? this.handleSubmitWrap
+                : this.props.onHide
+            }>
+            {isPermitted || this.props.isPermittetForObjectFact
+              ? 'Сохранить'
+              : 'Закрыть'}
           </EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>

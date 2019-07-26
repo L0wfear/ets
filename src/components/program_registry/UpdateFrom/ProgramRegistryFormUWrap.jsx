@@ -336,6 +336,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
         isPermittedByStatus={isPermittedByStatus}
         isPermittedPercentByStatus={isPermittedPercentByStatus}
         isPermittetForContractorL={isPermittetForContractorL}
+        isPermittetForObjectFact={isPermittetForObjectFact}
         canSave={canSave}
         handleFormChange={this.handleFormStateChange}
         show={this.props.showForm}

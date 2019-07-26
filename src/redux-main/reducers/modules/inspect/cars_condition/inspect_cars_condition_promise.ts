@@ -106,7 +106,6 @@ export const promiseGetInspectCarsCondition = async (payload: { carsConditionId:
 export const promiseGetInspectCarsConditionById = async (id: number) => {
   const inspectCarsCondition: InspectCarsCondition = await promiseGetInspectionByIdType(
     id,
-    'cars_condition',
   );
 
   return makeInspectCarsConditionFront(inspectCarsCondition);

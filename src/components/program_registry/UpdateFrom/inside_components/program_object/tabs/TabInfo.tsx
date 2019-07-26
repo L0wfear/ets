@@ -107,7 +107,7 @@ const getFieldProps = (props) => {
   return {
     object_property_id: {
       type: 'select',
-      options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, disabled: selectedElements.includes(value) })),
+      options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, isNotVisible: selectedElements.includes(value) })),
       disabled: typeTab === OBJ_TAB_INDEX.FACT,
     },
     value: {

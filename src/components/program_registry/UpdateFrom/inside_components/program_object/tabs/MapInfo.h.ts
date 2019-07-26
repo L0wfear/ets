@@ -7,6 +7,7 @@ type IHandleRemoveLastDrawFeature = () => void;
 type IStartDraw = () => void;
 
 export interface IPropsMapInfo {
+  focusOnSelectedGeo?: boolean;
   isPermitted: boolean;
   isPermittedMap: boolean;
   manual: boolean;

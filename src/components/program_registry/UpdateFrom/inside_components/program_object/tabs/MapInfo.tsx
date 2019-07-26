@@ -78,7 +78,10 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
                 objectsType={objectsType}
                 manual={manual}
                 canDraw={manual}
+
+                focusOnSelectedGeo={this.props.focusOnSelectedGeo}
                 polys={polys}
+
                 objectList={objectList}
                 drawObjectList={drawObjectList}
                 handleFeatureClick={this.handleFeatureClick}

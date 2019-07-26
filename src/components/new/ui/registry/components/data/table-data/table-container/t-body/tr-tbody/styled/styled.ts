@@ -46,16 +46,15 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
 
     &:hover {
       &:nth-of-type(odd) {
-      background-color: ${constantColor.colorLightGreen};
+        background-color: ${constantColor.colorLightGreen};
       }
       &:nth-of-type(even) {
         background-color: ${darken(0.02, constantColor.colorLightGreen)};
       }
       background-color: ${constantColor.colorLightGreen};
 
-      td {
-        color: white;
-      }
+      color: white;
+
       ${FileInputWrapper} {
         a {
           color: white;

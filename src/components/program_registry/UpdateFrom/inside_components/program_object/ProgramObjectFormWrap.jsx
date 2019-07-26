@@ -165,6 +165,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
         handleMultiChange={this.handleMultiChange}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
+        isPermittedByPermission={isPermitted}
         isPermitted={
           isPermitted && this.props.program_version_status !== 'accepted'
         }

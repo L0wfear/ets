@@ -50,8 +50,9 @@
       flex-direction: row-reverse;
 
       &.red {
-        background-color: rgba(234, 66, 255, 0.05);
-        border: 1px solid rgba(234, 66, 255, 0.24);
+        background-color: #ff000087;
+        border: 1px solid #ff00004a!important;
+        color: white!important;
       }
 
       .react-select__multi-value__label {

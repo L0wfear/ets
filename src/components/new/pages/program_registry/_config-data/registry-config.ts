@@ -117,7 +117,7 @@ export const getToConfig = (): TypeConfigData<ProgramRegistry> => {
           {
             key: 'status_name',
             title: 'Статус',
-            width: 100,
+            width: 125,
           },
           {
             key: 'plan_date_start',

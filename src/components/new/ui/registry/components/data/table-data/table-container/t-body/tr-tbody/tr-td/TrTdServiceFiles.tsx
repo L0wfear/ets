@@ -56,7 +56,7 @@ const TrTdServiceFilesf: React.FC<TrTdServiceFilesfProps> = React.memo(
               },
             );
           } else {
-            const file: any = get(files_old.filter(({ id }) => !files.find((fileData) => fileData.id === id)), '0', null);
+            const file: any = files.find(({ action }) => action === 'delete');
 
             if (file) {
               await props.actionServiceRemoveFileById(

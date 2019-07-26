@@ -25,10 +25,10 @@ const vehicleFilter = (structure_id: string, car_id: number | void) =>
 
 // todo вернуть интерфес
 //  R.filter<IVehicle>((c) =>
-const carFilter = (structure_id, car_id) =>
+const carFilter: any = (structure_id, car_id) =>
   R.pipe(
     vehicleFilter(structure_id, car_id),
-    R.filter<any>(
+    R.filter<IVehicle>(
       (c) =>
         !c.is_trailer ||
         [
@@ -39,10 +39,10 @@ const carFilter = (structure_id, car_id) =>
   );
 // todo вернуть интерфейс
 //  R.filter<IVehicle>((c) => c.is_trailer),
-const trailerFilter = (structure_id, trailer_id) =>
+const trailerFilter: any = (structure_id, trailer_id) =>
   R.pipe(
     vehicleFilter(structure_id, trailer_id),
-    R.filter<any>((c) => c.is_trailer),
+    R.filter<IVehicle>((c) => c.is_trailer),
   );
 
 // <IVehicle, any>

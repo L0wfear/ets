@@ -297,9 +297,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       formState: { draw_object_list = [] },
     } = this.props;
 
-    draw_object_list.push(...drawObjectNew);
-
-    this.handleChange('draw_object_list', draw_object_list);
+    this.handleChange('draw_object_list', [
+      ...draw_object_list,
+      ...drawObjectNew,
+    ]);
   };
 
   handleDrawFeatureClick = ({ index, state }) => {
@@ -695,5 +696,9 @@ export default compose(
           }),
         ),
     }),
+    null,
+    {
+      pure: false,
+    },
   ),
 )(connectToStores(ProgramObjectFormDT, ['repair']));

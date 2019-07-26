@@ -34,7 +34,7 @@ export const promiseGetTracksCaching = async (payload: PromiseGetTracksCachingPa
     version,
     car_id,
     from_dt: makeUnixTime(date_start),
-    to_dt: date_end ? makeUnixTime(date_end) + 86340 : makeUnixTime(date_end), // <<< исправить
+    to_dt: makeUnixTime(date_end),
     sensors,
   };
 

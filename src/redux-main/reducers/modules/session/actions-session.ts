@@ -149,7 +149,7 @@ export const sessionSetData: any = (
     dispatch(
       someUniqActions.actionGetAndSetInStoreMissionSource(
         {},
-        { page: 'mainpage' },
+        { page: 'main' },
       ),
     ),
   ]);

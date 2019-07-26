@@ -8,9 +8,11 @@ export const DividerDatePickerRange = styled.div<{ label: any; date_start_label:
     text-align: center;
     bottom: ${(props) => props.label || props.date_start_label ? '-24px' : '0px'};
     @media (min-width: 992px) {
+      width: auto;
+      left: 50%;
+      transform: translate(-50%, 0);
+      top: 0;
       position: absolute;
-      top: 25%;
-      width: 100%;
       margin: 0;
       padding: 8px 0 0 0;
       display: flex;

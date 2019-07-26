@@ -15,10 +15,10 @@ export default class PercentModalForm extends UNSAFE_Form {
 
     const {
       isPermitted: isPermittedOuter = false,
-      isPermittedByStatus,
+      isPermittedPercentByStatus,
     } = this.props;
 
-    const isPermitted = isPermittedOuter && isPermittedByStatus;
+    const isPermitted = isPermittedOuter && isPermittedPercentByStatus;
 
     const IS_CREATING = !state.id;
 

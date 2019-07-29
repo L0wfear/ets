@@ -164,7 +164,7 @@ export type TypeConfigData<F> = {
       | 'is_current_structure'
     );
     is_current_structure_popover?: string;
-    buttons?: ButtonDefineType,
+    buttons?: Array<ValuesOf<OneRegistryData['header']['buttons']> | string>,
   },
   filter?: {
     isOpen?: boolean;

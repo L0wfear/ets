@@ -23,7 +23,9 @@ export const config: TypeConfigData<Employee> = {
     title: 'Реестр сотрудников',
     buttons: [
       buttonsTypes.filter,
-      buttonsTypes.create,
+      {
+        type: buttonsTypes.create,
+      },
       buttonsTypes.read,
       buttonsTypes.export,
     ],

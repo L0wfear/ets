@@ -9,14 +9,16 @@ export const REGISTRY_CHANGE_FILTER = REGISTRY`CHANGE_FILTER_DATA`;
 export const REGISTRY_CHANGE_LIST = REGISTRY`CHANGE_LIST`;
 export const REGISTRY_CHANGE_SERVICE = REGISTRY`CHANGE_SERVICE`;
 export const REGISTRY_SET_LOADING_STATUS = REGISTRY`SET_LOADING_STATUS`;
+export const REGISTRY_SET_ID_REQUEST_TIME = REGISTRY`SET_ID_REQUEST_TIME`;
 
 export interface OneRegistryData {
+  idRequestTime: number;
   isLoading: boolean;
   Service: any;
-  header?: {
+  header: {
     title?: any;
-    titlePopover?: string;
-    format?: (
+    titlePopover: string;
+    format: (
       'default'
       | 'select_odh/dt(disabled)'
       | 'select_odh/dt'
@@ -25,7 +27,13 @@ export interface OneRegistryData {
       | 'is_current_structure'
     );
     is_current_structure_popover?: string;
-    buttons?: string[];
+    buttons: Array<{
+      type: string;
+      title?: string;
+      glyph?: string;                                       // EtsBootstrap.Glyphicon glyph
+      format?: string;
+      objChangeParams?: object;                     // что заменять в params при клике
+    }>;
   };
   list: {
     data: {
@@ -97,10 +105,10 @@ export default (state = initialState, { type, payload }) => {
       };
     }
     case REGISTRY_REMOVE_DATA: {
-      return {
-        ...state,
-        [payload.registryKey]: undefined,
-      };
+      const state_new = { ...state };
+      delete state_new[payload.registryKey];
+
+      return state_new;
     }
     case REGISTRY_CHANGE_FILTER: {
       const { registryKey } = payload;
@@ -143,6 +151,17 @@ export default (state = initialState, { type, payload }) => {
         [registryKey]: {
           ...state[registryKey],
           isLoading: payload.isLoading,
+        },
+      };
+    }
+    case REGISTRY_SET_ID_REQUEST_TIME: {
+      const { registryKey } = payload;
+
+      return {
+        ...state,
+        [registryKey]: {
+          ...state[registryKey],
+          idRequestTime: payload.idRequestTime,
         },
       };
     }

@@ -72,7 +72,17 @@ export const mergeHeader = (header: OneRegistryData['header']) => (
     Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
       if (key === 'buttons') {
         if (isArray(header[key])) {
-          newObj[key] = header[key];
+          newObj[key] = header[key].map(
+            (buttonData) => {
+              if (isObject(buttonData)) {
+                return buttonData;
+              }
+
+              return {
+                type: buttonData,
+              };
+            },
+          );
         } else {
           newObj[key] = value;
         }

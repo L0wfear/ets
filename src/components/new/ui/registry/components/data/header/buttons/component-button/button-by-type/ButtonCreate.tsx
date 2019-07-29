@@ -9,6 +9,7 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
+import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
@@ -19,6 +20,7 @@ type ButtonCreateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
 type ButtonCreateOwnProps = {
+  data?: ValuesOf<OneRegistryData['header']['buttons']>
   registryKey: string;
 };
 type ButtonCreateMergeProps = {};
@@ -31,19 +33,27 @@ type ButtonCreateProps = (
 ) & WithSearchProps;
 
 const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
+  const data = React.useMemo(
+    () => (
+      get(props, 'data', {} as ButtonCreateOwnProps['data'])
+    ),
+    [props.data],
+  );
+
   const handleClick = React.useCallback(
     () => {
       props.registrySetSelectedRowToShowInForm({});
       props.setParams({
         [props.uniqKeyForParams]: buttonsTypes.create,
+        ...get(data, 'objChangeParams', {}),
       });
     },
-    [],
+    [data],
   );
 
   return (
     <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
-      <EtsBootstrap.Glyphicon glyph="plus" /> Создать
+      <EtsBootstrap.Glyphicon glyph={data.glyph || 'plus'} />{data.title || 'Создать'}
     </EtsBootstrap.Button>
   );
 };

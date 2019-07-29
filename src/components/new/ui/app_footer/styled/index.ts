@@ -10,7 +10,7 @@ export const AppFooterContainer = styled.footer`
   justify-content: space-between;
   line-height: 30px;
   color: white;
-  z-index: 1; /* футер выше загрузки */
+  z-index: 100; /* футер выше загрузки */
   >div {
     overflow: hidden;
   }

@@ -26,8 +26,8 @@ const Buttons: React.FC<ButtonsProps> = (props) => {
     <EtsButtonsContainer>
       {
         props.buttons.map(
-          (type) => (
-            <ComponentButton key={type} type={type} registryKey={props.registryKey} />
+          (data, index) => (
+            <ComponentButton key={`${data.type}_${index}`} data={data} registryKey={props.registryKey} />
           ),
         )
       }

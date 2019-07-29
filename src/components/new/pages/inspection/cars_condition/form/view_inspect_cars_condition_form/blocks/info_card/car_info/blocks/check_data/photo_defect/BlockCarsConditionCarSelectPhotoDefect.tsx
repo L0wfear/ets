@@ -42,7 +42,7 @@ const BlockCarsConditionCarSelectPhotoDefect: React.FC<BlockCarsConditionCarSele
     return (
       <FileField
         id="file_photo_defect"
-        label="Фотографии подтверждающих документов"
+        label="Фотографии дефектов"
         multiple
         value={value}
         onChange={handleChange}

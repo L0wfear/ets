@@ -9,6 +9,7 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
+import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 
 type ButtonRemoveStateProps = {
@@ -21,6 +22,7 @@ type ButtonRemoveDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type ButtonRemoveOwnProps = {
+  data?: ValuesOf<OneRegistryData['header']['buttons']>
   registryKey: string;
 
   format?: 'yesno' | 'default';
@@ -72,10 +74,18 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   );
   const checkedRowsAsArray = Object.values(props.checkedRows);
 
+  const data = React.useMemo(
+    () => (
+      get(props, 'data', {} as ButtonRemoveOwnProps['data'])
+    ),
+    [props.data],
+  );
+
   return (
     <>
       <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
-        <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
+        <EtsBootstrap.Glyphicon glyph={data.glyph || 'remove'} />{data.title || 'Удалить'}
+
       </EtsBootstrap.Button>
       <ModalYesNo
         show={isOpenModalRemove}

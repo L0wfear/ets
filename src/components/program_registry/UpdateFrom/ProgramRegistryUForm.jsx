@@ -380,7 +380,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
               {state.id ? (
-                <EtsBootstrap.Col md={12}>
+                <React.Fragment>
                   <ProgramObjectList
                     program_version_id={state.id}
                     program_version_status={state.status}
@@ -407,7 +407,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     program_version_status={state.status}
                     isPermittedByStatus={isPermittedByStatus}
                   />
-                </EtsBootstrap.Col>
+                </React.Fragment>
               ) : (
                 <DivNone />
               )}

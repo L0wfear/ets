@@ -18,7 +18,7 @@ import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } fro
 import { EtsButtonsContainer } from '../../../../../styled/styled';
 import ButtonRemove from '../../../ButtonRemove';
 import InspectActFileForm from './form/InspectActFileForm';
-import ButtonReadWrap from '../../../wrap/ButtonReadWrap';
+import ButtonRead from '../../../ButtonRead';
 
 type Props = {
   element: { id: number };
@@ -106,7 +106,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
                   Добавить файл
                 </EtsBootstrap.Button>
                 <EtsButtonsContainer>
-                  <ButtonReadWrap registryKey={registryKey} onClick={handleOpenFormEdit} />
+                  <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
                   <ButtonRemove registryKey={registryKey} format="yesno"/>
                 </EtsButtonsContainer>
               </EtsHeaderContainer>

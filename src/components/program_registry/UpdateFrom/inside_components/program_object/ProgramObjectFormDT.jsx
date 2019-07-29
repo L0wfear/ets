@@ -420,6 +420,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       formErrors: errors,
       tabKey,
       contractorList = [],
+      isPermittedByPermission,
       isPermitted: isPermittedDefault,
       isPermittedByStatus,
       prCompanyName,
@@ -545,7 +546,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                         error={errors.name}
                         onChange={this.handleChange}
                         boundKeys="contract_number"
-                        disabled={!isPermitted}
+                        disabled={
+                          !isPermittedByPermission
+                          || !this.props.isPermittetForObjectFact
+                        }
                       />
                     </EtsBootstrap.Col>
                     <EtsBootstrap.Col mdOffset={2} md={1}>
@@ -561,7 +565,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                         value={state.contractor_id}
                         onChange={this.handleChange}
                         boundKeys="contractor_id"
-                        disabled={!isPermitted}
+                        disabled={
+                          !isPermittedByPermission
+                          || !this.props.isPermittetForObjectFact
+                        }
                       />
                     </EtsBootstrap.Col>
                   </div>

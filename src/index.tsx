@@ -16,6 +16,18 @@ import './components/ui/NotificationSystem';
 import './components/ui/Prompt';
 import './config/raven';
 
+if ('Worker' in window && __DEVELOPMENT__) {
+  const WebWorker = require("worker-loader!./test.webworker");
+
+  const worker = new WebWorker();
+
+  worker.postMessage({ message: 'Hello, bro!' });
+  worker.onmessage = (event) => {
+    console.log(event.data.message);  // tslint:disable-line:no-console
+  };
+}
+
+// App.ts
 const AppContainer = React.lazy(() => (
   import(/* webpackChunkName: "app" */ './AppContainer')
 ));

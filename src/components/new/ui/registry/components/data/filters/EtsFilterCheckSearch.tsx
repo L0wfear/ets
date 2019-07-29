@@ -29,7 +29,9 @@ class EtsFilterCheckSearch extends React.PureComponent<EtsFilterCheckSearchProps
     let filterValue = this.props.searchState[filterKey];
 
     try {
-      filterValue = decodeURIComponent(filterValue);
+      if (filterValue) {
+        filterValue = decodeURIComponent(filterValue);
+      }
     } catch (e) {
       //
     }
@@ -51,7 +53,9 @@ class EtsFilterCheckSearch extends React.PureComponent<EtsFilterCheckSearchProps
     let filterValue = this.props.searchState[filterKey];
 
     try {
-      filterValue = decodeURIComponent(filterValue);
+      if (filterValue) {
+        filterValue = decodeURIComponent(filterValue);
+      }
     } catch (e) {
       //
     }

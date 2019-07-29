@@ -288,7 +288,11 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   error={errors.fact_date_start}
                   onChange={this.handleChange}
                   boundKeys="fact_date_start"
-                  disabled={!isPermitted || !isPermittedByStatus || !is_active}
+                  disabled={
+                    !isPermitted
+                    || !this.props.isPermittetForObjectFact
+                    || !is_active
+                  }
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={3}>
@@ -300,7 +304,11 @@ class ProgramRegistryForm extends UNSAFE_Form {
                   error={errors.fact_date_end}
                   onChange={this.handleChange}
                   boundKeys="fact_date_end"
-                  disabled={!isPermitted || !isPermittedByStatus || !is_active}
+                  disabled={
+                    !isPermitted
+                    || !this.props.isPermittetForObjectFact
+                    || !is_active
+                  }
                 />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>

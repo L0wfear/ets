@@ -41,6 +41,7 @@ module.exports = {
     filename: 'app.[name].[contenthash].js',
     path: path.join(__dirname, '..', 'dist'),
     publicPath: '/',
+    globalObject: 'this',
   },
   module: {
     rules: [
@@ -49,6 +50,10 @@ module.exports = {
         use: [
           'handlebars-loader',
         ],
+      },
+      {
+        test: /\.worker\.(js|ts)$/,
+        use: { loader: 'worker-loader' }
       },
       {
         test: /\.(jsx|js|ts|tsx)$/,

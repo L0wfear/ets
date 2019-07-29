@@ -6,7 +6,7 @@ import { mobiSize } from 'global-styled/global-constants';
 export const AppHeaderNav = styled.nav`
   display: flex;
   justify-content: space-between;
-  z-index: 100; /* шапка выше загрузки */
+  z-index: 1; /* шапка выше загрузки */
   background-color: #292929;
   flex-shrink: 0;
 `;

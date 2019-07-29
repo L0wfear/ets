@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 import {get} from 'lodash';
 import { isNullOrUndefined } from 'util';
 import carFormTabKey from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import CarFormLink from './CarFormLink';
 import CarFormLinkNavDropdown from './CarFormLinkNavDropdown';
@@ -13,21 +11,9 @@ type CarFormBodyHeaderOwnProps = {
 };
 type CarFormBodyHeaderProps = (
   CarFormBodyHeaderOwnProps
-  & WithSearchProps
 );
 
 const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
-  const {
-    match,
-  } = props;
-
-  let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' || str === ':technical_operation_relations_type_form?' ? null :  str);
-
-  const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
-  if (emptyIndex > 0) {
-    urlAsArray = urlAsArray.slice(0, emptyIndex);
-  }
-
   const activeTabKey = get(props, 'match.params.tabKey', null);
 
   return (
@@ -70,6 +56,4 @@ const CarFormBodyHeader: React.FC<CarFormBodyHeaderProps> = (props) => {
   );
 };
 
-export default compose<CarFormBodyHeaderProps, CarFormBodyHeaderOwnProps>(
-  withSearch,
-)(CarFormBodyHeader);
+export default CarFormBodyHeader;

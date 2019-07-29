@@ -33,6 +33,7 @@ import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { getGeoobjectState } from 'redux-main/reducers/selectors';
 import { polyState } from 'constants/polygons';
 import memoizeOne from 'memoize-one';
+import { isNullOrUndefined } from 'util';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -67,6 +68,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
     this.state = {
       manual: false,
+      isNotDrawAllObject: false,
       showPercentForm: false,
       selectedObj: {},
       IS_CREATING: !props.formState.id,
@@ -88,6 +90,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             type_slug: type,
             plan_shape_json: {
               manual,
+              isNotDrawAllObject: isNotDrawAllObjectOuter,
               dtPolys: dtPolysOut,
               draw_object_list = [],
               object_list,
@@ -95,12 +98,18 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             elements = [],
           },
         } = this.props;
+        const isNotDrawAllObject = isNullOrUndefined(isNotDrawAllObjectOuter)
+          ? manual
+          : isNotDrawAllObjectOuter;
 
         if (!IS_CREATING) {
-          const changesState = { manual };
+          const changesState = {
+            manual,
+            isNotDrawAllObject,
+          };
 
           const changesFormState = {};
-          if (manual) {
+          if (isNotDrawAllObject) {
             changesFormState.draw_object_list = draw_object_list;
             changesFormState.objectsType = getObjectsType('mixed');
           } else {
@@ -143,7 +152,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.setState({ ...changesState });
         } else {
           this.props.actionGetGetDt().then(({ dtList: data }) => {
-            const changesState = { manual };
+            const changesState = { manual, isNotDrawAllObject };
             changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
 
             changesState.OBJECT_OPTIONS = Object.values(
@@ -193,7 +202,13 @@ class ProgramObjectFormDT extends UNSAFE_Form {
   handleChangeVersion = (value, versionAllData) =>
     this.props.changeVersionWithObject(versionAllData);
 
+  setManualOnTrue = () => {
+    this.setState({ manual: true });
+  };
   setManualOnFalse = () => {
+    this.setState({ manual: false });
+  };
+  setIsDrawAllObjectOnFalse = () => {
     const {
       formState: { draw_object_list = [] },
     } = this.props;
@@ -214,10 +229,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       object_list,
       objectsType: log.objectsType,
     });
-    this.setState({ manual: false, dtPolys });
+    this.setState({ manual: false, isNotDrawAllObject: false, dtPolys });
   };
 
-  setManualOnTrue = () => {
+  setIsDrawAllObjectOnTrue = () => {
     const {
       formState: {
         objectsType,
@@ -241,7 +256,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       draw_object_list: log.draw_object_list || [],
       objectsType: getObjectsType('mixed'),
     });
-    this.setState({ manual: true, dtPolys });
+    this.setState({ manual: true, isNotDrawAllObject: true, dtPolys });
   };
 
   showPercentForm = () => this.setState({ showPercentForm: true });
@@ -249,15 +264,15 @@ class ProgramObjectFormDT extends UNSAFE_Form {
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => {
-    const { manual, IS_CREATING } = this.state;
+    const { isNotDrawAllObject, IS_CREATING } = this.state;
     if (IS_CREATING) {
       const { dtPolys } = this.state;
 
       const plan_shape_json = {
-        manual,
+        isNotDrawAllObject,
       };
 
-      if (manual) {
+      if (isNotDrawAllObject) {
         const {
           formState: { draw_object_list },
         } = this.props;
@@ -301,6 +316,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       ...draw_object_list,
       ...drawObjectNew,
     ]);
+
+    this.setManualOnFalse();
   };
 
   handleDrawFeatureClick = ({ index, state }) => {
@@ -352,7 +369,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     }
       = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
-    if (!this.state.manual) {
+    if (!this.state.isNotDrawAllObject) {
       if (!isEmpty(object_list_old)) {
         const [{ object_id: object_id_old }] = object_list_old;
 
@@ -429,6 +446,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     const {
       OBJECT_OPTIONS = [],
       manual,
+      isNotDrawAllObject,
       showPercentForm,
       selectedObj,
       IS_CREATING,
@@ -640,6 +658,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
+                    isNotDrawAllObject={isNotDrawAllObject}
                     manual={manual}
                     polys={dtPolys}
                     focusOnSelectedGeo
@@ -649,6 +668,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                     drawObjectList={drawObjectList}
                     setManualOnTrue={this.setManualOnTrue}
                     setManualOnFalse={this.setManualOnFalse}
+                    setIsDrawAllObjectOnTrue={this.setIsDrawAllObjectOnTrue}
+                    setIsDrawAllObjectOnFalse={this.setIsDrawAllObjectOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
                     handleAddDrawLines={this.handleAddDrawLines}

@@ -47,54 +47,51 @@ type PropsComponentButton = {
   registryKey: string;
 };
 
-const getButtomNameComponent = (type: string) => {
-  switch (type) {
-    case buttonsTypes.export: return ButtonExport;
-    case buttonsTypes.export_filtred_data: return ButtonExportFiltredData;
-    case buttonsTypes.filter: return ButtonToggleFilter;
-    case buttonsTypes.create: return ButtonCreate;
-    case buttonsTypes.read: return ButtonRead;
-    case buttonsTypes.remove: return ButtonRemove;
-    case buttonsTypes.duty_missions_by_templates: return ButtonCreateDutyMission;
-    case buttonsTypes.edc_request_create_mission: return ButtonCreateMissionByEdcRequest;
-    case buttonsTypes.edc_request_create_duty_mission: return ButtonCreateDutyMissionByEdcRequest;
-    case buttonsTypes.edc_request_reject: return ButtonRejectEdcRequest;
-    case buttonsTypes.edc_request_cancel: return ButtonCancelEdcRequest;
-    case buttonsTypes.edc_request_close: return ButtonCloseEdcRequest;
-    case buttonsTypes.read_cars_contisions_car: return ButtonReadCarsConditionsCar;
-    case buttonsTypes.read_employee_on_car: return ButtonReadEmployeeOnCar;
-    case buttonsTypes.change_driver_technical_operation_relations : return ButtonChangeDriverTechnicalOperationRelations;
-    case buttonsTypes.change_route_technical_operation_relations : return ButtonChangeRouteTechnicalOperationRelations;
-    case buttonsTypes.duty_missions_remove : return ButtonRemoveDutyMission;
-    case buttonsTypes.duty_missions_export : return ButtonExportDutyMission;
-    case buttonsTypes.duty_missions_fail : return ButtonFailDutyMission;
-    case buttonsTypes.duty_missions_complete : return ButtonCompleteDutyMission;
-    case buttonsTypes.duty_missions_to_archvie : return ButtonToArchiveDutyMission;
-    case buttonsTypes.duty_missions_from_archvie: return ButtonFromArchiveDutyMission;
-    case buttonsTypes.missions_by_templates: return ButtonCreateMissionTemplate;
-    case buttonsTypes.copy_template: return ButtonCopyMissionTemplate;
-    case buttonsTypes.mission_create: return ButtonCreateMission;
-    case buttonsTypes.mission_create_by_order: return ButtonCreateMissionByOrder;
-    case buttonsTypes.missions_remove: return ButtonRemoveMission;
-    case buttonsTypes.missions_export: return ButtonExportMission;
-    case buttonsTypes.missions_complete: return ButtonCompleteMission;
-    case buttonsTypes.missions_fail: return ButtonFailMission;
-    case buttonsTypes.missions_to_archvie: return ButtonToArchiveMission;
-    case buttonsTypes.missions_from_archvie: return ButtonFromArchiveMission;
-    case buttonsTypes.company_structure_create: return ButtonCreateCompanyStructure;
-    case buttonsTypes.columns_control: return ButtonColumnsControl;
-    case buttonsTypes.waybill_print: return ButtonWaybillExport;
-    case buttonsTypes.inspect_show_acts: return ButtonInspectShowActs;
-    case buttonsTypes.car_actual_add_battery: return ButtonCarActualAddBattery;
-    default: return null;
-  }
+const buttonComponents = {
+  [buttonsTypes.export]: ButtonExport,
+  [buttonsTypes.export_filtred_data]: ButtonExportFiltredData,
+  [buttonsTypes.filter]: ButtonToggleFilter,
+  [buttonsTypes.create]: ButtonCreate,
+  [buttonsTypes.read]: ButtonRead,
+  [buttonsTypes.remove]: ButtonRemove,
+  [buttonsTypes.duty_missions_by_templates]: ButtonCreateDutyMission,
+  [buttonsTypes.edc_request_create_mission]: ButtonCreateMissionByEdcRequest,
+  [buttonsTypes.edc_request_create_duty_mission]: ButtonCreateDutyMissionByEdcRequest,
+  [buttonsTypes.edc_request_reject]: ButtonRejectEdcRequest,
+  [buttonsTypes.edc_request_cancel]: ButtonCancelEdcRequest,
+  [buttonsTypes.edc_request_close]: ButtonCloseEdcRequest,
+  [buttonsTypes.read_cars_contisions_car]: ButtonReadCarsConditionsCar,
+  [buttonsTypes.read_employee_on_car]: ButtonReadEmployeeOnCar,
+  [buttonsTypes.change_driver_technical_operation_relations ]: ButtonChangeDriverTechnicalOperationRelations,
+  [buttonsTypes.change_route_technical_operation_relations ]: ButtonChangeRouteTechnicalOperationRelations,
+  [buttonsTypes.duty_missions_remove ]: ButtonRemoveDutyMission,
+  [buttonsTypes.duty_missions_export ]: ButtonExportDutyMission,
+  [buttonsTypes.duty_missions_fail ]: ButtonFailDutyMission,
+  [buttonsTypes.duty_missions_complete ]: ButtonCompleteDutyMission,
+  [buttonsTypes.duty_missions_to_archvie ]: ButtonToArchiveDutyMission,
+  [buttonsTypes.duty_missions_from_archvie]: ButtonFromArchiveDutyMission,
+  [buttonsTypes.missions_by_templates]: ButtonCreateMissionTemplate,
+  [buttonsTypes.copy_template]: ButtonCopyMissionTemplate,
+  [buttonsTypes.mission_create]: ButtonCreateMission,
+  [buttonsTypes.mission_create_by_order]: ButtonCreateMissionByOrder,
+  [buttonsTypes.missions_remove]: ButtonRemoveMission,
+  [buttonsTypes.missions_export]: ButtonExportMission,
+  [buttonsTypes.missions_complete]: ButtonCompleteMission,
+  [buttonsTypes.missions_fail]: ButtonFailMission,
+  [buttonsTypes.missions_to_archvie]: ButtonToArchiveMission,
+  [buttonsTypes.missions_from_archvie]: ButtonFromArchiveMission,
+  [buttonsTypes.company_structure_create]: ButtonCreateCompanyStructure,
+  [buttonsTypes.columns_control]: ButtonColumnsControl,
+  [buttonsTypes.waybill_print]: ButtonWaybillExport,
+  [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,
+  [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
 };
 
 const ComponentButton: React.FC<PropsComponentButton> = (props) => {
   const { data } = props;
 
   const ButtonNameComponent = React.useMemo(
-    () => getButtomNameComponent(data.type),
+    () => buttonComponents[data.type],
     [data],
   );
 

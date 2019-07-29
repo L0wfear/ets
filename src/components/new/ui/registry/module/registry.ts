@@ -30,8 +30,9 @@ export interface OneRegistryData {
     buttons: Array<{
       type: string;
       title?: string;
-      glyph?: string;                               // EtsBootstrap.Glyphicon glyph
+      glyph?: string;                                       // EtsBootstrap.Glyphicon glyph
       format?: string;
+      objChangeParams?: object;                     // что заменять в params при клике
     }>;
   };
   list: {

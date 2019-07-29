@@ -33,21 +33,22 @@ type ButtonCreateProps = (
 ) & WithSearchProps;
 
 const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
-  const handleClick = React.useCallback(
-    () => {
-      props.registrySetSelectedRowToShowInForm({});
-      props.setParams({
-        [props.uniqKeyForParams]: buttonsTypes.create,
-      });
-    },
-    [],
-  );
-
   const data = React.useMemo(
     () => (
       get(props, 'data', {} as ButtonCreateOwnProps['data'])
     ),
     [props.data],
+  );
+
+  const handleClick = React.useCallback(
+    () => {
+      props.registrySetSelectedRowToShowInForm({});
+      props.setParams({
+        [props.uniqKeyForParams]: buttonsTypes.create,
+        ...get(data, 'objChangeParams', {}),
+      });
+    },
+    [data],
   );
 
   return (

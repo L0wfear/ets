@@ -7,7 +7,6 @@ import ButtonExport from 'components/new/ui/registry/components/data/header/butt
 import ButtonToggleFilter from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonToggleFilter';
 import ButtonCreate from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonCreate';
 import ButtonRead from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonRead';
-import ButtonSelect from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonSelect';
 import ButtonRemove from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonRemove';
 import ButtonCreateMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateMissionByEdcRequest';
 import ButtonCreateDutyMissionByEdcRequest from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/edc_request/ButtonCreateDutyMissionByEdcRequest';
@@ -41,9 +40,10 @@ import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 type PropsComponentButton = {
-  type: string;
+  data: ValuesOf<OneRegistryData['header']['buttons']>;
   registryKey: string;
 };
 
@@ -86,26 +86,25 @@ const getButtomNameComponent = (type: string) => {
     case buttonsTypes.waybill_print: return ButtonWaybillExport;
     case buttonsTypes.inspect_show_acts: return ButtonInspectShowActs;
     case buttonsTypes.car_actual_add_battery: return ButtonCarActualAddBattery;
-    case buttonsTypes.select: return ButtonSelect;
     default: return null;
   }
 };
 
 const ComponentButton: React.FC<PropsComponentButton> = (props) => {
-  const { type } = props;
+  const { data } = props;
 
   const ButtonNameComponent = React.useMemo(
-    () => getButtomNameComponent(type),
-    [type],
+    () => getButtomNameComponent(data.type),
+    [data],
   );
 
   if (ButtonNameComponent) {
     return (
-      <ButtonNameComponent registryKey={props.registryKey} />
+      <ButtonNameComponent registryKey={props.registryKey} data={data} />
     );
   }
 
-  return <div>Не определён тип для {type}</div>;
+  return <div>Не определён тип для {data.type}</div>;
 };
 
 export default React.memo(ComponentButton);

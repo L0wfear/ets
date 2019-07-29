@@ -21,6 +21,7 @@ type ButtonReadDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
 type ButtonReadOwnProps = {
+  data: ValuesOf<OneRegistryData['header']['buttons']>
   registryKey: string;
   onClick?: (item: any) => any;
 };
@@ -63,7 +64,7 @@ class ButtonRead extends React.PureComponent<ButtonReadProps, {}> {
 
     return (
       <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
-        <EtsBootstrap.Glyphicon glyph="search" /> Просмотреть
+        <EtsBootstrap.Glyphicon glyph={props.data.glyph || 'search'} />{props.data.title || 'Просмотреть'}
       </EtsBootstrap.Button>
     );
   }

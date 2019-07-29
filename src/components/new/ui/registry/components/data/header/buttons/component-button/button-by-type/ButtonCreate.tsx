@@ -19,6 +19,7 @@ type ButtonCreateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
 type ButtonCreateOwnProps = {
+  data: ValuesOf<OneRegistryData['header']['buttons']>
   registryKey: string;
 };
 type ButtonCreateMergeProps = {};
@@ -43,7 +44,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
 
   return (
     <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
-      <EtsBootstrap.Glyphicon glyph="plus" /> Создать
+      <EtsBootstrap.Glyphicon glyph={props.data.glyph || 'plus'} />{props.data.title || 'Создать'}
     </EtsBootstrap.Button>
   );
 };

@@ -30,7 +30,11 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
 
       buttons: [
         buttonsTypes.filter,
-        buttonsTypes.select,
+        {
+          type: buttonsTypes.select,
+          title: 'Выбрать',
+          glyph: 'hand-up',
+        },
       ],
     },
     filter: {

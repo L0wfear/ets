@@ -15,10 +15,10 @@ export interface OneRegistryData {
   idRequestTime: number;
   isLoading: boolean;
   Service: any;
-  header?: {
+  header: {
     title?: any;
-    titlePopover?: string;
-    format?: (
+    titlePopover: string;
+    format: (
       'default'
       | 'select_odh/dt(disabled)'
       | 'select_odh/dt'
@@ -27,7 +27,12 @@ export interface OneRegistryData {
       | 'is_current_structure'
     );
     is_current_structure_popover?: string;
-    buttons?: string[];
+    buttons: Array<{
+      type: string;
+      title?: string;
+      glyph?: string;                               // EtsBootstrap.Glyphicon glyph
+      format?: string;
+    }>;
   };
   list: {
     data: {

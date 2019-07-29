@@ -10,6 +10,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { registryToggleIsOpenFilter } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 type ButtonToggleFilterStateProps = {
   hasFilters: boolean;
@@ -19,6 +20,7 @@ type ButtonToggleFilterDispatchProps = {
 };
 type ButtonToggleFilterOwnProps = {
   registryKey: string;
+  data: ValuesOf<OneRegistryData['header']['buttons']>
 };
 type ButtonToggleFilterMergeProps = {};
 
@@ -37,7 +39,7 @@ const ButtonToggleFilter: React.FC<ButtonToggleFilterProps> = (props) => {
       active={props.hasFilters}
       onClick={props.handleClick}
     >
-      <EtsBootstrap.Glyphicon glyph="filter" />
+      <EtsBootstrap.Glyphicon glyph={props.data.glyph || 'filter'} />
     </EtsBootstrap.Button>
   );
 };

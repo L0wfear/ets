@@ -21,6 +21,7 @@ type ButtonRemoveDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type ButtonRemoveOwnProps = {
+  data: ValuesOf<OneRegistryData['header']['buttons']>
   registryKey: string;
 
   format?: 'yesno' | 'default';
@@ -75,7 +76,8 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   return (
     <>
       <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
-        <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
+        <EtsBootstrap.Glyphicon glyph={props.data.glyph || 'remove'} />{props.data.title || 'Удалить'}
+
       </EtsBootstrap.Button>
       <ModalYesNo
         show={isOpenModalRemove}

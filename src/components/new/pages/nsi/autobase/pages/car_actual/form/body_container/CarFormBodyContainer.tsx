@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import carFormTabKey, { mainInfo } from './formConfig';
+import { Route, Switch } from 'react-router-dom';
+import carFormTabKey from './formConfig';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../@types/CarForm';
-import { Route, Switch, Redirect } from 'react-router-dom';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as queryString from 'query-string';
+import RedirectCarFormBody from './RedirectCarFormBody';
 
 type CarFormBodyContainerOwnProps = {
   isPermitted: boolean;
@@ -24,40 +24,9 @@ type CarFormBodyContainerProps = (
 
 const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
   (props) => {
-    const carActualSearchStateString = React.useMemo(
-      () => {
-        return queryString.stringify({
-          CarActual_filters: props.searchState.CarActual_filters,
-          CarActual_page: props.searchState.CarActual_page,
-          func_type_id: props.searchState.func_type_id,
-          municipal_facility_id: props.searchState.municipal_facility_id,
-          route_types: props.searchState.route_types,
-          technicalOperationRelationsRegistry_page: props.searchState.technicalOperationRelationsRegistry_page,
-          technical_operation_id: props.searchState.technical_operation_id,
-        });
-      },
-      [
-        props.searchState.CarActual_filters,
-        props.searchState.CarActual_page,
-        props.searchState.func_type_id,
-        props.searchState.route_types,
-        props.searchState.technicalOperationRelationsRegistry_page,
-        props.searchState.technical_operation_id,
-      ],
-    );
-
     const {
       match,
     } = props;
-
-    let urlAsArray = match.path.split('/').map((str) => str === ':car_actual_asuods_id?' ? null : str);
-
-    const emptyIndex = urlAsArray.findIndex((value, index) => index && !value);
-    if (emptyIndex > 0) {
-      urlAsArray = urlAsArray.slice(0, emptyIndex);
-    }
-
-    const pathname = `${urlAsArray.join('/')}/:car_actual_asuods_id?`;
 
     return (
       <EtsBootstrap.Row>
@@ -69,7 +38,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
                   other.children.map(({ tabKey: tabKeyChildScheme, path, ...childrenOther }) => (
                     <Route
                       key={tabKeyChildScheme}
-                      path={`${pathname}/${tabKeyChildScheme}${path}`}
+                      path={`${match.path.replace(':tabKey?', tabKeyChildScheme)}${path}`}
                       render={
                         () => (
                           <EtsBootstrap.Col md={12}>
@@ -94,7 +63,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
               return (
                 <Route
                   key={tabKeyScheme}
-                  path={`${pathname}/${tabKeyScheme}${other.path}`}
+                  path={`${match.path.replace(':tabKey?', tabKeyScheme)}${other.path}`}
                   render={
                     (routeProps) => (
                       <other.component
@@ -107,7 +76,7 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
               );
             })
           }
-          <Redirect to={`${pathname}/${mainInfo.tabKey}?${carActualSearchStateString}`} />
+          <RedirectCarFormBody />
         </Switch>
       </EtsBootstrap.Row>
     );

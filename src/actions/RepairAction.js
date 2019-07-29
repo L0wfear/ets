@@ -215,7 +215,7 @@ export default class RepairActions extends Actions {
 
     const path = parsePutPath(programVersion, 'put', formState);
     return Repair.path(`${path}/${type}`).put(
-      withForm ? payload : {},
+      withForm || type === 'close' ? payload : {},
       false,
       'json',
     );

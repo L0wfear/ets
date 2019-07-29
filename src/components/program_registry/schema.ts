@@ -60,18 +60,18 @@ export const formValidationSchema: IValidationSchema = {
     {
       key: 'contractor_id',
       title: 'Подрядчик',
-      type: 'boolean',
+      type: 'number',
       required: true,
     },
     {
-      key: 'is_active',
+      key: 'contract_number',
       title: '№ контракта',
       type: 'string',
       maxLength: 128,
       required: true,
     },
     {
-      key: 'is_active',
+      key: 'note',
       title: 'Примечание',
       type: 'string',
       maxLength: 2048,

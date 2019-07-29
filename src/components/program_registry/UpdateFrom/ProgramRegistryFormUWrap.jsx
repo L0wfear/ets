@@ -9,6 +9,7 @@ import { get } from 'lodash';
 
 import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { isNullOrUndefined } from 'util';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -98,9 +99,8 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
    */
   validate = (state, errors) => this.props.validate(state, errors);
 
-  updateVersionList({ id, additionalState }) {
+  updateVersionList({ id, additionalState, percentUpdate }) {
     this.setState({ isLoading: true });
-
     return this.context.flux
       .getActions('repair')
       .getAllVersionsById(id)
@@ -119,15 +119,27 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
 
         const activeVersionId = versionList.find((d) => d.is_active).id;
 
+        const oldFormState = {
+          ...this.state.formState,
+          percent: get(reduceVersionList[activeVersionId], 'percent', null),
+        };
+        const versionState = !isNullOrUndefined(percentUpdate)
+          ? {
+            ...this.props.getFrowmStateAndErrorAndCanSave(oldFormState),
+          }
+          : {
+            ...this.props.getFrowmStateAndErrorAndCanSave(
+              reduceVersionList[activeVersionId],
+            ),
+          };
+
         this.setState({
           isLoading: true,
           versionOptions,
           activeVersionId,
           reduceVersionList,
           ...additionalState,
-          ...this.props.getFrowmStateAndErrorAndCanSave(
-            reduceVersionList[activeVersionId],
-          ),
+          ...versionState,
         });
       });
   }
@@ -311,8 +323,10 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
       });
   };
 
-  updateVersionOuter = () =>
-    this.updateVersionList({ id: this.props.element.id });
+  updateVersionOuter = (payload) => {
+    const percentUpdate = get(payload, 'percentUpdate', false);
+    return this.updateVersionList({ id: this.props.element.id, percentUpdate });
+  };
 
   render() {
     const { isPermitted = false, entity } = this.props;

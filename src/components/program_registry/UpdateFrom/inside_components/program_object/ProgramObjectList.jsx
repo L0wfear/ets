@@ -265,7 +265,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
   };
 
   init(needVersionUpdate) {
-    this.props.updateObjectData(needVersionUpdate);
+    this.props.updateObjectData(needVersionUpdate, { percentUpdate: true });
     this.context.flux
       .getActions('technicalOperation')
       .getTechnicalOperationsObjects();

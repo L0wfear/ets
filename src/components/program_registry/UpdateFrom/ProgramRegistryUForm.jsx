@@ -126,9 +126,9 @@ class ProgramRegistryForm extends UNSAFE_Form {
       .then(() => this.setState({ mainButtonEnable: true }));
   };
 
-  updateObjectData = (needVersionUpdate = true) => {
+  updateObjectData = (needVersionUpdate = true, payload) => {
     if (needVersionUpdate) {
-      this.props.updateVersionOuter();
+      this.props.updateVersionOuter(payload);
     }
     return this.context.flux
       .getActions('repair')

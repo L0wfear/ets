@@ -93,17 +93,16 @@ class ProgramObjectFormodh extends UNSAFE_Form {
             changesFormState.objectsType = getObjectsType(type);
           }
           changesState.odhPolys = odhPolysOut;
+
           changesState.OBJECT_OPTIONS = Object.values(
             changesState.odhPolys,
-          ).map(
-            ({ data: { id: value, name: label, total_area, id, name } }) => ({
-              value,
-              label,
-              total_area,
-              id,
-              name,
-            }),
-          );
+          ).map(({ id: value, name: label, total_area, id, name }) => ({
+            value,
+            label,
+            total_area,
+            id,
+            name,
+          }));
 
           const { id: object_id }
             = changesState.OBJECT_OPTIONS.find(

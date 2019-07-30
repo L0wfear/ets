@@ -1271,3 +1271,17 @@ div.car-movement-time-report {
   background: #c1c1c1;
   opacity: 1;
 }
+
+.rw-select-bordered {
+  border-left: none;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    background-color: hsl(0,0%,80%);
+    top: 6px;
+    width: 1px;
+    height: 24px;
+    display: block;
+  }
+}

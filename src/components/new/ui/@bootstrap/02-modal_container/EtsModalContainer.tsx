@@ -21,7 +21,19 @@ const bsSizeLargeCss = css`
   }
 `;
 
-export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' }>`
+const bsSizeMediumCss = css`
+  @media screen and (min-width: 990px) {
+    width: 500px;
+  }
+  @media screen and (min-width: 1240px) {
+    width: 900px;
+  }
+  @media screen and (min-width: 1540px) {
+    width: 900px;
+  }
+`;
+
+export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' | 'medium' }>`
   width: 95%;
   position: relative;
   margin-bottom: 300px;
@@ -47,13 +59,14 @@ export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 's
   }
 
   ${({ bsSize }) => bsSize === 'large' && bsSizeLargeCss}
+  ${({ bsSize }) => bsSize === 'medium' && bsSizeMediumCss}
 `;
 
 export type EtsModalContainerProps = {
   id: string;                                       // ясно понятно
   show: boolean;                                    // ясно понятно
   onHide: (...arg: any[]) => any;                   // ясно понятно
-  bsSize?: 'large' | 'small';                       // размер формы | small - дефолт
+  bsSize?: 'large' | 'small' | 'medium';            // размер формы | small - дефолт
   themeName?: keyof typeof themeModal;
 
   position?: 'center' | 'default';                  // положение формы

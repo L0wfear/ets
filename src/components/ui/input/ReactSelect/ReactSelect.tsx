@@ -99,7 +99,7 @@ export default class ReactSelect extends React.Component<any, any> {
 
   menuListRender = (props: any) => {
     if (props.options.length > 500) {
-      return <VirtualizedSelectList {...props} />;
+      return <VirtualizedSelectList {...props} noOptionsMessage = {this.noOptionsMessage}/>;
     }
     return <MenuList {...props} />;
   }

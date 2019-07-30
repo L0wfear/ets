@@ -24,7 +24,7 @@ export const TitleContainer = styled.div`
   align-items: baseline;
   flex-shrink: 0;
   align-items: baseline;
-
+  margin-top: 4px;
   >* {
     margin-right: 5px;
     &:last-child {

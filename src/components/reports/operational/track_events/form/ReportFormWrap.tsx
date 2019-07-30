@@ -2,8 +2,6 @@ import * as React from 'react';
 import LoadingComponent from 'components/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
 const ReportForm = React.lazy(() => (
   import(/* webpackChunkName: "ReportForm" */ 'components/reports/operational/track_events/form/ReportForm')
 ));
@@ -14,16 +12,10 @@ type PropsReportFormWrap = {
   coords: [number, number];
 };
 
-class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
-  render() {
-    const {
-      showForm,
-      ...props
-    } = this.props;
-
+const ReportFormWrap: React.FC<PropsReportFormWrap> = React.memo(
+  (props) => {
     return (
-      showForm ?
-      (
+      Boolean(props.showForm) && (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
             <ReportForm
@@ -33,10 +25,8 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
           </React.Suspense>
         </ErrorBoundaryForm>
       )
-      :
-      ( <DivNone /> )
     );
-  }
-}
+  },
+);
 
 export default ReportFormWrap;

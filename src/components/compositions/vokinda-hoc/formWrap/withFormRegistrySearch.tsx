@@ -21,11 +21,11 @@ type WithFormRegistrySearchConfig = {
 };
 
 type StateProps = {
-  buttons: OneRegistryData['header']['buttons'];
+  getOneData: OneRegistryData['Service']['getOneData'];
   array: OneRegistryData['list']['data']['array'];
+  buttons: OneRegistryData['header']['buttons'];
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
-  getOneData: OneRegistryData['Service']['getOneData'];
 };
 
 type OwnProps = {
@@ -80,7 +80,6 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         getOneData: getServiceData(state.registry, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
         buttons: getHeaderData(state.registry, registryKey).buttons,
-        data: getListData(state.registry, registryKey).data,
         uniqKey: getListData(state.registry, registryKey).data.uniqKey,
         uniqKeyForParams: uniqKeyForParams || getListData(state.registry, registryKey).data.uniqKeyForParams,
         permissions: getPermissionsCreateReadUpdate(permissions || getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент

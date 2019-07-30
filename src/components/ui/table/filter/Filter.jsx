@@ -8,6 +8,12 @@ import { reduce, cloneDeep } from 'lodash';
 import Div from 'components/ui/Div';
 import FilterRow from 'components/ui/table/filter/FilterRow';
 import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
+import {
+  EtsFiltersButtonsLine,
+  EtsFiltersCloseContainer,
+  EtsFilterActionButton,
+  EtsFilterActionButtonConteiner,
+} from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
 
 export default class Filter extends React.Component {
   static get propTypes() {
@@ -191,21 +197,23 @@ export default class Filter extends React.Component {
         <EtsBootstrap.Collapse in={this.props.show}>
           <Div className="filter-container">
             <Div className="filter-buttons">
-              <EtsBootstrap.Button id="apply-filter" type="submit">
-                Применить
-              </EtsBootstrap.Button>
-              <EtsBootstrap.Button
-                id="reset-filter"
-                onClick={this.reset}
-                disabled={this.checkDisabledButton(filterValues)}>
-                Сброс
-              </EtsBootstrap.Button>
-              <span
-                id="filter-close"
-                className="filter-close"
-                onClick={this.props.onHide}>
-                <EtsBootstrap.Glyphicon glyph="remove" />
-              </span>
+              <EtsFiltersButtonsLine>
+                <div />
+                <EtsFilterActionButtonConteiner>
+                  <EtsFilterActionButton id="apply-filter" type="submit">
+                    Применить
+                  </EtsFilterActionButton>
+                  <EtsFilterActionButton
+                    id="reset-filter"
+                    onClick={this.reset}
+                    disabled={this.checkDisabledButton(filterValues)}>
+                    Сброс
+                  </EtsFilterActionButton>
+                </EtsFilterActionButtonConteiner>
+                <EtsFiltersCloseContainer onClick={this.props.onHide}>
+                  <EtsBootstrap.Glyphicon glyph="remove" />
+                </EtsFiltersCloseContainer>
+              </EtsFiltersButtonsLine>
             </Div>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>

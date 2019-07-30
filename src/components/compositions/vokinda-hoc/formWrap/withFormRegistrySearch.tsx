@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { connect, DispatchProp } from 'react-redux';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
@@ -11,6 +11,7 @@ import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { get } from 'lodash';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 type WithFormRegistrySearchConfig = {
   cantCreate?: boolean;                   // может ли форма создать запись
@@ -18,6 +19,26 @@ type WithFormRegistrySearchConfig = {
   uniqKeyName?: string;                   // имя уникального ключа для формы (см выше)
   hideWithClose?: string[];
 };
+
+type StateProps = {
+  buttons: OneRegistryData['header']['buttons'];
+  array: OneRegistryData['list']['data']['array'];
+  uniqKey: OneRegistryData['list']['data']['uniqKey'];
+  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
+  getOneData: OneRegistryData['Service']['getOneData'];
+};
+
+type OwnProps = {
+  registryKey: string;
+  handleHide?: (isSubmitted?: any, response?: any) => any;
+};
+
+type Props = (
+  DispatchProp
+  & OwnProps
+  & StateProps
+  & WithSearchProps
+);
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -64,26 +85,10 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         uniqKeyForParams: uniqKeyForParams || getListData(state.registry, registryKey).data.uniqKeyForParams,
         permissions: getPermissionsCreateReadUpdate(permissions || getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       }),
-      (dispatch: any) => ({
-        registryResetSelectedRowToShowInForm: (...arg) => (
-          dispatch(
-            registryResetSelectedRowToShowInForm(
-              ...arg,
-            ),
-          )
-        ),
-        registryLoadOneData: (...arg) => (
-          dispatch(
-            registryLoadOneData(
-              ...arg,
-            ),
-          )
-        ),
-      }),
     ),
     withRequirePermissionsNew(),
   )(
-    ({ registryResetSelectedRowToShowInForm: registryResetSelectedRowToShowInFormProps, array, uniqKey, uniqKeyForParams, ...props}) => {
+    ({ array, uniqKey, uniqKeyForParams, ...props }: Props) => {
       const [element, setElement] = React.useState(null);
       const uniqKeyValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
       const type = props.match.params.type;
@@ -127,7 +132,9 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
               }
 
               if (props.getOneData) {
-                props.registryLoadOneData(props.registryKey, uniqKeyValue).then((responseElement) => {
+                props.dispatch(
+                  registryLoadOneData(props.registryKey, uniqKeyValue),
+                ).then((responseElement) => {
                   if (responseElement) {
                     setElement(responseElement);
                   } else {
@@ -171,7 +178,9 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
             ),
           });
 
-          registryResetSelectedRowToShowInFormProps(props.registryKey, isSubmitted, response);
+          props.dispatch(
+            registryResetSelectedRowToShowInForm(props.registryKey, isSubmitted, response),
+          );
 
           if (isFunction(props.handleHide)) {
             props.handleHide(isSubmitted, response);

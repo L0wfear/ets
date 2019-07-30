@@ -29,7 +29,7 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
       .then((ans) => {
         global.NOTIFICATION_SYSTEM.notify({
           message:
-            'Удаление сохраненной записи возможно в течении дня создания.',
+            'Удаление сохраненной записи возможно в течение дня создания.',
           level: 'info',
           position: 'tr',
         });

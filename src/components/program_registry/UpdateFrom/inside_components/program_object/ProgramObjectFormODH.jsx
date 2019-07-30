@@ -1,5 +1,4 @@
 import React from 'react';
-
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import connectToStores from 'flummox/connect';
@@ -23,22 +22,16 @@ import TabInfo from 'components/program_registry/UpdateFrom/inside_components/pr
 import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
-import {
-  SpanContractor,
-  PanelObjectInfo,
-} from 'components/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
-import { getGeoobjectState } from 'redux-main/reducers/selectors';
-import { polyState } from 'constants/polygons';
-import memoizeOne from 'memoize-one';
-import { isNullOrUndefined } from 'util';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 const getObjectsType = (slug) => {
   switch (slug) {
     case 'dt':
       return 'simple_dt';
+    case 'odh':
     case 'mixed':
       return 'mixed';
     default:
@@ -47,33 +40,23 @@ const getObjectsType = (slug) => {
 };
 const log = {};
 
-const makeSelector = memoizeOne((dtPolys) =>
-  Object.entries(dtPolys).reduce((newObj, [key, data]) => {
-    newObj[key] = {
-      ...data,
-      state: polyState.ENABLE,
-    };
-
-    return newObj;
-  }, {}),
-);
-
-class ProgramObjectFormDT extends UNSAFE_Form {
+class ProgramObjectFormodh extends UNSAFE_Form {
   static defaultProps = {
     tabKey: OBJ_TAB_INDEX.PLAN,
   };
 
   constructor(props) {
     super(props);
+    const {
+      formState: { id },
+    } = props;
 
     this.state = {
       manual: false,
-      isNotDrawAllObject: false,
       showPercentForm: false,
       selectedObj: {},
-      IS_CREATING: !props.formState.id,
+      IS_CREATING: !id,
       polys: {},
-      VERSIONS_OPTIONS: [],
     };
   }
 
@@ -82,63 +65,51 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
     this.context.flux
       .getActions('repair')
-      .getObjectProperty({ object_type: 'dt' })
+      .getObjectProperty({ object_type: 'odh' })
       .then(({ data: { result: { rows: objectPropertyList } } }) => {
         const {
           formState: {
+            asuods_id = null,
             type_slug: type,
             plan_shape_json: {
               manual,
-              isNotDrawAllObject: isNotDrawAllObjectOuter,
-              dtPolys: dtPolysOut,
+              odhPolys: odhPolysOut,
               draw_object_list = [],
               object_list,
             },
             elements = [],
           },
         } = this.props;
-        const isNotDrawAllObject = isNullOrUndefined(isNotDrawAllObjectOuter)
-          ? manual
-          : isNotDrawAllObjectOuter;
 
         if (!IS_CREATING) {
-          const changesState = {
-            manual,
-            isNotDrawAllObject,
-          };
+          const changesState = { manual };
 
           const changesFormState = {};
-          if (isNotDrawAllObject) {
+          if (manual) {
             changesFormState.draw_object_list = draw_object_list;
             changesFormState.objectsType = getObjectsType('mixed');
           } else {
             changesFormState.object_list = object_list;
             changesFormState.objectsType = getObjectsType(type);
           }
-          changesState.dtPolys = dtPolysOut;
+          changesState.odhPolys = odhPolysOut;
 
-          changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(
-            ({
-              yard_id: value,
-              object_address: label,
-              total_area,
-              id,
-              name,
-            }) => ({
-              value,
-              label,
-              total_area,
-              id,
-              name,
-            }),
-          );
+          changesState.OBJECT_OPTIONS = Object.values(
+            changesState.odhPolys,
+          ).map(({ id: value, name: label, total_area, id, name }) => ({
+            value,
+            label,
+            total_area,
+            id,
+            name,
+          }));
 
-          const { id: asuods_id }
+          const { id: object_id }
             = changesState.OBJECT_OPTIONS.find(
-              ({ value: yard_id }) => yard_id === asuods_id,
+              ({ value: id }) => id === asuods_id,
             ) || {};
 
-          changesState.selectedObj = changesState.dtPolys[asuods_id];
+          changesState.selectedObj = changesState.odhPolys[object_id];
 
           changesFormState.elements = elements.map((d) => ({
             ...d,
@@ -151,77 +122,39 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetGetDt().then(({ dtList: data }) => {
-            const changesState = { manual, isNotDrawAllObject };
-            changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
+          this.props.actionGetGetOdh().then(({ data }) => {
+            const changesState = { manual };
+            changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
 
             changesState.OBJECT_OPTIONS = Object.values(
-              changesState.dtPolys,
-            ).map(
-              ({
-                yard_id: value,
-                object_address: label,
-                total_area,
-                id,
-                name,
-                company_name,
-              }) => ({
-                value,
-                label,
-                company_name,
-                total_area,
-                id,
-                name,
-              }),
-            );
+              changesState.odhPolys,
+            ).map(({ id: value, name: label, total_area, id, name }) => ({
+              value,
+              label,
+              total_area,
+              id,
+              name,
+            }));
 
             this.setState({ ...changesState });
           });
         }
       });
-
-    if (!IS_CREATING) {
-      this.context.flux
-        .getActions('repair')
-        .getObjectVersions(this.props.formState.id)
-        .then((ans) =>
-          this.setState({
-            VERSIONS_OPTIONS: ans.map(
-              ({ object_id, program_version_id }, index) => ({
-                value: object_id,
-                label: `Версия №${index}`,
-                object_id,
-                asuods_id: object_id,
-                program_version_id,
-              }),
-            ),
-          }),
-        );
-    }
   }
 
-  handleChangeVersion = (value, versionAllData) =>
-    this.props.changeVersionWithObject(versionAllData);
-
-  setManualOnTrue = () => {
-    this.setState({ manual: true });
-  };
   setManualOnFalse = () => {
-    this.setState({ manual: false });
-  };
-  setIsDrawAllObjectOnFalse = () => {
     const {
       formState: { draw_object_list = [] },
     } = this.props;
-    const { dtPolys: dtPolysOld } = this.props;
+    const { odhPolys: odhPolysOld } = this.props;
     const {
       object_list,
       object_list: [selectedShape],
     } = log;
 
-    const dtPolys = cloneDeep(dtPolysOld);
+    const odhPolys = cloneDeep(odhPolysOld);
 
-    dtPolys[selectedShape.asuods_id].state = selectedShape.state;
+    odhPolys[selectedShape.object_id].state = selectedShape.state;
 
     log.draw_object_list = cloneDeep(draw_object_list);
 
@@ -230,10 +163,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       object_list,
       objectsType: log.objectsType,
     });
-    this.setState({ manual: false, isNotDrawAllObject: false, dtPolys });
+    this.setState({ manual: false, odhPolys });
   };
 
-  setIsDrawAllObjectOnTrue = () => {
+  setManualOnTrue = () => {
     const {
       formState: {
         objectsType,
@@ -241,11 +174,11 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         object_list: [selectedShape],
       },
     } = this.props;
-    const { dtPolys: dtPolysOld } = this.state;
+    const { odhPolys: odhPolysOld } = this.props;
 
-    const dtPolys = {
-      [selectedShape.asuods_id]: {
-        ...dtPolysOld[selectedShape.asuods_id],
+    const odhPolys = {
+      [selectedShape.object_id]: {
+        ...odhPolysOld[selectedShape.object_id],
       },
     };
 
@@ -257,7 +190,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       draw_object_list: log.draw_object_list || [],
       objectsType: getObjectsType('mixed'),
     });
-    this.setState({ manual: true, isNotDrawAllObject: true, dtPolys });
+    this.setState({ manual: true, odhPolys });
   };
 
   showPercentForm = () => this.setState({ showPercentForm: true });
@@ -265,20 +198,20 @@ class ProgramObjectFormDT extends UNSAFE_Form {
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => {
-    const { isNotDrawAllObject, IS_CREATING } = this.state;
+    const { manual, IS_CREATING } = this.state;
     if (IS_CREATING) {
-      const { dtPolys } = this.state;
+      const { odhPolys } = this.state;
 
       const plan_shape_json = {
-        isNotDrawAllObject,
+        manual,
       };
 
-      if (isNotDrawAllObject) {
+      if (manual) {
         const {
           formState: { draw_object_list },
         } = this.props;
 
-        plan_shape_json.dtPolys = dtPolys;
+        plan_shape_json.odhPolys = odhPolys;
         plan_shape_json.draw_object_list = draw_object_list;
       } else {
         const {
@@ -287,9 +220,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             object_list: [selectedShape],
           },
         } = this.props;
-        const { asuods_id } = selectedShape;
+        const { object_id } = selectedShape;
 
-        plan_shape_json.dtPolys = { [asuods_id]: dtPolys[asuods_id] };
+        plan_shape_json.odhPolys = { [object_id]: odhPolys[object_id] };
         plan_shape_json.object_list = object_list;
       }
       this.handleChange('plan_shape_json', plan_shape_json);
@@ -297,8 +230,13 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     return new Promise(() => this.handleSubmit());
   };
 
-  handleFeatureClick = ({ id: asuods_id }) => {
-    this.handleChangeInfoObject('asuods_id', Number(asuods_id));
+  handleFeatureClick = ({ id: object_id }) => {
+    const { odhPolys } = this.state;
+    const {
+      data: { id: asuods_id },
+    } = odhPolys[object_id];
+
+    this.handleChangeInfoObject('asuods_id', asuods_id);
   };
 
   startDraw = () => {
@@ -310,12 +248,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       formState: { draw_object_list = [] },
     } = this.props;
 
-    this.handleChange('draw_object_list', [
-      ...draw_object_list,
-      ...drawObjectNew,
-    ]);
+    draw_object_list.push(...drawObjectNew);
 
-    this.setManualOnFalse();
+    this.handleChange('draw_object_list', draw_object_list);
   };
 
   handleDrawFeatureClick = ({ index, state }) => {
@@ -339,7 +274,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     this.handleChange('draw_object_list', draw_object_list);
   };
 
-  handleChangeInfoObject = (field, asuods_id) => {
+  handleChangeInfoObject = (field, value) => {
+    const asuods_id = value;
+
     const {
       formState: {
         type_slug,
@@ -350,42 +287,25 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       objectPropertyList = [],
     } = this.props;
 
-    const { dtPolys: dtPolysOld = {} } = this.state;
+    const { OBJECT_OPTIONS = [], odhPolys: odhPolysOld = {} } = this.state;
 
-    const { OBJECT_OPTIONS = [] } = this.state;
+    const odhPolys = cloneDeep(odhPolysOld);
 
-    let dtPolys = cloneDeep(dtPolysOld);
+    const { id: object_id, label: name, total_area: info_total_area }
+      = OBJECT_OPTIONS.find(({ value: id }) => id === asuods_id) || {};
 
-    const {
-      name,
-      label: object_address,
-      total_area: info_total_area,
-      company_name: info_company_name,
-    }
-      = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
+    if (!isEmpty(object_list_old)) {
+      const [{ object_id: object_id_old }] = object_list_old;
 
-    if (!this.state.isNotDrawAllObject) {
-      if (!isEmpty(object_list_old)) {
-        const [{ asuods_id: asuods_id_old }] = object_list_old;
-
-        if (asuods_id_old === asuods_id) {
-          return;
-        }
-
-        dtPolys[asuods_id_old].state = polyState.ENABLE;
+      if (object_id_old === object_id) {
+        return;
       }
 
-      dtPolys[asuods_id].state = polyState.SELECTED;
-    } else {
-      dtPolys = {
-        [asuods_id]: {
-          ...this.props.dtPolys[asuods_id],
-          state: polyState.SELECTED,
-        },
-      };
+      odhPolys[object_id_old].state = 1;
     }
+    odhPolys[object_id].state = 2;
 
-    const selectedObj = dtPolys[asuods_id];
+    const selectedObj = odhPolys[object_id];
 
     const changeObject = {
       asuods_id,
@@ -395,36 +315,35 @@ class ProgramObjectFormDT extends UNSAFE_Form {
         const { original_name } = objectPropertyList.find(
           ({ object_property_id }) => object_property_id === d.id,
         );
-        newD.value = selectedObj[original_name];
+        newD.value = selectedObj.data[original_name];
         return newD;
       }),
       info: {
         ...info_old,
         total_area: info_total_area,
-        company_name: info_company_name,
       },
       objectsType: getObjectsType(type_slug),
       object_list: [
         {
-          name: object_address,
-          object_id: asuods_id,
-          asuods_id: asuods_id,
-          state: dtPolys[asuods_id].state,
+          name,
+          object_id,
+          state: odhPolys[object_id].state,
           type: type_slug,
         },
       ],
-      draw_object_list: [],
     };
 
-    this.setState({ selectedObj, dtPolys });
+    this.setState({ selectedObj, odhPolys });
     this.props.handleMultiChange({ ...changeObject });
   };
 
   pushElement = () => {
-    this.handleChange('elements', [
-      ...this.props.formState.elements,
-      { ...ELEMENT_NULL_OBJECT },
-    ]);
+    const {
+      formState: { elements = [] },
+    } = this.props;
+    const newElements = [...elements, { ...ELEMENT_NULL_OBJECT }];
+
+    this.handleChange('elements', newElements);
   };
 
   render() {
@@ -433,45 +352,45 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       formErrors: errors,
       tabKey,
       contractorList = [],
-      isPermittedByPermission,
-      isPermitted: isPermittedDefault,
-      isPermittedByStatus,
-      prCompanyName,
+      isPermitted,
     } = this.props;
 
     const {
       OBJECT_OPTIONS = [],
       manual,
-      isNotDrawAllObject,
       showPercentForm,
       selectedObj,
       IS_CREATING,
-      dtPolys = {},
-      VERSIONS_OPTIONS = [],
+      odhPolys = {},
     } = this.state;
 
     const {
       id,
       name,
       asuods_id,
-      info: { total_area = null, company_name = null } = {},
       objectsType,
       object_list: objectList,
       draw_object_list: drawObjectList,
     } = state;
 
+    const total_area = get(state, 'info.total_area', null);
+
     const title = IS_CREATING
-      ? 'Создание карточки ДТ капитального ремонта.'
-      : `Карточка ДТ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
-    const isPermitted = isPermittedDefault && isPermittedByStatus;
+      ? 'Создание карточки ОДХ капитального ремонта.'
+      : `Карточка ОДХ капитального ремонта. Объект: ${name}. ID ${asuods_id}`;
 
     const CONTRACTOR_OPTIONS = contractorList.map(
       ({ id: value, name: label }) => ({ value, label }),
     );
+    const buttonPercentProps = {
+      className: !id ? undefined : 'active',
+      disabled: !id,
+      onClick: this.showPercentForm,
+    };
 
     return (
       <EtsBootstrap.ModalContainer
-        id="modal-program-object-dt"
+        id="modal-program-object-odh"
         show={this.props.show}
         onHide={this.props.onHide}
         bsSize="large">
@@ -483,7 +402,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             <EtsBootstrap.Col md={6}>
               <ExtField
                 type="select"
-                label="Наименование ДТ"
+                label="Наименование ОДХ"
                 error={errors.asuods_id}
                 options={OBJECT_OPTIONS}
                 value={state.asuods_id}
@@ -493,100 +412,75 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 clearable={false}
               />
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col mdOffset={3} md={3}>
-              <ExtField
-                hidden={!state.id}
-                type="select"
-                label="Версия"
-                options={VERSIONS_OPTIONS}
-                onChange={this.handleChangeVersion}
-                value={state.id}
-                clearable={false}
-              />
-            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <div>
             <EtsBootstrap.Row style={{ marginBottom: 20 }}>
               <EtsBootstrap.Col md={12}>
-                <PanelObjectInfo>
-                  <EtsBootstrap.Col md={12}>
-                    <span style={{ fontWeight: 600 }}>
-                      Информация об объекте
-                    </span>
+                <span style={{ fontWeight: 600 }}>Информация об объекте</span>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={8}>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={6}>
+                    <EtsBootstrap.Col md={9}>
+                      Общая площадь по паспорту, кв.м.:
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={3}>{total_area}</EtsBootstrap.Col>
                   </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={4}>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Общая площадь по паспорту, кв.м.: ${Number(
-                        total_area,
-                      )}`}</span>
+                  <EtsBootstrap.Col md={6}>
+                    <EtsBootstrap.Col md={9}>
+                      Площадь проезда, кв.м.:
                     </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
-                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={3}>{0}</EtsBootstrap.Col>
                   </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={4}>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                </EtsBootstrap.Row>
+                <EtsBootstrap.Row>
+                  <EtsBootstrap.Col md={6}>
+                    <EtsBootstrap.Col md={9}>
+                      Площадь пешеходной дорожки, кв.м.:
                     </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
-                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={3}>{0}</EtsBootstrap.Col>
                   </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={4}>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Заказчик: ${company_name
-                        || prCompanyName}`}</span>
+                  <EtsBootstrap.Col md={6}>
+                    <EtsBootstrap.Col md={9}>
+                      Площадь тротуаров, кв.м.:
                     </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={3}>{0}</EtsBootstrap.Col>
                   </EtsBootstrap.Col>
-                </PanelObjectInfo>
+                </EtsBootstrap.Row>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={4}>
+                <EtsBootstrap.Col md={6}>Заказчик</EtsBootstrap.Col>
+                <EtsBootstrap.Col md={6}>{0}</EtsBootstrap.Col>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <EtsBootstrap.Panel>
-                  <EtsBootstrap.Col
-                    md={12}
-                    style={{ fontWeight: 600, marginBottom: 5 }}>
-                    <span>Подрядчик</span>
-                  </EtsBootstrap.Col>
-                  <div>
-                    <EtsBootstrap.Col md={2}>
-                      <SpanContractor>Номер контракта</SpanContractor>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={3}>
-                      <ExtField
-                        type="string"
-                        value={state.contract_number}
-                        error={errors.name}
-                        onChange={this.handleChange}
-                        boundKeys="contract_number"
-                        disabled={
-                          !isPermittedByPermission
-                          || !this.props.isPermittetForObjectFact
-                        }
-                      />
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col mdOffset={2} md={1}>
-                      <SpanContractor>Подрядчик</SpanContractor>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col
-                      style={{ position: 'relative', top: -20 }}
-                      md={4}>
-                      <ExtField
-                        type="select"
-                        error={errors.contractor_id}
-                        options={CONTRACTOR_OPTIONS}
-                        value={state.contractor_id}
-                        onChange={this.handleChange}
-                        boundKeys="contractor_id"
-                        disabled={
-                          !isPermittedByPermission
-                          || !this.props.isPermittetForObjectFact
-                        }
-                      />
-                    </EtsBootstrap.Col>
-                  </div>
-                </EtsBootstrap.Panel>
+              <EtsBootstrap.Col
+                md={12}
+                style={{ fontWeight: 600, marginBottom: 5 }}>
+                <span>Подрядчик</span>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="string"
+                  label="Номер контракта"
+                  value={state.contract_number}
+                  error={errors.name}
+                  onChange={this.handleChange}
+                  boundKeys="contract_number"
+                  disabled={!isPermitted}
+                />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col style={{ marginBottom: 20 }} md={6}>
+                <ExtField
+                  type="select"
+                  label="Подрядчик"
+                  error={errors.contractor_id}
+                  options={CONTRACTOR_OPTIONS}
+                  value={state.contractor_id}
+                  onChange={this.handleChange}
+                  boundKeys="contractor_id"
+                  disabled={!isPermitted}
+                />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Nav
@@ -614,20 +508,15 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                   <div className="pr-object-data">
                     <span>Дата осмотра</span>
                     <span>
-                      {state.reviewed_at
-                        ? moment(state.reviewed_at).format(
-                          `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
-                        )
-                        : '---'}
+                      {moment(state.reviewed_at).format(
+                        `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
+                      )}
                     </span>
                   </div>
                 </EtsBootstrap.Col>
                 <EtsBootstrap.Col md={2} xsOffset={1}>
                   <EtsBootstrap.Col md={12}>
-                    <EtsBootstrap.Button
-                      className={!id ? undefined : 'active'}
-                      disabled={!id}
-                      onClick={this.showPercentForm}>
+                    <EtsBootstrap.Button {...buttonPercentProps}>
                       <div style={{ width: 200, textAlign: 'center' }}>%</div>
                     </EtsBootstrap.Button>
                   </EtsBootstrap.Col>
@@ -638,34 +527,27 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               <EtsBootstrap.Col md={7}>
                 <TabInfo
                   isPermitted={!(!asuods_id || !isPermitted)}
-                  isPermittetForObjectFact={
-                    !(!asuods_id || !this.props.isPermittetForObjectFact)
-                  }
                   whatSelectedTab={tabKey}
                   state={state}
                   errors={errors}
-                  objectList={dtPolys}
+                  objectList={odhPolys}
                   handleChange={this.handleChange}
                   pushElement={this.pushElement}
                   selectedObj={selectedObj}
                 />
               </EtsBootstrap.Col>
               <EtsBootstrap.Col md={5}>
-                <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
+                <Div hidden={!IS_CREATING && isEmpty(odhPolys)}>
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
-                    isNotDrawAllObject={isNotDrawAllObject}
                     manual={manual}
-                    polys={dtPolys}
-                    focusOnSelectedGeo
+                    polys={odhPolys}
                     objectList={objectList}
                     objectsType={objectsType}
                     startDraw={this.startDraw}
                     drawObjectList={drawObjectList}
                     setManualOnTrue={this.setManualOnTrue}
                     setManualOnFalse={this.setManualOnFalse}
-                    setIsDrawAllObjectOnTrue={this.setIsDrawAllObjectOnTrue}
-                    setIsDrawAllObjectOnFalse={this.setIsDrawAllObjectOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
                     handleAddDrawLines={this.handleAddDrawLines}
@@ -684,20 +566,13 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             object_id={id}
             onHide={this.hidePercentForm}
             updateObjectData={this.props.updateObjectData}
-            isPermittedPercentByStatus={this.props.isPermittedPercentByStatus}
           />
         )}
         <EtsBootstrap.ModalFooter>
           <EtsBootstrap.Button
             disabled={!this.props.canSave}
-            onClick={
-              isPermitted || this.props.isPermittetForObjectFact
-                ? this.handleSubmitWrap
-                : this.props.onHide
-            }>
-            {isPermitted || this.props.isPermittetForObjectFact
-              ? 'Сохранить'
-              : 'Закрыть'}
+            onClick={this.handleSubmitWrap}>
+            Сохранить
           </EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
@@ -708,21 +583,15 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 export default compose(
   tabable,
   connect(
-    (state) => ({
-      dtPolys: makeSelector(getGeoobjectState(state).dtPolys),
-    }),
+    null,
     (dispatch) => ({
-      actionGetGetDt: () =>
+      actionGetGetOdh: () =>
         dispatch(
-          geoobjectActions.actionGetAndSetInStoreDt(null, {
+          geoobjectActions.actionGetGetOdh(null, {
             page: null,
             path: null,
           }),
         ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
-)(connectToStores(ProgramObjectFormDT, ['repair']));
+)(connectToStores(ProgramObjectFormodh, ['repair']));

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
+import { connect, DispatchProp, useDispatch } from 'react-redux';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
@@ -91,6 +91,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
       const [element, setElement] = React.useState(null);
       const uniqKeyValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
       const type = props.match.params.type;
+      const dispatch = useDispatch();
 
       React.useEffect(
         () => {
@@ -131,7 +132,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
               }
 
               if (props.getOneData) {
-                props.dispatch(
+                dispatch(
                   registryLoadOneData(props.registryKey, uniqKeyValue),
                 ).then((responseElement) => {
                   if (responseElement) {
@@ -177,7 +178,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
             ),
           });
 
-          props.dispatch(
+          dispatch(
             registryResetSelectedRowToShowInForm(props.registryKey, isSubmitted, response),
           );
 

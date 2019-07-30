@@ -470,215 +470,230 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     );
 
     return (
-      <EtsBootstrap.ModalContainer
-        id="modal-program-object-dt"
-        show={this.props.show}
-        onHide={this.props.onHide}
-        bsSize="large">
-        <EtsBootstrap.ModalHeader closeButton>
-          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
-        <ModalBody style={{ padding: 15 }}>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
-              <ExtField
-                type="select"
-                label="Наименование ДТ"
-                error={errors.asuods_id}
-                options={OBJECT_OPTIONS}
-                value={state.asuods_id}
-                onChange={this.handleChangeInfoObject}
-                boundKeys="asuods_id"
-                disabled={!IS_CREATING || !isPermitted}
-                clearable={false}
-              />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col mdOffset={3} md={3}>
-              <ExtField
-                hidden={!state.id}
-                type="select"
-                label="Версия"
-                options={VERSIONS_OPTIONS}
-                onChange={this.handleChangeVersion}
-                value={state.id}
-                clearable={false}
-              />
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-          <div>
-            <EtsBootstrap.Row style={{ marginBottom: 20 }}>
-              <EtsBootstrap.Col md={12}>
-                <PanelObjectInfo>
-                  <EtsBootstrap.Col md={12}>
-                    <span style={{ fontWeight: 600 }}>
-                      Информация об объекте
-                    </span>
-                  </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={4}>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Общая площадь по паспорту, кв.м.: ${Number(
-                        total_area,
-                      )}`}</span>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
-                    </EtsBootstrap.Col>
-                  </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={4}>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь проезда, кв.м.: ${0}`}</span>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
-                    </EtsBootstrap.Col>
-                  </EtsBootstrap.Col>
-                  <EtsBootstrap.Col md={4}>
-                    <EtsBootstrap.Col md={12}>
-                      <span>{`Заказчик: ${company_name
-                        || prCompanyName}`}</span>
-                    </EtsBootstrap.Col>
-                  </EtsBootstrap.Col>
-                </PanelObjectInfo>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
+      <React.Fragment>
+        <EtsBootstrap.ModalContainer
+          id="modal-program-object-dt"
+          show={this.props.show}
+          onHide={this.props.onHide}
+          bsSize="large">
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
+          <ModalBody style={{ padding: 15 }}>
             <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <EtsBootstrap.Panel>
-                  <EtsBootstrap.Col
-                    md={12}
-                    style={{ fontWeight: 600, marginBottom: 5 }}>
-                    <span>Подрядчик</span>
-                  </EtsBootstrap.Col>
-                  <div>
-                    <EtsBootstrap.Col md={2}>
-                      <SpanContractor>Номер контракта</SpanContractor>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={3}>
-                      <ExtField
-                        type="string"
-                        value={state.contract_number}
-                        error={errors.name}
-                        onChange={this.handleChange}
-                        boundKeys="contract_number"
-                        disabled={
-                          !isPermittedByPermission
-                          || !this.props.isPermittetForObjectFact
-                        }
-                      />
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col mdOffset={2} md={1}>
-                      <SpanContractor>Подрядчик</SpanContractor>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col
-                      style={{ position: 'relative', top: -20 }}
-                      md={4}>
-                      <ExtField
-                        type="select"
-                        error={errors.contractor_id}
-                        options={CONTRACTOR_OPTIONS}
-                        value={state.contractor_id}
-                        onChange={this.handleChange}
-                        boundKeys="contractor_id"
-                        disabled={
-                          !isPermittedByPermission
-                          || !this.props.isPermittetForObjectFact
-                        }
-                      />
-                    </EtsBootstrap.Col>
-                  </div>
-                </EtsBootstrap.Panel>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-            <EtsBootstrap.Nav
-              style={{ marginBottom: 20 }}
-              bsStyle="tabs"
-              activeKey={tabKey}
-              onSelect={this.props.handleTabSelect}
-              id="refs-car-tabs">
-              <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.PLAN}>
-                План
-              </EtsBootstrap.NavItem>
-              <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.FACT}>
-                Факт
-              </EtsBootstrap.NavItem>
-            </EtsBootstrap.Nav>
-            <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
-              <EtsBootstrap.Row style={{ marginBottom: 20 }}>
-                <EtsBootstrap.Col md={3}>
-                  <div className="pr-object-data">
-                    <span>Процент выполнения</span>
-                    <span>{state.percent}</span>
-                  </div>
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={3}>
-                  <div className="pr-object-data">
-                    <span>Дата осмотра</span>
-                    <span>
-                      {state.reviewed_at
-                        ? moment(state.reviewed_at).format(
-                          `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
-                        )
-                        : '---'}
-                    </span>
-                  </div>
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={2} xsOffset={1}>
-                  <EtsBootstrap.Col md={12}>
-                    <EtsBootstrap.Button
-                      className={!id ? undefined : 'active'}
-                      disabled={!id}
-                      onClick={this.showPercentForm}>
-                      <div style={{ width: 200, textAlign: 'center' }}>%</div>
-                    </EtsBootstrap.Button>
-                  </EtsBootstrap.Col>
-                </EtsBootstrap.Col>
-              </EtsBootstrap.Row>
-            </Div>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={7}>
-                <TabInfo
-                  isPermitted={!(!asuods_id || !isPermitted)}
-                  isPermittetForObjectFact={
-                    !(!asuods_id || !this.props.isPermittetForObjectFact)
-                  }
-                  whatSelectedTab={tabKey}
-                  state={state}
-                  errors={errors}
-                  objectList={dtPolys}
-                  handleChange={this.handleChange}
-                  pushElement={this.pushElement}
-                  selectedObj={selectedObj}
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="select"
+                  label="Наименование ДТ"
+                  error={errors.asuods_id}
+                  options={OBJECT_OPTIONS}
+                  value={state.asuods_id}
+                  onChange={this.handleChangeInfoObject}
+                  boundKeys="asuods_id"
+                  disabled={!IS_CREATING || !isPermitted}
+                  clearable={false}
                 />
               </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={5}>
-                <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
-                  <MapInfo
-                    handleFeatureClick={this.handleFeatureClick}
-                    isNotDrawAllObject={isNotDrawAllObject}
-                    manual={manual}
-                    polys={dtPolys}
-                    focusOnSelectedGeo
-                    objectList={objectList}
-                    objectsType={objectsType}
-                    startDraw={this.startDraw}
-                    drawObjectList={drawObjectList}
-                    setManualOnTrue={this.setManualOnTrue}
-                    setManualOnFalse={this.setManualOnFalse}
-                    setIsDrawAllObjectOnTrue={this.setIsDrawAllObjectOnTrue}
-                    setIsDrawAllObjectOnFalse={this.setIsDrawAllObjectOnFalse}
-                    isPermitted={asuods_id && isPermitted && IS_CREATING}
-                    isPermittedMap={IS_CREATING && isPermitted}
-                    handleAddDrawLines={this.handleAddDrawLines}
-                    handleDrawFeatureClick={this.handleDrawFeatureClick}
-                    handleRemoveLastDrawFeature={
-                      this.handleRemoveLastDrawFeature
-                    }
-                  />
-                </Div>
+              <EtsBootstrap.Col mdOffset={3} md={3}>
+                <ExtField
+                  hidden={!state.id}
+                  type="select"
+                  label="Версия"
+                  options={VERSIONS_OPTIONS}
+                  onChange={this.handleChangeVersion}
+                  value={state.id}
+                  clearable={false}
+                />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-          </div>
-        </ModalBody>
+            <div>
+              <EtsBootstrap.Row style={{ marginBottom: 20 }}>
+                <EtsBootstrap.Col md={12}>
+                  <PanelObjectInfo>
+                    <EtsBootstrap.Col md={12}>
+                      <span style={{ fontWeight: 600 }}>
+                        Информация об объекте
+                      </span>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={4}>
+                      <EtsBootstrap.Col md={12}>
+                        <span>{`Общая площадь по паспорту, кв.м.: ${Number(
+                          total_area,
+                        )}`}</span>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={12}>
+                        <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={4}>
+                      <EtsBootstrap.Col md={12}>
+                        <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={12}>
+                        <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                    <EtsBootstrap.Col md={4}>
+                      <EtsBootstrap.Col md={12}>
+                        <span>{`Заказчик: ${company_name
+                          || prCompanyName}`}</span>
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
+                  </PanelObjectInfo>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={12}>
+                  <EtsBootstrap.Panel>
+                    <EtsBootstrap.Col
+                      md={12}
+                      style={{ fontWeight: 600, marginBottom: 5 }}>
+                      <span>Подрядчик</span>
+                    </EtsBootstrap.Col>
+                    <div>
+                      <EtsBootstrap.Col md={2}>
+                        <SpanContractor>Номер контракта</SpanContractor>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col md={3}>
+                        <ExtField
+                          type="string"
+                          value={state.contract_number}
+                          error={errors.name}
+                          onChange={this.handleChange}
+                          boundKeys="contract_number"
+                          disabled={
+                            !isPermittedByPermission
+                            || !this.props.isPermittetForObjectFact
+                          }
+                        />
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col mdOffset={2} md={1}>
+                        <SpanContractor>Подрядчик</SpanContractor>
+                      </EtsBootstrap.Col>
+                      <EtsBootstrap.Col
+                        style={{ position: 'relative', top: -20 }}
+                        md={4}>
+                        <ExtField
+                          type="select"
+                          error={errors.contractor_id}
+                          options={CONTRACTOR_OPTIONS}
+                          value={state.contractor_id}
+                          onChange={this.handleChange}
+                          boundKeys="contractor_id"
+                          disabled={
+                            !isPermittedByPermission
+                            || !this.props.isPermittetForObjectFact
+                          }
+                        />
+                      </EtsBootstrap.Col>
+                    </div>
+                  </EtsBootstrap.Panel>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+              <EtsBootstrap.Nav
+                style={{ marginBottom: 20 }}
+                bsStyle="tabs"
+                activeKey={tabKey}
+                onSelect={this.props.handleTabSelect}
+                id="refs-car-tabs">
+                <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.PLAN}>
+                  План
+                </EtsBootstrap.NavItem>
+                <EtsBootstrap.NavItem eventKey={OBJ_TAB_INDEX.FACT}>
+                  Факт
+                </EtsBootstrap.NavItem>
+              </EtsBootstrap.Nav>
+              <Div hidden={tabKey !== OBJ_TAB_INDEX.FACT}>
+                <EtsBootstrap.Row style={{ marginBottom: 20 }}>
+                  <EtsBootstrap.Col md={3}>
+                    <div className="pr-object-data">
+                      <span>Процент выполнения</span>
+                      <span>{state.percent}</span>
+                    </div>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={3}>
+                    <div className="pr-object-data">
+                      <span>Дата осмотра</span>
+                      <span>
+                        {state.reviewed_at
+                          ? moment(state.reviewed_at).format(
+                            `${global.APP_DATE_FORMAT} ${global.APP_TIME_FORMAT}`,
+                          )
+                          : '---'}
+                      </span>
+                    </div>
+                  </EtsBootstrap.Col>
+                  <EtsBootstrap.Col md={2} xsOffset={1}>
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Button
+                        className={!id ? undefined : 'active'}
+                        disabled={!id}
+                        onClick={this.showPercentForm}>
+                        <div style={{ width: 200, textAlign: 'center' }}>%</div>
+                      </EtsBootstrap.Button>
+                    </EtsBootstrap.Col>
+                  </EtsBootstrap.Col>
+                </EtsBootstrap.Row>
+              </Div>
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={7}>
+                  <TabInfo
+                    isPermitted={!(!asuods_id || !isPermitted)}
+                    isPermittetForObjectFact={
+                      !(!asuods_id || !this.props.isPermittetForObjectFact)
+                    }
+                    whatSelectedTab={tabKey}
+                    state={state}
+                    errors={errors}
+                    objectList={dtPolys}
+                    handleChange={this.handleChange}
+                    pushElement={this.pushElement}
+                    selectedObj={selectedObj}
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={5}>
+                  <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
+                    <MapInfo
+                      handleFeatureClick={this.handleFeatureClick}
+                      isNotDrawAllObject={isNotDrawAllObject}
+                      manual={manual}
+                      polys={dtPolys}
+                      focusOnSelectedGeo
+                      objectList={objectList}
+                      objectsType={objectsType}
+                      startDraw={this.startDraw}
+                      drawObjectList={drawObjectList}
+                      setManualOnTrue={this.setManualOnTrue}
+                      setManualOnFalse={this.setManualOnFalse}
+                      setIsDrawAllObjectOnTrue={this.setIsDrawAllObjectOnTrue}
+                      setIsDrawAllObjectOnFalse={this.setIsDrawAllObjectOnFalse}
+                      isPermitted={asuods_id && isPermitted && IS_CREATING}
+                      isPermittedMap={IS_CREATING && isPermitted}
+                      handleAddDrawLines={this.handleAddDrawLines}
+                      handleDrawFeatureClick={this.handleDrawFeatureClick}
+                      handleRemoveLastDrawFeature={
+                        this.handleRemoveLastDrawFeature
+                      }
+                    />
+                  </Div>
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            </div>
+          </ModalBody>
+          <EtsBootstrap.ModalFooter>
+            <EtsBootstrap.Button
+              disabled={!this.props.canSave}
+              onClick={
+                isPermitted || this.props.isPermittetForObjectFact
+                  ? this.handleSubmitWrap
+                  : this.props.onHide
+              }>
+              {isPermitted || this.props.isPermittetForObjectFact
+                ? 'Сохранить'
+                : 'Закрыть'}
+            </EtsBootstrap.Button>
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
         {showPercentForm && (
           <PercentModalList
             object_id={id}
@@ -687,20 +702,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             isPermittedPercentByStatus={this.props.isPermittedPercentByStatus}
           />
         )}
-        <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button
-            disabled={!this.props.canSave}
-            onClick={
-              isPermitted || this.props.isPermittetForObjectFact
-                ? this.handleSubmitWrap
-                : this.props.onHide
-            }>
-            {isPermitted || this.props.isPermittetForObjectFact
-              ? 'Сохранить'
-              : 'Закрыть'}
-          </EtsBootstrap.Button>
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
+      </React.Fragment>
     );
   }
 }

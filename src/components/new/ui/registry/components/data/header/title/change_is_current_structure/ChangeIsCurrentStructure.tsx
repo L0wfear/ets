@@ -79,7 +79,7 @@ const Title: React.FC<HeaderProps> = (props) => {
               {is_current_structure_popover}
             </EtsBootstrap.Popover>
           )}
-          placement="bottom">
+          placement="top">
           <EtsBootstrap.Glyphicon glyph="info-sign" />
         </EtsBootstrap.OverlayTrigger>
       </ChangeIsCurrentStructureWrap>

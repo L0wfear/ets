@@ -9,7 +9,7 @@ import { mission_template_types } from '../components/data/header/buttons/compon
 import { company_structure_types } from '../components/data/header/buttons/component-button/button-by-type/company_structure/constant';
 import { waybill_types } from '../components/data/header/buttons/component-button/button-by-type/waybill/constant';
 import { inspect_types } from '../components/data/header/buttons/component-button/button-by-type/inspect/constant';
-import { car_actual_types } from '../components/data/header/buttons/component-button/button-by-type/car_actual/constant';
+import { car_actual_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -19,7 +19,6 @@ const buttonsTypes =  {
   read: 'read',
   remove: 'remove',
   columns_control: 'columns_control',
-  select: 'select',
   ...inspect_types,
   ...waybill_types,
   ...mission_template_types,

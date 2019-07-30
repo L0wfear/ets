@@ -1,27 +1,40 @@
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import tirePermissions from './permissions';
-import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
-export const registryKey = 'tireRegistry';
-export const uniqKeyForParams = 'actual_tires_on_car_id';
+export const registryKey = 'tireRegistryAddButton';
 
-export const getToConfig = (car_id): TypeConfigData<Tire> => {
+export const getToConfig = (is_current_structure: boolean, company_id: number, ): TypeConfigData<Tire> => {
   return {
+    noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'autobase/actual_tires_on_car',
+        entity: 'autobase/tire_registry',
         payload: {
-          car_id,
+          is_current_structure,
+          company_id,
         },
+      },
+      removeOneData: {
+        entity: 'autobase/tire_registry',
+        uniqKeyLikeQueryString: false,
       },
     },
     registryKey,
     header: {
-      title: 'Установленные шины на текущую дату',
+      title: 'Реестр шин', // "Реестр шин для добавления"
+
+      format: 'is_current_structure',
+      is_current_structure_popover: 'Отобразятся шины, установленные на текущую дату на ТС Вашего подразделения',
+
       buttons: [
-        buttonsTypes.car_actual_add_tire,
-        buttonsTypes.read,
+        buttonsTypes.filter,
+        {
+          type: buttonsTypes.read,
+          title: 'Выбрать',
+          glyph: 'hand-up',
+        },
       ],
     },
     filter: {
@@ -33,9 +46,10 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'installed_at',
-          title: 'Дата монтажа',
-          type: 'advanced-date',
+          valueKey: 'tire_manufacturer_id',
+          labelKey: 'tire_manufacturer_name',
+          title: 'Производитель',
+          type: 'multiselect',
         },
         {
           valueKey: 'tire_size_id',
@@ -44,16 +58,15 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'odometr_diff',
-          title: 'Пробег, км',
-          type: 'advanced-number',
-          step: 1,
-        },
-        {
           valueKey: 'motohours_diff',
           title: 'Наработка, мч',
           type: 'advanced-number',
           step: 1,
+        },
+        {
+          valueKey: 'gov_number',
+          title: 'Установлен на',
+          type: 'multiselect',
         },
       ],
     },
@@ -62,7 +75,7 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams,
+        uniqKeyForParams: 'tire_registry_id',
       },
       meta: {
         fields: [
@@ -76,10 +89,9 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
             width: 200,
           },
           {
-            key: 'installed_at',
-            title: 'Дата монтажа',
-            width: 150,
-            format: 'date',
+            key: 'tire_manufacturer_name',
+            title: 'Производитель',
+            width: 200,
           },
           {
             key: 'tire_size_name',
@@ -87,13 +99,18 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
             width: 150,
           },
           {
-            key: 'odometr_diff',
-            title: 'Пробег, км',
-            width: 150,
+            key: 'comment',
+            title: 'Комментарий',
+            width: 200,
           },
           {
             key: 'motohours_diff',
             title: 'Наработка, мч',
+            width: 150,
+          },
+          {
+            key: 'gov_number',
+            title: 'Установлен на',
             width: 150,
           },
         ],

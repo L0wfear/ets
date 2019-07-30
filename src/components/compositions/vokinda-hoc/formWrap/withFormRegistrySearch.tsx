@@ -92,12 +92,14 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         () => {
           if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
             const hasButton = (
-              props.buttons.includes(buttonsTypes.create)
-              || props.buttons.includes(buttonsTypes.mission_create)
-              || props.buttons.includes(buttonsTypes.car_actual_add_battery)
+              props.buttons.some((elem) => buttonsTypes.create === elem.type)
+              || props.buttons.some((elem) => buttonsTypes.mission_create === elem.type)
+              || props.buttons.some((elem) => buttonsTypes.car_actual_add_battery === elem.type)
+              || props.buttons.some((elem) => buttonsTypes.car_actual_add_tire === elem.type)
+              || props.buttons.some((elem) => buttonsTypes.company_structure_create === elem.type)
             );
 
-            if (hasButton || props.buttons.includes(buttonsTypes.company_structure_create) && !config.cantCreate) {
+            if (hasButton && !config.cantCreate) {
               setElement({});
             } else {
               global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');

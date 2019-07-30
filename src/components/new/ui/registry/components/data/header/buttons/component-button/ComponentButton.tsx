@@ -41,6 +41,7 @@ import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
 
 type PropsComponentButton = {
   data: ValuesOf<OneRegistryData['header']['buttons']>;
@@ -85,6 +86,7 @@ const buttonComponents = {
   [buttonsTypes.waybill_print]: ButtonWaybillExport,
   [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,
   [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
+  [buttonsTypes.car_actual_add_tire]: ButtonCarActualAddTire,
 };
 
 const ComponentButton: React.FC<PropsComponentButton> = (props) => {

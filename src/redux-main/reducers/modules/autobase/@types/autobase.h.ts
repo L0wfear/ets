@@ -280,6 +280,22 @@ export type TireManufacturer = {
   id: number;
   name: string;
 };
+
+export type TireOnCar =   {
+  car_id: number;
+  gov_number: string;
+  id?: number;
+  installed_at: string;
+  motohours_diff: number;
+  odometr_diff: number;
+  uninstalled_at: string;
+  // для таблички
+  customId?: number;
+  isChecked?: boolean;
+  isHighlighted?: boolean;
+  isSelected?: boolean;
+};
+
 export type Tire = {
   car_id: number;
   comment: string;
@@ -297,15 +313,7 @@ export type Tire = {
   tire_model_name: string;
   tire_size_id: number;
   tire_size_name: string;
-  tire_to_car: {
-    car_id: number;
-    gov_number: string;
-    id?: number;
-    installed_at: string;
-    motohours_diff: number;
-    odometr_diff: number;
-    uninstalled_at: string;
-  }[];
+  tire_to_car: TireOnCar[];
   tire_to_car_id: number;
   uninstalled_at: string;
 };

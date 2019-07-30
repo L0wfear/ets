@@ -23,7 +23,7 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
     },
     registryKey,
     header: {
-      title: 'Реестр аккумуляторов для добавления',
+      title: 'Реестр аккумуляторов', // Реестр аккумуляторов для добавления
 
       format: 'is_current_structure',
       is_current_structure_popover: 'Отобразятся аккумуляторы, установленные на текущую дату на ТС Вашего подразделения',
@@ -31,7 +31,7 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
       buttons: [
         buttonsTypes.filter,
         {
-          type: buttonsTypes.select,
+          type: buttonsTypes.read,
           title: 'Выбрать',
           glyph: 'hand-up',
         },

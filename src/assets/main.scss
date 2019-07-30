@@ -909,6 +909,8 @@ body.application {
           background-color: $colorGreen !important;
           color: white !important;
           .error {
+            margin-top: 0px;
+            border-radius: 0 0 3px 3px;
             margin-top: 4px;
             padding: 2px;
             border-radius: 2px;

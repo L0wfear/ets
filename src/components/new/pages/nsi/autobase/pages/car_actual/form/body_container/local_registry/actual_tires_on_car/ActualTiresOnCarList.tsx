@@ -12,6 +12,7 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 import { get } from 'lodash';
 import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import ActualTireOnCarForm from './form/ActualTireOnCarForm';
 
 export type ActualTiresOnCarListStateProps = {};
 export type ActualTiresOnCarListDispatchProps = {
@@ -50,6 +51,7 @@ const ActualTiresOnCarList: React.FC<ActualTiresOnCarListProps> = (props) => {
   return (
     <>
       <Registry registryKey={registryKey} />
+      <ActualTireOnCarForm registryKey={registryKey} />
     </>
   );
 };

@@ -2,18 +2,18 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { omit } from 'lodash';
 
-import { ColorForTable } from 'components/reports/operational/route_odh_coverage/styled';
+import { ColorForTable } from 'components/old/reports/operational/route_odh_coverage/styled';
 
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 import { ITechnicalOperationType } from 'api/@types/services/index.h';
 
 import { FluxContext, connectToStores } from 'utils/decorators';
 
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 interface IPropsReportHeader
   extends IPropsReportHeaderCommon,

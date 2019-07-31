@@ -3,7 +3,7 @@ import TemplateMonitor from 'components/new/ui/template/monitor/TemplateMonitor'
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "monitor" */ 'components/monitor/MonitorPage')
+  import(/* webpackChunkName: "monitor" */ 'components/old/monitor/MonitorPage')
 ));
 
 export default (props) => (

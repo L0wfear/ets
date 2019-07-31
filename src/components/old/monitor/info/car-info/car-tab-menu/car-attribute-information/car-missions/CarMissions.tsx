@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 
-import MissionsList from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/MissionsList';
+import MissionsList from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/MissionsList';
 import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfoFormWrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 
 import {
   loadMissionDataById,
 } from 'redux-main/trash-actions/mission';
-import { fetchCarInfo } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { ReduxState } from 'redux-main/@types/state';
-import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
-import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
+import { CarInfoBlockTabDataColumn } from 'components/old/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/old/monitor/info/geoobjects-info/styled';
 
 type CarMissionsDispatchProps = {
   actionGetMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetMissionById>;

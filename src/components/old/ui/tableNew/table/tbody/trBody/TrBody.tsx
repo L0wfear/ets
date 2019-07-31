@@ -1,5 +1,5 @@
 import * as React from 'react';
-import TdBody from 'components/ui/tableNew/table/tbody/trBody/tdBody/TdBody';
+import TdBody from 'components/old/ui/tableNew/table/tbody/trBody/tdBody/TdBody';
 import * as cx from 'classnames';
 
 class TrBody extends React.Component<any, any> {

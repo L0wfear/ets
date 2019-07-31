@@ -1,5 +1,5 @@
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 

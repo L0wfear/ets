@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -18,7 +18,7 @@ import { DivNone } from 'global-styled/global-styled';
 import contractorPermissions from '../_config-data/permissions';
 import { contractorFormSchema } from './schema';
 import { getDefaultContractorElement } from './utils';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 import { actionCreateContractor, actionUpdateContractor } from 'redux-main/reducers/modules/repair/contractor/actions_contractor';
 

@@ -1,4 +1,4 @@
-import { ISchemaRenderer, ISchemaMaker, IDataTableColSchema } from 'components/ui/table/@types/schema.h';
+import { ISchemaRenderer, ISchemaMaker, IDataTableColSchema } from 'components/old/ui/table/@types/schema.h';
 
 export interface IReportProps {
   title: string | JSX.Element | null;

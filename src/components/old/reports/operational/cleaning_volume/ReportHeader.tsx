@@ -4,12 +4,12 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 
 import { getToday0am, createValidDate } from 'utils/dates';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   start_date: string;

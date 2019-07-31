@@ -12,7 +12,7 @@ import {
   DispatchPropsNotificationBadge,
   OwnPropsNotificationBadge,
   PropsNotificationBadge,
-} from 'components/notifications/@types/NotificationBadge.h';
+} from 'components/old/notifications/@types/NotificationBadge.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 /* ETS2 */

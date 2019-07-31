@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import MapContainer from 'components/new/ui/mission_info_form/form-components/map-contaienr/MapContainer';
 
@@ -19,17 +19,17 @@ import {
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 import { get } from 'lodash';
-import DataTable from 'components/ui/table/DataTable';
+import DataTable from 'components/old/ui/table/DataTable';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { ReportFormRightWrapper } from 'components/reports/operational/cars_travel_time/styled';
+import { ReportFormRightWrapper } from 'components/old/reports/operational/cars_travel_time/styled';
 import {
   CarsTravelTimeModalStateProps,
   CarsTravelTimeModalDispatchProps,
   PropsCarsTravelTimeModal,
   CarsTravelTimeModalOwnProps,
-} from 'components/reports/operational/cars_travel_time/form/@types/CarsTravelTime.h';
+} from 'components/old/reports/operational/cars_travel_time/form/@types/CarsTravelTime.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { addTime } from 'utils/dates';
 

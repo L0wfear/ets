@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'components/ui/table/DataTable';
+import Table from 'components/old/ui/table/DataTable';
 import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';

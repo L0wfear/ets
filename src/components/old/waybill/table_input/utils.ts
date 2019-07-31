@@ -2,7 +2,7 @@ import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import memoizeOne from 'memoize-one';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeFuelCardStrickOptions = memoizeOne(
   (

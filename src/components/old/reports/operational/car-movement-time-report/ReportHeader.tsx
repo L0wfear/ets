@@ -1,17 +1,17 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates } from 'utils/dates';
 
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import { ReduxState } from 'redux-main/@types/state';
 import { getCompanyState } from 'redux-main/reducers/selectors/index';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import companyActions from 'redux-main/reducers/modules/company/actions';

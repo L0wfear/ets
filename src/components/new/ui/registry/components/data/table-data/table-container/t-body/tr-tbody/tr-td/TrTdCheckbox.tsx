@@ -11,7 +11,7 @@ import {
   OwnPropsTrTdCheckbox,
   PropsTrTdCheckbox,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd.h';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { registryCheckLine } from 'components/new/ui/registry/module/actions-registy';
 
 const TrTdCheckbox: React.FC<PropsTrTdCheckbox> = (props) => {

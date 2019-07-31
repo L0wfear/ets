@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import RouteInfoMap from 'components/new/pages/routes_list/route-info/map/RouteInfoMap';
 

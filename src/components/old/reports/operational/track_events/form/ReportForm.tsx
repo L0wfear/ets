@@ -1,9 +1,9 @@
 import * as React from 'react';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import MapEts from 'components/new/ui/map/MapEts';
 
-import { MapEtsContainer } from 'components/reports/operational/track_events/form/map-geoobject/styled/styled';
-import LayerOneGeometry from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
+import { MapEtsContainer } from 'components/old/reports/operational/track_events/form/map-geoobject/styled/styled';
+import LayerOneGeometry from 'components/old/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry';
 
 import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

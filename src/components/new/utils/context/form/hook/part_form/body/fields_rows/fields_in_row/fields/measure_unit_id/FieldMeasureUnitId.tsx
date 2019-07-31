@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
 import { FieldDataMeasureUnitId } from 'components/new/utils/context/form/@types/fields/valueOfArray';

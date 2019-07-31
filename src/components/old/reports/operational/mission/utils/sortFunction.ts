@@ -1,4 +1,4 @@
-import { getDelForUnitRender } from 'components/reports/operational/mission/utils/main';
+import { getDelForUnitRender } from 'components/old/reports/operational/mission/utils/main';
 
 export const sortFunc = (a, b) => {
   const first_a = Number(a.traveled / getDelForUnitRender(a.route_check_unit));

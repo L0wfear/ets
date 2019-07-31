@@ -1,15 +1,15 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import techInspectionPermissions from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data/permissions';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { techInspectionFormSchema } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/shema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultTechInspectionElement } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/utils';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -21,7 +21,7 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/@types/TechInspectionForm';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
-import { FileField } from 'components/ui/input/fields';
+import { FileField } from 'components/old/ui/input/fields';
 import { isNullOrUndefined } from 'util';
 import { getSessionState } from 'redux-main/reducers/selectors';
 

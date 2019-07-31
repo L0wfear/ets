@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsBatteryBrandFormLazy } from 'components/new/pages/nsi/autobase/pages/battery_brand/form/@types/BatteryBrandForm';
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const BatteryBrandFrom = React.lazy(() => (
   import(/* webpackChunkName: "battery_brand_form" */ 'components/new/pages/nsi/autobase/pages/battery_brand/form/BatteryBrandForm')

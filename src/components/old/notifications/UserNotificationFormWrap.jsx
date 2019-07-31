@@ -1,7 +1,7 @@
 import React from 'react';
 
-import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
-import UserNotificationForm from 'components/notifications/UserNotificationForm';
+import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
+import UserNotificationForm from 'components/old/notifications/UserNotificationForm';
 
 export default class UserNotificationFormWrap extends UNSAFE_FormWrap {
   handleFormHide = () => {

@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { setSelectedElementAssignment } from 'redux-main/reducers/modules/order/action-order';
 
-import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
-import DataTableComponent from 'components/ui/table/DataTable';
-import DateFormatter from 'components/ui/DateFormatter';
+import DataTableComponent from 'components/old/ui/table/DataTable';
+import DateFormatter from 'components/old/ui/DateFormatter';
 import { ORDER_ASSIGNMENTS_STATUS_KEYS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;

@@ -3,10 +3,10 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { staticProps } from 'utils/decorators';
 import { isEmpty } from 'utils/functions';
-import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
-import UserNotificationFormWrap from 'components/notifications/UserNotificationFormWrap';
-import UserNotificationTable from 'components/notifications/UserNotificationTable';
-import permissions from 'components/notifications/config-data/permissions';
+import UNSAFE_CheckableElementsList from 'components/old/program_registry/UNSAFE_CheckableElementsList';
+import UserNotificationFormWrap from 'components/old/notifications/UserNotificationFormWrap';
+import UserNotificationTable from 'components/old/notifications/UserNotificationTable';
+import permissions from 'components/old/notifications/config-data/permissions';
 import { connect } from 'react-redux';
 import {
   getUserNotificationInfo,
@@ -19,7 +19,7 @@ import {
   getUserNotificationsState,
   getSessionState,
 } from 'redux-main/reducers/selectors';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { compose } from 'recompose';
 
 @staticProps({

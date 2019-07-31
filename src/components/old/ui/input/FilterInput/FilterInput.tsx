@@ -2,11 +2,11 @@ import * as React from 'react';
 import { isEqual, isEmpty } from 'lodash';
 import * as R from 'ramda';
 
-import filterTypeHandler from 'components/ui/input/FilterInput/filterTypeHandler';
-import Input from 'components/ui/input/FilterInput/Input';
-import { FILTER_VALUES, FILTER_SELECT_TYPES } from 'components/ui/input/FilterInput/constants';
+import filterTypeHandler from 'components/old/ui/input/FilterInput/filterTypeHandler';
+import Input from 'components/old/ui/input/FilterInput/Input';
+import { FILTER_VALUES, FILTER_SELECT_TYPES } from 'components/old/ui/input/FilterInput/constants';
 import { createValidDateTime, createValidDate } from 'utils/dates';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import { isEqualOr } from 'utils/functions';
 

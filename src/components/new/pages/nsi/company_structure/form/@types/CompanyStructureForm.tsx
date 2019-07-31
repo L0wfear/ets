@@ -1,6 +1,6 @@
 import { CompanyStructure, IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { HandleThunkActionCreator } from 'react-redux';
 import { getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 

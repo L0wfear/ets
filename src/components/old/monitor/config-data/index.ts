@@ -1,5 +1,5 @@
-import permissions from 'components/monitor/config-data/permissions';
-import component from 'components/monitor/config-data/components';
+import permissions from 'components/old/monitor/config-data/permissions';
+import component from 'components/old/monitor/config-data/components';
 
 export default {
   path: '/monitor',

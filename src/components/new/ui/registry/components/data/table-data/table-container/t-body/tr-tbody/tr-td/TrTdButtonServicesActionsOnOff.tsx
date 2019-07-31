@@ -4,7 +4,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { EtsTbodyTrTd, ButtonGreenActive, ButtonRedActive } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Service } from 'redux-main/reducers/modules/services/@types/services';

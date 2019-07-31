@@ -6,10 +6,10 @@ import Map from 'ol/Map';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { getStyleForParking } from 'components/monitor/layers/track/events/parking/feature-style';
-import OverlayParkingPoint from 'components/monitor/layers/track/events/parking/OverlayParkingPoint';
-import { carInfoSetParkingPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { getStyleForParking } from 'components/old/monitor/layers/track/events/parking/feature-style';
+import OverlayParkingPoint from 'components/old/monitor/layers/track/events/parking/OverlayParkingPoint';
+import { carInfoSetParkingPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 type PropsLayerParkingPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

@@ -5,7 +5,7 @@ import { omit, uniqBy } from 'lodash';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 import { IVehicleType } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
@@ -13,8 +13,8 @@ import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates
 import { FluxContext } from 'utils/decorators';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {

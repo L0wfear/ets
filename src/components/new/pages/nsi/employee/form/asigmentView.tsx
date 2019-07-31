@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { FileField } from 'components/ui/input/fields';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { FileField } from 'components/old/ui/input/fields';
 import { compose, withProps } from 'recompose';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';

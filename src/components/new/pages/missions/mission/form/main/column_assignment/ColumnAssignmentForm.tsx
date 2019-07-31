@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FieldAssignToWaybillMissionWithCarId from './inside_fields/assign_to_waybill/FieldAssignToWaybillMissionWithCarId';
 import { PropsColumnAssignmentForm } from './@types/index.h';
 import { DivNone } from 'global-styled/global-styled';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 class ColumnAssignmentForm extends React.PureComponent<PropsColumnAssignmentForm, { showBackButton: boolean }> {
   state = {

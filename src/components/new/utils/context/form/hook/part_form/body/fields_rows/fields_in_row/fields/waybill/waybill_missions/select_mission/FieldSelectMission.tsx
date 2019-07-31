@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldSelectMissionProps = {

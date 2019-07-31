@@ -1,4 +1,4 @@
-import { BooleanPropertie } from 'components/ui/form/new/@types/validate.h';
+import { BooleanPropertie } from 'components/old/ui/form/new/@types/validate.h';
 import { isBoolean } from 'util';
 
 export const validateBoolean = <K, F, P, RootFormState>(key: keyof F, fieldData: BooleanPropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {

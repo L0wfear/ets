@@ -3,8 +3,8 @@ import * as React from 'react';
 import PDF from 'react-pdf-js';
 import * as Raven from 'raven-js';
 
-import ModalBody from 'components/ui/Modal';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import ModalBody from 'components/old/ui/Modal';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import {
   PropsPDFViewModal,

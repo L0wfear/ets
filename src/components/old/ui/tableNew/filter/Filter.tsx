@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
-import FilterRow from 'components/ui/tableNew/filter/FilterRow';
+import FilterRow from 'components/old/ui/tableNew/filter/FilterRow';
 
 import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
 

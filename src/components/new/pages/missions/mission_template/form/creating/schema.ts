@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { diffDates } from 'utils/dates';
 import { MissionTemplateCreating, PropsMissionTemplateCreatingForm } from './@types/MissionTemplateCreatingForm';
 import { routeTypesByKey } from 'constants/route';

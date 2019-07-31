@@ -9,7 +9,7 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import IntervalPicker from 'components/ui/input/IntervalPicker';
+import IntervalPicker from 'components/old/ui/input/IntervalPicker';
 import { getDefaultMissionElement } from '../../../mission/form/main/utils';
 
 export const makeDefaultMissionTemplate = (): MissionTemplateCreating => {

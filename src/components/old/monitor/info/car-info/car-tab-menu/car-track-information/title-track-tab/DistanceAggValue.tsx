@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import CarFilterByText from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText';
-import CarFilterBySelect from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect';
+import CarFilterByText from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText';
+import CarFilterBySelect from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect';
 
 type CarFiltersProps = {};
 

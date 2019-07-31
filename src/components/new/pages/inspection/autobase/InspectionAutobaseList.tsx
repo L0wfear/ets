@@ -4,7 +4,7 @@ import { EtsPageWrap } from 'global-styled/global-styled';
 import { InspectionAutobaseListProps } from './@types/InspectionAutobaseList';
 import InspectionTitle from 'components/new/pages/inspection/common_components/inspect_title/InspectionTitle';
 import InspectionAutobaseSelectCarpool from './components/select_carpool/InspectionAutobaseSelectCarpool';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import InspectionAutobaseData from './components/data/InspectionAutobaseData';
 import InspectionAutobaseFormLazy from 'components/new/pages/inspection/autobase/form';
 

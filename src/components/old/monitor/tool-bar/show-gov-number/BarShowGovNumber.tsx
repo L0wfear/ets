@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cx from 'classnames';
-import { monitorPageToggleStatusShowGovNumber } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageToggleStatusShowGovNumber } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 const getClassNameByType = (props, type) => (
   cx(

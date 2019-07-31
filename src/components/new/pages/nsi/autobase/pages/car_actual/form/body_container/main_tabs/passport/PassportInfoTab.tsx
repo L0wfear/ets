@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { MarginTopRow } from './styled';
 import { get } from 'lodash';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
-import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../@types/CarForm';
 
 import { DivNone } from 'global-styled/global-styled';

@@ -4,20 +4,20 @@ import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 import { get } from 'lodash';
 import { EtsPreloaderFieldContainer } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import {
   onChangeSelectLegacy,
   defaultSortingFunction,
-} from 'components/ui/input/ReactSelect/utils';
+} from 'components/old/ui/input/ReactSelect/utils';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
 import { isArray, isNullOrUndefined, isString, isObject } from 'util';
-import { SingleValue, MultiValue, MenuList } from 'components/ui/input/ReactSelect/styled/styled';
+import { SingleValue, MultiValue, MenuList } from 'components/old/ui/input/ReactSelect/styled/styled';
 import { DivRelative } from 'global-styled/global-styled';
 import VirtualizedSelectList from '../VirtualizedSelectList/VirtualizedSelectList';
 
-require('components/ui/input/ReactSelect/ReactSelect.scss');
+require('components/old/ui/input/ReactSelect/ReactSelect.scss');
 
 const openMenuIds = {};
 

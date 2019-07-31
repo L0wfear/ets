@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ThHead from 'components/ui/tableNew/table/thead/trHead/thHEad/ThHead';
+import ThHead from 'components/old/ui/tableNew/table/thead/trHead/thHEad/ThHead';
 
 class TrHead extends React.Component<any, any> {
   renderTh = (thData, index) => (

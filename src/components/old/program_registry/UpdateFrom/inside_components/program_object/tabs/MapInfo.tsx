@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { IPropsMapInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.h';
+import { IPropsMapInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo.h';
 import RouteCreatingMap from 'components/new/pages/routes_list/form/inside_fields/creating-map/map/RouteCreatingMap';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

@@ -8,20 +8,20 @@ import { cloneDeep, keyBy, isEmpty } from 'lodash';
 import {
   OBJ_TAB_INDEX,
   ELEMENT_NULL_OBJECT,
-} from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
+} from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
-import { tabable } from 'components/compositions/hoc';
+import { tabable } from 'components/old/compositions/hoc';
 
-import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
+import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
-import Div from 'components/ui/Div';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import ModalBody from 'components/ui/Modal';
+import Div from 'components/old/ui/Div';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ModalBody from 'components/old/ui/Modal';
 
-import TabInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo';
-import MapInfo from 'components/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
+import TabInfo from 'components/old/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo';
+import MapInfo from 'components/old/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
-import { PercentModalList } from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components';
+import { PercentModalList } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';

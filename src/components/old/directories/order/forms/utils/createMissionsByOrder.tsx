@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { groupBy, cloneDeep, get } from 'lodash';
 import { ASSING_BY_KEY } from './constant';
-import IntervalPicker from 'components/ui/input/IntervalPicker';
+import IntervalPicker from 'components/old/ui/input/IntervalPicker';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 
 export const createMissions = async (flux, element, payload) => {

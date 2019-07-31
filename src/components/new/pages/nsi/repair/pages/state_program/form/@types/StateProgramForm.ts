@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { HandleThunkActionCreator } from 'react-redux';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { StateProgram } from 'redux-main/reducers/modules/repair/state_program/@types/stateProgram';

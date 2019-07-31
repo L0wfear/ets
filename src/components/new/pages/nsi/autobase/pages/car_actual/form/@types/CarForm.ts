@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from 'redux-main/reducers/modules/autobase/car/@types';
 

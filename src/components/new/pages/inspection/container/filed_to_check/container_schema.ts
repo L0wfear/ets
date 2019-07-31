@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 import { PropsInspectContainerWithForm } from '../@types/InspectionContainerList';
 

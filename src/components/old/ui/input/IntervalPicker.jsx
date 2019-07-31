@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
+import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export default class IntervalPicker extends Component {

@@ -6,10 +6,10 @@ import Map from 'ol/Map';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { getStyleForTrackLine } from 'components/monitor/layers/track/lines/feature-style';
-import OverlayTrackPoint from 'components/monitor/layers/track/points/OverlayTrackPoint';
-import { carInfoSetTrackPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { getStyleForTrackLine } from 'components/old/monitor/layers/track/lines/feature-style';
+import OverlayTrackPoint from 'components/old/monitor/layers/track/points/OverlayTrackPoint';
+import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 type PropsLayerTrackPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

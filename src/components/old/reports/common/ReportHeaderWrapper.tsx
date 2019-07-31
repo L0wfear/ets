@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 import {
   IPropsReportHeaderWrapper,
   IStateReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 function ReportHeaderWrapper(SourceHeader: any):
 React.ComponentClass<IPropsReportHeaderWrapper & IStateReportHeaderWrapper> {

@@ -1,13 +1,13 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { get } from 'lodash';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -21,7 +21,7 @@ import {
 import { BatteryRegistry, BatteryOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import BatteryToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/BatteryToVehicleBlock';
-import { onChangeWithKeys } from 'components/compositions/hoc';
+import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import { getDefaultBatteryRegistryElement } from './utils';
 import { batteryRegistryFormSchema } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 import batteryRegistryPermissions from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data/permissions';

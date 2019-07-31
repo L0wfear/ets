@@ -2,8 +2,8 @@ import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
 import { get } from 'lodash';
 
-import { getCasheStyleForGeoobject } from 'components/monitor/layers/geoobjects/feature-style';
-import { LayerGeoobjectsUtilsTypes } from 'components/monitor/layers/geoobjects/LayerGeooobjects.h';
+import { getCasheStyleForGeoobject } from 'components/old/monitor/layers/geoobjects/feature-style';
+import { LayerGeoobjectsUtilsTypes } from 'components/old/monitor/layers/geoobjects/LayerGeooobjects.h';
 
 /**
  * проверка на измнение show в serverName

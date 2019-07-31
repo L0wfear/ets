@@ -4,9 +4,9 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   date_start: string;

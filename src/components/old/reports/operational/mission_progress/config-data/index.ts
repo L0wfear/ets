@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/mission_progress/config-data/permissions';
-import component from 'components/reports/operational/mission_progress/config-data/components';
+import permissions from 'components/old/reports/operational/mission_progress/config-data/permissions';
+import component from 'components/old/reports/operational/mission_progress/config-data/components';
 
 export default {
   path: '/mission-progress-report',

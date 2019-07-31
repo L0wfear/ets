@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import DistanceAggValue from 'components/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
+import DistanceAggValue from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
 
 type PropsDistanceAgg = {
 };

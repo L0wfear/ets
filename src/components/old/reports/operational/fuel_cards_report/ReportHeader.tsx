@@ -4,12 +4,12 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import { createValidDateTime, diffDates } from 'utils/dates';
 
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';

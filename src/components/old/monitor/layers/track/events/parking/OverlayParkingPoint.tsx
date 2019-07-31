@@ -2,7 +2,7 @@ import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { carInfoSetParkingPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { carInfoSetParkingPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
 
 import {

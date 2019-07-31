@@ -1,7 +1,7 @@
 import memoize from 'memoize-one';
 
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeOptionsByMunicipalFacilityIdRegistryForMissionList = (
   memoize(

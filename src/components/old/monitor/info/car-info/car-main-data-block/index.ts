@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CarInfoBlock } from 'components/monitor/styled';
+import { CarInfoBlock } from 'components/old/monitor/styled';
 
 export const CarInfoMainDataContainer = styled.div`
   ${CarInfoBlock} {

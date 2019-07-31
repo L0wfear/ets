@@ -1,5 +1,5 @@
-import permissions from 'components/reports/analytics/config-data/permissions';
-import component from 'components/reports/analytics/config-data/components';
+import permissions from 'components/old/reports/analytics/config-data/permissions';
+import component from 'components/old/reports/analytics/config-data/components';
 
 export default {
   path: '/analytics',

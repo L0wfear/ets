@@ -2,7 +2,7 @@ import * as R from 'ramda';
 import { diffDates } from 'utils/dates';
 
 import { IVehicle } from 'api/@types/services/index.h';
-import { checkErrorDate } from 'components/waybill/utils_react';
+import { checkErrorDate } from 'components/old/waybill/utils_react';
 
 import { isNotEqualAnd, hasMotohours } from 'utils/functions';
 import { isArray, isNumber } from 'util';

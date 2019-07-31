@@ -5,11 +5,11 @@ import Map from 'ol/Map';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { getStyleForFuelEventLeak} from 'components/monitor/layers/fuel-event/leak/feature-style';
-import OverlayFuelEventLeakPoint from 'components/monitor/layers/fuel-event/leak/OverlayFuelEventLeakPoint';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { getStyleForFuelEventLeak} from 'components/old/monitor/layers/fuel-event/leak/feature-style';
+import OverlayFuelEventLeakPoint from 'components/old/monitor/layers/fuel-event/leak/OverlayFuelEventLeakPoint';
 import { geoJSON } from 'utils/ol';
-import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageSetFuelEventsLeakOverlayData } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 type PropsLayerFuelEventLeakPoint = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

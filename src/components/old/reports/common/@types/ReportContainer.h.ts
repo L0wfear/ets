@@ -1,7 +1,7 @@
 import { IExportableTableList } from 'utils/@types/common.h';
-import { IDataTableSelectedRowPropsData } from 'components/ui/table/@types/schema.h';
-import { IReportProps } from 'components/reports/@types/common.h';
-import * as ReduxTypes from 'components/reports/redux-main/modules/@types/report.h';
+import { IDataTableSelectedRowPropsData } from 'components/old/ui/table/@types/schema.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
+import * as ReduxTypes from 'components/old/reports/redux-main/modules/@types/report.h';
 import { RouteComponentProps } from 'react-router-dom';
 
 export interface IPropsReportContainer

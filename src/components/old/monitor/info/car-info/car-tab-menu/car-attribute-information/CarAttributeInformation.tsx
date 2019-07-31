@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Map from 'ol/Map';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import { getStatusById } from 'constants/statuses';
 
-import CarMissions from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/CarMissions';
+import CarMissions from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/CarMissions';
 import { makeDate, makeTime } from 'utils/dates';
 
 import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';
-import CarCreateMission from 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/CreateMission';
-import { CarInfoBlockTabData } from 'components/monitor/styled';
+import CarCreateMission from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/CreateMission';
+import { CarInfoBlockTabData } from 'components/old/monitor/styled';
 
 const makeLastPointString = (lastPoint: TypeLastPoint): string => {
   const dt = new Date(lastPoint.timestamp * 1000);

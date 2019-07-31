@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HandleThunkActionCreator } from 'react-redux';
-import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
 import { MeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/@types';
 

@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { IStateOldReport } from 'components/coverage_reports/redux-main/modules/old-report/@types/old_report';
+import { IStateOldReport } from 'components/old/coverage_reports/redux-main/modules/old-report/@types/old_report';
 
 const OLD_REPORT = createPath('OLD_REPORT');
 

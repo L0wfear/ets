@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsMaterialConsumptionRate } from 'components/new/pages/nsi/regulatory_indicator/pages/material_consumption_rate/form/@types/MaterialConsumptionRateForm';
 import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 

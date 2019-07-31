@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
-import ProgramRegistryFormBase from 'components/program_registry/UpdateFrom/ProgramRegistryUForm';
+import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
+import enhanceWithPermissions from 'components/old/util/RequirePermissions';
+import ProgramRegistryFormBase from 'components/old/program_registry/UpdateFrom/ProgramRegistryUForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { get } from 'lodash';

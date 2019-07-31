@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import useEdcRequestCommentsList from 'components/new/utils/hooks/services/useList/useEdcRequestCommentsList';
 import BlockCommentData from './blocks/commet/BlockCommentData';
 

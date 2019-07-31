@@ -2,13 +2,16 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
-import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
-import { ButtonCreateNew, ButtonDeleteNew } from 'components/ui/buttons/CRUD';
+import enhanceWithPermissions from 'components/old/util/RequirePermissions';
+import UNSAFE_CheckableElementsList from 'components/old/program_registry/UNSAFE_CheckableElementsList';
+import {
+  ButtonCreateNew,
+  ButtonDeleteNew,
+} from 'components/old/ui/buttons/CRUD';
 
-import ProgramRemarkTable from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
-import ProgramRemarkFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
-import permissions from 'components/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
+import ProgramRemarkTable from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkTable';
+import ProgramRemarkFormWrap from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkFormWrap';
+import permissions from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/config-data/permissions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';

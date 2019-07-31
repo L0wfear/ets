@@ -1,9 +1,9 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import { DivNone } from 'global-styled/global-styled';
 import { PropsMaintenanceRateFormLazy } from 'components/new/pages/nsi/regulatory_indicator/pages/maintenance_rate/form/@types/MaintenanceRateForm';
 import { compose } from 'recompose';
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { connect } from 'react-redux';
 import { getServiceData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';

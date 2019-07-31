@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { Option } from "components/ui/input/ReactSelect/styled/styled";
+import { Option } from "components/old/ui/input/ReactSelect/styled/styled";
 
 export const VirtualizedOption = styled.div`
   text-overflow: ellipsis!important;

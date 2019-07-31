@@ -4,7 +4,7 @@ import { inspectContainerSchema } from './filed_to_check/container_schema';
 import { filedToCheckContainerFirst, filedToCheckContainerSecond } from './filed_to_check/filedToCheck';
 import inspectPgmBasePermissions from '../pgm_base/_config_data/permissions';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { getDefaultInspectContainerElement } from './utils';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -13,7 +13,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import IAVisibleWarningContainer from './filed_to_check/IAVisibleWarningContainer';
 import InspectContainerRegistry from './registry/InspectContainerRegistry';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import inspectContainerActions from 'redux-main/reducers/modules/inspect/container/container_actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

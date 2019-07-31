@@ -1,6 +1,6 @@
-import { IDataTableSelectedRow } from 'components/ui/table/@types/schema.h';
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
-import { ISharedPropsDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
+import { IDataTableSelectedRow } from 'components/old/ui/table/@types/schema.h';
+import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
+import { ISharedPropsDataTableInput } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 
 /**
  * Пропсы, которые принимает компонент-обёртка.

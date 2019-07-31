@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { Route } from 'react-router-dom';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';

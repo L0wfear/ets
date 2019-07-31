@@ -1,6 +1,6 @@
 import {
   IReactSelectOption,
-} from 'components/ui/@types/ReactSelect.h';
+} from 'components/old/ui/@types/ReactSelect.h';
 
 export type PropsDefaultInput = {
   value: number[];

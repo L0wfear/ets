@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectOneActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';
 import { PropsInspectActFileForm } from './@types/InspectActFileForm';
 

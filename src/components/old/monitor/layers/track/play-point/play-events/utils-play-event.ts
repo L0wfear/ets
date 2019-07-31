@@ -1,4 +1,4 @@
-import { PropsLayerPlayPoint } from 'components/monitor/layers/track/play-point/LayerPlayPoint.h';
+import { PropsLayerPlayPoint } from 'components/old/monitor/layers/track/play-point/LayerPlayPoint.h';
 import Point from 'ol/geom/Point';
 
 type TypeActionOnPlay = (props: PropsLayerPlayPoint) => void;

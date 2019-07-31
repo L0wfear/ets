@@ -1,6 +1,6 @@
 import { createPath } from 'redux-main/redux-utils';
 import { getStartOfToday } from 'utils/dates';
-import { initialMaxSpeed } from 'components/monitor/info/car-info/redux-main/modules/constatnts';
+import { initialMaxSpeed } from 'components/old/monitor/info/car-info/redux-main/modules/constatnts';
 
 const CAR_INFO = createPath('CAR_INFO');
 

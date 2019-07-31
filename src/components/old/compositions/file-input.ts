@@ -2,7 +2,7 @@ import { identity } from 'lodash';
 import { withHandlers } from 'recompose';
 
 import { mbToBytes, fromIterableListToArray } from 'utils/functions';
-import { IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
+import { IFileWrapper } from 'components/old/ui/input/FileInput/FileInput.h';
 
 export const fileFormatter = withHandlers({
   onChange: ({

@@ -3,13 +3,13 @@ import * as React from 'react';
 import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
-} from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import { getToday0am, createValidDate } from 'utils/dates';
 
-import ReportHeaderWrapper from 'components/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { ButtonSubmit } from 'components/reports/operational/cars_count_deviation/styled';
+import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { ButtonSubmit } from 'components/old/reports/operational/cars_count_deviation/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {

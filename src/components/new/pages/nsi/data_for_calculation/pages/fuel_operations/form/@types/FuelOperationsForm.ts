@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 import { HandleThunkActionCreator } from 'react-redux';
 import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';

@@ -1,5 +1,5 @@
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 export type PropsInspectContainerFormLazy = {
   element: Partial<InspectContainer> | null;

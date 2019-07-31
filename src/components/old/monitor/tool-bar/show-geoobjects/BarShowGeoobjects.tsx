@@ -4,12 +4,12 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import * as cx from 'classnames';
-import { monitorPageToggleStatusGeoobject, monitorPageSetGeometry } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageToggleStatusGeoobject, monitorPageSetGeometry } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import {
   MONITOR_PAGE_SET_GEOMETRY,
-} from 'components/monitor/redux-main/models/monitor-page';
+} from 'components/old/monitor/redux-main/models/monitor-page';
 
 import {
   DivNone,

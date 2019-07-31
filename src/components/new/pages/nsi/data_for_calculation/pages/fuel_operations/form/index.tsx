@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsFuelOperationsFormLazy } from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/@types/FuelOperationsForm';
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const FuelOperationFrom = React.lazy(() => (
   import(/* webpackChunkName: "fuel_operations_form" */ 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/FuelOperationsForm')

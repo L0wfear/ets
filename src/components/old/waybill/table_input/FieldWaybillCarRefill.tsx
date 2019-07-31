@@ -13,7 +13,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 type FieldWaybillCarRefillStateProps = {
   fuelCardsList: IStateAutobase['fuelCardsList'];

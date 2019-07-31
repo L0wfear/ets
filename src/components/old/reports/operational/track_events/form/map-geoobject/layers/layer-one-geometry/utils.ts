@@ -2,8 +2,8 @@ import { geoJSON } from 'utils/ol';
 import Feature from 'ol/Feature';
 import { get } from 'lodash';
 
-import { getCasheStyleForGeoobject } from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/feature-style';
-import { LayerGeoobjectsUtilsTypes } from 'components/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
+import { getCasheStyleForGeoobject } from 'components/old/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/feature-style';
+import { LayerGeoobjectsUtilsTypes } from 'components/old/reports/operational/track_events/form/map-geoobject/layers/layer-one-geometry/LayerOneGeometry.h';
 
 /**
  * изменение геометрии фичи, если shape разный

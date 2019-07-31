@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsEmployeeFormLazy } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const EmployeeFrom = React.lazy(() => (
   import(/* webpackChunkName: "employee_form" */ 'components/new/pages/nsi/employee/form/EmployeeForm')

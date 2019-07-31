@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import carInfoReducer from 'components/monitor/info/car-info/redux-main/modules/car-info';
+import carInfoReducer from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { getToday0am, getDateWithMoscowTz } from 'utils/dates';
 

@@ -4,15 +4,15 @@ import Feature from 'ol/Feature';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
-import { monitorPageAddToSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageAddToSelectedGeoobjects } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import {
   PropsLayerGeooobjects,
   StateLayerGeooobjects,
-} from 'components/monitor/layers/geoobjects/LayerGeooobjects.h';
+} from 'components/old/monitor/layers/geoobjects/LayerGeooobjects.h';
 import {
   diffInputProps,
   renderGeoobjects,
-} from 'components/monitor/layers/geoobjects/utils';
+} from 'components/old/monitor/layers/geoobjects/utils';
 
 class LayerGeooobjects extends React.PureComponent<PropsLayerGeooobjects, StateLayerGeooobjects> {
   componentDidMount() {

@@ -10,13 +10,13 @@ import {
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { ReduxState } from 'redux-main/@types/state';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getDefaultMissionElement } from './utils';
 import { missionFormSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState, getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors';
 
@@ -30,7 +30,7 @@ import FieldDatesMission from './inside_fields/dates/FieldDatesMission';
 import FieldCarIdsMission from './inside_fields/car_ids/FieldCarIdsMission';
 import FieldForColumnMission from './inside_fields/for_column/FieldForColumnMission';
 import FieldRouteIdMission from './inside_fields/route_id/FieldRouteIdMission';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import FieldMissionSourceMission from './inside_fields/mission_source_id/FieldMissionSourceMission';
 
 import { diffDates } from 'utils/dates';

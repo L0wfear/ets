@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { monitorPageChangeFilter } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 import {
   PropsDefaultInput,
-} from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput.h';
+} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput.h';
 
 const DefaultInput: React.FC<PropsDefaultInput> = ({ OPTIONS, OPTIONS: { length }, ...props }) => (
   <ExtField

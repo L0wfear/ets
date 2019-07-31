@@ -2,9 +2,9 @@ import * as React from 'react';
 import {
   CollapseContainer,
   CollapseTitleContainer,
-} from 'components/ui/collapse/text/styled/styled';
+} from 'components/old/ui/collapse/text/styled/styled';
 
-import Collapse from 'components/ui/collapse/Collapse';
+import Collapse from 'components/old/ui/collapse/Collapse';
 import { isObject } from 'util';
 
 type PropsCollapseText= {

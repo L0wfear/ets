@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsDutyMissionTemplateCreatingForm } from './@types/index.h';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { diffDates } from 'utils/dates';

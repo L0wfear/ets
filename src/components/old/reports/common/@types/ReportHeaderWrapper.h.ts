@@ -1,4 +1,4 @@
-import { IReportMeta } from 'components/reports/redux-main/modules/@types/report.h';
+import { IReportMeta } from 'components/old/reports/redux-main/modules/@types/report.h';
 import IStringKeyHashTable = ETSCore.Types.IStringKeyHashTable;
 
 export interface IStateReportHeaderWrapper extends IStringKeyHashTable<any> {}

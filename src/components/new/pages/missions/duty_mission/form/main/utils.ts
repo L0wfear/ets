@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import memoize from 'memoize-one';
 
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { createValidDateTime, getTomorrow9am, getToday9am } from 'utils/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import createFio from 'utils/create-fio';

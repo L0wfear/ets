@@ -4,12 +4,12 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import connectToStores from 'flummox/connect';
 import { createValidDate } from 'utils/dates';
 
-import { OBJ_TAB_INDEX } from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
+import { OBJ_TAB_INDEX } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 
-import Table from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table';
-import { ITableMetaInfo } from 'components/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
+import Table from 'components/old/program_registry/UpdateFrom/inside_components/program_object/utils/Table';
+import { ITableMetaInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 const nullFunc = () => null;
 

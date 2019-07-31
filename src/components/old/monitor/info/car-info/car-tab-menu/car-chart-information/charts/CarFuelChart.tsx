@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import memoize from 'memoize-one';
 
-import LineChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
+import LineChart from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
 import { NO_DATA_TEXT, NO_SENSORS_LEVEL_TEXT } from 'constants/statuses';
-import EventTable from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/event-table/EventTable';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import EventTable from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/event-table/EventTable';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 
@@ -16,7 +16,7 @@ import {
   StatePropsCarFuelChart,
   OwnPropsCarFuelChart,
   DispatchPropsCarFuelChart,
-} from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
+} from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 
 const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, sensorRawData = false) => (
   Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {

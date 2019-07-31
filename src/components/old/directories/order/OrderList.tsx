@@ -11,21 +11,21 @@ import * as queryString from 'query-string';
 
 import { FluxContext } from 'utils/decorators';
 
-import OrdersDatepicker from 'components/directories/order/OrdersDatepicker';
-import OrdersTable from 'components/directories/order/OrdersTable';
-import OrderTableChildren from 'components/directories/order/OrderTableChildren';
-import OrderFormWrap from 'components/directories/order/OrderFormWrap';
+import OrdersDatepicker from 'components/old/directories/order/OrdersDatepicker';
+import OrdersTable from 'components/old/directories/order/OrdersTable';
+import OrderTableChildren from 'components/old/directories/order/OrderTableChildren';
+import OrderFormWrap from 'components/old/directories/order/OrderFormWrap';
 
-import OrderAssignmentsList from 'components/directories/order/order_assignment/OrderAssignmentsList';
-import HistoryOrderList from 'components/directories/order/order_history/HistoryOrderList';
-import Paginator from 'components/directories/order/Paginator';
+import OrderAssignmentsList from 'components/old/directories/order/order_assignment/OrderAssignmentsList';
+import HistoryOrderList from 'components/old/directories/order/order_history/HistoryOrderList';
+import Paginator from 'components/old/directories/order/Paginator';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { isString } from 'util';
 
 import { actionLoadAppConfig } from 'redux-main/reducers/modules/session/action_get_config';
 
-require('components/directories/order/Order.scss');
+require('components/old/directories/order/Order.scss');
 
 @FluxContext
 class OrderList extends React.Component<any, any> {

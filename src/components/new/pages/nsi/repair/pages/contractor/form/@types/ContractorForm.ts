@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { DispatchProp } from 'react-redux';
 import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 

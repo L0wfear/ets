@@ -3,12 +3,12 @@ import * as PropTypes from 'prop-types';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { cloneDeep, find } from 'lodash';
-import UNSAFE_ElementsList from 'components/program_registry/UNSAFE_ElementsList';
+import UNSAFE_ElementsList from 'components/old/program_registry/UNSAFE_ElementsList';
 import {
   ButtonCreateNew,
   ButtonReadNew,
   ButtonDeleteNew,
-} from 'components/ui/buttons/CRUD';
+} from 'components/old/ui/buttons/CRUD';
 
 /**
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов

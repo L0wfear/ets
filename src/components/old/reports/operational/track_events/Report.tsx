@@ -1,10 +1,10 @@
 import * as React from 'react';
 
 import { exportable } from 'utils/decorators';
-import ReportContainer from 'components/reports/common/ReportContainer';
-import reportProps, { serviceUrl, renderers } from 'components/reports/operational/track_events/reportProps';
+import ReportContainer from 'components/old/reports/common/ReportContainer';
+import reportProps, { serviceUrl, renderers } from 'components/old/reports/operational/track_events/reportProps';
 
-import ReportFormWrap from 'components/reports/operational/track_events/form/ReportFormWrap';
+import ReportFormWrap from 'components/old/reports/operational/track_events/form/ReportFormWrap';
 
 interface IStateTrackEventReport {
   mapFormVisibility: boolean;

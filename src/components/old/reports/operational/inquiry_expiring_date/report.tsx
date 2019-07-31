@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withProps } from 'recompose';
 
-import { IReportProps } from 'components/reports/@types/common.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from 'components/reports/operational/inquiry_expiring_date/ReportHeader';
-import DateFormatter from 'components/ui/DateFormatter';
+import ReportContainer from 'components/old/reports/common/ReportContainer';
+import ReportHeader from 'components/old/reports/operational/inquiry_expiring_date/ReportHeader';
+import DateFormatter from 'components/old/ui/DateFormatter';
 
 const serviceUrl = 'autobase/reports/inquiry_expiring_date';
 const reportUrl = 'inquiry-expiring-date';

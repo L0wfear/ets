@@ -3,7 +3,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { Link } from 'react-router-dom';
 import permissionsRoute from 'components/new/pages/routes_list/config-data/permissions';
 
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 
 export const LinkToOpenRouteInfoForm = withRequirePermissionsNew({
   permissions: permissionsRoute.read,

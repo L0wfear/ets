@@ -1,6 +1,6 @@
 import memoize from 'memoize-one';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeOptionsMissionsForCarMissionId = (
   memoize(

@@ -2,15 +2,15 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { connect } from 'react-redux';
 import config from 'config';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
-import { getMaxSpeedToLegend } from 'components/monitor/info/car-info/car-main-data-block/utils';
-import { carInfoToggleStatusTCFollowOnCar } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { getMaxSpeedToLegend } from 'components/old/monitor/info/car-info/car-main-data-block/utils';
+import { carInfoToggleStatusTCFollowOnCar } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import {
   BtnGroupWrapper,
   BtnPart,
 } from 'global-styled/global-styled';
-import { CarInfoBlock } from 'components/monitor/styled';
+import { CarInfoBlock } from 'components/old/monitor/styled';
 import { CarInfoMainDataContainer } from '.';
 
 type PropsCarMainDataBlock = {

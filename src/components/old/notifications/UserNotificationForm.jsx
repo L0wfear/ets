@@ -1,11 +1,11 @@
 import React from 'react';
 
 import * as queryString from 'query-string';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 
-import ModalBody from 'components/ui/Modal';
-import DateFormatter from 'components/ui/DateFormatter';
-import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
+import ModalBody from 'components/old/ui/Modal';
+import DateFormatter from 'components/old/ui/DateFormatter';
+import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
 import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';

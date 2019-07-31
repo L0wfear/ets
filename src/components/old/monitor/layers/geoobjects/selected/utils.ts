@@ -1,5 +1,5 @@
-import { LayerSelectedGeooobjects } from 'components/monitor/layers/geoobjects/selected/LayerSelectedGeooobjects.h';
-import { checkShowTrue, checkShowFalse } from 'components/monitor/layers/geoobjects/utils';
+import { LayerSelectedGeooobjects } from 'components/old/monitor/layers/geoobjects/selected/LayerSelectedGeooobjects.h';
+import { checkShowTrue, checkShowFalse } from 'components/old/monitor/layers/geoobjects/utils';
 
 /**
  * рендер выбранных геообъектов

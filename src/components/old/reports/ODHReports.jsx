@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import Field from 'components/ui/Field';
+import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
+import Field from 'components/old/ui/Field';
 import connectToStores from 'flummox/connect';
 
 import { EtsPageWrap } from 'global-styled/global-styled';

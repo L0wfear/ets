@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { withProps } from 'recompose';
 
-import { IReportProps } from 'components/reports/@types/common.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
 
 import { exportable } from 'utils/decorators';
-import { parseMultiSelectListQueryParams } from 'components/reports/common/utils';
-import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from 'components/reports/regulated/daily_cleaning_cafap/ReportHeader';
+import { parseMultiSelectListQueryParams } from 'components/old/reports/common/utils';
+import ReportContainer from 'components/old/reports/common/ReportContainer';
+import ReportHeader from 'components/old/reports/regulated/daily_cleaning_cafap/ReportHeader';
 
 const serviceUrl = 'cleaning_status_cafap_report';
 const reportUrl = 'daily-cleaning-reports-cafap';

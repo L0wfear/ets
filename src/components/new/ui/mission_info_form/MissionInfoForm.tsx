@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { keyBy, get } from 'lodash';
 
 import { maskStatusPoint } from 'components/new/ui/mission_info_form/utils/constants';

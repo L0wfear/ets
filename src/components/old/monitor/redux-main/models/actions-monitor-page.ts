@@ -20,7 +20,7 @@ import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
-} from 'components/monitor/redux-main/models/monitor-page';
+} from 'components/old/monitor/redux-main/models/monitor-page';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { ReduxState } from 'redux-main/@types/state';
 

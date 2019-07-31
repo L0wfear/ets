@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTechInspection } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/@types/TechInspectionForm';
 
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';

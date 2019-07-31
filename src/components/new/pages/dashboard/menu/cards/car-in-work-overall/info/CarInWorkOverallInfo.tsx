@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { compose } from 'recompose';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';

@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/cars_count_deviation/config-data/permissions';
-import component from 'components/reports/operational/cars_count_deviation/config-data/components';
+import permissions from 'components/old/reports/operational/cars_count_deviation/config-data/permissions';
+import component from 'components/old/reports/operational/cars_count_deviation/config-data/components';
 
 export default {
   path: '/cars-count-deviation',

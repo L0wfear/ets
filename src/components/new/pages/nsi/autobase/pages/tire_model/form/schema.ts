@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTireModel } from 'components/new/pages/nsi/autobase/pages/tire_model/form/@types/TireModelForm';
 import { TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 

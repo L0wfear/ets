@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { get } from 'lodash';
 
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import RouteInfoFormWrap from 'components/new/pages/routes_list/route-info/RouteInfoFormWrap';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { listData } from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/listData';
 import {
   dashboardLoadCurrentDutyMissions,

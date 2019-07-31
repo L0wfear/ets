@@ -2,7 +2,7 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import { IStateEmployee, Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export type StateFieldBrigadeEmployeeIdListDutyMission = {
   BRIGADE: DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean }>[];

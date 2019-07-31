@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/employee_efficiency/config-data/permissions';
-import component from 'components/reports/operational/employee_efficiency/config-data/components';
+import permissions from 'components/old/reports/operational/employee_efficiency/config-data/permissions';
+import component from 'components/old/reports/operational/employee_efficiency/config-data/components';
 
 export default {
   path: '/employee-efficiency-report',

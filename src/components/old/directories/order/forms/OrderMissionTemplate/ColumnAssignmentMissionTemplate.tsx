@@ -1,9 +1,9 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
-import ModalBody from 'components/ui/Modal';
+import ModalBody from 'components/old/ui/Modal';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { cloneDeep } from 'lodash';
 

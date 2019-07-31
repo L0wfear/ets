@@ -1,5 +1,5 @@
 import React from 'react';
-import Table from 'components/ui/table/DataTable';
+import Table from 'components/old/ui/table/DataTable';
 import { floatFixed1Percentage } from 'utils/renderers/index';
 
 const getTableMeta = () => {
@@ -10,11 +10,12 @@ const getTableMeta = () => {
         displayName: 'Учреждение',
         type: 'string',
         cssClassName: 'width200',
-        customHeaderComponent:
-  <div className="diagonal-header">
-    <div className="top-right">Вид операции</div>
-    <div className="bottom-left">Учреждение</div>
-  </div>,
+        customHeaderComponent: (
+          <div className="diagonal-header">
+            <div className="top-right">Вид операции</div>
+            <div className="bottom-left">Учреждение</div>
+          </div>
+        ),
       },
       {
         name: 'percentage_one_distance',

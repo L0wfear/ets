@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { GEOOBJECTS_OBJ_BY_SERVER_NAME } from 'constants/geoobjects-new';
 
-import GeoDataTemplate from 'components/monitor/info/geoobjects-info/geo-data-template/GeoDataTemplate';
-import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
+import GeoDataTemplate from 'components/old/monitor/info/geoobjects-info/geo-data-template/GeoDataTemplate';
+import { monitorPageRemoveFromSelectedGeoobjects } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
-import { CarInfoBlock, CarInfoClose } from 'components/monitor/styled';
+import { CarInfoBlock, CarInfoClose } from 'components/old/monitor/styled';
 import { CarInfoTrackDateTitle, CarInfoTitleSpanContainerWrapFlexBasic100 } from './styled';
 
 type PropsGeoobjectData = {

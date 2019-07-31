@@ -9,10 +9,10 @@ import { get } from 'lodash';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { getStyleForFuelEvent } from 'components/monitor/layers/track/events/fuel-event/feature-style';
-import { carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
-import OverlayFuelEventPoint from 'components/monitor/layers/track/events/fuel-event/OverlayFuelEventPoint';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { getStyleForFuelEvent } from 'components/old/monitor/layers/track/events/fuel-event/feature-style';
+import { carInfoSetFuelEventPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import OverlayFuelEventPoint from 'components/old/monitor/layers/track/events/fuel-event/OverlayFuelEventPoint';
 
 type PropsLayerFuelEventPoints = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

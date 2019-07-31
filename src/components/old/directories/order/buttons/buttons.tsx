@@ -1,7 +1,7 @@
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { Link } from 'react-router-dom';
 
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 
 export const ButtonReadOrder = withRequirePermissionsNew({
   permissions: 'faxogramm.read',

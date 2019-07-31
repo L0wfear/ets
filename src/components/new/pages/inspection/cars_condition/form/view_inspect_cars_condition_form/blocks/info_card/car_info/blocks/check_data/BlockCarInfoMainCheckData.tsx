@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { stateExploitationOptions } from './options';
 import { get } from 'lodash';
 import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataDocs, filedToCheckDefectDataOtherSecond, filedToCheckDefectDataOtherFirst } from './filedToCheckCarInfoMainCheckData';

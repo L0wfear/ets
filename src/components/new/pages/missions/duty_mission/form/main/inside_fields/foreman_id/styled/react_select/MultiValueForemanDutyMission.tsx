@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import * as components from 'components/ui/input/ReactSelect/styled/styled';
+import * as components from 'components/old/ui/input/ReactSelect/styled/styled';
 
 const pathToActiveStatus = ['data', 'rowData', 'active_for_brigade'];
 

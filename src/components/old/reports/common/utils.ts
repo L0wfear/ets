@@ -1,6 +1,6 @@
 import { isArray } from 'lodash';
 
-import { IDataTableColSchema } from 'components/ui/table/@types/schema.h';
+import { IDataTableColSchema } from 'components/old/ui/table/@types/schema.h';
 
 /**
  * Когда с сервера будут приходить типы полей, то такая штука будет не нужна.

@@ -4,7 +4,7 @@ import {
   OrderService,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
-import { typeTemplate } from 'components/directories/order/forms/utils/constant';
+import { typeTemplate } from 'components/old/directories/order/forms/utils/constant';
 import { parseFilterObject } from 'actions/MissionsActions';
 import { ThunkAction } from 'redux-thunk';
 import { ReduxState } from 'redux-main/@types/state';

@@ -3,10 +3,10 @@ import * as PropTypes from 'prop-types';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field';
-import Div from 'components/ui/Div';
-import Datepicker from 'components/ui/input/date-picker/DatePicker';
+import ModalBody from 'components/old/ui/Modal';
+import Field from 'components/old/ui/Field';
+import Div from 'components/old/ui/Div';
+import Datepicker from 'components/old/ui/input/date-picker/DatePicker';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications';
 import { cloneDeep, get, isEmpty } from 'lodash';
@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import memoize from 'memoize-one';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 @connectToStores(['objects', 'missions'])

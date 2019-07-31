@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsCompany } from 'components/new/pages/nsi/company/form/@types/CompanyList.h';
 import { Company } from 'redux-main/reducers/modules/company/@types';
 

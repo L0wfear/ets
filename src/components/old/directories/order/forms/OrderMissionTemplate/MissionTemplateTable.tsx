@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
+import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
-import DataTableComponent from 'components/ui/table/DataTable';
-import DateFormatter from 'components/ui/DateFormatter';
+import DataTableComponent from 'components/old/ui/table/DataTable';
+import DateFormatter from 'components/old/ui/DateFormatter';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OneSessionStructure } from 'redux-main/reducers/modules/session/session.d';
 
-require('components/directories/order/forms/OrderMissionTemplate/MissionTableStyle.scss');
+require('components/old/directories/order/forms/OrderMissionTemplate/MissionTableStyle.scss');
 
 const highlightClassMapper = (_, checkdeData) => {
   if (get(checkdeData, 'front_invalid_interval')) {

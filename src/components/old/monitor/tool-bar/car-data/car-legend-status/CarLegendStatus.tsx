@@ -1,19 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { monitorPageToggleStatusShow } from 'components/monitor/redux-main/models/actions-monitor-page';
-import { getFrontStatus } from 'components/monitor/layers/car-markers/utils';
+import { monitorPageToggleStatusShow } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+import { getFrontStatus } from 'components/old/monitor/layers/car-markers/utils';
 
 import {
   getActiveClassName,
   getClassNameByType,
-} from 'components/monitor/tool-bar/car-data/car-legend-status/utils';
+} from 'components/old/monitor/tool-bar/car-data/car-legend-status/utils';
 import {
   listStatus,
-} from 'components/monitor/tool-bar/car-data/car-legend-status/const';
+} from 'components/old/monitor/tool-bar/car-data/car-legend-status/const';
 
 import {
   PropsCarLegendStatus,
-} from 'components/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus.h';
+} from 'components/old/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus.h';
 
 const CarLegendStatus: React.FC<PropsCarLegendStatus> = (props) => (
   <span className="car-toolbar">

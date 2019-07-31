@@ -6,9 +6,9 @@ import {
   setEmptyDutyMissionTemplateData,
 } from 'redux-main/reducers/modules/order/action-order';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 
-import OrderMissionTemplate from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
+import OrderMissionTemplate from 'components/old/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { monitorPageSetFuelEventsLeakOverlayData } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageSetFuelEventsLeakOverlayData } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { getFormattedDateTime } from 'utils/dates';
 
 import {

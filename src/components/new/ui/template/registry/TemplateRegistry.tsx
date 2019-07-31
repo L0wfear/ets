@@ -1,5 +1,5 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import {
   TemplateRegistryContainer,
   TemplateHeaderLineContainer,

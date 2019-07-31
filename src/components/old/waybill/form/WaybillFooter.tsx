@@ -2,8 +2,8 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
-import DivForEnhance from 'components/ui/Div';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import DivForEnhance from 'components/old/ui/Div';
 import {
   BtnGroupWrapper,
   BtnPart,

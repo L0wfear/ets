@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 
 import {
   DivNone,
@@ -15,7 +15,7 @@ type StateGeoobjectsInfo = {
 };
 
 const GeoobjectsInfo = React.lazy(() => (
-  import(/* webpackChunkName: "geoobjects_info" */ 'components/monitor/info/geoobjects-info/GeoobjectsInfo')
+  import(/* webpackChunkName: "geoobjects_info" */ 'components/old/monitor/info/geoobjects-info/GeoobjectsInfo')
 ));
 
 class GeoobjectsInfoWrap extends React.PureComponent<PropsGeoobjectsInfo, StateGeoobjectsInfo> {

@@ -1,16 +1,16 @@
 import * as React from 'react';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import UNSAFE_CheckableElementsList from 'components/program_registry/UNSAFE_CheckableElementsList';
+import UNSAFE_CheckableElementsList from 'components/old/program_registry/UNSAFE_CheckableElementsList';
 import {
   ButtonCreateNew,
   ButtonReadNew,
   ButtonDeleteNew,
-} from 'components/ui/buttons/CRUD';
+} from 'components/old/ui/buttons/CRUD';
 
-import ProgramObjectTable from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
-import ProgramObjectFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
-import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
+import ProgramObjectTable from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectTable';
+import ProgramObjectFormWrap from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormWrap';
+import permissions from 'components/old/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';

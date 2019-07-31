@@ -5,7 +5,7 @@ import {
   TPropsDataTableInputWrapper,
   TInjectedPropsDataTableInputWrapper,
   IStateDataTableInputWrapper,
-} from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
+} from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 import { get } from 'lodash';
 
 import { validateField } from 'utils/validate/validateField';

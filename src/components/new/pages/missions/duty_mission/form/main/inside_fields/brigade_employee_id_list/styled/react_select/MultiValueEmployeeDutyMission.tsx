@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import * as components from 'components/ui/input/ReactSelect/styled/styled';
+import * as components from 'components/old/ui/input/ReactSelect/styled/styled';
 import styled, { css } from 'styled-components';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
 

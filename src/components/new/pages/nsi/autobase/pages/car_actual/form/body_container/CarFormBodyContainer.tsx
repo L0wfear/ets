@@ -3,7 +3,7 @@ import { compose } from 'recompose';
 import { Route, Switch } from 'react-router-dom';
 import carFormTabKey from './formConfig';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import RedirectCarFormBody from './RedirectCarFormBody';

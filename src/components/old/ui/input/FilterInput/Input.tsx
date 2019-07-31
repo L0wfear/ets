@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as R from 'ramda';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
+import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export interface IPropsExtendedInput {

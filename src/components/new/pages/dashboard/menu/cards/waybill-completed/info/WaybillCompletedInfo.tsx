@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { groupBy } from 'lodash';
 
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 
@@ -17,7 +17,7 @@ import {
 import { makeDate } from 'utils/dates';
 import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
-import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
+import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
 
 import {
   PropsWaybillCompletedInfo,

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import Field from 'components/ui/Field';
-import { onChangeWithKeys } from 'components/compositions/hoc';
+import Field from 'components/old/ui/Field';
+import { onChangeWithKeys } from 'components/old/compositions/hoc';
 
 type ExtFieldCommon<V = any> = {
   rel?: any;

@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { IReportProps } from 'components/reports/@types/common.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
 
 import { bindable } from 'utils/decorators';
-import ReportHeader from 'components/reports/operational/track_events/ReportHeader';
+import ReportHeader from 'components/old/reports/operational/track_events/ReportHeader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const serviceUrl = 'track_events';

@@ -8,7 +8,7 @@ import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'compo
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { isNullOrUndefined, isFunction } from 'util';
 import { DivNone } from 'global-styled/global-styled';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { get } from 'lodash';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import LineChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
-import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/redux-main/modules/car-info';
+import LineChart from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/LineChart';
+import { CAR_INFO_SET_TRACK_CACHING } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { NO_DATA_TEXT } from 'constants/statuses';
 import { sensorsMapOptions } from 'constants/sensors';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 
 import {
@@ -14,7 +14,7 @@ import {
   StatePropsCarSpeedChart,
   DispatchPropsCarSpeedChart,
   StateCarSpeedChart,
-} from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
+} from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
 import { ReduxState } from 'redux-main/@types/state';
 
 const makeData = ({

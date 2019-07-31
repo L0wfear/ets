@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { HandleThunkActionCreator } from 'react-redux';

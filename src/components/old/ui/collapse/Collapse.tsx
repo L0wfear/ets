@@ -3,7 +3,7 @@ import {
   PanelWrap,
   PanelCollapseWrap,
   PanelBodyWrap,
-} from 'components/ui/collapse/styled/styled';
+} from 'components/old/ui/collapse/styled/styled';
 
 type PropsCollapse = {
   isOpen: boolean;

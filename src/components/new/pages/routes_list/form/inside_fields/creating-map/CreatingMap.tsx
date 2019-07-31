@@ -23,7 +23,7 @@ import {
   PointInputContainer,
   RouteFormGeoList,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/styled/styled';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import RouteGeoList from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList';
 
 import {
@@ -38,7 +38,7 @@ import {
   setCacheDataForRoute,
   getCacheDataForRoute,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
-import { ExtButton } from 'components/ui/new/button/ExtButton';
+import { ExtButton } from 'components/old/ui/new/button/ExtButton';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';

@@ -7,7 +7,7 @@ import {
   getDateWithMoscowTz,
 } from 'utils/dates';
 
-import Field from 'components/ui/Field';
+import Field from 'components/old/ui/Field';
 
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { connect } from 'react-redux';

@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as queryString from 'query-string';
 
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { FluxContext } from 'utils/decorators';
 
@@ -14,7 +14,7 @@ import {
   ButtonCreateNew,
   ButtonReadNew,
   ButtonDeleteNew,
-} from 'components/ui/buttons/CRUD';
+} from 'components/old/ui/buttons/CRUD';
 
 /**
  * Базовый класс для отображения таблиц и привязанных к ним форм (модальных окон)

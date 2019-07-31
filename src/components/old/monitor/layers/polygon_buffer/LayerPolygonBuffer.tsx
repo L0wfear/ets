@@ -11,9 +11,9 @@ import {
   monitorPageTogglePolygonBufferActive,
   monitorPageFalsePolygonBufferActive,
   monitorPageChangeFilter,
-} from 'components/monitor/redux-main/models/actions-monitor-page';
+} from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { compose } from 'recompose';
-import { getStyleForPolygonBuffer } from 'components/monitor/layers/polygon_buffer/feature-style';
+import { getStyleForPolygonBuffer } from 'components/old/monitor/layers/polygon_buffer/feature-style';
 import * as jsts from 'jsts';
 
 import Feature from 'ol/Feature';
@@ -25,7 +25,7 @@ import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import {
   ButtonContainer,
   ButtonDraw,
-} from 'components/monitor/layers/polygon_buffer/styled/styled';
+} from 'components/old/monitor/layers/polygon_buffer/styled/styled';
 
 const createBuffer = (feature: Feature, distance, options: any = {}) => {
   const ns_buffer = (jsts as any).operation.buffer.BufferParameters;

@@ -2,7 +2,7 @@ import { getChildrenData } from 'utils/routes/getChildrenData';
 
 import employeeOnCarList from 'components/new/pages/nsi/employee_on_car/_config-data';
 
-import order from 'components/directories/order/config-data';
+import order from 'components/old/directories/order/config-data';
 
 import companyList from 'components/new/pages/nsi/company/_config-data';
 import technicalOperationRelationsList from 'components/new/pages/nsi/technical_operation_relations/_config-data';

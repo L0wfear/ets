@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import ButtonCheckPermission from 'components/ui/buttons/ButtonCheckPermission';
+import ButtonCheckPermission from 'components/old/ui/buttons/ButtonCheckPermission';
 
 export const ColOrderAssignmentHeaderTitleContainer = styled(EtsBootstrap.Col)`
   display: flex;

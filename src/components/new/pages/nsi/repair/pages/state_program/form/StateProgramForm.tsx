@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -22,7 +22,7 @@ import { StateProgram } from 'redux-main/reducers/modules/repair/state_program/@
 import { actionCreateStateProgram, actionUpdateStateProgram } from 'redux-main/reducers/modules/repair/state_program/actions_state_program';
 import useStateProgramStatusOptions from './use/useStateProgramStatusOptions';
 import { actionLoadStateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/actions_state_program_status';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
   const {

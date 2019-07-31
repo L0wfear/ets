@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
+import DataTableInput from 'components/old/ui/table/DataTableInput/DataTableInput';
 import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
 import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
 import { CustomTableWrapper } from './styled/styled';

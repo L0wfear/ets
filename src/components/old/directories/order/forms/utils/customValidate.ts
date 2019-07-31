@@ -1,4 +1,4 @@
-import { typeTemplate } from 'components/directories/order/forms/utils/constant';
+import { typeTemplate } from 'components/old/directories/order/forms/utils/constant';
 import { checkMissionsOnStructureIdBrigade } from 'components/new/pages/missions/duty_mission_template/form/creating/utils';
 
 interface IMission {

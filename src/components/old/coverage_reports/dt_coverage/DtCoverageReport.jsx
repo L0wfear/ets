@@ -5,8 +5,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   oldReportGetDtCoverageReport,
   oldReportExportDtCoverageReport,
-} from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+} from 'components/old/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -16,8 +16,8 @@ import { saveData } from 'utils/functions';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 
-import DtCoverageReportTable from 'components/coverage_reports/dt_coverage/DtCoverageReportTable';
-import DtCoverageReportPrintForm from 'components/coverage_reports/dt_coverage/DtCoverageReportPrintForm';
+import DtCoverageReportTable from 'components/old/coverage_reports/dt_coverage/DtCoverageReportTable';
+import DtCoverageReportPrintForm from 'components/old/coverage_reports/dt_coverage/DtCoverageReportPrintForm';
 
 const page = 'dt_coverage_report';
 

@@ -5,13 +5,13 @@ import * as cx from 'classnames';
 
 import {
   makeOptions,
-} from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/utils';
+} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/utils';
 
 import {
   PropsCarFilterByText,
   StateCarFilterByText,
-} from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
-import DefaultInput from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput';
+} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
+import DefaultInput from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/default-input/DefaultInput';
 
 import {
   DivNone,

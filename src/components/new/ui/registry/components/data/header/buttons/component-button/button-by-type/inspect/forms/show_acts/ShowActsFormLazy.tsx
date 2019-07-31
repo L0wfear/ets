@@ -1,6 +1,6 @@
 import * as React from 'react';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 import { inspect_types } from '../../constant';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';

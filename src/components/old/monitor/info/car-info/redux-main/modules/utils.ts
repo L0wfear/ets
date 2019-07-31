@@ -3,7 +3,7 @@ import * as insider from 'point-in-polygon';
 import { sensorsMapOptions } from 'constants/sensors';
 import { makeDate, makeTime } from 'utils/dates';
 
-import { initialMaxSpeed } from 'components/monitor/info/car-info/redux-main/modules/constatnts';
+import { initialMaxSpeed } from 'components/old/monitor/info/car-info/redux-main/modules/constatnts';
 
 type TypeFrontCarsSensorsEquipment = {
   [key: string]: {

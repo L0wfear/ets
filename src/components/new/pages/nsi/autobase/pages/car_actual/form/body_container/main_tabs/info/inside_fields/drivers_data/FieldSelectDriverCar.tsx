@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { CarWrap } from '../../../../../@types/CarForm';
-import { FormWithHandleChange } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { FormWithHandleChange } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { compose } from 'recompose';
 import { componentsToDriver } from './component_to_select';

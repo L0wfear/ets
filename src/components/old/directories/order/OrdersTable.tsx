@@ -8,11 +8,11 @@ import {
   setSelectedElementOrder,
 } from 'redux-main/reducers/modules/order/action-order';
 
-import { ISchemaRenderer } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
-import DataTableComponent from 'components/ui/table/DataTable';
-import DateFormatter from 'components/ui/DateFormatter';
+import DataTableComponent from 'components/old/ui/table/DataTable';
+import DateFormatter from 'components/old/ui/DateFormatter';
 import { ORDER_STATUS_LABELS, ORDER_STATUS_KEYS } from 'constants/dictionary';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;

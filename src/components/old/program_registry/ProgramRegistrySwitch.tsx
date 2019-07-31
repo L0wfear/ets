@@ -4,9 +4,9 @@ import { cloneDeep } from 'lodash';
 import { isEmpty } from 'utils/functions';
 import { validateField } from 'utils/validate/validateField';
 
-import { formValidationSchema } from 'components/program_registry/schema';
-import ProgramRegistryFormCreateWrap from 'components/program_registry/CreateForm/ProgramRegistryFormCWrap';
-import ProgramRegistryFormUWrap from 'components/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
+import { formValidationSchema } from 'components/old/program_registry/schema';
+import ProgramRegistryFormCreateWrap from 'components/old/program_registry/CreateForm/ProgramRegistryFormCWrap';
+import ProgramRegistryFormUWrap from 'components/old/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
 import { useDispatch } from 'react-redux';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 

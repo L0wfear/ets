@@ -3,7 +3,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import Map from 'ol/Map';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
-import { ButtonContainer } from 'components/monitor/layers/polygon_buffer/styled/styled';
+import { ButtonContainer } from 'components/old/monitor/layers/polygon_buffer/styled/styled';
 
 type PropsLayerZoom = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,

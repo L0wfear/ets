@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 const ReportForm = React.lazy(() => (
-  import(/* webpackChunkName: "ReportForm" */ 'components/reports/operational/cars_travel_time/form/ReportForm')
+  import(/* webpackChunkName: "ReportForm" */ 'components/old/reports/operational/cars_travel_time/form/ReportForm')
 ));
 
 export type CarTravelTimeSelectedElement = {

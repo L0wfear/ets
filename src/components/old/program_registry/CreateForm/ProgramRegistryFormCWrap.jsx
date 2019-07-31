@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
-import ProgramRegistryFormCreate from 'components/program_registry/CreateForm/ProgramRegistryFormC';
+import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
+import enhanceWithPermissions from 'components/old/util/RequirePermissions';
+import ProgramRegistryFormCreate from 'components/old/program_registry/CreateForm/ProgramRegistryFormC';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 

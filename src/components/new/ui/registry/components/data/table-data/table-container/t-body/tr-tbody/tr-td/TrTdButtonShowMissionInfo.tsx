@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { MissionInfoStatusDiv, GlyphiconContainer32, EtsTbodyTrTdMisionData } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';

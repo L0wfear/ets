@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import Report from 'components/reports/operational/cars_travel_time/report';
-import ReportFormWrap from 'components/reports/operational/cars_travel_time/form/ReportFormWrap';
+import Report from 'components/old/reports/operational/cars_travel_time/report';
+import ReportFormWrap from 'components/old/reports/operational/cars_travel_time/form/ReportFormWrap';
 
 const ReportTsx: any = Report;
 

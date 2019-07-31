@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
+import LoadingOverlayLegacy from 'components/old/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import Routes from 'components/new/indexRoute';
 import NotifiactionOrders from 'components/new/ui/modal_notification/NotifiactionOrders';
 import AdmNotification from 'components/new/ui/adm_notification/AdmNotification';
-import UserNotificationWs from 'components/notifications/UserNotificationWs';
+import UserNotificationWs from 'components/old/notifications/UserNotificationWs';
 
 import AppHeader from 'components/new/ui/app_header/AppHeader';
 import AppFooter from 'components/new/ui/app_footer/AppFooter';

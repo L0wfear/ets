@@ -1,7 +1,7 @@
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export type StateFieldForemanIdDutyMission = {
   FOREMANS: DefaultSelectOption<Employee['id'], string, Employee & { active_for_brigade: boolean }>[];

@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { IStateBrigadeEfficiency } from 'components/reports/operational/brigade_efficiency/@types/report.h';
+import { IStateBrigadeEfficiency } from 'components/old/reports/operational/brigade_efficiency/@types/report.h';
 
 import { exportable } from 'utils/decorators';
-import ReportContainer from 'components/reports/common/ReportContainer';
-import reportProps, { serviceUrl, renderers } from 'components/reports/operational/brigade_efficiency/reportProps';
+import ReportContainer from 'components/old/reports/common/ReportContainer';
+import reportProps, { serviceUrl, renderers } from 'components/old/reports/operational/brigade_efficiency/reportProps';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import { compose } from 'recompose';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { ReduxState } from 'redux-main/@types/state';

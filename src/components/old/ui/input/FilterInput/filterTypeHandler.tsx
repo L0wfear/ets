@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as R from 'ramda';
 import { isEqual } from 'lodash';
 
-import { IPropsExtendedInput } from 'components/ui/input/FilterInput/Input';
+import { IPropsExtendedInput } from 'components/old/ui/input/FilterInput/Input';
 
 import { isEqualOr } from 'utils/functions';
-import { FILTER_VALUES } from 'components/ui/input/FilterInput/constants';
+import { FILTER_VALUES } from 'components/old/ui/input/FilterInput/constants';
 
 const filterTypeIf = (filterMatch) => R.propEq('filterType', filterMatch);
 

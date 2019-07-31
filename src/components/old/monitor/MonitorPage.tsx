@@ -2,22 +2,22 @@ import * as React from 'react';
 import { keyBy } from 'lodash';
 
 import { compose } from 'recompose';
-import triggerOnChangeCompany from 'components/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
+import triggerOnChangeCompany from 'components/old/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 import { connect, HandleThunkActionCreator, useDispatch } from 'react-redux';
 
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
-import MapWrap from 'components/monitor/MapWrap';
-import ToolBar from 'components/monitor/tool-bar/ToolBar';
+import MapWrap from 'components/old/monitor/MapWrap';
+import ToolBar from 'components/old/monitor/tool-bar/ToolBar';
 
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import { getCompany } from 'redux-main/trash-actions/uniq';
-import { resetMonitorPageState, actionMonitorPageLoadCarActual, monitorPageSetcarActualGpsNumberIndex } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { resetMonitorPageState, actionMonitorPageLoadCarActual, monitorPageSetcarActualGpsNumberIndex } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import {
   MONITOR_PAGE_SET_GEOMETRY,
   MONITOR_PAGE_SET_COMPANY,
-} from 'components/monitor/redux-main/models/monitor-page';
-import { MonitorPageContainer } from 'components/monitor/styled';
+} from 'components/old/monitor/redux-main/models/monitor-page';
+import { MonitorPageContainer } from 'components/old/monitor/styled';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';

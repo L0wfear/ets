@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Thead from 'components/ui/tableNew/table/thead/Thead';
-import Tbody from 'components/ui/tableNew/table/tbody/Tbody';
-import Paginator from 'components/ui/new/paginator/Paginator';
+import Thead from 'components/old/ui/tableNew/table/thead/Thead';
+import Tbody from 'components/old/ui/tableNew/table/tbody/Tbody';
+import Paginator from 'components/old/ui/new/paginator/Paginator';
 import { setStickyThead } from 'utils/stickyTableHeader';
 
-import { makeData, makeDataByPagination } from 'components/ui/tableNew/utils';
+import { makeData, makeDataByPagination } from 'components/old/ui/tableNew/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const PaginatorTsx: any = Paginator;

@@ -2,11 +2,11 @@ import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
 import { diffDates, getDateWithMoscowTz } from 'utils/dates';
-import { getTrailers } from 'components/waybill/utils';
+import { getTrailers } from 'components/old/waybill/utils';
 import { get } from 'lodash';
 import { isArray } from 'util';
 import memoizeOne from 'memoize-one';
-import { makeFuelCardIdOptions } from 'components/waybill/table_input/utils';
+import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 
 const validateFuelCardId = (
   rowData,

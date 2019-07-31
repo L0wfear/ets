@@ -2,7 +2,7 @@ import * as React from 'react';
 import { DivNone } from 'global-styled/global-styled';
 import * as cx from 'classnames';
 import { InputContainer } from 'components/new/ui/field/styled/styled';
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
+import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 
 type PropsInputDate = {
   id?: string;

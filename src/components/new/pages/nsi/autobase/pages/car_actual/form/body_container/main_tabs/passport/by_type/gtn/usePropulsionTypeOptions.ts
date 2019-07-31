@@ -2,7 +2,7 @@ import * as React from 'react';
 import { HandleThunkActionCreator } from 'react-redux';
 import { autobaseGetSetPropulsionType } from 'redux-main/reducers/modules/autobase/actions_by_type/propulsion_type/actions';
 import { PropulsionType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { defaultSelectListMapper, DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper, DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
 type UsePropulsionTypeOptionsAns = {
   propulsionTypeOptions: DefaultSelectListMapper<PropulsionType>,

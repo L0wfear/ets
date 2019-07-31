@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { CarInfoTitleSpanContainer } from 'components/monitor/styled';
+import { CarInfoTitleSpanContainer } from 'components/old/monitor/styled';
 
 export const ContainerButtonToggleShowGeoobjectList = styled.div`
   pointer-events: all;

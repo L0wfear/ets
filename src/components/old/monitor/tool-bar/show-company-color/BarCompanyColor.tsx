@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { compose } from 'recompose';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { connect } from 'react-redux';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
@@ -11,7 +11,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
-import { LegenCompanyLegendOption, CubeColor } from 'components/monitor/tool-bar/show-company-color/styled';
+import { LegenCompanyLegendOption, CubeColor } from 'components/old/monitor/tool-bar/show-company-color/styled';
 
 type PropsBarCompanyColor = {
   companiesIndex: TypeCompaniesIndex,

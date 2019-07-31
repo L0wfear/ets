@@ -1,15 +1,15 @@
 import React from 'react';
 
-import UNSAFE_FormWrap from 'components/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/util/RequirePermissions';
+import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
+import enhanceWithPermissions from 'components/old/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField';
 
-import ProgramObjectFormDT from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
+import ProgramObjectFormDT from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
 
 import {
   formValidationSchema,
   elementsValidationSchema,
-} from 'components/program_registry/UpdateFrom/inside_components/program_object/schema';
+} from 'components/old/program_registry/UpdateFrom/inside_components/program_object/schema';
 
 class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   constructor(props) {

@@ -16,7 +16,7 @@ import {
   DispatchPropsUserNotificationWs,
   OwnPropsUserNotificationWs,
   PropsUserNotificationWs,
-} from 'components/notifications/@types/UserNotificationWs.h';
+} from 'components/old/notifications/@types/UserNotificationWs.h';
 
 /* ETS2 */
 class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUserNotificationWs> {

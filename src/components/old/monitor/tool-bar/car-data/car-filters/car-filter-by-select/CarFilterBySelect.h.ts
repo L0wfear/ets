@@ -1,6 +1,6 @@
 import {
   IReactSelectOption,
-} from 'components/ui/@types/ReactSelect.h';
+} from 'components/old/ui/@types/ReactSelect.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export type PropsCarFilterByText = {

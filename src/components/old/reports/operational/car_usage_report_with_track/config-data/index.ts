@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/car_usage_report_with_track/config-data/permissions';
-import component from 'components/reports/operational/car_usage_report_with_track/config-data/components';
+import permissions from 'components/old/reports/operational/car_usage_report_with_track/config-data/permissions';
+import component from 'components/old/reports/operational/car_usage_report_with_track/config-data/components';
 
 export default {
   path: '/car-usage-report',

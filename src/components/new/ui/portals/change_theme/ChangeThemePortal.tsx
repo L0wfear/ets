@@ -4,7 +4,7 @@ import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeE
 import EtsBootstrap from '../../@bootstrap';
 import { EtsThemeContext } from '../../@bootstrap/EtsThemeProvider';
 import etsThemes from 'components/new/ui/@bootstrap/@themes/etsThemes';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 type ChangeThemePortalProps = {
   onClose: () => any;

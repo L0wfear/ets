@@ -1,5 +1,5 @@
-import permissions from 'components/coverage_reports/dt_coverage/config-data/permissions';
-import component from 'components/coverage_reports/dt_coverage/config-data/components';
+import permissions from 'components/old/coverage_reports/dt_coverage/config-data/permissions';
+import component from 'components/old/coverage_reports/dt_coverage/config-data/components';
 
 export default {
   path: '/dt_coverage_report',

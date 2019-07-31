@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import { IDataTableSchema, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+import { IDataTableSchema, ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 import { IUserNotification } from 'api/@types/services/index.h';
 
 import { READ_NOT_SELECT_OPTIONS_INT } from 'constants/dictionary';
-import DataTableComponent from 'components/ui/table/DataTable';
-import DateFormatter from 'components/ui/DateFormatter';
+import DataTableComponent from 'components/old/ui/table/DataTable';
+import DateFormatter from 'components/old/ui/DateFormatter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;

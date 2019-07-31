@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/long_repair/config-data/permissions';
-import component from 'components/reports/operational/long_repair/config-data/components';
+import permissions from 'components/old/reports/operational/long_repair/config-data/permissions';
+import component from 'components/old/reports/operational/long_repair/config-data/components';
 
 export default {
   path: '/long-repair',

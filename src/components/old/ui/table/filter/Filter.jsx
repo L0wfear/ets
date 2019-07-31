@@ -5,8 +5,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
 import { reduce, cloneDeep } from 'lodash';
-import Div from 'components/ui/Div';
-import FilterRow from 'components/ui/table/filter/FilterRow';
+import Div from 'components/old/ui/Div';
+import FilterRow from 'components/old/ui/table/filter/FilterRow';
 import { FilterRowsContainerDataTable } from 'components/new/ui/styled/Bootstrap3Features';
 import {
   EtsFiltersButtonsLine,

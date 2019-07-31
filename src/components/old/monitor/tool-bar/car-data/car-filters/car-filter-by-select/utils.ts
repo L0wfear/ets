@@ -1,6 +1,6 @@
 import {
   CheckByIdAndNameFunc,
-} from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
+} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-select/CarFilterBySelect.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const checkByIdAndName: CheckByIdAndNameFunc  = ({ ...store }, id, name) => {

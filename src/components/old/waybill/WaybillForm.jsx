@@ -4,10 +4,10 @@ import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
 
-import ModalBody from 'components/ui/Modal';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import ModalBody from 'components/old/ui/Modal';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import { isNotNull, isEmpty, hasMotohours } from 'utils/functions';
 
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
@@ -31,22 +31,22 @@ import {
   getTrailers,
   getWaybillDrivers,
   validateTaxesControl,
-} from 'components/waybill/utils';
+} from 'components/old/waybill/utils';
 
-import { confirmDialogChangeDate } from 'components/waybill/utils_react';
+import { confirmDialogChangeDate } from 'components/old/waybill/utils_react';
 
 import {
   defaultSortingFunction,
   defaultSelectListMapper,
-} from 'components/ui/input/ReactSelect/utils';
+} from 'components/old/ui/input/ReactSelect/utils';
 
-import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
-import Taxes from 'components/waybill/Taxes';
+import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
+import Taxes from 'components/old/waybill/Taxes';
 
-import WaybillFooter from 'components/waybill/form/WaybillFooter';
-import BsnoStatus from 'components/waybill/form/BsnoStatus';
+import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
+import BsnoStatus from 'components/old/waybill/form/BsnoStatus';
 
-import MissionField from 'components/waybill/form/MissionFiled';
+import MissionField from 'components/old/waybill/form/MissionFiled';
 import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import {
   getSessionState,

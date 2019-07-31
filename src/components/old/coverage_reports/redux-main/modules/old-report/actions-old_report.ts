@@ -1,7 +1,7 @@
 import {
   OLD_REPORT_SET_ODH_COVERAGE_REPORT,
   OLD_REPORT_SET_DT_COVERAGE_REPORT,
-} from 'components/coverage_reports/redux-main/modules/old-report/old_report';
+} from 'components/old/coverage_reports/redux-main/modules/old-report/old_report';
 
 import {
   loadOdhCoverageReport,
@@ -9,7 +9,7 @@ import {
   exportOdhCoverageReport,
   exportDtCoverageReport,
   loadAnalytics,
-} from 'components/coverage_reports/redux-main/modules/old-report/promise';
+} from 'components/old/coverage_reports/redux-main/modules/old-report/promise';
 
 export const oldReportChangeOdhCoverageReport = (odhCoverageReport) => ({
   type: OLD_REPORT_SET_ODH_COVERAGE_REPORT,

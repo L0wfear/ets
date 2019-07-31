@@ -1,13 +1,13 @@
 import * as React from 'react';
 import Map from 'ol/Map';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   fetchTrack,
   fetchCarInfo,
-} from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+} from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import { CarInfoButtonsRow } from './styled/index';
 import {
@@ -27,15 +27,15 @@ type PropsCarTabMenu = {
 };
 
 const CarAttributeInformation = React.lazy(() =>
-  import(/* webpackChunkName: "car_attribute_information" */ 'components/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation'),
+  import(/* webpackChunkName: "car_attribute_information" */ 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/CarAttributeInformation'),
 );
 
 const CarChartsInformation = React.lazy(() =>
-  import(/* webpackChunkName: "car_charts_information" */ 'components/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation'),
+  import(/* webpackChunkName: "car_charts_information" */ 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/CarChartsInformation'),
 );
 
 const CarTrackInformation = React.lazy(() =>
-  import(/* webpackChunkName: "car_track_information" */ 'components/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation'),
+  import(/* webpackChunkName: "car_track_information" */ 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/CarTrackInformation'),
 );
 
 const CarTabMenu: React.FC<PropsCarTabMenu> = React.memo(

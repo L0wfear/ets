@@ -3,7 +3,7 @@ import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegist
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "employee_efficiency" */ 'components/reports/operational/employee_efficiency/report')
+  import(/* webpackChunkName: "employee_efficiency" */ 'components/old/reports/operational/employee_efficiency/report')
 ));
 
 export default (props) => (

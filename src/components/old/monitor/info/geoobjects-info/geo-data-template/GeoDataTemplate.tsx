@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import DateFormatter from 'components/ui/DateFormatter';
+import DateFormatter from 'components/old/ui/DateFormatter';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { geoJSON } from 'utils/ol';
-import { monitorPageRemoveFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageRemoveFromSelectedGeoobjects } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
-import { CarInfoBlock, CarInfoClose } from 'components/monitor/styled';
+import { CarInfoBlock, CarInfoClose } from 'components/old/monitor/styled';
 
 const InfoDt: React.FC<any> = ({ data, ...props }) =>
   <div className="geoobject_one_data" onClick={props.centerOn}>

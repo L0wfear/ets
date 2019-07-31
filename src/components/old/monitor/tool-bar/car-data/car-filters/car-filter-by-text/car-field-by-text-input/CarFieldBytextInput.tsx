@@ -2,14 +2,14 @@ import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 
 import { connect } from 'react-redux';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { monitorPageChangeFilter } from 'components/monitor/redux-main/models/actions-monitor-page';
-import { carInfoSetGpsNumber } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+import { carInfoSetGpsNumber } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import {
   PropsCarFieldBytextInput,
   StateCarFieldBytextInput,
-} from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput.h';
+} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput.h';
 
 import {
   DivNone,

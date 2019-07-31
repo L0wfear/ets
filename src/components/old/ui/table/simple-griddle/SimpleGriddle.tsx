@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import { isNullOrUndefined, isArray } from 'util';
-import TrTable from 'components/ui/table/simple-griddle/tr-table/TrTable';
+import TrTable from 'components/old/ui/table/simple-griddle/tr-table/TrTable';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 import TrTableFuelCardsReport from './tr-table/TrTableFuelCardsReport';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-require('components/ui/table/simple-griddle/SimpleGriddle.scss');
+require('components/old/ui/table/simple-griddle/SimpleGriddle.scss');
 
 const EtsTheadThL: any = EtsTheadTh;
 

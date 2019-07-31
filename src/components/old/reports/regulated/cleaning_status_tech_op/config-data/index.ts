@@ -1,5 +1,5 @@
-import permissions from 'components/reports/regulated/cleaning_status_tech_op/config-data/permissions';
-import component from 'components/reports/regulated/cleaning_status_tech_op/config-data/components';
+import permissions from 'components/old/reports/regulated/cleaning_status_tech_op/config-data/permissions';
+import component from 'components/old/reports/regulated/cleaning_status_tech_op/config-data/components';
 
 export default {
   path: '/cleaning-status-tech-op-report',

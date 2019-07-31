@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/inquiry_expiring_date/config-data/permissions';
-import component from 'components/reports/operational/inquiry_expiring_date/config-data/components';
+import permissions from 'components/old/reports/operational/inquiry_expiring_date/config-data/permissions';
+import component from 'components/old/reports/operational/inquiry_expiring_date/config-data/components';
 
 export default {
   path: '/inquiry-expiring-date',

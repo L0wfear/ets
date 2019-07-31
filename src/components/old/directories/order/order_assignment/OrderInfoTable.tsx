@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
+import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
+import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
-import DataTableComponent from 'components/ui/table/DataTable';
+import DataTableComponent from 'components/old/ui/table/DataTable';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import { connect } from 'react-redux';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 @connect((state) => state.loading)
 @connectToStores(['loading'])

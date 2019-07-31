@@ -6,18 +6,18 @@ import {
   setMissionData,
   setDutyMissionData,
 } from 'redux-main/reducers/modules/order/action-order';
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import connectToStores from 'flummox/connect';
 
-import OrderAssignmentsInfoTable from 'components/directories/order/order_assignment/OrderAssignmentsInfoTable';
-import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
+import OrderAssignmentsInfoTable from 'components/old/directories/order/order_assignment/OrderAssignmentsInfoTable';
+import OrderInfoTable from 'components/old/directories/order/order_assignment/OrderInfoTable';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 
 import {
   ColOrderAssignmentHeaderTitleContainer,
   ButtonOrderAssignment,
   TitleText,
-} from 'components/directories/order/order_assignment/styled/styled';
+} from 'components/old/directories/order/order_assignment/styled/styled';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 const OrderAssignmentsList: React.FC<any> = (props) => (

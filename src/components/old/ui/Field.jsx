@@ -2,12 +2,12 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import cx from 'classnames';
 
-import DatePicker from 'components/ui/input/date-picker/DatePicker';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
-import FileInput from 'components/ui/input/FileInput/FileInput';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
+import FileInput from 'components/old/ui/input/FileInput/FileInput';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isNumber } from 'util';
 

@@ -1,4 +1,4 @@
-import { IDataTableSchema, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
+import { IDataTableSchema, ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
 
 type IFilterValue = string | number | string[] | number[];
 

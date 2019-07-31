@@ -1,10 +1,10 @@
 import * as React from 'react';
-import Table from 'components/ui/tableNew/table/Table';
-import FilterButton from 'components/ui/tableNew/filter-button/FIlterButton';
-import Filter from 'components/ui/tableNew/filter/Filter';
-import Div from 'components/ui/Div';
+import Table from 'components/old/ui/tableNew/table/Table';
+import FilterButton from 'components/old/ui/tableNew/filter-button/FIlterButton';
+import Filter from 'components/old/ui/tableNew/filter/Filter';
+import Div from 'components/old/ui/Div';
 
-import { makeTableMeta } from 'components/ui/tableNew/utils';
+import { makeTableMeta } from 'components/old/ui/tableNew/utils';
 
 interface DataTableProps {
   [key: string]: any;

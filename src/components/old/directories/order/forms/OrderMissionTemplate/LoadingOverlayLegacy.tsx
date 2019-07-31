@@ -1,4 +1,4 @@
-import LoadingOverlay from 'components/ui/LoadingOverlay';
+import LoadingOverlay from 'components/old/ui/LoadingOverlay';
 
 const LoadingOverlayLegacy: any = LoadingOverlay;
 

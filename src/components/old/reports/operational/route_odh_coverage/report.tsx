@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { withProps } from 'recompose';
 
-import { IReportProps } from 'components/reports/@types/common.h';
-import { ISchemaMaker } from 'components/ui/table/@types/schema.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
+import { ISchemaMaker } from 'components/old/ui/table/@types/schema.h';
 
-import { parseMultiSelectListQueryParams } from 'components/reports/common/utils';
+import { parseMultiSelectListQueryParams } from 'components/old/reports/common/utils';
 import { exportable } from 'utils/decorators';
-import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from 'components/reports/operational/route_odh_coverage/ReportHeader';
-import DeltaTableHeader from 'components/reports/operational/route_odh_coverage/DeltaTableHeader';
+import ReportContainer from 'components/old/reports/common/ReportContainer';
+import ReportHeader from 'components/old/reports/operational/route_odh_coverage/ReportHeader';
+import DeltaTableHeader from 'components/old/reports/operational/route_odh_coverage/DeltaTableHeader';
 
 const serviceUrl = 'route_odh_coverage_report';
 const reportUrl = 'route-odh-coverage-report';

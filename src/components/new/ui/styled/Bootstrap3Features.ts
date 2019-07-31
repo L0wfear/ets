@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ColFilter } from 'components/ui/tableNew/filter/styled';
+import { ColFilter } from 'components/old/ui/tableNew/filter/styled';
 
 export const FilterRowsContainerDataTable = styled.div`
   @media screen and (min-width: 1200px) {

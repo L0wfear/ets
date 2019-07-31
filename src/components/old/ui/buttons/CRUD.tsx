@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ICRUDButton } from 'components/ui/buttons/@types/index.h';
-import ButtonCheckPermission from 'components/ui/buttons/ButtonCheckPermission';
+import { ICRUDButton } from 'components/old/ui/buttons/@types/index.h';
+import ButtonCheckPermission from 'components/old/ui/buttons/ButtonCheckPermission';
 
 export const ButtonCreateNew: React.FC<ICRUDButton & { permission: string }> = ({ permission, onClick, disabled, buttonName = 'Создать' }) =>
   <ButtonCheckPermission id="open-create-form" bsSize="small" onClick={onClick} permissions={permission} disabled={disabled}>

@@ -1,4 +1,4 @@
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
+import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { diffDates } from 'utils/dates';
 
 export const formValidationSchema: IValidationSchema = {

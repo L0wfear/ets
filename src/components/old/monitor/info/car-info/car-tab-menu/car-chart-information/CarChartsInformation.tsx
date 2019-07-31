@@ -2,11 +2,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { carInfoSetTrackPoint, carInfoSetFuelEventPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
-import { CarInfoBlockTabData } from 'components/monitor/styled';
-import CarFuelChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart';
-import CarSpeedChart from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
+import { CarInfoBlockTabData } from 'components/old/monitor/styled';
+import CarFuelChart from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarFuelChart';
+import CarSpeedChart from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/CarSpeedChart';
 
 type PropsCarChartsInformation = {
   centerOn: any;

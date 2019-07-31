@@ -1,12 +1,12 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { IPropsDataTable } from 'components/ui/table/@types/DataTable.h';
-import { IDataTableSelectedRow, ISchemaRenderer } from 'components/ui/table/@types/schema.h';
-import { IPropsDataTableInput, IStateDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
+import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
+import { IDataTableSelectedRow, ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
+import { IPropsDataTableInput, IStateDataTableInput } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 
-import DataTableComponent from 'components/ui/table/DataTable';
-import DataTableInputWrapper from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper';
+import DataTableComponent from 'components/old/ui/table/DataTable';
+import DataTableInputWrapper from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';

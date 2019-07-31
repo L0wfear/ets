@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import * as cx from 'classnames';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

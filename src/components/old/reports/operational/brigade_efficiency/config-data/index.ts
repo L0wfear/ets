@@ -1,5 +1,5 @@
-import permissions from 'components/reports/operational/brigade_efficiency/config-data/permissions';
-import component from 'components/reports/operational/brigade_efficiency/config-data/components';
+import permissions from 'components/old/reports/operational/brigade_efficiency/config-data/permissions';
+import component from 'components/old/reports/operational/brigade_efficiency/config-data/components';
 
 export default {
   path: '/brigade-efficiency-report',

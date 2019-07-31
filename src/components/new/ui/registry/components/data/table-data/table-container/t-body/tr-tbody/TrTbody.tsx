@@ -17,7 +17,7 @@ import {
   PropsTrTbody,
   StateTrTbody,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/TrTbody.h';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
@@ -33,12 +33,12 @@ import TrTdButtonShowMissionInfo from './tr-td/TrTdButtonShowMissionInfo';
 import TrTdIsOpen from './tr-td/TrTdIsOpen';
 import TrTdButtonCompanyStructureActions from './tr-td/TrTdButtonCompanyStructureActions';
 import { WAYBILL_STATUSES } from 'constants/statuses';
-import { missionsStatusBySlag } from 'components/waybill/constant/table';
+import { missionsStatusBySlag } from 'components/old/waybill/constant/table';
 import TrTdButtonServicesActionsOnOff from './tr-td/TrTdButtonServicesActionsOnOff';
 import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
 import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
-import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
+import { validatePermissions } from 'components/old/util/RequirePermissionsNewRedux';
 import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
 import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
 import SimpleLinkA from 'components/new/ui/simple_a/link';

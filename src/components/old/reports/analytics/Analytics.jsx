@@ -1,18 +1,18 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { oldReportGetAnalytics } from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import { oldReportGetAnalytics } from 'components/old/coverage_reports/redux-main/modules/old-report/actions-old_report';
 import companyActions from 'redux-main/reducers/modules/company/actions';
 
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import Field from 'components/ui/Field';
+import Field from 'components/old/ui/Field';
 import { getToday9am, getTomorrow9am } from 'utils/dates';
 import { saveData } from 'utils/functions';
 

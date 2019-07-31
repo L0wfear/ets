@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import { isEqualOr } from 'utils/functions';
-import momentLocalizer from 'components/ui/input/date-picker/localizer';
+import momentLocalizer from 'components/old/ui/input/date-picker/localizer';
 
 moment.locale('ru');
 momentLocalizer();

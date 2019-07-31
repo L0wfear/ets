@@ -12,7 +12,7 @@ import {
 } from 'components/new/ui/map/overlay/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const ruler = require('components/monitor/layers/measure/styled/image/ruler.png');
+const ruler = require('components/old/monitor/layers/measure/styled/image/ruler.png');
 
 export const OverlayInsideMeasureContainer = styled(OverlayInsideContainer)`
   font-size: 12px;

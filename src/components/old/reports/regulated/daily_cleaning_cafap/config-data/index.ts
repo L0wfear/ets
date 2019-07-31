@@ -1,5 +1,5 @@
-import permissions from 'components/reports/regulated/daily_cleaning_cafap/config-data/permissions';
-import component from 'components/reports/regulated/daily_cleaning_cafap/config-data/components';
+import permissions from 'components/old/reports/regulated/daily_cleaning_cafap/config-data/permissions';
+import component from 'components/old/reports/regulated/daily_cleaning_cafap/config-data/components';
 
 export default {
   path: '/daily-cleaning-reports-cafap',

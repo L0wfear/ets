@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Map from 'ol/Map';
-import CarInfoWrap from 'components/monitor/info/car-info/CarInfoWrap';
-import GeoobjectsInfoWrap from 'components/monitor/info/geoobjects-info/GeoobjectsInfoWrap';
-import IconMeasureAndZoom from 'components/monitor/info/icon-measure-and-zoom/IconMeasureAndZoom';
+import CarInfoWrap from 'components/old/monitor/info/car-info/CarInfoWrap';
+import GeoobjectsInfoWrap from 'components/old/monitor/info/geoobjects-info/GeoobjectsInfoWrap';
+import IconMeasureAndZoom from 'components/old/monitor/info/icon-measure-and-zoom/IconMeasureAndZoom';
 import { MapInfoContainer } from './styled';
 
 type PropsMapInfo = {

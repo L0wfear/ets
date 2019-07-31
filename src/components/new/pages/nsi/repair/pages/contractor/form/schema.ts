@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsContractor } from './@types/ContractorForm';
 import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 

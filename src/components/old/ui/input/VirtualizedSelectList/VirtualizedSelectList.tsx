@@ -2,7 +2,7 @@ import * as React from 'react';
 import { List } from 'react-virtualized';
 import { VirtualizedOption } from './styled/styled';
 import { isNullOrUndefined } from 'util';
-import { NoOptionsMessage } from 'components/ui/input/ReactSelect/styled/styled';
+import { NoOptionsMessage } from 'components/old/ui/input/ReactSelect/styled/styled';
 
 const VirtualizedSelectList = (props: any) => {
   const rows = props.children;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import { connect } from 'react-redux';
 import {
@@ -8,16 +8,16 @@ import {
   fetchTrack,
   fetchCarInfo,
   carInfoChangeDate,
-} from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
-import DistanceAgg from 'components/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
-import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
+} from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import DistanceAgg from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
+import { initialState } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { diffDates } from 'utils/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
-import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/redux-main/modules/car-info';
-import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
-import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
+import { CAR_INFO_SET_TRACK_CACHING } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
+import { CarInfoBlockTabDataColumn } from 'components/old/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/old/monitor/info/geoobjects-info/styled';
 import { CarInfoToggleForToday } from './styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';

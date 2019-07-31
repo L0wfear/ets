@@ -2,17 +2,17 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import MapEts from 'components/new/ui/map/MapEts';
-import LayerGeooobjects from 'components/monitor/layers/geoobjects/LayerGeooobjects';
-import LayerSelectedGeooobjects from 'components/monitor/layers/geoobjects/selected/LayerSelectedGeooobjects';
-import LayerTrackLines from 'components/monitor/layers/track/lines/LayerTrackLines';
-import LayerTrackPoints from 'components/monitor/layers/track/points/LayerTrackPoints';
-import LayerTrackLinesBySensor from 'components/monitor/layers/track/lines-by-sensor/LayerTrackLinesBySensor';
-import LayerParkingPoints from 'components/monitor/layers/track/events/parking/LayerParkingPoints';
-import LayerFuelEventPoint from 'components/monitor/layers/track/events/fuel-event/LayerFuelEventPoints';
-import LayerPlayPoint from 'components/monitor/layers/track/play-point/LayerPlayPoint';
-import LayerCarMarker from 'components/monitor/layers/car-markers/LayerCarMarker';
-import LayerFuelEventLeakPoint from 'components/monitor/layers/fuel-event/leak/LayerFuelEventLeakPoint';
-import MapInfo from 'components/monitor/info/MapInfo';
+import LayerGeooobjects from 'components/old/monitor/layers/geoobjects/LayerGeooobjects';
+import LayerSelectedGeooobjects from 'components/old/monitor/layers/geoobjects/selected/LayerSelectedGeooobjects';
+import LayerTrackLines from 'components/old/monitor/layers/track/lines/LayerTrackLines';
+import LayerTrackPoints from 'components/old/monitor/layers/track/points/LayerTrackPoints';
+import LayerTrackLinesBySensor from 'components/old/monitor/layers/track/lines-by-sensor/LayerTrackLinesBySensor';
+import LayerParkingPoints from 'components/old/monitor/layers/track/events/parking/LayerParkingPoints';
+import LayerFuelEventPoint from 'components/old/monitor/layers/track/events/fuel-event/LayerFuelEventPoints';
+import LayerPlayPoint from 'components/old/monitor/layers/track/play-point/LayerPlayPoint';
+import LayerCarMarker from 'components/old/monitor/layers/car-markers/LayerCarMarker';
+import LayerFuelEventLeakPoint from 'components/old/monitor/layers/fuel-event/leak/LayerFuelEventLeakPoint';
+import MapInfo from 'components/old/monitor/info/MapInfo';
 
 import { MapEtsConsumer } from 'components/new/ui/map/context/MapetsContext';
 

@@ -4,17 +4,17 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 
-import OrdeHistoryTable from 'components/directories/order/order_history/OrdeHistoryTable';
-import OrderInfoTable from 'components/directories/order/order_assignment/OrderInfoTable';
+import OrdeHistoryTable from 'components/old/directories/order/order_history/OrdeHistoryTable';
+import OrderInfoTable from 'components/old/directories/order/order_assignment/OrderInfoTable';
 import {
   HistoryOrderListPanelTitleCol,
   HistoryOrderListPanelTitleH4,
   HistoryOrderListPanelTitleColSelect,
-} from 'components/directories/order/order_history/styled/HistoryOrderList';
+} from 'components/old/directories/order/order_history/styled/HistoryOrderList';
 
 class HistoryOrderList extends React.Component<any, any> {
   state: any = {

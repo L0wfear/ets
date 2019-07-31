@@ -1,6 +1,6 @@
 import { BatteryRegistry, BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { GetBatteryBrand } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_brand/@types';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;

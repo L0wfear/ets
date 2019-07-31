@@ -1,6 +1,6 @@
 import * as React from 'react';
-import TrBody from 'components/ui/tableNew/table/tbody/trBody/TrBody';
-import TrBodyAllRow from 'components/ui/tableNew/table/tbody/trBody/TrBodyAllRow';
+import TrBody from 'components/old/ui/tableNew/table/tbody/trBody/TrBody';
+import TrBodyAllRow from 'components/old/ui/tableNew/table/tbody/trBody/TrBodyAllRow';
 
 class Tbody extends React.Component<any, any> {
   renderTr = (summObj, rowData) => {

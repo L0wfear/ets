@@ -6,11 +6,11 @@ import {
   carInfoTogglePlay,
   carInfoStopPlay,
   carInfoIncTrackPointIndex,
-} from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+} from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import { connect } from 'react-redux';
-import { CarInfoBlockTabDataColumn } from 'components/monitor/styled';
-import { CarInfoTrackDateTitle } from 'components/monitor/info/geoobjects-info/styled';
+import { CarInfoBlockTabDataColumn } from 'components/old/monitor/styled';
+import { CarInfoTrackDateTitle } from 'components/old/monitor/info/geoobjects-info/styled';
 
 type PropsActionTrackTab = {
   gps_code: number;

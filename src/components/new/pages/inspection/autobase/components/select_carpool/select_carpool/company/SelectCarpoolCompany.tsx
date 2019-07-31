@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { SelectLabel, InstectionBlockSelect, SelectField } from 'components/new/pages/inspection/autobase/components/select_carpool/styled/InspectionAutobaseSelectCarpoolStyled';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
-import { useSelector } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { getInspectAutobase } from 'redux-main/reducers/selectors';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type SelectCarpoolCompanyProps = (
   {} &
@@ -19,8 +18,8 @@ const SelectCarpoolCompany: React.FC<SelectCarpoolCompanyProps> = (props) => {
     setDataInSearch,
   } = props;
 
-  const companyList = useSelector(
-    (state: ReduxState) => getInspectAutobase(state).companyList,
+  const companyList = etsUseSelector(
+    (state) => getInspectAutobase(state).companyList,
   );
 
   const companyId = getNumberValueFromSerch(searchState.companyId);

@@ -3,7 +3,7 @@ import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegist
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "order" */ 'components/directories/order/OrderList')
+  import(/* webpackChunkName: "order" */ 'components/old/directories/order/OrderList')
 ));
 
 export default (props) => (

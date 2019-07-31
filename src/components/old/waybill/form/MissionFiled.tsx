@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { isEmpty } from 'utils/functions';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { components } from 'react-select';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import { getWarningNotification } from 'utils/notifications';

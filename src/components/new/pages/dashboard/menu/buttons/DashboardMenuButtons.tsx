@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
+import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
 
 import {
   dashboardLoadDependentDataByWaybillDraft,
@@ -10,9 +10,9 @@ import {
   dashboardLoadDependentDataByNewDutyMission,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { LinkToOrder } from 'components/directories/order/buttons/buttons';
+import { LinkToOrder } from 'components/old/directories/order/buttons/buttons';
 import { ButtonCreateMission } from 'components/new/pages/missions/mission/buttons/buttons';
-import { ButtonCreateWaybill } from 'components/waybill/buttons/buttons';
+import { ButtonCreateWaybill } from 'components/old/waybill/buttons/buttons';
 
 import {
   DashboardMenuButtonsContainer,

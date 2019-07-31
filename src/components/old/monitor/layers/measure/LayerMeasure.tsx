@@ -13,9 +13,9 @@ import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerPro
 import {
   monitorPageToggleMeasureActive,
   monitorPageFalseMeasureActive,
-} from 'components/monitor/redux-main/models/actions-monitor-page';
+} from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { compose } from 'recompose';
-import { getStyleForLineMeasure } from 'components/monitor/layers/measure/feature-style';
+import { getStyleForLineMeasure } from 'components/old/monitor/layers/measure/feature-style';
 
 import {
   ButtonDraw,
@@ -23,7 +23,7 @@ import {
   EtsOverlayMeasureContainer,
   EtsOverlayMeasureTitleContainer,
   EtsTriangleMeasure,
-} from 'components/monitor/layers/measure/styled/styled';
+} from 'components/old/monitor/layers/measure/styled/styled';
 import { ButtonContainer } from '../polygon_buffer/styled/styled';
 import GeometryType from 'ol/geom/GeometryType';
 

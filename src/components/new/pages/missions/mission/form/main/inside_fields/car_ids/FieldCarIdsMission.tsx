@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldCarIdsMission,
@@ -15,7 +15,7 @@ import {
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { getMissionsState } from 'redux-main/reducers/selectors/index';
 import { makeOptionsForMission, makeLabelForMissionCarOption } from './makeOptions';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import FieldCarIdsMissionSelectComponents from './components';
 

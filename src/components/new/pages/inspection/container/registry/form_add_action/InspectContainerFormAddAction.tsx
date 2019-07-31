@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { createValidDate, diffDates } from 'utils/dates';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

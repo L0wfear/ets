@@ -1,13 +1,13 @@
 import React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
-import ModalBody from 'components/ui/Modal';
-// import Div from 'components/ui/Div';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
+import ModalBody from 'components/old/ui/Modal';
+// import Div from 'components/old/ui/Div';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import { connectToStores } from 'utils/decorators';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
 const PermittedSlug = ['dt', 'odh'];
 const setTypeOptionsBySlug = (slug, allOptions) => {

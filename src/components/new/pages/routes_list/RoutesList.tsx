@@ -12,8 +12,8 @@ import {
   SeasonsFilterContainer,
 } from 'components/new/pages/routes_list/styled/styled';
 
-import Filter from 'components/ui/table/filter/Filter';
-import FilterButton from 'components/ui/table/filter/FilterButton';
+import Filter from 'components/old/ui/table/filter/Filter';
+import FilterButton from 'components/old/ui/table/filter/FilterButton';
 import {
   getTypeRoute,
   makeRoutesListForRender,
@@ -26,7 +26,7 @@ import {
   ButtonUpdateRoute,
   ButtonDeleteRoute,
 } from 'components/new/pages/routes_list/buttons/buttons';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import { getCurrentSeason } from 'utils/dates';
 import { DivNone } from 'global-styled/global-styled';
@@ -44,7 +44,7 @@ import {
   RouteListContainer,
 } from 'components/new/pages/routes_list/styled/styled';
 import { getWarningNotification } from 'utils/notifications';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { getDefaultRouteElement } from './form/utils';
 
 import {

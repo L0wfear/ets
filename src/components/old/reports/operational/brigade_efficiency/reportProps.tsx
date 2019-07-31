@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { IReportProps } from 'components/reports/@types/common.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
 
 import { bindable } from 'utils/decorators';
-import ReportHeader from 'components/reports/operational/brigade_efficiency/ReportHeader';
+import ReportHeader from 'components/old/reports/operational/brigade_efficiency/ReportHeader';
 
 export const serviceUrl = '/reports/efficiency/brigade';
 const reportUrl = 'brigade-efficiency-report';

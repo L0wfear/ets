@@ -5,8 +5,8 @@ import LineString from 'ol/geom/LineString';
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { getStyleForTrackLineBySensor } from 'components/monitor/layers/track/lines-by-sensor/feature-style';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { getStyleForTrackLineBySensor } from 'components/old/monitor/layers/track/lines-by-sensor/feature-style';
 import { get } from 'lodash';
 
 type PropsLayerTrackLines = {

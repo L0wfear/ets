@@ -1,19 +1,19 @@
 import { flow as flow_fp } from 'lodash/fp';
 import { withProps } from 'recompose';
-import withMergeProps from 'components/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
+import withMergeProps from 'components/old/compositions/vokinda-hoc/with-merge-props/WithMergeProps';
 
 import {
   dateTimeFormatter,
   onChangeWithKeys,
   multiSelectFormatter,
-} from 'components/compositions/hoc';
+} from 'components/old/compositions/hoc';
 
 import {
   fileFormatter,
   fileCountLimiter,
-} from 'components/compositions/file-input';
+} from 'components/old/compositions/file-input';
 
-import BaseField from 'components/ui/Field';
+import BaseField from 'components/old/ui/Field';
 
 // что-то не зашло
 const flow: any = flow_fp;

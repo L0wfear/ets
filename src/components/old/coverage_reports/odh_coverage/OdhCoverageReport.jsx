@@ -5,8 +5,8 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   oldReportGetOdhCoverageReport,
   oldReportExportOdhCoverageReport,
-} from 'components/coverage_reports/redux-main/modules/old-report/actions-old_report';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+} from 'components/old/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -16,8 +16,8 @@ import { saveData } from 'utils/functions';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 
-import OdhCoverageReportTable from 'components/coverage_reports/odh_coverage/OdhCoverageReportTable';
-import OdhCoverageReportPrintForm from 'components/coverage_reports/odh_coverage/OdhCoverageReportPrintForm';
+import OdhCoverageReportTable from 'components/old/coverage_reports/odh_coverage/OdhCoverageReportTable';
+import OdhCoverageReportPrintForm from 'components/old/coverage_reports/odh_coverage/OdhCoverageReportPrintForm';
 
 const page = 'odh_coverage_report';
 

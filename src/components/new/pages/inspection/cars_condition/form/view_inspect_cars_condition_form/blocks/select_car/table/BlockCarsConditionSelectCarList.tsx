@@ -7,19 +7,19 @@ import {
 } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/_config-data/registry-config';
 
 import { compose } from 'recompose';
-import { useDispatch } from 'react-redux';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type BlockCarsConditionSelectCarListProps = {
   carsConditionCarsList: CarsConditionCars[];
 };
 
 const BlockCarsConditionSelectCarList: React.FC<BlockCarsConditionSelectCarListProps> = (props) => {
-  const dispatch = useDispatch();
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {

@@ -3,7 +3,7 @@ import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegist
 import ErrorBoundaryRegistry from 'components/new/ui/error_boundary_registry/ErrorBoundaryRegistry';
 
 const Component = React.lazy(() => (
-  import(/* webpackChunkName: "user_notification" */ 'components/notifications/UserNotificationList')
+  import(/* webpackChunkName: "user_notification" */ 'components/old/notifications/UserNotificationList')
 ));
 
 export default (props) => (

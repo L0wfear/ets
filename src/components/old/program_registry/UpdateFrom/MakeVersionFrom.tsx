@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import Div from 'components/ui/Div';
-import { FileField } from 'components/ui/input/fields';
-import ModalBody from 'components/ui/Modal';
+import Div from 'components/old/ui/Div';
+import { FileField } from 'components/old/ui/input/fields';
+import ModalBody from 'components/old/ui/Modal';
 /**
  * @todo
  * Описать stage & props

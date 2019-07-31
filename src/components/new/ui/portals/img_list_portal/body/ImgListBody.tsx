@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ImgListBodyContainer, ImgContainer, ImgBackground } from './styled';
 import PrevImage from './prev_image/PrevImage';
 import NextImage from './next_image/NextImage';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 type ImgListBodyProps = {
   img_url: string;

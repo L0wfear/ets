@@ -3,10 +3,10 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import * as cx from 'classnames';
 
-import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/ui/input/FileInput/FileInput.h';
+import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/ui/input/FileInput/FileInput.h';
 
 import { DivNone, DisplayFlexAlignCenter } from 'global-styled/global-styled';
-import { ButtonRemoveFile, FileInputWrapper } from 'components/ui/input/FileInput/styled';
+import { ButtonRemoveFile, FileInputWrapper } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
 import { createValidDateHM } from 'utils/dates';
 

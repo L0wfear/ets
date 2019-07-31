@@ -1,9 +1,9 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { FileField } from 'components/ui/input/fields';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { FileField } from 'components/old/ui/input/fields';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { employeeFormSchema } from 'components/new/pages/nsi/employee/form/schema';
 import { get } from 'lodash';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
@@ -11,7 +11,7 @@ import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autoba
 import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 
 import { getDefaultEmployeeElement, filterCars } from 'components/new/pages/nsi/employee/form/utils';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -24,7 +24,7 @@ import {
 } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DivNone } from 'global-styled/global-styled';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';

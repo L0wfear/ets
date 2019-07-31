@@ -16,32 +16,32 @@ import {
   get,
 } from 'lodash';
 
-import Title from 'components/reports/common/Title';
-import { filterFunction } from 'components/ui/tableNew/utils';
+import Title from 'components/old/reports/common/Title';
+import { filterFunction } from 'components/old/ui/tableNew/utils';
 import {
   IDataTableSelectedRow,
   IDataTableColFilter,
-} from 'components/ui/table/@types/schema.h';
-import { IReactSelectOption } from 'components/ui/@types/ReactSelect.h';
+} from 'components/old/ui/table/@types/schema.h';
+import { IReactSelectOption } from 'components/old/ui/@types/ReactSelect.h';
 import {
   IPropsReportContainer,
   IStateReportContainer,
-} from 'components/reports/common/@types/ReportContainer.h';
-import { IPropsReportHeaderCommon } from 'components/reports/common/@types/ReportHeaderWrapper.h';
+} from 'components/old/reports/common/@types/ReportContainer.h';
+import { IPropsReportHeaderCommon } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 import {
   ReportDataPromise,
   IReportTableMeta,
-} from 'components/reports/redux-main/modules/@types/report.h';
+} from 'components/old/reports/redux-main/modules/@types/report.h';
 
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import {
   getServerErrorNotification,
   noItemsInfoNotification,
 } from 'utils/notifications';
-import * as reportActionCreators from 'components/reports/redux-main/modules/report';
-import DataTable from 'components/ui/table/DataTable';
-import DataTableNew from 'components/ui/tableNew/DataTable';
+import * as reportActionCreators from 'components/old/reports/redux-main/modules/report';
+import DataTable from 'components/old/ui/table/DataTable';
+import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { isArray } from 'util';

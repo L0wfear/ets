@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { ViewInspectPgmBaseProps } from '../../@types/ViewInspectPgmBase';
-import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 
 type BlockInspectPgmBaseMainInfoProps = {
   base_address: InspectPgmBase['base_address'];

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import CollapseText from 'components/ui/collapse/text/CollapseText';
+import CollapseText from 'components/old/ui/collapse/text/CollapseText';
 
 import {
   CollapseTitleContainer,

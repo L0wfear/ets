@@ -19,7 +19,7 @@ import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_typ
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'utils/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
-import { removeEmptyString } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/utils';
 import { get } from 'lodash';
 

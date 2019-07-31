@@ -1,15 +1,15 @@
 import {
   SchemaType,
-} from 'components/ui/form/new/@types/validate.h';
+} from 'components/old/ui/form/new/@types/validate.h';
 import { get } from 'lodash';
 
-import { validateString } from 'components/ui/form/new/string/stringValidate';
-import { validateNumber } from 'components/ui/form/new/number/numberValidate';
-import { validateValueOfArray } from 'components/ui/form/new/valueOfArray/valueOfArrayValidate';
-import { validateMultiValueOfArray } from 'components/ui/form/new/multiValueOfArray/multiValueOfArrayValidate';
-import { validateDate } from 'components/ui/form/new/date/dateValidate';
-import { validateDatetime } from 'components/ui/form/new/datetime/datetimeValidate';
-import { validateBoolean } from 'components/ui/form/new/boolean/booleanValidate';
+import { validateString } from 'components/old/ui/form/new/string/stringValidate';
+import { validateNumber } from 'components/old/ui/form/new/number/numberValidate';
+import { validateValueOfArray } from 'components/old/ui/form/new/valueOfArray/valueOfArrayValidate';
+import { validateMultiValueOfArray } from 'components/old/ui/form/new/multiValueOfArray/multiValueOfArrayValidate';
+import { validateDate } from 'components/old/ui/form/new/date/dateValidate';
+import { validateDatetime } from 'components/old/ui/form/new/datetime/datetimeValidate';
+import { validateBoolean } from 'components/old/ui/form/new/boolean/booleanValidate';
 
 import { isObject, isArray } from 'util';
 

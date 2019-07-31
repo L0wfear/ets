@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HandleThunkActionCreator } from 'react-redux';
-import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { actionLoadStateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/actions_state_program_status';
 import { StateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/@types/stateProgramStatus';
 

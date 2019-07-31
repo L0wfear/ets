@@ -12,7 +12,7 @@ import {
 } from 'components/new/ui/map/overlay/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-const polygon = require('components/monitor/layers/polygon_buffer/styled/image/polygon.png');
+const polygon = require('components/old/monitor/layers/polygon_buffer/styled/image/polygon.png');
 
 export const OverlayInsideMeasureContainer = styled(OverlayInsideContainer)`
   font-size: 12px;

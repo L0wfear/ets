@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getBooleanValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { useDispatch, useSelector } from 'react-redux';

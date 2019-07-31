@@ -1,20 +1,20 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
-import ModalBody from 'components/ui/Modal';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
+import ModalBody from 'components/old/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import Field from 'components/ui/Field';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { FileField } from 'components/ui/input/fields';
+import Field from 'components/old/ui/Field';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { FileField } from 'components/old/ui/input/fields';
 
-import UNSAFE_Form from 'components/compositions/UNSAFE_Form';
+import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
 import {
   ProgramRemarkList,
   ProgramObjectList,
-} from 'components/program_registry/UpdateFrom/inside_components';
-import MakeVersionFrom from 'components/program_registry/UpdateFrom/MakeVersionFrom';
+} from 'components/old/program_registry/UpdateFrom/inside_components';
+import MakeVersionFrom from 'components/old/program_registry/UpdateFrom/MakeVersionFrom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';

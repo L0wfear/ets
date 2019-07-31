@@ -1,15 +1,16 @@
 import * as React from 'react';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import { actionChangeServiceFiles } from 'redux-main/reducers/modules/services/services_actions';
-import { FileField } from 'components/ui/input/fields';
+import { FileField } from 'components/old/ui/input/fields';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type TrTdServiceFilesfStateProps = {
   permissions: string | boolean;
@@ -32,7 +33,7 @@ type TrTdServiceFilesfProps = TrTdServiceFilesfMergedProps;
 const TrTdServiceFilesf: React.FC<TrTdServiceFilesfProps> = React.memo(
   (props) => {
     const { rowData } = props;
-    const dispatch: any = useDispatch();
+    const dispatch = etsUseDispatch();
 
     const handleChange = React.useCallback(
       async (files: any[]) => {

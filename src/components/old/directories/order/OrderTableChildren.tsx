@@ -10,11 +10,11 @@ import {
 
 import permissions_mission_template from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
-import { TypeDownload } from 'components/directories/order/constant-order';
-import { getBlobOrder } from 'components/directories/order/utils-order';
+import { TypeDownload } from 'components/old/directories/order/constant-order';
+import { getBlobOrder } from 'components/old/directories/order/utils-order';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import dutyMissionTemplatePermissions from 'components/new/pages/missions/duty_mission_template/_config-data/permissions';
-import ButtonCheckPermission from 'components/ui/buttons/ButtonCheckPermission';
+import ButtonCheckPermission from 'components/old/ui/buttons/ButtonCheckPermission';
 
 const marginLeft = { marginLeft: 10 };
 

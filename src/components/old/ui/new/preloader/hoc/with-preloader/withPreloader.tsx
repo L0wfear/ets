@@ -6,7 +6,7 @@ import {
   DivNone,
 } from 'global-styled/global-styled';
 
-import PreloadNew, { PropsPreloadNew } from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew, { PropsPreloadNew } from 'components/old/ui/new/preloader/PreloadNew';
 
 import { ReduxState } from 'redux-main/@types/state';
 

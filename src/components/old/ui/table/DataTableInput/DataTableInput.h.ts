@@ -1,5 +1,5 @@
-import { TInjectedPropsDataTableInputWrapper } from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
-import { ISchemaRenderer, IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { TInjectedPropsDataTableInputWrapper } from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
+import { ISchemaRenderer, IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
 
 /**
  * Это пропсы оборачиваемого компонента, которые надо расшарить для обёртки.

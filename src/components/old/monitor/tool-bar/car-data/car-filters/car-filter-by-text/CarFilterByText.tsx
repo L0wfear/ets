@@ -3,11 +3,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as ClickOutHandler from 'react-onclickout';
 import * as cx from 'classnames';
-import CarFieldBytextInput from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput';
+import CarFieldBytextInput from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/car-field-by-text-input/CarFieldBytextInput';
 import {
   PropsCarFilterByText,
   StateCarFilterByText,
-} from 'components/monitor/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText.h';
+} from 'components/old/monitor/tool-bar/car-data/car-filters/car-filter-by-text/CarFilterByText.h';
 
 import {
   DivNone,

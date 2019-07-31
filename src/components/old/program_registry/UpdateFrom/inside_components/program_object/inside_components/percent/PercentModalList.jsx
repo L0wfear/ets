@@ -5,17 +5,17 @@ import moment from 'moment';
 import { isEmpty } from 'lodash';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import UNSAFE_ElementsList from 'components/program_registry/UNSAFE_ElementsList';
-import ModalBody from 'components/ui/Modal';
+import UNSAFE_ElementsList from 'components/old/program_registry/UNSAFE_ElementsList';
+import ModalBody from 'components/old/ui/Modal';
 import {
   ButtonCreateNew,
   ButtonReadNew,
   ButtonDeleteNew,
-} from 'components/ui/buttons/CRUD';
+} from 'components/old/ui/buttons/CRUD';
 
-import PercentModalTable from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
-import PercentModalFormWrap from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalFormWrap';
-import permissions from 'components/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/config-data/permissions';
+import PercentModalTable from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalTable';
+import PercentModalFormWrap from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalFormWrap';
+import permissions from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/config-data/permissions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';

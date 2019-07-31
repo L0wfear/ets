@@ -4,7 +4,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/index';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 
 export type StatePropsFieldRouteIdDutyMission = {

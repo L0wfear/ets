@@ -3,12 +3,12 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import sspPermissions from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/permissions';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { sspFormSchema } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/schema';
 import { get } from 'lodash';
 
 import { getDefaultSspFormElement } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/utils';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -25,7 +25,7 @@ import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { isNumber } from 'util';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';

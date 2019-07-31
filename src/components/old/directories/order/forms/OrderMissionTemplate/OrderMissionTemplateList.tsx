@@ -7,36 +7,36 @@ import {
 
 import { FluxContext, connectToStores } from 'utils/decorators';
 
-import Div from 'components/ui/Div';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import Div from 'components/old/ui/Div';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
-import MissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
-import DutyMissionTemplateTable from 'components/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
+import MissionTemplateTable from 'components/old/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
+import DutyMissionTemplateTable from 'components/old/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
 
 import { diffDates } from 'utils/dates';
 
-import { checkStructureByTypeClick } from 'components/directories/order/forms/utils/customValidate';
+import { checkStructureByTypeClick } from 'components/old/directories/order/forms/utils/customValidate';
 import {
   getMissionListByFilter,
-} from 'components/directories/order/forms/utils/filtersData';
+} from 'components/old/directories/order/forms/utils/filtersData';
 
 import {
   ASSIGN_OPTIONS,
   typeTemplate,
-} from 'components/directories/order/forms/utils/constant';
+} from 'components/old/directories/order/forms/utils/constant';
 
 import {
   IStateOrderMissionTemplate,
-} from 'components/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
-import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/directories/order/forms/utils/createMissionsByOrder';
+} from 'components/old/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
+import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/old/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState, getSomeUniqState } from 'redux-main/reducers/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import LoadingOverlayLegacy from 'components/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import LoadingOverlayLegacy from 'components/old/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
 import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
 import {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import {
   MainPageLoader,
   CssloadLoader,
-} from 'components/ui/new/preloader/styled/styled';
+} from 'components/old/ui/new/preloader/styled/styled';
 
 export type PropsPreloadNew = {
   typePreloader: 'mainpage' | 'field' | 'lazy';

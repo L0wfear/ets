@@ -7,7 +7,7 @@ import {
   GetSessionCompanyOptionsAns,
   getSessionStructuresParams,
 } from 'redux-main/reducers/modules/session/selectors';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 

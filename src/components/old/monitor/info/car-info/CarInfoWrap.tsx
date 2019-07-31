@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Map from 'ol/Map';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { OwnPropsCarInfo } from 'components/monitor/info/car-info/CarInfo';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { OwnPropsCarInfo } from 'components/old/monitor/info/car-info/CarInfo';
 
 type PropsCarInfoWrap = {
   map: Map,
@@ -13,7 +13,7 @@ type StateCarInfoWrap = {
 };
 
 const CarInfo = React.lazy<React.ComponentType<OwnPropsCarInfo>>(() => (
-  import(/* webpackChunkName: "car_info" */ 'components/monitor/info/car-info/CarInfo')
+  import(/* webpackChunkName: "car_info" */ 'components/old/monitor/info/car-info/CarInfo')
 ));
 
 class CarInfoWrap extends React.PureComponent<PropsCarInfoWrap, StateCarInfoWrap> {

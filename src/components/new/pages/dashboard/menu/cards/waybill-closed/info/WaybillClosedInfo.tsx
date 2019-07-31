@@ -3,14 +3,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 
 import { dashboardSetInfoDataInWaybillClosed } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
-import WaybillFormWrapTSX from 'components/waybill/WaybillFormWrap';
+import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
 
 import {
   PropsWaybillClosedInfo,

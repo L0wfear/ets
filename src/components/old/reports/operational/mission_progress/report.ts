@@ -1,11 +1,11 @@
 import { withProps } from 'recompose';
 
-import { IReportProps } from 'components/reports/@types/common.h';
-import { ISchemaMaker } from 'components/ui/table/@types/schema.h';
+import { IReportProps } from 'components/old/reports/@types/common.h';
+import { ISchemaMaker } from 'components/old/ui/table/@types/schema.h';
 
 import { exportable } from 'utils/decorators';
-import ReportContainer from 'components/reports/common/ReportContainer';
-import ReportHeader from 'components/reports/operational/mission_progress/ReportHeader';
+import ReportContainer from 'components/old/reports/common/ReportContainer';
+import ReportHeader from 'components/old/reports/operational/mission_progress/ReportHeader';
 
 const serviceUrl = 'mission_progress_report';
 const reportUrl = 'mission-progress-report';

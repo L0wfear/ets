@@ -2,7 +2,7 @@ import {
   OrderService,
 } from 'api/Services';
 import { saveData } from 'utils/functions';
-import { TypeDownload } from 'components/directories/order/constant-order';
+import { TypeDownload } from 'components/old/directories/order/constant-order';
 
 export const getBlobOrder = ({ id }, eventName) => {
   const payload: any = {};

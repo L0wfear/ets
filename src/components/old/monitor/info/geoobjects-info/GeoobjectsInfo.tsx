@@ -1,11 +1,11 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { connect } from 'react-redux';
-import GeoobjectData from 'components/monitor/info/geoobjects-info/GeoobjectData';
+import GeoobjectData from 'components/old/monitor/info/geoobjects-info/GeoobjectData';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
-import { monitorPageRemoveAllFromSelectedGeoobjects } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageRemoveAllFromSelectedGeoobjects } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
-import { CarInfoBlock, DataContainer, CarInfoTitleSpanContainer, CarInfoClose } from 'components/monitor/styled';
+import { CarInfoBlock, DataContainer, CarInfoTitleSpanContainer, CarInfoClose } from 'components/old/monitor/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { ContainerButtonToggleShowGeoobjectList, GeoobjectListContainer } from './styled';
 

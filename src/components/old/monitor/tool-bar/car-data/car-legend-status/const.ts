@@ -1,4 +1,4 @@
-import { ListStatusType } from 'components/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus.h';
+import { ListStatusType } from 'components/old/monitor/tool-bar/car-data/car-legend-status/CarLegendStatus.h';
 /**
  * статусы тс из сокета
  */

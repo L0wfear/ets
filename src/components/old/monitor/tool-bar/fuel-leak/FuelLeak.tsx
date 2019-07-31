@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cx from 'classnames';
-import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { loadFuelEvents } from 'redux-main/trash-actions/geometry/geometry';
 import { compose } from 'recompose';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 
 import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
-} from 'components/monitor/redux-main/models/monitor-page';
+} from 'components/old/monitor/redux-main/models/monitor-page';
 
 import { diffDates } from 'utils/dates';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import {
   DivNone,

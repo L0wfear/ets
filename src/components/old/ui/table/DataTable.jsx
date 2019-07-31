@@ -7,7 +7,7 @@ import cx from 'classnames';
 
 import { diffDates } from 'utils/dates';
 import { isEmpty } from 'utils/functions';
-import SimpleGriddle from 'components/ui/table/simple-griddle/SimpleGriddle';
+import SimpleGriddle from 'components/old/ui/table/simple-griddle/SimpleGriddle';
 
 import {
   isStringArrayData,
@@ -17,11 +17,11 @@ import {
   parseAdvancedFilter,
   getFilterTypeByKey,
   makeData,
-} from 'components/ui/table/utils';
-import Filter from 'components/ui/table/filter/Filter';
-import FilterButton from 'components/ui/table/filter/FilterButton';
-import Div from 'components/ui/Div';
-import Paginator from 'components/ui/new/paginator/Paginator';
+} from 'components/old/ui/table/utils';
+import Filter from 'components/old/ui/table/filter/Filter';
+import FilterButton from 'components/old/ui/table/filter/FilterButton';
+import Div from 'components/old/ui/Div';
+import Paginator from 'components/old/ui/new/paginator/Paginator';
 import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
 import { isArray } from 'util';

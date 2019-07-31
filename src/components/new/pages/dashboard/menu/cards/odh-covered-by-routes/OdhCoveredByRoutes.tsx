@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
-import CollapseButton from 'components/ui/collapse/button/CollapseButton';
+import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 import List from 'components/new/pages/dashboard/menu/cards/odh-covered-by-routes/list/List';
 
 import {

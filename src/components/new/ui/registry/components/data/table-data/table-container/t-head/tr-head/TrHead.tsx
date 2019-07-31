@@ -14,7 +14,7 @@ import {
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { validatePermissions } from 'components/util/RequirePermissionsNewRedux';
+import { validatePermissions } from 'components/old/util/RequirePermissionsNewRedux';
 import { get } from 'lodash';
 import { getSessionState } from 'redux-main/reducers/selectors';
 

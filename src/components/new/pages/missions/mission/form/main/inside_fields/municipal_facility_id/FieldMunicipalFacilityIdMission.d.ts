@@ -3,7 +3,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export type StateFieldMunicipalFacilityIdMission = {
   MUNICIPAL_FACILITY_OPTIONS: DefaultSelectOption<MunicipalFacility['municipal_facility_id'], MunicipalFacility['municipal_facility_name'], MunicipalFacility>[];

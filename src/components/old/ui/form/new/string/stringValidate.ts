@@ -1,4 +1,4 @@
-import { StringPropertie } from 'components/ui/form/new/@types/validate.h';
+import { StringPropertie } from 'components/old/ui/form/new/@types/validate.h';
 import { isString } from 'util';
 
 export const validateString = <K, F, P, RootFormState>(key: keyof F, fieldData: StringPropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {

@@ -1,5 +1,5 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import routesActions from 'redux-main/reducers/modules/routes/actions';

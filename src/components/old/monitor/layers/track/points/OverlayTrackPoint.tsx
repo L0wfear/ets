@@ -2,10 +2,10 @@ import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { carInfoSetTrackPoint } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { makeDate, makeTime } from 'utils/dates';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
@@ -19,7 +19,7 @@ import {
   SensorsListContainer,
   OverlayBoxInfoContainer,
   OverlayLineObjectsStringContainer,
-} from 'components/monitor/layers/track/points/styled/styled';
+} from 'components/old/monitor/layers/track/points/styled/styled';
 
 import {
   OverlayLineInfoContainer,

@@ -8,7 +8,7 @@ import Point from 'ol/geom/Point';
 
 import withLayerProps from 'components/new/ui/map/layers/base-hoc/layer/LayerProps';
 import { compose } from 'recompose';
-import { getStyleForStatusDirectionType } from 'components/monitor/layers/car-markers/feature-style';
+import { getStyleForStatusDirectionType } from 'components/old/monitor/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
@@ -16,24 +16,24 @@ import {
   carInfoSetGpsNumber,
   carInfoSetStatus,
   carInfoPushPointIntoTrack,
-} from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
-import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/redux-main/modules/car-info';
+} from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { CAR_INFO_SET_TRACK_CACHING } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import {
   monitoPageChangeCarsByStatus,
   monitorPageResetCarStatus,
   monitorPageMergeFiltredCarGpsCode,
-} from 'components/monitor/redux-main/models/actions-monitor-page';
+} from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import {
   getFrontStatus,
   checkOnVisible,
   calcCountTsByStatus,
-} from 'components/monitor/layers/car-markers/utils';
+} from 'components/old/monitor/layers/car-markers/utils';
 
 import {
   PropsLayerCarMarker,
   StateLayerCarMarker,
   WsData,
-} from 'components/monitor/layers/car-markers/LayerCarMarker.h';
+} from 'components/old/monitor/layers/car-markers/LayerCarMarker.h';
 import { isEmpty } from 'lodash';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';

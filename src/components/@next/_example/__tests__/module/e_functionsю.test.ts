@@ -2,7 +2,7 @@ import {
   exampleFunc1,
   exampleFunc2,
   exampleFunc3,
-} from 'components/@next/example/module/e_functions';
+} from 'components/@next/_example/module/e_functions';
 
 describe('Проверка функций из примера', () => {
   test('Проверка exampleFunc1 на корректность суммы', () => {
@@ -23,6 +23,8 @@ describe('Проверка функций из примера', () => {
   test('Проверка асинхронной функции exampleFunc3 на корректность суммы', async () => {
     const a = 1;
     const b = 2;
+    expect.assertions(1);
+
     try {
       const result = await exampleFunc3(a, b);
       expect(result).toBe(a + b);

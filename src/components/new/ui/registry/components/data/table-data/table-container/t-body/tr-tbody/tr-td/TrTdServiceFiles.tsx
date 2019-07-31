@@ -43,7 +43,13 @@ const TrTdServiceFilesf: React.FC<TrTdServiceFilesfProps> = React.memo(
             await dispatch(
               actionChangeServiceFiles(
                 props.rowData.id,
-                files,
+                files.map(
+                  (file) => {
+                    file.kind = 'specification';
+
+                    return file;
+                  },
+                ),
                 {
                   page: props.registryKey,
                 },

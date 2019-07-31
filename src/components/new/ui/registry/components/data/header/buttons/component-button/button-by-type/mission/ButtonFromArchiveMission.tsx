@@ -98,7 +98,7 @@ const ButtonFromArchiveMission: React.FC<ButtonFromArchiveMissionProps> = (props
         handleHide={handleClickCloseForm}
         handleSubmit={handleClickToArchive}
 
-        message={`Вы уверены, что хотите перенести из архива ${checkedRowsAsArray.length > 1 ? 'выбранные наряд-задания' : 'выбранное наряд-задание'}?`}
+        message={`Вы уверены, что хотите перенести из архива ${checkedRowsAsArray.length > 1 ? 'выбранные задания' : 'выбранное задание'}?`}
       />
     </>
   );

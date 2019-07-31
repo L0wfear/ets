@@ -83,7 +83,7 @@ const Buttons: React.FC<any> = (props) => {
   return (
     <div>
       <EtsBootstrap.Button disabled={disabled} onClick={props.handleClickAddEl} >Добавить элемент</EtsBootstrap.Button>
-      <EtsBootstrap.Button disabled={selectedRow === null} onClick={props.handleClickOnRemove} >Удалить</EtsBootstrap.Button>
+      <EtsBootstrap.Button disabled={disabled || selectedRow === null} onClick={props.handleClickOnRemove} >Удалить</EtsBootstrap.Button>
     </div>
   );
 };

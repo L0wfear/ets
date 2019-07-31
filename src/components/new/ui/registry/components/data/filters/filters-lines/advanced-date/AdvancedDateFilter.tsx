@@ -6,7 +6,7 @@ import {
 } from 'components/new/ui/registry/module/selectors-registry';
 
 import {
-  EtsFilter,
+  EtsFilterDate,
   EtsFilterTitle,
   EtsFilterInputAdvacedContainer,
   AdvacedFirstLineContainer,
@@ -133,7 +133,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
     const id = `filter_${props.filterData.valueKey}`;
 
     return (
-      <EtsFilter htmlFor="">
+      <EtsFilterDate>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>
@@ -177,7 +177,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
           }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
-      </EtsFilter>
+      </EtsFilterDate>
     );
   }
 }

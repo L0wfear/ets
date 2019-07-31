@@ -4,7 +4,7 @@ import { get } from 'lodash';
 
 import { registyLoadPrintForm } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type PropsButtonExport = {
   data?: ValuesOf<OneRegistryData['header']['buttons']>

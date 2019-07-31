@@ -40,7 +40,7 @@ import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
 
 type PropsComponentButton = {

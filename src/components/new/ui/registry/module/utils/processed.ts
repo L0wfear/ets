@@ -1,5 +1,5 @@
 import { isNullOrUndefined, isArray, isString, isObject } from 'util';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { diffDatesByDays, diffDates } from 'utils/dates';
 import { get } from 'lodash';
 

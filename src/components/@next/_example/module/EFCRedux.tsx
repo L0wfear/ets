@@ -1,21 +1,16 @@
 // snippet function_component
 import * as React from 'react';
-import { ThunkAction } from 'redux-thunk';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { ReduxState } from 'redux-main/@types/state';
 
 // Простые названия, если не нужен экспорт
 type Props = {};
 
-/* Пример типа стора */
-type StateType = {
-  s: string;
-};
 /* Пример селектора */
 const selector_s = (state: ReduxState) => state.s;
 /* Пример экшена */
-const action = (): ThunkAction<number, StateType, {}, AnyAction> => (dispatch, getState) => 1;
+const action = (): EtsAction<number> => (dispatch, getState) => 1;
 
 const FunctionComponent: React.FC<Props> = React.memo(
   (props) => {

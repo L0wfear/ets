@@ -8,13 +8,11 @@ import {
   promiseRemoveDutyMissionTemplate,
 } from 'redux-main/reducers/modules/missions/duty_mission_template/promise';
 import { DutyMissionTemplate } from './@types/index.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { HandleThunkActionCreator } from 'react-redux';
 
-export const actionSetDutyMissionTemplate = (dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList']): ThunkAction<IStateMissions['dutyMissionTemplateList'], ReduxState, {}, AnyAction> => (dispatch) => {
+export const actionSetDutyMissionTemplate = (dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList']): EtsAction<IStateMissions['dutyMissionTemplateList']> => (dispatch) => {
   dispatch(
     missionsSetNewData({
       dutyMissionTemplateList,
@@ -23,7 +21,7 @@ export const actionSetDutyMissionTemplate = (dutyMissionTemplateList: IStateMiss
 
   return dutyMissionTemplateList;
 };
-export const actionResetDutyMissionTemplate = (): ThunkAction<IStateMissions['dutyMissionTemplateList'], ReduxState, {}, AnyAction> => (dispatch) => {
+export const actionResetDutyMissionTemplate = (): EtsAction<IStateMissions['dutyMissionTemplateList']> => (dispatch) => {
   const dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList'] = [];
 
   dispatch(
@@ -32,7 +30,7 @@ export const actionResetDutyMissionTemplate = (): ThunkAction<IStateMissions['du
 
   return dutyMissionTemplateList;
 };
-export const actionGetDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetDutyMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionGetDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetDutyMissionTemplate>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetDutyMissionTemplate(payloadOwn),
@@ -44,7 +42,7 @@ export const actionGetDutyMissionTemplate = (payloadOwn: object, meta: LoadingMe
 
   return payload;
 };
-export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMissionTemplate>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMissionTemplate>>> => async (dispatch) => {
   dispatch(actionResetDutyMissionTemplate());
 
   const response = await dispatch(
@@ -57,7 +55,7 @@ export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, me
 
   return response;
 };
-export const actionCreateDutyMissionTemplate = (dutyDutyMissionTemplateRaw: Partial<DutyMissionTemplate>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateDutyMissionTemplate>, ReduxState, {}, AnyAction>  => async (dispatch) => {
+export const actionCreateDutyMissionTemplate = (dutyDutyMissionTemplateRaw: Partial<DutyMissionTemplate>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateDutyMissionTemplate>>  => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateDutyMissionTemplate(dutyDutyMissionTemplateRaw),
@@ -69,7 +67,7 @@ export const actionCreateDutyMissionTemplate = (dutyDutyMissionTemplateRaw: Part
 
   return payload;
 };
-export const actionUpdateDutyMissionTemplate = (dutyDutyMissionTemplateOld: Partial<DutyMissionTemplate> & Pick<DutyMissionTemplate, 'id'>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateDutyMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateDutyMissionTemplate = (dutyDutyMissionTemplateOld: Partial<DutyMissionTemplate> & Pick<DutyMissionTemplate, 'id'>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateDutyMissionTemplate>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateDutyMissionTemplate(dutyDutyMissionTemplateOld),
@@ -81,7 +79,7 @@ export const actionUpdateDutyMissionTemplate = (dutyDutyMissionTemplateOld: Part
 
   return payload;
 };
-export const actionRemoveDutyMissionTemplates = (dutyDutyMissionTemplateOldArr: (Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>)[], meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveDutyMissionTemplates>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionRemoveDutyMissionTemplates = (dutyDutyMissionTemplateOldArr: (Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>)[], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissionTemplates>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissionTemplates(dutyDutyMissionTemplateOldArr.map(({ id }) => id)),
@@ -93,7 +91,7 @@ export const actionRemoveDutyMissionTemplates = (dutyDutyMissionTemplateOldArr: 
 
   return payload;
 };
-export const actionRemoveDutyMissionTemplate = (dutyDutyMissionTemplateOld: Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseRemoveDutyMissionTemplate>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionRemoveDutyMissionTemplate = (dutyDutyMissionTemplateOld: Pick<DutyMissionTemplate, 'id'> & Partial<DutyMissionTemplate>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseRemoveDutyMissionTemplate>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveDutyMissionTemplate(dutyDutyMissionTemplateOld.id),

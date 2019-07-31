@@ -6,7 +6,7 @@ import { ReduxState } from 'redux-main/@types/state';
 
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

@@ -6,7 +6,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { get } from 'lodash';
@@ -53,12 +53,6 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   );
   const handleClickRemoveSelectedRows = React.useCallback(
     async () => {
-      const itemToRemove = props.checkedRows;
-
-      if (!Object.values(itemToRemove).length) {
-        itemToRemove[props.uniqKey] = props.selectedRow;
-      }
-
       try {
         await props.registryRemoveSelectedRows(props.registryKey);
       } catch (error) {

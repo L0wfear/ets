@@ -23,9 +23,7 @@ import { WaybillClosedInfoDataType } from 'components/new/pages/dashboard/redux-
 
 import { loadMissionDataById } from 'redux-main/trash-actions/mission';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -128,7 +126,7 @@ export const dashboardSetInfoDataInOdhCoveredByRoutes = (infoData: OdhCoveredByR
   },
 });
 
-export const dashboardSetInfoDataInCarInWorkOverall = (infoData: CarInWorkOverallInfoDataType = null): ThunkAction<any, ReduxState, {}, AnyAction> => (dispatch) => dispatch({
+export const dashboardSetInfoDataInCarInWorkOverall = (infoData: CarInWorkOverallInfoDataType = null): EtsAction<any> => (dispatch) => dispatch({
   type: DASHBOARD_SET_INFO_DATA,
   payload: {
     path: 'car_in_work_overall',

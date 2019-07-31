@@ -9,11 +9,18 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 
 import {
   TypeConfigData,
-  PropsRegistryWrap,
-  StateRegistryWrap,
 } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'redux';
+
+export type PropsRegistryWrap = {
+  registryAddInitialData: any;
+  registryRemoveData: any;
+};
+
+export type StateRegistryWrap = {
+
+};
 
 const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Component) => (
   compose(

@@ -11,7 +11,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { registryToggleIsOpenFilter } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type ButtonToggleFilterStateProps = {
   hasFilters: boolean;

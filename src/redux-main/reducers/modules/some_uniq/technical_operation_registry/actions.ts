@@ -3,9 +3,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { promiseGetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types/index';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* --------------- обновление стора --------------- */
 export const actionSetTechnicalOperationRegistry = (technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList']) => (dispatch) => (
@@ -31,21 +29,21 @@ export const actionSetTechnicalOperationRegistryForDutyMission = (technicalOpera
 );
 
 /* --------------- сброс стора --------------- */
-export const actionResetTechnicalOperationRegistry = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetTechnicalOperationRegistry = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetTechnicalOperationRegistry([]),
   );
 
   return null;
 };
-export const actionResetTechnicalOperationRegistryForMission = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetTechnicalOperationRegistryForMission = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetTechnicalOperationRegistryForMission([]),
   );
 
   return null;
 };
-export const actionResetTechnicalOperationRegistryForDutyMission = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetTechnicalOperationRegistryForDutyMission = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetTechnicalOperationRegistryForDutyMission([]),
   );
@@ -84,7 +82,7 @@ export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = 
 export type ActionGetAndSetInStoreTechnicalOperationRegistryForMissionAns = {
   technicalOperationRegistryForMissionList: TechnicalOperationRegistry[],
 };
-export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (payload, { page, path }: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreTechnicalOperationRegistryForMissionAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (payload, { page, path }: LoadingMeta): EtsAction<Promise<ActionGetAndSetInStoreTechnicalOperationRegistryForMissionAns>> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetTechnicalOperationRegistry(
       {
@@ -106,7 +104,7 @@ export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (paylo
 export type ActionGetAndSetInStoreTechnicalOperationRegistryForDutyMissionAns = {
   technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[],
 };
-export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission = (payload = {}, { page, path }: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreTechnicalOperationRegistryForDutyMissionAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<Promise<ActionGetAndSetInStoreTechnicalOperationRegistryForDutyMissionAns>> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetTechnicalOperationRegistry(
       {

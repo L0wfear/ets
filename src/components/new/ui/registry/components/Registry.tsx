@@ -5,7 +5,8 @@ import { connect, DispatchProp } from 'react-redux';
 import { getRootRegistry, getHeaderData } from '../module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from '../module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegistry';
 
 type RegistryStateProps = {

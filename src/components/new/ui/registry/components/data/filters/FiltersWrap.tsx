@@ -8,7 +8,8 @@ import Filters from 'components/new/ui/registry/components/data/filters/Filters'
 import { PanelWrap, PanelBodyWrap } from 'components/new/ui/registry/components/data/filters/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
-import { OneRegistryData } from '../../../module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

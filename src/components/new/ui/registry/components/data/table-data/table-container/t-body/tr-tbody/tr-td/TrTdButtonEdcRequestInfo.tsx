@@ -17,7 +17,7 @@ import {
   GlyphiconContainer32,
   // EtsTbodyTrTdMisionData,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 import { get } from 'lodash';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';

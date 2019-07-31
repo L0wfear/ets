@@ -4,7 +4,7 @@ import { ColumnPopupContainer } from 'components/new/ui/registry/components/data
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ControlItem from './ControlItem';
 import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/module/actions-registy';
 import { get } from 'lodash';
@@ -29,7 +29,7 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
   const handleChange = React.useCallback(
     (field) => {
       const newField = props.fields.map((fieldData) => {
-        if (fieldData.key === field.key) {
+        if ('key' in fieldData && fieldData.key === field.key) {
           return field;
         }
 
@@ -49,7 +49,7 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
       props.actionChangeRegistryMetaFields(
         props.registryKey,
         props.fields.map((fieldData) => {
-          if (fieldData.key === field.key) {
+          if ('key' in fieldData && fieldData.key === field.key) {
             return field;
           }
 
@@ -64,11 +64,11 @@ const ColumnsPopup: React.FC<ColumnsPopupProps> = (props) => {
     <ColumnPopupContainer>
     {
       props.fields.reduce(
-        (newArr, fieldData) => {
-          if (fieldData.key !== 'checkbox' && fieldData.key !== 'enumerated') {
+        (newArr, fieldData, index) => {
+          if ('key' in fieldData && fieldData.key !== 'checkbox' && fieldData.key !== 'enumerated') {
             newArr.push(
               <ControlItem
-                key={fieldData.key}
+                key={fieldData.key.toString()}
                 fieldData={fieldData}
 
                 onChange={handleChange}

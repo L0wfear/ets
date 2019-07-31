@@ -6,7 +6,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';

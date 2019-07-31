@@ -17,7 +17,7 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { get } from 'lodash';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { hasMotohours } from 'utils/functions';
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

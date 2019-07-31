@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { TypeOneDisplayIf, OneFilterType } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { InitialStateTypeRegistry } from 'components/new/ui/registry/module/@types/registry';
 
 const REGISTRY = createPath('REGISTRY');
 
@@ -10,86 +10,6 @@ export const REGISTRY_CHANGE_LIST = REGISTRY`CHANGE_LIST`;
 export const REGISTRY_CHANGE_SERVICE = REGISTRY`CHANGE_SERVICE`;
 export const REGISTRY_SET_LOADING_STATUS = REGISTRY`SET_LOADING_STATUS`;
 export const REGISTRY_SET_ID_REQUEST_TIME = REGISTRY`SET_ID_REQUEST_TIME`;
-
-export interface OneRegistryData {
-  idRequestTime: number;
-  isLoading: boolean;
-  Service: any;
-  header: {
-    title?: any;
-    titlePopover: string;
-    format: (
-      'default'
-      | 'select_odh/dt(disabled)'
-      | 'select_odh/dt'
-      | 'datetime_range_picker'
-      | 'select_for_technical_operation_relations'
-      | 'is_current_structure'
-    );
-    is_current_structure_popover?: string;
-    buttons: Array<{
-      type: string;
-      title?: string;
-      glyph?: string;                                       // EtsBootstrap.Glyphicon glyph
-      format?: string;
-      objChangeParams?: object;                     // что заменять в params при клике
-    }>;
-  };
-  list: {
-    data: {
-      array: any[];
-      arrayExtra: any; // use lodash.get
-      total_count?: number;
-      uniqKey?: string;
-      uniqKeyForParams?: string;
-      selectedRow?: object | null;
-      selectedRowToShow?: object | null;
-      checkedRows?: object | null;
-      fixedWidth: boolean;
-      proxyCheckData?: (
-        'mission_template'
-      )
-    },
-    permissions: {
-      list: string | boolean;
-      create: string | boolean;
-      read: string | boolean;
-      update: string | boolean;
-      delete: string | boolean;
-      [otherKey: string]: string | boolean;
-    };
-    meta: {
-      row_double_click: boolean;
-      fields: any[],
-      fieldsInDeepArr: any[],
-      rowFields: any[],
-      treeFields: object,
-    },
-    paginator?: {
-      currentPage?: number;
-      perPage?: number;
-    },
-    processed?: {
-      filterValues?: object,
-      processedArray?: any[],
-      sort?: {
-        field?: string,
-        reverse?: boolean,
-      },
-      total_count?: number,
-    },
-  };
-  filter: {
-    isOpen?: boolean;
-    fields: OneFilterType<any>[],
-    rawFilterValues?: {},
-    displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
-  };
-}
-
-export type InitialStateTypeRegistry = {
-  [key: string]: OneRegistryData;
-};
 
 const initialState: InitialStateTypeRegistry = {
 };

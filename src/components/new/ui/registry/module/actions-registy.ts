@@ -1,5 +1,7 @@
 import { get } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,
@@ -7,7 +9,6 @@ import {
   REGISTRY_CHANGE_LIST,
   REGISTRY_CHANGE_SERVICE,
   REGISTRY_SET_LOADING_STATUS,
-  OneRegistryData,
   REGISTRY_SET_ID_REQUEST_TIME,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';

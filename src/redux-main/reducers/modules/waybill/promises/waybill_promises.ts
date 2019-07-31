@@ -3,7 +3,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import {
   get,
 } from 'lodash';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { monthOptions, makeDate } from 'utils/dates';
 
 export const getOneWaybillFront = (waybillRaw) => {

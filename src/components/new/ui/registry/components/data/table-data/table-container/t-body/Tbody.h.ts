@@ -1,5 +1,5 @@
 import { DispatchProp } from 'react-redux';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 export interface StatePropsTbody {
   showArray: OneRegistryData['list']['processed']['processedArray'];

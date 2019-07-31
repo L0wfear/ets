@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { connect, DispatchProp, useDispatch } from 'react-redux';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { get } from 'lodash';
 import { compose } from 'recompose';
+import { isNullOrUndefined, isFunction } from 'util';
+
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { isNullOrUndefined, isFunction } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { get } from 'lodash';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type WithFormRegistrySearchConfig = {
   cantCreate?: boolean;                   // может ли форма создать запись

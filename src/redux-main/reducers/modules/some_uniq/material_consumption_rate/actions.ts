@@ -2,9 +2,7 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* --------------- обновление стора --------------- */
 export const actionSetConsumptionRateMaterial = (
@@ -17,12 +15,7 @@ export const actionSetConsumptionRateMaterial = (
   );
 
 /* --------------- сброс стора --------------- */
-export const actionResetConsumptionRateMaterial = (): ThunkAction<
-  void,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+export const actionResetConsumptionRateMaterial = (): EtsAction<void> => async (dispatch) => {
   dispatch(actionSetConsumptionRateMaterial([]));
 
   return null;

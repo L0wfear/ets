@@ -9,7 +9,8 @@ import { EtsFilterCntainer } from 'components/new/ui/registry/components/data/fi
 import { ReduxState } from 'redux-main/@types/state';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getFilterData } from '../../../module/selectors-registry';
-import { OneRegistryData } from '../../../module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import { applyFilterFromRaw } from '../../../module/utils/filter';
 import EtsFilterCheckSearch from './EtsFilterCheckSearch';
 

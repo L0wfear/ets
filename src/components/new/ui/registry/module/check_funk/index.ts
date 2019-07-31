@@ -1,5 +1,6 @@
 import { get } from 'lodash';
-import { OneRegistryData } from '../registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 
 export const isAllChecked = (registryData: OneRegistryData) => {

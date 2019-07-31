@@ -1,5 +1,5 @@
 import { isBoolean, isArray, isString, isNumber } from 'util';
-import { OneRegistryData } from '../registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 export const typeFilter = [
   {

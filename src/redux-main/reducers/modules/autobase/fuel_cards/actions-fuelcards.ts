@@ -1,3 +1,4 @@
+import { HandleThunkActionCreator } from 'react-redux';
 import { FuelCard, FuelType } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import {
   createFuelCard,
@@ -6,11 +7,8 @@ import {
 } from 'redux-main/reducers/modules/autobase/fuel_cards/promises';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* ---------- FuelCards ---------- */
 export const setFuelCards = (fuelCardsList: FuelCard[]) => (dispatch) => (
@@ -35,7 +33,7 @@ export const resetSetFuelCards = () => (dispatch) => (
   )
 );
 
-export const fuelCardsGet = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof getFuelCards>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const fuelCardsGet = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<typeof getFuelCards>> => async (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     getFuelCards(payload),
@@ -43,7 +41,7 @@ export const fuelCardsGet = (payload: object, meta: LoadingMeta): ThunkAction<Re
   );
 };
 
-export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof fuelCardsGet>>> => async (dispatch) => {
   const { data } = await dispatch(
     fuelCardsGet(payload, meta),
   );
@@ -57,7 +55,7 @@ export const fuelCardsGetAndSetInStore = (payload: object, meta: LoadingMeta): T
   };
 };
 
-export const autobaseCreateFuelCard = (fuelCardsOld: FuelCard, meta: LoadingMeta): ThunkAction<ReturnType<typeof createFuelCard>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const autobaseCreateFuelCard = (fuelCardsOld: FuelCard, meta: LoadingMeta): EtsAction<ReturnType<typeof createFuelCard>> => async (dispatch) => {
   const fuelCards = await etsLoadingCounter(
     dispatch,
     createFuelCard(fuelCardsOld),
@@ -67,7 +65,7 @@ export const autobaseCreateFuelCard = (fuelCardsOld: FuelCard, meta: LoadingMeta
   return fuelCards;
 };
 
-export const fuelCardsUpdate = (fuelCardsOld: FuelCard, meta: LoadingMeta): ThunkAction<ReturnType<typeof updateFuelCard>, ReduxState, {}, AnyAction>  => async (dispatch) => {
+export const fuelCardsUpdate = (fuelCardsOld: FuelCard, meta: LoadingMeta): EtsAction<ReturnType<typeof updateFuelCard>>  => async (dispatch) => {
   const fuelCards = await etsLoadingCounter(
     dispatch,
     updateFuelCard(fuelCardsOld),

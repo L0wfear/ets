@@ -59,6 +59,7 @@ import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_
 import { isOrderSource } from 'components/new/pages/missions/utils';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -512,7 +513,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
-            <div>
+            <EtsButtonsContainer>
               <EtsBootstrap.Button
                 onClick={this.handleGetPrintFormWrap}
                 disabled={!this.props.canSave}>
@@ -524,7 +525,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </EtsBootstrap.Button>
-            </div>
+            </EtsButtonsContainer>
           ) : (
             <DivNone />
           )}

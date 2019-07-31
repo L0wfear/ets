@@ -69,7 +69,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
         () => {
           return handleHide && (
             <EtsBootstrap.ModalContainer id={`modal-${formData.key}}`}show onHide={handleHide}>
-              <ModalFormHeader formDataKey={formData.key} />
+              <ModalFormHeader formDataKey={formData.key} onHide={handleHide} />
               <ModalFormBody formDataKey={formData.key} />
               <ModalFormFooter formDataKey={formData.key} />
             </EtsBootstrap.ModalContainer>

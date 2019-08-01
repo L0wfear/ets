@@ -80,6 +80,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
       (state, { registryKey, uniqKeyForParams, permissions }) => ({
         getOneData: getServiceData(state.registry, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
+        data: getListData(state.registry, registryKey).data,                        // Используется в children
         buttons: getHeaderData(state.registry, registryKey).buttons,
         uniqKey: getListData(state.registry, registryKey).data.uniqKey,
         uniqKeyForParams: uniqKeyForParams || getListData(state.registry, registryKey).data.uniqKeyForParams,

@@ -90,6 +90,7 @@ describe('Тестирование функции сортировки реес�
       {
         field_sort_number: 1,
         field_sort_string: 'a',
+        field_sort_date: '2019-05-21T16:12:50',
         field_sort_array: [
           {
             name: 1,
@@ -102,6 +103,7 @@ describe('Тестирование функции сортировки реес�
       {
         field_sort_number: 2,
         field_sort_string: 'A',
+        field_sort_date: '2019-06-21T16:12:50',
         field_sort_array: [
           {
             name: '2',
@@ -114,6 +116,7 @@ describe('Тестирование функции сортировки реес�
       {
         field_sort_number: 1,
         field_sort_string: 'b',
+        field_sort_date: '2019-05-21T16:12:50',
         field_sort_array: [
           {
             name: 2,
@@ -126,6 +129,7 @@ describe('Тестирование функции сортировки реес�
       {
         field_sort_number: null,
         field_sort_string: null,
+        field_sort_date: null,
         field_sort_array: [
           {
             name: null,
@@ -137,20 +141,17 @@ describe('Тестирование функции сортировки реес�
       },
     ];
 
-    const sortArrayListByNumber = arrayToSort.map(
-        (d) => ({ field_sort_number: d.field_sort_number }),
-      ).sort(
-        (a, b) => sortArray(a, b, 'field_sort_number'),
-      );
-    const sortArrayListByString = arrayToSort.map(
-        (d) => ({ field_sort_string: d.field_sort_string }),
-      ).sort(
-        (a, b) => sortArray(a, b, 'field_sort_string'),
-      );
-    const sortArrayListByArrayName = arrayToSort.map(
-      (d) => ({ field_sort_array: d.field_sort_array }),
-    ).sort(
+    const sortArrayListByNumber = [...arrayToSort].sort(
+      (a, b) => sortArray(a, b, 'field_sort_number'),
+    );
+    const sortArrayListByString = [...arrayToSort].sort(
+      (a, b) => sortArray(a, b, 'field_sort_string'),
+    );
+    const sortArrayListByArrayName = [...arrayToSort].sort(
       (a, b) => sortArray(a, b, 'field_sort_array'),
+    );
+    const sortArrayListByDate = [...arrayToSort].sort(
+      (a, b) => sortArray(a, b, 'field_sort_date'),
     );
 
     expect(sortArrayListByNumber.map((d) => d.field_sort_number).join()).toBe(',1,1,2');
@@ -162,5 +163,6 @@ describe('Тестирование функции сортировки реес�
         ).join(''),
       ).join(),
     ).toBe(',112,212,2a2');
+    expect(sortArrayListByDate.map((d) => d.field_sort_date).join()).toBe(',2019-05-21T16:12:50,2019-05-21T16:12:50,2019-06-21T16:12:50');
   });
 });

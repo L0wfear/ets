@@ -77,7 +77,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                           validateDateInsideOther(d.uninstalled_at, tire_to_car)
                             ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
                             : (
-                              diffDatesByDays(d.installed_at, d.uninstalled_at) >= 0
+                              diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
                                 ? 'Поле "Дата демонтажа" должна быть позже даты монтажа'
                                 : ''
                             )

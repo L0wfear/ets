@@ -85,7 +85,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                             validateDateInsideOther(d.uninstalled_at, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)], 'end')
                               ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
                               : (
-                                diffDatesByDays(d.installed_at, d.uninstalled_at) >= 0
+                                diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
                                   ? 'Поле "Дата демонтажа" должна быть позже даты монтажа'
                                   : ''
                               )

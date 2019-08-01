@@ -3,7 +3,7 @@ import {
   isNumber,
   isArray,
 } from "util";
-// import { diffDates } from "utils/dates";
+import { diffDates } from "utils/dates";
 
 type ObjWithName = {
   name: string | number;
@@ -41,42 +41,42 @@ export const compareVoids = (first: any, second: any) => {
 
   return false;
 };
-// export const compareNumbers = (first: number, second: number) => {
-//   return first - second;
-// };
-// };
-// export const compareStrings = (first: string, second: string) => {
-//   const first_string = first.toLocaleLowerCase().trim();
-//   const second_string = first.toLocaleLowerCase().trim();
+export const compareNumbers = (first: number, second: number) => {
+  return first - second;
+};
 
-//   return first_string.localeCompare(
-//     second_string,
-//   );
-// };
+export const compareStrings = (first: string, second: string) => {
+  const first_string = first.toLocaleLowerCase().trim();
+  const second_string = first.toLocaleLowerCase().trim();
 
-// export const sortArray = (firstRowData, secondRowData, field) => {
-//   const first = makeStringFromField(firstRowData[field]);
-//   const second = makeStringFromField(secondRowData[field]);
+  return first_string.localeCompare(
+    second_string,
+  );
+};
 
-//   const hasEmptyData = compareVoids(first, second);
-//   if (hasEmptyData !== false) {
-//     return hasEmptyData;
-//   }
+export const sortArray = (firstRowData, secondRowData, field) => {
+  const first = makeStringFromField(firstRowData[field]);
+  const second = makeStringFromField(secondRowData[field]);
 
-//   // оба числа
-//   if (isNumber(first) && isNumber(second)) {
-//     return compareNumbers(first, second);
-//   }
+  const hasEmptyData = compareVoids(first, second);
+  if (hasEmptyData !== false) {
+    return hasEmptyData;
+  }
 
-//   // обе строки
-//   if (isString(first) && isString(second)) {
-//     // обе даты
-//     if (first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
-//       return diffDates(first, second);
-//     }
+  // оба числа
+  if (isNumber(first) && isNumber(second)) {
+    return compareNumbers(first, second);
+  }
 
-//     return compareStrings(first, second);
-//   }
+  // обе строки
+  if (isString(first) && isString(second)) {
+    // обе даты
+    if (first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
+      return diffDates(first, second);
+    }
 
-//   return 0;
-// };
+    return compareStrings(first, second);
+  }
+
+  return 0;
+};

@@ -42,19 +42,26 @@ export const compareVoids = (first: any, second: any) => {
   return false;
 };
 export const compareNumbers = (first: number, second: number) => {
-  return first - second;
+  const diff = first - second;
+  return (
+    diff < 0
+      ? -1
+      : diff > 0
+        ? 1
+        : 0
+  );
 };
 
 export const compareStrings = (first: string, second: string) => {
   const first_string = first.toLocaleLowerCase().trim();
-  const second_string = first.toLocaleLowerCase().trim();
+  const second_string = second.toLocaleLowerCase().trim();
 
   return first_string.localeCompare(
     second_string,
   );
 };
 
-export const sortArray = (firstRowData, secondRowData, field) => {
+export const sortArray = <T extends any>(firstRowData: T, secondRowData: T, field: keyof T) => {
   const first = makeStringFromField(firstRowData[field]);
   const second = makeStringFromField(secondRowData[field]);
 

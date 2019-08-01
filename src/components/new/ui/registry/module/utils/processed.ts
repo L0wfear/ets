@@ -1,68 +1,8 @@
 import { isNullOrUndefined, isArray, isString, isObject } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { diffDatesByDays, diffDates } from 'utils/dates';
+import { diffDatesByDays } from 'utils/dates';
 import { get } from 'lodash';
-
-const makeStirngNameFormArray = (item: string | Record<string, any> & { name: string }) => {
-  if (isString(item)) {
-    return item;
-  }
-
-  return item.name;
-};
-
-export const sortArray = (firstRowData, secondRowData, field) => {
-  let [
-    first,
-    second,
-  ] = [
-    firstRowData[field],
-    secondRowData[field],
-  ];
-
-  first = Array.isArray(first) ? first.reduce((newFirst, item) => `${newFirst}, ${makeStirngNameFormArray(item)}`, '') : first;
-  second = Array.isArray(second) ? second.reduce((newSecond, item) => `${newSecond}, ${makeStirngNameFormArray(item)}`, '') : second;
-
-  const firstIsNumber = !isNaN(Number(first));
-  const secondIsNumber = !isNaN(Number(second));
-
-  if (isString(firstRowData) && isString(secondRowData) && first.match(/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))|([0-1]\d|2[0-3]):([0-5]\d):([0-5]\d)/)) {
-    return diffDates(first, second);
-  }
-
-  // оба числа
-  if (firstIsNumber && secondIsNumber) {
-    return first - second;
-  }
-  if (!firstIsNumber || !secondIsNumber) {
-    if (!first && first !== 0) {
-      return -1;
-    }
-    if (!second && second !== 0) {
-      return 1;
-    }
-  }
-  // первое - не число
-  if (!firstIsNumber && secondIsNumber) {
-    return -1;
-  }
-  // второе - не число
-  if (firstIsNumber && !secondIsNumber) {
-    return 1;
-  }
-  // оба элемента пусты ('', null, undefined)
-  if (!first && !second) {
-    return 0;
-  }
-  if (!first && second) {
-    return -1;
-  }
-  if (first && !second) {
-    return 1;
-  }
-
-  return first.toLocaleLowerCase().trim().localeCompare(second.toLocaleLowerCase().trim());
-};
+import { sortArray } from 'components/@next/@ui/registry/utils/sort/sort';
 
 export const filterArray = (array, filterValues, fields: OneRegistryData['filter']['fields']) => {
   const filterValauesEntries = Object.entries<any>(filterValues);

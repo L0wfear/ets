@@ -200,7 +200,9 @@ export interface OneRegistryData<F = any> {
       perPage?: number;
     },
     processed?: {
-      filterValues?: object,
+      filterValues?: {
+        [k: string]: any;
+      },
       processedArray?: F[],
       sort?: {
         field?: keyof F;

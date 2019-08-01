@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HandleThunkActionCreator } from 'react-redux';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 import { actionLoadSpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/actions';
 

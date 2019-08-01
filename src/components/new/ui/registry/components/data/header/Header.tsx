@@ -8,7 +8,7 @@ import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getHeaderData } from '../../../module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
 import { DivNone } from 'global-styled/global-styled';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import SelectedOdhDtDisabled from './middle/SelectedOdhDtDisabled';
 import SelectedOdhDt from './middle/SelectedOdhDt';
 import SelecteDateTimeRange from './middle/SelecteDateTimeRange';

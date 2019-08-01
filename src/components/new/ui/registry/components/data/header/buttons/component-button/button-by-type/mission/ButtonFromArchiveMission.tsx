@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { actionFromArchiveMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
@@ -55,7 +55,7 @@ const ButtonFromArchiveMission: React.FC<ButtonFromArchiveMissionProps> = (props
       const itemToArchive = props.checkedRows;
 
       if (!Object.values(itemToArchive).length) {
-        itemToArchive[props.uniqKey] = props.selectedRow;
+        itemToArchive[props.selectedRow[props.uniqKey]] = props.selectedRow;
       }
 
       const itemToArchiveAsArray = Object.values(itemToArchive);
@@ -98,7 +98,7 @@ const ButtonFromArchiveMission: React.FC<ButtonFromArchiveMissionProps> = (props
         handleHide={handleClickCloseForm}
         handleSubmit={handleClickToArchive}
 
-        message={`Вы уверены, что хотите перенести из архива ${checkedRowsAsArray.length > 1 ? 'выбранные наряд-задания' : 'выбранное наряд-задание'}?`}
+        message={`Вы уверены, что хотите перенести из архива ${checkedRowsAsArray.length > 1 ? 'выбранные задания' : 'выбранное задание'}?`}
       />
     </>
   );

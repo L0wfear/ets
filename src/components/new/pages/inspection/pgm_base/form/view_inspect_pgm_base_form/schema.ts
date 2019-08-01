@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import { PropsViewInspectPgmBaseWithForm } from './@types/ViewInspectPgmBase';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';

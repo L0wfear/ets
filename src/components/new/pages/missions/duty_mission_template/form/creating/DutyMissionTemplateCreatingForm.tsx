@@ -7,7 +7,7 @@ import dutyDutyMissionTemplatePermissions from 'components/new/pages/missions/du
 import { getDefaultDutyMissionTemplateElement, checkMissionsOnStructureIdBrigade } from './utils';
 import { dutyDutyMissionTemplateCreatingFormSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
@@ -16,7 +16,7 @@ import {
 } from 'redux-main/reducers/selectors';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import {
   PropsDutyMissionTemplateCreatingForm,

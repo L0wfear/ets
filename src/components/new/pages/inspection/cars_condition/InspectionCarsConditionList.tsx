@@ -5,7 +5,7 @@ import InspectionTitle from 'components/new/pages/inspection/common_components/i
 import InspectionCarsConditionSelectData from 'components/new/pages/inspection/cars_condition/components/select_data/InspectionCarsConditionSelectData';
 import InspectionCarsConditionData from 'components/new/pages/inspection/cars_condition/components/data/InspectionCarsConditionData';
 import InspectionCarsConditionFormLazy from 'components/new/pages/inspection/cars_condition/form';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { RouteComponentProps } from 'react-router';
 

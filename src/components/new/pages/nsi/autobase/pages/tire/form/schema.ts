@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
@@ -77,7 +77,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                           validateDateInsideOther(d.uninstalled_at, tire_to_car)
                             ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
                             : (
-                              diffDatesByDays(d.installed_at, d.uninstalled_at) >= 0
+                              diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
                                 ? 'Поле "Дата демонтажа" должна быть позже даты монтажа'
                                 : ''
                             )

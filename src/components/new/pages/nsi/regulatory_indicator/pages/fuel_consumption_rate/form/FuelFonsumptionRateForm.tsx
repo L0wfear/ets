@@ -4,11 +4,11 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {

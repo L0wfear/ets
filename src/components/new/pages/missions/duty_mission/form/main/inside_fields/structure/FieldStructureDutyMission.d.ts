@@ -3,7 +3,7 @@ import {
   OneSessionStructure,
   InitialStateSession,
 } from 'redux-main/reducers/modules/session/session.d';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import {
   getSessionStructuresParams,
   getSessionStructuresOptions,

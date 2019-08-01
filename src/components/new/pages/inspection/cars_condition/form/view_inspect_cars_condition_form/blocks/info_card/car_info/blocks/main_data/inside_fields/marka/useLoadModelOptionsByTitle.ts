@@ -2,7 +2,7 @@ import * as React from 'react';
 import { HandleThunkActionCreator } from 'react-redux';
 import { ModelElement } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { actionGetModelList } from 'redux-main/reducers/modules/some_uniq/modelList/actions';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 type useLoadModelOptionsByTitleAns = {
   modelOptions: DefaultSelectOption<ModelElement['title'], ModelElement['title'], ModelElement>[],

@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 
-import { IDataTableSchema } from 'components/ui/table/@types/schema.h';
+import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
 import {
   IPropsDataTableInputRenderer,
   TRendererFunction,
-} from 'components/ui/table/DataTableInput/DataTableInput.h';
-import { IValidationSchema } from 'components/ui/form/@types/validation.h';
+} from 'components/old/ui/table/DataTableInput/DataTableInput.h';
+import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { IBatteryAvailableCar } from 'api/@types/services/autobase.h';
 
 export const validationSchema: IValidationSchema = {

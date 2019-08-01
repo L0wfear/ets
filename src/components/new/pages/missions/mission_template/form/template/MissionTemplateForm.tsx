@@ -10,17 +10,17 @@ import {
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 import { ReduxState } from 'redux-main/@types/state';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { getDefaultMissionTemplateElement } from './utils';
 import { missionTemplateFormSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 

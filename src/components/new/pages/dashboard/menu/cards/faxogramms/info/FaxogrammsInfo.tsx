@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { saveData } from 'utils/functions';
 
-import withShowByProps from 'components/compositions/vokinda-hoc/show-by-props/withShowByProps';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 
@@ -17,7 +17,7 @@ import { saveOrderBlob } from 'redux-main/trash-actions/order/order';
 import {
   ButtonReadOrder,
   LinkToOrder,
-} from 'components/directories/order/buttons/buttons';
+} from 'components/old/directories/order/buttons/buttons';
 
 import PDFViewModalLazy from 'components/new/pages/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModalLazy';
 

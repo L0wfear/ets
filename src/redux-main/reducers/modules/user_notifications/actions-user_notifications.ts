@@ -1,3 +1,6 @@
+import { isArray } from 'util';
+import { get, uniqBy } from 'lodash';
+
 import {
   makeReadAdmNotification,
   getCountNotRead,
@@ -15,11 +18,7 @@ import {
   filterAdmNotReadNotifyByIdArr,
   mapAdmNotifyToSetReadByIdArr,
 } from 'redux-main/reducers/modules/user_notifications/utils';
-import { isArray } from 'util';
-import { get, uniqBy } from 'lodash';
-import { ThunkAction } from 'redux-thunk';
-import { AnyAction } from 'redux';
-import { ReduxState } from 'redux-main/@types/state';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export const userAdmNotificationPut = (type: string | null, read_ids: number | number[], { page = 'notification-registry', path = null } = {}) => ({
   type,
@@ -152,7 +151,7 @@ export const setMakeReadAdmNotification: any = (notifyIds: number | number[]) =>
   );
 };
 
-export const getUserNotificationInfo = (): ThunkAction<Promise<any>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const getUserNotificationInfo = (): EtsAction<Promise<any>> => async (dispatch) => {
   const response = await (
     dispatch({
       type: SESSION_CHANGE_SOME_DATA,
@@ -167,7 +166,7 @@ export const getUserNotificationInfo = (): ThunkAction<Promise<any>, ReduxState,
   return response;
 };
 
-export const setMakeReadOrderNotification = (notifyIds: number | number[]): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const setMakeReadOrderNotification = (notifyIds: number | number[]): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const notifyIdsAsArr = isArray(notifyIds) ? notifyIds : [notifyIds];
 
   await dispatch(
@@ -211,7 +210,7 @@ export const setMakeReadOrderNotification = (notifyIds: number | number[]): Thun
   );
 };
 
-export const getNotifications = (): ThunkAction<Promise<void>, ReduxState, {}, AnyAction> => async (dispatch, getState) => {
+export const getNotifications = (): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const { payload: { notify } } = await dispatch(
     userNotificationGet(
       'none',

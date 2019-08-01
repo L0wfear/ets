@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as cx from 'classnames';
-import { getClassNameByType } from 'components/monitor/tool-bar/car-data/car-legend-status/utils';
+import { getClassNameByType } from 'components/old/monitor/tool-bar/car-data/car-legend-status/utils';
 import { DivNone } from 'global-styled/global-styled';
 import { TrackTitleContainer, TrackLegentContainer } from './styled';
 

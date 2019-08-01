@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
@@ -15,7 +15,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { INSPECT_TYPE_FORM } from '../../autobase/global_constants';
 import { isInspectIsConducting } from 'redux-main/reducers/modules/inspect/inspect_utils';
 
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { HiddenPageEtsContainer, PopupBottomForm, TitleForm } from './styled';
 
 import { createPortal } from 'react-dom';

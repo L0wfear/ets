@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { EtsPageWrap } from 'global-styled/global-styled';
-import { DataTableHeadLine } from 'components/ui/table/styled';
+import { DataTableHeadLine } from 'components/old/ui/table/styled';
 
 export const TemplateRegistryContainer = styled(EtsPageWrap)`
   opacity: 0.5;

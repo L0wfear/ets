@@ -8,7 +8,7 @@ import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import { FooterEnd } from 'global-styled/global-styled';
 import ViewInspectCarsConditionButtonSubmit from './button_submit/ViewInspectCarsConditionButtonSubmit';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { PropsViewInspectCarsConditionWithForm, ViewInspectCarsConditionStateProps, ViewInspectCarsConditionDispatchProps, ViewInspectCarsConditionOwnProps, ViewInspectCarsConditionProps } from './@types/ViewInspectCarsContidion';
 import { getDefaultInspectCarsConditionElement } from './utils';
 import inspectCarsConditionPermissions from '../../_config_data/permissions';
@@ -21,7 +21,7 @@ import BlockCarsConditionHeadCountList from './blocks/headcount/BlockCarsConditi
 import BlockCarsConditionCarsUse from './blocks/car_use/BlockCarsConditionCarsUse';
 import BlockInfoCard from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/BlockInfoCard';
 import { ColScroll } from './styled';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

@@ -5,15 +5,22 @@ import {
   registryRemoveData,
 } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import {
   TypeConfigData,
-  PropsRegistryWrap,
-  StateRegistryWrap,
 } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'redux';
+
+export type PropsRegistryWrap = {
+  registryAddInitialData: any;
+  registryRemoveData: any;
+};
+
+export type StateRegistryWrap = {
+
+};
 
 const withRegistry = <F extends any>(configData: TypeConfigData<F>) => (Component) => (
   compose(

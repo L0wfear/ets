@@ -1,14 +1,14 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { ProgramRegistry } from 'redux-main/reducers/modules/repair/program_registry/@types/programRegistry';
 
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { isObject } from 'util';
 
 const ProgramRegistryFrom = React.lazy(() => (
-  import(/* webpackChunkName: "programm_registry_switch" */ 'components/program_registry/ProgramRegistrySwitch')
+  import(/* webpackChunkName: "programm_registry_switch" */ 'components/old/program_registry/ProgramRegistrySwitch')
 ));
 
 type PropsProgramRegistryFormLazy = {

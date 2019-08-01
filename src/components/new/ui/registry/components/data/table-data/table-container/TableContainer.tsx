@@ -10,7 +10,7 @@ import { setStickyThead } from 'utils/stickyTableHeader';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 

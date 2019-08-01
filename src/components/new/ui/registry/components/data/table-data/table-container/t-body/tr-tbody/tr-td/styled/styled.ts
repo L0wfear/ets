@@ -34,6 +34,11 @@ export const EtsTbodyTextContainer = styled.div`
   pointer-events: none;
 `;
 
+export const EtsTdInnerWrapper = styled.div`
+  display: block;
+  word-wrap: break-word;
+`;
+
 export const EtsTbodyTrTd = styled.td`
   &&& {
     padding: 8px;

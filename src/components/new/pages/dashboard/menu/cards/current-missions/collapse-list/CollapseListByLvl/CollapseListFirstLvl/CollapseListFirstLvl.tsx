@@ -6,7 +6,7 @@ import {
   PropsCollapseListFirstLvl,
   StateCollapseListFirstLvl,
 } from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/CollapseListFirstLvl/CollapseListFirstLvl.h';
-import CollapseText from 'components/ui/collapse/text/CollapseText';
+import CollapseText from 'components/old/ui/collapse/text/CollapseText';
 
 class CollapseListFirstLvl extends React.PureComponent<PropsCollapseListFirstLvl, StateCollapseListFirstLvl> {
   renderMap = ({ subItems, ...item }, index) => {

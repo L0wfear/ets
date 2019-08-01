@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { CarGtnPasspost } from 'redux-main/reducers/modules/autobase/car/@types';
-import { FileField } from 'components/ui/input/fields';
+import { FileField } from 'components/old/ui/input/fields';
 import usePropulsionTypeOptions from './usePropulsionTypeOptions';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { autobaseGetSetPropulsionType } from 'redux-main/reducers/modules/autobase/actions_by_type/propulsion_type/actions';

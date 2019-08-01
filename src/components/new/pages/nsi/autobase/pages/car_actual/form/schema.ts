@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsCar, CarWrap } from './@types/CarForm';
 
 export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'], PropsCar> = {

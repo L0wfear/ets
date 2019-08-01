@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'components/ui/table/DataTable';
-import { sortFunc } from 'components/reports/operational/mission/utils/sortFunction';
-import { getDelForUnitRender } from 'components/reports/operational/mission/utils/main';
+import Table from 'components/old/ui/table/DataTable';
+import { sortFunc } from 'components/old/reports/operational/mission/utils/sortFunction';
+import { getDelForUnitRender } from 'components/old/reports/operational/mission/utils/main';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';

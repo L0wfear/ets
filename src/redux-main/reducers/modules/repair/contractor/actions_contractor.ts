@@ -1,12 +1,10 @@
 import { Contractor } from "./@types/contractor";
 import { LoadingMeta } from "redux-main/_middleware/@types/ets_loading.h";
-import { ThunkAction } from "redux-thunk";
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import etsLoadingCounter from "redux-main/_middleware/ets-loading/etsLoadingCounter";
-import { ReduxState } from "redux-main/@types/state";
-import { AnyAction } from "redux";
 import { promiseCreateContractor, promiseUpdateContractor } from "./promise_contractor";
 
-export const actionCreateContractor = (contractorNew: Contractor, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseCreateContractor>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCreateContractor = (contractorNew: Contractor, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateContractor>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseCreateContractor(contractorNew),
@@ -16,7 +14,7 @@ export const actionCreateContractor = (contractorNew: Contractor, meta: LoadingM
   return response;
 };
 
-export const actionUpdateContractor = (contractorNew: Contractor, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseUpdateContractor>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateContractor = (contractorNew: Contractor, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateContractor>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateContractor(contractorNew),

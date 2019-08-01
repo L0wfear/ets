@@ -10,21 +10,21 @@ import {
 } from './@types/EdcRequestCancel';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getDefaultDutyMissionElement,
 } from './utils';
 import { edcRequestCancelSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import edcRequestPermissions from '../../_config-data/permissions';
 import { makeDate } from 'utils/dates';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { get } from 'lodash';
 
 const EdcRequestCancelForm: React.FC<EdcRequestCancelFormProps> = (props) => {

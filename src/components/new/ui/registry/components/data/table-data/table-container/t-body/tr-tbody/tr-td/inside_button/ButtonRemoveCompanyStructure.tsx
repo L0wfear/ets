@@ -4,9 +4,9 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { ReduxState } from 'redux-main/@types/state';
 
 import { registryLoadDataByKey, registrySetSelectedRowToShowInForm, registryRemoveSelectedRows } from 'components/new/ui/registry/module/actions-registy';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

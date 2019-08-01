@@ -1,5 +1,5 @@
 
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
 import { INSPECT_TYPE_FORM } from '../../global_constants';
@@ -110,9 +110,9 @@ const dataSchema: SchemaType<InspectAutobase['data'], PropsViewInspectAutobaseWi
     cnt_repair_posts: {
       title: 'Количество постов для обслуживания, ремонта техники (шт.)',
       type: 'number',
-      minNotEqual: 0,
       integer: true,
 
+      minNotEqual: 0,
       dependencies: [
         (value, { lack_repair_areas }, { type }) => {
           if (type === INSPECT_TYPE_FORM.list) {

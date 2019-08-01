@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_mission_template/@types/index.h';
 import { PropsDutyMissionTemplateForm } from './@types/index.h';
 import { isPermittedEmployeeForDutyMission } from '../../../duty_mission/form/main/utils';

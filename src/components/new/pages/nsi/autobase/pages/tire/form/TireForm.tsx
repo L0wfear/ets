@@ -2,12 +2,12 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -18,19 +18,37 @@ import {
   DispatchPropsTire,
   PropsTireWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
-import { Tire, TireSize, TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { Tire, TireSize, TireModel, TireOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import TireToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/tire/form/vehicle-block/TireToVehicleBlock';
-import { onChangeWithKeys } from 'components/compositions/hoc';
+import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import { getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { InlineSpanValue, DiffValueWrapper, DiffValueElem } from './styled';
 import { getDefaultTireElement } from './utils';
 import { tireFormSchema } from './schema';
 import tirePermissions from '../_config-data/permissions';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
+import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data/registry-config';
 
 const TireToVehicleBlock: any = onChangeWithKeys(TireToVehicleBlockComponent);
 
+const defaultTireOnCarItem: TireOnCar = {
+  car_id: null,
+  gov_number: null,
+  id: null,
+  installed_at: null,
+  motohours_diff: null,
+  odometr_diff: null,
+  uninstalled_at: null,
+  // для таблички
+  customId: null,
+  isChecked: false,
+  isHighlighted: false,
+  isSelected: false,
+};
 class TireForm extends React.PureComponent<PropsTire, StateTire> {
   state = {
     canSave: true,
@@ -38,7 +56,28 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
   componentDidMount() {
     this.props.tireModelGetAndSetInStore();
     this.props.tireSizeGetAndSetInStore();
+    this.addNewTireOnCar();
   }
+
+  addNewTireOnCar = () => {
+    const newCarId = getNumberValueFromSerch(this.props.match.params[config.list.data.uniqKeyForParams]);
+    const actualBatteriesOnCarId = this.props.match.params[uniqKeyForParams];
+    if ( newCarId && actualBatteriesOnCarId === 'create') {
+      const customId = this.props.formState.tire_to_car.length + 1;
+      this.props.handleChange(
+        'tire_to_car',
+        [
+          {
+            ...defaultTireOnCarItem,
+            car_id: newCarId,
+            customId,
+          },
+          ...this.props.formState.tire_to_car,
+        ],
+      );
+    }
+  };
+
   handleTireToCarValidity = ({ isValidInput }) => {
     this.setState({
       canSave: isValidInput,
@@ -249,6 +288,7 @@ export default compose<PropsTire, OwnTireProps>(
       ),
     }),
   ),
+  withSearch,
   withForm<PropsTireWithForm, Tire>({
     uniqField: 'id',
     createAction: autobaseActions.autobaseCreateTire,

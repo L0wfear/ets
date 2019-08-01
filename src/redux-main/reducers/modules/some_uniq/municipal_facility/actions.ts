@@ -2,9 +2,7 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { MunicipalFacility } from './@types';
 
 /* --------------- обновление стора --------------- */
@@ -31,21 +29,21 @@ export const actionSetMunicipalFacilityForDutyMission = (municipalFacilityForDut
 );
 
 /* --------------- сброс стора --------------- */
-export const actionResetMunicipalFacility: any = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetMunicipalFacility: any = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacility([]),
   );
 
   return null;
 };
-export const actionResetMunicipalFacilityForMission: any = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetMunicipalFacilityForMission: any = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacilityForMission([]),
   );
 
   return null;
 };
-export const actionResetMunicipalFacilityForDutyMission: any = (): ThunkAction<void, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetMunicipalFacilityForDutyMission: any = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacilityForDutyMission([]),
   );
@@ -102,7 +100,7 @@ export const actionGetAndSetInStoreMunicipalFacilityForMission: any = (payload =
 export type ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns = {
   municipalFacilityForDutyMissionList: MunicipalFacility[],
 };
-export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, { page, path }: LoadingMeta): ThunkAction<Promise<ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<Promise<ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns>> => async (dispatch) => {
   const { payload: { data } } = await dispatch(
     actionGetMunicipalFacility(
       {

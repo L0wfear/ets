@@ -6,13 +6,13 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { getDefaultMissionTemplateElement, checkMissionsOnStructureIdCar, makeMissionsByTemplate, createMissionByTemplate, makePartialMission } from './utils';
 import { missionTemplateCreatingFormSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -23,7 +23,7 @@ import {
   PropsMissionTemplateWithForm,
   MissionTemplateCreating,
 } from './@types/MissionTemplateCreatingForm';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldNormIdMissionTemplateCreating from './inside_fields/norm_id/FieldNormIdMissionTemplateCreating';
 import FieldDatesMissionTemplateCreating from './inside_fields/dates/FieldDatesMissionTemplateCreating';
@@ -31,7 +31,7 @@ import FieldAssignToWaybillMissionTemplateCreating from './inside_fields/assign_
 import ColumnAssignmentFormWrap from './inside_fields/column_assignment_form_wrap/ColumnAssignmentFormWrap';
 import { isBoolean } from 'util';
 import { getMissionsState } from 'redux-main/reducers/selectors';
-import { ASSING_BY_KEY } from 'components/directories/order/forms/utils/constant';
+import { ASSING_BY_KEY } from 'components/old/directories/order/forms/utils/constant';
 
 /**
  * Форма шаблона наряд-заданий

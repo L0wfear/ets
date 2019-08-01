@@ -8,7 +8,7 @@ import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-d
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type TrTdServiceButtonShowActionLogStateProps = {

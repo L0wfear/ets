@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { HandleThunkActionCreator } from 'react-redux';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';

@@ -4,11 +4,9 @@ import {
   OrderService,
 } from 'api/Services';
 import { createValidDateTime } from 'utils/dates';
-import { typeTemplate } from 'components/directories/order/forms/utils/constant';
+import { typeTemplate } from 'components/old/directories/order/forms/utils/constant';
 import { parseFilterObject } from 'actions/MissionsActions';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { getOrderState } from 'redux-main/reducers/selectors';
@@ -112,7 +110,7 @@ export const setEmptyMissionData = () => ({
   payload: {},
 });
 
-export const setDutyMissionData = (): ThunkAction<any, ReduxState, {}, AnyAction> => (dispatch, getState) => {
+export const setDutyMissionData = (): EtsAction<any> => (dispatch, getState) => {
   const partialDutyMission: Partial<DutyMission> = {};
   partialDutyMission.mission_source_id = getSomeUniqState(getState()).missionSource.order_mission_source_id;
   const {

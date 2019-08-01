@@ -1,6 +1,6 @@
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { DefaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/@types';
 
 export type StateFieldMissionSourceMission = {

@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
+import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 
 type ButtonRemoveStateProps = {
@@ -21,6 +22,7 @@ type ButtonRemoveDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type ButtonRemoveOwnProps = {
+  data?: ValuesOf<OneRegistryData['header']['buttons']>
   registryKey: string;
 
   format?: 'yesno' | 'default';
@@ -51,12 +53,6 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   );
   const handleClickRemoveSelectedRows = React.useCallback(
     async () => {
-      const itemToRemove = props.checkedRows;
-
-      if (!Object.values(itemToRemove).length) {
-        itemToRemove[props.uniqKey] = props.selectedRow;
-      }
-
       try {
         await props.registryRemoveSelectedRows(props.registryKey);
       } catch (error) {
@@ -72,10 +68,18 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   );
   const checkedRowsAsArray = Object.values(props.checkedRows);
 
+  const data = React.useMemo(
+    () => (
+      get(props, 'data', {} as ButtonRemoveOwnProps['data'])
+    ),
+    [props.data],
+  );
+
   return (
     <>
       <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
-        <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
+        <EtsBootstrap.Glyphicon glyph={data.glyph || 'remove'} />{data.title || 'Удалить'}
+
       </EtsBootstrap.Button>
       <ModalYesNo
         show={isOpenModalRemove}

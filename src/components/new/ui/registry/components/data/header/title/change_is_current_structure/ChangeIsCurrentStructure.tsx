@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getBooleanValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -70,7 +70,7 @@ const Title: React.FC<HeaderProps> = (props) => {
           value={is_current_structure}
           onChange={handleChange}
           label="Вывести данные по текущему подразделению"
-          className="checkbox-input flex-reverse"
+          className="checkbox-input flex-reverse default-boolean-input"
         />
         <EtsBootstrap.OverlayTrigger
           trigger={['hover', 'focus']}
@@ -79,7 +79,7 @@ const Title: React.FC<HeaderProps> = (props) => {
               {is_current_structure_popover}
             </EtsBootstrap.Popover>
           )}
-          placement="bottom">
+          placement="top">
           <EtsBootstrap.Glyphicon glyph="info-sign" />
         </EtsBootstrap.OverlayTrigger>
       </ChangeIsCurrentStructureWrap>

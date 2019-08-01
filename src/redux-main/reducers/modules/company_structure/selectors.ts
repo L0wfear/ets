@@ -1,6 +1,6 @@
 import { ReduxState } from 'redux-main/@types/state';
 import { createSelector, Selector } from 'reselect';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { IStateCompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { getCompanyStructureState } from 'redux-main/reducers/selectors';
 

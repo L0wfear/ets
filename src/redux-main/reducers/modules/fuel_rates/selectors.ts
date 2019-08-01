@@ -1,6 +1,6 @@
 import { ReduxState } from 'redux-main/@types/state';
 import { createSelector, Selector } from 'reselect';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { getFuelRatesState } from 'redux-main/reducers/selectors';
 

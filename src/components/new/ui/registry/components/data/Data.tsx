@@ -8,7 +8,8 @@ import Paginator from 'components/new/ui/registry/components/data/paginator/Pagi
 import { EtsDataContainer } from 'components/new/ui/registry/components/data/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { DispatchProp, connect } from 'react-redux';
-import { OneRegistryData } from '../../module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import { getHeaderData } from '../../module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import SelectForTechnicalOperationRelationsRegistryWrap from './SelectForTechnicalOperationRelationsRegistryWrap';

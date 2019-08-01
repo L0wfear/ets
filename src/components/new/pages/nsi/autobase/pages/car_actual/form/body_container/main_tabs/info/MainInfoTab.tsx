@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { CenterCol, FlexRow } from './styled';
 import config from 'config';
 import { DivNone } from 'global-styled/global-styled';
 import { connect } from 'react-redux';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { FormWithHandleChange, FormWithHandleChangeBoolean } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../@types/CarForm';
 import FieldSelectDriverCar from './inside_fields/drivers_data/FieldSelectDriverCar';
 import { MarginTopRow } from '../registration/styled';

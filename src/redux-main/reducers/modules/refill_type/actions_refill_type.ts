@@ -1,7 +1,5 @@
-import { ThunkAction } from "redux-thunk";
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { RefillType } from "./@types/refillType";
-import { ReduxState } from "redux-main/@types/state";
-import { AnyAction } from "redux";
 import { LoadingMeta } from "redux-main/_middleware/@types/ets_loading.h";
 import etsLoadingCounter from "redux-main/_middleware/ets-loading/etsLoadingCounter";
 import { promiseLoadRefillType } from "./promise_refill_type";
@@ -20,7 +18,7 @@ export const actionSetCleanCategories = (
   )
 );
 
-export const actionResetRefillTypeAndSetInStore = (): ThunkAction<Promise<RefillType[]>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionResetRefillTypeAndSetInStore = (): EtsAction<Promise<RefillType[]>> => async (dispatch) => {
   const result = [];
 
   dispatch(
@@ -30,7 +28,7 @@ export const actionResetRefillTypeAndSetInStore = (): ThunkAction<Promise<Refill
   return result;
 };
 
-export const actionLoadRefillType = (payload: any, meta: LoadingMeta): ThunkAction<Promise<RefillType[]>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionLoadRefillType = (payload: any, meta: LoadingMeta): EtsAction<Promise<RefillType[]>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseLoadRefillType(payload),
@@ -40,7 +38,7 @@ export const actionLoadRefillType = (payload: any, meta: LoadingMeta): ThunkActi
   return result;
 };
 
-export const actionLoadRefillTypeAndSetInStore = (payload: any, meta: LoadingMeta): ThunkAction<Promise<RefillType[]>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionLoadRefillTypeAndSetInStore = (payload: any, meta: LoadingMeta): EtsAction<Promise<RefillType[]>> => async (dispatch) => {
   const result = await dispatch(
     actionLoadRefillType(
       payload,

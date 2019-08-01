@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';

@@ -12,6 +12,7 @@ const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
   (props) => {
     const formDataHeaderValue = useForm.useFormDataSchemaHeader<any>(props.formDataKey) as DefaultHeaderType;
     const IS_CREATING = useForm.useFormDataSchemaIsCreating<any>(props.formDataKey);
+    const handleHide = useForm.useFormDataSchemaHandleHide(props.formDataKey);
 
     const title = React.useMemo(
       () => {
@@ -37,11 +38,11 @@ const DefaultModalHeader: React.FC<DefaultModalHeaderProps> = React.memo(
 
     return React.useMemo(
       () => (
-        <EtsBootstrap.ModalHeader closeButton>
+        <EtsBootstrap.ModalHeader closeButton onHide={handleHide}>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
       ),
-      [props, title],
+      [props, title, handleHide],
     );
   },
 );

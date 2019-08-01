@@ -8,7 +8,7 @@ import {
   dashboardSetInfoDataInWaybillCompleted,
  } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 import WaybillCompletedInfo from 'components/new/pages/dashboard/menu/cards/waybill-completed/info/WaybillCompletedInfo';
-import CollapseButton from 'components/ui/collapse/button/CollapseButton';
+import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 
 import {
   PropsWaybillCompleted,

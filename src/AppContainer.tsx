@@ -5,7 +5,7 @@ import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
 import Flux from 'config/flux';
 import { HashRouter, Switch, Route } from 'react-router-dom';
-import App from 'components/App';
+import App from 'components/old/App';
 import configureStore from 'redux-main/create';
 
 const flux = new Flux();

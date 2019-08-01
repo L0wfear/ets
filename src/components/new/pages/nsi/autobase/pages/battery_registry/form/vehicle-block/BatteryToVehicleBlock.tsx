@@ -1,9 +1,9 @@
 import * as React from 'react';
 
-import { ISharedPropsDataTableInput } from 'components/ui/table/DataTableInput/DataTableInput.h';
-import { IExternalPropsDataTableInputWrapper } from 'components/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
+import { ISharedPropsDataTableInput } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
+import { IExternalPropsDataTableInputWrapper } from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 
-import DataTableInput from 'components/ui/table/DataTableInput/DataTableInput';
+import DataTableInput from 'components/old/ui/table/DataTableInput/DataTableInput';
 import { meta, renderers, validationSchema } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/table-schema';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

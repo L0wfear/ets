@@ -817,7 +817,8 @@ body.application {
   border: 1px solid #ddd;
   label {
     text-align: center;
-    width: 100%
+    width: 100%;
+    margin: 5px 0;
   }
   td {
     padding: 1px !important;
@@ -825,7 +826,6 @@ body.application {
 }
 
 .filter-buttons {
-  margin-bottom: 10px;
   padding: 1% 1% 5px 1%;
   text-align: center;
 }
@@ -916,6 +916,8 @@ body.application {
           background-color: $colorGreen !important;
           color: white !important;
           .error {
+            margin-top: 0px;
+            border-radius: 0 0 3px 3px;
             margin-top: 4px;
             padding: 2px;
             border-radius: 2px;
@@ -1105,24 +1107,25 @@ body.application {
   background-color: rgba(237, 234, 191, 0.6);
   color: #a79521;
 }
-
+.width115 {
+  width: 115px;
+}
 .advanced-string-input {
   position: relative;
-
   .inputs {
     .form-group {
       width: 40%;
       position: absolute;
       top: 0;
-      left: 75px;
+      left: 118px;
     }
     .form-group:nth-child(2) {
       left: calc(40% + 60px);
       width: calc(100% - 40% - 60px);
     }
     .form-group:only-child {
-      left: 75px;
-      width: calc(100% - 75px);
+      left: 118px;
+      width: calc(100% - 118px);
     }
   }
   .datepickers {
@@ -1275,4 +1278,18 @@ div.car-movement-time-report {
 *::-webkit-scrollbar-thumb:hover {
   background: #c1c1c1;
   opacity: 1;
+}
+
+.rw-select-bordered {
+  border-left: none;
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    background-color: hsl(0,0%,80%);
+    top: 6px;
+    width: 1px;
+    height: 24px;
+    display: block;
+  }
 }

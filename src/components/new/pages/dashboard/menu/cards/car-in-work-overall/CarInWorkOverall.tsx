@@ -5,7 +5,7 @@ import * as Raven from 'raven-js';
 import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
-import CollapseButton from 'components/ui/collapse/button/CollapseButton';
+import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
 import List from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/list/List';
 
 import {
@@ -30,7 +30,7 @@ import {
 import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
-import { actionMonitorPageLoadCarActual } from 'components/monitor/redux-main/models/actions-monitor-page';
+import { actionMonitorPageLoadCarActual } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 class CarInWorkOverall extends React.Component<
   PropsCarInWorkOverall,

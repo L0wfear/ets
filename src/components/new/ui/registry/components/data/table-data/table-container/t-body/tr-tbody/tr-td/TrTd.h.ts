@@ -1,4 +1,4 @@
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { HandleThunkActionCreator } from 'react-redux';
 import { registryCheckLine } from 'components/new/ui/registry/module/actions-registy';
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import {
   getListData,
@@ -10,6 +11,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { registryToggleIsOpenFilter } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type ButtonToggleFilterStateProps = {
   hasFilters: boolean;
@@ -19,6 +21,7 @@ type ButtonToggleFilterDispatchProps = {
 };
 type ButtonToggleFilterOwnProps = {
   registryKey: string;
+  data?: ValuesOf<OneRegistryData['header']['buttons']>
 };
 type ButtonToggleFilterMergeProps = {};
 
@@ -30,6 +33,13 @@ type ButtonToggleFilterProps = (
 );
 
 const ButtonToggleFilter: React.FC<ButtonToggleFilterProps> = (props) => {
+  const data = React.useMemo(
+    () => (
+      get(props, 'data', {} as ButtonToggleFilterOwnProps['data'])
+    ),
+    [props.data],
+  );
+
   return (
     <EtsBootstrap.Button
       id="show-options-filter"
@@ -37,7 +47,7 @@ const ButtonToggleFilter: React.FC<ButtonToggleFilterProps> = (props) => {
       active={props.hasFilters}
       onClick={props.handleClick}
     >
-      <EtsBootstrap.Glyphicon glyph="filter" />
+      <EtsBootstrap.Glyphicon glyph={data.glyph || 'filter'} />
     </EtsBootstrap.Button>
   );
 };

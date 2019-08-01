@@ -16,7 +16,7 @@ import {
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import InputNumber from 'components/new/ui/field/InputNumber';
 import { DivNone } from 'global-styled/global-styled';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 type PropsAdvancedNumberFilter = {
   filterData: {

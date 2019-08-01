@@ -58,7 +58,8 @@ export const config: TypeConfigData<Mission> = {
       {
         valueKey: 'waybill_number',
         title: 'Путевой лист',
-        type: 'advanced-string-like',
+        type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'column_id',
@@ -129,7 +130,8 @@ export const config: TypeConfigData<Mission> = {
       {
         valueKey: 'passes_count',
         title: 'Количество циклов',
-        type: 'advanced-string-like',
+        type: 'advanced-number',
+        step: 1,
       },
       {
         valueKey: 'technical_operation_id',

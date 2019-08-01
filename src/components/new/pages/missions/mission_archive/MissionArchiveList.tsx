@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import MissionArchiveListFormWrap from 'components/new/pages/missions/mission_archive/form/main/MissionArchiveListFormWrap';
 

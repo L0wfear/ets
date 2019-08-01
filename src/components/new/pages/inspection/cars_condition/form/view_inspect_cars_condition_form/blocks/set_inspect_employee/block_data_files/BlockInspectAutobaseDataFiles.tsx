@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FileField } from 'components/ui/input/fields';
+import { FileField } from 'components/old/ui/input/fields';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockDataFilesProps = {

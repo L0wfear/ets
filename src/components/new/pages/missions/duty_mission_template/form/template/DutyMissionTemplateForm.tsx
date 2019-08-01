@@ -8,9 +8,9 @@ import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_m
 import { getDefaultDutyMissionTemplateElement } from './utils';
 import { dutyDutyMissionTemplateFormSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import {
   getSessionState,
@@ -18,7 +18,7 @@ import {
 } from 'redux-main/reducers/selectors';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import FieldTechnicalOperationDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationDutyMission';
 import FieldMunicipalFacilityIdDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMission';
 import FieldForemanIdDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/foreman_id/FieldForemanIdDutyMission';

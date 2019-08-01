@@ -1,18 +1,18 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
-import { FileField } from 'components/ui/input/fields';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { FileField } from 'components/old/ui/input/fields';
 
 import { DivNone } from 'global-styled/global-styled';
 
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 

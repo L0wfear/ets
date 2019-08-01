@@ -1,5 +1,5 @@
 import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
 
 type getHeaderDataFunc = (

@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { PropsViewInspectCarsConditionWithForm } from './@types/ViewInspectCarsContidion';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';

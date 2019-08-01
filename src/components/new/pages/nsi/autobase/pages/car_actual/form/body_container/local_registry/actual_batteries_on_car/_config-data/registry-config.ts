@@ -1,8 +1,11 @@
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import batteryRegistryPermissions from './permissions';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 export const registryKey = 'batteryRegistryRegistry';
+
+export const uniqKeyForParams = 'actual_batteries_on_car_id';
 
 export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => {
   return {
@@ -20,8 +23,11 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
     },
     registryKey,
     header: {
-      title: 'Реестр аккумуляторов',
-      buttons: [],
+      title: 'Установленные аккумуляторы на текущую дату',
+      buttons: [
+        buttonsTypes.car_actual_add_battery,
+        buttonsTypes.read,
+      ],
     },
     filter: {
       fields: [
@@ -67,13 +73,17 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
       ],
     },
     list: {
-      permissions: batteryRegistryPermissions,
+      permissions: {
+        ...batteryRegistryPermissions,
+        create: batteryRegistryPermissions.update,
+      },
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'actual_batteries_on_car_id',
+        uniqKeyForParams,
       },
       meta: {
+        row_double_click: true,
         fields: [
           {
             key: 'enumerated',

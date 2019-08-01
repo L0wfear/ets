@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Flex } from 'global-styled/global-styled';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { getTechnicalOperations } from 'redux-main/trash-actions/technical-operation/technical-operation';
 import { ReduxState } from 'redux-main/@types/state';
 import {

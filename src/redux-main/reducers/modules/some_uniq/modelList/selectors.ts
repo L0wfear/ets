@@ -2,7 +2,7 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { createSelector, Selector } from 'reselect';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const getModelsListState = (state: ReduxState) => (
   getSomeUniqState(state).modelsList

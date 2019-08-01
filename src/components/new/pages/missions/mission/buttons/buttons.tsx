@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 

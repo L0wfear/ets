@@ -9,9 +9,7 @@ import {
   IStateEmployee,
   Employee,
 } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- Employee ---------- */
@@ -23,7 +21,7 @@ export const employeeEmployeeSetEmployee = (employeeList: IStateEmployee['employ
     }),
   )
 );
-export const employeeEmployeeResetSetEmployee = (): ThunkAction<void, ReduxState, {}, AnyAction> => (dispatch) => {
+export const employeeEmployeeResetSetEmployee = (): EtsAction<void> => (dispatch) => {
   dispatch(
     employeeEmployeeSetEmployee([], {}),
   );
@@ -47,7 +45,7 @@ type EmployeeGetAndSetInStoreAns = {
   employeeIndex: Record<Employee['id'], Employee>;
 };
 
-export const employeeGetAndSetInStore = (payload: object, meta: LoadingMeta): ThunkAction<Promise<EmployeeGetAndSetInStoreAns>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const employeeGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<Promise<EmployeeGetAndSetInStoreAns>> => async (dispatch) => {
   const { payload: { data, dataIndex } } = await dispatch(
     employeeEmployeeGetSetEmployee(payload, meta),
   );

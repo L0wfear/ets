@@ -9,7 +9,8 @@ import ButtonLast from 'components/new/ui/registry/components/data/paginator/but
 
 import { EtsPaginatorContainer } from 'components/new/ui/registry/components/data/paginator/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from '../../../module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import NumberButtons from './buttons/number_buttons/NumberButtons';
 import { compose } from 'recompose';
 import EtsPaginatorCheckSearch from './EtsPaginatorCheckSearch';

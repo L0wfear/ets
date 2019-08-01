@@ -15,7 +15,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import EdcRequestFormLazy from 'components/new/pages/edc_request/form';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 const EdcRequestList: React.FC<EdcRequestListProps> = (props) => {

@@ -10,7 +10,7 @@ import {
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { ReduxState } from 'redux-main/@types/state';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import {
@@ -22,7 +22,7 @@ import {
 } from './utils';
 import { dutyDutyMissionFormSchema } from './schema';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
@@ -39,7 +39,7 @@ import FieldBrigadeEmployeeIdListDutyMission from './inside_fields/brigade_emplo
 import FieldDatesDutyMission from './inside_fields/dates/FieldDatesDutyMission';
 import FieldStructureDutyMission from './inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
 import FieldRouteIdDutyMission from './inside_fields/route_id/FieldRouteIdDutyMission';
 import FieldCarMissionIdDutyMission from './inside_fields/car_mission_id/FieldCarMissionIdDutyMission';
@@ -59,6 +59,7 @@ import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_
 import { isOrderSource } from 'components/new/pages/missions/utils';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -512,7 +513,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
-            <div>
+            <EtsButtonsContainer>
               <EtsBootstrap.Button
                 onClick={this.handleGetPrintFormWrap}
                 disabled={!this.props.canSave}>
@@ -524,7 +525,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onClick={this.props.defaultSubmit}>
                 Сохранить
               </EtsBootstrap.Button>
-            </div>
+            </EtsButtonsContainer>
           ) : (
             <DivNone />
           )}

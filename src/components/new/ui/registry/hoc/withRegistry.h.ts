@@ -1,13 +1,4 @@
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-
-export type PropsRegistryWrap = {
-  registryAddInitialData: any;
-  registryRemoveData: any;
-};
-
-export type StateRegistryWrap = {
-
-};
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 export type ButtonDefineType = string[];
 
@@ -150,62 +141,29 @@ export type TypeFields<F extends any> = {
 
 export type TypeConfigData<F> = {
   noInitialLoad?: boolean;
-  Service: any;
+  Service: OneRegistryData<F>['Service'];
   registryKey: string;
-  header: {
-    title: string;
-    titlePopover?: string;
-    format?: (
-      'default'
-      | 'select_odh/dt(disabled)'
-      | 'select_odh/dt'
-      | 'datetime_range_picker'
-      | 'select_for_technical_operation_relations'
-      | 'is_current_structure'
-    );
-    is_current_structure_popover?: string;
-    buttons?: ButtonDefineType,
-  },
-  filter?: {
-    isOpen?: boolean;
-    fields: OneFilterType<F>[];
-    rawFilterValues?: {
-      [key in OneFilterType<F>['valueKey']]?: {
-        in: {
-          value: any[];
-        };
-      };
-    };
+  header?: {
+    title?: OneRegistryData<F>['header']['title'];
+    titlePopover?: OneRegistryData<F>['header']['titlePopover'];
+    format?: OneRegistryData<F>['header']['format'];
+    is_current_structure_popover?: OneRegistryData<F>['header']['is_current_structure_popover'];
+    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | string>,
   };
+  filter?: Partial<OneRegistryData<F>['filter']>;
   list?: {
-    data?: {
-      fixedWidth?: boolean;
-      uniqKey?: keyof F;
-      uniqKeyForParams?: string;
-      array?: F[];
-      total_count?: number;
-      proxyCheckData?: (
-        'mission_template'
-      )
-    },
-    permissions: OneRegistryData['list']['permissions'];
+    data?: Partial<OneRegistryData<F>['list']['data']>;
+    permissions?: Partial<OneRegistryData<F>['list']['permissions']>;
     processed?: {
-      processedArray?: F[];
-      sort?: {
-        field?: keyof F;
-        reverse?: boolean
-      };
-      filterValues?: object;
-      total_count?: number;
-    },
-    paginator?: {
-      currentPage?: number,
-      perPage?: number,
-    },
+      processedArray?: OneRegistryData<F>['list']['processed']['processedArray'];
+      sort?: Partial<OneRegistryData<F>['list']['processed']['sort']>;
+      filterValues?: OneRegistryData<F>['list']['processed']['filterValues'];
+      total_count?: OneRegistryData<F>['list']['processed']['total_count'];
+    };
     meta: {
-      row_double_click?: boolean;
-      fields: TypeFields<F>[];
-    },
+      row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
+      fields?: OneRegistryData<F>['list']['meta']['fields'];
+    };
+    paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
   };
-  trash?: object;
 };

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DataTable from 'components/ui/tableNew/DataTable';
+import DataTable from 'components/old/ui/tableNew/DataTable';
 
 const ROUTE_TYPE_OPTIONS = {
   mixed: {

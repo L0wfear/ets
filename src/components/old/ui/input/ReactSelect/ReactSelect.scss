@@ -1,0 +1,105 @@
+.react-select {
+  background-color: white;
+  height: auto;
+  color: black;
+
+  &.width70 {
+    width: 70px;
+  }
+
+  &.has-error {
+    .react-select__control {
+      border-color: #a94442;
+      &.react-select__control--is-focused {
+        border-color: #66afe9;
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+        box-shadow: none;
+      }
+    }
+  }
+  &.react-select--is-disabled {
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+    pointer-events: all;
+
+    >.react-select__control {
+      pointer-events: none;
+    }
+  }
+
+  .react-select__control {
+    border-radius: 0;
+    background-color: inherit;
+
+    &.react-select__control--is-focused {
+      border-color: #66afe9;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+
+    .react-select__indicators {
+      cursor: pointer;
+    }
+
+    .react-select__multi-value {
+      background-color: rgba(0, 126, 255, 0.08);
+      border-radius: 2px;
+      border: 1px solid rgba(0, 126, 255, 0.24);
+      color: #007eff;
+      display: flex;
+      flex-direction: row-reverse;
+
+      &.red {
+        background-color: #ff000087;
+        border: 1px solid #ff00004a!important;
+        color: white!important;
+      }
+
+      .react-select__multi-value__label {
+        color: #007eff;
+        white-space: normal;
+      }
+
+      .react-select__multi-value__remove {
+        border-right: 1px solid rgba(0, 126, 255, 0.24);
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(0, 113, 230, 0.08);
+          color: #0071e6;
+        }
+      }
+    }
+  }
+
+  .react-select__menu {
+    margin-bottom: initial;
+    margin-top: initial;
+    border-radius: 0;
+
+    border-right: 1px solid hsl(0,0%,80%);
+    border-bottom: 1px solid hsl(0,0%,80%);
+    border-left: 1px solid hsl(0,0%,80%);
+
+    .react-select__menu-list {
+      padding-bottom: 0;
+      padding-top: 0;
+      cursor: pointer;
+
+      .react-select__option {
+        cursor: pointer;
+        &:hover {
+          background-color: rgba(222, 235, 255, 0.5);
+        }
+        &.react-select__option--is-selected {
+          color: black;
+          background-color: rgba(222, 235, 255, 0.8);
+
+          &:hover {
+            background-color: rgba(222, 235, 255, 0.5);
+          }
+        }
+      }
+    }
+  }
+}
+

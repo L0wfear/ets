@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import * as components from 'components/ui/input/ReactSelect/styled/styled';
+import * as components from 'components/old/ui/input/ReactSelect/styled/styled';
 import styled, { css } from 'styled-components';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
 
 const NotActiveEmployeeStyle = css`
-  background-color: rgba(234, 66, 255, 0.05);
-  border: 1px solid rgba(234, 66, 255, 0.24);
+  background-color: #ff000087;
+  border: 1px solid #ff00004a!important;
+  color: white!important;
 `;
 
 const pathToActiveStatus = ['data', 'rowData', 'active_for_brigade'];

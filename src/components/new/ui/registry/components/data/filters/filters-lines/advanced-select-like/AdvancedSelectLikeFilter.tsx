@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import {
   getListData,
@@ -20,7 +20,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getJSON } from 'api/adapter';
 import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { DivNone } from 'global-styled/global-styled';
 import { isNumber, isBoolean, isArray } from 'util';

@@ -1,5 +1,5 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 export type WaybillsReportForm = {
   date_start: string;

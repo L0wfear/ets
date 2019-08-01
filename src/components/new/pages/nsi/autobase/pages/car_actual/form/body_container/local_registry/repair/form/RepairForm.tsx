@@ -1,15 +1,15 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { repairFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/schema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { getDefaultRepairElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/utils';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
@@ -23,7 +23,7 @@ import {
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { isNullOrUndefined } from 'util';
-import { FileField } from 'components/ui/input/fields';
+import { FileField } from 'components/old/ui/input/fields';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
 import { AUTOBASE_REPAIR_STATUS } from 'redux-main/reducers/modules/autobase/actions_by_type/repair/status';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { routeTypesBySlug, routeTypesByKey } from 'constants/route';
 import {
   PropsFieldType,

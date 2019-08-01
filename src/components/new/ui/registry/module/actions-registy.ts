@@ -1,5 +1,7 @@
 import { get } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import {
   REGISTRY_ADD_INITIAL_DATA,
   REGISTRY_REMOVE_DATA,
@@ -7,7 +9,7 @@ import {
   REGISTRY_CHANGE_LIST,
   REGISTRY_CHANGE_SERVICE,
   REGISTRY_SET_LOADING_STATUS,
-  OneRegistryData,
+  REGISTRY_SET_ID_REQUEST_TIME,
 } from 'components/new/ui/registry/module/registry';
 import { saveData } from 'utils/functions';
 
@@ -123,6 +125,14 @@ export const actionSetLoadingStatus = (registryKey, isLoading) => ({
   },
 });
 
+export const actionSetRequestTime = (registryKey, idRequestTime) => ({
+  type: REGISTRY_SET_ID_REQUEST_TIME,
+  payload: {
+    registryKey,
+    idRequestTime,
+  },
+});
+
 export const actionChangeRegistryMetaFields: any = (registryKey, fields) => (dispatch, getState) => {
   const registyData = get(getState(), ['registry', registryKey], null);
   const list = get(registyData, 'list', null);
@@ -190,6 +200,10 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
   dispatch(
     actionUnselectSelectedRowToShow(registryKey, true),
   );
+  const idRequestTime = +(new Date());
+  dispatch(
+    actionSetRequestTime(registryKey, idRequestTime),
+  );
 
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
@@ -242,6 +256,12 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
       );
     } catch (error) {
       console.error(error); //tslint:disable-line
+    }
+
+    const idRequestTimeOld = get(getState(), `registry.${registryKey}.idRequestTime`, null);
+
+    if (idRequestTime !== idRequestTimeOld) {
+      return;
     }
 
     const typeAns = get(getRegistryData, 'typeAns', 'result.rows');

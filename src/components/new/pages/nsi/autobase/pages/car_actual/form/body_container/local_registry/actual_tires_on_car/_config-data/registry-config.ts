@@ -1,8 +1,10 @@
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import tirePermissions from './permissions';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 export const registryKey = 'tireRegistry';
+export const uniqKeyForParams = 'actual_tires_on_car_id';
 
 export const getToConfig = (car_id): TypeConfigData<Tire> => {
   return {
@@ -16,8 +18,11 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
     },
     registryKey,
     header: {
-      title: 'Реестр шин',
-      buttons: [],
+      title: 'Установленные шины на текущую дату',
+      buttons: [
+        buttonsTypes.car_actual_add_tire,
+        buttonsTypes.read,
+      ],
     },
     filter: {
       fields: [
@@ -57,7 +62,7 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'actual_tires_on_car_id',
+        uniqKeyForParams,
       },
       meta: {
         fields: [

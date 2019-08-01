@@ -16,8 +16,9 @@ export const TitleList = styled.div`
 `;
 
 const notValidStyle = css`
-  background-color: rgba(234, 66, 255, 0.05);
-  border: 1px solid rgba(234, 66, 255, 0.24);
+  background-color: #ff000087;
+  border: 1px solid #ff00004a!important;
+  color: white!important;
 `;
 
 export const LiRouteManual = styled.li<{ isInvalid: boolean }>`

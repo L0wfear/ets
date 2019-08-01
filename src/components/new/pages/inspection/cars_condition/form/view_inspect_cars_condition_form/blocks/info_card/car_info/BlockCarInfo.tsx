@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { getDefaultCarsConditionCarElement } from './utils';
 import { BlockCarInfoOwnProps, BlockCarInfoProps } from './@types/BlockCarInfo';
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';

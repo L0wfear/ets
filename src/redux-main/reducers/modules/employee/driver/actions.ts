@@ -5,9 +5,7 @@ import {
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* ---------- Driver ---------- */
 export const employeeDriverSetDriver = (driverList: IStateEmployee['driverList'], dataIndex: IStateEmployee['driverIndex']) => (dispatch) => (
@@ -22,14 +20,14 @@ export const employeeDriverResetSetDriver = () => (dispatch) => (
     employeeDriverSetDriver([], {}),
   )
 );
-export const employeeDriverGetSetDriver = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof getSetDriver>, ReduxState, {}, AnyAction> => async (dispatch) => (
+export const employeeDriverGetSetDriver = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<typeof getSetDriver>> => async (dispatch) => (
   etsLoadingCounter(
     dispatch,
     getSetDriver(payload),
     meta,
   )
 );
-export const driverGetAndSetInStore = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof getSetDriver>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const driverGetAndSetInStore = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<typeof getSetDriver>> => async (dispatch) => {
   const result = await dispatch(
     employeeDriverGetSetDriver(payload, meta),
   );

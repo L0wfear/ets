@@ -1,9 +1,9 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { PropsCompanyStructureFormWrap } from 'components/new/pages/nsi/company_structure/form/@types/CompanyStructureForm';
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const CompanyStructureForm = React.lazy(() => (
   import(/* webpackChunkName: "company_structure_form" */ 'components/new/pages/nsi/company_structure/form/CompanyStructureForm')

@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type DutyMissionFailFormProps = {

@@ -4,7 +4,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import {
   OneSessionCompany,
 } from './session.d';
-import { DefaultSelectOption, DefaultSelectListMapper, defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption, DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { InitialStateSession, OneSessionStructure } from './session.d';
 import { find } from 'lodash';
 

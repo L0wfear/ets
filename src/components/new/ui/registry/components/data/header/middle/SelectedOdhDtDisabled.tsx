@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from 'styled-components';
 import { connect, HandleThunkActionCreator } from 'react-redux';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import { ReduxState } from 'redux-main/@types/state';
 import { getServiceData } from 'components/new/ui/registry/module/selectors-registry';

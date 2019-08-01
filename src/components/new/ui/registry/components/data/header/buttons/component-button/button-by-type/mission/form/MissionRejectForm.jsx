@@ -3,10 +3,10 @@ import * as PropTypes from 'prop-types';
 import { connectToStores, FluxContext } from 'utils/decorators';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import ModalBody from 'components/ui/Modal';
-import Field from 'components/ui/Field';
-import Div from 'components/ui/Div';
-import Datepicker from 'components/ui/input/date-picker/DatePicker';
+import ModalBody from 'components/old/ui/Modal';
+import Field from 'components/old/ui/Field';
+import Div from 'components/old/ui/Div';
+import Datepicker from 'components/old/ui/input/date-picker/DatePicker';
 import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications';
 import { cloneDeep, get, isEmpty } from 'lodash';
@@ -15,7 +15,7 @@ import { connect } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import memoize from 'memoize-one';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 @connectToStores(['objects', 'missions'])
@@ -367,7 +367,7 @@ class MissionRejectForm extends React.Component {
       = missions
       && missions.map((oneM, i) => (
         <EtsBootstrap.Row style={{ marginBottom: '4px' }} key={i}>
-          <EtsBootstrap.Col md={3} style={{ paddingRight: '0' }}>
+          <EtsBootstrap.Col lg={6} style={{ paddingRight: '0' }}>
             <div
               title={oneM.technical_operation_name}
               style={{
@@ -380,7 +380,7 @@ class MissionRejectForm extends React.Component {
             </div>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col
-            md={9}
+            lg={6}
             style={{
               textAlign: 'right',
               paddingLeft: '0',
@@ -416,7 +416,8 @@ class MissionRejectForm extends React.Component {
         <EtsBootstrap.ModalContainer
           id="modal-mission-reject"
           show={this.props.show}
-          onHide={this.props.onHide}>
+          onHide={this.props.onHide}
+          bsSize="medium">
           <EtsBootstrap.ModalHeader>
             <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
           </EtsBootstrap.ModalHeader>
@@ -460,7 +461,7 @@ class MissionRejectForm extends React.Component {
                   )})`}
                 </label>
                 <EtsBootstrap.Row style={{ marginBottom: '4px' }}>
-                  <EtsBootstrap.Col md={3} style={{ paddingRight: '0' }}>
+                  <EtsBootstrap.Col lg={6} style={{ paddingRight: '0' }}>
                     <div
                       style={{
                         paddingTop: '9px',
@@ -472,7 +473,7 @@ class MissionRejectForm extends React.Component {
                     </div>
                   </EtsBootstrap.Col>
                   <EtsBootstrap.Col
-                    md={9}
+                    lg={6}
                     style={{
                       textAlign: 'right',
                       paddingLeft: '0',

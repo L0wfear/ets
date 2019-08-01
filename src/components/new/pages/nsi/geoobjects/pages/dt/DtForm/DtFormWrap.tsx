@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 import { DivNone } from 'global-styled/global-styled';
 
 import { PropsDtFormWrap } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/@types/DtForm.h';
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const DtFrom = React.lazy(() => (
   import(/* webpackChunkName: "dt_form" */ 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/DtForm')

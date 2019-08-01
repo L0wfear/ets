@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { HandleThunkActionCreator } from 'react-redux';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
 

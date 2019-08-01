@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
@@ -8,7 +8,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { actionGetAndSetInStoreTechnicalOperationRegistry, actionResetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { defaultSelectListMapper } from 'components/ui/input/ReactSelect/utils';
+import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import memoizeOne from 'memoize-one';
 
 type SelectTechnicalOperationStateProps = {

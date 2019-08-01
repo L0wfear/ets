@@ -12,14 +12,12 @@ import {
   Company,
 } from 'redux-main/reducers/modules/company/@types';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { HandleThunkActionCreator } from 'react-redux';
 
 export const actionSetCompany = (
   companyList: IStateCompany['companyList'],
-): ThunkAction<IStateCompany['companyList'], ReduxState, {}, AnyAction> => (
+): EtsAction<IStateCompany['companyList']> => (
   dispatch,
 ) => {
   dispatch(
@@ -30,12 +28,7 @@ export const actionSetCompany = (
 
   return companyList;
 };
-export const actionResetSetCompany = (): ThunkAction<
-  null,
-  ReduxState,
-  {},
-  AnyAction
-> => (dispatch) => {
+export const actionResetSetCompany = (): EtsAction<null> => (dispatch) => {
   dispatch(actionSetCompany([]));
 
   return null;
@@ -43,12 +36,7 @@ export const actionResetSetCompany = (): ThunkAction<
 export const actionGetBlobCompany = (
   payloadOwn: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseLoadPFCompany>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseLoadPFCompany>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadPFCompany(payloadOwn),
@@ -63,12 +51,7 @@ export const actionGetBlobCompany = (
 export const actionLoadCompany = (
   payloadOwn: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseGetCompany>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseGetCompany>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetCompany(payloadOwn),
@@ -84,12 +67,7 @@ export const actionLoadCompany = (
 export const actionGetAndSetInStoreCompany = (
   payload: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>> => async (dispatch) => {
   const response = await dispatch(actionLoadCompany(payload, meta));
 
   dispatch(actionSetCompany(response.data));
@@ -99,12 +77,7 @@ export const actionGetAndSetInStoreCompany = (
 export const actionCreateCompany = (
   companyRaw: Partial<Company>,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseCreateCompany>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseCreateCompany>> => async (dispatch) => {
   const { payload: company } = await dispatch({
     type: 'none',
     payload: promiseCreateCompany(companyRaw),
@@ -119,12 +92,7 @@ export const actionCreateCompany = (
 export const actionUpdateCompany = (
   companyOld: Company,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseUpdateCompany>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseUpdateCompany>> => async (dispatch) => {
   const { payload: company } = await dispatch({
     type: 'none',
     payload: promiseUpdateCompany(companyOld),
@@ -139,12 +107,7 @@ export const actionUpdateCompany = (
 export const actionRemoveCompany = (
   compnay_id: number,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseDeleteCompany>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseDeleteCompany>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseDeleteCompany(compnay_id),

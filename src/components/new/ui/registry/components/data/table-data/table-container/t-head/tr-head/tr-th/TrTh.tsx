@@ -6,7 +6,7 @@ import {
   registryTriggerOnChangeSelectedField, registryGlobalCheck,
 } from 'components/new/ui/registry/module/actions-registy';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { isAllChecked } from 'components/new/ui/registry/module/check_funk';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

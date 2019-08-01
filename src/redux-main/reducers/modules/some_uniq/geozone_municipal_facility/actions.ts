@@ -2,9 +2,7 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetGeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 /* --------------- обновление стора --------------- */
 export const actionSetGeozoneMunicipalFacility = (
@@ -17,12 +15,7 @@ export const actionSetGeozoneMunicipalFacility = (
   );
 
 /* --------------- сброс стора --------------- */
-export const actionResetGeozoneMunicipalFacility: any = (): ThunkAction<
-  void,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+export const actionResetGeozoneMunicipalFacility: any = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetGeozoneMunicipalFacility(
       someUniq.initialState.geozoneMunicipalFacility,

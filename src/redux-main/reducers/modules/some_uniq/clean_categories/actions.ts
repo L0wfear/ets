@@ -2,9 +2,7 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /* --------------- обновление стора --------------- */
 export const actionSetCleanCategories = (
@@ -17,12 +15,7 @@ export const actionSetCleanCategories = (
   );
 
 /* --------------- сброс стора --------------- */
-export const actionResetCleanCategories = (): ThunkAction<
-  void,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+export const actionResetCleanCategories = (): EtsAction<void> => async (dispatch) => {
   dispatch(actionSetCleanCategories([]));
 
   return null;

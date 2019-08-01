@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { EdcRequestCancelFormProps, EdcRequestCancel } from './@types/EdcRequestCancel';
 
 export const edcRequestCancelSchema: SchemaType<EdcRequestCancel, EdcRequestCancelFormProps> = {

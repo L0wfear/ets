@@ -3,12 +3,10 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetMissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { HandleThunkActionCreator } from 'react-redux';
 
-const actionSetMissionSource = (missionSourceList: IStateSomeUniq['missionSource']['list']): ThunkAction<IStateSomeUniq['missionSource'], ReduxState, {}, AnyAction> => (dispatch) => {
+const actionSetMissionSource = (missionSourceList: IStateSomeUniq['missionSource']['list']): EtsAction<IStateSomeUniq['missionSource']> => (dispatch) => {
   const missionSource = {
     list: missionSourceList,
     order_mission_source_id: get(missionSourceList.find(({ auto }) => auto), 'id', null),
@@ -22,14 +20,14 @@ const actionSetMissionSource = (missionSourceList: IStateSomeUniq['missionSource
 
   return missionSource;
 };
-const actionResetMissionSource = (): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionSource>>, ReduxState, {}, AnyAction> => (dispatch) => {
+const actionResetMissionSource = (): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionSource>>> => (dispatch) => {
   const response = dispatch(
     actionSetMissionSource([]),
   );
 
   return response;
 };
-const actionLoadMissionSource = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetMissionSource>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionLoadMissionSource = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMissionSource>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetMissionSource(payloadOwn),
@@ -41,7 +39,7 @@ const actionLoadMissionSource = (payloadOwn: object, meta: LoadingMeta): ThunkAc
 
   return payload;
 };
-const actionGetAndSetInStoreMissionSource = (payload: object, meta: LoadingMeta): ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionLoadMissionSource>>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionGetAndSetInStoreMissionSource = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadMissionSource>>> => async (dispatch) => {
   const response = await dispatch(
     actionLoadMissionSource(payload, meta),
   );

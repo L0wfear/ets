@@ -8,21 +8,14 @@ import {
   promiseValidateRoute,
 } from 'redux-main/reducers/modules/routes/promise';
 import { IStateRoutes, Route } from 'redux-main/reducers/modules/routes/@types';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
-import { ThunkAction } from 'redux-thunk';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const actionSetRoutes = (
   routesList: IStateRoutes['routesList'],
   routesIndex: IStateRoutes['routesIndex'],
-): ThunkAction<
-  Pick<IStateRoutes, 'routesList' | 'routesIndex'>,
-  ReduxState,
-  {},
-  AnyAction
-> => (dispatch) => {
+): EtsAction<Pick<IStateRoutes, 'routesList' | 'routesIndex'>> => (dispatch) => {
   dispatch(
     actionSetNewData({
       routesList,
@@ -35,12 +28,7 @@ const actionSetRoutes = (
     routesIndex,
   };
 };
-const actionResetSetRoutes = (): ThunkAction<
-  Pick<IStateRoutes, 'routesList' | 'routesIndex'>,
-  ReduxState,
-  {},
-  AnyAction
-> => (dispatch) => {
+const actionResetSetRoutes = (): EtsAction<Pick<IStateRoutes, 'routesList' | 'routesIndex'>> => (dispatch) => {
   const routesList = [];
   const routesIndex = {};
 
@@ -54,12 +42,7 @@ const actionResetSetRoutes = (): ThunkAction<
 const actionLoadRoutes = (
   ownPayload: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseLoadRoutes>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseLoadRoutes>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadRoutes(ownPayload),
@@ -74,12 +57,7 @@ const actionLoadRoutes = (
 const actionLoadAndSetInStoreRoutes = (
   payload: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<HandleThunkActionCreator<typeof actionLoadRoutes>>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadRoutes>>, > => async (dispatch) => {
   const response = await dispatch(actionLoadRoutes(payload, meta));
 
   dispatch(actionSetRoutes(response.data, response.dataIndex));
@@ -89,12 +67,7 @@ const actionLoadAndSetInStoreRoutes = (
 const actionLoadRouteById = (
   id: number,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseLoadRouteById>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseLoadRouteById>, > => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadRouteById(id),
@@ -111,12 +84,7 @@ const actionCreateRoute = (
   routeRaw: Partial<Route>,
   isTemplate: boolean,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseCreateRoute>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseCreateRoute>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseCreateRoute(routeRaw, isTemplate),
@@ -131,12 +99,7 @@ const actionCreateRoute = (
 const actionUpdateRoute = (
   routeOld: Partial<Route>,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseUpdateRoute>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseUpdateRoute>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateRoute(routeOld),
@@ -151,12 +114,7 @@ const actionUpdateRoute = (
 const actionRemoveRoute = (
   id: Route['id'],
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseDeleteRoute>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseDeleteRoute>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseDeleteRoute(id),
@@ -175,12 +133,7 @@ const actionValidateRoute = (
       'technical_operation_id' | 'input_lines' | 'municipal_facility_id'
     >,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseValidateRoute>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseValidateRoute>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseValidateRoute(route),

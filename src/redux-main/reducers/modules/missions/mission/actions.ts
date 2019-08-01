@@ -14,9 +14,7 @@ import {
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { HandleThunkActionCreator } from 'react-redux';
 import { initialMissionsState } from 'redux-main/reducers/modules/missions';
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -36,7 +34,7 @@ import { isArray } from 'util';
 import { MissionDataType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
-const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): ThunkAction<IStateMissions['missionData'], ReduxState, {}, AnyAction> => (
+const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): EtsAction<IStateMissions['missionData']> => (
   dispatch,
   getState,
 ) => {
@@ -53,12 +51,7 @@ const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions[
 
   return newMissionData;
 };
-const actionResetMission = (): ThunkAction<
-  IStateMissions['missionData'],
-  ReduxState,
-  {},
-  AnyAction
-> => (dispatch) => {
+const actionResetMission = (): EtsAction<IStateMissions['missionData']> => (dispatch) => {
   const newMissionData = dispatch(
     actionSetMissionPartialData(initialMissionsState.missionData),
   );
@@ -66,13 +59,7 @@ const actionResetMission = (): ThunkAction<
   return newMissionData;
 };
 
-type ThunkActionSetCarsMission = ThunkAction<
-  Pick<
-    IStateMissions['missionData'], 'carsIndex' | 'carsList'>,
-  ReduxState,
-  {},
-  AnyAction
->;
+type ThunkActionSetCarsMission = EtsAction<Pick<IStateMissions['missionData'], 'carsIndex' | 'carsList'>>;
 const actionSetCarsMission = (
   carsList: IStateMissions['missionData']['carsList'],
   carsIndex: IStateMissions['missionData']['carsIndex'],
@@ -90,25 +77,17 @@ const actionSetCarsMission = (
   };
 };
 
-type ThunkActionResetCarsMissionTemplate = ThunkAction<
+type ThunkActionResetCarsMissionTemplate = EtsAction<
   Pick<
     IStateMissions['missionData'],
     'carsIndex' | 'carsList'
   >,
-  ReduxState,
-  {},
-  AnyAction
 >;
 
 const actionLoadCarsForMission = (
   ownPayload: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<HandleThunkActionCreator<typeof autobaseGetSetCar>>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<HandleThunkActionCreator<typeof autobaseGetSetCar>>> => async (dispatch) => {
   const response = await dispatch(autobaseGetSetCar(ownPayload, meta));
 
   return response;
@@ -116,12 +95,7 @@ const actionLoadCarsForMission = (
 const actionGetAndSetInStoreCarForMission = (
   payload: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<HandleThunkActionCreator<typeof actionLoadCarsForMission>>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCarsForMission>>> => async (dispatch) => {
   const { data, dataIndex } = await dispatch(
     actionLoadCarsForMission(payload, meta),
   );
@@ -152,7 +126,7 @@ const actionResetCarsMission = (): ThunkActionResetCarsMissionTemplate => (
   };
 };
 
-const actionPrintFormMission = (payloadOwn: any, meta: LoadingMeta): ThunkAction<ReturnType<typeof promiseGetPrintFormMission>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionPrintFormMission = (payloadOwn: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetPrintFormMission>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetPrintFormMission(payloadOwn),
@@ -168,12 +142,7 @@ const actionPrintFormMission = (payloadOwn: any, meta: LoadingMeta): ThunkAction
 const actionGetMission = (
   payloadOwn: GetMissionPayload,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseGetMission>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseGetMission>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetMission(payloadOwn),
@@ -188,12 +157,7 @@ const actionGetMission = (
 const actionGetMissionById = (
   id: Mission['id'],
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseGetMissionById>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseGetMissionById>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetMissionById(id),
@@ -208,12 +172,7 @@ const actionGetMissionById = (
 const actionGetAndSetInStoreMission = (
   payloadOwn: object,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<HandleThunkActionCreator<typeof actionGetMission>>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetMission>>> => async (dispatch) => {
   dispatch(actionResetMission());
 
   const response = await dispatch(actionGetMission(payloadOwn, meta));
@@ -228,7 +187,7 @@ const actionGetAndSetInStoreMission = (
   return response;
 };
 
-type ActionSetDependenceOrderDataForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+type ActionSetDependenceOrderDataForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
 const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['missionData']['dependeceOrder'], dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation']): ActionSetDependenceOrderDataForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -243,7 +202,7 @@ const actionSetDependenceOrderDataForMission = (dependeceOrder: IStateMissions['
   }
 );
 
-type ActionSetDependenceEdcRequestForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+type ActionSetDependenceEdcRequestForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
 const actionSetDependenceEdcRequestForMission = (edcRequest: IStateMissions['missionData']['edcRequest']): ActionSetDependenceEdcRequestForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -257,7 +216,7 @@ const actionSetDependenceEdcRequestForMission = (edcRequest: IStateMissions['mis
   }
 );
 
-type ActionSetDependenceWaybillDataForMission = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+type ActionSetDependenceWaybillDataForMission = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
 const actionSetDependenceWaybillDataForMission = (waybillData: IStateMissions['missionData']['waybillData']): ActionSetDependenceWaybillDataForMission => (
   (dispatch, getState) => {
     const missionData = dispatch(
@@ -323,12 +282,7 @@ const actionCreateMission = (
   missionRaw: Partial<Mission>,
   assign_to_waybill: string[],
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseCreateMission>,
-  ReduxState,
-  {},
-  AnyAction
-> => (dispatch) => {
+): EtsAction<ReturnType<typeof promiseCreateMission>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promiseCreateMission(missionRaw, assign_to_waybill, false),
@@ -339,12 +293,7 @@ const actionChangeArchiveMissionStatus = (
   missionId: Mission['id'],
   is_archive: boolean,
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseChangeArchiveMissionStatus>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseChangeArchiveMissionStatus>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseChangeArchiveMissionStatus(missionId, is_archive),
@@ -360,12 +309,7 @@ const actionChangeArchiveMissionStatus = (
 const actionUpdateMission = (
   missionOld: Mission & { action_at?: string },
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseUpdateMission>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseUpdateMission>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseUpdateMission(missionOld),
@@ -380,12 +324,7 @@ const actionUpdateMission = (
 const actionRemoveMissions = (
   missionOldArr: (Pick<Mission, 'id'> & Partial<Mission>)[],
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseRemoveMissions>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseRemoveMissions>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveMissions(missionOldArr.map(({ id }) => id)),
@@ -400,12 +339,7 @@ const actionRemoveMissions = (
 const actionRemoveMission: any = (
   id: Mission['id'],
   meta: LoadingMeta,
-): ThunkAction<
-  ReturnType<typeof promiseRemoveMission>,
-  ReduxState,
-  {},
-  AnyAction
-> => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseRemoveMission>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseRemoveMission(id),
@@ -418,7 +352,7 @@ const actionRemoveMission: any = (
   return payload;
 };
 
-export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
   // формировать новый массив объектов
   return Promise.all(
@@ -433,7 +367,7 @@ export const actionCompleteMissionByIds = (id: Mission['id'] | Mission['id'][], 
   );
 };
 
-export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const mission = await dispatch(
     actionGetMissionById(
       id,
@@ -462,7 +396,7 @@ export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta):
   return false;
 };
 
-export const actionToArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionToArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -478,7 +412,7 @@ export const actionToArchiveMissionByIds: any = (id: Mission['id'] | Mission['id
   );
 };
 
-export const actionFromArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): ThunkAction<any, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionFromArchiveMissionByIds: any = (id: Mission['id'] | Mission['id'][], meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
   const ids = isArray(id) ? id : [id];
 
   return Promise.all(
@@ -494,7 +428,7 @@ export const actionFromArchiveMissionByIds: any = (id: Mission['id'] | Mission['
   );
 };
 
-export const actionLoadMissionData = (id: Mission['id'], meta: LoadingMeta): ThunkAction<Promise<MissionDataType>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionLoadMissionData = (id: Mission['id'], meta: LoadingMeta): EtsAction<Promise<MissionDataType>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     getMissionDataById(id),
@@ -504,7 +438,7 @@ export const actionLoadMissionData = (id: Mission['id'], meta: LoadingMeta): Thu
   return result;
 };
 
-type ActionReseSetDependenceMissionDataForMissionForm = ThunkAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>, ReduxState, {}, AnyAction>;
+type ActionReseSetDependenceMissionDataForMissionForm = EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetMissionPartialData>>>;
 const actionReseSetDependenceMissionDataForMissionForm = (): ActionReseSetDependenceMissionDataForMissionForm => (
   (dispatch, getState) => {
     const missionData = dispatch(

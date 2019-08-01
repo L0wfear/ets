@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
@@ -57,7 +57,7 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
       const itemToRemove = props.checkedRows;
 
       if (!Object.values(itemToRemove).length) {
-        itemToRemove[props.uniqKey] = props.selectedRow;
+        itemToRemove[props.selectedRow[props.uniqKey]] = props.selectedRow;
       }
 
       setMissionsFail(Object.values(itemToRemove));

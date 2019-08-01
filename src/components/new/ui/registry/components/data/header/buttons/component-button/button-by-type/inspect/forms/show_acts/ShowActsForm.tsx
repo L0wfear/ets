@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import TableData from 'components/new/ui/registry/components/data/table-data/TableData';
 import Paginator from 'components/new/ui/registry/components/data/paginator/Paginator';
 import { EtsHeaderContainer } from '../../../../../../styled/styled';
@@ -18,7 +18,7 @@ import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } fro
 import { EtsButtonsContainer } from '../../../../../styled/styled';
 import ButtonRemove from '../../../ButtonRemove';
 import InspectActFileForm from './form/InspectActFileForm';
-import ButtonReadWrap from '../../../wrap/ButtonReadWrap';
+import ButtonRead from '../../../ButtonRead';
 
 type Props = {
   element: { id: number };
@@ -106,7 +106,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
                   Добавить файл
                 </EtsBootstrap.Button>
                 <EtsButtonsContainer>
-                  <ButtonReadWrap registryKey={registryKey} onClick={handleOpenFormEdit} />
+                  <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
                   <ButtonRemove registryKey={registryKey} format="yesno"/>
                 </EtsButtonsContainer>
               </EtsHeaderContainer>

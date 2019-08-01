@@ -3,7 +3,7 @@ import registryDefaultObj from 'components/new/ui/registry/module/contant/defaul
 import { isArray, isBoolean, isObject, isString, isNumber } from 'util';
 import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/filter';
 import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { makeProcessedArray } from './processed';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
@@ -72,7 +72,17 @@ export const mergeHeader = (header: OneRegistryData['header']) => (
     Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
       if (key === 'buttons') {
         if (isArray(header[key])) {
-          newObj[key] = header[key];
+          newObj[key] = header[key].map(
+            (buttonData) => {
+              if (isObject(buttonData)) {
+                return buttonData;
+              }
+
+              return {
+                type: buttonData,
+              };
+            },
+          );
         } else {
           newObj[key] = value;
         }
@@ -170,7 +180,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   const fieldsFiltred = fields.reduce(
     (newArr, fieldData) => {
       const { title } = fieldData;
-      let formatedTitle = title;
+      let formatedTitle = null;
 
       if (isArray(title)) {
         formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
@@ -188,9 +198,11 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
 
           return filtredTitle;
         }, null);
+      } else {
+        formatedTitle = title;
       }
 
-      if (formatedTitle || fieldData.key === 'checkbox') {
+      if (formatedTitle || 'key' in fieldData && fieldData.key === 'checkbox') {
         newArr.push({
           ...fieldData,
           title: formatedTitle,

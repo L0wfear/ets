@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldForemanIdDutyMission,
@@ -13,7 +13,7 @@ import {
 } from 'components/new/pages/missions/duty_mission/form/main/inside_fields/foreman_id/FieldForemanIdDutyMission.d';
 import { getEmployeeState } from 'redux-main/reducers/selectors/index';
 import { isPermittedEmployeeForDutyMission, makeOptionsByEmployee } from 'components/new/pages/missions/duty_mission/form/main/utils';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { componentsForSelect } from './styled';
 

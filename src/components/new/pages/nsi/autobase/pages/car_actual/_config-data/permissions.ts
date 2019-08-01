@@ -1,4 +1,4 @@
-const carActualPermissions = {
+export const carActualPermissions = {
   list: 'car.list',
   create: 'car.create',
   read: 'car.read',

@@ -6,7 +6,7 @@ import { CarWrap } from '../../../../../@types/CarForm';
 import { HandleThunkActionCreator } from 'react-redux';
 import { employeeDriverGetSetDriver } from 'redux-main/reducers/modules/employee/driver/actions';
 import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 type UseCarDriversListAns = {
   primaryDriverOptions: DefaultSelectOption<number, string, Employee>[],

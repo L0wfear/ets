@@ -8,12 +8,12 @@ import {
 import ContainerBlock from './container_bloc';
 import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
 import { compose } from 'recompose';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import inspectionPgmBaseActions from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
 import inspectPgmBasePermissions from '../../_config_data/permissions';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { ViewInspectPgmBaseProps, PropsViewInspectPgmBaseWithForm, ViewInspectPgmBaseOwnProps } from './@types/ViewInspectPgmBase';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
 import { BoxContainer } from '../../../autobase/components/data/styled/InspectionAutobaseData';

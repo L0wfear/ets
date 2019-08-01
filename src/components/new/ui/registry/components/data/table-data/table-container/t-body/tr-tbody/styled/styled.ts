@@ -3,7 +3,7 @@ import { constantColor } from 'global-styled/global-constants';
 import { get } from 'lodash';
 import { darken } from 'polished';
 import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
-// import { FileInputWrapper } from 'components/ui/input/FileInput/styled';
+// import { FileInputWrapper } from 'components/old/ui/input/FileInput/styled';
 
 import { isBoolean } from 'util';
 

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { DivNone } from 'global-styled/global-styled';
 
-import withFormRegistrySearch from 'components/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import ChangeRouteForm from './ChangeRouteForm';
 
 type PropsChangeRouteFormLazy = any;

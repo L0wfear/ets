@@ -116,7 +116,7 @@ export const config: TypeConfigData<Waybill> = {
         },
       },
       {
-        valueKey: 'work_mode_name',
+        valueKey: 'work_mode_id',
         title: 'Режим работы',
         type: 'multiselect',
         getRegistryData: {
@@ -358,7 +358,7 @@ export const config: TypeConfigData<Waybill> = {
           key: 'plan_arrival_date',
           title: 'Возвращение план',
           format: 'datetime',
-          width: 150,
+          width: 175,
         },
         {
           key: 'fact_arrival_date',

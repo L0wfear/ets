@@ -1,9 +1,7 @@
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import {
   getCars,
   promiseLoadCarDrivers,
@@ -33,7 +31,7 @@ export const autobaseResetSetCar = () => (dispatch) => (
     autobaseSetCar([]),
   )
 );
-export const autobaseGetSetCar = (payloadOwn: object, meta: LoadingMeta): ThunkAction<ReturnType<typeof getCars>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const autobaseGetSetCar = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<typeof getCars>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     getCars(payloadOwn),
@@ -59,7 +57,7 @@ export const carGetAndSetInStore = (payload = {}, meta: LoadingMeta) => async (d
   };
 };
 
-export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarWrap>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): EtsAction<Promise<CarWrap>> => async (dispatch) => {
   const response = await Promise.all([
     dispatch(
       actionsGetCarByAsuodsId(asuods_id, meta),
@@ -118,7 +116,7 @@ export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], met
   return fullCarData;
 };
 
-export const actionsGetCarByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<Car>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionsGetCarByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): EtsAction<Promise<Car>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseLoadCarByAsuodsId(asuods_id),
@@ -128,7 +126,7 @@ export const actionsGetCarByAsuodsId = (asuods_id: Car['asuods_id'], meta: Loadi
   return response;
 };
 
-export const actionUpdateCar = (car: Car, meta: LoadingMeta): ThunkAction<Promise<Car>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateCar = (car: Car, meta: LoadingMeta): EtsAction<Promise<Car>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateCar(car),
@@ -164,7 +162,7 @@ export const actionUpdateCarWrap: any = (carWrapOld: CarWrap, meta: LoadingMeta)
   return carWrapOld;
 };
 
-export const actionUpdateCarDrivers = (driversData: CarDriversData, meta: LoadingMeta): ThunkAction<Promise<CarDriversData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateCarDrivers = (driversData: CarDriversData, meta: LoadingMeta): EtsAction<Promise<CarDriversData>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateCarDriversData(driversData),
@@ -174,7 +172,7 @@ export const actionUpdateCarDrivers = (driversData: CarDriversData, meta: Loadin
   return response;
 };
 
-export const actionGetCarDrivers = (car_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarDriversData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionGetCarDrivers = (car_id: Car['asuods_id'], meta: LoadingMeta): EtsAction<Promise<CarDriversData>> => async (dispatch) => {
   const carDriversData = await etsLoadingCounter(
     dispatch,
     promiseLoadCarDrivers(car_id),
@@ -184,7 +182,7 @@ export const actionGetCarDrivers = (car_id: Car['asuods_id'], meta: LoadingMeta)
   return carDriversData;
 };
 
-export const actionUpdateCarRegistration = (registrationData: CarRegistrationData, meta: LoadingMeta): ThunkAction<Promise<CarRegistrationData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateCarRegistration = (registrationData: CarRegistrationData, meta: LoadingMeta): EtsAction<Promise<CarRegistrationData>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateCarRegistrationData(registrationData),
@@ -194,7 +192,7 @@ export const actionUpdateCarRegistration = (registrationData: CarRegistrationDat
   return response;
 };
 
-export const actionLoadCarRegistration = (car_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarRegistrationData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionLoadCarRegistration = (car_id: Car['asuods_id'], meta: LoadingMeta): EtsAction<Promise<CarRegistrationData>> => async (dispatch) => {
   const carDriversData = await etsLoadingCounter(
     dispatch,
     promiseLoadCarRegistration(car_id),
@@ -204,7 +202,7 @@ export const actionLoadCarRegistration = (car_id: Car['asuods_id'], meta: Loadin
   return carDriversData;
 };
 
-export const actionUpdateCarPassport = (passportData: CarPassporntData, meta: LoadingMeta): ThunkAction<Promise<CarPassporntData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionUpdateCarPassport = (passportData: CarPassporntData, meta: LoadingMeta): EtsAction<Promise<CarPassporntData>> => async (dispatch) => {
   if (!passportData.type) {                             // нет типа - нет обновления
     return Promise.resolve(passportData);
   }
@@ -218,7 +216,7 @@ export const actionUpdateCarPassport = (passportData: CarPassporntData, meta: Lo
   return response;
 };
 
-export const actionLoadCarPassport = (car_id: Car['asuods_id'], meta: LoadingMeta): ThunkAction<Promise<CarPassporntData>, ReduxState, {}, AnyAction> => async (dispatch) => {
+export const actionLoadCarPassport = (car_id: Car['asuods_id'], meta: LoadingMeta): EtsAction<Promise<CarPassporntData>> => async (dispatch) => {
   const carDriversData = await etsLoadingCounter(
     dispatch,
     promiseLoadCarPassport(car_id),

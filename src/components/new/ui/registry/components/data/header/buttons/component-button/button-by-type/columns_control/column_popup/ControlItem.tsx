@@ -1,23 +1,12 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { isString } from 'util';
 
-type ControlItemStateProps = {
-};
-type ControlItemDispatchProps = {
-};
-type ControlItemOwnProps = {
+type ControlItemProps = {
   fieldData: ValuesOf<OneRegistryData['list']['meta']['fields']>;
   onChange: (fieldData: ValuesOf<OneRegistryData['list']['meta']['fields']>) => any;
 };
-type ControlItemMergedProps = (
-  ControlItemStateProps
-  & ControlItemDispatchProps
-  & ControlItemOwnProps
-);
-type ControlItemProps = ControlItemMergedProps;
 
 const ControlItem: React.FC<ControlItemProps> = (props) => {
   const handleChange = React.useCallback(
@@ -30,10 +19,21 @@ const ControlItem: React.FC<ControlItemProps> = (props) => {
     [props.onChange, props.fieldData],
   );
 
+  const canRender = React.useMemo(
+    () => {
+      return isString(props.fieldData.title);
+    },
+    [props.fieldData.title],
+  );
+
+  if (!canRender) {
+    return null;
+  }
+
   return (
     <ExtField
       type="boolean"
-      label={props.fieldData.title}
+      label={props.fieldData.title as string}
       onChange={handleChange}
       value={!props.fieldData.hidden}
       className="checkbox-input flex-reverse"
@@ -41,6 +41,4 @@ const ControlItem: React.FC<ControlItemProps> = (props) => {
   );
 };
 
-export default connect<ControlItemStateProps, ControlItemDispatchProps, ControlItemOwnProps, ReduxState>(
-  null,
-)(ControlItem);
+export default ControlItem;

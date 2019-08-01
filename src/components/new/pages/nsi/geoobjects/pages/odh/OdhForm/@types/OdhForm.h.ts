@@ -1,4 +1,4 @@
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { EtsTbodyTrTd, EtsTbodyScrollContainer, EtsTbodyTextContainer } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import { EtsTbodyTrTd, EtsTbodyScrollContainer, EtsTbodyTextContainer, EtsTdInnerWrapper } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { isString } from 'util';
 
 export type PropsTrTd = {
@@ -69,7 +69,11 @@ const TrTd: React.FC<PropsTrTd> = React.memo(
     );
 
     return (
-      <EtsTbodyTrTd onClick={handleClick}>{value}</EtsTbodyTrTd>
+      <EtsTbodyTrTd onClick={handleClick}>
+        <EtsTdInnerWrapper>
+          {value}
+        </EtsTdInnerWrapper>
+      </EtsTbodyTrTd>
     );
   },
 );

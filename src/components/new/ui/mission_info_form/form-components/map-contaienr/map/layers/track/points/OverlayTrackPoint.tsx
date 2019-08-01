@@ -3,7 +3,7 @@ import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { makeDate, makeTime } from 'utils/dates';
-import PreloadNew from 'components/ui/new/preloader/PreloadNew';
+import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
@@ -21,7 +21,7 @@ import {
 import { OverlayLineInfoContainer } from 'components/new/ui/map/overlay/styled/styled';
 
 import { DivNone } from 'global-styled/global-styled';
-import { OverlayLineObjectsStringContainer } from 'components/monitor/layers/track/points/styled/styled';
+import { OverlayLineObjectsStringContainer } from 'components/old/monitor/layers/track/points/styled/styled';
 
 class OverlayTrackPoint extends React.Component<any, any> {
   state = {

@@ -1,6 +1,6 @@
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
-import { DefaultSelectListMapper, DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { DefaultSelectListMapper, DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { GetPosition } from 'redux-main/reducers/modules/employee/position/@types';

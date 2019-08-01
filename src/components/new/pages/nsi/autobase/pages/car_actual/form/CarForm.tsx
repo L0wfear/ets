@@ -1,11 +1,11 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { carFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/schema';
 
 import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
   OwnCarProps,
   PropsCar,
@@ -17,6 +17,7 @@ import carActualPermissions from '../_config-data/permissions';
 import CarFormBodyHeader from './body_header/CarFormBodyHeader';
 import CarFormBodyContainer from './body_container/CarFormBodyContainer';
 import { actionUpdateCarWrap, actionsGetCarFormDataByAsuodsId } from 'redux-main/reducers/modules/autobase/car/actions';
+import { CarActualRegistryFormContext, CarActualRegistryFormContextType } from './body_container/CarFormContext';
 
 const CarForm: React.FC<PropsCar> = React.memo(
   (props) => {
@@ -31,8 +32,18 @@ const CarForm: React.FC<PropsCar> = React.memo(
 
     const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
 
+    const contextValue: CarActualRegistryFormContextType = React.useMemo(
+      () => {
+        return {
+          currentSelectedCar: state,
+        };
+      },
+      [state],
+    );
+
     return (
-      <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
+      <CarActualRegistryFormContext.Provider value={contextValue}>
+        <EtsBootstrap.ModalContainer id="modal-car" show onHide={props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Карточка транспортного средства</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -61,6 +72,7 @@ const CarForm: React.FC<PropsCar> = React.memo(
         }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
+      </CarActualRegistryFormContext.Provider>
     );
   },
 );

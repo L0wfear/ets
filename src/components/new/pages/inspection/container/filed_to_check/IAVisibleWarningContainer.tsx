@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { groupBy, get } from 'lodash';
 import { DivNone } from 'global-styled/global-styled';
 import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
 import { IAVisibleWarningInputContainer } from '../../autobase/components/vsible_warning/styled/IAVisibleWarning';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'utils/dates';
-import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { SubHeader } from '../../pgm_base/components/vsible_warning/styled/IAVisibleWarning';
-// import { FormErrorType } from 'components/ui/form/new/@types/validate.h';
+// import { FormErrorType } from 'components/old/ui/form/new/@types/validate.h';
 
 type IAVisibleWarningProps = {
   onChange: (data: any) => any;

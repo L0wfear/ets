@@ -4,7 +4,8 @@ import { compose } from 'recompose';
 import { isNullOrUndefined } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { OneRegistryData } from '../../../module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+
 import { getListData, getRootRegistry } from '../../../module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
 import { registryChangeDataPaginatorCurrentPage } from '../../../module/actions-registy';

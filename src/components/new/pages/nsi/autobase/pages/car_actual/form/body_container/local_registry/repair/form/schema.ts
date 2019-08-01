@@ -1,4 +1,4 @@
-import { SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsRepair } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/@types/RepairForm';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'utils/validate';

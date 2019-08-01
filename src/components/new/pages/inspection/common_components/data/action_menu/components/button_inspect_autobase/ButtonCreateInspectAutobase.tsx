@@ -6,7 +6,7 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';

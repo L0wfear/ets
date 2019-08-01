@@ -5,8 +5,8 @@ import {
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import {
   DefaultSelectListMapper,
-} from 'components/ui/input/ReactSelect/utils';
-import { OutputWithFormProps } from 'components/compositions/vokinda-hoc/formWrap/withForm';
+} from 'components/old/ui/input/ReactSelect/utils';
+import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { GetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/@types';
 import { GetRepairType } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/@types';

@@ -112,7 +112,7 @@ export const sessionSetData: any = (
     dispatch(
       someUniqActions.actionGetAndSetInStoreMissionSource(
         {},
-        { page: 'mainpage' },
+        { page: 'main' },
       ),
     ),
   ]);
@@ -162,7 +162,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
         dispatch,
         AuthCheckServiceEtsTest.get(),
         {
-          page: 'mainpage', path: '',
+          page: 'main', path: '',
         },
       );
 

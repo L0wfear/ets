@@ -5,9 +5,8 @@ import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-d
 import { ReduxState } from 'redux-main/@types/state';
 
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -16,7 +15,6 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 type TrTdButtonShowEdcCommentsStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
-  permissions: string | boolean;
 };
 type TrTdButtonShowEdcCommentsDispatchProps = {
 };
@@ -61,9 +59,7 @@ export default compose<TrTdButtonShowEdcCommentsProps, TrTdButtonShowEdcComments
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
-      permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
   withSearch,
 )(TrTdButtonShowEdcComments);

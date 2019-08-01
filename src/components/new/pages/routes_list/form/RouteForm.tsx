@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
-import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 
 import FieldIsMain from 'components/new/pages/routes_list/form/inside_fields/is-main/FieldIsMain';
 
@@ -13,7 +13,7 @@ import FieldStructure from 'components/new/pages/routes_list/form/inside_fields/
 import FieldType from 'components/new/pages/routes_list/form/inside_fields/type/FieldType';
 import CreatingMap from 'components/new/pages/routes_list/form/inside_fields/creating-map/CreatingMap';
 
-import { FlewWrapFormRow } from 'components/ui/form/new/styled/styled';
+import { FlewWrapFormRow } from 'components/old/ui/form/new/styled/styled';
 
 import { routeFormSchema } from 'components/new/pages/routes_list/form/route-form-schema';
 
@@ -33,7 +33,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { DivNone } from 'global-styled/global-styled';
 import { isArray, isFunction } from 'util';
 import { compose } from 'recompose';
-import withForm from 'components/compositions/vokinda-hoc/formWrap/withForm';
+import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import routePermisions from 'components/new/pages/routes_list/config-data/permissions';
 import bridgesPermission from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';

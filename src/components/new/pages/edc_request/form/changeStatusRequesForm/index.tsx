@@ -1,11 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/ui/PreloaderMainPage';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 // import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 // import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-// import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+// import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import withElementFromArray from 'components/new/utils/hoc/with_element_from_array/withElementFromArray';
 
 const ChangeStatusRequesForm = React.lazy(() =>

@@ -5,7 +5,7 @@ import InspectionTitle from 'components/new/pages/inspection/common_components/i
 import InspectionPgmBaseSelectData from './components/select_pgm_store/InspectionPgmBaseSelectData';
 import InspectionPgmBaseData from './components/data/InspectionPgmBaseData';
 import InspectionPgmBaseFormLazy from 'components/new/pages/inspection/pgm_base/form';
-import withPreloader from 'components/ui/new/preloader/hoc/with-preloader/withPreloader';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { InspectionPgmBaseListProps } from './@types/InspectionPgmBaseList';
 

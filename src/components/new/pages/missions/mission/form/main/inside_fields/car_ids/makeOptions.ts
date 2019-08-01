@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { DefaultSelectOption } from 'components/ui/input/ReactSelect/utils';
+import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 
 export const makeLabelForMissionCarOption = (carData: Partial<Car> & Pick<Car, 'gov_number' | 'type_name'>) => {
   let label = get(carData, 'gov_number', '-');

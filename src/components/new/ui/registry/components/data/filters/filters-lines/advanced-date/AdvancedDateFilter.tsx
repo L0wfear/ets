@@ -6,7 +6,7 @@ import {
 } from 'components/new/ui/registry/module/selectors-registry';
 
 import {
-  EtsFilter,
+  EtsFilterDate,
   EtsFilterTitle,
   EtsFilterInputAdvacedContainer,
   AdvacedFirstLineContainer,
@@ -15,7 +15,7 @@ import {
   AdvacedFirstInputContainer,
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { DivNone } from 'global-styled/global-styled';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 import InputDate from 'components/new/ui/field/InputDate';
 import { createValidDate, createValidDateTime } from 'utils/dates';
 
@@ -133,7 +133,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
     const id = `filter_${props.filterData.valueKey}`;
 
     return (
-      <EtsFilter htmlFor="">
+      <EtsFilterDate>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputAdvacedContainer>
           <AdvacedFirstLineContainer>
@@ -177,7 +177,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
           }
           </AdvacedSecondLineContainer>
         </EtsFilterInputAdvacedContainer>
-      </EtsFilter>
+      </EtsFilterDate>
     );
   }
 }

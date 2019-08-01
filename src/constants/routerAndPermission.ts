@@ -1,8 +1,8 @@
-import monitor from 'components/monitor/config-data';
-import coverageReports from 'components/coverage_reports/config-data';
-import nsi from 'components/directories/config-data';
-import reports from 'components/reports/config-data';
-import notificationRegistry from 'components/notifications/config-data';
+import monitor from 'components/old/monitor/config-data';
+import coverageReports from 'components/old/coverage_reports/config-data';
+import nsi from 'components/old/directories/config-data';
+import reports from 'components/old/reports/config-data';
+import notificationRegistry from 'components/old/notifications/config-data';
 import changeCompany from 'components/new/ui/app_header/desktop/right/change_role/config-data';
 
 import missions from 'components/new/pages/missions/_config-data';

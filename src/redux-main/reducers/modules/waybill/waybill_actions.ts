@@ -5,20 +5,15 @@ import {
   Waybill,
 } from 'redux-main/reducers/modules/waybill/@types';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { ThunkAction } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
-import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const actionGetWaybillById = (
   id: Waybill['id'],
   meta: LoadingMeta,
-): ThunkAction<
+): EtsAction<
   ReturnType<typeof promiseGetWaybillById>,
-  ReduxState,
-  {},
-  AnyAction
 > => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
@@ -32,7 +27,7 @@ const actionGetWaybillById = (
   return payload;
 };
 
-const actionGetBlobWaybillJournalReport = (payload: { date: string } | { month: number, year: number }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): ThunkAction<Promise<any>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionGetBlobWaybillJournalReport = (payload: { date: string } | { month: number, year: number }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetBlobWaybilljournalReport(payload, filter),
@@ -42,7 +37,7 @@ const actionGetBlobWaybillJournalReport = (payload: { date: string } | { month: 
   return result;
 };
 
-const actionGetBlobWaybillReport = (payload: { date_start: string, date_end: string }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): ThunkAction<Promise<any>, ReduxState, {}, AnyAction> => async (dispatch) => {
+const actionGetBlobWaybillReport = (payload: { date_start: string, date_end: string }, filter: OneRegistryData['list']['processed']['filterValues'], meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetBlobWaybillReport(payload, filter),

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import ModalBodyPreloader from 'components/ui/new/preloader/modal-body/ModalBodyPreloader';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { get } from 'lodash';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import { createValidDateHM } from 'utils/dates';

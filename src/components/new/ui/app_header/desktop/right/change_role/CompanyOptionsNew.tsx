@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import {
   sessionCahngeCompanyOnAnother,
 } from 'redux-main/reducers/modules/session/actions-session';
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import { withRouter } from 'react-router-dom';
 import { ReduxState } from 'redux-main/@types/state';

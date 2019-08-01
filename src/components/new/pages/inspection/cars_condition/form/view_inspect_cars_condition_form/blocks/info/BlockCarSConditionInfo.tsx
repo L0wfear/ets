@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { ExtField } from 'components/ui/new/field/ExtField';
+import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
-import { FormErrorType, SchemaType } from 'components/ui/form/new/@types/validate.h';
+import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
 
 type BlockCarSConditionInfoProps = {

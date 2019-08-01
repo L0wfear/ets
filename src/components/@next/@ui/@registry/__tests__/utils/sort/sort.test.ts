@@ -5,7 +5,7 @@ import {
   compareNumbers,
   compareStrings,
   sortArray,
-} from 'components/@next/@ui/registry/utils/sort/sort';
+} from 'components/@next/@ui/@registry/utils/sort/sort';
 
 describe('Тестирование функции сортировки реестра', () => {
   test('Получение значения поля сортировки', () => {

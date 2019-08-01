@@ -111,8 +111,9 @@ class BatteryRegistryForm extends React.PureComponent<
     const IS_CREATING = !state.id;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+    const isGivenAway = state.status === 'given_away' ? false : true;
     const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
+      ? (this.props.isPermittedToUpdate && isGivenAway)
       : this.props.isPermittedToCreate;
 
     return (

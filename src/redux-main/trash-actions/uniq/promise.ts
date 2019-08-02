@@ -5,7 +5,7 @@ import {
 import {
   keyBy,
 } from 'lodash';
-import { getDateWithMoscowTz } from 'utils/dates';
+import { getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 
 const colors = [];
 

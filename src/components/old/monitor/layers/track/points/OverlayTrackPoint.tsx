@@ -4,13 +4,13 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-import { makeDate, makeTime } from 'utils/dates';
+import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
-import { getDateWithMoscowTzByTimestamp } from 'utils/dates';
+import { getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
 
 import {
   OverlayInsideTrackContainer,

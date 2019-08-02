@@ -5,7 +5,7 @@ import * as R from 'ramda';
 import filterTypeHandler from 'components/old/ui/input/FilterInput/filterTypeHandler';
 import Input from 'components/old/ui/input/FilterInput/Input';
 import { FILTER_VALUES, FILTER_SELECT_TYPES } from 'components/old/ui/input/FilterInput/constants';
-import { createValidDateTime, createValidDate } from 'utils/dates';
+import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import { isEqualOr } from 'utils/functions';

@@ -5,7 +5,7 @@ import {
   getFormattedTimeWithSecond,
   getDateWithMoscowTz,
   getDateWithMoscowTzByTimestamp,
-} from 'utils/dates';
+} from 'components/@next/@utils/dates/dates';
 
 import {
   DashboardTimeContainer,

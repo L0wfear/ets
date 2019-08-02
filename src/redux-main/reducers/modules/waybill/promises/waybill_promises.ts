@@ -4,7 +4,7 @@ import {
   get,
 } from 'lodash';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { monthOptions, makeDate } from 'utils/dates';
+import { monthOptions, makeDate } from 'components/@next/@utils/dates/dates';
 
 export const getOneWaybillFront = (waybillRaw) => {
   const waybill: Waybill = waybillRaw;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-// import { makeDate, makeTime } from 'utils/dates';
+// import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 // import { DivNone } from 'global-styled/global-styled';
 import FieldCarsConditionsCarMarka from './inside_fields/marka/FieldCarsConditionsCarMarka';
 import FieldCarsConditionsCarModel from './inside_fields/model/FieldCarsConditionsCarModel';

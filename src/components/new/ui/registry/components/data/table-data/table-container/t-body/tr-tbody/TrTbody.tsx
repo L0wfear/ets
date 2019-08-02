@@ -22,7 +22,7 @@ import { compose } from 'recompose';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { getSessionState, getRegistryState } from 'redux-main/reducers/selectors';
-import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'utils/dates';
+import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'components/@next/@utils/dates/dates';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';

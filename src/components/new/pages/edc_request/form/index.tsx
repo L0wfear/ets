@@ -9,7 +9,7 @@ import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { diffDates, getDateWithMoscowTz, createValidDateTime, makeDataFromRaw, isValidDate } from 'utils/dates';
+import { diffDates, getDateWithMoscowTz, createValidDateTime, makeDataFromRaw, isValidDate } from 'components/@next/@utils/dates/dates';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';

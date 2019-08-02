@@ -1,4 +1,4 @@
-import { getDateWithMoscowTz, diffDatesByDays } from "utils/dates";
+import { getDateWithMoscowTz, diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
 type DefaultPartInspect = {
   status: 'conducting' | 'completed';

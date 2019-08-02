@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { PropsMissionForm } from './@types/index.h';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import { routeTypesByTitle } from 'constants/route';
 

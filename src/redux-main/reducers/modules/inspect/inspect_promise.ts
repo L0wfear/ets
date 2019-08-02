@@ -5,7 +5,7 @@ import {
 } from 'lodash';
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;

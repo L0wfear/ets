@@ -8,7 +8,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/promises';
 import { batteryRegistry } from 'redux-main/reducers/modules/autobase/constants';
 import { modufyBatteryData } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_registry/utils';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 
 export const getBatteryRegistry = autobaseLoadByType(batteryRegistry);

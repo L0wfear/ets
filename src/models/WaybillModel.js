@@ -1,7 +1,10 @@
 import moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
-import { diffDates, getDateWithMoscowTz } from 'utils/dates';
+import {
+  diffDates,
+  getDateWithMoscowTz,
+} from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { get } from 'lodash';
 import { isArray } from 'util';

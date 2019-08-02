@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsBatteryRegistry } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates, diffDatesByDays } from 'utils/dates';
+import { diffDates, diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
 const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_to_car'], type: 'start' | 'end') => {
   if (!date) {

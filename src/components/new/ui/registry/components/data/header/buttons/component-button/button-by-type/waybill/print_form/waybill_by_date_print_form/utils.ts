@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { WaybillPrintJournalForm } from './@types';
 
 export const defaultWaybillPrintJournalFormFunc = (): WaybillPrintJournalForm => ({

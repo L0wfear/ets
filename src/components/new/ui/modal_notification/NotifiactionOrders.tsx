@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { makeDate } from 'utils/dates';
+import { makeDate } from 'components/@next/@utils/dates/dates';
 import * as orderNotifiyMp3 from 'components/new/ui/modal_notification/audio/orderNotifiy.mp3';
 import * as orderNotifiyOgg from 'components/new/ui/modal_notification/audio/orderNotifiy.ogg';
 import { setMakeReadOrderNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';

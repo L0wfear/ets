@@ -19,7 +19,7 @@ import {
   ExtFieldDateStartWrap,
   FieldDatesMissionContainer,
 } from './styled';
-import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates } from 'utils/dates';
+import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

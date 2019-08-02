@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { getFormattedDateTimeSeconds } from 'utils/dates';
+import { getFormattedDateTimeSeconds } from 'components/@next/@utils/dates/dates';
 
 import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/@types/listData.h';
 export const listData: ListDataType = [

@@ -10,7 +10,7 @@ import { maskStatusPoint } from 'components/new/ui/mission_info_form/utils/const
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { routeTypesBySlug, routeTypesByKey } from 'constants/route';
 
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { makeTitle } from 'components/new/ui/mission_info_form/utils/format';
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
 import routesActions from 'redux-main/reducers/modules/routes/actions';

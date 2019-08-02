@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { getToday9am, getTomorrow9am, createValidDateTime } from 'utils/dates';
+import { getToday9am, getTomorrow9am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { WaybillsReportForm } from './@types';
 
 export const defaultWaybillsReportFormFunc = (): WaybillsReportForm => ({

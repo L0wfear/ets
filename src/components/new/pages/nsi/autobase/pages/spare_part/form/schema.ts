@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsSparePart } from 'components/new/pages/nsi/autobase/pages/spare_part/form/@types/SparePartForm';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const sparePartFormSchema: SchemaType<SparePart, PropsSparePart> = {
   properties: {

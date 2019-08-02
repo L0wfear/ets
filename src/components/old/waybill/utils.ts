@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { IVehicle } from 'api/@types/services/index.h';
 import { checkErrorDate } from 'components/old/waybill/utils_react';

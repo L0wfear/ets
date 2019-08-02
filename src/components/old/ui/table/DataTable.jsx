@@ -5,7 +5,7 @@ import moment from 'moment';
 import _ from 'lodash';
 import cx from 'classnames';
 
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
 import SimpleGriddle from 'components/old/ui/table/simple-griddle/SimpleGriddle';
 

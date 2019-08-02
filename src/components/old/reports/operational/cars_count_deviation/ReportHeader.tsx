@@ -5,7 +5,7 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import { getToday0am, createValidDate } from 'utils/dates';
+import { getToday0am, createValidDate } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import { ExtField } from 'components/old/ui/new/field/ExtField';

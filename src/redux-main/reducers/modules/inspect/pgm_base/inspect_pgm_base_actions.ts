@@ -15,7 +15,7 @@ import {
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import pgmStoreActions from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectPgmBase } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/utils';

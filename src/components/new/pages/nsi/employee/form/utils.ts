@@ -1,6 +1,6 @@
 import { isObject, isArray, isNullOrUndefined } from 'util';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 
 export type GetDefaultEmployeeElement = (batteryRegistry: Employee | null) => Employee;

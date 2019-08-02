@@ -1,7 +1,7 @@
 import { swapCoords } from 'utils/geo';
 import * as insider from 'point-in-polygon';
 import { sensorsMapOptions } from 'constants/sensors';
-import { makeDate, makeTime } from 'utils/dates';
+import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 
 type TypeFrontCarsSensorsEquipment = {
   [key: string]: {

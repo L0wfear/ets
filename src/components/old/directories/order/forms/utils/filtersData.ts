@@ -1,4 +1,4 @@
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const getMissionListByFilter = (missionsList) => (
   missionsList.reduce((arr, m) => {

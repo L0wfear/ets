@@ -5,7 +5,7 @@ import memoizeOne from 'memoize-one';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { hasMotohours } from 'utils/functions';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 const makeEmployeeList = (
   employeeBindedToCarList: EmployeeBindedToCar[],

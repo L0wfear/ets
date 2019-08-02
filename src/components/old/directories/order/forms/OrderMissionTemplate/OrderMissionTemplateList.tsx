@@ -13,7 +13,7 @@ import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 import MissionTemplateTable from 'components/old/directories/order/forms/OrderMissionTemplate/MissionTemplateTable';
 import DutyMissionTemplateTable from 'components/old/directories/order/forms/OrderMissionTemplate/DutyMissionTemplateTable';
 
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { checkStructureByTypeClick } from 'components/old/directories/order/forms/utils/customValidate';
 import {

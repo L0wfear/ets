@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as Highcharts from 'highcharts/highstock';
 
-import { makeTime, makeDate } from 'utils/dates';
+import { makeTime, makeDate } from 'components/@next/@utils/dates/dates';
 
 type PropsLineChart = {
   data: Highcharts.SeriesOptionsType[],

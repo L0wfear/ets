@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { clone, mapKeys } from 'lodash';
 import { hasMotohours, isEmpty } from 'utils/functions';
 import {
@@ -41,9 +41,7 @@ export default class WaybillsActions extends Actions {
           waybill.tax_data = waybill.tax_data.map((tax) => {
             tax.originOperation = true;
             tax.uniqKey = `originOperation_${tax.OPERATION}`;
-            tax.operation_name = `${tax.operation_name}, ${
-              tax.measure_unit_name
-            }`;
+            tax.operation_name = `${tax.operation_name}, ${tax.measure_unit_name}`;
             if (tax.comment) {
               tax.operation_name = `${tax.operation_name} (${tax.comment})`;
             }
@@ -57,9 +55,7 @@ export default class WaybillsActions extends Actions {
           waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax) => {
             tax.originOperation = true;
             tax.uniqKey = `originOperation_${tax.OPERATION}`;
-            tax.operation_name = `${tax.operation_name}, ${
-              tax.measure_unit_name
-            }`;
+            tax.operation_name = `${tax.operation_name}, ${tax.measure_unit_name}`;
             if (tax.comment) {
               tax.operation_name = `${tax.operation_name} (${tax.comment})`;
             }

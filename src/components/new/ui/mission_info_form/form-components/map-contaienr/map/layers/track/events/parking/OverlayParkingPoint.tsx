@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
-import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
+import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
 
 import {
   OverlayLineInfoContainer,

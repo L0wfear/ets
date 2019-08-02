@@ -2,7 +2,7 @@
  * Утилиты для работы с таблицей
  */
 import { isString, isArray } from 'util';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const getFilterTypeByKey = (key, tableMeta) => {
   const col = tableMeta.cols.find((c) => c.name === key);

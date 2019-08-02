@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import connectToStores from 'flummox/connect';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 import { OBJ_TAB_INDEX } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT.h';
 

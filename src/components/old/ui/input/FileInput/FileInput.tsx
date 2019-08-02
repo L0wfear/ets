@@ -8,7 +8,7 @@ import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/u
 import { DivNone, DisplayFlexAlignCenter } from 'global-styled/global-styled';
 import { ButtonRemoveFile, FileInputWrapper } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
-import { createValidDateHM } from 'utils/dates';
+import { createValidDateHM } from 'components/@next/@utils/dates/dates';
 
 const FileListItem: React.FC<any> = React.memo(
   (props) => {

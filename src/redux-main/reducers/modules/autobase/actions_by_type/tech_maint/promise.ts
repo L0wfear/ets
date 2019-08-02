@@ -12,7 +12,7 @@ import {
   get,
 } from 'lodash';
 import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const getTechMaint = autobaseLoadByType(techMaint);
 export const createTechMaint = autobaseCreateByType(techMaint);

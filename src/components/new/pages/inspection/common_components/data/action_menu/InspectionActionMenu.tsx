@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
+import { makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { DispatchProp, connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';

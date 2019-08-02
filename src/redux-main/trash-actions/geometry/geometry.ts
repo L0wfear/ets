@@ -4,7 +4,7 @@ import {
   GeozonesService,
   FuelEvent,
 } from 'api/Services';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 import { GORMOST_GEOOBJECTS_LIST } from 'constants/geoobjects-new';
 

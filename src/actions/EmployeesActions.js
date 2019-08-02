@@ -5,7 +5,7 @@ import {
   DriverService,
   WaybillDriverService,
 } from 'api/Services';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 const makeFilesToFrontendAll = (rows) =>
   rows.map(({ files = [], ...other }) => ({

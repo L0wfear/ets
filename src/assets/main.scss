@@ -1276,6 +1276,7 @@ div.car-movement-time-report {
 .rw-select-bordered {
   border-left: none;
   position: relative;
+  padding: 0px;
   &:before {
     content: '';
     position: absolute;
@@ -1284,5 +1285,14 @@ div.car-movement-time-report {
     width: 1px;
     height: 24px;
     display: block;
+  }
+  &:hover, &:active {
+    background: inherit;
+  }
+  button {
+    height: 100%!important;
+    &:hover {
+      background: #e6e6e6;
+    }
   }
 }

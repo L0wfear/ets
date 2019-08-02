@@ -13,6 +13,5 @@ node-server.js
 stats.json
 *.sublime-project
 *.sublime-workspace
-package-lock.json
 yarn.lock
 coverage

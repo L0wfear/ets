@@ -1,7 +1,7 @@
 import * as React from 'react';
 import DatePickerRange from './DatePickerRange';
 import { WithDatePickerRangeRegistry } from './styled';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from '../@bootstrap';
 
 type WithDatePickerRangeRegistryConfig = {

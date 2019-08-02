@@ -3,7 +3,7 @@ import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { createValidDate, diffDates } from 'utils/dates';
+import { createValidDate, diffDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

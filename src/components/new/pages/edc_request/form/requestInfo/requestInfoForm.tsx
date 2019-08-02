@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { get } from 'lodash';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
-import { createValidDateHM } from 'utils/dates';
+import { createValidDateHM } from 'components/@next/@utils/dates/dates';
 import RequestHistoryList from 'components/new/pages/edc_request/form/requestInfo/RequestHistoryList';
 
 type RequestInfoFormOwnProps = {

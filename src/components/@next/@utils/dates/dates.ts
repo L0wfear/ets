@@ -1,8 +1,8 @@
 import * as moment from 'moment';
-import { isEqualOr } from 'utils/functions';
-import momentLocalizer from 'components/old/ui/input/date-picker/localizer';
 
-moment.locale('ru');
+import { isEqualOr } from 'utils/functions';
+import momentLocalizer from 'components/@next/@utils/dates/localizer';
+
 momentLocalizer();
 
 export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>

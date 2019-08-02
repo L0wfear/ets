@@ -14,7 +14,7 @@ import {
   dashboardSetInfoDataInWaybillCompleted,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { makeDate } from 'utils/dates';
+import { makeDate } from 'components/@next/@utils/dates/dates';
 import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
 import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';

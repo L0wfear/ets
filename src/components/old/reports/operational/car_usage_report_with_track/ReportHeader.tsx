@@ -7,7 +7,7 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import { getToday859am, getYesterday9am , createValidDateTime } from 'utils/dates';
+import { getToday859am, getYesterday9am , createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { GEOZONE_OBJECTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';

@@ -11,7 +11,10 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import { getToday9am, getFormattedDateTime } from 'utils/dates';
+import {
+  getToday9am,
+  getFormattedDateTime,
+} from 'components/@next/@utils/dates/dates';
 import { saveData } from 'utils/functions';
 
 import { EtsPageWrap } from 'global-styled/global-styled';

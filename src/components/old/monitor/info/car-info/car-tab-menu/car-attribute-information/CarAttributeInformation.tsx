@@ -5,7 +5,7 @@ import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import { getStatusById } from 'constants/statuses';
 
 import CarMissions from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/CarMissions';
-import { makeDate, makeTime } from 'utils/dates';
+import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 
 import { roundCoordinates } from 'utils/geo';
 import { ReduxState } from 'redux-main/@types/state';

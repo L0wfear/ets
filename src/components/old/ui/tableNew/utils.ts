@@ -1,4 +1,4 @@
-import { diffDatesByDays } from 'utils/dates';
+import { diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
 export const hideChildren = (data: any, { uniqName }) => data.filter(({ [`${uniqName}_father`]: fatherId }: any) => !fatherId);
 export const showChildren = (data) => {

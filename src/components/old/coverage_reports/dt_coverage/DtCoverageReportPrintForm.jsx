@@ -4,7 +4,10 @@ import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/old/ui/Modal';
-import { getYesterday9am, getToday859am } from 'utils/dates';
+import {
+  getYesterday9am,
+  getToday859am,
+} from 'components/@next/@utils/dates/dates';
 import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 
 export default class DtCoverageReportPrintForm extends React.Component {

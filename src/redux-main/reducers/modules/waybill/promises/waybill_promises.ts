@@ -4,40 +4,50 @@ import {
   get,
 } from 'lodash';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { monthOptions, makeDate } from 'utils/dates';
+import { monthOptions, makeDate } from 'components/@next/@utils/dates/dates';
+import { isArray } from 'util';
 
 export const getOneWaybillFront = (waybillRaw) => {
   const waybill: Waybill = waybillRaw;
 
   if (waybill) {
-    waybill.tax_data = (get(waybill, 'tax_data', []) || []).map((tax) => {
-      tax.originOperation = true;
-      tax.uniqKey = `originOperation_${tax.OPERATION}`;
-      tax.operation_name = `${tax.operation_name}, ${
-        tax.measure_unit_name
-      }`;
-      if (tax.comment) {
-        tax.operation_name = `${tax.operation_name} (${tax.comment})`;
-      }
-      if (tax.is_excluding_mileage) {
-        tax.operation_name = `${tax.operation_name} [без учета пробега]`;
-      }
-      return tax;
-    });
-    waybill.equipment_tax_data = (get(waybill, 'equipment_tax_data', []) || []).map((tax) => {
-      tax.originOperation = true;
-      tax.uniqKey = `originOperation_${tax.OPERATION}`;
-      tax.operation_name = `${tax.operation_name}, ${
-        tax.measure_unit_name
-      }`;
-      if (tax.comment) {
-        tax.operation_name = `${tax.operation_name} (${tax.comment})`;
-      }
-      if (tax.is_excluding_mileage) {
-        tax.operation_name = `${tax.operation_name} [без учета пробега]`;
-      }
-      return tax;
-    });
+    if (isArray(waybill.tax_data)) {
+      waybill.tax_data = waybill.tax_data.map((tax: any) => {
+        tax.originOperation = true;
+        tax.uniqKey = `originOperation_${tax.OPERATION}`;
+        tax.operation_name = `${tax.operation_name}, ${
+          tax.measure_unit_name
+        }`;
+        if (tax.comment) {
+          tax.operation_name = `${tax.operation_name} (${tax.comment})`;
+        }
+        if (tax.is_excluding_mileage) {
+          tax.operation_name = `${tax.operation_name} [без учета пробега]`;
+        }
+        return tax;
+      });
+    } else {
+      waybill.tax_data = [];
+    }
+
+    if (isArray(waybill.equipment_tax_data)) {
+      waybill.equipment_tax_data = waybill.equipment_tax_data.map((tax: any) => {
+        tax.originOperation = true;
+        tax.uniqKey = `originOperation_${tax.OPERATION}`;
+        tax.operation_name = `${tax.operation_name}, ${
+          tax.measure_unit_name
+        }`;
+        if (tax.comment) {
+          tax.operation_name = `${tax.operation_name} (${tax.comment})`;
+        }
+        if (tax.is_excluding_mileage) {
+          tax.operation_name = `${tax.operation_name} [без учета пробега]`;
+        }
+        return tax;
+      });
+    } else {
+      waybill.equipment_tax_data = [];
+    }
   }
 
   return waybill;

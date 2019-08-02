@@ -2,13 +2,13 @@ import * as React from 'react';
 import Overlay from 'components/new/ui/map/overlay/Overlay';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { makeDate, makeTime } from 'utils/dates';
+import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
-import { getDateWithMoscowTzByTimestamp } from 'utils/dates';
+import { getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
 
 import {
   OverlayInsideTrackContainer,

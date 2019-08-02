@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsInsurancePolicy } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/@types/InsurancePolicyForm';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const insurancePolicyFormSchema: SchemaType<InsurancePolicy, PropsInsurancePolicy> = {
   properties: {

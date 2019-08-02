@@ -12,7 +12,7 @@ import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodIn
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { createValidDateTime, getToday0am, getToday2359 } from 'utils/dates';
+import { createValidDateTime, getToday0am, getToday2359 } from 'components/@next/@utils/dates/dates';
 
 export type UserActionLogListStateProps = {};
 export type UserActionLogListDispatchProps = {

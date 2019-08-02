@@ -2,7 +2,7 @@ import {
   getTomorrow9am,
   getDateWithMoscowTz,
   createValidDateTime,
-} from 'utils/dates';
+} from 'components/@next/@utils/dates/dates';
 
 export function getDefaultBill({ company_id = null }) {
   // TODO change fuel type to default from app config

@@ -12,7 +12,7 @@ import { get } from 'lodash';
 
 import { filterDriverAccident } from '../../../../../../utils';
 import { getLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 type Props = {
   isPermitted: boolean;

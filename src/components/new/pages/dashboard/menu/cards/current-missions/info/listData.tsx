@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'utils/dates';
+import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
 import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-missions/info/@types/listData.h';
 import {
   DivNone,

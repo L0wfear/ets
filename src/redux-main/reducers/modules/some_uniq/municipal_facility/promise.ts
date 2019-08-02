@@ -1,6 +1,6 @@
 import { CleaningMunicipalFacilityService } from 'api/Services';
 import { get } from 'lodash';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const promiseGetMunicipalFacility = async (payloadOwn) => {
   const payload = {

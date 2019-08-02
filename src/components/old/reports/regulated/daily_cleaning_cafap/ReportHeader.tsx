@@ -8,9 +8,9 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
+import { getYesterday9am, getToday859am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
-import { getCurrentSeason } from 'utils/dates';
+import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';

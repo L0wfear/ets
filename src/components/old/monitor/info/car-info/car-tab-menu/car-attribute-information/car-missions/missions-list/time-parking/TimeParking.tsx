@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { makeUnixTime, secondsToTime } from 'utils/dates';
+import { makeUnixTime, secondsToTime } from 'components/@next/@utils/dates/dates';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';

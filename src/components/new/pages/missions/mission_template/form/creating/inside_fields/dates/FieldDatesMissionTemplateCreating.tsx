@@ -10,7 +10,7 @@ import {
   StateFieldDatesMissionTemplateCreating,
 } from 'components/new/pages/missions/mission_template/form/creating/inside_fields/dates/FieldDatesMissionTemplateCreating.h';
 
-import { addTime } from 'utils/dates';
+import { addTime } from 'components/@next/@utils/dates/dates';
 import { checkMissionsByRouteType } from '../../utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

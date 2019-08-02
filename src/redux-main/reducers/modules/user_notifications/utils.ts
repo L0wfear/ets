@@ -1,6 +1,6 @@
 import {
   diffDates,
-} from 'utils/dates';
+} from 'components/@next/@utils/dates/dates';
 
 export const TYPE_GROUP = {
   personal: {

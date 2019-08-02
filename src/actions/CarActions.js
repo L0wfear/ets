@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { get } from 'lodash';
-import { makeUnixTime } from 'utils/dates';
+import { makeUnixTime } from 'components/@next/@utils/dates/dates';
 import config from 'config';
 import { InfoService } from 'api/Services';
 

@@ -1,5 +1,5 @@
 import { DateTimePropertie } from 'components/old/ui/form/new/@types/validate.h';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const validateDatetime = <K, F, P, RootFormState>(key: keyof F, fieldData: DateTimePropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {
   const {

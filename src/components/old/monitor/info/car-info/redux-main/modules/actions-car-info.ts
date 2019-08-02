@@ -18,7 +18,7 @@ import {
   CAR_INFO_SET_POPUP_FUEL_EVENT_POINT,
   initialState,
 } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad, getCarTabInfo } from 'components/old/monitor/info/car-info/redux-main/modules/utils';
 import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
 

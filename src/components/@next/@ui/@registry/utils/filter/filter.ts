@@ -1,6 +1,6 @@
 import { isArray, isString, isObject, isNullOrUndefined } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { diffDatesByDays } from 'utils/dates';
+import { diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
 type ArrayRegisrty<F> = OneRegistryData<F>['list']['data']['array'];
 type FilterValues<F> = OneRegistryData<F>['list']['processed']['filterValues'];

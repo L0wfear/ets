@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates, diffDatesByDays } from 'utils/dates';
+import { diffDates, diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
 const validateDateInsideOther = (date, tire_to_car: Tire['tire_to_car']) => {
   if (!date) {

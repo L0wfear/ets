@@ -33,7 +33,7 @@ import FieldRouteIdMission from './inside_fields/route_id/FieldRouteIdMission';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import FieldMissionSourceMission from './inside_fields/mission_source_id/FieldMissionSourceMission';
 
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import FieldAssignToWaybillMission from './inside_fields/assign_to_waybill/FieldAssignToWaybillMission';
 import ColumnAssignmentFormLazy from './column_assignment';
 import FieldNormIdMission from './inside_fields/norm_id/FieldNormIdMission';

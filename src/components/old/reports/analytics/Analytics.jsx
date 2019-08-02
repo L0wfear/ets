@@ -13,7 +13,10 @@ import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
 import Field from 'components/old/ui/Field';
-import { getToday9am, getTomorrow9am } from 'utils/dates';
+import {
+  getToday9am,
+  getTomorrow9am,
+} from 'components/@next/@utils/dates/dates';
 import { saveData } from 'utils/functions';
 
 import { EtsPageWrap } from 'global-styled/global-styled';

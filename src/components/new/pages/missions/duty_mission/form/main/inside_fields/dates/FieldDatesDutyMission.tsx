@@ -20,7 +20,7 @@ import {
   ColEndDatePicker,
 } from './styled';
 import { routeTypesByTitle } from 'constants/route';
-import { addTime } from 'utils/dates';
+import { addTime } from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 /**

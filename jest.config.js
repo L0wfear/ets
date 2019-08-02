@@ -1,4 +1,11 @@
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  moduleDirectories: ['node_modules', 'src'],
+  collectCoverage: true,
+  coverageDirectory: './coverageDirectory',
+  reporters: [ 'default', 'jest-junit' ],
+  // collectCoverageFrom: ['src/components/**/*.{ts,js}'],
+  globals: {
+    window: true,
+  },
 };

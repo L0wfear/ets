@@ -4,6 +4,7 @@ import {
   compareVoids,
   compareNumbers,
   compareStrings,
+  sortArrayFunc,
   sortArray,
 } from 'components/@next/@ui/@registry/utils/sort/sort';
 
@@ -141,28 +142,118 @@ describe('Тестирование функции сортировки реес�
       },
     ];
 
-    const sortArrayListByNumber = [...arrayToSort].sort(
-      (a, b) => sortArray(a, b, 'field_sort_number'),
-    );
-    const sortArrayListByString = [...arrayToSort].sort(
-      (a, b) => sortArray(a, b, 'field_sort_string'),
-    );
-    const sortArrayListByArrayName = [...arrayToSort].sort(
-      (a, b) => sortArray(a, b, 'field_sort_array'),
-    );
-    const sortArrayListByDate = [...arrayToSort].sort(
-      (a, b) => sortArray(a, b, 'field_sort_date'),
-    );
+    // число
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[0], 'field_sort_number')).toBe(0);
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[1], 'field_sort_number')).toBe(-1);
+    expect(sortArrayFunc(arrayToSort[1], arrayToSort[2], 'field_sort_number')).toBe(1);
+    expect(sortArrayFunc(arrayToSort[2], arrayToSort[3], 'field_sort_number')).toBe(1);
+    expect(sortArrayFunc(arrayToSort[3], arrayToSort[2], 'field_sort_number')).toBe(-1);
 
-    expect(sortArrayListByNumber.map((d) => d.field_sort_number).join()).toBe(',1,1,2');
-    expect(sortArrayListByString.map((d) => d.field_sort_string).join().toLocaleLowerCase()).toBe(',a,a,b');
+    // строка
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[0], 'field_sort_string')).toBe(0);
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[1], 'field_sort_string')).toBe(0);
+    expect(sortArrayFunc(arrayToSort[1], arrayToSort[2], 'field_sort_string')).toBe(-1);
+    expect(sortArrayFunc(arrayToSort[2], arrayToSort[3], 'field_sort_string')).toBe(1);
+    expect(sortArrayFunc(arrayToSort[3], arrayToSort[2], 'field_sort_string')).toBe(-1);
+
+    // дата
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[0], 'field_sort_date')).toBe(0);
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[1], 'field_sort_date') < 0).toBeTruthy();
+    expect(sortArrayFunc(arrayToSort[1], arrayToSort[2], 'field_sort_date') > 0).toBeTruthy();
+    expect(sortArrayFunc(arrayToSort[2], arrayToSort[3], 'field_sort_date') > 0).toBeTruthy();
+    expect(sortArrayFunc(arrayToSort[3], arrayToSort[2], 'field_sort_date') < 0).toBeTruthy();
+
+    // массив name
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[0], 'field_sort_array')).toBe(0);
+    expect(sortArrayFunc(arrayToSort[0], arrayToSort[1], 'field_sort_array')).toBe(-1);
+    expect(sortArrayFunc(arrayToSort[1], arrayToSort[2], 'field_sort_array')).toBe(-1);
+    expect(sortArrayFunc(arrayToSort[2], arrayToSort[3], 'field_sort_array')).toBe(1);
+    expect(sortArrayFunc(arrayToSort[3], arrayToSort[2], 'field_sort_array')).toBe(-1);
+  });
+
+  test('Отсортированный массив долже быть новым', () => {
+    const array = [];
+    expect(sortArray(array, {})).not.toBe(array);
+  });
+
+  test('Проверка сортировки массива', () => {
+    const arrayToSort = [
+      {
+        field_sort_number: 1,
+        field_sort_string: 'a',
+        field_sort_date: '2019-05-21T16:12:50',
+        field_sort_array: [
+          {
+            name: 1,
+          },
+          {
+            name: 12,
+          },
+        ],
+      },
+      {
+        field_sort_number: 2,
+        field_sort_string: 'A',
+        field_sort_date: '2019-06-21T16:12:50',
+        field_sort_array: [
+          {
+            name: '2',
+          },
+          {
+            name: '12',
+          },
+        ],
+      },
+      {
+        field_sort_number: 1,
+        field_sort_string: 'b',
+        field_sort_date: '2019-05-21T16:12:50',
+        field_sort_array: [
+          {
+            name: 2,
+          },
+          {
+            name: 'a2',
+          },
+        ],
+      },
+      {
+        field_sort_number: null,
+        field_sort_string: null,
+        field_sort_date: null,
+        field_sort_array: [
+          {
+            name: null,
+          },
+          {
+            name: null,
+          },
+        ],
+      },
+    ];
+
+    expect(sortArray(arrayToSort, { field: 'field_sort_number', reverse: false }).map((d) => d.field_sort_number).join()).toBe(',1,1,2');
+    expect(sortArray(arrayToSort, { field: 'field_sort_number', reverse: true }).map((d) => d.field_sort_number).join()).toBe('2,1,1,');
+
+    expect(sortArray(arrayToSort, { field: 'field_sort_string', reverse: false }).map((d) => d.field_sort_string).join().toLocaleLowerCase()).toBe(',a,a,b');
+    expect(sortArray(arrayToSort, { field: 'field_sort_string', reverse: true }).map((d) => d.field_sort_string).join().toLocaleLowerCase()).toBe('b,a,a,');
+
     expect(
-      sortArrayListByArrayName.map(
+      sortArray(arrayToSort, { field: 'field_sort_array', reverse: false }).map(
         (d) => d.field_sort_array.map(
           (dd) => dd.name,
         ).join(''),
       ).join(),
     ).toBe(',112,212,2a2');
-    expect(sortArrayListByDate.map((d) => d.field_sort_date).join()).toBe(',2019-05-21T16:12:50,2019-05-21T16:12:50,2019-06-21T16:12:50');
+    expect(
+      sortArray(arrayToSort, { field: 'field_sort_array', reverse: true }).map(
+        (d) => d.field_sort_array.map(
+          (dd) => dd.name,
+        ).join(''),
+      ).join(),
+    ).toBe('2a2,212,112,');
+
+    expect(sortArray(arrayToSort, { field: 'field_sort_date', reverse: false }).map((d) => d.field_sort_date).join()).toBe(',2019-05-21T16:12:50,2019-05-21T16:12:50,2019-06-21T16:12:50');
+    expect(sortArray(arrayToSort, { field: 'field_sort_date', reverse: true }).map((d) => d.field_sort_date).join()).toBe('2019-06-21T16:12:50,2019-05-21T16:12:50,2019-05-21T16:12:50,');
   });
 });

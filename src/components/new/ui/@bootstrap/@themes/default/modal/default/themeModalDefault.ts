@@ -3,13 +3,13 @@ import ThemeModal from '../../../@types/ThemeModal';
 const themeModalDefault: ThemeModal = {
   backgroundColor: {
     header: {
-      default: '#e9f0f5',
+      default: '#f1f1f1',
     },
     body: {
       default: 'white',
     },
     footer: {
-      default: '#e9f0f5',
+      default: '#f1f1f1',
     },
   },
   padding: {

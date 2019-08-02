@@ -734,7 +734,7 @@ body.application {
 }
 
 .modal-footer {
-  background-color: #e9f0f5;
+  background-color: #f1f1f1;
   border: none;
 
   >.inline-block {
@@ -904,20 +904,25 @@ body.application {
           background-color: $colorLightGreen !important;
           color: white !important;
         }
-
+        .error { // inputTable error
+          margin-top: 0px;
+          border-radius: 0 0 3px 3px;
+          margin-top: 0px;
+          padding: 2px;
+          border-radius: 0 0 3px 3px;
+          background: #a94442;
+          color: white;
+          padding-left: 5px;
+        }
+        .chart-datepicker .rw-widget-picker.rw-widget-container{
+          height: 32px!important;
+        }
+        .rw-select-bordered button {
+          height: 32px!important;
+        }
         &.selected-row > td {
           background-color: $colorGreen !important;
           color: white !important;
-          .error {
-            margin-top: 0px;
-            border-radius: 0 0 3px 3px;
-            margin-top: 4px;
-            padding: 2px;
-            border-radius: 2px;
-            background: #a94442;
-            color: white;
-            padding-left: 5px;
-          }
           .form-group {
             margin-bottom: 0px;
           }
@@ -988,7 +993,7 @@ body.application {
 }
 
 .error {
-  color: red;
+  color: #a94442;
   font-size: 12px;
   /* text-align: center; */
   margin-top: -10px;

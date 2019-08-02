@@ -904,6 +904,9 @@ body.application {
           background-color: $colorLightGreen !important;
           color: white !important;
         }
+        .form-group {
+          margin-bottom: 0px;
+        }
         .error { // inputTable error
           margin-top: 0px;
           border-radius: 0 0 3px 3px;

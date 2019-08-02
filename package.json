@@ -99,6 +99,7 @@
         "html-webpack-plugin": "=3.2.0",
         "husky": "^3.0.1",
         "jest": "=24.8.0",
+        "jest-junit": "^7.0.0",
         "jsdoc": "=3.6.3",
         "jspdf": "^1.5.3",
         "lint-staged": "=9.2.1",
@@ -143,7 +144,7 @@
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "bump": "node webpack/utils/updateVersion.js",
         "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",
-        "test": "jest",
+        "test": "cross-env JEST_JUNIT_OUTPUT_DIR='./coverageDirectory' jest",
         "lint-staged": "lint-staged",
         "log-version": "node webpack/utils/logVersion.js"
     },

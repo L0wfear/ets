@@ -307,6 +307,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_model_names = car_model_names ? [car_model_names] : [];
           let car_special_model_names = get(option, ['rowData', 'special_model_name'], '');
           car_special_model_names = car_special_model_names ? [car_special_model_names] : [];
+          const structure_id  = get(option, ['rowData', 'company_structure_id'], '');
 
           props.onChange({
             car_gov_numbers,
@@ -317,6 +318,7 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_special_model_names,
             car_type_names,
             car_type_names_text: car_type_names.join(', '),
+            structure_id,
           });
         }
       }

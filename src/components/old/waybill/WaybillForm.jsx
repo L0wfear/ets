@@ -672,6 +672,12 @@ class WaybillForm extends UNSAFE_Form {
     // https://gost-jira.atlassian.net/browse/DITETS-6607
     setTimeout(() => {
       new Promise((res) => {
+        const structureIdCar = get(
+          selectedCar,
+          'rowData.company_structure_id',
+          null,
+        );
+        const carIsCommon = get(selectedCar, 'rowData.is_common', false);
         const fieldsToChange = {
           car_id,
           gov_number: '',
@@ -679,6 +685,10 @@ class WaybillForm extends UNSAFE_Form {
           ...setEmptyFieldByKey(fieldToCheckHasData),
           equipment_fuel: getDefaultBill({}).equipment_fuel,
           equipment_fuel_type: null,
+          structure_id:
+            structureIdCar && !carIsCommon
+              ? structureIdCar
+              : get(this.props, 'formState.structure_id', null),
         };
 
         if (!isEmpty(car_id)) {

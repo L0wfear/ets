@@ -7,30 +7,22 @@ import { filterArray } from 'components/@next/@ui/@registry/utils/filter/filter'
 export const makeProcessedArray = (array, { sort, filterValues }: Pick<OneRegistryData['list']['processed'], 'sort' | 'filterValues'>, fields: OneRegistryData['filter']['fields']) => {
   let processedArray = filterArray(array, filterValues, fields);
 
-  if (sort.field) {
-    processedArray.sort((a, b) => (
-      sortArray(
-        sort.reverse ? b : a,
-        sort.reverse ? a : b,
-        sort.field,
-      )
-    ));
+  processedArray = sortArray(processedArray, sort);
 
-    if (processedArray.some(({ children }) => isArray(children) && children.length)) {
-      processedArray = processedArray.map((rowData) => {
-        const children = get(rowData, 'children', null);
-        if (children) {
-          const rowDataTemp =  {
-            ...rowData,
-            children: makeProcessedArray(children, { sort, filterValues }, fields),
-          };
+  if (processedArray.some(({ children }) => isArray(children) && children.length)) {
+    processedArray = processedArray.map((rowData) => {
+      const children = get(rowData, 'children', null);
+      if (children) {
+        const rowDataTemp =  {
+          ...rowData,
+          children: makeProcessedArray(children, { sort, filterValues }, fields),
+        };
 
-          rowDataTemp.is_open = false;
+        rowDataTemp.is_open = false;
 
-          return rowDataTemp;
-        }
-      });
-    }
+        return rowDataTemp;
+      }
+    });
   }
 
   return processedArray;

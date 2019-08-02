@@ -16,6 +16,14 @@ describe('Тестирование функции фильтрации реес�
     expect(filterArray(array, filter_values, filter_fields).length).toBe(0);
   });
 
+  test('отфильтрованный массив должен быть новым', () => {
+    const array: ArrayRegisrty<any> = [];
+    const filter_values: FilterValues<any> = {};
+    const filter_fields: FilterFields<any> = [];
+
+    expect(filterArray(array, filter_values, filter_fields)).not.toBe(array);
+  });
+
   test('фильтрация по отсутствующемеу типу', () => {
     const array: ArrayRegisrty<any> = [
       {

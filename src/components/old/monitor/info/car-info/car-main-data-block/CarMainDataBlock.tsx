@@ -12,7 +12,7 @@ import {
 } from 'global-styled/global-styled';
 import { CarInfoBlock } from 'components/old/monitor/styled';
 import { CarInfoMainDataContainer } from '.';
-import ButtonExportCarData from './buttons/export_car_data/ButtonExportCarData';
+import ButtonExportCarData from 'components/old/monitor/info/car-info/car-main-data-block/buttons/export_car_info/ButtonExportCarData';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;

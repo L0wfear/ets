@@ -309,7 +309,7 @@ export function detectIE() {
  */
 export const getTextCanvas = async (text: string, style: string) => {
   const temp = document.createElement("span");
-  temp.id = "temp";
+  temp.id = `${temp}_${Math.random()}`;
   temp.setAttribute('style', style);
   temp.innerHTML = text;
 
@@ -318,7 +318,7 @@ export const getTextCanvas = async (text: string, style: string) => {
   container.appendChild(temp);
   document.body.appendChild(container);
 
-  const canvas = await html2canvas(document.getElementById('temp'));
+  const canvas = await html2canvas(temp);
   document.body.removeChild(container);
 
   return canvas;

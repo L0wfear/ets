@@ -6,7 +6,7 @@ import * as jsPDF from 'jspdf';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { getDateWithMoscowTz, getFormattedDateTime } from 'utils/dates';
+import { getDateWithMoscowTz, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
 import { getTextCanvas, getCanvasOfElement } from 'utils/functions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { NO_DATA_TEXT } from 'constants/statuses';
@@ -71,14 +71,25 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
         topPadding += 10;
 
-        const canvas_text = await getTextCanvas('Информация о ТС:', 'font-size:14px; font-weight:800');
-        const canvas_car_main_data = await getCanvasOfElement(document.getElementById('car_main_data'));
-        let canvas_img_car = null;
-        if (type_image_name) {
-          canvas_img_car = await getCanvasOfElement(document.getElementById('car_info_image'));
-        }
-        const canvas_mission_text = await getTextCanvas('Задания:', 'font-size:14px; font-weight:800');
-        const canvas_on_interval_text = await getTextCanvas(`За период: ${getFormattedDateTime(date_start)} - ${getFormattedDateTime(date_end)}`, 'font-size:14px;');
+        const [
+          canvas_text,
+          canvas_car_main_data,
+          canvas_img_car,
+          canvas_mission_text,
+          canvas_on_interval_text,
+        ] = await Promise.all([
+          getTextCanvas('Информация о ТС:', 'font-size:14px; font-weight:800'),
+          getCanvasOfElement(document.getElementById('car_main_data')),
+          Promise.resolve().then(
+            () => {
+              if (type_image_name) {
+                return getCanvasOfElement(document.getElementById('car_info_image'));
+              }
+            },
+          ),
+          getTextCanvas('Задания:', 'font-size:14px; font-weight:800'),
+          getTextCanvas(`За период: ${getFormattedDateTime(date_start)} - ${getFormattedDateTime(date_end)}`, 'font-size:14px;'),
+        ]);
         const missions = Array.from(document.querySelectorAll('.car_info_mission_container'));
         const arrCanvasMissionData = await Promise.all(
           missions.length
@@ -179,7 +190,35 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         /**************** CHARTS ****************/
         docAddPage(doc, 'landscape');
         topPadding = 15;
+        const canvas_fuel_chart = await getCanvasOfElement(document.getElementById('fuel-chart'));
 
+        const canvasChart = document.createElement('canvas');
+        const tnCanvasContext = canvasChart.getContext('2d');
+        canvasChart.width = canvas_fuel_chart.width;
+        canvasChart.height = canvas_fuel_chart.height - 100 * window.devicePixelRatio;
+
+        tnCanvasContext.drawImage(canvas_fuel_chart, 0, 0,  canvasChart.width * window.devicePixelRatio, canvasChart.height * window.devicePixelRatio, 0, 0, canvasChart.width, canvasChart.height);
+
+        doc.addImage(
+          canvasChart.toDataURL('image/png'),
+          'JPEG',
+          10,
+          topPadding,
+          canvasChart.width / editParam,
+          canvasChart.height / editParam,
+        );
+
+        topPadding += canvas_fuel_chart.height / editParam + 5;
+        const canvas_speed_chart = await getCanvasOfElement(document.getElementById('speed-chart'));
+
+        doc.addImage(
+          canvas_speed_chart.toDataURL('image/png'),
+          'JPEG',
+          10,
+          topPadding,
+          canvas_speed_chart.width / editParam,
+          canvas_speed_chart.height / editParam,
+        );
         /**************** TRACK_DATA ****************/
         docAddPage(doc, 'landscape');
         topPadding = 15;

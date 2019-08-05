@@ -11,7 +11,7 @@ export const GlyphiconStyled = styled(Glyphicon)`
 export type EtsGlyphiconProps = any;
 
 const EtsGlyphicon: React.FC<EtsGlyphiconProps> = React.memo(
-  (props) => (
+  ({ isLoading, ...props }) => (
     <GlyphiconStyled {...props} />
   ),
 );

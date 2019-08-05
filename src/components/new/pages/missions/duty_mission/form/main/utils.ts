@@ -4,7 +4,7 @@ import memoize from 'memoize-one';
 
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
-import { createValidDateTime, getTomorrow9am, getToday9am } from 'utils/dates';
+import { createValidDateTime, getTomorrow9am, getToday9am } from 'components/@next/@utils/dates/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import createFio from 'utils/create-fio';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types/index';

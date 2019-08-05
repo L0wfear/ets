@@ -6,7 +6,7 @@ import {
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
-import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates } from 'utils/dates';
+import { getToday0am, getDateWithMoscowTz, createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import { ReduxState } from 'redux-main/@types/state';

@@ -31,7 +31,7 @@ import {
   CarsTravelTimeModalOwnProps,
 } from 'components/old/reports/operational/cars_travel_time/form/@types/CarsTravelTime.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { addTime } from 'utils/dates';
+import { addTime } from 'components/@next/@utils/dates/dates';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;

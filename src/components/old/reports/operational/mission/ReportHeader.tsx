@@ -7,7 +7,7 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import Div from 'components/old/ui/Div';
-import { getDatesByShift, createValidDateTime } from 'utils/dates';
+import { getDatesByShift, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';

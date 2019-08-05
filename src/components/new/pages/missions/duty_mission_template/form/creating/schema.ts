@@ -1,7 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsDutyMissionTemplateCreatingForm } from './@types/index.h';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const dutyDutyMissionTemplateCreatingFormSchema: SchemaType<Partial<Pick<DutyMission, 'plan_date_end' | 'plan_date_start' | 'mission_source_id'>>, PropsDutyMissionTemplateCreatingForm> = {
   properties: {

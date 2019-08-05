@@ -7,7 +7,10 @@ import ModalBody from 'components/old/ui/Modal';
 import Field from 'components/old/ui/Field';
 import Div from 'components/old/ui/Div';
 import Datepicker from 'components/old/ui/input/date-picker/DatePicker';
-import { getFormattedDateTime, createValidDateTime } from 'utils/dates';
+import {
+  getFormattedDateTime,
+  createValidDateTime,
+} from 'components/@next/@utils/dates/dates';
 import { reassignMissionSuccessNotification } from 'utils/notifications';
 import { cloneDeep, get, isEmpty } from 'lodash';
 import { compose } from 'recompose';

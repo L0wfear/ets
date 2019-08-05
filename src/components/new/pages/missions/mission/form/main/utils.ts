@@ -4,7 +4,7 @@ import {
 } from 'lodash';
 
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { getDateWithMoscowTz, createValidDateTime, getTomorrow9am } from 'utils/dates';
+import { getDateWithMoscowTz, createValidDateTime, getTomorrow9am } from 'components/@next/@utils/dates/dates';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 

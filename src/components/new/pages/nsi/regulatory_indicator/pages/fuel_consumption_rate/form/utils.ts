@@ -1,6 +1,6 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
-import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
+import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 export const makeDefaultFuelRate = (): FuelRate => ({
   body_capacity: null,

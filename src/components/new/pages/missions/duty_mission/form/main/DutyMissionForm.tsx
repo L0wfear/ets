@@ -52,7 +52,7 @@ import {
   getDateWithMoscowTzByTimestamp,
   diffDates,
   createValidDateTime,
-} from 'utils/dates';
+} from 'components/@next/@utils/dates/dates';
 import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMission';
 
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';

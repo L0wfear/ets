@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { carInfoSetFuelEventPoint } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'utils/dates';
+import { secondsToTime, makeDate, makeTime, getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
 
 import {
   OverlayLineInfoContainer,

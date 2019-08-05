@@ -8,7 +8,7 @@ export const TitleForm = styled(EtsBootstrap.Col)`
   align-items: center;
 
   padding: 5px 20px;
-  background-color: #e9f0f5;
+  background-color: #f1f1f1;
   flex-shrink: 0;
   border-bottom: 1px solid black;
 `;
@@ -23,7 +23,7 @@ export const ContainerForm = styled.div`
 
 export const FooterForm = styled(EtsBootstrap.Col)`
   border-top: 1px solid black;
-  background-color: #e9f0f5;
+  background-color: #f1f1f1;
   padding: 5px 20px;
   flex-shrink: 0;
 `;

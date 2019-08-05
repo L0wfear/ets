@@ -28,7 +28,7 @@ import {
 } from 'components/new/pages/routes_list/buttons/buttons';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
-import { getCurrentSeason } from 'utils/dates';
+import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { DivNone } from 'global-styled/global-styled';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';

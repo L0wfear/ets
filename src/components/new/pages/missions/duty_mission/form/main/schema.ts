@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { PropsDutyMissionForm } from './@types/index.h';
 import { isPermittedEmployeeForDutyMission } from './utils';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import { routeTypesByTitle } from 'constants/route';
 

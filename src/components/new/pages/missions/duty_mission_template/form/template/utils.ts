@@ -6,7 +6,7 @@ import memoize from 'memoize-one';
 
 import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_mission_template/@types/index.h';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
-import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
+import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import createFio from 'utils/create-fio';
 import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types/index';

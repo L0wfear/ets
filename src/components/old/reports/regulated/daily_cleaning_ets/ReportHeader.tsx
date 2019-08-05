@@ -9,7 +9,7 @@ import {
 import { IVehicleType } from 'api/@types/services/index.h';
 
 import { connectToStores } from 'utils/decorators';
-import { getYesterday9am, getToday859am, createValidDateTime } from 'utils/dates';
+import { getYesterday9am, getToday859am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { FluxContext } from 'utils/decorators';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 

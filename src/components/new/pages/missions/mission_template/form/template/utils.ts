@@ -4,7 +4,7 @@ import {
 } from 'lodash';
 
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
-import { getDateWithMoscowTz, createValidDateTime } from 'utils/dates';
+import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 export type GetDefaultMissionTemplateElement = (companyStructure: Partial<MissionTemplate> | null) => MissionTemplate;
 

@@ -22,6 +22,8 @@ export const defaultTire: Tire = {
   tire_to_car: [],
   tire_to_car_id: null,
   uninstalled_at: '',
+  status_text: '',
+  status: '',
 };
 
 export const getDefaultTireElement = (element: Partial<Tire>): Tire => {

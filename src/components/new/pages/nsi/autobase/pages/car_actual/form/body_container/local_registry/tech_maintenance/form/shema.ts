@@ -6,7 +6,7 @@ import { PropsTechMaintenance } from 'components/new/pages/nsi/autobase/pages/ca
 import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { getRequiredFieldMessage } from 'utils/validate';
 import { hasMotohours } from 'utils/functions';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const techMaintFormSchema: SchemaType<TechMaintenance, PropsTechMaintenance> = {
   properties: {

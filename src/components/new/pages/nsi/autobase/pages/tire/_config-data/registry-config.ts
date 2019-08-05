@@ -22,7 +22,7 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
     },
     registryKey,
     header: {
-      title: 'Реестр шин',
+      title: 'Реестр шин', // Реестр шин основной
 
       format: 'is_current_structure',
       is_current_structure_popover: 'Отобразятся шины, установленные на текущую дату на ТС Вашего подразделения',
@@ -88,6 +88,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
           title: 'Дата монтажа',
           type: 'advanced-date',
         },
+        {
+          valueKey: 'status_text',
+          title: 'Статус',
+          type: 'multiselect',
+        },
       ],
     },
     list: {
@@ -147,6 +152,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
           {
             key: 'buttonCloneTire',
             title: ' ',
+          },
+          {
+            key: 'status_text',
+            title: 'Статус',
+            width: 200,
           },
         ],
       },

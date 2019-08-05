@@ -20,6 +20,8 @@ export const defaultBatteryRegistry: BatteryRegistry = {
   serial_number: null,
   uninstalled_at: null,
   worked_months: null,
+  status_text: null,
+  status: null,
 };
 
 export const getDefaultBatteryRegistryElement = (element: Partial<BatteryRegistry>): BatteryRegistry => {

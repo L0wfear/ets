@@ -15,7 +15,7 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 import { HandleThunkActionCreator } from "react-redux";
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
+import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'components/@next/@utils/dates/dates';
 
 export type ServicesHistoryListStateProps = {};
 export type ServicesHistoryListDispatchProps = {

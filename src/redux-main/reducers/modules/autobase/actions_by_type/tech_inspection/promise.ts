@@ -9,7 +9,7 @@ import {
 import { techInspection } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 
 export const getTechInspection = autobaseLoadByType(techInspection);
 export const createTechInspection = autobaseCreateByType(techInspection);

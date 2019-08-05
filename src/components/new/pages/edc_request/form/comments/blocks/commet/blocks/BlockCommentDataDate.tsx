@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { getFormattedDateTime } from 'utils/dates';
+import { getFormattedDateTime } from 'components/@next/@utils/dates/dates';
 
 const BlockCommentDataDateContainer = styled.div`
   font-weight: 400;

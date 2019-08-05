@@ -6,7 +6,7 @@ import {
   DutyMissionService,
 } from 'api/missions/index';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { DutyMissionArchiveService } from 'api/missions';

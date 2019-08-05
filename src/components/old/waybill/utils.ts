@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { IVehicle } from 'api/@types/services/index.h';
 import { checkErrorDate } from 'components/old/waybill/utils_react';
@@ -46,14 +46,15 @@ const trailerFilter: any = (structure_id, trailer_id) =>
   );
 
 // <IVehicle, any>
-const vehicleMapper = R.map<any, any>((c) => ({
-  value: c.asuods_id,
-  model_id: c.model_id,
-  gov_number: c.gov_number,
-  label: `${c.gov_number} [${c.model_name || ''}${
-    c.model_name ? '/' : ''
-  }${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
-}));
+const vehicleMapper = R.map<any, any>((c) => {
+  return ({
+    value: c.asuods_id,
+    model_id: c.model_id,
+    gov_number: c.gov_number,
+    label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
+    rowData: {...c},
+  });
+});
 
 export const getCars = (structure_id, car_id) =>
   R.pipe(

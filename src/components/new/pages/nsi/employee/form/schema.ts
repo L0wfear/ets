@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsEmployee } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isEmpty } from 'utils/functions';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const employeeFormSchema: SchemaType<Employee, PropsEmployee> = {
   properties: {

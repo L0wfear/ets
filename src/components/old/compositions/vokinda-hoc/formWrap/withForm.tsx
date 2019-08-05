@@ -7,7 +7,7 @@ import { validate } from 'components/old/ui/form/new/validate';
 import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { createValidDateTime, createValidDate } from 'utils/dates';
+import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 

@@ -22,7 +22,7 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Batte
     },
     registryKey,
     header: {
-      title: 'Реестр аккумуляторов',
+      title: 'Реестр аккумуляторов', // Реестр аккумуляторов основной
 
       format: 'is_current_structure',
       is_current_structure_popover: 'Отобразятся аккумуляторы, установленные на текущую дату на ТС Вашего подразделения',
@@ -87,6 +87,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Batte
           title: 'Дата установки',
           type: 'advanced-date',
         },
+        {
+          valueKey: 'status_text',
+          title: 'Статус',
+          type: 'multiselect',
+        },
       ],
     },
     list: {
@@ -147,6 +152,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Batte
             key: 'installed_at',
             title: 'Дата установки',
             format: 'date',
+            width: 200,
+          },
+          {
+            key: 'status_text',
+            title: 'Статус',
             width: 200,
           },
         ],

@@ -131,9 +131,12 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
 
     const IS_CREATING = !state.id;
 
+    const isGivenAway = state.status === 'given_away' ? false : true;
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
 
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
+    const isPermitted = !IS_CREATING
+      ? (this.props.isPermittedToUpdate && isGivenAway)
+      : this.props.isPermittedToCreate;
     const canSave = (
       this.state.canSave
       && this.props.canSave

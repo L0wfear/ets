@@ -16,7 +16,7 @@ import {
   getWarningNotification,
   getServerErrorNotification,
 } from 'utils/notifications';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import {
   checkDateMission,
@@ -668,48 +668,62 @@ class WaybillForm extends UNSAFE_Form {
       });
   };
 
-  onCarChange = (car_id, selectedCar = {}) =>
-    new Promise((res) => {
-      const fieldsToChange = {
-        car_id,
-        gov_number: '',
-        fuel_to_give: null,
-        ...setEmptyFieldByKey(fieldToCheckHasData),
-        equipment_fuel: getDefaultBill({}).equipment_fuel,
-        equipment_fuel_type: null,
-      };
+  onCarChange = (car_id, selectedCar = {}) => {
+    // https://gost-jira.atlassian.net/browse/DITETS-6607
+    setTimeout(() => {
+      new Promise((res) => {
+        const structureIdCar = get(
+          selectedCar,
+          'rowData.company_structure_id',
+          null,
+        );
+        const carIsCommon = get(selectedCar, 'rowData.is_common', false);
+        const fieldsToChange = {
+          car_id,
+          gov_number: '',
+          fuel_to_give: null,
+          ...setEmptyFieldByKey(fieldToCheckHasData),
+          equipment_fuel: getDefaultBill({}).equipment_fuel,
+          equipment_fuel_type: null,
+          structure_id:
+            structureIdCar && !carIsCommon
+              ? structureIdCar
+              : get(this.props, 'formState.structure_id', null),
+        };
 
-      if (!isEmpty(car_id)) {
-        if (!this.state.fuelRateAllList.includes(selectedCar.model_id)) {
-          global.NOTIFICATION_SYSTEM.notify(
-            notifications.missionFuelRateByCarUpdateNotification,
-          );
+        if (!isEmpty(car_id)) {
+          if (!this.state.fuelRateAllList.includes(selectedCar.model_id)) {
+            global.NOTIFICATION_SYSTEM.notify(
+              notifications.missionFuelRateByCarUpdateNotification,
+            );
+          }
+          this.props.clearSomeData();
+          return this.context.flux
+            .getActions('waybills')
+            .getLastClosedWaybill(car_id)
+            .then(({ result: lastCarUsedWaybill }) =>
+              res({
+                ...fieldsToChange,
+                ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
+                gov_number: selectedCar.gov_number,
+              }),
+            );
         }
-        this.props.clearSomeData();
-        return this.context.flux
-          .getActions('waybills')
-          .getLastClosedWaybill(car_id)
-          .then(({ result: lastCarUsedWaybill }) =>
-            res({
-              ...fieldsToChange,
-              ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
-              gov_number: selectedCar.gov_number,
-            }),
-          );
-      }
 
-      /**
-       * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
-       */
-      return Promise.resolve(
-        res({
-          ...fieldsToChange,
-          driver_id: null,
-        }),
+        /**
+         * Если ТС не выбрано, то и ранее выбранного водителя не должно быть.
+         */
+        return Promise.resolve(
+          res({
+            ...fieldsToChange,
+            driver_id: null,
+          }),
+        );
+      }).then((fieldsToChange) =>
+        this.props.handleMultipleChange(fieldsToChange),
       );
-    }).then((fieldsToChange) =>
-      this.props.handleMultipleChange(fieldsToChange),
-    );
+    }, 0);
+  };
 
   getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
     let fieldsToChange = {};

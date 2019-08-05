@@ -1,7 +1,7 @@
 import {
   cloneDeep,
 } from 'lodash';
-import { isCrossDates } from 'utils/dates';
+import { isCrossDates } from 'components/@next/@utils/dates/dates';
 
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';

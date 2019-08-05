@@ -4,7 +4,7 @@ import {
   DtCoverageReportService,
 } from 'api/Services';
 
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { get, cloneDeep } from 'lodash';
 
 export const loadOdhCoverageReport = (date_start, date_end) => {

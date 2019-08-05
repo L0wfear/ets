@@ -1,12 +1,26 @@
 import * as moment from 'moment';
-import { isEqualOr } from 'utils/functions';
-import momentLocalizer from 'components/old/ui/input/date-picker/localizer';
 
-moment.locale('ru');
+import { isEqualOr } from 'utils/functions';
+import momentLocalizer from 'components/@next/@utils/dates/localizer';
+
 momentLocalizer();
 
-export const diffDates = (dateA, dateB, typeDiff = 'seconds', float = true) =>
-  moment(dateA).diff(moment(dateB), typeDiff as any, float);
+/**
+ * Вычисляет разницу в typeDiff между датами
+ * @param dateA Первая дата
+ * @param dateB Вторая дата
+ * @param typeDiff Тип разницы
+ * @param float Точное ли сравнение | true - вернёт дробный ответ, false - целый, окгруглённый в меньшую сторону
+ * @return number разницу между датами
+ */
+export const diffDates = (
+  dateA?: moment.MomentInput,
+  dateB?: moment.MomentInput,
+  typeDiff: 'seconds' | 'hours' | 'minutes' | 'days' | 'months' = 'seconds', // moment.unitOfTime.Diff = 'seconds',
+  float: boolean = true,
+): number => {
+  return moment(dateA).diff(moment(dateB), typeDiff, float);
+};
 
 export const isDateInInterval = (check_date, date_start, date_end) => {
   return (

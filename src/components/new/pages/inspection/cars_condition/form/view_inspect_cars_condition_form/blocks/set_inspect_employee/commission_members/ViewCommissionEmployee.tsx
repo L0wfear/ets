@@ -3,7 +3,7 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 
 import { DivNone } from 'global-styled/global-styled';
 import { CommissionMembersDataContainer } from './styled';
-import { createValidDate } from 'utils/dates';
+import { createValidDate } from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ViewCommissionEmployeeProps = (

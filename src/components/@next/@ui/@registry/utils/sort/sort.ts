@@ -3,7 +3,8 @@ import {
   isNumber,
   isArray,
 } from "util";
-import { diffDates } from "utils/dates";
+import { diffDates } from 'components/@next/@utils/dates/dates';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type ObjWithName = {
   name: string | number;
@@ -61,7 +62,7 @@ export const compareStrings = (first: string, second: string) => {
   );
 };
 
-export const sortArray = <T extends any>(firstRowData: T, secondRowData: T, field: keyof T) => {
+export const sortArrayFunc = <T extends any>(firstRowData: T, secondRowData: T, field: keyof T) => {
   const first = makeStringFromField(firstRowData[field]);
   const second = makeStringFromField(secondRowData[field]);
 
@@ -86,4 +87,22 @@ export const sortArray = <T extends any>(firstRowData: T, secondRowData: T, fiel
   }
 
   return 0;
+};
+
+export const sortArray = <F extends any>(array: OneRegistryData<F>['list']['data']['array'], sort: OneRegistryData<F>['list']['processed']['sort']): F[] => {
+  const newArray = [...array];
+
+  if (sort.field) {
+    newArray.sort(
+      (a, b) => (
+        sortArrayFunc(
+          sort.reverse ? b : a,
+          sort.reverse ? a : b,
+          sort.field,
+        )
+      ),
+    );
+  }
+
+  return newArray;
 };

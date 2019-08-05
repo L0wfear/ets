@@ -1,7 +1,7 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { get } from 'lodash';
-import { makeDateFromUnix } from 'utils/dates';
+import { makeDateFromUnix } from 'components/@next/@utils/dates/dates';
 import {
   carInfoTogglePlay,
   carInfoStopPlay,

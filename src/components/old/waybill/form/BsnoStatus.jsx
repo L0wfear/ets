@@ -5,7 +5,7 @@ import {
   diffDates,
   getDateWithMoscowTzByTimestamp,
   getDateWithMoscowTz,
-} from 'utils/dates';
+} from 'components/@next/@utils/dates/dates';
 
 import Field from 'components/old/ui/Field';
 

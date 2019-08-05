@@ -89,7 +89,7 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
               try {
                 await global.confirmDialog({
                   title: 'Смена типа паспорта',
-                  body: `Будут очищены поля, который относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
+                  body: `Будут очищены поля, которые относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
                 });
 
                 changeObj = {

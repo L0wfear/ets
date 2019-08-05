@@ -7,7 +7,7 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import Div from 'components/old/ui/Div';
-import { createValidDateTime, diffDates } from 'utils/dates';
+import { createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import { connect, HandleThunkActionCreator } from 'react-redux';

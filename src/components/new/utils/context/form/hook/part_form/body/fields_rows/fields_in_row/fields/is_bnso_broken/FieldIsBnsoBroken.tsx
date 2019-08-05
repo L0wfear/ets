@@ -9,7 +9,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 type FieldIsBnsoBrokenProps = {

@@ -13,7 +13,7 @@ import { get } from 'lodash';
 import { DivNone } from 'global-styled/global-styled';
 import MissionRejectForm from './form/MissionRejectForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 
 type ButtonFailMissionStateProps = {

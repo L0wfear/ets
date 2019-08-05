@@ -72,6 +72,8 @@ export type BatteryRegistry = {
   serial_number: string;
   uninstalled_at: string;
   worked_months: number;
+  status_text: string;
+  status: string;
 };
 
 export type BatteryAvailableCar = {
@@ -316,6 +318,8 @@ export type Tire = {
   tire_to_car: TireOnCar[];
   tire_to_car_id: number;
   uninstalled_at: string;
+  status_text: string;
+  status: string;
 };
 export type TireSize = {
   id: number;

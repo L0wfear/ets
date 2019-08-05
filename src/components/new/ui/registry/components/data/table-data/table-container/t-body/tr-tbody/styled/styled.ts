@@ -71,5 +71,18 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       color: ${({selected}) => selected ? 'white' : '#0081d6'};
       text-decoration: ${({selected}) => selected ? 'underline' : 'underline'};
     }
+    .error { /* inputTable error */
+      margin-top: 0px;
+      border-radius: 0 0 3px 3px;
+      margin-top: 0px;
+      padding: 2px;
+      border-radius: 0 0 3px 3px;
+      background: #a94442;
+      color: white;
+      padding-left: 5px;
+    }
+    .form-group{
+      margin-bottom: 0px;
+    }
   }
 `;

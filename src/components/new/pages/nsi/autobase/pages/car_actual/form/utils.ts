@@ -3,7 +3,7 @@ import memoizeOne from 'memoize-one';
 import { CarWrap } from './@types/CarForm';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { isFourDigitGovNumber } from 'utils/functions';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const getDefaultCar = (): CarWrap => ({
   asuods_id: null,

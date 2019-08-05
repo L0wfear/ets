@@ -10,7 +10,7 @@ import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 

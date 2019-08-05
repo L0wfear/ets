@@ -11,7 +11,7 @@ import {
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
 import { initialState } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
-import { diffDates } from 'utils/dates';
+import { diffDates } from 'components/@next/@utils/dates/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить

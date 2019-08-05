@@ -17,7 +17,7 @@ import {
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { createValidDateTime } from 'utils/dates';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {

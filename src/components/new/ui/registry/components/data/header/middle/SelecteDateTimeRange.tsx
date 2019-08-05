@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
-import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'utils/dates';
+import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelecteDateTimeRangeOwnProps = {

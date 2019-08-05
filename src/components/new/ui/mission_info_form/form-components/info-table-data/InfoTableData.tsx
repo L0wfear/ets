@@ -10,7 +10,7 @@ import {
   getDataTraveledYet,
 } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
 
-import { secondsToTime } from 'utils/dates';
+import { secondsToTime } from 'components/@next/@utils/dates/dates';
 
 import { PropsInfoTableData } from 'components/new/ui/mission_info_form/form-components/info-table-data/InfoTableData.h';
 

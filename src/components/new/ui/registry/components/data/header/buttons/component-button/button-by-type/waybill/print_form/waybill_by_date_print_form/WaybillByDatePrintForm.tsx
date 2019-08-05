@@ -9,7 +9,7 @@ import { getDefaultWaybillPrintJournalFormElement, defaultWaybillPrintJournalFor
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { waybillPrintJournalFormSchema } from './schema';
 import { compose } from 'recompose';
-import { monthOptions } from 'utils/dates';
+import { monthOptions } from 'components/@next/@utils/dates/dates';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { connect, DispatchProp } from 'react-redux';

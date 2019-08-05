@@ -5,32 +5,19 @@
   .rw-select>button {
     height: auto;
   }
-  &.rw-state-focus>.rw-widget-picker.rw-widget-container {
-    box-shadow: none;
-    input {
-      border-color: rgb(81, 180, 255);
-    }
-  }
   .rw-widget-picker {
     border-radius: 0px;
-    input {
-      border-left: #ccc 1px solid;
-      border-top: #ccc 1px solid;
-      border-bottom: #ccc 1px solid;
-      &.rw-input[disabled] {
-        background-color: #f8f8f8;
-        border-color: #cccccc;
-      }
+    border-width: 1.3px; // привет IE если зумить, то бордер не рендеоится
+  }
+  &.has-error {
+    .rw-widget-container {
+      border-color: #b63b3e;
     }
   }
-  &.has-error>.rw-widget-picker.rw-widget-container {
-    border-color: #b63b3e;
-    >input {
-      border: none;
-      background-color: initial;
+  &.rw-state-focus>.rw-widget-picker.rw-widget-container {
+    box-shadow: none;
+    .rw-widget-picker {
+      border-color: rgb(81, 180, 255);
     }
-  }
-  .rw-widget-picker input {
-    border: none;
   }
 }

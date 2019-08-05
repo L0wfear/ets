@@ -17,3 +17,4 @@ yarn.lock
 coverage
 .vscode
 coverageDirectory
+junit.xml

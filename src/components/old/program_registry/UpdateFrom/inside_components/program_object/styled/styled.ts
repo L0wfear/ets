@@ -7,6 +7,7 @@ export const SpanContractor = styled.span`
 `;
 
 export const PanelObjectInfo = styled(EtsBootstrap.Panel)`
+  padding: 10px;
   >.panel-body {
     margin: 10px 0 10px 0;
   }

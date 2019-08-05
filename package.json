@@ -34,14 +34,14 @@
         "react-router-dom": "=5.0.1",
         "react-select": "=3.0.4",
         "react-virtualized": "^9.21.1",
-        "react-widgets": "=4.4.11",
-        "recompose": "=0.30.0",
-        "redux": "=4.0.4",
-        "redux-promise": "=0.6.0",
-        "redux-promise-loading": "=0.1.2",
-        "redux-thunk": "=2.3.0",
-        "reselect": "=4.0.0",
-        "url-join": "=4.0.1"
+        "react-widgets": "^4.4.11",
+        "recompose": "^0.30.0",
+        "redux": "^4.0.4",
+        "redux-promise": "^0.6.0",
+        "redux-promise-loading": "^0.1.2",
+        "redux-thunk": "^2.3.0",
+        "reselect": "^4.0.0",
+        "url-join": "^4.0.1"
     },
     "devDependencies": {
         "@babel/core": "^7.5.5",
@@ -143,13 +143,13 @@
         "lint": "eslint -c .eslintrc.js --fix --ext .js --ext .jsx src",
         "bump": "node webpack/utils/updateVersion.js",
         "prettier": "prettier -c \"src/**/*.tsx\" typescript --parser --write",
-        "test": "jest",
+        "test": "cross-env JEST_JUNIT_OUTPUT_DIR='./coverageDirectory' jest",
         "lint-staged": "lint-staged",
         "log-version": "node webpack/utils/logVersion.js"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged && npm run bump && git add package.json"
+            "pre-commit": "lint-staged"
         }
     },
     "lint-staged": {

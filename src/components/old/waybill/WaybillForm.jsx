@@ -1536,69 +1536,72 @@ class WaybillForm extends UNSAFE_Form {
           </EtsBootstrap.Row>
           <br />
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={4}>
-              <ExtField
-                id="car-id"
-                type="select"
-                modalKey={modalKey}
-                label="Транспортное средство (поиск по рег. номер  ТС)"
-                error={errors.car_id}
-                className="white-space-pre-wrap"
-                hidden={!(IS_CREATING || IS_DRAFT)}
-                options={CARS}
-                value={state.car_id}
-                onChange={this.onCarChange}
-                disabled={!isPermittedByKey.update}
-              />
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="car-id"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Транспортное средство (поиск по рег. номер  ТС)"
+                    error={errors.car_id}
+                    className="white-space-pre-wrap"
+                    hidden={!(IS_CREATING || IS_DRAFT)}
+                    options={CARS}
+                    value={state.car_id}
+                    onChange={this.onCarChange}
+                    disabled={!isPermittedByKey.update}
+                  />
 
-              <ExtField
-                id="car-gov-number"
-                type="string"
-                label="Транспортное средство"
-                className="white-space-pre-wrap"
-                readOnly
-                hidden={IS_CREATING || IS_DRAFT}
-                value={`${state.gov_number} [${state.car_model_name || ''}${
-                  state.car_model_name ? '/' : ''
-                }${state.car_special_model_name || ''}${
-                  state.car_type_name ? '/' : ''
-                }${state.car_type_name || ''}]`}
-              />
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={4}>
-              <ExtField
-                id="trailer-id"
-                type="select"
-                modalKey={modalKey}
-                label="Прицеп"
-                error={errors.trailer_id}
-                className="white-space-pre-wrap"
-                hidden={!(IS_CREATING || IS_DRAFT)}
-                options={TRAILERS}
-                value={state.trailer_id}
-                onChange={this.handleChange}
-                boundKeys="trailer_id"
-                disabled={!isPermittedByKey.update}
-              />
-
-              <ExtField
-                id="trailer-gov-number"
-                type="string"
-                label="Прицеп"
-                className="white-space-pre-wrap"
-                readOnly
-                hidden={IS_CREATING || IS_DRAFT}
-                value={
-                  state.trailer_id
-                    ? `${
-                      state.trailer_gov_number
-                    } [${state.trailer_special_model_name || ''}${
-                      state.trailer_special_model_name ? '/' : ''
-                    }${state.trailer_model_name || ''}]`
-                    : 'Н/Д'
-                }
-              />
-            </EtsBootstrap.Col>
+                  <ExtField
+                    id="car-gov-number"
+                    type="string"
+                    label="Транспортное средство"
+                    className="white-space-pre-wrap"
+                    readOnly
+                    hidden={IS_CREATING || IS_DRAFT}
+                    value={`${state.gov_number} [${state.car_model_name || ''}${
+                      state.car_model_name ? '/' : ''
+                    }${state.car_special_model_name || ''}${
+                      state.car_type_name ? '/' : ''
+                    }${state.car_type_name || ''}]`}
+                  />
+                </EtsBootstrap.Col>
+                <EtsBootstrap.Col md={4}>
+                  <ExtField
+                    id="trailer-id"
+                    type="select"
+                    modalKey={modalKey}
+                    label="Прицеп"
+                    error={errors.trailer_id}
+                    className="white-space-pre-wrap"
+                    hidden={!(IS_CREATING || IS_DRAFT)}
+                    options={TRAILERS}
+                    value={state.trailer_id}
+                    onChange={this.handleChange}
+                    boundKeys="trailer_id"
+                    disabled={!isPermittedByKey.update}
+                  />
+                  <ExtField
+                    id="trailer-gov-number"
+                    type="string"
+                    label="Прицеп"
+                    className="white-space-pre-wrap"
+                    readOnly
+                    hidden={IS_CREATING || IS_DRAFT}
+                    value={
+                      state.trailer_id
+                        ? `${
+                          state.trailer_gov_number
+                        } [${state.trailer_special_model_name || ''}${
+                          state.trailer_special_model_name ? '/' : ''
+                        }${state.trailer_model_name || ''}]`
+                        : 'Н/Д'
+                    }
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
             <EtsBootstrap.Col md={IS_ACTIVE || IS_CLOSED ? 7 : 12}>
               <BsnoStatus
                 okStatus={IS_CREATING || IS_DRAFT}

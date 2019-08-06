@@ -3,7 +3,7 @@ import config, { configApi } from 'config';
 
 const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
   apiUrl:
-    process.env.STAND === 'gost_stage' ? configApi.develop.ets_test : config.backend,
+    process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix' ? configApi.develop.ets_test : config.backend,
   otherToken: true,
   headers: () => {
     const token = JSON.parse(

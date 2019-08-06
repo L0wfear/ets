@@ -39,7 +39,7 @@ export const sessionCahngeCompanyOnAnother: any = (
 
   let sessionEtsTest = null;
 
-  if (process.env.STAND === 'gost_stage') {
+  if (process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix') {
     const {
       payload: { token: sessionEtsTestToken },
     } = await dispatch({
@@ -74,7 +74,7 @@ export const sessionLogin = (user: { login: string; password: string }, meta: Lo
 
   let sessionEtsTest = '';
 
-  if (process.env.STAND === 'gost_stage') {
+  if (process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix') {
     const { token: sessionEtsTestToken } = await etsLoadingCounter(
       dispatch,
       AuthServiceEtsTest.post(user, false, 'json'),
@@ -99,7 +99,7 @@ export const sessionSetData: any = (
 ) => async (dispatch) => {
   localStorage.setItem(global.SESSION_KEY, JSON.stringify(session));
 
-  if (process.env.STAND === 'gost_stage') {
+  if (process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix') {
     localStorage.setItem(
       global.SESSION_KEY_ETS_TEST_BY_DEV,
       JSON.stringify(sessionEtsTest),
@@ -148,7 +148,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
     && Boolean(Object.keys(data).length)
   );
 
-  if (process.env.STAND === 'gost_stage') {
+  if (process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix') {
     let tokenString = localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
     if (tokenString === 'undefined') {
       tokenString = null;

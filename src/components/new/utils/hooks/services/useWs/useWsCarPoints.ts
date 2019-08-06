@@ -28,7 +28,7 @@ const useWsCarPoints = () => {
     (points_ws, tokenOwn) => {
       let token = tokenOwn;
 
-      if (process.env.STAND === 'gost_stage') {
+      if (process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix') {
         token = JSON.parse(
           localStorage.getItem(global.SESSION_KEY_ETS_TEST_BY_DEV),
         );

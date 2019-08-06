@@ -12,6 +12,7 @@ import {
 } from 'global-styled/global-styled';
 import { CarInfoBlock } from 'components/old/monitor/styled';
 import { CarInfoMainDataContainer } from '.';
+import ButtonExportCarData from 'components/old/monitor/info/car-info/car-main-data-block/buttons/export_car_info/ButtonExportCarData';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;
@@ -35,19 +36,21 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
       <CarInfoMainDataContainer>
         <CarInfoBlock>
           <div>
-            <div className="legend-color">
-              <div className="car_info-legend-color green"></div>
-              <div>{`0-${maxSpeed} км/ч`}</div>
-            </div>
-            <div className="legend-color">
-              <div className="car_info-legend-color red"></div>
-              <div>{`+${maxSpeed + 1} км/ч`}</div>
+            <div id="car_track_legend">
+              <div className="legend-color">
+                <div className="car_info-legend-color green"></div>
+                <div>{`0-${maxSpeed} км/ч`}</div>
+              </div>
+              <div className="legend-color">
+                <div className="car_info-legend-color red"></div>
+                <div>{`+${maxSpeed + 1} км/ч`}</div>
+              </div>
             </div>
           </div>
           <div className="car_info-img">
           {
             type_image_name !== '' ?
-            <img role="presentation" className="car-info-image" src={!!type_image_name ? `${config.images}${type_image_name}` : ''} />
+            <img id="car_info_image" role="presentation" className="car-info-image" src={'https://i.ibb.co/wd2FvRz/image.png' || (!!type_image_name ? `${config.images}${type_image_name}` : '')} />
             :
             <PreloadNew typePreloader="field" />
           }
@@ -65,6 +68,9 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
                   <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
                   Трек
                 </EtsBootstrap.Button>
+              </BtnPart>
+              <BtnPart>
+                <ButtonExportCarData disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} />
               </BtnPart>
             </BtnGroupWrapper>
           </div>

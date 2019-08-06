@@ -24,6 +24,8 @@ export const DefaultFirstDt = styled.div<{ active?: boolean }>`
   background-color: ${({ active }) => (active ? '#e7e7e7' : 'initial')};
   text-decoration: none;
 
+  transition: background-color 0.3s;
+
   :hover {
     background-color: ${({ active }) => (active ? '#e7e7e7' : '#4c4c4c')};
   }

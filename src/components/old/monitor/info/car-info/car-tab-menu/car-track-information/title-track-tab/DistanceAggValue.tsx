@@ -8,17 +8,15 @@ type PropsDistanceAggValue = {
   distance: any;
 };
 
+export const getDistanceValue = (distance) => {
+  return distance === null
+    ? '---'
+    : (distance / 1000).toFixed(2);
+};
+
 const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => (
     <span>
-    {
-      distance === null
-      ? (
-        <span>{'---'}</span>
-      )
-      : (
-        <span>{(distance / 1000).toFixed(2)}</span>
-      )
-    }
+      <span>{getDistanceValue(distance)}</span>
     </span>
 );
 

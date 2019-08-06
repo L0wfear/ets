@@ -14,6 +14,7 @@ stats.json
 *.sublime-project
 *.sublime-workspace
 yarn.lock
+coverage
 coverageDirectory
 .vscode
 junit.xml

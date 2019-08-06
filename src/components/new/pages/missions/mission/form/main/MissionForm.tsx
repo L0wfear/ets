@@ -281,7 +281,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   handlePrint: any = (print_form_type) => {
     const data: any = { mission_id: this.props.formState.id };
 
-    this.props.getMapImageInBase64ByKey(smallPrintMapKey).then((image) => {
+    this.props.getMapImageInBase64ByKey(smallPrintMapKey).then(({ image }) => {
       if (image) {
         data.image = image;
         this.printMission(data, print_form_type);

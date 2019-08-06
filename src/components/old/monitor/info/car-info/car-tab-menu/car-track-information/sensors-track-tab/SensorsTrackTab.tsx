@@ -10,17 +10,19 @@ type PropsSensorsTrackTab = {
 
 const SensorsTrackTab: React.FC<PropsSensorsTrackTab> = () => (
   <CarInfoBlockTabDataColumn>
-    <CarInfoTrackDateTitle>
-      <div>Отображение датчиков на треке</div>
-    </CarInfoTrackDateTitle>
-    <div className="car_info-sensors-list-container">
-      <div className="sensors-type-list">
-        <div className="type-title" >Датчики уровня топлива</div>
-        <SensorsLevelList />
-      </div>
-      <div className="sensors-type-list">
-        <div className="type-title" >Датчики навесного оборудования</div>
-        <SensorsEquipmentList />
+    <div id="track_sensors_list">
+      <CarInfoTrackDateTitle>
+        <div>Отображение датчиков на треке</div>
+      </CarInfoTrackDateTitle>
+      <div id="car_info-sensors-list-container" className="car_info-sensors-list-container">
+        <div className="sensors-type-list">
+          <div className="type-title" >Датчики уровня топлива</div>
+          <SensorsLevelList />
+        </div>
+        <div className="sensors-type-list">
+          <div className="type-title" >Датчики навесного оборудования</div>
+          <SensorsEquipmentList />
+        </div>
       </div>
     </div>
   </CarInfoBlockTabDataColumn>

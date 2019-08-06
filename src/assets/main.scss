@@ -94,6 +94,13 @@ html, body {
 .all-width {
   width: 100%;
 }
+.all-width-x2 {
+  width: 200%;
+}
+
+.height0 {
+  height: 0px;
+}
 
 .car_info-attributes {
   font-weight: 200;
@@ -376,7 +383,7 @@ body.application {
   padding: 5px;
   display: flex;
   flex-direction: column;
-  .car_info_mission_container {
+  .car_info_mission_data_container {
     display: flex;
     justify-content: space-between;
     font-weight: 200;

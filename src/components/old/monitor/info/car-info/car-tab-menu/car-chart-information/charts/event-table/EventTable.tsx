@@ -16,7 +16,7 @@ class EventTable extends React.Component<PropsEventTable, {}> {
   }
   render() {
     return (
-      <table className="car_info-event_table">
+      <table className="car_info-event_table" id="car_info-event_table">
         <thead>
           <tr>
             <td>Дата и время</td>

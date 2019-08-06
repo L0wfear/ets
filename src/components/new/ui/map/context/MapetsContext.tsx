@@ -51,14 +51,17 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
     this.setState({ mapByKeys });
   }
 
-  getMapImageInBase64ByKey = (key: string): Promise<object> => {
+  getMapImageInBase64ByKey: any = (key: string): Promise<object> => {
     return new Promise((res, rej) => {
       const { mapByKeys: { [key]: map } } = this.state;
 
       if (map) {
-        map.once('postcompose', (event) => {
-          resizeBase64(event.context.canvas.toDataURL('image/png'))
-            .then((imageObj: any) => res(imageObj));
+        map.once('postcompose', async (event) => {
+          const image: any = await resizeBase64(event.context.canvas.toDataURL('image/png'));
+          res({
+            image,
+            canvas: event.context.canvas,
+          });
         });
         map.render();
       } else {

@@ -10,6 +10,7 @@ import { getStyleForTrackLine } from 'components/old/monitor/layers/track/lines/
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
+  getOlLayer: ETSCore.Map.InjectetLayerProps.FuncGetOlLayer,
   removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer,
   addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
   removeFeaturesFromSource: ETSCore.Map.InjectetLayerProps.FuncRemoveFeaturesFromSource,
@@ -23,6 +24,9 @@ type PropsLayerTrackLines = {
   speed_lim: number;
   SHOW_TRACK: boolean;
   front_cars_sensors_equipment: any[];
+
+  centerOn: any;
+  needCenterOnAfterUpdate?: boolean;
 };
 
 type StateLayerTrackLines = {
@@ -44,6 +48,9 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
           .some(({ show }) => show);
 
         this.drawTrackLines(track, this.props.SHOW_TRACK, isChecked);
+        if (this.props.needCenterOnAfterUpdate) {
+          this.centerMapOnFeature();
+        }
         this.setState({ lastPoint: this.props.lastPoint, trackLineIsDraw: true });
       }
     });
@@ -69,10 +76,27 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
       } else if (lastPoint !== prevProps.track) {
         this.drawTrackLines(track.slice(-2), SHOW_TRACK, newIsChecked);
       }
+
+      if (this.props.needCenterOnAfterUpdate) {
+        this.centerMapOnFeature();
+      }
     }
 
     if (oldIsChecked !== newIsChecked || SHOW_TRACK !== prevProps.SHOW_TRACK)  {
       this.changeStyleForLines(SHOW_TRACK, newIsChecked);
+    }
+  }
+
+  centerMapOnFeature() {
+    const extent = this.props.getOlLayer().getSource().getExtent();
+
+    if (isFinite(extent[0])) {
+      setImmediate(() => {
+        this.props.centerOn({
+          extent,
+          opt_options: { padding: [10, 10, 10, 10], maxZoom: 13 },
+        });
+      });
     }
   }
 
@@ -170,5 +194,7 @@ export default compose<any, any>(
     mapStateToProps,
     mapDispatchToProps,
   ),
-  withLayerProps({}),
+  withLayerProps({
+    centerOn: true,
+  }),
 )(LayerTrackLines);

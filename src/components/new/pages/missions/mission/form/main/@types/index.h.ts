@@ -6,6 +6,7 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
+import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 
 export type PropsMissionFormLazy = {
   showForm: boolean;
@@ -51,7 +52,7 @@ export type OwnMissionProps = {
 export type PropsMissionWithForm = StatePropsMission &
   DispatchPropsMission &
   OwnMissionProps & {
-    getMapImageInBase64ByKey: any;
+    getMapImageInBase64ByKey: GetMapImageInBase64ByKeyType;
   };
 
 export type PropsMissionForm = OutputWithFormProps<

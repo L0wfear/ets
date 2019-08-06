@@ -14,6 +14,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { HandleThunkActionCreator } from 'react-redux';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -38,7 +39,7 @@ export type OwnMissionTemplateProps = {
 export type PropsMissionTemplateWithForm = StatePropsMissionTemplate &
   DispatchPropsMissionTemplate &
   OwnMissionTemplateProps & {
-    getMapImageInBase64ByKey: any;
+    getMapImageInBase64ByKey: GetMapImageInBase64ByKeyType;
   };
 
 export type PropsMissionTemplateForm = OutputWithFormProps<

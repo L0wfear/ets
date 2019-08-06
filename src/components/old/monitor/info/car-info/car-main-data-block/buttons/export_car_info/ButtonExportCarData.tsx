@@ -10,9 +10,14 @@ import { getDateWithMoscowTz, getFormattedDateTime } from 'components/@next/@uti
 import { getTextCanvas, getCanvasOfElement } from 'utils/functions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { NO_DATA_TEXT } from 'constants/statuses';
+import HiddenMapCarExport from 'components/old/monitor/info/car-info/car-main-data-block/buttons/export_car_info/map/HiddenMapCarExport';
+import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
+import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
+import { getDistanceValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
 
 type Props = {
   disabled: boolean;
+  getMapImageInBase64ByKey: GetMapImageInBase64ByKeyType,
 };
 
 // в мм
@@ -40,6 +45,8 @@ const docAddPage = (doc: DocExportCar, orientation?: 'portrait' | 'landscape') =
 
 const editParam = 4 * window.devicePixelRatio;
 
+const mapKey = 'HiddenMapCarExport';
+
 const ButtonExportCarData: React.FC<Props> = React.memo(
   (props) => {
 
@@ -52,6 +59,19 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
   );
   const date_end = useSelector(
     (state: ReduxState) => getMonitorPageState(state).carInfo.date_end,
+  );
+  const distance = useSelector(
+    (state: ReduxState) => getMonitorPageState(state).carInfo.trackCaching.distance,
+  );
+  const gov_number = useSelector(
+    (state: ReduxState) => getMonitorPageState(state).carInfo.gov_number,
+  );
+
+  const inLoading = useSelector(
+    (state: ReduxState) => (
+      getMonitorPageState(state).carInfo.trackCaching.track === -1
+      || getMonitorPageState(state).carInfo.missionsData.missions === -1
+    ),
   );
 
   const dispatch = useDispatch();
@@ -67,9 +87,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         ];
 
         /**************** MAIN_INFO ****************/
-        let topPadding = 10;
-
-        topPadding += 10;
+        let topPadding = 20;
 
         const [
           canvas_text,
@@ -77,6 +95,8 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           canvas_img_car,
           canvas_mission_text,
           canvas_on_interval_text,
+          arrCanvasMissionData,
+          canvas_no_data,
         ] = await Promise.all([
           getTextCanvas('Информация о ТС:', 'font-size:14px; font-weight:800'),
           getCanvasOfElement(document.getElementById('car_main_data')),
@@ -89,17 +109,22 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           ),
           getTextCanvas('Задания:', 'font-size:14px; font-weight:800'),
           getTextCanvas(`За период: ${getFormattedDateTime(date_start)} - ${getFormattedDateTime(date_end)}`, 'font-size:14px;'),
+          Promise.resolve().then(
+            () => {
+              const missions = Array.from(document.querySelectorAll('.car_info_mission_container'));
+              return Promise.all(
+                missions.length
+                  ? missions.map(
+                    (element: HTMLElement) => getCanvasOfElement(element),
+                  )
+                  : [
+                    getTextCanvas(NO_DATA_TEXT, 'font-size:12px'),
+                  ],
+              );
+            },
+          ),
+          getTextCanvas(NO_DATA_TEXT, 'font-size:12px'),
         ]);
-        const missions = Array.from(document.querySelectorAll('.car_info_mission_container'));
-        const arrCanvasMissionData = await Promise.all(
-          missions.length
-            ? missions.map(
-              (element: HTMLElement) => getCanvasOfElement(element),
-            )
-            : [
-              getTextCanvas(NO_DATA_TEXT, 'font-size:12px'),
-            ],
-        );
 
         doc.addImage(
           canvas_text.toDataURL('image/png'),
@@ -172,7 +197,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
             if (topPadding + canvasHeight + 2  > lastPosition) {
               docAddPage(doc);
-              topPadding = 15;
+              topPadding = 20;
             }
             doc.addImage(
               canvasMissionData.toDataURL('image/png'),
@@ -189,39 +214,267 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
         /**************** CHARTS ****************/
         docAddPage(doc, 'landscape');
-        topPadding = 15;
-        const canvas_fuel_chart = await getCanvasOfElement(document.getElementById('fuel-chart'));
+        topPadding = 20;
 
-        const canvasChart = document.createElement('canvas');
-        const tnCanvasContext = canvasChart.getContext('2d');
-        canvasChart.width = canvas_fuel_chart.width;
-        canvasChart.height = canvas_fuel_chart.height - 100 * window.devicePixelRatio;
+        const [
+          canvas_text_fuel,
+          canvas_text_speed,
+          canvas_fuel_chart,
+          canvas_car_info_event_table,
+          canvas_speed_chart,
+        ] = await Promise.all([
+          getTextCanvas('Датчики топлива:', 'font-size:14px; font-weight:800'),
+          getTextCanvas('Датчики скорости:', 'font-size:14px; font-weight:800'),
+          Promise.resolve().then(
+            () => {
+              const fuelChart = document.getElementById('fuel-chart');
+              if (fuelChart) {
+                return getCanvasOfElement(fuelChart);
+              } else {
+                return null;
+              }
+            },
+          ),
+          getCanvasOfElement(document.getElementById('car_info-event_table')),
+          Promise.resolve().then(
+            () => {
+              const speedChart = document.getElementById('speed-chart');
 
-        tnCanvasContext.drawImage(canvas_fuel_chart, 0, 0,  canvasChart.width * window.devicePixelRatio, canvasChart.height * window.devicePixelRatio, 0, 0, canvasChart.width, canvasChart.height);
-
+              if (speedChart) {
+                return getCanvasOfElement(document.getElementById('speed-chart'));
+              } else {
+                return null;
+              }
+            },
+          ),
+        ]);
         doc.addImage(
-          canvasChart.toDataURL('image/png'),
+          canvas_text_fuel.toDataURL('image/png'),
           'JPEG',
           10,
           topPadding,
-          canvasChart.width / editParam,
-          canvasChart.height / editParam,
+          canvas_text_fuel.width / editParam,
+          canvas_text_fuel.height / editParam,
         );
+        topPadding += canvas_text_fuel.height / editParam;
 
-        topPadding += canvas_fuel_chart.height / editParam + 5;
-        const canvas_speed_chart = await getCanvasOfElement(document.getElementById('speed-chart'));
+        if (canvas_fuel_chart) {
+          const canvasChart = document.createElement('canvas');
+          canvasChart.width = canvas_fuel_chart.width;
+          canvasChart.height = canvas_fuel_chart.height - 350;
+
+          canvasChart.getContext('2d').drawImage(
+            canvas_fuel_chart,
+            0,
+            0,
+            canvasChart.width,
+            canvasChart.height,
+            0,
+            0,
+            canvasChart.width,
+            canvasChart.height,
+          );
+
+          doc.addImage(
+            canvasChart.toDataURL('image/png'),
+            'JPEG',
+            10,
+            topPadding,
+            canvasChart.width / editParam,
+            canvasChart.height / editParam,
+          );
+
+          const canvasLegendChart = document.createElement('canvas');
+          canvasLegendChart.width = canvas_fuel_chart.width;
+          canvasLegendChart.height = 200;
+
+          canvasLegendChart.getContext('2d').drawImage(
+            canvas_fuel_chart,
+            0,
+            canvas_fuel_chart.height - 350,
+            canvasLegendChart.width,
+            canvasLegendChart.height,
+            0,
+            0,
+            canvasLegendChart.width,
+            canvasLegendChart.height,
+          );
+
+          doc.addImage(
+            canvasLegendChart.toDataURL('image/png'),
+            'JPEG',
+            canvasChart.width / editParam + 10,
+            topPadding,
+            canvasLegendChart.width / editParam,
+            canvasLegendChart.height / editParam,
+          );
+
+          doc.addImage(
+            canvas_car_info_event_table.toDataURL('image/png'),
+            'JPEG',
+            format.a4.height - canvas_car_info_event_table.width / editParam - 10,
+            topPadding,
+            canvas_car_info_event_table.width / editParam,
+            canvas_car_info_event_table.height / editParam,
+          );
+          topPadding += canvasChart.height / editParam + 5;
+        } else {
+          doc.addImage(
+            canvas_no_data.toDataURL('image/png'),
+            'JPEG',
+            15,
+            topPadding,
+            canvas_no_data.width / editParam,
+            canvas_no_data.height / editParam,
+          );
+          topPadding += canvas_no_data.height / editParam + 5;
+        }
 
         doc.addImage(
-          canvas_speed_chart.toDataURL('image/png'),
+          canvas_text_speed.toDataURL('image/png'),
           'JPEG',
           10,
           topPadding,
-          canvas_speed_chart.width / editParam,
-          canvas_speed_chart.height / editParam,
+          canvas_text_speed.width / editParam,
+          canvas_text_speed.height / editParam,
         );
+        topPadding += canvas_text_speed.height / editParam;
+
+        if (canvas_speed_chart) {
+          const canvasSpeedChart = document.createElement('canvas');
+          canvasSpeedChart.width = canvas_speed_chart.width;
+          canvasSpeedChart.height = canvas_speed_chart.height - 350;
+
+          canvasSpeedChart.getContext('2d').drawImage(
+            canvas_speed_chart,
+            0,
+            0,
+            canvasSpeedChart.width,
+            canvasSpeedChart.height,
+            0,
+            0,
+            canvasSpeedChart.width,
+            canvasSpeedChart.height,
+          );
+
+          doc.addImage(
+            canvasSpeedChart.toDataURL('image/png'),
+            'JPEG',
+            10,
+            topPadding,
+            canvasSpeedChart.width / editParam,
+            canvasSpeedChart.height / editParam,
+          );
+          const canvasLegendSpeedChart = document.createElement('canvas');
+          canvasLegendSpeedChart.width = canvas_speed_chart.width;
+          canvasLegendSpeedChart.height = 200;
+
+          canvasLegendSpeedChart.getContext('2d').drawImage(
+            canvas_speed_chart,
+            0,
+            canvas_speed_chart.height - 350,
+            canvasLegendSpeedChart.width,
+            canvasLegendSpeedChart.height,
+            0,
+            0,
+            canvasLegendSpeedChart.width,
+            canvasLegendSpeedChart.height,
+          );
+
+          doc.addImage(
+            canvasLegendSpeedChart.toDataURL('image/png'),
+            'JPEG',
+            canvasSpeedChart.width / editParam + 10,
+            topPadding,
+            canvasLegendSpeedChart.width / editParam,
+            canvasLegendSpeedChart.height / editParam,
+          );
+        } else {
+          doc.addImage(
+            canvas_no_data.toDataURL('image/png'),
+            'JPEG',
+            15,
+            topPadding,
+            canvas_no_data.width / editParam,
+            canvas_no_data.height / editParam,
+          );
+          topPadding += canvas_no_data.height / editParam + 5;
+        }
+
         /**************** TRACK_DATA ****************/
         docAddPage(doc, 'landscape');
-        topPadding = 15;
+        topPadding = 20;
+
+        const [
+          { canvas: canvas_map },
+          canvas_text_track,
+          canvas_text_track_distance,
+          canvas_track_sensors_list,
+          canvas_car_track_legend,
+        ] = await Promise.all([
+          props.getMapImageInBase64ByKey(mapKey),
+          getTextCanvas('Трекинг:', 'font-size:14px; font-weight:800'),
+          getTextCanvas(`Протяженность, км: ${getDistanceValue(distance)}`, 'font-size:14px;'),
+          getCanvasOfElement(document.getElementById('track_sensors_list')),
+          getCanvasOfElement(document.getElementById('car_track_legend')),
+        ]);
+        doc.addImage(
+          canvas_text_track.toDataURL('image/png'),
+          'JPEG',
+          10,
+          topPadding,
+          canvas_text_track.width / editParam,
+          canvas_text_track.height / editParam,
+        );
+
+        topPadding += canvas_text_track.height / editParam;
+        doc.addImage(
+          canvas_text_track_distance.toDataURL('image/png'),
+          'JPEG',
+          10,
+          topPadding,
+          canvas_text_track_distance.width / editParam,
+          canvas_text_track_distance.height / editParam,
+        );
+
+        topPadding += canvas_text_track_distance.height / editParam;
+        doc.addImage(
+          canvas_map.toDataURL('image/png'),
+          'JPEG',
+          10,
+          topPadding,
+          canvas_map.width / editParam,
+          canvas_map.height / editParam,
+        );
+        topPadding += canvas_map.height / editParam - canvas_track_sensors_list.height / editParam + 4;
+        const leftPadding = 10 + canvas_map.width / editParam + 5;
+
+        doc.addImage(
+          canvas_track_sensors_list.toDataURL('image/png'),
+          'JPEG',
+          leftPadding,
+          topPadding,
+          canvas_track_sensors_list.width / editParam,
+          canvas_track_sensors_list.height / editParam,
+        );
+
+        doc.line(
+          leftPadding,
+          topPadding + 7,
+          format.a4.height - 10,
+          topPadding + 7,
+        ); // horizontal line
+
+        topPadding += -canvas_car_track_legend.height / editParam - 4;
+
+        doc.addImage(
+          canvas_car_track_legend.toDataURL('image/png'),
+          'JPEG',
+          leftPadding,
+          topPadding,
+          canvas_car_track_legend.width / editParam,
+          canvas_car_track_legend.height / editParam,
+        );
 
         /**************** END ****************/
         const canvas_createAt = await getTextCanvas(`Сформировано: ${getFormattedDateTime(getDateWithMoscowTz())}`, 'font-size:10px');
@@ -254,30 +507,49 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           );
         }
 
-        doc.save('test.pdf');
+        doc.save(`Информация о ${gov_number} за ${getFormattedDateTime(date_start)} ${getFormattedDateTime(date_end)}.pdf`);
       };
 
       etsLoadingCounter(
         dispatch,
-        loadPdf(),
+        // loadPdf(),
+        new Promise(
+          (res) => {
+            setTimeout(
+              async () => {
+                try {
+                  await loadPdf();
+                } catch (error) {
+                  //
+                }
+                res();
+              },
+              0,
+            );
+          },
+        ),
         {
           page: 'main',
+          noTimeout: true,
         },
       );
     },
-    [type_image_name, date_start, date_end],
+    [type_image_name, date_start, date_end, distance, gov_number],
   );
 
   return React.useMemo(
     () => (
-      <EtsBootstrap.Button disabled={props.disabled} onClick={handleClick} className="all-width">
-        <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
-        Выгрузить
-      </EtsBootstrap.Button>
+      <React.Fragment>
+        <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
+        <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
+          <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
+          Выгрузить
+        </EtsBootstrap.Button>
+      </React.Fragment>
     ),
     [props.disabled, handleClick],
   );
   },
 );
 
-export default ButtonExportCarData;
+export default withMapInConsumer()(ButtonExportCarData);

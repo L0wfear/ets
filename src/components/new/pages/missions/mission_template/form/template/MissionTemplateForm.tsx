@@ -97,7 +97,7 @@ class MissionTemplateForm extends React.PureComponent<
         data.size = 'a4';
       }
 
-      this.props.getMapImageInBase64ByKey(mapKey).then((image) => {
+      this.props.getMapImageInBase64ByKey(mapKey).then(({ image }) => {
         if (image) {
           data.image = image;
           this.printMissionTemplate(data);

@@ -36,13 +36,15 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
       <CarInfoMainDataContainer>
         <CarInfoBlock>
           <div>
-            <div className="legend-color">
-              <div className="car_info-legend-color green"></div>
-              <div>{`0-${maxSpeed} км/ч`}</div>
-            </div>
-            <div className="legend-color">
-              <div className="car_info-legend-color red"></div>
-              <div>{`+${maxSpeed + 1} км/ч`}</div>
+            <div id="car_track_legend">
+              <div className="legend-color">
+                <div className="car_info-legend-color green"></div>
+                <div>{`0-${maxSpeed} км/ч`}</div>
+              </div>
+              <div className="legend-color">
+                <div className="car_info-legend-color red"></div>
+                <div>{`+${maxSpeed + 1} км/ч`}</div>
+              </div>
             </div>
           </div>
           <div className="car_info-img">

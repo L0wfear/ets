@@ -6,7 +6,7 @@ export type MapByKeysType = {
 
 export type SetMapToContextType = (key: string, map: Map) => void;
 export type RemoveMapToContextType = (key: string) => void;
-type GetMapImageInBase64ByKeyType = (key: string) => Promise<object>;
+export type GetMapImageInBase64ByKeyType = (key: string) => Promise<{ image: any; canvas: HTMLCanvasElement }>;
 
 export type StateMapEtsProvider = {
   mapByKeys: MapByKeysType,

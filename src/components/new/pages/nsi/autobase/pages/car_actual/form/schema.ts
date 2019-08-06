@@ -33,7 +33,6 @@ const carPassportDataSchema: SchemaType<CarWrap['passport_data'], PropsCar> = {
       type: 'string',
       minLength: 10,
       maxLength: 10,
-      trimSpace: true,
     },
     vin: {
       validateIf: {

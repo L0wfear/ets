@@ -20,7 +20,6 @@ import {
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
-import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { getSessionState, getRegistryState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'components/@next/@utils/dates/dates';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
@@ -193,24 +192,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
       );
     }
 
-    let formatedTitle = title;
-
-    if (isArray(title)) {
-      formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
-        const { displayIf } = titleSomeValue;
-
-        if (displayIf === displayIfContant.isKgh && this.props.userData.isKgh) {
-          return true;
-        }
-        if (displayIf === displayIfContant.isOkrug && this.props.userData.isOkrug) {
-          return true;
-        }
-        if (displayIf === displayIfContant.lenghtStructureMoreOne && this.props.STRUCTURES.length) {
-          return true;
-        }
-        return filtredTitle;
-      }, null);
-    }
+    const formatedTitle = title;
 
     if (!formatedTitle) {
       return null;

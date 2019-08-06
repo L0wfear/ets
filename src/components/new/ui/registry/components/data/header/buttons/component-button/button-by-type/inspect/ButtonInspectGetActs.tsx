@@ -97,7 +97,7 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
     );
 
     return React.useMemo(
-      () => <EtsBootstrap.Button disabled={!canGetAct} onClick={handleGetAct}>
+      () => <EtsBootstrap.Button disabled={!canGetAct} title={!canGetAct ? 'Сформировать акт(ы) можно только для проверок в статусе “завершена”' : ''} onClick={handleGetAct}>
           Сформировать акт(ы)
         </EtsBootstrap.Button>,
       [

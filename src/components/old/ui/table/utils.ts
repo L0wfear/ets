@@ -20,8 +20,8 @@ export const isNumberSelectArrayData = (filterValue, fieldValue, fieldKey, table
   Array.isArray(fieldValue) &&
   getFilterTypeByKey(fieldKey, tableMeta) === 'select';
 
-export const stringArrayDataMatching = (filterValue, fieldValueArray) =>
-  fieldValueArray.filter((v) => v.match(filterValue) !== null).length > 0;
+export const stringArrayDataMatching = (filterValue: string, fieldValueArray: Array<string>) =>
+  fieldValueArray.join().includes(filterValue.split(', ').join());
 
 export const numberArrayDataMatching = (filterValue, fieldValueArray) =>
   fieldValueArray.filter((v) => v === filterValue).length > 0;

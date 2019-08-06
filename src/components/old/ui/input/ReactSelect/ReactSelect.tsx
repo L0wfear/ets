@@ -93,7 +93,11 @@ export default class ReactSelect extends React.Component<any, any> {
         objectValue === null ? emptyValue : objectValue,
         multi,
       ),
-      objectValue,
+      !multi
+        ? objectValue
+        : objectValue ?
+          objectValue
+          : [],
     );
   }
 

@@ -23,10 +23,7 @@ import TabInfo from 'components/old/program_registry/UpdateFrom/inside_component
 import MapInfo from 'components/old/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components';
-import {
-  SpanContractor,
-  PanelObjectInfo,
-} from 'components/old/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
+import { PanelObjectInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
@@ -510,52 +507,60 @@ class ProgramObjectFormDT extends UNSAFE_Form {
               <EtsBootstrap.Row style={{ marginBottom: 20 }}>
                 <EtsBootstrap.Col md={12}>
                   <PanelObjectInfo>
-                    <EtsBootstrap.Col md={12}>
-                      <span style={{ fontWeight: 600 }}>
-                        Информация об объекте
-                      </span>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={4}>
+                    <EtsBootstrap.Row>
                       <EtsBootstrap.Col md={12}>
-                        <span>{`Общая площадь по паспорту, кв.м.: ${Number(
-                          total_area,
-                        )}`}</span>
+                        <span style={{ fontWeight: 600 }}>
+                          Информация об объекте
+                        </span>
                       </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={12}>
-                        <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
+                      <EtsBootstrap.Col md={4}>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={12}>
+                            <span>{`Общая площадь по паспорту, кв.м.: ${Number(
+                              total_area,
+                            )}`}</span>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={12}>
+                            <span>{`Площадь пешеходной дорожки, кв.м.: ${0}`}</span>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={4}>
-                      <EtsBootstrap.Col md={12}>
-                        <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                      <EtsBootstrap.Col md={4}>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={12}>
+                            <span>{`Площадь проезда, кв.м.: ${0}`}</span>
+                          </EtsBootstrap.Col>
+                          <EtsBootstrap.Col md={12}>
+                            <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={12}>
-                        <span>{`Площадь тротуара, кв.м.: ${0}`}</span>
+                      <EtsBootstrap.Col md={4}>
+                        <EtsBootstrap.Row>
+                          <EtsBootstrap.Col md={12}>
+                            <span>{`Заказчик: ${company_name
+                              || prCompanyName}`}</span>
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
-                    </EtsBootstrap.Col>
-                    <EtsBootstrap.Col md={4}>
-                      <EtsBootstrap.Col md={12}>
-                        <span>{`Заказчик: ${company_name
-                          || prCompanyName}`}</span>
-                      </EtsBootstrap.Col>
-                    </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
                   </PanelObjectInfo>
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
               <EtsBootstrap.Row>
                 <EtsBootstrap.Col md={12}>
-                  <EtsBootstrap.Panel>
-                    <EtsBootstrap.Col
-                      md={12}
-                      style={{ fontWeight: 600, marginBottom: 5 }}>
-                      <span>Подрядчик</span>
-                    </EtsBootstrap.Col>
-                    <div>
-                      <EtsBootstrap.Col md={2}>
-                        <SpanContractor>Номер контракта</SpanContractor>
+                  <PanelObjectInfo>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={12}>
+                        <h4>Подрядчик</h4>
                       </EtsBootstrap.Col>
-                      <EtsBootstrap.Col md={3}>
+                    </EtsBootstrap.Row>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={4}>
                         <ExtField
+                          label="Номер контракта"
                           type="string"
                           value={state.contract_number}
                           error={errors.name}
@@ -567,13 +572,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                           }
                         />
                       </EtsBootstrap.Col>
-                      <EtsBootstrap.Col mdOffset={2} md={1}>
-                        <SpanContractor>Подрядчик</SpanContractor>
-                      </EtsBootstrap.Col>
-                      <EtsBootstrap.Col
-                        style={{ position: 'relative', top: -20 }}
-                        md={4}>
+                      <EtsBootstrap.Col md={4}>
                         <ExtField
+                          label="Подрядчик"
                           type="select"
                           error={errors.contractor_id}
                           options={CONTRACTOR_OPTIONS}
@@ -586,8 +587,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                           }
                         />
                       </EtsBootstrap.Col>
-                    </div>
-                  </EtsBootstrap.Panel>
+                    </EtsBootstrap.Row>
+                  </PanelObjectInfo>
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
               <EtsBootstrap.Nav

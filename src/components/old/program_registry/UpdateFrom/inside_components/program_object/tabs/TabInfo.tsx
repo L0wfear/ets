@@ -10,6 +10,7 @@ import Table from 'components/old/program_registry/UpdateFrom/inside_components/
 import { ITableMetaInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
 
 import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const nullFunc = () => null;
 
@@ -81,10 +82,10 @@ const Buttons: React.FC<any> = (props) => {
   const disabled = !isPermitted || (elements.length >= objectPropertyList.length);
 
   return (
-    <div>
+    <EtsButtonsContainer>
       <EtsBootstrap.Button disabled={disabled} onClick={props.handleClickAddEl} >Добавить элемент</EtsBootstrap.Button>
       <EtsBootstrap.Button disabled={disabled || selectedRow === null} onClick={props.handleClickOnRemove} >Удалить</EtsBootstrap.Button>
-    </div>
+    </EtsButtonsContainer>
   );
 };
 
@@ -107,7 +108,7 @@ const getFieldProps = (props) => {
   return {
     object_property_id: {
       type: 'select',
-      options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, isNotVisible: selectedElements.includes(value) })),
+      options: objectPropertyList.map(({ id: value, name: label }) => ({ value, label, isNotVisible: selectedElements.includes(value), original_name: value, })),
       disabled: typeTab === OBJ_TAB_INDEX.FACT,
     },
     value: {
@@ -147,10 +148,10 @@ class PlanTab extends React.Component<any, any> {
       const newLine = { ...d };
 
       if (field === 'object_property_id') {
-        const { measure_unit_name = null, original_name = null } = this.props.objectPropertyList.find(({ id }) => id === valueNew) || {};
-
+        const { measure_unit_name = null } = this.props.objectPropertyList.find(({ id }) => id === valueNew) || {};
         newLine.measure_unit_name = measure_unit_name;
-        newLine.value = this.props.selectedObj[original_name];
+        // newLine.value = this.props.selectedObj[original_name];
+        newLine.value = valueNew;
         newLine.object_property_id = valueNew;
 
         return { ...newLine };
@@ -256,12 +257,12 @@ class PlanTab extends React.Component<any, any> {
     } = this.getDataByTypeTab();
 
     return (
-      <div>
+      <EtsBootstrap.Row>
         <EtsBootstrap.Col md={12}>
           <label>{label}</label>
         </EtsBootstrap.Col>
         <EtsBootstrap.Col md={12}>
-          <div style={{ display: 'flex', alignItems: 'baseline', textAlign: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', textAlign: 'center', marginBottom: '10px', }}>
             <div className="no-label" style={{ width: 'calc(50% - 20px)' }}>
               <ExtField
                 type={'date'}
@@ -313,7 +314,7 @@ class PlanTab extends React.Component<any, any> {
             disabled={disabled}
           />
         </EtsBootstrap.Col>
-      </div>
+      </EtsBootstrap.Row>
     );
   }
 }

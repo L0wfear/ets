@@ -39,6 +39,7 @@ import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumns
 import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
+import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs';
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
@@ -85,6 +86,7 @@ const buttonComponents = {
   [buttonsTypes.columns_control]: ButtonColumnsControl,
   [buttonsTypes.waybill_print]: ButtonWaybillExport,
   [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,
+  [buttonsTypes.inspect_get_acts]: ButtonInspectGetActs,
   [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
   [buttonsTypes.car_actual_add_tire]: ButtonCarActualAddTire,
 };

@@ -30,6 +30,7 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
       title: 'Журнал проверок',
       buttons: [
         buttonsTypes.inspect_show_acts,
+        buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.export,
@@ -80,6 +81,9 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
       },
       meta: {
         fields: [
+          {
+            key: 'checkbox',
+          },
           {
             key: 'enumerated',
             title: '№',

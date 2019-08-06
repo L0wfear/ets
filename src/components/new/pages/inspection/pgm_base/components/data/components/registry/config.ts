@@ -30,6 +30,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
       title: 'Журнал проверок',
       buttons: [
         buttonsTypes.inspect_show_acts,
+        buttonsTypes.inspect_get_acts,
         buttonsTypes.filter,
         buttonsTypes.read,
         buttonsTypes.export,
@@ -104,6 +105,9 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
       },
       meta: {
         fields: [
+          {
+            key: 'checkbox',
+          },
           {
             key: 'enumerated',
             title: '№',

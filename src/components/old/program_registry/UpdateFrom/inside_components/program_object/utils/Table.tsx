@@ -7,6 +7,8 @@ import { EtsThead } from 'components/new/ui/registry/components/data/table-data/
 import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
 import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import { DataTableHeadLine, DataTableHeadLineTitle } from 'components/old/ui/table/styled';
+import Div from 'components/old/ui/Div';
 
 class TablePrev extends React.Component<any, any> {
   handleChange = (numRow, field, value) => {
@@ -57,13 +59,12 @@ class TablePrev extends React.Component<any, any> {
 
     return (
       <div>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}>
-          {title && <div>{title}</div>}
-          {buttons && <div>{buttons}</div>}
-        </div>
+        <Div className="some-header" style={{ marginBottom: '10px', }}>
+          <DataTableHeadLine>
+            {title && <DataTableHeadLineTitle>{title}</DataTableHeadLineTitle>}
+            {buttons && <div className="waybills-buttons">{buttons}</div>}
+          </DataTableHeadLine>
+        </Div>
         {
           !!bodyData.length &&
           <EtsTable>

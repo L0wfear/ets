@@ -7,7 +7,5 @@ TestWebWorker.addEventListener("message", (event) => {
   const { data } = event;
   console.log(data.message); // tslint:disable-line:no-console
 
-  if (data.type === 'calc') {
-    TestWebWorker.postMessage({ message: 'Hello, bro, too!' });
-  }
+  TestWebWorker.postMessage({ message: 'Hello, bro, too!' });
 });

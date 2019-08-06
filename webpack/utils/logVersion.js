@@ -9,12 +9,6 @@ var data = JSON.parse(
     ),
 );
 
-var [
-  kontur,
-  zero,
-  release,
-  version,
-] = data.version.split('.').map(number => Number(number));
 console.log('\x1b[36m%s\x1b[0m', `-`);  //cyan
 console.log('\x1b[36m%s\x1b[0m', `--`);  //cyan
 console.log('\x1b[36m%s\x1b[0m', `---`);  //cyan

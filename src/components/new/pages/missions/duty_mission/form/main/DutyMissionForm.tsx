@@ -210,7 +210,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       if (printFormData) {
         saveData(
           printFormData.blob,
-          `Печатная форма наряд-задания №${result.number}.pdf`,
+          `Наряд-задание №${result.number}.pdf`,
         );
       }
     }

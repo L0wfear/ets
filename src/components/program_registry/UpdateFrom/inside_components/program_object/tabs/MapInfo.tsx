@@ -24,16 +24,28 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
   handleRemoveLastDrawFeature = () => {
     this.props.handleRemoveLastDrawFeature();
   }
-  setManualOnFalse = () => {
-    const { isPermitted } = this.props;
-    if (isPermitted) {
-      this.props.setManualOnFalse();
-    }
-  }
+
   setManualOnTrue = () => {
     const { isPermitted } = this.props;
     if (isPermitted) {
-      this.props.setManualOnTrue();
+      if (this.props.manual) {
+        this.props.setManualOnTrue();
+      } else {
+        this.props.setManualOnTrue();
+      }
+    }
+  }
+
+  setIsDrawAllObjectOnFalse = () => {
+    const { isPermitted } = this.props;
+    if (isPermitted) {
+      this.props.setIsDrawAllObjectOnFalse();
+    }
+  }
+  setIsDrawAllObjectOnTrue = () => {
+    const { isPermitted } = this.props;
+    if (isPermitted) {
+      this.props.setIsDrawAllObjectOnTrue();
     }
   }
 
@@ -46,6 +58,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
       objectsType,
       objectList,
       drawObjectList,
+      isNotDrawAllObject,
     } = this.props;
 
     return (
@@ -55,19 +68,19 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
             <label>Отрисовка границ ремонта</label>
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12} style={{ marginBottom: 15 }}>
-            <EtsBootstrap.Col md={6} onClick={this.setManualOnFalse} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
+            <EtsBootstrap.Col md={6} onClick={this.setIsDrawAllObjectOnFalse} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
               <input
                 disabled={!isPermitted}
                 type="radio"
-                checked={!manual}
+                checked={!isNotDrawAllObject}
                 style={{marginRight: 5}}
               />Отрисовать весь объект
             </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={6} onClick={this.setManualOnTrue} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
+            <EtsBootstrap.Col md={6} onClick={this.setIsDrawAllObjectOnTrue} style={{ display: 'flex', cursor: isPermitted ? 'pointer' : 'not-allowed' }}>
               <input
                 disabled={!isPermitted}
                 type="radio"
-                checked={manual}
+                checked={isNotDrawAllObject}
                 style={{marginRight: 5}}
               />Отрисовать границы ремонта
             </EtsBootstrap.Col>
@@ -77,7 +90,7 @@ class MapInfo extends React.Component<IPropsMapInfo, any> {
               <RouteCreatingMap
                 objectsType={objectsType}
                 manual={manual}
-                canDraw={manual}
+                canDraw={isNotDrawAllObject}
 
                 focusOnSelectedGeo={this.props.focusOnSelectedGeo}
                 polys={polys}

@@ -5,7 +5,6 @@ import enhanceWithPermissions from 'components/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField';
 
 import ProgramObjectFormDT from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
-import ProgramObjectFormODH from 'components/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormODH';
 
 import {
   formValidationSchema,
@@ -179,32 +178,7 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   }
 
   getFormOdh() {
-    const { entity, isPermitted = false } = this.props;
-    const { saveButtonEnability = true } = this.state;
-    const canSave = isPermitted && this.state.canSave && saveButtonEnability;
-
-    return (
-      <ProgramObjectFormODH
-        formState={this.state.formState}
-        program_version_status={this.props.program_version_status}
-        formErrors={this.state.formErrors}
-        permissions={[`${entity}.update`]}
-        addPermissionProp
-        canSave={canSave}
-        onSubmit={this.handleFormSubmit.bind(this)}
-        handleFormChange={this.handleFormStateChange.bind(this)}
-        handleMultiChange={this.handleMultiChange}
-        show={this.props.showForm}
-        onHide={this.props.onFormHide}
-        isPermitted={
-          isPermitted && this.props.program_version_status !== 'accepted'
-        }
-        updateObjectData={this.updateObjectData}
-        isPermittedByStatus={this.props.isPermittedByStatus}
-        isPermittedPercentByStatus={this.props.isPermittedPercentByStatus}
-        isPermittetForObjectFact={this.props.isPermittetForObjectFact}
-      />
-    );
+    return <div>none</div>;
   }
 
   render() {

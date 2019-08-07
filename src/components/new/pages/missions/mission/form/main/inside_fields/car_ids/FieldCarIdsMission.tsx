@@ -308,8 +308,9 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           let car_special_model_names = get(option, ['rowData', 'special_model_name'], '');
           car_special_model_names = car_special_model_names ? [car_special_model_names] : [];
           const structure_id  = get(option, ['rowData', 'company_structure_id'], '');
+          const is_common  = get(option, ['rowData', 'is_common'], '');
 
-          props.onChange({
+          const newObj: any = {
             car_gov_numbers,
             car_gov_numbers_text: car_gov_numbers.join(', '),
             car_ids: [value],
@@ -318,7 +319,14 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_special_model_names,
             car_type_names,
             car_type_names_text: car_type_names.join(', '),
-            structure_id,
+          };
+
+          if (!is_common) {
+            newObj.structure_id = structure_id;
+          }
+
+          props.onChange({
+            ...newObj,
           });
         }
       }

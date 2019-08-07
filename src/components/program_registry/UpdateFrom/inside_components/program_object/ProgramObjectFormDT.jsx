@@ -33,6 +33,7 @@ import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { getGeoobjectState } from 'redux-main/reducers/selectors';
 import { polyState } from 'constants/polygons';
 import memoizeOne from 'memoize-one';
+import { isNullOrUndefined } from 'util';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -67,6 +68,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
     this.state = {
       manual: false,
+      isNotDrawAllObject: false,
       showPercentForm: false,
       selectedObj: {},
       IS_CREATING: !props.formState.id,
@@ -84,10 +86,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       .then(({ data: { result: { rows: objectPropertyList } } }) => {
         const {
           formState: {
-            asuods_id = null,
             type_slug: type,
             plan_shape_json: {
               manual,
+              isNotDrawAllObject: isNotDrawAllObjectOuter,
               dtPolys: dtPolysOut,
               draw_object_list = [],
               object_list,
@@ -95,12 +97,18 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             elements = [],
           },
         } = this.props;
+        const isNotDrawAllObject = isNullOrUndefined(isNotDrawAllObjectOuter)
+          ? manual
+          : isNotDrawAllObjectOuter;
 
         if (!IS_CREATING) {
-          const changesState = { manual };
+          const changesState = {
+            manual,
+            isNotDrawAllObject,
+          };
 
           const changesFormState = {};
-          if (manual) {
+          if (isNotDrawAllObject) {
             changesFormState.draw_object_list = draw_object_list;
             changesFormState.objectsType = getObjectsType('mixed');
           } else {
@@ -108,6 +116,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             changesFormState.objectsType = getObjectsType(type);
           }
           changesState.dtPolys = dtPolysOut;
+
           changesState.OBJECT_OPTIONS = Object.values(changesState.dtPolys).map(
             ({
               yard_id: value,
@@ -124,12 +133,12 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             }),
           );
 
-          const { id: object_id }
+          const { id: asuods_id }
             = changesState.OBJECT_OPTIONS.find(
               ({ value: yard_id }) => yard_id === asuods_id,
             ) || {};
 
-          changesState.selectedObj = changesState.dtPolys[object_id];
+          changesState.selectedObj = changesState.dtPolys[asuods_id];
 
           changesFormState.elements = elements.map((d) => ({
             ...d,
@@ -143,7 +152,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.setState({ ...changesState });
         } else {
           this.props.actionGetGetDt().then(({ dtList: data }) => {
-            const changesState = { manual };
+            const changesState = { manual, isNotDrawAllObject };
             changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
 
             changesState.OBJECT_OPTIONS = Object.values(
@@ -182,6 +191,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 value: object_id,
                 label: `Версия №${index}`,
                 object_id,
+                asuods_id: object_id,
                 program_version_id,
               }),
             ),
@@ -193,7 +203,13 @@ class ProgramObjectFormDT extends UNSAFE_Form {
   handleChangeVersion = (value, versionAllData) =>
     this.props.changeVersionWithObject(versionAllData);
 
+  setManualOnTrue = () => {
+    this.setState({ manual: true });
+  };
   setManualOnFalse = () => {
+    this.setState({ manual: false });
+  };
+  setIsDrawAllObjectOnFalse = () => {
     const {
       formState: { draw_object_list = [] },
     } = this.props;
@@ -205,7 +221,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
     const dtPolys = cloneDeep(dtPolysOld);
 
-    dtPolys[selectedShape.object_id].state = selectedShape.state;
+    dtPolys[selectedShape.asuods_id].state = selectedShape.state;
 
     log.draw_object_list = cloneDeep(draw_object_list);
 
@@ -214,10 +230,10 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       object_list,
       objectsType: log.objectsType,
     });
-    this.setState({ manual: false, dtPolys });
+    this.setState({ manual: false, isNotDrawAllObject: false, dtPolys });
   };
 
-  setManualOnTrue = () => {
+  setIsDrawAllObjectOnTrue = () => {
     const {
       formState: {
         objectsType,
@@ -228,8 +244,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     const { dtPolys: dtPolysOld } = this.state;
 
     const dtPolys = {
-      [selectedShape.object_id]: {
-        ...dtPolysOld[selectedShape.object_id],
+      [selectedShape.asuods_id]: {
+        ...dtPolysOld[selectedShape.asuods_id],
       },
     };
 
@@ -241,7 +257,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       draw_object_list: log.draw_object_list || [],
       objectsType: getObjectsType('mixed'),
     });
-    this.setState({ manual: true, dtPolys });
+    this.setState({ manual: true, isNotDrawAllObject: true, dtPolys });
   };
 
   showPercentForm = () => this.setState({ showPercentForm: true });
@@ -249,15 +265,15 @@ class ProgramObjectFormDT extends UNSAFE_Form {
   hidePercentForm = () => this.setState({ showPercentForm: false });
 
   handleSubmitWrap = () => {
-    const { manual, IS_CREATING } = this.state;
+    const { isNotDrawAllObject, IS_CREATING } = this.state;
     if (IS_CREATING) {
       const { dtPolys } = this.state;
 
       const plan_shape_json = {
-        manual,
+        isNotDrawAllObject,
       };
 
-      if (manual) {
+      if (isNotDrawAllObject) {
         const {
           formState: { draw_object_list },
         } = this.props;
@@ -271,9 +287,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
             object_list: [selectedShape],
           },
         } = this.props;
-        const { object_id } = selectedShape;
+        const { asuods_id } = selectedShape;
 
-        plan_shape_json.dtPolys = { [object_id]: dtPolys[object_id] };
+        plan_shape_json.dtPolys = { [asuods_id]: dtPolys[asuods_id] };
         plan_shape_json.object_list = object_list;
       }
       this.handleChange('plan_shape_json', plan_shape_json);
@@ -281,11 +297,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     return new Promise(() => this.handleSubmit());
   };
 
-  handleFeatureClick = ({ id: object_id }) => {
-    const { dtPolys } = this.state;
-    const { yard_id: asuods_id } = dtPolys[object_id];
-
-    this.handleChangeInfoObject('asuods_id', asuods_id);
+  handleFeatureClick = ({ id: asuods_id }) => {
+    this.handleChangeInfoObject('asuods_id', Number(asuods_id));
   };
 
   startDraw = () => {
@@ -301,6 +314,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       ...draw_object_list,
       ...drawObjectNew,
     ]);
+
+    this.setManualOnFalse();
   };
 
   handleDrawFeatureClick = ({ index, state }) => {
@@ -324,9 +339,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     this.handleChange('draw_object_list', draw_object_list);
   };
 
-  handleChangeInfoObject = (field, value) => {
-    const asuods_id = value;
-
+  handleChangeInfoObject = (field, asuods_id) => {
     const {
       formState: {
         type_slug,
@@ -345,35 +358,34 @@ class ProgramObjectFormDT extends UNSAFE_Form {
 
     const {
       name,
-      id: object_id,
       label: object_address,
       total_area: info_total_area,
       company_name: info_company_name,
     }
       = OBJECT_OPTIONS.find(({ value: yard_id }) => yard_id === asuods_id) || {};
 
-    if (!this.state.manual) {
+    if (!this.state.isNotDrawAllObject) {
       if (!isEmpty(object_list_old)) {
-        const [{ object_id: object_id_old }] = object_list_old;
+        const [{ asuods_id: asuods_id_old }] = object_list_old;
 
-        if (object_id_old === object_id) {
+        if (asuods_id_old === asuods_id) {
           return;
         }
 
-        dtPolys[object_id_old].state = polyState.ENABLE;
+        dtPolys[asuods_id_old].state = polyState.ENABLE;
       }
 
-      dtPolys[object_id].state = polyState.SELECTED;
+      dtPolys[asuods_id].state = polyState.SELECTED;
     } else {
       dtPolys = {
-        [object_id]: {
-          ...this.props.dtPolys[object_id],
+        [asuods_id]: {
+          ...this.props.dtPolys[asuods_id],
           state: polyState.SELECTED,
         },
       };
     }
 
-    const selectedObj = dtPolys[object_id];
+    const selectedObj = dtPolys[asuods_id];
 
     const changeObject = {
       asuods_id,
@@ -395,8 +407,9 @@ class ProgramObjectFormDT extends UNSAFE_Form {
       object_list: [
         {
           name: object_address,
-          object_id,
-          state: dtPolys[object_id].state,
+          object_id: asuods_id,
+          asuods_id: asuods_id,
+          state: dtPolys[asuods_id].state,
           type: type_slug,
         },
       ],
@@ -429,6 +442,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
     const {
       OBJECT_OPTIONS = [],
       manual,
+      isNotDrawAllObject,
       showPercentForm,
       selectedObj,
       IS_CREATING,
@@ -640,6 +654,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                 <Div hidden={!IS_CREATING && isEmpty(dtPolys)}>
                   <MapInfo
                     handleFeatureClick={this.handleFeatureClick}
+                    isNotDrawAllObject={isNotDrawAllObject}
                     manual={manual}
                     polys={dtPolys}
                     focusOnSelectedGeo
@@ -649,6 +664,8 @@ class ProgramObjectFormDT extends UNSAFE_Form {
                     drawObjectList={drawObjectList}
                     setManualOnTrue={this.setManualOnTrue}
                     setManualOnFalse={this.setManualOnFalse}
+                    setIsDrawAllObjectOnTrue={this.setIsDrawAllObjectOnTrue}
+                    setIsDrawAllObjectOnFalse={this.setIsDrawAllObjectOnFalse}
                     isPermitted={asuods_id && isPermitted && IS_CREATING}
                     isPermittedMap={IS_CREATING && isPermitted}
                     handleAddDrawLines={this.handleAddDrawLines}

@@ -192,7 +192,7 @@ export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload
   }
 };
 
-export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getState) => {
+export const registryLoadDataByKey: any = (registryKey, responseDataList: any[]) => async (dispatch, getState) => {
   // const stateSome = getState();
   dispatch(
     actionSetLoadingStatus(registryKey, true),
@@ -268,7 +268,21 @@ export const registryLoadDataByKey: any = (registryKey) => async (dispatch, getS
     const typeExtra = get(getRegistryData, 'typeExtra', 'result.extra');
 
     processResponse(result);
-    arrayRaw = get(result, typeAns, []);
+
+    let newRegistryElemFromResponse = []; // маассив с новыми зааписями, корторых раньше небыло в реестре
+    arrayRaw = (Array.isArray(responseDataList) && responseDataList.length)
+      ? [ ...get(result, typeAns, []).map(
+          (resultElem) => {
+            const findElem = responseDataList.find( (dataElem) => dataElem[list.data.uniqKey] === resultElem[list.data.uniqKey] );
+            if ( !isNullOrUndefined(findElem) ) { // Если мы не нашли запись в текущем реестре, значит добавляем новую запись, см. ниже
+              newRegistryElemFromResponse = [...newRegistryElemFromResponse, findElem];
+            }
+            return isNullOrUndefined(findElem) ? resultElem : findElem;
+          }),
+          ...newRegistryElemFromResponse,
+        ]
+      : get(result, typeAns, []);
+
     arrayExtra = get(result, typeExtra, {});
 
     switch (getRegistryData.format) {
@@ -1053,7 +1067,7 @@ export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => as
   return true;
 };
 
-export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted) => (dispatch, getState) => {
+export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitted, responseData) => async (dispatch, getState) => {
   dispatch(
     actionUnselectSelectedRowToShow(
       registryKey,
@@ -1061,9 +1075,17 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitt
     ),
   );
 
+  const canUpdateRegistry = registryKey === 'batteryRegistryRegistry' || registryKey === 'tireRegistry';
+
+  const responseDataList = canUpdateRegistry
+    ? Array.isArray(responseData)
+      ? [ ...responseData ]
+      : [ {...responseData} ]
+    : [];
+
   if (isBoolean(isSubmitted) && isSubmitted) {
     dispatch(
-      registryLoadDataByKey(registryKey),
+      registryLoadDataByKey(registryKey, responseDataList),
     );
   }
 };

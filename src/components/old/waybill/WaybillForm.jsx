@@ -31,6 +31,7 @@ import {
   getTrailers,
   getWaybillDrivers,
   validateTaxesControl,
+  vehicleMapper,
 } from 'components/old/waybill/utils';
 
 import { confirmDialogChangeDate } from 'components/old/waybill/utils_react';
@@ -1274,8 +1275,42 @@ class WaybillForm extends UNSAFE_Form {
       state.trailer_id,
     );
 
-    const CARS = getCarsByStructId(carsList);
-    const TRAILERS = getTrailersByStructId(carsList);
+    let CARS = getCarsByStructId(carsList);
+
+    if (state.car_id && !CARS.find((c) => c.value === state.car_id)) {
+      CARS = [
+        ...CARS,
+        ...vehicleMapper([
+          {
+            asuods_id: state.car_id,
+            model_id: state.car_model_id,
+            model_name: state.car_model_name,
+            gov_number: state.gov_number,
+            special_model_name: state.car_special_model_name,
+            type_name: state.car_type_name,
+          },
+        ]),
+      ];
+    }
+
+    let TRAILERS = getTrailersByStructId(carsList);
+
+    if (state.trailer_id && !CARS.find((c) => c.value === state.trailer_id)) {
+      TRAILERS = [
+        ...TRAILERS,
+        ...vehicleMapper([
+          {
+            asuods_id: state.trailer_id,
+            model_id: state.trailer_model_id,
+            model_name: state.trailer_model_name,
+            gov_number: state.trailer_gov_number,
+            special_model_name: state.trailer_special_model_name,
+            type_name: state.trailer_type_name,
+          },
+        ]),
+      ];
+    }
+
     const FUEL_TYPES = map(appConfig.enums.FUEL_TYPE, (v, k) => ({
       value: k,
       label: v,

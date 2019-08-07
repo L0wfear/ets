@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, keyBy } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
@@ -192,7 +192,7 @@ export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload
   }
 };
 
-export const registryLoadDataByKey: any = (registryKey, responseDataList: any[]) => async (dispatch, getState) => {
+export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] = []) => async (dispatch, getState) => {
   // const stateSome = getState();
   dispatch(
     actionSetLoadingStatus(registryKey, true),
@@ -209,6 +209,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[])
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
   const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const list: any = get(registryData, 'list', null);
+  const uniqKey = list.data.uniqKey;
 
   let arrayRaw = null;
   let arrayExtra = {};
@@ -269,19 +270,15 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[])
 
     processResponse(result);
 
-    let newRegistryElemFromResponse = []; // маассив с новыми зааписями, корторых раньше небыло в реестре
-    arrayRaw = (Array.isArray(responseDataList) && responseDataList.length)
-      ? [ ...get(result, typeAns, []).map(
-          (resultElem) => {
-            const findElem = responseDataList.find( (dataElem) => dataElem[list.data.uniqKey] === resultElem[list.data.uniqKey] );
-            if ( !isNullOrUndefined(findElem) ) { // Если мы не нашли запись в текущем реестре, значит добавляем новую запись, см. ниже
-              newRegistryElemFromResponse = [...newRegistryElemFromResponse, findElem];
-            }
-            return isNullOrUndefined(findElem) ? resultElem : findElem;
-          }),
-          ...newRegistryElemFromResponse,
-        ]
-      : get(result, typeAns, []);
+    const arrayRawResult = get(result, typeAns, []);
+
+    const newDataObj = keyBy(responseDataList, uniqKey);
+
+    arrayRaw = arrayRawResult.map(
+      (resultElem) => {
+        return newDataObj[resultElem[uniqKey]] || resultElem;
+      },
+    );
 
     arrayExtra = get(result, typeExtra, {});
 

@@ -46,7 +46,7 @@ const trailerFilter: any = (structure_id, trailer_id) =>
   );
 
 // <IVehicle, any>
-const vehicleMapper = R.map<any, any>((c) => {
+export const vehicleMapper = R.map<any, any>((c) => {
   return ({
     value: c.asuods_id,
     model_id: c.model_id,

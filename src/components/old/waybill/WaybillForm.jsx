@@ -678,6 +678,14 @@ class WaybillForm extends UNSAFE_Form {
           null,
         );
         const carIsCommon = get(selectedCar, 'rowData.is_common', false);
+
+        const structure_id
+          = structureIdCar && !carIsCommon
+            ? structureIdCar
+            : structureIdCar && carIsCommon && this.props.userStructureId
+              ? this.props.userStructureId
+              : get(this.props, 'formState.structure_id', null);
+
         const fieldsToChange = {
           car_id,
           gov_number: '',
@@ -685,10 +693,7 @@ class WaybillForm extends UNSAFE_Form {
           ...setEmptyFieldByKey(fieldToCheckHasData),
           equipment_fuel: getDefaultBill({}).equipment_fuel,
           equipment_fuel_type: null,
-          structure_id:
-            structureIdCar && !carIsCommon
-              ? structureIdCar
-              : get(this.props, 'formState.structure_id', null),
+          structure_id,
         };
 
         if (!isEmpty(car_id)) {

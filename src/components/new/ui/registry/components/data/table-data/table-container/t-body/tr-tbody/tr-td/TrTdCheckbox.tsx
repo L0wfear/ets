@@ -1,52 +1,87 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import { ReduxState } from 'redux-main/@types/state';
 import { get } from 'lodash';
 
-import {
-  StatePropsTrTdCheckbox,
-  DispatchPropsTrTdCheckbox,
-  OwnPropsTrTdCheckbox,
-  PropsTrTdCheckbox,
-} from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd.h';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { registryCheckLine } from 'components/new/ui/registry/module/actions-registy';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const TrTdCheckbox: React.FC<PropsTrTdCheckbox> = (props) => {
-  const onClick = React.useCallback(
-    () => {
-      props.registryCheckLine(
-        props.registryKey,
-        props.rowData,
-      );
-    },
-    [props.rowData, props.registryCheckLine, props.registryKey],
+interface Props {
+  registryKey: string;
+  rowData: any;
+}
+
+const TrTdCheckbox: React.FC<Props> = (props) => {
+  const [onClickStatus, setOnClick] = React.useState({ status: false, id: null });
+  const dispatch = etsUseDispatch();
+  const isChecked = etsUseSelector(
+    (state) => (
+      Boolean(
+        get(
+          getListData(state.registry, props.registryKey).data.checkedRows,
+          props.rowData[getListData(state.registry, props.registryKey).data.uniqKey],
+          false,
+        ),
+      )
+    ),
   );
 
-  return (
-    <EtsTbodyTrTd onClick={onClick} >
-      <ExtField
-        type="boolean"
-        error={false}
-        label={false}
-        value={props.isChecked}
-        className="pointer"
-      />
-    </EtsTbodyTrTd>
+  const handleClick = React.useCallback(
+    () => {
+      setOnClick(
+        (oldState) => {
+          clearTimeout(oldState.id);
+          const id = setTimeout(
+            () => {
+              setOnClick({ status: false, id: null });
+            },
+            300,
+          );
+
+          return {
+            status: true,
+            id,
+          };
+        },
+      );
+
+      if (!onClickStatus.status) {
+        dispatch(
+          registryCheckLine(
+            props.registryKey,
+            props.rowData,
+          ),
+        );
+      }
+    },
+    [dispatch, props.rowData, props.registryKey, onClickStatus],
+  );
+
+  const handleDoubleClick = React.useCallback(
+    (event) => {
+      if (onClickStatus.status) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    },
+    [onClickStatus],
+  );
+
+  return React.useMemo(
+    () => (
+      <EtsTbodyTrTd onClick={handleClick} onDoubleClick={handleDoubleClick}>
+        <ExtField
+          type="boolean"
+          error={false}
+          label={false}
+          value={isChecked}
+          className="pointer"
+        />
+      </EtsTbodyTrTd>
+    ),
+    [handleClick, handleDoubleClick, isChecked],
   );
 };
 
-export default connect<StatePropsTrTdCheckbox, DispatchPropsTrTdCheckbox, OwnPropsTrTdCheckbox, ReduxState>(
-  (state, { registryKey, rowData }) =>  ({
-    isChecked: Boolean(get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false)),
-  }),
-  (dispatch: any) => ({
-    registryCheckLine: (...arg) => (
-      dispatch(
-        registryCheckLine(...arg),
-      )
-    ),
-  }),
-)(TrTdCheckbox);
+export default TrTdCheckbox;

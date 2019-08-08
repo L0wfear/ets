@@ -44,6 +44,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
     &:nth-of-type(even) {
       background-color: ${(props) => darken(0.02, getColorTd(props.rowData, props.checkData, props.registryKey))};
     }
+    transition: color 0.1s, background-color 0.1s;
 
     &:hover {
       &:nth-of-type(odd) {
@@ -63,6 +64,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
     }
 
     td {
+      transition: color 0.1s, background-color 0.1s;
       color: ${({ selected }) => selected ? 'white' : 'initial'};
       background-color: ${({ selected }) => selected ? constantColor.colorGreen : 'initial'};
     }

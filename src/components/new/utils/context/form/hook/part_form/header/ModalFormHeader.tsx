@@ -4,6 +4,7 @@ import DefaultModalHeader from './default/DefaultHeader';
 
 type ModalFormHeaderProps = {
   formDataKey: string;
+  onHide?: any;
 };
 
 const ModalFormHeader: React.FC<ModalFormHeaderProps> = React.memo(

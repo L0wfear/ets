@@ -9,6 +9,10 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
+import { getStructureAfterChageCar } from 'components/new/utils/context/form/hook/part_form/body/fields_rows/fields_in_row/fields/waybill/waybill_structure_and_accompanying_person/structure/getStructureAfterChageCar';
 
 type FieldWaybillStructureIdProps = {
   fieldData: FieldDataWaybillStuctureId;
@@ -27,6 +31,23 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<Waybill>(props.formDataKey);
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
+    const selectedCarData = useWaybillFormData.useFormDataGetSelectedCar(props.formDataKey);
+
+    const userData = etsUseSelector(
+      (state) => getSessionState(state).userData,
+    );
+    const selectedCarDataPrev = usePrevious(selectedCarData);
+
+    React.useEffect(
+      () => {
+        const newStructureData = getStructureAfterChageCar(selectedCarData, selectedCarDataPrev, userData);
+        if (newStructureData) {
+          handleChange(newStructureData);
+        }
+      },
+      [selectedCarData, selectedCarDataPrev, userData, handleChange],
+    );
+
     const {
       isLoading,
       options,

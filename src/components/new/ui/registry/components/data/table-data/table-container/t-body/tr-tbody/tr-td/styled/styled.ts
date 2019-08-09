@@ -39,12 +39,12 @@ export const EtsTdInnerWrapper = styled.div`
   word-wrap: break-word;
 `;
 
-export const EtsTbodyTrTd = styled.td`
+export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean, }>`
   &&& {
     padding: 8px;
     border: 1px solid white;
     vertical-align: top;
-
+    text-align: ${ ({ alignCenter }) => alignCenter ? 'center' : 'left' };
     word-break: break-word;
     input {
       cursor: pointer;

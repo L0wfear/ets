@@ -8,6 +8,7 @@ type EtsButtonsContainerProps = {
   marginContainerX?: number;
   marginContainerY?: number;
   justifyContent?: string;
+  sameBtn?: boolean; // одинаковые кнопки по ширине
 };
 
 const defaultMargin = 2.5;
@@ -19,6 +20,10 @@ export const EtsButtonsContainer = styled.div<EtsButtonsContainerProps>`
   justify-content: ${({ justifyContent }) => (justifyContent ? justifyContent : 'flex-end')};
   >* {
     margin: ${({ marginBtnX, marginBtnY }) => `${marginBtnY || defaultMargin}px ${marginBtnX || defaultMargin}px `};
+  }
+
+  >button {
+    flex: ${ ({ sameBtn }) => sameBtn ? '1 1 auto' : '' };
   }
 
   /* Для кнопок, обернутых в ClickOutHandler */

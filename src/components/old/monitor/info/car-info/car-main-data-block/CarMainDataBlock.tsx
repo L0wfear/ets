@@ -6,13 +6,10 @@ import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
 import { getMaxSpeedToLegend } from 'components/old/monitor/info/car-info/car-main-data-block/utils';
 import { carInfoToggleStatusTCFollowOnCar } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-import {
-  BtnGroupWrapper,
-  BtnPart,
-} from 'global-styled/global-styled';
 import { CarInfoBlock } from 'components/old/monitor/styled';
 import { CarInfoMainDataContainer } from '.';
 import ButtonExportCarData from 'components/old/monitor/info/car-info/car-main-data-block/buttons/export_car_info/ButtonExportCarData';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 type PropsCarMainDataBlock = {
   maxSpeed: number;
@@ -56,23 +53,17 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
           }
           </div>
           <div>
-            <BtnGroupWrapper vertical={true}>
-              <BtnPart>
-                <EtsBootstrap.Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
-                  <EtsBootstrap.Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
-                  {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
-                </EtsBootstrap.Button>
-              </BtnPart>
-              <BtnPart>
-                <EtsBootstrap.Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
-                  <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
-                  Трек
-                </EtsBootstrap.Button>
-              </BtnPart>
-              <BtnPart>
-                <ButtonExportCarData disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} />
-              </BtnPart>
-            </BtnGroupWrapper>
+            <EtsButtonsContainer>
+              <EtsBootstrap.Button disabled={props.disabledFollow} active={STATUS_TC_FOLLOW_ON_CAR} onClick={props.carInfoToggleStatusTCFollowOnCar} className="all-width" title="Следить за машиной">
+                <EtsBootstrap.Glyphicon glyph="screenshot" className="car_info-main_block-button inverse" />
+                {STATUS_TC_FOLLOW_ON_CAR ? 'Следим' : 'Следить'}
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} onClick={props.carInfoToggleStatusTCShowTrack} className="all-width">
+                <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
+                Трек
+              </EtsBootstrap.Button>
+              <ButtonExportCarData disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} />
+            </EtsButtonsContainer>
           </div>
         </CarInfoBlock>
       </CarInfoMainDataContainer>

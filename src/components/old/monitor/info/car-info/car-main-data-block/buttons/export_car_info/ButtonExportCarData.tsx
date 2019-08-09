@@ -88,6 +88,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           ];
 
           /**************** MAIN_INFO ****************/
+          // PAGE 1
           let topPadding = 20;
 
           const [
@@ -126,7 +127,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             ),
             getTextCanvas(NO_DATA_TEXT, 'font-size:12px'),
           ]);
-
+          // Вставляет текст
           doc.addImage(
             canvas_text.toDataURL('image/png'),
             'JPEG',
@@ -137,6 +138,8 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           );
 
           topPadding += canvas_text.height / editParam;
+
+          // Данные тачки
           doc.addImage(
             canvas_car_main_data.toDataURL('image/png'),
             'JPEG',
@@ -168,6 +171,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
           topPadding += 5;
 
+          // Задания слово
           doc.addImage(
             canvas_mission_text.toDataURL('image/png'),
             'JPEG',
@@ -271,7 +275,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           if (canvas_fuel_chart) {
             const canvasChart = document.createElement('canvas');
             canvasChart.width = canvas_fuel_chart.width;
-            canvasChart.height = canvas_fuel_chart.height - 350;
+            canvasChart.height = canvas_fuel_chart.height - 350 / (2 / window.devicePixelRatio);
 
             canvasChart.getContext('2d').drawImage(
               canvas_fuel_chart,
@@ -296,12 +300,12 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
             const canvasLegendChart = document.createElement('canvas');
             canvasLegendChart.width = canvas_fuel_chart.width;
-            canvasLegendChart.height = 200;
+            canvasLegendChart.height = 200 / (2 / window.devicePixelRatio);
 
             canvasLegendChart.getContext('2d').drawImage(
               canvas_fuel_chart,
               0,
-              canvas_fuel_chart.height - 350,
+              canvas_fuel_chart.height - 350 / (2 / window.devicePixelRatio),
               canvasLegendChart.width,
               canvasLegendChart.height,
               0,
@@ -355,7 +359,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           if (canvas_speed_chart) {
             const canvasSpeedChart = document.createElement('canvas');
             canvasSpeedChart.width = canvas_speed_chart.width;
-            canvasSpeedChart.height = canvas_speed_chart.height - 350;
+            canvasSpeedChart.height = canvas_speed_chart.height - 350 / (2 / window.devicePixelRatio);
 
             canvasSpeedChart.getContext('2d').drawImage(
               canvas_speed_chart,
@@ -379,12 +383,12 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             );
             const canvasLegendSpeedChart = document.createElement('canvas');
             canvasLegendSpeedChart.width = canvas_speed_chart.width;
-            canvasLegendSpeedChart.height = 200;
+            canvasLegendSpeedChart.height = 200  / (2 / window.devicePixelRatio);
 
             canvasLegendSpeedChart.getContext('2d').drawImage(
               canvas_speed_chart,
               0,
-              canvas_speed_chart.height - 350,
+              canvas_speed_chart.height - 350  / (2 / window.devicePixelRatio),
               canvasLegendSpeedChart.width,
               canvasLegendSpeedChart.height,
               0,
@@ -430,6 +434,8 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             getCanvasOfElement(document.getElementById('track_sensors_list')),
             getCanvasOfElement(document.getElementById('car_track_legend')),
           ]);
+
+          // Слово трекинг
           doc.addImage(
             canvas_text_track.toDataURL('image/png'),
             'JPEG',
@@ -440,6 +446,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           );
 
           topPadding += canvas_text_track.height / editParam;
+          // Протяженность
           doc.addImage(
             canvas_text_track_distance.toDataURL('image/png'),
             'JPEG',
@@ -450,6 +457,8 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           );
 
           topPadding += canvas_text_track_distance.height / editParam;
+
+          // карта
           doc.addImage(
             canvas_map.toDataURL('image/png'),
             'JPEG',
@@ -461,6 +470,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           topPadding += canvas_map.height / editParam - canvas_track_sensors_list.height / editParam + 4;
           const leftPadding = 10 + canvas_map.width / editParam + 5;
 
+          // список датчиков
           doc.addImage(
             canvas_track_sensors_list.toDataURL('image/png'),
             'JPEG',
@@ -470,6 +480,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             canvas_track_sensors_list.height / editParam,
           );
 
+          // разделитель
           doc.line(
             leftPadding,
             topPadding + 7,
@@ -479,6 +490,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
           topPadding += -canvas_car_track_legend.height / editParam - 4;
 
+          // legend Image
           doc.addImage(
             canvas_car_track_legend.toDataURL('image/png'),
             'JPEG',
@@ -562,7 +574,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         </EtsBootstrap.Button>
       </React.Fragment>
     ),
-    [props.disabled, handleClick],
+    [props.disabled, handleClick, inLoading],
   );
   },
 );

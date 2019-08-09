@@ -33,7 +33,7 @@ const getColorTd = (rowData, checkData, registryKey) => {
   return 'white';
 };
 
-export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowData?: any, checkData?: any, registryKey: string }>`
+export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowData?: any, checkData?: any, registryKey: string, borderedTd?: boolean, }>`
   &&& {
     cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
     pointer-events: ${({ enable }) => enable ? 'all' : 'none'};
@@ -67,6 +67,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       transition: color 0.1s, background-color 0.1s;
       color: ${({ selected }) => selected ? 'white' : 'initial'};
       background-color: ${({ selected }) => selected ? constantColor.colorGreen : 'initial'};
+      border: ${ ({ borderedTd }) => borderedTd ? '1px solid #c1c1c1' : 'none' }
     }
 
     a {

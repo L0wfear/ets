@@ -4,6 +4,11 @@ import { compose } from 'redux';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
+import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
+import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
+import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 
 type PropsEventTable = {
   front_events_list: any[],
@@ -16,26 +21,28 @@ class EventTable extends React.Component<PropsEventTable, {}> {
   }
   render() {
     return (
-      <table className="car_info-event_table" id="car_info-event_table">
-        <thead>
-          <tr>
-            <td>Дата и время</td>
-            <td>Событие</td>
-            <td>Объем, л</td>
-          </tr>
-        </thead>
+      <EtsTable id="car_info-event_table">
+        <EtsThead>
+          <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Дата и время</EtsTheadTh>
+          <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Событие</EtsTheadTh>
+          <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Объем, л</EtsTheadTh>
+        </EtsThead>
         <tbody>
           {
-            this.props.front_events_list.map((row, indexRow) => (
-              <tr key={indexRow} data-ievent={indexRow} onClick={this.handleEventClick}>
-                <td>{row.date}</td>
-                <td>{row.type_name}</td>
-                <td>{row.value}</td>
-              </tr>
-              ))
+            this.props.front_events_list.length
+              ? this.props.front_events_list.map((row, indexRow) => (
+                <EtsTrTbody borderedTd={true} key={indexRow} data-ievent={indexRow} onClick={this.handleEventClick} registryKey={'car_info-event_table'}>
+                  <EtsTbodyTrTd>{row.date}</EtsTbodyTrTd>
+                  <EtsTbodyTrTd>{row.type_name}</EtsTbodyTrTd>
+                  <EtsTbodyTrTd>{row.value}</EtsTbodyTrTd>
+                </EtsTrTbody>
+                ))
+              : <EtsTrTbody borderedTd={true} registryKey={'car_info-event_table'}>
+                  <EtsTbodyTrTd alignCenter={true} colSpan={3}>Нет данных</EtsTbodyTrTd>
+                </EtsTrTbody>
           }
         </tbody>
-      </table>
+      </EtsTable>
     );
   }
 }

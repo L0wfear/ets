@@ -9,11 +9,7 @@ import {
   fetchCarInfo,
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
-import { CarInfoButtonsRow } from './styled/index';
-import {
-  BtnGroupWrapper,
-  BtnPart,
-} from 'global-styled/global-styled';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 type PropsCarTabMenu = {
   fetchMissionsData: any;
@@ -71,25 +67,17 @@ const CarTabMenu: React.FC<PropsCarTabMenu> = React.memo(
 
     return (
       <div>
-        <CarInfoButtonsRow>
-          <BtnGroupWrapper fullWidth={true}>
-            <BtnPart>
-              <EtsBootstrap.Button active={tabNum === 1} onClick={handleSelectInfo}>
-                Информация
-              </EtsBootstrap.Button>
-            </BtnPart>
-            <BtnPart>
-              <EtsBootstrap.Button active={tabNum === 2} onClick={handleSelectChart}>
-                Графики
-              </EtsBootstrap.Button>
-            </BtnPart>
-            <BtnPart>
-              <EtsBootstrap.Button active={tabNum === 3} onClick={handleSelectTrack}>
-                  Трекинг
-              </EtsBootstrap.Button>
-            </BtnPart>
-          </BtnGroupWrapper>
-        </CarInfoButtonsRow>
+        <EtsButtonsContainer sameBtn={true}>
+          <EtsBootstrap.Button active={tabNum === 1} onClick={handleSelectInfo}>
+            Информация
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button active={tabNum === 2} onClick={handleSelectChart}>
+            Графики
+          </EtsBootstrap.Button>
+          <EtsBootstrap.Button active={tabNum === 3} onClick={handleSelectTrack}>
+            Трекинг
+          </EtsBootstrap.Button>
+        </EtsButtonsContainer>
         <React.Suspense fallback={<LoadingComponent />}>
           <EtsBootstrap.ViewCarousel indexShow={tabNum - 1}>
             <CarAttributeInformation map={props.map} />

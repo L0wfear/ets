@@ -23,14 +23,14 @@ export const config: TypeConfigData<CarFuncTypes> = {
   filter: {
     fields: [
       {
-        valueKey: 'full_name',
-        type: 'multiselect',
-        title: 'Полное наименование',
-      },
-      {
         valueKey: 'group_name',
         type: 'multiselect',
         title: 'Группа',
+      },
+      {
+        valueKey: 'full_name',
+        type: 'multiselect',
+        title: 'Полное наименование',
       },
       {
         valueKey: 'short_name',
@@ -59,13 +59,13 @@ export const config: TypeConfigData<CarFuncTypes> = {
           title: '№',
         },
         {
-          key: 'full_name',
-          title: 'Полное наименование',
+          key: 'group_name',
+          title: 'Группа',
           width: 300,
         },
         {
-          key: 'group_name',
-          title: 'Группа',
+          key: 'full_name',
+          title: 'Полное наименование',
           width: 300,
         },
         {

@@ -110,7 +110,7 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
     }
 
     if (for_column) {
-      payload.object_id = 1; // ТО только по ОДХ
+      payload.for_column = true; // ТО только по ОДХ
     }
 
     const { technicalOperationRegistryForMissionList } = await this.props.actionGetAndSetInStoreTechnicalOperationRegistryForMission(

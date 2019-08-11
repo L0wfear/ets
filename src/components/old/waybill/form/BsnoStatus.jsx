@@ -79,7 +79,7 @@ class BsnoStaus extends React.Component {
         carsTrackState: {},
         ws: null,
         date: getDateWithMoscowTz(),
-        itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
+        itervalId: null,
       };
     }
   }

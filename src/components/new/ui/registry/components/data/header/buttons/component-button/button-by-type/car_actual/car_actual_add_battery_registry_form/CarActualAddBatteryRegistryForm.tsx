@@ -8,7 +8,7 @@ import {
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
+import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -16,11 +16,13 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import BatteryRegistryFormLazy from 'components/new/pages/nsi/autobase/pages/battery_registry/form';
 import { CarActualRegistryFormContext } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/CarFormContext';
 import { get } from 'lodash';
+import * as registryAddButtonConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
 
 export type CarActualAddBatteryRegistryFormStateProps = {};
 export type CarActualAddBatteryRegistryFormDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 export type CarActualAddBatteryRegistryFormOwnProps = {
   // form props
@@ -56,10 +58,11 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
   const handleHideForm = React.useCallback(
     (isSubmitted) => {
       if (isSubmitted) {
+        props.registryLoadDataByKey(registryAddButtonConfig.registryKey);
         props.handleHide();
       }
     },
-    [props.handleHide],
+    [props.handleHide, props.page, props.registryLoadDataByKey, ],
   );
 
   return (
@@ -100,6 +103,11 @@ export default compose<CarActualAddBatteryRegistryFormProps, CarActualAddBattery
       registryRemoveData: (registryKeyTemp: string) => (
         dispatch(
           registryRemoveData(registryKeyTemp),
+        )
+      ),
+      registryLoadDataByKey: (...arg) => (
+        dispatch(
+          registryLoadDataByKey(...arg),
         )
       ),
     }),

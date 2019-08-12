@@ -8,7 +8,7 @@ import {
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
+import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -16,11 +16,13 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import TireRegistryFormLazy from 'components/new/pages/nsi/autobase/pages/tire/form';
 import { CarActualRegistryFormContext } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/CarFormContext';
 import { get } from 'lodash';
+import * as registryAddButtonConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data/registry-config';
 
 export type CarActualAddTireRegistryFormStateProps = {};
 export type CarActualAddTireRegistryFormDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
   registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
+  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 export type CarActualAddTireRegistryFormOwnProps = {
   // form props
@@ -57,6 +59,7 @@ const CarActualAddTireRegistryForm: React.FC<CarActualAddTireRegistryFormProps> 
     (isSubmitted) => {
       if (isSubmitted) {
         props.handleHide();
+        props.registryLoadDataByKey(registryAddButtonConfig.registryKey);
       }
     },
     [props.handleHide],
@@ -100,6 +103,11 @@ export default compose<CarActualAddTireRegistryFormProps, CarActualAddTireRegist
       registryRemoveData: (registryKeyTemp: string) => (
         dispatch(
           registryRemoveData(registryKeyTemp),
+        )
+      ),
+      registryLoadDataByKey: (...arg) => (
+        dispatch(
+          registryLoadDataByKey(...arg),
         )
       ),
     }),

@@ -145,10 +145,10 @@ class BatteryRegistryForm extends React.PureComponent<
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
               <ExtField
-                  id="brand_name"
+                  id="manufacturer_name"
                   type={'string'}
                   label={'Изготовитель'}
-                  value={state.brand_name}
+                  value={state.manufacturer_name}
                   disabled
                   modalKey={page}
               />

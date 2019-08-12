@@ -15,7 +15,7 @@ type Props = {
 
 const ActualBatteriesOnCarForm: React.FC<Props> = React.memo(
   (props) => {
-    const { data: { uniqKeyForParams } } = props;
+    const { data: { uniqKeyForParams }, registryKey } = props;
     const idRaw = props.match.params[uniqKeyForParams];
     const idValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
 
@@ -29,6 +29,7 @@ const ActualBatteriesOnCarForm: React.FC<Props> = React.memo(
                 return  (
                   <BatteryRegistryAddButtonData.component
                     {...propsBattery}
+                    page={registryKey}
                     handleHide={props.onFormHide}
                   />
                 );
@@ -39,7 +40,7 @@ const ActualBatteriesOnCarForm: React.FC<Props> = React.memo(
       }
       if (!isNaN(idValue)) {
         return (
-          <BatteryRegistryFormLazy registryKey={props.registryKey} />
+          <BatteryRegistryFormLazy registryKey={props.registryKey} page={props.registryKey} />
         );
       }
     }

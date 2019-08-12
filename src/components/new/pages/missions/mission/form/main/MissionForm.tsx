@@ -40,14 +40,13 @@ import FieldNormIdMission from './inside_fields/norm_id/FieldNormIdMission';
 import { IPropsHiddenMapForPrint } from './inside_fields/route_id/print/HiddenMapForPrint';
 import { saveData, printData } from 'utils/functions';
 import {
-  BtnGroupWrapper,
   DisplayFlexAlignCenterFooterForm,
-  BtnPart,
 } from 'global-styled/global-styled';
 import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData';
 import { isOrderSource } from 'components/new/pages/missions/utils';
 import missionPermissions from '../../_config-data/permissions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const smallPrintMapKey = 'smallPrintMapKey';
 
@@ -715,11 +714,11 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       <DivNone />
                     )
                 }
-                <BtnGroupWrapper>
+                <EtsButtonsContainer>
                 {
                   !state.for_column && state.status
                     ? (
-                      <BtnPart>
+                      <React.Fragment>
                         <EtsBootstrap.Dropdown
                           id="waybill-print-dropdown"
                           dropup
@@ -731,22 +730,20 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                             <EtsBootstrap.MenuItem eventKey={2} onSelect={this.handlePrint}>Печать</EtsBootstrap.MenuItem>
                           </EtsBootstrap.DropdownMenu>
                         </EtsBootstrap.Dropdown>
-                      </BtnPart>
+                      </React.Fragment>
                     )
                     : (
-                      <BtnPart></BtnPart>
+                      <React.Fragment></React.Fragment>
                     )
                   }
-                  <BtnPart>
-                    <EtsBootstrap.Button
-                      id="mission_submit"
-                      disabled={!this.props.canSave}
-                      onClick={this.handleSubmitWrap}
-                    >
-                      Сохранить
-                    </EtsBootstrap.Button>
-                  </BtnPart>
-                </BtnGroupWrapper>
+                  <EtsBootstrap.Button
+                    id="mission_submit"
+                    disabled={!this.props.canSave}
+                    onClick={this.handleSubmitWrap}
+                  >
+                    Сохранить
+                  </EtsBootstrap.Button>
+                </EtsButtonsContainer>
               </DisplayFlexAlignCenterFooterForm>
             ) : (
               <DivNone />

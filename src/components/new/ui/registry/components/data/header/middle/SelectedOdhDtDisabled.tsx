@@ -9,6 +9,7 @@ import { getServiceData } from 'components/new/ui/registry/module/selectors-regi
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 type SelectedOdhDtDisabledStateProps = {
   Service: OneRegistryData['Service'];
@@ -28,26 +29,6 @@ type SelectedOdhDtDisabledMergedProps = (
 type SelectedOdhDtDisabledProps = SelectedOdhDtDisabledMergedProps;
 
 const ButtonWrap = styled(EtsBootstrap.Button)``;
-
-const ButtonContainer = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-
-  ${ButtonWrap} {
-    border-radius: 0;
-
-    &:first-child {
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
-    &:last-child {
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
-  }
-`;
 
 const SelectedOdhDtDisabled: React.FC<SelectedOdhDtDisabledProps> = React.memo(
   (props) => {
@@ -87,10 +68,10 @@ const SelectedOdhDtDisabled: React.FC<SelectedOdhDtDisabledProps> = React.memo(
     );
 
     return (
-      <ButtonContainer>
+      <EtsButtonsContainer>
         <ButtonWrap active={selectedType === 'odh'} onClick={handleSelectOdh}>ОДХ</ButtonWrap>
         <ButtonWrap disabled active={selectedType === 'dt'} onClick={handleSelectDt}>ДТ</ButtonWrap>
-      </ButtonContainer>
+      </EtsButtonsContainer>
     );
   },
 );

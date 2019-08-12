@@ -37,10 +37,9 @@ import FieldRouteIdMission from 'components/new/pages/missions/mission/form/main
 import { IPropsHiddenMapForPrint } from 'components/new/pages/missions/mission/form/main/inside_fields/route_id/print/HiddenMapForPrint';
 import { getDateWithMoscowTz, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import {
-  BtnGroupWrapper,
   DisplayFlexAlignCenterFooterForm,
-  BtnPart,
 } from 'global-styled/global-styled';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const printMapKeyBig = 'printMapKeyBig';
 const printMapKeySmall = 'printMapKeySmall';
@@ -296,28 +295,24 @@ class MissionTemplateForm extends React.PureComponent<
         <EtsBootstrap.ModalFooter>
           {isPermitted ? ( // либо обновление, либо создание
             <DisplayFlexAlignCenterFooterForm>
-              <BtnGroupWrapper>
-                <BtnPart>
-                  <EtsBootstrap.Dropdown
-                    id="mission_template-print-dropdown"
-                    dropup
-                    disabled={!this.props.canSave}
-                    toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
-                  >
-                    <EtsBootstrap.DropdownMenu dropup>
-                      <EtsBootstrap.MenuItem eventKey={printMapKeyBig} onSelect={this.handlePrint}>Формате А3</EtsBootstrap.MenuItem>
-                      <EtsBootstrap.MenuItem eventKey={printMapKeySmall} onSelect={this.handlePrint}>Формате А4</EtsBootstrap.MenuItem>
-                    </EtsBootstrap.DropdownMenu>
-                  </EtsBootstrap.Dropdown>
-                </BtnPart>
-                <BtnPart>
-                  <EtsBootstrap.Button
-                    disabled={!this.props.canSave}
-                    onClick={this.props.defaultSubmit}>
-                    Сохранить
-                  </EtsBootstrap.Button>
-                </BtnPart>
-              </BtnGroupWrapper>
+              <EtsButtonsContainer>
+                <EtsBootstrap.Dropdown
+                  id="mission_template-print-dropdown"
+                  dropup
+                  disabled={!this.props.canSave}
+                  toggleElement={<EtsBootstrap.Glyphicon id="m-print" glyph="print" />}
+                >
+                  <EtsBootstrap.DropdownMenu dropup>
+                    <EtsBootstrap.MenuItem eventKey={printMapKeyBig} onSelect={this.handlePrint}>Формате А3</EtsBootstrap.MenuItem>
+                    <EtsBootstrap.MenuItem eventKey={printMapKeySmall} onSelect={this.handlePrint}>Формате А4</EtsBootstrap.MenuItem>
+                  </EtsBootstrap.DropdownMenu>
+                </EtsBootstrap.Dropdown>
+                <EtsBootstrap.Button
+                  disabled={!this.props.canSave}
+                  onClick={this.props.defaultSubmit}>
+                  Сохранить
+                </EtsBootstrap.Button>
+              </EtsButtonsContainer>
             </DisplayFlexAlignCenterFooterForm>
           ) : (
             <DivNone />

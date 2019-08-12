@@ -7,6 +7,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 type SelectedOdhDtStateProps = {
 };
@@ -28,26 +29,6 @@ type SelectedOdhDtProps = (
 );
 
 const ButtonWrap = styled(EtsBootstrap.Button)``;
-
-const ButtonContainer = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-
-  ${ButtonWrap} {
-    border-radius: 0;
-
-    &:first-child {
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
-    &:last-child {
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
-  }
-`;
 
 const SelectedOdhDt: React.FC<SelectedOdhDtProps> = React.memo(
   (props) => {
@@ -100,10 +81,10 @@ const SelectedOdhDt: React.FC<SelectedOdhDtProps> = React.memo(
     );
 
     return (
-      <ButtonContainer>
+      <EtsButtonsContainer>
         <ButtonWrap active={selected_odh_dt_value === 'odh'} onClick={handleSelectOdh}>ОДХ</ButtonWrap>
         <ButtonWrap active={selected_odh_dt_value === 'dt'} onClick={handleSelectDt}>ДТ</ButtonWrap>
-      </ButtonContainer>
+      </EtsButtonsContainer>
     );
   },
 );

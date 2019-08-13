@@ -23,6 +23,7 @@ import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates
 import { routeTypesByTitle } from 'constants/route';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 
 class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, StateFieldDatesMission> {
   componentDidMount() {
@@ -124,7 +125,7 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
       <FieldDatesMissionContainer>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <label>Время выполнения:</label>
+            <FieldLabel>Время выполнения:</FieldLabel>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>

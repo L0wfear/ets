@@ -13,7 +13,7 @@ const NotifyCheckVersion: React.FC<IPropsNotifiVersionPopup> = (props) => (
       <div className="text-version-container">
         <div className="one-text-version">
           <span>Текущая версия:</span>
-          <span style={{ color: 'red'}}>{props.currV}</span>
+          <span style={{ color: '#a94442'}}>{props.currV}</span>
         </div>
         <div className="one-text-version">
           <span>Новая версия:&nbsp;</span>

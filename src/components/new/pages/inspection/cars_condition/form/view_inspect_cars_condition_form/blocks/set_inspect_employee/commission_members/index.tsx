@@ -6,6 +6,7 @@ import RowAddCommissionMembers from './RowAddCommissionMembers';
 import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 type CommissionMembersProps = {
   isPermittedChangeListParams: boolean;
@@ -52,7 +53,11 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
         {
           Boolean(props.error) && (
             <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}><div className="error">{props.error}</div></EtsBootstrap.Col>
+              <EtsBootstrap.Col md={12}>
+                <ErrorsBlock
+                  error={props.error}
+                />
+              </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           )
         }

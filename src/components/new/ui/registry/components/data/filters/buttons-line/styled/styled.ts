@@ -15,7 +15,7 @@ export const EtsFiltersCloseContainer = styled.div`
 
   padding: 5px;
   :hover {
-    color: red;
+    color: #a94442;
   }
 `;
 

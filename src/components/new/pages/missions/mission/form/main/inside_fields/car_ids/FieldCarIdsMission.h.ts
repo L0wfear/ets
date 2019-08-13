@@ -18,7 +18,7 @@ export type DispatchPropsFieldCarIdsMission = {
 
 export type OwnPropsFieldCarIdsMission = {
   value: Mission['car_ids'];
-  error: string | void;
+  error: string;
   disabled: boolean;
   isPermitted: boolean;
   onChange: (obj: { [key: string]: any }) => any;

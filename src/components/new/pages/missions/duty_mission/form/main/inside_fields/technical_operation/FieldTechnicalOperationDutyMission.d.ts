@@ -22,7 +22,7 @@ export type OwnPropsFieldTechnicalOperationDutyMission = {
   name: DutyMission['technical_operation_name'];
   isPermitted: boolean;
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key in keyof DutyMission]?: DutyMission[key] }) => void;
 
   IS_TEMPLATE: boolean;

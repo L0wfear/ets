@@ -20,7 +20,7 @@ export type OwnPropsFieldForemanIdDutyMission = {
   foreman_full_fio: DutyMission['foreman_full_fio'];
   name: string | void;
   disabled: boolean;
-  error: string | void;
+  error: string;
   isPermitted: boolean;
   onChange: (obj: { [key in keyof DutyMission]?: DutyMission[key] }) => void;
 

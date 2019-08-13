@@ -17,7 +17,7 @@ export type OwnPropsFieldStructure = {
   value: number | void;
   name: string | null;
   disabled: boolean;
-  error: string | void;
+  error: string;
   page: string;
   path: string;
   onChange: (obj: { [key: string]: any }) => any;

@@ -23,7 +23,7 @@ export type OwnPropsFieldMunicipalFacilityIdMission = {
   name: Mission['municipal_facility_name'];
   isPermitted: boolean;
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: Record<any, any>) => void;
 
   technical_operation_id: Mission['technical_operation_id'];

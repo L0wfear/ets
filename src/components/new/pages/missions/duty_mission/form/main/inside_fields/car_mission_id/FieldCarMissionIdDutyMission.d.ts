@@ -21,7 +21,7 @@ export type DispatchPropsFieldCarMissionIdDutyMission = {
 export type OwnPropsFieldCarMissionIdDutyMission = {
   value: DutyMission['car_mission_id'];
   name: DutyMission['car_mission_name'];
-  error: string | void;
+  error: string;
   isPermitted: boolean;
   disabled: boolean;
 

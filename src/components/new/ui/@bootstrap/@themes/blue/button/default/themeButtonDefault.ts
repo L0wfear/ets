@@ -3,7 +3,7 @@ import ThemeButton from '../../../@types/ThemeButton';
 
 const themeButtonDefault: ThemeButton = {
   backgroundColor: {
-    default: 'red',
+    default: '#a94442',
     disabled: '#ddd',
     hover: 'blue',
     focus: darken(0.05, 'blue'),

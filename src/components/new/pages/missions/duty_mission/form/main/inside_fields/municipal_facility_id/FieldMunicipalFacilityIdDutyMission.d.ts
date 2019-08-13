@@ -23,7 +23,7 @@ export type OwnPropsFieldMunicipalFacilityIdDutyMission = {
   name: DutyMission['municipal_facility_name'];
   isPermitted: boolean;
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key in keyof DutyMission]?: DutyMission[key] }) => void;
 
   technical_operation_id: DutyMission['technical_operation_id'];

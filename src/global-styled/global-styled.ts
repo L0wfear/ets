@@ -21,11 +21,11 @@ export const SpanGreen = styled.span`
 `;
 
 export const DivRed = styled.div`
-  color: red;
+  color: #a94442;
 `;
 
 export const SpanRed = styled.span`
-  color: red;
+  color: #a94442;
 `;
 
 export const MarkNewRegistry = styled.div`

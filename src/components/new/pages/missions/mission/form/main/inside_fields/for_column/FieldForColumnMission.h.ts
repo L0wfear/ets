@@ -10,7 +10,7 @@ export type DispatchPropsFieldForColumnMission = {
 
 export type OwnPropsFieldForColumnMission = {
   value: Mission['for_column'];
-  error: string | void;
+  error: string;
   disabled: boolean;
   onChange: (obj: { [key: string]: any }) => any;
 

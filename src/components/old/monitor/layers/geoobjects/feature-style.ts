@@ -15,11 +15,11 @@ const makeCacheStyle = (cacheStyleName, { selected, color } ) => {
         color: 'rgba(0, 0, 0, 0.1)',
       }),
       fill: new Fill({
-        color:  selected ? 'yellow' : color || 'red',
+        color:  selected ? 'yellow' : color || '#a94442',
       }),
     }),
     fill: new Fill({
-      color:  selected ? 'yellow' : color || 'red',
+      color:  selected ? 'yellow' : color || '#a94442',
     }),
     zIndex: 9,
   });

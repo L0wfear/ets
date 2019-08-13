@@ -3,6 +3,7 @@ import { DivNone } from 'global-styled/global-styled';
 import * as cx from 'classnames';
 import { InputContainer } from 'components/new/ui/field/styled/styled';
 import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 type PropsInputDate = {
   id?: string;
@@ -56,7 +57,9 @@ class InputDate extends React.PureComponent<PropsInputDate, {}> {
           </InputContainer>
           {
             !noShowError ? (
-              <div className="error">{error}</div>
+              <ErrorsBlock
+                error={error}
+              />
             )
             : (
               <DivNone />

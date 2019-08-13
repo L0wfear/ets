@@ -246,7 +246,7 @@ class MissionField extends React.Component<any, any> {
         {new Date(origFormState.fact_arrival_date).getTime() >
           new Date(state.fact_arrival_date).getTime() &&
           state.status === 'active' && (
-            <div style={{ color: 'red' }}>{`Задания: ${OUTSIDEMISSIONS.map(
+            <div style={{ color: '#a94442' }}>{`Задания: ${OUTSIDEMISSIONS.map(
               (m) => `№${m.number}`,
             ).join(
               ', ',

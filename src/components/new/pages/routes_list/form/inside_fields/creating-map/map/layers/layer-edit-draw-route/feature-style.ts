@@ -24,11 +24,11 @@ export const createArrowStyle = (start, end) => {
   return new Style({
     geometry: new Point(end),
     image: new RegularShape({
-      fill: new Fill({ color: 'red' }),
+      fill: new Fill({ color: '#a94442' }),
       points: 3,
       radius: 4,
       stroke: new Stroke({
-        color: 'red',
+        color: '#a94442',
       }),
       rotation: -rotation + (Math.PI / 2),
     }),

@@ -4,7 +4,7 @@ import { Flex } from 'global-styled/global-styled';
 
 type PropsFieldIsMain = {
   value: string | void;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key: string]: any }) => any;
 };
 

@@ -17,7 +17,7 @@ export const ModalHeaderCloseButtonStyled = styled.button`
 
   :hover {
     opacity: 1;
-    color: red;
+    color: #a94442;
   }
 `;
 

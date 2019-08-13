@@ -31,7 +31,7 @@ export type DispatchPropsMunicipalFacilityField = {
 };
 
 export type OwnPropsMunicipalFacilityField = {
-  error: string | void;
+  error: string;
   disabled?: boolean;
   value: number | void;
   name?: string | void;

@@ -1,7 +1,7 @@
 export type PropsFieldType = {
   value: string | void;
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key: string]: any }) => any;
 
   notTemplate?: boolean;

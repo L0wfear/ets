@@ -7,9 +7,9 @@ import { createValidDateTime, createValidDate } from 'components/@next/@utils/da
 
 const DTPicker: any = DateTimePicker;
 
-interface DatePickerProps {
+export interface DatePickerProps {
   date: any;
-  onChange: any;
+  onChange?: any;
   id?: string;
   className?: string;
   time?: boolean;

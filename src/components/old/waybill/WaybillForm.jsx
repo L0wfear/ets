@@ -63,6 +63,7 @@ import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FuelType from './form/FuelType';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -2011,7 +2012,7 @@ class WaybillForm extends UNSAFE_Form {
                           }
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
                         />
-                        <div className="error">{errors.tax_data}</div>
+                        <ErrorsBlock error={errors.tax_data} />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
                   </EtsBootstrap.Row>
@@ -2225,9 +2226,7 @@ class WaybillForm extends UNSAFE_Form {
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                             />
-                            <div className="error">
-                              {errors.equipment_tax_data}
-                            </div>
+                            <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>
                         </EtsBootstrap.Col>
                       </EtsBootstrap.Row>

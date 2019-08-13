@@ -21,7 +21,7 @@ export type DispatchPropsFieldStructureDutyMission = {};
 export type OwnPropsFieldStructureDutyMission = {
   value: InitialStateSession['userData']['structure_id'];
   name: InitialStateSession['userData']['structure_name'];
-  error: string | void;
+  error: string;
   disabled: boolean;
   isPermitted: boolean;
   onChange: (

@@ -88,7 +88,7 @@ export const CarInfoClose = styled.span`
     }
     &:hover {
       transform: scale3d(1.1, 1.1, 1);
-      background-color: red;
+      background-color: #a94442;
       color: white;
     }
   }

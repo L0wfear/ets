@@ -76,7 +76,7 @@ export const listData: ListDataType = [
       infoData.car_data.driver_allowed
       ? (
         <div style={{ marginBottom: 5, marginTop: 5 }}>
-          <span style={{ fontSize: 16, color: 'red' }}>Не пройден внеплановый мед. осмотр</span>
+          <span style={{ fontSize: 16, color: '#a94442' }}>Не пройден внеплановый мед. осмотр</span>
         </div>
       )
       : (

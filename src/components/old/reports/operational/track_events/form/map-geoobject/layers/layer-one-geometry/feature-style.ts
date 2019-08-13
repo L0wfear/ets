@@ -12,15 +12,15 @@ const makeCacheStyle = (cacheStyleName) => {
     image: new Circle({
       radius: 6 / DEVICE_PIXEL_RATIO,
       stroke: new Stroke({
-        color: 'red',
+        color: '#a94442',
         width: 1,
       }),
       fill: new Fill({
-        color: 'red',
+        color: '#a94442',
       }),
     }),
     stroke: new Stroke({
-      color: 'red',
+      color: '#a94442',
       width: 1,
     }),
     fill: new Fill({

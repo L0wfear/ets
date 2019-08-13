@@ -22,7 +22,7 @@ export type OwnPropsFieldBrigadeEmployeeIdListDutyMission = {
   name: DutyMission['brigade_employee_id_list_fio'];
   isPermitted: boolean;
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key in keyof DutyMission]?: DutyMission[key] }) => void;
 
   foreman_id: DutyMission['foreman_id'];

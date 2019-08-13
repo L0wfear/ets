@@ -18,7 +18,7 @@ export type OwnPropsFieldStructureMission = {
   value: Mission['structure_id'];
   name: Mission['structure_name'];
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key: string]: any }) => any;
 
   page: string;

@@ -7,6 +7,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
 import { ExtFieldContainer } from './styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 type BlockCarsConditionSelectCarOwnProps = {
   cars_cnt: InspectCarsCondition['cars_cnt'];
@@ -99,7 +100,9 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           inline
           error="hello"
         />
-        <span className="error">{props.error_checked_cars_cnt}</span>
+        <ErrorsBlock
+          error={props.error_checked_cars_cnt}
+        />
       </BoxContainer>
     );
   },

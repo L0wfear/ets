@@ -1,22 +1,26 @@
 import * as React from 'react';
 import Field from 'components/old/ui/Field';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
+import { DatePickerProps } from 'components/old/ui/input/date-picker/DatePicker';
+import { IPropsFileInput } from 'components/old/ui/input/FileInput/FileInput.h';
 
-type ExtFieldCommon<V = any> = {
+export type ExtFieldCommon<V = any> = {
   rel?: any;
   id?: any;
   label?: string | boolean;
-  error?: string | boolean | void;
+  error?: string | boolean;
   onChange?: (...arg: any[]) => void;
   disabled?: boolean;
   value?: V,
   boundKeys?: any | any[];
   className?: string;
   modalKey?: string;
+  hidden?: boolean;
+  readOnly?: boolean;
 
   emptyValue?: any; // надо ли
 };
-type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
+export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   type: 'select';
   clearable?: boolean;
   multi?: boolean,
@@ -34,49 +38,57 @@ type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   legacy?: boolean;
   components?: any; // нужно описать
 };
-type ExtFieldDate<V = any> = ExtFieldCommon<V> & {
+export type ExtFieldDate<V = any> = ExtFieldCommon<V> & {
   type: 'date';
   date?: any; // нужно избавиться
   value?: any;
   time?: boolean;
+  minHeightLabel?: number;
 
   makeGoodFormat?: boolean; // валидный формат даты при изменении
   preventDateTime?: boolean; // всегда datetime
-};
+} & Partial<DatePickerProps>;
 
-type ExtFieldBoolean<V = any> = ExtFieldCommon<V> & {
+export type ExtFieldBoolean<V = any> = ExtFieldCommon<V> & {
   type: 'boolean';
   checked?: any;
   checkboxStyle?: any;
 };
 
-type ExtFieldString<V = any> = ExtFieldCommon<V> & {
+export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
   type?: 'string';
-  readOnly?: boolean;
   inline?: boolean;
+  isLoading?: boolean;
+  wrapStyle?: any;
 
   maxlength?: number;
   placeholder?: string;
 };
 
-type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
+export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
   type?: 'number';
+  showRedBorder?: boolean;
 };
 
-type ExtFieldText<V = any> = ExtFieldCommon<V> & {
+export type ExtFieldText<V = any> = ExtFieldCommon<V> & {
   type?: 'text';
 
   textAreaStyle?: any;
   rows?: number;
 };
 
-type ExtFieldType = (
+export type ExtFieldFile<V = any> = ExtFieldCommon<V> & {
+  type?: 'file';
+} & IPropsFileInput;
+
+export type ExtFieldType = (
   ExtFieldSelect
   | ExtFieldDate
   | ExtFieldBoolean
   | ExtFieldString
   | ExtFieldNumber
   | ExtFieldText
+  | ExtFieldFile
 );
 
 export const ExtField: React.ComponentClass<ExtFieldType> = onChangeWithKeys(

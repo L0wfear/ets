@@ -3,6 +3,7 @@ import { DivNone } from 'global-styled/global-styled';
 import * as cx from 'classnames';
 import { InputContainer } from 'components/new/ui/field/styled/styled';
 import EtsBootstrap from '../@bootstrap';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 type PropsInputNumber = {
   error?: string;
@@ -47,7 +48,9 @@ class InputNumber extends React.PureComponent<PropsInputNumber, {}> {
           </InputContainer>
           {
             !noShowError ? (
-              <div className="error">{error}</div>
+              <ErrorsBlock
+                error={error}
+              />
             )
             : (
               <DivNone />

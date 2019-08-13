@@ -7,6 +7,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/@types/ViewInspectAutobase';
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import { AgentsFromGbuWrapper } from './styled';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 type AgentsFromGbuProps = {
   isPermittedChangeListParams: boolean;
@@ -50,7 +51,11 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
         {
           Boolean(props.error) && (
             <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}><div className="error">{props.error}</div></EtsBootstrap.Col>
+              <EtsBootstrap.Col md={12}>
+                <ErrorsBlock
+                  error={props.error}
+                />
+              </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           )
         }

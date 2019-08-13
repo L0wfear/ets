@@ -18,15 +18,15 @@ import BaseField from 'components/old/ui/Field';
 // что-то не зашло
 const flow: any = flow_fp;
 
-const BaseDataTimeField = withProps({
+const BaseDataTimeField = withProps<{type: string}, any>({
   type: 'date',
 })(BaseField);
 
-const BaseFileField = withProps({
+const BaseFileField = withProps<{type: string}, any>({
   type: 'file',
 })(BaseField);
 
-const BaseMultiSelectField = withProps({
+const BaseMultiSelectField = withProps<{type: string, multi: boolean}, any>({
   type: 'select',
   multi: true,
 })(BaseField);

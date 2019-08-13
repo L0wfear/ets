@@ -4,7 +4,7 @@ import { constantColor } from 'global-styled/global-constants';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const redColor = css`
-  color: red;
+  color: #a94442;
 `;
 
 export const EtsTbodyScrollContainer = styled.div`
@@ -83,7 +83,7 @@ const cssActiveGreenButton = css`
   background-color: green !important;;
 `;
 const cssActiveRedButton = css`
-  background-color: red !important;
+  background-color: '#a94442' !important;
 `;
 const cssNotActiveButton = css`
   background-color: ${constantColor.colorGray} !important;;

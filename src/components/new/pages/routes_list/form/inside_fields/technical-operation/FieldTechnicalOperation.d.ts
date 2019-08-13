@@ -11,7 +11,7 @@ export type OwnPropsFieldTechnicalOperation = {
   value: number | void;
   name: string | void;
   disabled: boolean;
-  error: string | void;
+  error: string;
   onChange: (obj: { [key: string]: any }) => any;
   page: string;
   path: string;

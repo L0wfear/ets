@@ -42,16 +42,16 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       background-color: ${(props) => getColorTd(props.rowData, props.checkData, props.registryKey)};
     }
     &:nth-of-type(even) {
-      background-color: ${(props) => darken(0.02, getColorTd(props.rowData, props.checkData, props.registryKey))};
+      background-color: ${(props) => darken(0.03, getColorTd(props.rowData, props.checkData, props.registryKey))};
     }
     transition: color 0.1s, background-color 0.1s;
 
     &:hover {
       &:nth-of-type(odd) {
-        background-color: ${constantColor.colorLightGreen};
+        background-color: ${(props) => darken(0.08, getColorTd(props.rowData, props.checkData, props.registryKey))};
       }
       &:nth-of-type(even) {
-        background-color: ${darken(0.02, constantColor.colorLightGreen)};
+        background-color: ${(props) => darken(0.08, getColorTd(props.rowData, props.checkData, props.registryKey))};
       }
       background-color: ${constantColor.colorLightGreen};
 

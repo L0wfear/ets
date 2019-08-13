@@ -90,6 +90,7 @@ export type TypeFields<F extends any> = {
   } | {
     key: 'show_edc_comments',
     title: string;
+    displayIfPermission?: string | string[];
   }
 );
 

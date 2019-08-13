@@ -2,7 +2,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTechMaintOrder } from 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/form/@types/TechMaintenanceOrderForm';
 
 import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { getRequiredFieldMessage } from 'utils/validate';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 
 export const techMaintOrderFormSchema: SchemaType<TechMaintOrder, PropsTechMaintOrder> = {
   properties: {

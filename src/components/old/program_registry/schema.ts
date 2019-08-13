@@ -1,5 +1,5 @@
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { getRequiredFieldMessage } from 'utils/validate';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
 export const formValidationSchema: IValidationSchema = {

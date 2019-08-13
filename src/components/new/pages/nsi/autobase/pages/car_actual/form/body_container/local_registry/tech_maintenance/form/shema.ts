@@ -4,7 +4,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTechMaintenance } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/@types/TechMintenanceForm';
 
 import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { getRequiredFieldMessage } from 'utils/validate';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 import { hasMotohours } from 'utils/functions';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 

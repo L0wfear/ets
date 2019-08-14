@@ -41,7 +41,7 @@ class EtsPaginatorCheckSearch extends React.PureComponent<EtsPaginatorCheckSearc
           currentPageSearchNumber,
         );
       }
-    } else {                                                                        // применение текущей страницы из стора
+    } else if (this.props.currentPage > 0) {                                                                        // применение текущей страницы из стора
       this.props.setDataInSearch({
         [pageKey]: this.props.currentPage,
       });
@@ -70,16 +70,16 @@ class EtsPaginatorCheckSearch extends React.PureComponent<EtsPaginatorCheckSearc
       const currentPageSearchNumber = Math.ceil(getNumberValueFromSerch(newCurrentPageSearch));
       if (newCurrentPageStore !== currentPageSearchNumber) {
         this.props.setDataInSearch({
-          [pageKey]: newCurrentPageStore,
+          [pageKey]: newCurrentPageStore === 0 ? null : newCurrentPageStore,
         });
       }
     }
 
     if (!isNullOrUndefined(newCurrentPageSearch) && !this.props.isLoading) {                          // Если текущая страница больше максимальной
       const currentPageSearchNumber = Math.ceil(getNumberValueFromSerch(newCurrentPageSearch));
-      if (currentPageSearchNumber !== 0 && currentPageSearchNumber >= this.props.countPages) {
+      if (currentPageSearchNumber >= this.props.countPages) {
         this.props.setDataInSearch({
-          [pageKey]: this.props.countPages <= 1 ? 0 : this.props.countPages - 1,
+          [pageKey]: this.props.countPages <= 1 ? null : this.props.countPages - 1,
         });
       }
     }

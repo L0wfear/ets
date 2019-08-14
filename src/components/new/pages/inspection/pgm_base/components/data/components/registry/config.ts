@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'inspectionPgmBase';
 
@@ -84,8 +85,9 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           title: 'Суммарная вместимость',
         },
         {
-          valueKey: 'pgm_volume_sum',
+          valueKey: 'has_pgm',
           type: 'multiselect',
+          options: YES_NO_SELECT_OPTIONS_BOOL,
           title: 'Наличие ПГМ в емкостях',
         },
       ],
@@ -158,7 +160,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             width: 200,
           },
           {
-            key: 'pgm_volume_sum',
+            key: 'has_pgm',
             title: 'Наличие ПГМ в емкостях',
             format: 'boolean',
             width: 200,

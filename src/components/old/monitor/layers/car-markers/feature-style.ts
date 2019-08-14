@@ -197,7 +197,7 @@ const makeCacheIcon = (cacheStyleName, { status, direction, selected, zoomMore8,
         font: '6px Verdana',
         text: gov_number,
         fill: new Fill({ color: 'black' }),
-        backgroundFill: new Fill({ color: '#a94442' }),
+        backgroundFill: new Fill({ color: '#e26240' }),
         backgroundStroke: new Stroke({ color: 'blue', width: 2 }),
       }),
     );

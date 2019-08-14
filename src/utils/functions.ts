@@ -305,7 +305,7 @@ export function detectIE() {
 /**
  * Получение каваса с текстом
  * @param text текст
- * @param style стиль ('font-size: 10px;color: '#a94442'')
+ * @param style стиль ('font-size: 10px;color: '#e26240'')
  */
 export const getTextCanvas = async (text: string, style: string) => {
   const temp = document.createElement("span");

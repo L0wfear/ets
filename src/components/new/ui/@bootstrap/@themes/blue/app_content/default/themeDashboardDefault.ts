@@ -1,8 +1,9 @@
 import ThemeAppContent from '../../../@types/ThemeAppContent';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const themeAppContentDefault: ThemeAppContent = {
   backgroundColor: 'orange',
-  color: '#a94442',
+  color: UiConstants.colorError,
 };
 
 export default themeAppContentDefault;

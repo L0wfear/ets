@@ -2,9 +2,10 @@ import styled, { css } from 'styled-components';
 
 import { constantColor } from 'global-styled/global-constants';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const redColor = css`
-  color: #a94442;
+  color: ${UiConstants.colorError};
 `;
 
 export const EtsTbodyScrollContainer = styled.div`
@@ -83,7 +84,7 @@ const cssActiveGreenButton = css`
   background-color: green !important;;
 `;
 const cssActiveRedButton = css`
-  background-color: '#a94442' !important;
+  background-color: UiConstants.colorError !important;
 `;
 const cssNotActiveButton = css`
   background-color: ${constantColor.colorGray} !important;;

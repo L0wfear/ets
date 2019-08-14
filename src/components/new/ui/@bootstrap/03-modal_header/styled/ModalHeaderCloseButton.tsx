@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import styled from 'styled-components';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 export const ModalHeaderCloseButtonStyled = styled.button`
   background-color: rgba(0, 0, 0, 0);
@@ -17,7 +18,7 @@ export const ModalHeaderCloseButtonStyled = styled.button`
 
   :hover {
     opacity: 1;
-    color: #a94442;
+    color: ${UiConstants.colorError};
   }
 `;
 

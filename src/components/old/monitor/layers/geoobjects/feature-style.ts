@@ -2,6 +2,7 @@ import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
@@ -15,11 +16,11 @@ const makeCacheStyle = (cacheStyleName, { selected, color } ) => {
         color: 'rgba(0, 0, 0, 0.1)',
       }),
       fill: new Fill({
-        color:  selected ? 'yellow' : color || '#a94442',
+        color:  selected ? 'yellow' : color || UiConstants.colorError,
       }),
     }),
     fill: new Fill({
-      color:  selected ? 'yellow' : color || '#a94442',
+      color:  selected ? 'yellow' : color || UiConstants.colorError,
     }),
     zIndex: 9,
   });

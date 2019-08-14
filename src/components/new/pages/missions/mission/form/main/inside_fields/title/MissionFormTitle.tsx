@@ -10,9 +10,9 @@ const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {
         <span>Создание задания</span>
         {
           !Boolean(props.MISSION_IS_ORDER_SOURCE) && (
-            <span style={{ marginLeft: 10, color: '#a94442' }}>
+            <EtsBootstrap.BackgroundLabel bsStyle="error">
               Данное задание не будет учитываться по централизованным заданиям
-            </span>
+            </EtsBootstrap.BackgroundLabel>
           )
         }
       </React.Fragment>

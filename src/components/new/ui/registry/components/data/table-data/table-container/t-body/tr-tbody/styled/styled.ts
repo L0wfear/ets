@@ -8,6 +8,7 @@ import { WAYBILL_STATUSES_KEY } from 'constants/statuses';
 import { isBoolean } from 'util';
 
 import { registryWaybillKey } from 'components/new/pages/waybill/_config-data/registry-config';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const getColorTd = (rowData, checkData, registryKey) => {
   if (get(rowData, 'is_valid_to_order_operation', null) === false) {
@@ -80,7 +81,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       margin-top: 0px;
       padding: 2px;
       border-radius: 0 0 3px 3px;
-      background: #a94442;
+      background: ${UiConstants.colorError};
       color: white;
       padding-left: 5px;
     }

@@ -247,9 +247,9 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     ) : (
       <div>
         {`Наряд-задание № ${state.number || ''}`}
-        <EtsBootstrap.Label bsStyle="default" style={{ marginLeft: 10 }}>
+        <EtsBootstrap.BackgroundLabel bsStyle="default">
           {DUTY_MISSION_STATUS_LABELS[state.status]}
-        </EtsBootstrap.Label>
+        </EtsBootstrap.BackgroundLabel>
       </div>
     );
 

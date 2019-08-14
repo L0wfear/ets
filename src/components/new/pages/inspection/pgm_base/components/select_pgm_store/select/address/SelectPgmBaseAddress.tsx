@@ -46,7 +46,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
 
   React.useEffect(
     () => {
-      if (pgmBaseId && companyId && pgmBaseId && props.pgmBaseList.length) {
+      if (pgmBaseId && props.pgmBaseList.length) {
         const currentPgmBaseInCompany = filterPgmBaseByCompany(
           props.pgmBaseList,
           companyId,

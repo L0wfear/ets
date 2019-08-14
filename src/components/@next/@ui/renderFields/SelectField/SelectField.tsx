@@ -20,7 +20,7 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
       <SingleUiElementWrapper
         hidden={props.hidden}
         className={className}
-        style={{ marginBottom: typeof label === 'string' ? 15 : 0 }}>
+      >
         {typeof label === 'string' && <FieldLabel id={id}>{label}</FieldLabel>}
         <SelectFieldUi
           {...selectProps}

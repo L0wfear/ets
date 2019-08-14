@@ -13,7 +13,7 @@ import {
   fileCountLimiter,
 } from 'components/old/compositions/file-input';
 
-import BaseField from 'components/old/ui/Field';
+import BaseField from 'components/@next/@ui/renderFields/Field';
 
 // что-то не зашло
 const flow: any = flow_fp;

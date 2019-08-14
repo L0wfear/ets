@@ -12,7 +12,7 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import Field from 'components/old/ui/Field';
+import Field from 'components/@next/@ui/renderFields/Field';
 import {
   getToday9am,
   getTomorrow9am,

@@ -3,12 +3,16 @@ import { SelectFieldUi } from 'components/@next/@ui/renderFields/SelectField/sty
 import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled/ErrorField';
 
 export const SingleUiElementWrapperStyled = styled.div`
+  margin-bottom: 10px;
   ${SelectFieldUi} {
     border-radius: 0px;
   }
   ${ErrorField} {
     margin-top: 5px;
     padding-left: 0px;
+  }
+  .form-group {
+    margin-bottom: 0px;
   }
 `;
 

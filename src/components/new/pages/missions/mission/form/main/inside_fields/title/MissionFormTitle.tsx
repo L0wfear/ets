@@ -28,9 +28,9 @@ const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {
   return (
     <React.Fragment>
       <span>{title}</span>
-      <EtsBootstrap.Label bsStyle="default" style={{ marginLeft: 10 }}>
+      <EtsBootstrap.BackgroundLabel bsStyle="default">
         {MISSION_STATUS_LABELS[props.status]}
-      </EtsBootstrap.Label>
+      </EtsBootstrap.BackgroundLabel>
     </React.Fragment>
   );
 };

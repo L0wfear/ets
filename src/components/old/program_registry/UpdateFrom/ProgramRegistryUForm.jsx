@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBody from 'components/old/ui/Modal';
 import { connectToStores } from 'utils/decorators';
-import Field from 'components/old/ui/Field';
+import Field from 'components/@next/@ui/renderFields/Field';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { FileField } from 'components/old/ui/input/fields';
 

@@ -4,7 +4,7 @@ import { connectToStores, FluxContext } from 'utils/decorators';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/old/ui/Modal';
-import Field from 'components/old/ui/Field';
+import Field from 'components/@next/@ui/renderFields/Field';
 import Div from 'components/old/ui/Div';
 import Datepicker from 'components/old/ui/input/date-picker/DatePicker';
 import {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Field from 'components/old/ui/Field';
+import Field from 'components/@next/@ui/renderFields/Field';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import { DatePickerProps } from 'components/old/ui/input/date-picker/DatePicker';
 import { IPropsFileInput } from 'components/old/ui/input/FileInput/FileInput.h';

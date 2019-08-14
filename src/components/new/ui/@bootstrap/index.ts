@@ -27,6 +27,7 @@ import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
 import EtsBadge from 'components/new/ui/@bootstrap/28-badge/EtsBadge';
 import EtsDashboardCard from './29-dashboard_card/EtsDashboardCard';
 import EtsViewCarousel from './30-view_carousel/EtsViewCarousel';
+import EtsBackgroundLabel from 'components/new/ui/@bootstrap/31-background_label/EtsBackgroundLabel';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -45,6 +46,7 @@ const EtsBootstrap = {
   NavDropdown: EtsNavDropdown,
   MenuItem: EtsMenuItem,
   Label: EtsLabel,
+  BackgroundLabel: EtsBackgroundLabel,
   FormControl: EtsFormControl,
   ButtonGroup: EtsButtonGroup,
   Panel: EtsPanel,

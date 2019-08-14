@@ -54,13 +54,13 @@ export const SingleUiElementWrapperStyled = styled.div`
     } */
 
     /* New error v3 сырая */
-    background: ${UiConstants.colorError};
+    /* background: ${UiConstants.colorError};
     color: #fff;
     border-radius: 0 0 ${UiConstants.colorError} ${UiConstants.colorError};
     padding: 5px 10px;
     width: auto;
     display: inline-flex;
-    margin-top: 0px;
+    margin-top: 0px; */
   }
   .form-group {
     margin-bottom: 0px;

@@ -53,6 +53,7 @@ export type InspectPgmBase = {
   created_at: string;
   data: InspectPgmBaseData;
   date_start: string;
+  has_pgm: boolean;
   head_balance_holder_base: {
     fio: string;
     tel: string;

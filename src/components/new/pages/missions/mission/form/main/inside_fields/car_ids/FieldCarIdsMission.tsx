@@ -188,19 +188,15 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
     } = this.props;
 
     const payload: any = {};
-
     if (MISSION_IS_ORDER_SOURCE) {
       const norm_id = get(dependeceTechnicalOperation, 'norm_id', null);
-
       if (norm_id) {
-        payload.norm_ids = norm_id;
+        payload.norm_ids = norm_id.toString();
       }
     }
-
-    if (loadByNormId) {
+    if (loadByNormId && norm_ids.length) {
       payload.norm_ids = norm_ids.toString();
     }
-
     const {
       dataIndex,
     } = await this.props.actionGetAndSetInStoreCarForMission(

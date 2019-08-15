@@ -6,9 +6,9 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 export const SingleUiElementWrapperStyled = styled.div`
   margin-bottom: 10px;
   position: relative;
-  ${SelectFieldUi} {
+  /* ${SelectFieldUi} {
     border-radius: 0px;
-  }
+  } */
   &&& ${ErrorField} {
     margin-top: 5px;
     padding-left: 0px;

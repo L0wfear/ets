@@ -79,7 +79,7 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       margin-top: 0px;
       border-radius: 0 0 3px 3px;
       margin-top: 0px;
-      padding: 2px;
+      padding: 2px 5px;
       border-radius: 0 0 3px 3px;
       background: ${UiConstants.colorError};
       color: white;

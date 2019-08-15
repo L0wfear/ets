@@ -138,7 +138,7 @@ html, body {
 }
 
 .car_info-attributes {
-  font-weight: 200;
+  font-weight: 500;
   margin: 5px 0;
 
   >div {
@@ -169,7 +169,7 @@ html, body {
 .chart-select_raw {
   position: relative;
   transform: translate3d(270px, -168px, 0);
-  font-weight: 200;
+  font-weight: 500;
   cursor: pointer;
   >span {
     margin: 5px;
@@ -181,7 +181,7 @@ html, body {
   border-collapse: separate;
   border-spacing: 2px;
   margin-bottom: 30px;
-  font-weight: 200;
+  font-weight: 500;
   text-align: center;
 
   thead {
@@ -237,7 +237,7 @@ button {
 }
 
 .car_info-distance {
-  font-weight: 200;
+  font-weight: 500;
   padding: 5px 5px;
 }
 
@@ -257,7 +257,7 @@ label {
     .sensors-list {
       padding: 5px 20px;
       .sensor-option {
-        font-weight: 200;
+        font-weight: 500;
         cursor: pointer;
         &.disabled {
           cursor: not-allowed;
@@ -275,7 +275,7 @@ label {
   display: flex;
   flex-direction: column;
   margin: 5px 0px;
-  font-weight: 200;
+  font-weight: 500;
 
   .sensors_legeng_option {
     display: flex;
@@ -421,7 +421,7 @@ body.application {
   .car_info_mission_data_container {
     display: flex;
     justify-content: space-between;
-    font-weight: 200;
+    font-weight: 500;
     margin: 5px 2px;
 
     .mission_title {
@@ -499,7 +499,7 @@ body.application {
         box-shadow: 0px 1px 30px rgba(0, 0, 0, 0.3);
         border-radius: 6px;
         padding: 6px 1pc;
-        font-weight: 200;
+        font-weight: 500;
 
         &.companies {
           padding: 6px 0 6px 1pc;
@@ -952,11 +952,10 @@ body.application {
           margin-top: 0px;
           border-radius: 0 0 3px 3px;
           margin-top: 0px;
-          padding: 2px;
+          padding: 2px 5px;
           border-radius: 0 0 3px 3px;
           background: $colorError;
           color: white;
-          padding-left: 5px;
         }
         .chart-datepicker .rw-widget-picker.rw-widget-container{
           height: 32px!important;

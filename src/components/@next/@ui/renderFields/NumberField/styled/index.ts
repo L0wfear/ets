@@ -8,6 +8,9 @@ export const NumberFieldUi = styled(EtsBootstrap.FormControl)`
     .form-control {
       border-radius: ${UiConstants.borderFieldRadius};
     }
+    &:focus {
+      box-shadow: none;
+    }
     .has-error {
       border-radius: ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} 0
     }

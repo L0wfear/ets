@@ -5,8 +5,8 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 export const SelectFieldUi = styled(ReactSelect)`
   &&& {
     border-radius: ${UiConstants.borderFieldRadius};
-    .has-error {
-      border-radius: ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} 0
+    &.has-error {
+      border-radius: ${UiConstants.borderFieldRadius} ${UiConstants.borderFieldRadius} 0
     }
   }
 `;

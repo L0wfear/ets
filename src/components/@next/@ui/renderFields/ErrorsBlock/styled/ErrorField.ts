@@ -8,4 +8,5 @@ export const ErrorField = styled.div`
   margin-top: 0px;
   transition: background-color .3s ease, color .3s ease;
   border-radius: 0 0 3px 3px;
+  display: inline-flex;
 `;

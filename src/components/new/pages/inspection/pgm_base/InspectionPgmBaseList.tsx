@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { EtsPageWrap } from 'global-styled/global-styled';
+import { EtsGreyPageWrap } from 'global-styled/global-styled';
 import InspectionTitle from 'components/new/pages/inspection/common_components/inspect_title/InspectionTitle';
 import InspectionPgmBaseSelectData from './components/select_pgm_store/InspectionPgmBaseSelectData';
 import InspectionPgmBaseData from './components/data/InspectionPgmBaseData';
@@ -14,11 +14,11 @@ const loadingPage = 'inspectionPgmBase';
 const InspectionPgmBaseList: React.FC<InspectionPgmBaseListProps> = (props) => {
   return (
     <>
-      <EtsPageWrap>
+      <EtsGreyPageWrap>
         <InspectionTitle title="Мониторинг состояния баз хранения ПГМ" />
         <InspectionPgmBaseSelectData loadingPage={loadingPage} />
         <InspectionPgmBaseData loadingPage={loadingPage} />
-      </EtsPageWrap>
+      </EtsGreyPageWrap>
       <InspectionPgmBaseFormLazy loadingPage={loadingPage} {...props}/>
     </>
   );

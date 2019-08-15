@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { EtsPageWrap } from 'global-styled/global-styled';
+import { EtsGreyPageWrap } from 'global-styled/global-styled';
 import InspectionTitle from 'components/new/pages/inspection/common_components/inspect_title/InspectionTitle';
 import InspectionCarsConditionSelectData from 'components/new/pages/inspection/cars_condition/components/select_data/InspectionCarsConditionSelectData';
 import InspectionCarsConditionData from 'components/new/pages/inspection/cars_condition/components/data/InspectionCarsConditionData';
@@ -18,11 +18,11 @@ const loadingPage = 'inspectionCarsCondition';
 const InspectionCarsConditionList: React.FC<InspectionCarsConditionListProps> = (props) => {
   return (
     <>
-      <EtsPageWrap>
+      <EtsGreyPageWrap>
         <InspectionTitle title="Мониторинг транспортных средств" />
         <InspectionCarsConditionSelectData loadingPage={loadingPage} />
         <InspectionCarsConditionData loadingPage={loadingPage} />
-      </EtsPageWrap>
+      </EtsGreyPageWrap>
       <InspectionCarsConditionFormLazy loadingPage={loadingPage} {...props}/>
     </>
   );

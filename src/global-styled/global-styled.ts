@@ -52,6 +52,19 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   }
 `;
 
+export const EtsGreyPageWrap = styled.div<EtsPageWrapProps>`
+  position: relative;
+  height: 100%;
+  background: #eeeeee;
+  padding: 10px 15px;
+  overflow: auto;
+
+  &:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+  }
+`;
+
 export const FlexContainer = styled.div<{ isWrap?: boolean; direction?: string; alignItems?: string }>`
   display: flex;
   flex-wrap: ${({ isWrap }) => (isWrap ? 'wrap' : 'initial')};

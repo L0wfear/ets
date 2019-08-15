@@ -3,7 +3,6 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 export const ErrorField = styled.div`
   color: ${UiConstants.colorError};
-  background: #ffffff;
   font-size: 12px;
   padding: 2px 5px;
   margin-top: 0px;

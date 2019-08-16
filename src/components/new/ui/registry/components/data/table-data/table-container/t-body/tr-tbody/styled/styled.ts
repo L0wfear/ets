@@ -57,7 +57,6 @@ export const EtsTrTbody = styled.tr<{ enable?: boolean, selected?: boolean, rowD
       background-color: ${constantColor.colorLightGreen};
 
       a {
-        color: white;
         &:hover {
           text-decoration: none;
         }

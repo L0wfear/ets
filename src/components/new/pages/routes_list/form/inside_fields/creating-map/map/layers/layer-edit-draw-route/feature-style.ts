@@ -6,6 +6,7 @@ import RegularShape from 'ol/style/RegularShape';
 import Point from 'ol/geom/Point';
 
 import { polyState, linesState } from 'constants/polygons';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
@@ -24,11 +25,11 @@ export const createArrowStyle = (start, end) => {
   return new Style({
     geometry: new Point(end),
     image: new RegularShape({
-      fill: new Fill({ color: '#a94442' }),
+      fill: new Fill({ color: UiConstants.colorError }),
       points: 3,
       radius: 4,
       stroke: new Stroke({
-        color: '#a94442',
+        color: UiConstants.colorError,
       }),
       rotation: -rotation + (Math.PI / 2),
     }),

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 export const EtsFiltersButtonsLine = styled.div`
   display: flex;
@@ -15,7 +16,7 @@ export const EtsFiltersCloseContainer = styled.div`
 
   padding: 5px;
   :hover {
-    color: #a94442;
+    color: ${UiConstants.colorError};
   }
 `;
 

@@ -16,6 +16,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const ButtonCreateMission = withRequirePermissionsNew({
   permissions: missionPermissions.create,
@@ -246,7 +247,7 @@ class MissionField extends React.Component<any, any> {
         {new Date(origFormState.fact_arrival_date).getTime() >
           new Date(state.fact_arrival_date).getTime() &&
           state.status === 'active' && (
-            <div style={{ color: '#a94442' }}>{`Задания: ${OUTSIDEMISSIONS.map(
+            <div style={{ color: UiConstants.colorError }}>{`Задания: ${OUTSIDEMISSIONS.map(
               (m) => `№${m.number}`,
             ).join(
               ', ',

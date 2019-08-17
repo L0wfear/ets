@@ -2,6 +2,7 @@ import Style from 'ol/style/Style';
 import Circle from 'ol/style/Circle';
 import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
@@ -12,15 +13,15 @@ const makeCacheStyle = (cacheStyleName) => {
     image: new Circle({
       radius: 6 / DEVICE_PIXEL_RATIO,
       stroke: new Stroke({
-        color: '#a94442',
+        color: UiConstants.colorError,
         width: 1,
       }),
       fill: new Fill({
-        color: '#a94442',
+        color: UiConstants.colorError,
       }),
     }),
     stroke: new Stroke({
-      color: '#a94442',
+      color: UiConstants.colorError,
       width: 1,
     }),
     fill: new Fill({

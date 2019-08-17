@@ -1,9 +1,10 @@
 import { darken, lighten } from 'polished';
 import ThemeButton from '../../../@types/ThemeButton';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const themeButtonDefault: ThemeButton = {
   backgroundColor: {
-    default: '#a94442',
+    default: UiConstants.colorError,
     disabled: '#ddd',
     hover: 'blue',
     focus: darken(0.05, 'blue'),

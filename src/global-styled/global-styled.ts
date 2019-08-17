@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 export type EtsPageWrapProps = {
   inheritDisplay?: boolean;
   autoHeight?: boolean;
@@ -21,11 +22,11 @@ export const SpanGreen = styled.span`
 `;
 
 export const DivRed = styled.div`
-  color: #a94442;
+  color: ${UiConstants.colorError};
 `;
 
 export const SpanRed = styled.span`
-  color: #a94442;
+  color: ${UiConstants.colorError};
 `;
 
 export const MarkNewRegistry = styled.div`

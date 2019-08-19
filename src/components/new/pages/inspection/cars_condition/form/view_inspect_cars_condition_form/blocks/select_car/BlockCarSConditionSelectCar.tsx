@@ -8,6 +8,8 @@ import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/car
 import { ExtFieldContainer } from './styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { get } from 'lodash';
+import { monitoringKindSeasonReadiness } from 'components/new/pages/inspection/cars_condition/components/select_data/constants';
 
 type BlockCarsConditionSelectCarOwnProps = {
   cars_cnt: InspectCarsCondition['cars_cnt'];
@@ -29,7 +31,11 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
       carsConditionCarsList,
     } = props;
 
-    const selectedCarsConditionsCar = getNumberValueFromSerch(props.match.params.selectedCarsConditionsCar);
+    const getSelectedCarsConditionsCar = getNumberValueFromSerch(props.match.params.selectedCarsConditionsCar);
+
+    const selectedCarsConditionsCar = isNaN(getSelectedCarsConditionsCar)
+      ? props.match.params.selectedCarsConditionsCar
+      : getSelectedCarsConditionsCar;
 
     const handleSelectCar = React.useCallback(
       (car_id) => {
@@ -48,6 +54,13 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
       [props.setParams],
     );
 
+    const handleCreateNewCardCar = React.useCallback(
+      () => {
+        handleSelectCar('create');
+      },
+      [handleSelectCar],
+    );
+
     const carsData = React.useMemo(
       () => {
         const carsConditionCarsOptions = carsConditionCarsList.map(
@@ -64,7 +77,8 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
       },
       [carsConditionCarsList],
     );
-
+    const monitoringKind = get(props, 'searchState.monitoringKind', null);
+    const showCreateBtn = props.isActiveInspect && monitoringKindSeasonReadiness.key !== monitoringKind;
     return (
       <BoxContainer>
         <h4>Выбор ТС для просмотра карточки</h4>
@@ -80,6 +94,25 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             onChange={handleSelectCar}
           />
         </ExtFieldContainer>
+        {
+          monitoringKindSeasonReadiness.key !== monitoringKind &&
+          (
+            <p>
+              <span>
+                Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
+                После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
+              </span>
+            </p>
+          )
+        }
+        {
+          showCreateBtn &&
+          (
+            <EtsBootstrap.Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>
+              Создать карточку
+            </EtsBootstrap.Button>
+          )
+        }
         <EtsBootstrap.Row>
           <BlockCarsConditionSelectCarList
             carsConditionCarsList={carsConditionCarsList}

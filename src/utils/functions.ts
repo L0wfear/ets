@@ -104,7 +104,7 @@ export function saveData(blob, fileName) {
   }
 }
 
-function get_browser() {
+export function get_browser() {
   const ua = navigator.userAgent;
   let tem;
   let M =

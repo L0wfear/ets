@@ -31,7 +31,7 @@ class CollapseButton extends React.Component<PropsCollapseButton, StateCollapseB
           { this.props.children }
         </Collapse>
         <GlyphiconCollapseButtonWrap isOpen={isOpen}>
-          <GlyphiconPointer glyph={'menu-down'} onClick={this.toggleIsOpen} />
+          <GlyphiconPointer glyph="menu-down" onClick={this.toggleIsOpen} />
         </GlyphiconCollapseButtonWrap>
       </>
     );

@@ -1,3 +1,5 @@
+import { glyphMap } from 'global-styled';
+
 export type FilterOptionType<F> = {
   value: F[keyof F];
   label: string | number;
@@ -161,9 +163,9 @@ export interface OneRegistryData<F = any> {
     buttons: Array<{
       type: string;
       title?: string;
-      glyph?: string;                                       // EtsBootstrap.Glyphicon glyph
+      glyph?: keyof typeof glyphMap;                                        // EtsBootstrap.Glyphicon glyph
       format?: string;
-      objChangeParams?: object;                             // что заменять в params при клике
+      objChangeParams?: object;                                             // что заменять в params при клике
     }>;
   };
   list: {

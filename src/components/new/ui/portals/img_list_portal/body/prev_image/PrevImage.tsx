@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import EtsGlyphicon from 'components/new/ui/@bootstrap/01-glyphicon/EtsGlyphicon';
 import { NavigationImageContainer } from '../styled';
 
 type PrevImageProps = {
@@ -56,7 +55,7 @@ const PrevImage: React.FC<PrevImageProps> = React.memo(
     return (
       <NavigationImageContainer type="left">
         <EtsBootstrap.Button block onClick={handleClick} themeName="img_view" disabled={disabled}>
-          <EtsGlyphicon glyph="chevron-left"/>
+          <EtsBootstrap.Glyphicon glyph="chevron-left"/>
         </EtsBootstrap.Button>
       </NavigationImageContainer>
     );

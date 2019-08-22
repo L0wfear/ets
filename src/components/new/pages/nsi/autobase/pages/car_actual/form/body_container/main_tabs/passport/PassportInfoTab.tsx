@@ -92,8 +92,9 @@ const PassportInfoTab: React.FC<PassportInfoTabProps> = React.memo(
                   body: `Будут очищены поля, которые относятся к паспорту ${passportByKey[passport_data.type]}. Продолжить?`,
                 });
 
+                const { car_id, id, ...defaultPassportData } = getDefaultCar().passport_data; // что бы при смене не сбрасывался car_id
                 changeObj = {
-                  ...getDefaultCar().passport_data,
+                  ...defaultPassportData,
                   ...changeObj,
                 };
               } catch (e) {

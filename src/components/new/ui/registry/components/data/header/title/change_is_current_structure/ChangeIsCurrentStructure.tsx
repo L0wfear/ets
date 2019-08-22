@@ -8,7 +8,7 @@ import { actionChangeGlobalPaylaodInServiceData, actionUnselectSelectedRowToShow
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ReduxState } from 'redux-main/@types/state';
 import { getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
-import { getRegistryState } from 'redux-main/reducers/selectors';
+import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors';
 import { ChangeIsCurrentStructureWrap } from './styled';
 
 type HeaderProps = {
@@ -22,6 +22,9 @@ const Title: React.FC<HeaderProps> = (props) => {
 
   const is_current_structure_popover = useSelector(
     (state: ReduxState) => getHeaderData(getRegistryState(state), props.registryKey).is_current_structure_popover,
+  );
+  const userStructureId = useSelector(
+    (state: ReduxState) => getSessionState(state).userData.structure_id,
   );
 
   const handleChange = React.useCallback(
@@ -64,25 +67,26 @@ const Title: React.FC<HeaderProps> = (props) => {
   );
   return React.useMemo(
     () => (
-      <ChangeIsCurrentStructureWrap>
-        <ExtField
-          type="boolean"
-          value={is_current_structure}
-          onChange={handleChange}
-          label="Вывести данные по текущему подразделению"
-          className="checkbox-input flex-reverse default-boolean-input"
-        />
-        <EtsBootstrap.OverlayTrigger
-          trigger={['hover', 'focus']}
-          overlay={(
-            <EtsBootstrap.Popover id={`${props.registryKey}_title-popover`} >
-              {is_current_structure_popover}
-            </EtsBootstrap.Popover>
-          )}
-          placement="top">
-          <EtsBootstrap.Glyphicon glyph="info-sign" />
-        </EtsBootstrap.OverlayTrigger>
-      </ChangeIsCurrentStructureWrap>
+      userStructureId &&
+        <ChangeIsCurrentStructureWrap>
+          <ExtField
+            type="boolean"
+            value={is_current_structure}
+            onChange={handleChange}
+            label="Вывести данные по текущему подразделению"
+            className="checkbox-input flex-reverse default-boolean-input"
+          />
+          <EtsBootstrap.OverlayTrigger
+            trigger={['hover', 'focus']}
+            overlay={(
+              <EtsBootstrap.Popover id={`${props.registryKey}_title-popover`} >
+                {is_current_structure_popover}
+              </EtsBootstrap.Popover>
+            )}
+            placement="top">
+            <EtsBootstrap.Glyphicon glyph="info-sign" />
+          </EtsBootstrap.OverlayTrigger>
+        </ChangeIsCurrentStructureWrap>
     ),
     [
       handleChange,

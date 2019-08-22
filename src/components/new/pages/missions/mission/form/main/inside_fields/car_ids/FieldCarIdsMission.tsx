@@ -221,22 +221,16 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
       car_type_names,
       car_model_names,
       car_special_model_names,
-      IS_TEMPLATE,
     } = this.props;
 
     if (value.length) {
       let hasSomeChange = false;
 
       const permittedIndexObj = value.reduce((newObj, car_id, index) => {
-        if (dataIndex[car_id]) {
-          newObj[index] = true;
-        } else {
-          if (IS_TEMPLATE) {
-            newObj[index] = true; // если тачку перенесли в другую оргаанизацию, то отображать её в шаблоне
-          }
+        newObj[index] = true; // даже если тачку перенесли в другую оргаанизацию, то отображать её в модалке
+        if (!dataIndex[car_id]) {
           hasSomeChange = true;
         }
-
         return newObj;
       }, {});
 

@@ -33,7 +33,7 @@ class ThHead extends React.Component<any, any> {
           </Div>
           { !thData.notAvailableSort &&
             <Div className={className}>
-              <EtsBootstrap.Glyphicon glyph={`sort-by-attributes${this.props.sortAscending ? '-alt' : ''}`} />
+              <EtsBootstrap.Glyphicon glyph={this.props.sortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
             </Div>
           }
         </Div>

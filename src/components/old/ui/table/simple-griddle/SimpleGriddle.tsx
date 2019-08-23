@@ -121,7 +121,7 @@ class SimpleGriddle extends React.Component<any, any> {
         {field.displayName}
         {
           this.state.initialSort === sortByName ?
-            <EtsBootstrap.Glyphicon glyph={`sort-by-attributes${!this.state.initialSortAscending ? '-alt' : ''}`} />
+            <EtsBootstrap.Glyphicon glyph={!this.props.initialSortAscending ? 'sort-by-attributes-alt' : 'sort-by-attributes'} />
           :
             <span></span>
         }

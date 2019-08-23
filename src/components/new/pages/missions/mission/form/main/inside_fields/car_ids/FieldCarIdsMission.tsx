@@ -193,16 +193,13 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
     } = this.props;
 
     const payload: any = {};
-
     if (MISSION_IS_ORDER_SOURCE) {
       const norm_id = get(dependeceTechnicalOperation, 'norm_id', null);
-
       if (norm_id) {
-        payload.norm_ids = norm_id;
+        payload.norm_ids = norm_id.toString();
       }
     }
-
-    if (loadByNormId) {
+    if (loadByNormId && norm_ids.length) {
       payload.norm_ids = norm_ids.toString();
     }
 
@@ -230,12 +227,10 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
       let hasSomeChange = false;
 
       const permittedIndexObj = value.reduce((newObj, car_id, index) => {
-        if (dataIndex[car_id]) {
-          newObj[index] = true;
-        } else {
+        newObj[index] = true; // даже если тачку перенесли в другую оргаанизацию, то отображать её в модалке
+        if (!dataIndex[car_id]) {
           hasSomeChange = true;
         }
-
         return newObj;
       }, {});
 

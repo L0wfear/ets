@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import EtsGlyphicon from 'components/new/ui/@bootstrap/01-glyphicon/EtsGlyphicon';
 import { NavigationImageContainer } from '../styled';
 
 type NextImageProps = {
@@ -58,7 +57,7 @@ const NextImage: React.FC<NextImageProps> = React.memo(
     return (
       <NavigationImageContainer type="right">
         <EtsBootstrap.Button block onClick={handleClick} themeName="img_view" disabled={disabled}>
-          <EtsGlyphicon glyph="chevron-right"/>
+          <EtsBootstrap.Glyphicon glyph="chevron-right"/>
         </EtsBootstrap.Button>
       </NavigationImageContainer>
     );

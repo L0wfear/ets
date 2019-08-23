@@ -22,7 +22,6 @@ import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/Ets
 import EtsPopover from 'components/new/ui/@bootstrap/23-popover/EtsPopover';
 import EtsOverlayTrigger from 'components/new/ui/@bootstrap/24-overlay_trigger/EtsOverlayTrigger';
 import EtsNavItem from 'components/new/ui/@bootstrap/25-nav_item/EtsNavItem';
-import EtsButtonToolbar from 'components/new/ui/@bootstrap/26-button_toolbar/EtsButtonToolbar';
 import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
 import EtsBadge from 'components/new/ui/@bootstrap/28-badge/EtsBadge';
 import EtsDashboardCard from './29-dashboard_card/EtsDashboardCard';
@@ -55,7 +54,6 @@ const EtsBootstrap = {
   Popover: EtsPopover,
   OverlayTrigger: EtsOverlayTrigger,
   NavItem: EtsNavItem,
-  ButtonToolbar: EtsButtonToolbar,
   Table: EtsTable,
   Badge: EtsBadge,
   DashboardCard: EtsDashboardCard,

@@ -38,6 +38,7 @@ export const EtsTbodyTextContainer = styled.div`
 export const EtsTdInnerWrapper = styled.div`
   display: block;
   word-wrap: break-word;
+  white-space: pre-wrap;
 `;
 
 export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean, }>`

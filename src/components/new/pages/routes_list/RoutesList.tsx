@@ -485,7 +485,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                   active={activeFilter}
                   onClick={this.toggleFilter}
                 />
-                <ButtonCreateRoute bsSize="small" onClick={this.createRoute}>
+                <ButtonCreateRoute bsSize="small" onClick={this.createRoute} id = "municipal_facility_id-container">
                   <EtsBootstrap.Glyphicon glyph="plus" /> Создать маршрут
                 </ButtonCreateRoute>
                 <ButtonUpdateRoute

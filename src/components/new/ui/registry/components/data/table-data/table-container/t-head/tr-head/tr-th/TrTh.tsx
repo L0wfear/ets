@@ -28,10 +28,10 @@ type StateTrTh = {
 
 const getGlyphName = ({ colData: { key }, sort }) => {
   if (key === sort.field) {
-    return `sort-by-attributes${sort.reverse ? '-alt' : ''}`;
+    return sort.reverse ? 'sort-by-attributes-alt' : 'sort-by-attributes';
   }
 
-  return '';
+  return null;
 };
 
 class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {

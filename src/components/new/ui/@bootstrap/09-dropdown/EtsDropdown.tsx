@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import * as ClickOutHandler from 'react-onclickout';
 import EtsButton, { EtsButtonProps } from '../00-button/EtsButton';
-import EtsGlyphicon from '../01-glyphicon/EtsGlyphicon';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type EtsDropdownProps = {
   id?: string;
@@ -58,7 +58,7 @@ const EtsDropdown: React.FC<EtsDropdownProps> = React.memo(
             {
               !props.noCaret  && (
                 <EtsDropdownCaretContainer>
-                  <EtsGlyphicon
+                  <EtsBootstrap.Glyphicon
                     glyph={
                       glyphDirection
                         ? 'triangle-bottom'

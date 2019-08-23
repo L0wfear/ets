@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { getDateWithMoscowTz, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
-import { getTextCanvas, getCanvasOfElement } from 'utils/functions';
+import { getTextCanvas, getCanvasOfElement, get_browser } from 'utils/functions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { NO_DATA_TEXT } from 'constants/statuses';
 import HiddenMapCarExport from 'components/old/monitor/info/car-info/car-main-data-block/buttons/export_car_info/map/HiddenMapCarExport';
@@ -75,6 +75,10 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
   );
 
   const dispatch = useDispatch();
+  const [ currentBrowser, setCurrentBrowser] = React.useState('');
+  React.useEffect(() => {
+    setCurrentBrowser(get_browser().name);
+  }, [] );
 
   const handleClick = React.useCallback(
     () => {
@@ -566,15 +570,16 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
   return React.useMemo(
     () => (
-      <React.Fragment>
-        <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
-        <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
-          <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
-          Выгрузить
-        </EtsBootstrap.Button>
-      </React.Fragment>
+      currentBrowser !== 'IE' &&
+        <React.Fragment>
+          <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
+          <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
+            <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
+            Выгрузить
+          </EtsBootstrap.Button>
+        </React.Fragment>
     ),
-    [props.disabled, handleClick, inLoading],
+    [props.disabled, handleClick, inLoading, currentBrowser],
   );
   },
 );

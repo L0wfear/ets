@@ -1,54 +1,37 @@
 import * as React from 'react';
 
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { getUserNotificationInfo } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
-import { getUserNotificationsState } from 'redux-main/reducers/selectors';
-import { ThunkDispatch } from 'redux-thunk';
-
-import {
-  StateNotificationBadge,
-  StatePropsNotificationBadge,
-  DispatchPropsNotificationBadge,
-  OwnPropsNotificationBadge,
-  PropsNotificationBadge,
-} from 'components/old/notifications/@types/NotificationBadge.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 
-/* ETS2 */
-class NotificationBadge extends React.PureComponent<PropsNotificationBadge, StateNotificationBadge> {
-  context!: ETSCore.LegacyContext;
+const NotificationBadge: React.FC<{}> = React.memo(
+  () => {
+    const dispatch = etsUseDispatch();
+    const countNotRead = etsUseSelector((state) => getUserNotificationsState(state).countNotRead);
 
-  state = {
-    socketIsWork: false,
-    checkUsNotifInterval: 0,
-  };
+    React.useEffect(
+      () => {
+        const loadData = () => {
+          dispatch(
+            getUserNotificationInfo(),
+          );
+        };
 
-  ws: any;
-  componentDidMount() {
-    this.checkNotifications();
-    this.setState({ checkUsNotifInterval: setInterval(this.checkNotifications, 1000 * 60 * 60 ) });
-  }
-  componentWillUnmount() {
-    clearInterval(this.state.checkUsNotifInterval);
-  }
-  checkNotifications = () => {
-    this.props.getUserNotificationInfo();
-  }
+        const interval_id = setInterval(
+          () => loadData(),
+          1000 * 60 * 60,
+        );
 
-  render() {
-    const { countNotRead = 0 } = this.props;
-    return <EtsBootstrap.Badge>{countNotRead}</EtsBootstrap.Badge>;
-  }
-}
+        loadData();
 
-export default connect<StatePropsNotificationBadge, DispatchPropsNotificationBadge, OwnPropsNotificationBadge, ReduxState>(
-  getUserNotificationsState,
-  (dispatch: ThunkDispatch<ReduxState, {}, any>) => ({
-    getUserNotificationInfo: () => (
-      dispatch(
-        getUserNotificationInfo(),
-      )
-    ),
-  }),
-)(NotificationBadge);
+        return () => clearInterval(interval_id);
+      },
+      [],
+    );
+
+    return <EtsBootstrap.Badge>{countNotRead || 0}</EtsBootstrap.Badge>;
+  },
+);
+
+export default NotificationBadge;

@@ -18,7 +18,7 @@ export const TitleForm = styled(EtsBootstrap.Col)`
 `;
 
 export const ContainerForm = styled.div`
-  padding: 5px 0px;
+  padding: 15px 0px;
 
   flex-grow: 10;
 

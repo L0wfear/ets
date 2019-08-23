@@ -8,6 +8,7 @@ import InspectionCarsConditionFormLazy from 'components/new/pages/inspection/car
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { RouteComponentProps } from 'react-router';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type InspectionCarsConditionListProps = (
   RouteComponentProps<{}>
@@ -19,8 +20,12 @@ const InspectionCarsConditionList: React.FC<InspectionCarsConditionListProps> = 
   return (
     <>
       <EtsGreyPageWrap>
-        <InspectionTitle title="Мониторинг транспортных средств" />
-        <InspectionCarsConditionSelectData loadingPage={loadingPage} />
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <InspectionTitle title="Мониторинг транспортных средств" />
+            <InspectionCarsConditionSelectData loadingPage={loadingPage} />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <InspectionCarsConditionData loadingPage={loadingPage} />
       </EtsGreyPageWrap>
       <InspectionCarsConditionFormLazy loadingPage={loadingPage} {...props}/>

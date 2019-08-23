@@ -7,7 +7,7 @@ import InspectionAutobaseSelectCarpool from './components/select_carpool/Inspect
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import InspectionAutobaseData from './components/data/InspectionAutobaseData';
 import InspectionAutobaseFormLazy from 'components/new/pages/inspection/autobase/form';
-import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const loadingPage = 'inspectAutobase';
 
@@ -15,10 +15,12 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseListProps> = (props) =>
   return (
     <React.Fragment>
       <EtsGreyPageWrap>
-        <InspectionTitle title="Мониторинг обустройства автобаз" />
-        <BoxContainer>
-          <InspectionAutobaseSelectCarpool loadingPage={loadingPage} />
-        </BoxContainer>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <InspectionTitle title="Мониторинг обустройства автобаз" />
+            <InspectionAutobaseSelectCarpool loadingPage={loadingPage} />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <InspectionAutobaseData loadingPage={loadingPage} />
       </EtsGreyPageWrap>
       <InspectionAutobaseFormLazy loadingPage={loadingPage} {...props}/>

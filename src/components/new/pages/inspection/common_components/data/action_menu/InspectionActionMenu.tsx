@@ -102,76 +102,78 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
         </EtsBootstrap.Row>
       </h4>
       <EtsBootstrap.Row>
-        <InspectInfo>
-          <LineData>
-            Статус проверки: <StatusLabel>{status_text}</StatusLabel>
-          </LineData>
-          <LineData>
-            &nbsp;
-          </LineData>
-          {
-            status === INSPECT_STATUS.noToday
-              ? (
-                <LineData>
-                  <ButtonCreateInspectAutobase
-                    loadRegistryData={props.loadRegistryData}
-                    loadingPage={props.loadingPage}
-                    type={props.type}
-                    triggerKey={props.triggerKey}
-                    makePayloadToCreateInspect={props.makePayloadToCreateInspect}
-                  />
-                </LineData>
-              )
-              : (
-                <DivNone />
-              )
-          }
-          {
-            status === INSPECT_STATUS.conditionLast
-              ? (
-                <>
+        <EtsBootstrap.Col md={12}>
+          <InspectInfo>
+            <LineData>
+              Статус проверки: <StatusLabel>{status_text}</StatusLabel>
+            </LineData>
+            <LineData>
+              &nbsp;
+            </LineData>
+            {
+              status === INSPECT_STATUS.noToday
+                ? (
                   <LineData>
-                    <div>
-                      <span>Проверка открыта: </span><StatusLabel>{makeDate(get(lastConductingInspect, 'date_start', null))}</StatusLabel>
-                    </div>
-                    <div>
-                      <span>пользователем: </span><StatusLabel>{get(lastConductingInspect, 'open_employee_fio', '')}</StatusLabel>
-                    </div>
+                    <ButtonCreateInspectAutobase
+                      loadRegistryData={props.loadRegistryData}
+                      loadingPage={props.loadingPage}
+                      type={props.type}
+                      triggerKey={props.triggerKey}
+                      makePayloadToCreateInspect={props.makePayloadToCreateInspect}
+                    />
                   </LineData>
-                  {
-                    props.LineDataCarsLast
-                      ? (
-                        props.LineDataCarsLast
-                      )
-                      : (
-                        <DivNone />
-                      )
-                  }
-                  <LineDataButtonLine>
-                    <ButtonContinueInspectAutobase loadingPage={props.loadingPage} />
-                  </LineDataButtonLine>
-                </>
-              )
-              : (
-                <DivNone />
-              )
-          }
-          {
-            status === INSPECT_STATUS.completedLast
-              ? (
-                <>
-                  <LineData>
-                    <span>Проверка завершена:</span><StatusLabel>{makeDate(get(lastCompletedInspect, 'date_end', null))}</StatusLabel>
-                    <span>в</span><StatusLabel>{makeTime(get(lastCompletedInspect, 'date_end', null))}</StatusLabel>
-                    <span>Пользователем:</span><StatusLabel>{get(lastCompletedInspect, 'close_employee_fio', '')}</StatusLabel>
-                  </LineData>
-                </>
-              )
-              : (
-                <DivNone />
-              )
-          }
-        </InspectInfo>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+            {
+              status === INSPECT_STATUS.conditionLast
+                ? (
+                  <>
+                    <LineData>
+                      <div>
+                        <span>Проверка открыта: </span><StatusLabel>{makeDate(get(lastConductingInspect, 'date_start', null))}</StatusLabel>
+                      </div>
+                      <div>
+                        <span>пользователем: </span><StatusLabel>{get(lastConductingInspect, 'open_employee_fio', '')}</StatusLabel>
+                      </div>
+                    </LineData>
+                    {
+                      props.LineDataCarsLast
+                        ? (
+                          props.LineDataCarsLast
+                        )
+                        : (
+                          <DivNone />
+                        )
+                    }
+                    <LineDataButtonLine>
+                      <ButtonContinueInspectAutobase loadingPage={props.loadingPage} />
+                    </LineDataButtonLine>
+                  </>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+            {
+              status === INSPECT_STATUS.completedLast
+                ? (
+                  <>
+                    <LineData>
+                      <span>Проверка завершена:</span><StatusLabel>{makeDate(get(lastCompletedInspect, 'date_end', null))}</StatusLabel>
+                      <span>в</span><StatusLabel>{makeTime(get(lastCompletedInspect, 'date_end', null))}</StatusLabel>
+                      <span>Пользователем:</span><StatusLabel>{get(lastCompletedInspect, 'close_employee_fio', '')}</StatusLabel>
+                    </LineData>
+                  </>
+                )
+                : (
+                  <DivNone />
+                )
+            }
+          </InspectInfo>
+        </EtsBootstrap.Col>
       </EtsBootstrap.Row>
     </BoxContainer>
   );

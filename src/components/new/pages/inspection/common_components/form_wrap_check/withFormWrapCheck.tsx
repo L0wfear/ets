@@ -218,7 +218,9 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
                 <React.Fragment>
                   <TitleForm md={12} sm={12}>
                     <h4>{config.title}</h4>
-                    <EtsBootstrap.Button onClick={handleCloseWithoutChanges}><EtsBootstrap.Glyphicon glyph="remove" /></EtsBootstrap.Button>
+                    <EtsBootstrap.Button onClick={handleCloseWithoutChanges}>
+                      <EtsBootstrap.Glyphicon glyph="remove" />
+                    </EtsBootstrap.Button>
                   </TitleForm>
                   <Component
                     selectedInspect={selectedInspect}

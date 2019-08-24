@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps } from './@types/ButtonCloseInspectAutobase';
+import { get } from 'lodash';
 import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
+import { ReduxState } from 'redux-main/@types/state';
+
+import { ButtonCloseInspectAutobaseProps, ButtonCloseInspectAutobaseStateProps, ButtonCloseInspectAutobaseDispatchProps, ButtonCloseInspectAutobaseOwnProps } from './@types/ButtonCloseInspectAutobase';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import withRequirePermissionsNew from 'components/util/RequirePermissionsNewRedux';
 import { INSPECT_AUTOBASE_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
@@ -10,7 +12,6 @@ import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { BigPaddingButton } from '../../styled/InspectionAutobaseDataActionMenu';
 import { getLastConductingInspect } from 'components/new/pages/inspection/autobase/@selectors';
-import {get} from 'lodash';
 
 const ButtonCloseInspectAutobase: React.FC<ButtonCloseInspectAutobaseProps> = (props) => {
   const { lastConductingInspect } = props;

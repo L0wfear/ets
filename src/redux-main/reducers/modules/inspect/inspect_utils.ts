@@ -1,10 +1,5 @@
 import { getDateWithMoscowTz, diffDatesByDays } from 'components/@next/@utils/dates/dates';
 
-type DefaultPartInspect = {
-  status: 'conducting' | 'completed';
-  date_end: string;
-};
-
 export const STATUS_INSPECT_CONDITING = 'conducting';
 export const STATUS_INSPECT_COMPLETED = 'completed';
 
@@ -24,7 +19,7 @@ export const isInspectIsCompleted = (status: 'conducting' | 'completed') => (
 /**
  * Получаем последнюю за текущий день закрытую испекцию
  */
-export const getTodayCompletedInspect = <T extends DefaultPartInspect = DefaultPartInspect>(inspectArray: T[]) => (
+export const getTodayCompletedInspect = (inspectArray: any[]) => (
   inspectArray.find((inspect) => (
     isInspectIsCompleted(inspect.status)
     && diffDatesByDays(getDateWithMoscowTz(), inspect.date_end) === 0
@@ -37,6 +32,6 @@ export const isInspectIsConducting = (status: 'conducting' | 'completed') => (
 /**
  * Получаем последнюю открытую испекцию
  */
-export const getTodayConductingInspect = <T extends DefaultPartInspect = DefaultPartInspect>(inspectArray: T[]) => (
+export const getTodayConductingInspect = (inspectArray: any[]) => (
   inspectArray.find((inspect) => isInspectIsConducting(inspect.status))
 );

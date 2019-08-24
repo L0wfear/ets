@@ -2,6 +2,7 @@ import memoizeOne from 'memoize-one';
 import { get } from 'lodash';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { getTodayCompletedInspect, getTodayConductingInspect } from 'redux-main/reducers/modules/inspect/inspect_utils';
+import { DefaultPartInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 
 export const getLastConductingInspect = memoizeOne(
   (registryList: OneRegistryData['list']) => {
@@ -10,7 +11,7 @@ export const getLastConductingInspect = memoizeOne(
 );
 
 export const getLastCompletedInspect = memoizeOne(
-  (registryList: OneRegistryData['list']) => {
+  <T extends DefaultPartInspect>(registryList: OneRegistryData['list']) => {
     return getTodayCompletedInspect(get(registryList, 'data.array', []));
   },
 );

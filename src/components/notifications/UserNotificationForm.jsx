@@ -20,6 +20,7 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
 import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { makeReactMessage } from 'utils/helpMessangeWarning';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -211,7 +212,9 @@ class UserNotificationForm extends UNSAFE_Form {
         </EtsBootstrap.ModalHeader>
         <ModalBody>
           <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>{state.description}</EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              {makeReactMessage(state.description || '')}
+            </EtsBootstrap.Col>
             <EtsBootstrap.Col md={12} style={{ marginTop: 10 }}>
               <NotificationDesc
                 {...this.getDataForUserNotification(state.type_code, state)}

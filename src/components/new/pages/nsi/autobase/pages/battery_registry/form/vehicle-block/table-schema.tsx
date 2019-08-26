@@ -99,6 +99,7 @@ const InstalledAtRenderer: React.FC<
     onChange={onChange}
     boundKeys={[index, 'installed_at']}
     disabled={!isPermitted}
+    makeGoodFormat
   />
 );
 

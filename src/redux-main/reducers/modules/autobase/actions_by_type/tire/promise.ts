@@ -53,6 +53,12 @@ export const updateSetTire = (oldTire) => {
   const payload = {
     ...oldTire,
     released_at: createValidDate(oldTire.released_at),
+    tire_to_car: get(oldTire, 'tire_to_car', []).map((item) => ({
+      ...item,
+      car_id: item.car_id,
+      installed_at: createValidDate(item.installed_at),
+      uninstalled_at: createValidDate(item.uninstalled_at),
+    })),
   };
 
   return updateTire(

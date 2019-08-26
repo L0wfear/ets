@@ -82,7 +82,13 @@ class FieldMunicipalFacilityIdMission extends React.PureComponent<PropsFieldMuni
     } = this.props;
 
     if (isPermitted) {
-      const isDiffTechnicalOperationId = (prevProps.technical_operation_id !== technical_operation_id);
+      const prev_normatives = (get(prevProps.technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id), 'normatives') || []).map(({ id }) => id).toString();
+      const normatives = (get(technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id), 'normatives') || []).map(({ id }) => id).toString();
+
+      const isDiffTechnicalOperationId = (
+        prevProps.technical_operation_id !== technical_operation_id
+        || prev_normatives !== normatives
+      );
 
       const triggerOnUpdate = (
         technical_operation_id

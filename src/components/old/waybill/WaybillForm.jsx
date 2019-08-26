@@ -749,7 +749,15 @@ class WaybillForm extends UNSAFE_Form {
         fieldsToChange.fuel_type = lastCarUsedWaybill.fuel_type;
       }
       if (isNotNull(lastCarUsedWaybill.trailer_id)) {
-        fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
+        const getTrailersByStructId = getTrailers(
+          this.props.formState.structure_id,
+          lastCarUsedWaybill.trailer_id,
+        );
+        const TRAILERS = getTrailersByStructId(this.props.carsList);
+
+        if (TRAILERS.find((c) => c.value === lastCarUsedWaybill.trailer_id)) {
+          fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
+        }
       }
     } else {
       fieldsToChange.fuel_start = 0;
@@ -1296,7 +1304,10 @@ class WaybillForm extends UNSAFE_Form {
 
     let TRAILERS = getTrailersByStructId(carsList);
 
-    if (state.trailer_id && !CARS.find((c) => c.value === state.trailer_id)) {
+    if (
+      state.trailer_id
+      && !TRAILERS.find((c) => c.value === state.trailer_id)
+    ) {
       TRAILERS = [
         ...TRAILERS,
         ...vehicleMapper([

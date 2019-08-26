@@ -130,7 +130,7 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
           },
           {
             key: 'odometr_diff',
-            title: 'Пробег, км',
+            title: 'Общий пробег, км',
             width: 150,
           },
           {

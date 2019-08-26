@@ -520,6 +520,9 @@ body.application {
           .car_text_filter-container {
             display: flex;
             align-items: center;
+            &>div {
+              margin-bottom: 0px;
+            }
             &.multi>div {
               min-width: 250px;
               &>*:nth-of-type(n + 2) {

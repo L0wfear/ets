@@ -2,7 +2,8 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsBatteryRegistry } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates, diffDatesByDays } from 'components/@next/@utils/dates/dates';
+import { diffDates, diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
+import { get } from 'lodash';
 
 const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_to_car'], type: 'start' | 'end') => {
   if (!date) {
@@ -25,6 +26,22 @@ const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_
       );
     },
   );
+};
+
+const olderInstalledDateIndex = (battery_to_car: BatteryRegistry['battery_to_car']) => {
+  let olderIndex = 0;
+  if (battery_to_car.length) {
+    battery_to_car.forEach((elem, index) => {
+      const firstData =  createValidDate(get(battery_to_car[olderIndex], 'installed_at', null ));
+      const secondDate = createValidDate(get(elem, 'installed_at', null));
+      if ( elem.installed_at && diffDates( firstData, secondDate ) < 0) {
+        olderIndex = index;
+      }
+    });
+  } else {
+    return null;
+  }
+  return olderIndex;
 };
 
 export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBatteryRegistry> = {
@@ -77,7 +94,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                     )
                   ),
                   uninstalled_at: (
-                    !d.uninstalled_at && index
+                    !d.uninstalled_at && olderInstalledDateIndex(battery_to_car) !== index
                       ? 'Поле "Дата демонтажа" должно быть заполнено'
                       : (
                         d.uninstalled_at

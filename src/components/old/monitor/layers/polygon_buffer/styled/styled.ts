@@ -16,7 +16,7 @@ const polygon = require('components/old/monitor/layers/polygon_buffer/styled/ima
 
 export const OverlayInsideMeasureContainer = styled(OverlayInsideContainer)`
   font-size: 12px;
-  font-weight: 400;
+  font-weight: 500;
 `;
 
 export const EtsOverlayMeasureContainer = styled(EtsOverlayContainer)`

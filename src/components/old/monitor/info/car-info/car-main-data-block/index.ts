@@ -9,7 +9,7 @@ export const CarInfoMainDataContainer = styled.div`
   .legend-color {
     display: flex;
     align-items: center;
-    font-weight: 200;
+    font-weight: 500;
     &>div {
       margin: 0px 2px;
       white-space: nowrap;

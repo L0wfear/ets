@@ -27,7 +27,7 @@ export const CarInfoTrackDateTitle = styled.div`
   border-bottom: 1px solid #d7d7d7;
   align-items: baseline;
   padding: 5px;
-  font-weight: 200;
+  font-weight: 500;
 `;
 
 export const CarInfoTitleSpanContainerWrapFlexBasic100 = styled(CarInfoTitleSpanContainer)`

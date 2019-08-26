@@ -1,46 +1,56 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { compose } from 'recompose';
 
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { carInfoSetGpsNumber } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { carInfoSetGpsNumber, fetchTrack, fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { getTrackDefaultDateStart, getTrackDefaultDateEnd } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
+import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
 type Props = WithSearchProps;
 
 export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
   (props) => {
-    const gov_number: Car['gov_number'] = props.match.params.gov_number;
-
     const dispatch = etsUseDispatch();
-    const carActualGpsNumberIndex = etsUseSelector((state) => getMonitorPageState(state).carActualGpsNumberIndex);
 
-    const carRecordData = React.useMemo(
+    /****************************** gps_code ******************************/
+    const gov_number: Car['gov_number'] = props.match.params.gov_number;
+    const gov_number_old = usePrevious(gov_number);
+
+    const carActualGpsNumberIndex = etsUseSelector((state) => getMonitorPageState(state).carActualGpsNumberIndex);
+    const carData = React.useMemo(
       () => {
         const carList = Object.values(carActualGpsNumberIndex);
-        return {
-          hasData: Boolean(carList.length),
-          record: carList.reduce((newObj, carData) => {
-            newObj[carData.gov_number] = carData;
+        const data = carList.find((carRow) => carRow.gov_number === gov_number);
 
-            return newObj;
-          }, {}),
+        return {
+          dataIsLoaded: carList.length,
+          data,
         };
       },
-      [carActualGpsNumberIndex],
+      [carActualGpsNumberIndex, gov_number],
     );
 
     React.useEffect(
       () => {
         if (gov_number) {
-          if (carRecordData.hasData) {
-            const gps_code = get(carRecordData.record[gov_number], 'gps_code');
-            if (gps_code) {
-              dispatch(carInfoSetGpsNumber(gov_number, gps_code));
+          if (carData.dataIsLoaded) {
+
+            if (carData.data) {
+              dispatch(carInfoSetGpsNumber(gov_number, carData.data.gps_code));
             } else {
-              props.setParams({
-                gov_number: null,
+              props.setParamsAndSearch({
+                params: {
+                  gov_number: null,
+                },
+                search: {
+                  date_start: null,
+                  date_end: null,
+                },
               });
             }
           }
@@ -48,7 +58,47 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
           dispatch(carInfoSetGpsNumber(null, null));
         }
       },
-      [gov_number, carRecordData, props.setParams],
+      [gov_number, carData, props.setParams],
+    );
+    /****************************** end ******************************/
+    /****************************** dates ******************************/
+    const date_start = props.searchState.date_start;
+    const date_end = props.searchState.date_end;
+
+    React.useEffect(
+      () => {
+        if (gov_number !== gov_number_old) {
+          if (gov_number) {
+            props.setDataInSearch({
+              date_start: createValidDateTime(getTrackDefaultDateStart()),
+              date_end: createValidDateTime(getTrackDefaultDateEnd()),
+            });
+          } else {
+            props.setDataInSearch({
+              date_start: null,
+              date_end: null,
+            });
+          }
+        }
+      },
+      [gov_number_old, gov_number, date_start, props.setDataInSearch],
+    );
+
+    React.useEffect(
+      () => {
+        if (date_start && date_end && carData.data) {
+          const payload = {
+            asuods_id: carData.data.asuods_id,
+            gps_code: carData.data.gps_code,
+            date_start,
+            date_end,
+          };
+
+          dispatch(fetchTrack(payload));
+          dispatch(fetchCarInfo(payload));
+        }
+      },
+      [date_start, date_end, carData],
     );
 
     React.useEffect(
@@ -62,4 +112,9 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
   },
 );
 
-export const MonitorSearchParams = withSearch(MonitorSearchParamsDefault);
+export const MonitorSearchParams = compose(
+  withSearch,
+  withShowByProps({
+    path: 'monitorPage.geoobjects.odh_mkad.data',
+  }),
+)(MonitorSearchParamsDefault);

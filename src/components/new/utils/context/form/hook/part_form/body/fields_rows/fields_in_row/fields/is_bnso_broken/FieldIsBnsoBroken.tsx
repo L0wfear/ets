@@ -4,13 +4,12 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWsCarPoints from 'components/new/utils/hooks/services/useWs/useWsCarPoints';
-import { useSelector } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import useMoscowTime from 'components/new/utils/hooks/services/useData/useMoscowTime';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type FieldIsBnsoBrokenProps = {
   formDataKey: string;
@@ -30,8 +29,8 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
     const wsStateDataUse = useWsCarPoints();
     const moscowTimeData = useMoscowTime(page, path);
 
-    const token = useSelector((state: ReduxState) => getSessionState(state).token);
-    const points_ws = useSelector((state: ReduxState) => getSessionState(state).appConfig.points_ws);
+    const token = etsUseSelector((state) => getSessionState(state).token);
+    const points_ws = etsUseSelector((state) => getSessionState(state).appConfig.points_ws);
 
     React.useEffect(
       () => {

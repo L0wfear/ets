@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 import { get } from 'lodash';
 
 import { registyLoadPrintForm } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type PropsButtonExport = {
   data?: ValuesOf<OneRegistryData['header']['buttons']>
@@ -13,7 +13,7 @@ type PropsButtonExport = {
 
 const ButtonExport: React.FC<PropsButtonExport> = React.memo(
   (props) => {
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
     const handleClick = React.useCallback(
       () => (
         dispatch(

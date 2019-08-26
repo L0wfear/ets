@@ -30,6 +30,7 @@ import { get } from 'lodash';
 import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getMonitorPageState } from 'redux-main/reducers/selectors';
 
 export const carInfoSetGpsNumber = (gov_number: Car['gov_number'], gps_code: Car['gps_code']): EtsAction<any> => (dispatch, getState) => {
   return dispatch({
@@ -117,7 +118,9 @@ export const carInfoToggleSensorShow = (type, key) => ({
   },
 });
 
-export const fetchTrack = (payloadData, odh_mkad, meta = { loading: true } as any) => async (dispatch, getState) => {
+export const fetchTrack = (payloadData, meta = { loading: true } as any): EtsAction<any> => async (dispatch, getState) => {
+  const odh_mkad = getMonitorPageState(getState()).geoobjects.odh_mkad.data;
+
   const {
     monitorPage: {
       carInfo: {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect, DispatchProp, useDispatch } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 import { get } from 'lodash';
 import { compose } from 'recompose';
 import { isNullOrUndefined, isFunction } from 'util';
@@ -13,6 +13,7 @@ import { DivNone } from 'global-styled/global-styled';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WithFormRegistrySearchConfig = {
   cantCreate?: boolean;                   // может ли форма создать запись
@@ -93,7 +94,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
       const [element, setElement] = React.useState(null);
       const uniqKeyValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
       const type = props.match.params.type;
-      const dispatch = useDispatch();
+      const dispatch = etsUseDispatch();
 
       React.useEffect(
         () => {

@@ -7,8 +7,8 @@ import { validateField } from 'utils/validate/validateField';
 import { formValidationSchema } from 'components/old/program_registry/schema';
 import ProgramRegistryFormCreateWrap from 'components/old/program_registry/CreateForm/ProgramRegistryFormCWrap';
 import ProgramRegistryFormUWrap from 'components/old/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
-import { useDispatch } from 'react-redux';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const defSendFromState = (page, dispatch) => ({ callback, outFormState }) => {
   const schema = formValidationSchema;
@@ -82,7 +82,7 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
 
     const { element } = props;
 
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
     const defSendFromStateWrap = React.useMemo(
       () => {

@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import TableData from 'components/new/ui/registry/components/data/table-data/TableData';
 import Paginator from 'components/new/ui/registry/components/data/paginator/Paginator';
 import { EtsHeaderContainer } from '../../../../../../styled/styled';
-import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/permissions';
 
@@ -19,6 +17,7 @@ import { EtsButtonsContainer } from '../../../../../styled/styled';
 import ButtonRemove from '../../../ButtonRemove';
 import InspectActFileForm from './form/InspectActFileForm';
 import ButtonRead from '../../../ButtonRead';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
   element: { id: number };
@@ -35,7 +34,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
       page, path,
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
     React.useEffect(
       () => {
@@ -52,8 +51,8 @@ const ShowActsForm: React.FC<Props> = React.memo(
       [props.element.id],
     );
 
-    const isPermittedUpdate = useSelector(
-      (state: ReduxState) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.update),
+    const isPermittedUpdate = etsUseSelector(
+      (state) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.update),
     );
 
     const handleOpenForm = React.useCallback(

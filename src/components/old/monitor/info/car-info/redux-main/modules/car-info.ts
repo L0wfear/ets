@@ -33,6 +33,9 @@ export type IStateCarInfo = {
   [k: string]: any;
 };
 
+export const getTrackDefaultDateStart = () => getStartOfToday();
+export const getTrackDefaultDateEnd = () => new Date();
+
 export const initialState: IStateCarInfo = {
   gps_code: null,
   gov_number: null,
@@ -76,8 +79,8 @@ export const initialState: IStateCarInfo = {
   },
   status: 0,
   forToday: true,
-  date_start: getStartOfToday(),
-  date_end: new Date(),
+  date_start: getTrackDefaultDateStart(),
+  date_end: getTrackDefaultDateEnd(),
   playTrack: {
     status: 'stop',
     trackPointIndex: 0,
@@ -99,8 +102,8 @@ export default (state = initialState, { type, payload }: any) => {
         ...initialState,
         gps_code: payload.gps_code,
         gov_number: payload.gov_number,
-        date_start: getStartOfToday(),
-        date_end: new Date(),
+        date_start: getTrackDefaultDateStart(),
+        date_end: getTrackDefaultDateEnd(),
       };
 
       return newState;
@@ -176,8 +179,8 @@ export default (state = initialState, { type, payload }: any) => {
       return {
         ...state,
         forToday: !state.forToday,
-        date_start: !state.forToday ? getStartOfToday() : state.date_start,
-        date_end: !state.forToday ? new Date() : state.date_end,
+        date_start: !state.forToday ? getTrackDefaultDateStart() : state.date_start,
+        date_end: !state.forToday ? getTrackDefaultDateEnd() : state.date_end,
       };
     }
     case CAR_INFO_RESET_TRACK_CACHING: {

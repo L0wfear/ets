@@ -7,8 +7,8 @@ import ModalFormFooter from './part_form/footer/ModalFormFooter';
 import ModalFormBody from './part_form/body/ModalFormBody';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { useDispatch } from 'react-redux';
 import useForm from '../hook_selectors/useForm';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type FormProps<P> = P;
 
@@ -25,7 +25,7 @@ const withFormContext = <T extends any, InnerProps extends DefaultPropsWithFormC
   const Form: React.FC<FormProps<InnerProps>> = React.memo(
     (props) => {
       const context = React.useContext(FormContext);
-      const dispatch = useDispatch();
+      const dispatch = etsUseDispatch();
 
       React.useEffect(
         () => {

@@ -3,16 +3,13 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { makeDriverFioLicenceLabel } from 'redux-main/reducers/modules/employee/driver/promise';
 import { PropsRoadAccident } from '../../@types/RoadAccident';
-import { useDispatch } from 'react-redux';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
-import { ThunkDispatch } from 'redux-thunk';
-import { ReduxState } from 'redux-main/@types/state';
-import { AnyAction } from 'redux';
 import { get } from 'lodash';
 
 import { filterDriverAccident } from '../../../../../../utils';
 import { getLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
   isPermitted: boolean;
@@ -36,7 +33,7 @@ const FieldRoadAccidentDriverId: React.FC<Props> = React.memo(
       car_gov_number,
     } = props;
 
-    const dispatch: ThunkDispatch<ReduxState, {}, AnyAction> = useDispatch();
+    const dispatch = etsUseDispatch();
 
     React.useEffect(
       () => {

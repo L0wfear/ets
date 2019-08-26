@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { useSelector } from 'react-redux';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import useWaybillFormData from 'components/new/utils/context/form/hook_selectors/waybill/useWaybillForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getDefaultWaybill } from 'components/new/pages/waybill/form/context/utils';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WaybillFuelTypeProps = {
   formDataKey: string;
@@ -23,9 +22,7 @@ const WaybillFuelType: React.FC<WaybillFuelTypeProps> = React.memo(
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
-    const FUEL_TYPE = useSelector(
-      (state: ReduxState) => getSessionState(state).appConfig.enums.FUEL_TYPE,
-    );
+    const FUEL_TYPE = etsUseSelector((state) => getSessionState(state).appConfig.enums.FUEL_TYPE);
 
     React.useEffect(
       () => {

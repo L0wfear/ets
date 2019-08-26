@@ -1,11 +1,9 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import * as jsPDF from 'jspdf';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import * as jsPDF from 'jspdf';
-import { useSelector, useDispatch } from 'react-redux';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
 import { getDateWithMoscowTz, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
 import { getTextCanvas, getCanvasOfElement, get_browser } from 'utils/functions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
@@ -14,6 +12,7 @@ import HiddenMapCarExport from 'components/old/monitor/info/car-info/car-main-da
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 import { getDistanceValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
   disabled: boolean;
@@ -50,31 +49,29 @@ const mapKey = 'HiddenMapCarExport';
 const ButtonExportCarData: React.FC<Props> = React.memo(
   (props) => {
 
-  const type_image_name = useSelector(
-    (state: ReduxState) => get(getMonitorPageState(state).carActualGpsNumberIndex[getMonitorPageState(state).carInfo.gps_code], 'type_image_name', ''),
+  const type_image_name = etsUseSelector((state) => get(getMonitorPageState(state).carActualGpsNumberIndex[getMonitorPageState(state).carInfo.gps_code], 'type_image_name', ''));
+
+  const date_start = etsUseSelector(
+    (state) => getMonitorPageState(state).carInfo.date_start,
+  );
+  const date_end = etsUseSelector(
+    (state) => getMonitorPageState(state).carInfo.date_end,
+  );
+  const distance = etsUseSelector(
+    (state) => getMonitorPageState(state).carInfo.trackCaching.distance,
+  );
+  const gov_number = etsUseSelector(
+    (state) => getMonitorPageState(state).carInfo.gov_number,
   );
 
-  const date_start = useSelector(
-    (state: ReduxState) => getMonitorPageState(state).carInfo.date_start,
-  );
-  const date_end = useSelector(
-    (state: ReduxState) => getMonitorPageState(state).carInfo.date_end,
-  );
-  const distance = useSelector(
-    (state: ReduxState) => getMonitorPageState(state).carInfo.trackCaching.distance,
-  );
-  const gov_number = useSelector(
-    (state: ReduxState) => getMonitorPageState(state).carInfo.gov_number,
-  );
-
-  const inLoading = useSelector(
-    (state: ReduxState) => {
+  const inLoading = etsUseSelector(
+    (state) => {
       return (getMonitorPageState(state).carInfo.trackCaching.track === -1
         || getMonitorPageState(state).carInfo.missionsData.missions === -1);
     },
   );
 
-  const dispatch = useDispatch();
+  const dispatch = etsUseDispatch();
   const [ currentBrowser, setCurrentBrowser] = React.useState('');
   React.useEffect(() => {
     setCurrentBrowser(get_browser().name);

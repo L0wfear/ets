@@ -70,8 +70,6 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
 }) => {
   const handleChange = (valueNew, option) => {
     onChange(index, 'car_id', valueNew);
-    onChange(index, 'gov_number', get(option, 'rowData.gov_number', null));
-    onChange(index, 'company_id', get(option, 'rowData.company_id', null));
   };
 
   return (

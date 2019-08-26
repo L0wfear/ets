@@ -11,24 +11,24 @@ import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
 
 const Field: React.FC<ExtFieldType> = React.memo(
   (props) => {
-      switch (props.type) {
-        case 'string':
-          return <StringField {...props} />;
-        case 'text':
-          return <TextAreaField {...props} />;
-        case 'select':
-          return <SelectField {...props}/>;
-        case 'date':
-          return <DateField {...props} />;
-        case 'file':
-          return <FileField {...props} />;
-        case 'number':
-          return <NumberField {...props}/>;
-        case 'boolean':
-          return <CheckBoxField {...props}/>;
-        default:
-          return null;
-      }
+    switch (props.type) {
+      case 'string':
+        return <StringField {...props} />;
+      case 'text':
+        return <TextAreaField {...props} />;
+      case 'select':
+        return <SelectField {...props}/>;
+      case 'date':
+        return <DateField {...props} />;
+      case 'file':
+        return <FileField {...props} />;
+      case 'number':
+        return <NumberField {...props}/>;
+      case 'boolean':
+        return <CheckBoxField {...props}/>;
+      default:
+        return null;
+    }
   },
 );
 

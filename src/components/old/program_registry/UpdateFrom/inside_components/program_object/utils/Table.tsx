@@ -4,11 +4,11 @@ import {
   EtsTheadTh,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
 import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import EtsTable from 'components/new/ui/@bootstrap/27-table/EtsTable';
 import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { DataTableHeadLine, DataTableHeadLineTitle } from 'components/old/ui/table/styled';
 import Div from 'components/old/ui/Div';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class TablePrev extends React.Component<any, any> {
   handleChange = (numRow, field, value) => {
@@ -67,7 +67,7 @@ class TablePrev extends React.Component<any, any> {
         </Div>
         {
           !!bodyData.length &&
-          <EtsTable>
+          <EtsBootstrap.Table>
             <EtsThead>
               <tr className="ets_thead_tr">
                 {
@@ -108,7 +108,7 @@ class TablePrev extends React.Component<any, any> {
                 ))
               }
             </tbody>
-          </EtsTable>
+          </EtsBootstrap.Table>
         }
         </div>
     );

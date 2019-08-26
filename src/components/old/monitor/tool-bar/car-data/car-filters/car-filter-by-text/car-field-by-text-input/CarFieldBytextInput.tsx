@@ -4,7 +4,6 @@ import { findDOMNode } from 'react-dom';
 import { connect } from 'react-redux';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/models/actions-monitor-page';
-import { carInfoSetGpsNumber } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import {
   PropsCarFieldBytextInput,
@@ -16,6 +15,8 @@ import {
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { compose } from 'recompose';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class CarFieldBytextInput extends React.Component<PropsCarFieldBytextInput, StateCarFieldBytextInput> {
   focusOn = (node) => {
@@ -96,15 +97,18 @@ const mergeProps = ({ carsGpsCodeShowList, carActualGpsNumberIndex, ...stateProp
     const [gps_code] = carsGpsCodeShowList;
 
     if (carActualGpsNumberIndex[gps_code]) {
-      dispatchProps.dispatch(
-        carInfoSetGpsNumber(gps_code, carActualGpsNumberIndex[gps_code].gov_number),
-      );
+      ownerProps.setParams({
+        gov_number: carActualGpsNumberIndex[gps_code].gov_number,
+      });
     }
   },
 });
 
-export default connect<any, any, any, ReduxState>(
-  mapStateToProps,
-  mapDispatchToProps,
-  mergeProps,
- )(CarFieldBytextInput);
+export default compose(
+  withSearch,
+  connect<any, any, any, ReduxState>(
+    mapStateToProps,
+    mapDispatchToProps,
+    mergeProps,
+  ),
+)(CarFieldBytextInput);

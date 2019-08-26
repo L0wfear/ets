@@ -124,6 +124,11 @@ export const getToConfig = (is_current_structure: boolean): TypeConfigData<Tire>
             width: 150,
           },
           {
+            key: 'initial_mileage',
+            title: 'Первоначальный пробег, км',
+            width: 250,
+          },
+          {
             key: 'odometr_diff',
             title: 'Пробег, км',
             width: 150,

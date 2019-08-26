@@ -62,7 +62,7 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
                 <EtsBootstrap.Glyphicon glyph="resize-full" className="car_info-main_block-button" />
                 Трек
               </EtsBootstrap.Button>
-              <ButtonExportCarData disabled={STATUS_TC_FOLLOW_ON_CAR || props.disabledShowTrack} />
+              <ButtonExportCarData disabled={false} />
             </EtsButtonsContainer>
           </div>
         </CarInfoBlock>

@@ -68,10 +68,10 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
   );
 
   const inLoading = useSelector(
-    (state: ReduxState) => (
-      getMonitorPageState(state).carInfo.trackCaching.track === -1
-      || getMonitorPageState(state).carInfo.missionsData.missions === -1
-    ),
+    (state: ReduxState) => {
+      return (getMonitorPageState(state).carInfo.trackCaching.track === -1
+        || getMonitorPageState(state).carInfo.missionsData.missions === -1);
+    },
   );
 
   const dispatch = useDispatch();

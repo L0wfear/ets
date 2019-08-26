@@ -1,3 +1,5 @@
+import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+
 export type PropsLayerCarMarker = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer;
   removeLayer: ETSCore.Map.InjectetLayerProps.FuncRemoveLayer;
@@ -25,8 +27,7 @@ export type PropsLayerCarMarker = {
   centerOn: any;
   monitoPageChangeCarsByStatus: any;
   monitorPageMergeFiltredCarGpsCode: any;
-  carInfoSetGpsNumber: any;
-};
+} & WithSearchProps;
 
 export type OneWsDataCardata = {
   company_id: number | void;

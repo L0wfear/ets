@@ -28,14 +28,18 @@ import {
 import config from 'config';
 import { get } from 'lodash';
 import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const carInfoSetGpsNumber = (gps_code = null, gov_number = null) => ({
-  type: CAR_INFO_SET_GPS_CODE,
-  payload: {
-    gps_code,
-    gov_number,
-  },
-});
+export const carInfoSetGpsNumber = (gov_number: Car['gov_number'], gps_code: Car['gps_code']): EtsAction<any> => (dispatch, getState) => {
+  return dispatch({
+    type: CAR_INFO_SET_GPS_CODE,
+    payload: {
+      gov_number,
+      gps_code,
+    },
+  });
+};
 
 export const carInfoSetStatus = (status) => ({
   type: CAR_INFO_SET_STATUS,

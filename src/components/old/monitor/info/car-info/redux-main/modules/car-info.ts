@@ -1,6 +1,7 @@
 import { createPath } from 'redux-main/redux-utils';
 import { getStartOfToday } from 'components/@next/@utils/dates/dates';
 import { initialMaxSpeed } from 'components/old/monitor/info/car-info/redux-main/modules/constatnts';
+import { isArray } from 'util';
 
 const CAR_INFO = createPath('CAR_INFO');
 
@@ -24,7 +25,15 @@ export const CAR_INFO_SET_POPUP_TRACK_POINT = CAR_INFO`SET_POPUP_TRACK_POINT`;
 export const CAR_INFO_SET_POPUP_PARKING_POINT = CAR_INFO`SET_POPUP_PARKING_POINT`;
 export const CAR_INFO_SET_POPUP_FUEL_EVENT_POINT = CAR_INFO`SET_POPUP_FUEL_EVENT_POINT`;
 
-export const initialState = {
+export type IStateCarInfo = {
+  trackCaching: {
+    track: number | any[];
+    [k: string]: any;
+  }
+  [k: string]: any;
+};
+
+export const initialState: IStateCarInfo = {
   gps_code: null,
   gov_number: null,
   missionsData: {
@@ -83,7 +92,7 @@ export const initialState = {
   },
 };
 
-export default (state: any = initialState, { type, payload }: any) => {
+export default (state = initialState, { type, payload }: any) => {
   switch (type) {
     case CAR_INFO_SET_GPS_CODE: {
       const newState = {
@@ -127,6 +136,7 @@ export default (state: any = initialState, { type, payload }: any) => {
             speed_lim: payload.speed_lim,
 
             carTabInfo: payload.carTabInfo,
+            isLoading: false,
           },
         };
       }
@@ -143,12 +153,17 @@ export default (state: any = initialState, { type, payload }: any) => {
         return state;
       }
 
+      let lastTrackData = [];
+      if (isArray(state.trackCaching.track)) {
+        lastTrackData = state.trackCaching.track;
+      }
+
       return {
         ...state,
         trackCaching: {
           ...state.trackCaching,
           track: [
-            ...state.trackCaching.track,
+            ...lastTrackData,
             {
               ...payload.point,
               speed_avg: payload.point.speed,

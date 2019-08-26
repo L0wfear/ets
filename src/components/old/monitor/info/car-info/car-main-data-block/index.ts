@@ -12,6 +12,7 @@ export const CarInfoMainDataContainer = styled.div`
     font-weight: 200;
     &>div {
       margin: 0px 2px;
+      white-space: nowrap;
     }
   }
   .car_info-legend-color {

@@ -87,6 +87,7 @@ export type Waybill = {
     is_excluding_mileage: boolean;
     measure_unit_name: string;
     operation_name: string;
+    iem_FACT_VALUE?: ValuesOf<Waybill['tax_data']>['FACT_VALUE'];  // нужно удалить
   }[];
   track_length: number;
   trailer_id: number;
@@ -101,6 +102,7 @@ export type Waybill = {
   work_mode_id: number;
   work_mode_name: string;
   work_mode_text: string;
+  season: 'winter' | 'summer';
 };
 
 export type IStateWaybill = {

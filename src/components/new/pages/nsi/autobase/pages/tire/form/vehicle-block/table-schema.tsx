@@ -50,7 +50,7 @@ export const meta: IDataTableSchema = {
     },
     {
       name: 'odometr_diff',
-      displayName: 'Пробег, км',
+      displayName: 'Общий пробег, км',
       type: 'text',
       cssClassName: 'width200',
     },

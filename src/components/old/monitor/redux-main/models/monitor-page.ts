@@ -2,6 +2,7 @@ import { createPath } from 'redux-main/redux-utils';
 import carInfoReducer from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { getToday0am, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const MONITOR_PAGE = createPath('MONITOR_PAGE');
 
@@ -31,7 +32,12 @@ export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA = MONITOR_PAGE`CHANGE_FUE
 export const MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA = MONITOR_PAGE`CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA`;
 export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUEL_EVENTS_LEAK_SHOW`;
 
-const initialState = {
+export type IStateMonitorPage = {
+  carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
+  [k: string]: any;
+};
+
+const initialState: IStateMonitorPage = {
   carActualGpsNumberIndex: {},
   carInfo: carInfoReducer(undefined, {}),
   SHOW_GOV_NUMBER: false,

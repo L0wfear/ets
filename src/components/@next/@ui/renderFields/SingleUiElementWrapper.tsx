@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled/index';
+import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled';
 
 type SingleUiElementWrapperProps = {
   hidden?: boolean;
@@ -9,7 +9,6 @@ type SingleUiElementWrapperProps = {
 
 const SingleUiElementWrapper: React.FC<SingleUiElementWrapperProps> = React.memo(
   (props) => {
-
     const hidden = get(props, 'hidden', false);
 
     return !hidden && (

@@ -21,6 +21,7 @@ import { MonitorPageContainer } from 'components/old/monitor/styled';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { MonitorSearchParams } from 'components/old/monitor/monitor_search_params';
 
 type StateProps = {
   token: InitialStateSession['token'];
@@ -94,6 +95,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
         <MonitorPageContainer>
           <MapWrap />
           <ToolBar />
+          <MonitorSearchParams />
         </MonitorPageContainer>
       :
         <div>загрузка...</div>

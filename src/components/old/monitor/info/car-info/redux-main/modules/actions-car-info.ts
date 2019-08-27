@@ -20,7 +20,7 @@ import {
 } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad, getCarTabInfo } from 'components/old/monitor/info/car-info/redux-main/modules/utils';
-import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 import config from 'config';
 import { get } from 'lodash';
@@ -167,7 +167,7 @@ export const fetchTrack = (payloadData, meta = { loading: true } as any): EtsAct
   });
 };
 
-export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta): EtsAction<void> => async (dispatch, getState) => {
+export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> => async (dispatch, getState) => {
   const {
     monitorPage: {
       carInfo: {
@@ -187,9 +187,7 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta):
         date_start: createValidDateTime(payloadData.date_start || date_start),
         date_end: createValidDateTime(payloadData.date_end || date_end),
       },
-      {
-        page: 'mainpage',
-      },
+      meta,
     ),
   );
 

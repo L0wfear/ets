@@ -22,15 +22,17 @@ import {
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import { HandleThunkActionCreator } from 'react-redux';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) => ({
+export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex: Record<Car['gps_code'], Car>) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   payload: {
     carActualGpsNumberIndex,
   },
 });
 
-export const actionMonitorPageLoadCarActual = (): EtsAction<Promise<any>> => async (dispatch) => {
+export const actionMonitorPageLoadCarActual = (): EtsAction<ReturnType<HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>>> => async (dispatch) => {
   const result = await dispatch(
     autobaseActions.autobaseGetSetCar(
       {},

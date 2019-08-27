@@ -36,9 +36,9 @@ import { ReduxState } from 'redux-main/@types/state';
 
 import { getWarningNotification } from 'utils/notifications';
 
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -65,7 +65,13 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
     let action_at = null;
 
-    const { time } = await loadMoscowTime();
+    const time = await this.props.dispatch(
+      actionLoadTimeMoscow(
+      {},
+      {
+        page: 'dashboard',
+      },
+    ));
     action_at = time.date;
 
     let mission = null;
@@ -97,8 +103,13 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   rejectMission = () => {
-    loadMoscowTime()
-      .then(({ time }) => {
+    this.props.dispatch(
+      actionLoadTimeMoscow(
+      {},
+      {
+        page: 'dashboard',
+      },
+    )).then((time) => {
         const action_at = time.date;
 
         this.setState({
@@ -187,6 +198,7 @@ export default compose<any, any>(
       infoData: getDashboardState(state).current_missions.infoData,
     }),
     (dispatch: any) => ({
+      dispatch,
       handleClose: () => (
         dispatch(
           dashboardLoadMissionDataForCurrentMission(null),

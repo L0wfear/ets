@@ -14,6 +14,7 @@ import {
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { HandleThunkActionCreator } from 'react-redux';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const actionSetCompany = (
   companyList: IStateCompany['companyList'],
@@ -52,16 +53,11 @@ export const actionLoadCompany = (
   payloadOwn: object,
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseGetCompany>> => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetCompany(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
+  return etsLoadingCounter(
+    dispatch,
+    promiseGetCompany(payloadOwn),
+    meta,
+  );
 };
 
 export const actionGetAndSetInStoreCompany = (

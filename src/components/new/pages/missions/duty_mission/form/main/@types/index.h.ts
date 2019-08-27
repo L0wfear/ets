@@ -8,6 +8,7 @@ import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type PropsDutyMissionFormLazy = {
   showForm: boolean;
@@ -35,6 +36,7 @@ export type StatePropsDutyMission = {
 };
 
 export type DispatchPropsDutyMission = {
+  dispatch: EtsDispatch,
   employeeGetAndSetInStore: HandleThunkActionCreator<typeof employeeActions.employeeGetAndSetInStore>;
   employeeEmployeeResetSetEmployee: HandleThunkActionCreator<typeof employeeActions.employeeEmployeeResetSetEmployee>;
   actionPrintFormDutyMission: HandleThunkActionCreator<typeof missionsActions.actionPrintFormDutyMission>;

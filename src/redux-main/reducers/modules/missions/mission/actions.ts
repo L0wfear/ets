@@ -31,8 +31,9 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import edcRequestActions from '../../edc_request/edc_request_actions';
 import { MISSION_STATUS } from 'constants/dictionary';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): EtsAction<IStateMissions['missionData']> => (
   dispatch,
@@ -375,7 +376,12 @@ export const actionCompleteMissionById = (id: Mission['id'], meta: LoadingMeta):
     ),
   );
 
-  const { time } = await loadMoscowTime();
+  const time = await dispatch(
+    actionLoadTimeMoscow(
+      {},
+      meta,
+    ),
+  );
 
   if (mission) {
     const response = await dispatch(

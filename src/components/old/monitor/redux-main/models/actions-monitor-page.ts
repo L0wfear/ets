@@ -19,11 +19,20 @@ import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
+  MONITOR_PAGE_SET_COMPANY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import { HandleThunkActionCreator } from 'react-redux';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { Company } from 'redux-main/reducers/modules/company/@types';
+
+export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Company>) => ({
+  type: MONITOR_PAGE_SET_COMPANY,
+  payload: {
+    companiesIndex,
+  },
+});
 
 export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex: Record<Car['gps_code'], Car>) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,

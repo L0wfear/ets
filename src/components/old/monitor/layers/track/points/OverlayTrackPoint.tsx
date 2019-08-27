@@ -7,7 +7,6 @@ import { carInfoSetTrackPoint } from 'components/old/monitor/info/car-info/redux
 import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
-import { getVectorObject } from 'redux-main/trash-actions/uniq';
 import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
 import { getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
@@ -30,8 +29,16 @@ import {
 } from 'global-styled/global-styled';
 import LoadingContext from 'components/new/utils/context/loading/LoadingContext';
 import { getCarMissionsByTimestamp } from 'redux-main/trash-actions/car/car';
+import { actionGetVectorObject } from 'redux-main/reducers/modules/some_uniq/vector_object/actions';
+import { ReduxState } from 'redux-main/@types/state';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-class OverlayTrackPoint extends React.Component<any, any> {
+type Props = {
+  dispatch: EtsDispatch;
+  [k: string]: any;
+};
+
+class OverlayTrackPoint extends React.Component<Props, any> {
   static contextType = LoadingContext;
 
   state = {
@@ -72,29 +79,35 @@ class OverlayTrackPoint extends React.Component<any, any> {
     this.getObjectData(props);
     this.getMissionsData(props);
   }
-  getObjectData = (props) => {
+  getObjectData = async (props) => {
     const { track, trackPoint } = props;
     const index = track.findIndex(({ timestamp }) => timestamp === trackPoint.timestamp);
     const points = track.slice(index - 1, index + 2);
 
-    this.props.getVectorObject(points).then(({ payload: { vectorObject } }) => {
-      let objectsString = 'Объекты ОДХ не найдены';
-      if (vectorObject && vectorObject[0] && vectorObject[1]) {
-        if (vectorObject[0].asuods_id && vectorObject[1].asuods_id) {
-          if (vectorObject[0].asuods_id === vectorObject[1].asuods_id) {
-            objectsString = vectorObject[0].name ? vectorObject[0].name : '';
-          } else {
-            objectsString = `${vectorObject[0].name} / ${vectorObject[1].name}`;
-          }
+    const vectorObject = await this.props.dispatch(actionGetVectorObject(
+      {
+        coordinates: points.map(({ coords_msk }) => coords_msk),
+      },
+      {
+        page: 'mainpage',
+      },
+    ));
+    let objectsString = 'Объекты ОДХ не найдены';
+    if (vectorObject && vectorObject[0] && vectorObject[1]) {
+      if (vectorObject[0].asuods_id && vectorObject[1].asuods_id) {
+        if (vectorObject[0].asuods_id === vectorObject[1].asuods_id) {
+          objectsString = vectorObject[0].name ? vectorObject[0].name : '';
+        } else {
+          objectsString = `${vectorObject[0].name} / ${vectorObject[1].name}`;
         }
       }
+    }
 
-      this.setState({
-        trackPoint: {
-          ...this.state.trackPoint,
-          objectsString,
-        },
-      });
+    this.setState({
+      trackPoint: {
+        ...this.state.trackPoint,
+        objectsString,
+      },
     });
   }
 
@@ -235,40 +248,32 @@ class OverlayTrackPoint extends React.Component<any, any> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  gps_code: state.monitorPage.carInfo.gps_code,
-  gov_number: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].gov_number,
-  asuods_id: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].asuods_id,
-  trackPoint: state.monitorPage.carInfo.popups.trackPoint,
-  track: state.monitorPage.carInfo.trackCaching.track,
-  cars_sensors: state.monitorPage.carInfo.trackCaching.cars_sensors,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getCarMissionsByTimestamp: (...arg: [any, any, any, any]) => (
-    dispatch(
-      getCarMissionsByTimestamp(...arg),
-    )
-  ),
-  hidePopup: () => (
-    dispatch(
-      carInfoSetTrackPoint(),
-    )
-  ),
-  getVectorObject: (points) => (
-    dispatch(
-      getVectorObject('NONE', points),
-    )
-  ),
-});
-
 export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carActualGpsNumberIndex'],
     type: 'none',
   }),
   connect(
-    mapStateToProps,
-    mapDispatchToProps,
+    (state: ReduxState) => ({
+      gps_code: state.monitorPage.carInfo.gps_code,
+      gov_number: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].gov_number,
+      asuods_id: state.monitorPage.carActualGpsNumberIndex[state.monitorPage.carInfo.gps_code].asuods_id,
+      trackPoint: state.monitorPage.carInfo.popups.trackPoint,
+      track: state.monitorPage.carInfo.trackCaching.track,
+      cars_sensors: state.monitorPage.carInfo.trackCaching.cars_sensors,
+    }),
+    (dispatch) => ({
+      dispatch,
+      getCarMissionsByTimestamp: (...arg: [any, any, any, any]) => (
+        dispatch(
+          getCarMissionsByTimestamp(...arg),
+        )
+      ),
+      hidePopup: () => (
+        dispatch(
+          carInfoSetTrackPoint(),
+        )
+      ),
+    }),
   ),
 )(OverlayTrackPoint);

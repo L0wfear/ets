@@ -1,7 +1,7 @@
 import Feature from 'ol/Feature';
 
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
-import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
+import { Company } from 'redux-main/reducers/modules/company/@types';
 
 export type PropsLayerLayerShowPointsRoute = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -44,7 +44,7 @@ export namespace InjectetLayerProps {
 export namespace LayerGeoobjectsUtilsTypes {
   type checkShowTrueFuncThisProps = {
     addFeaturesToSource: ETSCore.Map.InjectetLayerProps.FuncAddFeaturesToSource,
-    companiesIndex?: TypeCompaniesIndex;
+    companiesIndex?: Record<Company['id'], Company>;
   };
 
   type checkShowFalseFuncThisProps = {
@@ -53,7 +53,7 @@ export namespace LayerGeoobjectsUtilsTypes {
 
   type renderGeoobjectsFuncThisProps = checkShowTrueFuncThisProps & checkShowFalseFuncThisProps & {
     getFeatureById: ETSCore.Map.InjectetLayerProps.FuncGetFeatureById,
-    companiesIndex?: TypeCompaniesIndex;
+    companiesIndex?: Record<Company['id'], Company>;
   };
 
   export type renderGeoobjectsFunc = (

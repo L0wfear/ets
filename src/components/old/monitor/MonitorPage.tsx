@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { keyBy } from 'lodash';
-
-import { compose } from 'recompose';
-import triggerOnChangeCompany from 'components/old/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 import { connect, HandleThunkActionCreator } from 'react-redux';
+import { compose } from 'recompose';
+
+import triggerOnChangeCompany from 'components/old/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
 
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
@@ -11,11 +11,9 @@ import MapWrap from 'components/old/monitor/MapWrap';
 import ToolBar from 'components/old/monitor/tool-bar/ToolBar';
 
 import { loadGeozones } from 'redux-main/trash-actions/geometry/geometry';
-import { getCompany } from 'redux-main/trash-actions/uniq';
-import { resetMonitorPageState, actionMonitorPageLoadCarActual, monitorPageSetcarActualGpsNumberIndex } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+import { resetMonitorPageState, actionMonitorPageLoadCarActual, monitorPageSetcarActualGpsNumberIndex, actionSetCompanyIndex } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import {
   MONITOR_PAGE_SET_GEOMETRY,
-  MONITOR_PAGE_SET_COMPANY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import { MonitorPageContainer } from 'components/old/monitor/styled';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
@@ -23,6 +21,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { MonitorSearchParams } from 'components/old/monitor/monitor_search_params';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadCompany } from 'redux-main/reducers/modules/company/actions';
 
 type StateProps = {
   token: InitialStateSession['token'];
@@ -31,7 +30,6 @@ type StateProps = {
 type DispatchProps = {
   actionMonitorPageLoadCarActual: HandleThunkActionCreator<typeof actionMonitorPageLoadCarActual>;
   loadGeozonesOdhMkad: HandleThunkActionCreator<typeof loadGeozones>;
-  getCompany: HandleThunkActionCreator<typeof getCompany>;
   resetMonitorPageState: HandleThunkActionCreator<typeof resetMonitorPageState>;
 };
 
@@ -67,7 +65,18 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
         );
 
         props.loadGeozonesOdhMkad();
-        props.getCompany();
+
+        dispatch(
+          actionLoadCompany({}, { page: 'mainpage' }),
+        ).then(
+          ({ dataIndex }) => {
+            if (i_exist) {
+              dispatch(
+                actionSetCompanyIndex(dataIndex),
+              );
+            }
+          },
+        );
 
         return () => {
           i_exist = false;
@@ -119,11 +128,6 @@ export default compose<PropsMonitorPage, OwnProps>(
       loadGeozonesOdhMkad: () => (
         dispatch(
           loadGeozones(MONITOR_PAGE_SET_GEOMETRY, GEOOBJECTS_OBJ.odh_mkad.serverName),
-        )
-      ),
-      getCompany: () => (
-        dispatch(
-          getCompany(MONITOR_PAGE_SET_COMPANY),
         )
       ),
       resetMonitorPageState: () => (

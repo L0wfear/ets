@@ -1,12 +1,12 @@
 import * as React from 'react';
-import Overlay from 'components/new/ui/map/overlay/Overlay';
+import { get } from 'lodash';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+
 import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
+import Overlay from 'components/new/ui/map/overlay/Overlay';
 
-import { getVectorObject } from 'redux-main/trash-actions/uniq';
-import { get } from 'lodash';
 import { roundCoordinates } from 'utils/geo';
 import { getDateWithMoscowTzByTimestamp } from 'components/@next/@utils/dates/dates';
 
@@ -22,8 +22,15 @@ import { OverlayLineInfoContainer } from 'components/new/ui/map/overlay/styled/s
 
 import { DivNone } from 'global-styled/global-styled';
 import { OverlayLineObjectsStringContainer } from 'components/old/monitor/layers/track/points/styled/styled';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionGetVectorObject } from 'redux-main/reducers/modules/some_uniq/vector_object/actions';
 
-class OverlayTrackPoint extends React.Component<any, any> {
+type Props = {
+  dispatch: EtsDispatch;
+  [k: string]: any;
+};
+
+class OverlayTrackPoint extends React.Component<Props, any> {
   state = {
     gps_code: this.props.gps_code,
     trackPoint: this.props.trackPoint,
@@ -43,26 +50,32 @@ class OverlayTrackPoint extends React.Component<any, any> {
     }
   }
 
-  getObjectData = (props) => {
+  getObjectData = async (props) => {
     const { track, trackPoint } = props;
     const index = track.findIndex(({ timestamp }) => timestamp === trackPoint.timestamp);
     const points = track.slice(index - 1, index + 2);
 
-    this.props.getVectorObject(points).then(({ payload: { vectorObject } }) => {
-      let objectsString = 'Объекты ОДХ не найдены';
-      if (vectorObject && vectorObject[0] && vectorObject[1]) {
-        if (vectorObject[0].asuods_id && vectorObject[1].asuods_id) {
-          if (vectorObject[0].asuods_id === vectorObject[1].asuods_id) {
-            objectsString = vectorObject[0].name ? vectorObject[0].name : '';
-          } else {
-            objectsString = `${vectorObject[0].name} / ${vectorObject[1].name}`;
-          }
+    const vectorObject = await this.props.dispatch(actionGetVectorObject(
+      {
+        coordinates: points.map(({ coords_msk }) => coords_msk),
+      },
+      {
+        page: 'mainpage',
+      },
+    ));
+    let objectsString = 'Объекты ОДХ не найдены';
+    if (vectorObject && vectorObject[0] && vectorObject[1]) {
+      if (vectorObject[0].asuods_id && vectorObject[1].asuods_id) {
+        if (vectorObject[0].asuods_id === vectorObject[1].asuods_id) {
+          objectsString = vectorObject[0].name ? vectorObject[0].name : '';
+        } else {
+          objectsString = `${vectorObject[0].name} / ${vectorObject[1].name}`;
         }
       }
+    }
 
-      this.setState({
-        objectsString,
-      });
+    this.setState({
+      objectsString,
     });
   }
 
@@ -163,17 +176,11 @@ class OverlayTrackPoint extends React.Component<any, any> {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getVectorObject: (points) => (
-    dispatch(
-      getVectorObject('NONE', points),
-    )
-  ),
-});
-
 export default compose<any, any>(
   connect(
     null,
-    mapDispatchToProps,
+    (dispatch) => ({
+      dispatch,
+    }),
   ),
 )(OverlayTrackPoint);

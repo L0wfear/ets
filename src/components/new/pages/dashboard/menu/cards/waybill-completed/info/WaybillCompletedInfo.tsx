@@ -15,7 +15,6 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import { makeDate } from 'components/@next/@utils/dates/dates';
-import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
 import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
 
@@ -27,6 +26,7 @@ import { WaybillCompletedItemsSubItemsType } from 'components/new/pages/dashboar
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
+import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -56,9 +56,12 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
       dataset: { path },
     },
   }) => {
-    this.props
-      .getWaybillById(Number.parseInt(path, 0))
-      .then(({ payload: { waybill_data } }) => {
+    this.props.dispatch(
+      waybillActions.actionGetWaybillById(
+        Number.parseInt(path, 0),
+        { page: 'dashboard' },
+      ),
+    ).then((waybill_data) => {
         if (waybill_data) {
           this.setState({
             showWaybillFormWrap: true,
@@ -151,13 +154,6 @@ export default compose<any, any>(
       handleClose: () => dispatch(dashboardSetInfoDataInWaybillCompleted(null)),
       loadAllWaybillCard: () =>
         dispatch(dashboardLoadDependentDataByWaybillCompleted()),
-      getWaybillById: (id: number) =>
-        dispatch(
-          loadWaybillById('none', id, {
-            promise: true,
-            page: 'dashboard',
-          }),
-        ),
     }),
   ),
 )(WaybillCompletedInfo);

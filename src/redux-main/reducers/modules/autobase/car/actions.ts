@@ -12,6 +12,7 @@ import {
   promiseUpdateCarRegistrationData,
   promiseUpdateCarPassportData,
   promiseLoadCarByAsuodsId,
+  promiseGetCarMissionsByTimestamp,
 } from 'redux-main/reducers/modules/autobase/car/promise';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
@@ -224,4 +225,12 @@ export const actionLoadCarPassport = (car_id: Car['asuods_id'], meta: LoadingMet
   );
 
   return carDriversData;
+};
+
+export const actionGetCarMissionsByTimestamp = (payload: Parameters<typeof promiseGetCarMissionsByTimestamp>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetCarMissionsByTimestamp>> => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseGetCarMissionsByTimestamp(payload),
+    meta,
+  );
 };

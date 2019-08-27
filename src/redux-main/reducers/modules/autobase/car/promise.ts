@@ -11,6 +11,7 @@ import {
   CarPassportGibddRegistryService,
   CarPassportGtnRegistryService,
   CarService,
+  CarInfoService,
 } from 'api/Services';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from './@types';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
@@ -137,4 +138,29 @@ export const promiseLoadCarPassport = async (car_id: Car['asuods_id']) => {
   const carPassporntData: CarPassporntData = get(response, 'result.rows.0', null);
 
   return carPassporntData;
+};
+
+type Paylaod = (
+  { car_id: Car['asuods_id'], point_timestamp: number }
+  | { car_id: Car['asuods_id'], date_start: string; date_end: string }
+);
+
+export const promiseGetCarMissionsByTimestamp = async (payload: Paylaod) => {
+  let response = null;
+
+  try {
+    response = await CarInfoService.get(payload);
+  } catch (error) {
+    // tslint:disable-next-line
+    console.warn(error);  
+  }
+
+  const result: {
+    missions: Array<any>;
+    contractor_name: string;
+    customer_name: string;
+    owner_name: string;
+  } = get(response, 'result');
+
+  return result;
 };

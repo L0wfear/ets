@@ -1,33 +1,9 @@
-type GetMunicipalFacilityFuncProps = {
-  start_date: any,
-  end_date: any,
-  kind_task_ids?: number[],
-  norm_ids: string;
-};
-
-type MunicipalFacilityNormative = {};
-
-type MunicipalFacilityType = {
-  municipal_facility_id: number;
-  municipal_facility_name: string;
-  normatives: MunicipalFacilityNormative[];
-  car_func_types: {
-    id: number;
-  }[];
-  route_types: any[];
-};
-
-type GetMunicipalFacilityFuncAns = {
-  payload: {
-    municipal_facility_list: MunicipalFacilityType[];
-  };
-};
-
-type GetMunicipalFacilityFunc = (props: GetMunicipalFacilityFuncProps) => Promise<GetMunicipalFacilityFuncAns>;
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 
 export type StatePropsMunicipalFacilityField = {};
 export type DispatchPropsMunicipalFacilityField = {
-  getCleaningMunicipalFacilityList: GetMunicipalFacilityFunc,
+  dispatch: EtsDispatch,
 };
 
 export type OwnPropsMunicipalFacilityField = {
@@ -56,7 +32,7 @@ export type StateMunicipalFacilityField = {
   MUNICIPAL_FACILITY_OPTIONS: {
     value: number;
     label: string;
-    mfData: MunicipalFacilityType;
+    mfData: MunicipalFacility;
   }[];
   myDisable: boolean;
 };

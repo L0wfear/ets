@@ -135,7 +135,7 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
       payload.kind_task_ids = 3;
     }
 
-    const { municipalFacilityForDutyMissionList } = await this.props.actionGetAndSetInStoreMunicipalFacilityForDutyMission(
+    const municipalFacilityForDutyMissionList = await this.props.actionGetAndSetInStoreMunicipalFacilityForDutyMission(
       payload,
       { page, path },
     );

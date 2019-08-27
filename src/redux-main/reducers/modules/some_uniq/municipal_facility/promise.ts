@@ -1,6 +1,7 @@
 import { CleaningMunicipalFacilityService } from 'api/Services';
 import { get } from 'lodash';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
+import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 
 export const promiseGetMunicipalFacility = async (payloadOwn) => {
   const payload = {
@@ -17,9 +18,7 @@ export const promiseGetMunicipalFacility = async (payloadOwn) => {
     response = null;
   }
 
-  const data = get(response, ['result', 'rows'], []);
+  const result: MunicipalFacility[] = get(response, ['result', 'rows'], []);
 
-  return {
-    data,
-  };
+  return result;
 };

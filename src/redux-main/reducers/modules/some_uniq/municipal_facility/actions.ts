@@ -3,30 +3,30 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { promiseGetMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { MunicipalFacility } from './@types';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* --------------- обновление стора --------------- */
-export const actionSetMunicipalFacility = (municipalFacilityList: IStateSomeUniq['municipalFacilityList']) => (dispatch) => (
+export const actionSetMunicipalFacility = (municipalFacilityList: IStateSomeUniq['municipalFacilityList']): EtsAction<void> => (dispatch) => {
   dispatch(
     someUniqSetNewData({
       municipalFacilityList,
     }),
-  )
-);
-export const actionSetMunicipalFacilityForMission = (municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList']) => (dispatch) => (
+  );
+};
+export const actionSetMunicipalFacilityForMission = (municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList']): EtsAction<void> => (dispatch) => {
   dispatch(
     someUniqSetNewData({
       municipalFacilityForMissionList,
     }),
-  )
-);
-export const actionSetMunicipalFacilityForDutyMission = (municipalFacilityForDutyMissionList: IStateSomeUniq['municipalFacilityForDutyMissionList']) => (dispatch) => (
+  );
+};
+export const actionSetMunicipalFacilityForDutyMission = (municipalFacilityForDutyMissionList: IStateSomeUniq['municipalFacilityForDutyMissionList']): EtsAction<void> => (dispatch) => {
   dispatch(
     someUniqSetNewData({
       municipalFacilityForDutyMissionList,
     }),
-  )
-);
+  );
+};
 
 /* --------------- сброс стора --------------- */
 export const actionResetMunicipalFacility: any = (): EtsAction<void> => async (dispatch) => {
@@ -52,21 +52,20 @@ export const actionResetMunicipalFacilityForDutyMission: any = (): EtsAction<voi
 };
 
 /* --------------- запрос --------------- */
-export const actionGetMunicipalFacility: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseGetMunicipalFacility(payload),
-    meta: {
-      promise: true,
+export const actionGetMunicipalFacility = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetMunicipalFacility(payload),
+    {
       page,
       path,
     },
-  })
+  )
 );
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreMunicipalFacility: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+export const actionGetAndSetInStoreMunicipalFacility = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
+  const data = await dispatch(
     actionGetMunicipalFacility(payload, { page, path }),
   );
 
@@ -74,12 +73,10 @@ export const actionGetAndSetInStoreMunicipalFacility: any = (payload = {}, { pag
     actionSetMunicipalFacility(data),
   );
 
-  return {
-    municipalFacilityList: data,
-  };
+  return data;
 };
-export const actionGetAndSetInStoreMunicipalFacilityForMission: any = (payload = {}, { page, path }: LoadingMeta) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+export const actionGetAndSetInStoreMunicipalFacilityForMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
+  const data = await dispatch(
     actionGetMunicipalFacility(
       {
         for: 'mission',
@@ -92,16 +89,11 @@ export const actionGetAndSetInStoreMunicipalFacilityForMission: any = (payload =
     actionSetMunicipalFacilityForMission(data),
   );
 
-  return {
-    municipalFacilityForMissionList: data,
-  };
+  return data;
 };
 
-export type ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns = {
-  municipalFacilityForDutyMissionList: MunicipalFacility[],
-};
-export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<Promise<ActionGetAndSetInStoreMunicipalFacilityForDutyMissionAns>> => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
+export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
+  const data = await dispatch(
     actionGetMunicipalFacility(
       {
         for: 'duty-mission',
@@ -114,9 +106,7 @@ export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = 
     actionSetMunicipalFacilityForDutyMission(data),
   );
 
-  return {
-    municipalFacilityForDutyMissionList: data,
-  };
+  return data;
 };
 
 export default {

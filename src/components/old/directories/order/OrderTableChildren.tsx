@@ -11,7 +11,7 @@ import {
 import permissions_mission_template from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
 import { TypeDownload } from 'components/old/directories/order/constant-order';
-import { getBlobOrder } from 'components/old/directories/order/utils-order';
+import { promiseLoadOrderBlobAndSave } from 'components/old/directories/order/utils-order';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import dutyMissionTemplatePermissions from 'components/new/pages/missions/duty_mission_template/_config-data/permissions';
 import ButtonCheckPermission from 'components/old/ui/buttons/ButtonCheckPermission';
@@ -88,7 +88,7 @@ const mergeProps = (
   handleClickOnCDMTemplate: () =>
     dispatchProps.setDMInMissionTemplateData({ mission_source_id: stateProps.mission_source_id }),
   selectDownload: (eventName) =>
-    getBlobOrder(stateProps.selectedElementOrder, eventName),
+    promiseLoadOrderBlobAndSave(stateProps.selectedElementOrder, eventName),
 });
 
 export default connect(

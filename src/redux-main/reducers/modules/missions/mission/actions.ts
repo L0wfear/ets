@@ -1,3 +1,7 @@
+import { HandleThunkActionCreator } from 'react-redux';
+import { get } from 'lodash';
+import { isArray } from 'util';
+
 import { missionsSetNewData } from 'redux-main/reducers/modules/missions/common';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import {
@@ -11,11 +15,10 @@ import {
   promiseRemoveMission,
   getMissionDataById,
 } from 'redux-main/reducers/modules/missions/mission/promise';
-import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Mission, MissionDataType } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
 import { initialMissionsState } from 'redux-main/reducers/modules/missions';
 import { GetMissionPayload } from 'redux-main/reducers/modules/missions/mission/@types';
 import {
@@ -26,12 +29,9 @@ import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-or
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
-import { get } from 'lodash';
 import edcRequestActions from '../../edc_request/edc_request_actions';
 import { MISSION_STATUS } from 'constants/dictionary';
 import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
-import { isArray } from 'util';
-import { MissionDataType } from 'redux-main/trash-actions/mission/@types/promise-mission.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): EtsAction<IStateMissions['missionData']> => (

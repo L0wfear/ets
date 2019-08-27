@@ -26,6 +26,7 @@ type PropsAdvancedNumberFilter = {
     disabled?: boolean;
     step: number;
   };
+  registryKey: string;
   filterValuesObj: any;
   formatedTitle: string;
   onChange: (valueKey: string, type: string, value: any) => any;
@@ -112,6 +113,10 @@ class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter
     const {
       filterValuesObj,
     } = props;
+    const id = `filter_r:${this.props.registryKey.toLocaleLowerCase()}_p:${this.props.filterData.valueKey}`;
+    const id_select = `${id}_n:select`;
+    const id_one = `${id}_n:one`;
+    const id_two = `${id}_n:two`;
 
     return (
       <EtsFilter>
@@ -120,6 +125,7 @@ class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter
           <AdvacedFirstLineContainer>
             <AdvacedSelectContainer>
               <ReactSelect
+                id={id_select}
                 value={activeTypeArr}
                 options={state.optionsType}
                 onChange={this.handleChangeType}
@@ -129,6 +135,7 @@ class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
               <InputNumber
+                id={id_one}
                 value={filterValuesObj[activeTypeArr[0]].value}
                 onChange={this.handleChangeFirst}
                 noShowLabel
@@ -143,6 +150,7 @@ class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter
             activeTypeArr.length > 1
             ? (
               <InputNumber
+                id={id_two}
                 value={filterValuesObj[activeTypeArr[1]].value}
                 onChange={this.handleChangeSecond}
                 noShowLabel

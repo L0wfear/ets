@@ -26,6 +26,7 @@ type PropsAdvancedDateFilter = {
     labelKey?: string;
     disabled?: boolean;
   };
+  registryKey: string;
   filterValuesObj: any;
   formatedTitle: string;
   onChange: (valueKey: string, type: string, value: any) => any;
@@ -130,7 +131,10 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
       filterValuesObj,
     } = props;
 
-    const id = `filter_${props.filterData.valueKey}`;
+    const id = `filter_r:${this.props.registryKey.toLocaleLowerCase()}_p:${this.props.filterData.valueKey}`;
+    const id_select = `${id}_n:select`;
+    const id_one = `${id}_n:one`;
+    const id_two = `${id}_n:two`;
 
     return (
       <EtsFilterDate>
@@ -139,6 +143,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
           <AdvacedFirstLineContainer>
             <AdvacedSelectContainer>
               <ReactSelect
+                id={id_select}
                 value={activeTypeArr}
                 options={state.optionsType}
                 onChange={this.handleChangeType}
@@ -148,7 +153,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
             </AdvacedSelectContainer>
             <AdvacedFirstInputContainer>
               <InputDate
-                id={id}
+                id={id_one}
                 value={filterValuesObj[activeTypeArr[0]].value}
                 onChange={this.handleChangeFirst}
                 noShowLabel
@@ -163,6 +168,7 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
             activeTypeArr.length > 1
             ? (
               <InputDate
+                id={id_two}
                 value={filterValuesObj[activeTypeArr[1]].value}
                 onChange={this.handleChangeSecond}
                 noShowLabel

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
-import MultiselectRegestryFilter from 'components/new/ui/registry/components/data/filters/filters-lines/multiselect/MultiselectRegestryFilter';
+import MultiselectRegistryFilter from 'components/new/ui/registry/components/data/filters/filters-lines/multiselect/MultiselectRegistryFilter';
 import {
   EtsFiltersLines,
   EtsFilterContainer,
@@ -68,7 +68,7 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
       case 'multiselect': {
         return (
           <EtsFilterContainer key={otherFilterData.valueKey}>
-            <MultiselectRegestryFilter
+            <MultiselectRegistryFilter
               formatedTitle={formatedTitle}
               filterData={otherFilterData}
               wasFirstOpen={this.props.wasFirstOpen}

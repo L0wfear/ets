@@ -6,6 +6,7 @@ import EtsBootstrap from '../@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 type PropsInputNumber = {
+  id?: string;
   error?: string;
   noShowError?: boolean;
   value: number | string | string[];
@@ -44,7 +45,7 @@ class InputNumber extends React.PureComponent<PropsInputNumber, {}> {
                 <DivNone />
               )
             }
-            <EtsBootstrap.FormControl lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
+            <EtsBootstrap.FormControl id={this.props.id} lang="en" type="number" className={inputClassName} {...mainProps} value={value} step={this.props.step} />
           </InputContainer>
           {
             !noShowError ? (

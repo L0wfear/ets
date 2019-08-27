@@ -54,12 +54,14 @@ class AdvancedStringLikeFilter extends React.PureComponent<PropsAdvancedStringLi
         },
       },
     } = props;
+    const id = `filter_r:${props.registryKey.toLocaleLowerCase()}_p:${props.filterData.valueKey}`;
 
     return (
       <EtsFilter>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
           <EtsBootstrap.FormControl
+            id={id}
             value={value}
             onChange={this.handleChange}
             disabled={this.props.filterData.disabled}

@@ -55,12 +55,12 @@ const SelectCarpoolCompany: React.FC<SelectCarpoolCompanyProps> = (props) => {
   return React.useMemo(
     () => (
       <InstectionBlockSelect>
-        <SelectLabel md={1} sm={1}>
+        <SelectLabel md={3} sm={1}>
             <h5>
               Организация
             </h5>
           </SelectLabel>
-          <SelectField md={4} sm={6}>
+          <SelectField md={9} sm={6}>
             <ExtField
               type="select"
               label={false}

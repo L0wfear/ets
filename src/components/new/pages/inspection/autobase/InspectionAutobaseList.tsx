@@ -16,12 +16,16 @@ const InspectionAutobaseList: React.FC<InspectionAutobaseListProps> = (props) =>
     <React.Fragment>
       <EtsGreyPageWrap>
         <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={6}>
+          <EtsBootstrap.Col md={12}>
             <InspectionTitle title="Мониторинг обустройства автобаз" />
-            <InspectionAutobaseSelectCarpool loadingPage={loadingPage} />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
-        <InspectionAutobaseData loadingPage={loadingPage} />
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={4}>
+            <InspectionAutobaseSelectCarpool loadingPage={loadingPage} />
+          </EtsBootstrap.Col>
+          <InspectionAutobaseData loadingPage={loadingPage} />
+        </EtsBootstrap.Row>
       </EtsGreyPageWrap>
       <InspectionAutobaseFormLazy loadingPage={loadingPage} {...props}/>
     </React.Fragment>

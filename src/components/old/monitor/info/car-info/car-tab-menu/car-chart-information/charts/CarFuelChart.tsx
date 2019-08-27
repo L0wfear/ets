@@ -10,15 +10,16 @@ import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';
 
 import {
-  TypeFrontCarsSensorsLevel,
   PropsCarFuelChart,
   StateCarFuelChart,
   StatePropsCarFuelChart,
   OwnPropsCarFuelChart,
   DispatchPropsCarFuelChart,
 } from 'components/old/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
+import { isObject, isArray } from 'util';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
-const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, sensorRawData = false) => (
+const makeData = (front_cars_sensors_level: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_level'], sensorRawData = false) => (
   Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {
     const data = sensor[sensorRawData ? 'raw_data' : 'data'];
 
@@ -57,7 +58,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
 
     let selected_point = track[0];
 
-    track.some((track_point, index) => {
+    (track as []).some((track_point: any, index) => {
       if (Math.abs(timestamp - selected_point.timestamp) >= Math.abs(timestamp - track_point.timestamp)) {
         selected_point = track_point;
         return false;
@@ -94,7 +95,7 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
     return (
       <div>
         {
-          this.props.track.length === 0 ?
+          isArray(this.props.track) ? this.props.track.length === 0 : true ?
           (
             <div className="center-preloader">
               <div>{NO_DATA_TEXT}</div>
@@ -152,9 +153,9 @@ export default compose<PropsCarFuelChart, OwnPropsCarFuelChart>(
   }),
   connect<StatePropsCarFuelChart, DispatchPropsCarFuelChart, OwnPropsCarFuelChart, ReduxState>(
     (state) => ({
-      has_cars_sensors: Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level'),
-      track: state.monitorPage.carInfo.trackCaching.track,
+      has_cars_sensors: isObject(state.monitorPage.carInfo.trackCaching.cars_sensors) ? Object.values(state.monitorPage.carInfo.trackCaching.cars_sensors).some(({ type_slug }) => type_slug === 'level') : false,
       front_cars_sensors_level: state.monitorPage.carInfo.trackCaching.front_cars_sensors_level,
+      track: isArray(state.monitorPage.carInfo.trackCaching.track) ? state.monitorPage.carInfo.trackCaching.track : [],
     }),
   ),
 )(CarFuelChart);

@@ -26,11 +26,86 @@ export const CAR_INFO_SET_POPUP_PARKING_POINT = CAR_INFO`SET_POPUP_PARKING_POINT
 export const CAR_INFO_SET_POPUP_FUEL_EVENT_POINT = CAR_INFO`SET_POPUP_FUEL_EVENT_POINT`;
 
 export type IStateCarInfo = {
+  gps_code: string;
+  gov_number: string;
+  missionsData: {
+    error: boolean;
+    missions: -1 | Array<any>;
+    mkad_speed_lim: number,
+    speed_lim: number,
+
+    carTabInfo: {
+      contractor_name: string;
+      customer_name: string;
+      owner_name: string;
+    },
+    isLoading: boolean;
+  },
   trackCaching: {
-    track: number | any[];
-    [k: string]: any;
-  }
-  [k: string]: any;
+    error: boolean;
+    cars_sensors: Record<string, {
+      type_slug: string;
+      type_name?: string;
+    }>;
+    front_cars_sensors_level: Record<string, {
+      sensor: IStateCarInfo['trackCaching']['cars_sensors'];
+      data: any[];
+      show: boolean;
+      color: string;
+      connectNulls: number;
+      name: string;
+    }>;
+    front_cars_sensors_equipment: Record<string, {
+      sensor: IStateCarInfo['trackCaching']['cars_sensors'];
+      data: any[];
+      type_name: string;
+      color: string;
+      connectNulls: number;
+      name: string;
+      show: boolean;
+    }>;
+    consumptions: object,
+    distance: -1 | number;
+    duration_moving: -1 | number,
+    equipment: object,
+    front_events_list: Array<{
+      date: string;
+      type_name: string;
+      value: number;
+    }>,
+    equipment_distance: -1 | number;
+    equipment_time: -1 | number;
+    events: object,
+    parkings: -1 | number;
+    front_parkings: -1 | number;
+    sensors: object,
+    sensors_data: {
+      cars_sensors: object,
+      consumptions: object,
+      sensors_track: object,
+    },
+    time_of_parking: -1 | number,
+    track: -1 | Array<{
+      timestamp: number;
+    }>,
+    isCorssingMKAD: boolean;
+  },
+  status: number;
+  forToday: boolean;
+  date_start: string | Date;
+  date_end: string | Date;
+  playTrack: {
+    status: 'stop' | 'payse' | 'play' | string;
+    trackPointIndex: number,
+  },
+  statusTC: {
+    FOLLOW_ON_CAR: boolean;
+  },
+  popups: {
+    trackPoint: any;
+    fuelEventPoint: any;
+    parkingPoint: any;
+  },
 };
 
 export const getTrackDefaultDateStart = () => getStartOfToday();

@@ -21,6 +21,7 @@ import {
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { getMonitorPageState } from 'redux-main/reducers/selectors';
 
 export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
@@ -40,12 +41,22 @@ export const actionMonitorPageLoadCarActual = (): EtsAction<Promise<any>> => asy
   return result;
 };
 
-export const monitoPageChangeCarsByStatus = (carsByStatus) => ({
-  type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
-  payload: {
-    carsByStatus,
-  },
-});
+export const monitoPageChangeCarsByStatus = (carsByStatus): EtsAction<void> => (dispatch, getState) => {
+  const carsByStatusOld = getMonitorPageState(getState()).carsByStatus;
+
+  const hasDiff = Object.entries(carsByStatusOld).some(
+    ([key, count]) => carsByStatus[key] !== count,
+  );
+
+  if (hasDiff) {
+    dispatch({
+      type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
+      payload: {
+        carsByStatus,
+      },
+    });
+  }
+};
 
 export const monitorPageToggleStatusShow = (typeArr) => ({
   type: MONITOR_PAGE_TOGGLE_STATUS_SHOW,

@@ -7,6 +7,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForTrackLine } from 'components/old/monitor/layers/track/lines/feature-style';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -23,7 +24,7 @@ type PropsLayerTrackLines = {
   mkad_speed_lim: number;
   speed_lim: number;
   SHOW_TRACK: boolean;
-  front_cars_sensors_equipment: any[];
+  front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
 
   centerOn: any;
   needCenterOnAfterUpdate?: boolean;

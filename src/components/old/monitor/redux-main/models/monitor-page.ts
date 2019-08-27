@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import carInfoReducer from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
+import carInfoReducer, { IStateCarInfo, initialState as carInfoInitialState } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 import { getToday0am, getDateWithMoscowTz } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -34,12 +34,63 @@ export const MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW = MONITOR_PAGE`TOGGLE_FUE
 
 export type IStateMonitorPage = {
   carActualGpsNumberIndex: Record<Car['gps_code'], Car>;
-  [k: string]: any;
+  carInfo: IStateCarInfo;
+  carsByStatus: {
+    in_move: number;
+    stop: number;
+    parking: number;
+    not_in_touch: number;
+  }
+  SHOW_GOV_NUMBER: boolean;
+  status: {
+    in_move: boolean;
+    stop: boolean;
+    parking: boolean;
+    not_in_touch: boolean;
+  },
+  statusGeo: {
+    SHOW_TRACK: boolean;
+    SHOW_GEOOBJECTS: boolean;
+  },
+  geoobjects: {
+    [k in typeof GEOOBJECTS_OBJ[keyof typeof GEOOBJECTS_OBJ]['serverName']]: {
+      show: boolean;
+      data: object;
+    }
+  };
+  selectedGeoobjects: {
+    [k in typeof GEOOBJECTS_OBJ[keyof typeof GEOOBJECTS_OBJ]['serverName']]: object;
+  },
+  filters: {
+    data: {
+      carFilterText: string;
+      carFilterMultyType: Array<number>,
+      carFilterMultyStructure: Array<number>,
+      carFilterMultyOwner: Array<number>,
+      featureBufferPolygon: null | { type: 'Poligon'; coordinates: Array<any>}, // DITETSSUP-2007
+    },
+    filtredCarGpsCode: Array<number>,
+  },
+  companiesIndex: -1 | object;
+  drawActive: {
+    all: boolean;
+    measureActive: boolean;
+    polygonBuffer: boolean;
+  },
+  fuelEvents: {
+    leak: {
+      show: boolean;
+      overlayData: any;
+      data: object,
+      date_from: any;
+      date_to: any;
+    },
+  },
 };
 
 const initialState: IStateMonitorPage = {
   carActualGpsNumberIndex: {},
-  carInfo: carInfoReducer(undefined, {}),
+  carInfo: carInfoReducer(carInfoInitialState, {}),
   SHOW_GOV_NUMBER: false,
   status: {
     in_move: true,

@@ -13,7 +13,8 @@ import {
   OwnPropsCreatingMap,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/CreatingMap.d';
 import { routeTypesByKey } from 'constants/route';
-import { getTechnicalOperationsObjects } from 'redux-main/trash-actions/technical-operation/technical-operation';
+import { actionGetTechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/technical_operation_objects_actions';
+
 import { OneGeozoneMunicipalFacility } from 'redux-main/trash-actions/geometry/geometry.h';
 import {
   ButtonOdhContainer,
@@ -170,8 +171,20 @@ class CreatingMap extends React.PureComponent<
 
   async getToObjects() {
     const {
-      payload: { technical_operations_object_list },
-    } = await this.props.getTechnicalOperationsObjects();
+      page,
+      path,
+    } = this.props;
+
+    const technical_operations_object_list = await this.props.dispatch(
+      actionGetTechnicalOperationObjects(
+        {},
+        {
+          page,
+          path,
+        },
+      ),
+    );
+
     this.setState({ technical_operations_object_list });
 
     if (this.props.type && this.props.municipal_facility_id) {
@@ -506,21 +519,12 @@ export default connect<
       .geozoneMunicipalFacility.byId,
     objectList: getSomeUniqState(state).geozoneMunicipalFacility.list,
   }),
-  (dispatch, { page, path }) => ({
-    actionGetAndSetInStoreGeozoneMunicipalFacility: (...arg) =>
+  (dispatch: any) => ({
+    actionGetAndSetInStoreGeozoneMunicipalFacility: (...arg) => (
       dispatch(
         someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility(...arg),
-      ),
-    getTechnicalOperationsObjects: () =>
-      dispatch(
-        getTechnicalOperationsObjects(
-          'none',
-          {},
-          {
-            page,
-            path,
-          },
-        ),
-      ),
+      )
+    ),
+    dispatch,
   }),
 )(CreatingMap);

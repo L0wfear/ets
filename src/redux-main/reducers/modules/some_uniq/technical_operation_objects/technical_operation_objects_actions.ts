@@ -23,7 +23,7 @@ export const actionResetTechnicalOperationObjects = (): EtsAction<IStateSomeUniq
   return technicalOperationObjectsList;
 };
 
-export const actionGetTechnicalOperationObjects = (payload: any, meta: LoadingMeta): EtsAction<Promise<TechnicalOperationObjects[]>> => async (dispatch) => {
+export const actionGetTechnicalOperationObjects = (payload: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationObjects>> => async (dispatch) => {
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetTechnicalOperationObjects(payload),

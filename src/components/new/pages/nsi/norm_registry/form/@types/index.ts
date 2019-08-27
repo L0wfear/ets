@@ -20,7 +20,6 @@ export type StatePropsNorm = {
 };
 export type DispatchPropsNorm = {
   actionGetWorkKind: HandleThunkActionCreator<typeof someUniqActions.actionGetWorkKind>;
-  actionGetTechnicalOperationObjects: HandleThunkActionCreator<typeof someUniqActions.actionGetTechnicalOperationObjects>;
   actionGetTechnicalOperationTypes: HandleThunkActionCreator<typeof someUniqActions.actionGetTechnicalOperationTypes>;
   actionGetSensorType: HandleThunkActionCreator<typeof someUniqActions.actionGetSensorType>;
   autobaseGetSetCarFuncTypes: HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCarFuncTypes>;

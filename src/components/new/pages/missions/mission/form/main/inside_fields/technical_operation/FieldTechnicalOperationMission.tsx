@@ -16,6 +16,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { makeOptionsByTechnicalOperationRegistryForMissionList } from './makeOptions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { actionGetAndSetInStoreTechnicalOperationRegistryForMission } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
 
 class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechnicalOperationMission, StateFieldTechnicalOperationMission> {
   state = {
@@ -113,12 +114,14 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
       payload.for_column = true; // ТО только по ОДХ
     }
 
-    const { technicalOperationRegistryForMissionList } = await this.props.actionGetAndSetInStoreTechnicalOperationRegistryForMission(
-      payload,
-      { page, path },
+    const { data } = await this.props.dispatch(
+      actionGetAndSetInStoreTechnicalOperationRegistryForMission(
+        payload,
+        { page, path },
+      ),
     );
 
-    if (!technicalOperationRegistryForMissionList.find(({ id }) => id === this.props.value)) {
+    if (!data.find(({ id }) => id === this.props.value)) {
       this.handleChange(null);
     }
   }
@@ -165,11 +168,7 @@ export default connect<StatePropsFieldTechnicalOperationMission, DispatchPropsFi
     technicalOperationRegistryForMissionList: getSomeUniqState(state).technicalOperationRegistryForMissionList,
   }),
   (dispatch: any) => ({
-    actionGetAndSetInStoreTechnicalOperationRegistryForMission: (...arg) => (
-      dispatch(
-        someUniqActions.actionGetAndSetInStoreTechnicalOperationRegistryForMission(...arg),
-      )
-    ),
+    dispatch,
     actionResetTechnicalOperationRegistryForMission: (...arg) => (
       dispatch(
         someUniqActions.actionResetTechnicalOperationRegistryForMission(...arg),

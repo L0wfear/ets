@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { saveData } from 'utils/functions';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
   registryKey: string;
@@ -20,16 +19,16 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
       registryKey,
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
-    const currentSelectedRow = useSelector(
-      (state: ReduxState) => (
+    const currentSelectedRow = etsUseSelector(
+      (state) => (
         getListData(state.registry, registryKey).data.selectedRow
       ),
     );
 
-    const currentSelectedRowUniqKey = useSelector(
-      (state: ReduxState) => (
+    const currentSelectedRowUniqKey = etsUseSelector(
+      (state) => (
         get(
           getListData(state.registry, registryKey).data.selectedRow,
           getListData(state.registry, registryKey).data.uniqKey,
@@ -37,8 +36,8 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
       ),
     );
 
-    const currentCheckedRows = useSelector(
-      (state: ReduxState) => (
+    const currentCheckedRows = etsUseSelector(
+      (state) => (
         getListData(state.registry, registryKey).data.checkedRows
       ),
     );

@@ -3,6 +3,7 @@ import component from 'components/old/monitor/config-data/components';
 
 export default {
   path: '/monitor',
+  routePath: '/monitor/:gov_number?',
   title: 'Карта',
   entyity: 'monitor',
   noDotList: true,

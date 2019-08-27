@@ -35,7 +35,7 @@ export const CssloadLoader = styled.div`
     text-transform: uppercase;
     color: white;
     font-family: Lato, 'Helvetica Neue';
-    font-weight: 200;
+    font-weight: 500;
     font-size: 10px;
     position: absolute;
     width: 100%;

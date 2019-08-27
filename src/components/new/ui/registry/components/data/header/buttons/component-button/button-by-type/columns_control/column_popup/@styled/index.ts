@@ -21,7 +21,7 @@ export const ColumnPopupContainer = styled.div`
 
     label {
       font-size: 14px;
-      font-weight: 400;
+      font-weight: 500;
     }
   }
 `;

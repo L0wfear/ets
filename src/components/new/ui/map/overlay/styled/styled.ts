@@ -16,7 +16,7 @@ export const EtsOverlayContainer = styled.div`
   flex-direction: column;
 
   white-space: nowrap;
-  font-weight: 200;
+  font-weight: 500;
   border-radius: 10px;
   box-shadow: 0 3px 14px rgba(0, 0, 0, 0.4);
 `;

@@ -18,6 +18,7 @@ import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { IStateOrder } from 'redux-main/reducers/modules/order/@types';
 import { IStateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { IStateInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -38,7 +39,7 @@ export interface ReduxState {
 
   order: IStateOrder; // partial
 
-  monitorPage: any;
+  monitorPage: IStateMonitorPage;
   loading: any;
   etsLoading: any;
   fuelRates: IStateFuelRates;

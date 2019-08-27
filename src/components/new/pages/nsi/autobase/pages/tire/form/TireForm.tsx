@@ -126,13 +126,16 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
       path,
       tireSizeList,
       tireModelList,
-      isPermitterToUpdateInitialMileage,
     } = this.props;
 
     const IS_CREATING = !state.id;
 
     const isGivenAway = state.status === 'given_away' ? false : true;
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
+
+    const isPermitterToUpdateInitialMileage = !IS_CREATING
+    ? (this.props.isPermitterToUpdateInitialMileage && isGivenAway)
+    : this.props.isPermitterToUpdateInitialMileage;
 
     const isPermitted = !IS_CREATING
       ? (this.props.isPermittedToUpdate && isGivenAway)

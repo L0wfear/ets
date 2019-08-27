@@ -1,11 +1,11 @@
 import * as React from 'react';
+
 import useForm from '../useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
-import { useSelector } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /**
  * является ли открытый ПЛ черновиком (IS_DRAFT)
@@ -54,8 +54,8 @@ const useFormDataIsActiveOrIsClosed = (formDataKey: string) => {
  * можно ли редактировать закрытый ПЛ | можно, если нет он последний и нет активного для выбранного тс
  */
 const useFormDataCanEditIfClose = (formDataKey: string) => {
-  const userData = useSelector(
-    (state: ReduxState) => getSessionState(state).userData,
+  const userData = etsUseSelector(
+    (state) => getSessionState(state).userData,
   );
 
   const formState = useForm.useFormDataFormState<Waybill>(formDataKey);
@@ -82,8 +82,8 @@ const useFormDataCanEditIfClose = (formDataKey: string) => {
  * STRUCTURE_FIELD_DELETABLE - возможность удалить
  */
 const useFormDataPickStructureData = (options: Array<any>) => {
-  const userStructureId = useSelector(
-    (state: ReduxState) => getSessionState(state).userData.structure_id,
+  const userStructureId = etsUseSelector(
+    (state) => getSessionState(state).userData.structure_id,
   );
 
   return React.useMemo(
@@ -165,8 +165,8 @@ const useFormDataGetSelectedTrailer = (formDataKey: string) => {
 };
 
 const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string) => {
-  const userData = useSelector(
-    (state: ReduxState) => getSessionState(state).userData,
+  const userData = etsUseSelector(
+    (state) => getSessionState(state).userData,
   );
 
   const waybillFormData = useForm.useFormData<Waybill, WaybillFormStoreType>(formDataKey);

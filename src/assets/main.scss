@@ -520,6 +520,9 @@ body.application {
           .car_text_filter-container {
             display: flex;
             align-items: center;
+            &>div {
+              margin-bottom: 0px;
+            }
             &.multi>div {
               min-width: 250px;
               &>*:nth-of-type(n + 2) {
@@ -952,7 +955,7 @@ body.application {
           margin-top: 0px;
           border-radius: 0 0 3px 3px;
           margin-top: 0px;
-          padding: 2px 5px;
+          padding: 2px 5px !important;
           border-radius: 0 0 3px 3px;
           background: $colorError;
           color: white;

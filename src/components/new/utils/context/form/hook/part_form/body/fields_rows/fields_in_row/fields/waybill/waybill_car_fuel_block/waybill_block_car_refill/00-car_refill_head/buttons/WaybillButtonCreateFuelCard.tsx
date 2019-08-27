@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
 import fuelCardsPermissions from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/permissions';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
@@ -7,11 +6,11 @@ import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBo
 import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
-import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import useForm from 'components/new/utils/context/form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WaybillButtonCreateFuelCardProps = {
   formDataKey: string;
@@ -20,8 +19,8 @@ type WaybillButtonCreateFuelCardProps = {
 const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = React.memo(
   (props) => {
     const [showStatus, setShowStatus] = React.useState(false);
-    const isPermitted = useSelector(
-      (state: ReduxState) => getSessionState(state).userData.permissionsSet.has(fuelCardsPermissions.create),
+    const isPermitted = etsUseSelector(
+      (state) => getSessionState(state).userData.permissionsSet.has(fuelCardsPermissions.create),
     );
     const page = useForm.useFormDataSchemaPage<Waybill>(props.formDataKey);
     const {

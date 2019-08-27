@@ -6,7 +6,7 @@ export const MenuItemAnchorStyled = styled.a`
   display: block;
   padding: 3px 20px;
   clear: both;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.42857143;
   color: #333;
   white-space: nowrap;

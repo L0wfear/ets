@@ -73,6 +73,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   structure_id: null,
   structure_name: '',
   tax_data: [],
+  season: null,
   track_length: null,
   trailer_id: null,
   trailer_type_id: null,

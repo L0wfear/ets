@@ -1,24 +1,16 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import Map from 'ol/Map';
+import { compose } from 'recompose';
 
 import TitleBlock from 'components/old/monitor/info/car-info/title-block/TitleBlock';
 import CarMainDataBlock from 'components/old/monitor/info/car-info/car-main-data-block/CarMainDataBlock';
 import CarTabMenu from 'components/old/monitor/info/car-info/car-tab-menu/CarTabMenu';
-import { carInfoSetGpsNumber } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { compose } from 'recompose';
-import { ReduxState } from 'redux-main/@types/state';
 import { DataContainer } from 'components/old/monitor/styled';
 
-export type StateCarInfo = {
-};
-
 export type StatePropsCarInfo = {};
-export type DispatchPropsCarInfo = {
-  carInfoSetGpsNumber: () => any;
-};
+export type DispatchPropsCarInfo = {};
 export type OwnPropsCarInfo = {
   map: Map,
   centerOn: any;
@@ -30,32 +22,20 @@ export type PropsCarInfo = (
   & OwnPropsCarInfo
 );
 
-class CarInfo extends React.Component<PropsCarInfo, StateCarInfo> {
-  componentWillUnmount() {
-    this.props.carInfoSetGpsNumber();
-  }
-
-  render() {
+const CarInfo: React.FC<PropsCarInfo> = React.memo(
+  (props) => {
     return (
       <DataContainer className="car_info">
         <TitleBlock />
-        <CarMainDataBlock map={this.props.map} centerOn={this.props.centerOn} />
-        <CarTabMenu map={this.props.map} centerOn={this.props.centerOn} />
+        <CarMainDataBlock map={props.map} centerOn={props.centerOn} />
+        <CarTabMenu map={props.map} centerOn={props.centerOn} />
       </DataContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsCarInfo, OwnPropsCarInfo>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'gps_code'],
   }),
-  connect<StatePropsCarInfo, DispatchPropsCarInfo, OwnPropsCarInfo, ReduxState>(
-    null,
-    (dispatch) => ({
-      carInfoSetGpsNumber() {
-        dispatch(carInfoSetGpsNumber(null, null));
-      },
-    }),
-  ),
 )(CarInfo);

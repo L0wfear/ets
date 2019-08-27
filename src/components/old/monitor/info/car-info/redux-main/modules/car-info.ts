@@ -1,6 +1,7 @@
 import { createPath } from 'redux-main/redux-utils';
 import { getStartOfToday } from 'components/@next/@utils/dates/dates';
 import { initialMaxSpeed } from 'components/old/monitor/info/car-info/redux-main/modules/constatnts';
+import { isArray } from 'util';
 
 const CAR_INFO = createPath('CAR_INFO');
 
@@ -24,7 +25,18 @@ export const CAR_INFO_SET_POPUP_TRACK_POINT = CAR_INFO`SET_POPUP_TRACK_POINT`;
 export const CAR_INFO_SET_POPUP_PARKING_POINT = CAR_INFO`SET_POPUP_PARKING_POINT`;
 export const CAR_INFO_SET_POPUP_FUEL_EVENT_POINT = CAR_INFO`SET_POPUP_FUEL_EVENT_POINT`;
 
-export const initialState = {
+export type IStateCarInfo = {
+  trackCaching: {
+    track: number | any[];
+    [k: string]: any;
+  }
+  [k: string]: any;
+};
+
+export const getTrackDefaultDateStart = () => getStartOfToday();
+export const getTrackDefaultDateEnd = () => new Date();
+
+export const initialState: IStateCarInfo = {
   gps_code: null,
   gov_number: null,
   missionsData: {
@@ -67,8 +79,8 @@ export const initialState = {
   },
   status: 0,
   forToday: true,
-  date_start: getStartOfToday(),
-  date_end: new Date(),
+  date_start: getTrackDefaultDateStart(),
+  date_end: getTrackDefaultDateEnd(),
   playTrack: {
     status: 'stop',
     trackPointIndex: 0,
@@ -83,15 +95,15 @@ export const initialState = {
   },
 };
 
-export default (state: any = initialState, { type, payload }: any) => {
+export default (state = initialState, { type, payload }: any) => {
   switch (type) {
     case CAR_INFO_SET_GPS_CODE: {
       const newState = {
         ...initialState,
         gps_code: payload.gps_code,
         gov_number: payload.gov_number,
-        date_start: getStartOfToday(),
-        date_end: new Date(),
+        date_start: getTrackDefaultDateStart(),
+        date_end: getTrackDefaultDateEnd(),
       };
 
       return newState;
@@ -127,6 +139,7 @@ export default (state: any = initialState, { type, payload }: any) => {
             speed_lim: payload.speed_lim,
 
             carTabInfo: payload.carTabInfo,
+            isLoading: false,
           },
         };
       }
@@ -143,12 +156,17 @@ export default (state: any = initialState, { type, payload }: any) => {
         return state;
       }
 
+      let lastTrackData = [];
+      if (isArray(state.trackCaching.track)) {
+        lastTrackData = state.trackCaching.track;
+      }
+
       return {
         ...state,
         trackCaching: {
           ...state.trackCaching,
           track: [
-            ...state.trackCaching.track,
+            ...lastTrackData,
             {
               ...payload.point,
               speed_avg: payload.point.speed,
@@ -161,8 +179,8 @@ export default (state: any = initialState, { type, payload }: any) => {
       return {
         ...state,
         forToday: !state.forToday,
-        date_start: !state.forToday ? getStartOfToday() : state.date_start,
-        date_end: !state.forToday ? new Date() : state.date_end,
+        date_start: !state.forToday ? getTrackDefaultDateStart() : state.date_start,
+        date_end: !state.forToday ? getTrackDefaultDateEnd() : state.date_end,
       };
     }
     case CAR_INFO_RESET_TRACK_CACHING: {

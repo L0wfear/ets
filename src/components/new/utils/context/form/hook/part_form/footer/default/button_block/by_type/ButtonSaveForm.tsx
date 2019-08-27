@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
 
 import useFormData from 'components/new/utils/context/form/hook_selectors/useForm';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type ButtonSaveFormProps = {
   formDataKey: string;
@@ -19,7 +19,7 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
     const page = useFormData.useFormDataSchemaPage(props.formDataKey);
     const path = useFormData.useFormDataSchemaPath(props.formDataKey);
 
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
     const handleSubmit = React.useCallback(
       async () => {

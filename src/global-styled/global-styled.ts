@@ -30,6 +30,10 @@ export const SpanRed = styled.span`
   color: ${UiConstants.colorError};
 `;
 
+export const ColorSpan = styled.span<{ color: string }>`
+  color: ${({ color }) => color};
+`;
+
 export const MarkNewRegistry = styled.div`
   width: 5px;
   height: 5px;

@@ -13,7 +13,6 @@ import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import {
-  carInfoSetGpsNumber,
   carInfoSetStatus,
   carInfoPushPointIntoTrack,
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
@@ -37,6 +36,7 @@ import {
 import { isEmpty } from 'lodash';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 let updatePoints = true;
 const MIN_ZOOM_VAL = 3;
@@ -166,6 +166,7 @@ class LayerCarMarker extends React.PureComponent<
         lastPoint !== prevProps.lastPoint &&
         this.props.forToday &&
         !isEmpty(odh_mkad)
+        && this.state.carPointsDataWs[gps_code]
       ) {
         const {
           carPointsDataWs: { [gps_code]: carPointData },
@@ -558,12 +559,9 @@ class LayerCarMarker extends React.PureComponent<
   singleclick = (feature) => {
     const gps_code = (feature as any).getId();
     if (gps_code !== this.props.gps_code) {
-      this.props.carInfoSetGpsNumber(
-        gps_code,
-        this.props.carActualGpsNumberIndex[gps_code]
-          ? this.props.carActualGpsNumberIndex[gps_code].gov_number
-          : null,
-      );
+      this.props.setParams({
+        gov_number: this.props.carActualGpsNumberIndex[gps_code].gov_number,
+      });
     }
   };
 
@@ -592,9 +590,6 @@ const mapStateToProps = (state: ReduxState) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  carInfoSetGpsNumber(gps_code, gov_number) {
-    dispatch(carInfoSetGpsNumber(gps_code, gov_number));
-  },
   carInfoSetStatus(status) {
     dispatch(carInfoSetStatus(status));
   },
@@ -610,6 +605,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default compose<any, any>(
+  withSearch,
   connect(
     mapStateToProps,
     mapDispatchToProps,

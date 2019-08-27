@@ -10,8 +10,6 @@ import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autoba
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { useSelector, useDispatch } from 'react-redux';
 import {
   OwnRoadAccidentProps,
   PropsRoadAccident,
@@ -26,14 +24,13 @@ import roadAccidentPermissions from '../_config-data/permissions';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
 import FieldRoadAccidentDriverId from './inside_fields/driver_id/FieldRoadAccidentDriverId';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const [roadAccidentCauseOptions, setRoadAccidentCauseOptions] = React.useState([]);
   const [roadAccidentCauseIsLoading, setRoadAccidentCauseIsLoading] = React.useState(false);
-  const dispatch = useDispatch();
-  const userCompanyId = useSelector(
-    (stateRedux: ReduxState) => getSessionState(stateRedux).userData.company_id,
-  );
+  const dispatch = etsUseDispatch();
+  const userCompanyId = etsUseSelector((stateRedux) => getSessionState(stateRedux).userData.company_id);
 
   const {
     formState: state,

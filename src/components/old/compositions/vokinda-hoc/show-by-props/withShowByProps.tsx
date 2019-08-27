@@ -10,7 +10,7 @@ import { isArray, isUndefined, isNullOrUndefined, isObject } from 'util';
 import { ReduxState } from 'redux-main/@types/state';
 
 type TypeConfigToShow = {
-  path: string[],                                                           // path.to.проверяемое.свойство
+  path: string | string[],                                                  // path.to.проверяемое.свойство
   checkErrorPath?: string[];                                                // path.to.error
   canNull?: boolean;                                                        // может ли значение быть нуловом после ответа
   type?: 'loader-field' | 'small-loader-field' | 'hidden' | 'none',         // что отображать вместо (прелоадер/ ничего)

@@ -3,7 +3,7 @@ import { keyBy } from 'lodash';
 
 import { compose } from 'recompose';
 import triggerOnChangeCompany from 'components/old/compositions/vokinda-hoc/trigger-on-change-company/triggerOnChangeCompany';
-import { connect, HandleThunkActionCreator, useDispatch } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
@@ -21,6 +21,8 @@ import { MonitorPageContainer } from 'components/old/monitor/styled';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { MonitorSearchParams } from 'components/old/monitor/monitor_search_params';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type StateProps = {
   token: InitialStateSession['token'];
@@ -43,7 +45,7 @@ type PropsMonitorPage = (
 
 const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
   (props) => {
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
     React.useEffect(
       () => {
@@ -94,6 +96,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
         <MonitorPageContainer>
           <MapWrap />
           <ToolBar />
+          <MonitorSearchParams />
         </MonitorPageContainer>
       :
         <div>загрузка...</div>

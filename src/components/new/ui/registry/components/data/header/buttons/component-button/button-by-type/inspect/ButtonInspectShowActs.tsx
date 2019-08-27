@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ReduxState } from 'redux-main/@types/state';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { inspect_types } from './constant';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from './forms/show_acts/registry/permissions';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
   registryKey: string;
@@ -21,12 +20,12 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
       registryKey,
     } = props;
 
-    const isPermittedUpdate = useSelector(
-      (state: ReduxState) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.read),
+    const isPermittedUpdate = etsUseSelector(
+      (state) => getSessionState(state).userData.permissionsSet.has(inspectActScanPermissions.read),
     );
 
-    const currentSelectedRowUniqKey = useSelector(
-      (state: ReduxState) => (
+    const currentSelectedRowUniqKey = etsUseSelector(
+      (state) => (
         get(
           getListData(state.registry, registryKey).data.selectedRow,
           getListData(state.registry, registryKey).data.uniqKey,

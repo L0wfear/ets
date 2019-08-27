@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import MissionInfoFormWrap from './MissionInfoFormWrap';
-import { useDispatch } from 'react-redux';
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = {
   element: Partial<Mission>;
@@ -15,7 +15,7 @@ const MissionInfoFormById: React.FC<Props> = React.memo(
   (props) => {
     const [missionInfoElement, setMissionInfoElement] = React.useState(null);
 
-    const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
     React.useEffect(
       () => {

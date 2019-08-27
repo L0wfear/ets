@@ -23,6 +23,8 @@ export type FuelRate = {
   operation_id: number | null;
   operation_name: string | null;
   order_date: string | null;
+  rate_on_date?: number;
+  season?: string;
   summer_rate: number | null;
   winter_rate: number | null;
 };

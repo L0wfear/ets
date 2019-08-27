@@ -95,7 +95,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
           };
 
           dispatch(fetchTrack(payload));
-          dispatch(fetchCarInfo(payload));
+          dispatch(fetchCarInfo(payload, { page: 'mainpage' }));
         }
       },
       [date_start, date_end, carData],

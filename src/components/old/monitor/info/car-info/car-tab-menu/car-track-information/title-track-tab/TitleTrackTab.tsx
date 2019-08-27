@@ -231,7 +231,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   carInfoToggleForToday: () => dispatch(carInfoToggleForToday()),
   changeDate: (field, value) => dispatch(carInfoChangeDate(field, value)),
-  fetchMissionsData: (props) => dispatch(fetchCarInfo(props)),
+  fetchMissionsData: (props) => dispatch(fetchCarInfo(props, { page: 'mainpage' })),
   dispatch,
 });
 

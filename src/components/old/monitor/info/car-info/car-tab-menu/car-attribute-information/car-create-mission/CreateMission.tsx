@@ -97,10 +97,15 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   fetchMissionsData: (props) =>
     dispatch(
-      fetchCarInfo({
-        asuods_id: props.asuods_id,
-        gps_code: props.gps_code,
-      }),
+      fetchCarInfo(
+        {
+          asuods_id: props.asuods_id,
+          gps_code: props.gps_code,
+        },
+        {
+          page: 'mainpage',
+        },
+      ),
     ),
 });
 

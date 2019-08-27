@@ -153,10 +153,15 @@ export default connect<any, CarMissionsDispatchProps, any, ReduxState>(
     ),
     fetchMissionsData: (props) => {
       return dispatch(
-        fetchCarInfo({
-          asuods_id: props.asuods_id,
-          gps_code: props.gps_code,
-        }),
+        fetchCarInfo(
+          {
+            asuods_id: props.asuods_id,
+            gps_code: props.gps_code,
+          },
+          {
+            page: 'mainpage',
+          },
+        ),
       );
     },
   }),

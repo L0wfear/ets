@@ -58,8 +58,8 @@ class TitleTrackTab extends React.Component<
   state = {
     gps_code: this.props.gps_code,
     errorDates: '',
-    date_start: this.props.searchState.date_start,
-    date_end: this.props.searchState.date_end,
+    date_start: this.props.searchState.date_start || createValidDateTime(getTrackDefaultDateStart()),
+    date_end: this.props.searchState.date_end || createValidDateTime(getTrackDefaultDateEnd()),
   };
 
   static getDerivedStateFromProps(nextProps: PropsTitleTrackTab, prevState: StateTitleTrackTab) {

@@ -4,9 +4,9 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { carInfoSetGpsNumber, fetchTrack, fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
+import { carInfoSetGpsNumber, fetchTrack, fetchCarInfo, carInfoToggleForToday } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 import { getTrackDefaultDateStart, getTrackDefaultDateEnd } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
@@ -70,8 +70,8 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
         if (gov_number !== gov_number_old) {
           if (gov_number) {
             props.setDataInSearch({
-              date_start: createValidDateTime(getTrackDefaultDateStart()),
-              date_end: createValidDateTime(getTrackDefaultDateEnd()),
+              date_start: createValidDateTime(!gov_number_old && date_start || getTrackDefaultDateStart()),
+              date_end: createValidDateTime(!gov_number_old && date_end || getTrackDefaultDateEnd()),
             });
           } else {
             props.setDataInSearch({
@@ -100,6 +100,36 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
       },
       [date_start, date_end, carData],
     );
+
+    /****************************** end ******************************/
+    /****************************** for_today ******************************/
+    const for_today = etsUseSelector((state) => getMonitorPageState(state).carInfo.forToday);
+
+    React.useEffect(
+      () => {
+        const intervalId = setInterval(
+          () => {
+            const datesIsMove = (
+              diffDates(getTrackDefaultDateStart(), date_start)
+              || diffDates(createValidDateTime(getTrackDefaultDateEnd()), date_end)
+            );
+
+            if (carData.data && datesIsMove && for_today) {
+              dispatch(
+                carInfoToggleForToday(),
+              );
+            }
+          },
+          1000,
+        );
+
+        return () => {
+          clearInterval(intervalId);
+        };
+      },
+      [carData, date_start, date_end, for_today],
+    );
+    /****************************** end ******************************/
 
     React.useEffect(
       () => {

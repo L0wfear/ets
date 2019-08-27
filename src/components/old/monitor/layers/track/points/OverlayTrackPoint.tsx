@@ -123,11 +123,11 @@ class OverlayTrackPoint extends React.Component<Props, any> {
           page: 'mainpage',
         },
       ),
-    ).then((missions) => {
+    ).then((result) => {
         this.setState({
           trackPoint: {
             ...this.state.trackPoint,
-            missions,
+            missions: result.missions,
           },
         });
       });

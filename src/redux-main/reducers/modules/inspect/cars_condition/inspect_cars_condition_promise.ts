@@ -5,7 +5,7 @@ import {
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
-import { InspectCarsService } from "api/Services";
+import { InspectCarsService, InspectConfigService, } from "api/Services";
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 // дефолтное значение для "Руководитель предприятия"
@@ -127,6 +127,14 @@ export const promiseCreateInspectionCarsCondition = async (payload: { carsCondit
 
 export const promiseGetSetCarsConditionCars = async (inspection_id: number) => {
   const response = await InspectCarsService.get({ inspection_id });
+
+  const result = get(response, 'result.rows', []);
+
+  return result;
+};
+
+export const promiseGetInspectConfig = async () => {
+  const response = await InspectConfigService.get();
 
   const result = get(response, 'result.rows', []);
 

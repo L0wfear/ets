@@ -126,6 +126,26 @@ export type CarsConditionCars = {
   was_resaved: boolean;
   state_exploitation: string;
   vin: string;
+  vin_incorrect: boolean;
+  self_tm_repair: boolean;
+  last_repair: boolean;
+  body_number_incorrect: boolean;
+  vin_by_hand: string;
+  last_repair_company: string;
+  body_number: string;
+  body_number_by_hand: string;
+  manufactured_at: string;
+  environmental_class: string;
+  engine_type: string;
+  origin_country: string;
+  kind: string;
+  given_at: string;
+  exploitation_date_start: string;
+  kind_purchase: string;
+  gby_district: string;
+  gby_operation_district: string;
+  last_tm_repair_company: string;
+  max_weight: number;
   odometr_fact: number | null;
   motohours_fact: number | null;
   status_at_check: string;
@@ -140,15 +160,11 @@ export type CarsConditionCars = {
   updated_at: string;
   season: string;
   data: {
-    no_status_docs: boolean;
     defects_body: boolean;
     defects_chassis: boolean;
     defects_attachments: boolean;
     incomplete_equipment: boolean;
     liquids_leak: boolean;
-    no_glonass: boolean;
-    logos_not_required: boolean;
-    no_logos: boolean;
 
     does_not_start: boolean;
     broken_chassis: boolean;
@@ -169,7 +185,6 @@ export type CarsConditionCars = {
     act_readiness_not_issued: boolean;
 
     untimely_maintenance: boolean;
-    technical_inspection_not_passed: boolean;
     not_ready_to_work: boolean;
     comments: string;
 
@@ -177,6 +192,15 @@ export type CarsConditionCars = {
     mission_numbers?: number;
     not_passed_verification_glonass?: boolean;
     reason_repair?: string;
+    repair_application: string;
+    classifier: string;
+    tech_inspection_passed: string;
+    glonass_stationary: string;
+    glonass_registered: string;
+    logo: string;
+    tech_condition: string;
+    repair_from_date: string;
+    repair_reason: string;
   };
   files: any[];
 };

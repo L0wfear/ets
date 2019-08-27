@@ -142,3 +142,8 @@ export const ButtonGroupWrapperMargin = styled.div`
     }
   }
 `;
+
+export const HrDelimiter = styled.div`
+  border-bottom: 1px solid #ddd;
+  margin: 30px 0px;
+`;

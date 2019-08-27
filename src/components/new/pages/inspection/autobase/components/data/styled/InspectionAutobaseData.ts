@@ -10,4 +10,7 @@ export const BoxContainer = styled.div`
   h4 {
     font-weight: 600;
   }
+  h2 {
+    margin-top: 0px;
+  }
 `;

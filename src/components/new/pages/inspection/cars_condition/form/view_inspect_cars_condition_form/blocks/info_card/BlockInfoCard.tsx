@@ -77,6 +77,7 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
         <BlockCarInfoWrap
           handleHide={handleHideCarInfo}
           carsConditionCarsList={props.carsConditionCarsList}
+          handleChangeData={props.handleChangeData}
           type={props.type}
           page={props.page}
         />

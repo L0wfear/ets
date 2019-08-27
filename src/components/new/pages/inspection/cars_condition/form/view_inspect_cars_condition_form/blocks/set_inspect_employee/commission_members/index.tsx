@@ -50,19 +50,19 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
     return (
       <React.Fragment>
         <h4>Подписанты:</h4>
-        {
-          Boolean(props.error) && (
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <ErrorsBlock
-                  error={props.error}
-                />
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-          )
-        }
         <div>
           <h5>Проверяющие от Доринвеста:</h5>
+          {
+            Boolean(props.error) && (
+              <EtsBootstrap.Row>
+                <EtsBootstrap.Col md={12}>
+                  <ErrorsBlock
+                    error={props.error}
+                  />
+                </EtsBootstrap.Col>
+              </EtsBootstrap.Row>
+            )
+          }
           <div>
             {
               props.commission_members.map((commissionEmployee, index) => (

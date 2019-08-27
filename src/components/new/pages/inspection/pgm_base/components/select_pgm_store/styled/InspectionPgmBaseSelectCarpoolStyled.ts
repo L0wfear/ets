@@ -4,8 +4,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 export const InstectionBlockSelect = styled(EtsBootstrap.Row)`
   margin-top: 10px;
   margin-bottom: 10px;
-
-  padding: 0 40px;
 `;
 
 export const SelectLabel = styled(EtsBootstrap.Col)`

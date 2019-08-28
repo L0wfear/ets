@@ -8,6 +8,7 @@ import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autoba
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import { AgentsFromGbuWrapper } from './styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { CommissionMembersDataContainer } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/commission_members/styled';
 
 type AgentsFromGbuProps = {
   isPermittedChangeListParams: boolean;
@@ -59,7 +60,7 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             </EtsBootstrap.Row>
           )
         }
-        <div>
+        <CommissionMembersDataContainer>
           {
             props.agents_from_gbu.map((agent, index) => (
               <ViewAgentFromGbuEmployee
@@ -74,11 +75,11 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
               />
             ))
           }
-          <RowAddRowAddAgentFromGbu
-            isPermitted={props.isPermittedChangeListParams}
-            handleAddChangeRowAddAgentFromGbu={handleAddChangeRowAddAgentFromGbu}
-          />
-        </div>
+        </CommissionMembersDataContainer>
+        <RowAddRowAddAgentFromGbu
+          isPermitted={props.isPermittedChangeListParams}
+          handleAddChangeRowAddAgentFromGbu={handleAddChangeRowAddAgentFromGbu}
+        />
       </AgentsFromGbuWrapper>
     );
   },

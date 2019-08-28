@@ -42,7 +42,7 @@ const docAddPage = (doc: DocExportCar, orientation?: 'portrait' | 'landscape') =
   return doc;
 };
 
-const editParam = 8 * window.devicePixelRatio;
+const editParam = 4 * 2;
 
 const mapKey = 'HiddenMapCarExport';
 

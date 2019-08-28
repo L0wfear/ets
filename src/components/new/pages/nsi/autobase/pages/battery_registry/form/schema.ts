@@ -4,6 +4,7 @@ import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/aut
 import memoizeOne from 'memoize-one';
 import { diffDates, diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
+import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_to_car'], type: 'start' | 'end') => {
   if (!date) {
@@ -28,12 +29,12 @@ const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_
   );
 };
 
-const oldestInstalledDateIndex = (battery_to_car: BatteryRegistry['battery_to_car']) => {
+export const oldestInstalledDateIndex = (list_elem_to_car: BatteryRegistry['battery_to_car'] | Tire['tire_to_car']) => {
   let olderIndex = 0;
   // Поиск индекса самой старой даты
-  if (battery_to_car.length) {
-    battery_to_car.forEach((elem, index) => {
-      const firstData =  createValidDate(get(battery_to_car[olderIndex], 'installed_at', null ));
+  if (list_elem_to_car.length) {
+    list_elem_to_car.forEach((elem, index) => {
+      const firstData =  createValidDate(get(list_elem_to_car[olderIndex], 'installed_at', null ));
       const secondDate = createValidDate(get(elem, 'installed_at', null));
       if ( elem.installed_at && diffDates( firstData, secondDate ) < 0) {
         olderIndex = index;

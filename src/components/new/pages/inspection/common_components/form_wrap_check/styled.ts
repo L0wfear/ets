@@ -18,11 +18,15 @@ export const TitleForm = styled(EtsBootstrap.Col)`
 `;
 
 export const ContainerForm = styled.div`
-  padding: 15px 0px;
-
+  padding: 10px 0px;
   flex-grow: 10;
-
   overflow: auto;
+
+  .col-md-6 {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
 `;
 
 export const FooterForm = styled(EtsBootstrap.Col)`

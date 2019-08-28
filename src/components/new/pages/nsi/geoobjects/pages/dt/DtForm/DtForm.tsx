@@ -122,6 +122,7 @@ class DtForm extends React.PureComponent<PropsDtForm, StateDtForm> {
                 emptyValue={null}
                 onChange={this.handleChangeCompanyStructure}
                 boundKeys="company_structure_id"
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

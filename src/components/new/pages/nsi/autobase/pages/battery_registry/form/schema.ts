@@ -28,8 +28,9 @@ const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_
   );
 };
 
-const olderInstalledDateIndex = (battery_to_car: BatteryRegistry['battery_to_car']) => {
+const oldestInstalledDateIndex = (battery_to_car: BatteryRegistry['battery_to_car']) => {
   let olderIndex = 0;
+  // Поиск индекса самой старой даты
   if (battery_to_car.length) {
     battery_to_car.forEach((elem, index) => {
       const firstData =  createValidDate(get(battery_to_car[olderIndex], 'installed_at', null ));
@@ -78,6 +79,9 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
           (battery_to_car) => {
             return battery_to_car.map(
               (d, index) => {
+                const oldestDateIndex = oldestInstalledDateIndex(battery_to_car);
+                const installed_at_oldest = createValidDate(get(battery_to_car[oldestDateIndex], 'installed_at', null ));
+                const installed_at_current = createValidDate(get(d, 'installed_at', null ));
                 return ({
                   car_id: (
                     !d.car_id
@@ -94,7 +98,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                     )
                   ),
                   uninstalled_at: (
-                    !d.uninstalled_at && olderInstalledDateIndex(battery_to_car) !== index
+                    !d.uninstalled_at && installed_at_oldest !== installed_at_current
                       ? 'Поле "Дата демонтажа" должно быть заполнено'
                       : (
                         d.uninstalled_at

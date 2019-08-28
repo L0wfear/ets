@@ -105,8 +105,8 @@ class TitleTrackTab extends React.Component<
 
   handleChangeDate = (field: 'date_start' | 'date_end', value: any) => {
     if (value) {
-      const date_start = this.props.searchState.date_start;
-      const date_end = this.props.searchState.date_end;
+      const date_start = this.state.date_start;
+      const date_end = this.state.date_end;
 
       const partialState = {
         date_start,

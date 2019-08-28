@@ -8,6 +8,7 @@ import InspectionPgmBaseFormLazy from 'components/new/pages/inspection/pgm_base/
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { InspectionPgmBaseListProps } from './@types/InspectionPgmBaseList';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const loadingPage = 'inspectionPgmBase';
 
@@ -15,9 +16,17 @@ const InspectionPgmBaseList: React.FC<InspectionPgmBaseListProps> = (props) => {
   return (
     <>
       <EtsGreyPageWrap>
-        <InspectionTitle title="Мониторинг состояния баз хранения ПГМ" />
-        <InspectionPgmBaseSelectData loadingPage={loadingPage} />
-        <InspectionPgmBaseData loadingPage={loadingPage} />
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
+            <InspectionTitle title="Мониторинг состояния баз хранения ПГМ" />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={4}>
+            <InspectionPgmBaseSelectData loadingPage={loadingPage} />
+          </EtsBootstrap.Col>
+          <InspectionPgmBaseData loadingPage={loadingPage} />
+        </EtsBootstrap.Row>
       </EtsGreyPageWrap>
       <InspectionPgmBaseFormLazy loadingPage={loadingPage} {...props}/>
     </>

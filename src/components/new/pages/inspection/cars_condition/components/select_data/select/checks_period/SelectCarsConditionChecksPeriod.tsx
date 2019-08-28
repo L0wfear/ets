@@ -101,12 +101,12 @@ const SelectCarsConditionChecksPeriod: React.FC<SelectCarsConditionChecksPeriodP
 
   return (
     <InstectionBlockSelect disabled={notSelect}>
-      <SelectLabel md={2} sm={2}>
+      <SelectLabel md={3} sm={2}>
           <h5>
             Период проверки
           </h5>
         </SelectLabel>
-        <SelectField md={4} sm={6}>
+        <SelectField md={9} sm={6}>
           <ExtField
             type="select"
             placeholder={notSelect ? '' : undefined}

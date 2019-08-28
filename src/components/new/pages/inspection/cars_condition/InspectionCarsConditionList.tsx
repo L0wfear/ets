@@ -21,12 +21,16 @@ const InspectionCarsConditionList: React.FC<InspectionCarsConditionListProps> = 
     <>
       <EtsGreyPageWrap>
         <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={6}>
+          <EtsBootstrap.Col md={12}>
             <InspectionTitle title="Мониторинг транспортных средств" />
-            <InspectionCarsConditionSelectData loadingPage={loadingPage} />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
-        <InspectionCarsConditionData loadingPage={loadingPage} />
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={4}>
+            <InspectionCarsConditionSelectData loadingPage={loadingPage} />
+          </EtsBootstrap.Col>
+          <InspectionCarsConditionData loadingPage={loadingPage} />
+        </EtsBootstrap.Row>
       </EtsGreyPageWrap>
       <InspectionCarsConditionFormLazy loadingPage={loadingPage} {...props}/>
     </>

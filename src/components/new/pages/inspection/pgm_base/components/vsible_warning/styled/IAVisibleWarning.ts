@@ -10,7 +10,8 @@ export const IAVisibleWarningInputContainer = styled.div<{ sub?: number }>`
   }
 `;
 
-export const SubHeader = styled.div`
+export const SubHeader = styled.h5`
   font-size: 16px;
+  font-weight: 500!important;
   margin: 10px 0px;
 `;

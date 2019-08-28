@@ -95,12 +95,12 @@ const SelectCarpool: React.FC<SelectCarpoolProps> = (props) => {
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={1} sm={1}>
+      <SelectLabel md={3} sm={1}>
         <h5>
         Автобаза
         </h5>
       </SelectLabel>
-      <SelectField md={4} sm={6}>
+      <SelectField md={9} sm={6}>
         <ExtField
           type="select"
           value={carpoolId}

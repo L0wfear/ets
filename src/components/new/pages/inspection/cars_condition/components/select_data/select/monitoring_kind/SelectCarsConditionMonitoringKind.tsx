@@ -90,23 +90,23 @@ const SelectCarsConditionMonitoringKind: React.FC<SelectCarsConditionMonitoringK
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={2} sm={2}>
-          <h5>
-            Вид мониторинга
-          </h5>
-        </SelectLabel>
-        <SelectField md={4} sm={6}>
-          <ExtField
-            type="select"
-            label={false}
-            value={monitoringKind}
-            options={monitoringKindOptions}
-            onChange={setMonitoringKindId}
-            clearable={false}
-            disabled={status !== INSPECT_STATUS.noToday}
-          />
-        </SelectField>
-      </InstectionBlockSelect>
+      <SelectLabel md={3} sm={3}>
+        <h5>
+          Вид мониторинга
+        </h5>
+      </SelectLabel>
+      <SelectField md={9} sm={7}>
+        <ExtField
+          type="select"
+          label={false}
+          value={monitoringKind}
+          options={monitoringKindOptions}
+          onChange={setMonitoringKindId}
+          clearable={false}
+          disabled={status !== INSPECT_STATUS.noToday}
+        />
+      </SelectField>
+    </InstectionBlockSelect>
   );
 };
 

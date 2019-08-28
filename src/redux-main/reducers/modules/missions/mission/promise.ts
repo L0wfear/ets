@@ -47,7 +47,7 @@ export const getFrontMission = (missionRaw: any) => {
 };
 
 export const getBackMission = (missionRaw: any, index): Mission => {
-  const mission: Mission = cloneDeep(missionRaw);
+  const mission: Mission & { action_at: string, } = cloneDeep(missionRaw);
 
   mission.car_gov_number = get(mission.car_gov_number, index, null);
   mission.car_id = get(mission.car_ids, index, null);
@@ -57,6 +57,11 @@ export const getBackMission = (missionRaw: any, index): Mission => {
   mission.car_special_model_name = get(mission.car_special_model_names, index, null);
   mission.norm_id = get(mission.norm_ids, index, null);
 
+  const action_at = get(mission, 'action_at', null);
+  if (action_at) {
+    mission.action_at = createValidDateTime(action_at);
+  }
+
   delete mission.car_gov_numbers;
   delete mission.car_ids;
   delete mission.car_type_ids;
@@ -64,7 +69,6 @@ export const getBackMission = (missionRaw: any, index): Mission => {
   delete mission.car_model_names;
   delete mission.car_special_model_names;
   delete mission.norm_ids;
-
   return mission;
 };
 

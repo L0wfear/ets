@@ -87,7 +87,7 @@ const ButtonFailMission: React.FC<ButtonFailMissionProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id="duty_mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
+      <EtsBootstrap.Button id="mission-reject" bsSize="small" onClick={handleClickFail} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="ban-circle" /> Не выполнено / Отменено
       </EtsBootstrap.Button>
       {

@@ -9,6 +9,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import InspectionActionMenu from './action_menu/InspectionActionMenu';
 import InspectionRegistry from '../registry/InspectRegistry';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class InspectionData extends React.Component<InspectionDataProps, { isLoaded: boolean }> {
   state = {
@@ -81,15 +82,19 @@ class InspectionData extends React.Component<InspectionDataProps, { isLoaded: bo
       this.state.isLoaded
         ? (
           <>
-            <InspectionActionMenu
-              loadingPage={this.props.loadingPage}
-              loadRegistryData={this.loadRegistryData}
-              type={this.props.type}
-              triggerKey={this.props.triggerKey}
-              makePayloadToCreateInspect={this.props.makePayloadToCreateInspect}
-              LineDataCarsLast={this.props.LineDataCarsLast}
-            />
-            <InspectionRegistry registryKey={this.props.loadingPage}/>
+            <EtsBootstrap.Col md={8}>
+              <InspectionActionMenu
+                loadingPage={this.props.loadingPage}
+                loadRegistryData={this.loadRegistryData}
+                type={this.props.type}
+                triggerKey={this.props.triggerKey}
+                makePayloadToCreateInspect={this.props.makePayloadToCreateInspect}
+                LineDataCarsLast={this.props.LineDataCarsLast}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={12}>
+              <InspectionRegistry registryKey={this.props.loadingPage}/>
+            </EtsBootstrap.Col>
           </>
         )
         : (

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
 
 export const TitleForm = styled(EtsBootstrap.Col)`
   display: flex;
@@ -8,13 +9,16 @@ export const TitleForm = styled(EtsBootstrap.Col)`
   align-items: center;
 
   padding: 5px 20px;
-  background-color: #f1f1f1;
+  background-color: #6a9e56;
+  color: #ffffff;
   flex-shrink: 0;
-  border-bottom: 1px solid black;
+  &&& ${ButtonStyled} {
+    background-color: transparent;
+  }
 `;
 
 export const ContainerForm = styled.div`
-  padding: 5px 0px;
+  padding: 15px 0px;
 
   flex-grow: 10;
 
@@ -22,8 +26,8 @@ export const ContainerForm = styled.div`
 `;
 
 export const FooterForm = styled(EtsBootstrap.Col)`
-  border-top: 1px solid black;
-  background-color: #f1f1f1;
+  background-color: #ffffff;
+  border-top: solid 1px #4c4c4c;
   padding: 5px 20px;
   flex-shrink: 0;
 `;
@@ -48,7 +52,7 @@ export const PopupBottomForm = styled.form<{ show: boolean }>`
   transition: all 500ms;
   opacity: ${({ show }) => show ? 1 : 0};
   transform: ${({ show }) => show ? 'translate(0, 0)' : 'translate(0, 100%)'};
-  background-color: #fafafa;
+  background-color: #eeeeee;
 
   display: flex;
   flex-direction: column;

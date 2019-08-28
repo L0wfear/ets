@@ -34,5 +34,5 @@ export const BigPaddingButton = styled(EtsBootstrap.Button)`
 `;
 
 export const InspectInfo = styled.div`
-  padding: 0 40px;
+  padding: 0;
 `;

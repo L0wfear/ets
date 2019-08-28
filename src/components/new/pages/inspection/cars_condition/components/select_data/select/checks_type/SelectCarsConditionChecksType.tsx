@@ -90,12 +90,12 @@ const SelectCarsConditionChecksType: React.FC<SelectCarsConditionChecksTypeProps
 
   return (
     <InstectionBlockSelect>
-      <SelectLabel md={2} sm={2}>
+      <SelectLabel md={3} sm={2}>
           <h5>
             Тип проверки
           </h5>
         </SelectLabel>
-        <SelectField md={4} sm={6}>
+        <SelectField md={9} sm={6}>
           <ExtField
             type="select"
             label={false}

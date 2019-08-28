@@ -3,6 +3,7 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 export type EtsPageWrapProps = {
   inheritDisplay?: boolean;
   autoHeight?: boolean;
+  smallPaddings?: boolean;
 };
 
 export const DivRelative = styled.div`
@@ -48,6 +49,19 @@ export const EtsPageWrap = styled.div<EtsPageWrapProps>`
   height: 100%;
 
   padding: 10px 15px;
+  overflow: auto;
+
+  &:focus {
+    outline: 0px !important;
+    -webkit-appearance: none;
+  }
+`;
+
+export const EtsGreyPageWrap = styled.div<EtsPageWrapProps>`
+  position: relative;
+  height: 100%;
+  background: #eeeeee;
+  padding:  ${ ({ smallPaddings }) => smallPaddings ? '10px 0px' : '10px 15px' };
   overflow: auto;
 
   &:focus {

@@ -532,7 +532,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             );
           }
 
-          doc.save(`Информация о ${gov_number} за ${getFormattedDateTime(date_start)} ${getFormattedDateTime(date_end)}.pdf`);
+          doc.save(`Информация о ${gov_number} за ${getFormattedDateTime(date_start)} - ${getFormattedDateTime(date_end)}.pdf`);
         } catch (error) {
           console.log(error); // tslint:disable-line
         }

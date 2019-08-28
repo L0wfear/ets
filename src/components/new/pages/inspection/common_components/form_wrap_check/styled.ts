@@ -22,7 +22,7 @@ export const ContainerForm = styled.div`
   flex-grow: 10;
   overflow: auto;
 
-  .col-md-6 {
+  &>.col-md-6 {
     padding-right: 5px;
     padding-left: 5px;
   }

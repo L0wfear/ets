@@ -2,7 +2,9 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates, diffDatesByDays } from 'components/@next/@utils/dates/dates';
+import { diffDates, diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
+import { get } from 'lodash';
+import { oldestInstalledDateIndex } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 
 const validateDateInsideOther = (date, tire_to_car: Tire['tire_to_car']) => {
   if (!date) {
@@ -53,6 +55,9 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
         memoizeOne(
           (tire_to_car) => {
             return tire_to_car.map((d, index) => {
+              const oldestDateIndex = oldestInstalledDateIndex(tire_to_car);
+              const installed_at_oldest = createValidDate(get(tire_to_car[oldestDateIndex], 'installed_at', null ));
+              const installed_at_current = createValidDate(get(d, 'installed_at', null ));
               return ({
                 car_id: (
                   !d.car_id
@@ -69,7 +74,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                   )
                 ),
                 uninstalled_at: (
-                  !d.uninstalled_at && index
+                  !d.uninstalled_at && installed_at_oldest !== installed_at_current
                     ? 'Поле "Дата демонтажа" должно быть заполнено'
                     : (
                       d.uninstalled_at

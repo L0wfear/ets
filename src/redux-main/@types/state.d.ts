@@ -36,12 +36,12 @@ export interface ReduxState {
   missions: IStateMissions;
   company: IStateCompany;
   inspect: IStateInspect;
+  monitorPage: IStateMonitorPage;
 
   order: IStateOrder; // partial
-
-  monitorPage: IStateMonitorPage;
   loading: any;
   etsLoading: any;
+
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
   materialConsumptionRate: IStateMaterialConsumptionRate;

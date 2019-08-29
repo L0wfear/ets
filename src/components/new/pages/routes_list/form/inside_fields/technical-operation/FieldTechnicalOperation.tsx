@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Flex } from 'global-styled/global-styled';
 
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { getTechnicalOperations } from 'redux-main/trash-actions/technical-operation/technical-operation';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsFieldTechnicalOperation,
@@ -12,6 +11,7 @@ import {
   OwnPropsFieldTechnicalOperation,
   StateFieldTechnicalOperation,
 } from 'components/new/pages/routes_list/form/inside_fields/technical-operation/FieldTechnicalOperation.d';
+import { actionGetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
 
 class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOperation, StateFieldTechnicalOperation> {
   constructor(props) {
@@ -40,9 +40,15 @@ class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOpe
   }
 
   getTechnicalOperations() {
-    this.props.getTechnicalOperations().then(({
-      payload: { technical_operations_list },
-    }) => {
+    this.props.dispatch(
+      actionGetTechnicalOperationRegistry(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      ),
+    ).then(({ data: technical_operations_list }) => {
       const {
         props: {
           value,
@@ -107,19 +113,7 @@ class FieldTechnicalOperation extends React.PureComponent<PropsFieldTechnicalOpe
 
 export default connect<StatePropsFieldTechnicalOperation, DispatchPropsFieldTechnicalOperation, OwnPropsFieldTechnicalOperation, ReduxState>(
   null,
-  (dispatch, { page, path }) => ({
-    getTechnicalOperations: () => (
-      dispatch(
-        getTechnicalOperations(
-          'none',
-          {},
-          {
-            promise: true,
-            page,
-            path,
-          },
-        ),
-      )
-    ),
+  (dispatch: any) => ({
+    dispatch,
   }),
 )(FieldTechnicalOperation);

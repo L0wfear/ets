@@ -13,19 +13,16 @@ import {
   EtsFilter,
   EtsFilterTitle,
   EtsFilterInputContainer,
-  EtsPreloaderFieldContainer,
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 
 import { getJSON } from 'api/adapter';
 import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
-import { DivNone } from 'global-styled/global-styled';
 import { isNumber, isBoolean, isArray, isObject } from 'util';
 
-type PropsMultiselectRegestryFilter = {
+type PropsMultiselectRegistryFilter = {
   filterData: {
     title: string;
     valueKey: string;
@@ -44,7 +41,7 @@ type PropsMultiselectRegestryFilter = {
   onChange: (valueKey: string, type: string, value: any[], option: object) => any;
 };
 
-type StateMultiselectRegestryFilter = {
+type StateMultiselectRegistryFilter = {
   array: any[];
   filterData: {
     title: string;
@@ -136,7 +133,7 @@ const makeOptionsFromArray = (array: any[], valueKey: string | number, labelKey:
   }, [])
 );
 
-const makeOptions = (props: PropsMultiselectRegestryFilter) => (
+const makeOptions = (props: PropsMultiselectRegistryFilter) => (
   props.filterData.options
   || (
     uniqBy(
@@ -160,13 +157,13 @@ const makeObjByKey = (array: any[], valueKey: string) => {
   }, {}));
 };
 
-const checkOnNewValuewInArray = (array: any[], filterData: StateMultiselectRegestryFilter['filterData'], options: StateMultiselectRegestryFilter['options']) => {
+const checkOnNewValuewInArray = (array: any[], filterData: StateMultiselectRegistryFilter['filterData'], options: StateMultiselectRegistryFilter['options']) => {
   const objArray = Object.values(makeObjByKey(array, filterData.valueKey));
 
   return options.length !== objArray.length;
 };
 
-class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRegestryFilter, StateMultiselectRegestryFilter> {
+class MultiselectRegistryFilter extends React.PureComponent<PropsMultiselectRegistryFilter, StateMultiselectRegistryFilter> {
   state = {
     array: this.props.array,
     filterData: this.props.filterData,
@@ -175,11 +172,11 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
     isLoading: Boolean(get(this.props.filterData, 'getRegistryData', false)),
   };
 
-  static getDerivedStateFromProps(nextProps: PropsMultiselectRegestryFilter, prevState: StateMultiselectRegestryFilter) {
+  static getDerivedStateFromProps(nextProps: PropsMultiselectRegistryFilter, prevState: StateMultiselectRegistryFilter) {
     const { array, filterData } = nextProps;
 
     if (array !== prevState.array || filterData !== prevState.filterData) {
-      const changeObj: Partial<StateMultiselectRegestryFilter> = {
+      const changeObj: Partial<StateMultiselectRegistryFilter> = {
         array,
         filterData,
       };
@@ -302,12 +299,14 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
     } = props;
 
     const emptyList = !state.options.length;
+    const id = `filter_r:${props.registryKey.toLocaleLowerCase()}_p:${props.filterData.valueKey}`;
 
     return (
       <EtsFilter noneClick={this.state.isLoading}>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
           <ReactSelect
+            id={id}
             placeholder={
               this.state.isLoading
                 ? 'Загрузка...'
@@ -322,18 +321,8 @@ class MultiselectRegestryFilter extends React.PureComponent<PropsMultiselectRege
             multi
             onChange={this.handleChange}
             disabled={this.props.filterData.disabled || this.state.disabled || emptyList}
+            etsIsLoading={this.state.isLoading}
           />
-          {
-            this.state.isLoading
-              ? (
-                <EtsPreloaderFieldContainer>
-                  <PreloadNew typePreloader="field" />
-                </EtsPreloaderFieldContainer>
-              )
-              : (
-                <DivNone />
-              )
-          }
         </EtsFilterInputContainer>
       </EtsFilter>
     );
@@ -354,4 +343,4 @@ export default connect<any, any, any, ReduxState>(
       )
     ),
   }),
-)(MultiselectRegestryFilter);
+)(MultiselectRegistryFilter);

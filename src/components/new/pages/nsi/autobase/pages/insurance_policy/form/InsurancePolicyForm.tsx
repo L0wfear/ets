@@ -28,7 +28,7 @@ import insurancePolicyPermissions from '../_config-data/permissions';
 
 const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   const [insuranceTypeOptions, setInsuranceTypeOptions] = React.useState([]);
-  const [carListOptions, setCarListOptions] = React.useState([]);
+  const [carList, setCarList] = React.useState([]);
   const {
     formState: state,
     formErrors: errors,
@@ -60,18 +60,36 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
       if (!car_id) {
         props.autobaseGetSetCar({}, { page, path }).then(
           ({ data }) => {
-            setCarListOptions(
-              data.map((rowData) => ({
-                value: rowData.asuods_id,
-                label: rowData.gov_number,
-                rowData,
-              })),
+            setCarList(
+              data,
             );
           },
         );
       }
     },
     [],
+  );
+
+  const carListOptions = React.useMemo(
+    () => {
+      const options = carList.map((rowData) => ({
+        value: rowData.asuods_id,
+        label: rowData.gov_number,
+      }));
+
+      if (state.car_id) {
+        const hasCar = options.find(({ value }) => value === state.car_id);
+        if (!hasCar) {
+          options.push({
+            value: state.car_id,
+            label: state.gov_number,
+          });
+        }
+      }
+
+      return options;
+    },
+    [carList, state.car_id, state.gov_number],
   );
 
   return (

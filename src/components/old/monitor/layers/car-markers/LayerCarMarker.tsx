@@ -144,6 +144,16 @@ class LayerCarMarker extends React.PureComponent<
               noCheckDisabledCenterOn,
             );
           }
+        } else {
+          const {
+            carPointsDataWs: { [prev_gps_code]: carPointData },
+          } = this.state as any;
+
+          if (carPointData) {
+            hasWhatChage = true;
+
+            propsObjToChangeStyle.carPointsDataWs[prev_gps_code] = carPointData;
+          }
         }
       }
 

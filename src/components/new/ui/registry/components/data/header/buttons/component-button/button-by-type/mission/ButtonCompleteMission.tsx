@@ -102,7 +102,7 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id="duty_mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>
+      <EtsBootstrap.Button id="mission-complete" bsSize="small" onClick={handleClickComplete} disabled={disabled}>
         <EtsBootstrap.Glyphicon glyph="ok" /> Выполнено
       </EtsBootstrap.Button>
       {

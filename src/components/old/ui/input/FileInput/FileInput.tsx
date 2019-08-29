@@ -5,8 +5,8 @@ import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/ui/input/FileInput/FileInput.h';
 
-import { DivNone, DisplayFlexAlignCenter } from 'global-styled/global-styled';
-import { ButtonRemoveFile, FileInputWrapper } from 'components/old/ui/input/FileInput/styled';
+import { DivNone } from 'global-styled/global-styled';
+import { ButtonRemoveFile, FileInputWrapper, SingleInputFileItem } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
 import { createValidDateHM } from 'components/@next/@utils/dates/dates';
 
@@ -36,9 +36,9 @@ const FileListItem: React.FC<any> = React.memo(
     const withDateTime = get(props, 'withDateTime', false);
 
     return (
-      <EtsBootstrap.Col style={{ marginBottom: 10 }} md={12}>
+      <EtsBootstrap.Col md={12}>
         <FileInputWrapper>
-          <DisplayFlexAlignCenter>
+          <SingleInputFileItem>
             <ButtonRemoveFile
               bsClass="close"
               bsSize="xsmall"
@@ -47,7 +47,7 @@ const FileListItem: React.FC<any> = React.memo(
               children="×"
             />
             <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
-          </DisplayFlexAlignCenter>
+          </SingleInputFileItem>
           {
             (createdAt && withDateTime) ? (
               <div>

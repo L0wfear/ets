@@ -1,11 +1,11 @@
 import {
   WaybillDraftItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-draft.h';
-import { WaybillType } from 'redux-main/trash-actions/waybill/@types/promise.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type PropsWaybillDraftInfo = {
   infoData: WaybillDraftItemsType;
-  getWaybillById: (id: number) => Promise<WaybillType>;
+  dispatch: EtsDispatch;
 
   handleClose: any;
   loadAllWaybillCard: any;

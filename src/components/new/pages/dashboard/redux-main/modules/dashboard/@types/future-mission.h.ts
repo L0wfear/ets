@@ -1,6 +1,4 @@
-import {
-  MissionDataType,
-} from 'redux-main/trash-actions/mission/@types/promise-mission.h';
+import { MissionDataType } from 'redux-main/reducers/modules/missions/mission/@types';
 
 export type FutureMissionsItemsType = {
   mission_id: number;

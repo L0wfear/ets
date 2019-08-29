@@ -33,7 +33,7 @@ export interface IPropsDataTableInputRenderer {
   value: string | any;
   isPermitted: boolean;
   outputListErrors: ETSCore.Types.IStringKeyHashTable<string>[];
-  onChange(index: number, key: string, value: any): void;
+  onChange(index: number, key: string | object, value?: any): void;
   fieldKey?: string;
 }
 

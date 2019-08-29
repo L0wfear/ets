@@ -9,10 +9,10 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
-import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { get } from 'lodash';
 import { MISSION_STATUS } from 'constants/dictionary';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 type ButtonRemoveMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -70,7 +70,7 @@ const ButtonRemoveMission: React.FC<ButtonRemoveMissionProps> = (props) => {
 
   const checkedRowsAsArray = Object.values(props.checkedRows);
   if (checkedRowsAsArray.length) {
-    disabled = checkedRowsAsArray.some((dutyMission: DutyMission) => dutyMission.status !== MISSION_STATUS.not_assigned);
+    disabled = checkedRowsAsArray.some((mission: Mission) => mission.status !== MISSION_STATUS.not_assigned);
   } else {
     const status = get(props.selectedRow, 'status', null);
     disabled = !status || status !== MISSION_STATUS.not_assigned;

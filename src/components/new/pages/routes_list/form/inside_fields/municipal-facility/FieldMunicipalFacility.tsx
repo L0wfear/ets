@@ -4,7 +4,6 @@ import { get } from 'lodash';
 
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { Flex } from 'global-styled/global-styled';
-import { getCleaningMunicipalFacilityList } from 'redux-main/trash-actions/cleaning/cleaning';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsMunicipalFacilityField,
@@ -14,6 +13,7 @@ import {
   OwnPropsMunicipalFacilityField,
 } from 'components/new/pages/routes_list/form/inside_fields/municipal-facility/FieldMunicipalFacility.d';
 import { isArray } from 'util';
+import { actionGetMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/actions';
 
 class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityField, StateMunicipalFacilityField> {
   constructor(props) {
@@ -59,8 +59,9 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
   }
 
   loadMunicipalFacility(outerPayload) {
-    this.props.getCleaningMunicipalFacilityList(outerPayload)
-      .then(({ payload: { municipal_facility_list } }) => {
+    this.props.dispatch(
+      actionGetMunicipalFacility(outerPayload, { page: this.props.page, path: this.props.path }),
+    ).then((municipal_facility_list) => {
         const { value } = this.props;
 
         const MUNICIPAL_FACILITY_OPTIONS = municipal_facility_list.map((mfData) => ({
@@ -135,18 +136,7 @@ class MunicipalFacilityField extends React.PureComponent<PropsMunicipalFacilityF
 
 export default connect<StatePropsMunicipalFacilityField, DispatchPropsMunicipalFacilityField, OwnPropsMunicipalFacilityField, ReduxState>(
   null,
-  (dispatch, { page, path }) => ({
-    getCleaningMunicipalFacilityList: (outerPayload) => (
-      dispatch(
-        getCleaningMunicipalFacilityList(
-          'none',
-          outerPayload,
-          {
-            page,
-            path,
-          },
-        ),
-      )
-    ),
+  (dispatch: any) => ({
+    dispatch,
   }),
 )(MunicipalFacilityField);

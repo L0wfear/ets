@@ -47,27 +47,31 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
 
     return (
       <RowAddCommissionMembersWrapper>
-        <EtsBootstrap.Col md={6}>
-          <ExtField
-            type="select"
-            value={selectedEmployee}
-            label={false}
-            error=""
-            options={filterOptions}
-            onChange={setSelectedEmployee}
-            legacy={false}
-            etsIsLoading={optionData.isLoading}
-          />
-        </EtsBootstrap.Col>
-        <EtsBootstrap.Col md={6}>
-          <EtsBootstrap.Button
-            block
-            disabled={!selectedEmployee}
-            onClick={handleClickAddCommissionEmployee}
-          >
-            <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
-          </EtsBootstrap.Button>
-        </EtsBootstrap.Col>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="select"
+              value={selectedEmployee}
+              label={false}
+              error=""
+              options={filterOptions}
+              onChange={setSelectedEmployee}
+              legacy={false}
+              etsIsLoading={optionData.isLoading}
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Button
+              block
+              disabled={!selectedEmployee}
+              onClick={handleClickAddCommissionEmployee}
+            >
+              <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
+            </EtsBootstrap.Button>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </RowAddCommissionMembersWrapper>
     );
   },

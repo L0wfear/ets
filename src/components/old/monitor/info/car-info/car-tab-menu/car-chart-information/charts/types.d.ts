@@ -1,17 +1,9 @@
-export type TypeFrontCarsSensorsLevel = {
-  [key: string]: {
-    data: any[];
-    show: boolean;
-    color: string;
-    connectNulls: number;
-    name: string;
-  };
-};
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 export type StatePropsCarFuelChart = {
-  track: any[];
   has_cars_sensors: boolean;
-  front_cars_sensors_level: TypeFrontCarsSensorsLevel;
+  front_cars_sensors_level: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_level'];
+  track: IStateMonitorPage['carInfo']['trackCaching']['track'];
 };
 
 export type DispatchPropsCarFuelChart = {};
@@ -34,7 +26,7 @@ export type StatePropsCarSpeedChart = {
   track: any;
   lastPoint: any;
   has_cars_sensors: boolean;
-  front_cars_sensors_equipment: TypeFrontCarsSensorsEquipment;
+  front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   mkad_speed_lim: number;
   speed_lim: number;
 };
@@ -50,21 +42,10 @@ export type PropsCarSpeedChart = (
   & OwnPropsCarSpeedChart
 );
 
-export type TypeFrontCarsSensorsEquipment = {
-  [key: string]: {
-    data: any[];
-    type_name: string;
-    color: string;
-    connectNulls: number;
-    name: string;
-    show: boolean;
-  };
-};
-
 export type StateCarSpeedChart = {
   lastPoint: any,
   data: any[],
-  front_cars_sensors_equipment: TypeFrontCarsSensorsEquipment;
+  front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   mkad_speed_lim: number;
   speed_lim: number;
 };

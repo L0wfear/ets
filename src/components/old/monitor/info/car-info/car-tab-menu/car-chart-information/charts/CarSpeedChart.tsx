@@ -8,7 +8,6 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { compose } from 'recompose';
 
 import {
-  TypeFrontCarsSensorsEquipment,
   PropsCarSpeedChart,
   OwnPropsCarSpeedChart,
   StatePropsCarSpeedChart,
@@ -22,7 +21,7 @@ const makeData = ({
   front_cars_sensors_equipment,
   mkad_speed_lim,
   speed_lim,
-}) =>
+}: PropsCarSpeedChart) =>
   [
     {
       name: 'Скорость ТС',
@@ -40,7 +39,7 @@ const makeData = ({
       color: 'rgba(205, 17, 71, 1)',
     },
     ...Object.values(
-      front_cars_sensors_equipment as TypeFrontCarsSensorsEquipment,
+      front_cars_sensors_equipment,
     ).reduce<any[]>(
       (newArr, sensor, index) => [
         ...newArr,
@@ -96,18 +95,12 @@ class CarSpeedChart extends React.Component<
     super(props);
 
     const {
-      track,
       front_cars_sensors_equipment,
       mkad_speed_lim,
       speed_lim,
     } = props;
 
-    const data = makeData({
-      track,
-      front_cars_sensors_equipment,
-      mkad_speed_lim,
-      speed_lim,
-    });
+    const data = makeData(props);
 
     this.state = {
       lastPoint: props.lastPoint,

@@ -2,7 +2,7 @@ import { TrackService } from 'api/Services';
 import { get } from 'lodash';
 import {
   checkAndModifyTrack,
-} from 'redux-main/trash-actions/uniq/utils/utils';
+} from 'components/old/monitor/info/car-info/redux-main/modules/utils';
 import config from 'config';
 import { makeUnixTime } from 'components/@next/@utils/dates/dates';
 import { Car } from '../../autobase/@types/autobase.h';

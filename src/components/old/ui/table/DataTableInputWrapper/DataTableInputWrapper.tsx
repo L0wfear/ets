@@ -9,6 +9,7 @@ import {
 import { get } from 'lodash';
 
 import { validateField } from 'utils/validate/validateField';
+import { isString } from 'util';
 
 const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableInputWrapper, TPropsDataTableInputWrapper> = (SourceComponent) =>
   class DataTableInputWrapperHOC extends React.Component<TPropsDataTableInputWrapper, IStateDataTableInputWrapper> {
@@ -48,15 +49,25 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
 
       this.props.onValidation(validityOptions);
     }
-    handleItemChange = (index, key, value) => {
+    handleItemChange = (index: number, keyOrObj: string | object, value: any) => {
       index = index || this.state.selectedIndex || 0;
       const newItems = this.props.inputList.map(
-        (item: any, i) => i === index
-          ? ({
-            ...item,
-            [key]: get(value, 'target.value', value),
-          })
-          : item,
+        (item: any, i) => {
+          if (i === index) {
+            if (isString(keyOrObj)) {
+              return ({
+                ...item,
+                [keyOrObj]: get(value, 'target.value', value),
+              });
+            }
+
+            return ({
+              ...item,
+              ...keyOrObj,
+            });
+          }
+          return item;
+        },
       );
       this.props.onChange(newItems);
       this.validate(newItems);

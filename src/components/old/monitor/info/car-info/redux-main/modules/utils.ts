@@ -4,19 +4,7 @@ import { sensorsMapOptions } from 'constants/sensors';
 import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 
 import { initialMaxSpeed } from 'components/old/monitor/info/car-info/redux-main/modules/constatnts';
-
-type TypeFrontCarsSensorsEquipment = {
-  [key: string]: {
-    data: any[];
-  };
-};
-
-type TypeCarsSensors = {
-  [key: string]: {
-    type_slug: string;
-    type_name?: string;
-  };
-};
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 export const getCarTabInfo = (carInfoData: any) => {
   return {
@@ -72,7 +60,7 @@ export const checkAndModifyTrack = (
   let indexEquipment = 0;
 
   const front_cars_sensors_level = Object.entries(
-    cars_sensors as TypeCarsSensors,
+    cars_sensors as IStateMonitorPage['carInfo']['trackCaching']['cars_sensors'],
   ).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'level') {
       (newObj[key] = {
@@ -92,7 +80,7 @@ export const checkAndModifyTrack = (
   }, {});
 
   const front_cars_sensors_equipment = Object.entries(
-    cars_sensors as TypeCarsSensors,
+    cars_sensors as IStateMonitorPage['carInfo']['trackCaching']['cars_sensors'],
   ).reduce((newObj, [key, sensor]) => {
     if (sensor.type_slug === 'equipment') {
       newObj[key] = {
@@ -147,7 +135,7 @@ export const checkAndModifyTrack = (
     );
 
     Object.entries(
-      front_cars_sensors_equipment as TypeFrontCarsSensorsEquipment,
+      front_cars_sensors_equipment as IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'],
     ).forEach(([key, value]) => {
       value.data.push([
         point.timestamp,

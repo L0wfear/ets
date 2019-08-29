@@ -116,10 +116,10 @@ class SelectMunicipalFacility extends React.PureComponent<SelectMunicipalFacilit
             page: this.props.registryKey,
           },
         ).then(
-          (result: { municipalFacilityList: MunicipalFacility[] }) => {
-            if (!value && result.municipalFacilityList.length === 1) {
+          (municipalFacilityListNew) => {
+            if (!value && municipalFacilityListNew.length === 1) {
               this.setMunicipalFacilityId(
-                result.municipalFacilityList[0].municipal_facility_id,
+                municipalFacilityListNew[0].municipal_facility_id,
               );
             }
           },

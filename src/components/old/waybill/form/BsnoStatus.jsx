@@ -12,7 +12,7 @@ import Field from 'components/@next/@ui/renderFields/Field';
 import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 class BsnoStaus extends React.Component {
   static get propTypes() {
@@ -85,14 +85,24 @@ class BsnoStaus extends React.Component {
   }
 
   componentDidMount() {
-    loadMoscowTime().then(({ time }) => {
-      clearInterval(this.state.itervalId);
+    this.props
+      .dispatch(
+        actionLoadTimeMoscow(
+          {},
+          {
+            page: this.props.page,
+            path: this.props.path,
+          },
+        ),
+      )
+      .then((time) => {
+        clearInterval(this.state.itervalId);
 
-      this.setState({
-        date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
-        itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
+        this.setState({
+          date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
+          itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
+        });
       });
-    });
   }
 
   componentWillUnmount() {

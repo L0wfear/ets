@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 import ListByTypeCurerntMission from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/ListByTypeCurerntMission';
@@ -15,33 +14,38 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import {
-  PropsCurrentMissions,
-  StatePropsCurrentMissions,
-  DispatchPropsCurrentMissions,
-  OwnPropsCurrentMissions,
-  StateCurrentMissions,
-} from 'components/new/pages/dashboard/menu/cards/current-missions/CurrentMissions.h';
-import {
   CurrentMissionsItemsSubItemsSubItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
-import { ReduxState } from 'redux-main/@types/state';
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-class CurrentMissions extends React.Component<PropsCurrentMissions, StateCurrentMissions> {
-  handleClick = (lastSubItem: CurrentMissionsItemsSubItemsSubItemsType) => {
-    this.props.loadMissionDataById(lastSubItem.id);
-  }
+export type OwnPropsCurrentMissions = {};
+export type PropsCurrentMissions = OwnPropsCurrentMissions;
 
-  render() {
-    return (
-      <CurrentMissionsLineDates>
-        <ListByTypeCurerntMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={this.handleClick} />
-        <ListByTypeCurerntMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={this.handleClick} />
-      </CurrentMissionsLineDates>
+const CurrentMissions: React.FC<PropsCurrentMissions> = React.memo(
+  () => {
+    const dispatch = etsUseDispatch();
+    const handleClick = React.useCallback(
+      (lastSubItem: CurrentMissionsItemsSubItemsSubItemsType) => {
+        dispatch(
+          dashboardLoadMissionDataForCurrentMission(lastSubItem.id),
+        );
+      },
+      [dispatch],
     );
-  }
-}
+
+    return React.useMemo(
+      () => (
+        <CurrentMissionsLineDates>
+          <ListByTypeCurerntMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
+          <ListByTypeCurerntMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
+        </CurrentMissionsLineDates>
+      ),
+      [handleClick],
+    );
+  },
+);
 
 export default compose<PropsCurrentMissions, PropsToDefaultCard>(
   withDefaultCard({
@@ -49,14 +53,4 @@ export default compose<PropsCurrentMissions, PropsToDefaultCard>(
     loadData: dashboardLoadCurrentMissions,
     InfoComponent: CurrentMissionInfo,
   }),
-  connect<StatePropsCurrentMissions, DispatchPropsCurrentMissions, OwnPropsCurrentMissions, ReduxState>(
-    null,
-    (dispatch) => ({
-      loadMissionDataById: (id) => (
-        dispatch(
-          dashboardLoadMissionDataForCurrentMission(id),
-        )
-      ),
-    }),
-  ),
 )(CurrentMissions);

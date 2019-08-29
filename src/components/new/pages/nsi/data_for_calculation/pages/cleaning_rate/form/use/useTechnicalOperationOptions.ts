@@ -20,7 +20,7 @@ const useTechnicalOperationOptions: UseTechnicalOperationOptions = (loadTechnica
   React.useEffect(
     () => {
       loadTechnicalOperation({}, { page, path }).then(
-        ({ payload: { data } }) => (
+        ({ data }) => (
           setTechnicalOperationOptions(
             data.map(defaultSelectListMapper),
           )

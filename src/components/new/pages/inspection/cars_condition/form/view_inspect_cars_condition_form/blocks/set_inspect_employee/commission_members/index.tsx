@@ -7,6 +7,7 @@ import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autoba
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { CommissionEmployeeWrapper, CommissionMembersDataContainer } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/commission_members/styled';
 
 type CommissionMembersProps = {
   isPermittedChangeListParams: boolean;
@@ -48,7 +49,7 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
     );
 
     return (
-      <React.Fragment>
+      <CommissionEmployeeWrapper>
         <h4>Подписанты:</h4>
         <div>
           <h5>Проверяющие от Доринвеста:</h5>
@@ -63,7 +64,7 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
               </EtsBootstrap.Row>
             )
           }
-          <div>
+          <CommissionMembersDataContainer>
             {
               props.commission_members.map((commissionEmployee, index) => (
                 <ViewCommissionEmployee
@@ -79,21 +80,21 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
                 />
               ))
             }
-            {
-              props.isPermittedChangeListParams && (
-                <RowAddCommissionMembers
-                  handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
-                  commission_members={props.commission_members}
-                  company_id={props.company_id}
+          </CommissionMembersDataContainer>
+          {
+            props.isPermittedChangeListParams && (
+              <RowAddCommissionMembers
+                handleAddChangeCommissionMembers={handleAddChangeCommissionMembers}
+                commission_members={props.commission_members}
+                company_id={props.company_id}
 
-                  page={props.page}
-                  path={props.path}
-                />
-              )
-            }
-          </div>
+                page={props.page}
+                path={props.path}
+              />
+            )
+          }
         </div>
-      </React.Fragment>
+      </CommissionEmployeeWrapper>
     );
   },
 );

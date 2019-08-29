@@ -6,7 +6,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { components } from 'react-select';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+
 import { getWarningNotification } from 'utils/notifications';
 import { compose } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
@@ -17,12 +17,19 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 const ButtonCreateMission = withRequirePermissionsNew({
   permissions: missionPermissions.create,
 })(EtsBootstrap.Button);
 
-class MissionField extends React.Component<any, any> {
+type Props = {
+  dispatch: EtsDispatch;
+  [k: string]: any;
+};
+
+class MissionField extends React.Component<Props, any> {
   state = {
     showMissionForm: false,
     selectedMission: null,
@@ -130,8 +137,15 @@ class MissionField extends React.Component<any, any> {
   };
 
   rejectMission = (rejectedMission) => {
-    loadMoscowTime()
-      .then(({ time }) => {
+    this.props.dispatch(
+      actionLoadTimeMoscow(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      ),
+    ).then((time) => {
         const action_at = time.date;
         this.setState({
           showMissionRejectForm: true,
@@ -287,9 +301,10 @@ export default compose<any, any>(
   withRequirePermissionsNew({
     permissions: missionPermissions.read,
   }),
-  connect<null, { actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(
+  connect<null, { dispatch: EtsDispatch; actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(
     null,
     (dispatch: any) => ({
+      dispatch,
       actionSetDependenceWaybillDataForMission: (...arg) => (
         dispatch(
           missionsActions.actionSetDependenceWaybillDataForMission(...arg),

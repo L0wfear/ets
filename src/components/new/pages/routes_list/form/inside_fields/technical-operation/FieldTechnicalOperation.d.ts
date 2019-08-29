@@ -1,10 +1,12 @@
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+
 export type StateFieldTechnicalOperation = {
   TECHNICAL_OPERATION_OPTIONS: any[];
 };
 
 export type StatePropsFieldTechnicalOperation = {};
 export type DispatchPropsFieldTechnicalOperation = {
-  getTechnicalOperations: () => Promise<any>;
+  dispatch: EtsDispatch,
 };
 
 export type OwnPropsFieldTechnicalOperation = {

@@ -42,7 +42,7 @@ const docAddPage = (doc: DocExportCar, orientation?: 'portrait' | 'landscape') =
   return doc;
 };
 
-const editParam = 4 * window.devicePixelRatio;
+const editParam = 4 * 2;
 
 const mapKey = 'HiddenMapCarExport';
 
@@ -301,12 +301,12 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
             const canvasLegendChart = document.createElement('canvas');
             canvasLegendChart.width = canvas_fuel_chart.width;
-            canvasLegendChart.height = 200 / (2 / window.devicePixelRatio);
+            canvasLegendChart.height = 200;
 
             canvasLegendChart.getContext('2d').drawImage(
               canvas_fuel_chart,
               0,
-              canvas_fuel_chart.height - 350 / (2 / window.devicePixelRatio),
+              canvas_fuel_chart.height - 350,
               canvasLegendChart.width,
               canvasLegendChart.height,
               0,
@@ -360,7 +360,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           if (canvas_speed_chart) {
             const canvasSpeedChart = document.createElement('canvas');
             canvasSpeedChart.width = canvas_speed_chart.width;
-            canvasSpeedChart.height = canvas_speed_chart.height - 350 / (2 / window.devicePixelRatio);
+            canvasSpeedChart.height = canvas_speed_chart.height - 350;
 
             canvasSpeedChart.getContext('2d').drawImage(
               canvas_speed_chart,
@@ -384,12 +384,12 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             );
             const canvasLegendSpeedChart = document.createElement('canvas');
             canvasLegendSpeedChart.width = canvas_speed_chart.width;
-            canvasLegendSpeedChart.height = 200  / (2 / window.devicePixelRatio);
+            canvasLegendSpeedChart.height = 200;
 
             canvasLegendSpeedChart.getContext('2d').drawImage(
               canvas_speed_chart,
               0,
-              canvas_speed_chart.height - 350  / (2 / window.devicePixelRatio),
+              canvas_speed_chart.height - 350,
               canvasLegendSpeedChart.width,
               canvasLegendSpeedChart.height,
               0,
@@ -465,11 +465,11 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             'JPEG',
             10,
             topPadding,
-            canvas_map.width / editParam,
-            canvas_map.height / editParam,
+            canvas_map.width / editParam * (2 / window.devicePixelRatio),
+            canvas_map.height / editParam * (2 /  window.devicePixelRatio),
           );
-          topPadding += canvas_map.height / editParam - canvas_track_sensors_list.height / editParam + 4;
-          const leftPadding = 10 + canvas_map.width / editParam + 5;
+          topPadding += canvas_map.height / editParam * (2 /  window.devicePixelRatio) - canvas_track_sensors_list.height / editParam + 4;
+          const leftPadding = 10 + (canvas_map.width / editParam * (2 / window.devicePixelRatio)) + 5;
 
           // список датчиков
           doc.addImage(
@@ -532,7 +532,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             );
           }
 
-          doc.save(`Информация о ${gov_number} за ${getFormattedDateTime(date_start)} ${getFormattedDateTime(date_end)}.pdf`);
+          doc.save(`Информация о ${gov_number} за ${getFormattedDateTime(date_start)} - ${getFormattedDateTime(date_end)}.pdf`);
         } catch (error) {
           console.log(error); // tslint:disable-line
         }

@@ -4,6 +4,7 @@ import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/aut
 import memoizeOne from 'memoize-one';
 import { diffDates, diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
+import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_to_car'], type: 'start' | 'end') => {
   if (!date) {
@@ -28,11 +29,12 @@ const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_
   );
 };
 
-const olderInstalledDateIndex = (battery_to_car: BatteryRegistry['battery_to_car']) => {
+export const oldestInstalledDateIndex = (list_elem_to_car: BatteryRegistry['battery_to_car'] | Tire['tire_to_car']) => {
   let olderIndex = 0;
-  if (battery_to_car.length) {
-    battery_to_car.forEach((elem, index) => {
-      const firstData =  createValidDate(get(battery_to_car[olderIndex], 'installed_at', null ));
+  // Поиск индекса самой старой даты
+  if (list_elem_to_car.length) {
+    list_elem_to_car.forEach((elem, index) => {
+      const firstData =  createValidDate(get(list_elem_to_car[olderIndex], 'installed_at', null ));
       const secondDate = createValidDate(get(elem, 'installed_at', null));
       if ( elem.installed_at && diffDates( firstData, secondDate ) < 0) {
         olderIndex = index;
@@ -78,6 +80,9 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
           (battery_to_car) => {
             return battery_to_car.map(
               (d, index) => {
+                const oldestDateIndex = oldestInstalledDateIndex(battery_to_car);
+                const installed_at_oldest = createValidDate(get(battery_to_car[oldestDateIndex], 'installed_at', null ));
+                const installed_at_current = createValidDate(get(d, 'installed_at', null ));
                 return ({
                   car_id: (
                     !d.car_id
@@ -94,7 +99,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                     )
                   ),
                   uninstalled_at: (
-                    !d.uninstalled_at && olderInstalledDateIndex(battery_to_car) !== index
+                    !d.uninstalled_at && installed_at_oldest !== installed_at_current
                       ? 'Поле "Дата демонтажа" должно быть заполнено'
                       : (
                         d.uninstalled_at

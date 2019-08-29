@@ -1,5 +1,6 @@
 import { TechnicalOperationRegistryService } from 'api/Services';
 import { get } from 'lodash';
+import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
 
 export const promiseGetTechnicalOperationRegistry = async (payload) => {
   let response = null;
@@ -10,7 +11,7 @@ export const promiseGetTechnicalOperationRegistry = async (payload) => {
     response = null;
   }
 
-  const data = get(response, ['result', 'rows'], []);
+  const data: TechnicalOperationRegistry[] = get(response, ['result', 'rows'], []);
 
   return {
     data,

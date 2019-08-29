@@ -2,9 +2,8 @@ import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
 import { DivNone } from 'global-styled/global-styled';
-import { CommissionMembersDataContainer } from './styled';
+import { CommissionAgentsMembersItem, CommissionAgentsMembersText, CommissionAgentsMembersRemoveButton } from './styled';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ViewCommissionEmployeeProps = (
   (
@@ -41,24 +40,22 @@ const ViewCommissionEmployee: React.FC<ViewCommissionEmployeeProps> = React.memo
     );
 
     return (
-      <CommissionMembersDataContainer>
-        <div>
-          <EtsBootstrap.Glyphicon glyph="minus" /> {text}
-        </div>
-        <div>
-          {
-            props.canRemove
-              ? (
-                <EtsBootstrap.Button onClick={handleClick}>
-                  <EtsBootstrap.Glyphicon glyph="remove" />
-                </EtsBootstrap.Button>
-              )
-              : (
-                <DivNone />
-              )
-          }
-        </div>
-      </CommissionMembersDataContainer>
+      <CommissionAgentsMembersItem>
+        {
+          props.canRemove
+            ? (
+              <CommissionAgentsMembersRemoveButton onClick={handleClick}>
+                ×
+              </CommissionAgentsMembersRemoveButton>
+            )
+            : (
+              <DivNone />
+            )
+        }
+        <CommissionAgentsMembersText>
+          {text}
+        </CommissionAgentsMembersText>
+      </CommissionAgentsMembersItem>
     );
   },
 );

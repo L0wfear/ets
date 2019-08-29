@@ -20,17 +20,15 @@ import {
 } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getMaxSpeeds, checkAndModifyTrack, checkOnMkad, getCarTabInfo } from 'components/old/monitor/info/car-info/redux-main/modules/utils';
-import { TypeMeta } from 'redux-main/trash-actions/@types/common.h';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-import {
-  CarInfoService,
-} from 'api/Services';
 import config from 'config';
 import { get } from 'lodash';
 import { actionGetTracksCaching } from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import { actionGetCarMissionsByTimestamp } from 'redux-main/reducers/modules/autobase/car/actions';
 
 export const carInfoSetGpsNumber = (gov_number: Car['gov_number'], gps_code: Car['gps_code']): EtsAction<any> => (dispatch, getState) => {
   return dispatch({
@@ -169,7 +167,7 @@ export const fetchTrack = (payloadData, meta = { loading: true } as any): EtsAct
   });
 };
 
-export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) => (dispatch, getState) => {
+export const fetchCarInfo = (payloadData, meta: LoadingMeta): EtsAction<void> => async (dispatch, getState) => {
   const {
     monitorPage: {
       carInfo: {
@@ -180,30 +178,28 @@ export const fetchCarInfo = (payloadData, meta = { loading: true } as TypeMeta) 
   } = getState();
 
   dispatch(carInfoResetMissionsData());
+
+  let result = null;
+  result = await dispatch(
+    actionGetCarMissionsByTimestamp(
+      {
+        car_id: payloadData.asuods_id,
+        date_start: createValidDateTime(payloadData.date_start || date_start),
+        date_end: createValidDateTime(payloadData.date_end || date_end),
+      },
+      meta,
+    ),
+  );
+
   dispatch({
     type: CAR_INFO_SET_MISSIONS_DATA,
-    payload: CarInfoService.get({
-      car_id: payloadData.asuods_id,
-      date_start: createValidDateTime(payloadData.date_start || date_start),
-      date_end: createValidDateTime(payloadData.date_end || date_end),
-    }).then(({ result }) => {
-      return {
-        missions: result.missions,
-        ...getMaxSpeeds(result.missions),
-        gps_code: payloadData.gps_code,
-        carTabInfo: getCarTabInfo(result),
-        isLoading: false,
-      };
-    })
-    .catch((error) => {
-      return {
-        ...initialState.missionsData,
-        error: true,
-        gps_code: payloadData.gps_code,
-        isLoading: false,
-      };
-    }),
-    meta,
+    payload: {
+      missions: result.missions,
+      ...getMaxSpeeds(result.missions),
+      gps_code: payloadData.gps_code,
+      carTabInfo: getCarTabInfo(result),
+      isLoading: false,
+    },
   });
 };
 

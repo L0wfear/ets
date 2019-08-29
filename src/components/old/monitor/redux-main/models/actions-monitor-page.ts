@@ -19,17 +19,29 @@ import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_DATE,
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_OVERLAY_DATA,
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
+  MONITOR_PAGE_SET_COMPANY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { getMonitorPageState } from 'redux-main/reducers/selectors';
+import { HandleThunkActionCreator } from 'react-redux';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { Company } from 'redux-main/reducers/modules/company/@types';
 
-export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex) => ({
+export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Company>) => ({
+  type: MONITOR_PAGE_SET_COMPANY,
+  payload: {
+    companiesIndex,
+  },
+});
+
+export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex: Record<Car['gps_code'], Car>) => ({
   type: MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   payload: {
     carActualGpsNumberIndex,
   },
 });
 
-export const actionMonitorPageLoadCarActual = (): EtsAction<Promise<any>> => async (dispatch) => {
+export const actionMonitorPageLoadCarActual = (): EtsAction<ReturnType<HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>>> => async (dispatch) => {
   const result = await dispatch(
     autobaseActions.autobaseGetSetCar(
       {},
@@ -40,12 +52,22 @@ export const actionMonitorPageLoadCarActual = (): EtsAction<Promise<any>> => asy
   return result;
 };
 
-export const monitoPageChangeCarsByStatus = (carsByStatus) => ({
-  type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
-  payload: {
-    carsByStatus,
-  },
-});
+export const monitoPageChangeCarsByStatus = (carsByStatus): EtsAction<void> => (dispatch, getState) => {
+  const carsByStatusOld = getMonitorPageState(getState()).carsByStatus;
+
+  const hasDiff = Object.entries(carsByStatusOld).some(
+    ([key, count]) => carsByStatus[key] !== count,
+  );
+
+  if (hasDiff) {
+    dispatch({
+      type: MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
+      payload: {
+        carsByStatus,
+      },
+    });
+  }
+};
 
 export const monitorPageToggleStatusShow = (typeArr) => ({
   type: MONITOR_PAGE_TOGGLE_STATUS_SHOW,

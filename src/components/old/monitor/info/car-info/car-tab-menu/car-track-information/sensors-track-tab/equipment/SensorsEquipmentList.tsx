@@ -10,18 +10,11 @@ import { carInfoToggleSensorShow } from 'components/old/monitor/info/car-info/re
 import { DivNone } from 'global-styled/global-styled';
 import { sensorTrackColor } from 'constants/sensors';
 import { ColorSensorDiv } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/sensors-track-tab/equipment/styled';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 type PropsSensorsEquipmentList = {
   track: any;
-  front_cars_sensors_equipment: {
-    [key: string]: {
-      data: any[];
-      show: boolean;
-      sensor: {
-        type_name: string;
-      };
-    };
-  };
+  front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   toggleSensorOnMap: any;
 };
 

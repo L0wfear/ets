@@ -3,7 +3,7 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { DivNone, FooterEnd } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { AgentsFromGbuDataContainerAddMember, RowAddRowAddAgentFromGbuWrapper } from './styled';
+import { AgentsFromGbuDataContainerAddMember, RowAddRowAddAgentFromGbuWrapper, AgentsFromGbuCloseBtn } from './styled';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
@@ -62,7 +62,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
               props.isPermitted
                 ? (
                   <EtsBootstrap.Row>
-                    <EtsBootstrap.Col mdOffset={6} md={6}>
+                    <EtsBootstrap.Col md={6}>
                       <EtsBootstrap.Button block disabled={Boolean(newAgent)} onClick={handleClickAddTemplateAgent}>
                         <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить представителей ГБУ'}
                       </EtsBootstrap.Button>
@@ -81,7 +81,9 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                 <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={12}>
                     <FooterEnd>
-                      <EtsBootstrap.Glyphicon glyph="remove" onClick={handleClickClose} />
+                      <AgentsFromGbuCloseBtn onClick={handleClickClose}>
+                        <EtsBootstrap.Glyphicon glyph="remove"/>
+                      </AgentsFromGbuCloseBtn>
                     </FooterEnd>
                   </EtsBootstrap.Col>
                   <EtsBootstrap.Col md={6}>

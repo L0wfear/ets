@@ -13,16 +13,13 @@ import {
   EtsFilter,
   EtsFilterTitle,
   EtsFilterInputContainer,
-  EtsPreloaderFieldContainer,
 } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import { ReduxState } from 'redux-main/@types/state';
 
 import { getJSON } from 'api/adapter';
 import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
-import { DivNone } from 'global-styled/global-styled';
 import { isNumber, isBoolean, isArray } from 'util';
 
 type PropsAdvancedSelectLikeFilterFilter = {
@@ -247,12 +244,14 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
     } = props;
 
     const emptyList = !state.options.length;
+    const id = `filter_r:${props.registryKey.toLocaleLowerCase()}_p:${props.filterData.valueKey}`;
 
     return (
       <EtsFilter noneClick={this.state.isLoading}>
         <EtsFilterTitle>{this.props.formatedTitle}</EtsFilterTitle>
         <EtsFilterInputContainer>
           <ReactSelect
+            id={id}
             placeholder={
               this.state.isLoading
                 ? 'Загрузка...'
@@ -266,18 +265,8 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
             options={state.options}
             onChange={this.handleChange}
             disabled={this.props.filterData.disabled || this.state.disabled || emptyList}
+            etsIsLoading={this.state.isLoading}
           />
-          {
-            this.state.isLoading
-              ? (
-                <EtsPreloaderFieldContainer>
-                  <PreloadNew typePreloader="field" />
-                </EtsPreloaderFieldContainer>
-              )
-              : (
-                <DivNone />
-              )
-          }
         </EtsFilterInputContainer>
       </EtsFilter>
     );

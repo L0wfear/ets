@@ -90,6 +90,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
             && (
               <ExtField
                 type="number"
+                id={props.metaData.key}
                 label={false}
                 value={props.value}
                 error={props.error}
@@ -103,6 +104,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
             && (
               <ExtField
                 type="select"
+                id={props.metaData.key}
                 label={false}
                 value={props.value}
                 error={props.error}

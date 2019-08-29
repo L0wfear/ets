@@ -47,7 +47,7 @@ import FieldCarMissionIdDutyMission from './inside_fields/car_mission_id/FieldCa
 import { saveData } from 'utils/functions';
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getMissionsState } from 'redux-main/reducers/selectors/index';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+
 import {
   getDateWithMoscowTzByTimestamp,
   diffDates,
@@ -60,6 +60,7 @@ import { isOrderSource } from 'components/new/pages/missions/utils';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -133,8 +134,16 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
 
   async checkOnMosckowTime() {
     const {
-      time: { date },
-    } = await loadMoscowTime();
+      date,
+    } = await this.props.dispatch(
+      actionLoadTimeMoscow(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      ),
+    );
 
     const currentTime = getDateWithMoscowTzByTimestamp(date);
 
@@ -556,6 +565,7 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
         .order_mission_source_id,
     }),
     (dispatch: any) => ({
+      dispatch,
       employeeGetAndSetInStore: (...arg) =>
         dispatch(employeeActions.employeeGetAndSetInStore(...arg)),
       employeeEmployeeResetSetEmployee: (...arg) =>

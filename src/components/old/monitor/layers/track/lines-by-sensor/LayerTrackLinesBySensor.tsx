@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForTrackLineBySensor } from 'components/old/monitor/layers/track/lines-by-sensor/feature-style';
 import { get } from 'lodash';
+import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -18,7 +19,7 @@ type PropsLayerTrackLines = {
   getAllFeatures: ETSCore.Map.InjectetLayerProps.FuncGetAllFeatures,
   track: any[];
   lastPoint: any;
-  front_cars_sensors_equipment: any[];
+  front_cars_sensors_equipment: IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'];
   SHOW_TRACK: boolean;
 };
 

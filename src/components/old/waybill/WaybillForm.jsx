@@ -1660,6 +1660,8 @@ class WaybillForm extends UNSAFE_Form {
                 is_bnso_broken={state.is_bnso_broken}
                 gps_code={gps_code}
                 handleChange={this.handleChange}
+                page={this.props.page}
+                path={this.props.path}
               />
             </EtsBootstrap.Col>
             <Div hidden={!(IS_ACTIVE || IS_CLOSED)}>

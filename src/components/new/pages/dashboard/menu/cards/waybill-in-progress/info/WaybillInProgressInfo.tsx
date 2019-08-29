@@ -13,7 +13,6 @@ import {
   dashboardLoadDependentDataByWaybillInProgress,
   dashboardSetInfoDataInWaybillInProgress,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-import { loadWaybillById } from 'redux-main/trash-actions/waybill/waybill';
 
 import { makeDate } from 'components/@next/@utils/dates/dates';
 
@@ -27,6 +26,7 @@ import { WaybillInProgressItemsSubItemsType } from 'components/new/pages/dashboa
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
+import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -56,9 +56,12 @@ class WaybillInProgressInfo extends React.PureComponent<PropsWaybillInProgressIn
       dataset: { path },
     },
   }) => {
-    this.props
-      .getWaybillById(Number.parseInt(path, 0))
-      .then(({ payload: { waybill_data } }) => {
+    this.props.dispatch(
+      waybillActions.actionGetWaybillById(
+        Number.parseInt(path, 0),
+        { page: 'dashboard' },
+      ),
+    ).then((waybill_data) => {
         if (waybill_data) {
           this.setState({
             showWaybillFormWrap: true,
@@ -154,13 +157,6 @@ export default compose<any, any>(
         dispatch(dashboardLoadDependentDataByWaybillInProgress()),
       setInfoData: (infoData) =>
         dispatch(dashboardSetInfoDataInWaybillInProgress(infoData)),
-      getWaybillById: (id) =>
-        dispatch(
-          loadWaybillById('none', id, {
-            promise: true,
-            page: 'dashboard',
-          }),
-        ),
     }),
   ),
 )(WaybillInProgressInfo);

@@ -1,4 +1,5 @@
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type StateFieldDatesMission = {
 };
@@ -6,6 +7,7 @@ export type StateFieldDatesMission = {
 export type StatePropsFieldDatesMission = {
 };
 export type DispatchPropsFieldDatesMission = {
+  dispatch: EtsDispatch;
 };
 
 export type OwnPropsFieldDatesMission = {

@@ -5,16 +5,15 @@ import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-pro
 import { connect } from 'react-redux';
 import { GEOOBJECTS_OBJ } from 'constants/geoobjects-new';
 
-import { TypeCompaniesIndex } from 'redux-main/trash-actions/uniq/promise.h';
-
 import {
   DivNone,
 } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { LegenCompanyLegendOption, CubeColor } from 'components/old/monitor/tool-bar/show-company-color/styled';
+import { Company } from 'redux-main/reducers/modules/company/@types';
 
 type PropsBarCompanyColor = {
-  companiesIndex: TypeCompaniesIndex,
+  companiesIndex: Record<Company['id'], Company>;
 };
 
 type StateBarCompanyColor = {

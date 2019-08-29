@@ -1,4 +1,3 @@
-import { TechnicalOperationObjectsList } from 'redux-main/trash-actions/technical-operation/promise/promise.d';
 import {
   GeozoneMunicipalFacilityById,
   GeozonesDataByIndex,
@@ -11,9 +10,11 @@ import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { TechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/@types/technical_operation_objects';
 
 export type StateCreatingMap = {
-  technical_operations_object_list: TechnicalOperationObjectsList;
+  technical_operations_object_list: TechnicalOperationObjects[];
   geozone_municipal_facility_by_id: GeozoneMunicipalFacilityById;
   object_list: PropsCreatingMap['object_list'];
   OBJECT_LIST_OPTIONS: any[];
@@ -32,7 +33,7 @@ export type DispatchPropsCreatingMap = {
   actionGetAndSetInStoreGeozoneMunicipalFacility: HandleThunkActionCreator<
     typeof someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility
   >;
-  getTechnicalOperationsObjects: () => Promise<any>;
+  dispatch: EtsDispatch,
 };
 
 export type OwnPropsCreatingMap = {
@@ -47,8 +48,8 @@ export type OwnPropsCreatingMap = {
   type: any | null;
   isPermitted: boolean;
 
-  page: string | void;
-  path: string | void;
+  page: string;
+  path: string;
 
   checkRoute: () => any;
   onChange: (changeObj: { [key: string]: any }) => any;

@@ -21,9 +21,10 @@ import {
 } from './styled';
 import { addTime, getDateWithMoscowTzByTimestamp, createValidDateTime, diffDates } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, StateFieldDatesMission> {
   componentDidMount() {
@@ -61,8 +62,16 @@ class FieldDatesMission extends React.PureComponent<PropsFieldDatesMission, Stat
 
   async updateDateStartByCurrentTime() {
     const {
-      time: { date },
-    } = await loadMoscowTime();
+      date,
+    } = await this.props.dispatch(
+      actionLoadTimeMoscow(
+        {},
+        {
+          page: this.props.page,
+          path: this.props.path,
+        },
+      ),
+    );
 
     const currentTime = createValidDateTime(getDateWithMoscowTzByTimestamp(date));
 

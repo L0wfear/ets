@@ -15,8 +15,9 @@ import ButtonCreateInspectAutobase from './components/button_inspect_autobase/Bu
 import { TypeOfInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 import useLastInpectSatus, { INSPECT_STATUS } from './useLastInpectSatus';
 import { getLastConductingInspect, getLastCompletedInspect } from '../../../autobase/@selectors';
-import { loadMoscowTime } from 'redux-main/trash-actions/uniq/promise';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
 type InspectionActionMenuMenuStateProps = {
   lastConductingInspect: InspectAutobase;
@@ -47,6 +48,8 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
     lastCompletedInspect,
   } = props;
 
+  const dispatch = etsUseDispatch();
+
   const {
     status,
     status_text,
@@ -59,8 +62,15 @@ const InspectionActionMenuMenu: React.FC<InspectionActionMenuMenuProps> = (props
     () => {
       const loadDate = async () => {
         const {
-          time: { date },
-        } = await loadMoscowTime();
+          date,
+        } = await dispatch(
+          actionLoadTimeMoscow(
+            {},
+            {
+              page: props.loadingPage,
+            },
+          ),
+        );
 
         setCurrentDate(
           getDateWithMoscowTzByTimestamp(date),

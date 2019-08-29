@@ -3,7 +3,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { saveData } from 'utils/functions';
 
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
@@ -12,7 +11,6 @@ import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-co
 import {
   dashboardSetInfoDataInFaxogramms,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-import { saveOrderBlob } from 'redux-main/trash-actions/order/order';
 
 import {
   ButtonReadOrder,
@@ -32,6 +30,7 @@ import {
 } from 'global-styled/global-styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
+import { promiseLoadOrderBlobAndSave, promiseLoadOrderBlob } from 'components/old/directories/order/utils-order';
 
 const TypeDownload = {
   old: 'old',
@@ -53,24 +52,13 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
     })
   )
 
-  seclectDownload = (event, eventKey) => {
-    const payload: any = {};
-
-    if (event === TypeDownload.new) {
-      payload.format = 'xls';
-    }
-
-    this.props.saveOrder(this.props.infoData.data.id, payload)
-      .then(({ payload: { blob, fileName } }) => saveData(blob, fileName))
-      .catch((error) => {
-        // tslint:disable-next-line
-        console.warn(error);
-      });
+  seclectDownload = (event) => {
+    promiseLoadOrderBlobAndSave({ id: this.props.infoData.data.id }, event);
   }
 
   showPDFViewModal = () => {
-    this.props.saveOrder(this.props.infoData.data.id)
-      .then(({ payload: { blob } }) => {
+    promiseLoadOrderBlob({ id: this.props.infoData.data.id }, '')
+      .then(({ blob }) => {
         if (blob) {
           this.setState({
             showPDFViewModal: true,
@@ -166,19 +154,6 @@ export default compose<any, any>(
       handleClose: () => (
         dispatch(
           dashboardSetInfoDataInFaxogramms(null),
-        )
-      ),
-      saveOrder: (id, payload) => (
-        dispatch(
-          saveOrderBlob(
-            'none',
-            id,
-            payload,
-            {
-              promise: true,
-              page: 'dashboard',
-            },
-          ),
         )
       ),
     }),

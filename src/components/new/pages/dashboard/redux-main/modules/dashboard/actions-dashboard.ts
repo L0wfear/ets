@@ -21,9 +21,9 @@ import { WaybillInProgressInfoDataType} from 'components/new/pages/dashboard/red
 import { WaybillCompletedInfoDataType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-completed.h';
 import { WaybillClosedInfoDataType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/waibill-closed.h';
 
-import { loadMissionDataById } from 'redux-main/trash-actions/mission';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -37,7 +37,7 @@ export const dashBoardResetData: any = () => ({
   payload: {},
 });
 
-export const dashboardLoadMissionDataForCurrentMission: any = (id: number) => (dispatch) => {
+export const dashboardLoadMissionDataForCurrentMission = (id: number): EtsAction<void> => async (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {
@@ -47,28 +47,29 @@ export const dashboardLoadMissionDataForCurrentMission: any = (id: number) => (d
   });
 
   if (id) {
-    dispatch(
-      loadMissionDataById(
-        'none',
-        id,
-        {
-          promise: true,
-          page: 'dashboard',
-        },
-      ),
-    ).then(({ payload: { mission_data } }) => (
+    try {
+      const mission_data = await dispatch(
+        actionLoadMissionData(
+          id,
+          {
+            page: 'dashboard',
+          },
+        ),
+      );
       dispatch({
         type: DASHBOARD_SET_INFO_DATA,
         payload: {
           path: 'current_missions',
           infoData: mission_data,
         },
-      })
-    ));
+      });
+    } catch {
+      //
+    }
   }
 };
 
-export const dashboardLoadRouteDataForCurrentDutyMissions: any = (duty_mission_data?: CurrentDutyMissionsItemsSubItemDatasType, id?: number) => (dispatch) => {
+export const dashboardLoadRouteDataForCurrentDutyMissions = (duty_mission_data?: CurrentDutyMissionsItemsSubItemDatasType, id?: number): EtsAction<void> => async (dispatch) => {
   dispatch({
     type: DASHBOARD_SET_INFO_DATA,
     payload: {
@@ -78,14 +79,16 @@ export const dashboardLoadRouteDataForCurrentDutyMissions: any = (duty_mission_d
   });
 
   if (id) {
-    dispatch(
-      routesActions.actionLoadRouteById(
-        id,
-        {
-          page: 'dashboard',
-        },
-      ),
-    ).then((route_data) => (
+    try {
+      const route_data = await dispatch(
+        routesActions.actionLoadRouteById(
+          id,
+          {
+            page: 'dashboard',
+          },
+        ),
+      );
+
       dispatch({
         type: DASHBOARD_SET_INFO_DATA,
         payload: {
@@ -97,8 +100,10 @@ export const dashboardLoadRouteDataForCurrentDutyMissions: any = (duty_mission_d
             ...route_data,
           },
         },
-      })
-    ));
+      });
+    } catch {
+      //
+    }
   }
 };
 

@@ -15,6 +15,9 @@ const filterArrayByIn = <F extends any>(row_value: any, filter_value: any, field
       }
       return filter_value.every((oneValue) => !row_value.includes(oneValue));
     }
+    if (isString(row_value)) {
+      return filter_value.every((oneValue) => !row_value.includes(oneValue));
+    }
     return !filter_value.includes(row_value);
   }
   throw new Error('non define filter by type');

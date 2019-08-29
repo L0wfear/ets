@@ -17,6 +17,7 @@ import {
   OwnPropsCarFuelChart,
   DispatchPropsCarFuelChart,
 } from 'components/monitor/info/car-info/car-tab-menu/car-chart-information/charts/types.d';
+import { isArray } from 'util';
 
 const makeData = (front_cars_sensors_level: TypeFrontCarsSensorsLevel, sensorRawData = false) => (
   Object.values(front_cars_sensors_level).reduce((newArr, sensor) => {
@@ -94,14 +95,13 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
     return (
       <div>
         {
-          this.props.track.length === 0 ?
-          (
+          Boolean(isArray(this.props.track) ? this.props.track.length === 0 : true)
+          ? (
             <div className="center-preloader">
               <div>{NO_DATA_TEXT}</div>
             </div>
           )
-          :
-          (
+          : (
             <div className="car_info-line_chart_wrap" >
               {
                 !this.props.has_cars_sensors ?
@@ -120,19 +120,18 @@ class CarFuelChart extends React.Component<PropsCarFuelChart, StateCarFuelChart>
                   )
 
                   :
-                  [
+                  <React.Fragment>
                     <LineChart
-                      key="fuel-chart"
                       data={data}
                       onClick={this.handleChartClick}
                       name="fuel-chart"
                       showX
-                    />,
-                    <div key="checkbox-fuel" className="chart-select_raw" onClick={this.handleClick}>
+                    />
+                    <div className="chart-select_raw" onClick={this.handleClick}>
                       <input readOnly type="checkbox" checked={this.state.sensorRawData} />
                       <span>Исходные данные датчиков</span>
-                    </div>,
-                  ]
+                    </div>
+                  </React.Fragment>
                 )
               }
               <EventTable handleEventClick={this.props.handleEventClick} />

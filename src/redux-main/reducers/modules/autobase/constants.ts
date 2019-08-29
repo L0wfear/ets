@@ -20,7 +20,7 @@ export const measureUnitRun = 'measureUnitRun';
 export const tireModel = 'tireModel';
 export const tireManufacturer = 'tireManufacturer';
 export const tire = 'tire';
-export const tireNoRegistry = 'tireNoRegistry';
+// export const tireNoRegistry = 'tireNoRegistry';
 export const tireSize = 'tireSize';
 export const tireAvailableCar = 'tireAvailableCar';
 export const actualBatteriesOnCar = 'actualBatteriesOnCar';
@@ -52,7 +52,7 @@ export default {
   [tireModel]: 'tire_model',
   [tireManufacturer]: 'tire_manufacturer',
   [tire]: 'tire_registry',
-  [tireNoRegistry]: 'tire',
+  // [tireNoRegistry]: 'tire',
   [tireSize]: 'tire_size',
   [tireAvailableCar]: 'tire_available_car',
   [spareAvailableCar]: 'spare_part_available_car',

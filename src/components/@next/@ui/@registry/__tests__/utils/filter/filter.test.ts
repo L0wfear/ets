@@ -63,15 +63,19 @@ describe('Тестирование функции фильтрации реес�
       const array: ArrayRegisrty<any> = [
         {
           field_key: 1,
+          field_key2: '1',
         },
         {
           field_key: 3,
+          field_key2: '3',
         },
         {
           field_key: 2,
+          field_key2: '1, 2',
         },
         {
           field_key: null,
+          field_key2: null,
         },
       ];
       const filter_fields: FilterFields<any> = [
@@ -82,11 +86,26 @@ describe('Тестирование функции фильтрации реес�
         },
       ];
 
+      const filter_fields2: FilterFields<any> = [
+        {
+          valueKey: 'field_key2',
+          title: 'Тест фильтрации мультиселекта',
+          type: 'multiselect',
+        },
+      ];
+
       expect(filterArray(array, { field_key__in: [] }, filter_fields).length).toBe(0);
       expect(filterArray(array, { field_key__in: [2] }, filter_fields).length).toBe(1);
       expect(filterArray(array, { field_key__in: [4] }, filter_fields).length).toBe(0);
       expect(filterArray(array, { field_key__in: [1, 2] }, filter_fields).length).toBe(2);
       expect(filterArray(array, { field_key__in: [1, 2, 4] }, filter_fields).length).toBe(2);
+
+      expect(filterArray(array, { field_key2__in: [] }, filter_fields2).length).toBe(0);
+      expect(filterArray(array, { field_key2__in: [1] }, filter_fields2).length).toBe(2);
+      expect(filterArray(array, { field_key2__in: [2] }, filter_fields2).length).toBe(1);
+      expect(filterArray(array, { field_key2__in: [4] }, filter_fields2).length).toBe(0);
+      expect(filterArray(array, { field_key2__in: [1, 2] }, filter_fields2).length).toBe(2);
+      expect(filterArray(array, { field_key2__in: [1, 2, 4] }, filter_fields2).length).toBe(2);
     });
 
     test('фильтрация для типа multiselect', () => {

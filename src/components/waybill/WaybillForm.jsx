@@ -1053,8 +1053,9 @@ class WaybillForm extends UNSAFE_Form {
 
   handleChangeHasEquipmentOnFalse = async () => {
     const { formState } = this.props;
-
-    if (formState.equipment_fuel) {
+    if (isNullOrUndefined(formState.equipment_fuel)) {
+      this.handleChange('equipment_fuel', false);
+    } else if (formState.equipment_fuel) {
       if (hasWaybillEquipmentData(formState, fieldToCheckHasData)) {
         await this.clearFuelEquipmentData(
           {

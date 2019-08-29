@@ -170,6 +170,7 @@ class OdhForm extends React.PureComponent<PropsOdhForm, StateOdhForm> {
                 emptyValue={null}
                 onChange={this.handleChangeCompanyStructure}
                 boundKeys="company_structure_id"
+                disabled={!isPermitted}
               />
             </Col>
           </Row>

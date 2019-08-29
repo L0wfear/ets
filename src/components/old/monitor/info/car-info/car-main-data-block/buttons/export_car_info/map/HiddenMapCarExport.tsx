@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import MapEts from 'components/new/ui/map/MapEts';
 import LayerTrackLines from 'components/old/monitor/layers/track/lines/LayerTrackLines';
-import LayerTrackPoints from 'components/old/monitor/layers/track/points/LayerTrackPoints';
+// import LayerTrackPoints from 'components/old/monitor/layers/track/points/LayerTrackPoints';
 import LayerTrackLinesBySensor from 'components/old/monitor/layers/track/lines-by-sensor/LayerTrackLinesBySensor';
 import LayerParkingPoints from 'components/old/monitor/layers/track/events/parking/LayerParkingPoints';
 import LayerFuelEventPoint from 'components/old/monitor/layers/track/events/fuel-event/LayerFuelEventPoints';
@@ -42,7 +42,7 @@ const HiddenMapCarExport: React.FC<PropsMapWrap> = React.memo(
               ({ map, centerOn }) => (
                 <div>
                   <LayerTrackLines map={map} needCenterOnAfterUpdate centerOn={centerOn} />
-                  <LayerTrackPoints map={map} />
+                  {/* <LayerTrackPoints map={map} /> */}
                   <LayerTrackLinesBySensor map={map} />
                   <LayerParkingPoints map={map} />
                   <LayerFuelEventPoint map={map} />

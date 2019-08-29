@@ -35,6 +35,7 @@ module.exports = {
     './src/index',
   ],
   mode: 'production',
+  devtool: 'eval',
   context: path.resolve(__dirname, '..'),
   output: {
     filename: 'app.[name].[contenthash].js',

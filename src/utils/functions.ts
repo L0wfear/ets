@@ -318,7 +318,7 @@ export const getTextCanvas = async (text: string, style: string) => {
   container.appendChild(temp);
   document.body.appendChild(container);
 
-  const canvas = await html2canvas(temp);
+  const canvas = await html2canvas(temp, { scale: 2 });
   document.body.removeChild(container);
 
   return canvas;
@@ -329,5 +329,5 @@ export const getTextCanvas = async (text: string, style: string) => {
  * @param element элемента html
  */
 export const getCanvasOfElement = (element: HTMLElement) => {
-  return html2canvas(element);
+  return html2canvas(element, { scale: 2 });
 };

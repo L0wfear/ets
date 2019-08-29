@@ -6,7 +6,7 @@ import {
 import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
-import { tire, tireNoRegistry } from 'redux-main/reducers/modules/autobase/constants';
+import { tire } from 'redux-main/reducers/modules/autobase/constants';
 import { tireToCarMap } from 'redux-main/reducers/modules/autobase/actions_by_type/tire/utils';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
@@ -15,7 +15,8 @@ import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import { Tire } from '../../@types/autobase.h';
 
 export const getTire = autobaseLoadByType(tire);
-export const createTire = autobaseCreateByType(tireNoRegistry);
+// export const createTire = autobaseCreateByType(tireNoRegistry);
+export const createTire = autobaseCreateByType(tire);
 export const updateTire = autobaseUpdateByType(tire);
 export const removeTire = autobaseRemoveByType(tire);
 

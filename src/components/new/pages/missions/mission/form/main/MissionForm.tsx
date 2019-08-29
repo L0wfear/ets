@@ -688,7 +688,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
               municipal_facility_id={state.municipal_facility_id}
               route_type={state.route_type}
               type_ids={state.car_type_ids}
-              disabled={state.status && !IS_NOT_ASSIGNED}
+              disabled={state.status && !IS_NOT_ASSIGNED || MISSION_IS_ORDER_SOURCE}
               onChange={this.props.handleChange}
               IS_TEMPLATE={false}
               MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}

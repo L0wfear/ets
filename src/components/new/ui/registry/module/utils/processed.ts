@@ -77,6 +77,9 @@ export const filterArray = (array, filterValues, fields: OneRegistryData['filter
               if (isArray(row[valueKey])) {
                 return value.every((oneValue) => !row[valueKey].includes(oneValue));
               }
+              if (isString(row[valueKey])) {
+                return value.every((oneValue) => !row[valueKey].includes(oneValue));
+              }
               return !value.includes(row[valueKey]);
             }
             default: throw new Error('non define filter by type');

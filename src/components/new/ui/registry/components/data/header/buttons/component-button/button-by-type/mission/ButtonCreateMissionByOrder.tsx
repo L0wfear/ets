@@ -4,28 +4,20 @@ import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNew
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import { path } from 'components/new/pages/nsi/order/_config-data';
 
-type ButtonCreateMissionByOrderStateProps = {
-};
-type ButtonCreateMissionByOrderDispatchProps = {
-};
 type ButtonCreateMissionByOrderOwnProps = {
   registryKey: string;
 };
-type ButtonCreateMissionByOrderMergeProps = {};
-
 type ButtonCreateMissionByOrderProps = (
-  ButtonCreateMissionByOrderStateProps
-  & ButtonCreateMissionByOrderDispatchProps
-  & ButtonCreateMissionByOrderOwnProps
-  & ButtonCreateMissionByOrderMergeProps
+  ButtonCreateMissionByOrderOwnProps
 ) & WithSearchProps;
 
 const ButtonCreateMissionByOrder: React.FC<ButtonCreateMissionByOrderProps> = (props) => {
   const handleClick = React.useCallback(
     () => {
       props.history.push(
-        '/orders',
+        path,
       );
     },
     [],

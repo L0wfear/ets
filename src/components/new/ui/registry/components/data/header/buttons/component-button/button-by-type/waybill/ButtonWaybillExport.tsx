@@ -27,14 +27,12 @@ const ButtonWaybillExport: React.FC<PropsButtonWaybillExport> = (props) => {
     [],
   );
 
-  const toggleElement = <EtsBootstrap.Glyphicon glyph="download-alt" />;
-
   return (
     <React.Fragment>
       <EtsBootstrap.Dropdown
         id="dropdown-print"
 
-        toggleElement={toggleElement}
+        toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
         toggleElementSize="small"
       >
         <EtsBootstrap.DropdownMenu pullRight>

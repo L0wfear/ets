@@ -212,7 +212,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
   const uniqKey = list.data.uniqKey;
 
   let arrayRaw = null;
-  let arrayExtra = {};
+  let objectExtra = {};
   let total_count = 0;
 
   if (getRegistryData) {
@@ -280,7 +280,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
       },
     );
 
-    arrayExtra = get(result, typeExtra, {});
+    objectExtra = get(result, typeExtra, {});
 
     switch (getRegistryData.format) {
       case 'dutyMissionTemplate': {
@@ -391,7 +391,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
             ...list.data,
             total_count,
             array,
-            arrayExtra,
+            objectExtra,
           },
           processed: {
             ...list.processed,

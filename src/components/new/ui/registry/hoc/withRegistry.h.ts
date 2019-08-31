@@ -162,6 +162,7 @@ export type TypeConfigData<F> = {
       total_count?: OneRegistryData<F>['list']['processed']['total_count'];
     };
     meta: {
+      selected_row_in_params?: OneRegistryData<F>['list']['meta']['selected_row_in_params'];
       row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
       fields?: OneRegistryData<F>['list']['meta']['fields'];
     };

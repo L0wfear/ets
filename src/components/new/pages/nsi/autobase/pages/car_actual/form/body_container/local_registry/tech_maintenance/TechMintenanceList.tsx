@@ -23,7 +23,7 @@ import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type TechMaintenanceListStateProps = {
-  arrayExtra: OneRegistryData['list']['data']['arrayExtra'];
+  objectExtra: OneRegistryData['list']['data']['objectExtra'];
 };
 export type TechMaintenanceListDispatchProps = {
   registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
@@ -43,7 +43,7 @@ export type TechMaintenanceListProps = (
 
 const TechMaintenanceList: React.FC<TechMaintenanceListProps> = (props) => {
   const {
-    arrayExtra,
+    objectExtra,
     selectedCarData,
   } = props;
 
@@ -70,7 +70,7 @@ const TechMaintenanceList: React.FC<TechMaintenanceListProps> = (props) => {
               type="string"
               label={selectedCarHasMotohours ? 'Срок по пробегу, м/ч:' : 'Срок до ТО по пробегу, км:'}
               readOnly
-              value={get(arrayExtra, 'car_interval_probeg', '') || 'Не указано'}
+              value={get(objectExtra, 'car_interval_probeg', '') || 'Не указано'}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -78,7 +78,7 @@ const TechMaintenanceList: React.FC<TechMaintenanceListProps> = (props) => {
               type="string"
               label="Срок по времени, дней:"
               readOnly
-              value={get(arrayExtra, 'car_interval_time', '') || 'Не указано'}
+              value={get(objectExtra, 'car_interval_time', '') || 'Не указано'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Col>
@@ -96,7 +96,7 @@ export default compose<TechMaintenanceListProps, TechMaintenanceListOwnProps>(
   }),
   connect<TechMaintenanceListStateProps, TechMaintenanceListDispatchProps, TechMaintenanceListOwnProps, ReduxState>(
     (state) => ({
-      arrayExtra: getListData(getRegistryState(state), registryKey).data.arrayExtra,
+      objectExtra: getListData(getRegistryState(state), registryKey).data.objectExtra,
     }),
     (dispatch: any) => ({
       registryAddInitialData: (...any) => (

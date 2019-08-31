@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
+import { path } from 'components/new/pages/nsi/order/_config-data';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
@@ -10,7 +12,6 @@ import {
   dashboardLoadDependentDataByNewDutyMission,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { LinkToOrder } from 'components/old/directories/order/buttons/buttons';
 import { ButtonCreateMission } from 'components/new/pages/missions/mission/buttons/buttons';
 import { ButtonCreateWaybill } from 'components/old/waybill/buttons/buttons';
 
@@ -23,6 +24,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ButtonCreateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
+import { LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -84,7 +86,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
             <ButtonCreateWaybill whiteSpace="normal" onClick={setShowWaybillForm}>
               Создать путевой лист
             </ButtonCreateWaybill>
-            <LinkToOrder to="/orders">
+            <LinkToOrder to={path}>
               <EtsBootstrap.Button whiteSpace="normal" active>Исполнение централизованного задания</EtsBootstrap.Button>
             </LinkToOrder>
             <ButtonCreateMission whiteSpace="normal" onClick={setShowMissionForm}>

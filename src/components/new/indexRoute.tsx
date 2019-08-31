@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Switch, Redirect, Route as PublicRoute } from 'react-router-dom';
 import routerAndPermission from 'constants/routerAndPermission';
+import { path } from 'components/new/pages/nsi/order/_config-data';
 
 // TODO сделать модуль containers по аналогии с другими модулями
 
@@ -31,6 +32,10 @@ const renderRoutes = (newRoutesArr, data) => {
 const getRouters = () => (
   <Switch>
     { Object.values(routerAndPermission).reduce(renderRoutes, []) }
+
+    { /* 32 релиз */}
+    <Redirect from="/orders" to={path} />
+
     <Redirect to="/monitor" />
   </Switch>
 );

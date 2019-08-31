@@ -294,12 +294,17 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleClick: React.MouseEventHandler<HTMLTableRowElement> = () => {
     const { props } = this;
-    props.registrySelectRow(
-      props.rowData,
-    );
+
+    if (props.selected_row_in_params) {
+      this.handleDoubleClick();
+    } else {
+      props.registrySelectRow(
+        props.rowData,
+      );
+    }
   }
 
-  handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
+  handleDoubleClick = () => {
     const { props } = this;
     const isPermittedToClick = (
       props.isPermitted
@@ -363,6 +368,7 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       buttons: getHeaderData(state.registry, registryKey).buttons,
       row_double_click: getListData(getRegistryState(state), registryKey).meta.row_double_click,
       checkData: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
+      selected_row_in_params: getListData(state.registry, registryKey).meta.selected_row_in_params,
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

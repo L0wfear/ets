@@ -158,6 +158,7 @@ export interface OneRegistryData<F = any> {
       | 'datetime_range_picker'
       | 'select_for_technical_operation_relations'
       | 'is_current_structure'
+      | 'order_to'
     );
     is_current_structure_popover?: string;
     buttons: Array<{
@@ -171,7 +172,7 @@ export interface OneRegistryData<F = any> {
   list: {
     data: {
       array: F[];
-      arrayExtra: any; // use lodash.get
+      objectExtra: Record<string, any> // use lodash.get
       total_count: number;
       uniqKey: keyof F;
       uniqKeyForParams?: string;
@@ -193,6 +194,7 @@ export interface OneRegistryData<F = any> {
     };
     meta: {
       row_double_click: boolean;
+      selected_row_in_params: boolean;
       fields: TypeFields<F>[];
       fieldsInDeepArr: any[],
       rowFields: any[],

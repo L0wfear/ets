@@ -15,7 +15,7 @@ export interface StatePropsTrTbody {
   userData: InitialStateSession['userData'];
   buttons: OneRegistryData['header']['buttons'];
   row_double_click: OneRegistryData['list']['meta']['row_double_click'];
-
+  selected_row_in_params: OneRegistryData['list']['meta']['selected_row_in_params'];
   checkData: any;
 }
 

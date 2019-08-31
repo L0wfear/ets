@@ -126,6 +126,9 @@ export const mergeListData = (data: OneRegistryData['list']['data']) => (
       if (key === 'array') {
         newObj[key] = isArray(data[key]) ? data[key] : value;
       }
+      if (key === 'objectExtra') {
+        newObj[key] = isObject(data[key]) ? data[key] : value;
+      }
       if (key === 'total_count') {
         if (isArray(data.array)) {
           newObj[key] = data.array.length;
@@ -175,6 +178,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   const {
     fields = registryDefaultObj.list.meta.fields,
     row_double_click = registryDefaultObj.list.meta.row_double_click,
+    selected_row_in_params = registryDefaultObj.list.meta.selected_row_in_params,
   } = meta || {};
 
   const fieldsFiltred = fields.reduce(
@@ -216,6 +220,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   return {
     ...makerDataMetaField(fieldsFiltred),
     row_double_click,
+    selected_row_in_params,
   };
 };
 

@@ -3,41 +3,38 @@ import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions
 import {
   getInsuranceType,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_type/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- InsuranceType ---------- */
-export const autobaseSetInsuranceType = (insuranceTypeList: InsuranceType[]) => (dispatch) => (
+export const autobaseSetInsuranceType = (insuranceTypeList: InsuranceType[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       insuranceTypeList,
     }),
   )
 );
-export const autobaseResetSetInsuranceType = () => (dispatch) => (
+export const autobaseResetSetInsuranceType = (): EtsAction<EtsActionReturnType<typeof autobaseSetInsuranceType>> => (dispatch) => (
   dispatch(
     autobaseSetInsuranceType([]),
   )
 );
-export const autobaseGetInsuranceType: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getInsuranceType(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const autobaseGetInsuranceType = (payload: Parameters<typeof getInsuranceType>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getInsuranceType>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getInsuranceType(payload),
+    meta,
+  )
 );
-export const insuranceTypeGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetInsuranceType(payload, { page, path }),
+export const insuranceTypeGetAndSetInStore = (...arg: Parameters<typeof autobaseGetInsuranceType>): EtsAction<EtsActionReturnType<typeof autobaseGetInsuranceType>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetInsuranceType(...arg),
   );
 
   dispatch(
-    autobaseSetInsuranceType(data),
+    autobaseSetInsuranceType(result.data),
   );
 
-  return {
-    insuranceTypeList: data,
-  };
+  return result;
 };

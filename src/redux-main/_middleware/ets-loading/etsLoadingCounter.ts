@@ -1,7 +1,8 @@
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { incLoadingCount, decLoadingCount } from './module/actions-loading';
+import { EtsDispatch, EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const etsLoadingCounter = async <PromiseAns>(dispatch: any, promise: Promise<PromiseAns>, meta: LoadingMeta) => {
+const etsLoadingCounter = async <PromiseAns>(dispatch: EtsDispatch, promise: Promise<PromiseAns>, meta: LoadingMeta) => {
   let countLoad = false;
   let interval = null;
 
@@ -45,7 +46,7 @@ const etsLoadingCounter = async <PromiseAns>(dispatch: any, promise: Promise<Pro
   return response;
 };
 
-export const actionFetchWithCount: any = (promise: Promise<any>, meta: LoadingMeta) => (dispatch) => {
+export const actionFetchWithCount = (promise: Promise<any>, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof etsLoadingCounter>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promise,

@@ -25,9 +25,3 @@ export type Odh = {
   total_auto_clean_area: number | null;
   total_manual_clean_area: number | null;
 };
-
-export type CreateOdh = any;
-
-export type UpdateOdh = any;
-
-export type GetOdh = () => Promise<any>;

@@ -5,11 +5,10 @@ import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/
 import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
 import { CustomTableWrapper } from './styled/styled';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
-import { ReduxState } from 'redux-main/@types/state';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type PreparePlanOwnProps = {
+type PreparePlanProps = {
   types_cars: InspectCarsCondition['data']['types_cars'];
   types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];
   canSavePreparePlanHandler: (value: boolean) => any;
@@ -18,23 +17,20 @@ type PreparePlanOwnProps = {
   page: string;
 };
 
-type PreparePlanDispatchProps = {
-  autobaseGetSetCarFuncTypes: HandleThunkActionCreator<typeof autobaseGetSetCarFuncTypes>;
-};
-
-export type PreparePlanProps = (
-  PreparePlanOwnProps
-  & PreparePlanDispatchProps
-);
-
 const PreparePlan: React.FC<PreparePlanProps> = (props) => {
   const [typesListOpt, setTypesListOpt] = React.useState([]);
   const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(true);
   const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(true);
 
+  const dispatch = etsUseDispatch();
   // componentDidMount
   React.useEffect(() => {
-    props.autobaseGetSetCarFuncTypes().then(
+    dispatch(
+      autobaseGetSetCarFuncTypes(
+        {},
+        props,
+      ),
+    ).then(
       ({ data }) => {
         setTypesListOpt(
           data.map(
@@ -172,13 +168,4 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
   );
 };
 
-export default connect<{}, PreparePlanDispatchProps, PreparePlanOwnProps, ReduxState>(
-  null,
-  (dispatch: any) => ({
-    autobaseGetSetCarFuncTypes: (...arg) => (
-      dispatch(
-        autobaseGetSetCarFuncTypes(...arg),
-      )
-    ),
-  }),
-)(PreparePlan);
+export default PreparePlan;

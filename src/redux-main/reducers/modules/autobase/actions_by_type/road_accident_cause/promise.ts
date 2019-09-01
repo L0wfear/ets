@@ -8,24 +8,12 @@ import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
 import { roadAccidentCause } from 'redux-main/reducers/modules/autobase/constants';
-import { get } from 'lodash';
+import { RoadAccidentCause } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getRoadAccidentCause = autobaseLoadByType(roadAccidentCause);
-export const createRoadAccidentCause = autobaseCreateByType(roadAccidentCause);
-export const updateRoadAccidentCause = autobaseUpdateByType(roadAccidentCause);
-export const removeRoadAccidentCause = autobaseRemoveByType(roadAccidentCause);
-
-export const getSetRoadAccidentCause = async (payload) => {
-  const { data } = await getRoadAccidentCause(payload);
-
-  return {
-    data: data.map((rowData) => {
-      rowData.files = get(rowData, 'files', []);
-
-      return rowData;
-    }),
-  };
-};
+export const getSetRoadAccidentCause = autobaseLoadByType<RoadAccidentCause>(roadAccidentCause);
+export const createRoadAccidentCause = autobaseCreateByType<RoadAccidentCause>(roadAccidentCause);
+export const updateRoadAccidentCause = autobaseUpdateByType<RoadAccidentCause>(roadAccidentCause);
+export const autobaseDeleteRoadAccidentCause = autobaseRemoveByType(roadAccidentCause);
 
 export const createSetRoadAccidentCause = (rawRoadAccidentCause) => {
   const payload = {
@@ -51,10 +39,5 @@ export const updateSetRoadAccidentCause = (oldRoadAccidentCause) => {
 
   return updateRoadAccidentCause(
     payload,
-  );
-};
-export const autobaseDeleteRoadAccidentCause = (id) => {
-  return removeRoadAccidentCause(
-    id,
   );
 };

@@ -1,16 +1,11 @@
 import {
   getFuelRates,
-  getFuelRatesByCarModel,
-  getEquipmentFuelRatesByCarModel,
   createFuelRate,
   updateFuelRate,
-  deleteFuelRate,
   getFuelOperations,
 } from 'redux-main/reducers/modules/fuel_rates/promises/index';
 
 import {
-  IFuelRatesByCarModel,
-  IEquipmentFuelRatesByCarModel,
   FuelRate,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 
@@ -19,123 +14,82 @@ import {
   initialState as fuelRatesInitialState,
 } from 'redux-main/reducers/modules/fuel_rates/fuelRates';
 import { FuelOperation } from '../fuel_operations/@types/fuelOperations';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export const fuelRatesGet = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getFuelRates(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export const fuelRatesSetNewData = (newStateData) => ({
+export const fuelRatesSetNewData = (newStateData: Partial<{ fuelRatesList: FuelRate[]; fuelRateOperationsIsActiveList: FuelOperation[] }>) => ({
   type: FUEL_RATES_SET_DATA,
   payload: newStateData,
 });
 
-export const fuelRatesGetAndSetInStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { fuelRatesList } } = await dispatch(
-    fuelRatesGet(payload, { page, path, }),
+export const fuelRatesGet = (payload: object = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getFuelRates>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getFuelRates(payload),
+    meta,
+  )
+);
+
+export const fuelRatesGetAndSetInStore = (payload: object = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelRatesGet>> => async (dispatch) => {
+  const result = await dispatch(
+    fuelRatesGet(payload, meta),
   );
 
   dispatch(
-    fuelRatesSetNewData({fuelRatesList}),
+    fuelRatesSetNewData({ fuelRatesList: result.fuelRatesList }),
   );
 
-  return {
-    fuelRatesList,
-  };
+  return result;
 };
 
-export const fuelRatesByCarModelGet = ( payload: IFuelRatesByCarModel) => ({
-  type: 'none',
-  payload: getFuelRatesByCarModel(payload),
-  meta: {
-    promise: true,
-  },
-});
-
-export const equipmentFuelRatesByCarModelGet = (payload: IEquipmentFuelRatesByCarModel) => ({
-  type: 'none',
-  payload: getEquipmentFuelRatesByCarModel(payload),
-  meta: {
-    promise: true,
-  },
-});
-
-export const fuelRateCreate: any = (payload: FuelRate, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const newFuelRate = await dispatch({
-    type: 'none',
-    payload: createFuelRate(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-  await fuelRatesGetAndSetInStore({}, {page, path});
+export const fuelRateCreate = (payload: FuelRate, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createFuelRate>> => async (dispatch) => {
+  const newFuelRate = await etsLoadingCounter(
+    dispatch,
+    createFuelRate(payload),
+    meta,
+  );
+  await fuelRatesGetAndSetInStore({}, meta);
   return newFuelRate;
 };
 
-export const fuelRateUpdate: any = (payload: FuelRate, { page, path }: {page: string, path?: string }) => async (dispatch) => {
-  const fuelRateUpd = await dispatch({
-    type: 'none',
-    payload: updateFuelRate(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-  await fuelRatesGetAndSetInStore({}, {page, path});
+export const fuelRateUpdate = (payload: FuelRate, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateFuelRate>> => async (dispatch) => {
+  const fuelRateUpd = await etsLoadingCounter(
+    dispatch,
+    updateFuelRate(payload),
+    meta,
+  );
+  await fuelRatesGetAndSetInStore({}, meta);
   return fuelRateUpd;
 };
 
-export const fuelRateDelete = (payload: number) => ({
-  type: 'none',
-  payload: deleteFuelRate(payload),
-  meta: {
-    promise: true,
-  },
-});
-
-export const fuelOperationsGet = (payload, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getFuelOperations(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const fuelOperationsGet = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getFuelOperations>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getFuelOperations(payload),
+    meta,
+  )
 );
 
-export const resetFuelRates = () => (dispatch) => (
+export const resetFuelRates = (): EtsAction<EtsActionReturnType<typeof fuelRatesSetNewData>> => (dispatch) => (
   dispatch(
     fuelRatesSetNewData(fuelRatesInitialState),
   )
 );
-export const resetFuelOperations = () => (dispatch) => (
+export const resetFuelOperations = (): EtsAction<EtsActionReturnType<typeof fuelRatesSetNewData>> => (dispatch) => (
   dispatch(
-    fuelRatesSetNewData({fuelRateOperationsIsActiveList: []}),
+    fuelRatesSetNewData({ fuelRateOperationsIsActiveList: [] }),
   )
 );
 
-export const fuelOperationsGetAndSetInStore: any = (payload: FuelOperation, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { fuelRateOperations } } = await dispatch(
-    fuelOperationsGet(payload, { page, path, }),
+export const fuelOperationsGetAndSetInStore = (payload: { is_active?: boolean }, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof fuelOperationsGet>>  => async (dispatch) => {
+  const result = await dispatch(
+    fuelOperationsGet(payload, meta),
   );
 
   dispatch(
-    fuelRatesSetNewData({fuelRateOperationsIsActiveList: fuelRateOperations}),
+    fuelRatesSetNewData({fuelRateOperationsIsActiveList: result.fuelRateOperations}),
   );
 
-  return {
-    fuelRateOperations,
-  };
+  return result;
 };

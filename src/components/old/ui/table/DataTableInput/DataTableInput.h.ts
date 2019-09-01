@@ -13,9 +13,6 @@ export interface ISharedPropsDataTableInput {
   addButtonLabel?: string;
   removeButtonLable?: string;
   selectField?: string;
-  batteryAvailableCarGetAndSetInStore?: any;
-  tireAvailableCarGetAndSetInStore?: any;
-  spareAvailableCarGetAndSetInStore?: any;
   typesListOpt?: any[];
   page: string;
   path: string;

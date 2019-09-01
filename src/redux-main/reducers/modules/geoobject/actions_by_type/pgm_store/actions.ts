@@ -1,109 +1,44 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
 import {
   promiseGetPgmStore,
   promiseLoadPFPgmStore,
   promiseCreatePgmStore,
   promiseUpdatePgmStore,
-  promiseRemovePgmStore,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetPgmStore: any = (pgmStoreList: PgmStore[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      pgmStoreList,
-    }),
-  )
-);
-export const geoobjectResetSetPgmStore: any = () => (dispatch) => (
-  dispatch(
-    actionSetPgmStore([]),
-  )
-);
-export const actionGetBlobPgmStore: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFPgmStore(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetPgmStore: any = (payloadOwn = {}, { page, path }: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetPgmStore(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStorePgmStore: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetPgmStore(payload, { page, path }),
+export const actionGetBlobPgmStore = (payload: Parameters<typeof promiseLoadPFPgmStore>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFPgmStore>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFPgmStore(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetPgmStore(data),
+};
+export const actionGetGetPgmStore = (payload: Parameters<typeof promiseGetPgmStore>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetPgmStore>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetPgmStore(payload),
+      meta,
+    ),
   );
-
-  return {
-    pgmStoreList: data,
-  };
 };
-export const actionCreatePgmStore: any = (pgmStoreOld: PgmStore, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreatePgmStore(pgmStoreOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
+export const actionCreatePgmStore = (payload: Parameters<typeof promiseCreatePgmStore>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreatePgmStore>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreatePgmStore(payload),
+      meta,
+    ),
+  );
 };
-export const actionUpdatePgmStore: any = (pgmStoreOld: PgmStore, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdatePgmStore(pgmStoreOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionRemovePgmStore: any = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemovePgmStore(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetPgmStore,
-  geoobjectResetSetPgmStore,
-  actionGetBlobPgmStore,
-  actionGetGetPgmStore,
-  actionGetAndSetInStorePgmStore,
-  actionCreatePgmStore,
-  actionUpdatePgmStore,
-  actionRemovePgmStore,
+export const actionUpdatePgmStore = (payload: Parameters<typeof promiseUpdatePgmStore>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdatePgmStore>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdatePgmStore(payload),
+      meta,
+    ),
+  );
 };

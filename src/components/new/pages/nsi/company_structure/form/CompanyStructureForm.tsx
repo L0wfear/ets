@@ -22,20 +22,21 @@ import {
   PropsCompanyStructure,
   StateCompanyStructure,
   StatePropsCompanyStructure,
-  DispatchPropsCompanyStructure,
   PropsCompanyStructureWithForm,
 } from 'components/new/pages/nsi/company_structure/form/@types/CompanyStructureForm';
 import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { DivNone } from 'global-styled/global-styled';
 import { getCompanyStructureState, getGeoobjectState } from 'redux-main/reducers/selectors';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
 import companyStructurePermissions from '../_config-data/permissions';
+import { createCompanyStructure, updateCompanyStructure, getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 
 class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, StateCompanyStructure> {
   componentDidMount() {
-    this.props.getAndSetInStoreCompanyStructureLinear(
-      {},
-      { page: this.props.page, path: this.props.path },
+    this.props.dispatch(
+      getAndSetInStoreCompanyStructureLinear(
+        {},
+        this.props,
+      ),
     );
   }
   handleChangeParentID = (parent_id) => {
@@ -165,23 +166,16 @@ class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, St
 }
 
 export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
-  connect<StatePropsCompanyStructure, DispatchPropsCompanyStructure, OwnCompanyStructureProps, ReduxState>(
+  connect<StatePropsCompanyStructure, {}, OwnCompanyStructureProps, ReduxState>(
     (state) => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
       carpoolList: getGeoobjectState(state).carpoolList,
     }),
-    (dispatch: any) => ({
-      getAndSetInStoreCompanyStructureLinear: (...arg) => (
-        dispatch(
-          companyStructureActions.getAndSetInStoreCompanyStructureLinear(...arg),
-        )
-      ),
-    }),
   ),
   withForm<PropsCompanyStructureWithForm, CompanyStructure>({
     uniqField: 'id',
-    createAction: companyStructureActions.createCompanyStructure,
-    updateAction: companyStructureActions.updateCompanyStructure,
+    createAction: createCompanyStructure,
+    updateAction: updateCompanyStructure,
     mergeElement: (props) => {
       return getdefaultCompanyStructureElement(props.element);
     },

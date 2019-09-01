@@ -15,13 +15,11 @@ import {
   PropsDangerZoneForm,
   StateDangerZoneForm,
   StatePropsDangerZoneForm,
-  DispatchPropsDangerZoneForm,
   PropsDangerZoneFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/@types/DangerZoneForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
@@ -29,6 +27,7 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { isNumber } from 'util';
+import { actionCreateDangerZone, actionUpdateDangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/actions';
 
 class DangerZoneForm extends React.PureComponent<
   PropsDangerZoneForm,
@@ -136,18 +135,15 @@ class DangerZoneForm extends React.PureComponent<
 }
 
 export default compose<PropsDangerZoneForm, OwnPropsDangerZoneForm>(
-  connect<
-    StatePropsDangerZoneForm,
-    DispatchPropsDangerZoneForm,
-    OwnPropsDangerZoneForm,
-    ReduxState
-  >((state) => ({
-    userData: getSessionState(state).userData,
-  })),
+  connect<StatePropsDangerZoneForm, {}, OwnPropsDangerZoneForm, ReduxState>(
+    (state) => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
   withForm<PropsDangerZoneFormWithForm, DangerZone>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateDangerZone,
-    updateAction: geoobjectActions.actionUpdateDangerZone,
+    createAction: actionCreateDangerZone,
+    updateAction: actionUpdateDangerZone,
     mergeElement: (props) => {
       return getDefaultDangerZoneFormElement(props.element);
     },

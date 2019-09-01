@@ -15,19 +15,18 @@ import {
   PropsBridgesForm,
   StateBridgesForm,
   StatePropsBridgesForm,
-  DispatchPropsBridgesForm,
   PropsBridgesFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/bridges/BridgesForm/@types/BridgesForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionCreateBridges, actionUpdateBridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/actions';
 
 class BridgesForm extends React.PureComponent<
   PropsBridgesForm,
@@ -129,18 +128,15 @@ class BridgesForm extends React.PureComponent<
 }
 
 export default compose<PropsBridgesForm, OwnPropsBridgesForm>(
-  connect<
-    StatePropsBridgesForm,
-    DispatchPropsBridgesForm,
-    OwnPropsBridgesForm,
-    ReduxState
-  >((state) => ({
-    userData: getSessionState(state).userData,
-  })),
+  connect<StatePropsBridgesForm, {}, OwnPropsBridgesForm, ReduxState>(
+    (state) => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
   withForm<PropsBridgesFormWithForm, Bridges>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateBridges,
-    updateAction: geoobjectActions.actionUpdateBridges,
+    createAction: actionCreateBridges,
+    updateAction: actionUpdateBridges,
     mergeElement: (props) => {
       return getDefaultBridgesFormElement(props.element);
     },

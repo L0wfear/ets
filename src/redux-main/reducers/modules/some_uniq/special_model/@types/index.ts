@@ -3,5 +3,3 @@ export type SpecialModel = {
   id: number;
   name: string;
 };
-
-export type GetCompanyStructureLinear = () => Promise<any>;

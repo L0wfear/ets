@@ -6,78 +6,59 @@ import {
   updateSetRoadAccidentCause,
   autobaseDeleteRoadAccidentCause,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/promise';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- RoadAccidentCause ---------- */
-export const autobaseSetRoadAccidentCause = (roadAccidentCauseList: RoadAccidentCause[]) => (dispatch) => (
+export const autobaseSetRoadAccidentCause = (roadAccidentCauseList: RoadAccidentCause[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       roadAccidentCauseList,
     }),
   )
 );
-export const autobaseResetSetRoadAccidentCause = () => (dispatch) => (
+export const autobaseResetSetRoadAccidentCause = (): EtsAction<EtsActionReturnType<typeof autobaseSetRoadAccidentCause>> => (dispatch) => (
   dispatch(
     autobaseSetRoadAccidentCause([]),
   )
 );
-export const autobaseGetSetRoadAccidentCause: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSetRoadAccidentCause(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-export const roadAccidentCauseGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetRoadAccidentCause(payload, { page, path }),
+export const autobaseGetSetRoadAccidentCause = (payloadOwn = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSetRoadAccidentCause>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    getSetRoadAccidentCause(payloadOwn),
+    meta,
+  );
+};
+export const roadAccidentCauseGetAndSetInStore = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseGetSetRoadAccidentCause>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSetRoadAccidentCause(payload, meta),
   );
 
   dispatch(
-    autobaseSetRoadAccidentCause(data),
+    autobaseSetRoadAccidentCause(result.data),
   );
 
-  return {
-    roadAccidentCauseList: data,
-  };
+  return result;
 };
-export const autobaseCreateRoadAccidentCause: any = (roadAccidentCauseOld: RoadAccidentCause, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: roadAccidentCause } = await dispatch({
-    type: 'none',
-    payload: createSetRoadAccidentCause(roadAccidentCauseOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return roadAccidentCause;
+export const autobaseCreateRoadAccidentCause = (roadAccidentCauseOld: RoadAccidentCause, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createSetRoadAccidentCause>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    createSetRoadAccidentCause(roadAccidentCauseOld),
+    meta,
+  );
 };
-export const autobaseUpdateRoadAccidentCause: any = (roadAccidentCauseOld: RoadAccidentCause, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: roadAccidentCause } = await dispatch({
-    type: 'none',
-    payload: updateSetRoadAccidentCause(roadAccidentCauseOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return roadAccidentCause;
+export const autobaseUpdateRoadAccidentCause = (roadAccidentCauseOld: RoadAccidentCause, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetRoadAccidentCause>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    updateSetRoadAccidentCause(roadAccidentCauseOld),
+    meta,
+  );
 };
-export const autobaseRemoveRoadAccidentCause = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: autobaseDeleteRoadAccidentCause(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
+export const autobaseRemoveRoadAccidentCause = (id: RoadAccidentCause['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteRoadAccidentCause>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    autobaseDeleteRoadAccidentCause(id),
+    meta,
+  );
+};

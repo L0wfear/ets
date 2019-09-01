@@ -52,21 +52,18 @@ export const actionResetTechnicalOperationRegistryForDutyMission = (): EtsAction
 };
 
 /* --------------- запрос --------------- */
-export const actionGetTechnicalOperationRegistry = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => (
+export const actionGetTechnicalOperationRegistry = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => (
   etsLoadingCounter(
     dispatch,
     promiseGetTechnicalOperationRegistry(payload),
-    {
-      page,
-      path,
-    },
+    meta,
   )
 );
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistry = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => {
   const result = await dispatch(
-    actionGetTechnicalOperationRegistry(payload, { page, path }),
+    actionGetTechnicalOperationRegistry(payload, meta),
   );
 
   dispatch(
@@ -76,14 +73,15 @@ export const actionGetAndSetInStoreTechnicalOperationRegistry: any = (payload = 
   return result;
 };
 
-export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (payload, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (payload, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => {
   const result = await dispatch(
     actionGetTechnicalOperationRegistry(
       {
         for: 'mission',
         ...payload,
       },
-      { page, path }),
+      meta,
+    ),
   );
 
   dispatch(
@@ -93,7 +91,7 @@ export const actionGetAndSetInStoreTechnicalOperationRegistryForMission = (paylo
   return result;
 };
 
-export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => {
+export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetTechnicalOperationRegistry>> => async (dispatch) => {
   const result = await dispatch(
     actionGetTechnicalOperationRegistry(
       {
@@ -101,7 +99,8 @@ export const actionGetAndSetInStoreTechnicalOperationRegistryForDutyMission = (p
         needs_brigade: true,
         ...payload,
       },
-      { page, path }),
+      meta,
+    ),
   );
 
   dispatch(

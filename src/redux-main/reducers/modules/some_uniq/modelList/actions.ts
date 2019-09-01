@@ -1,42 +1,39 @@
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetModelList } from 'redux-main/reducers/modules/some_uniq/modelList/promise';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
-export const actionSetModelList = (modelsList: IStateSomeUniq['modelsList']) => (dispatch) => (
+export const actionSetModelList = (modelsList: IStateSomeUniq['modelsList']): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
   dispatch(
     someUniqSetNewData({
       modelsList,
     }),
   )
 );
-export const actionResetModelList: any = () => (dispatch) => (
+export const actionResetModelList = (): EtsAction<EtsActionReturnType<typeof actionSetModelList>> => (dispatch) => (
   dispatch(
     actionSetModelList([]),
   )
 );
 
-export const actionGetModelList: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseGetModelList(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const actionGetModelList = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetModelList>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetModelList(payload),
+    meta,
+  )
 );
 
-export const actionGetAndSetInStoreModelList: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    actionGetModelList(payload, { page, path }),
+export const actionGetAndSetInStoreModelList = (...arg: Parameters<typeof actionGetModelList>): EtsAction<EtsActionReturnType<typeof actionGetModelList>> => async (dispatch) => {
+  const result = await dispatch(
+    actionGetModelList(...arg),
   );
 
   dispatch(
-    actionSetModelList(data),
+    actionSetModelList(result.data),
   );
 
-  return {
-    driverList: data,
-  };
+  return result;
 };

@@ -11,10 +11,10 @@ import { get } from 'lodash';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 
-export const getTechInspection = autobaseLoadByType(techInspection);
-export const createTechInspection = autobaseCreateByType(techInspection);
-export const updateTechInspection = autobaseUpdateByType(techInspection);
-export const removeTechInspection = autobaseRemoveByType(techInspection);
+export const getTechInspection = autobaseLoadByType<TechInspection>(techInspection);
+export const createTechInspection = autobaseCreateByType<TechInspection>(techInspection);
+export const updateTechInspection = autobaseUpdateByType<TechInspection>(techInspection);
+export const autobaseDeleteTechInspection = autobaseRemoveByType(techInspection);
 
 export const getSetTechInspection = async (payload) => {
   const { data } = await getTechInspection(payload);
@@ -50,10 +50,5 @@ export const updateSetTechInspection = (oldTechInspection: TechInspection) => {
 
   return updateTechInspection(
     payload,
-  );
-};
-export const autobaseDeleteTechInspection = (id) => {
-  return removeTechInspection(
-    id,
   );
 };

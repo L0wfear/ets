@@ -22,10 +22,12 @@ import TabInfo from 'components/old/program_registry/UpdateFrom/inside_component
 import MapInfo from 'components/old/program_registry/UpdateFrom/inside_components/program_object/tabs/MapInfo';
 
 import { PercentModalList } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
+
+import { actionGetAndSetInStoreOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -122,7 +124,7 @@ class ProgramObjectFormodh extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetGetOdh().then(({ data }) => {
+          this.props.actionGetAndSetInStoreOdh().then(({ odhList: data }) => {
             const changesState = { manual };
             changesState.odhPolys = cloneDeep(keyBy(data, 'id'));
 
@@ -585,9 +587,9 @@ export default compose(
   connect(
     null,
     (dispatch) => ({
-      actionGetGetOdh: () =>
+      actionGetAndSetInStoreOdh: () =>
         dispatch(
-          geoobjectActions.actionGetGetOdh(null, {
+          actionGetAndSetInStoreOdh(null, {
             page: null,
             path: null,
           }),

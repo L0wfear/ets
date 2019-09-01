@@ -28,7 +28,7 @@ const useCarDriversList: UseCarDriversList = (drivers_data, gov_number, page, pa
   React.useEffect(
     () => {
       employeePromise({}, { page, path }).then(
-        ({ payload: { dataIndex } }) => {
+        ({ dataIndex }) => {
           setEmployeeIndex(dataIndex);
         },
       );

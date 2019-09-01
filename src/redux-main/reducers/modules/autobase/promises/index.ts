@@ -4,17 +4,27 @@ import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 /* ------------- AUTOBASE ------------- */
-export const autobaseLoadByType = (keyType: keyof typeof AUTOBASE) => (payload = {}) => (
-  AutoBase.path(AUTOBASE[keyType]).get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-    })
-    .then((ans) => ({
-      data: get(ans, ['result', 'rows'], []),
-      extraData: get(ans, ['result', 'extra'], {}),
-    }))
-);
-export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
+export const autobaseLoadByType = <F extends any, ExtraData extends any = any>(keyType: keyof typeof AUTOBASE) => async (payload: object) => {
+  let response = null;
+
+  try {
+    response = await AutoBase.path(AUTOBASE[keyType]).get({ ...payload });
+  } catch {
+    //
+  }
+
+  const result: {
+    data: Array<F>,
+    extraData: ExtraData,
+  } = {
+    data: get(response, 'result.rows', []),
+    extraData: get(response, 'result.extra', {}),
+  };
+
+  return result;
+};
+
+export const autobaseCreateByType = <F extends any>(keyType: keyof typeof AUTOBASE) => async (ownPayload: object) => {
   const payload = {
     ...ownPayload,
   };
@@ -25,15 +35,15 @@ export const autobaseCreateByType = (keyType: keyof typeof AUTOBASE) => async (o
     'json',
   );
 
-  const data = get(
+  const data: F = get(
     response,
-    ['result', 'rows', 0],
-    get(response, ['result', 0], null),
+    'result.rows.0',
+    get(response, 'result.0', null),
   );
 
   return data;
 };
-export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (ownPayload) => {
+export const autobaseUpdateByType = <F extends any>(keyType: keyof typeof AUTOBASE) => async (ownPayload: object & { id: number }) => {
   const payload = {
     ...ownPayload,
   };
@@ -44,15 +54,15 @@ export const autobaseUpdateByType = (keyType: keyof typeof AUTOBASE) => async (o
     'json',
   );
 
-  const data = get(
+  const data: F = get(
     response,
-    ['result', 'rows', 0],
-    get(response, ['result', 0], null),
+    'result.rows.0',
+    get(response, 'result.0', null),
   );
 
   return data;
 };
-export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id) => {
+export const autobaseRemoveByType = (keyType: keyof typeof AUTOBASE) => (id: number) => {
   return AutoBase.path(`${AUTOBASE[keyType]}/${id}`).delete(
     {},
     false,

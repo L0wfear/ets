@@ -2,7 +2,8 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetCarsTravelTime } from 'redux-main/reducers/modules/some_uniq/cars_travel_time/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* --------------- обновление стора --------------- */
 export const actionSetCarsTravelTime = (
@@ -22,34 +23,21 @@ export const actionResetCarsTravelTime = (): EtsAction<void> => async (dispatch)
 };
 
 /* --------------- запрос --------------- */
-export const actionGetCarsTravelTime: any = (
-  payload = {},
-  { page, path }: LoadingMeta,
-) => async (dispatch) =>
-  dispatch({
-    type: 'none',
-    payload: promiseGetCarsTravelTime(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const actionGetCarsTravelTime = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetCarsTravelTime>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseGetCarsTravelTime(payload),
+    meta,
+  );
+};
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreCarsTravelTime: any = (
-  payload = {},
-  { page, path }: LoadingMeta,
-) => async (dispatch) => {
-  const {
-    payload: { data },
-  } = await dispatch(actionGetCarsTravelTime(payload, { page, path }));
+export const actionGetAndSetInStoreCarsTravelTime = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetCarsTravelTime>> => async (dispatch) => {
+  const result = await dispatch(actionGetCarsTravelTime(payload, meta));
 
-  dispatch(actionSetCarsTravelTime(data));
+  dispatch(actionSetCarsTravelTime(result.data));
 
-  return {
-    carsTravelTimeList: data,
-  };
+  return result;
 };
 
 export default {

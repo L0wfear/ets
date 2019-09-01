@@ -5,51 +5,59 @@ import { IExternalPropsDataTableInputWrapper } from 'components/old/ui/table/Dat
 
 import DataTableInput from 'components/old/ui/table/DataTableInput/DataTableInput';
 import { meta, renderers, validationSchema } from 'components/new/pages/nsi/autobase/pages/tire/form/vehicle-block/table-schema';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import { getAutobaseState } from 'redux-main/reducers/selectors';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { tireAvailableCarGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_available_car/actions';
 
 interface IPropsTireToVehicleBlock extends ISharedPropsDataTableInput, IExternalPropsDataTableInputWrapper {
   tireId: number;
   errors: any;
 }
 
-class TireToVehicleBlock extends React.Component<IPropsTireToVehicleBlock, any> {
-  componentDidMount() {
-    this.props.tireAvailableCarGetAndSetInStore(
-      this.props.tireId
-      ? {tire_id: this.props.tireId, }
-      : {});
-  }
-  render() {
-    return (
-      <DataTableInput
-        tableSchema={meta}
-        renderers={renderers}
-        errors={this.props.errors}
-        validationSchema={validationSchema}
-        addButtonLabel="Добавить ТС"
-        removeButtonLable="Удалить ТС"
-        stackOrder
-        {...this.props}
-      />
-    );
-  }
-}
+const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
+  (props) => {
+    const dispatch = etsUseDispatch();
+    const tireAvailableCarList = etsUseSelector((state) => getAutobaseState(state).tireAvailableCarList);
 
-export default connect<any, any, any, ReduxState>(
-  (state) => ({
-    tireAvailableCarList: getAutobaseState(state).tireAvailableCarList,
-  }),
-  (dispatch, { page, path }) => ({
-    tireAvailableCarGetAndSetInStore: (payload) => (
-      dispatch(
-        autobaseActions.tireAvailableCarGetAndSetInStore(
-          payload,
-          { page, path },
-        ),
-      )
-    ),
-  }),
-)(TireToVehicleBlock);
+    React.useEffect(
+      () => {
+        const payload: { tire_id?: number } = {};
+        if (props.tireId) {
+          payload.tire_id = props.tireId;
+        }
+
+        dispatch(
+          tireAvailableCarGetAndSetInStore(
+            payload,
+            props,
+          ),
+        );
+      },
+      [props.tireId],
+    );
+
+    return React.useMemo(
+      () => (
+        <DataTableInput
+          tableSchema={meta}
+          renderers={renderers}
+          validationSchema={validationSchema}
+          addButtonLabel="Добавить ТС"
+          removeButtonLable="Удалить ТС"
+          stackOrder
+          tireAvailableCarList={tireAvailableCarList}
+          {...props}
+        />
+      ),
+      [
+        meta,
+        renderers,
+        validationSchema,
+        tireAvailableCarList,
+        props,
+      ],
+    );
+  },
+);
+
+export default TireToVehicleBlock;

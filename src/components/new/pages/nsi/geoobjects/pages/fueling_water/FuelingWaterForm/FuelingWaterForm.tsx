@@ -15,19 +15,18 @@ import {
   PropsFuelingWaterForm,
   StateFuelingWaterForm,
   StatePropsFuelingWaterForm,
-  DispatchPropsFuelingWaterForm,
   PropsFuelingWaterFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/fueling_water/FuelingWaterForm/@types/FuelingWaterForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionCreateFuelingWater, actionUpdateFuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/actions';
 
 class FuelingWaterForm extends React.PureComponent<
   PropsFuelingWaterForm,
@@ -107,7 +106,7 @@ class FuelingWaterForm extends React.PureComponent<
 export default compose<PropsFuelingWaterForm, OwnPropsFuelingWaterForm>(
   connect<
     StatePropsFuelingWaterForm,
-    DispatchPropsFuelingWaterForm,
+    {},
     OwnPropsFuelingWaterForm,
     ReduxState
   >((state) => ({
@@ -115,8 +114,8 @@ export default compose<PropsFuelingWaterForm, OwnPropsFuelingWaterForm>(
   })),
   withForm<PropsFuelingWaterFormWithForm, FuelingWater>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateFuelingWater,
-    updateAction: geoobjectActions.actionUpdateFuelingWater,
+    createAction: actionCreateFuelingWater,
+    updateAction: actionUpdateFuelingWater,
     mergeElement: (props) => {
       return getDefaultFuelingWaterFormElement(props.element);
     },

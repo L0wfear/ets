@@ -15,13 +15,11 @@ import {
   PropsFountainsForm,
   StateFountainsForm,
   StatePropsFountainsForm,
-  DispatchPropsFountainsForm,
   PropsFountainsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsForm/@types/FountainsForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Fountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
@@ -32,6 +30,7 @@ import SimpleEmailA from 'components/new/ui/simple_a/email/index';
 import SimplePhoneA from 'components/new/ui/simple_a/phone';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
+import { actionCreateFountains, actionUpdateFountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/actions';
 
 class FountainsForm extends React.PureComponent<
   PropsFountainsForm,
@@ -184,18 +183,15 @@ class FountainsForm extends React.PureComponent<
 }
 
 export default compose<PropsFountainsForm, OwnPropsFountainsForm>(
-  connect<
-    StatePropsFountainsForm,
-    DispatchPropsFountainsForm,
-    OwnPropsFountainsForm,
-    ReduxState
-  >((state) => ({
-    userData: getSessionState(state).userData,
-  })),
+  connect<StatePropsFountainsForm, {}, OwnPropsFountainsForm, ReduxState>(
+      (state) => ({
+      userData: getSessionState(state).userData,
+    }),
+  ),
   withForm<PropsFountainsFormWithForm, Fountains>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateFountains,
-    updateAction: geoobjectActions.actionUpdateFountains,
+    createAction: actionCreateFountains,
+    updateAction: actionUpdateFountains,
     mergeElement: (props) => {
       return getDefaultFountainsFormElement(props.element);
     },

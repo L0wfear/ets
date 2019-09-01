@@ -1,109 +1,44 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/@types';
 import {
   promiseGetPedestrianTunnelExits,
   promiseLoadPFPedestrianTunnelExits,
   promiseCreatePedestrianTunnelExits,
   promiseUpdatePedestrianTunnelExits,
-  promiseRemovePedestrianTunnelExits,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetPedestrianTunnelExits: any = (pedestrianTunnelExitsList: PedestrianTunnelExits[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      pedestrianTunnelExitsList,
-    }),
-  )
-);
-export const geoobjectResetSetPedestrianTunnelExits: any = () => (dispatch) => (
-  dispatch(
-    actionSetPedestrianTunnelExits([]),
-  )
-);
-export const actionGetBlobPedestrianTunnelExits: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFPedestrianTunnelExits(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetPedestrianTunnelExits: any = (payloadOwn = {}, { page, path }: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetPedestrianTunnelExits(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStorePedestrianTunnelExits: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetPedestrianTunnelExits(payload, { page, path }),
+export const actionGetBlobPedestrianTunnelExits = (payload: Parameters<typeof promiseLoadPFPedestrianTunnelExits>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFPedestrianTunnelExits>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFPedestrianTunnelExits(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetPedestrianTunnelExits(data),
+};
+export const actionGetGetPedestrianTunnelExits = (payload: Parameters<typeof promiseGetPedestrianTunnelExits>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetPedestrianTunnelExits>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetPedestrianTunnelExits(payload),
+      meta,
+    ),
   );
-
-  return {
-    pedestrianTunnelExitsList: data,
-  };
 };
-export const actionCreatePedestrianTunnelExits: any = (pedestrianTunnelExitsOld: PedestrianTunnelExits, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreatePedestrianTunnelExits(pedestrianTunnelExitsOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
+export const actionCreatePedestrianTunnelExits = (payload: Parameters<typeof promiseCreatePedestrianTunnelExits>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreatePedestrianTunnelExits>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreatePedestrianTunnelExits(payload),
+      meta,
+    ),
+  );
 };
-export const actionUpdatePedestrianTunnelExits: any = (pedestrianTunnelExitsOld: PedestrianTunnelExits, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdatePedestrianTunnelExits(pedestrianTunnelExitsOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionRemovePedestrianTunnelExits: any = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemovePedestrianTunnelExits(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetPedestrianTunnelExits,
-  geoobjectResetSetPedestrianTunnelExits,
-  actionGetBlobPedestrianTunnelExits,
-  actionGetGetPedestrianTunnelExits,
-  actionGetAndSetInStorePedestrianTunnelExits,
-  actionCreatePedestrianTunnelExits,
-  actionUpdatePedestrianTunnelExits,
-  actionRemovePedestrianTunnelExits,
+export const actionUpdatePedestrianTunnelExits = (payload: Parameters<typeof promiseUpdatePedestrianTunnelExits>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdatePedestrianTunnelExits>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdatePedestrianTunnelExits(payload),
+      meta,
+    ),
+  );
 };

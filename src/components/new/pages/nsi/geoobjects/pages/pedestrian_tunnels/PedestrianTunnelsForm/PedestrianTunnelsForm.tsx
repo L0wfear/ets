@@ -15,19 +15,18 @@ import {
   PropsPedestrianTunnelsForm,
   StatePedestrianTunnelsForm,
   StatePropsPedestrianTunnelsForm,
-  DispatchPropsPedestrianTunnelsForm,
   PropsPedestrianTunnelsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/@types/PedestrianTunnelsForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { PedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionCreatePedestrianTunnels, actionUpdatePedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/actions';
 
 class PedestrianTunnelsForm extends React.PureComponent<
   PropsPedestrianTunnelsForm,
@@ -125,7 +124,7 @@ export default compose<
 >(
   connect<
     StatePropsPedestrianTunnelsForm,
-    DispatchPropsPedestrianTunnelsForm,
+    {},
     OwnPropsPedestrianTunnelsForm,
     ReduxState
   >((state) => ({
@@ -133,8 +132,8 @@ export default compose<
   })),
   withForm<PropsPedestrianTunnelsFormWithForm, PedestrianTunnels>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreatePedestrianTunnels,
-    updateAction: geoobjectActions.actionUpdatePedestrianTunnels,
+    createAction: actionCreatePedestrianTunnels,
+    updateAction: actionUpdatePedestrianTunnels,
     mergeElement: (props) => {
       return getDefaultPedestrianTunnelsFormElement(props.element);
     },

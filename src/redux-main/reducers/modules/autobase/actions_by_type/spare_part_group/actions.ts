@@ -3,41 +3,38 @@ import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions
 import {
   getSparePartGroup,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/promise';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- SparePartGroup ---------- */
-export const autobaseSetSparePartGroup = (sparePartGroupList: SparePartGroup[]) => (dispatch) => (
+export const autobaseSetSparePartGroup = (sparePartGroupList: SparePartGroup[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       sparePartGroupList,
     }),
   )
 );
-export const autobaseResetSetSparePartGroup = () => (dispatch) => (
+export const autobaseResetSetSparePartGroup = (): EtsAction<EtsActionReturnType<typeof autobaseSetSparePartGroup>> => (dispatch) => (
   dispatch(
     autobaseSetSparePartGroup([]),
   )
 );
-export const autobaseGetSparePartGroup: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSparePartGroup(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const autobaseGetSparePartGroup = (payload: Parameters<typeof getSparePartGroup>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSparePartGroup>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getSparePartGroup(payload),
+    meta,
+  )
 );
-export const sparePartGroupGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSparePartGroup(payload, { page, path }),
+export const sparePartGroupGetAndSetInStore = (...arg: Parameters<typeof autobaseGetSparePartGroup>): EtsAction<EtsActionReturnType<typeof autobaseGetSparePartGroup>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSparePartGroup(...arg),
   );
 
   dispatch(
-    autobaseSetSparePartGroup(data),
+    autobaseSetSparePartGroup(result.data),
   );
 
-  return {
-    sparePartGroupList: data,
-  };
+  return result;
 };

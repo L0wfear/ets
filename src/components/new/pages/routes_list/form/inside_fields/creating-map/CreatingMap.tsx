@@ -40,11 +40,11 @@ import {
   getCacheDataForRoute,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
 import { ExtButton } from 'components/old/ui/new/button/ExtButton';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
 import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionGetAndSetInStoreGeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
 
 class CreatingMap extends React.PureComponent<
   PropsCreatingMap,
@@ -220,7 +220,7 @@ class CreatingMap extends React.PureComponent<
         );
         const geozoneMunicipalFacility = get(
           resolve,
-          'geozoneMunicipalFacility',
+          'data.list',
           someUniq.initialState.geozoneMunicipalFacility,
         );
 
@@ -522,7 +522,7 @@ export default connect<
   (dispatch: any) => ({
     actionGetAndSetInStoreGeozoneMunicipalFacility: (...arg) => (
       dispatch(
-        someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility(...arg),
+        actionGetAndSetInStoreGeozoneMunicipalFacility(...arg),
       )
     ),
     dispatch,

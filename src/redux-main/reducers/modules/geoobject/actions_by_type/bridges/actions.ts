@@ -1,109 +1,44 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';
 import {
   promiseGetBridges,
   promiseLoadPFBridges,
   promiseCreateBridges,
   promiseUpdateBridges,
-  promiseRemoveBridges,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetBridges: any = (bridgesList: Bridges[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      bridgesList,
-    }),
-  )
-);
-export const geoobjectResetSetBridges: any = () => (dispatch) => (
-  dispatch(
-    actionSetBridges([]),
-  )
-);
-export const actionGetBlobBridges: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFBridges(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetBridges: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetBridges(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreBridges: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetBridges(payload, { page, path }),
+export const actionGetBlobBridges = (payload: Parameters<typeof promiseLoadPFBridges>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFBridges>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFBridges(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetBridges(data),
+};
+export const actionGetGetBridges = (payload: Parameters<typeof promiseGetBridges>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetBridges>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetBridges(payload),
+      meta,
+    ),
   );
-
-  return {
-    bridgesList: data,
-  };
 };
-export const actionCreateBridges: any = (bridgesOld: Bridges, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateBridges(bridgesOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
+export const actionCreateBridges = (payload: Parameters<typeof promiseCreateBridges>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateBridges>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreateBridges(payload),
+      meta,
+    ),
+  );
 };
-export const actionUpdateBridges: any = (bridgesOld: Bridges, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateBridges(bridgesOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionRemoveBridges: any = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveBridges(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetBridges,
-  geoobjectResetSetBridges,
-  actionGetBlobBridges,
-  actionGetGetBridges,
-  actionGetAndSetInStoreBridges,
-  actionCreateBridges,
-  actionUpdateBridges,
-  actionRemoveBridges,
+export const actionUpdateBridges = (payload: Parameters<typeof promiseUpdateBridges>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateBridges>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateBridges(payload),
+      meta,
+    ),
+  );
 };

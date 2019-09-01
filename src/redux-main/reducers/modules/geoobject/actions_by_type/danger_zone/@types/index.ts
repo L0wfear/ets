@@ -8,9 +8,3 @@ export type DangerZone = {
   sidelines_area: number | null;
   sidewalk_area: number | null;
 };
-
-export type CreateDangerZone = any;
-
-export type UpdateDangerZone = any;
-
-export type GetDangerZone = () => Promise<any>;

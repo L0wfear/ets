@@ -5,9 +5,3 @@ export type FuelingWater = {
   name: string;
   shape: object;
 };
-
-export type CreateFuelingWater = any;
-
-export type UpdateFuelingWater = any;
-
-export type GetFuelingWater = () => Promise<any>;

@@ -1,4 +1,4 @@
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import {
   MONITOR_PAGE_SET_CAR_ACTUAL_INDEX,
   MONITOR_PAGE_CHANGE_CARS_BY_STATUS,
@@ -21,11 +21,10 @@ import {
   MONITOR_PAGE_TOGGLE_FUEL_EVENTS_LEAK_SHOW,
   MONITOR_PAGE_SET_COMPANY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
-import { HandleThunkActionCreator } from 'react-redux';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Company } from 'redux-main/reducers/modules/company/@types';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 
 export const actionSetCompanyIndex = (companiesIndex: Record<Company['id'], Company>) => ({
   type: MONITOR_PAGE_SET_COMPANY,
@@ -41,9 +40,9 @@ export const monitorPageSetcarActualGpsNumberIndex = (carActualGpsNumberIndex: R
   },
 });
 
-export const actionMonitorPageLoadCarActual = (): EtsAction<ReturnType<HandleThunkActionCreator<typeof autobaseActions.autobaseGetSetCar>>> => async (dispatch) => {
+export const actionMonitorPageLoadCarActual = (): EtsAction<EtsActionReturnType<typeof autobaseGetSetCar>> => async (dispatch) => {
   const result = await dispatch(
-    autobaseActions.autobaseGetSetCar(
+    autobaseGetSetCar(
       {},
       { page: 'main', path: '' },
     ),

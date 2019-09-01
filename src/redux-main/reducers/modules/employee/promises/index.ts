@@ -1,4 +1,4 @@
-import { DriverService, EmployeeService, PositionService } from 'api/Services';
+import { DriverService, EmployeeService } from 'api/Services';
 import { get } from 'lodash';
 
 /* ------------- EMPLOYEE ------------- */
@@ -61,22 +61,6 @@ export const employeeLoadDriver = (payload = {}) => (
     .then((ans) => {
       return ({
         data: get(ans, ['result'], []),
-      });
-    })
-);
-/* ------------- POSITIONS ------------- */
-export const employeeLoadPosition = (payload = {}) => (
-  PositionService.get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-
-      return {
-        result: [],
-      };
-    })
-    .then((ans) => {
-      return ({
-        data: get(ans, ['result', 'rows'], []),
       });
     })
 );

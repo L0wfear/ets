@@ -1,109 +1,44 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import {
   promiseGetSsp,
   promiseLoadPFSsp,
   promiseCreateSsp,
   promiseUpdateSsp,
-  promiseRemoveSsp,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/promise';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetSsp = (sspList: Ssp[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      sspList,
-    }),
-  )
-);
-export const geoobjectResetSetSsp = () => (dispatch) => (
-  dispatch(
-    actionSetSsp([]),
-  )
-);
-export const actionGetBlobSsp: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFSsp(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetSsp: any = (payloadOwn = {}, { page, path }: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetSsp(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreSsp = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetSsp(payload, { page, path }),
+export const actionGetBlobSsp = (payload: Parameters<typeof promiseLoadPFSsp>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFSsp>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFSsp(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetSsp(data),
+};
+export const actionGetGetSsp = (payload: Parameters<typeof promiseGetSsp>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetSsp>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetSsp(payload),
+      meta,
+    ),
   );
-
-  return {
-    sspList: data,
-  };
 };
-export const actionCreateSsp: any = (sspOld: Ssp, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateSsp(sspOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
+export const actionCreateSsp = (payload: Parameters<typeof promiseCreateSsp>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateSsp>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreateSsp(payload),
+      meta,
+    ),
+  );
 };
-export const actionUpdateSsp: any = (sspOld: Ssp, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateSsp(sspOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionRemoveSsp = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveSsp(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetSsp,
-  geoobjectResetSetSsp,
-  actionGetGetSsp,
-  actionGetBlobSsp,
-  actionGetAndSetInStoreSsp,
-  actionCreateSsp,
-  actionUpdateSsp,
-  actionRemoveSsp,
+export const actionUpdateSsp = (payload: Parameters<typeof promiseUpdateSsp>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateSsp>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateSsp(payload),
+      meta,
+    ),
+  );
 };

@@ -1,5 +1,6 @@
 import { TypesService } from 'api/Services';
 import { get } from 'lodash';
+import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const promiseLoadCarFuncTypess = async (payload = {}) => {
   let result = null;
@@ -9,8 +10,9 @@ export const promiseLoadCarFuncTypess = async (payload = {}) => {
     console.log(error); // tslint:disable-line:no-console
   }
 
+  const data: CarFuncTypes[] = get(result, ['result', 'rows'], []);
   return {
-    data: get(result, ['result', 'rows'], []),
+    data,
   };
 };
 

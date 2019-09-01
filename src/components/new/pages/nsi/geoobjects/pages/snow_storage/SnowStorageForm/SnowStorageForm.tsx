@@ -15,19 +15,18 @@ import {
   PropsSnowStorageForm,
   StateSnowStorageForm,
   StatePropsSnowStorageForm,
-  DispatchPropsSnowStorageForm,
   PropsSnowStorageFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/@types/SnowStorageForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionCreateSnowStorage, actionUpdateSnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/actions';
 
 class SnowStorageForm extends React.PureComponent<
   PropsSnowStorageForm,
@@ -107,7 +106,7 @@ class SnowStorageForm extends React.PureComponent<
 export default compose<PropsSnowStorageForm, OwnPropsSnowStorageForm>(
   connect<
     StatePropsSnowStorageForm,
-    DispatchPropsSnowStorageForm,
+    {},
     OwnPropsSnowStorageForm,
     ReduxState
   >((state) => ({
@@ -115,8 +114,8 @@ export default compose<PropsSnowStorageForm, OwnPropsSnowStorageForm>(
   })),
   withForm<PropsSnowStorageFormWithForm, SnowStorage>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateSnowStorage,
-    updateAction: geoobjectActions.actionUpdateSnowStorage,
+    createAction: actionCreateSnowStorage,
+    updateAction: actionUpdateSnowStorage,
     mergeElement: (props) => {
       return getDefaultSnowStorageFormElement(props.element);
     },

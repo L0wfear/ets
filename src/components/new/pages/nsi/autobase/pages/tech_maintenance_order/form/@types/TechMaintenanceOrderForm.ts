@@ -22,7 +22,6 @@ export type StatePropsTechMaintOrder = {
   specialModelList: IStateSomeUniq['specialModelList'];
 };
 export type DispatchPropsTechMaintOrder = {
-  techMaintTypeGetAndSetInStore: () => any;
   measureUnitRunGetAndSetInStore: (tech_maintenance_type_id: TechMaintOrder['tech_maintenance_type_id']) => any;
   actionGetAndSetInStoreSpecialModel: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreSpecialModel>;
 };

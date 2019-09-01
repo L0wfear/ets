@@ -6,78 +6,59 @@ import {
   updateSetSparePart,
   autobaseDeleteSparePart,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part/promise';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 /* ---------- SparePart ---------- */
-export const autobaseSetSparePart = (sparePartList: SparePart[]) => (dispatch) => (
+export const autobaseSetSparePart = (sparePartList: SparePart[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       sparePartList,
     }),
   )
 );
-export const autobaseResetSetSparePart = () => (dispatch) => (
+export const autobaseResetSetSparePart = (): EtsAction<EtsActionReturnType<typeof autobaseSetSparePart>> => (dispatch) => (
   dispatch(
     autobaseSetSparePart([]),
   )
 );
-export const autobaseGetSetSparePart = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSparePart(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-export const sparePartGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetSparePart(payload, { page, path }),
+export const autobaseGetSetSparePart = (payloadOwn = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSparePart>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    getSparePart(payloadOwn),
+    meta,
+  );
+};
+export const sparePartGetAndSetInStore = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSparePart>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSetSparePart(payload, meta),
   );
 
   dispatch(
-    autobaseSetSparePart(data),
+    autobaseSetSparePart(result.data),
   );
 
-  return {
-    sparePartList: data,
-  };
+  return result;
 };
-export const autobaseCreateSparePart: any = (sparePartOld: SparePart, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: sparePart } = await dispatch({
-    type: 'none',
-    payload: createSetSparePart(sparePartOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return sparePart;
+export const autobaseCreateSparePart = (sparePartOld: SparePart, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createSetSparePart>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    createSetSparePart(sparePartOld),
+    meta,
+  );
 };
-export const autobaseUpdateSparePart: any = (sparePartOld: SparePart, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: sparePart } = await dispatch({
-    type: 'none',
-    payload: updateSetSparePart(sparePartOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return sparePart;
+export const autobaseUpdateSparePart = (sparePartOld: SparePart, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetSparePart>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    updateSetSparePart(sparePartOld),
+    meta,
+  );
 };
-export const autobaseRemoveSparePart = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: autobaseDeleteSparePart(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
+export const autobaseRemoveSparePart = (id: SparePart['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteSparePart>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    autobaseDeleteSparePart(id),
+    meta,
+  );
+};

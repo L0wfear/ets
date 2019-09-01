@@ -45,9 +45,3 @@ export type Dt = {
   area_hand_improved_sum: number | null;
   improved_cover_flag: boolean | null;
 };
-
-export type CreateDt = any;
-
-export type UpdateDt = any;
-
-export type GetDt = () => Promise<any>;

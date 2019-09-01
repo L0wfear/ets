@@ -16,13 +16,11 @@ import {
   PropsSspForm,
   StateSspForm,
   StatePropsSspForm,
-  DispatchPropsSspForm,
   PropsSspFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/@types/SspForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
@@ -31,6 +29,7 @@ import { isNumber } from 'util';
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { actionUpdateSsp, actionCreateSsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/actions';
 
 class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
   render() {
@@ -133,15 +132,15 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
 }
 
 export default compose<PropsSspForm, OwnPropsSspForm>(
-  connect<StatePropsSspForm, DispatchPropsSspForm, OwnPropsSspForm, ReduxState>(
+  connect<StatePropsSspForm, {}, OwnPropsSspForm, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
   ),
   withForm<PropsSspFormWithForm, Ssp>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateSsp,
-    updateAction: geoobjectActions.actionUpdateSsp,
+    createAction: actionCreateSsp,
+    updateAction: actionUpdateSsp,
     mergeElement: (props) => {
       return getDefaultSspFormElement(props.element);
     },

@@ -9,11 +9,12 @@ import {
 } from 'redux-main/reducers/modules/autobase/promises';
 import { sparePart } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
+import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getSparePart = autobaseLoadByType(sparePart);
-export const createSparePart = autobaseCreateByType(sparePart);
-export const updateSparePart = autobaseUpdateByType(sparePart);
-export const removeSparePart = autobaseRemoveByType(sparePart);
+export const getSparePart = autobaseLoadByType<SparePart>(sparePart);
+export const createSparePart = autobaseCreateByType<SparePart>(sparePart);
+export const updateSparePart = autobaseUpdateByType<SparePart>(sparePart);
+export const autobaseDeleteSparePart = autobaseRemoveByType(sparePart);
 
 export const createSetSparePart = (rawSparePart) => {
   const payload = {
@@ -39,10 +40,5 @@ export const updateSetSparePart = (oldSparePart) => {
 
   return updateSparePart(
     payload,
-  );
-};
-export const autobaseDeleteSparePart = (id) => {
-  return removeSparePart(
-    id,
   );
 };

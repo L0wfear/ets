@@ -1,111 +1,45 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
 import {
   promiseGetCarpool,
   promiseLoadPFCarpool,
   promiseCreateCarpool,
   promiseUpdateCarpool,
-  promiseRemoveCarpool,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export const actionSetCarpool = (carpoolList: Carpool[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      carpoolList,
-    }),
-  )
-);
-export const geoobjectResetSetCarpool = () => (dispatch) => (
-  dispatch(
-    actionSetCarpool([]),
-  )
-);
-export const actionGetBlobCarpool: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFCarpool(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-  return payload;
-};
-export const actionGetGetCarpool: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetCarpool(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreCarpool: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetCarpool(payload, { page, path }),
+export const actionGetBlobCarpool = (payload: Parameters<typeof promiseLoadPFCarpool>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFCarpool>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFCarpool(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetCarpool(data),
+};
+export const actionGetGetCarpool = (payload: Parameters<typeof promiseGetCarpool>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetCarpool>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetCarpool(payload),
+      meta,
+    ),
   );
-
-  return {
-    carpoolList: data,
-  };
-};
-export const actionCreateCarpool: any = (carpoolOld: Carpool, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateCarpool(carpoolOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionUpdateCarpool: any = (carpoolOld: Carpool, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateCarpool(carpoolOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionRemoveCarpool = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveCarpool(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-const carpoolActions = {
-  actionSetCarpool,
-  geoobjectResetSetCarpool,
-  actionGetBlobCarpool,
-  actionGetGetCarpool,
-  actionGetAndSetInStoreCarpool,
-  actionCreateCarpool,
-  actionUpdateCarpool,
-  actionRemoveCarpool,
 };
 
-export default carpoolActions;
+export const actionCreateCarpool = (payload: Parameters<typeof promiseCreateCarpool>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateCarpool>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreateCarpool(payload),
+      meta,
+    ),
+  );
+};
+
+export const actionUpdateCarpool = (payload: Parameters<typeof promiseUpdateCarpool>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateCarpool>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateCarpool(payload),
+      meta,
+    ),
+  );
+};

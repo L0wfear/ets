@@ -15,19 +15,18 @@ import {
   PropsPgmStoreForm,
   StatePgmStoreForm,
   StatePropsPgmStoreForm,
-  DispatchPropsPgmStoreForm,
   PropsPgmStoreFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreForm/@types/PgmStoreForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { PgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionUpdatePgmStore, actionCreatePgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
 
 class PgmStoreForm extends React.PureComponent<
   PropsPgmStoreForm,
@@ -125,7 +124,7 @@ class PgmStoreForm extends React.PureComponent<
 export default compose<PropsPgmStoreForm, OwnPropsPgmStoreForm>(
   connect<
     StatePropsPgmStoreForm,
-    DispatchPropsPgmStoreForm,
+    {},
     OwnPropsPgmStoreForm,
     ReduxState
   >((state) => ({
@@ -133,8 +132,8 @@ export default compose<PropsPgmStoreForm, OwnPropsPgmStoreForm>(
   })),
   withForm<PropsPgmStoreFormWithForm, PgmStore>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreatePgmStore,
-    updateAction: geoobjectActions.actionUpdatePgmStore,
+    createAction: actionCreatePgmStore,
+    updateAction: actionUpdatePgmStore,
     mergeElement: (props) => {
       return getDefaultPgmStoreFormElement(props.element);
     },

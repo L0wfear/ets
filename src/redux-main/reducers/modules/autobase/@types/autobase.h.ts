@@ -30,7 +30,7 @@ export type SparePartGroup = {
 };
 
 export type BatteryBrand = {
-  id?: number;
+  id: number;
   name: string;
   manufacturer_id: number;
   manufacturer_name: string;
@@ -236,7 +236,7 @@ export type TechInspection = {
   date_end: string;
   date_start: string;
   gov_number: string;
-  id?: number;
+  id: number;
   is_allowed: boolean;
   note: string;
   reg_number: string;
@@ -249,7 +249,7 @@ export type TechMaintOrder = {
   car_model_name: string;
   description: string;
   entity_name: string;
-  id?: number;
+  id: number;
   interval_probeg: number;
   interval_time: number;
   interval_time_type: number;

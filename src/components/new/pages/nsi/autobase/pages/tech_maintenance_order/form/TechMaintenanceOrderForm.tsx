@@ -36,6 +36,7 @@ import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_mode
 import { getDefaultTechMaintOrderElement } from './utils';
 import { techMaintOrderFormSchema } from './shema';
 import techMaintenanceOrderPermissions from '../_config-data/permissions';
+import { techMaintTypeGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_type/actions';
 
 class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, StateTechMaintOrder> {
   componentDidMount() {
@@ -46,7 +47,12 @@ class TechMaintenanceOrder extends React.PureComponent<PropsTechMaintOrder, Stat
 
     this.props.actionGetAndSetInStoreSpecialModel({}, { page, path });
 
-    this.props.techMaintTypeGetAndSetInStore();
+    this.props.dispatch(
+      techMaintTypeGetAndSetInStore(
+        {},
+        this.props,
+      ),
+    );
 
     const {
       formState: {
@@ -272,14 +278,6 @@ export default compose<PropsTechMaintOrder, OwnTechMaintOrderProps>(
       specialModelList: getSomeUniqState(state).specialModelList,
     }),
     (dispatch: any, { page, path }) => ({
-      techMaintTypeGetAndSetInStore: () => (
-        dispatch(
-          autobaseActions.techMaintTypeGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
       measureUnitRunGetAndSetInStore: (tech_maintenance_type_id) => (
         dispatch(
           autobaseActions.measureUnitRunGetAndSetInStore(

@@ -137,7 +137,7 @@ export const actionUpdateCar = (car: Car, meta: LoadingMeta): EtsAction<Promise<
   return response;
 };
 
-export const actionUpdateCarWrap: any = (carWrapOld: CarWrap, meta: LoadingMeta) => async (dispatch) => {
+export const actionUpdateCarWrap = (carWrapOld: CarWrap, meta: LoadingMeta): EtsAction<Promise<CarWrap>> => async (dispatch) => {
   const {
     drivers_data,
     registration_data,

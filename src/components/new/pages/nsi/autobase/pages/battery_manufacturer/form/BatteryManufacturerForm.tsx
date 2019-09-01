@@ -4,7 +4,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
@@ -21,6 +20,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { getDefaultBatteryManufacturerElement } from './utils';
 import { batteryManufacturerFormSchema } from './schema';
 import batteryManufacturerPermissions from '../_config-data/permissions';
+import { autobaseCreateBatteryManufacturer, autobaseUpdateBatteryManufacturer } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_manufacturer/actions';
 
 const BatteryManufacturerForm: React.FC<PropsBatteryManufacturer> = (props) => {
   const {
@@ -78,8 +78,8 @@ export default compose<PropsBatteryManufacturer, OwnBatteryManufacturerProps>(
   ),
   withForm<PropsBatteryManufacturerWithForm, BatteryManufacturer>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateBatteryManufacturer,
-    updateAction: autobaseActions.autobaseUpdateBatteryManufacturer,
+    createAction: autobaseCreateBatteryManufacturer,
+    updateAction: autobaseUpdateBatteryManufacturer,
     mergeElement: (props) => {
       return getDefaultBatteryManufacturerElement(props.element);
     },

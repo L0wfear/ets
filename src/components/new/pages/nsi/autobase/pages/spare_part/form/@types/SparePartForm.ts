@@ -1,9 +1,6 @@
 import { SparePart, MeasureUnit, SparePartGroup } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
-import { GetSparePartGroup } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/@types';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { HandleThunkActionCreator } from 'react-redux';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -16,11 +13,6 @@ export type PropsSparePartFormLazy = {
   path?: string;
 };
 
-export type StatePropsSparePart = {};
-export type DispatchPropsSparePart = {
-  autobaseGetSetMeasureUnit: HandleThunkActionCreator<typeof autobaseActions.autobaseGetMeasureUnit>;
-  autobaseGetSetSparePartGroup: GetSparePartGroup;
-};
 export type OwnSparePartProps = {
   element: SparePart | null;
   handleHide: OnFormHideType
@@ -29,9 +21,7 @@ export type OwnSparePartProps = {
 };
 
 export type PropsSparePartWithForm = (
-  StatePropsSparePart
-  & DispatchPropsSparePart
-  & OwnSparePartProps
+  OwnSparePartProps
 );
 
 export type PropsSparePart = OutputWithFormProps<

@@ -6,7 +6,7 @@ import {
  } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { get } from 'lodash';
 
-export const getMaterialConsumptionRate = (payload = {}) => {
+export const getMaterialConsumptionRate = (payload = {}): Promise<{ materialConsumptionRateList: MaterialConsumptionRate[] }> => {
   return MaterialConsumptionRateService
     .get(payload)
     .catch((error) => {
@@ -27,14 +27,10 @@ export const createMaterialConsumptionRate = async (payload: MaterialConsumption
     false,
     'json',
   );
-  const materialConsumptionRateList = get(
+  const materialConsumptionRateList: MaterialConsumptionRate = get(
     response,
-    'result.rows',
-    {
-      result: {
-        rows: [],
-      },
-    },
+    'result.rows.0',
+    null,
   );
   return { materialConsumptionRateList };
 };
@@ -48,20 +44,16 @@ export const updateMaterialConsumptionRate = async (payload) => {
     'json',
   );
 
-  const materialConsumptionRateList = get(
+  const materialConsumptionRateList: MaterialConsumptionRate = get(
     response,
-    'result.rows',
-    {
-      result: {
-        rows: [],
-      },
-    },
+    'result.rows.0',
+    null,
   );
 
   return { materialConsumptionRateList };
 };
 
-export const deleteMaterialConsumptionRate = ( id: number ) => {
+export const deleteMaterialConsumptionRate = (id: number) => {
   return MaterialConsumptionRateService.path(id).delete(
     {},
     false,

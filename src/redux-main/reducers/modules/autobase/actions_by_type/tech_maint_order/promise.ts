@@ -13,9 +13,9 @@ import {
 } from 'lodash';
 import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getTechMaintOrder = autobaseLoadByType(techMaintOrder);
-export const createTechMaintOrder = autobaseCreateByType(techMaintOrder);
-export const updateTechMaintOrder = autobaseUpdateByType(techMaintOrder);
+export const getTechMaintOrder = autobaseLoadByType<TechMaintOrder>(techMaintOrder);
+export const createTechMaintOrder = autobaseCreateByType<TechMaintOrder>(techMaintOrder);
+export const updateTechMaintOrder = autobaseUpdateByType<TechMaintOrder>(techMaintOrder);
 export const removeTechMaintOrder = autobaseRemoveByType(techMaintOrder);
 
 export const getSetTechMaintOrder = async (payload) => {

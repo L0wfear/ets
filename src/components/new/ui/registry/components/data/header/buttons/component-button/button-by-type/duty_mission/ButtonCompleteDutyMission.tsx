@@ -59,7 +59,7 @@ const ButtonCompleteDutyMission: React.FC<ButtonCompleteDutyMissionProps> = (pro
       }
 
       try {
-        const response = await props.actionCompleteDutyMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id));
+        const response = await props.actionCompleteDutyMissionByIds(Object.values(itemToRemove).map(({ [props.uniqKey]: id }) => id), { page: props.registryKey });
         const successEdcRequestIds = response.filter(
           (value) => value,
         ).filter(

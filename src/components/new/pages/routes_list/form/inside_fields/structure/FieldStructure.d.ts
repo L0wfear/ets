@@ -1,4 +1,5 @@
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type StateFieldStructure = {
   STRUCTURE_OPTIONS: any[];
@@ -10,7 +11,7 @@ export type StatePropsFieldStructure = {
 };
 
 export type DispatchPropsFieldStructure = {
-  getAndSetInStoreCompanyStructureLinear: () => Promise<any>;
+  dispatch: EtsDispatch;
 };
 
 export type OwnPropsFieldStructure = {

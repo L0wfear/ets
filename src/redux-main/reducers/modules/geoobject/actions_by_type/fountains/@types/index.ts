@@ -28,9 +28,3 @@ export type Fountains = {
   working_hours: FountainsWorkingHour[],
   working_hours_text: string;
 };
-
-export type CreateFountains = any;
-
-export type UpdateFountains = any;
-
-export type GetFountains = () => Promise<any>;

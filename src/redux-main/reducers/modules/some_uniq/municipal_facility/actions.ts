@@ -29,21 +29,21 @@ export const actionSetMunicipalFacilityForDutyMission = (municipalFacilityForDut
 };
 
 /* --------------- сброс стора --------------- */
-export const actionResetMunicipalFacility: any = (): EtsAction<void> => async (dispatch) => {
+export const actionResetMunicipalFacility = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacility([]),
   );
 
   return null;
 };
-export const actionResetMunicipalFacilityForMission: any = (): EtsAction<void> => async (dispatch) => {
+export const actionResetMunicipalFacilityForMission = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacilityForMission([]),
   );
 
   return null;
 };
-export const actionResetMunicipalFacilityForDutyMission: any = (): EtsAction<void> => async (dispatch) => {
+export const actionResetMunicipalFacilityForDutyMission = (): EtsAction<void> => async (dispatch) => {
   dispatch(
     actionSetMunicipalFacilityForDutyMission([]),
   );
@@ -52,21 +52,18 @@ export const actionResetMunicipalFacilityForDutyMission: any = (): EtsAction<voi
 };
 
 /* --------------- запрос --------------- */
-export const actionGetMunicipalFacility = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => (
+export const actionGetMunicipalFacility = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => (
   etsLoadingCounter(
     dispatch,
     promiseGetMunicipalFacility(payload),
-    {
-      page,
-      path,
-    },
+    meta,
   )
 );
 
 /* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreMunicipalFacility = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
+export const actionGetAndSetInStoreMunicipalFacility = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
   const data = await dispatch(
-    actionGetMunicipalFacility(payload, { page, path }),
+    actionGetMunicipalFacility(payload, meta),
   );
 
   dispatch(
@@ -75,14 +72,15 @@ export const actionGetAndSetInStoreMunicipalFacility = (payload = {}, { page, pa
 
   return data;
 };
-export const actionGetAndSetInStoreMunicipalFacilityForMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
+export const actionGetAndSetInStoreMunicipalFacilityForMission = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
   const data = await dispatch(
     actionGetMunicipalFacility(
       {
         for: 'mission',
         ...payload,
       },
-      { page, path }),
+      meta,
+    ),
   );
 
   dispatch(
@@ -92,14 +90,15 @@ export const actionGetAndSetInStoreMunicipalFacilityForMission = (payload = {}, 
   return data;
 };
 
-export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, { page, path }: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
+export const actionGetAndSetInStoreMunicipalFacilityForDutyMission = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
   const data = await dispatch(
     actionGetMunicipalFacility(
       {
         for: 'duty-mission',
         ...payload,
       },
-      { page, path }),
+      meta,
+    ),
   );
 
   dispatch(

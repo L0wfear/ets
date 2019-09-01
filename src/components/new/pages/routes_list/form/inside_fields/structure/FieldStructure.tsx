@@ -11,7 +11,7 @@ import {
   DispatchPropsFieldStructure,
   OwnPropsFieldStructure,
 } from 'components/new/pages/routes_list/form/inside_fields/structure/FieldStructure.d';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import { getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 
 class FieldStructure extends React.PureComponent<PropsFieldStructure, StateFieldStructure> {
   constructor(props) {
@@ -52,9 +52,14 @@ class FieldStructure extends React.PureComponent<PropsFieldStructure, StateField
   }
 
   async getCompanyStructure() {
-    const { companyStructureLinearList } = await this.props.getAndSetInStoreCompanyStructureLinear();
+    const result = await this.props.dispatch(
+      getAndSetInStoreCompanyStructureLinear(
+        {},
+        this.props,
+      ),
+    );
 
-    const STRUCTURE_OPTIONS = companyStructureLinearList.map((structure) => ({
+    const STRUCTURE_OPTIONS = result.data.map((structure) => ({
       value: structure.id,
       label: structure.name,
     }));
@@ -128,15 +133,5 @@ export default connect<StatePropsFieldStructure, DispatchPropsFieldStructure, Ow
   (state) => ({
     sessionStructures: state.session.userData.structures,
     userStructureId: state.session.userData.structure_id,
-  }),
-  (dispatch, { page, path }) => ({
-    getAndSetInStoreCompanyStructureLinear: () => (
-      dispatch(
-        companyStructureActions.getAndSetInStoreCompanyStructureLinear(
-          {},
-          { page, path },
-        ),
-      )
-    ),
   }),
 )(FieldStructure);

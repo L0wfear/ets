@@ -7,8 +7,7 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 import { employeeFormSchema } from 'components/new/pages/nsi/employee/form/schema';
 import { get } from 'lodash';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import companyStructureActions from 'redux-main/reducers/modules/company_structure/actions';
+import { getSetCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
 
 import { getDefaultEmployeeElement, filterCars } from 'components/new/pages/nsi/employee/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -19,7 +18,6 @@ import {
   PropsEmployee,
   StateEmployee,
   StatePropsEmployee,
-  DispatchPropsEmployee,
   PropsEmployeeWithForm,
 } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
@@ -28,6 +26,8 @@ import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/uti
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import AsigmentView from 'components/new/pages/nsi/employee/form/asigmentView';
+import { employeePositionGetSetPosition } from 'redux-main/reducers/modules/employee/position/actions';
+import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 
 class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
   state = {
@@ -59,11 +59,11 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     this.loadCompanyStructurePosition();
   }
   async loadCars() {
-    const { page, path } = this.props;
-
-    const { data } = await this.props.autobaseGetSetCar(
-      {},
-      { page, path },
+    const { data } = await this.props.dispatch(
+      autobaseGetSetCar(
+        {},
+        this.props,
+      ),
     );
 
     this.setState({
@@ -78,7 +78,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     });
   }
   async loadEmployeePosition() {
-    const { payload: { data, dataIndex } } = await this.props.employeePositionGetSetPosition();
+    const { data, dataIndex } = await this.props.dispatch(
+      employeePositionGetSetPosition(
+        {},
+        this.props,
+      ),
+    );
     const positionOptions = data
       .map((rowData) => ({
         value: rowData.id,
@@ -99,7 +104,12 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     }
   }
   async loadCompanyStructurePosition() {
-    const { payload: { data } } = await this.props.companyStructureActions();
+    const { data } = await this.props.dispatch(
+      getSetCompanyStructureDescendantsByUser(
+        {},
+        this.props,
+      ),
+    );
     this.setState({
       companyStructureOptions: data.map(defaultSelectListMapper),
     });
@@ -641,32 +651,9 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
 }
 
 export default compose<PropsEmployee, OwnEmployeeProps>(
-  connect<StatePropsEmployee, DispatchPropsEmployee, OwnEmployeeProps, ReduxState>(
+  connect<StatePropsEmployee, {}, OwnEmployeeProps, ReduxState>(
     (state) => ({
       category_license: state.session.appConfig.category_license,
-    }),
-    (dispatch: any, { page, path }) => ({
-      autobaseGetSetCar: (...arg) => (
-        dispatch(
-          autobaseActions.autobaseGetSetCar(...arg),
-        )
-      ),
-      employeePositionGetSetPosition: () => (
-        dispatch(
-          employeeActions.employeePositionGetSetPosition(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      companyStructureActions: () => (
-        dispatch(
-          companyStructureActions.getSetCompanyStructureDescendantsByUser(
-            {},
-            { page, path },
-          ),
-        )
-      ),
     }),
   ),
   withForm<PropsEmployeeWithForm, Employee>({

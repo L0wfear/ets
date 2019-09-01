@@ -82,7 +82,7 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
   const handleSubmit = React.useCallback(
     async (partialDutyMission) => {
       try {
-        const response = await props.actionFailDutyMissionByPartialData(partialDutyMission);
+        const response = await props.actionFailDutyMissionByPartialData(partialDutyMission, { page: props.registryKey });
         const { request_id, request_number, close_request } = response;
 
         const successEdcRequestIds = close_request

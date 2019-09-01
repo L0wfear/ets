@@ -5,7 +5,6 @@ import carFuncTypesPermissions from 'components/new/pages/nsi/autobase/pages/car
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { carFuncTypesFormSchema } from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/car-func-types-from-schema';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { getDefaultCarFuncTypesElement } from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -17,6 +16,7 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/@types/CarFuncTypes.h';
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
+import { autobaseCreateCarFuncTypes, autobaseUpdateCarFuncTypes } from 'redux-main/reducers/modules/autobase/promises';
 
 class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFuncTypes> {
   render() {
@@ -83,8 +83,8 @@ class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFu
 export default compose<PropsCarFuncTypes, OwnCarFuncTypesProps>(
   withForm<PropsCarFuncTypesWithForm, CarFuncTypes>({
     uniqField: 'asuods_id',
-    createAction: autobaseActions.autobaseCreateCarFuncTypes,
-    updateAction: autobaseActions.autobaseUpdateCarFuncTypes,
+    createAction: autobaseCreateCarFuncTypes,
+    updateAction: autobaseUpdateCarFuncTypes,
     mergeElement: (props) => {
       return getDefaultCarFuncTypesElement(props.element);
     },

@@ -1,1 +1,1 @@
-export const createPath = (rootPath) => (path) => `${rootPath}/${path}`;
+export const createPath = (rootPath: string) => (path) => `${rootPath}/${path}`;

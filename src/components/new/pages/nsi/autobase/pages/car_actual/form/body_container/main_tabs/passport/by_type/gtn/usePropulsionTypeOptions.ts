@@ -20,7 +20,7 @@ const usePropulsionTypeOptions: UsePropulsionTypeOptions = (loadPropulsionType, 
   React.useEffect(
     () => {
       loadPropulsionType({}, { page, path }).then(
-        ({ payload: { data } }) => (
+        ({ data }) => (
           setPropulsionTypeList(
             data.map(defaultSelectListMapper),
           )

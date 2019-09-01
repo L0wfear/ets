@@ -1,8 +1,7 @@
 import { actionCompanySetNewData } from 'redux-main/reducers/modules/company/common';
 
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { IStateInspectAutobase, InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 import { getInspectAutobase } from 'redux-main/reducers/selectors';
 import { cloneDeep } from 'lodash';
@@ -13,13 +12,13 @@ import {
   promiseCreateInspectionAutobase,
   promiseGetInspectAutobaseById,
 } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
-import carpoolActions from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/utils';
 import { get } from 'lodash';
+import { actionGetGetCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): EtsAction<IStateInspectAutobase> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -37,7 +36,7 @@ export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAuto
   return stateInspectAutobase;
 };
 
-export const actionSetInspectAutobaseInspectAutobaseList = (inspectAutobaseList: IStateInspectAutobase['inspectAutobaseList']): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionSetInspectAutobase>>> => (dispatch) => {
+export const actionSetInspectAutobaseInspectAutobaseList = (inspectAutobaseList: IStateInspectAutobase['inspectAutobaseList']): EtsAction<EtsActionReturnType<typeof actionSetInspectAutobase>> => (dispatch) => {
   const lastConductingInspect = getTodayConductingInspect(inspectAutobaseList);
   const stateInspectAutobase = dispatch(
     actionSetInspectAutobase({
@@ -50,7 +49,7 @@ export const actionSetInspectAutobaseInspectAutobaseList = (inspectAutobaseList:
   return stateInspectAutobase;
 };
 
-export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>> => async (dispatch) => {
+export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionLoadCompany>> => async (dispatch) => {
   const response = await dispatch(
     actionLoadCompany(payload, meta),
   );
@@ -64,9 +63,9 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
   return response;
 };
 
-export const actionGetAndSetInStoreCarpool = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>> => async (dispatch) => {
+export const actionGetAndSetInStoreCarpool = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetGetCarpool>> => async (dispatch) => {
   const response = await dispatch(
-    carpoolActions.actionGetGetCarpool(payload, meta),
+    actionGetGetCarpool(payload, meta),
   );
 
   dispatch(
@@ -91,7 +90,7 @@ export const actionGetGetInspectAutobase = (payloadOwn: Parameters<typeof promis
   return payload;
 };
 
-export const actionGetAndSetInStoreInspectAutobase = (payload: Parameters<typeof actionGetGetInspectAutobase>[0], meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetGetInspectAutobase>>> => async (dispatch) => {
+export const actionGetAndSetInStoreInspectAutobase = (payload: Parameters<typeof actionGetGetInspectAutobase>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetGetInspectAutobase>> => async (dispatch) => {
   dispatch(
     actionResetInspectAutobaseList(),
   );
@@ -109,7 +108,7 @@ export const actionGetAndSetInStoreInspectAutobase = (payload: Parameters<typeof
   return response;
 };
 
-const actionGetInspectAutobaseById = (id: Parameters<typeof promiseGetInspectAutobaseById>[0], meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseGetInspectAutobaseById>>> => async (dispatch, getState) => {
+const actionGetInspectAutobaseById = (id: Parameters<typeof promiseGetInspectAutobaseById>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetInspectAutobaseById>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetInspectAutobaseById(id),

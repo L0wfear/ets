@@ -1,109 +1,44 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { FuelingWater } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/@types';
 import {
   promiseGetFuelingWater,
   promiseLoadPFFuelingWater,
   promiseCreateFuelingWater,
   promiseUpdateFuelingWater,
-  promiseRemoveFuelingWater,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/fueling_water/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetFuelingWater: any = (fuelingWaterList: FuelingWater[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      fuelingWaterList,
-    }),
-  )
-);
-export const geoobjectResetSetFuelingWater: any = () => (dispatch) => (
-  dispatch(
-    actionSetFuelingWater([]),
-  )
-);
-export const actionGetBlobFuelingWater: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFFuelingWater(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetFuelingWater: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetFuelingWater(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreFuelingWater: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetFuelingWater(payload, { page, path }),
+export const actionGetBlobFuelingWater = (payload: Parameters<typeof promiseLoadPFFuelingWater>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFFuelingWater>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFFuelingWater(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetFuelingWater(data),
+};
+export const actionGetGetFuelingWater = (payload: Parameters<typeof promiseGetFuelingWater>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetFuelingWater>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetFuelingWater(payload),
+      meta,
+    ),
   );
-
-  return {
-    fuelingWaterList: data,
-  };
 };
-export const actionCreateFuelingWater: any = (fuelingWaterOld: FuelingWater, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateFuelingWater(fuelingWaterOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
+export const actionCreateFuelingWater = (payload: Parameters<typeof promiseCreateFuelingWater>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateFuelingWater>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreateFuelingWater(payload),
+      meta,
+    ),
+  );
 };
-export const actionUpdateFuelingWater: any = (fuelingWaterOld: FuelingWater, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateFuelingWater(fuelingWaterOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionRemoveFuelingWater: any = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveFuelingWater(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetFuelingWater,
-  geoobjectResetSetFuelingWater,
-  actionGetBlobFuelingWater,
-  actionGetGetFuelingWater,
-  actionGetAndSetInStoreFuelingWater,
-  actionCreateFuelingWater,
-  actionUpdateFuelingWater,
-  actionRemoveFuelingWater,
+export const actionUpdateFuelingWater = (payload: Parameters<typeof promiseUpdateFuelingWater>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateFuelingWater>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateFuelingWater(payload),
+      meta,
+    ),
+  );
 };

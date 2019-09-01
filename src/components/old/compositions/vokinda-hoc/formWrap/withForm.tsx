@@ -10,6 +10,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -50,7 +51,7 @@ type WithFormState<F, P> = {
   inSubmit: boolean;
 };
 
-type WithFormProps<P> = P & DispatchProp & {
+type WithFormProps<P> = P & { dispatch: EtsDispatch } & {
   IS_CREATING: boolean;
   isPermitted: boolean;
   isPermittedToUpdate: boolean;

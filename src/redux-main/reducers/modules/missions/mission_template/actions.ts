@@ -11,8 +11,7 @@ import {
 import { MissionTemplate } from './@types/index.h';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export const actionSetMissionTemplate = (
   missionTemplateList: IStateMissions['missionTemplateList'],
@@ -91,7 +90,7 @@ export const actionResetCarsMissionTemplate = (): ThunkActionResetCarsMissionTem
 export const actionLoadCarsForMissiontemplate = (
   ownPayload: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof autobaseGetSetCar>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof autobaseGetSetCar>> => async (dispatch) => {
   const response = await dispatch(autobaseGetSetCar(ownPayload, meta));
 
   return response;
@@ -99,7 +98,7 @@ export const actionLoadCarsForMissiontemplate = (
 export const actionGetAndSetInStoreCarForMission = (
   payload: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCarsForMissiontemplate>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionLoadCarsForMissiontemplate>> => async (dispatch) => {
   const { data, dataIndex } = await dispatch(
     actionLoadCarsForMissiontemplate(payload, meta),
   );
@@ -129,7 +128,7 @@ export const actionGetMissionTemplate = (
 export const actionGetAndSetInStoreMissionTemplate = (
   payloadOwn: object,
   meta: LoadingMeta,
-): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetMissionTemplate>>> => async (dispatch) => {
+): EtsAction<EtsActionReturnType<typeof actionGetMissionTemplate>> => async (dispatch) => {
   dispatch(actionResetMissionTemplate());
 
   const response = await dispatch(actionGetMissionTemplate(payloadOwn, meta));

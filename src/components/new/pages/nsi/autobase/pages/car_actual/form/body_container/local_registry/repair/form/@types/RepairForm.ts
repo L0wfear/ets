@@ -8,8 +8,6 @@ import {
 } from 'components/old/ui/input/ReactSelect/utils';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { GetRepairCompany } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/@types';
-import { GetRepairType } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_type/@types';
 import { CarWrap } from '../../../../../@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
@@ -27,10 +25,7 @@ export type PropsRepairFormWrap = {
 export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
-export type DispatchPropsRepair = {
-  autobaseGetRepairCompany: GetRepairCompany;
-  autobaseGetRepairType: GetRepairType;
-};
+
 export type OwnRepairProps = {
   element: Repair | null;
   handleHide: OnFormHideType;
@@ -41,7 +36,6 @@ export type OwnRepairProps = {
 };
 
 export type PropsRepairWithForm = StatePropsRepair &
-  DispatchPropsRepair &
   OwnRepairProps;
 
 export type PropsRepair = OutputWithFormProps<

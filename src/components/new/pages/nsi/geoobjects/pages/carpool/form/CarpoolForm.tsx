@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 
 import {
   FlexContainer,
@@ -14,22 +15,20 @@ import { carpoolSchema } from 'components/new/pages/nsi/geoobjects/pages/carpool
 import { getDefaultCarpoolElement } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsCarpoolForm,
   PropsCarpoolForm,
   StateCarpoolForm,
   StatePropsCarpoolForm,
-  DispatchPropsCarpoolForm,
   PropsCarpoolFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/@types/CarpoolForm.h';
 
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { DivNone } from 'global-styled/global-styled';
 import { getSessionState } from 'redux-main/reducers/selectors/index';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionUpdateCarpool, actionCreateCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 
 class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm> {
   render() {
@@ -95,15 +94,15 @@ class CarpoolForm extends React.PureComponent<PropsCarpoolForm, StateCarpoolForm
 }
 
 export default compose<PropsCarpoolForm, OwnPropsCarpoolForm>(
-  connect<StatePropsCarpoolForm, DispatchPropsCarpoolForm, OwnPropsCarpoolForm, ReduxState>(
+  connect<StatePropsCarpoolForm, {}, OwnPropsCarpoolForm, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
   ),
   withForm<PropsCarpoolFormWithForm, Carpool>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateCarpool,
-    updateAction: geoobjectActions.actionUpdateCarpool,
+    createAction: actionCreateCarpool,
+    updateAction: actionUpdateCarpool,
     mergeElement: (props) => {
       return getDefaultCarpoolElement(props.element);
     },

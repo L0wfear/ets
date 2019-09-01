@@ -49,7 +49,7 @@ const makeFilesToBackendOne = (formState: Employee) => {
 
 export const getSetEmployee = async (...payload) => {
   const { data: rawData } = await getEmployee(...payload);
-  const data = rawData.map(getFrontEmployee);
+  const data: Employee[] = rawData.map(getFrontEmployee);
 
   return {
     data,

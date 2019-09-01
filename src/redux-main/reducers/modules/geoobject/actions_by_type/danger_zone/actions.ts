@@ -1,109 +1,44 @@
-import { geoobjectSetNewData } from 'redux-main/reducers/modules/geoobject/actions_by_type/common';
-import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
 import {
   promiseGetDangerZone,
   promiseLoadPFDangerZone,
   promiseCreateDangerZone,
   promiseUpdateDangerZone,
-  promiseRemoveDangerZone,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetDangerZone: any = (dangerZoneList: DangerZone[]) => (dispatch) => (
-  dispatch(
-    geoobjectSetNewData({
-      dangerZoneList,
-    }),
-  )
-);
-export const geoobjectResetSetDangerZone: any = () => (dispatch) => (
-  dispatch(
-    actionSetDangerZone([]),
-  )
-);
-export const actionGetBlobDangerZone: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFDangerZone(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
-};
-export const actionGetGetDangerZone: any = (payloadOwn = {}, { page, path }: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetDangerZone(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreDangerZone: any = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetDangerZone(payload, { page, path }),
+export const actionGetBlobDangerZone = (payload: Parameters<typeof promiseLoadPFDangerZone>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFDangerZone>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFDangerZone(payload),
+      meta,
+    ),
   );
-
-  dispatch(
-    actionSetDangerZone(data),
+};
+export const actionGetGetDangerZone = (payload: Parameters<typeof promiseGetDangerZone>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetDangerZone>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetDangerZone(payload),
+      meta,
+    ),
   );
-
-  return {
-    dangerZoneList: data,
-  };
 };
-export const actionCreateDangerZone: any = (dangerZoneOld: DangerZone, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateDangerZone(dangerZoneOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
+export const actionCreateDangerZone = (payload: Parameters<typeof promiseCreateDangerZone>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateDangerZone>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreateDangerZone(payload),
+      meta,
+    ),
+  );
 };
-export const actionUpdateDangerZone: any = (dangerZoneOld: DangerZone, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateDangerZone(dangerZoneOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
 
-  return payload;
-};
-export const actionRemoveDangerZone: any = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveDangerZone(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetDangerZone,
-  geoobjectResetSetDangerZone,
-  actionGetBlobDangerZone,
-  actionGetGetDangerZone,
-  actionGetAndSetInStoreDangerZone,
-  actionCreateDangerZone,
-  actionUpdateDangerZone,
-  actionRemoveDangerZone,
+export const actionUpdateDangerZone = (payload: Parameters<typeof promiseUpdateDangerZone>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateDangerZone>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateDangerZone(payload),
+      meta,
+    ),
+  );
 };

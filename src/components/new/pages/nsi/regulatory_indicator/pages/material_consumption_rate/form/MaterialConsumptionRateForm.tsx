@@ -32,6 +32,8 @@ import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_co
 import { materialConsumptionRateSchema } from './schema';
 import { getDefaultMaterialConsumptionRateElement } from './utils';
 import materialConsumptionRatePermissions from '../_config-data/permissions';
+import { actionGetAndSetInStoreConsumptionRateMaterial, actionResetConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/actions';
+import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 
 const makeOptionsMemoList = (inputList: any[], selectListMapper) => {
   const optionList = inputList.map(selectListMapper);
@@ -231,13 +233,13 @@ export default compose<PropsMaterialConsumptionRate, OwnMaterialConsumptionRateP
       actionResetTechnicalOperationRegistry: () =>
         dispatch(someUniqActions.actionResetTechnicalOperationRegistry()),
       actionGetAndSetInStoreConsumptionRateMaterial: (...arg) =>
-        dispatch(someUniqActions.actionGetAndSetInStoreConsumptionRateMaterial(...arg)),
+        dispatch(actionGetAndSetInStoreConsumptionRateMaterial(...arg)),
       actionResetConsumptionRateMaterial: () =>
-        dispatch(someUniqActions.actionResetConsumptionRateMaterial()),
+        dispatch(actionResetConsumptionRateMaterial()),
       actionGetAndSetInStoreCleanCategories: (...arg) =>
-        dispatch(someUniqActions.actionGetAndSetInStoreCleanCategories(...arg)),
+        dispatch(actionGetAndSetInStoreCleanCategories(...arg)),
       actionResetCleanCategories: () =>
-        dispatch(someUniqActions.actionResetCleanCategories()),
+        dispatch(actionResetCleanCategories()),
     }),
   ),
   withForm<PropsMaterialConsumptionRateWithForm, MaterialConsumptionRate>({

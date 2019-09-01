@@ -6,78 +6,59 @@ import {
   updateSetBatteryRegistry,
   autobaseDeleteBatteryRegistry,
 } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_registry/promise';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- BatteryRegistry ---------- */
-export const autobaseSetBatteryRegistry = (batteryRegistryList: BatteryRegistry[]) => (dispatch) => (
+export const autobaseSetBatteryRegistry = (batteryRegistryList: BatteryRegistry[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       batteryRegistryList,
     }),
   )
 );
-export const autobaseResetSetBatteryRegistry = () => (dispatch) => (
+export const autobaseResetSetBatteryRegistry = (): EtsAction<EtsActionReturnType<typeof autobaseSetBatteryRegistry>> => (dispatch) => (
   dispatch(
     autobaseSetBatteryRegistry([]),
   )
 );
-export const autobaseGetSetBatteryRegistry = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: getSetBatteryRegistry(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
+export const autobaseGetSetBatteryRegistry = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getSetBatteryRegistry>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getSetBatteryRegistry(payload),
+    meta,
+  )
 );
-export const batteryRegistryGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetBatteryRegistry(payload, { page, path }),
+export const batteryRegistryGetAndSetInStore = (...arg: Parameters<typeof autobaseGetSetBatteryRegistry>): EtsAction<EtsActionReturnType<typeof autobaseGetSetBatteryRegistry>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSetBatteryRegistry(...arg),
   );
 
   dispatch(
-    autobaseSetBatteryRegistry(data),
+    autobaseSetBatteryRegistry(result.data),
   );
 
-  return {
-    batteryRegistryList: data,
-  };
+  return result;
 };
-export const autobaseCreateBatteryRegistry: any = (batteryRegistryOld: BatteryRegistry, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: batteryRegistry } = await dispatch({
-    type: 'none',
-    payload: createSetBatteryRegistry(batteryRegistryOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return batteryRegistry;
+export const autobaseCreateBatteryRegistry = (batteryRegistryOld: BatteryRegistry, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof createSetBatteryRegistry>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    createSetBatteryRegistry(batteryRegistryOld),
+    meta,
+  );
 };
-export const autobaseUpdateBatteryRegistry: any = (batteryRegistryOld: BatteryRegistry, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: batteryRegistry } = await dispatch({
-    type: 'none',
-    payload: updateSetBatteryRegistry(batteryRegistryOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return batteryRegistry;
+export const autobaseUpdateBatteryRegistry = (batteryRegistryOld: BatteryRegistry, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetBatteryRegistry>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    updateSetBatteryRegistry(batteryRegistryOld),
+    meta,
+  );
 };
-export const autobaseRemoveBatteryRegistry = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: autobaseDeleteBatteryRegistry(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
+export const autobaseRemoveBatteryRegistry = (id: BatteryRegistry['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetBatteryRegistry>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    autobaseDeleteBatteryRegistry(id),
+    meta,
+  );
+};

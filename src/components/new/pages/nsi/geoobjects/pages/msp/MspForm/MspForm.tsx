@@ -15,13 +15,11 @@ import {
   PropsMspForm,
   StateMspForm,
   StatePropsMspForm,
-  DispatchPropsMspForm,
   PropsMspFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/@types/MspForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
@@ -29,6 +27,7 @@ import { isNumber } from 'util';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionCreateMsp, actionUpdateMsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/actions';
 
 class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
   render() {
@@ -119,15 +118,15 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
 }
 
 export default compose<PropsMspForm, OwnPropsMspForm>(
-  connect<StatePropsMspForm, DispatchPropsMspForm, OwnPropsMspForm, ReduxState>(
+  connect<StatePropsMspForm, {}, OwnPropsMspForm, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,
     }),
   ),
   withForm<PropsMspFormWithForm, Msp>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateMsp,
-    updateAction: geoobjectActions.actionUpdateMsp,
+    createAction: actionCreateMsp,
+    updateAction: actionUpdateMsp,
     mergeElement: (props) => {
       return getDefaultMspFormElement(props.element);
     },

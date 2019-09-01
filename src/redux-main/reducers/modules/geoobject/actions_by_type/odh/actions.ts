@@ -6,104 +6,68 @@ import {
   promiseLoadPFOdh,
   promiseCreateOdh,
   promiseUpdateOdh,
-  promiseRemoveOdh,
 } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/promise';
+import { defaultAction } from 'redux-main/default.actions';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const actionSetOdh = (odhList: Odh[]) => (dispatch) => (
+export const actionGetBlobOdh = (payload: Parameters<typeof promiseLoadPFOdh>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFOdh>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseLoadPFOdh(payload),
+      meta,
+    ),
+  );
+};
+export const actionGetGetOdh = (payload: Parameters<typeof promiseGetOdh>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetOdh>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseGetOdh(payload),
+      meta,
+    ),
+  );
+};
+
+export const actionCreateOdh = (payload: Parameters<typeof promiseCreateOdh>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateOdh>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseCreateOdh(payload),
+      meta,
+    ),
+  );
+};
+
+export const actionUpdateOdh = (payload: Parameters<typeof promiseUpdateOdh>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateOdh>> => async (dispatch) => {
+  return dispatch(
+    defaultAction(
+      promiseUpdateOdh(payload),
+      meta,
+    ),
+  );
+};
+
+export const actionSetOdh = (odhList: Odh[]): EtsAction<EtsActionReturnType<typeof geoobjectSetNewData>> => (dispatch) => (
   dispatch(
     geoobjectSetNewData({
       odhList,
     }),
   )
 );
-export const geoobjectResetSetOdh = () => (dispatch) => (
+export const geoobjectResetSetOdh = (): EtsAction<EtsActionReturnType<typeof actionSetOdh>> => (dispatch) => (
   dispatch(
     actionSetOdh([]),
   )
 );
-export const actionGetBlobOdh: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFOdh(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
 
-  return payload;
-};
-export const actionGetGetOdh: any = (payloadOwn = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetOdh(payloadOwn),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionGetAndSetInStoreOdh = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { data } = await dispatch(
-    actionGetGetOdh(payload, { page, path }),
+export const actionGetAndSetInStoreOdh = (payload = {}, meta: LoadingMeta): EtsAction<Promise<{ odhList: Odh[] }>> => async (dispatch) => {
+  const result = await dispatch(
+    actionGetGetOdh(payload, meta),
   );
 
   dispatch(
-    actionSetOdh(data),
+    actionSetOdh(result.data),
   );
 
   return {
-    odhList: data,
+    odhList: result.data,
   };
-};
-export const actionCreateOdh: any = (odhOld: Odh, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseCreateOdh(odhOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionUpdateOdh: any = (odhOld: Odh, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateOdh(odhOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return payload;
-};
-export const actionRemoveOdh = (id, { page, path }: { page: string; path?: string }) => async (dispatch) => (
-  dispatch({
-    type: 'none',
-    payload: promiseRemoveOdh(id),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  })
-);
-
-export default {
-  actionSetOdh,
-  geoobjectResetSetOdh,
-  actionGetGetOdh,
-  actionGetBlobOdh,
-  actionGetAndSetInStoreOdh,
-  actionCreateOdh,
-  actionUpdateOdh,
-  actionRemoveOdh,
 };

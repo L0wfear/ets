@@ -107,7 +107,7 @@ export default connect<StatePropsUserNotificationWs, DispatchPropsUserNotificati
   (state) => ({
     token: state.session.token,
   }),
-  (dispatch) => ({
+  (dispatch: any) => ({
     getOrderNotRead: () => (
       dispatch(
         getOrderNotRead(),

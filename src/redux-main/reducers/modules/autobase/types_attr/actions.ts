@@ -7,80 +7,59 @@ import {
   promiseUpdateTypesAttr,
 } from 'redux-main/reducers/modules/autobase/types_attr/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* ---------- TypesAttr ---------- */
-export const autobaseSetTypesAttr = (typesAttrList: TypesAttr[]) => (dispatch) => (
+export const autobaseSetTypesAttr = (typesAttrList: TypesAttr[]): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       typesAttrList,
     }),
   )
 );
-export const autobaseResetSetTypesAttr = () => (dispatch) => (
+export const autobaseResetSetTypesAttr = (): EtsAction<EtsActionReturnType<typeof autobaseSetTypesAttr>> => (dispatch) => (
   dispatch(
     autobaseSetTypesAttr([]),
   )
 );
-export const autobaseGetBlobTypesAttr: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadPFTypesAttr(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
+export const autobaseGetBlobTypesAttr = (payloadOwn: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadPFTypesAttr>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseLoadPFTypesAttr(payloadOwn),
+    meta,
+  );
 };
-export const autobaseGetSetTypesAttr: any = (payloadOwn: object, meta: LoadingMeta) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseLoadTypesAttr(payloadOwn),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
-
-  return payload;
+export const autobaseGetSetTypesAttr = (payloadOwn: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadTypesAttr>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseLoadTypesAttr(payloadOwn),
+    meta,
+  );
 };
-export const typesAttrGetAndSetInStore = (payload = {}, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: { data } } = await dispatch(
-    autobaseGetSetTypesAttr(payload, { page, path }),
+
+export const typesAttrGetAndSetInStore = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseGetSetTypesAttr>> => async (dispatch) => {
+  const result = await dispatch(
+    autobaseGetSetTypesAttr(payload, meta),
   );
 
   dispatch(
-    autobaseSetTypesAttr(data),
+    autobaseSetTypesAttr(result.data),
   );
 
-  return {
-    data,
-  };
+  return result;
 };
-export const autobaseCreateTypesAttr: any = (typesAttrOld: TypesAttr, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: typesAttr } = await dispatch({
-    type: 'none',
-    payload: promiseCreateTypesAttr(typesAttrOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return typesAttr;
+export const autobaseCreateTypesAttr = (typesAttrOld: TypesAttr, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseCreateTypesAttr>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseCreateTypesAttr(typesAttrOld),
+    meta,
+  );
 };
-export const autobaseUpdateTypesAttr: any = (typesAttrOld: TypesAttr, { page, path }: { page: string; path?: string }) => async (dispatch) => {
-  const { payload: typesAttr } = await dispatch({
-    type: 'none',
-    payload: promiseUpdateTypesAttr(typesAttrOld),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-  return typesAttr;
+export const autobaseUpdateTypesAttr = (typesAttrOld: TypesAttr, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseUpdateTypesAttr>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseUpdateTypesAttr(typesAttrOld),
+    meta,
+  );
 };

@@ -15,9 +15,7 @@ export type PropsTireModelFormLazy = {
 export type StatePropsTireModel = {
   tireManufacturerList: IStateAutobase['tireManufacturerList'];
 };
-export type DispatchPropsTireModel = {
-  tireManufacturerGetAndSetInStore: any;
-};
+
 export type OwnTireModelProps = {
   element: TireModel | null;
   handleHide: OnFormHideType
@@ -27,7 +25,6 @@ export type OwnTireModelProps = {
 
 export type PropsTireModelWithForm = (
   StatePropsTireModel
-  & DispatchPropsTireModel
   & OwnTireModelProps
 );
 

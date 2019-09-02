@@ -27,7 +27,7 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { actionGetAndSetInStoreOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
+import { actionsOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
 
 const getObjectsType = (slug) => {
   switch (slug) {
@@ -589,7 +589,7 @@ export default compose(
     (dispatch) => ({
       actionGetAndSetInStoreOdh: () =>
         dispatch(
-          actionGetAndSetInStoreOdh(null, {
+          actionsOdh.getArrayAndSetInStore(null, {
             page: null,
             path: null,
           }),

@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/registry-config';
 
-import {
-  PropsSspList,
-  StateSspList,
-} from 'components/new/pages/nsi/geoobjects/pages/ssp/SspList.h';
+type Props = {};
 
-class SspList extends React.Component<PropsSspList, StateSspList> {
-  render() {
+const SspList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <SspFormWrap
-          registryKey={registryKey}
-        />
-      </>
+       <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <SspFormWrap registryKey={registryKey} />
+       </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

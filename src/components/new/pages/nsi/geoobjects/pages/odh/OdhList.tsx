@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/registry-config';
 
-import {
-  PropsOdhList,
-  StateOdhList,
-} from 'components/new/pages/nsi/geoobjects/pages/odh/OdhList.h';
+type Props = {};
 
-class OdhList extends React.Component<PropsOdhList, StateOdhList> {
-  render() {
+const OdhList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <OdhListFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <OdhListFormWrap registryKey={registryKey} />
+      </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

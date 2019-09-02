@@ -1,16 +1,10 @@
 import {
-  geoozonesLoadByType,
-  promiseGeozonesLoadPFByType,
-  geoozonesCreateByType,
   geoozonesRemoveByType,
 } from 'redux-main/reducers/modules/geoobject/promises';
 import { odh } from 'redux-main/reducers/modules/geoobject/constants';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import { ODHService } from 'api/Services';
 
-export const promiseGetOdh = geoozonesLoadByType<Odh>(odh);
-export const promiseLoadPFOdh = promiseGeozonesLoadPFByType(odh);
-export const promiseCreateOdh = geoozonesCreateByType(odh);
 export const promiseUpdateOdh = (formState: Odh) => {
   const payload = {
     ...formState,

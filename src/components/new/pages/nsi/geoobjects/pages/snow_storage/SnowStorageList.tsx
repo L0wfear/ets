@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data/registry-config';
 
-import {
-  PropsSnowStorageList,
-  StateSnowStorageList,
-} from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageList.h';
+type Props = {};
 
-class SnowStorageList extends React.Component<PropsSnowStorageList, StateSnowStorageList> {
-  render() {
+const SnowStorageList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <SnowStorageFormWrap
-          registryKey={registryKey}
-        />
-      </>
+       <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <SnowStorageFormWrap registryKey={registryKey} />
+       </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

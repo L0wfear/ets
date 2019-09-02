@@ -18,7 +18,7 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 import { Dt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/@types';
 import FieldCompanyStructureId from '../../odh/OdhForm/fields/company_structure_id/FieldCompanyStructureId';
-import { actionCreateDt, actionUpdateDt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/actions';
+import { actionsDt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/actions';
 
 const DtForm: React.FC<PropsDtForm> = React.memo(
   (props) => {
@@ -103,8 +103,8 @@ const DtForm: React.FC<PropsDtForm> = React.memo(
 export default compose<PropsDtForm, OwnPropsDtForm>(
   withForm<PropsDtFormWithForm, Dt>({
     uniqField: 'yard_id',
-    createAction: actionCreateDt,
-    updateAction: actionUpdateDt,
+    createAction: actionsDt.post,
+    updateAction: actionsDt.put,
     mergeElement: (props) => {
       return getDefaultDtFormElement(props.element);
     },

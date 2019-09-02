@@ -26,7 +26,7 @@ import { PercentModalList } from 'components/old/program_registry/UpdateFrom/ins
 import { PanelObjectInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { actionGetAndSetInStoreDt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/actions';
+import { actionsDt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/actions';
 import { getGeoobjectState } from 'redux-main/reducers/selectors';
 import { polyState } from 'constants/polygons';
 import memoizeOne from 'memoize-one';
@@ -717,7 +717,7 @@ export default compose(
     (dispatch) => ({
       actionGetAndSetInStoreDt: () =>
         dispatch(
-          actionGetAndSetInStoreDt(
+          actionsDt.getArrayAndSetInStore(
             {},
             {
               page: null,

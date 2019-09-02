@@ -69,7 +69,7 @@ export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof
 type FormWithSubmitAction = (...arg: any[]) => Promise<any>;
 type FormWithDefaultSubmit = () => void;
 
-export type OutputWithFormProps<P, F, T extends any[], A> = (
+export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> = (
   WithFormProps<P>
   & WithFormState<F, P>
   & Pick<ConfigWithForm<P, F>, 'mergeElement' | 'schema'>

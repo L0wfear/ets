@@ -3,7 +3,7 @@ import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 import Circle from 'ol/style/Circle';
 
-const CACHE_ICON: any = {};
+const CACHE_ICON: Record<string, Style> = {};
 
 const makeCacheStyle = (cacheStyleName) => {
   return CACHE_ICON[cacheStyleName] = new Style({

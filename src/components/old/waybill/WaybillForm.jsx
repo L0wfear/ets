@@ -65,6 +65,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FuelType from './form/FuelType';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
+import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -261,7 +262,9 @@ class WaybillForm extends UNSAFE_Form {
     await Promise.all([
       flux.getActions('objects').getCars(),
       flux.getActions('employees').getEmployees(),
-      flux.getActions('objects').getWorkMode(),
+      this.props.dispatch(
+        actionsWorkMode.getArrayAndSetInStore({}, this.props),
+      ),
       getWaybillDrivers(
         this.context.flux.getActions('employees').getWaybillDrivers,
         this.props.formState,
@@ -1273,12 +1276,20 @@ class WaybillForm extends UNSAFE_Form {
       employeesList = [],
       uniqEmployeesBindedoOnCarList = [],
       appConfig,
-      workModeOptions,
+      workModeList,
       employeesIndex = {},
       isPermittedByKey = {},
       userStructures,
       userStructureId,
     } = this.props;
+
+    const workModeOptions = workModeList.map(
+      ({ id, name, start_time_text, end_time_text }) => ({
+        value: id,
+        label: `${name} (${start_time_text} - ${end_time_text})`,
+        name,
+      }),
+    );
 
     let taxesControl = false;
 
@@ -2437,6 +2448,7 @@ export default compose(
     userStructures: getSessionState(state).userData.structures,
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
+    workModeList: getSomeUniqState(state).workModeList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
   })),

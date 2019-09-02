@@ -2,7 +2,7 @@ import { get } from 'lodash';
 
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { RootService } from 'api/Services';
 
 export const defaultAction = <F extends any>(promise: Promise<F>, meta: LoadingMeta): EtsAction<Promise<F>> => (dispatch) => (
@@ -13,10 +13,10 @@ export const defaultAction = <F extends any>(promise: Promise<F>, meta: LoadingM
   )
 );
 
-export const defaultActions = <F extends any>(path: string, mapFunction: (data: F, index?: number, array?: Array<F>) => F = (d) => d) => {
+export const defaultActions = <F extends any>(path: string, setStoreAction: (obj: { data: Array<F>; response: any; }) => any, mapFunction: (data: F, index?: number, array?: Array<F>) => F = (d) => d) => {
   return {
     getOne: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows') => (
-      defaultAction<{ data: F; respose: any; }>(
+      defaultAction<{ data: F; response: any; }>(
         RootService.path(path).get(payload)
           .then((response) => {
             const data = mapFunction(get(response, `${typeAns}.0`));
@@ -31,7 +31,7 @@ export const defaultActions = <F extends any>(path: string, mapFunction: (data: 
     ),
     // работает
     getArray: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows') => (
-      defaultAction<{ data: Array<F>; respose: any; }>(
+      defaultAction<{ data: Array<F>; response: any; }>(
         RootService.path(path).get(payload)
           .then((response) => {
             const data = (get(response, typeAns) as Array<Partial<F>>).map(mapFunction);
@@ -44,8 +44,26 @@ export const defaultActions = <F extends any>(path: string, mapFunction: (data: 
         meta,
       )
     ),
+    getArrayAndSetInStore: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows') => (dispatch: EtsDispatch) => (
+      defaultAction<{ data: Array<F>; response: any; }>(
+        RootService.path(path).get(payload)
+          .then((response) => {
+            const data = (get(response, typeAns) as Array<Partial<F>>).map(mapFunction);
+            const result = {
+              data,
+              response,
+            };
+
+            dispatch(
+              setStoreAction(result),
+            );
+            return result;
+          }),
+        meta,
+      )
+    ),
     post: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows') => (
-      defaultAction<{ data: F; respose: any; }>(
+      defaultAction<{ data: F; response: any; }>(
         RootService.path(path).post(payload)
           .then((response) => {
             const data = mapFunction(get(response, `${typeAns}.0`));
@@ -59,7 +77,7 @@ export const defaultActions = <F extends any>(path: string, mapFunction: (data: 
       )
     ),
     put: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows') => (
-      defaultAction<{ data: F; respose: any; }>(
+      defaultAction<{ data: F; response: any; }>(
         RootService.path(path).put(payload)
           .then((response) => {
             const data = mapFunction(get(response, `${typeAns}.0`));

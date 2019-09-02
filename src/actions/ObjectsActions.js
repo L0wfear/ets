@@ -1,6 +1,6 @@
 import { Actions } from 'flummox';
 import { isEmpty } from 'utils/functions';
-import { CarActualService, WorkMode } from 'api/Services';
+import { CarActualService } from 'api/Services';
 
 export default class ObjectsActions extends Actions {
   getCars(technical_operation_id) {
@@ -13,9 +13,5 @@ export default class ObjectsActions extends Actions {
     return CarActualService.get(payload).then((r) => ({
       result: r.result.rows,
     }));
-  }
-
-  getWorkMode() {
-    return WorkMode.get();
   }
 }

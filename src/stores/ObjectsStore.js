@@ -9,7 +9,6 @@ export default class ObjectsStore extends Store {
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.register(objectsActions.getCars, this.handleGetCars);
-    this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
     this.register(
       technicalOperationsActions.getTechnicalOperations,
@@ -22,21 +21,10 @@ export default class ObjectsStore extends Store {
 
     this.state = {
       carsList: [],
-      modelsList: [],
-      technicalOperationsList: [],
-      technicalOperationsMap: new Map(),
-      OrdersList: [],
-      technicalOperationsObjectsList: [],
-      positionsList: [],
-
       carsIndex: {},
-      modelsIndex: {},
-      technicalOperationsObjectsIndex: {},
 
-      ordersTotalCount: 0,
-
-      workMode: [],
-      workModeOptions: [],
+      technicalOperationsList: [],
+      technicalOperationsObjectsList: [],
     };
   }
 
@@ -54,40 +42,14 @@ export default class ObjectsStore extends Store {
   }
 
   handleGetCars(cars) {
-    const carsList = cars.result.map((c) => {
-      const model = _.find(this.state.modelsList, (m) => m.id === c.model_id);
-      c.model = model ? model.title : 'Н/Д';
-      const type = _.find(
-        this.state.typesList,
-        (t) => t.asuods_id === c.type_id,
-      );
-      c.type = type ? type.title : 'Н/Д';
-      return c;
-    });
+    const carsList = cars.result;
     const carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({ carsList, carsIndex });
   }
 
   handleGetTechOperations({ result }) {
-    const technicalOperationsMap = new Map();
-    result.forEach((to) => technicalOperationsMap.set(to.id, to));
-
     this.setState({
       technicalOperationsList: result,
-      technicalOperationsMap,
-    });
-  }
-
-  handleGetWorkMode({ result: { rows = [] } }) {
-    this.setState({
-      workMode: rows,
-      workModeOptions: rows.map(
-        ({ id, name, start_time_text, end_time_text }) => ({
-          value: id,
-          label: `${name} (${start_time_text} - ${end_time_text})`,
-          name,
-        }),
-      ),
     });
   }
 }

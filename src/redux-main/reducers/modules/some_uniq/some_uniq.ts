@@ -37,6 +37,7 @@ export const initialState: IStateSomeUniq = {
   tracksCaching: null,
 
   edcRequestInfoList: [],
+  workModeList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

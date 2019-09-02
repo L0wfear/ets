@@ -16,6 +16,7 @@ import { RefillType } from '../../refill_type/@types/refillType';
 import { CarsTravelTime } from '../cars_travel_time/@types';
 import { EdcRequestInfo } from '../edc_request_info/@types';
 import { TracksCaching } from '../tracks_caching/@types';
+import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -63,4 +64,6 @@ export type IStateSomeUniq = {
   carsTravelTimeList: CarsTravelTime[];
   edcRequestInfoList: EdcRequestInfo[];
   tracksCaching: TracksCaching;
+
+  workModeList: WorkMode[];
 };

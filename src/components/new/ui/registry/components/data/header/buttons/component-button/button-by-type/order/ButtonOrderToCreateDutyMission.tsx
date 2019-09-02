@@ -11,7 +11,7 @@ import { orderRegistryKey } from 'components/new/pages/nsi/order/_config-data/re
 import { TypeCreateMissionByOrderTo, TypeCreateMissionByOrder } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
 import dutyMissionActions from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { etsIsPermitted } from 'components/@next/ets_hoc/etsIsPermitted';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 
 type OwnProps = {
@@ -28,7 +28,7 @@ const ButtonOrderToCreateDutyMission: React.FC<Props> = React.memo(
     const array = etsUseSelector((state) => getListData(state.registry, orderRegistryKey).data.array);
     const order_id = getNumberValueFromSerch(props.match.params.order_id);
     const order_operation_id = getNumberValueFromSerch(props.match.params.order_operation_id);
-    const isPemitted = etsIsPermitted(dutyMissionPermissions.create);
+    const isPemitted = etsUseIsPermitted(dutyMissionPermissions.create);
 
     const selectedOrderRow = React.useMemo(
       (): Order => {

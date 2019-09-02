@@ -1,24 +1,16 @@
 import * as React from 'react';
-
-import TrTh from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/TrTh';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
+import { compose } from 'recompose';
 import { isArray } from 'util';
 
+import TrTh from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/TrTh';
+
 import {
-  StatePropsTrHead,
-  DispatchPropsTrHead,
   OwnPropsTrHead,
   PropsTrHead,
   StateTrHead,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
-import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { validatePermissions } from 'components/old/util/RequirePermissionsNewRedux';
-import { get } from 'lodash';
-import { getSessionState } from 'redux-main/reducers/selectors';
 
-//
 class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
   mapThDataRow = (colData) => {
     const { title } = colData;
@@ -42,14 +34,6 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
       return null;
     }
 
-    const displayIfPermission = get(colData, 'displayIfPermission', []);
-    const permissionsSet = get(this.props, 'permissionsSet');
-    if (permissionsSet &&  displayIfPermission.length ) {
-      if (!validatePermissions(displayIfPermission, permissionsSet)) {
-        return null;
-      }
-    }
-
     return (
       <TrTh key={colData.key} colData={colData} formatedTitle={formatedTitle} registryKey={this.props.registryKey} />
     );
@@ -67,9 +51,4 @@ class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
 
 export default compose<PropsTrHead, OwnPropsTrHead>(
   withSearch,
-  connect<StatePropsTrHead, DispatchPropsTrHead, OwnPropsTrHead, ReduxState>(
-    (state) => ({
-      permissionsSet: getSessionState(state).userData.permissionsSet,
-    }),
-  ),
 )(TrHead);

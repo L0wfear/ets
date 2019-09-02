@@ -8,6 +8,7 @@ import { makeProcessedArray } from './processed';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { displayIfContant } from '../../contants/displayIf';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type OtherData = {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
@@ -183,7 +184,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
 
   const fieldsFiltred = fields.reduce(
     (newArr, fieldData) => {
-      const { title } = fieldData;
+      const { title, displayIfPermission } = fieldData;
       let formatedTitle = null;
 
       if (isArray(title)) {
@@ -204,6 +205,10 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
         }, null);
       } else {
         formatedTitle = title;
+      }
+
+      if (isString(displayIfPermission) || isArray(displayIfPermission)) {
+        formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
       }
 
       if (formatedTitle || 'key' in fieldData && fieldData.key === 'checkbox') {

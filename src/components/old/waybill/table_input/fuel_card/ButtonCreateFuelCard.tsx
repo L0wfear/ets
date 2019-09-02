@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import fuelCardsPermissions from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/permissions';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
@@ -9,6 +7,7 @@ import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 
 type ButtonCreateFuelCardOwnProps = {
   handleUpdateFuelCard: () => any;
@@ -22,7 +21,6 @@ type ButtonCreateFuelCardOwnProps = {
 
 type ButtonCreateFuelCardProps = (
   WithSearchProps
-  & { isPermitted: boolean }
   & ButtonCreateFuelCardOwnProps
 );
 
@@ -30,15 +28,17 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
   (props) => {
     const [showStatus, setShowStatus] = React.useState(false);
 
+    const isPermitted = etsUseIsPermitted(fuelCardsPermissions.create);
+
     const handleCreateFuelCard = React.useCallback(
       () => {
-        if (props.isPermitted) {
+        if (isPermitted) {
           setShowStatus(true);
         } else {
           global.NOTIFICATION_SYSTEM.notify('Недостаточно прав', 'warning', 'tr');
         }
       },
-      [],
+      [isPermitted],
     );
 
     const onFormHide = React.useCallback(
@@ -86,10 +86,4 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
   },
 );
 
-export default compose<ButtonCreateFuelCardProps, ButtonCreateFuelCardOwnProps>(
-  withRequirePermissionsNew({
-    permissions: fuelCardsPermissions.create,
-    withIsPermittedProps: true,
-  }),
-  withSearch,
-)(ButtonCreateFuelCard);
+export default withSearch(ButtonCreateFuelCard);

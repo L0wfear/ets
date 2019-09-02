@@ -44,42 +44,52 @@ export type TypeFields<F extends any> = {
   } | {
     title: string;
     childrenFields?: TypeFields<F>[];
+    displayIfPermission?: string | string[];
   } | {
     key: 'enumerated';
     title: string;
     width?: number;
     displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+    displayIfPermission?: string | string[];
   } | {
     key: 'checkbox';
     title?: string,
     displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
+    displayIfPermission?: string | string[];
   } | {
     key: 'showMissionInfo';
     title: string;
+    displayIfPermission?: string | string[];
   } | {
     key: 'is_open';
     title?: string;
+    displayIfPermission?: string | string[];
   } | {
     key: 'company_structure_actions',
     title: string;
+    displayIfPermission?: string | string[];
   } | {
     key: 'services_actions_on_off',
     title: string,
     sortable?: boolean;
     width: number;
+    displayIfPermission?: string | string[];
   } | {
     key: 'service_files';
     title: string,
     sortable?: boolean;
     width: number;
+    displayIfPermission?: string | string[];
   } | {
     key: 'button_show_action_log';
     title: string,
     sortable?: boolean;
     width: number;
+    displayIfPermission?: string | string[];
   } | {
     key: 'buttonCloneTire',
     title: string;
+    displayIfPermission?: string | string[];
   } | {
     key: 'edc_request_info',
     title: string,
@@ -89,6 +99,7 @@ export type TypeFields<F extends any> = {
   } | {
     key: 'show_file_list',
     title: string;
+    displayIfPermission?: string | string[];
   } | {
     key: 'show_edc_comments',
     title: string;

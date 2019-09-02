@@ -6,7 +6,7 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { isDisabledForCreateMission } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/utils';
 import { TypeCreateMissionByOrder } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
-import { etsIsPermitted } from 'components/@next/ets_hoc/etsIsPermitted';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 type OwnProps = {
@@ -19,7 +19,7 @@ type Props = (
 const ButtonOrderCreateMission: React.FC<Props> = React.memo(
   (props) => {
     const selectedRow: Order = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
-    const isPemitted = etsIsPermitted(missionPermissions.create);
+    const isPemitted = etsUseIsPermitted(missionPermissions.create);
 
     const handleClick = React.useCallback(
       () => {

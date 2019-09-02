@@ -15,7 +15,7 @@ export default {
   patrialEndPath,
   path,
   routePath,
-  title: 'Марки шин',
+  title: 'Модели шин',
   isNewRegistry: true,
   entyity: 'autobase_tire_model',
   noDotList: false,

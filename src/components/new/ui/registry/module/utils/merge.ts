@@ -184,34 +184,39 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
 
   const fieldsFiltred = fields.reduce(
     (newArr, fieldData) => {
-      const { title, displayIfPermission } = fieldData;
+      const { displayIfPermission } = fieldData;
       let formatedTitle = null;
 
-      if (isArray(title)) {
-        formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
-          const { displayIf } = titleSomeValue;
+      // добить childrenFields
 
-          if (displayIf === displayIfContant.isKgh && otherData.userData.isKgh) {
-            return titleSomeValue.title;
-          }
-          if (displayIf === displayIfContant.isOkrug && otherData.userData.isOkrug) {
-            return titleSomeValue.title;
-          }
-          if (displayIf === displayIfContant.lenghtStructureMoreOne && otherData.STRUCTURES.length) {
-            return titleSomeValue.title;
-          }
+      if ('title' in fieldData) {
+        const { title } = fieldData;
+        if (isArray(title)) {
+          formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
+            const { displayIf } = titleSomeValue;
 
-          return filtredTitle;
-        }, null);
-      } else {
-        formatedTitle = title;
+            if (displayIf === displayIfContant.isKgh && otherData.userData.isKgh) {
+              return titleSomeValue.title;
+            }
+            if (displayIf === displayIfContant.isOkrug && otherData.userData.isOkrug) {
+              return titleSomeValue.title;
+            }
+            if (displayIf === displayIfContant.lenghtStructureMoreOne && otherData.STRUCTURES.length) {
+              return titleSomeValue.title;
+            }
+
+            return filtredTitle;
+          }, null);
+        } else {
+          formatedTitle = title;
+        }
+
+        if (isString(displayIfPermission) || isArray(displayIfPermission)) {
+          formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
+        }
       }
 
-      if (isString(displayIfPermission) || isArray(displayIfPermission)) {
-        formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
-      }
-
-      if (formatedTitle || 'key' in fieldData && fieldData.key === 'checkbox') {
+      if (formatedTitle || ('key' in fieldData && fieldData.key === 'checkbox')) {
         newArr.push({
           ...fieldData,
           title: formatedTitle,

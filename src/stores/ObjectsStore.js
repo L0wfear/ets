@@ -11,10 +11,6 @@ export default class ObjectsStore extends Store {
     this.register(objectsActions.getCars, this.handleGetCars);
 
     this.register(
-      technicalOperationsActions.getTechnicalOperations,
-      this.handleGetTechOperations,
-    );
-    this.register(
       technicalOperationsActions.getTechnicalOperationsObjects,
       this.handleGetTechnicalOperationsObjects,
     );
@@ -23,7 +19,6 @@ export default class ObjectsStore extends Store {
       carsList: [],
       carsIndex: {},
 
-      technicalOperationsList: [],
       technicalOperationsObjectsList: [],
     };
   }
@@ -45,11 +40,5 @@ export default class ObjectsStore extends Store {
     const carsList = cars.result;
     const carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({ carsList, carsIndex });
-  }
-
-  handleGetTechOperations({ result }) {
-    this.setState({
-      technicalOperationsList: result,
-    });
   }
 }

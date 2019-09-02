@@ -60,7 +60,6 @@ export default class LoadingStore extends Store {
       missionsActons.createMissions,
       missionsActons.getCleaningOneNorm,
 
-      technicalOperationsActions.getTechnicalOperations,
       technicalOperationsActions.getTechnicalOperationsObjects,
     );
 

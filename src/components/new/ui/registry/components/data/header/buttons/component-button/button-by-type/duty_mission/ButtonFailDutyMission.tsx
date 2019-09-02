@@ -10,12 +10,12 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { get } from 'lodash';
 import { actionFailDutyMissionByPartialData } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import { DivNone } from 'global-styled/global-styled';
 import DutyMissionFailForm from './form/DutyMissionFailForm';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 
 type ButtonFailDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];

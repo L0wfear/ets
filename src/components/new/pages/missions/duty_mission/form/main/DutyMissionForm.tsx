@@ -45,7 +45,6 @@ import FieldRouteIdDutyMission from './inside_fields/route_id/FieldRouteIdDutyMi
 import FieldCarMissionIdDutyMission from './inside_fields/car_mission_id/FieldCarMissionIdDutyMission';
 
 import { saveData } from 'utils/functions';
-import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { getMissionsState } from 'redux-main/reducers/selectors/index';
 
 import {
@@ -61,6 +60,7 @@ import FieldMissionSourceMission from 'components/new/pages/missions/mission/for
 import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {

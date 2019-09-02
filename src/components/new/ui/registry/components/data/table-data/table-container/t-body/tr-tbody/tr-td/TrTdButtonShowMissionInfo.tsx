@@ -7,7 +7,7 @@ import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNew
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 

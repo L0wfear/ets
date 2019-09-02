@@ -28,7 +28,7 @@ import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-or
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import edcRequestActions from '../../edc_request/edc_request_actions';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';

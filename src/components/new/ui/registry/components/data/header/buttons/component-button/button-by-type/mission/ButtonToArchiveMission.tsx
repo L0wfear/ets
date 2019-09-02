@@ -12,7 +12,7 @@ import { compose } from 'recompose';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { get } from 'lodash';
 import { actionToArchiveMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 
 type ButtonToArchiveMissionStateProps = {

@@ -21,9 +21,9 @@ import { Order, OrderTechnicalOperation } from 'redux-main/reducers/modules/orde
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { get } from 'lodash';
 import edcRequestActions from '../../edc_request/edc_request_actions';
-import { DUTY_MISSION_STATUS } from '../mission/constants';
 import { isArray } from 'util';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 
 const actionSetDutyMissionPartialData = (partialDutyMissionData: Partial<IStateMissions['dutyMissionData']>): EtsAction<IStateMissions['dutyMissionData']> => (dispatch, getState) => {
   const newDutyMissionData = {

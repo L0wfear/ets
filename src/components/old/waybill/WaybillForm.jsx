@@ -64,6 +64,7 @@ import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FuelType from './form/FuelType';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -455,12 +456,14 @@ class WaybillForm extends UNSAFE_Form {
 
     Promise.all(
       missionsFromOrder.map((mission) =>
-        this.context.flux
-          .getActions('objects')
-          .getOrderById(mission.order_id)
-          .then(({ result: [order] }) => ({
+        this.props
+          .dispatch(actionLoadOrderById(mission.order_id, this.props))
+          .then((dependeceOrder) => ({
             ...mission,
-            ...getDatesToByOrderOperationId(order, mission.order_operation_id),
+            ...getDatesToByOrderOperationId(
+              dependeceOrder,
+              mission.order_operation_id,
+            ),
           })),
       ),
     )
@@ -864,7 +867,8 @@ class WaybillForm extends UNSAFE_Form {
           'id',
         ),
         this.props.order_mission_source_id,
-        this.context.flux.getActions('objects').getOrderById,
+        (order_id) =>
+          this.props.dispatch(actionLoadOrderById(order_id, this.props)),
       )
         .then(async () => {
           if (this.props.formState.status === 'active') {

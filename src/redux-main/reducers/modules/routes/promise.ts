@@ -43,12 +43,14 @@ const makeRoute = (route_data) => {
       route.draw_object_list = route.draw_object_list || [];
 
       route.draw_object_list.forEach((object: DrawData) => {
-        const start = [object.begin.x_msk, object.begin.y_msk];
-        const end = [object.end.x_msk, object.end.y_msk];
+        const begin = get(object, 'begin') || { x_msk: 0, y_msk: 0 };
+        const end = get(object, 'end') || { x_msk: 0, y_msk: 0 };
+        const start = [begin.x_msk, begin.y_msk];
+        const finish = [end.x_msk, end.y_msk];
 
         object.shape = {
           type: 'LineString',
-          coordinates: [start, end],
+          coordinates: [start, finish],
         };
 
         return object;

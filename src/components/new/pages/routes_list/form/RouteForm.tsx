@@ -25,7 +25,6 @@ import {
   OwnRouteFormProps,
   PropsRouteForm,
   StateRouteForm,
-  ModifyBridgesForRoute,
   InputRouteFormProps,
 } from 'components/new/pages/routes_list/form/RouteForm.h';
 import { ReduxState } from 'redux-main/@types/state';
@@ -66,7 +65,7 @@ class RouteForm extends React.PureComponent<PropsRouteForm, StateRouteForm> {
 
       this.setState({
         bridges: Object.entries(data).reduce(
-          (newBridges: ModifyBridgesForRoute, [key, value]) => ({
+          (newBridges: any, [key, value]) => ({
             ...newBridges,
             [key]: {
               ...value,

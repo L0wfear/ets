@@ -100,5 +100,5 @@ export type CarGtnPasspost = {
 
 export type CarPassporntData = (
   CarGibddPasspost
-  & CarGtnPasspost
+  | CarGtnPasspost
 );

@@ -98,8 +98,10 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
     const { formState: { position_id } } = this.props;
 
     if (position_id) {
+      const positionInfo = dataIndex[position_id];
+
       this.props.handleChange({
-        is_driver: get(dataIndex, [position_id, 'is_driver'], false),
+        is_driver: positionInfo ? positionInfo.is_driver : false,
       });
     }
   }

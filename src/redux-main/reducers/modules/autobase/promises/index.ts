@@ -1,4 +1,4 @@
-import { AutoBase, CarActualService, TypesService } from 'api/Services';
+import { AutoBase, CarActualService } from 'api/Services';
 import { get, keyBy } from 'lodash';
 import AUTOBASE from 'redux-main/reducers/modules/autobase/constants';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -91,27 +91,4 @@ export const autobaseLoadCars = async (payload = {}) => {
       'asuods_id',
     ),
   };
-};
-
-/* ------------- CAR_FUNC_TYPES ------------- */
-export const autobaseLoadCarFuncTypess = (payload = {}) => (
-  TypesService.get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-
-      return {
-        result: {
-          rows: [],
-        },
-      };
-    })
-    .then((ans) => ({
-      data: get(ans, ['result', 'rows'], []),
-    }))
-);
-export const autobaseCreateCarFuncTypes = (ownPayload) => {
-  return TypesService.post(ownPayload, false, 'json');
-};
-export const autobaseUpdateCarFuncTypes = (ownPayload) => {
-  return TypesService.put(ownPayload, false, 'json');
 };

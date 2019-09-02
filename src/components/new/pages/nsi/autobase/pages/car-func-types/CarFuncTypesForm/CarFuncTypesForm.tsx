@@ -16,7 +16,7 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/car-func-types/CarFuncTypesForm/@types/CarFuncTypes.h';
 import { CarFuncTypes } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
-import { autobaseCreateCarFuncTypes, autobaseUpdateCarFuncTypes } from 'redux-main/reducers/modules/autobase/promises';
+import { autobaseCreateCarFuncTypes, autobaseUpdateCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
 
 class CarFuncTypesForm extends React.PureComponent<PropsCarFuncTypes, StateCarFuncTypes> {
   render() {

@@ -9,7 +9,6 @@ export default class ObjectsStore extends Store {
     const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.register(objectsActions.getCars, this.handleGetCars);
-    this.register(objectsActions.getTypes, this.handleGetTypes);
     this.register(objectsActions.getWorkMode, this.handleGetWorkMode);
 
     this.register(
@@ -23,7 +22,6 @@ export default class ObjectsStore extends Store {
 
     this.state = {
       carsList: [],
-      typesList: [],
       modelsList: [],
       technicalOperationsList: [],
       technicalOperationsMap: new Map(),
@@ -33,7 +31,6 @@ export default class ObjectsStore extends Store {
 
       carsIndex: {},
       modelsIndex: {},
-      typesIndex: {},
       technicalOperationsObjectsIndex: {},
 
       ordersTotalCount: 0,
@@ -69,12 +66,6 @@ export default class ObjectsStore extends Store {
     });
     const carsIndex = _.keyBy(carsList, 'asuods_id');
     this.setState({ carsList, carsIndex });
-  }
-
-  handleGetTypes({ result: { rows = [] } }) {
-    const typesList = rows;
-    const typesIndex = _.keyBy(typesList, 'asuods_id');
-    this.setState({ typesList, typesIndex });
   }
 
   handleGetTechOperations({ result }) {

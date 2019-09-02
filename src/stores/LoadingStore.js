@@ -11,7 +11,6 @@ export default class LoadingStore extends Store {
     const objectsActions = flux.getActions('objects');
     const employeesActions = flux.getActions('employees');
     const missionsActons = flux.getActions('missions');
-    const technicalOperationsActions = flux.getActions('technicalOperation');
 
     this.reg(
       false,
@@ -59,8 +58,6 @@ export default class LoadingStore extends Store {
       missionsActons.updateMission,
       missionsActons.createMissions,
       missionsActons.getCleaningOneNorm,
-
-      technicalOperationsActions.getTechnicalOperationsObjects,
     );
 
     this.reg(true, missionsActons.getMissionsByCarAndDates);

@@ -13,7 +13,11 @@ import ProgramObjectFormWrap from 'components/old/program_registry/UpdateFrom/in
 import permissions from 'components/old/program_registry/UpdateFrom/inside_components/program_object/config-data/permissions';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import {
+  getSessionState,
+  getSomeUniqState,
+} from 'redux-main/reducers/selectors';
+import { actionGetAndSetInStoreTechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/technical_operation_objects_actions';
 
 const bodyConfirmDialogs = {
   remove(countCheckedElement) {
@@ -201,13 +205,13 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
     const {
       repair_type_name,
       program_version_status,
-      technicalOperationsObjectsList = [],
+      technicalOperationObjectsList = [],
       object_type_id,
       isPermittedByStatus,
     } = this.props;
 
     const slugTypeObjectPr = (
-      technicalOperationsObjectsList.find(({ id }) => id === object_type_id)
+      technicalOperationObjectsList.find(({ id }) => id === object_type_id)
       || {}
     ).slug;
 
@@ -266,9 +270,14 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
 
   init(needVersionUpdate) {
     this.props.updateObjectData(needVersionUpdate, { percentUpdate: true });
-    this.context.flux
-      .getActions('technicalOperation')
-      .getTechnicalOperationsObjects();
+    this.props.dispatch(
+      actionGetAndSetInStoreTechnicalOperationObjects(
+        {},
+        {
+          page: 'mainpage',
+        },
+      ),
+    );
   }
 
   getAdditionalProps = () => ({
@@ -321,5 +330,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
 export default compose(
   connect((state) => ({
     userData: getSessionState(state).userData,
+    technicalOperationObjectsList: getSomeUniqState(state)
+      .technicalOperationObjectsList,
   })),
 )(ProgramRemarkList);

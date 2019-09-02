@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/fueling_water/_config-data/registry-config';
 
-import {
-  PropsFuelingWaterList,
-  StateFuelingWaterList,
-} from 'components/new/pages/nsi/geoobjects/pages/fueling_water/FuelingWaterList.h';
+type Props = {};
 
-class FuelingWaterList extends React.Component<PropsFuelingWaterList, StateFuelingWaterList> {
-  render() {
+const FuelingWaterList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <FuelingWaterFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <FuelingWaterFormWrap registryKey={registryKey} />
+      </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

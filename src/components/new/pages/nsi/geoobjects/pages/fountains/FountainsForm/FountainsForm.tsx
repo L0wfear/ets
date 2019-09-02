@@ -8,13 +8,9 @@ import { fountainsFormSchema } from 'components/new/pages/nsi/geoobjects/pages/f
 
 import { getDefaultFountainsFormElement } from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsFountainsForm,
   PropsFountainsForm,
-  StateFountainsForm,
-  StatePropsFountainsForm,
   PropsFountainsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsForm/@types/FountainsForm.h';
 
@@ -25,32 +21,28 @@ import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
 import SimpleEmailA from 'components/new/ui/simple_a/email/index';
 import SimplePhoneA from 'components/new/ui/simple_a/phone';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
 import FountainWorkingHours from 'components/new/ui/render_some_s/fountain_working_hours';
-import { actionCreateFountains, actionUpdateFountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/actions';
+import { actionsFountains } from 'redux-main/reducers/modules/geoobject/actions_by_type/fountains/actions';
 
-class FountainsForm extends React.PureComponent<
-  PropsFountainsForm,
-  StateFountainsForm
-> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const FountainsForm: React.FC<PropsFountainsForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-fountains"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
        >
         <EtsBootstrap.ModalHeader closeButton>
@@ -59,12 +51,12 @@ class FountainsForm extends React.PureComponent<
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -169,8 +161,8 @@ class FountainsForm extends React.PureComponent<
         <EtsBootstrap.ModalFooter>
           {isPermitted && false ? ( // либо обновление, либо создание
             <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
+              disabled={!props.canSave}
+              onClick={props.defaultSubmit}>
               Сохранить
             </EtsBootstrap.Button>
           ) : (
@@ -179,19 +171,14 @@ class FountainsForm extends React.PureComponent<
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsFountainsForm, OwnPropsFountainsForm>(
-  connect<StatePropsFountainsForm, {}, OwnPropsFountainsForm, ReduxState>(
-      (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
   withForm<PropsFountainsFormWithForm, Fountains>({
     uniqField: 'id',
-    createAction: actionCreateFountains,
-    updateAction: actionUpdateFountains,
+    createAction: actionsFountains.post,
+    updateAction: actionsFountains.put,
     mergeElement: (props) => {
       return getDefaultFountainsFormElement(props.element);
     },

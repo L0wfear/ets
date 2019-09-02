@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data/registry-config';
 
-import {
-  PropsFountainsList,
-  StateFountainsList,
-} from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsList.h';
+type Props = {};
 
-class FountainsList extends React.Component<PropsFountainsList, StateFountainsList> {
-  render() {
+const FountainsList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <FountainsFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <FountainsFormWrap registryKey={registryKey} />
+      </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

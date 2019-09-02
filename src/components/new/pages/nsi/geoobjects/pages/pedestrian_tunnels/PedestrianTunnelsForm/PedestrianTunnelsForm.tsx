@@ -1,20 +1,16 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import PedestrianTunnelsPermissions from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { PedestrianTunnelsFormSchema } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/schema';
 
 import { getDefaultPedestrianTunnelsFormElement } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsPedestrianTunnelsForm,
   PropsPedestrianTunnelsForm,
-  StatePedestrianTunnelsForm,
-  StatePropsPedestrianTunnelsForm,
   PropsPedestrianTunnelsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/@types/PedestrianTunnelsForm.h';
 
@@ -25,28 +21,24 @@ import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
-import { actionCreatePedestrianTunnels, actionUpdatePedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/actions';
+import { actionsPedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/actions';
 
-class PedestrianTunnelsForm extends React.PureComponent<
-  PropsPedestrianTunnelsForm,
-  StatePedestrianTunnelsForm
-> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const PedestrianTunnelsForm: React.FC<PropsPedestrianTunnelsForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-PedestrianTunnels"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
        >
         <EtsBootstrap.ModalHeader closeButton>
@@ -55,12 +47,12 @@ class PedestrianTunnelsForm extends React.PureComponent<
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -105,8 +97,8 @@ class PedestrianTunnelsForm extends React.PureComponent<
         <EtsBootstrap.ModalFooter>
           {isPermitted && false ? ( // либо обновление, либо создание
             <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
+              disabled={!props.canSave}
+              onClick={props.defaultSubmit}>
               Сохранить
             </EtsBootstrap.Button>
           ) : (
@@ -115,25 +107,14 @@ class PedestrianTunnelsForm extends React.PureComponent<
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<
-  PropsPedestrianTunnelsForm,
-  OwnPropsPedestrianTunnelsForm
->(
-  connect<
-    StatePropsPedestrianTunnelsForm,
-    {},
-    OwnPropsPedestrianTunnelsForm,
-    ReduxState
-  >((state) => ({
-    userData: getSessionState(state).userData,
-  })),
+export default compose<PropsPedestrianTunnelsForm, OwnPropsPedestrianTunnelsForm>(
   withForm<PropsPedestrianTunnelsFormWithForm, PedestrianTunnels>({
     uniqField: 'id',
-    createAction: actionCreatePedestrianTunnels,
-    updateAction: actionUpdatePedestrianTunnels,
+    createAction: actionsPedestrianTunnels.post,
+    updateAction: actionsPedestrianTunnels.put,
     mergeElement: (props) => {
       return getDefaultPedestrianTunnelsFormElement(props.element);
     },

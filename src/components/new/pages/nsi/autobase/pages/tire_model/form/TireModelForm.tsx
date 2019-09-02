@@ -66,7 +66,7 @@ const TireModelForm: React.FC<PropsTireModel> = (props) => {
             <ExtField
               id="name"
               type="string"
-              label="Марка шины"
+              label="Модель шины"
               value={state.name}
               error={errors.name}
               disabled={!isPermitted}

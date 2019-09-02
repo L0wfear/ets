@@ -35,7 +35,7 @@ export const actionGetEdcRequestInfo = (payload: any, meta: LoadingMeta): EtsAct
 export const actionGetAndSetInStoreEdcRequestInfo = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetEdcRequestInfo>> => async (dispatch) => {
   const result = await dispatch(actionGetEdcRequestInfo(payload, meta));
 
-  dispatch(actionSetEdcRequestInfo(result.data as any)); // <<< Что тут должно быть
+  dispatch(actionSetEdcRequestInfo(result.data)); // <<< Что тут должно быть
 
   return result;
 };

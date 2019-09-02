@@ -5,6 +5,17 @@ import {
 import { get } from 'lodash';
 import { geoozones, gormost } from 'redux-main/reducers/modules/geoobject/constants';
 
+export const makeShape = <F extends any>(geomOwn: F) => {
+  const geom = { ...geomOwn };
+  try {
+    geom.shape = JSON.parse(geom.shape);
+  } catch (e) {
+    geom.shape = geom.shape || null;
+  }
+
+  return geom;
+};
+
 /* ------------- geoozones ------------- */
 export const geoozonesLoadByType = <F extends any, ExtraData extends any = any>(keyType: keyof typeof geoozones) => async (payload = {}) => {
   let response = null;
@@ -15,15 +26,7 @@ export const geoozonesLoadByType = <F extends any, ExtraData extends any = any>(
     //
   }
 
-  const data: F[] = get(response, 'result.rows', []).map((geom) => {
-    try {
-      geom.shape = JSON.parse(geom.shape);
-    } catch (e) {
-      geom.shape = geom.shape || null;
-    }
-
-    return geom;
-  });
+  const data: F[] = get(response, 'result.rows', []).map(makeShape);
   const extraData: ExtraData = get(response, 'result.extra', {});
 
   return {
@@ -78,15 +81,7 @@ export const gormostLoadByType = <F extends any, ExtraData extends any = any>(ke
     //
   }
 
-  const data: F[] = get(response, 'result.rows', []).map((geom) => {
-    try {
-      geom.shape = JSON.parse(geom.shape);
-    } catch (e) {
-      geom.shape = geom.shape || null;
-    }
-
-    return geom;
-  });
+  const data: F[] = get(response, 'result.rows', []).map(makeShape);
   const extraData: ExtraData = get(response, 'result.extra', {});
 
   return {

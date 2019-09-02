@@ -18,7 +18,7 @@ import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectPgmBase } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/utils';
 import { get } from 'lodash';
-import { actionGetGetPgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
+import { actionsPgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
 
 export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBase>): EtsAction<IStateInspectPgmBase> => (dispatch, getState) => {
   const stateInspectPgmBaseOld = getInspectPgmBase(getState());
@@ -63,9 +63,9 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
   return response;
 };
 
-export const actionGetAndSetInStorePgmBase = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetGetPgmStore>> => async (dispatch) => {
+export const actionGetAndSetInStorePgmBase = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionsPgmStore.getArray>> => async (dispatch) => {
   const response = await dispatch(
-    actionGetGetPgmStore(payload, meta),
+    actionsPgmStore.getArray(payload, meta),
   );
 
   dispatch(

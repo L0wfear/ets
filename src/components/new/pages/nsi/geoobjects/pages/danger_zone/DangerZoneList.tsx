@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/_config-data/registry-config';
 
-import {
-  PropsDangerZoneList,
-  StateDangerZoneList,
-} from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneList.h';
+type Props = {};
 
-class DangerZoneList extends React.Component<PropsDangerZoneList, StateDangerZoneList> {
-  render() {
+const DangerZoneList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <DangerZoneFormWrap
-          registryKey={registryKey}
-        />
-      </>
+       <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <DangerZoneFormWrap registryKey={registryKey} />
+       </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

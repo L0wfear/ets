@@ -18,7 +18,7 @@ import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/utils';
 import { get } from 'lodash';
-import { actionGetGetCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
+import { actionsCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): EtsAction<IStateInspectAutobase> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());
@@ -63,9 +63,9 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
   return response;
 };
 
-export const actionGetAndSetInStoreCarpool = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetGetCarpool>> => async (dispatch) => {
+export const actionGetAndSetInStoreCarpool = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionsCarpool.getArray>> => async (dispatch) => {
   const response = await dispatch(
-    actionGetGetCarpool(payload, meta),
+    actionsCarpool.getArray(payload, meta),
   );
 
   dispatch(

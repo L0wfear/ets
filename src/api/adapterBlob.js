@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import { parseFilename } from 'utils/content-disposition';
 import { hasWarningNotification } from 'utils/notifications';
 
@@ -7,7 +8,7 @@ function urlencode(jsonObject) {
     .join('&');
 }
 
-function httpMethodBlob(urlOwn, data, method) {
+function httpMethodBlob(urlOwn, dataOwn, method) {
   let url = urlOwn;
   const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
@@ -18,6 +19,7 @@ function httpMethodBlob(urlOwn, data, method) {
       'Access-Control-Expose-Headers': 'Content-Disposition',
     },
   };
+  const data = cloneDeep(dataOwn);
 
   if (method === 'post') {
     options.body = JSON.stringify(data);

@@ -26,7 +26,7 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { actionCreateBridges, actionUpdateBridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/actions';
+import { actionsBridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/actions';
 
 class BridgesForm extends React.PureComponent<
   PropsBridgesForm,
@@ -135,8 +135,8 @@ export default compose<PropsBridgesForm, OwnPropsBridgesForm>(
   ),
   withForm<PropsBridgesFormWithForm, Bridges>({
     uniqField: 'id',
-    createAction: actionCreateBridges,
-    updateAction: actionUpdateBridges,
+    createAction: actionsBridges.post,
+    updateAction: actionsBridges.put,
     mergeElement: (props) => {
       return getDefaultBridgesFormElement(props.element);
     },

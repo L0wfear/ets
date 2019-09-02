@@ -8,13 +8,10 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/registry-config';
 
-import {
-  PropsBridgesList,
-  StateBridgesList,
-} from 'components/new/pages/nsi/geoobjects/pages/bridges/BridgesList.h';
+type Props = {};
 
-class BridgesList extends React.Component<PropsBridgesList, StateBridgesList> {
-  render() {
+const BridgesList: React.FC<Props> = React.memo(
+  () => {
     return (
        <>
         <Registry
@@ -25,8 +22,8 @@ class BridgesList extends React.Component<PropsBridgesList, StateBridgesList> {
         />
       </>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

@@ -11,6 +11,8 @@ import { createValidDateTime, createValidDate } from 'components/@next/@utils/da
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -51,7 +53,11 @@ type WithFormState<F, P> = {
   inSubmit: boolean;
 };
 
-type WithFormProps<P> = P & { dispatch: EtsDispatch } & {
+type StateProps = {
+  userData: InitialStateSession['userData'];
+};
+
+type WithFormProps<P> = P & StateProps &  { dispatch: EtsDispatch } & {
   IS_CREATING: boolean;
   isPermitted: boolean;
   isPermittedToUpdate: boolean;
@@ -138,8 +144,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
       withIsPermittedProps: true,
       permissionName: 'isPermittedToCreate',
     }),
-    connect<{}, DispatchProp, any, ReduxState>(
-      null,
+    connect<StateProps, DispatchProp, any, ReduxState>(
+      (state) => ({
+        userData: getSessionState(state).userData,
+      }),
     ),
   )(
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F, P>> {

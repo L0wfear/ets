@@ -1,6 +1,7 @@
-import React from 'react';
-import { render } from 'react-dom';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 import NotificationSystem from 'react-notification-system';
+
 import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
 
 const notificationsDiv = document.createElement('div');
@@ -12,33 +13,31 @@ document.body.appendChild(notificationsDiv);
   https://github.com/igorprado/react-notification-system
  */
 class AppNotificationSystem extends React.Component {
+  node = React.createRef<any>();
   constructor(props) {
     super(props);
-    this._notify = this.notify.bind(this);
+
+    global.NOTIFICATION_SYSTEM = this;
   }
 
-  notifyWithObject(notification) {
-    this._notificationSystem.addNotification(notification);
+  notifyWithObject: typeof global.NOTIFICATION_SYSTEM.notifyWithObject  = (notification) => {
+    this.node.current.addNotification(notification);
   }
 
-  removeNotification(id) {
-    this._notificationSystem.removeNotification(id);
+  removeNotification: typeof global.NOTIFICATION_SYSTEM.removeNotification = (uid) => {
+    this.node.current.removeNotification(uid);
   }
 
-  /**
-   * показать обычное сообщение
-   * @param text
-   * @param type success|error|warning|info
-   */
-  notify(text, type = 'success', position = 'tc') {
-    if (typeof text === 'object') {
-      return this.notifyWithObject(text);
-    }
-    if (typeof this._notificationSystem === 'undefined') {
+  notify: typeof global.NOTIFICATION_SYSTEM.notify = (text: string | object, type = 'success', position = 'tc') => {
+    if (typeof this.node.current === 'undefined') {
       return undefined;
     }
 
-    return this._notificationSystem.addNotification({
+    if (typeof text === 'object') {
+      return this.notifyWithObject(text);
+    }
+
+    return this.notifyWithObject({
       message: text,
       level: type,
       position,
@@ -48,13 +47,12 @@ class AppNotificationSystem extends React.Component {
   render() {
     return (
       <EtsThemeProvider>
-        <NotificationSystem ref={(node) => (this._notificationSystem = node)} />
+        <NotificationSystem ref={this.node} />
       </EtsThemeProvider>
     );
   }
 }
-
-global.NOTIFICATION_SYSTEM = render(
+ReactDom.render(
   <AppNotificationSystem />,
   document.getElementById('notifications'),
 );

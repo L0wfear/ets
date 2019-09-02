@@ -18,7 +18,7 @@ export const getToConfig = (): TypeConfigData<TireModel> => {
     },
     registryKey,
     header: {
-      title: 'Марки шин',
+      title: 'Модели шин',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.create,
@@ -31,7 +31,7 @@ export const getToConfig = (): TypeConfigData<TireModel> => {
       fields: [
         {
           valueKey: 'name',
-          title: 'Марка шины',
+          title: 'Модель шины',
           type: 'multiselect',
         },
         {
@@ -57,7 +57,7 @@ export const getToConfig = (): TypeConfigData<TireModel> => {
           },
           {
             key: 'name',
-            title: 'Марка шины',
+            title: 'Модель шины',
             width: 400,
           },
           {

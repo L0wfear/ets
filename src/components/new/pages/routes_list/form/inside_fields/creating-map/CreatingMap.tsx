@@ -41,7 +41,6 @@ import {
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
 import { ExtButton } from 'components/old/ui/new/button/ExtButton';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { get } from 'lodash';
 import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { actionGetAndSetInStoreGeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
@@ -218,11 +217,7 @@ class CreatingMap extends React.PureComponent<
           },
           { page, path },
         );
-        const geozoneMunicipalFacility = get(
-          resolve,
-          'data.list',
-          someUniq.initialState.geozoneMunicipalFacility,
-        );
+        const geozoneMunicipalFacility = resolve.data || someUniq.initialState.geozoneMunicipalFacility;
 
         const {
           geozone_municipal_facility_by_id,

@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import TableData from 'components/new/ui/registry/components/data/table-data/TableData';
 import Paginator from 'components/new/ui/registry/components/data/paginator/Paginator';
-import { EtsHeaderContainer } from '../../../../../../styled/styled';
+import { EtsHeaderContainer, EtsHeaderContainerWrap } from '../../../../../../styled/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/permissions';
 
@@ -100,15 +100,17 @@ const ShowActsForm: React.FC<Props> = React.memo(
           </EtsBootstrap.ModalHeader>
           <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
             <EtsBootstrap.Row>
-              <EtsHeaderContainer>
-                <EtsBootstrap.Button disabled={!isPermittedUpdate} onClick={handleOpenForm}>
-                  Добавить файл
-                </EtsBootstrap.Button>
-                <EtsButtonsContainer>
-                  <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
-                  <ButtonRemove registryKey={registryKey} format="yesno"/>
-                </EtsButtonsContainer>
-              </EtsHeaderContainer>
+              <EtsHeaderContainerWrap>
+                <EtsHeaderContainer>
+                  <EtsBootstrap.Button disabled={!isPermittedUpdate} onClick={handleOpenForm}>
+                    Добавить файл
+                  </EtsBootstrap.Button>
+                  <EtsButtonsContainer>
+                    <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
+                    <ButtonRemove registryKey={registryKey} format="yesno"/>
+                  </EtsButtonsContainer>
+                </EtsHeaderContainer>
+              </EtsHeaderContainerWrap>
               <TableData registryKey={registryKey} />
               <Paginator registryKey={registryKey} />
             </EtsBootstrap.Row>

@@ -66,6 +66,7 @@ import FuelType from './form/FuelType';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
+import { HrLine } from 'components/new/pages/login/styled/styled';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -1984,7 +1985,11 @@ class WaybillForm extends UNSAFE_Form {
                         </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <br />
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={12}>
+                        <HrLine />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={2}>
                       <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
@@ -2012,7 +2017,11 @@ class WaybillForm extends UNSAFE_Form {
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <br />
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={12}>
+                        <HrLine />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
                         <Taxes
@@ -2194,37 +2203,48 @@ class WaybillForm extends UNSAFE_Form {
                             <DivNone />
                           )}
                         </EtsBootstrap.Col>
-                        <br />
-                        {!state.is_one_fuel_tank ? (
-                          <EtsBootstrap.Col md={12} zIndex={2}>
-                            <EtsBootstrap.Col md={12}>
-                              <FieldWaybillCarRefill
-                                array={state.equipment_refill}
-                                errors={get(
-                                  errors,
-                                  'equipment_refill',
-                                  state.equipment_refill.map(() => ({})),
-                                )} // временно
-                                title="Заправка топлива"
-                                handleChange={this.handleChangeEquipmentRefill}
-                                fuel_given={state.equipment_fuel_given}
-                                structure_id={state.structure_id}
-                                fuel_type={state.equipment_fuel_type}
-                                IS_DRAFT_OR_ACTIVE={
-                                  IS_CREATING || IS_DRAFT || IS_ACTIVE
-                                }
-                                disabled={
-                                  (IS_CLOSED && !this.state.canEditIfClose)
-                                  || !isPermittedByKey.update
-                                }
-                                page={this.props.page}
-                                path={this.props.path}
-                                canEditIfClose={this.state.canEditIfClose}
-                              />
-                            </EtsBootstrap.Col>
+                        <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Col md={12}>
+                            <HrLine />
                           </EtsBootstrap.Col>
-                        ) : (
-                          <DivNone />
+                        </EtsBootstrap.Col>
+                        {!state.is_one_fuel_tank && (
+                          <React.Fragment>
+                            <EtsBootstrap.Col md={12} zIndex={2}>
+                              <EtsBootstrap.Col md={12}>
+                                <FieldWaybillCarRefill
+                                  array={state.equipment_refill}
+                                  errors={get(
+                                    errors,
+                                    'equipment_refill',
+                                    state.equipment_refill.map(() => ({})),
+                                  )} // временно
+                                  title="Заправка топлива"
+                                  handleChange={
+                                    this.handleChangeEquipmentRefill
+                                  }
+                                  fuel_given={state.equipment_fuel_given}
+                                  structure_id={state.structure_id}
+                                  fuel_type={state.equipment_fuel_type}
+                                  IS_DRAFT_OR_ACTIVE={
+                                    IS_CREATING || IS_DRAFT || IS_ACTIVE
+                                  }
+                                  disabled={
+                                    (IS_CLOSED && !this.state.canEditIfClose)
+                                    || !isPermittedByKey.update
+                                  }
+                                  page={this.props.page}
+                                  path={this.props.path}
+                                  canEditIfClose={this.state.canEditIfClose}
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Col>
+                            <EtsBootstrap.Col md={12}>
+                              <EtsBootstrap.Col md={12}>
+                                <HrLine />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Col>
+                          </React.Fragment>
                         )}
                         <EtsBootstrap.Col md={12} zIndex={1}>
                           <EtsBootstrap.Col md={12}>

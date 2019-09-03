@@ -8,7 +8,10 @@ import Div from 'components/old/ui/Div';
 import { isEmpty } from 'utils/functions';
 import _, { get } from 'lodash';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
-import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import {
+  EtsHeaderContainer,
+  EtsHeaderContainerWrap,
+} from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
@@ -330,34 +333,36 @@ export default class Taxes extends React.Component {
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
         <EtsBootstrap.Row>
-          <EtsHeaderContainer>
-            <EtsHeaderTitle>{title}</EtsHeaderTitle>
-            <EtsButtonsContainer>
-              {!(this.props.IS_CLOSED || !fuelRates.length) && (
-                <React.Fragment>
-                  <ButtonTableInput
-                    width={160}
-                    id="add-operation"
-                    block
-                    onClick={this.addOperation}
-                    disabled={this.state.operations.length === taxes.length}>
-                    Добавить операцию
-                  </ButtonTableInput>
-                  <ButtonTableInput
-                    width={160}
-                    id="remove-operation"
-                    block
-                    disabled={
-                      this.state.selectedOperation === null
-                      || taxes.length === 0
-                    }
-                    onClick={this.removeOperation}>
-                    Удалить операцию
-                  </ButtonTableInput>
-                </React.Fragment>
-              )}
-            </EtsButtonsContainer>
-          </EtsHeaderContainer>
+          <EtsHeaderContainerWrap>
+            <EtsHeaderContainer>
+              <EtsHeaderTitle>{title}</EtsHeaderTitle>
+              <EtsButtonsContainer>
+                {!(this.props.IS_CLOSED || !fuelRates.length) && (
+                  <React.Fragment>
+                    <ButtonTableInput
+                      width={160}
+                      id="add-operation"
+                      block
+                      onClick={this.addOperation}
+                      disabled={this.state.operations.length === taxes.length}>
+                      Добавить операцию
+                    </ButtonTableInput>
+                    <ButtonTableInput
+                      width={160}
+                      id="remove-operation"
+                      block
+                      disabled={
+                        this.state.selectedOperation === null
+                        || taxes.length === 0
+                      }
+                      onClick={this.removeOperation}>
+                      Удалить операцию
+                    </ButtonTableInput>
+                  </React.Fragment>
+                )}
+              </EtsButtonsContainer>
+            </EtsHeaderContainer>
+          </EtsHeaderContainerWrap>
         </EtsBootstrap.Row>
         {!(fuelRates.length || !!hasTaxes) && <h5>{noDataMessage}</h5>}
         <Div hidden={!hasTaxes}>

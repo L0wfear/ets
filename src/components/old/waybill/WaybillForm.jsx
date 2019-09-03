@@ -2027,6 +2027,7 @@ class WaybillForm extends UNSAFE_Form {
                             || (IS_CLOSED && !state.tax_data)
                           }
                           readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
+                          IS_CLOSED={IS_CLOSED}
                           title="Расчет топлива по норме"
                           taxes={tax_data}
                           operations={this.state.operations}
@@ -2241,6 +2242,7 @@ class WaybillForm extends UNSAFE_Form {
                               readOnly={
                                 !IS_ACTIVE && !this.state.canEditIfClose
                               }
+                              IS_CLOSED={IS_CLOSED}
                               taxes={equipment_tax_data}
                               operations={this.state.equipmentOperations}
                               fuelRates={this.state.equipmentFuelRates}

@@ -4,7 +4,7 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates, diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
+import { diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
 import { oldestInstalledDateIndex } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 import { validateDateInsideOther } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 

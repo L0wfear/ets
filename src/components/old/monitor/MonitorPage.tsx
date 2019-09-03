@@ -87,7 +87,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
     );
     React.useLayoutEffect(
       () => {
-        const meta = document.querySelector('meta[property="og:description"]');
+        const meta = document.querySelector('meta[property="og:title"]');
         const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
         const new_title = `${etsName} Карта`;
 
@@ -99,7 +99,7 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
         }
 
         return () => {
-          const metaNew = document.querySelector('meta[property="og:description"]');
+          const metaNew = document.querySelector('meta[property="og:title"]');
           if (document) {
             document.title = etsName;
           }

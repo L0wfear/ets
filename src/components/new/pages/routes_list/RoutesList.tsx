@@ -194,7 +194,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       this.refreshRoutes();
     }
 
-    const meta = document.querySelector('meta[property="og:description"]');
+    const meta = document.querySelector('meta[property="og:title"]');
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
     const new_title = `${etsName} Реестр маршрутов`;
 
@@ -207,7 +207,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   }
 
   componentWillUnmount() {
-    const meta = document.querySelector('meta[property="og:description"]');
+    const meta = document.querySelector('meta[property="og:title"]');
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
 
     if (document) {

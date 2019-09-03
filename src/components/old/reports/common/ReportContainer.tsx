@@ -89,7 +89,7 @@ class ReportContainer extends React.Component<
     }
 
     if (this.props.titleText || this.props.title) {
-      const meta = document.querySelector('meta[property="og:description"]');
+      const meta = document.querySelector('meta[property="og:title"]');
       const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
       const new_title = `${etsName} ${this.props.titleText || this.props.title}`;
 
@@ -104,7 +104,7 @@ class ReportContainer extends React.Component<
 
   componentWillUnmount() {
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
-    const meta = document.querySelector('meta[property="og:description"]');
+    const meta = document.querySelector('meta[property="og:title"]');
 
     if (document) {
       document.title = etsName;

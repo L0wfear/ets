@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.32.40",
+    "version": "0.32.41",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -16,6 +16,7 @@
         "lodash": "^4.17.15",
         "memoize-one": "^5.1.1",
         "moment": "^2.24.0",
+        "moment-range": "^4.0.2",
         "ol": "^5.3.3",
         "point-in-polygon": "^1.0.1",
         "prop-types": "^15.7.2",

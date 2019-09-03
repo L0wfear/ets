@@ -87,14 +87,24 @@ const MonitorPage: React.FC<PropsMonitorPage> = React.memo(
     );
     React.useLayoutEffect(
       () => {
+        const meta = document.querySelector('meta[property="og:description"]');
         const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+        const new_title = `${etsName} Карта`;
+
         if (document) {
-          document.title = `${etsName} Карта`;
+          document.title = new_title;
+        }
+        if (meta) {
+          meta.setAttribute('content', new_title);
         }
 
         return () => {
+          const metaNew = document.querySelector('meta[property="og:description"]');
           if (document) {
             document.title = etsName;
+          }
+          if (metaNew) {
+            metaNew.setAttribute('content', etsName);
           }
         };
       },

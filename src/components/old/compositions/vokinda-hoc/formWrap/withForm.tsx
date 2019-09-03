@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { SchemaType, FormErrorType } from 'components/old/ui/form/new/@types/validate.h';
+import { SchemaType, FormErrorType, PropertieFieldValidatorArrType } from 'components/old/ui/form/new/@types/validate.h';
 import { validate } from 'components/old/ui/form/new/validate';
 import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
@@ -298,7 +298,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
             if (key in config.schema.properties) {
-              switch (config.schema.properties[key].type) {
+              switch (config.schema.properties[key].type as PropertieFieldValidatorArrType<F, WithFormProps<P>>['type']) {
                 case 'number':
                   const valueNumberString: number | string = (value as number | string);
 

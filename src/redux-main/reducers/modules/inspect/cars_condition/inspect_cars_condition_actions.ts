@@ -16,7 +16,6 @@ import {
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {
@@ -114,13 +113,12 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     return inspectionCarsCondition;
   } else {
     const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
-    inspectCarsCondition.resolve_to = createValidDateTime(inspectCarsCondition.resolve_to);
 
     const payload = {
       data: inspectCarsCondition.data,
       agents_from_gbu: inspectCarsCondition.agents_from_gbu,
       commission_members: inspectCarsCondition.commission_members,
-      resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+      resolve_to: inspectCarsCondition.resolve_to,
       action: inspectCarsCondition.action ? inspectCarsCondition.action : 'save',
     };
 
@@ -158,7 +156,7 @@ const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCon
     data,
     agents_from_gbu: inspectCarsCondition.agents_from_gbu,
     commission_members: inspectCarsCondition.commission_members,
-    resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+    resolve_to: inspectCarsCondition.resolve_to,
     action: 'close',
   };
 

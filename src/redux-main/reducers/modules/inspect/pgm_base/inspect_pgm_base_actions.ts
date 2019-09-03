@@ -13,7 +13,6 @@ import {
   promiseGetInspectPgmBaseById,
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectPgmBase } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/utils';
@@ -205,7 +204,7 @@ export const actionUpdateInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta:
       data,
       agents_from_gbu,
       commission_members,
-      resolve_to: createValidDateTime(resolve_to),
+      resolve_to,
       head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
       head_operating_base: inspectPgmBase.head_operating_base,
       action,
@@ -245,7 +244,7 @@ const actionCloseInspectPgmBase = (inspectPgmBase: InspectPgmBase, meta: Loading
     data,
     agents_from_gbu,
     commission_members,
-    resolve_to: createValidDateTime(resolve_to),
+    resolve_to,
     head_balance_holder_base: inspectPgmBase.head_balance_holder_base,
     head_operating_base: inspectPgmBase.head_operating_base,
     action: 'close',

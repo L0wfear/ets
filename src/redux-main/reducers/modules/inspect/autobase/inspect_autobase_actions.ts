@@ -13,7 +13,6 @@ import {
   promiseGetInspectAutobaseById,
 } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/utils';
@@ -206,7 +205,7 @@ export const actionUpdateInspectAutobase = (inspectAutobase: InspectAutobase, me
   const payload = {
     agents_from_gbu,
     commission_members,
-    resolve_to: createValidDateTime(resolve_to),
+    resolve_to,
     action,
   };
 
@@ -243,7 +242,7 @@ const actionCloseInspectAutobase = (inspectAutobase: InspectAutobase, meta: Load
     data,
     agents_from_gbu,
     commission_members,
-    resolve_to: createValidDateTime(resolve_to),
+    resolve_to,
     action: 'close',
   };
 

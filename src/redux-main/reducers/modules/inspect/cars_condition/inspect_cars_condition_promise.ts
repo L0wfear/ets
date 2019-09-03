@@ -6,7 +6,6 @@ import {
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
 import { InspectCarsService } from "api/Services";
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -71,7 +70,6 @@ const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
   };
   inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
-  inspectCarsCondition.data.preparing_cars_check.order_issued_at = createValidDateTime(inspectCarsCondition.data.preparing_cars_check.order_issued_at);
   return inspectCarsCondition;
 };
 

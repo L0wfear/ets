@@ -10,6 +10,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { get } from 'lodash';
 import { monitoringKindSeasonReadiness } from 'components/new/pages/inspection/cars_condition/components/select_data/constants';
+import ButtonShowTableForm from 'components/new/pages/inspection/cars_condition/components/button_inspect_cars_condition/ButtonShowTableForm';
 
 type BlockCarsConditionSelectCarOwnProps = {
   cars_cnt: InspectCarsCondition['cars_cnt'];
@@ -18,6 +19,7 @@ type BlockCarsConditionSelectCarOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
   isActiveInspect: boolean;
   isPermitted: boolean;
+  loadingPage?: string;
 };
 
 type BlockCarsConditionSelectCarProps = (
@@ -82,6 +84,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
     return (
       <BoxContainer>
         <h4>Выбор ТС для просмотра карточки</h4>
+        <ButtonShowTableForm loadingPage={props.loadingPage} />
         <div>
           <span>Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице</span>
         </div>

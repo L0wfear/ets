@@ -26,6 +26,10 @@ export const ContainerForm = styled.div`
     padding-right: 5px;
     padding-left: 5px;
   }
+  &>.col-md-12 {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
 
 `;
 
@@ -36,7 +40,7 @@ export const FooterForm = styled(EtsBootstrap.Col)`
   flex-shrink: 0;
 `;
 
-export const HiddenPageEtsContainer = styled.div`
+export const HiddenPageEtsContainer = styled.div<{z_index?: number}>`
   position: absolute;
   width: 100%;
   top: 0;
@@ -46,7 +50,7 @@ export const HiddenPageEtsContainer = styled.div`
   height: 100%;
   overflow: hidden;
 
-  z-index: 1000;
+  z-index: ${ ({z_index}) => z_index ? z_index : 1000 };
 `;
 
 export const PopupBottomForm = styled.form<{ show: boolean }>`

@@ -1,13 +1,19 @@
-export const DUTY_MISSION_STATUS = {
+export const MISSION_STATUS = {
   assigned: 'assigned',
+  in_progress: 'in_progress',
+  expired: 'expired',
   not_assigned: 'not_assigned',
   complete: 'complete',
   fail: 'fail',
-};
+  canceled: 'canceled',
+} as const;
 
-export const DUTY_MISSION_STATUS_LABELS = {
-  [DUTY_MISSION_STATUS.assigned]: 'Назначено',
-  [DUTY_MISSION_STATUS.not_assigned]: 'Не назначено',
-  [DUTY_MISSION_STATUS.complete]: 'Выполнено',
-  [DUTY_MISSION_STATUS.fail]: 'Не выполнено',
-};
+export const MISSION_STATUS_LABELS = {
+  [MISSION_STATUS.assigned]: 'Назначено',
+  [MISSION_STATUS.in_progress]: 'Выполняется',
+  [MISSION_STATUS.expired]: 'Просрочено',
+  [MISSION_STATUS.not_assigned]: 'Не назначено',
+  [MISSION_STATUS.complete]: 'Выполнено',
+  [MISSION_STATUS.fail]: 'Не выполнено',
+  [MISSION_STATUS.canceled]: 'Отменено',
+} as const;

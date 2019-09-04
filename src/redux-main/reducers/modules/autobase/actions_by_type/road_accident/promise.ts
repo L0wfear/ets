@@ -9,11 +9,12 @@ import {
 } from 'redux-main/reducers/modules/autobase/promises';
 import { roadAccident } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
+import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getRoadAccident = autobaseLoadByType(roadAccident);
-export const createRoadAccident = autobaseCreateByType(roadAccident);
-export const updateRoadAccident = autobaseUpdateByType(roadAccident);
-export const removeRoadAccident = autobaseRemoveByType(roadAccident);
+export const getRoadAccident = autobaseLoadByType<RoadAccident>(roadAccident);
+export const createRoadAccident = autobaseCreateByType<RoadAccident>(roadAccident);
+export const updateRoadAccident = autobaseUpdateByType<RoadAccident>(roadAccident);
+export const autobaseDeleteRoadAccident = autobaseRemoveByType(roadAccident);
 
 export const getSetRoadAccident = async (payload) => {
   const { data } = await getRoadAccident(payload);
@@ -45,10 +46,5 @@ export const updateSetRoadAccident = (oldRoadAccident) => {
 
   return updateRoadAccident(
     payload,
-  );
-};
-export const autobaseDeleteRoadAccident = (id) => {
-  return removeRoadAccident(
-    id,
   );
 };

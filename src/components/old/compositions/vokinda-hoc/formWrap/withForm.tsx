@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { SchemaType, FormErrorType } from 'components/old/ui/form/new/@types/validate.h';
+import { SchemaType, FormErrorType, PropertieFieldValidatorArrType } from 'components/old/ui/form/new/@types/validate.h';
 import { validate } from 'components/old/ui/form/new/validate';
 import { compose } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
@@ -10,6 +10,9 @@ import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -50,7 +53,11 @@ type WithFormState<F, P> = {
   inSubmit: boolean;
 };
 
-type WithFormProps<P> = P & DispatchProp & {
+type StateProps = {
+  userData: InitialStateSession['userData'];
+};
+
+type WithFormProps<P> = P & StateProps &  { dispatch: EtsDispatch } & {
   IS_CREATING: boolean;
   isPermitted: boolean;
   isPermittedToUpdate: boolean;
@@ -62,7 +69,7 @@ export type FormWithHandleChangeBoolean<F> = (objChange: keyof F, value: F[keyof
 type FormWithSubmitAction = (...arg: any[]) => Promise<any>;
 type FormWithDefaultSubmit = () => void;
 
-export type OutputWithFormProps<P, F, T extends any[], A> = (
+export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> = (
   WithFormProps<P>
   & WithFormState<F, P>
   & Pick<ConfigWithForm<P, F>, 'mergeElement' | 'schema'>
@@ -137,8 +144,10 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
       withIsPermittedProps: true,
       permissionName: 'isPermittedToCreate',
     }),
-    connect<{}, DispatchProp, any, ReduxState>(
-      null,
+    connect<StateProps, DispatchProp, any, ReduxState>(
+      (state) => ({
+        userData: getSessionState(state).userData,
+      }),
     ),
   )(
     class extends React.PureComponent<WithFormProps<P>, WithFormState<F, P>> {
@@ -289,7 +298,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
           Object.entries(objChangeItareble).forEach(([key, value]) => {
             let newValue = value;
             if (key in config.schema.properties) {
-              switch (config.schema.properties[key].type) {
+              switch (config.schema.properties[key].type as PropertieFieldValidatorArrType<F, WithFormProps<P>>['type']) {
                 case 'number':
                   const valueNumberString: number | string = (value as number | string);
 

@@ -2,29 +2,18 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsBatteryRegistry } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDates, diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
+import { diffDates, diffDatesByDays, createValidDate, isCrossDates } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_to_car'], type: 'start' | 'end') => {
-  if (!date) {
+export const validateDateInsideOther = (dates: Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>, battery_to_car: Array<Pick<ValuesOf<BatteryRegistry['battery_to_car']>, 'installed_at' | 'uninstalled_at'> & Record<string, any>>) => {
+  if (!dates.installed_at || !dates.uninstalled_at) {
     return false;
   }
 
   return battery_to_car.some(
     ({ installed_at, uninstalled_at }) => {
-
-      if (type === 'start') {
-        return (
-          diffDates(date, installed_at) >= 0
-          && diffDates(date, uninstalled_at) < 0
-        );
-      }
-
-      return (
-        diffDates(date, installed_at) > 0
-        && diffDates(date, uninstalled_at) < 0
-      );
+      return isCrossDates(dates.installed_at, dates.uninstalled_at, installed_at, uninstalled_at);
     },
   );
 };
@@ -93,7 +82,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                     !d.installed_at
                     ? 'Поле "Дата монтажа" должно быть заполнено'
                     : (
-                      validateDateInsideOther(d.installed_at, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)], 'start')
+                          validateDateInsideOther(d, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)])
                         ? 'Поле "Дата монтажа" не должно пересекаться с другими записями'
                         : ''
                     )
@@ -104,7 +93,7 @@ export const batteryRegistryFormSchema: SchemaType<BatteryRegistry, PropsBattery
                       : (
                         d.uninstalled_at
                           ? (
-                            validateDateInsideOther(d.uninstalled_at, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)], 'end')
+                            validateDateInsideOther(d, [...battery_to_car.slice(0, index), ...battery_to_car.slice(index + 1)])
                               ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
                               : (
                                 diffDatesByDays(d.installed_at, d.uninstalled_at) > 0

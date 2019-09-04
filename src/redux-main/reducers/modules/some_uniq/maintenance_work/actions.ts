@@ -2,12 +2,11 @@ import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { promiseGetMaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* --------------- обновление стора --------------- */
-export const actionSetMaintenanceWork = (
-  maintenanceWorkList: IStateSomeUniq['maintenanceWorkList'],
-) => (dispatch) =>
+export const actionSetMaintenanceWork = (maintenanceWorkList: IStateSomeUniq['maintenanceWorkList']): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) =>
   dispatch(
     someUniqSetNewData({
       maintenanceWorkList,
@@ -15,46 +14,25 @@ export const actionSetMaintenanceWork = (
   );
 
 /* --------------- сброс стора --------------- */
-export const actionResetMaintenanceWork = (): EtsAction<void> => async (dispatch) => {
+export const actionResetMaintenanceWork = (): EtsAction<EtsActionReturnType<typeof actionSetMaintenanceWork>> => (dispatch) => {
   dispatch(actionSetMaintenanceWork([]));
 
   return null;
 };
 
 /* --------------- запрос --------------- */
-export const actionGetMaintenanceWork: any = (
-  payload = {},
-  { page, path }: LoadingMeta,
-) => async (dispatch) =>
-  dispatch({
-    type: 'none',
-    payload: promiseGetMaintenanceWork(payload),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
-
-/* --------------- запрос и установка в стор --------------- */
-export const actionGetAndSetInStoreMaintenanceWork: any = (
-  payload = {},
-  { page, path }: LoadingMeta,
-) => async (dispatch) => {
-  const {
-    payload: { data },
-  } = await dispatch(actionGetMaintenanceWork(payload, { page, path }));
-
-  dispatch(actionSetMaintenanceWork(data));
-
-  return {
-    maintenanceWorkList: data,
-  };
+export const actionGetMaintenanceWork = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetMaintenanceWork>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseGetMaintenanceWork(payload),
+    meta,
+  );
 };
+/* --------------- запрос и установка в стор --------------- */
+export const actionGetAndSetInStoreMaintenanceWork = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetMaintenanceWork>> => async (dispatch) => {
+  const result = await dispatch(actionGetMaintenanceWork(payload, meta));
 
-export default {
-  actionSetMaintenanceWork,
-  actionResetMaintenanceWork,
-  actionGetMaintenanceWork,
-  actionGetAndSetInStoreMaintenanceWork,
+  dispatch(actionSetMaintenanceWork(result.data));
+
+  return result;
 };

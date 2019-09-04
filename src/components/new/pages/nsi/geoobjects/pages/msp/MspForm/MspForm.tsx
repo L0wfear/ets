@@ -1,51 +1,45 @@
 import * as React from 'react';
+import { isNumber } from 'util';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import mspPermissions from 'components/new/pages/nsi/geoobjects/pages/msp/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { mspFormSchema } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/schema';
 
 import { getDefaultMspFormElement } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsMspForm,
   PropsMspForm,
-  StateMspForm,
-  StatePropsMspForm,
-  DispatchPropsMspForm,
   PropsMspFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/@types/MspForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { isNumber } from 'util';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionsMsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/actions';
 
-class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const MspForm: React.FC<PropsMspForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-msp"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
        >
         <EtsBootstrap.ModalHeader closeButton>
@@ -54,12 +48,12 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -105,8 +99,8 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
         <EtsBootstrap.ModalFooter>
           {isPermitted && false ? ( // либо обновление, либо создание
             <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
+              disabled={!props.canSave}
+              onClick={props.defaultSubmit}>
               Сохранить
             </EtsBootstrap.Button>
           ) : (
@@ -115,19 +109,14 @@ class MspForm extends React.PureComponent<PropsMspForm, StateMspForm> {
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsMspForm, OwnPropsMspForm>(
-  connect<StatePropsMspForm, DispatchPropsMspForm, OwnPropsMspForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
   withForm<PropsMspFormWithForm, Msp>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateMsp,
-    updateAction: geoobjectActions.actionUpdateMsp,
+    createAction: actionsMsp.post,
+    updateAction: actionsMsp.put,
     mergeElement: (props) => {
       return getDefaultMspFormElement(props.element);
     },

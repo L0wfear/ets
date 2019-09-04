@@ -200,7 +200,7 @@ export default class Filter extends React.Component {
               <EtsFiltersButtonsLine>
                 <div />
                 <EtsFilterActionButtonConteiner>
-                  <EtsFilterActionButton id="apply-filter" type="submit">
+                  <EtsFilterActionButton id="submit" type="submit">
                     Применить
                   </EtsFilterActionButton>
                   <EtsFilterActionButton

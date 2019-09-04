@@ -14,9 +14,9 @@ import {
 import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 
-export const getTechMaint = autobaseLoadByType(techMaint);
-export const createTechMaint = autobaseCreateByType(techMaint);
-export const updateTechMaint = autobaseUpdateByType(techMaint);
+export const getTechMaint = autobaseLoadByType<TechMaintenance>(techMaint);
+export const createTechMaint = autobaseCreateByType<TechMaintenance>(techMaint);
+export const updateTechMaint = autobaseUpdateByType<TechMaintenance>(techMaint);
 export const removeTechMaint = autobaseRemoveByType(techMaint);
 
 export const getSetTechMaint = async (payload) => {

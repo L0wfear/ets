@@ -13,11 +13,13 @@ import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
 import { getDistanceValue } from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAggValue';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { compose } from 'recompose';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
-type Props = {
+type Props = ({
   disabled: boolean;
   getMapImageInBase64ByKey: GetMapImageInBase64ByKeyType,
-};
+}) & WithSearchProps;
 
 // в мм
 const format = {
@@ -51,12 +53,9 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
 
   const type_image_name = etsUseSelector((state) => get(getMonitorPageState(state).carActualGpsNumberIndex[getMonitorPageState(state).carInfo.gps_code], 'type_image_name', ''));
 
-  const date_start = etsUseSelector(
-    (state) => getMonitorPageState(state).carInfo.date_start,
-  );
-  const date_end = etsUseSelector(
-    (state) => getMonitorPageState(state).carInfo.date_end,
-  );
+  const date_start: string = props.searchState.date_start;
+  const date_end: string = props.searchState.date_end;
+
   const distance = etsUseSelector(
     (state) => getMonitorPageState(state).carInfo.trackCaching.distance,
   );
@@ -383,7 +382,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               canvasSpeedChart.height / editParam,
             );
             const canvasLegendSpeedChart = document.createElement('canvas');
-            canvasLegendSpeedChart.width = canvas_speed_chart.width;
+            canvasLegendSpeedChart.width = 380;
             canvasLegendSpeedChart.height = 200;
 
             canvasLegendSpeedChart.getContext('2d').drawImage(
@@ -537,7 +536,6 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
           console.log(error); // tslint:disable-line
         }
       };
-
       etsLoadingCounter(
         dispatch,
         // loadPdf(),
@@ -562,7 +560,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         },
       );
     },
-    [type_image_name, date_start, date_end, distance, gov_number],
+    [type_image_name, date_start, date_end, distance, gov_number, props.searchState],
   );
 
   return React.useMemo(
@@ -581,4 +579,8 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
   },
 );
 
-export default withMapInConsumer()(ButtonExportCarData);
+// export default withMapInConsumer()(ButtonExportCarData);
+export default compose<any, any>(
+  withSearch,
+  withMapInConsumer(),
+)(ButtonExportCarData);

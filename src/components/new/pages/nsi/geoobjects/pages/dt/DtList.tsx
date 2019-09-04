@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data/registry-config';
 
-import {
-  PropsDtList,
-  StateDtList,
-} from 'components/new/pages/nsi/geoobjects/pages/dt/DtList.h';
+type Props = {};
 
-class DtList extends React.Component<PropsDtList, StateDtList> {
-  render() {
+const DtList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <DtListFormWrap
-          registryKey={registryKey}
-        />
-      </>
+       <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <DtListFormWrap registryKey={registryKey} />
+       </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

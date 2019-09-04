@@ -20,7 +20,7 @@ const useMeasureUnitOperationOptions: UseMeasureUnitOperationOptions = (loadMeas
   React.useEffect(
     () => {
       loadMeasureUnitOperation({ type: 'operation' }, { page, path }).then(
-        (data) => (
+        ({ data }) => (
           setMeasureUnitOperationOptions(
             data.map(defaultSelectListMapper),
           )

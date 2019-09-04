@@ -201,5 +201,9 @@ export const inspectPgmBaseSchema: SchemaType<InspectPgmBase, PropsViewInspectPg
         },
       ],
     },
+    resolve_to: {
+      type: 'datetime',
+      title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+    },
   },
 };

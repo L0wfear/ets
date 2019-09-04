@@ -4,7 +4,6 @@ import { etsLoading } from 'redux-main/_middleware/etsLoading';
 
 import reports from 'components/old/reports/redux-main/reducer';
 
-import order from 'redux-main/reducers/modules/order/order';
 import session from 'redux-main/reducers/modules/session/session';
 import monitorPage from 'components/old/monitor/redux-main/models/monitor-page';
 import dashboard from 'components/new/pages/dashboard/redux-main/modules/dashboard/dashboard';
@@ -32,7 +31,6 @@ export default combineReducers({
   dashboard,
   loading: loadingReducer,
   etsLoading,
-  order,
   session,
   monitorPage,
   registry,

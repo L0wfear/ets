@@ -12,10 +12,10 @@ import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { AUTOBASE_REPAIR_STATUS } from './status';
 
-export const getRepair = autobaseLoadByType(repair);
-export const createRepair = autobaseCreateByType(repair);
-export const updateRepair = autobaseUpdateByType(repair);
-export const removeRepair = autobaseRemoveByType(repair);
+export const getRepair = autobaseLoadByType<Repair>(repair);
+export const createRepair = autobaseCreateByType<Repair>(repair);
+export const updateRepair = autobaseUpdateByType<Repair>(repair);
+export const autobaseDeleteRepair = autobaseRemoveByType(repair);
 
 export const getSetRepair = async (payload) => {
   const { data } = await getRepair(payload);
@@ -73,10 +73,5 @@ export const updateSetRepair = (oldRepair: Repair) => {
 
   return updateRepair(
     payload,
-  );
-};
-export const autobaseDeleteRepair = (id) => {
-  return removeRepair(
-    id,
   );
 };

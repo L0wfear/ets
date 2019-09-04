@@ -33,7 +33,7 @@ const ControlItem: React.FC<ControlItemProps> = (props) => {
   return (
     <ExtField
       type="boolean"
-      label={props.fieldData.title as string}
+      label={props.fieldData.title}
       onChange={handleChange}
       value={!props.fieldData.hidden}
       className="checkbox-input flex-reverse"

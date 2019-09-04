@@ -8,16 +8,6 @@ import fuelRates from './FuelRateActions';
 import missions from './MissionsActions';
 import objects from './ObjectsActions';
 import repair from './RepairAction';
-import technicalOperation from './TechnicalOperationsActions';
 import waybills from './WaybillsActions';
 
-export {
-  cars,
-  employees,
-  fuelRates,
-  missions,
-  objects,
-  repair,
-  technicalOperation,
-  waybills,
-};
+export { cars, employees, fuelRates, missions, objects, repair, waybills };

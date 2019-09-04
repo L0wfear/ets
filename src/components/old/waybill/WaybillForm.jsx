@@ -64,6 +64,9 @@ import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FuelType from './form/FuelType';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
+import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
+import { HrLine } from 'components/new/pages/login/styled/styled';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -260,7 +263,9 @@ class WaybillForm extends UNSAFE_Form {
     await Promise.all([
       flux.getActions('objects').getCars(),
       flux.getActions('employees').getEmployees(),
-      flux.getActions('objects').getWorkMode(),
+      this.props.dispatch(
+        actionsWorkMode.getArrayAndSetInStore({}, this.props),
+      ),
       getWaybillDrivers(
         this.context.flux.getActions('employees').getWaybillDrivers,
         this.props.formState,
@@ -455,12 +460,14 @@ class WaybillForm extends UNSAFE_Form {
 
     Promise.all(
       missionsFromOrder.map((mission) =>
-        this.context.flux
-          .getActions('objects')
-          .getOrderById(mission.order_id)
-          .then(({ result: [order] }) => ({
+        this.props
+          .dispatch(actionLoadOrderById(mission.order_id, this.props))
+          .then((dependeceOrder) => ({
             ...mission,
-            ...getDatesToByOrderOperationId(order, mission.order_operation_id),
+            ...getDatesToByOrderOperationId(
+              dependeceOrder,
+              mission.order_operation_id,
+            ),
           })),
       ),
     )
@@ -864,7 +871,8 @@ class WaybillForm extends UNSAFE_Form {
           'id',
         ),
         this.props.order_mission_source_id,
-        this.context.flux.getActions('objects').getOrderById,
+        (order_id) =>
+          this.props.dispatch(actionLoadOrderById(order_id, this.props)),
       )
         .then(async () => {
           if (this.props.formState.status === 'active') {
@@ -1269,12 +1277,20 @@ class WaybillForm extends UNSAFE_Form {
       employeesList = [],
       uniqEmployeesBindedoOnCarList = [],
       appConfig,
-      workModeOptions,
+      workModeList,
       employeesIndex = {},
       isPermittedByKey = {},
       userStructures,
       userStructureId,
     } = this.props;
+
+    const workModeOptions = workModeList.map(
+      ({ id, name, start_time_text, end_time_text }) => ({
+        value: id,
+        label: `${name} (${start_time_text} - ${end_time_text})`,
+        name,
+      }),
+    );
 
     let taxesControl = false;
 
@@ -1969,7 +1985,11 @@ class WaybillForm extends UNSAFE_Form {
                         </EtsBootstrap.Row>
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <br />
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={12}>
+                        <HrLine />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={2}>
                       <EtsBootstrap.Col md={12}>
                         <FieldWaybillCarRefill
@@ -1997,7 +2017,11 @@ class WaybillForm extends UNSAFE_Form {
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    <br />
+                    <EtsBootstrap.Col md={12}>
+                      <EtsBootstrap.Col md={12}>
+                        <HrLine />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Col>
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
                         <Taxes
@@ -2012,6 +2036,7 @@ class WaybillForm extends UNSAFE_Form {
                             || (IS_CLOSED && !state.tax_data)
                           }
                           readOnly={!IS_ACTIVE && !this.state.canEditIfClose}
+                          IS_CLOSED={IS_CLOSED}
                           title="Расчет топлива по норме"
                           taxes={tax_data}
                           operations={this.state.operations}
@@ -2178,37 +2203,48 @@ class WaybillForm extends UNSAFE_Form {
                             <DivNone />
                           )}
                         </EtsBootstrap.Col>
-                        <br />
-                        {!state.is_one_fuel_tank ? (
-                          <EtsBootstrap.Col md={12} zIndex={2}>
-                            <EtsBootstrap.Col md={12}>
-                              <FieldWaybillCarRefill
-                                array={state.equipment_refill}
-                                errors={get(
-                                  errors,
-                                  'equipment_refill',
-                                  state.equipment_refill.map(() => ({})),
-                                )} // временно
-                                title="Заправка топлива"
-                                handleChange={this.handleChangeEquipmentRefill}
-                                fuel_given={state.equipment_fuel_given}
-                                structure_id={state.structure_id}
-                                fuel_type={state.equipment_fuel_type}
-                                IS_DRAFT_OR_ACTIVE={
-                                  IS_CREATING || IS_DRAFT || IS_ACTIVE
-                                }
-                                disabled={
-                                  (IS_CLOSED && !this.state.canEditIfClose)
-                                  || !isPermittedByKey.update
-                                }
-                                page={this.props.page}
-                                path={this.props.path}
-                                canEditIfClose={this.state.canEditIfClose}
-                              />
-                            </EtsBootstrap.Col>
+                        <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Col md={12}>
+                            <HrLine />
                           </EtsBootstrap.Col>
-                        ) : (
-                          <DivNone />
+                        </EtsBootstrap.Col>
+                        {!state.is_one_fuel_tank && (
+                          <React.Fragment>
+                            <EtsBootstrap.Col md={12} zIndex={2}>
+                              <EtsBootstrap.Col md={12}>
+                                <FieldWaybillCarRefill
+                                  array={state.equipment_refill}
+                                  errors={get(
+                                    errors,
+                                    'equipment_refill',
+                                    state.equipment_refill.map(() => ({})),
+                                  )} // временно
+                                  title="Заправка топлива"
+                                  handleChange={
+                                    this.handleChangeEquipmentRefill
+                                  }
+                                  fuel_given={state.equipment_fuel_given}
+                                  structure_id={state.structure_id}
+                                  fuel_type={state.equipment_fuel_type}
+                                  IS_DRAFT_OR_ACTIVE={
+                                    IS_CREATING || IS_DRAFT || IS_ACTIVE
+                                  }
+                                  disabled={
+                                    (IS_CLOSED && !this.state.canEditIfClose)
+                                    || !isPermittedByKey.update
+                                  }
+                                  page={this.props.page}
+                                  path={this.props.path}
+                                  canEditIfClose={this.state.canEditIfClose}
+                                />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Col>
+                            <EtsBootstrap.Col md={12}>
+                              <EtsBootstrap.Col md={12}>
+                                <HrLine />
+                              </EtsBootstrap.Col>
+                            </EtsBootstrap.Col>
+                          </React.Fragment>
                         )}
                         <EtsBootstrap.Col md={12} zIndex={1}>
                           <EtsBootstrap.Col md={12}>
@@ -2226,6 +2262,7 @@ class WaybillForm extends UNSAFE_Form {
                               readOnly={
                                 !IS_ACTIVE && !this.state.canEditIfClose
                               }
+                              IS_CLOSED={IS_CLOSED}
                               taxes={equipment_tax_data}
                               operations={this.state.equipmentOperations}
                               fuelRates={this.state.equipmentFuelRates}
@@ -2433,6 +2470,7 @@ export default compose(
     userStructures: getSessionState(state).userData.structures,
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
+    workModeList: getSomeUniqState(state).workModeList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
   })),

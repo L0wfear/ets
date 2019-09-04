@@ -1,7 +1,5 @@
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { PedestrianTunnels } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnels/@types';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -15,10 +13,6 @@ export type PropsPedestrianTunnelsFormWrap = {
   path?: string;
 };
 
-export type StatePropsPedestrianTunnelsForm = {
-  userData: InitialStateSession['userData'];
-};
-export type DispatchPropsPedestrianTunnelsForm = DispatchProp;
 export type OwnPropsPedestrianTunnelsForm = {
   element: PedestrianTunnels | null;
   handleHide: OnFormHideType
@@ -27,9 +21,7 @@ export type OwnPropsPedestrianTunnelsForm = {
 };
 
 export type PropsPedestrianTunnelsFormWithForm = (
-  StatePropsPedestrianTunnelsForm
-  & DispatchPropsPedestrianTunnelsForm
-  & OwnPropsPedestrianTunnelsForm
+  OwnPropsPedestrianTunnelsForm
 );
 
 export type PropsPedestrianTunnelsForm = OutputWithFormProps<
@@ -38,5 +30,3 @@ export type PropsPedestrianTunnelsForm = OutputWithFormProps<
   [ PedestrianTunnels ],
   any
 >;
-export type StatePedestrianTunnelsForm = {
-};

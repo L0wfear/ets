@@ -7,20 +7,21 @@ import {
   autobaseLoadByType,
 } from 'redux-main/reducers/modules/autobase/promises';
 import { batteryRegistry } from 'redux-main/reducers/modules/autobase/constants';
-import { modufyBatteryData } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_registry/utils';
+import { modifyBatteryData } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_registry/utils';
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
+import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getBatteryRegistry = autobaseLoadByType(batteryRegistry);
-export const createBatteryRegistry = autobaseCreateByType(batteryRegistry);
-export const updateBatteryRegistry = autobaseUpdateByType(batteryRegistry);
-export const removeBatteryRegistry = autobaseRemoveByType(batteryRegistry);
+export const getBatteryRegistry = autobaseLoadByType<BatteryRegistry>(batteryRegistry);
+export const createBatteryRegistry = autobaseCreateByType<BatteryRegistry>(batteryRegistry);
+export const updateBatteryRegistry = autobaseUpdateByType<BatteryRegistry>(batteryRegistry);
+export const autobaseDeleteBatteryRegistry = autobaseRemoveByType(batteryRegistry);
 
-export const getSetBatteryRegistry = async (...payload) => {
+export const getSetBatteryRegistry = async (...payload: [any]) => {
   const { data } = await getBatteryRegistry(...payload);
 
   return {
-    data: data.map(modufyBatteryData),
+    data: data.map(modifyBatteryData),
   };
 };
 
@@ -54,10 +55,5 @@ export const updateSetBatteryRegistry = (oldBatteryRegistry) => {
 
   return updateBatteryRegistry(
     payload,
-  );
-};
-export const autobaseDeleteBatteryRegistry = (id) => {
-  return removeBatteryRegistry(
-    id,
   );
 };

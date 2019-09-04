@@ -9,11 +9,12 @@ import {
 } from 'redux-main/reducers/modules/autobase/promises';
 import { insurancePolicy } from 'redux-main/reducers/modules/autobase/constants';
 import { get } from 'lodash';
+import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getInsurancePolicy = autobaseLoadByType(insurancePolicy);
-export const createInsurancePolicy = autobaseCreateByType(insurancePolicy);
-export const updateInsurancePolicy = autobaseUpdateByType(insurancePolicy);
-export const removeInsurancePolicy = autobaseRemoveByType(insurancePolicy);
+export const getInsurancePolicy = autobaseLoadByType<InsurancePolicy>(insurancePolicy);
+export const createInsurancePolicy = autobaseCreateByType<InsurancePolicy>(insurancePolicy);
+export const updateInsurancePolicy = autobaseUpdateByType<InsurancePolicy>(insurancePolicy);
+export const autobaseDeleteInsurancePolicy = autobaseRemoveByType(insurancePolicy);
 
 export const getSetInsurancePolicy = async (payload) => {
   const { data } = await getInsurancePolicy(payload);
@@ -51,10 +52,5 @@ export const updateSetInsurancePolicy = (oldInsurancePolicy) => {
 
   return updateInsurancePolicy(
     payload,
-  );
-};
-export const autobaseDeleteInsurancePolicy = (id) => {
-  return removeInsurancePolicy(
-    id,
   );
 };

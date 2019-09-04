@@ -4,7 +4,7 @@ import { EtsTableDataContainer } from 'components/new/ui/registry/components/dat
 import { EtsTableWrap, EtsTable } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
 import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
@@ -75,19 +75,21 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
 
   return (
     <>
-      <EtsHeaderContainer>
-        <EtsHeaderTitle>Проведённые мероприятия по подготовке емкости к эксплуатации</EtsHeaderTitle>
-        <EtsButtonsContainer>
-          {
-            props.isPermitted && (
-              <React.Fragment>
-                <EtsBootstrap.Button onClick={setShowFormTrue}>Добавить</EtsBootstrap.Button>
-                <EtsBootstrap.Button onClick={removeActionByIndex} disabled={!selectedRowNumber}>Удалить</EtsBootstrap.Button>
-              </React.Fragment>
-            )
-          }
-        </EtsButtonsContainer>
-      </EtsHeaderContainer>
+      <EtsHeaderContainerWrap>
+        <EtsHeaderContainer>
+          <EtsHeaderTitle>Проведённые мероприятия по подготовке емкости к эксплуатации</EtsHeaderTitle>
+          <EtsButtonsContainer>
+            {
+              props.isPermitted && (
+                <React.Fragment>
+                  <EtsBootstrap.Button onClick={setShowFormTrue}>Добавить</EtsBootstrap.Button>
+                  <EtsBootstrap.Button onClick={removeActionByIndex} disabled={!selectedRowNumber}>Удалить</EtsBootstrap.Button>
+                </React.Fragment>
+              )
+            }
+          </EtsButtonsContainer>
+        </EtsHeaderContainer>
+      </EtsHeaderContainerWrap>
       <EtsTableDataContainer>
         <EtsTableWrap>
           <EtsTable fixedWidth={true}>

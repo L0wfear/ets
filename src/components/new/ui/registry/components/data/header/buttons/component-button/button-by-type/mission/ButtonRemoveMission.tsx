@@ -10,7 +10,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { get } from 'lodash';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 

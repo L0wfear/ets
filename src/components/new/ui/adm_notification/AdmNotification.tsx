@@ -49,7 +49,7 @@ class AdmNotification extends React.Component<PropsAdmNotification, StateAdmNoti
   }
 
   render() {
-    return <div></div>;
+    return null;
   }
 }
 
@@ -57,10 +57,10 @@ export default connect<StatePropsAdmNotification, DispatchPropsAdmNotification, 
   (state) => ({
     admNotReadNotificationsList: getUserNotificationsState(state).admNotReadNotificationsList,
   }),
-  (dispatch) => ({
-    setMakeReadAdmNotification: (id) => (
+  (dispatch: any) => ({
+    setMakeReadAdmNotification: (...arg) => (
       dispatch(
-        setMakeReadAdmNotification(id),
+        setMakeReadAdmNotification(...arg),
       )
     ),
   }),

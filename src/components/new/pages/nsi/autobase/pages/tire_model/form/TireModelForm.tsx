@@ -4,7 +4,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -14,7 +13,6 @@ import {
   OwnTireModelProps,
   PropsTireModel,
   StatePropsTireModel,
-  DispatchPropsTireModel,
   PropsTireModelWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tire_model/form/@types/TireModelForm';
 import { TireModel } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -23,6 +21,8 @@ import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { getDefaultTireModelElement } from './utils';
 import { tireModelFormSchema } from './schema';
 import tireModelPermissions from '../_config-data/permissions';
+import { tireManufacturerGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_manufacturer/actions';
+import { autobaseCreateTireModel, autobaseUpdateTireModel } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_model/actions';
 
 const TireModelForm: React.FC<PropsTireModel> = (props) => {
   const {
@@ -40,7 +40,12 @@ const TireModelForm: React.FC<PropsTireModel> = (props) => {
 
   React.useEffect(
     () => {
-      props.tireManufacturerGetAndSetInStore();
+      props.dispatch(
+        tireManufacturerGetAndSetInStore(
+          {},
+          props,
+        ),
+      );
     },
     [],
   );
@@ -63,7 +68,7 @@ const TireModelForm: React.FC<PropsTireModel> = (props) => {
             <ExtField
               id="name"
               type="string"
-              label="Марка шины"
+              label="Модель шины"
               value={state.name}
               error={errors.name}
               disabled={!isPermitted}
@@ -105,25 +110,15 @@ const TireModelForm: React.FC<PropsTireModel> = (props) => {
 };
 
 export default compose<PropsTireModel, OwnTireModelProps>(
-  connect<StatePropsTireModel, DispatchPropsTireModel, OwnTireModelProps, ReduxState>(
+  connect<StatePropsTireModel, {}, OwnTireModelProps, ReduxState>(
     (state) => ({
       tireManufacturerList: getAutobaseState(state).tireManufacturerList,
-    }),
-    (dispatch, { page, path }) => ({
-      tireManufacturerGetAndSetInStore: () => (
-        dispatch(
-          autobaseActions.tireManufacturerGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
     }),
   ),
   withForm<PropsTireModelWithForm, TireModel>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateTireModel,
-    updateAction: autobaseActions.autobaseUpdateTireModel,
+    createAction: autobaseCreateTireModel,
+    updateAction: autobaseUpdateTireModel,
     mergeElement: (props) => {
       return getDefaultTireModelElement(props.element);
     },

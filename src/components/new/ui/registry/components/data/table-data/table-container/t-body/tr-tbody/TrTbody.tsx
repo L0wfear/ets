@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
-import { isNumber, isArray, isNullOrUndefined, isBoolean } from 'util';
+import { isNumber, isArray, isBoolean } from 'util';
 
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdCheckbox';
@@ -37,7 +37,7 @@ import TrTdButtonServicesActionsOnOff from './tr-td/TrTdButtonServicesActionsOnO
 import TrTdServiceFiles from './tr-td/TrTdServiceFiles';
 import TrTdServiceButtonShowActionLog from './tr-td/TrTdServiceButtonShowActionLog';
 import TrTdButtonEdcRequestInfo from './tr-td/TrTdButtonEdcRequestInfo';
-import { validatePermissions } from 'components/old/util/RequirePermissionsNewRedux';
+
 import TrTdButtonShowImgButton from './tr-td/TrTdButtonShowImgButton';
 import TrTdButtonShowEdcComments from './tr-td/TrTdButtonShowEdcComments';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
@@ -58,20 +58,13 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, title, format, dashIfEmpty, displayIfPermission }, index) => {
+  renderRow = ({ key, title, format, dashIfEmpty }, index) => {
     const { props } = this;
 
     const {
       rowData,
       registryKey,
     } = props;
-
-    const permissionsSet = get(props, 'userData.permissionsSet', new Set());
-    if ( !isNullOrUndefined(displayIfPermission) ) {
-      if (!validatePermissions(displayIfPermission, permissionsSet)) {
-        return null;
-      }
-    }
 
     if (key === 'checkbox') {
       return (
@@ -294,12 +287,17 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
 
   handleClick: React.MouseEventHandler<HTMLTableRowElement> = () => {
     const { props } = this;
-    props.registrySelectRow(
-      props.rowData,
-    );
+
+    if (props.selected_row_in_params) {
+      this.handleDoubleClick();
+    } else {
+      props.registrySelectRow(
+        props.rowData,
+      );
+    }
   }
 
-  handleDoubleClick: React.MouseEventHandler<HTMLTableRowElement> = (e) => {
+  handleDoubleClick = () => {
     const { props } = this;
     const isPermittedToClick = (
       props.isPermitted
@@ -363,6 +361,7 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       buttons: getHeaderData(state.registry, registryKey).buttons,
       row_double_click: getListData(getRegistryState(state), registryKey).meta.row_double_click,
       checkData: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
+      selected_row_in_params: getListData(state.registry, registryKey).meta.selected_row_in_params,
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

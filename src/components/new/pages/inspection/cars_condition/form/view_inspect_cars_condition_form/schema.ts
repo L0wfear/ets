@@ -315,7 +315,7 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
       ],
     },
     resolve_to: {
-      type: 'date',
+      type: 'datetime',
       title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
     },
   },

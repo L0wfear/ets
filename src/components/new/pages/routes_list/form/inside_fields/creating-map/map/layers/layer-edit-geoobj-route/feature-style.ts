@@ -7,7 +7,7 @@ import { polyState, linesState } from 'constants/polygons';
 
 const DEVICE_PIXEL_RATIO = 2 / 2; // window.devicePixelRatio / 2;
 
-const CACHE_ICON = {};
+const CACHE_ICON: Record<string, Style> = {};
 
 export const TYPES_STYLE = {
   geoobj: 'geoobj',
@@ -113,7 +113,7 @@ const makeCacheStyle = ({ type, state = polyState.SELECTED }) => {
 
 export const getCasheStyleForGeoobject = (type, state) => {
   const cacheStyleName = `${type}/${state}`;
-  const { [cacheStyleName] : cache_style } = CACHE_ICON as any;
+  const { [cacheStyleName] : cache_style } = CACHE_ICON;
   let icon = cache_style;
 
   if (!cache_style) {

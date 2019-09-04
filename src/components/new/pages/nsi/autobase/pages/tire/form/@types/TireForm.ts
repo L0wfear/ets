@@ -19,10 +19,6 @@ export type StatePropsTire = {
   tireSizeList: IStateAutobase['tireSizeList'];
   isPermitterToUpdateInitialMileage: boolean;
 };
-export type DispatchPropsTire = {
-  tireSizeGetAndSetInStore: any;
-  tireModelGetAndSetInStore: any;
-};
 export type OwnTireProps = {
   element: Partial<Tire>;
   handleHide: OnFormHideType
@@ -32,7 +28,6 @@ export type OwnTireProps = {
 
 export type PropsTireWithForm = (
   StatePropsTire
-  & DispatchPropsTire
   & OwnTireProps
   & WithSearchProps
 );

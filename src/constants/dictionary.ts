@@ -2,38 +2,18 @@
  * Всё то, что не приходит с бэка для заполнения данными выпадающих списков и других элементов интерфейса.
  */
 
-export const MISSION_STATUS = {
-  assigned: 'assigned',
-  in_progress: 'in_progress',
-  expired: 'expired',
-  not_assigned: 'not_assigned',
-  complete: 'complete',
-  fail: 'fail',
-  canceled: 'canceled',
-};
-
-export const MISSION_STATUS_LABELS = {
-  [MISSION_STATUS.assigned]: 'Назначено',
-  [MISSION_STATUS.in_progress]: 'Выполняется',
-  [MISSION_STATUS.expired]: 'Просрочено',
-  [MISSION_STATUS.not_assigned]: 'Не назначено',
-  [MISSION_STATUS.complete]: 'Выполнено',
-  [MISSION_STATUS.fail]: 'Не выполнено',
-  [MISSION_STATUS.canceled]: 'Отменено',
-};
-
 export const ORDER_STATUS_KEYS = {
   published: 'published',
   cancelled: 'cancelled',
   partially_cancelled: 'partially_cancelled',
   suspended: 'suspended',
   partially_suspended: 'partially_suspended',
-};
+} as const;
 
 export const ORDER_ASSIGNMENTS_STATUS_KEYS = {
   full: 'full',
   partial: 'partial',
-};
+} as const;
 
 export const ORDER_STATUS_LABELS = {
   [ORDER_STATUS_KEYS.published]: 'Опубликовано',
@@ -41,7 +21,7 @@ export const ORDER_STATUS_LABELS = {
   [ORDER_STATUS_KEYS.partially_cancelled]: 'Частично отменено',
   [ORDER_STATUS_KEYS.suspended]: 'Приостановлено',
   [ORDER_STATUS_KEYS.partially_suspended]: 'Частично приостановлено',
-};
+} as const;
 
 export const GEOZONE_OBJECTS = [
   { value: 'odh', label: 'Объект дорожного хозяйства' },
@@ -54,13 +34,13 @@ export const GEOZONE_ELEMENTS = {
     { value: 'footway', label: 'Тротуар' },
   ],
   dt: [{ value: 'yard', label: 'Двор' }],
-};
+} as const;
 
 export const TIME_MEASURES = {
   year: 'Год.',
   day: 'Дн.',
   month: 'Мес.',
-};
+} as const;
 
 export const TIME_MEASURES_SELECT_OPTIONS = Object.keys(TIME_MEASURES).map(
   (key) => ({ label: TIME_MEASURES[key], value: key }),

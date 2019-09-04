@@ -10,6 +10,7 @@ import { company_structure_types } from '../components/data/header/buttons/compo
 import { waybill_types } from '../components/data/header/buttons/component-button/button-by-type/waybill/constant';
 import { inspect_types } from '../components/data/header/buttons/component-button/button-by-type/inspect/constant';
 import { car_actual_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/constant';
+import { order_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -31,6 +32,7 @@ const buttonsTypes =  {
   ...mission_types,
   ...company_structure_types,
   ...car_actual_types,
+  ...order_types,
 };
 
 export default buttonsTypes;

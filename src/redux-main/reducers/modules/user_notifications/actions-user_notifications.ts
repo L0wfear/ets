@@ -70,7 +70,7 @@ export const userNotificationGet = (type: string | null, payload: { is_read?: bo
   },
 });
 
-export const getOrderNotRead: any = () => async (dispatch) => {
+export const getOrderNotRead = (): EtsAction<Promise<void>> => async (dispatch) => {
   const { payload: { notify } } = await dispatch(
     userNotificationGet(
       'none',
@@ -90,6 +90,8 @@ export const getOrderNotRead: any = () => async (dispatch) => {
       orderNotReadList: notify,
     }),
   );
+
+  return;
 };
 
 export const userNotificationAdmGet = (type: string | null, payload: { is_read?: boolean }, { page = 'notification-registry', path = null } = {}) => ({
@@ -107,7 +109,7 @@ export const changeUserNotificationsState = (newSomeState) => ({
   payload: newSomeState,
 });
 
-export const setMakeReadAdmNotification: any = (notifyIds: number | number[]) => async (dispatch, getState) => {
+export const setMakeReadAdmNotification = (notifyIds: number | number[]): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const notifyIdsAsArr = isArray(notifyIds) ? notifyIds : [notifyIds];
 
   await dispatch(
@@ -149,6 +151,8 @@ export const setMakeReadAdmNotification: any = (notifyIds: number | number[]) =>
       userNotificationList,
     }),
   );
+
+  return;
 };
 
 export const getUserNotificationInfo = (): EtsAction<Promise<any>> => async (dispatch) => {
@@ -359,7 +363,7 @@ export const markAsRead = (readData = []) => async (dispatch) => {
   }
 };
 
-export const getAdmNotReadNotifications: any = () => async (dispatch) => {
+export const getAdmNotReadNotifications = (): EtsAction<Promise<void>> => async (dispatch) => {
   const { payload: { notify } } = await dispatch(
     userNotificationAdmGet(
       'none',
@@ -382,18 +386,22 @@ export const getAdmNotReadNotifications: any = () => async (dispatch) => {
       }),
     ),
   );
+
+  return;
 };
 
-export const setNotifyFromWs: any = (notify) => (dispatch) => {
-  dispatch(
+export const setNotifyFromWs = (notify): EtsAction<Promise<void>> => async (dispatch) => {
+ await dispatch(
     changeUserNotificationsStateByGroup({
       ...notify,
       front_type: get(TYPE_GROUP, [notify.group, 'front_type'], ''),
     }),
   );
-  dispatch(
+ dispatch(
     getNotifications(),
   );
+
+ return;
 };
 
 export const changeUserNotificationsStateByGroup = (newRowsNotifyArr) => (dispatch, getState) => {

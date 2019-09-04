@@ -1,4 +1,4 @@
-import { mapKeys } from 'lodash';
+import { cloneDeep, mapKeys } from 'lodash';
 import { getServerErrorNotification } from 'utils/notifications';
 
 import { checkInternalErrors } from 'utils/raven';
@@ -97,7 +97,7 @@ function httpMethod(
 
   let body;
   let url = urlOwn;
-  const data = { ...dataOwn };
+  const data = cloneDeep(dataOwn);
 
   const options = {
     method,

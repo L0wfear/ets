@@ -8,46 +8,37 @@ import { SnowStorageFormSchema } from 'components/new/pages/nsi/geoobjects/pages
 
 import { getDefaultSnowStorageFormElement } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsSnowStorageForm,
   PropsSnowStorageForm,
-  StateSnowStorageForm,
-  StatePropsSnowStorageForm,
-  DispatchPropsSnowStorageForm,
   PropsSnowStorageFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/@types/SnowStorageForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { SnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
+import { actionsSnowStorage } from 'redux-main/reducers/modules/geoobject/actions_by_type/snow_storage/actions';
 
-class SnowStorageForm extends React.PureComponent<
-  PropsSnowStorageForm,
-  StateSnowStorageForm
-> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const SnowStorageForm: React.FC<PropsSnowStorageForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-SnowStorage"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
        >
         <EtsBootstrap.ModalHeader closeButton>
@@ -56,12 +47,12 @@ class SnowStorageForm extends React.PureComponent<
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -91,8 +82,8 @@ class SnowStorageForm extends React.PureComponent<
         <EtsBootstrap.ModalFooter>
           {isPermitted && false ? ( // либо обновление, либо создание
             <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
+              disabled={!props.canSave}
+              onClick={props.defaultSubmit}>
               Сохранить
             </EtsBootstrap.Button>
           ) : (
@@ -101,22 +92,14 @@ class SnowStorageForm extends React.PureComponent<
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsSnowStorageForm, OwnPropsSnowStorageForm>(
-  connect<
-    StatePropsSnowStorageForm,
-    DispatchPropsSnowStorageForm,
-    OwnPropsSnowStorageForm,
-    ReduxState
-  >((state) => ({
-    userData: getSessionState(state).userData,
-  })),
   withForm<PropsSnowStorageFormWithForm, SnowStorage>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateSnowStorage,
-    updateAction: geoobjectActions.actionUpdateSnowStorage,
+    createAction: actionsSnowStorage.post,
+    updateAction: actionsSnowStorage.put,
     mergeElement: (props) => {
       return getDefaultSnowStorageFormElement(props.element);
     },

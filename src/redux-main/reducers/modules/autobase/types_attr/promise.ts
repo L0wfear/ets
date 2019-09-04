@@ -16,8 +16,10 @@ export const promiseLoadTypesAttr = async (payload = {}) => {
     console.log(error); // tslint:disable-line:no-console
   }
 
+  const data: TypesAttr[] = get(result, 'result.rows', []);
+
   return {
-    data: get(result, ['result', 'rows'], []),
+    data,
   };
 };
 

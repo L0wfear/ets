@@ -12,6 +12,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { TechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/@types/technical_operation_objects';
+import { actionGetAndSetInStoreGeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/actions';
 
 export type StateCreatingMap = {
   technical_operations_object_list: TechnicalOperationObjects[];
@@ -31,7 +32,7 @@ export type StatePropsCreatingMap = {
 
 export type DispatchPropsCreatingMap = {
   actionGetAndSetInStoreGeozoneMunicipalFacility: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreGeozoneMunicipalFacility
+    typeof actionGetAndSetInStoreGeozoneMunicipalFacility
   >;
   dispatch: EtsDispatch,
 };

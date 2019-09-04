@@ -6,8 +6,6 @@ import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/schema';
 
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
@@ -22,9 +20,10 @@ import { isNullOrUndefined } from 'util';
 import { getDefaultRoadAccidentElement } from './utils';
 import roadAccidentPermissions from '../_config-data/permissions';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { get } from 'lodash';
 import FieldRoadAccidentDriverId from './inside_fields/driver_id/FieldRoadAccidentDriverId';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { autobaseGetSetRoadAccidentCause } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident_cause/actions';
+import { autobaseCreateRoadAccident, autobaseUpdateRoadAccident } from 'redux-main/reducers/modules/autobase/actions_by_type/road_accident/actions';
 
 const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const [roadAccidentCauseOptions, setRoadAccidentCauseOptions] = React.useState([]);
@@ -57,15 +56,15 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   const roadAccidentCauseOptionsLoad = React.useCallback (async () => {
     try {
       setRoadAccidentCauseIsLoading(true);
-      const RoadAccidentCauseOptionsData = await dispatch(
-        autobaseActions.autobaseGetSetRoadAccidentCause(
+      const { data } = await dispatch(
+        autobaseGetSetRoadAccidentCause(
           {},
           { page, path },
         ),
       );
 
       setRoadAccidentCauseOptions(
-        get(RoadAccidentCauseOptionsData, 'payload.data', []).map(defaultSelectListMapper),
+        data.map(defaultSelectListMapper),
       );
 
     } catch (error) {
@@ -213,8 +212,8 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
 export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateRoadAccident,
-    updateAction: autobaseActions.autobaseUpdateRoadAccident,
+    createAction: autobaseCreateRoadAccident,
+    updateAction: autobaseUpdateRoadAccident,
     mergeElement: (props) => {
       return getDefaultRoadAccidentElement(props.element);
     },

@@ -23,10 +23,6 @@ export type StatePropsTechMaintenance = {
   repairCompanyList: IStateAutobase['repairCompanyList'];
   techMaintOrderList: IStateAutobase['techMaintOrderList'];
 };
-export type DispatchPropsTechMaintenance = {
-  techMaintOrderGetAndSetInStore: any;
-  repairCompanyGetAndSetInStore: any;
-};
 export type OwnTechMaintenanceProps = {
   element: Partial<TechMaintenance>;
   selectedCarData: CarWrap;
@@ -38,7 +34,6 @@ export type OwnTechMaintenanceProps = {
 
 export type PropsTechMaintenanceWithForm = (
   StatePropsTechMaintenance
-  & DispatchPropsTechMaintenance
   & OwnTechMaintenanceProps
 );
 

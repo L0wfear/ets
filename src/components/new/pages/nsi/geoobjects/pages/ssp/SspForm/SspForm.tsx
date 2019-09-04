@@ -9,45 +9,39 @@ import { get } from 'lodash';
 
 import { getDefaultSspFormElement } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnPropsSspForm,
   PropsSspForm,
-  StateSspForm,
-  StatePropsSspForm,
-  DispatchPropsSspForm,
   PropsSspFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/@types/SspForm.h';
 
 import { DivNone } from 'global-styled/global-styled';
 import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { isNumber } from 'util';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { actionsSsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/actions';
 
-class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const SspForm: React.FC<PropsSspForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-ssp"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
        >
         <EtsBootstrap.ModalHeader closeButton>
@@ -56,12 +50,12 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -119,8 +113,8 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
         <EtsBootstrap.ModalFooter>
           {isPermitted && false ? ( // либо обновление, либо создание
             <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
+              disabled={!props.canSave}
+              onClick={props.defaultSubmit}>
               Сохранить
             </EtsBootstrap.Button>
           ) : (
@@ -129,19 +123,14 @@ class SspForm extends React.PureComponent<PropsSspForm, StateSspForm> {
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default compose<PropsSspForm, OwnPropsSspForm>(
-  connect<StatePropsSspForm, DispatchPropsSspForm, OwnPropsSspForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
   withForm<PropsSspFormWithForm, Ssp>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateSsp,
-    updateAction: geoobjectActions.actionUpdateSsp,
+    createAction: actionsSsp.post,
+    updateAction: actionsSsp.put,
     mergeElement: (props) => {
       return getDefaultSspFormElement(props.element);
     },

@@ -1,19 +1,15 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnBatteryBrandProps,
   PropsBatteryBrand,
-  StatePropsBatteryBrand,
-  DispatchPropsBatteryBrand,
   PropsBatteryBrandWithForm,
 } from 'components/new/pages/nsi/autobase/pages/battery_brand/form/@types/BatteryBrandForm';
 import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -21,6 +17,9 @@ import { DivNone } from 'global-styled/global-styled';
 import { batteryBrandFormSchema } from './schema';
 import batteryBrandPermissions from '../_config-data/permissions';
 import { getDefaultBatteryBrandElement } from './utils';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { autobaseGetSetBatteryManufacturer } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_manufacturer/actions';
+import { autobaseCreateBatteryBrand, autobaseUpdateBatteryBrand } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_brand/actions';
 
 const BatteryBrandForm: React.FC<PropsBatteryBrand> = (props) => {
   const [batteryManufacturerOptions, setBatteryManufacturerOptions] = React.useState([]);
@@ -35,11 +34,17 @@ const BatteryBrandForm: React.FC<PropsBatteryBrand> = (props) => {
 
   const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
   const isPermitted = !IS_CREATING ? props.isPermittedToUpdate : props.isPermittedToCreate;
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {
-      props.autobaseGetSetBatteryManufacturer().then(
-        ({ payload: { data } }) => (
+      dispatch(
+        autobaseGetSetBatteryManufacturer(
+          {},
+          { page, path },
+        ),
+      ).then(
+        ({ data }) => (
           setBatteryManufacturerOptions(
             data.map(defaultSelectListMapper),
           )
@@ -102,23 +107,10 @@ const BatteryBrandForm: React.FC<PropsBatteryBrand> = (props) => {
 };
 
 export default compose<PropsBatteryBrand, OwnBatteryBrandProps>(
-  connect<StatePropsBatteryBrand, DispatchPropsBatteryBrand, OwnBatteryBrandProps, ReduxState>(
-    null,
-    (dispatch, { page, path }) => ({
-      autobaseGetSetBatteryManufacturer: () => (
-        dispatch(
-          autobaseActions.autobaseGetSetBatteryManufacturer(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-    }),
-  ),
   withForm<PropsBatteryBrandWithForm, BatteryBrand>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateBatteryBrand,
-    updateAction: autobaseActions.autobaseUpdateBatteryBrand,
+    createAction: autobaseCreateBatteryBrand,
+    updateAction: autobaseUpdateBatteryBrand,
     mergeElement: (props) => {
       return getDefaultBatteryBrandElement(props.element);
     },

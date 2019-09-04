@@ -3,6 +3,8 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { HandleThunkActionCreator } from 'react-redux';
 import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
+import { actionResetConsumptionRateMaterial, actionGetAndSetInStoreConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/actions';
+import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 
 export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
 
@@ -31,16 +33,16 @@ export type DispatchPropsMaterialConsumptionRate = {
     typeof someUniqActions.actionResetTechnicalOperationRegistry
   >;
   actionGetAndSetInStoreConsumptionRateMaterial: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreConsumptionRateMaterial
+    typeof actionGetAndSetInStoreConsumptionRateMaterial
   >;
   actionResetConsumptionRateMaterial: HandleThunkActionCreator<
-    typeof someUniqActions.actionResetConsumptionRateMaterial
+    typeof actionResetConsumptionRateMaterial
   >;
   actionGetAndSetInStoreCleanCategories: HandleThunkActionCreator<
-    typeof someUniqActions.actionGetAndSetInStoreCleanCategories
+    typeof actionGetAndSetInStoreCleanCategories
   >;
   actionResetCleanCategories: HandleThunkActionCreator<
-    typeof someUniqActions.actionResetCleanCategories
+    typeof actionResetCleanCategories
   >;
 };
 

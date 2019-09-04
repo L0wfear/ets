@@ -15,9 +15,3 @@ export type Bridges = {
   updated_at: string | null;
   year_of_commissioning: number | null;
 };
-
-export type CreateBridges = any;
-
-export type UpdateBridges = any;
-
-export type GetBridges = () => Promise<any>;

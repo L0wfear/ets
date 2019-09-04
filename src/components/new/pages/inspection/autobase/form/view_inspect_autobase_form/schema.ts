@@ -215,5 +215,9 @@ export const inspectAutobaseSchema: SchemaType<InspectAutobase, PropsViewInspect
         },
       ],
     },
+    resolve_to: {
+      type: 'datetime',
+      title: 'Срок, до которого необходимо представить отчет об устранении выявленных недостатков',
+    },
   },
 };

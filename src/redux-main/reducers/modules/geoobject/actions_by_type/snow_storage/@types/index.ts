@@ -5,9 +5,3 @@ export type SnowStorage = {
   name: string;
   shape: object;
 };
-
-export type CreateSnowStorage = any;
-
-export type UpdateSnowStorage = any;
-
-export type GetSnowStorage = () => Promise<any>;

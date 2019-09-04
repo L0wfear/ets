@@ -5,3 +5,13 @@ export const someUniqSetNewData = (newStateData: { [K in keyof IStateSomeUniq]?:
   type: SOME_UNIQ_SET_DATA,
   payload: newStateData,
 });
+
+export const someUniqSetNewDataNew = (name: keyof IStateSomeUniq) => (newStateData: { data: IStateSomeUniq[keyof IStateSomeUniq]; [k: string]: any }) => (dispatch) => {
+  return dispatch(
+    someUniqSetNewData(
+      {
+        [name]: newStateData.data,
+      },
+    ),
+  );
+};

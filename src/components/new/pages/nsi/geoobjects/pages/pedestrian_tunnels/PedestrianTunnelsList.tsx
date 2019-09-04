@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/_config-data/registry-config';
 
-import {
-  PropsPedestrianTunnelsList,
-  StatePedestrianTunnelsList,
-} from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsList.h';
+type Props = {};
 
-class PedestrianTunnelsList extends React.Component<PropsPedestrianTunnelsList, StatePedestrianTunnelsList> {
-  render() {
+const PedestrianTunnelsList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <PedestrianTunnelsFormWrap
-          registryKey={registryKey}
-        />
-      </>
+      <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <PedestrianTunnelsFormWrap registryKey={registryKey} />
+      </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

@@ -8,28 +8,38 @@ import {
   IPropsReportHeaderCommon,
   IPropsReportHeaderWrapper,
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
-import { ITechnicalOperationType } from 'api/@types/services/index.h';
-
-import { FluxContext, connectToStores } from 'utils/decorators';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
+import { actionGetAndSetInStoreTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
+import { ReduxState } from 'redux-main/@types/state';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
-interface IPropsReportHeader
-  extends IPropsReportHeaderCommon,
-    IPropsReportHeaderWrapper {
+type StateProps = {
+  technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper, StateProps, DispatchProps {
   technical_operations_ids: any;
-  technicalOperationsList: Array<ITechnicalOperationType>;
 }
 
-@connectToStores(['objects'])
-@FluxContext
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
-  context!: ETSCore.LegacyContext;
-
   componentDidMount() {
-    const { flux } = this.context;
-    flux.getActions('technicalOperation').getTechnicalOperations();
+    this.props.dispatch(
+      actionGetAndSetInStoreTechnicalOperationRegistry(
+        {},
+        {
+          page: 'mainpage',
+        },
+      ),
+    );
   }
   getState() {
     const { technical_operations_ids = '' } = this.props;
@@ -59,9 +69,9 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   render() {
     const { technical_operations_ids } = this.getState();
 
-    const { technicalOperationsList = [], readOnly } = this.props;
+    const { technicalOperationRegistryList, readOnly } = this.props;
 
-    const TECH_OPERATION_TYPES = technicalOperationsList
+    const TECH_OPERATION_TYPES = technicalOperationRegistryList
       .filter((route) => route.objects_text.includes('ОДХ'))
       .map((t) => ({ value: t.id, label: t.name }));
 
@@ -90,4 +100,11 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
   }
 }
 
-export default ReportHeaderWrapper(ReportHeader);
+export default compose(
+  ReportHeaderWrapper,
+  connect<StateProps, DispatchProps, any, ReduxState>(
+    (state) => ({
+      technicalOperationRegistryList: getSomeUniqState(state).technicalOperationRegistryList,
+    }),
+  ),
+)(ReportHeader);

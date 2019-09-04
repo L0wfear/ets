@@ -25,7 +25,7 @@ const registryDefaultObj: OneRegistryData = {
   list: {
     data: {
       array: [],
-      arrayExtra: {},
+      objectExtra: {},
       total_count: 0,
       uniqKey: 'id',
       uniqKeyForParams: 'id',
@@ -44,6 +44,7 @@ const registryDefaultObj: OneRegistryData = {
     },
     meta: {
       row_double_click: true,
+      selected_row_in_params: false,
       fields: [],
       fieldsInDeepArr: [],
       rowFields: [],

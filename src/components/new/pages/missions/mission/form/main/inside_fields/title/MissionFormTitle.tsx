@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PropsMissionFormTitle } from './MissionFormTitle.h';
-import { MISSION_STATUS_LABELS } from 'constants/dictionary';
+import { MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const MissionFormTitle: React.FC<PropsMissionFormTitle> = (props) => {

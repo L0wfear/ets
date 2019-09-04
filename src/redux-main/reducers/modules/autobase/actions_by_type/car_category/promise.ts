@@ -4,31 +4,8 @@ import {
   autobaseRemoveByType,
 } from 'redux-main/reducers/modules/autobase/promises';
 import { carCategory } from 'redux-main/reducers/modules/autobase/constants';
+import { CarCategory } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const createCarCategory = autobaseCreateByType(carCategory);
-export const updateCarCategory = autobaseUpdateByType(carCategory);
-export const removeCarCategory = autobaseRemoveByType(carCategory);
-
-export const createSetCarCategory = (rawCarCategory) => {
-  const payload = {
-    ...rawCarCategory,
-  };
-
-  return createCarCategory(
-    payload,
-  );
-};
-export const updateSetCarCategory = (oldCarCategory) => {
-  const payload = {
-    ...oldCarCategory,
-  };
-
-  return updateCarCategory(
-    payload,
-  );
-};
-export const autobaseDeleteCarCategory = (id) => {
-  return removeCarCategory(
-    id,
-  );
-};
+export const createSetCarCategory = autobaseCreateByType<CarCategory>(carCategory);
+export const updateSetCarCategory = autobaseUpdateByType<CarCategory>(carCategory);
+export const autobaseDeleteCarCategory = autobaseRemoveByType(carCategory);

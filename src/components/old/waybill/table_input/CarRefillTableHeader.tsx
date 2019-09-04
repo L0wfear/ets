@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ButtonCreateFuelCard from './fuel_card/ButtonCreateFuelCard';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
@@ -55,38 +55,40 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
 
     return (
       <EtsBootstrap.Row>
-        <EtsHeaderContainer>
-          <EtsHeaderTitle>
-            {props.title}
-          </EtsHeaderTitle>
-          <EtsButtonsContainer>
-            {
-              props.visibleButtons
-                && (
-                  <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
-                )
-            }
-            {
-              props.visibleButtons
-                && (
-                  <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={props.disabled || isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
-                )
-            }
-            {
-              props.visibleButtons && (
-                <ButtonCreateFuelCard
-                  handleUpdateFuelCard={props.handleUpdateFuelCard}
-                  structure_id={props.structure_id}
-                  fuel_type={props.fuel_type}
-                  buttonWidth={props.buttonWidth}
-                  page={props.page}
+        <EtsHeaderContainerWrap>
+          <EtsHeaderContainer>
+            <EtsHeaderTitle>
+              {props.title}
+            </EtsHeaderTitle>
+            <EtsButtonsContainer>
+              {
+                props.visibleButtons
+                  && (
+                    <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
+                  )
+              }
+              {
+                props.visibleButtons
+                  && (
+                    <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={props.disabled || isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
+                  )
+              }
+              {
+                props.visibleButtons && (
+                  <ButtonCreateFuelCard
+                    handleUpdateFuelCard={props.handleUpdateFuelCard}
+                    structure_id={props.structure_id}
+                    fuel_type={props.fuel_type}
+                    buttonWidth={props.buttonWidth}
+                    page={props.page}
 
-                  disabled={props.disabled}
-                />
-              )
-            }
-          </EtsButtonsContainer>
-        </EtsHeaderContainer>
+                    disabled={props.disabled}
+                  />
+                )
+              }
+            </EtsButtonsContainer>
+          </EtsHeaderContainer>
+        </EtsHeaderContainerWrap>
       </EtsBootstrap.Row>
     );
   },

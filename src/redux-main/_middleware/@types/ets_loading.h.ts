@@ -8,4 +8,6 @@ export type LoadingMeta = {
   page: string;
   path?: string;
   noTimeout?: boolean;
+
+  [k: string]: any;
 };

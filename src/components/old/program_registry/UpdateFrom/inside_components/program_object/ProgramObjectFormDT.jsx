@@ -26,7 +26,7 @@ import { PercentModalList } from 'components/old/program_registry/UpdateFrom/ins
 import { PanelObjectInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/styled/styled';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
+import { actionsDt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/actions';
 import { getGeoobjectState } from 'redux-main/reducers/selectors';
 import { polyState } from 'constants/polygons';
 import memoizeOne from 'memoize-one';
@@ -148,7 +148,7 @@ class ProgramObjectFormDT extends UNSAFE_Form {
           this.props.handleMultiChange({ ...changesFormState });
           this.setState({ ...changesState });
         } else {
-          this.props.actionGetGetDt().then(({ dtList: data }) => {
+          this.props.actionGetAndSetInStoreDt().then(({ dtList: data }) => {
             const changesState = { manual, isNotDrawAllObject };
             changesState.dtPolys = makeSelector(keyBy(data, 'yard_id'));
 
@@ -715,17 +715,16 @@ export default compose(
       dtPolys: makeSelector(getGeoobjectState(state).dtPolys),
     }),
     (dispatch) => ({
-      actionGetGetDt: () =>
+      actionGetAndSetInStoreDt: () =>
         dispatch(
-          geoobjectActions.actionGetAndSetInStoreDt(null, {
-            page: null,
-            path: null,
-          }),
+          actionsDt.getArrayAndSetInStore(
+            {},
+            {
+              page: null,
+              path: null,
+            },
+          ),
         ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
 )(connectToStores(ProgramObjectFormDT, ['repair']));

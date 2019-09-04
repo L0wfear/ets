@@ -6,6 +6,7 @@ import { checkErrorDate } from 'components/old/waybill/utils_react';
 
 import { isNotEqualAnd, hasMotohours } from 'utils/functions';
 import { isArray, isNumber } from 'util';
+import { Order } from 'redux-main/reducers/modules/order/@types';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
@@ -186,7 +187,7 @@ export function checkDateMission({
   );
 }
 
-export const getDatesToByOrderOperationId = (order, order_operation_id) => {
+export const getDatesToByOrderOperationId = (order: Order, order_operation_id) => {
   const { date_from = '', date_to = '' } =
     order.technical_operations.find(({ id }) => id === order_operation_id) ||
     {};
@@ -240,7 +241,7 @@ export const checkMissionSelectBeforeClose = (
   formState,
   missionsIndex,
   order_mission_source_id,
-  orderAction,
+  orderAction: (id: number) => Promise<Order>,
 ) =>
   Promise.all<any>(
     formState.mission_id_list.map((mission_id) => {
@@ -254,7 +255,7 @@ export const checkMissionSelectBeforeClose = (
       if (missionData.mission_source_id === order_mission_source_id) {
         const { order_id } = missionData;
         return orderAction(order_id)
-          .then(([order]) => {
+          .then((order: Order) => {
             const missionOrderTo = order.technical_operations.find(
               ({ id: to_id }) => to_id === missionData.order_operation_id,
             );

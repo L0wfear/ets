@@ -10,8 +10,9 @@ import {
   FuelRate,
  } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
 import { isEmpty } from 'utils/functions';
+import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 
-export const getFuelRates = (payload = {}) => {
+export const getFuelRates = (payload = {}): Promise<{ fuelRatesList: FuelRate[]}> => {
   return FuelConsumptionRateService
   .get(payload)
   .catch((error) => {
@@ -82,7 +83,7 @@ export const deleteFuelRate = ( id: number ) => {
   );
 };
 
-export const getFuelOperations = (payload = {}) => {
+export const getFuelOperations = (payload = {}): Promise<{ fuelRateOperations: FuelOperation[] }> => {
   return FuelOperationsService
     .get(payload)
     .catch((error) => {

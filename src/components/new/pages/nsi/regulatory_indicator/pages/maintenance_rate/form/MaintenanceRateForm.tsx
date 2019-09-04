@@ -32,6 +32,8 @@ import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { getDefaultMaintenanceRateElement } from './utils';
 import { maintenanceRateSchema } from './schema';
 import maintenanceRatePermissions from '../_config-data/permissions';
+import { actionResetMaintenanceWork, actionGetAndSetInStoreMaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
+import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
 
 const makeOptionsMemoList = (inputList: any[]) => {
   const optionList = inputList.map(defaultSelectListMapper);
@@ -229,13 +231,13 @@ export default compose<PropsMaintenanceRate, OwnMaintenanceRateProps>(
       actionResetTechnicalOperationRegistry: () =>
         dispatch(someUniqActions.actionResetTechnicalOperationRegistry()),
       actionGetAndSetInStoreMaintenanceWork: (...arg) =>
-        dispatch(someUniqActions.actionGetAndSetInStoreMaintenanceWork(...arg)),
+        dispatch(actionGetAndSetInStoreMaintenanceWork(...arg)),
       actionResetMaintenanceWork: () =>
-        dispatch(someUniqActions.actionResetMaintenanceWork()),
+        dispatch(actionResetMaintenanceWork()),
       actionGetAndSetInStoreCleanCategories: (...arg) =>
-        dispatch(someUniqActions.actionGetAndSetInStoreCleanCategories(...arg)),
+        dispatch(actionGetAndSetInStoreCleanCategories(...arg)),
       actionResetCleanCategories: () =>
-        dispatch(someUniqActions.actionResetCleanCategories()),
+        dispatch(actionResetCleanCategories()),
     }),
   ),
   withForm<PropsMaintenanceRateWithForm, MaintenanceRate>({

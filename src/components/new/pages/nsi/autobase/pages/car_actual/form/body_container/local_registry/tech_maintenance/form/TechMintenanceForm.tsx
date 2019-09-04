@@ -16,13 +16,11 @@ import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/uti
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import {
   OwnTechMaintenanceProps,
   PropsTechMaintenance,
   StatePropsTechMaintenance,
-  DispatchPropsTechMaintenance,
   PropsTechMaintenanceWithForm,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form/@types/TechMintenanceForm';
 import {
@@ -37,6 +35,9 @@ import { getDefaultTechMaintenanceElement } from './utils';
 import { techMaintFormSchema } from './shema';
 import techMaintenancePermissions from '../_config-data/permissions';
 import { get } from 'lodash';
+import { autobaseCreateTechMaintenance, autobaseUpdateTechMaintenance } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint/actions';
+import { repairCompanyGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/actions';
+import { techMaintOrderGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_order/actions';
 
 const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
   const {
@@ -60,14 +61,24 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
 
   React.useEffect(
     () => {
-      props.repairCompanyGetAndSetInStore();
+      props.dispatch(
+        repairCompanyGetAndSetInStore(
+          {},
+          props,
+        ),
+      );
     },
     [],
   );
 
   React.useEffect(
     () => {
-      props.techMaintOrderGetAndSetInStore(get(props.selectedCarData, 'special_model_id', null));
+      props.dispatch(
+        techMaintOrderGetAndSetInStore(
+          { car_model_id: get(props.selectedCarData, 'special_model_id', null) },
+          props,
+        ),
+      );
     },
     [props.selectedCarData],
   );
@@ -252,29 +263,16 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
 };
 
 export default compose<PropsTechMaintenance, OwnTechMaintenanceProps>(
-  connect<StatePropsTechMaintenance, DispatchPropsTechMaintenance, OwnTechMaintenanceProps, ReduxState>(
+  connect<StatePropsTechMaintenance, {}, OwnTechMaintenanceProps, ReduxState>(
     (state) => ({
       repairCompanyList: getAutobaseState(state).repairCompanyList,
       techMaintOrderList: getAutobaseState(state).techMaintOrderList,
     }),
-    (dispatch, { page, path }) => ({
-      techMaintOrderGetAndSetInStore: (car_model_id) =>
-        dispatch(
-          autobaseActions.techMaintOrderGetAndSetInStore(
-            { car_model_id },
-            { page, path },
-          ),
-        ),
-      repairCompanyGetAndSetInStore: () =>
-        dispatch(
-          autobaseActions.repairCompanyGetAndSetInStore({}, { page, path }),
-        ),
-    }),
   ),
   withForm<PropsTechMaintenanceWithForm, TechMaintenance>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateTechMaintenance,
-    updateAction: autobaseActions.autobaseUpdateTechMaintenance,
+    createAction: autobaseCreateTechMaintenance,
+    updateAction: autobaseUpdateTechMaintenance,
     mergeElement: (props) => {
       return getDefaultTechMaintenanceElement(props.element);
     },

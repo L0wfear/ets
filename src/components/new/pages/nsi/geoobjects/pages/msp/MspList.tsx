@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/msp/_config-data/registry-config';
 
-import {
-  PropsMspList,
-  StateMspList,
-} from 'components/new/pages/nsi/geoobjects/pages/msp/MspList.h';
+type Props = {};
 
-class MspList extends React.Component<PropsMspList, StateMspList> {
-  render() {
+const MspList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <MspFormWrap
-          registryKey={registryKey}
-        />
-      </>
+       <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <MspFormWrap registryKey={registryKey} />
+       </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

@@ -8,6 +8,7 @@ import { makeProcessedArray } from './processed';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
 import { displayIfContant } from '../../contants/displayIf';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type OtherData = {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
@@ -126,6 +127,9 @@ export const mergeListData = (data: OneRegistryData['list']['data']) => (
       if (key === 'array') {
         newObj[key] = isArray(data[key]) ? data[key] : value;
       }
+      if (key === 'objectExtra') {
+        newObj[key] = isObject(data[key]) ? data[key] : value;
+      }
       if (key === 'total_count') {
         if (isArray(data.array)) {
           newObj[key] = data.array.length;
@@ -175,34 +179,44 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   const {
     fields = registryDefaultObj.list.meta.fields,
     row_double_click = registryDefaultObj.list.meta.row_double_click,
+    selected_row_in_params = registryDefaultObj.list.meta.selected_row_in_params,
   } = meta || {};
 
   const fieldsFiltred = fields.reduce(
     (newArr, fieldData) => {
-      const { title } = fieldData;
+      const { displayIfPermission } = fieldData;
       let formatedTitle = null;
 
-      if (isArray(title)) {
-        formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
-          const { displayIf } = titleSomeValue;
+      // добить childrenFields
 
-          if (displayIf === displayIfContant.isKgh && otherData.userData.isKgh) {
-            return titleSomeValue.title;
-          }
-          if (displayIf === displayIfContant.isOkrug && otherData.userData.isOkrug) {
-            return titleSomeValue.title;
-          }
-          if (displayIf === displayIfContant.lenghtStructureMoreOne && otherData.STRUCTURES.length) {
-            return titleSomeValue.title;
-          }
+      if ('title' in fieldData) {
+        const { title } = fieldData;
+        if (isArray(title)) {
+          formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
+            const { displayIf } = titleSomeValue;
 
-          return filtredTitle;
-        }, null);
-      } else {
-        formatedTitle = title;
+            if (displayIf === displayIfContant.isKgh && otherData.userData.isKgh) {
+              return titleSomeValue.title;
+            }
+            if (displayIf === displayIfContant.isOkrug && otherData.userData.isOkrug) {
+              return titleSomeValue.title;
+            }
+            if (displayIf === displayIfContant.lenghtStructureMoreOne && otherData.STRUCTURES.length) {
+              return titleSomeValue.title;
+            }
+
+            return filtredTitle;
+          }, null);
+        } else {
+          formatedTitle = title;
+        }
+
+        if (isString(displayIfPermission) || isArray(displayIfPermission)) {
+          formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
+        }
       }
 
-      if (formatedTitle || 'key' in fieldData && fieldData.key === 'checkbox') {
+      if (formatedTitle || ('key' in fieldData && fieldData.key === 'checkbox')) {
         newArr.push({
           ...fieldData,
           title: formatedTitle,
@@ -216,6 +230,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   return {
     ...makerDataMetaField(fieldsFiltred),
     row_double_click,
+    selected_row_in_params,
   };
 };
 

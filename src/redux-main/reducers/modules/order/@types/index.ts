@@ -19,6 +19,7 @@ export type OrderTechnicalOperation = {
 export type Order = {
   create_date: string;
   id: number;
+  instruction: string;
   order_date: string;
   order_date_to: string;
   order_info: string | null;
@@ -30,10 +31,4 @@ export type Order = {
   status_name: string; // @todo status list
   synced_timestamp: string;
   technical_operations: OrderTechnicalOperation[];
-};
-
-export type IStateOrder = {
-  selectedElementOrder: Order,
-  selectedElementAssignment: OrderTechnicalOperation,
-  [K: string]: any;
 };

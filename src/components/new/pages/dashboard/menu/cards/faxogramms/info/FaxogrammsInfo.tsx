@@ -1,5 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { path } from 'components/new/pages/nsi/order/_config-data';
 
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
@@ -11,11 +12,6 @@ import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-co
 import {
   dashboardSetInfoDataInFaxogramms,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
-
-import {
-  ButtonReadOrder,
-  LinkToOrder,
-} from 'components/old/directories/order/buttons/buttons';
 
 import PDFViewModalLazy from 'components/new/pages/dashboard/menu/cards/faxogramms/info/pdf-veiw-modal/PDFViewModalLazy';
 
@@ -30,12 +26,9 @@ import {
 } from 'global-styled/global-styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { promiseLoadOrderBlobAndSave, promiseLoadOrderBlob } from 'components/old/directories/order/utils-order';
-
-const TypeDownload = {
-  old: 'old',
-  new: 'new',
-};
+import { promiseLoadOrderBlobAndSave, promiseLoadOrderBlob } from 'redux-main/reducers/modules/order/order_promise';
+import { ButtonReadOrder, LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
+import { TypeDownload } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
 
 class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogrammsInfo> {
   state = {
@@ -53,11 +46,11 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
   )
 
   seclectDownload = (event) => {
-    promiseLoadOrderBlobAndSave({ id: this.props.infoData.data.id }, event);
+    promiseLoadOrderBlobAndSave(this.props.infoData.data.id, event);
   }
 
   showPDFViewModal = () => {
-    promiseLoadOrderBlob({ id: this.props.infoData.data.id }, '')
+    promiseLoadOrderBlob(this.props.infoData.data.id, TypeDownload.old)
       .then(({ blob }) => {
         if (blob) {
           this.setState({
@@ -126,7 +119,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
           <ButtonReadOrder onClick={this.showPDFViewModal}><EtsBootstrap.Glyphicon glyph="info-sign" /></ButtonReadOrder>
-          <LinkToOrder to={`/orders?idOrder=${infoData.data.id}&dateFrom=${meta.date_from}&dateTo=${meta.date_to}`}>
+          <LinkToOrder to={`${path}/${infoData.data.id}`}>
             <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>
           </LinkToOrder>
         </RightButtonBlockContainer>

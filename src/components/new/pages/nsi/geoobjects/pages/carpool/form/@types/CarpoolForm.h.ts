@@ -1,7 +1,5 @@
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
-import { DispatchProp } from 'react-redux';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -15,10 +13,6 @@ export type PropsCarpoolFormWrap = {
   path?: string;
 };
 
-export type StatePropsCarpoolForm = {
-  userData: InitialStateSession['userData'];
-};
-export type DispatchPropsCarpoolForm = DispatchProp;
 export type OwnPropsCarpoolForm = {
   element: Carpool | null;
   handleHide: OnFormHideType
@@ -27,9 +21,7 @@ export type OwnPropsCarpoolForm = {
 };
 
 export type PropsCarpoolFormWithForm = (
-  StatePropsCarpoolForm
-  & DispatchPropsCarpoolForm
-  & OwnPropsCarpoolForm
+  OwnPropsCarpoolForm
 );
 
 export type PropsCarpoolForm = OutputWithFormProps<
@@ -38,5 +30,3 @@ export type PropsCarpoolForm = OutputWithFormProps<
   [ Carpool ],
   any
 >;
-export type StateCarpoolForm = {
-};

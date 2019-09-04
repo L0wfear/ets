@@ -3,18 +3,13 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnSparePartProps,
   PropsSparePart,
   StateSparePart,
-  StatePropsSparePart,
-  DispatchPropsSparePart,
   PropsSparePartWithForm,
 } from 'components/new/pages/nsi/autobase/pages/spare_part/form/@types/SparePartForm';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -24,6 +19,9 @@ import { sparePartFormSchema } from './schema';
 import { getDefaultSparePartElement } from './utils';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import SpareToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/spare_part/form/vehicle-block/SpareToVehicleBlock';
+import { autobaseGetMeasureUnit } from 'redux-main/reducers/modules/autobase/actions_by_type/measure_unit/actions';
+import { autobaseGetSparePartGroup } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part_group/actions';
+import { autobaseCreateSparePart, autobaseUpdateSparePart } from 'redux-main/reducers/modules/autobase/actions_by_type/spare_part/actions';
 
 const SpareToVehicleBlock: any = onChangeWithKeys(SpareToVehicleBlockComponent);
 
@@ -44,12 +42,22 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
     });
   }
   async loadMeasureUnit() {
-    const { payload: { data } } = await this.props.autobaseGetSetMeasureUnit();
+    const { data } = await this.props.dispatch(
+      autobaseGetMeasureUnit(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({ measureUnitOptions: data.map(defaultSelectListMapper) });
   }
   async loadSparePartGroup() {
-    const { payload: { data } } = await this.props.autobaseGetSetSparePartGroup();
+    const { data } = await this.props.dispatch(
+      autobaseGetSparePartGroup(
+        {},
+        this.props,
+      ),
+    );
 
     this.setState({ sparePartGroupOptions: data.map(defaultSelectListMapper) });
   }
@@ -190,31 +198,10 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
 }
 
 export default compose<PropsSparePart, OwnSparePartProps>(
-  connect<StatePropsSparePart, DispatchPropsSparePart, OwnSparePartProps, ReduxState>(
-    null,
-    (dispatch, { page, path }) => ({
-      autobaseGetSetMeasureUnit: () => (
-        dispatch(
-          autobaseActions.autobaseGetMeasureUnit(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      autobaseGetSetSparePartGroup: () => (
-        dispatch(
-          autobaseActions.autobaseGetSparePartGroup(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-    }),
-  ),
   withForm<PropsSparePartWithForm, SparePart>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateSparePart,
-    updateAction: autobaseActions.autobaseUpdateSparePart,
+    createAction: autobaseCreateSparePart,
+    updateAction: autobaseUpdateSparePart,
     mergeElement: (props) => {
       return getDefaultSparePartElement(props.element);
     },

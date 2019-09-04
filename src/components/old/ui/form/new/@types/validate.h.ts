@@ -1,3 +1,5 @@
+import { ExtFieldDate, ExtFieldBoolean, ExtFieldString, ExtFieldNumber } from 'components/old/ui/new/field/ExtField';
+
 export type DependenciesFieldFunc<K, F, P> = (
   value: K,
   formState: F,
@@ -41,14 +43,14 @@ export type CommonPropertie<K, F, P> = {
 };
 
 export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'string';
+  type: ExtFieldString<K>['type'];
   minLength?: number;
   maxLength?: number;
   trimSpace?: boolean;
 };
 
 export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'number';
+  type: ExtFieldNumber<K>['type'];
   minLength?: number;
   maxLength?: number;
   min?: number;
@@ -68,14 +70,14 @@ export type MultiValueOfArrayPropertie<K, F, P> = CommonPropertie<K, F, P> & {
 };
 
 export type DatePropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'date';
+  type: ExtFieldDate<K>['type'];
 };
 export type DateTimePropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: 'datetime';
 };
 
 export type BooleanPropertie<K, F, P> = CommonPropertie<K, F, P> & {
-  type: 'boolean';
+  type: ExtFieldBoolean<K>['type'];
 };
 export type ObjectProperty<K, P> = {
   type: 'schema';
@@ -99,26 +101,15 @@ export type FormErrorType<Shema extends SchemaType<any, any>> = {
 };
 
 export type PropertieFieldValidatorArrType<F, P, K = F[keyof F]> = (
-  K extends Array<any>
-    ? (
-      MultiValueOfArrayPropertie<K, F, P>
-      | AnyProperty<K, F, P>
-    )
-    : (
-      K extends { [k: string]: any }
-        ? (
-          ObjectProperty<K, P>
-        )
-        : (
-          StringPropertie<K, F, P>
-          | NumberPropertie<K, F, P>
-          | ValueOfArrayPropertie<K, F, P>
-          | DatePropertie<K, F, P>
-          | DateTimePropertie<K, F, P>
-          | BooleanPropertie<K, F, P>
-          | AnyProperty<K, F, P>
-        )
-    )
+    MultiValueOfArrayPropertie<K, F, P>
+    | ObjectProperty<K, P>
+    | StringPropertie<K, F, P>
+    | NumberPropertie<K, F, P>
+    | ValueOfArrayPropertie<K, F, P>
+    | DatePropertie<K, F, P>
+    | DateTimePropertie<K, F, P>
+    | BooleanPropertie<K, F, P>
+    | AnyProperty<K, F, P>
 );
 
 export type PropertieType<F, P> = {

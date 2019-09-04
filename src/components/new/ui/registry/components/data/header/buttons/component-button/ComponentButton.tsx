@@ -43,6 +43,11 @@ import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs'
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
+import ButtonOrderCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateMission';
+import ButtonOrderCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateDutyMission';
+import ButtonOrderExport from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderExport';
+import ButtonOrderToCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateMission';
+import ButtonOrderToCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateDutyMission';
 
 type PropsComponentButton = {
   data: ValuesOf<OneRegistryData['header']['buttons']>;
@@ -89,6 +94,11 @@ const buttonComponents = {
   [buttonsTypes.inspect_get_acts]: ButtonInspectGetActs,
   [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
   [buttonsTypes.car_actual_add_tire]: ButtonCarActualAddTire,
+  [buttonsTypes.order_create_mission_by_templates]: ButtonOrderCreateMission,
+  [buttonsTypes.order_create_duty_mission_by_templates]: ButtonOrderCreateDutyMission,
+  [buttonsTypes.order_export]: ButtonOrderExport,
+  [buttonsTypes.order_to_create_mission]: ButtonOrderToCreateMission,
+  [buttonsTypes.order_to_create_duty_mission]: ButtonOrderToCreateDutyMission,
 };
 
 const ComponentButton: React.FC<PropsComponentButton> = (props) => {

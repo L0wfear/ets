@@ -1,6 +1,5 @@
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { HandleThunkActionCreator } from 'react-redux';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { IStateInspectCarsCondition, InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { getInspectCarsCondition } from 'redux-main/reducers/selectors';
 import { INSPECT_CARS_CONDITION, initialStateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition';
@@ -18,7 +17,6 @@ import {
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {
@@ -37,7 +35,7 @@ export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspec
   return stateInspectCarsCondition;
 };
 
-export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionLoadCompany>>> => async (dispatch) => {
+export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionLoadCompany>> => async (dispatch) => {
   const response = await dispatch(
     actionLoadCompany(payload, meta),
   );
@@ -51,7 +49,7 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
   return response;
 };
 
-export const actionGetInspectCarsConditionById = (id: Parameters<typeof promiseGetInspectCarsConditionById>[0], meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseGetInspectCarsConditionById>>> => async (dispatch, getState) => {
+export const actionGetInspectCarsConditionById = (id: Parameters<typeof promiseGetInspectCarsConditionById>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetInspectCarsConditionById>> => async (dispatch, getState) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseGetInspectCarsConditionById(id),
@@ -116,13 +114,12 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     return inspectionCarsCondition;
   } else {
     const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
-    inspectCarsCondition.resolve_to = createValidDateTime(inspectCarsCondition.resolve_to);
 
     const payload = {
       data: inspectCarsCondition.data,
       agents_from_gbu: inspectCarsCondition.agents_from_gbu,
       commission_members: inspectCarsCondition.commission_members,
-      resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+      resolve_to: inspectCarsCondition.resolve_to,
       action: inspectCarsCondition.action ? inspectCarsCondition.action : 'save',
     };
 
@@ -160,7 +157,7 @@ const actionCloseInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCon
     data,
     agents_from_gbu: inspectCarsCondition.agents_from_gbu,
     commission_members: inspectCarsCondition.commission_members,
-    resolve_to: createValidDateTime(inspectCarsCondition.resolve_to),
+    resolve_to: inspectCarsCondition.resolve_to,
     action: 'close',
   };
 

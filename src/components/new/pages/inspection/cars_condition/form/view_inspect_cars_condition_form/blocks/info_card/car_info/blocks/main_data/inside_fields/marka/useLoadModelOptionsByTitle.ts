@@ -20,9 +20,9 @@ const useLoadModelOptionsByTitle: useLoadModelOptionsByTitle = (loadLoadModelLis
   React.useEffect(
     () => {
       loadLoadModelList({}, { page, path }).then(
-        ({ payload: { data } }) => (
+        ({ data }) => (
           setModelOptions(
-            (data as ModelElement[]).map((rowData) => ({
+            (data).map((rowData) => ({
               value: rowData.title,
               label: rowData.title,
               rowData,

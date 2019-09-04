@@ -12,7 +12,7 @@ import { compose } from 'recompose';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { get } from 'lodash';
 import { actionToArchiveMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
-import { MISSION_STATUS } from 'constants/dictionary';
+import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 
 type ButtonToArchiveMissionStateProps = {
@@ -64,7 +64,7 @@ const ButtonToArchiveMission: React.FC<ButtonToArchiveMissionProps> = (props) =>
       const itemToArchiveAsArray = Object.values(itemToArchive);
 
       try {
-        await props.actionToArchiveMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id));
+        await props.actionToArchiveMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id), { page: props.registryKey });
       } catch (error) {
         console.error(error); // tslint:disable-line
         //

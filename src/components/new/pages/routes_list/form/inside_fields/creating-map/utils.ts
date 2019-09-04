@@ -23,6 +23,7 @@ export const mergeStateFromObjectList = (
 ) => {
   const objectIndex = keyBy(objectList, 'object_id');
   const newObjectList = [];
+
   const geozone_municipal_facility_by_id = Object.entries(
     geozoneMunicipalFacilityById,
   ).reduce<GeozoneMunicipalFacilityById>((newObj, [id, geoData]) => {

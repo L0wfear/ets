@@ -4,8 +4,8 @@ import { get } from 'lodash';
 
 import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
-import { isArray, isBoolean, isString } from 'util';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { isArray } from 'util';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type TypeConfig = {
   withIsPermittedProps?: boolean;       // true даёт isPermitted в пропсах оборачиваемого компонента
@@ -26,19 +26,6 @@ const makePermissionOnCheck = (config, props) => {
   return isArray(permissionsOnCheck)
     ? permissionsOnCheck
     : [permissionsOnCheck];
-};
-
-export const validatePermissions = (permissions: string | string[] | boolean, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
-  if (isBoolean(permissions)) {
-    return permissions;
-  }
-  if (isString(permissions)) {
-    return permissionsSet.has(permissions);
-  }
-
-  return permissions.some((permission) => (
-    isBoolean(permission) ? permission : permissionsSet.has(permission)
-  ));
 };
 
 const checkOnisPermitted = (config, props, permissionsSet) => {

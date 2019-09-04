@@ -61,7 +61,7 @@ const ButtonFromArchiveDutyMission: React.FC<ButtonFromArchiveDutyMissionProps> 
       const itemToArchiveAsArray = Object.values(itemToArchive);
 
       try {
-        await props.actionFromArchiveDutyMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id));
+        await props.actionFromArchiveDutyMissionByIds(itemToArchiveAsArray.map(({ [props.uniqKey]: id }) => id), { page: props.registryKey });
       } catch (error) {
         console.error(error); // tslint:disable-line
         //

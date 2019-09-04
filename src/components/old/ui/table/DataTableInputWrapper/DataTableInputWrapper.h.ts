@@ -13,6 +13,10 @@ export interface IExternalPropsDataTableInputWrapper {
   errors?: any[];
   onValidation?(options: IStateDataTableInputWrapper): void;
   onChange(value: any, isValidInput?: boolean): void;
+
+  batteryAvailableCarList?: any;
+  tireAvailableCarList?: any;
+  spareAvailableCarList?: any;
 }
 
 /**

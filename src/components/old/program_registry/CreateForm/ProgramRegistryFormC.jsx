@@ -8,6 +8,9 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import { connectToStores } from 'utils/decorators';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
+import { actionGetAndSetInStoreTechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/technical_operation_objects_actions';
+import { connect } from 'react-redux';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 const PermittedSlug = ['dt', 'odh'];
 const setTypeOptionsBySlug = (slug, allOptions) => {
@@ -41,18 +44,25 @@ class ProgramRegistryForm extends UNSAFE_Form {
         {},
         { makeOptions: true, selectListMapper: defaultSelectListMapper },
       );
-    flux.getActions('technicalOperation').getTechnicalOperationsObjects();
+    this.props.dispatch(
+      actionGetAndSetInStoreTechnicalOperationObjects(
+        {},
+        {
+          page: 'mainpage',
+        },
+      ),
+    );
   }
 
   handleSubmitWrap = (...arg) => this.handleSubmit(...arg);
   handleChangeObjectType = (fieldName, val) => {
     const {
-      technicalOperationsObjectsList,
+      technicalOperationObjectsList,
       RepairOptions: { repairTypeOptions },
     } = this.props;
 
     const REPAIR_TYPES_OPTIONS = setTypeOptionsBySlug(
-      technicalOperationsObjectsList.find(({ id }) => id === val).slug,
+      technicalOperationObjectsList.find(({ id }) => id === val).slug,
       repairTypeOptions,
     );
 
@@ -67,12 +77,12 @@ class ProgramRegistryForm extends UNSAFE_Form {
       formErrors: errors,
       isPermitted = false,
       RepairOptions: { stateProgramOptions },
-      technicalOperationsObjectsList,
+      technicalOperationObjectsList,
     } = this.props;
 
     const { REPAIR_TYPES_OPTIONS = [] } = this.state;
 
-    const OBJECTS = technicalOperationsObjectsList.reduce(
+    const OBJECTS = technicalOperationObjectsList.reduce(
       (arr, { id, full_name, slug }) => {
         if (PermittedSlug.includes(slug)) {
           arr.push({ value: id, label: full_name, slug });
@@ -173,4 +183,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
   }
 }
 
-export default ProgramRegistryForm;
+export default connect((state) => ({
+  technicalOperationObjectsList: getSomeUniqState(state)
+    .technicalOperationObjectsList,
+}))(ProgramRegistryForm);

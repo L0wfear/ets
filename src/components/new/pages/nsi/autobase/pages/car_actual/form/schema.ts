@@ -20,7 +20,7 @@ export const carRegistrationDataSchema: SchemaType<CarWrap['registration_data'],
   },
 };
 
-const carPassportDataSchema: SchemaType<CarWrap['passport_data'], PropsCar> = {
+const carPassportDataSchema: SchemaType<any, PropsCar> = {
   properties: {
     // ___GIBDD___
     seria_number: {

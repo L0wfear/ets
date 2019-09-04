@@ -8,9 +8,8 @@ import {
   promiseRemoveDutyMissionTemplate,
 } from 'redux-main/reducers/modules/missions/duty_mission_template/promise';
 import { DutyMissionTemplate } from './@types/index.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { HandleThunkActionCreator } from 'react-redux';
 
 export const actionSetDutyMissionTemplate = (dutyMissionTemplateList: IStateMissions['dutyMissionTemplateList']): EtsAction<IStateMissions['dutyMissionTemplateList']> => (dispatch) => {
   dispatch(
@@ -42,7 +41,7 @@ export const actionGetDutyMissionTemplate = (payloadOwn: object, meta: LoadingMe
 
   return payload;
 };
-export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof actionGetDutyMissionTemplate>>> => async (dispatch) => {
+export const actionGetAndSetInStoreDutyMissionTemplate = (payloadOwn: object, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionGetDutyMissionTemplate>> => async (dispatch) => {
   dispatch(actionResetDutyMissionTemplate());
 
   const response = await dispatch(

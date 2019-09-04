@@ -21,6 +21,7 @@ import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 import { isNumber, isBoolean, isArray } from 'util';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type PropsAdvancedSelectLikeFilterFilter = {
   filterData: {
@@ -32,12 +33,13 @@ type PropsAdvancedSelectLikeFilterFilter = {
     getRegistryData: any;
   };
   registryKey: string;
-  actionFetchWithCount: any;
   wasFirstOpen: boolean;
   formatedTitle: string;
   filterValuesObj: any;
   array: any[];
   onChange: (valueKey: string, type: string, value: any[], option: object) => any;
+
+  dispatch: EtsDispatch;
 };
 
 type StateAdvancedSelectLikeFilterFilter = {
@@ -169,12 +171,14 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
         const payload = get(getRegistryData, 'payload', {});
 
         try {
-          response = await this.props.actionFetchWithCount(
-            getJSON(
-              `${configStand.backend}/${getRegistryData.entity}`,
-              payload,
+          response = await this.props.dispatch(
+            actionFetchWithCount(
+              getJSON(
+                `${configStand.backend}/${getRegistryData.entity}`,
+                payload,
+              ),
+              { page: '' },
             ),
-            { page: '' },
           );
         } catch (error) {
           console.error(error); // tslint:disable-line:no-console
@@ -273,18 +277,9 @@ class AdvancedSelectLikeFilterFilter extends React.PureComponent<PropsAdvancedSe
   }
 }
 
-const mapStateToProps = (state, { registryKey, filterData }) => ({
-  array: getListData(state.registry, registryKey).data.array,
-  filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
-});
-
 export default connect<any, any, any, ReduxState>(
-  mapStateToProps,
-  (dispatch: any) => ({
-    actionFetchWithCount: (...arg) => (
-      dispatch(
-        actionFetchWithCount(...arg),
-      )
-    ),
+  (state, { registryKey, filterData }) => ({
+    array: getListData(state.registry, registryKey).data.array,
+    filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
   }),
 )(AdvancedSelectLikeFilterFilter);

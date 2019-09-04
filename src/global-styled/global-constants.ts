@@ -15,6 +15,7 @@ export const constantColor = {
   orange: 'orange',
   redRegisry: '#ffabab',
   simpleRed: 'rgba(255, 0, 0, 0.8)',
+  simpleYellow: 'rgba(255, 255, 0, 0.7)',
 };
 
 export const mobiSize = 768;

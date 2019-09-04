@@ -5,7 +5,7 @@ import { Employee } from "redux-main/reducers/modules/employee/@types/employee.h
 import { Car } from "redux-main/reducers/modules/autobase/@types/autobase.h";
 import { EmployeeBindedToCar } from "components/new/utils/context/loading/@types/by_service/employee_binded_to_car";
 import { MedicalStatsAllowedDriver } from "components/new/utils/context/loading/@types/by_service/medical_stats_allowed_drivers";
-import { WorkMode } from "components/new/utils/context/loading/@types/by_service/work_mode";
+import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
 import { RefillType } from "components/new/utils/context/loading/@types/by_service/refill_type";
 import { FuelCard } from "redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h";
 

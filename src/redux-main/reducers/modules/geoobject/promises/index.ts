@@ -5,29 +5,36 @@ import {
 import { get } from 'lodash';
 import { geoozones, gormost } from 'redux-main/reducers/modules/geoobject/constants';
 
+export const makeShape = <F extends any>(geomOwn: F) => {
+  const geom = { ...geomOwn };
+  try {
+    geom.shape = JSON.parse(geom.shape);
+  } catch (e) {
+    geom.shape = geom.shape || null;
+  }
+
+  return geom;
+};
+
 /* ------------- geoozones ------------- */
-export const geoozonesLoadByType = (keyType: keyof typeof geoozones) => (payload = {}) => (
-  GeozonesService.path(geoozones[keyType]).get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-    })
-    .then((ans) => {
-      const data = get(ans, ['result', 'rows'], []).map((geom) => {
-        try {
-          geom.shape = JSON.parse(geom.shape);
-        } catch (e) {
-          geom.shape = geom.shape || null;
-        }
+export const geoozonesLoadByType = <F extends any, ExtraData extends any = any>(keyType: keyof typeof geoozones) => async (payload = {}) => {
+  let response = null;
 
-        return geom;
-      });
+  try {
+    response = await GeozonesService.path(geoozones[keyType]).get({ ...payload });
+  } catch {
+    //
+  }
 
-      return {
-        data,
-        extraData: get(ans, ['result', 'extra'], {}),
-      };
-    })
-);
+  const data: F[] = get(response, 'result.rows', []).map(makeShape);
+  const extraData: ExtraData = get(response, 'result.extra', {});
+
+  return {
+    data,
+    extraData,
+  };
+};
+
 export const promiseGeozonesLoadPFByType = (keyType: keyof typeof geoozones) => (payload = {}) => (
   GeozonesService.path(geoozones[keyType]).getBlob({ ...payload })
 );
@@ -43,17 +50,6 @@ export const geoozonesCreateByType = (keyType: keyof typeof geoozones) => (ownPa
   );
 };
 
-export const geoozonesUpdateByTypeOld = (keyType: keyof typeof geoozones) => (ownPayload) => {
-  const payload = {
-    ...ownPayload,
-  };
-
-  return GeozonesService.path(geoozones[keyType]).put(
-    payload,
-    false,
-    'json',
-  );
-};
 export const geoozonesUpdateByType = (keyType: keyof typeof geoozones) => (ownPayload) => {
   const payload = {
     ...ownPayload,
@@ -76,28 +72,23 @@ export const geoozonesRemoveByType = (keyType: keyof typeof geoozones) => (id: n
 };
 
 /* ------------- gormost ------------- */
-export const gormostLoadByType = (keyType: keyof typeof gormost) => (payload = {}) => (
-  GormostService.path(gormost[keyType]).get({ ...payload })
-    .catch((error) => {
-      console.log(error); // tslint:disable-line:no-console
-    })
-    .then((ans) => {
-      const data = get(ans, ['result', 'rows'], []).map((geom) => {
-        try {
-          geom.shape = JSON.parse(geom.shape);
-        } catch (e) {
-          geom.shape = geom.shape || null;
-        }
+export const gormostLoadByType = <F extends any, ExtraData extends any = any>(keyType: keyof typeof gormost) => async (payload = {}) => {
+  let response = null;
 
-        return geom;
-      });
+  try {
+    response = await GormostService.path(gormost[keyType]).get({ ...payload });
+  } catch {
+    //
+  }
 
-      return {
-        data,
-        extraData: get(ans, ['result', 'extra'], {}),
-      };
-    })
-);
+  const data: F[] = get(response, 'result.rows', []).map(makeShape);
+  const extraData: ExtraData = get(response, 'result.extra', {});
+
+  return {
+    data,
+    extraData,
+  };
+};
 export const promiseGormostLoadPFByType = (keyType: keyof typeof gormost) => (payload = {}) => (
   GormostService.path(gormost[keyType]).getBlob({ ...payload })
 );
@@ -113,17 +104,6 @@ export const gormostCreateByType = (keyType: keyof typeof gormost) => (ownPayloa
   );
 };
 
-export const gormostUpdateByTypeOld = (keyType: keyof typeof gormost) => (ownPayload) => {
-  const payload = {
-    ...ownPayload,
-  };
-
-  return GormostService.path(gormost[keyType]).put(
-    payload,
-    false,
-    'json',
-  );
-};
 export const gormostUpdateByType = (keyType: keyof typeof gormost) => (ownPayload) => {
   const payload = {
     ...ownPayload,

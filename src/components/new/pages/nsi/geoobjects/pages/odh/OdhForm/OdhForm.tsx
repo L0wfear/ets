@@ -17,8 +17,8 @@ import {
 
 import { DivNone } from 'global-styled/global-styled';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
-import geoobjectActions from 'redux-main/reducers/modules/geoobject/actions';
 import FieldCompanyStructureId from './fields/company_structure_id/FieldCompanyStructureId';
+import { actionsOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
 
 const OdhForm: React.FC<PropsOdhForm> = React.memo(
   (props) => {
@@ -150,8 +150,8 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
 export default compose<PropsOdhForm, OwnPropsOdhForm>(
   withForm<PropsOdhFormWithForm, Odh>({
     uniqField: 'id',
-    createAction: geoobjectActions.actionCreateOdh,
-    updateAction: geoobjectActions.actionUpdateOdh,
+    createAction: actionsOdh.post,
+    updateAction: actionsOdh.put,
     mergeElement: (props) => {
       return getDefaultOdhFormElement(props.element);
     },

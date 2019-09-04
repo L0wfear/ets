@@ -5,7 +5,6 @@ import {
 } from 'lodash';
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -59,10 +58,8 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
 };
 
 export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect, payload: any) => {
-
   const newPayload = {
     ...payload,
-    resolve_to: createValidDateTime(payload.resolve_to),
   };
 
   const response = await InspectRegistryService.path(id).put(

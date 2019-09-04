@@ -10,7 +10,6 @@ import {
 import TableMissionsRequest from 'components/new/pages/edc_request/form/requestInfo/table/TableMissionsRequest';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { HandleThunkActionCreator } from "react-redux";
 
@@ -22,6 +21,7 @@ import {
   getConfig,
 } from 'components/new/pages/edc_request/form/changeStatusRequesForm/_config-data/registry-config';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
+import { actionResetEdcRequestInfo, actionGetAndSetInStoreEdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/actions';
 
 type ChangeStatusRequesFormOwnProps = {
   onFormHide: (isSubmitted: boolean | any, result?: any) => any;
@@ -36,8 +36,8 @@ type ChangeStatusRequesFormStateProps = {
 };
 
 type ChangeStatusRequesFormDispatchProps = {
-  actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionGetAndSetInStoreEdcRequestInfo>;
-  actionResetEdcRequestInfo: HandleThunkActionCreator<typeof someUniqActions.actionResetEdcRequestInfo>;
+  actionGetAndSetInStoreEdcRequestInfo: HandleThunkActionCreator<typeof actionGetAndSetInStoreEdcRequestInfo>;
+  actionResetEdcRequestInfo: HandleThunkActionCreator<typeof actionResetEdcRequestInfo>;
   actionCloseEdcRequestById: HandleThunkActionCreator<typeof edcRequestActions.actionCloseEdcRequestById>;
 };
 
@@ -129,12 +129,12 @@ export default compose<ChangeStatusRequesFormProps, ChangeStatusRequesFormOwnPro
     (dispatch: any) => ({
       actionGetAndSetInStoreEdcRequestInfo: (...args) => (
         dispatch(
-          someUniqActions.actionGetAndSetInStoreEdcRequestInfo(...args),
+          actionGetAndSetInStoreEdcRequestInfo(...args),
         )
       ),
       actionResetEdcRequestInfo: (...args) => (
         dispatch(
-          someUniqActions.actionResetEdcRequestInfo(...args),
+          actionResetEdcRequestInfo(...args),
         )
       ),
       actionCloseEdcRequestById: (...arg) => (

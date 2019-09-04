@@ -8,25 +8,18 @@ import {
   config,
 } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data/registry-config';
 
-import {
-  PropsPgmStoreList,
-  StatePgmStoreList,
-} from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreList.h';
+type Props = {};
 
-class PgmStoreList extends React.Component<PropsPgmStoreList, StatePgmStoreList> {
-  render() {
+const PgmStoreList: React.FC<Props> = React.memo(
+  () => {
     return (
-       <>
-        <Registry
-          registryKey={registryKey}
-        />
-        <PgmStoreFormWrap
-          registryKey={registryKey}
-        />
-      </>
+       <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <PgmStoreFormWrap registryKey={registryKey} />
+       </React.Fragment>
     );
-  }
-}
+  },
+);
 
 export default withRegistry<any>(
   config,

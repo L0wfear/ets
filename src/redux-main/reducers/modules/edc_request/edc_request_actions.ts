@@ -1,7 +1,6 @@
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { HandleThunkActionCreator } from 'react-redux';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import {
   promiseLoadEdcRequestById,
   promiseCloseEdcRequestById,
@@ -13,7 +12,7 @@ import {
 import { EdcRequestCancel } from 'components/new/pages/edc_request/form/cancel/@types/EdcRequestCancel';
 import { EdcRequestReject } from 'components/new/pages/edc_request/form/reject/@types/EdcRequestReject';
 
-const actionLoadEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseLoadEdcRequestById>>> => (dispatch) => {
+const actionLoadEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadEdcRequestById>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promiseLoadEdcRequestById(
@@ -23,7 +22,7 @@ const actionLoadEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<Retu
   );
 };
 
-const actionRejectEdcRequest = (edcRequestReject: EdcRequestReject, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseLoadEdcRequestById>>> => (dispatch) => {
+const actionRejectEdcRequest = (edcRequestReject: EdcRequestReject, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadEdcRequestById>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promiseRejectEdcRequest(
@@ -33,7 +32,7 @@ const actionRejectEdcRequest = (edcRequestReject: EdcRequestReject, meta: Loadin
   );
 };
 
-const actionCancelEdcRequest = (edcRequestCancel: EdcRequestCancel, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseLoadEdcRequestById>>> => (dispatch) => {
+const actionCancelEdcRequest = (edcRequestCancel: EdcRequestCancel, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadEdcRequestById>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promiseCancelEdcRequest(
@@ -43,7 +42,7 @@ const actionCancelEdcRequest = (edcRequestCancel: EdcRequestCancel, meta: Loadin
   );
 };
 
-const actionCloseEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof promiseLoadEdcRequestById>>> => (dispatch) => {
+const actionCloseEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadEdcRequestById>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     promiseCloseEdcRequestById(
@@ -53,7 +52,7 @@ const actionCloseEdcRequestById = (id: number, meta: LoadingMeta): EtsAction<Ret
   );
 };
 
-const actionLoadRefusalReason = (meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof loadRefusalReason>>> => (dispatch) => {
+const actionLoadRefusalReason = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof loadRefusalReason>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     loadRefusalReason(),
@@ -61,7 +60,7 @@ const actionLoadRefusalReason = (meta: LoadingMeta): EtsAction<ReturnType<Handle
   );
 };
 
-const actionLoadRejectionReason = (meta: LoadingMeta): EtsAction<ReturnType<HandleThunkActionCreator<typeof loadRejectionReason>>> => (dispatch) => {
+const actionLoadRejectionReason = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof loadRejectionReason>> => (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     loadRejectionReason(),

@@ -2,12 +2,9 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { isEmpty } from 'utils/functions';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import DivForEnhance from 'components/old/ui/Div';
+import Div from 'components/old/ui/Div';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-
-const Div = withRequirePermissionsNew({})(DivForEnhance);
 
 const savePermissions = [
   waybillPermissions.update_closed,
@@ -48,8 +45,6 @@ const popoverHoverFocus = (
 class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
   render() {
     const { props } = this;
-
-    const waybillPrintDropdownPrintToggleElement = <EtsBootstrap.Glyphicon glyph="print" />;
     const waybillSaveDropdownPrintToggleElement = (
       <React.Fragment>
         <EtsBootstrap.Glyphicon id="waybill-download-pdf" glyph="download-alt" /> {props.state.status === 'closed' || props.state.status === 'active' ? 'Просмотр' : 'Выдать'}
@@ -71,7 +66,7 @@ class WaybillFooter extends React.Component<IPropsWaybillFooter, {}> {
               dropup
               disabled={!props.canSave || !props.state.id}
 
-              toggleElement={waybillPrintDropdownPrintToggleElement}
+              toggleElement={<EtsBootstrap.Glyphicon glyph="print" />}
             >
               <EtsBootstrap.DropdownMenu dropup>
                 <EtsBootstrap.MenuItem id="print-plate_special" onSelect={props.handlePrintFromMiniButton} eventKey={'plate_bus'}>Форма №1 (автобус)</EtsBootstrap.MenuItem>

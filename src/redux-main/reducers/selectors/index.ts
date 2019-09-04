@@ -19,9 +19,6 @@ export const getRegistryState = (state: ReduxState) => (
 export const getReportState = (state: ReduxState) => (
   state.report
 );
-export const getOrderState = (state: ReduxState) => (
-  state.order
-);
 export const getOldReportState = (state: ReduxState) => (
   state.old_report
 );

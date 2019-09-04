@@ -49,7 +49,7 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
       <EtsFiltersButtonsLine>
         <div />
         <EtsFilterActionButtonConteiner>
-          <EtsFilterActionButton type="submit">Применить</EtsFilterActionButton>
+          <EtsFilterActionButton id="submit" type="submit">Применить</EtsFilterActionButton>
           <EtsFilterActionButton
             onClick={resetAllTypeFilter}
             disabled={!props.canResetFilters}>

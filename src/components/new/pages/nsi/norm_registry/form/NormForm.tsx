@@ -58,9 +58,9 @@ const NormForm: React.FC<PropsNorm> = React.memo(
         });
         */
         dispatch(actionGetTechnicalOperationObjects({}, { page, path })).then(
-          (technicalOperationsObjectsList) => {
+          (technicalOperationObjectsList) => {
             setTechnicalOperationObjectsOptions(
-              technicalOperationsObjectsList.map(
+              technicalOperationObjectsList.map(
                 ({ id, full_name }) => ({ value: id, label: full_name }),
               ),
             );

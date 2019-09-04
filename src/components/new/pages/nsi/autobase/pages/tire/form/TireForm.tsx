@@ -5,7 +5,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
@@ -15,7 +14,6 @@ import {
   PropsTire,
   StateTire,
   StatePropsTire,
-  DispatchPropsTire,
   PropsTireWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire, TireSize, TireModel, TireOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -32,6 +30,9 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/_config-data/registry-config';
+import { tireSizeGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_size/actions';
+import { tireModelGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_model/actions';
+import { autobaseCreateTire, autobaseUpdateTire } from 'redux-main/reducers/modules/autobase/actions_by_type/tire/actions';
 
 const TireToVehicleBlock: any = onChangeWithKeys(TireToVehicleBlockComponent);
 
@@ -54,8 +55,18 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     canSave: true,
   };
   componentDidMount() {
-    this.props.tireModelGetAndSetInStore();
-    this.props.tireSizeGetAndSetInStore();
+    this.props.dispatch(
+      tireModelGetAndSetInStore(
+        {},
+        this.props,
+      ),
+    );
+    this.props.dispatch(
+      tireSizeGetAndSetInStore(
+        {},
+        this.props,
+      ),
+    );
     this.addNewTireOnCar();
   }
 
@@ -269,36 +280,18 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
 }
 
 export default compose<PropsTire, OwnTireProps>(
-  connect<StatePropsTire, DispatchPropsTire, OwnTireProps, ReduxState>(
+  connect<StatePropsTire, {}, OwnTireProps, ReduxState>(
     (state) => ({
       tireModelList: getAutobaseState(state).tireModelList,
       tireSizeList: getAutobaseState(state).tireSizeList,
       isPermitterToUpdateInitialMileage: getSessionState(state).userData.permissionsSet.has(tirePermissions.update_mileage),
     }),
-    (dispatch, { page, path }) => ({
-      tireSizeGetAndSetInStore: () => (
-        dispatch(
-          autobaseActions.tireSizeGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-      tireModelGetAndSetInStore: () => (
-        dispatch(
-          autobaseActions.tireModelGetAndSetInStore(
-            {},
-            { page, path },
-          ),
-        )
-      ),
-    }),
   ),
   withSearch,
   withForm<PropsTireWithForm, Tire>({
     uniqField: 'id',
-    createAction: autobaseActions.autobaseCreateTire,
-    updateAction: autobaseActions.autobaseUpdateTire,
+    createAction: autobaseCreateTire,
+    updateAction: autobaseUpdateTire,
     mergeElement: (props) => {
       return getDefaultTireElement(props.element);
     },

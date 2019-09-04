@@ -69,6 +69,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         || getMonitorPageState(state).carInfo.missionsData.missions === -1);
     },
   );
+  const has_front_events_list = etsUseSelector((state) => Boolean(getMonitorPageState(state).carInfo.trackCaching.front_events_list[0]));
 
   const dispatch = etsUseDispatch();
   const [ currentBrowser, setCurrentBrowser] = React.useState('');
@@ -323,7 +324,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               canvasLegendChart.height / editParam,
             );
 
-            if (canvas_car_info_event_table) {
+            if (canvas_car_info_event_table && has_front_events_list) {
               doc.addImage(
                 canvas_car_info_event_table.toDataURL('image/png'),
                 'JPEG',
@@ -560,7 +561,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         },
       );
     },
-    [type_image_name, date_start, date_end, distance, gov_number, props.searchState],
+    [type_image_name, date_start, date_end, distance, gov_number, props.searchState, has_front_events_list],
   );
 
   return React.useMemo(

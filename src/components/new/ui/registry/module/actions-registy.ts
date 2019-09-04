@@ -699,62 +699,71 @@ export const registyLoadPrintForm = (registryKey, useFiltredData?: boolean): Ets
   }
 };
 
-export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
-
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const getRegistryData = get(registyData, 'Service.getRegistryData', null);
-  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const filter = get(registyData, 'filter', {});
-  const list = get(registyData, 'list', null);
-
-  const {
-    processed : {
-      sort: sortOld,
-    },
-  } = list;
-
-  const sort = {
-    ...sortOld,
-  };
-
-  if (field === sortOld.field) {
-    if (sortOld.reverse) {
-      sort.field = '';
-      sort.reverse = false;
-    } else {
-      sort.reverse = true;
-    }
-  } else {
-    sort.field = field;
-    sort.reverse = false;
-  }
-
-  const processed = {
-    ...list.processed,
-    sort,
-  };
-
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-  }
-
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...list,
-        processed,
-      },
-    ),
-  );
-
-  if (getRegistryData && userServerFilters) {
+export const registryTriggerOnChangeSelectedField = (registryKey, field, sortable?: boolean) => (dispatch, getState) => {
+  if (field === 'checkbox') {
     dispatch(
-      registryLoadDataByKey(registryKey),
+      registryGlobalCheck(registryKey),
     );
+
+    return;
+  }
+  if (sortable) {
+    dispatch(
+      actionUnselectSelectedRowToShow(registryKey, true),
+    );
+
+    const registyData = get(getState(), ['registry', registryKey], null);
+    const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+    const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+    const filter = get(registyData, 'filter', {});
+    const list = get(registyData, 'list', null);
+
+    const {
+      processed : {
+        sort: sortOld,
+      },
+    } = list;
+
+    const sort = {
+      ...sortOld,
+    };
+
+    if (field === sortOld.field) {
+      if (sortOld.reverse) {
+        sort.field = '';
+        sort.reverse = false;
+      } else {
+        sort.reverse = true;
+      }
+    } else {
+      sort.field = field;
+      sort.reverse = false;
+    }
+
+    const processed = {
+      ...list.processed,
+      sort,
+    };
+
+    if (!getRegistryData || !userServerFilters) {
+      processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
+    }
+
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          processed,
+        },
+      ),
+    );
+
+    if (getRegistryData && userServerFilters) {
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      );
+    }
   }
 };
 

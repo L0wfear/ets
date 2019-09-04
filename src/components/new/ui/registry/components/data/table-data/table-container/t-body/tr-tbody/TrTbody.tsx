@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { get } from 'lodash';
 import { isNumber, isArray, isBoolean } from 'util';
+import { compose } from 'recompose';
 
+import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import TrTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTd';
 import TrTdCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdCheckbox';
 import TrTdEnumerated from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/TrTdEnumerated';
@@ -18,7 +19,6 @@ import {
   StateTrTbody,
 } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/TrTbody.h';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { compose } from 'recompose';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { getSessionState, getRegistryState } from 'redux-main/reducers/selectors';
 import { makeDate, getFormattedDateTime, getFormattedDateTimeWithSecond } from 'components/@next/@utils/dates/dates';

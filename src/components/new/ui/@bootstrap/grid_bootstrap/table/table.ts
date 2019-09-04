@@ -8,7 +8,7 @@ type Props = {
   }>
 };
 
-export const EtsGridTable = styled.table<Props>`
+export const EtsGridTable = styled.div<Props>`
   &&& {
     display: grid;
     border-collapse: collapse;
@@ -22,34 +22,5 @@ export const EtsGridTable = styled.table<Props>`
         '',
       );
     }};
-
-    thead,
-    tbody,
-    tr {
-      display: contents;
-    }
-    th, td {
-      padding: 15px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    tbody > tr {
-      transition: translate 0.1s;
-      :hover {
-        translate: scale(1.01. 1.01) transform(-1%);
-      }
-    }
-
-    th {
-      position: sticky;
-      top: 0;
-      text-align: left;
-    }
-
-    th:last-child {
-      border: 0;
-    }
   }
 `;

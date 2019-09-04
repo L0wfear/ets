@@ -1,4 +1,44 @@
 import { isObject } from 'util';
+import { get } from 'lodash';
+
+const widthByKey: Record<string, { width: number, sortable?: boolean; }> = {
+  enumerated: {
+    width: 50,
+  },
+  checkbox: {
+    width: 30,
+  },
+  showMissionInfo: {
+    width: 150,
+  },
+  is_open: {
+    width: 35,
+  },
+  company_structure_actions: {
+    width: 250,
+  },
+  services_actions_on_off: {
+    width: 150,
+  },
+  service_files: {
+    width: 400,
+  },
+  button_show_action_log: {
+    width: 175,
+  },
+  buttonCloneTire: {
+    width: 200,
+  },
+  edc_request_info: {
+    width: 100,
+  },
+  show_file_list: {
+    width: 350,
+  },
+  show_edc_comments: {
+    width: 75,
+  },
+};
 
 export const getRowKeys = (cols) => (
   cols.reduce((newCols, col) => {
@@ -98,13 +138,20 @@ export const makeFieldsInDeepArr = (treeFields, deep) => {
 };
 
 export const makerDataMetaField = (fieldsOwn) => {
-  const fields = fieldsOwn.filter(({ hidden }) => !hidden);
+  const fields = fieldsOwn.filter(({ hidden }) => !hidden).map(
+    (fieldMeta) => ({
+      ...fieldMeta,
+      width: fieldMeta.width || get(widthByKey, `${fieldMeta.key}.width`, 150),
+      sortable: fieldMeta.sortable || get(widthByKey, `${fieldMeta.key}.sortable`, !(fieldMeta.key in widthByKey)),
+    }),
+  );
   const { tree: treeFields, deep } = getColsWithRowAndColSpan(fields);
   const fieldsInDeepArr = makeFieldsInDeepArr(treeFields, deep);
   const rowFields = getRowKeys(fields);
 
   return {
     fields: fieldsOwn,
+    row_fields_table_width: rowFields.reduce((summ, { width }) => summ + width, 0),
     treeFields,
     rowFields,
     fieldsInDeepArr,

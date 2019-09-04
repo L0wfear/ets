@@ -24,7 +24,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Disp
 
 export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
   CommonTypeField<F, Title>
-) & (
+ ) & (
   {
     key: Extract<keyof F, string>;
     format?: (
@@ -180,6 +180,7 @@ export interface OneRegistryData<F = any> {
       fields: Array<TypeFieldsRegistry<F>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
+      row_fields_table_width: number;
       treeFields: object,
     },
     paginator?: {

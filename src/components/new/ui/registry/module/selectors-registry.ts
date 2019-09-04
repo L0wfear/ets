@@ -1,6 +1,9 @@
 import { ReduxState } from 'redux-main/@types/state';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
+import { createSelector } from 'reselect';
+import { get } from 'lodash';
+import { getRegistryState } from 'redux-main/reducers/selectors';
 
 type getHeaderDataFunc = (
   registryState: ReduxState['registry'],
@@ -41,4 +44,28 @@ export const getFilterData: getFilterDataFunc = (registryState, registryKey) => 
 
 export const getRootRegistry: getRootRegistryFunc = (registryState, registryKey, noTemplate) => (
   (registryState[registryKey] || (!noTemplate ? registryDefaultObj : null))
+);
+
+export const geProcessedArray = (state: ReduxState, registryKey: string) => (
+  getListData(getRegistryState(state), registryKey).processed.processedArray
+);
+
+export const getPaginator = (state: ReduxState, registryKey: string) => (
+  getListData(getRegistryState(state), registryKey).paginator
+);
+
+export const selectorShowArray = createSelector(
+  geProcessedArray,
+  getPaginator,
+  getServiceData,
+  (processedArray, paginator, Service) => {
+    const {
+      currentPage,
+      perPage,
+    } = paginator;
+    const userServerFilters = get(Service, 'getRegistryData.userServerFilters', false);
+    const currentPageEdit = userServerFilters ? 0 : currentPage;
+
+    return processedArray.slice(currentPageEdit * perPage, (currentPageEdit + 1) * perPage);
+  },
 );

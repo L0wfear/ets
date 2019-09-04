@@ -4,9 +4,9 @@ import * as Table from 'react-bootstrap/lib/Table';
 
 export const TableStyled = styled(Table)``;
 
-export type EtsTableProps = any;
+export type EtsTableOldProps = any;
 
-const EtsTable: React.FC<EtsTableProps> = React.memo(
+const EtsTableOld: React.FC<EtsTableOldProps> = React.memo(
   (props) => {
     return (
       <TableStyled {...props} />
@@ -14,4 +14,4 @@ const EtsTable: React.FC<EtsTableProps> = React.memo(
   },
 );
 
-export default EtsTable;
+export default EtsTableOld;

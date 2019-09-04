@@ -193,7 +193,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
     return (
       <>
         <div className="custom-table-container">
-          <EtsBootstrap.Table striped condensed className={'custom-data-table'}>
+          <EtsBootstrap.TableOld striped condensed className={'custom-data-table'}>
             <Thead
               tableMeta={[this.props.tableMeta]}
               handleClick={this.handleClickTh}
@@ -211,7 +211,7 @@ class DataTable extends React.Component<DataTableProps, DataTableState> {
               offset={pagination.offset * pagination.perPageCount}
               hasData={this.props.hasData}
             />
-          </EtsBootstrap.Table>
+          </EtsBootstrap.TableOld>
         </div>
         <PaginatorTsx
           firstLastButtons

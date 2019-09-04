@@ -24,21 +24,25 @@ const Data: React.FC<Props> = (props) => {
 
   return React.useMemo(
     () => (
-      format === 'select_for_technical_operation_relations'
-      ? (
-        <EtsDataContainer>
-          <Header registryKey={registryKey} />
-          <SelectForTechnicalOperationRelationsRegistryWrap registryKey={registryKey} />
-        </EtsDataContainer>
-      )
-      : (
-        <EtsDataContainer>
-          <Header registryKey={registryKey} />
-          <FiltersWrap registryKey={registryKey} />
-          <TableData registryKey={registryKey} />
-          <Paginator registryKey={registryKey} />
-        </EtsDataContainer>
-      )
+      <EtsDataContainer>
+        {
+          format === 'select_for_technical_operation_relations'
+            ? (
+              <React.Fragment>
+                <Header registryKey={registryKey} />
+                <SelectForTechnicalOperationRelationsRegistryWrap registryKey={registryKey} />
+              </React.Fragment>
+            )
+            : (
+              <React.Fragment>
+                <Header registryKey={registryKey} />
+                <FiltersWrap registryKey={registryKey} />
+                <TableData registryKey={registryKey} />
+                <Paginator registryKey={registryKey} />
+              </React.Fragment>
+            )
+        }
+      </EtsDataContainer>
     ),
     [
       registryKey,

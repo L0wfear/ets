@@ -177,7 +177,7 @@ export interface OneRegistryData<F = any> {
     meta: {
       row_double_click: boolean;
       selected_row_in_params: boolean;
-      fields: TypeFieldsRegistry<F>[];
+      fields: Array<TypeFieldsRegistry<F>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
       treeFields: object,

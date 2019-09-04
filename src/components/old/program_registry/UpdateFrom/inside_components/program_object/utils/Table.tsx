@@ -67,7 +67,7 @@ class TablePrev extends React.Component<any, any> {
         </Div>
         {
           !!bodyData.length &&
-          <EtsBootstrap.Table>
+          <EtsBootstrap.TableOld>
             <EtsThead>
               <tr className="ets_thead_tr">
                 {
@@ -108,7 +108,7 @@ class TablePrev extends React.Component<any, any> {
                 ))
               }
             </tbody>
-          </EtsBootstrap.Table>
+          </EtsBootstrap.TableOld>
         }
         </div>
     );

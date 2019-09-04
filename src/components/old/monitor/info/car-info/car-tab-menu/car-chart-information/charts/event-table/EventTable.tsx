@@ -25,7 +25,7 @@ const EventTable: React.FC<PropsEventTable> = React.memo(
 
     return React.useMemo(
       () => (
-        <EtsBootstrap.Table id="car_info-event_table">
+        <EtsBootstrap.TableOld id="car_info-event_table">
           <EtsThead>
             <tr>
               <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Дата и время</EtsTheadTh>
@@ -50,7 +50,7 @@ const EventTable: React.FC<PropsEventTable> = React.memo(
                 )
             }
           </tbody>
-        </EtsBootstrap.Table>
+        </EtsBootstrap.TableOld>
       ),
       [
         front_events_list,

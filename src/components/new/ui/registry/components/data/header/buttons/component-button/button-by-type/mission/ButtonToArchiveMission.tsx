@@ -14,6 +14,7 @@ import { get } from 'lodash';
 import { actionToArchiveMissionByIds } from 'redux-main/reducers/modules/missions/mission/actions';
 import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonToArchiveMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -25,9 +26,8 @@ type ButtonToArchiveMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonToArchiveMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonToArchiveMissionOwnProps = CommonTypesForButton & {};
+
 type ButtonToArchiveMissionMergeProps = {};
 
 type ButtonToArchiveMissionProps = (

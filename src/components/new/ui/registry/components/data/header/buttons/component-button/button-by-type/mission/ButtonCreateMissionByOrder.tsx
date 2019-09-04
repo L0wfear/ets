@@ -1,14 +1,14 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import { path } from 'components/new/pages/nsi/order/_config-data';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-type ButtonCreateMissionByOrderOwnProps = {
-  registryKey: string;
-};
+type ButtonCreateMissionByOrderOwnProps = CommonTypesForButton & {};
 type ButtonCreateMissionByOrderProps = (
   ButtonCreateMissionByOrderOwnProps
 ) & WithSearchProps;
@@ -32,7 +32,7 @@ const ButtonCreateMissionByOrder: React.FC<ButtonCreateMissionByOrderProps> = (p
 
 export default compose<ButtonCreateMissionByOrderProps, ButtonCreateMissionByOrderOwnProps>(
   withSearch,
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: missionPermissions.create,
   }),
 )(ButtonCreateMissionByOrder);

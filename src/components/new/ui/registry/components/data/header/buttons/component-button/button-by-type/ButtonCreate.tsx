@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
@@ -19,10 +20,7 @@ type ButtonCreateStateProps = {
 type ButtonCreateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCreateOwnProps = {
-  data?: ValuesOf<OneRegistryData['header']['buttons']>
-  registryKey: string;
-};
+type ButtonCreateOwnProps = CommonTypesForButton & {};
 type ButtonCreateMergeProps = {};
 
 type ButtonCreateProps = (

@@ -1,39 +1,23 @@
 import * as React from 'react';
+import memoizeOne from 'memoize-one';
+import { uniqBy } from 'lodash';
+
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { getNumberValueFromSerch, getStringArrValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { compose } from 'recompose';
-import { HandleThunkActionCreator } from 'react-redux';
-import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
-import memoizeOne from 'memoize-one';
-import { actionResetMunicipalFacility, actionGetAndSetInStoreMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/actions';
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
-import { uniqBy } from 'lodash';
 
-type SelectFuncTypeStateProps = {
-  technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];
-  municipalFacilityList: IStateSomeUniq['municipalFacilityList'];
-};
-type SelectFuncTypeDispatchProps = {
-  actionGetAndSetInStoreMunicipalFacility: HandleThunkActionCreator<typeof actionGetAndSetInStoreMunicipalFacility>;
-  actionResetMunicipalFacility: HandleThunkActionCreator<typeof actionResetMunicipalFacility>;
-};
-type SelectFuncTypeOwnProps = {
+type OwnProps = {
   registryKey: string;
   normList: Norm[];
 };
 
-type SelectFuncTypeMergeProps = (
-  SelectFuncTypeStateProps
-  & SelectFuncTypeDispatchProps
-  & SelectFuncTypeOwnProps
-);
-type SelectFuncTypeProps = (
-  SelectFuncTypeMergeProps
+type Props = (
+  OwnProps
   & WithSearchProps
 );
 
-type SelectFuncTypeState = {
+type State = {
   options: any[];
 };
 
@@ -64,14 +48,14 @@ const makeOptions = memoizeOne(
   ),
 );
 
-class SelectFuncType extends React.PureComponent<SelectFuncTypeProps, SelectFuncTypeState> {
+class SelectFuncType extends React.PureComponent<Props, State> {
   state = {
     options: makeOptions(
       this.props.normList,
       Boolean(getNumberValueFromSerch(this.props.searchState.municipal_facility_id)),
     ),
   };
-  static getDerivedStateFromProps(nextProps: SelectFuncTypeProps) {
+  static getDerivedStateFromProps(nextProps: Props) {
     const municipal_facility_id = getNumberValueFromSerch(nextProps.searchState.municipal_facility_id);
     const options = makeOptions(nextProps.normList, Boolean(municipal_facility_id));
 
@@ -89,7 +73,7 @@ class SelectFuncType extends React.PureComponent<SelectFuncTypeProps, SelectFunc
     }
   }
 
-  componentDidUpdate(prevProps: SelectFuncTypeProps, prevState: SelectFuncTypeState) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     const {
       options,
     } = this.state;
@@ -147,6 +131,4 @@ class SelectFuncType extends React.PureComponent<SelectFuncTypeProps, SelectFunc
   }
 }
 
-export default compose<SelectFuncTypeProps, SelectFuncTypeOwnProps>(
-  withSearch,
-)(SelectFuncType);
+export default withSearch<OwnProps>(SelectFuncType);

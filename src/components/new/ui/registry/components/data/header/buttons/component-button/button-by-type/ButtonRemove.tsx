@@ -11,6 +11,7 @@ import { registryRemoveSelectedRows, registryLoadDataByKey } from 'components/ne
 import { compose } from 'recompose';
 import { get } from 'lodash';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonRemoveStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -21,10 +22,7 @@ type ButtonRemoveDispatchProps = {
   registryRemoveSelectedRows: HandleThunkActionCreator<typeof registryRemoveSelectedRows>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
-type ButtonRemoveOwnProps = {
-  data?: ValuesOf<OneRegistryData['header']['buttons']>
-  registryKey: string;
-
+type ButtonRemoveOwnProps = CommonTypesForButton & {
   format?: 'yesno' | 'default';
 };
 type ButtonRemoveMergeProps = {};

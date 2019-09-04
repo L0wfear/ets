@@ -10,13 +10,12 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 import { isNullOrUndefined } from 'util';
 
-type RequestMissionsFormProps = (
-  {
-    edcRequestInfoList: EdcRequestInfo[];
-  }
-) & WithSearchProps;
+type OwnProps = {
+  edcRequestInfoList: EdcRequestInfo[];
+};
+type Props = OwnProps & WithSearchProps;
 
-const RequestMissionsForm: React.FC<RequestMissionsFormProps> = React.memo(
+const RequestMissionsForm: React.FC<Props> = React.memo(
   (props) => {
     const uniqKeyForParams = getConfig([], 0).list.data.uniqKeyForParams; /// <<< добавить index, для registry пока непонятно откуда
     const id = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
@@ -97,4 +96,4 @@ const RequestMissionsForm: React.FC<RequestMissionsFormProps> = React.memo(
   },
 );
 
-export default withSearch(RequestMissionsForm);
+export default withSearch<OwnProps>(RequestMissionsForm);

@@ -11,7 +11,8 @@ import OrderMissionTemplateList from 'components/old/directories/order/forms/Ord
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { TypeCreateMissionByOrder } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
 
-type Props = {} & WithSearchProps;
+type OwnProps = {};
+type Props = OwnProps & WithSearchProps;
 
 const MissionByTemplateFormWrap: React.FC<Props> = React.memo(
   (props) => {
@@ -60,4 +61,4 @@ const MissionByTemplateFormWrap: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(MissionByTemplateFormWrap);
+export default withSearch<OwnProps>(MissionByTemplateFormWrap);

@@ -90,7 +90,7 @@ const OrderList: React.FC<Props> = (props) => {
     () => (
       <>
         <Registry registryKey={orderRegistryKey} />
-        <MissionByTemplateFormWrap registryKey={orderRegistryKey} />
+        <MissionByTemplateFormWrap />
         <Route path={`${props.match.path}/:${uniqFieldParams}?/:type_to?`} component={OrderTechnicalOperationList} />
         <OrderHistoryList />
       </>

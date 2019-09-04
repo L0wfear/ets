@@ -1,54 +1,32 @@
 import * as React from 'react';
-import { compose } from 'recompose';
-import { isArray } from 'util';
 
 import TrTh from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/TrTh';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
-import {
-  OwnPropsTrHead,
-  PropsTrHead,
-  StateTrHead,
-} from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/TrHead.h';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+type Props = {
+  registryKey: string;
+  indexRow: number;
+};
 
-class TrHead extends React.PureComponent<PropsTrHead, StateTrHead> {
-  mapThDataRow = (colData) => {
-    const { title } = colData;
+const TrHead: React.FC<Props> = React.memo(
+  (props) => {
+    const thDataRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.fieldsInDeepArr[props.indexRow]);
 
-    //
-    let formatedTitle = title;
-
-    if (isArray(title)) {
-      formatedTitle = title.reduce((filtredTitle, titleSomeValue) => {
-        const { displayIf } = titleSomeValue;
-
-        if (displayIf === 'test') {
-          return 'test';
-        }
-
-        return filtredTitle;
-      }, null);
-    }
-
-    if (!formatedTitle && colData.key !== 'checkbox') {
-      return null;
-    }
-
-    return (
-      <TrTh key={colData.key} colData={colData} formatedTitle={formatedTitle} registryKey={this.props.registryKey} />
-    );
-  }
-  render() {
     return (
       <tr className="ets_thead_tr">
         {
-          this.props.thDataRow.map(this.mapThDataRow)
+          thDataRow.map(
+            (colData) => {
+              return (
+                <TrTh key={colData.key} colData={colData} registryKey={props.registryKey} />
+              );
+            },
+          )
         }
       </tr>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsTrHead, OwnPropsTrHead>(
-  withSearch,
-)(TrHead);
+export default TrHead;

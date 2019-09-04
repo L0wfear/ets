@@ -8,9 +8,10 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { registrySelectRow } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
-type Props = {
+type OwnProps = {
   registryKey: string;
-} & WithSearchProps;
+};
+type Props = OwnProps & WithSearchProps;
 
 const EtsTableSearchParams: React.FC<Props> = React.memo(
   (props) => {
@@ -65,4 +66,4 @@ const EtsTableSearchParams: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(EtsTableSearchParams);
+export default withSearch<OwnProps>(EtsTableSearchParams);

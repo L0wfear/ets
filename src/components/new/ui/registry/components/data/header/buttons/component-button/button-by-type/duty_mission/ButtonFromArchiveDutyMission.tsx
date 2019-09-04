@@ -11,6 +11,7 @@ import { registryLoadDataByKey, actionUnselectSelectedRowToShow } from 'componen
 import { compose } from 'recompose';
 import { actionFromArchiveDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonFromArchiveDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -22,9 +23,7 @@ type ButtonFromArchiveDutyMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonFromArchiveDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonFromArchiveDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonFromArchiveDutyMissionMergeProps = {};
 
 type ButtonFromArchiveDutyMissionProps = (

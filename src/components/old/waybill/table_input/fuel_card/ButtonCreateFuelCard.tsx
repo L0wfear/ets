@@ -11,12 +11,12 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 
 type ButtonCreateFuelCardOwnProps = {
   handleUpdateFuelCard: () => any;
-  page: string;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
   buttonWidth: number;
 
   disabled: boolean;
+  page: string;
 };
 
 type ButtonCreateFuelCardProps = (
@@ -86,4 +86,4 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
   },
 );
 
-export default withSearch(ButtonCreateFuelCard);
+export default withSearch<ButtonCreateFuelCardOwnProps>(ButtonCreateFuelCard);

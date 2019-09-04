@@ -13,6 +13,7 @@ import { actionCompleteMissionByIds } from 'redux-main/reducers/modules/missions
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { get } from 'lodash';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 // import { promiseSetTestDataToDatabase } from 'redux-main/reducers/modules/edc_request/edc_request_promise';
 
 export type ButtonCompleteMissionStateProps = {
@@ -25,9 +26,7 @@ type ButtonCompleteMissionDispatchProps = {
   actionCompleteMissionByIds: HandleThunkActionCreator<typeof actionCompleteMissionByIds>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonCompleteMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonCompleteMissionOwnProps = CommonTypesForButton & {};
 type ButtonCompleteMissionMergeProps = {};
 
 type ButtonCompleteMissionProps = (

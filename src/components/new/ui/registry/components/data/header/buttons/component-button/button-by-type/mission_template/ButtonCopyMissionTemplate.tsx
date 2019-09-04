@@ -14,6 +14,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 
 import { get } from 'lodash';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCopyMissionTemplateStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -23,9 +24,7 @@ type ButtonCopyMissionTemplateStateProps = {
 type ButtonCopyMissionTemplateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCopyMissionTemplateOwnProps = {
-  registryKey: string;
-};
+type ButtonCopyMissionTemplateOwnProps = CommonTypesForButton & {};
 type ButtonCopyMissionTemplateMergeProps = {};
 
 type ButtonCopyMissionTemplateProps = (

@@ -14,9 +14,10 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
-type Props = {
+type OwnProps = {
   registryKey: string;
-} & WithSearchProps;
+};
+type Props = OwnProps & WithSearchProps;
 
 const MissionFormWrap: React.FC<Props> = React.memo(
   (props) => {
@@ -121,4 +122,4 @@ const MissionFormWrap: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(MissionFormWrap);
+export default withSearch<OwnProps>(MissionFormWrap);

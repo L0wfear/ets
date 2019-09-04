@@ -1,62 +1,55 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as ClickOutHandler from 'react-onclickout';
-import { ReduxState } from 'redux-main/@types/state';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ColumnsPopup from './column_popup/ColumnsPopup';
-import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/module/actions-registy';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type ButtonColumnsControlStateProps = {
-  hasHiddenField: boolean;
-};
-type ButtonColumnsControlDispatchProps = {
-  actionChangeRegistryMetaFields: HandleThunkActionCreator<typeof actionChangeRegistryMetaFields>;
-};
-type ButtonColumnsControlOwnProps = {
-  registryKey: string;
-};
-type ButtonColumnsControlMergedProps = (
-  ButtonColumnsControlStateProps
-  & ButtonColumnsControlDispatchProps
-  & ButtonColumnsControlOwnProps
+type Props = CommonTypesForButton & {};
+
+const ButtonColumnsControl: React.FC<Props> = React.memo(
+  (props) => {
+    const [showConfigPopup, setShowConfigPopup] = React.useState(false);
+    const hasHiddenField = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).meta.fields.some(({ hidden }) => hidden));
+
+    const toggleShowPopup = React.useCallback(
+      () => {
+        setShowConfigPopup(!showConfigPopup);
+      },
+      [showConfigPopup],
+    );
+    const closePopup = React.useCallback(
+      () => {
+        setShowConfigPopup(false);
+      },
+      [],
+    );
+
+    return React.useMemo(
+      () => (
+        <ClickOutHandler onClickOut={closePopup}>
+          <EtsBootstrap.Button bsSize="small" active={showConfigPopup || hasHiddenField} onClick={toggleShowPopup}>
+            <EtsBootstrap.Glyphicon glyph="cog" />
+          </EtsBootstrap.Button>
+          {
+            showConfigPopup
+              && (
+                <ColumnsPopup registryKey={props.registryKey} />
+              )
+          }
+        </ClickOutHandler>
+      ),
+      [
+        closePopup,
+        showConfigPopup,
+        hasHiddenField,
+        hasHiddenField,
+      ],
+    );
+  },
 );
-type ButtonColumnsControlProps = ButtonColumnsControlMergedProps;
 
-const ButtonColumnsControl: React.FC<ButtonColumnsControlProps> = (props) => {
-  const [showConfigPopup, setShowConfigPopup] = React.useState(false);
-
-  const toggleShowPopup = React.useCallback(
-    () => {
-      setShowConfigPopup(!showConfigPopup);
-    },
-    [showConfigPopup],
-  );
-  const closePopup = React.useCallback(
-    () => {
-      setShowConfigPopup(false);
-    },
-    [],
-  );
-
-  return (
-    <ClickOutHandler onClickOut={closePopup}>
-      <EtsBootstrap.Button bsSize="small" active={showConfigPopup || props.hasHiddenField} onClick={toggleShowPopup}>
-        <EtsBootstrap.Glyphicon glyph="cog" />
-      </EtsBootstrap.Button>
-      {
-        showConfigPopup
-          && (
-            <ColumnsPopup registryKey={props.registryKey} />
-          )
-      }
-    </ClickOutHandler>
-  );
-};
-
-export default connect<ButtonColumnsControlStateProps, ButtonColumnsControlDispatchProps, ButtonColumnsControlOwnProps, ReduxState>(
-  (state, { registryKey }) => ({
-    hasHiddenField: getListData(getRegistryState(state), registryKey).meta.fields.some(({ hidden }) => hidden),
-  }),
-)(ButtonColumnsControl);
+export default ButtonColumnsControl;

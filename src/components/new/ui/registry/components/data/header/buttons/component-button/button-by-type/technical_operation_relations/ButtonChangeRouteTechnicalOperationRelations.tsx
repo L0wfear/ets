@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
 import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonChangeRouteTechnicalOperationRelationsStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -22,9 +23,7 @@ type ButtonChangeRouteTechnicalOperationRelationsDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonChangeRouteTechnicalOperationRelationsOwnProps = {
-  registryKey: string;
-};
+type ButtonChangeRouteTechnicalOperationRelationsOwnProps = CommonTypesForButton & {};
 type ButtonChangeRouteTechnicalOperationRelationsMergeProps = {};
 
 type ButtonChangeRouteTechnicalOperationRelationsProps = (

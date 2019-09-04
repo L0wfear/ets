@@ -184,7 +184,6 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
 
   const fieldsFiltred = fields.reduce(
     (newArr, fieldData) => {
-      const { displayIfPermission } = fieldData;
       let formatedTitle = null;
 
       // добить childrenFields
@@ -211,8 +210,11 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
           formatedTitle = title;
         }
 
-        if (isString(displayIfPermission) || isArray(displayIfPermission)) {
-          formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
+        if ('displayIfPermission' in fieldData) {
+          const { displayIfPermission } = fieldData;
+          if (isString(displayIfPermission) || isArray(displayIfPermission)) {
+            formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
+          }
         }
       }
 

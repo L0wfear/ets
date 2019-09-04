@@ -14,6 +14,7 @@ import { get } from 'lodash';
 import { actionCompleteDutyMissionByIds } from 'redux-main/reducers/modules/missions/duty_mission/actions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCompleteDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -25,9 +26,7 @@ type ButtonCompleteDutyMissionDispatchProps = {
   actionCompleteDutyMissionByIds: HandleThunkActionCreator<typeof actionCompleteDutyMissionByIds>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonCompleteDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonCompleteDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonCompleteDutyMissionMergeProps = {};
 
 type ButtonCompleteDutyMissionProps = (

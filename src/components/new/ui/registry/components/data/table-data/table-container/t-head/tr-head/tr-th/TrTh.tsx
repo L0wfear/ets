@@ -13,7 +13,6 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 type PropsTrTh = {
   registryKey: string;
   colData: any;
-  formatedTitle: string;
   registryTriggerOnChangeSelectedField: any;
   registryGlobalCheck: any;
   allIsChecked: boolean;
@@ -65,9 +64,9 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
     const {
       colData,
       colData: {
+        title,
         sortable = true,
       },
-      formatedTitle,
     } = this.props;
 
     if (colData.key === 'is_open') {
@@ -78,7 +77,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={35}
         >
-          {formatedTitle || ' '}
+          {title || ' '}
         </EtsTheadTh>
       );
     }
@@ -112,7 +111,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={50}
         >
-          {formatedTitle}
+          {title}
         </EtsTheadTh>
       );
     }
@@ -125,7 +124,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={200}
         >
-          {formatedTitle}
+          {title}
         </EtsTheadTh>
       );
     }
@@ -138,7 +137,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={350}
         >
-          {formatedTitle}
+          {title}
         </EtsTheadTh>
       );
     }
@@ -151,7 +150,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={75}
         >
-          {formatedTitle}
+          {title}
         </EtsTheadTh>
       );
     }
@@ -164,7 +163,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={150}
         >
-          {formatedTitle}
+          {title}
         </EtsTheadTh>
       );
     }
@@ -177,7 +176,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
           colSpan={colData.colSpan}
           width={250}
         >
-          {formatedTitle}
+          {title}
         </EtsTheadTh>
       );
     }
@@ -190,7 +189,7 @@ class TrTh extends React.PureComponent<PropsTrTh, StateTrTh> {
         onClick={this.handleClick}
         width={colData.width}
       >
-        {formatedTitle} <EtsBootstrap.Glyphicon glyph={getGlyphName(this.props)} />
+        {title} <EtsBootstrap.Glyphicon glyph={getGlyphName(this.props)} />
       </EtsTheadTh>
     );
   }

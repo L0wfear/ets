@@ -12,7 +12,7 @@ export type TypeFieldsRegistry<F extends Record<string, any>> = (
     title?: string;
   }
 );
-export type TypeFields<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
+export type CommonTypeField<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
   hidden?: boolean;
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   displayIfPermission?: string | string[];
@@ -20,9 +20,13 @@ export type TypeFields<F extends Record<string, any>, Title = string | DisplayIf
   width?: number;
   dashIfEmpty?: boolean;
   title?: Title;
-  } & (
+};
+
+export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
+  CommonTypeField<F, Title>
+) & (
   {
-    key: keyof F;
+    key: Extract<keyof F, string>;
     format?: (
       'date'
       | 'datetime'
@@ -46,8 +50,6 @@ export type TypeFields<F extends Record<string, any>, Title = string | DisplayIf
       | 'waybill_all_missions_status'
       | 'waybill_status_name'
     );
-  } | {
-    childrenFields?: TypeFields<F, Title>[];
   } | {
     key: 'enumerated';
     title: string;
@@ -76,13 +78,20 @@ export type TypeFields<F extends Record<string, any>, Title = string | DisplayIf
   }
 );
 
+export type TypeFields<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
+  TypeFieldsWithoutDeep<F, Title>
+  | CommonTypeField<F, Title> & {
+    childrenFields?: TypeFields<F, Title>[];
+  }
+);
+
 export type DisplayIfTitle = {
   displayIf: TypeOneDisplayIf | TypeOneDisplayIf[];
   title: string;
 };
 
 export type OneFilterType<F> = {
-  valueKey: keyof F;
+  valueKey: Extract<keyof F, string>;
   title: string | DisplayIfTitle[];
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];
@@ -97,7 +106,7 @@ export type OneFilterType<F> = {
     step: number; // для firefox
   } | {
     type: 'multiselect';
-    labelKey?: keyof F;
+    labelKey?: Extract<keyof F, string>;
     options?: FilterOptionType<F>[];
     getRegistryData?: {
       entity: string;
@@ -147,7 +156,7 @@ export interface OneRegistryData<F = any> {
       array: F[];
       objectExtra: Record<string, any> // use lodash.get
       total_count: number;
-      uniqKey: keyof F;
+      uniqKey: Extract<keyof F, string>;
       uniqKeyForParams?: string;
       selectedRow: F;
       selectedRowToShow: F;
@@ -169,7 +178,7 @@ export interface OneRegistryData<F = any> {
       row_double_click: boolean;
       selected_row_in_params: boolean;
       fields: TypeFieldsRegistry<F>[];
-      fieldsInDeepArr: any[],
+      fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
       treeFields: object,
     },
@@ -183,7 +192,7 @@ export interface OneRegistryData<F = any> {
       },
       processedArray?: F[],
       sort?: {
-        field?: keyof F;
+        field?: Extract<keyof F, string>;
         reverse?: boolean,
       },
       total_count?: number,

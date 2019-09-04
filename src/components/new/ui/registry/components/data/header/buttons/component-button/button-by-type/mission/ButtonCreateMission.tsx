@@ -11,6 +11,7 @@ import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/m
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateMissionStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
@@ -18,9 +19,7 @@ type ButtonCreateMissionStateProps = {
 type ButtonCreateMissionDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCreateMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonCreateMissionOwnProps = CommonTypesForButton & {};
 type ButtonCreateMissionMergeProps = {};
 
 type ButtonCreateMissionProps = (

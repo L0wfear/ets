@@ -7,11 +7,12 @@ import carActualPermissions from '../../autobase/pages/car_actual/_config-data/p
 import ChangeRouteFormLazy from 'components/new/pages/nsi/technical_operation_relations/form/change_route';
 import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
 
-type TechnicalOperationRelationsFormLazyProps = {
+type OwnProps = {
   registryKey: string;
-} & WithSearchProps;
+};
+type Props = OwnProps & WithSearchProps;
 
-const TechnicalOperationRelationsFormLazy: React.FC<TechnicalOperationRelationsFormLazyProps> = (
+const TechnicalOperationRelationsFormLazy: React.FC<Props> = React.memo(
   (props) => {
     const technical_operation_relations_type_form = props.match.params.technical_operation_relations_type_form;
     const car_actual_asuods_id = getNumberValueFromSerch(props.match.params.car_actual_asuods_id);
@@ -50,7 +51,7 @@ const TechnicalOperationRelationsFormLazy: React.FC<TechnicalOperationRelationsF
     return (
       <DivNone />
     );
-  }
+  },
 );
 
-export default withSearch(TechnicalOperationRelationsFormLazy);
+export default withSearch<OwnProps>(TechnicalOperationRelationsFormLazy);

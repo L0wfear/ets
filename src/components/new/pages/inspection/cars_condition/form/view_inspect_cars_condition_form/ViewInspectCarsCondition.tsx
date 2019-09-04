@@ -74,7 +74,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
         };
 
         setCarsConditionCarsList([]);
-        loadData();
+        return loadData();
       },
       [state.id],
     );

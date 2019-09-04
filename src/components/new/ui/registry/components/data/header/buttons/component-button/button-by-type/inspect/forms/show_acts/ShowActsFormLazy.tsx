@@ -9,7 +9,8 @@ const ShowActsForm = React.lazy(() => (
   import(/* webpackChunkName: "show_acts_form" */ 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/ShowActsForm')
 ));
 
-type Props = {} & WithSearchProps;
+type OwnProps = {};
+type Props = OwnProps & WithSearchProps;
 
 const ShowActsFormLazy: React.FC<Props> = React.memo(
   (props) => {
@@ -62,4 +63,4 @@ const ShowActsFormLazy: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(ShowActsFormLazy);
+export default withSearch<OwnProps>(ShowActsFormLazy);

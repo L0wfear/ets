@@ -8,11 +8,12 @@ import { inspect_types } from './constant';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from './forms/show_acts/registry/permissions';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type Props = {
-  registryKey: string;
+type OwnProps = CommonTypesForButton & {
   id?: number;
-} & WithSearchProps;
+};
+type Props = OwnProps & WithSearchProps;
 
 const ButtonInspectShowActs: React.FC<Props> = React.memo(
   (props) => {
@@ -59,4 +60,4 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(ButtonInspectShowActs);
+export default withSearch<OwnProps>(ButtonInspectShowActs);

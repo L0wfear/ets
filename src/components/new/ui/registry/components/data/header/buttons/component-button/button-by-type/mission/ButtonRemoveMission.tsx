@@ -13,6 +13,7 @@ import { get } from 'lodash';
 import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import ModalYesNo from 'components/new/ui/modal/yes_no_form/ModalYesNo';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonRemoveMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -23,9 +24,7 @@ type ButtonRemoveMissionDispatchProps = {
   registryRemoveSelectedRows: HandleThunkActionCreator<typeof registryRemoveSelectedRows>;
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
-type ButtonRemoveMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonRemoveMissionOwnProps = CommonTypesForButton & {};
 type ButtonRemoveMissionMergeProps = {};
 
 type ButtonRemoveMissionProps = (

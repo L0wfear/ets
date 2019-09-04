@@ -7,13 +7,14 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import inspectionActions from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { saveData } from 'utils/functions';
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type Props = {
-  registryKey: string;
+type OwnProps = CommonTypesForButton & {
   id?: number;
-} & WithSearchProps;
+};
+type Props = OwnProps & WithSearchProps;
 
-const ButtonInspectShowActs: React.FC<Props> = React.memo(
+const ButtonInspectGetActs: React.FC<Props> = React.memo(
   (props) => {
     const {
       registryKey,
@@ -108,4 +109,4 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(ButtonInspectShowActs);
+export default withSearch<OwnProps>(ButtonInspectGetActs);

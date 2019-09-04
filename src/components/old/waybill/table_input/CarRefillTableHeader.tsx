@@ -80,9 +80,9 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
                     structure_id={props.structure_id}
                     fuel_type={props.fuel_type}
                     buttonWidth={props.buttonWidth}
-                    page={props.page}
 
                     disabled={props.disabled}
+                    page={props.page}
                   />
                 )
               }

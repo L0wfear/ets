@@ -13,6 +13,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import missionTemplatePermissions from 'components/new/pages/missions/mission_template/_config-data/permissions';
 import { getWarningNotification } from 'utils/notifications';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateMissionTemplateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
@@ -21,9 +22,7 @@ type ButtonCreateMissionTemplateStateProps = {
 type ButtonCreateMissionTemplateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCreateMissionTemplateOwnProps = {
-  registryKey: string;
-};
+type ButtonCreateMissionTemplateOwnProps = CommonTypesForButton & {};
 type ButtonCreateMissionTemplateMergeProps = {};
 
 type ButtonCreateMissionTemplateProps = (

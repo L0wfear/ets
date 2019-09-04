@@ -29,7 +29,7 @@ const withSearch = <OwnProps extends object, Params extends Record<string, strin
       } = props;
 
       const setDataInSearch: WithSearchProps<Params, Search>['setDataInSearch'] = React.useCallback(
-        () => async (data, type) => {
+        async (data, type) => {
           await Promise.resolve(true);
           props.history[type ? type : 'replace'](
             `${

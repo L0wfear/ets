@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
+import { createPortal } from 'react-dom';
 import configs from 'config';
 
 import { ImageListContainer } from 'components/new/ui/portals/img_list_portal/styled/index';
@@ -52,7 +52,7 @@ const ImgListPortal: React.FC<ImgListPortalProps> = React.memo(
 
     useEscapeEvent(props.onClose);
 
-    return Boolean(img_url) && img_url !== '1' && ReactDom.createPortal(
+    return Boolean(img_url) && img_url !== '1' && createPortal(
       <ImageListContainer>
         <ImgListHeader
           img_data={props.images[indexImage]}

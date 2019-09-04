@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import { createPortal } from 'react-dom';
 
 import styled, { css } from 'styled-components';
 
@@ -65,7 +65,7 @@ export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 's
 export type EtsModalContainerProps = {
   id: string;                                       // ясно понятно
   show: boolean;                                    // ясно понятно
-  onHide: (...arg: any[]) => any;                   // ясно понятно
+  onHide?: (...arg: any[]) => any;                   // ясно понятно
   bsSize?: 'large' | 'small' | 'medium';            // размер формы | small - дефолт
   themeName?: keyof typeof themeModal;
 
@@ -94,7 +94,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
     );
 
     return (
-      ReactDOM.createPortal(
+      createPortal(
         <div role="dialog" onDoubleClick={handleDoubleClick}>
           <ModalFormContainer id={props.id} position={props.position} show>
             <ModalFormStyled show bsSize={props.bsSize}>

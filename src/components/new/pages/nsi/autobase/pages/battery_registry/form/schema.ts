@@ -15,7 +15,7 @@ const validateDateInsideOther = (date, battery_to_car: BatteryRegistry['battery_
 
       if (type === 'start') {
         return (
-          diffDates(date, installed_at) >= 0
+          diffDates(date, installed_at) > 0
           && diffDates(date, uninstalled_at) < 0
         );
       }

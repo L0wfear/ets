@@ -1,6 +1,6 @@
 import { InitialFormContextValue, ConfigFormDataForAdd } from '../FormContext';
 import { validate, canSaveTest } from './validate';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type AddFormDataToStore<T = any, Store = Record<string, any>> = (

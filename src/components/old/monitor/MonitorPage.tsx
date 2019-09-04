@@ -16,7 +16,7 @@ import {
   MONITOR_PAGE_SET_GEOMETRY,
 } from 'components/old/monitor/redux-main/models/monitor-page';
 import { MonitorPageContainer } from 'components/old/monitor/styled';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { MonitorSearchParams } from 'components/old/monitor/monitor_search_params';

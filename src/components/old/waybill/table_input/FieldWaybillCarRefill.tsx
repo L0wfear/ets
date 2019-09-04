@@ -9,7 +9,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import CarRefillTableHeader from './CarRefillTableHeader';
 import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';

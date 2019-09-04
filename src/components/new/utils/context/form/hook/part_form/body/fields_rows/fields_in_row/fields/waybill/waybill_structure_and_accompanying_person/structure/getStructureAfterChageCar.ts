@@ -1,5 +1,5 @@
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 
 type CarData = Pick<Car, 'is_common' | 'company_structure_id' | 'company_structure_name'> & Partial<Car>;

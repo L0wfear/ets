@@ -28,7 +28,8 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import { ButtonUpdateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -162,8 +163,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         </ul>
         <LinkToOpenRouteInfoForm openRouteInfoForm={this.openRouteInfoForm}/>
         <RightButtonBlockContainer>
-          <ButtonUpdateDutyMission onClick={this.completeDutyMission} >Выполнено</ButtonUpdateDutyMission>
-          <ButtonUpdateDutyMission onClick={this.rejectDutyMission} >Не выполнено</ButtonUpdateDutyMission>
+          <EtsBootstrap.Button onClick={this.completeDutyMission} permissions={dutyMissionPermissions.update}>Выполнено</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.rejectDutyMission} permissions={dutyMissionPermissions.update}>Не выполнено</EtsBootstrap.Button>
         </RightButtonBlockContainer>
         <RouteInfoFormWrap
           showForm={this.state.showRouteInfoForm}

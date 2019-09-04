@@ -20,10 +20,6 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 
-const ButtonCreateMission = withRequirePermissionsNew({
-  permissions: missionPermissions.create,
-})(EtsBootstrap.Button);
-
 type Props = {
   dispatch: EtsDispatch;
   [k: string]: any;
@@ -267,15 +263,16 @@ class MissionField extends React.Component<Props, any> {
               ', ',
             )} не входят в интервал путевого листа. После сохранения путевого листа время задания будет уменьшено и приравнено к времени "Возвращение факт." данного путевого листа`}</div>
           )}
-        <ButtonCreateMission
+        <EtsBootstrap.Button
           id="create-mission"
           style={{ marginTop: 10 }}
           onClick={this.createMission}
+          permissions={missionPermissions.create}
           disabled={
             isEmpty(state.car_id) || IS_CLOSED || !isPermittedByKey.update
           }>
           Создать задание
-        </ButtonCreateMission>
+        </EtsBootstrap.Button>
         <MissionFormLazy
           onFormHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}

@@ -2,7 +2,7 @@ import {
   FuelCard,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import {
   GetSessionCompanyOptionsAns,
   getSessionStructuresParams,

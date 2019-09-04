@@ -3,9 +3,9 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import {
   OneSessionCompany,
-} from './session.d';
+} from './@types/session';
 import { DefaultSelectOption, DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
-import { InitialStateSession, OneSessionStructure } from './session.d';
+import { InitialStateSession, OneSessionStructure } from './@types/session';
 import { find } from 'lodash';
 
 export type fuelTypeStructure = {

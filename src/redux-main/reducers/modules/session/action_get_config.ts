@@ -7,7 +7,7 @@ import {
 } from 'redux-main/reducers/modules/session/session';
 
 import { ConfigService, ConfigTrackService } from 'api/Services';
-import { InitialStateSession } from './session.d';
+import { InitialStateSession } from './@types/session';
 import config from 'config';
 
 const actionSetAppConfig = (appConfig: InitialStateSession['appConfig']) => ({

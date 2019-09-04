@@ -10,7 +10,7 @@ import { registryChangeFilterRawValues } from 'components/new/ui/registry/module
 import AdvancedNumberFilter from 'components/new/ui/registry/components/data/filters/filters-lines/advanced-number/AdvancedNumberFilter';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { isArray } from 'util';
 import AdvancedDateFilter from './advanced-date/AdvancedDateFilter';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';

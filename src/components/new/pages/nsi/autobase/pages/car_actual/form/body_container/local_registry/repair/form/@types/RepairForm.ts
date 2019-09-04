@@ -7,7 +7,7 @@ import {
   DefaultSelectListMapper,
 } from 'components/old/ui/input/ReactSelect/utils';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { CarWrap } from '../../../../../@types/CarForm';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;

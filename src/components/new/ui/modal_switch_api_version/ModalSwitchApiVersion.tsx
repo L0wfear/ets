@@ -17,7 +17,7 @@ import {
   StateModalSwitchApiVersion,
   OneOptionInStateModalSwitchApiVersion,
 } from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion.h';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import config from 'config';
 import { getSessionState } from 'redux-main/reducers/selectors';
 

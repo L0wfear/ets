@@ -3,7 +3,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import ModalTP from '../../modal_tp/ModalTP';
 import { SupportContainer, SupportTextContainer } from './styled';
 

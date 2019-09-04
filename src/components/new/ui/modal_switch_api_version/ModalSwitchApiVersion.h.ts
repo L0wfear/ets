@@ -1,4 +1,4 @@
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { DispatchProp } from 'react-redux';
 
 export type StatePropsModalSwitchApiVersion = {

@@ -2,8 +2,9 @@ import * as React from 'react';
 import styled, { css } from 'styled-components';
 import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
 import { GlyphiconStyled } from '../01-glyphicon/EtsGlyphicon';
+import { withRequirePermission, WithRequirePermissionAddProps, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-export type EtsButtonProps = {
+export type EtsButtonProps = WithRequirePermissionProps & {
   bsClass?: string;
   themeName?: keyof typeof themeButton;
   active?: boolean;
@@ -16,7 +17,10 @@ export type EtsButtonProps = {
   title?: string;
   type?: 'submit' | 'button';
   whiteSpace?: 'normal';
+
+  style?: object;
 };
+type EtsButtonPropsWrap = EtsButtonProps & WithRequirePermissionAddProps;
 
 const bsSizeCssSmall = css`
   padding: 5px 20px;
@@ -37,7 +41,7 @@ const whiteSpaceCssNormal = css`
   white-space: normal;
 `;
 
-export const ButtonStyled = styled.button<EtsButtonProps>`
+export const ButtonStyled = styled.button<EtsButtonPropsWrap>`
   &&& {
     user-select: none;
     text-align: center;
@@ -156,7 +160,7 @@ export const ButtonStyled = styled.button<EtsButtonProps>`
   }
 `;
 
-const EtsButton: React.FC<EtsButtonProps> = React.memo(
+const EtsButton: React.FC<EtsButtonPropsWrap> = React.memo(
   (props) => {
     // тк что-то где-то поддормаживает и дисейбл не сразу появляется
     const [localDisabled, setLocalDisabled] = React.useState(false);
@@ -188,4 +192,4 @@ const EtsButton: React.FC<EtsButtonProps> = React.memo(
   },
 );
 
-export default EtsButton;
+export default withRequirePermission<EtsButtonProps>()(EtsButton);

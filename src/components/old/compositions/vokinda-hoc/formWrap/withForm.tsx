@@ -12,7 +12,7 @@ import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 /**
  * @params uniqField - уникальный ключ формы

@@ -1,7 +1,7 @@
 import { isObject, isNullOrUndefined } from 'util';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { createValidDateTime, getDateWithMoscowTz, getTomorrow9am } from 'components/@next/@utils/dates/dates';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 export const getDefaultWaybill = (company_id): Waybill => ({
   accompanying_person_id: null,

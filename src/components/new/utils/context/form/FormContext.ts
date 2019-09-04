@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { SchemaFormContext, FormErrorBySchema } from './@types';
 import { EtsModalContainerProps } from 'components/new/ui/@bootstrap/02-modal_container/EtsModalContainer';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 // что имееем по formData
 export type OneFormDataByKey<F, Store extends object> = {

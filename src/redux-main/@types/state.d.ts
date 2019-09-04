@@ -1,7 +1,7 @@
 import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 import { InitialStateTypeRegistry } from 'components/new/ui/registry/module/@types/registry';
 import { IStateReport } from 'components/old/reports/redux-main/modules/report';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 import { IStateUserNotifications } from 'redux-main/reducers/modules/user_notifications/@types/user_notifications.h';
 import { IStateOldReport } from 'components/old/coverage_reports/redux-main/modules/old-report/@types/old_report';

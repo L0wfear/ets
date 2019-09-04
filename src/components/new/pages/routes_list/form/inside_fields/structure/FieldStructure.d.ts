@@ -1,4 +1,4 @@
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type StateFieldStructure = {

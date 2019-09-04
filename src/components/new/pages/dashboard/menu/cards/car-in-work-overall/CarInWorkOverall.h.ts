@@ -1,5 +1,5 @@
 import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { HandleThunkActionCreator } from 'react-redux';
 import { actionMonitorPageLoadCarActual } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { dashboardSetInfoDataInCarInWorkOverall } from '../../../redux-main/modules/dashboard/actions-dashboard';

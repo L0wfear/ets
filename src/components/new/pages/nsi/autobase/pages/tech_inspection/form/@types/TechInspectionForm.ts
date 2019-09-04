@@ -4,7 +4,7 @@ import {
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { CarWrap } from '../../../car_actual/form/@types/CarForm';
 

@@ -6,7 +6,7 @@ import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { makeProcessedArray } from './processed';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { displayIfContant } from '../../contants/displayIf';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 

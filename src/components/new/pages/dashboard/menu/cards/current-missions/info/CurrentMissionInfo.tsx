@@ -7,7 +7,6 @@ import { compose } from 'recompose';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
 import {
-  ButtenUpdateMission,
   LinkToOpenMissionInfoForm,
 } from 'components/new/pages/missions/mission/buttons/buttons';
 
@@ -39,6 +38,8 @@ import { getWarningNotification } from 'utils/notifications';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -156,8 +157,8 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         </ul>
         <LinkToOpenMissionInfoForm openMissiomInfoForm={this.openMissiomInfoForm}/>
         <RightButtonBlockContainer>
-          <ButtenUpdateMission onClick={this.completeMission} >Выполнено</ButtenUpdateMission>
-          <ButtenUpdateMission onClick={this.rejectMission} >Не выполнено</ButtenUpdateMission>
+          <EtsBootstrap.Button onClick={this.completeMission} permissions={missionPermissions.update}>Выполнено</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.rejectMission} permissions={missionPermissions.update}>Не выполнено</EtsBootstrap.Button>
         </RightButtonBlockContainer>
         {
           this.state.showMissionRejectForm ?

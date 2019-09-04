@@ -1,5 +1,5 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { HandleThunkActionCreator } from 'react-redux';

@@ -6,10 +6,10 @@ import {
 } from 'redux-main/reducers/modules/session/actions-session';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
-import { withRouter } from 'react-router-dom';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class CompanyOptionsNew extends React.Component<any, any> {
   context!: ETSCore.LegacyContext;
@@ -71,7 +71,7 @@ class CompanyOptionsNew extends React.Component<any, any> {
 }
 
 export default compose<any, any>(
-  withRouter,
+  withSearch,
   connect<any, any, any, ReduxState>(
     (state) => ({
       userData: getSessionState(state).userData,

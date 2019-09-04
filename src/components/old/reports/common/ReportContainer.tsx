@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { withRouter } from 'react-router-dom';
 import * as queryString from 'query-string';
 import {
   difference,
@@ -45,6 +44,7 @@ import DataTableNew from 'components/old/ui/tableNew/DataTable';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { isArray } from 'util';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 // Хак. Сделано для того, чтобы ts не ругался на jsx-компоненты.
 const Table: any = DataTable;
@@ -659,7 +659,7 @@ const mapDispatchToProps = (dispatch) =>
   bindActionCreators<any, any>(reportActionCreators, dispatch);
 
 export default compose<IPropsReportContainer, any>(
-  withRouter,
+  withSearch,
   connect(
     mapStateToProps,
     mapDispatchToProps,

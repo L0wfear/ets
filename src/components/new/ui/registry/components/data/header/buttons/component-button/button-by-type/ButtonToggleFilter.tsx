@@ -23,7 +23,7 @@ const ButtonToggleFilter: React.FC<Props> = React.memo(
         ).length,
       )
     ));
-    const handleClick = React.useMemo(
+    const handleClick = React.useCallback(
       () => (
         dispatch(
           registryToggleIsOpenFilter(props.registryKey),

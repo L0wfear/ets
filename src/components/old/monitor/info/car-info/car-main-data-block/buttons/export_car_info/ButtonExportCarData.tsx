@@ -383,7 +383,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               canvasSpeedChart.height / editParam,
             );
             const canvasLegendSpeedChart = document.createElement('canvas');
-            canvasLegendSpeedChart.width = canvas_speed_chart.width;
+            canvasLegendSpeedChart.width = 380;
             canvasLegendSpeedChart.height = 200;
 
             canvasLegendSpeedChart.getContext('2d').drawImage(
@@ -514,7 +514,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             doc.addImage(
               canvas_createAt.toDataURL('image/png'),
               'JPEG',
-              leftOffset - canvas_createAt.width / editParam - 10,
+              10,
               15,
               canvas_createAt.width / editParam,
               canvas_createAt.height / editParam,
@@ -526,7 +526,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               page_canvas.toDataURL('image/png'),
               'JPEG',
               leftOffset - page_canvas.width / editParam - 10,
-              topOffset - page_canvas.height / editParam - 15,
+              topOffset - page_canvas.height / editParam - 5,
               page_canvas.width / editParam,
               page_canvas.height / editParam,
             );

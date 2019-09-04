@@ -475,6 +475,7 @@ class CreatingMap extends React.PureComponent<
                 </span>
                 <FlexContainer>
                   <ExtField
+                    id={`route_edit_pn_${index}`}
                     type="string"
                     label={false}
                     error={false}
@@ -484,6 +485,7 @@ class CreatingMap extends React.PureComponent<
                     disabled={!isPermitted}
                   />
                   <ExtButton
+                    id={`route_edit_pn_remove_${index}`}
                     disabled={!isPermitted}
                     boundKeys={index}
                     onClick={this.handleRemovePoint}>

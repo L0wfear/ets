@@ -143,7 +143,7 @@ export default class Taxes extends React.Component {
           <ReactSelect
             clearable={false}
             modalKey={this.props.modalKey}
-            id="norm_operation_id"
+            id={`norm_operation_id_${index}`}
             disabled={this.props.readOnly}
             options={options}
             value={row.uniqKey}
@@ -159,6 +159,7 @@ export default class Taxes extends React.Component {
         const factValueProps = {
           type: 'number',
           value: FACT_VALUE,
+          id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'
             || typeof OPERATION === 'undefined'

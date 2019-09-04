@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { get, uniqBy } from 'lodash';
 
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
@@ -74,18 +74,30 @@ const CarIdRenderer: React.FC<IPropsCarIdRenderer> = ({
   onChange,
   index,
   isPermitted,
-}) => (
-  <ExtField
-    type="select"
-    label={false}
-    options={vehicleList}
-    value={value}
-    error={get(outputListErrors[index], 'car_id', '')}
-    onChange={onChange}
-    boundKeys={[index, 'car_id']}
-    disabled={!isPermitted}
-  />
-);
+}) => {
+  const handleChange = (valueNew, option) => {
+    onChange(
+      index,
+      {
+        car_id: valueNew,
+        gov_number: get(option, 'rowData.gov_number', null),
+        company_id: get(option, 'rowData.company_id', null),
+      },
+    );
+  };
+
+  return (
+    <ExtField
+      type="select"
+      label={false}
+      options={vehicleList}
+      value={value}
+      error={get(outputListErrors[index], 'car_id', '')}
+      onChange={handleChange}
+      disabled={!isPermitted}
+    />
+  );
+};
 
 const InstalledAtRenderer: React.FC<
   IPropsDataTableInputRenderer
@@ -137,8 +149,14 @@ const UninstalledAtRenderer: React.FC<
 };
 
 export const renderers: TRendererFunction = (props, onListItemChange) => {
-  const vehicleList = props.tireAvailableCarList.map(
-    ({ car_id, gov_number }) => ({ label: gov_number, value: car_id }),
+  const inputList = props.inputList.filter((filterItem) =>
+    Boolean(filterItem.gov_number),
+  );
+  const vehicleList = uniqBy(
+    [...props.tireAvailableCarList, ...inputList].map(
+      (rowData) => ({ label: rowData.gov_number, value: rowData.car_id, rowData }),
+    ),
+    'value',
   );
 
   return {

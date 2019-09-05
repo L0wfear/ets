@@ -113,7 +113,6 @@ export const makeObjectListOptions = (
       return ({
         value: id,
         label: name,
-        is_invalid: objectIndex.is_invalid,
       });
     },
   );

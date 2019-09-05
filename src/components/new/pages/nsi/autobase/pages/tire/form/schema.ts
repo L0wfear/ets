@@ -2,8 +2,10 @@ import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import memoizeOne from 'memoize-one';
-import { diffDatesByDays } from 'components/@next/@utils/dates/dates';
-import { validateDateInsideOther } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
+import { get } from 'lodash';
+
+import { diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
+import { validateDateInsideOther, oldestInstalledDateIndex } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 
 export const tireFormSchema: SchemaType<Tire, PropsTire> = {
   properties: {

@@ -3,14 +3,6 @@ import { lighten } from 'polished';
 
 import { CommonDisplayContent, CommonTdTh } from 'components/new/ui/@bootstrap/grid_bootstrap/common';
 
-type Props = {
-  table_width: number;
-  fields: Array<{
-    width?: number;
-    [k: string]: any;
-  }>
-};
-
 const EtsThead = styled.div`
   ${CommonDisplayContent};
 `;
@@ -48,31 +40,8 @@ const EtsTheadTh = styled.div<{ canClick?: boolean; }>`
   }
 `;
 
-const EtsTheadTr = styled.div<Props>`
+const EtsTheadTr = styled.div`
   ${CommonDisplayContent};
-
-  display: grid;
-  display: -ms-grid;
-  border-collapse: collapse;
-  min-width: 100%;
-  -ms-grid-columns: ${({ table_width, fields }) => {
-    // const table_width = fields.reduce((summ, { width }) => summ + (width || 150), 0);
-
-    return fields.reduce(
-      (str, { width }) => `${str}
-        minmax(${width || 150}px, ${(width || 150) / (table_width / fields.length)}fr)`,
-      '',
-    );
-  }};
-  grid-template-columns: ${({ table_width, fields }) => {
-    // const table_width = fields.reduce((summ, { width }) => summ + (width || 150), 0);
-
-    return fields.reduce(
-      (str, { width }) => `${str}
-        minmax(${width || 150}px, ${(width || 150) / (table_width / fields.length)}fr)`,
-      '',
-    );
-  }};
 `;
 
 const GridBootstrapThead = {

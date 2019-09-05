@@ -10,7 +10,6 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import Td from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Td';
-import { getRegistryState } from 'redux-main/reducers/selectors';
 
 type OwnProps = {
   registryKey: string;
@@ -88,8 +87,6 @@ const TrHead: React.FC<Props> = React.memo(
       [selected_row_in_params, handleDoubleClick],
     );
 
-    const row_fields_table_width = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).meta.row_fields_table_width);
-
     return React.useMemo(
       () => (
         <EtsBootstrap.Grid.GridBootstrapTbody.Tr
@@ -103,9 +100,6 @@ const TrHead: React.FC<Props> = React.memo(
           onDoubleClick={handleDoubleClick}
 
           registryKey={props.registryKey}
-
-          table_width={row_fields_table_width}
-          fields={rowFields}
         >
           {
             rowFields.map((fieldMeta) => (

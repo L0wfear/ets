@@ -1,8 +1,11 @@
-import * as moment from 'moment';
+import * as Moment from 'moment';
 
 import { isEqualOr } from 'utils/functions';
 import momentLocalizer from 'components/@next/@utils/dates/localizer';
 
+import { extendMoment } from 'moment-range';
+
+const moment = extendMoment(Moment);
 momentLocalizer();
 
 /**
@@ -14,31 +17,27 @@ momentLocalizer();
  * @return number разницу между датами
  */
 export const diffDates = (
-  dateA?: moment.MomentInput,
-  dateB?: moment.MomentInput,
-  typeDiff: 'seconds' | 'hours' | 'minutes' | 'days' | 'months' = 'seconds', // moment.unitOfTime.Diff = 'seconds',
+  dateA?: Moment.MomentInput,
+  dateB?: Moment.MomentInput,
+  typeDiff: 'seconds' | 'hours' | 'minutes' | 'days' | 'months' = 'seconds', // Moment.unitOfTime.Diff = 'seconds',
   float: boolean = true,
 ): number => {
   return moment(dateA).diff(moment(dateB), typeDiff, float);
 };
 
-export const isDateInInterval = (check_date, date_start, date_end) => {
-  return (
-    diffDates(date_end, check_date) > 0
-    && diffDates(check_date, date_start) > 0
-  );
-};
+export const isCrossDates = (
+  first_date_start: Moment.Moment | Date | string,
+  first_date_end: Moment.Moment | Date | string,
+  second_date_start: Moment.Moment | Date | string,
+  second_date_end: Moment.Moment | Date | string,
+) => {
+  if (!first_date_start || !first_date_end || !second_date_start || !second_date_end) {
+    return false;
+  }
+  const range_first_date = moment.range(moment(first_date_start), moment(first_date_end));
+  const range_second_date = moment.range(moment(second_date_start), moment(second_date_end));
 
-export const isCrossDates = (first_date_start, first_date_end, second_date_start, second_date_end) => {
-  return (
-    (
-      diffDates(second_date_end, first_date_start) >= 0
-      && diffDates(first_date_start, second_date_start) >= 0
-    ) || (
-      diffDates(second_date_end, first_date_end) >= 0
-      && diffDates(first_date_end, second_date_start) >= 0
-    )
-  );
+  return range_first_date.overlaps(range_second_date);
 };
 
 export const getDateWithMoscowTz = () => {
@@ -58,7 +57,7 @@ export const getDateWithMoscowTzByTimestamp = (timestamp) => {
 
   return newDate;
 };
-export const addSecond = (date, seconds) =>
+export const addSecond = (date: string | Date, seconds: number) =>
   moment(date).add(seconds, 'seconds');
 
 export function makeDate(date) {
@@ -72,16 +71,11 @@ export function makeUnixTime(time) {
   return Math.floor(time / 1000);
 }
 
-export function makeTime(date, withSeconds = false) {
+export function makeTime(date: string | Date, withSeconds?: boolean) {
   date = new Date(date);
   return moment(date).format(
     `${global.APP_TIME_FORMAT}${withSeconds ? ':ss' : ''}`,
   );
-}
-
-export function makeMinutes(date) {
-  date = new Date(date);
-  return moment(date).format('mm:ss');
 }
 
 export function getStartOfToday() {
@@ -89,28 +83,28 @@ export function getStartOfToday() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
-export function createValidDate(date) {
+export function createValidDate(date: string | Date) {
   if (!date) {
     return null;
   }
   return moment(date).format('YYYY-MM-DD');
 }
 
-export function createValidDateDots(date) {
+export function createValidDateDots(date: string | Date) {
   if (!date) {
     return null;
   }
   return moment(date).format('DD.MM.YYYY');
 }
 
-export function createValidDateHM(date) {
+export function createValidDateHM(date: string | Date) {
   if (!date) {
     return null;
   }
   return moment(date).format('YYYY.MM.DD HH:mm');
 }
 
-export function createValidDateTime(date) {
+export function createValidDateTime(date: string | Date) {
   if (!date) {
     return null;
   }
@@ -119,7 +113,7 @@ export function createValidDateTime(date) {
     .format('YYYY-MM-DDTHH:mm:ss');
 }
 
-export function formatDate(date, format) {
+export function formatDate(date: string | Date, format: string) {
   if (!date) {
     return null;
   }
@@ -127,7 +121,7 @@ export function formatDate(date, format) {
   return moment(date).format(format);
 }
 
-export function getFormattedDateTime(date) {
+export function getFormattedDateTime(date: string | Date) {
   if (!date) {
     return '';
   }
@@ -136,7 +130,7 @@ export function getFormattedDateTime(date) {
   );
 }
 
-export function getFormattedDateTimeWithSecond(date) {
+export function getFormattedDateTimeWithSecond(date: string | Date) {
   if (!date) {
     return '';
   }
@@ -145,36 +139,28 @@ export function getFormattedDateTimeWithSecond(date) {
   );
 }
 
-export function getFormattedTimeWithSecond(date) {
+export function getFormattedTimeWithSecond(date: string | Date) {
   if (!date) {
     return '';
   }
   return moment(date).format(`${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
-export function getFormattedDateTimeSeconds(date) {
+export function getFormattedDateTimeSeconds(date: string | Date) {
   if (!date) {
     return '';
   }
   return moment(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
-export function makeDateFromUnix(date) {
+export function makeDateFromUnix(date: number) {
   if (!date) {
     return '-';
   }
   return moment.unix(date).format(`${global.APP_DATE_FORMAT} HH:mm:ss`);
 }
 
-export function makeUnixFromDate(date) {
-  if (!date) {
-    return -Infinity;
-  }
-  return moment(date).unix();
-}
-
 // смены за вчера, сегодня, завтра
-
 export function getYesterday0am() {
   const now = new Date();
 
@@ -203,17 +189,17 @@ export function getYesterdayYesterday2359() {
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2, 23, 59);
 }
 
-export function getDate9am(date) {
+export function getDate9am(date: string | Date) {
   const now = new Date(date);
   return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9, 0);
 }
 
-export function getNextDay859am(date) {
+export function getNextDay859am(date: string | Date) {
   const now = new Date(date);
   return new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 8, 59);
 }
 
-export function getToday9am(seconds = 0) {
+export function getToday9am(seconds?: number) {
   const now = new Date();
 
   return new Date(
@@ -222,7 +208,7 @@ export function getToday9am(seconds = 0) {
     now.getDate(),
     9,
     0,
-    seconds,
+    seconds || 0,
   );
 }
 
@@ -272,7 +258,7 @@ export function makeDataFromRaw(date: string, time?: string, seconds?: string) {
   return datetime;
 }
 
-export function isValidDate(date) {
+export function isValidDate(date: string | Date) {
   return moment(date).isValid();
 }
 
@@ -290,10 +276,10 @@ export function getDatesByShift() {
   ];
 }
 
-function pad(num) {
+function pad(num: string | number) {
   return `0${num}`.slice(-2);
 }
-export function secondsToTime(secs) {
+export function secondsToTime(secs: number) {
   let mMinutes = Math.floor(secs / 60);
   const mSecs = secs % 60;
   const mHours = Math.floor(mMinutes / 60);
@@ -320,21 +306,13 @@ export const getCurrentSeason = (summer_start_date: string = null, summer_end_da
  * @param {date | string} dataB - date end compare
  * @param {string} typeDiff - type compare (see moment .diff())
  */
-export const setZeroSecondsToDate = (date) => moment(date).seconds(0);
-
-export const addTime = (date, count, typeAdd) =>
+export const addTime = (date: string | Date, count: number, typeAdd: Moment.unitOfTime.DurationConstructor) =>
   moment(date)
     .add(count, typeAdd)
     .format();
 
-export const diffDayOfDate = (dateA, dateB) =>
-  diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');
-
-export const diffDatesByDays = (dateA, dateB) =>
+export const diffDatesByDays = (dateA: string | Date, dateB: string | Date) =>
   diffDates(createValidDate(dateA), createValidDate(dateB), 'days');
-
-export const currentDateInInterval = ({ date_start, date_end }) =>
-  diffDates(new Date(), date_start) > 0 && diffDates(new Date(), date_end) < 0;
 
 export const monthOptions = Array(12).fill(0).map(
   (_, index) => {

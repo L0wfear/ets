@@ -322,6 +322,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     return (
       <React.Fragment>
         <EtsTrTbody
+          id={`${props.registryKey}.${props.rowData[props.uniqKey]}`}
           enable
           selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
           onClick={this.handleClick}

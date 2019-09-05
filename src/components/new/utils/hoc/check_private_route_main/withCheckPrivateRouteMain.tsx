@@ -9,7 +9,6 @@ import { compose } from 'recompose';
 import { MapEtsProvider } from 'components/new/ui/map/context/MapetsContext';
 import LoadingPovider from 'components/new/utils/context/loading/LoadingPovider';
 import EtsGlobalStyle from 'global-styled';
-import FormProvider from '../../context/form/FormPovider';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 /**
@@ -49,10 +48,8 @@ const withCheckPrivateRouteMain = (Component) => {
     return (
       <MapEtsProvider>
         <LoadingPovider>
-          <FormProvider>
-            <EtsGlobalStyle />
-            <Component />
-          </FormProvider>
+          <EtsGlobalStyle />
+          <Component />
         </LoadingPovider>
       </MapEtsProvider>
     );

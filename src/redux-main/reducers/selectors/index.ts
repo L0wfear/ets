@@ -67,3 +67,6 @@ export const getMaintenanceRateState = (state: ReduxState) => (
 export const getMaterialConsumptionRateState = (state: ReduxState) => (
   state.materialConsumptionRate
 );
+export const getFormDataRecordState = (state: ReduxState) => (
+  state.formDataRecord
+);

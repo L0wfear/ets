@@ -25,6 +25,7 @@ import missions from 'redux-main/reducers/modules/missions';
 import company from 'redux-main/reducers/modules/company';
 import materialConsumptionRate from 'redux-main/reducers/modules/material_consumption_rate/materialConsumptionRate';
 import inspect from 'redux-main/reducers/modules/inspect/inspect_reducer';
+import formDataRecord from 'redux-main/reducers/modules/form_data_record/form_data_record_reducer';
 
 export default combineReducers({
   reports,
@@ -48,4 +49,5 @@ export default combineReducers({
   company,
   materialConsumptionRate,
   inspect,
+  formDataRecord,
 });

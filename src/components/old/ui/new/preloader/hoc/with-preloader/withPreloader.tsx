@@ -36,7 +36,7 @@ const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
         return (
           <React.Fragment>
             {
-              isLoading && (
+              Boolean(isLoading) && (
                 <PreloadNew typePreloader={configWithPreloader.typePreloader || typePreloader} />
               )
             }

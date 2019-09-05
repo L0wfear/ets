@@ -1,5 +1,5 @@
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
-import { SchemaFormContext } from 'components/new/utils/context/form/@types';
+import { SchemaFormContext } from 'components/@next/@form/@types';
 
 export const maintenanceWorkFormSchema: SchemaFormContext<MaintenanceWork> = {
   header: {

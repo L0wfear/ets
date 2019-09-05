@@ -128,7 +128,6 @@
         "webpack-dev-server": "^3.8.0",
         "webpack-manifest-plugin": "^2.0.4",
         "whatwg-fetch": "^3.0.0",
-        "worker-loader": "^2.0.0",
         "xml-loader": "^1.2.1"
     },
     "scripts": {

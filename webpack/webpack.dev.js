@@ -52,7 +52,6 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.join(__dirname, '..', 'dist'),
-    globalObject: 'this',
   },
   module: {
     rules: [
@@ -61,10 +60,6 @@ module.exports = {
         use: [
           'handlebars-loader',
         ],
-      },
-      {
-        test: /\.worker\.(js|ts)$/,
-        use: { loader: 'worker-loader' }
       },
       {
         test: /\.(jsx|js|ts|tsx)$/,

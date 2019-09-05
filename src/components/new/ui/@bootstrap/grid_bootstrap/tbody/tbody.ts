@@ -5,6 +5,14 @@ import { getColorTd } from 'components/new/ui/@bootstrap/grid_bootstrap/tbody/ut
 import { constantColor } from 'global-styled/global-constants';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
+type Props = {
+  table_width: number;
+  fields: Array<{
+    width?: number;
+    [k: string]: any;
+  }>
+};
+
 const EtsTbody = styled.div`
   ${CommonDisplayContent};
 `;
@@ -15,7 +23,7 @@ const EtsTbodyTd = styled.div`
   word-break: break-word;
 `;
 
-const EtsBodyTr = styled.div<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: Record<string, any>; registryKey?: string}>`
+const EtsBodyTr = styled.div<{ enable?: boolean; isSelected?: boolean; rowData?: any; checkData?: Record<string, any>; registryKey?: string} & Props>`
   ${CommonDisplayContent};
 
   cursor: ${({ enable }) => enable ? 'pointer' : 'default'};
@@ -86,6 +94,29 @@ const EtsBodyTr = styled.div<{ enable?: boolean; isSelected?: boolean; rowData?:
       margin-bottom: 0px;
     }
   }
+
+  display: grid;
+  display: -ms-grid;
+  border-collapse: collapse;
+  min-width: 100%;
+  -ms-grid-columns: ${({ table_width, fields }) => {
+    // const table_width = fields.reduce((summ, { width }) => summ + (width || 150), 0);
+
+    return fields.reduce(
+      (str, { width }) => `${str}
+        minmax(${width || 150}px, ${(width || 150) / (table_width / fields.length)}fr)`,
+      '',
+    );
+  }};
+  grid-template-columns: ${({ table_width, fields }) => {
+    // const table_width = fields.reduce((summ, { width }) => summ + (width || 150), 0);
+
+    return fields.reduce(
+      (str, { width }) => `${str}
+        minmax(${width || 150}px, ${(width || 150) / (table_width / fields.length)}fr)`,
+      '',
+    );
+  }};
 `;
 
 const GridBootstrapTbody = {

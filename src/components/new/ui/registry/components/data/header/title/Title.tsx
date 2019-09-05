@@ -11,18 +11,18 @@ type HeaderProps = {
   registryKey: string;
 };
 
-const Title: React.FC<HeaderProps> = (props) => {
-  const format = etsUseSelector(
-    (state) => getHeaderData(getRegistryState(state), props.registryKey).format,
-  );
-  const title = etsUseSelector(
-    (state) => getHeaderData(getRegistryState(state), props.registryKey).title,
-  );
-  const titlePopover = etsUseSelector(
-    (state) => getHeaderData(getRegistryState(state), props.registryKey).titlePopover,
-  );
-  return React.useMemo(
-    () => (
+const Title: React.FC<HeaderProps> = React.memo(
+  (props) => {
+    const format = etsUseSelector(
+      (state) => getHeaderData(getRegistryState(state), props.registryKey).format,
+    );
+    const title = etsUseSelector(
+      (state) => getHeaderData(getRegistryState(state), props.registryKey).title,
+    );
+    const titlePopover = etsUseSelector(
+      (state) => getHeaderData(getRegistryState(state), props.registryKey).titlePopover,
+    );
+    return (
       <EtsHeaderTitle>
         <FlexContainerWrap direction="column">
           <TitleContainer>
@@ -51,14 +51,8 @@ const Title: React.FC<HeaderProps> = (props) => {
           </Flex>
         </FlexContainerWrap>
         </EtsHeaderTitle>
-    ),
-    [
-      title,
-      titlePopover,
-      format,
-      props.registryKey,
-    ],
-  );
-};
+    );
+  },
+);
 
 export default Title;

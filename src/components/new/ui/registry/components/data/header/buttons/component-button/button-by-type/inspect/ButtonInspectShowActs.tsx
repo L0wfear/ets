@@ -45,17 +45,10 @@ const ButtonInspectShowActs: React.FC<Props> = React.memo(
       [currentSelectedRowUniqKey, props.setDataInSearch, props.searchState],
     );
 
-    return React.useMemo(
-      () => isPermittedUpdate && (
-        <EtsBootstrap.Button disabled={!Boolean(currentSelectedRowUniqKey)} onClick={handleClick}>
-          <EtsBootstrap.Glyphicon glyph="list-alt" /> Скан-копия акта
-        </EtsBootstrap.Button>
-      ),
-      [
-        isPermittedUpdate,
-        currentSelectedRowUniqKey,
-        handleClick,
-      ],
+    return isPermittedUpdate && (
+      <EtsBootstrap.Button disabled={!Boolean(currentSelectedRowUniqKey)} onClick={handleClick}>
+        <EtsBootstrap.Glyphicon glyph="list-alt" /> Скан-копия акта
+      </EtsBootstrap.Button>
     );
   },
 );

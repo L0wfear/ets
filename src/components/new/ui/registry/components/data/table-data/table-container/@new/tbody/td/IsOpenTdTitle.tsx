@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { get } from 'lodash';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 
-type PropsTrTdIsOpen = {
-  rowData: ValuesOf<OneRegistryData['list']['processed']['processedArray']>;
-};
+type Props = CommontTdTiteProps;
 
-const TrTdIsOpen: React.FC<PropsTrTdIsOpen> = React.memo(
+const IsOpenTdTitle: React.FC<Props> = React.memo(
   (props) => {
     const is_open = React.useMemo(
       () => {
@@ -24,7 +22,7 @@ const TrTdIsOpen: React.FC<PropsTrTdIsOpen> = React.memo(
     );
 
     return (
-      <EtsTbodyTrTd>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
           is_open === true
             && (
@@ -43,9 +41,9 @@ const TrTdIsOpen: React.FC<PropsTrTdIsOpen> = React.memo(
               <EtsBootstrap.Glyphicon glyph="minus" />
             )
         }
-      </EtsTbodyTrTd>
+      </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   },
 );
 
-export default TrTdIsOpen;
+export default IsOpenTdTitle;

@@ -1,16 +1,14 @@
 import * as React from 'react';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 
 import ImgListPortal from 'components/new/ui/portals/img_list_portal/ImgListPortal';
 import SimpleLinkA from 'components/new/ui/simple_a/link';
 import { isImgPath } from 'utils/functions';
+import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-type TrTdButtonShowImgButtonProps = {
-  registryKey: string;
-  rowData: { files?: any[] } & Record<string, any>;
-};
+type Props = CommontTdTiteProps;
 
-const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.memo(
+const ShowFileListTdTitle: React.FC<Props> = React.memo(
   (props) => {
     const [filesToShow, setShowImage] = React.useState(
       () => ({
@@ -64,7 +62,7 @@ const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.me
     );
 
     return (
-      <EtsTbodyTrTd>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
           Boolean(files)
             ? (
@@ -91,9 +89,9 @@ const TrTdButtonShowImgButton: React.FC<TrTdButtonShowImgButtonProps> = React.me
             />
           )
         }
-      </EtsTbodyTrTd>
+      </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   },
 );
 
-export default TrTdButtonShowImgButton;
+export default ShowFileListTdTitle;

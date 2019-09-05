@@ -56,7 +56,7 @@ import {
 } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import { BorderDash, DivNone } from 'global-styled/global-styled';
+import { BorderDash } from 'global-styled/global-styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
@@ -1738,7 +1738,7 @@ class WaybillForm extends UNSAFE_Form {
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-          {state.car_id ? (
+          {Boolean(state.car_id) && (
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={4}>
                 <ExtField
@@ -1753,7 +1753,7 @@ class WaybillForm extends UNSAFE_Form {
                   modalKey={modalKey}
                 />
               </EtsBootstrap.Col>
-              {state.equipment_fuel ? (
+              {state.equipment_fuel && (
                 <React.Fragment>
                   <EtsBootstrap.Col md={4}>
                     <ExtField
@@ -1768,7 +1768,7 @@ class WaybillForm extends UNSAFE_Form {
                       modalKey={modalKey}
                     />
                   </EtsBootstrap.Col>
-                  {!state.is_one_fuel_tank ? (
+                  {!state.is_one_fuel_tank && (
                     <EtsBootstrap.Col md={4}>
                       <ExtField
                         type="string"
@@ -1780,16 +1780,10 @@ class WaybillForm extends UNSAFE_Form {
                         disabled
                       />
                     </EtsBootstrap.Col>
-                  ) : (
-                    <DivNone />
                   )}
                 </React.Fragment>
-              ) : (
-                <DivNone />
               )}
             </EtsBootstrap.Row>
-          ) : (
-            <DivNone />
           )}
           <Div hidden={!state.car_id}>
             <EtsBootstrap.Row>
@@ -2057,7 +2051,7 @@ class WaybillForm extends UNSAFE_Form {
                 </BorderDash>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            {state.equipment_fuel ? (
+            {state.equipment_fuel && (
               <>
                 <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={12}>
@@ -2112,7 +2106,7 @@ class WaybillForm extends UNSAFE_Form {
                               disabled
                             />
                           </EtsBootstrap.Col>
-                          {!state.is_one_fuel_tank ? (
+                          {!state.is_one_fuel_tank && (
                             <EtsBootstrap.Col md={8}>
                               <EtsBootstrap.Row>
                                 <EtsBootstrap.Col md={12}>
@@ -2199,8 +2193,6 @@ class WaybillForm extends UNSAFE_Form {
                                 </EtsBootstrap.Col>
                               </EtsBootstrap.Row>
                             </EtsBootstrap.Col>
-                          ) : (
-                            <DivNone />
                           )}
                         </EtsBootstrap.Col>
                         <EtsBootstrap.Col md={12}>
@@ -2284,8 +2276,6 @@ class WaybillForm extends UNSAFE_Form {
                   </EtsBootstrap.Col>
                 </EtsBootstrap.Row>
               </>
-            ) : (
-              <DivNone />
             )}
           </Div>
           <EtsBootstrap.Row>

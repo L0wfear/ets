@@ -91,38 +91,26 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
       [props.page],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          isEmpty(element)
-            ? (
-              <ProgramRegistryFormCreateWrap
-                defSendFromState={defSendFromStateWrap}
-                getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
-                validate={validate}
-                {...props}
-              />
-            )
-            : (
-              <ProgramRegistryFormUWrap
-                defSendFromState={defSendFromStateWrap}
-                getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
-                validate={validate}
-                {...props}
-                entity={'repair_program_version'}
-              />
-            )
-        );
-      },
-      [
-        props,
-        element,
-        defSendFromStateWrap,
-        getFrowmStateAndErrorAndCanSave,
-        validate,
-      ],
+    return (
+      isEmpty(element)
+        ? (
+          <ProgramRegistryFormCreateWrap
+            defSendFromState={defSendFromStateWrap}
+            getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
+            validate={validate}
+            {...props}
+          />
+        )
+        : (
+          <ProgramRegistryFormUWrap
+            defSendFromState={defSendFromStateWrap}
+            getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
+            validate={validate}
+            {...props}
+            entity={'repair_program_version'}
+          />
+        )
     );
-
   },
 );
 

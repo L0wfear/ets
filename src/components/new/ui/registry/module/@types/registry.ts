@@ -22,9 +22,25 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Disp
   title?: Title;
 };
 
+export type TypeFieldsAvalibaleKey<F> = (
+  Extract<keyof F, string>
+  | 'checkbox'
+  | 'enumerated'
+  | 'showMissionInfo'
+  | 'is_open'
+  | 'company_structure_actions'
+  | 'services_actions_on_off'
+  | 'service_files'
+  | 'button_show_action_log'
+  | 'buttonCloneTire'
+  | 'edc_request_info'
+  | 'show_file_list'
+  | 'show_edc_comments'
+);
+
 export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
   CommonTypeField<F, Title>
-) & (
+ ) & (
   {
     key: Extract<keyof F, string>;
     format?: (
@@ -51,30 +67,7 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'waybill_status_name'
     );
   } | {
-    key: 'enumerated';
-    title: string;
-  } | {
-    key: 'checkbox';
-  } | {
-    key: 'showMissionInfo';
-  } | {
-    key: 'is_open';
-  } | {
-    key: 'company_structure_actions',
-  } | {
-    key: 'services_actions_on_off',
-  } | {
-    key: 'service_files';
-  } | {
-    key: 'button_show_action_log';
-  } | {
-    key: 'buttonCloneTire',
-  } | {
-    key: 'edc_request_info',
-  } | {
-    key: 'show_file_list',
-  } | {
-    key: 'show_edc_comments',
+    key: TypeFieldsAvalibaleKey<void>;
   }
 );
 
@@ -180,6 +173,7 @@ export interface OneRegistryData<F = any> {
       fields: Array<TypeFieldsRegistry<F>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
+      row_fields_table_width: number;
       treeFields: object,
     },
     paginator?: {

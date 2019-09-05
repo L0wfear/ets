@@ -19,14 +19,11 @@ const CahngeCompany: React.FC<Props> = React.memo(
       return <Redirect to={requireAuth(userData.permissionsSet, '/monitor')} />;
     }
 
-    return React.useMemo(
-      () => (
-        <div className="company-switcher-big">
-          <span className="company-switcher-big-label">Выберите организацию</span>
-          <CompanyOptions/>
-        </div>
-      ),
-      [],
+    return (
+      <div className="company-switcher-big">
+        <span className="company-switcher-big-label">Выберите организацию</span>
+        <CompanyOptions/>
+      </div>
     );
   },
 );

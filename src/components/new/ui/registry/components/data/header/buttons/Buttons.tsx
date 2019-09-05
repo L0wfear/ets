@@ -9,12 +9,12 @@ type ButtonsProps = {
   registryKey: string;
 };
 
-const Buttons: React.FC<ButtonsProps> = (props) => {
-  const buttons = etsUseSelector(
-    (state) => getHeaderData(state.registry, props.registryKey).buttons,
-  );
-  return React.useMemo(
-    () => (
+const Buttons: React.FC<ButtonsProps> = React.memo(
+  (props) => {
+    const buttons = etsUseSelector(
+      (state) => getHeaderData(state.registry, props.registryKey).buttons,
+    );
+    return (
       <EtsButtonsContainer>
         {
           buttons.map(
@@ -24,9 +24,8 @@ const Buttons: React.FC<ButtonsProps> = (props) => {
           )
         }
       </EtsButtonsContainer>
-    ),
-    [buttons, props.registryKey],
-  );
-};
+    );
+  },
+);
 
 export default Buttons;

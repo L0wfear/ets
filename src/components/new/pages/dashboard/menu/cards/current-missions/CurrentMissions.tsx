@@ -35,14 +35,11 @@ const CurrentMissions: React.FC<PropsCurrentMissions> = React.memo(
       [dispatch],
     );
 
-    return React.useMemo(
-      () => (
-        <CurrentMissionsLineDates>
-          <ListByTypeCurerntMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
-          <ListByTypeCurerntMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
-        </CurrentMissionsLineDates>
-      ),
-      [handleClick],
+    return (
+      <CurrentMissionsLineDates>
+        <ListByTypeCurerntMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
+        <ListByTypeCurerntMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
+      </CurrentMissionsLineDates>
     );
   },
 );

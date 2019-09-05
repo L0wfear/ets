@@ -14,10 +14,6 @@ import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
-import {
-  DivNone,
-} from 'global-styled/global-styled';
-
 const getActiveClassName = (activeMain) => (
   cx(
     'legen_option',
@@ -98,12 +94,7 @@ class BarShowGeoobjects extends React.Component<any, any> {
               <span>{`Сливы ${isOpen ? ' \u25BC' : ' \u25BA'}`}</span>
             </div>
             {
-              !isOpen ?
-              (
-                <DivNone />
-              )
-              :
-              (
+              isOpen && (
                 <div className="car_block_legend left fuel_leak">
                   <div>
                     <span>C </span>

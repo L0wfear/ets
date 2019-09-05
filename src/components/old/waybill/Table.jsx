@@ -1,14 +1,8 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import _ from 'lodash';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import {
-  EtsTable,
-  EtsTableWrapNoScroll,
-} from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
-import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+
+import { EtsTableWrapNoScroll } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -75,15 +69,20 @@ export default class Table extends React.Component {
 
   renderHeader() {
     return (
-      <EtsThead className="ets-table-header">
-        {this.props.columnCaptions.map((o, i) => {
-          return (
-            <EtsTheadTh key={i} width={o.width} className={o.className}>
-              {o.value}
-            </EtsTheadTh>
-          );
-        })}
-      </EtsThead>
+      <EtsBootstrap.Grid.GridBootstrapThead.Thead className="ets-table-header">
+        <EtsBootstrap.Grid.GridBootstrapThead.Tr>
+          {this.props.columnCaptions.map((o, i) => {
+            return (
+              <EtsBootstrap.Grid.GridBootstrapThead.Th
+                key={i}
+                width={o.width}
+                className={o.className}>
+                {o.value}
+              </EtsBootstrap.Grid.GridBootstrapThead.Th>
+            );
+          })}
+        </EtsBootstrap.Grid.GridBootstrapThead.Tr>
+      </EtsBootstrap.Grid.GridBootstrapThead.Thead>
     );
   }
 
@@ -107,10 +106,10 @@ export default class Table extends React.Component {
       <EtsBootstrap.Row>
         <EtsTableDataContainer>
           <EtsTableWrapNoScroll className="ets_table_wrap">
-            <EtsTable fixedWidth>
+            <EtsBootstrap.Grid.GridTable fixedWidth>
               {this.renderHeader()}
               <tbody>{rows}</tbody>
-            </EtsTable>
+            </EtsBootstrap.Grid.GridTable>
           </EtsTableWrapNoScroll>
         </EtsTableDataContainer>
       </EtsBootstrap.Row>
@@ -126,12 +125,16 @@ const TrRow = (props) => {
     _.each(props.tableCols, (col) => {
       const v = props.cells[col];
       if (renderers[col] === undefined) {
-        cells.push(<EtsTbodyTrTd key={cells.length}>{v}</EtsTbodyTrTd>);
+        cells.push(
+          <EtsBootstrap.Grid.GridBootstrapTbody.Td key={cells.length}>
+            {v}
+          </EtsBootstrap.Grid.GridBootstrapTbody.Td>,
+        );
       } else {
         cells.push(
-          <EtsTbodyTrTd key={cells.length}>
+          <EtsBootstrap.Grid.GridBootstrapTbody.Td key={cells.length}>
             {renderers[col](v, props.cells, props.index)}
-          </EtsTbodyTrTd>,
+          </EtsBootstrap.Grid.GridBootstrapTbody.Td>,
         );
       }
     });
@@ -139,10 +142,16 @@ const TrRow = (props) => {
     _.each(props.cells, (v, k) => {
       if (k !== 'id') {
         if (renderers[k] === undefined) {
-          cells.push(<EtsTbodyTrTd key={cells.length}>{v}</EtsTbodyTrTd>);
+          cells.push(
+            <EtsBootstrap.Grid.GridBootstrapTbody.Td key={cells.length}>
+              {v}
+            </EtsBootstrap.Grid.GridBootstrapTbody.Td>,
+          );
         } else {
           cells.push(
-            <EtsTbodyTrTd key={cells.length}>{renderers[k](v)}</EtsTbodyTrTd>,
+            <EtsBootstrap.Grid.GridBootstrapTbody.Td key={cells.length}>
+              {renderers[k](v)}
+            </EtsBootstrap.Grid.GridBootstrapTbody.Td>,
           );
         }
       }
@@ -150,11 +159,11 @@ const TrRow = (props) => {
   }
 
   return (
-    <EtsTrTbody
+    <EtsBootstrap.Grid.GridBootstrapTbody.Tr
       enable
-      selected={props.selected}
+      isSelected={props.selected}
       onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>
       {cells}
-    </EtsTrTbody>
+    </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
   );
 };

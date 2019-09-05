@@ -1,6 +1,7 @@
 import * as React from 'react';
 import TdBody from 'components/old/ui/tableNew/table/tbody/trBody/tdBody/TdBody';
 import * as cx from 'classnames';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class TrBody extends React.Component<any, any> {
   renderTd = (tableMeta, index) => (
@@ -32,9 +33,9 @@ class TrBody extends React.Component<any, any> {
     );
 
     return (
-      <tr className={className} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick} >
+      <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey="none" className={className} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick} >
         { this.props.tableMeta.cols.map(this.renderTd) }
-      </tr>
+      </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
     );
   }
 }

@@ -1,7 +1,7 @@
 import { isBoolean, isString } from 'util';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
-export const validatePermissions = (permissions: string | string[] | boolean, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
+export const validatePermissions = (permissions: string | Array<string | boolean> | boolean, permissionsSet: InitialStateSession['userData']['permissionsSet']) => {
   if (isBoolean(permissions)) {
     return permissions;
   }

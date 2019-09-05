@@ -564,19 +564,15 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
     [type_image_name, date_start, date_end, distance, gov_number, props.searchState, has_front_events_list],
   );
 
-  return React.useMemo(
-    () => (
-      currentBrowser !== 'IE' &&
-        <React.Fragment>
-          <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
-          <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
-            <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
-            Выгрузить
-          </EtsBootstrap.Button>
-        </React.Fragment>
-    ),
-    [props.disabled, handleClick, inLoading, currentBrowser],
-  );
+  return currentBrowser !== 'IE' && (
+      <React.Fragment>
+        <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
+        <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
+          <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
+          Выгрузить
+        </EtsBootstrap.Button>
+      </React.Fragment>
+    );
   },
 );
 

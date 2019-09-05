@@ -5,7 +5,6 @@ import Buttons from 'components/new/ui/registry/components/data/header/buttons/B
 import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getHeaderData } from '../../../module/selectors-registry';
-import { DivNone } from 'global-styled/global-styled';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import SelectedOdhDtDisabled from './middle/SelectedOdhDtDisabled';
 import SelectedOdhDt from './middle/SelectedOdhDt';
@@ -34,44 +33,28 @@ const Header: React.FC<HeaderProps> = React.memo(
     );
 
     if (format === 'select_for_technical_operation_relations') {
-      return React.useMemo(
-        () => (
-          <SelectForTechnicalOperationRelations registryKey={props.registryKey} />
-        ),
-        [props.registryKey],
+      return (
+        <SelectForTechnicalOperationRelations registryKey={props.registryKey} />
       );
     }
+    const MiddleBlock = getMiddleBlockComponent(format);
 
-    return React.useMemo(
-      () => {
-        const MiddleBlock = getMiddleBlockComponent(format);
-
-        return (
-          <EtsHeaderContainerWrap>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
-                <EtsHeaderContainer>
-                  <Title registryKey={props.registryKey} />
-                  {
-                    MiddleBlock
-                      ? (
-                        <MiddleBlock registryKey={props.registryKey} />
-                      )
-                      : (
-                        <DivNone />
-                      )
-                  }
-                  <Buttons registryKey={props.registryKey} />
-                </EtsHeaderContainer>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-          </EtsHeaderContainerWrap>
-        );
-      },
-      [
-        format,
-        props.registryKey,
-      ],
+    return (
+      <EtsHeaderContainerWrap>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
+            <EtsHeaderContainer>
+              <Title registryKey={props.registryKey} />
+              {
+                MiddleBlock && (
+                  <MiddleBlock registryKey={props.registryKey} />
+                )
+              }
+              <Buttons registryKey={props.registryKey} />
+            </EtsHeaderContainer>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+      </EtsHeaderContainerWrap>
     );
   },
 );

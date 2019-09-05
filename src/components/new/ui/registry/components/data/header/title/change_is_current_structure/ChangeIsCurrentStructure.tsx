@@ -67,35 +67,27 @@ const Title: React.FC<Props> = React.memo(
       },
       [is_current_structure, dispatch, props.registryKey],
     );
-    return React.useMemo(
-      () => (
-        userStructureId &&
-          <ChangeIsCurrentStructureWrap>
-            <ExtField
-              type="boolean"
-              value={is_current_structure}
-              onChange={handleChange}
-              label="Вывести данные по текущему подразделению"
-              className="checkbox-input flex-reverse default-boolean-input"
-            />
-            <EtsBootstrap.OverlayTrigger
-              trigger={['hover', 'focus']}
-              overlay={(
-                <EtsBootstrap.Popover id={`${props.registryKey}_title-popover`} >
-                  {is_current_structure_popover}
-                </EtsBootstrap.Popover>
-              )}
-              placement="top">
-              <EtsBootstrap.Glyphicon glyph="info-sign" />
-            </EtsBootstrap.OverlayTrigger>
-          </ChangeIsCurrentStructureWrap>
-      ),
-      [
-        handleChange,
-        props.registryKey,
-        is_current_structure,
-        is_current_structure_popover,
-      ],
+    return (
+      userStructureId &&
+        <ChangeIsCurrentStructureWrap>
+          <ExtField
+            type="boolean"
+            value={is_current_structure}
+            onChange={handleChange}
+            label="Вывести данные по текущему подразделению"
+            className="checkbox-input flex-reverse default-boolean-input"
+          />
+          <EtsBootstrap.OverlayTrigger
+            trigger={['hover', 'focus']}
+            overlay={(
+              <EtsBootstrap.Popover id={`${props.registryKey}_title-popover`} >
+                {is_current_structure_popover}
+              </EtsBootstrap.Popover>
+            )}
+            placement="top">
+            <EtsBootstrap.Glyphicon glyph="info-sign" />
+          </EtsBootstrap.OverlayTrigger>
+        </ChangeIsCurrentStructureWrap>
     );
   },
 );

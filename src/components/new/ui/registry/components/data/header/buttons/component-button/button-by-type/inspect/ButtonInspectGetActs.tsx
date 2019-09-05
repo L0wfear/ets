@@ -96,15 +96,10 @@ const ButtonInspectGetActs: React.FC<Props> = React.memo(
       [canGetAct, currentCheckedRows, currentSelectedRowUniqKey, currentSelectedRow],
     );
 
-    return React.useMemo(
-      () => <EtsBootstrap.Button disabled={!canGetAct} title={!canGetAct ? 'Сформировать акт(ы) можно только для проверок в статусе “завершена”' : ''} onClick={handleGetAct}>
-          Сформировать акт(ы)
-        </EtsBootstrap.Button>,
-      [
-        currentSelectedRowUniqKey,
-        handleGetAct,
-        currentCheckedRows,
-      ],
+    return (
+      <EtsBootstrap.Button disabled={!canGetAct} title={!canGetAct ? 'Сформировать акт(ы) можно только для проверок в статусе “завершена”' : ''} onClick={handleGetAct}>
+        Сформировать акт(ы)
+      </EtsBootstrap.Button>
     );
   },
 );

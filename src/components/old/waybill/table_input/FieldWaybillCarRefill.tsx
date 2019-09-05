@@ -1,9 +1,10 @@
 import * as React from 'react';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+
 import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_input/TableInput';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { DisplayFlexAlignCenterFooterForm, DivNone, FooterEnd } from 'global-styled/global-styled';
+import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
@@ -230,16 +231,12 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
         />
         <DisplayFlexAlignCenterFooterForm>
           {
-            Boolean(props.array) && Boolean(props.array.length)
-              ? (
-                <FooterEnd margin={30}>
-                  <div><b>{'Итого '}</b></div>
-                  <div><b>{props.fuel_given.toFixed(3)}</b></div>
-                </FooterEnd>
-              )
-              : (
-                <DivNone />
-              )
+            Boolean(props.array && props.array[0]) && (
+              <FooterEnd margin={30}>
+                <div><b>{'Итого '}</b></div>
+                <div><b>{props.fuel_given.toFixed(3)}</b></div>
+              </FooterEnd>
+            )
           }
         </DisplayFlexAlignCenterFooterForm>
       </div>

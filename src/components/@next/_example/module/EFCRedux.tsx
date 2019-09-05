@@ -25,15 +25,8 @@ const FunctionComponent: React.FC<Props> = React.memo(
       [],
     );
 
-    // если используется etsUseSelector, то оборачиваем в React.useMemo
-    return React.useMemo(
-      () => (
-        <div onClick={handleClick}>{JSON.stringify(stateFromState)}</div>
-      ),
-      [
-        stateFromState,
-        handleClick,
-      ],
+    return (
+      <div onClick={handleClick}>{JSON.stringify(stateFromState)}</div>
     );
   },
 );

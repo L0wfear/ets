@@ -1,9 +1,7 @@
 import * as React from 'react';
 
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
-import { EtsTableWrap, EtsTable } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
-import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import { EtsTableWrap } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
@@ -92,16 +90,16 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
       </EtsHeaderContainerWrap>
       <EtsTableDataContainer>
         <EtsTableWrap>
-          <EtsTable fixedWidth={true}>
-            <EtsThead>
-              <tr>
-                <EtsTheadTh width={30}>№</EtsTheadTh>
-                <EtsTheadTh width={150}>Наименование работ</EtsTheadTh>
-                <EtsTheadTh width={250}>Дата начала</EtsTheadTh>
-                <EtsTheadTh width={250}>Дата окончания</EtsTheadTh>
-              </tr>
-            </EtsThead>
-            <tbody>
+          <EtsBootstrap.Grid.GridTable fixedWidth={true}>
+            <EtsBootstrap.Grid.GridBootstrapThead.Thead>
+              <EtsBootstrap.Grid.GridBootstrapThead.Tr>
+                <EtsBootstrap.Grid.GridBootstrapThead.Th width={30}>№</EtsBootstrap.Grid.GridBootstrapThead.Th>
+                <EtsBootstrap.Grid.GridBootstrapThead.Th width={150}>Наименование работ</EtsBootstrap.Grid.GridBootstrapThead.Th>
+                <EtsBootstrap.Grid.GridBootstrapThead.Th width={250}>Дата начала</EtsBootstrap.Grid.GridBootstrapThead.Th>
+                <EtsBootstrap.Grid.GridBootstrapThead.Th width={250}>Дата окончания</EtsBootstrap.Grid.GridBootstrapThead.Th>
+              </EtsBootstrap.Grid.GridBootstrapThead.Tr>
+            </EtsBootstrap.Grid.GridBootstrapThead.Thead>
+            <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
               {
                 props.actions.map((actionData, index) => (
                   <ContainerRegistryTr
@@ -113,8 +111,8 @@ export const InspectContainerRegistry: React.FC<InspectContainerRegistryProps> =
                   />
                 ))
               }
-            </tbody>
-          </EtsTable>
+            </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
+          </EtsBootstrap.Grid.GridTable>
         </EtsTableWrap>
       </EtsTableDataContainer>
       <InspectContainerFormAddActionLazy

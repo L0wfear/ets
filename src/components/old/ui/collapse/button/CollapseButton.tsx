@@ -3,13 +3,13 @@ import * as React from 'react';
 import Collapse from 'components/old/ui/collapse/Collapse';
 import {
   GlyphiconCollapseButtonWrap,
-  GlyphiconPointer,
 } from 'components/old/ui/collapse/button/styled/styled';
 
 import {
   PropsCollapseButton,
   StateCollapseButton,
 } from 'components/old/ui/collapse/button/CollapseButton.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class CollapseButton extends React.Component<PropsCollapseButton, StateCollapseButton> {
   state = {
@@ -31,7 +31,7 @@ class CollapseButton extends React.Component<PropsCollapseButton, StateCollapseB
           { this.props.children }
         </Collapse>
         <GlyphiconCollapseButtonWrap isOpen={isOpen}>
-          <GlyphiconPointer glyph="menu-down" onClick={this.toggleIsOpen} />
+          <EtsBootstrap.Glyphicon glyph="menu-down" onClick={this.toggleIsOpen} />
         </GlyphiconCollapseButtonWrap>
       </>
     );

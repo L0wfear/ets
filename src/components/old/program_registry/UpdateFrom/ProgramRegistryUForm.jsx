@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
@@ -15,10 +18,8 @@ import {
   ProgramObjectList,
 } from 'components/old/program_registry/UpdateFrom/inside_components';
 import MakeVersionFrom from 'components/old/program_registry/UpdateFrom/MakeVersionFrom';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { DivNone } from 'global-styled/global-styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const styleTextMakeVersion = { marginBottom: 5 };
@@ -379,7 +380,7 @@ class ProgramRegistryForm extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <EtsBootstrap.Row>
-              {state.id ? (
+              {Boolean(state.id) && (
                 <React.Fragment>
                   <ProgramObjectList
                     program_version_id={state.id}
@@ -408,8 +409,6 @@ class ProgramRegistryForm extends UNSAFE_Form {
                     isPermittedByStatus={isPermittedByStatus}
                   />
                 </React.Fragment>
-              ) : (
-                <DivNone />
               )}
             </EtsBootstrap.Row>
           </ModalBody>

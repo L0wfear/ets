@@ -13,72 +13,67 @@ type Props = (
   WithSearchProps
 );
 
-const SelectCarpoolCompany: React.FC<Props> = (props) => {
-  const {
-    searchState,
-    setDataInSearch,
-  } = props;
+const SelectCarpoolCompany: React.FC<Props> = React.memo(
+  (props) => {
+    const {
+      searchState,
+      setDataInSearch,
+    } = props;
 
-  const companyList = etsUseSelector(
-    (state) => getInspectAutobase(state).companyList,
-  );
+    const companyList = etsUseSelector(
+      (state) => getInspectAutobase(state).companyList,
+    );
 
-  const companyId = getNumberValueFromSerch(searchState.companyId);
+    const companyId = getNumberValueFromSerch(searchState.companyId);
 
-  const compnayOptions = React.useMemo(
-    () => {
-      return (
-        companyList.map(
-          (company) => ({
-            value: company.company_id,
-            label: company.short_name,
-            rowData: company,
-          }),
-        ).filter(({ value }) => value)
-      );
-    },
-    [companyList],
-  );
+    const compnayOptions = React.useMemo(
+      () => {
+        return (
+          companyList.map(
+            (company) => ({
+              value: company.company_id,
+              label: company.short_name,
+              rowData: company,
+            }),
+          ).filter(({ value }) => value)
+        );
+      },
+      [companyList],
+    );
 
-  const setCompanyId = React.useCallback(
-    (selectedCompanyId: number) => {
-      const newPartialSearch: any = {
-        ...searchState,
-      };
+    const setCompanyId = React.useCallback(
+      (selectedCompanyId: number) => {
+        const newPartialSearch: any = {
+          ...searchState,
+        };
 
-      newPartialSearch.companyId = selectedCompanyId;
+        newPartialSearch.companyId = selectedCompanyId;
 
-      setDataInSearch(newPartialSearch);
-    },
-    [searchState],
-  );
+        setDataInSearch(newPartialSearch);
+      },
+      [searchState],
+    );
 
-  return React.useMemo(
-    () => (
+    return (
       <InstectionBlockSelect>
         <SelectLabel md={3} sm={1}>
-            <h5>
-              Организация
-            </h5>
-          </SelectLabel>
-          <SelectField md={9} sm={6}>
-            <ExtField
-              type="select"
-              label={false}
-              value={companyId}
-              options={compnayOptions}
-              onChange={setCompanyId}
-              clearable={false}
-            />
-          </SelectField>
-        </InstectionBlockSelect>
-    ),
-    [
-      companyId,
-      compnayOptions,
-      setCompanyId,
-    ],
-  );
-};
+          <h5>
+            Организация
+          </h5>
+        </SelectLabel>
+        <SelectField md={9} sm={6}>
+          <ExtField
+            type="select"
+            label={false}
+            value={companyId}
+            options={compnayOptions}
+            onChange={setCompanyId}
+            clearable={false}
+          />
+        </SelectField>
+      </InstectionBlockSelect>
+    );
+  },
+);
 
 export default withSearch<OwnProps>(SelectCarpoolCompany);

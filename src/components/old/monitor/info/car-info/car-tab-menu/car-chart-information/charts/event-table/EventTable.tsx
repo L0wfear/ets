@@ -1,10 +1,6 @@
 import * as React from 'react';
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
-import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
@@ -23,39 +19,33 @@ const EventTable: React.FC<PropsEventTable> = React.memo(
       [props.handleEventClick, front_events_list],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.TableOld id="car_info-event_table">
-          <EtsThead>
-            <tr>
-              <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Дата и время</EtsTheadTh>
-              <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Событие</EtsTheadTh>
-              <EtsTheadTh width={33} widthUnits={'%'} alignCenter={true}>Объем, л</EtsTheadTh>
-            </tr>
-          </EtsThead>
-          <tbody>
-            {
-              front_events_list.length
-                ? front_events_list.map((row, indexRow) => (
-                    <EtsTrTbody enable borderedTd={true} key={indexRow} data-ievent={indexRow} onClick={handleEventClick} registryKey="car_info-event_table">
-                      <EtsTbodyTrTd>{row.date}</EtsTbodyTrTd>
-                      <EtsTbodyTrTd>{row.type_name}</EtsTbodyTrTd>
-                      <EtsTbodyTrTd>{row.value}</EtsTbodyTrTd>
-                    </EtsTrTbody>
-                  ))
-                : (
-                  <EtsTrTbody borderedTd={true} registryKey={'car_info-event_table'}>
-                    <EtsTbodyTrTd alignCenter={true} colSpan={3}>Нет данных</EtsTbodyTrTd>
-                  </EtsTrTbody>
-                )
-            }
-          </tbody>
-        </EtsBootstrap.TableOld>
-      ),
-      [
-        front_events_list,
-        handleEventClick,
-      ],
+    return (
+      <EtsBootstrap.TableOld id="car_info-event_table">
+        <EtsBootstrap.Grid.GridBootstrapThead.Thead>
+          <EtsBootstrap.Grid.GridBootstrapThead.Tr>
+            <EtsBootstrap.Grid.GridBootstrapThead.Th width={33} widthUnits={'%'} alignCenter={true}>Дата и время</EtsBootstrap.Grid.GridBootstrapThead.Th>
+            <EtsBootstrap.Grid.GridBootstrapThead.Th width={33} widthUnits={'%'} alignCenter={true}>Событие</EtsBootstrap.Grid.GridBootstrapThead.Th>
+            <EtsBootstrap.Grid.GridBootstrapThead.Th width={33} widthUnits={'%'} alignCenter={true}>Объем, л</EtsBootstrap.Grid.GridBootstrapThead.Th>
+          </EtsBootstrap.Grid.GridBootstrapThead.Tr>
+        </EtsBootstrap.Grid.GridBootstrapThead.Thead>
+        <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
+          {
+            front_events_list.length
+              ? front_events_list.map((row, indexRow) => (
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Tr enable borderedTd={true} key={indexRow} data-ievent={indexRow} onClick={handleEventClick} registryKey="car_info-event_table">
+                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.date}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.type_name}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{row.value}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                  </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+                ))
+              : (
+                <EtsBootstrap.Grid.GridBootstrapTbody.Tr borderedTd={true} registryKey={'car_info-event_table'}>
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter={true} colSpan={3}>Нет данных</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+                </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+              )
+          }
+        </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
+      </EtsBootstrap.TableOld>
     );
   },
 );

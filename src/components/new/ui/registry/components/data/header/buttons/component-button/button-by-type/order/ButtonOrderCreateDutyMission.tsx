@@ -32,17 +32,10 @@ const ButtonOrderCreateDutyMission: React.FC<Props> = React.memo(
 
     const isDisabled = isDisabledForCreateDutyMission(selectedRow);
 
-    return React.useMemo(
-      () => isPemitted && (
-        <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
-          Создать наряд-задание по шаблону
-        </EtsBootstrap.Button>
-      ),
-      [
-        isPemitted,
-        isDisabled,
-        handleClick,
-      ],
+    return isPemitted && (
+      <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
+        Создать наряд-задание по шаблону
+      </EtsBootstrap.Button>
     );
   },
 );

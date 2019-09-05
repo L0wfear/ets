@@ -16,14 +16,14 @@ type Props = {
   registryKey: string;
 };
 
-const Data: React.FC<Props> = (props) => {
-  const {
-    registryKey,
-  } = props;
-  const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
+const Data: React.FC<Props> = React.memo(
+  (props) => {
+    const {
+      registryKey,
+    } = props;
+    const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
 
-  return React.useMemo(
-    () => (
+    return (
       <EtsDataContainer>
         {
           format === 'select_for_technical_operation_relations'
@@ -43,12 +43,8 @@ const Data: React.FC<Props> = (props) => {
             )
         }
       </EtsDataContainer>
-    ),
-    [
-      registryKey,
-      format,
-    ],
-  );
-};
+    );
+  },
+);
 
 export default Data;

@@ -2,8 +2,6 @@ import * as React from 'react';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
 const ReportForm = React.lazy(() => (
   import(/* webpackChunkName: "ReportForm" */ 'components/old/reports/operational/cars_travel_time/form/ReportForm')
 ));
@@ -48,8 +46,7 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
     } = this.props;
 
     return (
-      showForm ?
-      (
+      showForm && (
         <ErrorBoundaryForm>
           <React.Suspense fallback={<LoadingComponent />}>
             <ReportForm
@@ -61,8 +58,6 @@ class ReportFormWrap extends React.PureComponent<PropsReportFormWrap, {}> {
           </React.Suspense>
         </ErrorBoundaryForm>
       )
-      :
-      ( <DivNone /> )
     );
   }
 }

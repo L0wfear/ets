@@ -1,15 +1,9 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import {
-  EtsTable,
-} from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type Props = {
   registryKey: string;
@@ -30,36 +24,33 @@ const OrdetToInstruction: React.FC<Props> = React.memo(
       [array],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsTable fixedWidth={false}>
-          <EtsThead>
-            <tr className="ets_thead_tr">
-              <EtsTheadTh>Дополнительная информация</EtsTheadTh>
-            </tr>
-          </EtsThead>
-          <tbody>
+    return (
+      <EtsBootstrap.Grid.GridTable fixedWidth={false}>
+        <EtsBootstrap.Grid.GridBootstrapThead.Thead>
+          <EtsBootstrap.Grid.GridBootstrapThead.Tr className="ets_thead_tr">
+            <EtsBootstrap.Grid.GridBootstrapThead.Th>Дополнительная информация</EtsBootstrap.Grid.GridBootstrapThead.Th>
+          </EtsBootstrap.Grid.GridBootstrapThead.Tr>
+        </EtsBootstrap.Grid.GridBootstrapThead.Thead>
+        <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
           {
             arrayData && arrayData.length
             ? (
-              <EtsTrTbody registryKey={props.registryKey}>
+              <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey={props.registryKey}>
                 {
                   arrayData.map((rowData) => (
-                    <EtsTbodyTrTd>{rowData.instruction}</EtsTbodyTrTd>
+                    <EtsBootstrap.Grid.GridBootstrapTbody.Td>{rowData.instruction}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
                   ))
                 }
-              </EtsTrTbody>
+              </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
             )
             : (
-              <EtsTrTbody registryKey={props.registryKey}>
-                <EtsTbodyTrTd>Нет данных</EtsTbodyTrTd>
-              </EtsTrTbody>
+              <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey={props.registryKey}>
+                <EtsBootstrap.Grid.GridBootstrapTbody.Td>Нет данных</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+              </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
             )
           }
-        </tbody>
-        </EtsTable>
-      ),
-      [props.registryKey, arrayData],
+        </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
+      </EtsBootstrap.Grid.GridTable>
     );
   },
 );

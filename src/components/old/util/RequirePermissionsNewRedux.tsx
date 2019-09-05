@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { get } from 'lodash';
 
-import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
@@ -72,10 +71,8 @@ const withRequirePermissionsNew = <P extends {}, O = {}>(
         const isPermitted = checkOnisPermitted(config, props, permissionsSet);
         const newProps = { ...props };
 
-        return config.withIsPermittedProps || isPermitted ? (
+        return Boolean(config.withIsPermittedProps || isPermitted) && (
           <Component {...newProps} {...this.state} />
-        ) : (
-          <DivNone />
         );
       }
     },

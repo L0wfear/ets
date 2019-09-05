@@ -22,29 +22,23 @@ const ButtonOrderExport: React.FC<Props> = React.memo(
     );
     const disabled = !selectedRow;
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Dropdown
-          id="dropdown-print"
-          disabled={disabled}
+    return (
+      <EtsBootstrap.Dropdown
+        id="dropdown-print"
+        disabled={disabled}
 
-          toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
-          toggleElementSize="small"
-        >
-          <EtsBootstrap.DropdownMenu pullRight>
-            <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={showPrintForm}>
-              Скан-копия факсограммы
-            </EtsBootstrap.MenuItem>
-            <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={showPrintForm}>
-              Расшифровка централизованного задания
-            </EtsBootstrap.MenuItem>
-          </EtsBootstrap.DropdownMenu>
-        </EtsBootstrap.Dropdown>
-      ),
-      [
-        disabled,
-        showPrintForm,
-      ],
+        toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
+        toggleElementSize="small"
+      >
+        <EtsBootstrap.DropdownMenu pullRight>
+          <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={showPrintForm}>
+            Скан-копия факсограммы
+          </EtsBootstrap.MenuItem>
+          <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={showPrintForm}>
+            Расшифровка централизованного задания
+          </EtsBootstrap.MenuItem>
+        </EtsBootstrap.DropdownMenu>
+      </EtsBootstrap.Dropdown>
     );
   },
 );

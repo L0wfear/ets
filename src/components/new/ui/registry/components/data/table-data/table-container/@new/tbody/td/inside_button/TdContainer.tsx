@@ -1,38 +1,36 @@
 import * as React from 'react';
-import { EtsTbodyTrTd, EtsTbodyScrollContainer, EtsTbodyTextContainer, EtsTdInnerWrapper } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { isString } from 'util';
 
-export type PropsTrTd = {
-  registryKey: string;
-  rowData: any;
-  metaKey: string;
-  value: any;
-  selected: boolean;
+import { EtsTbodyScrollContainer, EtsTbodyTextContainer, EtsTdInnerWrapper } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-  style?: any; // not use
+export type Props = {
+  registryKey: string;
+  value: string | number | React.ReactNode;
+  isSelected: boolean;
 };
 
-const TrTd: React.FC<PropsTrTd> = React.memo(
+const TdContainer: React.FC<Props> = React.memo(
   (props) => {
     const [showAll, setShowAll] = React.useState(false);
 
     const {
-      selected,
+      isSelected,
     } = props;
 
     const value = React.useMemo(
       () => {
         let valueRaw = props.value;
-        if (isString(valueRaw)) {
+        if (isString(props.value)) {
           valueRaw = (
-            valueRaw
+            props.value
               .split('\n')
               .map(
                 (oneLineComment, i) => {
                   let text = oneLineComment;
 
-                  if (!showAll || !selected) {
-                    const shortTest = valueRaw.slice(0, 300);
+                  if (!showAll || !isSelected) {
+                    const shortTest = (isString(props.value) ? props.value : '').slice(0, 300);
                     if (shortTest.length >= 300) {
                       text = `${shortTest} ...`;
                     }
@@ -54,28 +52,28 @@ const TrTd: React.FC<PropsTrTd> = React.memo(
 
         return valueRaw;
       },
-      [props.value, showAll, selected],
+      [props.value, showAll, isSelected],
     );
 
     const handleClick = React.useCallback(
       () => {
-        if ( !selected ) {
+        if ( !isSelected ) {
           setShowAll(false);
         } else {
           setShowAll(!showAll);
         }
       },
-      [selected, showAll],
+      [isSelected, showAll],
     );
 
     return (
-      <EtsTbodyTrTd onClick={handleClick}>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick}>
         <EtsTdInnerWrapper>
           {value}
         </EtsTdInnerWrapper>
-      </EtsTbodyTrTd>
+      </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   },
 );
 
-export default TrTd;
+export default TdContainer;

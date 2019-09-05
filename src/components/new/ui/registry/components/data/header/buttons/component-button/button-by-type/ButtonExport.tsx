@@ -27,20 +27,14 @@ const ButtonExport: React.FC<PropsButtonExport> = React.memo(
       [props.data],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Button
-          id="regestry-download-alt"
-          bsSize="small"
-          onClick={handleClick}
-        >
-          <EtsBootstrap.Glyphicon glyph={glyph || 'download-alt'} />
-        </EtsBootstrap.Button>
-      ),
-      [
-        handleClick,
-        glyph,
-      ],
+    return (
+      <EtsBootstrap.Button
+        id="regestry-download-alt"
+        bsSize="small"
+        onClick={handleClick}
+      >
+        <EtsBootstrap.Glyphicon glyph={glyph || 'download-alt'} />
+      </EtsBootstrap.Button>
     );
   },
 );

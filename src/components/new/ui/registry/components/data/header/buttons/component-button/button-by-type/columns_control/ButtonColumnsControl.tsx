@@ -28,26 +28,18 @@ const ButtonColumnsControl: React.FC<Props> = React.memo(
       [],
     );
 
-    return React.useMemo(
-      () => (
-        <ClickOutHandler onClickOut={closePopup}>
-          <EtsBootstrap.Button bsSize="small" active={showConfigPopup || hasHiddenField} onClick={toggleShowPopup}>
-            <EtsBootstrap.Glyphicon glyph="cog" />
-          </EtsBootstrap.Button>
-          {
-            showConfigPopup
-              && (
-                <ColumnsPopup registryKey={props.registryKey} />
-              )
-          }
-        </ClickOutHandler>
-      ),
-      [
-        closePopup,
-        showConfigPopup,
-        hasHiddenField,
-        hasHiddenField,
-      ],
+    return (
+      <ClickOutHandler onClickOut={closePopup}>
+        <EtsBootstrap.Button bsSize="small" active={showConfigPopup || hasHiddenField} onClick={toggleShowPopup}>
+          <EtsBootstrap.Glyphicon glyph="cog" />
+        </EtsBootstrap.Button>
+        {
+          showConfigPopup
+            && (
+              <ColumnsPopup registryKey={props.registryKey} />
+            )
+        }
+      </ClickOutHandler>
     );
   },
 );

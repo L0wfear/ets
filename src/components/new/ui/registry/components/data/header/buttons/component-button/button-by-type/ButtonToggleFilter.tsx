@@ -38,22 +38,15 @@ const ButtonToggleFilter: React.FC<Props> = React.memo(
       [props.data],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Button
-          id="show-options-filter"
-          bsSize="small"
-          active={hasFilters}
-          onClick={handleClick}
-        >
-          <EtsBootstrap.Glyphicon glyph={glyph || 'filter'} />
-        </EtsBootstrap.Button>
-      ),
-      [
-        hasFilters,
-        handleClick,
-        glyph,
-      ],
+    return (
+      <EtsBootstrap.Button
+        id="show-options-filter"
+        bsSize="small"
+        active={hasFilters}
+        onClick={handleClick}
+      >
+        <EtsBootstrap.Glyphicon glyph={glyph || 'filter'} />
+      </EtsBootstrap.Button>
     );
   },
 );

@@ -75,7 +75,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
         <EtsBootstrap.Glyphicon glyph={data.glyph || 'remove'} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>

@@ -50,7 +50,7 @@ class ButtonCreateDutyMissionByEdcRequest extends React.PureComponent<ButtonCrea
     const can_create_duty_mission = get(props.selectedRow, 'can_create_duty_mission', false);
 
     return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_duty_mission}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-create_duty_mission_by_edc-form`} bsSize="small" onClick={this.handleClick} disabled={!can_create_duty_mission}>
         <EtsBootstrap.Glyphicon glyph="plus" /> Создать наряд-задание
       </EtsBootstrap.Button>
     );

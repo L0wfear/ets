@@ -41,7 +41,7 @@ const ButtonCreateCompanyStructure: React.FC<ButtonCreateCompanyStructureProps> 
   );
 
   return (
-    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-create_company_structure-form`} bsSize="small" onClick={handleClick}>
       <EtsBootstrap.Glyphicon glyph="plus" /> Добавить подразделение
     </EtsBootstrap.Button>
   );

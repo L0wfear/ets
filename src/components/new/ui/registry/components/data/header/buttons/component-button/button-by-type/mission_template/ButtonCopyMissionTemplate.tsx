@@ -53,7 +53,7 @@ const ButtonCopyMissionTemplate: React.FC<ButtonCopyMissionTemplateProps> = (pro
   );
 
   return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!selectedRow}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-copy_form-form`} bsSize="small" onClick={handleClick} disabled={!selectedRow}>
         <EtsBootstrap.Glyphicon glyph="copy" />  Копировать
       </EtsBootstrap.Button>
   );

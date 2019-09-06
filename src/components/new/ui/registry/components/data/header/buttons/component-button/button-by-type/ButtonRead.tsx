@@ -70,7 +70,7 @@ const ButtonRead: React.FC<ButtonReadProps> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-update-form`} bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
         <EtsBootstrap.Glyphicon glyph={data.glyph || 'search'} />{data.title || 'Просмотреть'}
       </EtsBootstrap.Button>
     );

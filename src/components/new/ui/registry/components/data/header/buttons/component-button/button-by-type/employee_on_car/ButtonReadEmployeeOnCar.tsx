@@ -56,7 +56,7 @@ class ButtonReadEmployeeOnCar extends React.Component<ButtonReadEmployeeOnCarPro
     const { props } = this;
 
     return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-update_car-form`} bsSize="small" onClick={this.handleClick} disabled={!props.selectedRow}>
         Просмотреть карточку ТС
       </EtsBootstrap.Button>
     );

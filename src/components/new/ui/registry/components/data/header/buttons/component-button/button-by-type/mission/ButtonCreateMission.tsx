@@ -41,7 +41,7 @@ const ButtonCreateMission: React.FC<ButtonCreateMissionProps> = (props) => {
   );
 
   return (
-    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_by_templates-form`} bsSize="small" onClick={handleClick}>
       <EtsBootstrap.Glyphicon glyph="plus" /> Создать децентрализованное задание
     </EtsBootstrap.Button>
   );

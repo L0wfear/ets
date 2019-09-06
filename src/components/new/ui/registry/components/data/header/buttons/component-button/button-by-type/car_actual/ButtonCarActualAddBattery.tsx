@@ -41,7 +41,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   );
 
   return (
-    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
+    <EtsBootstrap.Button id={`${props.registryKey}.add_battery`} bsSize="small" onClick={handleClick}>
       <EtsBootstrap.Glyphicon glyph="plus" /> Добавить
     </EtsBootstrap.Button>
   );

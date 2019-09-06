@@ -76,7 +76,7 @@ const ButtonChangeRouteTechnicalOperationRelations: React.FC<ButtonChangeRouteTe
   );
 
   return (
-    <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-update_route_form-form`} bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
       Изменить маршрут
     </EtsBootstrap.Button>
   );

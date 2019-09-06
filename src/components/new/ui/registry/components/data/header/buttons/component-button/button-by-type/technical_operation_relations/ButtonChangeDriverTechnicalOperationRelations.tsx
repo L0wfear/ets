@@ -76,7 +76,7 @@ const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriver
   );
 
   return (
-    <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-update_car-form`} bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
       Изменить водителей
     </EtsBootstrap.Button>
   );

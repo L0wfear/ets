@@ -48,7 +48,7 @@ class ButtonCreateMissionByEdcRequest extends React.PureComponent<ButtonCreateMi
     const can_create_mission = get(props.selectedRow, 'can_create_mission', false);
 
     return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_mission}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_by_edc-form`} bsSize="small" onClick={this.handleClick} disabled={!can_create_mission}>
         <EtsBootstrap.Glyphicon glyph="plus" /> Создать децентрализованное задание
       </EtsBootstrap.Button>
     );

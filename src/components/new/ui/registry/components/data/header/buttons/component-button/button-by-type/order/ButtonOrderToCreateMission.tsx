@@ -81,7 +81,7 @@ const ButtonOrderToCreateMission: React.FC<Props> = React.memo(
     const isDisabled = isDisabledForCreateMissionByTO(selectedOrderRow, selectedOrderTORow);
 
     return isPemitted && (
-      <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_from_order-form`} bsSize="small" disabled={isDisabled} onClick={handleClick}>
         Создать задание
       </EtsBootstrap.Button>
     );

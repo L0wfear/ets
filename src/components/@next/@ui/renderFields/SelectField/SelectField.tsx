@@ -21,7 +21,7 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
         hidden={props.hidden}
         className={className}
       >
-        {typeof label === 'string' && <FieldLabel id={id}>{label}</FieldLabel>}
+        {typeof props.label === 'string' && <FieldLabel id={id}>{label}</FieldLabel>}
         <SelectFieldUi
           {...selectProps}
           disabled={readOnly || props.disabled}

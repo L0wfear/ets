@@ -51,6 +51,7 @@ const registryDefaultObj: OneRegistryData = {
       rowFields: [],
       row_fields_table_width: 0,
       treeFields: {},
+      renderFieldsSchema: null,
     },
     paginator: {
       currentPage: 0,

@@ -6,11 +6,14 @@ import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseD
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+// import { validate } from 'components/old/ui/form/new/validate';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
   registryKey: string;
   metaKey: string;
+  indexRow: number;
+  renderFieldsSchema: any;
 };
 type Props = OwnProps & {};
 
@@ -33,11 +36,21 @@ const getValueFromEvent = (valueEvent, renderParams) => {
   }
 };
 
-const ExtFieldTdTitle: React.FC<Props> = React.memo(
+const ExtFieldTd: React.FC<Props> = React.memo(
   (props) => {
-    const { renderParams } = props;
+    const { renderParams, renderFieldsSchema } = props;
     const value = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values.${props.metaKey}`, null));
+    const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
+    const error = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.errors.${props.metaKey}`, null));
     const dispatch = etsUseDispatch();
+
+    // const [errors, setErrors] = React.useState(null);
+
+    React.useEffect(() => {
+      if (valuesRenderRow) {
+        // const formErrors = validate(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
+      }
+    }, [valuesRenderRow]);
 
     const handleChange = React.useCallback(
       (fieldValue) => {
@@ -51,13 +64,13 @@ const ExtFieldTdTitle: React.FC<Props> = React.memo(
           ),
         );
       },
-      [props.metaKey, props.renderParams],
+      [props.metaKey, props.renderParams, renderFieldsSchema, valuesRenderRow],
     );
 
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         <ExtField
-          // id={renderParams.key} `${props.registryKey}.${props.indexRow}.${props.metaKey}`
+          id={`${props.registryKey}.${props.indexRow}.${props.metaKey}`}
           type={renderParams.type}
           multi={renderParams.multi}
           time={renderParams.time}
@@ -67,7 +80,7 @@ const ExtFieldTdTitle: React.FC<Props> = React.memo(
           className={renderParams.className}
           options={renderParams.options}
           // disabled={!props.isPermitted}
-          // error={get(props.errors, renderParams.key, '')}
+          error={error}
           readOnly={renderParams.readOnly}
           inline={renderParams.inline}
         />
@@ -76,4 +89,4 @@ const ExtFieldTdTitle: React.FC<Props> = React.memo(
   },
 );
 
-export default ExtFieldTdTitle;
+export default ExtFieldTd;

@@ -21,9 +21,7 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Disp
   width?: number;
   dashIfEmpty?: boolean;
   title?: Title;
-  renderParams?: ExtFieldType & {
-    key: string,
-  };
+  renderParams?: ExtFieldType;
 };
 
 export type TypeFieldsAvalibaleKey<F> = (
@@ -173,6 +171,7 @@ export interface OneRegistryData<F = any> {
     };
     meta: {
       row_double_click: boolean;
+      renderFieldsSchema: any;
       is_render_field: boolean;
       selected_row_in_params: boolean;
       fields: Array<TypeFieldsRegistry<F>>;

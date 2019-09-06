@@ -48,6 +48,7 @@ const Td: React.FC<Props> = React.memo(
         rowData={props.rowData}
         fieldMeta={props.fieldMeta}
         indexRow={props.indexRow}
+        renderFieldsSchema={props.renderFieldsSchema}
       />
     );
   },

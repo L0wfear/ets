@@ -14,7 +14,7 @@ import config from 'config';
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import TdContainer from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
-import ExtFieldTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTdTitle';
+import ExtFieldTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
 
 const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: CommontTdTiteProps['fieldMeta']) => {
   let value = rowData[fieldMeta.key];
@@ -116,10 +116,12 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
 
     return Boolean(props.fieldMeta.renderParams && isSelected)
       ? (
-        <ExtFieldTdTitle
+        <ExtFieldTd
           renderParams={props.fieldMeta.renderParams}
           registryKey={props.registryKey}
           metaKey={props.fieldMeta.key}
+          indexRow={props.indexRow}
+          renderFieldsSchema={props.renderFieldsSchema}
         />
       )
       : (

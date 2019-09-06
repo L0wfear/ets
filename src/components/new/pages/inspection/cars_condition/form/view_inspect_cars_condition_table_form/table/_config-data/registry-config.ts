@@ -2,6 +2,7 @@
 import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
+import { carsConditionCarFormDataSchema, carsConditionCarFormSchema } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/schema';
 
 export const registryKey = 'InspectCarsConditionsCarsExtendedRegistry';
 
@@ -34,15 +35,19 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
     meta: {
       row_double_click: false,
       is_render_field: true,
+      renderFieldsSchema: { // Что бы не надо было менять в нескольких местах, используем схему из карточки ТС
+        properties: {
+          ...carsConditionCarFormDataSchema.properties,
+          ...carsConditionCarFormSchema.properties,
+        },
+      },
       fields: [
         {
           key: 'gov_number',
           title: 'Гос.№',
-          width: 100,
+          width: 200,
           renderParams: {
             type: 'string',
-            label: false,
-            key: 'gov_number',
           },
         },
         {
@@ -95,14 +100,15 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'boolean',
-            label: 'да',
-            key: 'vin_incorrect',
           },
         },
         {
           key: 'vin_by_hand',
           title: 'Корректный VIN',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'body_number',
@@ -113,181 +119,318 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           key: 'body_number_incorrect',
           title: 'Некорректный заводской номер',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
         {
           key: 'body_number_by_hand',
           title: 'Корректный заводской номер',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'manufactured_at',
           title: 'Год выпуска',
           width: 200,
+          renderParams: {
+            type: 'number',
+          },
         },
         {
           key: 'environmental_class',
           title: 'Экологический стандарт ТС',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'engine_type',
           title: 'Тип двигателя',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'max_weight',
           title: 'Разрешенная масса (кг)',
           width: 200,
+          renderParams: {
+            type: 'number',
+            label: false,
+          },
         },
         {
           key: 'origin_country',
           title: 'Страна изготовитель',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'classifier',
           title: 'Классификатор',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'kind',
           title: 'Вид техники',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'osago',
           title: 'Номер ОСАГО',
           width: 200,
+          renderParams: {
+            type: 'string',
+            label: false,
+          },
         },
         {
           key: 'osago_not_required',
           title: 'ОСАГО не требуется',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
         {
           key: 'osago_finished_at',
           title: 'Срок действия ОСАГО',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'diagnostic_card',
           title: '№ диагностической карты / талона ГТО',
           width: 200,
+          renderParams: {
+            type: 'string',
+            label: false,
+          },
         },
         {
           key: 'diagnostic_card_finished_at',
           title: 'Дата окончания действия ГТО',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'given_at',
           title: 'Дата регистрации',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'exploitation_date_start',
           title: 'Дата начала эксплуатации',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'tech_inspection_passed',
           title: 'Технический осмотр пройден',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
         {
           key: 'glonass_stationary',
           title: 'ГЛОНАСС стационарный',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'glonass_registered',
           title: 'ГЛОНАСС зарегистрирован',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'logo',
           title: 'Логотип',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'state_exploitation',
           title: 'Состояние эксплуатации',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'tech_condition',
           title: 'Техническое состояние',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'fact_status',
           title: 'Фактический статус ТС',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'status_at_check',
           title: 'Нахождение ТС на момент проверки',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'waybill_number',
           title: 'Выдан ПЛ номер',
           width: 200,
+          renderParams: {
+            type: 'number',
+          },
         },
         {
           key: 'mission_numbers',
           title: 'Активное задание',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'not_passed_verification_glonass',
           title: 'Не пройдена проверка фактической работы техники с использованием ГЛОНАСС',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
         {
           key: 'reason_repair',
           title: 'Причина ремонта',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'mileage',
           title: 'Пробег на дату проведения проверки',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'motohours',
           title: 'Наработка м/ч на дату проведения проверки',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'last_tech_inspection_date',
           title: 'Дата прохождения последнего ТО шасси',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'last_inspection_equipment',
           title: 'Дата прохождения последнего ТО спецоборудования',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'odometr_fact',
           title: 'Пробег на дату проведения последнего ТО',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'motohours_fact',
           title: 'Наработка м/ч на дату проведения последнего ТО',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'untimely_maintenance',
           title: 'Несвоевременное проведение ТО',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
         {
           key: 'last_tm_repair_company',
           title: 'Кем проведено последнее ТО (организация)',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         // {
         //   key: 'comments', // нет такого атрибута
@@ -298,46 +441,79 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           key: 'kind_purchase',
           title: 'Вид приобретения',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'last_repair_company',
           title: 'Кем проведен последний ремонт (организация)',
           width: 200,
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'last_repair',
           title: 'Дата проведения последнего ремонта',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'repair_from_date',
           title: 'В ремонте с даты',
           width: 200,
+          renderParams: {
+            type: 'date',
+          },
         },
         {
           key: 'repair_reason',
           title: 'Причина ремонта',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'repair_application',
           title: 'Заявка на ремонт',
           width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'comments',
           title: 'Замечания',
           width: 200,
+          renderParams: {
+            type: 'text',
+          },
         },
         {
           key: 'not_ready_to_work',
           title: 'Техника не готова к работе',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
         {
           key: 'act_readiness_not_issued',
           title: 'Акт готовности техники не оформлен',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
         },
       ],
     },

@@ -1,6 +1,7 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { BlockCarInfoProps } from './@types/BlockCarInfo';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { get } from 'lodash';
 
 export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'], BlockCarInfoProps> = {
   properties: {
@@ -154,7 +155,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Номер ОСАГО',
       dependencies: [
         (value, formState) => {
-          if (!formState.data.osago_not_required && !value) {
+          if (( !get(formState, 'data.osago_not_required', null) || !get(formState, 'osago_not_required', null)) && !value) {
             return 'Поле "Номер ОСАГО" должно быть заполнено';
           }
         },
@@ -165,7 +166,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Действует до',
       dependencies: [
         (value, formState) => {
-          if (!formState.data.osago_not_required && !value) {
+          if (( !get(formState, 'data.osago_not_required', null) || !get(formState, 'osago_not_required', null)) && !value) {
             return 'Поле "Действует до" должно быть заполнено';
           }
         },

@@ -50,26 +50,6 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           title: 'Дата окончания проверки',
         },
         {
-          valueKey: 'status_text',
-          type: 'multiselect',
-          title: 'Статус проверки',
-        },
-        {
-          valueKey: 'okrug_name',
-          type: 'multiselect',
-          title: 'Округ',
-        },
-        {
-          valueKey: 'company_name',
-          type: 'multiselect',
-          title: 'Организация',
-        },
-        {
-          valueKey: 'base_address',
-          type: 'multiselect',
-          title: 'Адрес',
-        },
-        {
           valueKey: 'base_type',
           type: 'multiselect',
           title: 'Тип базы',
@@ -89,6 +69,16 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           type: 'multiselect',
           options: YES_NO_SELECT_OPTIONS_BOOL,
           title: 'Наличие ПГМ в емкостях',
+        },
+        {
+          valueKey: 'open_employee_fio',
+          title: 'Открыта',
+          type: 'multiselect',
+        },
+        {
+          valueKey: 'close_employee_fio',
+          title: 'Завершена',
+          type: 'multiselect',
         },
       ],
     },
@@ -132,19 +122,6 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             width: 300,
           },
           {
-            key: 'okrug_name',
-            title: 'Округ',
-          },
-          {
-            key: 'company_name',
-            title: 'Организация',
-          },
-          {
-            key: 'base_address',
-            title: 'Адрес',
-            width: 200,
-          },
-          {
             key: 'base_type',
             title: 'Тип базы',
             width: 200,
@@ -163,6 +140,16 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             key: 'has_pgm',
             title: 'Наличие ПГМ в емкостях',
             format: 'boolean',
+            width: 200,
+          },
+          {
+            key: 'open_employee_fio',
+            title: 'Открыта',
+            width: 200,
+          },
+          {
+            key: 'close_employee_fio',
+            title: 'Завершена',
             width: 200,
           },
         ],

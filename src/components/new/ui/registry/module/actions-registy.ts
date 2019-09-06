@@ -859,6 +859,35 @@ export const registryResetGlobalCheck: any = (registryKey) => (dispatch, getStat
   }
 };
 
+export const registryChangeRenderSelectedRow: any = (registryKey, payload: {key: string, value: any}) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  const newVal = {
+    ...list.rendersFields.values,
+    [payload.key]: payload.value,
+  };
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        rendersFields: {
+          ...list.rendersFields,
+          values: newVal,
+        },
+      },
+    ),
+  );
+
+};
+
 export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
   const {
     registry: {
@@ -868,15 +897,32 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
     },
   } = getState();
 
+  const uniqKeyCurrent = get(list, 'data.uniqKey', null);
+  const isEqualSelectedRow = uniqKeyCurrent && get(selectedRow, `${uniqKeyCurrent}`, 0) === get(list, `data.selectedRow.${uniqKeyCurrent}`, 1);
+  const SelectedRowObj = isEqualSelectedRow
+  ? {
+    ...list,
+    data: {
+      ...list.data,
+      selectedRow,
+    },
+  }
+  : {
+    ...list,
+    data: {
+      ...list.data,
+      selectedRow,
+    },
+    rendersFields: {
+      values: selectedRow,
+    },
+  };
+
   dispatch(
     registryChangeListData(
       registryKey,
       {
-        ...list,
-        data: {
-          ...list.data,
-          selectedRow,
-        },
+        ...SelectedRowObj,
       },
     ),
   );

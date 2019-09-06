@@ -24,8 +24,10 @@ export type TypeConfigData<F> = {
     meta: {
       selected_row_in_params?: OneRegistryData<F>['list']['meta']['selected_row_in_params'];
       row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
+      is_render_field?: OneRegistryData<F>['list']['meta']['row_double_click'];
       fields?: Array<TypeFields<F>>;
     };
     paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
+    rendersFields?: Partial<OneRegistryData<F>['list']['rendersFields']>;
   };
 };

@@ -33,11 +33,17 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
     },
     meta: {
       row_double_click: false,
+      is_render_field: true,
       fields: [
         {
           key: 'gov_number',
           title: 'Гос.№',
           width: 100,
+          renderParams: {
+            type: 'string',
+            label: false,
+            key: 'gov_number',
+          },
         },
         {
           key: 'enumerated',
@@ -87,6 +93,11 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           key: 'vin_incorrect',
           title: 'Некорректный VIN',
           width: 200,
+          renderParams: {
+            type: 'boolean',
+            label: 'да',
+            key: 'vin_incorrect',
+          },
         },
         {
           key: 'vin_by_hand',

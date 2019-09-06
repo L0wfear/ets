@@ -1,5 +1,6 @@
 import { glyphMap } from 'global-styled';
 import { TypeOneDisplayIf } from 'components/new/ui/registry/contants/displayIf';
+import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
 
 export type FilterOptionType<F> = {
   value: F[keyof F];
@@ -20,6 +21,9 @@ export type TypeFields<F extends Record<string, any>, Title = string | DisplayIf
   width?: number;
   dashIfEmpty?: boolean;
   title?: Title;
+  renderParams?: ExtFieldType & {
+    key: string,
+  };
   } & (
   {
     key: keyof F;
@@ -167,6 +171,7 @@ export interface OneRegistryData<F = any> {
     };
     meta: {
       row_double_click: boolean;
+      is_render_field: boolean;
       selected_row_in_params: boolean;
       fields: TypeFieldsRegistry<F>[];
       fieldsInDeepArr: any[],
@@ -188,6 +193,19 @@ export interface OneRegistryData<F = any> {
       },
       total_count?: number,
     },
+    rendersFields?: { // для расширенного реестра Excel
+      errors: { // для вывода ошибок в реестре
+        [key: string]: any; // key - уникаальный ключ строки
+      },
+      values: F, // тоже что и в selectedRow
+      options: {
+        [key: string]: {
+          value: any;
+          label: string;
+          rowData: any;
+        };
+      },
+    };
   };
   filter: {
     isOpen?: boolean;

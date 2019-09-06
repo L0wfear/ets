@@ -58,9 +58,8 @@ const getPermissionsReadUpdate = (permission) => {
 };
 
 class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
-  renderRow = ({ key, title, format, dashIfEmpty }, index) => {
+  renderRow = ({ key, title, format, dashIfEmpty, renderParams }, index) => {
     const { props } = this;
-
     const {
       rowData,
       registryKey,
@@ -272,6 +271,9 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     if (dashIfEmpty) {
       value = !value && value !== 0 ? '-' : value;
     }
+    // if (props.rendersFields) {
+    //   console.log('props.rendersFields === ', { rendersFields: props.rendersFields, });
+    // }
 
     return (
       <TrTd
@@ -281,6 +283,8 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
         rowData={rowData}
         registryKey={registryKey}
         selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
+        renderParams={renderParams}
+        rendersFields={props.rendersFields}
       />
     );
   }
@@ -360,8 +364,10 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       selectedUniqKey: get(getListData(state.registry, registryKey), ['data', 'selectedRow', getListData(state.registry, registryKey).data.uniqKey], null),
       buttons: getHeaderData(state.registry, registryKey).buttons,
       row_double_click: getListData(getRegistryState(state), registryKey).meta.row_double_click,
+      is_render_field: getListData(getRegistryState(state), registryKey).meta.is_render_field,
       checkData: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
       selected_row_in_params: getListData(state.registry, registryKey).meta.selected_row_in_params,
+      rendersFields: get(getListData(state.registry, registryKey), 'rendersFields', null),
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

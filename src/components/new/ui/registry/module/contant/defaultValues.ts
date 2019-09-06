@@ -44,6 +44,7 @@ const registryDefaultObj: OneRegistryData = {
     },
     meta: {
       row_double_click: true,
+      is_render_field: false,
       selected_row_in_params: false,
       fields: [],
       fieldsInDeepArr: [],
@@ -62,6 +63,11 @@ const registryDefaultObj: OneRegistryData = {
         reverse: false,
       },
       total_count: 0,
+    },
+    rendersFields: {
+      errors: {},
+      values: {},
+      options: {},
     },
   },
 };

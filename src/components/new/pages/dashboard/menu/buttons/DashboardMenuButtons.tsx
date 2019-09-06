@@ -77,16 +77,16 @@ const DashboardMenuButtons: React.FC<Props> = React.memo(
         <EtsBootstrap.DashboardCard block>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>
-            <EtsBootstrap.Button whiteSpace="normal" onClick={setShowWaybillForm} permissions={waybillPermissions.create}>
+            <EtsBootstrap.Button id="dashboard.create_waybill" whiteSpace="normal" onClick={setShowWaybillForm} permissions={waybillPermissions.create}>
               Создать путевой лист
             </EtsBootstrap.Button>
             <LinkToOrder to={path}>
-              <EtsBootstrap.Button whiteSpace="normal" active>Исполнение централизованного задания</EtsBootstrap.Button>
+              <EtsBootstrap.Button id="dashboard.link_to_order" whiteSpace="normal" active>Исполнение централизованного задания</EtsBootstrap.Button>
             </LinkToOrder>
-            <EtsBootstrap.Button whiteSpace="normal" onClick={setShowMissionForm} permissions={missionPermissions.create}>
+            <EtsBootstrap.Button id="dashboard.create_mission" whiteSpace="normal" onClick={setShowMissionForm} permissions={missionPermissions.create}>
               Создать децентрализованное задание
             </EtsBootstrap.Button>
-            <EtsBootstrap.Button whiteSpace="normal" onClick={setShowDutyMissionForm} permissions={dutyMissionPermissions.create}>
+            <EtsBootstrap.Button id="dashboard.create_duty_mission" whiteSpace="normal" onClick={setShowDutyMissionForm} permissions={dutyMissionPermissions.create}>
               Создать наряд-задание
             </EtsBootstrap.Button>
           </CardBodyContainer>

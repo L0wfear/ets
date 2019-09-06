@@ -15,10 +15,10 @@ type WaybillFieldMotohoursDiffProps = {
 const WaybillFieldMotohoursDiff: React.FC<WaybillFieldMotohoursDiffProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      motohours_start,
-      motohours_end,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+
+    const motohours_start = useForm.useFormDataFormStatePickValue<Waybill, Waybill['motohours_start']>(props.formDataKey, 'motohours_start');
+    const motohours_end = useForm.useFormDataFormStatePickValue<Waybill, Waybill['motohours_end']>(props.formDataKey, 'motohours_end');
+
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
 
     const motohours_diff = React.useMemo(

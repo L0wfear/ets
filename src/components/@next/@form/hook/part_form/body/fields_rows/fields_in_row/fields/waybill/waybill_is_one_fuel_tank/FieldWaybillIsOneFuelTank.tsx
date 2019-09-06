@@ -15,11 +15,9 @@ type FieldWaybillIsOneFuelTankProps = {
 const FieldWaybillIsOneFuelTank: React.FC<FieldWaybillIsOneFuelTankProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      car_id,
-      equipment_fuel,
-      is_one_fuel_tank,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+    const equipment_fuel = useForm.useFormDataFormStatePickValue<Waybill, Waybill['equipment_fuel']>(props.formDataKey, 'equipment_fuel');
+    const is_one_fuel_tank = useForm.useFormDataFormStatePickValue<Waybill, Waybill['is_one_fuel_tank']>(props.formDataKey, 'is_one_fuel_tank');
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);

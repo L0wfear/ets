@@ -17,12 +17,15 @@ type FieldWaybillCarIdArrayProps = {
 const FieldWaybillCarIdArray: React.FC<FieldWaybillCarIdArrayProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
 
-    const carActualOptionData = useWaybillCarActualOptions(props.formDataKey, formState.car_id, formState.structure_id);
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+    const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(props.formDataKey, 'structure_id');
+
+    const carActualOptionData = useWaybillCarActualOptions(props.formDataKey, car_id, structure_id);
     const selectedCarData = useWaybillFormData.useFormDataGetSelectedCar(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
@@ -35,18 +38,18 @@ const FieldWaybillCarIdArray: React.FC<FieldWaybillCarIdArrayProps> = React.memo
       [handleChange],
     );
 
-    const previosStructure = usePrevious(formState.structure_id);
+    const previosStructure = usePrevious(structure_id);
 
     React.useEffect(
       () => {
         const needTrigger = (
-          (previosStructure !== formState.structure_id)
+          (previosStructure !== structure_id)
           && selectedCarData
-          && formState.structure_id
+          && structure_id
           && !(
             selectedCarData.is_common
             || (
-              selectedCarData.company_structure_id === formState.structure_id
+              selectedCarData.company_structure_id === structure_id
             )
           )
         );
@@ -55,7 +58,7 @@ const FieldWaybillCarIdArray: React.FC<FieldWaybillCarIdArrayProps> = React.memo
           handleChangeWrap('car_id', null);
         }
       },
-      [previosStructure, formState.structure_id, selectedCarData, handleChangeWrap],
+      [previosStructure, structure_id, selectedCarData, handleChangeWrap],
     );
 
     return  (
@@ -64,7 +67,7 @@ const FieldWaybillCarIdArray: React.FC<FieldWaybillCarIdArrayProps> = React.memo
           id={`${path}_car_id`}
           type="select"
           label={`Транспортное средство (поиск по рег. номер  ТС)`}
-          value={formState.car_id}
+          value={car_id}
           error={formErrors.car_id}
           options={carActualOptionData.options}
           onChange={handleChangeWrap}

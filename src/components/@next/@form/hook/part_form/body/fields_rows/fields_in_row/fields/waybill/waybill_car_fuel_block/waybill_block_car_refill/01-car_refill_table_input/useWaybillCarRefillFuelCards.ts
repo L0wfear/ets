@@ -10,10 +10,9 @@ import { makeFuelCardIdOptions } from './waybill_car_refill_fuel_cards';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export const useWaybillLoadCarRefillFuelCards = (formDataKey: string) => {
-  const {
-    car_refill,
-    fuel_type,
-  } = useForm.useFormDataFormState<Waybill>(formDataKey);
+  const car_refill = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_refill']>(formDataKey, 'car_refill');
+  const fuel_type = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_type']>(formDataKey, 'fuel_type');
+
   const userData = etsUseSelector(
     (state) => getSessionState(state).userData,
   );

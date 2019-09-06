@@ -15,9 +15,8 @@ type WaybillFactFuelEndProps = {
 const WaybillFactFuelEnd: React.FC<WaybillFactFuelEndProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      fact_fuel_end,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const fact_fuel_end = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fact_fuel_end']>(props.formDataKey, 'fact_fuel_end');
+
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const IS_ACTIVE = useWaybillFormData.useFormDataIsActive(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);

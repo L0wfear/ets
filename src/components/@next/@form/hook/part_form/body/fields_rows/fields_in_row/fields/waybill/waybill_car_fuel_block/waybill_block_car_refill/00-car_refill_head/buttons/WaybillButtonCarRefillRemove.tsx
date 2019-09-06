@@ -13,9 +13,7 @@ type WaybillButtonCarRefillRemoveProps = {
 const WaybillButtonCarRefillRemove: React.FC<WaybillButtonCarRefillRemoveProps> = React.memo(
   (props) => {
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
-    const {
-      car_refill,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const car_refill = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_refill']>(props.formDataKey, 'car_refill');
 
     const handleRemoveRow = React.useCallback(
       () => {

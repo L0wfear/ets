@@ -23,10 +23,8 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
       (state) => getSessionState(state).userData.permissionsSet.has(fuelCardsPermissions.create),
     );
     const { page } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
-    const {
-      structure_id,
-      fuel_type,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(props.formDataKey, 'structure_id');
+    const fuel_type = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_type']>(props.formDataKey, 'fuel_type');
 
     const handleCreateFuelCard = React.useCallback(
       () => {

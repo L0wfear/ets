@@ -15,9 +15,7 @@ type WaybillBlockCarRefillProps = {
 const WaybillBlockCarRefill: React.FC<WaybillBlockCarRefillProps> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState<number>(null);
-    const {
-      car_refill,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const car_refill = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_refill']>(props.formDataKey, 'car_refill');
 
     React.useEffect(
       () => {

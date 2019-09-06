@@ -12,10 +12,10 @@ type FieldWaybillFactDatesOwnProps = {
 const FieldWaybillFactDates: React.FC<FieldWaybillFactDatesOwnProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
-    const {
-      fact_departure_date,
-      fact_arrival_date,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+
+    const fact_departure_date = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fact_departure_date']>(props.formDataKey, 'fact_departure_date');
+    const fact_arrival_date = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fact_arrival_date']>(props.formDataKey, 'fact_arrival_date');
+
     const {
       fact_departure_date: fact_departure_date_error,
       fact_arrival_date: fact_arrival_date_error,

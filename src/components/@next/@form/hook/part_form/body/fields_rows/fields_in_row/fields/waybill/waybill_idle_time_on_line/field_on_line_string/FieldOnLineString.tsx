@@ -27,9 +27,9 @@ const FieldOnLineString: React.FC<FieldOnLineStringProps> = React.memo(
   (props) => {
     const { fieldData: { key, title } } = props;
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
-    const {
-      [key]: value,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+
+    const value = useForm.useFormDataFormStatePickValue<any, any>(props.formDataKey, key);
+
     const {
       [key]: error,
     } = useForm.useFormDataFormErrors<any>(props.formDataKey);

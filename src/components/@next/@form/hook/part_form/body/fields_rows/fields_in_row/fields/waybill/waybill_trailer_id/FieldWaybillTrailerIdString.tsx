@@ -13,27 +13,31 @@ type FieldWaybillTrailerIdStringProps = {
 const FieldWaybillTrailerIdString: React.FC<FieldWaybillTrailerIdStringProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const trailer_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_id']>(props.formDataKey, 'trailer_id');
+    const trailer_gov_number = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_gov_number']>(props.formDataKey, 'trailer_gov_number');
+    const trailer_model_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_model_name']>(props.formDataKey, 'trailer_model_name');
+    const trailer_special_model_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_special_model_name']>(props.formDataKey, 'trailer_special_model_name');
+    const trailer_type_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_type_name']>(props.formDataKey, 'trailer_type_name');
 
     const value = React.useMemo(
       () => {
-        if (formState.trailer_id) {
+        if (trailer_id) {
           return carActualOptionLabel(
-            formState.trailer_gov_number,
-            formState.trailer_model_name,
-            formState.trailer_special_model_name,
-            formState.trailer_type_name,
+            trailer_gov_number,
+            trailer_model_name,
+            trailer_special_model_name,
+            trailer_type_name,
           );
         }
 
         return 'Н/д';
       },
       [
-        formState.trailer_id,
-        formState.trailer_gov_number,
-        formState.trailer_model_name,
-        formState.trailer_special_model_name,
-        formState.trailer_type_name,
+        trailer_id,
+        trailer_gov_number,
+        trailer_model_name,
+        trailer_special_model_name,
+        trailer_type_name,
       ],
     );
 

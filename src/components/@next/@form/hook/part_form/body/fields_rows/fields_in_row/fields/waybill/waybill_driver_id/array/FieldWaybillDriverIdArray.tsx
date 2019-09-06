@@ -26,10 +26,9 @@ const sortingDrivers = (a, b) => {
 const FieldWaybillDriverIdArray: React.FC<FieldWaybillDriverIdArrayProps> = React.memo(
   (props) => {
     const isPermitted = useForm.useFormDataIsPermitted<Waybill>(props.formDataKey);
-    const {
-      driver_id: value,
-      car_id,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+    const value = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_id']>(props.formDataKey, 'driver_id');
+
     const {
       driver_id: error,
     } = useForm.useFormDataFormErrors<any>(props.formDataKey);

@@ -10,16 +10,14 @@ import waybillFilterDrivers from './waybill_filter_driver';
 import useEmployeeBindedToCarApiList from 'components/new/utils/hooks/services/useList/useEmployeeBindedToCarList';
 
 export const useWaybillDrivers = (formDataKey: string) => {
-  const {
-    car_id,
-    gov_number,
-    plan_departure_date,
-    plan_arrival_date,
-    company_id,
-    structure_id,
-    driver_id,
-    driver_fio,
-  } = useForm.useFormDataFormState<Waybill>(formDataKey);
+  const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(formDataKey, 'car_id');
+  const gov_number = useForm.useFormDataFormStatePickValue<Waybill, Waybill['gov_number']>(formDataKey, 'gov_number');
+  const plan_departure_date = useForm.useFormDataFormStatePickValue<Waybill, Waybill['plan_departure_date']>(formDataKey, 'plan_departure_date');
+  const plan_arrival_date = useForm.useFormDataFormStatePickValue<Waybill, Waybill['plan_arrival_date']>(formDataKey, 'plan_arrival_date');
+  const company_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['company_id']>(formDataKey, 'company_id');
+  const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(formDataKey, 'structure_id');
+  const driver_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_id']>(formDataKey, 'driver_id');
+  const driver_fio = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_fio']>(formDataKey, 'driver_fio');
 
   const employeeBindedToCarListData = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'employeeBindedToCar'>(
     formDataKey,

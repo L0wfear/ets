@@ -12,7 +12,7 @@ const FieldCreateMission: React.FC<FieldCreateMissionProps> = React.memo(
   (props) => {
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<Waybill>(props.formDataKey);
-    const { car_id } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
     const isSelectedCarId = Boolean(car_id);
 
     const isDisabled = IS_CLOSED || !isSelectedCarId || !isPermitted;

@@ -178,19 +178,22 @@ const useFormDataMeta = <F extends object, Store extends object = {}>(formDataKe
  */
 const useFormDataHandleSubmitPromise = <F extends object, Store extends object = {}>(formDataKey: string) => {
   const handleSubmitPromise = etsUseSelector((state) => getFormDataHandleSubmitPromiseByKey<F, Store>(state, formDataKey));
+  const formState = useFormDataFormState<F, Store>(formDataKey);
+
   const meta = useFormDataMeta<F, Store>(formDataKey);
   const dispatch = etsUseDispatch();
 
   return React.useCallback(
-    (newFormState: F) => {
+    () => {
       return dispatch(
         defaultAction(
-          handleSubmitPromise(newFormState),
+          handleSubmitPromise(formState),
           meta,
         ),
       );
     },
     [
+      formState,
       meta,
     ],
   );

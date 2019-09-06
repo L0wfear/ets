@@ -15,9 +15,8 @@ type WaybillFieldMotohoursEndProps = {
 const WaybillFieldMotohoursEnd: React.FC<WaybillFieldMotohoursEndProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      motohours_end,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const motohours_end = useForm.useFormDataFormStatePickValue<Waybill, Waybill['motohours_end']>(props.formDataKey, 'motohours_end');
+
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);

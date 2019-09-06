@@ -16,9 +16,8 @@ type WaybillFuelTypeProps = {
 const WaybillFuelType: React.FC<WaybillFuelTypeProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      fuel_type,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const fuel_type = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_type']>(props.formDataKey, 'fuel_type');
+
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);

@@ -13,7 +13,7 @@ const FieldWaybillWorkModeIdString: React.FC<FieldWaybillWorkModeIdStringProps> 
   (props) => {
     const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
 
-    const { work_mode_name } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const work_mode_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['work_mode_name']>(props.formDataKey, 'work_mode_name');
 
     return (
       <EtsBootstrap.Col md={props.md || 12}>

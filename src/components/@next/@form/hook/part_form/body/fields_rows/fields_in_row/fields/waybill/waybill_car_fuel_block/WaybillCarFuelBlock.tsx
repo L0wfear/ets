@@ -14,9 +14,8 @@ type WaybillCarFuelBlockProps = {
 
 const WaybillCarFuelBlock: React.FC<WaybillCarFuelBlockProps> = React.memo(
   (props) => {
-    const {
-      car_id,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+
     const isSelectedCarId = Boolean(car_id);
 
     return isSelectedCarId && (

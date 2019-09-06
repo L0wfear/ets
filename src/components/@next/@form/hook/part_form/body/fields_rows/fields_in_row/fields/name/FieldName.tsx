@@ -16,7 +16,8 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
       fieldData: { key, title },
     } = props;
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<any>(props.formDataKey);
+    const formStateValue = useForm.useFormDataFormStatePickValue<any, any>(props.formDataKey, key);
+
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
@@ -35,7 +36,7 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
           id={`${path}_${key}`}
           type="string"
           label={title}
-          value={formState[key]}
+          value={formStateValue}
           error={formErrors[key]}
           onChange={handleChangeWrap}
           disabled={!isPermitted}

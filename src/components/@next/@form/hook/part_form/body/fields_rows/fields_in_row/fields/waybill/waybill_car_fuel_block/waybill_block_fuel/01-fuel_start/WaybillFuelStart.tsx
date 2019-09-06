@@ -16,9 +16,8 @@ type WaybillFuelStartProps = {
 const WaybillFuelStart: React.FC<WaybillFuelStartProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      fuel_start,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const fuel_start = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_start']>(props.formDataKey, 'fuel_start');
+
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);

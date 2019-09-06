@@ -14,12 +14,15 @@ type FieldWaybillTrailerIdArrayProps = {
 const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+
+    const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(props.formDataKey, 'structure_id');
+    const trailer_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_id']>(props.formDataKey, 'trailer_id');
+
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
 
-    const carActualOptionData = useWaybillCarActualOptions(props.formDataKey, formState.trailer_id, formState.structure_id);
+    const carActualOptionData = useWaybillCarActualOptions(props.formDataKey, trailer_id, structure_id);
 
     const handleChangeWrap = React.useCallback(
       (_, value) => {
@@ -30,17 +33,17 @@ const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = Re
       [handleChange],
     );
 
-    const previosStructure = usePrevious(formState.structure_id);
+    const previosStructure = usePrevious(structure_id);
 
     React.useEffect(
       () => {
-        if (previosStructure !== formState.structure_id) {
-          if (formState.structure_id) {
+        if (previosStructure !== structure_id) {
+          if (structure_id) {
             handleChangeWrap('trailer_id', null);
           }
         }
       },
-      [previosStructure, formState.structure_id, handleChangeWrap],
+      [previosStructure, structure_id, handleChangeWrap],
     );
 
     return (
@@ -49,7 +52,7 @@ const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = Re
           id={`${path}_trailer_id`}
           type="select"
           label="Прицеп"
-          value={formState.trailer_id}
+          value={trailer_id}
           error={formErrors.trailer_id}
           options={carActualOptionData.options}
           onChange={handleChangeWrap}

@@ -26,7 +26,8 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
     } = props;
 
     const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(props.formDataKey, 'structure_id');
+    const structure_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_name']>(props.formDataKey, 'structure_name');
     const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<Waybill>(props.formDataKey);
@@ -88,7 +89,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
                     id={`${path}_${key}`}
                     type="select"
                     label={title}
-                    value={formState[key]}
+                    value={structure_id}
                     error={formErrors[key]}
                     options={options}
                     onChange={handleChangeWrap}
@@ -102,7 +103,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
                     id={`${path}_${key}`}
                     type="string"
                     label={title}
-                    value={formState.structure_name ? formState.structure_name : 'Не выбрано'}
+                    value={structure_name ? structure_name : 'Не выбрано'}
                     disabled
                   />
                 )

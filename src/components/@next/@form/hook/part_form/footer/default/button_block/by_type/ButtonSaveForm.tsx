@@ -11,7 +11,6 @@ type ButtonSaveFormProps = {
 const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
   (props) => {
     const isPermitted = useFormData.useFormDataIsPermitted(props.formDataKey);
-    const formState = useFormData.useFormDataFormState<any>(props.formDataKey);
     const canSave = useFormData.useFormDataCanSave<any>(props.formDataKey);
     const handleSubmitPromise = useFormData.useFormDataHandleSubmitPromise<any>(props.formDataKey);
     const handleHide = useFormData.useFormDataSchemaHandleHide<any>(props.formDataKey);
@@ -22,14 +21,14 @@ const ButtonSaveForm: React.FC<ButtonSaveFormProps> = React.memo(
       async () => {
         let response = null;
         try {
-          response = await handleSubmitPromise(formState);
+          response = await handleSubmitPromise();
         } catch (error) {
           //
         }
 
         handleHide(true, response);
       },
-      [dispatch, handleHide, handleSubmitPromise, formState],
+      [dispatch, handleHide, handleSubmitPromise],
     );
 
     return isPermitted && (

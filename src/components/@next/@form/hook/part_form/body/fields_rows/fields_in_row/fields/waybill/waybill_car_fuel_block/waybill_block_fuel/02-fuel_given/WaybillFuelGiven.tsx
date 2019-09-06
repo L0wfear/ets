@@ -14,10 +14,9 @@ type WaybillFuelGivenProps = {
 const WaybillFuelGiven: React.FC<WaybillFuelGivenProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      fuel_given,
-      car_refill,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const fuel_given = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_given']>(props.formDataKey, 'fuel_given');
+    const car_refill = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_refill']>(props.formDataKey, 'car_refill');
+
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
 
     const previousCarRefill = usePrevious(car_refill);

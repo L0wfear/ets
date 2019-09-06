@@ -13,15 +13,14 @@ type WaybillFuelEndProps = {
 const WaybillFuelEnd: React.FC<WaybillFuelEndProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      fuel_start,
-      fuel_given,
-      tax_data,
-      equipment_tax_data,
-      fuel_end,
-      equipment_fuel,
-      is_one_fuel_tank,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const fuel_start = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_start']>(props.formDataKey, 'fuel_start');
+    const fuel_given = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_given']>(props.formDataKey, 'fuel_given');
+    const tax_data = useForm.useFormDataFormStatePickValue<Waybill, Waybill['tax_data']>(props.formDataKey, 'tax_data');
+    const equipment_tax_data = useForm.useFormDataFormStatePickValue<Waybill, Waybill['equipment_tax_data']>(props.formDataKey, 'equipment_tax_data');
+    const fuel_end = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_end']>(props.formDataKey, 'fuel_end');
+    const equipment_fuel = useForm.useFormDataFormStatePickValue<Waybill, Waybill['equipment_fuel']>(props.formDataKey, 'equipment_fuel');
+    const is_one_fuel_tank = useForm.useFormDataFormStatePickValue<Waybill, Waybill['is_one_fuel_tank']>(props.formDataKey, 'is_one_fuel_tank');
+
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
 
     React.useEffect(

@@ -20,7 +20,7 @@ const FieldWaybillWorkModeIdArray: React.FC<FieldWaybillWorkModeIdArrayProps> = 
     const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
 
-    const { work_mode_name } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const work_mode_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['work_mode_name']>(props.formDataKey, 'work_mode_name');
 
     const optionsData = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'workModeOptions'>(
       props.formDataKey,

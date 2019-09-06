@@ -13,9 +13,7 @@ type WaybillBlockIndicatorProps = {
 
 const WaybillBlockIndicator: React.FC<WaybillBlockIndicatorProps> = React.memo(
   (props) => {
-    const {
-      gov_number,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const gov_number = useForm.useFormDataFormStatePickValue<Waybill, Waybill['gov_number']>(props.formDataKey, 'gov_number');
 
     const carHasMotohours = hasMotohours(gov_number);
 

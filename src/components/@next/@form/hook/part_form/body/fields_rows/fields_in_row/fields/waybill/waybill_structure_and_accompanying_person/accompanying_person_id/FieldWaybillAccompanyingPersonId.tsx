@@ -21,7 +21,8 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
     } = props;
 
     const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const accompanying_person_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['accompanying_person_id']>(props.formDataKey, key);
+    const accompanying_person_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['accompanying_person_name']>(props.formDataKey, 'accompanying_person_name');
     const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<Waybill>(props.formDataKey);
@@ -57,7 +58,7 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
                 id={`${path}_${key}`}
                 type="select"
                 label={title}
-                value={formState[key]}
+                value={accompanying_person_id}
                 error={formErrors[key]}
                 options={options}
                 onChange={handleChangeWrap}
@@ -71,7 +72,7 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
                 id={`${path}_${key}`}
                 type="string"
                 label={title}
-                value={formState.accompanying_person_name ? formState.accompanying_person_name : 'Не выбран'}
+                value={accompanying_person_name ? accompanying_person_name : 'Не выбран'}
                 disabled
               />
             )

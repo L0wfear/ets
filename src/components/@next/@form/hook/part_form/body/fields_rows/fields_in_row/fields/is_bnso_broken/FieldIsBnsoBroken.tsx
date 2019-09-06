@@ -22,7 +22,10 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
       page,
       path,
     } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+
+    const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(props.formDataKey, 'car_id');
+    const is_bnso_broken = useForm.useFormDataFormStatePickValue<Waybill, Waybill['is_bnso_broken']>(props.formDataKey, 'is_bnso_broken');
+
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
     const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
     const selectedCar = useWaybillFormData.useFormDataGetSelectedCar(props.formDataKey);
@@ -63,13 +66,13 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
 
     React.useEffect(
       () => {
-        if (!formState.car_id) {
+        if (!car_id) {
           handleChange({
             is_bnso_broken: null,
           });
         }
       },
-      [formState.car_id],
+      [car_id],
     );
 
     React.useEffect(
@@ -84,37 +87,37 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
               'hours',
             );
 
-            const is_bnso_broken = timeFromLastActive > 1;
+            const is_bnso_broken_new = timeFromLastActive > 1;
 
-            if (is_bnso_broken !== formState.is_bnso_broken) {
+            if (is_bnso_broken_new !== is_bnso_broken) {
               handleChange({
-                is_bnso_broken,
+                is_bnso_broken: is_bnso_broken_new,
               });
             }
           } else if (gps_code) {
-            const is_bnso_broken = true;
+            const is_bnso_broken_new = true;
 
-            if (is_bnso_broken !== formState.is_bnso_broken) {
+            if (is_bnso_broken_new !== is_bnso_broken) {
               handleChange({
-                is_bnso_broken,
+                is_bnso_broken: is_bnso_broken_new,
               });
             }
           }
         }
       },
-      [IS_DRAFT, wsStateDataUse.wsStateData.wsState, formState.is_bnso_broken, gps_code, moscowTimeData],
+      [IS_DRAFT, wsStateDataUse.wsStateData.wsState, is_bnso_broken, gps_code, moscowTimeData],
     );
 
     const is_bnso_broken_text = React.useMemo(
       () => {
-        if (formState.is_bnso_broken === false) {
+        if (is_bnso_broken === false) {
           return 'Исправен';
         }
-        if (formState.is_bnso_broken === true) {
+        if (is_bnso_broken === true) {
           return 'Датчик ГЛОНАСС не исправен';
         }
       },
-      [formState.is_bnso_broken],
+      [is_bnso_broken],
     );
 
     return (
@@ -125,7 +128,7 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
           label="Исправность датчика ГЛОНАСС"
           value={is_bnso_broken_text}
           error={
-            is_bnso_broken_text && formState.is_bnso_broken
+            is_bnso_broken_text && is_bnso_broken
               ? 'Выполненные работы не будут учтены в системе'
               : ''
           }

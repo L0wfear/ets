@@ -18,7 +18,7 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
     } = props;
 
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const formState = useForm.useFormDataFormState<any>(props.formDataKey);
+    const formStateValue = useForm.useFormDataFormStatePickValue<any, number>(props.formDataKey, key);
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<any>(props.formDataKey);
@@ -29,9 +29,9 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
     } = useMeasureUnitOptions();
 
     const handleChangeWrap = React.useCallback(
-      (value, option) => {
+      (newValue, option) => {
         handleChange({
-          measure_unit_id: value,
+          measure_unit_id: newValue,
           measure_unit_name: get(option, 'rowData.name', null),
         });
       },
@@ -45,7 +45,7 @@ const FieldMeasureUnitId: React.FC<FieldMeasureUnitIdProps> = React.memo(
           type="select"
           clearable={clearable}
           label={title}
-          value={formState[key]}
+          value={formStateValue}
           error={formErrors[key]}
           options={options}
           onChange={handleChangeWrap}

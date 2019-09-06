@@ -15,10 +15,9 @@ type WaybillFieldOdometrDiffProps = {
 const WaybillFieldOdometrDiff: React.FC<WaybillFieldOdometrDiffProps> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
-    const {
-      odometr_start,
-      odometr_end,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const odometr_start = useForm.useFormDataFormStatePickValue<Waybill, Waybill['odometr_start']>(props.formDataKey, 'odometr_start');
+    const odometr_end = useForm.useFormDataFormStatePickValue<Waybill, Waybill['odometr_end']>(props.formDataKey, 'odometr_end');
+
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
 
     const odometr_diff = React.useMemo(

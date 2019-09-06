@@ -11,7 +11,7 @@ export type ViewInspectAutobaseOwnProps = {
   element: InspectAutobase;
   type: keyof typeof INSPECT_TYPE_FORM;
   handleHide: OnFormHideType;
-  handleCloseWithoutChanges: any;
+  title: string;
 
   loadingPage: string;
   page: string;

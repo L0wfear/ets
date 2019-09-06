@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
+
 import { ReduxState } from 'redux-main/@types/state';
 import { InspectCarsCondition, CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { INSPECT_TYPE_FORM } from '../../../autobase/global_constants';
-
-import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
+import { ContainerForm, FooterForm, TitleForm } from '../../../common_components/form_wrap_check/styled';
 import { FooterEnd } from 'global-styled/global-styled';
 import ViewInspectCarsConditionButtonSubmit from './button_submit/ViewInspectCarsConditionButtonSubmit';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
@@ -119,6 +119,12 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
     return (
       <React.Fragment>
+        <TitleForm md={12} sm={12}>
+          <h4>{props.title}</h4>
+          <EtsBootstrap.Button onClick={props.hideWithoutChanges}>
+            <EtsBootstrap.Glyphicon glyph="remove" />
+          </EtsBootstrap.Button>
+        </TitleForm>
         <ContainerForm>
           <ColScroll md={6} sm={6}>
             <BlockCarSConditionInfo
@@ -230,7 +236,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               id={state.id}
               registryPage={props.page}
             />
-            <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
           </FooterEnd>
         </FooterForm>
       </React.Fragment>
@@ -258,6 +264,7 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
     },
     permissions: inspectCarsConditionPermissions,
     schema: inspectcarsConditionormSchema,
+    askBeforeCloseIfChanged: {},
   }),
   withPreloader({
     typePreloader: 'mainpage',

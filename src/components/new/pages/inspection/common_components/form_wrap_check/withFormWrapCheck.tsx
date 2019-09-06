@@ -1,25 +1,23 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { createPortal } from 'react-dom';
+import { compose } from 'recompose';
+import { connect, HandleThunkActionCreator } from 'react-redux';
+import { isBoolean } from 'util';
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { actionUnselectSelectedRowToShow, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import { isBoolean } from 'util';
 import { DivNone } from 'global-styled/global-styled';
 
 import { INSPECT_TYPE_FORM } from '../../autobase/global_constants';
 import { isInspectIsConducting } from 'redux-main/reducers/modules/inspect/inspect_utils';
 
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { HiddenPageEtsContainer, PopupBottomForm, TitleForm } from './styled';
-
-import { createPortal } from 'react-dom';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { HiddenPageEtsContainer, PopupBottomForm } from './styled';
 
 type WithInspectFormWrapCheckConfig = {
   loadingPage: string;
@@ -186,20 +184,6 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
 
     const handleCloseWithoutChanges = React.useCallback(
       async () => {
-        if (inspectType !== INSPECT_TYPE_FORM.closed) {
-          try {
-            await global.confirmDialog({
-              title: 'Покинуть страницу?',
-              body: 'Возможно, внесенные изменения не сохранятся.',
-              okName: 'Закрыть',
-              cancelName: 'Остаться',
-            });
-          } catch (error) {
-            // no
-            return;
-          }
-        }
-
         handleCloseForm(
           inspectType !== INSPECT_TYPE_FORM.closed,
         );
@@ -216,16 +200,11 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
             inspectId && selectedInspect && inspectType
               ? (
                 <React.Fragment>
-                  <TitleForm md={12} sm={12}>
-                    <h4>{config.title}</h4>
-                    <EtsBootstrap.Button onClick={handleCloseWithoutChanges}>
-                      <EtsBootstrap.Glyphicon glyph="remove" />
-                    </EtsBootstrap.Button>
-                  </TitleForm>
                   <Component
                     selectedInspect={selectedInspect}
                     element={selectedInspect}
                     type={inspectType}
+                    title={config.title}
                     handleHide={handleCloseForm}
                     handleCloseWithoutChanges={handleCloseWithoutChanges}
                     isPermitted={inspectType === INSPECT_TYPE_FORM.closed ? props.isPermittedToUpdateClose : props.isPermitted}

@@ -280,11 +280,9 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
         key={key}
         metaKey={key}
         value={value}
-        rowData={rowData}
         registryKey={registryKey}
         selected={props.rowData[props.uniqKey] === props.selectedUniqKey}
         renderParams={renderParams}
-        rendersFields={props.rendersFields}
       />
     );
   }
@@ -367,7 +365,7 @@ const TrTbodyConnected = compose<PropsTrTbody, OwnPropsTrTbody>(
       is_render_field: getListData(getRegistryState(state), registryKey).meta.is_render_field,
       checkData: get(getListData(state.registry, registryKey).data.checkedRows, rowData[getListData(state.registry, registryKey).data.uniqKey], false),
       selected_row_in_params: getListData(state.registry, registryKey).meta.selected_row_in_params,
-      rendersFields: get(getListData(state.registry, registryKey), 'rendersFields', null),
+      // rendersFields: get(getListData(state.registry, registryKey), 'rendersFields', null),
     }),
     (dispatch, { registryKey }) => ({
       registrySelectRow: (rowData) => (

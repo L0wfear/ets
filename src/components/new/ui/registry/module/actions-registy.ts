@@ -899,24 +899,19 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
 
   const uniqKeyCurrent = get(list, 'data.uniqKey', null);
   const isEqualSelectedRow = uniqKeyCurrent && get(selectedRow, `${uniqKeyCurrent}`, 0) === get(list, `data.selectedRow.${uniqKeyCurrent}`, 1);
-  const SelectedRowObj = isEqualSelectedRow
-  ? {
+  const SelectedRowObj = {
     ...list,
     data: {
       ...list.data,
       selectedRow,
-    },
-  }
-  : {
-    ...list,
-    data: {
-      ...list.data,
-      selectedRow,
-    },
-    rendersFields: {
-      values: selectedRow,
     },
   };
+
+  if (!isEqualSelectedRow) {
+    SelectedRowObj.rendersFields = {
+      values: selectedRow,
+    };
+  }
 
   dispatch(
     registryChangeListData(

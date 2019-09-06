@@ -12,7 +12,7 @@ type FieldWaybillTrailerIdStringProps = {
 
 const FieldWaybillTrailerIdString: React.FC<FieldWaybillTrailerIdStringProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
 
     const value = React.useMemo(
@@ -37,24 +37,16 @@ const FieldWaybillTrailerIdString: React.FC<FieldWaybillTrailerIdStringProps> = 
       ],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id={`${path}_trailer_id`}
-              type="string"
-              label="Прицеп"
-              readOnly
-              value={value}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        value,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_trailer_id`}
+          type="string"
+          label="Прицеп"
+          readOnly
+          value={value}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

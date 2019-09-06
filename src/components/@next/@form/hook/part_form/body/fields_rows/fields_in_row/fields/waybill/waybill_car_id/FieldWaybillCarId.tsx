@@ -12,29 +12,19 @@ const FieldWaybillCarId: React.FC<FieldWaybillCarIdProps> = React.memo(
   (props) => {
     const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
 
-    return React.useMemo(
-      () => {
-        return (
-          IS_DRAFT
-            ? (
-                <FieldWaybillCarIdArrayArray
-                  formDataKey={props.formDataKey}
-                  md={props.md}
-                />
-            )
-            : (
-                <FieldWaybillCarIdString
-                  formDataKey={props.formDataKey}
-                  md={props.md}
-                />
-              )
-        );
-      },
-      [
-        props,
-        IS_DRAFT,
-      ],
-    );
+    return IS_DRAFT
+      ? (
+          <FieldWaybillCarIdArrayArray
+            formDataKey={props.formDataKey}
+            md={props.md}
+          />
+      )
+      : (
+          <FieldWaybillCarIdString
+            formDataKey={props.formDataKey}
+            md={props.md}
+          />
+      );
   },
 );
 

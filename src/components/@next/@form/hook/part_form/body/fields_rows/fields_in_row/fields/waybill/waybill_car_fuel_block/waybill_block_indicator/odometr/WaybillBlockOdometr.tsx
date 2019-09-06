@@ -11,20 +11,15 @@ type WaybillBlockOdometrProps = {
 
 const WaybillBlockOdometr: React.FC<WaybillBlockOdometrProps> = React.memo(
   (props) => {
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <h4>Одометр</h4>
-          <EtsBootstrap.Row>
-            <WaybillFieldOdometrStart formDataKey={props.formDataKey} md={12} />
-            <WaybillFieldOdometrEnd formDataKey={props.formDataKey} md={12} />
-            <WaybillFieldOdometrDiff formDataKey={props.formDataKey} md={12} />
-          </EtsBootstrap.Row>
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <h4>Одометр</h4>
+        <EtsBootstrap.Row>
+          <WaybillFieldOdometrStart formDataKey={props.formDataKey} md={12} />
+          <WaybillFieldOdometrEnd formDataKey={props.formDataKey} md={12} />
+          <WaybillFieldOdometrDiff formDataKey={props.formDataKey} md={12} />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -14,7 +14,7 @@ type FieldWaybillEquipmentFuelProps = {
 
 const FieldWaybillEquipmentFuel: React.FC<FieldWaybillEquipmentFuelProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       car_id,
       equipment_fuel,
@@ -44,38 +44,25 @@ const FieldWaybillEquipmentFuel: React.FC<FieldWaybillEquipmentFuelProps> = Reac
       [previosIsSelectedCarId, isSelectedCarId, handleChangeWrap],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            {
-              isSelectedCarId && (
-                <ExtField
-                  id={`${path}_equipment_fuel`}
-                  type="select"
-                  clearable={false}
-                  label="На ТС установлено спецоборудование"
-                  value={equipment_fuel}
-                  options={YES_NO_SELECT_OPTIONS_BOOL}
-                  onChange={handleChangeWrap}
-                  disabled={IS_CLOSED || !isPermitted}
+    return (
+        <EtsBootstrap.Col md={props.md || 12}>
+          {
+            isSelectedCarId && (
+              <ExtField
+                id={`${path}_equipment_fuel`}
+                type="select"
+                clearable={false}
+                label="На ТС установлено спецоборудование"
+                value={equipment_fuel}
+                options={YES_NO_SELECT_OPTIONS_BOOL}
+                onChange={handleChangeWrap}
+                disabled={IS_CLOSED || !isPermitted}
 
-                  boundKeys="equipment_fuel"
-                />
-              )
-            }
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        isSelectedCarId,
-        path,
-        props,
-        equipment_fuel,
-        handleChangeWrap,
-        isPermitted,
-        IS_CLOSED,
-      ],
+                boundKeys="equipment_fuel"
+              />
+            )
+          }
+        </EtsBootstrap.Col>
     );
   },
 );

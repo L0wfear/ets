@@ -26,14 +26,8 @@ const WaybillButtonCarRefillRemove: React.FC<WaybillButtonCarRefillRemoveProps> 
       [props.selectedRowIndex, handleChange, car_refill],
     );
 
-    return React.useMemo(
-      () => (
-        <ButtonTableInput block width={160} onClick={handleRemoveRow} disabled={isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
-      ),
-      [
-        props,
-        handleRemoveRow,
-      ],
+    return (
+      <ButtonTableInput block width={160} onClick={handleRemoveRow} disabled={isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
     );
   },
 );

@@ -7,15 +7,10 @@ type WaybillModalFooterProps = {
 
 const WaybillModalFooter: React.FC<WaybillModalFooterProps> = React.memo(
   (props) => {
-    return React.useMemo(
-      () => {
-        return (
-          <div>
-            waybill_footer
-          </div>
-        );
-      },
-      [props],
+    return (
+      <div>
+        waybill_footer
+      </div>
     );
   },
 );

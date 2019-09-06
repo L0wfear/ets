@@ -17,37 +17,31 @@ const WaybillBlockFuel: React.FC<WaybillBlockFuelProps> = React.memo(
   (props) => {
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <h4>Топливо</h4>
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={6}>
-              <EtsBootstrap.Row>
-                <WaybillFuelType formDataKey={props.formDataKey} md={12} />
-                <WaybillFuelStart formDataKey={props.formDataKey} md={12} />
-                <WaybillFuelGiven formDataKey={props.formDataKey} md={12} />
-              </EtsBootstrap.Row>
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={6}>
-              <EtsBootstrap.Row>
-                {
-                  IS_CLOSE_OR_IS_ACTIVE && (
-                    <React.Fragment>
-                      <WaybillFuelEnd formDataKey={props.formDataKey} md={12} />
-                      <WaybillFactFuelEnd formDataKey={props.formDataKey} md={12} />
-                    </React.Fragment>
-                  )
-                }
-              </EtsBootstrap.Row>
-            </EtsBootstrap.Col>
-          </EtsBootstrap.Row>
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        IS_CLOSE_OR_IS_ACTIVE,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <h4>Топливо</h4>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Row>
+              <WaybillFuelType formDataKey={props.formDataKey} md={12} />
+              <WaybillFuelStart formDataKey={props.formDataKey} md={12} />
+              <WaybillFuelGiven formDataKey={props.formDataKey} md={12} />
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <EtsBootstrap.Row>
+              {
+                IS_CLOSE_OR_IS_ACTIVE && (
+                  <React.Fragment>
+                    <WaybillFuelEnd formDataKey={props.formDataKey} md={12} />
+                    <WaybillFactFuelEnd formDataKey={props.formDataKey} md={12} />
+                  </React.Fragment>
+                )
+              }
+            </EtsBootstrap.Row>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

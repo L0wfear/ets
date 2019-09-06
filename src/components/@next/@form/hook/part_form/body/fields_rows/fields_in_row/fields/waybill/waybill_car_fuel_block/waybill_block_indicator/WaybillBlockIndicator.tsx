@@ -19,20 +19,13 @@ const WaybillBlockIndicator: React.FC<WaybillBlockIndicatorProps> = React.memo(
 
     const carHasMotohours = hasMotohours(gov_number);
 
-    return React.useMemo(
-      () => (
-        carHasMotohours ? (
-          <WaybillBlockMotohours formDataKey={props.formDataKey} md={props.md} />
-        )
-        : (
-          <WaybillBlockOdometr formDataKey={props.formDataKey} md={props.md} />
-        )
-      ),
-      [
-        props,
-        carHasMotohours,
-      ],
-    );
+    return carHasMotohours
+      ? (
+        <WaybillBlockMotohours formDataKey={props.formDataKey} md={props.md} />
+      )
+      : (
+        <WaybillBlockOdometr formDataKey={props.formDataKey} md={props.md} />
+      );
   },
 );
 

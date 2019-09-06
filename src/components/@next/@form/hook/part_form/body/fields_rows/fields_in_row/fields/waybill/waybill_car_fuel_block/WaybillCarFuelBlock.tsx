@@ -19,29 +19,23 @@ const WaybillCarFuelBlock: React.FC<WaybillCarFuelBlockProps> = React.memo(
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const isSelectedCarId = Boolean(car_id);
 
-    return React.useMemo(
-      () => isSelectedCarId && (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <React.Fragment>
-            <h3>Транспортное средство</h3>
-            <BorderDash width={2} borderStyle="dashed" color="rgba(0, 0, 0, 0.5)">
-              <EtsBootstrap.Row>
-                <EtsBootstrap.Col md={12}>
-                  <WaybillBlockIndicator formDataKey={props.formDataKey} md={4} />
-                  <WaybillBlockFuel formDataKey={props.formDataKey} md={8} />
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={12}>
-                  <WaybillBlockCarRefill formDataKey={props.formDataKey} md={12} />
-                </EtsBootstrap.Col>
-              </EtsBootstrap.Row>
-            </BorderDash>
-          </React.Fragment>
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        isSelectedCarId,
-      ],
+    return isSelectedCarId && (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <React.Fragment>
+          <h3>Транспортное средство</h3>
+          <BorderDash width={2} borderStyle="dashed" color="rgba(0, 0, 0, 0.5)">
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <WaybillBlockIndicator formDataKey={props.formDataKey} md={4} />
+                <WaybillBlockFuel formDataKey={props.formDataKey} md={8} />
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={12}>
+                <WaybillBlockCarRefill formDataKey={props.formDataKey} md={12} />
+              </EtsBootstrap.Col>
+            </EtsBootstrap.Row>
+          </BorderDash>
+        </React.Fragment>
+      </EtsBootstrap.Col>
     );
   },
 );

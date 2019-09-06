@@ -25,7 +25,7 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
       fieldData: { title, clearable, key },
     } = props;
 
-    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
@@ -71,61 +71,44 @@ const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.me
       [key, handleChange],
     );
 
-    return React.useMemo(
-      () => {
-        const isDisabled = (
-          !isPermitted
-          || IS_CLOSE_OR_IS_ACTIVE
-          || structurePickData.STRUCTURE_FIELD_READONLY
-        );
+    const isDisabled = (
+      !isPermitted
+      || IS_CLOSE_OR_IS_ACTIVE
+      || structurePickData.STRUCTURE_FIELD_READONLY
+    );
 
-        return (
-          structurePickData.STRUCTURE_FIELD_VIEW
-            && (
-              <EtsBootstrap.Col md={props.fieldData.md || 12}>
-                {
-                  !isDisabled
-                    ? (
-                      <ExtField
-                        id={`${path}_${key}`}
-                        type="select"
-                        label={title}
-                        value={formState[key]}
-                        error={formErrors[key]}
-                        options={options}
-                        onChange={handleChangeWrap}
-                        clearable={clearable || structurePickData.STRUCTURE_FIELD_DELETABLE}
+    return (
+      structurePickData.STRUCTURE_FIELD_VIEW
+        && (
+          <EtsBootstrap.Col md={props.fieldData.md || 12}>
+            {
+              !isDisabled
+                ? (
+                  <ExtField
+                    id={`${path}_${key}`}
+                    type="select"
+                    label={title}
+                    value={formState[key]}
+                    error={formErrors[key]}
+                    options={options}
+                    onChange={handleChangeWrap}
+                    clearable={clearable || structurePickData.STRUCTURE_FIELD_DELETABLE}
 
-                        etsIsLoading={isLoading}
-                      />
-                    )
-                    : (
-                      <ExtField
-                        id={`${path}_${key}`}
-                        type="string"
-                        label={title}
-                        value={formState.structure_name ? formState.structure_name : 'Не выбрано'}
-                        disabled
-                      />
-                    )
-                }
-              </EtsBootstrap.Col>
-            )
-        );
-      },
-      [
-        path,
-        key,
-        clearable,
-        title,
-        formState[key],
-        IS_CLOSE_OR_IS_ACTIVE,
-        formErrors[key],
-        options,
-        handleChangeWrap,
-        isPermitted,
-        structurePickData,
-      ],
+                    etsIsLoading={isLoading}
+                  />
+                )
+                : (
+                  <ExtField
+                    id={`${path}_${key}`}
+                    type="string"
+                    label={title}
+                    value={formState.structure_name ? formState.structure_name : 'Не выбрано'}
+                    disabled
+                  />
+                )
+            }
+          </EtsBootstrap.Col>
+        )
     );
   },
 );

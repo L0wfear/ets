@@ -22,7 +22,7 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
     const isPermitted = etsUseSelector(
       (state) => getSessionState(state).userData.permissionsSet.has(fuelCardsPermissions.create),
     );
-    const page = useForm.useFormDataSchemaPage<Waybill>(props.formDataKey);
+    const { page } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const {
       structure_id,
       fuel_type,
@@ -69,34 +69,25 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
       [structure_id, fuel_type, showStatus],
     );
 
-    return React.useMemo(
-      () => (
-        <React.Fragment>
-          <ButtonTableInput block width={160} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
-          {
-            showStatus && (
-              <ErrorBoundaryForm>
-                <React.Suspense fallback={<LoadingComponent />}>
-                  <FuelCardsFormLazy
-                    element={element}
-                    handleHide={onFormHide}
+    return (
+      <React.Fragment>
+        <ButtonTableInput block width={160} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
+        {
+          showStatus && (
+            <ErrorBoundaryForm>
+              <React.Suspense fallback={<LoadingComponent />}>
+                <FuelCardsFormLazy
+                  element={element}
+                  handleHide={onFormHide}
 
-                    page={page}
-                    fromWaybill
-                  />
-                </React.Suspense>
-              </ErrorBoundaryForm>
-            )
-          }
-        </React.Fragment>
-      ),
-      [
-        page,
-        isPermitted,
-        showStatus,
-        element,
-        onFormHide,
-      ],
+                  page={page}
+                  fromWaybill
+                />
+              </React.Suspense>
+            </ErrorBoundaryForm>
+          )
+        }
+      </React.Fragment>
     );
   },
 );

@@ -17,7 +17,7 @@ const FieldWaybillWorkModeIdArray: React.FC<FieldWaybillWorkModeIdArrayProps> = 
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<Waybill>(props.formDataKey);
 
-    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
 
     const { work_mode_name } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -37,34 +37,21 @@ const FieldWaybillWorkModeIdArray: React.FC<FieldWaybillWorkModeIdArrayProps> = 
       [],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id={`${path}_work_mode_id`}
-              type="select"
-              clearable
-              label="Режим работы"
-              disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
-              value={work_mode_name}
-              options={optionsData.options}
-              etsIsLoading={optionsData.isLoading}
-              onChange={handleChangeWrap}
-              boundKeys="work_mode_id"
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props.md,
-        work_mode_name,
-        path,
-        IS_CLOSE_OR_IS_ACTIVE,
-        isPermitted,
-        optionsData,
-        handleChangeWrap,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_work_mode_id`}
+          type="select"
+          clearable
+          label="Режим работы"
+          disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
+          value={work_mode_name}
+          options={optionsData.options}
+          etsIsLoading={optionsData.isLoading}
+          onChange={handleChangeWrap}
+          boundKeys="work_mode_id"
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

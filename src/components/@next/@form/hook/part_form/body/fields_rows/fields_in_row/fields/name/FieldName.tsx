@@ -15,7 +15,7 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
     const {
       fieldData: { key, title },
     } = props;
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<any>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
@@ -29,21 +29,18 @@ const FieldName: React.FC<FieldNameProps> = React.memo(
       [key, handleChange],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.fieldData.md || 12}>
-          <ExtField
-            id={`${path}_${key}`}
-            type="string"
-            label={title}
-            value={formState[key]}
-            error={formErrors[key]}
-            onChange={handleChangeWrap}
-            disabled={!isPermitted}
-          />
-        </EtsBootstrap.Col>
-      ),
-      [props, path, key, title, formState[key], formErrors[key], handleChangeWrap, isPermitted],
+    return (
+      <EtsBootstrap.Col md={props.fieldData.md || 12}>
+        <ExtField
+          id={`${path}_${key}`}
+          type="string"
+          label={title}
+          value={formState[key]}
+          error={formErrors[key]}
+          onChange={handleChangeWrap}
+          disabled={!isPermitted}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

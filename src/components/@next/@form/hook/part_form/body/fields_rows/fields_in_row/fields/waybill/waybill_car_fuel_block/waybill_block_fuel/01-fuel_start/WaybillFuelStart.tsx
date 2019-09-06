@@ -15,7 +15,7 @@ type WaybillFuelStartProps = {
 
 const WaybillFuelStart: React.FC<WaybillFuelStartProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       fuel_start,
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -41,29 +41,19 @@ const WaybillFuelStart: React.FC<WaybillFuelStartProps> = React.memo(
       [handleChange],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <ExtField
-            id={`${path}_fuel_start`}
-            type="number"
-            label="Выезд, л"
-            value={fuel_start}
-            onChange={handleChangeWrap}
-            disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_fuel_start`}
+          type="number"
+          label="Выезд, л"
+          value={fuel_start}
+          onChange={handleChangeWrap}
+          disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
 
-            boundKeys="fuel_start"
-          />
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        handleChangeWrap,
-        fuel_start,
-        IS_CLOSE_OR_IS_ACTIVE,
-        isPermitted,
-      ],
+          boundKeys="fuel_start"
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

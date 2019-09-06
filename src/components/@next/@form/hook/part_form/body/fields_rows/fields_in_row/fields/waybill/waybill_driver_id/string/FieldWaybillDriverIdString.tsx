@@ -11,28 +11,18 @@ type FieldWaybillDriverIdStringProps = {
 
 const FieldWaybillDriverIdString: React.FC<FieldWaybillDriverIdStringProps> = React.memo(
   (props) => {
-    const {
-      driver_fio,
-    } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
+    const driver_fio = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_fio']>(props.formDataKey, 'driver_fio');
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id="driver-fio"
-              type="string"
-              label="Водитель"
-              readOnly
-              value={driver_fio}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        driver_fio,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id="driver-fio"
+          type="string"
+          label="Водитель"
+          readOnly
+          value={driver_fio}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -42,27 +42,18 @@ const WaybillCarRefillTableInput: React.FC<WaybillCarRefillTableInputProps> = Re
       [handleChange, disabled],
     );
 
-    return React.useMemo(
-      () => (
-          <TableInput
-            meta={tableMeta}
-            array={car_refill}
-            onChange={handleChangeWrap}
+    return (
+      <TableInput
+        meta={tableMeta}
+        array={car_refill}
+        onChange={handleChangeWrap}
 
-            header={null}
-            selectedRowIndex={props.selectedRowIndex}
-            setSelectedRowIndex={props.setSelectedRowIndex}
+        header={null}
+        selectedRowIndex={props.selectedRowIndex}
+        setSelectedRowIndex={props.setSelectedRowIndex}
 
-            disabled={disabled}
-          />
-      ),
-      [
-        tableMeta,
-        props.selectedRowIndex,
-        props.setSelectedRowIndex,
-        car_refill,
-        disabled,
-      ],
+        disabled={disabled}
+      />
     );
   },
 );

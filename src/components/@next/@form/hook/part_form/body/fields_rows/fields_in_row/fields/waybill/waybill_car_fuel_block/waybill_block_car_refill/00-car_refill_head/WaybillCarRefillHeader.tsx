@@ -26,33 +26,27 @@ const WaybillCarRefillHeader: React.FC<WaybillCarRefillHeaderProps> = React.memo
       || canEditIfClose
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Row>
-          <EtsHeaderContainerWrap>
-            <EtsHeaderContainer>
-              <EtsHeaderTitle>
-                Заправка топлива
-              </EtsHeaderTitle>
-              <EtsButtonsContainer>
-                {
-                  visibleButtons && (
-                    <React.Fragment>
-                      <WaybillButtonCarRefillAdd formDataKey={props.formDataKey} />
-                      <WaybillButtonCarRefillRemove formDataKey={props.formDataKey} selectedRowIndex={props.selectedRowIndex} setSelectedRowIndex={props.setSelectedRowIndex} />
-                      <WaybillButtonCreateFuelCard formDataKey={props.formDataKey} />
-                    </React.Fragment>
-                  )
-                }
-              </EtsButtonsContainer>
-            </EtsHeaderContainer>
-          </EtsHeaderContainerWrap>
-        </EtsBootstrap.Row>
-      ),
-      [
-        props,
-        visibleButtons,
-      ],
+    return (
+      <EtsBootstrap.Row>
+        <EtsHeaderContainerWrap>
+          <EtsHeaderContainer>
+            <EtsHeaderTitle>
+              Заправка топлива
+            </EtsHeaderTitle>
+            <EtsButtonsContainer>
+              {
+                visibleButtons && (
+                  <React.Fragment>
+                    <WaybillButtonCarRefillAdd formDataKey={props.formDataKey} />
+                    <WaybillButtonCarRefillRemove formDataKey={props.formDataKey} selectedRowIndex={props.selectedRowIndex} setSelectedRowIndex={props.setSelectedRowIndex} />
+                    <WaybillButtonCreateFuelCard formDataKey={props.formDataKey} />
+                  </React.Fragment>
+                )
+              }
+            </EtsButtonsContainer>
+          </EtsHeaderContainer>
+        </EtsHeaderContainerWrap>
+      </EtsBootstrap.Row>
     );
   },
 );

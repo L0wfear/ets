@@ -10,22 +10,17 @@ type FieldWaybillDates = {
 
 const FieldWaybillDates: React.FC<FieldWaybillDates> = React.memo(
   (props) => {
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <FieldWaybillPlanDates formDataKey={props.formDataKey} />
-              </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={12}>
-                <FieldWaybillFactDates formDataKey={props.formDataKey} />
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
+            <FieldWaybillPlanDates formDataKey={props.formDataKey} />
           </EtsBootstrap.Col>
-        );
-      },
-      [props],
+          <EtsBootstrap.Col md={12}>
+            <FieldWaybillFactDates formDataKey={props.formDataKey} />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

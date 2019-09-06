@@ -14,7 +14,7 @@ type WaybillFieldOdometrDiffProps = {
 
 const WaybillFieldOdometrDiff: React.FC<WaybillFieldOdometrDiffProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       odometr_start,
       odometr_end,
@@ -32,27 +32,20 @@ const WaybillFieldOdometrDiff: React.FC<WaybillFieldOdometrDiffProps> = React.me
       [odometr_start, odometr_end],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          {
-            IS_CLOSE_OR_IS_ACTIVE && (
-              <ExtField
-                id={`${path}_odometr_diff`}
-                type="number"
-                label="Пробег, км"
-                value={odometr_diff}
-                disabled
-              />
-            )
-          }
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        odometr_diff,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        {
+          IS_CLOSE_OR_IS_ACTIVE && (
+            <ExtField
+              id={`${path}_odometr_diff`}
+              type="number"
+              label="Пробег, км"
+              value={odometr_diff}
+              disabled
+            />
+          )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

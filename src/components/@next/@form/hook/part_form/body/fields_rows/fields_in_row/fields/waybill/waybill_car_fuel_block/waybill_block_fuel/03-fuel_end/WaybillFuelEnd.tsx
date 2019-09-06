@@ -12,7 +12,7 @@ type WaybillFuelEndProps = {
 
 const WaybillFuelEnd: React.FC<WaybillFuelEndProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       fuel_start,
       fuel_given,
@@ -49,23 +49,16 @@ const WaybillFuelEnd: React.FC<WaybillFuelEndProps> = React.memo(
       [fuel_end, equipment_fuel, is_one_fuel_tank, fuel_start, fuel_given],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <ExtField
-            id={`${path}_fuel_end`}
-            type="number"
-            label="Возврат по таксировке, л"
-            value={fuel_end}
-            disabled
-          />
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        fuel_end,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_fuel_end`}
+          type="number"
+          label="Возврат по таксировке, л"
+          value={fuel_end}
+          disabled
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

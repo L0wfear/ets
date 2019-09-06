@@ -20,7 +20,7 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
       fieldData: { title, clearable, key },
     } = props;
 
-    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
@@ -44,58 +44,39 @@ const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonI
       },
       [key, handleChange],
     );
+    const isDisabled = (
+      !isPermitted
+      || IS_CLOSE_OR_IS_ACTIVE
+    );
+    return (
+      <EtsBootstrap.Col md={props.fieldData.md || 12}>
+        {
+          !isDisabled
+            ? (
+              <ExtField
+                id={`${path}_${key}`}
+                type="select"
+                label={title}
+                value={formState[key]}
+                error={formErrors[key]}
+                options={options}
+                onChange={handleChangeWrap}
+                clearable={clearable}
 
-    return React.useMemo(
-      () => {
-        const isDisabled = (
-          !isPermitted
-          || IS_CLOSE_OR_IS_ACTIVE
-        );
-
-        return (
-          <EtsBootstrap.Col md={props.fieldData.md || 12}>
-            {
-              !isDisabled
-                ? (
-                  <ExtField
-                    id={`${path}_${key}`}
-                    type="select"
-                    label={title}
-                    value={formState[key]}
-                    error={formErrors[key]}
-                    options={options}
-                    onChange={handleChangeWrap}
-                    clearable={clearable}
-
-                    etsIsLoading={isLoading}
-                  />
-                )
-                : (
-                  <ExtField
-                    id={`${path}_${key}`}
-                    type="string"
-                    label={title}
-                    value={formState.accompanying_person_name ? formState.accompanying_person_name : 'Не выбран'}
-                    disabled
-                  />
-                )
-            }
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        path,
-        key,
-        clearable,
-        title,
-        formState[key],
-        IS_CLOSE_OR_IS_ACTIVE,
-        formErrors[key],
-        options,
-        handleChangeWrap,
-        isPermitted,
-      ],
+                etsIsLoading={isLoading}
+              />
+            )
+            : (
+              <ExtField
+                id={`${path}_${key}`}
+                type="string"
+                label={title}
+                value={formState.accompanying_person_name ? formState.accompanying_person_name : 'Не выбран'}
+                disabled
+              />
+            )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -14,7 +14,7 @@ type FieldWaybillIsOneFuelTankProps = {
 
 const FieldWaybillIsOneFuelTank: React.FC<FieldWaybillIsOneFuelTankProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       car_id,
       equipment_fuel,
@@ -45,38 +45,25 @@ const FieldWaybillIsOneFuelTank: React.FC<FieldWaybillIsOneFuelTankProps> = Reac
       [previosIsShowField, isShowField, handleChangeWrap],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            {
-              isShowField && (
-                <ExtField
-                  id={`${path}_is_one_fuel_tank`}
-                  type="select"
-                  clearable={false}
-                  label="Таксировка с одного топливного бака"
-                  value={is_one_fuel_tank}
-                  options={YES_NO_SELECT_OPTIONS_BOOL}
-                  onChange={handleChangeWrap}
-                  disabled={IS_CLOSED || !isPermitted}
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        {
+          isShowField && (
+            <ExtField
+              id={`${path}_is_one_fuel_tank`}
+              type="select"
+              clearable={false}
+              label="Таксировка с одного топливного бака"
+              value={is_one_fuel_tank}
+              options={YES_NO_SELECT_OPTIONS_BOOL}
+              onChange={handleChangeWrap}
+              disabled={IS_CLOSED || !isPermitted}
 
-                  boundKeys="is_one_fuel_tank"
-                />
-              )
-            }
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        isShowField,
-        path,
-        props,
-        is_one_fuel_tank,
-        handleChangeWrap,
-        isPermitted,
-        IS_CLOSED,
-      ],
+              boundKeys="is_one_fuel_tank"
+            />
+          )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -11,7 +11,7 @@ type FieldWaybillPlanDatesOwnProps = {
 
 const FieldWaybillPlanDates: React.FC<FieldWaybillPlanDatesOwnProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const {
       plan_departure_date,
       plan_arrival_date,
@@ -33,48 +33,33 @@ const FieldWaybillPlanDates: React.FC<FieldWaybillPlanDatesOwnProps> = React.mem
       },
       [handleChange],
     );
+    const isDisabled = (
+      !isPermitted
+      || IS_CLOSE_OR_IS_ACTIVE
+    );
 
-    return React.useMemo(
-      () => {
-        const isDisabled = (
-          !isPermitted
-          || IS_CLOSE_OR_IS_ACTIVE
-        );
+    return (
+      <EtsBootstrap.Col md={12}>
+        <EtsBootstrap.Row>
+          <DatePickerRange
+            date_start_id={`${path}_plan_departure_date`}
+            date_start_key="plan_departure_date"
+            date_start_value={plan_departure_date}
+            date_start_error={plan_departure_date_error}
+            date_start_time
+            date_end_id={`${path}_plan_arrival_date`}
+            date_end_key="plan_arrival_date"
+            date_end_value={plan_arrival_date}
+            date_end_error={plan_arrival_date_error}
+            date_end_time
+            date_start_label="Выезд план."
+            date_end_label="Возвращение план."
 
-        return (
-          <EtsBootstrap.Col md={12}>
-            <EtsBootstrap.Row>
-              <DatePickerRange
-                date_start_id={`${path}_plan_departure_date`}
-                date_start_key="plan_departure_date"
-                date_start_value={plan_departure_date}
-                date_start_error={plan_departure_date_error}
-                date_start_time
-                date_end_id={`${path}_plan_arrival_date`}
-                date_end_key="plan_arrival_date"
-                date_end_value={plan_arrival_date}
-                date_end_error={plan_arrival_date_error}
-                date_end_time
-                date_start_label="Выезд план."
-                date_end_label="Возвращение план."
-
-                disabled={isDisabled}
-                onChange={handleChangeWrap}
-              />
-            </EtsBootstrap.Row>
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        path,
-        plan_departure_date,
-        plan_departure_date_error,
-        plan_arrival_date_error,
-        plan_arrival_date,
-        IS_CLOSE_OR_IS_ACTIVE,
-        handleChangeWrap,
-        isPermitted,
-      ],
+            disabled={isDisabled}
+            onChange={handleChangeWrap}
+          />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

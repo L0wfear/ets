@@ -13,7 +13,7 @@ type FieldWaybillCarIdStringProps = {
 const FieldWaybillCarIdString: React.FC<FieldWaybillCarIdStringProps> = React.memo(
   (props) => {
 
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
 
     const value = React.useMemo(
@@ -33,24 +33,16 @@ const FieldWaybillCarIdString: React.FC<FieldWaybillCarIdStringProps> = React.me
       ],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id={`${path}_car_id`}
-              type="string"
-              label="Транспортное средство"
-              readOnly
-              value={value}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        value,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_car_id`}
+          type="string"
+          label="Транспортное средство"
+          readOnly
+          value={value}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

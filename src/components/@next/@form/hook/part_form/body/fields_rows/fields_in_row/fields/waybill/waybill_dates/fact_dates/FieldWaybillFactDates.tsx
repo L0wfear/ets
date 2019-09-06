@@ -11,7 +11,7 @@ type FieldWaybillFactDatesOwnProps = {
 
 const FieldWaybillFactDates: React.FC<FieldWaybillFactDatesOwnProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const {
       fact_departure_date,
       fact_arrival_date,
@@ -34,54 +34,38 @@ const FieldWaybillFactDates: React.FC<FieldWaybillFactDatesOwnProps> = React.mem
       },
       [handleChange],
     );
+    const isDisabled = (
+      !isPermitted
+      || IS_CLOSED
+    );
 
-    return React.useMemo(
-      () => {
-        const isDisabled = (
-          !isPermitted
-          || IS_CLOSED
-        );
+    return (
+      <EtsBootstrap.Col md={12}>
+        <EtsBootstrap.Row>
+          {
+            IS_CLOSE_OR_IS_ACTIVE
+              && (
+                <DatePickerRange
+                  date_start_id={`${path}_fact_departure_date`}
+                  date_start_key="fact_departure_date"
+                  date_start_value={fact_departure_date}
+                  date_start_error={fact_departure_date_error}
+                  date_start_time
+                  date_end_id={`${path}_fact_arrival_date`}
+                  date_end_key="fact_arrival_date"
+                  date_end_value={fact_arrival_date}
+                  date_end_error={fact_arrival_date_error}
+                  date_end_time
+                  date_start_label="Выезд факт."
+                  date_end_label="Возвращение факт."
 
-        return (
-          <EtsBootstrap.Col md={12}>
-            <EtsBootstrap.Row>
-              {
-                IS_CLOSE_OR_IS_ACTIVE
-                  && (
-                    <DatePickerRange
-                      date_start_id={`${path}_fact_departure_date`}
-                      date_start_key="fact_departure_date"
-                      date_start_value={fact_departure_date}
-                      date_start_error={fact_departure_date_error}
-                      date_start_time
-                      date_end_id={`${path}_fact_arrival_date`}
-                      date_end_key="fact_arrival_date"
-                      date_end_value={fact_arrival_date}
-                      date_end_error={fact_arrival_date_error}
-                      date_end_time
-                      date_start_label="Выезд факт."
-                      date_end_label="Возвращение факт."
-
-                      disabled={isDisabled}
-                      onChange={handleChangeWrap}
-                    />
-                  )
-              }
-            </EtsBootstrap.Row>
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        path,
-        fact_departure_date,
-        fact_departure_date_error,
-        fact_arrival_date_error,
-        fact_arrival_date,
-        IS_CLOSE_OR_IS_ACTIVE,
-        IS_CLOSED,
-        handleChangeWrap,
-        isPermitted,
-      ],
+                  disabled={isDisabled}
+                  onChange={handleChangeWrap}
+                />
+              )
+          }
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

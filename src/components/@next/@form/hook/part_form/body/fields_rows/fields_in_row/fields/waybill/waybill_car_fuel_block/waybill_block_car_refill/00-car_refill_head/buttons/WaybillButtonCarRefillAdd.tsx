@@ -31,13 +31,8 @@ const WaybillButtonCarRefillAdd: React.FC<WaybillButtonCarRefillAddProps> = Reac
       [car_refill, handleChange],
     );
 
-    return React.useMemo(
-      () => (
-        <ButtonTableInput block width={160} onClick={handleAddRow}>Добавить заправку</ButtonTableInput>
-      ),
-      [
-        handleAddRow,
-      ],
+    return (
+      <ButtonTableInput block width={160} onClick={handleAddRow}>Добавить заправку</ButtonTableInput>
     );
   },
 );

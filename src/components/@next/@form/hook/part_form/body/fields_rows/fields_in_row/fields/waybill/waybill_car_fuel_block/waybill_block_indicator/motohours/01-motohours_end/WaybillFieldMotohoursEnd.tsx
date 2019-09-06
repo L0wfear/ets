@@ -14,7 +14,7 @@ type WaybillFieldMotohoursEndProps = {
 
 const WaybillFieldMotohoursEnd: React.FC<WaybillFieldMotohoursEndProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       motohours_end,
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -45,35 +45,23 @@ const WaybillFieldMotohoursEnd: React.FC<WaybillFieldMotohoursEndProps> = React.
       [handleChangeWrap],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          {
-            IS_CLOSE_OR_IS_ACTIVE && (
-              <ExtField
-                id={`${path}_motohours_end`}
-                type="number"
-                label="Возвращение в гараж, м/ч"
-                value={motohours_end}
-                onChange={handleChangeWrap}
-                disabled={IS_CLOSED && !canEditIfClose || (!isPermitted && !isPermittedForDepartureAndArrivalValues)}
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        {
+          IS_CLOSE_OR_IS_ACTIVE && (
+            <ExtField
+              id={`${path}_motohours_end`}
+              type="number"
+              label="Возвращение в гараж, м/ч"
+              value={motohours_end}
+              onChange={handleChangeWrap}
+              disabled={IS_CLOSED && !canEditIfClose || (!isPermitted && !isPermittedForDepartureAndArrivalValues)}
 
-                boundKeys="motohours_end"
-              />
-            )
-          }
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        motohours_end,
-        handleChangeWrap,
-        IS_CLOSED,
-        IS_CLOSE_OR_IS_ACTIVE,
-        canEditIfClose,
-        isPermitted,
-      ],
+              boundKeys="motohours_end"
+            />
+          )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

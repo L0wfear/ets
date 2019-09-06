@@ -14,7 +14,7 @@ type WaybillFieldMotohoursStartProps = {
 
 const WaybillFieldMotohoursStart: React.FC<WaybillFieldMotohoursStartProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       car_id,
       motohours_start,
@@ -53,29 +53,19 @@ const WaybillFieldMotohoursStart: React.FC<WaybillFieldMotohoursStartProps> = Re
       [],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-           <ExtField
-            id={`${path}_motohours_start`}
-            type="number"
-            label="Выезд из гаража, м/ч"
-            value={motohours_start}
-            onChange={handleChangeWrap}
-            disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+          <ExtField
+          id={`${path}_motohours_start`}
+          type="number"
+          label="Выезд из гаража, м/ч"
+          value={motohours_start}
+          onChange={handleChangeWrap}
+          disabled={IS_CLOSE_OR_IS_ACTIVE || !isPermitted}
 
-            boundKeys="motohours_start"
-          />
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        motohours_start,
-        handleChangeWrap,
-        IS_CLOSE_OR_IS_ACTIVE,
-        isPermitted,
-      ],
+          boundKeys="motohours_start"
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

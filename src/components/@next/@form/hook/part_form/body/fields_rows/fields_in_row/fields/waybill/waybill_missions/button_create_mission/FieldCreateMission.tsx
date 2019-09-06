@@ -15,19 +15,12 @@ const FieldCreateMission: React.FC<FieldCreateMissionProps> = React.memo(
     const { car_id } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const isSelectedCarId = Boolean(car_id);
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={12}>
-            <EtsBootstrap.Button disabled={IS_CLOSED || !isSelectedCarId || !isPermitted}>Создать задание</EtsBootstrap.Button>
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        IS_CLOSED,
-        isPermitted,
-        isSelectedCarId,
-      ],
+    const isDisabled = IS_CLOSED || !isSelectedCarId || !isPermitted;
+
+    return (
+      <EtsBootstrap.Col md={12}>
+        <EtsBootstrap.Button disabled={isDisabled}>Создать задание</EtsBootstrap.Button>
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -14,7 +14,7 @@ type WaybillFactFuelEndProps = {
 
 const WaybillFactFuelEnd: React.FC<WaybillFactFuelEndProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       fact_fuel_end,
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -35,33 +35,25 @@ const WaybillFactFuelEnd: React.FC<WaybillFactFuelEndProps> = React.memo(
       [handleChange],
     );
 
-    return React.useMemo(
-      () => (
-        <React.Fragment>
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id={`${path}_fact_fuel_end`}
-              type="number"
-              label="Возврат фактический, л"
-              value={fact_fuel_end}
-              onChange={handleChangeWrap}
-              disabled={
-                !(IS_ACTIVE || IS_CLOSED && canEditIfClose)
-                || !isPermitted
-              }
-            />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={props.md || 12}>
-            Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
-          </EtsBootstrap.Col>
-        </React.Fragment>
-      ),
-      [
-        props,
-        path,
-        fact_fuel_end,
-        handleChangeWrap,
-      ],
+    return (
+      <React.Fragment>
+        <EtsBootstrap.Col md={props.md || 12}>
+          <ExtField
+            id={`${path}_fact_fuel_end`}
+            type="number"
+            label="Возврат фактический, л"
+            value={fact_fuel_end}
+            onChange={handleChangeWrap}
+            disabled={
+              !(IS_ACTIVE || IS_CLOSED && canEditIfClose)
+              || !isPermitted
+            }
+          />
+        </EtsBootstrap.Col>
+        <EtsBootstrap.Col md={props.md || 12}>
+          Значение поля «Возврат фактический, л» обновляется при редактировании таксировки.
+        </EtsBootstrap.Col>
+      </React.Fragment>
     );
   },
 );

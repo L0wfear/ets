@@ -11,24 +11,22 @@ type FieldWaybillClosedByEmployeeNameProps = {
 
 const FieldWaybillClosedByEmployeeName: React.FC<FieldWaybillClosedByEmployeeNameProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const key = 'closed_by_employee_name';
-    const closed_by_employee_name = useForm.useFormDataFormStatePickValue<Waybill>(props.formDataKey, key);
+
+    const closed_by_employee_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['closed_by_employee_name']>(props.formDataKey, key);
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
 
-    return React.useMemo(
-      () => IS_CLOSED && (
-        <EtsBootstrap.Col md={12}>
-          <ExtField
-            id={`${path}_${key}`}
-            type="string"
-            label="Закрыт"
-            value={closed_by_employee_name}
-            readOnly
-          />
-        </EtsBootstrap.Col>
-      ),
-      [path, key, closed_by_employee_name, IS_CLOSED],
+    return IS_CLOSED && (
+      <EtsBootstrap.Col md={12}>
+        <ExtField
+          id={`${path}_${key}`}
+          type="string"
+          label="Закрыт"
+          value={closed_by_employee_name}
+          readOnly
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

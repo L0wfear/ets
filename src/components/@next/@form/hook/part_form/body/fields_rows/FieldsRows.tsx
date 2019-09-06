@@ -11,25 +11,20 @@ const FieldsRows: React.FC<FieldsRowsProps> = React.memo(
   (props) => {
     const fields = useForm.useFormDataSchemaBodyFields<any>(props.formDataKey);
 
-    return React.useMemo(
-      () => {
-        return (
-          <React.Fragment>
-            {
-              fields.map((fieldDataRow, indexRow) => (
-                <EtsBootstrap.Row key={indexRow + 1}>
-                  {
-                    fieldDataRow.map((fieldData) => (
-                      <SwitchFields key={fieldData.key} fieldData={fieldData} formDataKey={props.formDataKey} />
-                    ))
-                  }
-                </EtsBootstrap.Row>
-              ))
-            }
-          </React.Fragment>
-        );
-      },
-      [fields, props],
+    return (
+      <React.Fragment>
+        {
+          fields.map((fieldDataRow, indexRow) => (
+            <EtsBootstrap.Row key={indexRow + 1}>
+              {
+                fieldDataRow.map((fieldData) => (
+                  <SwitchFields key={fieldData.key} fieldData={fieldData} formDataKey={props.formDataKey} />
+                ))
+              }
+            </EtsBootstrap.Row>
+          ))
+        }
+      </React.Fragment>
     );
   },
 );

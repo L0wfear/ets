@@ -8,21 +8,15 @@ type FieldSelectMissionProps = {
 
 const FieldSelectMission: React.FC<FieldSelectMissionProps> = React.memo(
   (props) => {
-
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={12}>
-            <ExtField
-              type="select"
-              label={false}
-              value={null}
-              options={[]}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [props],
+    return (
+      <EtsBootstrap.Col md={12}>
+        <ExtField
+          type="select"
+          label={false}
+          value={null}
+          options={[]}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -16,7 +16,7 @@ const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
     const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
     const IS_ACTIVE = useWaybillFormData.useFormDataIsActive(props.formDataKey);
     const IS_CLOSED = useWaybillFormData.useFormDataIsClosed(props.formDataKey);
-    const number = useForm.useFormDataFormStatePickValue<Waybill>(props.formDataKey, 'number');
+    const number = useForm.useFormDataFormStatePickValue<Waybill, Waybill['number']>(props.formDataKey, 'number');
 
     const titleText = React.useMemo(
       () => {
@@ -26,13 +26,10 @@ const WaybillHeader: React.FC<WaybillHeaderProps> = React.memo(
       [IS_CREATING, IS_DRAFT, IS_ACTIVE, IS_CLOSED, number],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.ModalHeader closeButton onHide={props.onHide}>
-          <EtsBootstrap.ModalTitle>{ titleText }</EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
-      ),
-      [props, titleText],
+    return (
+      <EtsBootstrap.ModalHeader closeButton onHide={props.onHide}>
+        <EtsBootstrap.ModalTitle>{ titleText }</EtsBootstrap.ModalTitle>
+      </EtsBootstrap.ModalHeader>
     );
   },
 );

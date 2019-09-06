@@ -10,26 +10,21 @@ type FieldWaybillMissionsProps = {
 const FieldWaybillMissions: React.FC<FieldWaybillMissionsProps> = React.memo(
   (props) => {
 
-    return React.useMemo(
-      () => {
-        return (
+    return (
+      <EtsBootstrap.Col md={12}>
+        <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <h4>Задание</h4>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-            <EtsBootstrap.Row>
-              <FieldSelectMission formDataKey={props.formDataKey} />
-            </EtsBootstrap.Row>
-            <br />
-            <EtsBootstrap.Row>
-              <FieldCreateMission formDataKey={props.formDataKey} />
-            </EtsBootstrap.Row>
+            <h4>Задание</h4>
           </EtsBootstrap.Col>
-        );
-      },
-      [props],
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <FieldSelectMission formDataKey={props.formDataKey} />
+        </EtsBootstrap.Row>
+        <br />
+        <EtsBootstrap.Row>
+          <FieldCreateMission formDataKey={props.formDataKey} />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

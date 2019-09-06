@@ -31,13 +31,10 @@ const ModalFormFooter: React.FC<ModalFormFooterProps> = React.memo(
       [formDataFooterValue, props],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.ModalFooter>
-          {children}
-        </EtsBootstrap.ModalFooter>
-      ),
-      [children],
+    return (
+      <EtsBootstrap.ModalFooter>
+        {children}
+      </EtsBootstrap.ModalFooter>
     );
   },
 );

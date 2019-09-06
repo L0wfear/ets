@@ -48,31 +48,18 @@ const FieldOnLineString: React.FC<FieldOnLineStringProps> = React.memo(
       [key, handleChange],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={6}>
-            <ExtField
-              id={key}
-              type="string"
-              label={title}
-              disabled={IS_CLOSED && !canEditIfClose || !isPermitted}
-              value={value}
-              onChange={handleChangeWrap}
-              error={error}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        canEditIfClose,
-        IS_CLOSED,
-        isPermitted,
-        value,
-        error,
-        handleChangeWrap,
-      ],
+    return (
+      <EtsBootstrap.Col md={6}>
+        <ExtField
+          id={key}
+          type="string"
+          label={title}
+          disabled={IS_CLOSED && !canEditIfClose || !isPermitted}
+          value={value}
+          onChange={handleChangeWrap}
+          error={error}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

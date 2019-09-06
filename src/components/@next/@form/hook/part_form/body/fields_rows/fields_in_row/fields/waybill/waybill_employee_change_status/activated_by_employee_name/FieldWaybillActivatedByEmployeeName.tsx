@@ -10,23 +10,20 @@ type FieldWaybillActivatedByEmployeeNameProps = {
 
 const FieldWaybillActivatedByEmployeeName: React.FC<FieldWaybillActivatedByEmployeeNameProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const key = 'activated_by_employee_name';
-    const activated_by_employee_name = useForm.useFormDataFormStatePickValue<Waybill>(props.formDataKey, key);
+    const activated_by_employee_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['activated_by_employee_name']>(props.formDataKey, key);
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={12}>
-          <ExtField
-            id={`${path}_${key}`}
-            type="string"
-            label="Выдан"
-            value={activated_by_employee_name}
-            readOnly
-          />
-        </EtsBootstrap.Col>
-      ),
-      [path, key, activated_by_employee_name],
+    return (
+      <EtsBootstrap.Col md={12}>
+        <ExtField
+          id={`${path}_${key}`}
+          type="string"
+          label="Выдан"
+          value={activated_by_employee_name}
+          readOnly
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

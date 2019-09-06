@@ -12,23 +12,15 @@ const FieldWaybillEmployeeChangeStatus: React.FC<FieldWaybillEmployeeChangeStatu
   (props) => {
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
 
-    return React.useMemo(
-      () => {
-        return (
-          IS_CLOSE_OR_IS_ACTIVE
-            && (
-              <EtsBootstrap.Col md={2}>
-                <EtsBootstrap.Row>
-                  <FieldWaybillActivatedByEmployeeName formDataKey={props.formDataKey} />
-                </EtsBootstrap.Row>
-                <EtsBootstrap.Row>
-                  <FieldWaybillClosedByEmployeeName formDataKey={props.formDataKey} />
-                </EtsBootstrap.Row>
-              </EtsBootstrap.Col>
-            )
-        );
-      },
-      [props, IS_CLOSE_OR_IS_ACTIVE],
+    return IS_CLOSE_OR_IS_ACTIVE && (
+      <EtsBootstrap.Col md={2}>
+        <EtsBootstrap.Row>
+          <FieldWaybillActivatedByEmployeeName formDataKey={props.formDataKey} />
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <FieldWaybillClosedByEmployeeName formDataKey={props.formDataKey} />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

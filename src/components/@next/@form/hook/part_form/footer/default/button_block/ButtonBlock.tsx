@@ -15,29 +15,24 @@ const ComponentsByKey: Record<ValuesOf<ValuesOf<DefautlFooterButtons['buttons']>
 
 const ButtonBlock: React.FC<ButtonBlockProps> = React.memo(
   (props) => {
-    return React.useMemo(
-      () => {
-        return (
-          <div>
-            {
-              props.blockButtons.map((buttonType) => {
-                const ComponentName = ComponentsByKey[buttonType];
+    return (
+      <div>
+        {
+          props.blockButtons.map((buttonType) => {
+            const ComponentName = ComponentsByKey[buttonType];
 
-                if (ComponentName) {
-                  return (
-                    <ComponentName key={buttonType} formDataKey={props.formDataKey} />
-                  );
-                }
-
-                return (
-                  <div>{`Опередели тип кнопки для ${buttonType} в ButtonBlock ComponentsByKey`}</div>
-                );
-              })
+            if (ComponentName) {
+              return (
+                <ComponentName key={buttonType} formDataKey={props.formDataKey} />
+              );
             }
-          </div>
-        );
-      },
-      [props.blockButtons, props.formDataKey],
+
+            return (
+              <div>{`Опередели тип кнопки для ${buttonType} в ButtonBlock ComponentsByKey`}</div>
+            );
+          })
+        }
+      </div>
     );
   },
 );

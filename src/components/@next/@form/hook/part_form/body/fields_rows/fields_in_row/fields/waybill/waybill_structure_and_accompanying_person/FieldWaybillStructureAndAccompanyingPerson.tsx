@@ -23,18 +23,13 @@ const FieldWaybillStructureAndAccompanyingPerson: React.FC<FieldWaybillStructure
   (props) => {
     const IS_CLOSE_OR_IS_ACTIVE = useWaybillFormData.useFormDataIsActiveOrIsClosed(props.formDataKey);
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={IS_CLOSE_OR_IS_ACTIVE ? 4 : 6}>
-            <EtsBootstrap.Row>
-              <FieldWaybillStructureId formDataKey={props.formDataKey} fieldData={FieldDataStructureId} />
-              <FieldWaybillAccompanyingPersonId formDataKey={props.formDataKey} fieldData={FieldDataAccompanyingPersonId} />
-            </EtsBootstrap.Row>
-          </EtsBootstrap.Col>
-        );
-      },
-      [props, IS_CLOSE_OR_IS_ACTIVE, props.formDataKey],
+    return (
+      <EtsBootstrap.Col md={IS_CLOSE_OR_IS_ACTIVE ? 4 : 6}>
+        <EtsBootstrap.Row>
+          <FieldWaybillStructureId formDataKey={props.formDataKey} fieldData={FieldDataStructureId} />
+          <FieldWaybillAccompanyingPersonId formDataKey={props.formDataKey} fieldData={FieldDataAccompanyingPersonId} />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

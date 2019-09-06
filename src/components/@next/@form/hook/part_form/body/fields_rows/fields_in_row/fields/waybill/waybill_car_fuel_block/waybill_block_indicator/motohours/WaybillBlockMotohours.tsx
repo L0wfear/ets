@@ -11,20 +11,15 @@ type WaybillBlockMotohoursProps = {
 
 const WaybillBlockMotohours: React.FC<WaybillBlockMotohoursProps> = React.memo(
   (props) => {
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <h4>Счетчик моточасов</h4>
-          <EtsBootstrap.Row>
-            <WaybillFieldMotohoursStart formDataKey={props.formDataKey} md={12} />
-            <WaybillFieldMotohoursEnd formDataKey={props.formDataKey} md={12} />
-            <WaybillFieldMotohoursDiff formDataKey={props.formDataKey} md={12} />
-          </EtsBootstrap.Row>
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <h4>Счетчик моточасов</h4>
+        <EtsBootstrap.Row>
+          <WaybillFieldMotohoursStart formDataKey={props.formDataKey} md={12} />
+          <WaybillFieldMotohoursEnd formDataKey={props.formDataKey} md={12} />
+          <WaybillFieldMotohoursDiff formDataKey={props.formDataKey} md={12} />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

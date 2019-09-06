@@ -50,37 +50,23 @@ const FieldWaybillDriverIdArray: React.FC<FieldWaybillDriverIdArrayProps> = Reac
       [],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id="driver-id"
-              type="select"
-              placeholder={notSelectedCarId ? 'Выберите Транспортное средство' : undefined}
-              label={'Водитель (возможен поиск по табельному номеру)'}
-              error={error}
-              sortingFunction={sortingDrivers}
-              options={employeeBindedToCarOptionData.options}
-              value={value}
-              onChange={handleChangeWrap}
-              boundKeys="driver_id"
-              disabled={!isPermitted || notSelectedCarId}
-              etsIsLoading={!notSelectedCarId && employeeBindedToCarOptionData.isLoading}
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        sortingDrivers,
-        error,
-        value,
-        handleChangeWrap,
-        isPermitted,
-        notSelectedCarId,
-        employeeBindedToCarOptionData,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id="driver-id"
+          type="select"
+          placeholder={notSelectedCarId ? 'Выберите Транспортное средство' : undefined}
+          label={'Водитель (возможен поиск по табельному номеру)'}
+          error={error}
+          sortingFunction={sortingDrivers}
+          options={employeeBindedToCarOptionData.options}
+          value={value}
+          onChange={handleChangeWrap}
+          boundKeys="driver_id"
+          disabled={!isPermitted || notSelectedCarId}
+          etsIsLoading={!notSelectedCarId && employeeBindedToCarOptionData.isLoading}
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

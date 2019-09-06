@@ -14,7 +14,7 @@ type WaybillFieldOdometrEndProps = {
 
 const WaybillFieldOdometrEnd: React.FC<WaybillFieldOdometrEndProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       odometr_end,
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
@@ -45,35 +45,23 @@ const WaybillFieldOdometrEnd: React.FC<WaybillFieldOdometrEndProps> = React.memo
       [handleChangeWrap],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          {
-            IS_CLOSE_OR_IS_ACTIVE && (
-              <ExtField
-                id={`${path}_odometr_end`}
-                type="number"
-                label="Возвращение в гараж, км"
-                value={odometr_end}
-                onChange={handleChangeWrap}
-                disabled={IS_CLOSED && !canEditIfClose || (!isPermitted && !isPermittedForDepartureAndArrivalValues)}
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        {
+          IS_CLOSE_OR_IS_ACTIVE && (
+            <ExtField
+              id={`${path}_odometr_end`}
+              type="number"
+              label="Возвращение в гараж, км"
+              value={odometr_end}
+              onChange={handleChangeWrap}
+              disabled={IS_CLOSED && !canEditIfClose || (!isPermitted && !isPermittedForDepartureAndArrivalValues)}
 
-                boundKeys="odometr_end"
-              />
-            )
-          }
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        odometr_end,
-        handleChangeWrap,
-        IS_CLOSED,
-        IS_CLOSE_OR_IS_ACTIVE,
-        canEditIfClose,
-        isPermitted,
-      ],
+              boundKeys="odometr_end"
+            />
+          )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

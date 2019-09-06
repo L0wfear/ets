@@ -28,19 +28,12 @@ const WaybillBlockCarRefill: React.FC<WaybillBlockCarRefillProps> = React.memo(
       [car_refill.length, selectedRowIndex, setSelectedRowIndex],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <WaybillCarRefillHeader formDataKey={props.formDataKey} selectedRowIndex={selectedRowIndex} setSelectedRowIndex={setSelectedRowIndex} />
-          <WaybillCarRefillTableInput formDataKey={props.formDataKey} selectedRowIndex={selectedRowIndex} setSelectedRowIndex={setSelectedRowIndex}  />
-          <WaybillCarRefillFuelGiven formDataKey={props.formDataKey} />
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        selectedRowIndex,
-        setSelectedRowIndex,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <WaybillCarRefillHeader formDataKey={props.formDataKey} selectedRowIndex={selectedRowIndex} setSelectedRowIndex={setSelectedRowIndex} />
+        <WaybillCarRefillTableInput formDataKey={props.formDataKey} selectedRowIndex={selectedRowIndex} setSelectedRowIndex={setSelectedRowIndex}  />
+        <WaybillCarRefillFuelGiven formDataKey={props.formDataKey} />
+      </EtsBootstrap.Col>
     );
   },
 );

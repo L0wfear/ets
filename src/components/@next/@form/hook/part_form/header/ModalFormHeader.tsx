@@ -17,19 +17,15 @@ const ComponentsByKey: Record<SchemaFormContextHeader['type'], React.ComponentTy
 const ModalFormHeader: React.FC<ModalFormHeaderProps> = React.memo(
   (props) => {
     const formDataHeaderValue = useForm.useFormDataSchemaHeader<any>(props.formDataKey);
+    const ComponentName = ComponentsByKey[formDataHeaderValue.type];
 
-    return React.useMemo(
-      () => {
-        const ComponentName = ComponentsByKey[formDataHeaderValue.type];
-        if (ComponentName) {
-          return (
-            <ComponentName formDataKey={props.formDataKey} onHide={props.onHide} />
-          );
-        }
-        return <div>{`Определи тип шапки для ${formDataHeaderValue.type} в ModalFormHeader ComponentsByKey`}</div>;
-      },
-      [props, formDataHeaderValue],
-    );
+    return ComponentName
+      ? (
+        <ComponentName formDataKey={props.formDataKey} onHide={props.onHide} />
+      )
+      : (
+        <div>{`Определи тип шапки для ${formDataHeaderValue.type} в ModalFormHeader ComponentsByKey`}</div>
+      );
   },
 );
 

@@ -31,39 +31,34 @@ const fieldDataDowntimeHoursRepair: FieldDataDowntimeHoursRepair = {
 
 const FieldWaybillIdleTimeOnLine: React.FC<FieldWaybillIdleTimeOnLineProps> = React.memo(
   (props) => {
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={8}>
-                <h4>Простои на линии, ч.</h4>
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
-            <EtsBootstrap.Row>
-              <FieldOnLineString
-                formDataKey={props.formDataKey}
-                fieldData={fieldDataDowntimeHoursWork}
-              />
-              <FieldOnLineString
-                formDataKey={props.formDataKey}
-                fieldData={fieldDataDowntimeHoursDuty}
-              />
-            </EtsBootstrap.Row>
-            <EtsBootstrap.Row>
-              <FieldOnLineString
-                formDataKey={props.formDataKey}
-                fieldData={fieldDataDowntimeHoursDinner}
-              />
-              <FieldOnLineString
-                formDataKey={props.formDataKey}
-                fieldData={fieldDataDowntimeHoursRepair}
-              />
-            </EtsBootstrap.Row>
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={8}>
+            <h4>Простои на линии, ч.</h4>
           </EtsBootstrap.Col>
-        );
-      },
-      [props],
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <FieldOnLineString
+            formDataKey={props.formDataKey}
+            fieldData={fieldDataDowntimeHoursWork}
+          />
+          <FieldOnLineString
+            formDataKey={props.formDataKey}
+            fieldData={fieldDataDowntimeHoursDuty}
+          />
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <FieldOnLineString
+            formDataKey={props.formDataKey}
+            fieldData={fieldDataDowntimeHoursDinner}
+          />
+          <FieldOnLineString
+            formDataKey={props.formDataKey}
+            fieldData={fieldDataDowntimeHoursRepair}
+          />
+        </EtsBootstrap.Row>
+      </EtsBootstrap.Col>
     );
   },
 );

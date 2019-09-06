@@ -16,17 +16,11 @@ const WaybillCarRefillFuelGiven: React.FC<WaybillCarRefillFuelGivenProps> = Reac
     } = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const not_empty_car_refill = car_refill.length > 0;
 
-    return React.useMemo(
-      () => not_empty_car_refill && (
-        <FooterEnd margin={30}>
-          <div><b>{'Итого '}</b></div>
-          <div><b>{Number(fuel_given).toFixed(3)}</b></div>
-        </FooterEnd>
-      ),
-      [
-        fuel_given,
-        not_empty_car_refill,
-      ],
+    return not_empty_car_refill && (
+      <FooterEnd margin={30}>
+        <div><b>{'Итого '}</b></div>
+        <div><b>{Number(fuel_given).toFixed(3)}</b></div>
+      </FooterEnd>
     );
   },
 );

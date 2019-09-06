@@ -18,10 +18,11 @@ type FieldIsBnsoBrokenProps = {
 
 const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
   (props) => {
-    const page = useForm.useFormDataSchemaPage<Waybill>(props.formDataKey);
-    const path = useForm.useFormDataSchemaPath<Waybill>(props.formDataKey);
+    const {
+      page,
+      path,
+    } = useForm.useFormDataMeta<Waybill>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
-    const formErrors = useForm.useFormDataFormErrors<Waybill>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<Waybill>(props.formDataKey);
     const IS_DRAFT = useWaybillFormData.useFormDataIsDraft(props.formDataKey);
     const selectedCar = useWaybillFormData.useFormDataGetSelectedCar(props.formDataKey);
@@ -116,30 +117,21 @@ const FieldIsBnsoBroken: React.FC<FieldIsBnsoBrokenProps> = React.memo(
       [formState.is_bnso_broken],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          <ExtField
-            id={`${path}_is_bnso_broken`}
-            type="string"
-            label="Исправность датчика ГЛОНАСС"
-            value={is_bnso_broken_text}
-            error={
-              is_bnso_broken_text && formState.is_bnso_broken
-                ? 'Выполненные работы не будут учтены в системе'
-                : ''
-            }
-            disabled
-          />
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        is_bnso_broken_text,
-        formState.is_bnso_broken,
-        formErrors.is_bnso_broken,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_is_bnso_broken`}
+          type="string"
+          label="Исправность датчика ГЛОНАСС"
+          value={is_bnso_broken_text}
+          error={
+            is_bnso_broken_text && formState.is_bnso_broken
+              ? 'Выполненные работы не будут учтены в системе'
+              : ''
+          }
+          disabled
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

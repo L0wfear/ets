@@ -13,7 +13,7 @@ type FieldWaybillTrailerIdArrayProps = {
 
 const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Waybill>(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<any>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<any>(props.formDataKey);
@@ -43,33 +43,22 @@ const FieldWaybillTrailerIdArray: React.FC<FieldWaybillTrailerIdArrayProps> = Re
       [previosStructure, formState.structure_id, handleChangeWrap],
     );
 
-    return React.useMemo(
-      () => {
-        return (
-          <EtsBootstrap.Col md={props.md || 12}>
-            <ExtField
-              id={`${path}_trailer_id`}
-              type="select"
-              label="Прицеп"
-              value={formState.trailer_id}
-              error={formErrors.trailer_id}
-              options={carActualOptionData.options}
-              onChange={handleChangeWrap}
-              disabled={!isPermitted}
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        <ExtField
+          id={`${path}_trailer_id`}
+          type="select"
+          label="Прицеп"
+          value={formState.trailer_id}
+          error={formErrors.trailer_id}
+          options={carActualOptionData.options}
+          onChange={handleChangeWrap}
+          disabled={!isPermitted}
 
-              etsIsLoading={carActualOptionData.isLoading}
-              boundKeys="trailer_id"
-            />
-          </EtsBootstrap.Col>
-        );
-      },
-      [
-        props,
-        formState.trailer_id,
-        formErrors.trailer_id,
-        isPermitted,
-        carActualOptionData,
-      ],
+          etsIsLoading={carActualOptionData.isLoading}
+          boundKeys="trailer_id"
+        />
+      </EtsBootstrap.Col>
     );
   },
 );

@@ -14,7 +14,7 @@ type WaybillFieldMotohoursDiffProps = {
 
 const WaybillFieldMotohoursDiff: React.FC<WaybillFieldMotohoursDiffProps> = React.memo(
   (props) => {
-    const path = useForm.useFormDataSchemaPath<any>(props.formDataKey);
+    const { path } = useForm.useFormDataMeta<any>(props.formDataKey);
     const {
       motohours_start,
       motohours_end,
@@ -32,27 +32,20 @@ const WaybillFieldMotohoursDiff: React.FC<WaybillFieldMotohoursDiffProps> = Reac
       [motohours_start, motohours_end],
     );
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Col md={props.md || 12}>
-          {
-            IS_CLOSE_OR_IS_ACTIVE && (
-              <ExtField
-                id={`${path}_motohours_diff`}
-                type="number"
-                label="Пробег, м/ч"
-                value={motohours_diff}
-                disabled
-              />
-            )
-          }
-        </EtsBootstrap.Col>
-      ),
-      [
-        props,
-        path,
-        motohours_diff,
-      ],
+    return (
+      <EtsBootstrap.Col md={props.md || 12}>
+        {
+          IS_CLOSE_OR_IS_ACTIVE && (
+            <ExtField
+              id={`${path}_motohours_diff`}
+              type="number"
+              label="Пробег, м/ч"
+              value={motohours_diff}
+              disabled
+            />
+          )
+        }
+      </EtsBootstrap.Col>
     );
   },
 );

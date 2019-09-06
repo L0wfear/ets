@@ -1,8 +1,29 @@
 import * as React from 'react';
 
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { getFormDataByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
+import {
+  getFormDataByKey,
+  getFormDataShemaByKey,
+  getFormDataShemaBodyByKey,
+  getFormDataShemaHeaderByKey,
+  getFormDataShemaFooterByKey,
+  getFormDataShemaBodyFieldsByKey,
+  getFormDataIsCreatingByKey,
+  getFormDataIsPermittedToCreateByKey,
+  getFormDataIsPermittedToUpdateByKey,
+  getFormDataIsPermittedByKey,
+  getFormDataHandleHideByKey,
+  getFormDataHandleSubmitPromiseByKey,
+  getFormDataMetaByKey,
+  getFormDataFormStateByKey,
+  getFormDataFormErrorsByKey,
+  getFormDataCanSaveByKey,
+  getFormDataStoreByKey,
+  getFormDataBsSizeFormByKey,
+  getFormDataFormStatePickValueByKey,
+} from 'redux-main/reducers/modules/form_data_record/selectors';
 import { actionChangeFormState, actionChangeFormStore, actionRemoveFormData } from 'redux-main/reducers/modules/form_data_record/actions';
+import { defaultAction } from 'redux-main/default.actions';
 
 /* _______________ селекторы хуки _______________ */
 
@@ -19,79 +40,96 @@ const useFormData = <F extends object, Store extends object = {}>(formDataKey: s
  * получение схемы formData
  */
 const useFormDataSchema = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const schema = etsUseSelector((state) => getFormDataShemaByKey<F, Store>(state, formDataKey));
 
-  return formData ? formData.schema : null;
+  return schema;
 };
 
 /**
  * полуение шапки схемы
  */
 const useFormDataSchemaHeader = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const schema = useFormDataSchema<F, Store>(formDataKey);
+  const header = etsUseSelector((state) => getFormDataShemaHeaderByKey<F, Store>(state, formDataKey));
 
-  return schema ? schema.header : null;
+  return header;
 };
 
 /**
  * полуение тела схемы
  */
 const useFormDataSchemaBody = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const schema = useFormDataSchema<F, Store>(formDataKey);
+  const body = etsUseSelector((state) => getFormDataShemaBodyByKey<F, Store>(state, formDataKey));
 
-  return schema ? schema.body : null;
+  return body;
 };
 /**
  * получение полей формы из тела схемы
  */
 const useFormDataSchemaBodyFields = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formDataBody = useFormDataSchemaBody<F, Store>(formDataKey);
+  const fields = etsUseSelector((state) => getFormDataShemaBodyFieldsByKey<F, Store>(state, formDataKey));
 
-  return formDataBody ? formDataBody.fields : null;
+  return fields;
 };
 
 /**
  * полуение футера схемы
  */
 const useFormDataSchemaFooter = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const schema = useFormDataSchema<F, Store>(formDataKey);
+  const footer = etsUseSelector((state) => getFormDataShemaFooterByKey<F, Store>(state, formDataKey));
 
-  return schema ? schema.footer : null;
+  return footer;
 };
 
 /**
  * получение флага 'Создаётся ли элемент' формы
  */
 const useFormDataSchemaIsCreating = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const IS_CREATING = etsUseSelector((state) => getFormDataIsCreatingByKey<F, Store>(state, formDataKey));
 
-  return formData ? formData.IS_CREATING : null;
+  return IS_CREATING;
 };
 
 /**
  * получение разрешения на создание формы
  */
 const useFormDataSchemaIsPermittedToCreate = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const isPermittedToCreate = etsUseSelector((state) => getFormDataIsPermittedToCreateByKey<F, Store>(state, formDataKey));
 
-  return formData ? formData.isPermittedToCreate : null;
+  return isPermittedToCreate;
 };
 
 /**
  * получение разрешения на редактирование формы
  */
 const useFormDataSchemaIsPermittedToUpdate = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const isPermittedToUpdate = etsUseSelector((state) => getFormDataIsPermittedToUpdateByKey<F, Store>(state, formDataKey));
 
-  return formData ? formData.isPermittedToUpdate : null;
+  return isPermittedToUpdate;
+};
+
+/**
+ * получение разрешения на измнение формы
+ */
+const useFormDataSchemaIsPermitted = <F extends object, Store extends object = {}>(formDataKey: string) => {
+  const isPermitted = etsUseSelector((state) => getFormDataIsPermittedByKey<F, Store>(state, formDataKey));
+
+  return isPermitted;
+};
+
+/**
+ * получение разрешения на измнение формы
+ */
+const useFormDataBsSizeForm = <F extends object, Store extends object = {}>(formDataKey: string) => {
+  const bsSizeForm = etsUseSelector((state) => getFormDataBsSizeFormByKey<F, Store>(state, formDataKey));
+
+  return bsSizeForm;
 };
 
 /**
  * получение функции закрытия формы
  */
 const useFormDataSchemaHandleHide = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
-  const handleHide = formData ? formData.handleHide : null;
+  const handleHide = etsUseSelector((state) => getFormDataHandleHideByKey<F, Store>(state, formDataKey));
   const dispatch = etsUseDispatch();
 
   return React.useCallback(
@@ -127,12 +165,35 @@ const useFormDataHandleChange = <F extends object, Store extends object = {}>(fo
 };
 
 /**
+ * получение meta формы
+ */
+const useFormDataMeta = <F extends object, Store extends object = {}>(formDataKey: string) => {
+  const meta = etsUseSelector((state) => getFormDataMetaByKey<F, Store>(state, formDataKey));
+
+  return meta;
+};
+
+/**
  * получение функции сабмита формы
  */
-const useFormDataHandleSubmitAction = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+const useFormDataHandleSubmitPromise = <F extends object, Store extends object = {}>(formDataKey: string) => {
+  const handleSubmitPromise = etsUseSelector((state) => getFormDataHandleSubmitPromiseByKey<F, Store>(state, formDataKey));
+  const meta = useFormDataMeta<F, Store>(formDataKey);
+  const dispatch = etsUseDispatch();
 
-  return formData ? formData.handleSubmitPromise : null;
+  return React.useCallback(
+    (newFormState: F) => {
+      return dispatch(
+        defaultAction(
+          handleSubmitPromise(newFormState),
+          meta,
+        ),
+      );
+    },
+    [
+      meta,
+    ],
+  );
 };
 
 /**
@@ -155,86 +216,66 @@ const useFormDataHandleChangeStore = <Store extends object = {}>(formDataKey: st
 };
 
 /**
- * получение page формы
- */
-const useFormDataSchemaPage = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
-
-  return formData ? formData.meta.page : null;
-};
-
-/**
- * получение path формы
- */
-const useFormDataSchemaPath = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
-
-  return formData ? formData.meta.path : null;
-};
-
-/**
  * получение состояния зачений формы (formState)
  */
 const useFormDataFormState = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const formState = etsUseSelector((state) => getFormDataFormStateByKey<F, Store>(state, formDataKey));
 
-  return formData.formState;
+  return formState;
 };
 
 /**
  * получение состояния значения формы (formState) по ключу (key)
  */
-const useFormDataFormStatePickValue = <F extends object, Store extends object = {}>(formDataKey: string, key: keyof F) => {
-  const formState = useFormDataFormState<F, Store>(formDataKey);
+const useFormDataFormStatePickValue = <F extends object, ReturnType>(formDataKey: string, key: keyof F) => {
+  const pickValue: ReturnType = etsUseSelector((state) => getFormDataFormStatePickValueByKey<any, any>(state, formDataKey, key));
 
-  return formState[key];
+  return pickValue;
 };
 
 /**
  * получение состояния ошибок (formErrors)
  */
 const useFormDataFormErrors = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const formErrors = etsUseSelector((state) => getFormDataFormErrorsByKey<F, Store>(state, formDataKey));
 
-  return formData ? formData.formErrors : null;
+  return formErrors;
 };
 
 /**
  * получение статуса возможности сабмита формы
  */
 const useFormDataCanSave = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const canSave = etsUseSelector((state) => getFormDataCanSaveByKey<F, Store>(state, formDataKey));
 
-  return formData ? formData.canSave : null;
+  return canSave;
 };
 
 /**
  * получение статуса возможности изменения формы
  */
 const useFormDataIsPermitted = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const IS_CREATING = useFormDataSchemaIsCreating<F, Store>(formDataKey);
-  const isPermittedToCreate = useFormDataSchemaIsPermittedToCreate<F, Store>(formDataKey);
-  const isPermittedToUpdate = useFormDataSchemaIsPermittedToUpdate<F, Store>(formDataKey);
+  const isPermitted = etsUseSelector((state) => getFormDataIsPermittedByKey<F, Store>(state, formDataKey));
 
-  return IS_CREATING ? isPermittedToCreate : isPermittedToUpdate;
+  return isPermitted;
 };
 
 /**
  * получение глобального стора формы
  */
 const useFormDataStore = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const formData = useFormData<F, Store>(formDataKey);
+  const store = etsUseSelector((state) => getFormDataStoreByKey<F, Store>(state, formDataKey));
 
-  return formData.store;
+  return store;
 };
 
 /**
  * получение значения из глобального стора формы
  */
 const useFormDataStorePickValue = <F extends object, Store extends object = {}>(formDataKey: string, key: string) => {
-  const store = useFormDataStore<F, Store>(formDataKey);
+  const storePickValue = etsUseSelector((state) => getFormDataStoreByKey<F, Store>(state, formDataKey)[key]);
 
-  return store ? store[key] : null;
+  return storePickValue;
 };
 
 const useFormDataLoadOptions = <Store extends object, K extends keyof Store>(formDataKey: string, key: K, hookData: Store[K]) => {
@@ -263,8 +304,7 @@ export default {
   useFormDataSchemaIsCreating,
   useFormDataSchemaHandleHide,
   useFormDataHandleChangeStore,
-  useFormDataSchemaPage,
-  useFormDataSchemaPath,
+  useFormDataMeta,
   useFormDataSchemaBodyFields,
   useFormDataFormState,
   useFormDataFormStatePickValue,
@@ -272,11 +312,13 @@ export default {
   useFormDataIsPermitted,
   useFormDataHandleChange,
   useFormDataCanSave,
-  useFormDataHandleSubmitAction,
+  useFormDataHandleSubmitPromise,
   useFormDataSchemaIsPermittedToCreate,
   useFormDataSchemaIsPermittedToUpdate,
+  useFormDataSchemaIsPermitted,
 
   useFormDataStore,
   useFormDataStorePickValue,
   useFormDataLoadOptions,
+  useFormDataBsSizeForm,
 };

@@ -10,7 +10,7 @@ type Props = CommontTdTiteProps;
 const CompanyStructureActionsTdTitle: React.FC<Props> = React.memo(
   (props) => {
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         <ButtonReadCompanyStructure
           rowData={props.rowData}
           registryKey={props.registryKey}

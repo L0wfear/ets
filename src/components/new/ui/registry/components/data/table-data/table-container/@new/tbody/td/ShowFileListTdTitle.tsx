@@ -62,7 +62,7 @@ const ShowFileListTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         {
           Boolean(files)
             ? (

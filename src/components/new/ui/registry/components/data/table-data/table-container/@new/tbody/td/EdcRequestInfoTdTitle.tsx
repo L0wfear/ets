@@ -29,7 +29,7 @@ const EdcRequestInfoTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter id={props.id}>
         {
           rowData.rework && (
             <EtsBootstrap.Glyphicon onClick={ handleClick } glyph="info-sign" fontSize="32px" color={UiConstants.colorError} />

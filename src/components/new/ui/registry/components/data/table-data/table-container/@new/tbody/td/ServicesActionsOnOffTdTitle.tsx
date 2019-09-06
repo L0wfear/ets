@@ -67,7 +67,7 @@ const ServicesActionsOnOffTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         <ButtonGroupWrapperMargin>
           <ButtonGreenActive active={props.rowData.is_active} onClick={handleClickOn}>Вкл</ButtonGreenActive>
           <ButtonRedActive active={!props.rowData.is_active} onClick={handleClickOff}>Выкл</ButtonRedActive>

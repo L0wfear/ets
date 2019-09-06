@@ -6,4 +6,5 @@ export type CommontTdTiteProps = {
 
   registryKey: string;
   indexRow: number;
+  id: string;
 };

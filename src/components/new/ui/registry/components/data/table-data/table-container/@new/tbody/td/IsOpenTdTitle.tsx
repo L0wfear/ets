@@ -22,7 +22,7 @@ const IsOpenTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         {
           is_open === true
             && (

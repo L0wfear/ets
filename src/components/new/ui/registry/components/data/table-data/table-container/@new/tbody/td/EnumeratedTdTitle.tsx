@@ -13,7 +13,7 @@ const EnumeratedTdTitle: React.FC<Props> = React.memo(
     const paginator = etsUseSelector((state) => getPaginator(state, props.registryKey));
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         {props.indexRow + 1 + paginator.currentPage * paginator.perPage}
       </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );

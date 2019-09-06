@@ -89,6 +89,7 @@ const TrHead: React.FC<Props> = React.memo(
 
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Tr
+        id={`${props.registryKey}.${rowData[uniqKey]}`}
         enable
         isSelected={isSelected}
 

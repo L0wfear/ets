@@ -30,7 +30,7 @@ const ShowEdcCommentsTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         <EtsBootstrap.Button block onClick={handleClick}>
           <EtsBootstrap.Glyphicon glyph="envelope" />
         </EtsBootstrap.Button>

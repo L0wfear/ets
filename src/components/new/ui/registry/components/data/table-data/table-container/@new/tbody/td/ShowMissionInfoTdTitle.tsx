@@ -40,7 +40,7 @@ const TrTdButtonShowMissionInfo: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter id={props.id}>
         {
           !noData
             ? (

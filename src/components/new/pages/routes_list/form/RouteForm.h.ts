@@ -1,4 +1,4 @@
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { GeozonesDataByIndex } from 'redux-main/trash-actions/geometry/geometry.h';
 import { Route } from 'redux-main/reducers/modules/routes/@types';

@@ -10,7 +10,8 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 import { orderRegistryKey } from 'components/new/pages/nsi/order/_config-data/registry-config';
 import OrderMissionFormWrap from 'components/new/pages/nsi/order/order_technical_operation/form';
 
-type Props = {
+type OwnProps = {};
+type Props = OwnProps & {
 } & WithSearchProps;
 
 const OrderTechnicalOperationList: React.FC<Props> = React.memo(
@@ -48,4 +49,4 @@ const OrderTechnicalOperationList: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(OrderTechnicalOperationList);
+export default withSearch<OwnProps>(OrderTechnicalOperationList);

@@ -7,7 +7,7 @@ import { FooterEnd } from 'global-styled/global-styled';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';
 import { filedToCheck } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/filed_to_check/filedToCheck';
-import { ContainerForm, FooterForm } from '../../../common_components/form_wrap_check/styled';
+import { ContainerForm, FooterForm, TitleForm } from '../../../common_components/form_wrap_check/styled';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps, PropsViewInspectAutobaseWithForm } from './@types/ViewInspectAutobase';
@@ -64,6 +64,12 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
 
     return (
         <React.Fragment>
+          <TitleForm md={12} sm={12}>
+            <h4>{props.title}</h4>
+            <EtsBootstrap.Button onClick={props.hideWithoutChanges}>
+              <EtsBootstrap.Glyphicon glyph="remove" />
+            </EtsBootstrap.Button>
+          </TitleForm>
           <ContainerForm>
             <EtsBootstrap.Col md={6} sm={6}>
               <BoxContainer>
@@ -133,7 +139,7 @@ const ViewInspectAutobase: React.FC<ViewInspectAutobaseProps> = React.memo(
                 id={state.id}
                 registryPage={props.page}
               />
-              <EtsBootstrap.Button onClick={props.handleCloseWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
+              <EtsBootstrap.Button onClick={props.hideWithoutChanges}>{props.type !== INSPECT_TYPE_FORM.closed ? 'Отмена' : 'Закрыть карточку'}</EtsBootstrap.Button>
             </FooterEnd>
           </FooterForm>
         </React.Fragment>
@@ -151,6 +157,7 @@ export default compose<ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps>(
     },
     permissions: inspectAutobasePermissions,
     schema: inspectAutobaseSchema,
+    askBeforeCloseIfChanged: {},
   }),
   withPreloader({
     typePreloader: 'mainpage',

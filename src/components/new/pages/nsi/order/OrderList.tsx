@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { compose } from 'recompose';
-import { useDispatch } from 'react-redux';
 import { Route } from 'react-router';
 
 import Registry from 'components/new/ui/registry/components/Registry';
@@ -20,7 +19,7 @@ import OrderTechnicalOperationList from 'components/new/pages/nsi/order/order_te
 import MissionByTemplateFormWrap from 'components/new/pages/nsi/order/form';
 import OrderHistoryList from 'components/new/pages/nsi/order/order_history/OrderHistoryList';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type Props = (
   {}
@@ -28,78 +27,75 @@ export type Props = (
 
 const uniqFieldParams = getOrderToConfig(null, null).list.data.uniqKeyForParams;
 
-const OrderList: React.FC<Props> = (props) => {
-  const configDateStart = etsUseSelector((state) => getSessionState(state).appConfig.shift.shift_start);
-  const configDateEnd = etsUseSelector((state) => getSessionState(state).appConfig.shift.shift_end);
+const OrderList: React.FC<Props> = React.memo(
+  (props) => {
+    const configDateStart = etsUseSelector((state) => getSessionState(state).appConfig.shift.shift_start);
+    const configDateEnd = etsUseSelector((state) => getSessionState(state).appConfig.shift.shift_end);
 
-  const date_start: string = props.searchState.date_from;
-  const date_end: string = props.searchState.date_to;
+    const date_start: string = props.searchState.date_from;
+    const date_end: string = props.searchState.date_to;
 
-  const dispatch = useDispatch();
+    const dispatch = etsUseDispatch();
 
-  React.useEffect(
-    () => {
-      dispatch(
-        registryAddInitialData(
-          getToConfig(
-            date_start || createValidDateTime(getToday0am()),
-            date_end || createValidDateTime(getToday2359()),
+    React.useEffect(
+      () => {
+        dispatch(
+          registryAddInitialData(
+            getToConfig(
+              date_start || createValidDateTime(getToday0am()),
+              date_end || createValidDateTime(getToday2359()),
+            ),
           ),
-        ),
-      );
-      return () => {
-        dispatch(
-          registryRemoveData(orderRegistryKey),
         );
-      };
-    },
-    [],
-  );
-
-  React.useEffect(
-    () => {
-      if (date_start && date_end) {
-        const payload = {
-          getRegistryData: {
-            date_start,
-            date_end,
-          },
+        return () => {
+          dispatch(
+            registryRemoveData(orderRegistryKey),
+          );
         };
+      },
+      [],
+    );
 
-        dispatch(
-          actionChangeGlobalPaylaodInServiceData(orderRegistryKey, payload),
-        );
-      }
-    },
-    [date_start, date_end],
-  );
+    React.useEffect(
+      () => {
+        if (date_start && date_end) {
+          const payload = {
+            getRegistryData: {
+              date_start,
+              date_end,
+            },
+          };
 
-  React.useEffect(
-    () => {
-      if (!date_start || !date_end) {
-        props.setDataInSearch({
-          date_from: createValidDateTime(date_start || configDateStart),
-          date_to: createValidDateTime(date_end || configDateEnd),
-        });
-      }
-    },
-    [date_start, date_end],
-  );
+          dispatch(
+            actionChangeGlobalPaylaodInServiceData(orderRegistryKey, payload),
+          );
+        }
+      },
+      [date_start, date_end],
+    );
 
-  return React.useMemo(
-    () => (
-      <>
+    React.useEffect(
+      () => {
+        if (!date_start || !date_end) {
+          props.setDataInSearch({
+            date_from: createValidDateTime(date_start || configDateStart),
+            date_to: createValidDateTime(date_end || configDateEnd),
+          });
+        }
+      },
+      [date_start, date_end],
+    );
+
+    return (
+      <React.Fragment>
         <Registry registryKey={orderRegistryKey} />
-        <MissionByTemplateFormWrap registryKey={orderRegistryKey} />
+        <MissionByTemplateFormWrap />
         <Route path={`${props.match.path}/:${uniqFieldParams}?/:type_to?`} component={OrderTechnicalOperationList} />
         <OrderHistoryList />
-      </>
-    ),
-    [
-      props.match,
-    ],
-  );
-};
+      </React.Fragment>
+    );
+  },
+);
 
 export default compose<Props, {}>(
   withPreloader({

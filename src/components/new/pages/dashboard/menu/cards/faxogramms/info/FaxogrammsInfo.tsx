@@ -27,8 +27,9 @@ import {
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { promiseLoadOrderBlobAndSave, promiseLoadOrderBlob } from 'redux-main/reducers/modules/order/order_promise';
-import { ButtonReadOrder, LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
+import { LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
 import { TypeDownload } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
+import orderPermissions from 'components/new/pages/nsi/order/_config-data/permissions';
 
 class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogrammsInfo> {
   state = {
@@ -118,7 +119,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
               <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={this.seclectDownload}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
-          <ButtonReadOrder onClick={this.showPDFViewModal}><EtsBootstrap.Glyphicon glyph="info-sign" /></ButtonReadOrder>
+          <EtsBootstrap.Button onClick={this.showPDFViewModal} permissions={orderPermissions.read} ><EtsBootstrap.Glyphicon glyph="info-sign" /></EtsBootstrap.Button>
           <LinkToOrder to={`${path}/${infoData.data.id}`}>
             <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>
           </LinkToOrder>

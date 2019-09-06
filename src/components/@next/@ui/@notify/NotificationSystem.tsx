@@ -1,8 +1,5 @@
 import * as React from 'react';
-import * as ReactDom from 'react-dom';
-import NotificationSystem from 'react-notification-system';
-
-import EtsThemeProvider from 'components/new/ui/@bootstrap/EtsThemeProvider';
+import NotificationSystemOrigin from 'react-notification-system';
 
 const notificationsDiv = document.createElement('div');
 notificationsDiv.id = 'notifications';
@@ -12,7 +9,7 @@ document.body.appendChild(notificationsDiv);
   INFO
   https://github.com/igorprado/react-notification-system
  */
-class AppNotificationSystem extends React.Component {
+class NotificationSystem extends React.Component {
   node = React.createRef<any>();
   constructor(props) {
     super(props);
@@ -46,13 +43,9 @@ class AppNotificationSystem extends React.Component {
 
   render() {
     return (
-      <EtsThemeProvider>
-        <NotificationSystem ref={this.node} />
-      </EtsThemeProvider>
+      <NotificationSystemOrigin ref={this.node} />
     );
   }
 }
-ReactDom.render(
-  <AppNotificationSystem />,
-  document.getElementById('notifications'),
-);
+
+export default NotificationSystem;

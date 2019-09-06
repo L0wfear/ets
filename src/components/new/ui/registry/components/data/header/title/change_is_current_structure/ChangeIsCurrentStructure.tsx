@@ -11,62 +11,63 @@ import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors
 import { ChangeIsCurrentStructureWrap } from './styled';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type HeaderProps = {
+type OwnProps = {
   registryKey: string;
-} & WithSearchProps;
+};
+type Props = OwnProps & WithSearchProps;
 
-const Title: React.FC<HeaderProps> = (props) => {
-  const is_current_structure = getBooleanValueFromSerch(props.searchState.is_current_structure);
+const Title: React.FC<Props> = React.memo(
+  (props) => {
+    const is_current_structure = getBooleanValueFromSerch(props.searchState.is_current_structure);
 
-  const dispatch = etsUseDispatch();
+    const dispatch = etsUseDispatch();
 
-  const is_current_structure_popover = etsUseSelector(
-    (state) => getHeaderData(getRegistryState(state), props.registryKey).is_current_structure_popover,
-  );
-  const userStructureId = etsUseSelector(
-    (state) => getSessionState(state).userData.structure_id,
-  );
+    const is_current_structure_popover = etsUseSelector(
+      (state) => getHeaderData(getRegistryState(state), props.registryKey).is_current_structure_popover,
+    );
+    const userStructureId = etsUseSelector(
+      (state) => getSessionState(state).userData.structure_id,
+    );
 
-  const handleChange = React.useCallback(
-    () => {
-      const value = get(event, 'target.checked', event);
+    const handleChange = React.useCallback(
+      () => {
+        const value = get(event, 'target.checked', event);
 
-      const filterKey = `${props.registryKey}_filters`;
-      dispatch(
-        registryResetAllTypeFilter(props.registryKey),
-      );
+        const filterKey = `${props.registryKey}_filters`;
+        dispatch(
+          registryResetAllTypeFilter(props.registryKey),
+        );
 
-      props.setDataInSearch({
-        is_current_structure: value ? value : null,
-        [filterKey]: null,
-        [`${props.registryKey}_page`]: null,
-      });
-    },
-    [props.setDataInSearch],
-  );
+        props.setDataInSearch({
+          is_current_structure: value ? value : null,
+          [filterKey]: null,
+          [`${props.registryKey}_page`]: null,
+        });
+      },
+      [props.setDataInSearch],
+    );
 
-  React.useEffect(
-    () => {
-      const payload = {
-        getRegistryData: {
-          is_current_structure: is_current_structure ? true : null,
-        },
-        getBlobData: {
-          format: 'xls',
-          is_current_structure: is_current_structure ? true : null,
-        },
-      };
-      dispatch(
-        actionUnselectSelectedRowToShow(props.registryKey, true),
-      );
-      dispatch(
-        actionChangeGlobalPaylaodInServiceData(props.registryKey, payload),
-      );
-    },
-    [is_current_structure, dispatch, props.registryKey],
-  );
-  return React.useMemo(
-    () => (
+    React.useEffect(
+      () => {
+        const payload = {
+          getRegistryData: {
+            is_current_structure: is_current_structure ? true : null,
+          },
+          getBlobData: {
+            format: 'xls',
+            is_current_structure: is_current_structure ? true : null,
+          },
+        };
+        dispatch(
+          actionUnselectSelectedRowToShow(props.registryKey, true),
+        );
+        dispatch(
+          actionChangeGlobalPaylaodInServiceData(props.registryKey, payload),
+        );
+      },
+      [is_current_structure, dispatch, props.registryKey],
+    );
+    return (
       userStructureId &&
         <ChangeIsCurrentStructureWrap>
           <ExtField
@@ -87,14 +88,8 @@ const Title: React.FC<HeaderProps> = (props) => {
             <EtsBootstrap.Glyphicon glyph="info-sign" />
           </EtsBootstrap.OverlayTrigger>
         </ChangeIsCurrentStructureWrap>
-    ),
-    [
-      handleChange,
-      props.registryKey,
-      is_current_structure,
-      is_current_structure_popover,
-    ],
-  );
-};
+    );
+  },
+);
 
-export default withSearch(Title);
+export default withSearch<OwnProps>(Title);

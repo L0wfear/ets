@@ -11,6 +11,7 @@ import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/m
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonReadCarsConditionsCarStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -19,9 +20,7 @@ type ButtonReadCarsConditionsCarStateProps = {
 type ButtonReadCarsConditionsCarDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonReadCarsConditionsCarOwnProps = {
-  registryKey: string;
-};
+type ButtonReadCarsConditionsCarOwnProps = CommonTypesForButton & {};
 type ButtonReadCarsConditionsCarMergeProps = {};
 
 type ButtonReadCarsConditionsCarProps = (

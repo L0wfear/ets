@@ -1,7 +1,7 @@
 import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 import { InitialStateTypeRegistry } from 'components/new/ui/registry/module/@types/registry';
 import { IStateReport } from 'components/old/reports/redux-main/modules/report';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 import { IStateUserNotifications } from 'redux-main/reducers/modules/user_notifications/@types/user_notifications.h';
 import { IStateOldReport } from 'components/old/coverage_reports/redux-main/modules/old-report/@types/old_report';
@@ -18,6 +18,7 @@ import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
 import { IStateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { IStateInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
+import { IStateFormDataRecord } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export interface ReduxState {
   dashboard: InitialStateDashboard;
@@ -43,5 +44,6 @@ export interface ReduxState {
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
   materialConsumptionRate: IStateMaterialConsumptionRate;
+  formDataRecord: IStateFormDataRecord;
   [key: string]: any;
 }

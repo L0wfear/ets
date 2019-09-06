@@ -13,10 +13,9 @@ import dutyMissionActions from 'redux-main/reducers/modules/missions/duty_missio
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type OwnProps = {
-  registryKey: string;
-};
+type OwnProps = CommonTypesForButton & {};
 type Props = (
   OwnProps
 ) & WithSearchProps;
@@ -84,19 +83,12 @@ const ButtonOrderToCreateDutyMission: React.FC<Props> = React.memo(
     );
     const isDisabled = isDisabledForCreateDutyMissionByTO(selectedOrderRow, selectedOrderTORow);
 
-    return React.useMemo(
-      () => isPemitted && (
-        <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
-          Создать наряд-задание
-        </EtsBootstrap.Button>
-      ),
-      [
-        isDisabled,
-        handleClick,
-        isPemitted,
-      ],
+    return isPemitted && (
+      <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
+        Создать наряд-задание
+      </EtsBootstrap.Button>
     );
   },
 );
 
-export default withSearch(ButtonOrderToCreateDutyMission);
+export default withSearch<OwnProps>(ButtonOrderToCreateDutyMission);

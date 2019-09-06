@@ -12,8 +12,6 @@ import './assets/main.scss';
 /* Вспомогательные утилиты,
  * требующие постоянного нахождения в специфичном элементе в DOM
  */
-import 'components/@next/@ui/@notify/NotificationSystem';
-import './components/old/ui/Prompt';
 import './config/raven';
 
 // App.ts

@@ -8,7 +8,7 @@ import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 import DataTableComponent from 'components/old/ui/table/DataTable';
 import DateFormatter from 'components/old/ui/DateFormatter';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { OneSessionStructure } from 'redux-main/reducers/modules/session/session.d';
+import { OneSessionStructure } from 'redux-main/reducers/modules/session/@types/session';
 
 require('components/old/directories/order/forms/OrderMissionTemplate/MissionTableStyle.scss');
 

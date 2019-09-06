@@ -1,11 +1,6 @@
 import * as React from 'react';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import {
-  ButtonCreateRoute,
-  ButtonUpdateRoute,
-  ButtonDeleteRoute,
-} from 'components/new/pages/routes_list/buttons/buttons';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import ChangeRouteTable from './ChangeRouteTable';
 import { TechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/@types/technicalOperationRelations';
@@ -19,6 +14,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { isBoolean } from 'util';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
 
 type ChangeRouteFormStateProps = {};
 type ChangeRouteFormDispatchProps = {
@@ -173,25 +169,29 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
               onRowClick={onRowClick}
               selected={routeSelected}
             >
-              <ButtonCreateRoute onClick={handleCreateNewRouteNew}>
+              <EtsBootstrap.Button onClick={handleCreateNewRouteNew} permissions={routePermissions.create}>
                 Создать новый маршрут
-              </ButtonCreateRoute>
-              <ButtonDeleteRoute
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
                 disabled={!routeSelected}
-                onClick={removeRoute}>
+                onClick={removeRoute}
+                permissions={routePermissions.delete}
+              >
                 Удалить маршрут
-              </ButtonDeleteRoute>
+              </EtsBootstrap.Button>
             </ChangeRouteTable>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={3} mdOffset={9}>
-                <ButtonUpdateRoute
+                <EtsBootstrap.Button
                   block
                   id="change-route"
                   bsClass="btn all-width"
                   disabled={!routeSelected}
-                  onClick={handleChangeRoute}>
+                  onClick={handleChangeRoute}
+                  permissions={routePermissions.update}
+                >
                   Изменить
-                </ButtonUpdateRoute>
+                </EtsBootstrap.Button>
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
           </ModalBodyPreloader>

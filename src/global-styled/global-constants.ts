@@ -14,8 +14,8 @@ export const constantColor = {
   navbarPaddingA: '22px',
   orange: 'orange',
   redRegisry: '#ffabab',
-  simpleRed: 'rgba(255, 0, 0, 0.8)',
-  simpleYellow: 'rgba(255, 255, 0, 0.7)',
+  simpleRed: '#ff3333',
+  simpleYellow: '#feff4c',
 };
 
 export const mobiSize = 768;

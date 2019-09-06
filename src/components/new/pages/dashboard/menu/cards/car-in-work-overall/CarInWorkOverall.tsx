@@ -22,7 +22,6 @@ import {
   DispatchPropsCarInOveral,
   OwnPropsCarInOveral,
 } from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/CarInWorkOverall.h';
-import { DivNone } from 'global-styled/global-styled';
 import {
   getDashboardState,
   getSessionState,
@@ -149,18 +148,18 @@ class CarInWorkOverall extends React.Component<
           classNameContainer="line_data"
           addIndex={0}
         />
-        {collapsetItems.length ? (
-          <CollapseButton>
-            <List
-              items={collapsetItems}
-              handleClick={this.handleClickMission}
-              addIndex={counttoFirstShow}
-              classNameContainer="line_data"
-            />
-          </CollapseButton>
-        ) : (
-          <DivNone />
-        )}
+        {
+          Boolean(collapsetItems[0]) && (
+            <CollapseButton>
+              <List
+                items={collapsetItems}
+                handleClick={this.handleClickMission}
+                addIndex={counttoFirstShow}
+                classNameContainer="line_data"
+              />
+            </CollapseButton>
+          )
+        }
       </div>
     );
   }

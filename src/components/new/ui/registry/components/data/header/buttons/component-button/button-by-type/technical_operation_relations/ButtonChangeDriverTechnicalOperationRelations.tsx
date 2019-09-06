@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
 import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonChangeDriverTechnicalOperationRelationsStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -22,9 +23,7 @@ type ButtonChangeDriverTechnicalOperationRelationsDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
-type ButtonChangeDriverTechnicalOperationRelationsOwnProps = {
-  registryKey: string;
-};
+type ButtonChangeDriverTechnicalOperationRelationsOwnProps = CommonTypesForButton & {};
 type ButtonChangeDriverTechnicalOperationRelationsMergeProps = {};
 
 type ButtonChangeDriverTechnicalOperationRelationsProps = (

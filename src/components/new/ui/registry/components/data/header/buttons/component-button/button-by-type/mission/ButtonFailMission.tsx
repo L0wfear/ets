@@ -15,6 +15,7 @@ import MissionRejectForm from './form/MissionRejectForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonFailMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -25,9 +26,7 @@ type ButtonFailMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonFailMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonFailMissionOwnProps = CommonTypesForButton & {};
 type ButtonFailMissionMergeProps = {};
 
 type ButtonFailMissionProps = (

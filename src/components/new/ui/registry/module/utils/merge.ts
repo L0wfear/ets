@@ -6,7 +6,7 @@ import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { makeProcessedArray } from './processed';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { displayIfContant } from '../../contants/displayIf';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
@@ -185,7 +185,6 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
 
   const fieldsFiltred = fields.reduce(
     (newArr, fieldData) => {
-      const { displayIfPermission } = fieldData;
       let formatedTitle = null;
 
       // добить childrenFields
@@ -212,8 +211,11 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
           formatedTitle = title;
         }
 
-        if (isString(displayIfPermission) || isArray(displayIfPermission)) {
-          formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
+        if ('displayIfPermission' in fieldData) {
+          const { displayIfPermission } = fieldData;
+          if (isString(displayIfPermission) || isArray(displayIfPermission)) {
+            formatedTitle = validatePermissions(displayIfPermission, otherData.userData.permissionsSet) ? formatedTitle : null;
+          }
         }
       }
 

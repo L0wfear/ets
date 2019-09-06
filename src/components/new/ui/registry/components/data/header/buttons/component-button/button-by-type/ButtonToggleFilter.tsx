@@ -1,79 +1,54 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { get } from 'lodash';
 
 import {
   getListData,
-  getFilterData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { registryToggleIsOpenFilter } from 'components/new/ui/registry/module/actions-registy';
-import { ReduxState } from 'redux-main/@types/state';
-import { compose } from 'recompose';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type ButtonToggleFilterStateProps = {
-  hasFilters: boolean;
-};
-type ButtonToggleFilterDispatchProps = {
-  handleClick: React.MouseEventHandler<React.ClassicComponent<any, {}>>;
-};
-type ButtonToggleFilterOwnProps = {
-  registryKey: string;
-  data?: ValuesOf<OneRegistryData['header']['buttons']>
-};
-type ButtonToggleFilterMergeProps = {};
+type Props = CommonTypesForButton & {};
 
-type ButtonToggleFilterProps = (
-  ButtonToggleFilterStateProps
-  & ButtonToggleFilterDispatchProps
-  & ButtonToggleFilterOwnProps
-  & ButtonToggleFilterMergeProps
+const ButtonToggleFilter: React.FC<Props> = React.memo(
+  (props) => {
+    const { data } = props;
+
+    const dispatch = etsUseDispatch();
+    const hasFilters = etsUseSelector((state) => (
+      Boolean(
+        Object.values(
+          getListData(state.registry, props.registryKey).processed.filterValues,
+        ).length,
+      )
+    ));
+    const handleClick = React.useCallback(
+      () => (
+        dispatch(
+          registryToggleIsOpenFilter(props.registryKey),
+        )
+      ),
+      [props.registryKey],
+    );
+    const glyph = React.useMemo(
+      () => (
+        data && data.glyph
+      ),
+      [props.data],
+    );
+
+    return (
+      <EtsBootstrap.Button
+        id="show-options-filter"
+        bsSize="small"
+        active={hasFilters}
+        onClick={handleClick}
+      >
+        <EtsBootstrap.Glyphicon glyph={glyph || 'filter'} />
+      </EtsBootstrap.Button>
+    );
+  },
 );
 
-const ButtonToggleFilter: React.FC<ButtonToggleFilterProps> = (props) => {
-  const data = React.useMemo(
-    () => (
-      get(props, 'data', {} as ButtonToggleFilterOwnProps['data'])
-    ),
-    [props.data],
-  );
-
-  return (
-    <EtsBootstrap.Button
-      id="show-options-filter"
-      bsSize="small"
-      active={props.hasFilters}
-      onClick={props.handleClick}
-    >
-      <EtsBootstrap.Glyphicon glyph={data.glyph || 'filter'} />
-    </EtsBootstrap.Button>
-  );
-};
-
-export default compose<ButtonToggleFilterProps, ButtonToggleFilterOwnProps>(
-  connect<ButtonToggleFilterStateProps, ButtonToggleFilterDispatchProps, ButtonToggleFilterOwnProps, ButtonToggleFilterMergeProps, ReduxState>(
-    (state, { registryKey }) => ({
-      isOpen: getFilterData(state.registry, registryKey).isOpen,
-      hasFilters: (
-        Boolean(
-          Object.values(
-            getListData(state.registry, registryKey).processed.filterValues,
-          ).length,
-        )
-      ),
-    }),
-    (dispatch: any, { registryKey }) => ({
-      handleClick: () => (
-        dispatch(
-          registryToggleIsOpenFilter(registryKey),
-        )
-      ),
-    }),
-    null,
-    {
-      pure: true,
-    },
-  ),
-)(ButtonToggleFilter);
+export default ButtonToggleFilter;

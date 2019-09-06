@@ -1,9 +1,9 @@
 import { get } from 'lodash';
+import memoizeOne from 'memoize-one';
 
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsTire } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import memoizeOne from 'memoize-one';
 import { diffDatesByDays, createValidDate } from 'components/@next/@utils/dates/dates';
 import { oldestInstalledDateIndex } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 import { validateDateInsideOther } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
@@ -54,7 +54,7 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                   !d.installed_at
                   ? 'Поле "Дата монтажа" должно быть заполнено'
                   : (
-                    validateDateInsideOther(d, tire_to_car)
+                      validateDateInsideOther(d, [...tire_to_car.slice(0, index), ...tire_to_car.slice(index + 1)])
                       ? 'Поле "Дата монтажа" не должно пересекаться с другими записями'
                       : ''
                   )
@@ -65,8 +65,8 @@ export const tireFormSchema: SchemaType<Tire, PropsTire> = {
                     : (
                       d.uninstalled_at
                         ? (
-                          validateDateInsideOther(d, tire_to_car)
-                            ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
+                          validateDateInsideOther(d, [...tire_to_car.slice(0, index), ...tire_to_car.slice(index + 1)])
+                          ? 'Поле "Дата демонтажа" не должно пересекаться с другими записями'
                             : (
                               diffDatesByDays(d.installed_at, d.uninstalled_at) > 0
                                 ? 'Поле "Дата демонтажа" должна быть позже даты монтажа'

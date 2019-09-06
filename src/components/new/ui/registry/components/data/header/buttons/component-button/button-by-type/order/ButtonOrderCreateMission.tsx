@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Order } from 'redux-main/reducers/modules/order/@types';
@@ -8,10 +9,9 @@ import { isDisabledForCreateMission } from 'components/new/ui/registry/component
 import { TypeCreateMissionByOrder } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type OwnProps = {
-  registryKey: string;
-};
+type OwnProps = CommonTypesForButton & {};
 type Props = (
   OwnProps
 ) & WithSearchProps;
@@ -32,21 +32,12 @@ const ButtonOrderCreateMission: React.FC<Props> = React.memo(
 
     const isDisabled = isDisabledForCreateMission(selectedRow);
 
-    return React.useMemo(
-      () => (
-        isPemitted && (
-          <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
-            Создать задание по шаблону
-          </EtsBootstrap.Button>
-        )
-      ),
-      [
-        isDisabled,
-        handleClick,
-        isPemitted,
-      ],
+    return isPemitted && (
+      <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
+        Создать задание по шаблону
+      </EtsBootstrap.Button>
     );
   },
 );
 
-export default withSearch(ButtonOrderCreateMission);
+export default withSearch<OwnProps>(ButtonOrderCreateMission);

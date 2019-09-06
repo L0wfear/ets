@@ -1,11 +1,8 @@
 import * as React from 'react';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { DefaultOwnPropsToBodyRoute } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-type Props = {
-  isActive: boolean;
-  tabKey: string;
-  title: string;
-} & WithSearchProps;
+type Props = DefaultOwnPropsToBodyRoute & WithSearchProps;
 
 type PropsFromBootstrap = {
   onSelect: (tabKey: string, event: any) => any;
@@ -38,4 +35,4 @@ const CarFormLink: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(CarFormLink);
+export default withSearch<DefaultOwnPropsToBodyRoute>(CarFormLink);

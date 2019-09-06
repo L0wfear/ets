@@ -10,6 +10,10 @@ type TypeConfig = {
   type?: string;                        // смотри выше
 };
 
+export type WithRequirePermissionAddProps = {
+  isPermitted: boolean;
+};
+
 export type WithRequirePermissionProps = {
   entity?: string;
   permissions?: string | Array<string> | boolean;

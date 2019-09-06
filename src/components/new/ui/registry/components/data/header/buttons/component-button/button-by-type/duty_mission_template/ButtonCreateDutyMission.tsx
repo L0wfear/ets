@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import dutyMissionTemplatePermissions from 'components/new/pages/missions/duty_mission_template/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateDutyMissionStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
@@ -20,9 +21,7 @@ type ButtonCreateDutyMissionStateProps = {
 type ButtonCreateDutyMissionDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
-type ButtonCreateDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonCreateDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonCreateDutyMissionMergeProps = {};
 
 type ButtonCreateDutyMissionProps = (

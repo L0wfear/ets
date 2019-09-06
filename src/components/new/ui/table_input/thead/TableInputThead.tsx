@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { TableMeta } from '../TableInput';
-import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import { EtsTheadTh } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type TableInputTheadProps = {
   meta: TableMeta<any>[];
@@ -10,11 +9,11 @@ export type TableInputTheadProps = {
 const TableInputThead: React.FC<TableInputTheadProps> = React.memo(
   (props) => {
     return (
-      <EtsThead>
-        <tr>
+      <EtsBootstrap.Grid.GridBootstrapThead.Thead>
+        <EtsBootstrap.Grid.GridBootstrapThead.Tr>
           {
             props.meta.map((metaData) => (
-              <EtsTheadTh
+              <EtsBootstrap.Grid.GridBootstrapThead.Th
                 key={metaData.key}
                 canClick={false}
                 width={metaData.width}
@@ -22,8 +21,8 @@ const TableInputThead: React.FC<TableInputTheadProps> = React.memo(
               />
             ))
           }
-        </tr>
-      </EtsThead>
+        </EtsBootstrap.Grid.GridBootstrapThead.Tr>
+      </EtsBootstrap.Grid.GridBootstrapThead.Thead>
     );
   },
 );

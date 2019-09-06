@@ -13,7 +13,7 @@ export type TypeFieldsRegistry<F extends Record<string, any>> = (
     title?: string;
   }
 );
-export type TypeFields<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
+export type CommonTypeField<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
   hidden?: boolean;
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   displayIfPermission?: string | string[];
@@ -24,9 +24,29 @@ export type TypeFields<F extends Record<string, any>, Title = string | DisplayIf
   renderParams?: ExtFieldType & {
     key: string,
   };
-  } & (
+};
+
+export type TypeFieldsAvalibaleKey<F> = (
+  Extract<keyof F, string>
+  | 'checkbox'
+  | 'enumerated'
+  | 'showMissionInfo'
+  | 'is_open'
+  | 'company_structure_actions'
+  | 'services_actions_on_off'
+  | 'service_files'
+  | 'button_show_action_log'
+  | 'buttonCloneTire'
+  | 'edc_request_info'
+  | 'show_file_list'
+  | 'show_edc_comments'
+);
+
+export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
+  CommonTypeField<F, Title>
+ ) & (
   {
-    key: keyof F;
+    key: Extract<keyof F, string>;
     format?: (
       'date'
       | 'datetime'
@@ -51,32 +71,14 @@ export type TypeFields<F extends Record<string, any>, Title = string | DisplayIf
       | 'waybill_status_name'
     );
   } | {
+    key: TypeFieldsAvalibaleKey<void>;
+  }
+);
+
+export type TypeFields<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = (
+  TypeFieldsWithoutDeep<F, Title>
+  | CommonTypeField<F, Title> & {
     childrenFields?: TypeFields<F, Title>[];
-  } | {
-    key: 'enumerated';
-    title: string;
-  } | {
-    key: 'checkbox';
-  } | {
-    key: 'showMissionInfo';
-  } | {
-    key: 'is_open';
-  } | {
-    key: 'company_structure_actions',
-  } | {
-    key: 'services_actions_on_off',
-  } | {
-    key: 'service_files';
-  } | {
-    key: 'button_show_action_log';
-  } | {
-    key: 'buttonCloneTire',
-  } | {
-    key: 'edc_request_info',
-  } | {
-    key: 'show_file_list',
-  } | {
-    key: 'show_edc_comments',
   }
 );
 
@@ -86,7 +88,7 @@ export type DisplayIfTitle = {
 };
 
 export type OneFilterType<F> = {
-  valueKey: keyof F;
+  valueKey: Extract<keyof F, string>;
   title: string | DisplayIfTitle[];
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];
@@ -101,7 +103,7 @@ export type OneFilterType<F> = {
     step: number; // для firefox
   } | {
     type: 'multiselect';
-    labelKey?: keyof F;
+    labelKey?: Extract<keyof F, string>;
     options?: FilterOptionType<F>[];
     getRegistryData?: {
       entity: string;
@@ -151,7 +153,7 @@ export interface OneRegistryData<F = any> {
       array: F[];
       objectExtra: Record<string, any> // use lodash.get
       total_count: number;
-      uniqKey: keyof F;
+      uniqKey: Extract<keyof F, string>;
       uniqKeyForParams?: string;
       selectedRow: F;
       selectedRowToShow: F;
@@ -173,9 +175,10 @@ export interface OneRegistryData<F = any> {
       row_double_click: boolean;
       is_render_field: boolean;
       selected_row_in_params: boolean;
-      fields: TypeFieldsRegistry<F>[];
-      fieldsInDeepArr: any[],
+      fields: Array<TypeFieldsRegistry<F>>;
+      fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
+      row_fields_table_width: number;
       treeFields: object,
     },
     paginator?: {
@@ -188,7 +191,7 @@ export interface OneRegistryData<F = any> {
       },
       processedArray?: F[],
       sort?: {
-        field?: keyof F;
+        field?: Extract<keyof F, string>;
         reverse?: boolean,
       },
       total_count?: number,

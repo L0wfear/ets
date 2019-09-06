@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 const SESSION = createPath('SESSION');
 

@@ -16,6 +16,7 @@ import { DivNone } from 'global-styled/global-styled';
 import DutyMissionFailForm from './form/DutyMissionFailForm';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonFailDutyMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -27,9 +28,7 @@ type ButtonFailDutyMissionDispatchProps = {
   actionFailDutyMissionByPartialData: HandleThunkActionCreator<typeof actionFailDutyMissionByPartialData>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonFailDutyMissionOwnProps = {
-  registryKey: string;
-};
+type ButtonFailDutyMissionOwnProps = CommonTypesForButton & {};
 type ButtonFailDutyMissionMergeProps = {};
 
 type ButtonFailDutyMissionProps = (

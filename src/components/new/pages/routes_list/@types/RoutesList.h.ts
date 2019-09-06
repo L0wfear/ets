@@ -1,6 +1,6 @@
 import routesAction from 'redux-main/reducers/modules/routes/actions';
 import { HandleThunkActionCreator } from 'react-redux';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { Route } from 'redux-main/reducers/modules/routes/@types/index';
 import { RouteComponentProps } from 'react-router-dom';
 

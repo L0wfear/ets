@@ -18,9 +18,7 @@ import {
   CardTitleContainer,
   CardTitleContainerWrap,
   CardBodyContainer,
-  GlyphiconWithNonAnimation,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
-import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 
@@ -106,7 +104,7 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
                   <div>{title}</div>
                   <div className="button_refresh">
                     <EtsBootstrap.Button onClick={this.loadData} disabled={isLoading}>
-                      <GlyphiconWithNonAnimation
+                      <EtsBootstrap.Glyphicon
                         isLoading={isLoading}
                         glyph="refresh"
                       />
@@ -120,13 +118,8 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
             </div>
             <div>
               {
-                InfoComponent ?
-                (
+                Boolean(InfoComponent) && (
                   <InfoComponent />
-                )
-                :
-                (
-                  <DivNone />
                 )
               }
             </div>

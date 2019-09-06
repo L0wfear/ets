@@ -7,7 +7,7 @@ import { isArray, isString } from 'util';
 export type ListData<ApiConfig extends LoadingServiceGeneric<any, any, any>> = { list: ApiConfig['result'], isLoading: boolean };
 
 const useLoadListData = <ApiConfig extends LoadingServiceGeneric<any, any, any>>(apiUrl: ApiConfig['url'], partialPath: string | Array<string | number>, payload: ApiConfig['payload'], page: LoadingMeta['page'], path: LoadingMeta['path']) => {
-  const [list, setList] = React.useState<ListData<ApiConfig>>({ list: [], isLoading: false });
+  const [list, setList] = React.useState<ListData<ApiConfig>>({ list: [], isLoading: true });
   const context = React.useContext(LoadingContext);
 
   React.useEffect(

@@ -13,6 +13,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { get } from 'lodash';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCreateMissionByEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -22,9 +23,7 @@ type ButtonCreateMissionByEdcRequestStateProps = {
 type ButtonCreateMissionByEdcRequestDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonCreateMissionByEdcRequestOwnProps = {
-  registryKey: string;
-};
+type ButtonCreateMissionByEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonCreateMissionByEdcRequestMergeProps = {};
 
 type ButtonCreateMissionByEdcRequestProps = (

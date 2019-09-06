@@ -36,26 +36,17 @@ const TireToVehicleBlock: React.FC<IPropsTireToVehicleBlock> = React.memo(
       [props.tireId],
     );
 
-    return React.useMemo(
-      () => (
-        <DataTableInput
-          tableSchema={meta}
-          renderers={renderers}
-          validationSchema={validationSchema}
-          addButtonLabel="Добавить ТС"
-          removeButtonLable="Удалить ТС"
-          stackOrder
-          tireAvailableCarList={tireAvailableCarList}
-          {...props}
-        />
-      ),
-      [
-        meta,
-        renderers,
-        validationSchema,
-        tireAvailableCarList,
-        props,
-      ],
+    return (
+      <DataTableInput
+        tableSchema={meta}
+        renderers={renderers}
+        validationSchema={validationSchema}
+        addButtonLabel="Добавить ТС"
+        removeButtonLable="Удалить ТС"
+        stackOrder
+        tireAvailableCarList={tireAvailableCarList}
+        {...props}
+      />
     );
   },
 );

@@ -15,7 +15,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { actionLoadAppConfig } from 'redux-main/reducers/modules/session/action_get_config';
 import { compose } from 'recompose';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {

@@ -5,7 +5,6 @@ import * as cx from 'classnames';
 
 import { IPropsFileInput, IStateFileInput, IFileWrapper } from 'components/old/ui/input/FileInput/FileInput.h';
 
-import { DivNone } from 'global-styled/global-styled';
 import { ButtonRemoveFile, FileInputWrapper, SingleInputFileItem } from 'components/old/ui/input/FileInput/styled';
 import { get } from 'lodash';
 import { createValidDateHM } from 'components/@next/@utils/dates/dates';
@@ -49,11 +48,11 @@ const FileListItem: React.FC<any> = React.memo(
             <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
           </SingleInputFileItem>
           {
-            (createdAt && withDateTime) ? (
+            Boolean(createdAt && withDateTime) && (
               <div>
                 {createValidDateHM(createdAt)}
               </div>
-            ) : (<DivNone />)
+            )
           }
         </FileInputWrapper>
       </EtsBootstrap.Col>
@@ -138,18 +137,14 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
       <div>
         { showFileList && <EtsBootstrap.Row id={ID}>{fileList}</EtsBootstrap.Row> }
           {
-            !this.props.disabled
-              ? (
-                <EtsBootstrap.Button
-                  disabled={this.props.disabled || disabledIfSingleFile}
-                  onClick={this.handleFilePick}
-                  id={button_id}
-                  children={buttonName}
-                />
-              )
-              : (
-                <DivNone />
-              )
+            !this.props.disabled && (
+              <EtsBootstrap.Button
+                disabled={this.props.disabled || disabledIfSingleFile}
+                onClick={this.handleFilePick}
+                id={button_id}
+                children={buttonName}
+              />
+            )
           }
           <input
             id={id}

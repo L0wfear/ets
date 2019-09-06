@@ -1,12 +1,6 @@
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
+import { withRequirePermission, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-
-export const ButtonReadOrder = withRequirePermissionsNew({
+export const LinkToOrder = withRequirePermission<LinkProps & WithRequirePermissionProps>({
   permissions: 'faxogramm.read',
-})(EtsBootstrap.Button);
-
-export const LinkToOrder = withRequirePermissionsNew({
-  permissions: 'faxogramm.read',
-})(Link);
+})(Link as any);

@@ -1,7 +1,7 @@
 import { NumberPropertie } from 'components/old/ui/form/new/@types/validate.h';
 import { isNumber, isNullOrUndefined } from 'util';
 
-export const validateNumber = <K, F, P, RootFormState>(key: keyof F, fieldData: NumberPropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {
+export const validateNumber = <K, F extends Record<string, any>, P, RootFormState>(key: keyof F, fieldData: NumberPropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {
   const {
     [key]: value,
   } = formState;
@@ -10,7 +10,7 @@ export const validateNumber = <K, F, P, RootFormState>(key: keyof F, fieldData: 
     title,
   } = fieldData;
 
-  if (fieldData.required && isNullOrUndefined(value)) {
+  if ( fieldData.required && (value === "" || isNullOrUndefined(value)) ) {
     return `Поле "${title}" должно быть заполнено`;
   }
 

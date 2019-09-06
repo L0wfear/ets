@@ -21,20 +21,19 @@ export type GlobalFormSchemaType = {
 // Здесь формы, которые можно открыть по урлу
 const GlobalForms: React.FC<Props> = React.memo(
   (props) => {
-
-  return (
-    <React.Fragment>
-      <ShowActsFormLazy />
-      <InspectionCarsConditionTableFormLazy
-        registryConfig={InspectionCarsConditionTableConfig}
-        {...props}
-        title={"Форма заполнения данных ТС"}
-        globalFormShema={globalFormShema}
-        registryComponent={<CarsConditionTableEdit />}
-        permissions={Object.values(inspectCarsConditionPermissions)}
-      />
-    </React.Fragment>
-  );
+    return (
+      <React.Fragment>
+        <ShowActsFormLazy />
+        <InspectionCarsConditionTableFormLazy
+          registryConfig={InspectionCarsConditionTableConfig}
+          {...props}
+          title={"Форма заполнения данных ТС"}
+          globalFormShema={globalFormShema}
+          registryComponent={<CarsConditionTableEdit />}
+          permissions={Object.values(inspectCarsConditionPermissions)}
+        />
+      </React.Fragment>
+    );
   },
 );
 

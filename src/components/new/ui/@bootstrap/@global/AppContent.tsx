@@ -11,8 +11,7 @@ export const AppContentContainer = styled.div<{ themeName?: keyof typeof themeAp
   justify-self: flex-start;
   flex: 1 1 auto;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: auto;
 `;
 
 export type AppContentProps = {

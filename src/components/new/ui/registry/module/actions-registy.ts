@@ -44,6 +44,7 @@ import { getListData } from './selectors-registry';
 import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /**
  * Да простят меня боги
@@ -156,7 +157,7 @@ export const actionChangeRegistryMetaFields: any = (registryKey, fields) => (dis
   );
 };
 
-export const actionChangeGlobalPaylaodInServiceData: any = (registryKey, payload, needUpdate = true) => (dispatch, getState) => {
+export const actionChangeGlobalPaylaodInServiceData = (registryKey, payload, needUpdate = true): EtsAction<any> => (dispatch, getState) => {
   const registryData = get(getState(), `registry.${registryKey}`, null);
   const ServiceData = get(registryData, 'Service', null);
 
@@ -634,7 +635,7 @@ export const registryToggleIsOpenFilter = (registryKey) => (dispatch, getState) 
   );
 };
 
-export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean) => async  (dispatch, getState) => {
+export const registyLoadPrintForm = (registryKey, useFiltredData?: boolean): EtsAction<Promise<void>> => async  (dispatch, getState) => {
   const getBlobData = get(
     getState(),
     ['registry', registryKey, 'Service', 'getBlobData'],
@@ -698,62 +699,71 @@ export const registyLoadPrintForm: any = (registryKey, useFiltredData?: boolean)
   }
 };
 
-export const registryTriggerOnChangeSelectedField = (registryKey, field) => (dispatch, getState) => {
-  dispatch(
-    actionUnselectSelectedRowToShow(registryKey, true),
-  );
-
-  const registyData = get(getState(), ['registry', registryKey], null);
-  const getRegistryData = get(registyData, 'Service.getRegistryData', null);
-  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-  const filter = get(registyData, 'filter', {});
-  const list = get(registyData, 'list', null);
-
-  const {
-    processed : {
-      sort: sortOld,
-    },
-  } = list;
-
-  const sort = {
-    ...sortOld,
-  };
-
-  if (field === sortOld.field) {
-    if (sortOld.reverse) {
-      sort.field = '';
-      sort.reverse = false;
-    } else {
-      sort.reverse = true;
-    }
-  } else {
-    sort.field = field;
-    sort.reverse = false;
-  }
-
-  const processed = {
-    ...list.processed,
-    sort,
-  };
-
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-  }
-
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...list,
-        processed,
-      },
-    ),
-  );
-
-  if (getRegistryData && userServerFilters) {
+export const registryTriggerOnChangeSelectedField = (registryKey, field, sortable?: boolean) => (dispatch, getState) => {
+  if (field === 'checkbox') {
     dispatch(
-      registryLoadDataByKey(registryKey),
+      registryGlobalCheck(registryKey),
     );
+
+    return;
+  }
+  if (sortable) {
+    dispatch(
+      actionUnselectSelectedRowToShow(registryKey, true),
+    );
+
+    const registyData = get(getState(), ['registry', registryKey], null);
+    const getRegistryData = get(registyData, 'Service.getRegistryData', null);
+    const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+    const filter = get(registyData, 'filter', {});
+    const list = get(registyData, 'list', null);
+
+    const {
+      processed : {
+        sort: sortOld,
+      },
+    } = list;
+
+    const sort = {
+      ...sortOld,
+    };
+
+    if (field === sortOld.field) {
+      if (sortOld.reverse) {
+        sort.field = '';
+        sort.reverse = false;
+      } else {
+        sort.reverse = true;
+      }
+    } else {
+      sort.field = field;
+      sort.reverse = false;
+    }
+
+    const processed = {
+      ...list.processed,
+      sort,
+    };
+
+    if (!getRegistryData || !userServerFilters) {
+      processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
+    }
+
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list,
+          processed,
+        },
+      ),
+    );
+
+    if (getRegistryData && userServerFilters) {
+      dispatch(
+        registryLoadDataByKey(registryKey),
+      );
+    }
   }
 };
 

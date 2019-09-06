@@ -31,6 +31,9 @@ export const isCrossDates = (
   second_date_start: Moment.Moment | Date | string,
   second_date_end: Moment.Moment | Date | string,
 ) => {
+  if (!first_date_start || !first_date_end || !second_date_start || !second_date_end) {
+    return false;
+  }
   const range_first_date = moment.range(moment(first_date_start), moment(first_date_end));
   const range_second_date = moment.range(moment(second_date_start), moment(second_date_end));
 

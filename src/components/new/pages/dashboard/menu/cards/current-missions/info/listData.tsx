@@ -2,9 +2,6 @@ import * as React from 'react';
 
 import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
 import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-missions/info/@types/listData.h';
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const VALUE_FOR_FIXED = {
@@ -74,14 +71,10 @@ export const listData: ListDataType = [
     path: ['car_data', 'driver_allowed'],
     title: 'Задание',
     RenderComponent: ({ infoData }) => (
-      infoData.car_data.driver_allowed
-      ? (
+      infoData.car_data.driver_allowed && (
         <div style={{ marginBottom: 5, marginTop: 5 }}>
           <span style={{ fontSize: 16, color: UiConstants.colorError }}>Не пройден внеплановый мед. осмотр</span>
         </div>
-      )
-      : (
-        <DivNone />
       )
     ),
   },

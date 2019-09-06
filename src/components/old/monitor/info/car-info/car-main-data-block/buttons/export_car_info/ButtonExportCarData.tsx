@@ -69,6 +69,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         || getMonitorPageState(state).carInfo.missionsData.missions === -1);
     },
   );
+  const has_front_events_list = etsUseSelector((state) => Boolean(getMonitorPageState(state).carInfo.trackCaching.front_events_list[0]));
 
   const dispatch = etsUseDispatch();
   const [ currentBrowser, setCurrentBrowser] = React.useState('');
@@ -323,7 +324,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               canvasLegendChart.height / editParam,
             );
 
-            if (canvas_car_info_event_table) {
+            if (canvas_car_info_event_table && has_front_events_list) {
               doc.addImage(
                 canvas_car_info_event_table.toDataURL('image/png'),
                 'JPEG',
@@ -513,7 +514,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
             doc.addImage(
               canvas_createAt.toDataURL('image/png'),
               'JPEG',
-              leftOffset - canvas_createAt.width / editParam - 10,
+              10,
               15,
               canvas_createAt.width / editParam,
               canvas_createAt.height / editParam,
@@ -525,7 +526,7 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
               page_canvas.toDataURL('image/png'),
               'JPEG',
               leftOffset - page_canvas.width / editParam - 10,
-              topOffset - page_canvas.height / editParam - 15,
+              topOffset - page_canvas.height / editParam - 5,
               page_canvas.width / editParam,
               page_canvas.height / editParam,
             );
@@ -560,22 +561,18 @@ const ButtonExportCarData: React.FC<Props> = React.memo(
         },
       );
     },
-    [type_image_name, date_start, date_end, distance, gov_number, props.searchState],
+    [type_image_name, date_start, date_end, distance, gov_number, props.searchState, has_front_events_list],
   );
 
-  return React.useMemo(
-    () => (
-      currentBrowser !== 'IE' &&
-        <React.Fragment>
-          <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
-          <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
-            <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
-            Выгрузить
-          </EtsBootstrap.Button>
-        </React.Fragment>
-    ),
-    [props.disabled, handleClick, inLoading, currentBrowser],
-  );
+  return currentBrowser !== 'IE' && (
+      <React.Fragment>
+        <HiddenMapCarExport width={format.a4.height * 2.5} height={format.a4.width * 2.8} mapKey={mapKey} />
+        <EtsBootstrap.Button disabled={props.disabled || inLoading} onClick={handleClick} className="all-width">
+          <EtsBootstrap.Glyphicon glyph="download-alt" className="car_info-main_block-button" />
+          Выгрузить
+        </EtsBootstrap.Button>
+      </React.Fragment>
+    );
   },
 );
 

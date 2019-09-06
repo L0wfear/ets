@@ -35,26 +35,17 @@ const BatteryToVehicleBlock: React.FC<IPropsBatteryToVehicleBlock> = React.memo(
       [props.batteryId],
     );
 
-    return React.useMemo(
-      () => (
-        <DataTableInput
-          tableSchema={meta}
-          renderers={renderers}
-          validationSchema={validationSchema}
-          addButtonLabel="Добавить ТС"
-          removeButtonLable="Удалить ТС"
-          stackOrder
-          batteryAvailableCarList={batteryAvailableCarList}
-          {...props}
-        />
-      ),
-      [
-        meta,
-        renderers,
-        validationSchema,
-        batteryAvailableCarList,
-        props,
-      ],
+    return (
+      <DataTableInput
+        tableSchema={meta}
+        renderers={renderers}
+        validationSchema={validationSchema}
+        addButtonLabel="Добавить ТС"
+        removeButtonLable="Удалить ТС"
+        stackOrder
+        batteryAvailableCarList={batteryAvailableCarList}
+        {...props}
+      />
     );
   },
 );

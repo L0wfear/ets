@@ -18,8 +18,8 @@ import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
-type Props = {
-} & WithSearchProps;
+type OwnProps = {};
+type Props = OwnProps & WithSearchProps;
 
 const defaultState = { list: null, currentIndex: 1, isOpen: false };
 
@@ -187,4 +187,4 @@ const OrderHistoryList: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch(OrderHistoryList);
+export default withSearch<OwnProps>(OrderHistoryList);

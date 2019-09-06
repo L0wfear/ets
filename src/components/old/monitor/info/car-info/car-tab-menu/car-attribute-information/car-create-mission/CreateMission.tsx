@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ButtonCreateMission } from 'components/new/pages/missions/mission/buttons/buttons';
 import { connect } from 'react-redux';
 import { FlexCenterButton } from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-create-mission/styled/index';
 import memoizeOne from 'memoize-one';
@@ -7,6 +6,8 @@ import { fetchCarInfo } from 'components/old/monitor/info/car-info/redux-main/mo
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 type PropsCarMissions = {
   gps_code: number;
@@ -77,9 +78,9 @@ class CreateMission extends React.Component<
 
     return (
       <FlexCenterButton>
-        <ButtonCreateMission onClick={this.handleClickCreateMission}>
+        <EtsBootstrap.Button onClick={this.handleClickCreateMission} permissions={missionPermissions.create}>
           Создать децентрализованное задание
-        </ButtonCreateMission>
+        </EtsBootstrap.Button>
         <MissionFormLazy
           onFormHide={this.handleHideMissionForm}
           showForm={showMissionForm}

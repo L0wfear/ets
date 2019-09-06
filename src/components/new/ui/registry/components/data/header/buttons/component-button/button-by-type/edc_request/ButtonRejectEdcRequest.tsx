@@ -13,6 +13,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { get } from 'lodash';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonRejectEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -22,9 +23,7 @@ type ButtonRejectEdcRequestStateProps = {
 type ButtonRejectEdcRequestDispatchProps = {
   registrySetSelectedRowToShowInForm: any;
 };
-type ButtonRejectEdcRequestOwnProps = {
-  registryKey: string;
-};
+type ButtonRejectEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonRejectEdcRequestMergeProps = {};
 
 type ButtonRejectEdcRequestProps = (

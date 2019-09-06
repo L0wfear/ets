@@ -1,26 +1,8 @@
-import styled, { keyframes, css } from 'styled-components';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import styled from 'styled-components';
 
 type PropsCardBodyContainer = {
   isLoading?: boolean;
 };
-
-const spin = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(359deg);
-  }
-`;
-
-const AnimationSpin = css`
-  animation: ${spin} 1000ms infinite linear;
-`;
-
-const AnimationNone = css`
-  animation: none !important;
-`;
 
 export const CardTitleContainer = styled.div`
   padding: 20px;
@@ -49,24 +31,18 @@ export const CardTitleContainerWrap = styled.div`
   }
 `;
 
-export const GlyphiconWithNonAnimation = styled(EtsBootstrap.Glyphicon)<{ isLoading: boolean }>`
-  &&& {
-    ${({ isLoading }) => isLoading ? AnimationSpin : AnimationNone};
-  }
-`;
-
 export const LineData = styled.div`
   padding: 15px 0;
   border-bottom: 1px solid #d6d6d6;
 `;
 
-export const CardBodyContainer = styled.div`
+export const CardBodyContainer = styled.div<PropsCardBodyContainer>`
   padding: 20px;
   padding-top: 5px;
   display: flex;
   flex-direction: column;
 
-  pointer-events: ${({ isLoading }: PropsCardBodyContainer) => isLoading ? 'none' : 'all'};
+  pointer-events: ${({ isLoading }) => isLoading ? 'none' : 'all'};
   opacity: ${({ isLoading }) => isLoading ? '0.5' : '1'};
 
   .line_data {

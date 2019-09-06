@@ -36,26 +36,17 @@ const SpareToVehicleBlock: React.FC<IPropsSpareToVehicleBlock> = React.memo(
       [props.spareId],
     );
 
-    return React.useMemo(
-      () => (
-        <DataTableInput
-          tableSchema={meta}
-          renderers={renderers}
-          validationSchema={validationSchema}
-          addButtonLabel="Добавить ТС"
-          removeButtonLable="Удалить ТС"
-          stackOrder
-          spareAvailableCarList={spareAvailableCarList}
-          {...props}
-        />
-      ),
-      [
-        meta,
-        renderers,
-        validationSchema,
-        spareAvailableCarList,
-        props,
-      ],
+    return (
+      <DataTableInput
+        tableSchema={meta}
+        renderers={renderers}
+        validationSchema={validationSchema}
+        addButtonLabel="Добавить ТС"
+        removeButtonLable="Удалить ТС"
+        stackOrder
+        spareAvailableCarList={spareAvailableCarList}
+        {...props}
+      />
     );
   },
 );

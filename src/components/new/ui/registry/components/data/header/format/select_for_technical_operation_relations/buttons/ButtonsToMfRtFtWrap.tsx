@@ -6,18 +6,10 @@ import { EtsButtonsContainer } from '../../../buttons/styled/styled';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { DivNone } from 'global-styled/global-styled';
 
-type ButtonsToMfRtFtWrapStateProps = {
-};
-type ButtonsToMfRtFtWrapDispatchProps = {};
-type ButtonsToMfRtFtWrapOwnProps = {
+type OwnProps = {
   registryKey: string;
 };
-type ButtonsToMfRtFtWrapMergedProps = (
-  ButtonsToMfRtFtWrapStateProps
-  & ButtonsToMfRtFtWrapDispatchProps
-  & ButtonsToMfRtFtWrapOwnProps
-);
-type ButtonsToMfRtFtWrapProps = ButtonsToMfRtFtWrapMergedProps & WithSearchProps;
+type Props = OwnProps & WithSearchProps;
 
 const ButtonWrap = styled.div`
   ${EtsButtonsContainer} {
@@ -25,7 +17,7 @@ const ButtonWrap = styled.div`
   }
 `;
 
-const ButtonsToMfRtFtWrap: React.FC<ButtonsToMfRtFtWrapProps> = React.memo(
+const ButtonsToMfRtFtWrap: React.FC<Props> = React.memo(
   (props) => {
     const technical_operation_id = props.searchState.technical_operation_id || null;
     const municipal_facility_id = props.searchState.municipal_facility_id || null;
@@ -55,4 +47,4 @@ const ButtonsToMfRtFtWrap: React.FC<ButtonsToMfRtFtWrapProps> = React.memo(
   },
 );
 
-export default withSearch(ButtonsToMfRtFtWrap);
+export default withSearch<OwnProps>(ButtonsToMfRtFtWrap);

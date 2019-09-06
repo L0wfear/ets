@@ -1,11 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+
 import { selectors } from 'redux-main/_middleware/etsLoading';
-
-import {
-  DivNone,
-} from 'global-styled/global-styled';
-
 import PreloadNew, { PropsPreloadNew } from 'components/old/ui/new/preloader/PreloadNew';
 
 import { ReduxState } from 'redux-main/@types/state';
@@ -40,13 +36,8 @@ const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
         return (
           <React.Fragment>
             {
-              isLoading ?
-              (
+              Boolean(isLoading) && (
                 <PreloadNew typePreloader={configWithPreloader.typePreloader || typePreloader} />
-              )
-              :
-              (
-                <DivNone />
               )
             }
             <Component

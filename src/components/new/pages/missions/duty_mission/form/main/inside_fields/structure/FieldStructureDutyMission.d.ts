@@ -2,7 +2,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import {
   OneSessionStructure,
   InitialStateSession,
-} from 'redux-main/reducers/modules/session/session.d';
+} from 'redux-main/reducers/modules/session/@types/session';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import {
   getSessionStructuresParams,

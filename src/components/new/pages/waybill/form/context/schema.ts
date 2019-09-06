@@ -1,4 +1,4 @@
-import { SchemaFormContext } from 'components/new/utils/context/form/@types';
+import { SchemaFormContext } from 'components/@next/@form/@types';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 export const waybillFormSchema: SchemaFormContext<Waybill> = {

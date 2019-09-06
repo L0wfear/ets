@@ -7,7 +7,6 @@ import { compose } from 'recompose';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 
 import {
-  ButtenUpdateMission,
   LinkToOpenMissionInfoForm,
 } from 'components/new/pages/missions/mission/buttons/buttons';
 
@@ -28,9 +27,6 @@ import {
   CurrentMissionInfoDispatchProps,
 } from 'components/new/pages/dashboard/menu/cards/current-missions/info/@types/CurrentMissionInfo.h';
 import { RightButtonBlockContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
-import {
-  DivNone,
-} from 'global-styled/global-styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
@@ -39,6 +35,8 @@ import { getWarningNotification } from 'utils/notifications';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import MissionRejectForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/mission/form/MissionRejectForm';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
@@ -156,12 +154,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
         </ul>
         <LinkToOpenMissionInfoForm openMissiomInfoForm={this.openMissiomInfoForm}/>
         <RightButtonBlockContainer>
-          <ButtenUpdateMission onClick={this.completeMission} >Выполнено</ButtenUpdateMission>
-          <ButtenUpdateMission onClick={this.rejectMission} >Не выполнено</ButtenUpdateMission>
+          <EtsBootstrap.Button onClick={this.completeMission} permissions={missionPermissions.update}>Выполнено</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.rejectMission} permissions={missionPermissions.update}>Не выполнено</EtsBootstrap.Button>
         </RightButtonBlockContainer>
         {
-          this.state.showMissionRejectForm ?
-          (
+          this.state.showMissionRejectForm && (
             <MissionRejectForm
               show
               onReject={this.onReject}
@@ -172,10 +169,6 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
               }}
               action_at={this.state.action_at}
             />
-          )
-          :
-          (
-            <DivNone />
           )
         }
         <MissionInfoFormWrap

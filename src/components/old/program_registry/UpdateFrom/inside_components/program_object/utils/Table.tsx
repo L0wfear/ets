@@ -1,11 +1,5 @@
 import * as React from 'react';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-import {
-  EtsTheadTh,
-} from 'components/new/ui/registry/components/data/table-data/table-container/t-head/tr-head/tr-th/styled/styled';
-import { EtsThead } from 'components/new/ui/registry/components/data/table-data/table-container/t-head/styled/styled';
-import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { DataTableHeadLine, DataTableHeadLineTitle } from 'components/old/ui/table/styled';
 import Div from 'components/old/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -67,30 +61,30 @@ class TablePrev extends React.Component<any, any> {
         </Div>
         {
           !!bodyData.length &&
-          <EtsBootstrap.Table>
-            <EtsThead>
-              <tr className="ets_thead_tr">
+          <EtsBootstrap.TableOld>
+            <EtsBootstrap.Grid.GridBootstrapThead.Thead>
+              <EtsBootstrap.Grid.GridBootstrapThead.Tr className="ets_thead_tr">
                 {
                   headerData.map(({ title: titleTH }, i) => (
-                    <EtsTheadTh canClick width={400} key={i}>{titleTH}</EtsTheadTh>
+                    <EtsBootstrap.Grid.GridBootstrapThead.Th canClick width={400} key={i}>{titleTH}</EtsBootstrap.Grid.GridBootstrapThead.Th>
                   ))
                 }
-              </tr>
-            </EtsThead>
-            <tbody>
+              </EtsBootstrap.Grid.GridBootstrapThead.Tr>
+            </EtsBootstrap.Grid.GridBootstrapThead.Thead>
+            <EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
               {
                 bodyData.map((row, numRow) => (
-                  <EtsTrTbody
+                  <EtsBootstrap.Grid.GridBootstrapTbody.Tr
                     registryKey={this.props.page}
                     key={numRow + 1}
                     enable
-                    selected={false}
+                    isSelected={false}
                     onClick={this.handleClick}
                     className={selectedRow === numRow ? 'sm-active' : null}
                   >
                     {
                       headerData.map(({ key, style, otherProps }, numOne) => (
-                          <EtsTbodyTrTd key={numOne + 1} style={{ ...style(numRow, row, errors) }}>
+                          <EtsBootstrap.Grid.GridBootstrapTbody.Td key={numOne + 1} style={{ ...style(numRow, row, errors) }}>
                             <ExtField
                               {...mainPropsFields[key]}
                               label={""}
@@ -101,14 +95,14 @@ class TablePrev extends React.Component<any, any> {
                               disabled={!isPermitted || mainPropsFields[key].disabled}
                               {...otherProps(numRow, row, errors)}
                             />
-                          </EtsTbodyTrTd>
+                          </EtsBootstrap.Grid.GridBootstrapTbody.Td>
                       ))
                     }
-                  </EtsTrTbody>
+                  </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
                 ))
               }
-            </tbody>
-          </EtsBootstrap.Table>
+            </EtsBootstrap.Grid.GridBootstrapTbody.Tbody>
+          </EtsBootstrap.TableOld>
         }
         </div>
     );

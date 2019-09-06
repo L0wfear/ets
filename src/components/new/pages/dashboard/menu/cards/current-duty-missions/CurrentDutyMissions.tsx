@@ -36,14 +36,11 @@ const CurrentDutyMissions: React.FC<PropsCurrentDutyMissions> = React.memo(
       [dispatch],
     );
 
-    return React.useMemo(
-      () => (
-        <div>
-          <ListByTypeCurerntDutyMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
-          <ListByTypeCurerntDutyMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
-        </div>
-      ),
-      [handleClick],
+    return (
+      <div>
+        <ListByTypeCurerntDutyMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
+        <ListByTypeCurerntDutyMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
+      </div>
     );
   },
 );

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/@types/container';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ContainerRegistryTrProps = {
   actionData: ValuesOf<InspectContainer['actions']>;
@@ -24,12 +23,12 @@ export const ContainerRegistryTr: React.FC<ContainerRegistryTrProps> = (props) =
   );
 
   return (
-    <EtsTrTbody onClick={handleClickRow} enable selected={props.isSelected} rowData={actionData} registryKey="">
-      <EtsTbodyTrTd>{rowNumber}</EtsTbodyTrTd>
-      <EtsTbodyTrTd>{actionData.name}</EtsTbodyTrTd>
-      <EtsTbodyTrTd>{actionData.date_start}</EtsTbodyTrTd>
-      <EtsTbodyTrTd>{actionData.date_end}</EtsTbodyTrTd>
-    </EtsTrTbody>
+    <EtsBootstrap.Grid.GridBootstrapTbody.Tr onClick={handleClickRow} enable isSelected={props.isSelected} rowData={actionData} registryKey="">
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>{rowNumber}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>{actionData.name}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>{actionData.date_start}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>{actionData.date_end}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
+    </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
   );
 };
 

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { path } from 'components/new/pages/nsi/order/_config-data';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -12,49 +11,40 @@ import {
   dashboardLoadDependentDataByNewDutyMission,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import { ButtonCreateMission } from 'components/new/pages/missions/mission/buttons/buttons';
-import { ButtonCreateWaybill } from 'components/old/waybill/buttons/buttons';
-
 import {
   DashboardMenuButtonsContainer,
   CardTitleContainer,
   CardBodyContainer,
 } from 'components/new/pages/dashboard/menu/buttons/styled/styled';
-import { ReduxState } from 'redux-main/@types/state';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import { ButtonCreateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
 import { LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
+import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
+import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
-export type StatePropsDashboardMenuButtons = {};
-
-export type DispatchPropsDashboardMenuButtons = {
-  dashboardLoadDependentDataByWaybillDraft: HandleThunkActionCreator<typeof dashboardLoadDependentDataByWaybillDraft>;
-  dashboardLoadDependentDataByNewMission: HandleThunkActionCreator<typeof dashboardLoadDependentDataByNewMission>;
-  dashboardLoadDependentDataByNewDutyMission: HandleThunkActionCreator<typeof dashboardLoadDependentDataByNewDutyMission>;
-};
-
-export type OwnerPropsDashboardMenuButtons = {
+export type OwpProps = {
   page: string;
 };
 
-export type PropsDashboardMenuButtons = (
-  StatePropsDashboardMenuButtons
-  & DispatchPropsDashboardMenuButtons
-  & OwnerPropsDashboardMenuButtons
-);
+export type Props = OwpProps & {};
 
-const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
+const DashboardMenuButtons: React.FC<Props> = React.memo(
   (props) => {
     const [showWaybillForm, setShowWaybillForm] = React.useState(false);
     const [showMissionForm, setShowMissionForm] = React.useState(false);
     const [showDutyMissionForm, setShowDutyMissionForm] = React.useState(false);
 
+    const dispatch = etsUseDispatch();
+
     const handleFormHideWaybillForm = React.useCallback(
-      (isSubmitted) => {
-        props.dashboardLoadDependentDataByWaybillDraft();
+      () => {
+        dispatch(
+          dashboardLoadDependentDataByWaybillDraft(),
+        );
         setShowWaybillForm(false);
       },
       [],
@@ -62,7 +52,9 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
     const handleFormHideMissionForm = React.useCallback(
       (isSubmitted) => {
         if (isSubmitted) {
-          props.dashboardLoadDependentDataByNewMission();
+          dispatch(
+            dashboardLoadDependentDataByNewMission(),
+          );
         }
         setShowMissionForm(false);
       },
@@ -71,7 +63,9 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
     const handleFormHideDutyMissionForm = React.useCallback(
       (isSubmitted) => {
         if (isSubmitted) {
-          props.dashboardLoadDependentDataByNewDutyMission();
+          dispatch(
+            dashboardLoadDependentDataByNewDutyMission(),
+          );
         }
         setShowDutyMissionForm(false);
       },
@@ -83,18 +77,18 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
         <EtsBootstrap.DashboardCard block>
           <CardTitleContainer>Управление</CardTitleContainer>
           <CardBodyContainer>
-            <ButtonCreateWaybill whiteSpace="normal" onClick={setShowWaybillForm}>
+            <EtsBootstrap.Button whiteSpace="normal" onClick={setShowWaybillForm} permissions={waybillPermissions.create}>
               Создать путевой лист
-            </ButtonCreateWaybill>
+            </EtsBootstrap.Button>
             <LinkToOrder to={path}>
               <EtsBootstrap.Button whiteSpace="normal" active>Исполнение централизованного задания</EtsBootstrap.Button>
             </LinkToOrder>
-            <ButtonCreateMission whiteSpace="normal" onClick={setShowMissionForm}>
+            <EtsBootstrap.Button whiteSpace="normal" onClick={setShowMissionForm} permissions={missionPermissions.create}>
               Создать децентрализованное задание
-            </ButtonCreateMission>
-            <ButtonCreateDutyMission whiteSpace="normal" onClick={setShowDutyMissionForm}>
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button whiteSpace="normal" onClick={setShowDutyMissionForm} permissions={dutyMissionPermissions.create}>
               Создать наряд-задание
-            </ButtonCreateDutyMission>
+            </EtsBootstrap.Button>
           </CardBodyContainer>
         </EtsBootstrap.DashboardCard>
         {
@@ -124,14 +118,4 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
   },
 );
 
-export default connect<StatePropsDashboardMenuButtons, DispatchPropsDashboardMenuButtons, OwnerPropsDashboardMenuButtons, ReduxState>(
-  null,
-  (dispatch) => ({
-    dashboardLoadDependentDataByWaybillDraft: () =>
-      dispatch(dashboardLoadDependentDataByWaybillDraft()),
-    dashboardLoadDependentDataByNewMission: () =>
-      dispatch(dashboardLoadDependentDataByNewMission()),
-    dashboardLoadDependentDataByNewDutyMission: () =>
-      dispatch(dashboardLoadDependentDataByNewDutyMission()),
-  }),
-)(DashboardMenuButtons);
+export default DashboardMenuButtons;

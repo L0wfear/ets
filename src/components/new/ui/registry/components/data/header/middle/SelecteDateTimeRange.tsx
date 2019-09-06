@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { compose } from 'recompose';
+
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'components/@next/@utils/dates/dates';
@@ -76,6 +76,4 @@ const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
   },
 );
 
-export default compose<SelecteDateTimeRangeProps, SelecteDateTimeRangeOwnProps>(
-  withSearch,
-)(SelecteDateTimeRange);
+export default withSearch<SelecteDateTimeRangeProps>(SelecteDateTimeRange);

@@ -5,13 +5,10 @@ import { TypeDownload } from 'components/new/ui/registry/components/data/header/
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { Order } from 'redux-main/reducers/modules/order/@types';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { promiseLoadOrderBlobAndSave } from 'redux-main/reducers/modules/order/order_promise';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type Props = {
-  registryKey: string;
-  data: ValuesOf<OneRegistryData['header']['buttons']>;
-};
+type Props = CommonTypesForButton & {};
 
 const ButtonOrderExport: React.FC<Props> = React.memo(
   (props) => {
@@ -25,29 +22,23 @@ const ButtonOrderExport: React.FC<Props> = React.memo(
     );
     const disabled = !selectedRow;
 
-    return React.useMemo(
-      () => (
-        <EtsBootstrap.Dropdown
-          id="dropdown-print"
-          disabled={disabled}
+    return (
+      <EtsBootstrap.Dropdown
+        id="dropdown-print"
+        disabled={disabled}
 
-          toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
-          toggleElementSize="small"
-        >
-          <EtsBootstrap.DropdownMenu pullRight>
-            <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={showPrintForm}>
-              Скан-копия факсограммы
-            </EtsBootstrap.MenuItem>
-            <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={showPrintForm}>
-              Расшифровка централизованного задания
-            </EtsBootstrap.MenuItem>
-          </EtsBootstrap.DropdownMenu>
-        </EtsBootstrap.Dropdown>
-      ),
-      [
-        disabled,
-        showPrintForm,
-      ],
+        toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
+        toggleElementSize="small"
+      >
+        <EtsBootstrap.DropdownMenu pullRight>
+          <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={showPrintForm}>
+            Скан-копия факсограммы
+          </EtsBootstrap.MenuItem>
+          <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={showPrintForm}>
+            Расшифровка централизованного задания
+          </EtsBootstrap.MenuItem>
+        </EtsBootstrap.DropdownMenu>
+      </EtsBootstrap.Dropdown>
     );
   },
 );

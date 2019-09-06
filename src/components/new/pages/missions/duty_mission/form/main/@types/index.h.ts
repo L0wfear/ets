@@ -1,6 +1,6 @@
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';

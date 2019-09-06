@@ -21,11 +21,6 @@ import {
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
-import {
-  ButtonCreateRoute,
-  ButtonUpdateRoute,
-  ButtonDeleteRoute,
-} from 'components/new/pages/routes_list/buttons/buttons';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 
 import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
@@ -55,6 +50,7 @@ import {
   StateRoutesList,
 } from 'components/new/pages/routes_list/@types/RoutesList.h';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
 
 const SEASONS_OPTIONS = [
   {
@@ -194,7 +190,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       this.refreshRoutes();
     }
 
-    const meta = document.querySelector('meta[property="og:description"]');
+    const meta = document.querySelector('meta[property="og:title"]');
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
     const new_title = `${etsName} Реестр маршрутов`;
 
@@ -207,7 +203,7 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
   }
 
   componentWillUnmount() {
-    const meta = document.querySelector('meta[property="og:description"]');
+    const meta = document.querySelector('meta[property="og:title"]');
     const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
 
     if (document) {
@@ -495,27 +491,33 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
                   active={activeFilter}
                   onClick={this.toggleFilter}
                 />
-                <ButtonCreateRoute bsSize="small" onClick={this.createRoute} id = "create_route">
+                <EtsBootstrap.Button bsSize="small" onClick={this.createRoute} id = "create_route" permissions={routePermissions.create}>
                   <EtsBootstrap.Glyphicon glyph="plus" /> Создать маршрут
-                </ButtonCreateRoute>
-                <ButtonUpdateRoute
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
-                  onClick={this.updateRoute}>
+                  onClick={this.updateRoute}
+                  permissions={routePermissions.update}
+                >
                   <EtsBootstrap.Glyphicon glyph="pencil" /> Изменить маршрут
-                </ButtonUpdateRoute>
-                <ButtonUpdateRoute
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
-                  onClick={this.copyRoute}>
+                  onClick={this.copyRoute}
+                  permissions={routePermissions.create}
+                >
                   <EtsBootstrap.Glyphicon glyph="copy" /> Копировать маршрут
-                </ButtonUpdateRoute>
-                <ButtonDeleteRoute
+                </EtsBootstrap.Button>
+                <EtsBootstrap.Button
                   bsSize="small"
                   disabled={isNull(selectedRoute)}
-                  onClick={this.deleteRoute}>
+                  onClick={this.deleteRoute}
+                  permissions={routePermissions.delete}
+                >
                   <EtsBootstrap.Glyphicon glyph="remove" /> Удалить
-                </ButtonDeleteRoute>
+                </EtsBootstrap.Button>
               </div>
             </RouteHeaderContainer>
             <Filter

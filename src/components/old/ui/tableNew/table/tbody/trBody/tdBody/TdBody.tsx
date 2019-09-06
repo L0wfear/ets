@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as cx from 'classnames';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class TdBody extends React.Component<any, any> {
 
@@ -19,7 +20,7 @@ class TdBody extends React.Component<any, any> {
     );
 
     return (
-      <td className={tdClassName}>{this.props.render(this.props)}</td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td className={tdClassName}>{this.props.render(this.props)}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   }
 }

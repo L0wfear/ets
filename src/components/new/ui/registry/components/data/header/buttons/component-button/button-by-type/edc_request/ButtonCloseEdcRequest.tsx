@@ -12,6 +12,7 @@ import { compose } from 'recompose';
 import { get } from 'lodash';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
 type ButtonCloseEdcRequestStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -22,9 +23,7 @@ type ButtonCloseEdcRequestDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
 };
-type ButtonCloseEdcRequestOwnProps = {
-  registryKey: string;
-};
+type ButtonCloseEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonCloseEdcRequestMergeProps = {};
 
 type ButtonCloseEdcRequestProps = (

@@ -21,7 +21,7 @@ import { actionLoadAppConfig, actionLoadAppConfigTracksCaching } from './action_
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 export const sessionCahngeCompanyOnAnother: any = (
   company_id,

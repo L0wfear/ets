@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { compose } from 'recompose';
+
 import { Route, Switch } from 'react-router-dom';
 import carFormTabKey from './formConfig';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
@@ -82,6 +82,4 @@ const CarFormBodyContainer: React.FC<CarFormBodyContainerProps> = React.memo(
     );
 });
 
-export default compose<CarFormBodyContainerProps, CarFormBodyContainerOwnProps>(
-  withSearch,
-)(CarFormBodyContainer);
+export default withSearch<CarFormBodyContainerOwnProps>(CarFormBodyContainer);

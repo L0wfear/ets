@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Redirect, withRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import requireAuth from 'utils/auth';
 
 import { connect } from 'react-redux';
@@ -9,7 +9,7 @@ import { compose } from 'recompose';
 import { MapEtsProvider } from 'components/new/ui/map/context/MapetsContext';
 import LoadingPovider from 'components/new/utils/context/loading/LoadingPovider';
 import EtsGlobalStyle from 'global-styled';
-import FormProvider from '../../context/form/FormPovider';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 /**
  * используется только в 1 месте для редиректа, если урл не разрешён или пользователь не залогинен
@@ -48,17 +48,15 @@ const withCheckPrivateRouteMain = (Component) => {
     return (
       <MapEtsProvider>
         <LoadingPovider>
-          <FormProvider>
-            <EtsGlobalStyle />
-            <Component />
-          </FormProvider>
+          <EtsGlobalStyle />
+          <Component />
         </LoadingPovider>
       </MapEtsProvider>
     );
   };
 
   return compose(
-    withRouter,
+    withSearch,
     connect<any, any, any, ReduxState>(
       (state) => ({
         hasValidToken: Boolean(getSessionState(state).token),

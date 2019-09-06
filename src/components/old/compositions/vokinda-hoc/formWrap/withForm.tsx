@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
+import { compose } from 'recompose';
+import { connect, DispatchProp } from 'react-redux';
+
 import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { SchemaType, FormErrorType, PropertieFieldValidatorArrType } from 'components/old/ui/form/new/@types/validate.h';
 import { validate } from 'components/old/ui/form/new/validate';
-import { compose } from 'recompose';
-import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/session.d';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -30,6 +31,10 @@ type ConfigWithForm<P, F> = {
     create: string | string[];
     update: string | string[];
     [k: string]: any;
+  };
+  askBeforeCloseIfChanged?: {         // спрашивать перед закрытие формы
+    askTitle?: string;
+    askBody?: string;
   };
 };
 
@@ -509,7 +514,21 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
         return result;
       }
 
-      hideWithoutChanges = () => {
+      hideWithoutChanges = async () => {
+        if (config.askBeforeCloseIfChanged) {
+          if (this.state.originalFormState !== this.state.formState) {
+            try {
+              await global.confirmDialog({
+                title: config.askBeforeCloseIfChanged.askTitle || 'Покинуть страницу?',
+                body: config.askBeforeCloseIfChanged.askBody || 'Возможно, внесенные изменения не сохранятся.',
+                okName: 'Закрыть',
+                cancelName: 'Остаться',
+              });
+            } catch {
+              return;
+            }
+          }
+        }
         this.props.handleHide(false);
       }
 

@@ -1,36 +1,28 @@
 import * as React from 'react';
 
 import Data from 'components/new/ui/registry/components/data/Data';
-import { connect, DispatchProp } from 'react-redux';
 import { getRootRegistry, getHeaderData } from '../module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegistry';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type RegistryStateProps = {
-  hasData: boolean;
-  title: OneRegistryData['header']['title'];
-};
-type RegistryDispatchProps = DispatchProp;
-type RegistryOwnProps = {
+type OwnProps = {
   registryKey: string;
 };
 
-type PropsRegistry = (
-  RegistryStateProps
-  & RegistryDispatchProps
-  & RegistryOwnProps
-);
+type Props = OwnProps & {};
 
-const Registry: React.FC<PropsRegistry> =  React.memo(
+const Registry: React.FC<Props> =  React.memo(
   (props) => {
+    const hasData = etsUseSelector((state) => Boolean(getRootRegistry(getRegistryState(state), props.registryKey, true)));
+    const title = etsUseSelector((state) => getHeaderData(getRegistryState(state), props.registryKey).title);
+
     React.useLayoutEffect(
       () => {
-        const meta = document.querySelector('meta[property="og:description"]');
+        const meta = document.querySelector('meta[property="og:title"]');
         const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
-        const new_title = `${etsName} ${props.title}`;
+        const new_title = `${etsName} ${title}`;
 
         if (document) {
           document.title = new_title;
@@ -40,7 +32,7 @@ const Registry: React.FC<PropsRegistry> =  React.memo(
         }
 
         return () => {
-          const metaNew = document.querySelector('meta[property="og:description"]');
+          const metaNew = document.querySelector('meta[property="og:title"]');
           if (document) {
             document.title = etsName;
           }
@@ -51,7 +43,7 @@ const Registry: React.FC<PropsRegistry> =  React.memo(
       },
     );
     return (
-      props.hasData
+      hasData
         ? (
           <Data registryKey={props.registryKey} />
         )
@@ -62,9 +54,4 @@ const Registry: React.FC<PropsRegistry> =  React.memo(
   },
 );
 
-export default connect<RegistryStateProps, RegistryDispatchProps, RegistryOwnProps, ReduxState>(
-  (state, { registryKey }) => ({
-    hasData: Boolean(getRootRegistry(getRegistryState(state), registryKey, true)),
-    title: getHeaderData(getRegistryState(state), registryKey).title,
-  }),
-)(Registry);
+export default Registry;

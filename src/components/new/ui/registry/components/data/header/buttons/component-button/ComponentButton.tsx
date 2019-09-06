@@ -41,20 +41,19 @@ import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs';
 import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
 import ButtonOrderCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateMission';
 import ButtonOrderCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateDutyMission';
 import ButtonOrderExport from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderExport';
 import ButtonOrderToCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateMission';
 import ButtonOrderToCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateDutyMission';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type PropsComponentButton = {
-  data: ValuesOf<OneRegistryData['header']['buttons']>;
-  registryKey: string;
-};
+type Props = CommonTypesForButton;
 
-const buttonComponents = {
+type AllButtons = Record<typeof buttonsTypes[keyof typeof buttonsTypes], React.ComponentType<CommonTypesForButton & Record<string, any>>>;
+
+const buttonComponents: AllButtons = {
   [buttonsTypes.export]: ButtonExport,
   [buttonsTypes.export_filtred_data]: ButtonExportFiltredData,
   [buttonsTypes.filter]: ButtonToggleFilter,
@@ -101,11 +100,11 @@ const buttonComponents = {
   [buttonsTypes.order_to_create_duty_mission]: ButtonOrderToCreateDutyMission,
 };
 
-const ComponentButton: React.FC<PropsComponentButton> = (props) => {
+const ComponentButton: React.FC<Props> = (props) => {
   const { data } = props;
 
   const ButtonNameComponent = React.useMemo(
-    () => buttonComponents[data.type],
+    () => data && buttonComponents[data.type],
     [data],
   );
 

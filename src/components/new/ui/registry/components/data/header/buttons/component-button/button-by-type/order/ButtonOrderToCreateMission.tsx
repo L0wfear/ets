@@ -13,10 +13,9 @@ import missionActions from 'redux-main/reducers/modules/missions/mission/actions
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 
-type OwnProps = {
-  registryKey: string;
-};
+type OwnProps = CommonTypesForButton & {};
 type Props = (
   OwnProps
 ) & WithSearchProps;
@@ -81,21 +80,12 @@ const ButtonOrderToCreateMission: React.FC<Props> = React.memo(
 
     const isDisabled = isDisabledForCreateMissionByTO(selectedOrderRow, selectedOrderTORow);
 
-    return React.useMemo(
-      () => (
-        isPemitted && (
-          <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
-            Создать задание
-          </EtsBootstrap.Button>
-        )
-      ),
-      [
-        isDisabled,
-        handleClick,
-        isPemitted,
-      ],
+    return isPemitted && (
+      <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
+        Создать задание
+      </EtsBootstrap.Button>
     );
   },
 );
 
-export default withSearch(ButtonOrderToCreateMission);
+export default withSearch<OwnProps>(ButtonOrderToCreateMission);

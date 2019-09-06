@@ -55,6 +55,18 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           title: 'Вид проверки',
         },
         {
+          valueKey: 'checks_period',
+          labelKey: 'checks_period_text',
+          type: 'multiselect',
+          title: 'Период проверки',
+        },
+        {
+          valueKey: 'checks_type',
+          labelKey: 'checks_type_text',
+          type: 'multiselect',
+          title: 'Тип проверки',
+        },
+        {
           valueKey: 'cars_cnt',
           type: 'advanced-number',
           title: 'Количество ТС на балансе',
@@ -116,6 +128,17 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
             key: 'status_text',
             title: 'Статус проверки',
             width: 200,
+          },
+          {
+            key: 'checks_period_text',
+            title: 'Период проверки',
+            width: 150,
+            dashIfEmpty: true,
+          },
+          {
+            key: 'checks_type_text',
+            title: 'Тип проверки',
+            width: 150,
           },
           {
             key: 'cars_cnt',

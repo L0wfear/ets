@@ -6,7 +6,7 @@ import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseD
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-// import { validate } from 'components/old/ui/form/new/validate';
+import { validate } from 'components/old/ui/form/new/validate';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
@@ -41,14 +41,15 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     const { renderParams, renderFieldsSchema } = props;
     const value = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values.${props.metaKey}`, null));
     const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
-    const error = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.errors.${props.metaKey}`, null));
+    // const error = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.errors.${props.metaKey}`, null));
     const dispatch = etsUseDispatch();
 
-    // const [errors, setErrors] = React.useState(null);
+    const [error, setError] = React.useState(null);
 
     React.useEffect(() => {
       if (valuesRenderRow) {
-        // const formErrors = validate(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
+        const formErrors = validate(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
+        setError(get(formErrors, props.metaKey, null));
       }
     }, [valuesRenderRow]);
 

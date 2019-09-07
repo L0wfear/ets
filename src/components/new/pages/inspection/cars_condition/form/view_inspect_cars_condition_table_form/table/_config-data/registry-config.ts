@@ -6,6 +6,15 @@ import { carsConditionCarFormDataSchema, carsConditionCarFormSchema } from 'comp
 
 export const registryKey = 'InspectCarsConditionsCarsExtendedRegistry';
 
+const {data, ...carsConditionCarFormSchemaDataLess } = carsConditionCarFormSchema.properties; // с бека приходит без даты
+
+const renderFieldsSchema = { // Что бы не надо было менять в нескольких местах, используем схему из карточки ТС
+  properties: {
+    ...carsConditionCarFormDataSchema.properties,
+    ...carsConditionCarFormSchemaDataLess,
+  },
+};
+
 export const getConfig = (inspection_id: number, ): TypeConfigData<CarsConditionCars & CarsConditionCars['data']> => ({
   Service: {
     getRegistryData: {
@@ -35,12 +44,7 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
     meta: {
       row_double_click: false,
       is_render_field: true,
-      renderFieldsSchema: { // Что бы не надо было менять в нескольких местах, используем схему из карточки ТС
-        properties: {
-          ...carsConditionCarFormDataSchema.properties,
-          ...carsConditionCarFormSchema.properties,
-        },
-      },
+      renderFieldsSchema,
       fields: [
         {
           key: 'gov_number',

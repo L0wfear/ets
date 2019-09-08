@@ -33,7 +33,7 @@ type ButtonCreateProps = (
 const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   const data = React.useMemo(
     () => (
-      get(props, 'data', {} as ButtonCreateOwnProps['data'])
+      get(props, 'data', {}) as ButtonCreateOwnProps['data']
     ),
     [props.data],
   );
@@ -50,7 +50,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   );
 
   return (
-    <EtsBootstrap.Button id={`${props.registryKey}.open-create-form`} bsSize="small" onClick={handleClick}>
+    <EtsBootstrap.Button id={`${props.registryKey}.${data.id || 'open-create-form'}`} bsSize="small" onClick={handleClick}>
       <EtsBootstrap.Glyphicon glyph={data.glyph || 'plus'} />{data.title || 'Создать'}
     </EtsBootstrap.Button>
   );

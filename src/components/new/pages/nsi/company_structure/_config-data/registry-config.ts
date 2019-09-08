@@ -21,6 +21,7 @@ export const config: TypeConfigData<CompanyStructure> = {
     title: 'Структура предприятия',
     buttons: [
       {
+        id: 'open-create-form',
         type: buttonsTypes.create,
         title: 'Добавить подразделение',
       },

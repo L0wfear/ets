@@ -31,6 +31,7 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
       buttons: [
         buttonsTypes.filter,
         {
+          id: 'open-update-form',
           type: buttonsTypes.read,
           title: 'Выбрать',
           glyph: 'hand-up',

@@ -138,6 +138,7 @@ export interface OneRegistryData<F = any> {
     is_current_structure_popover?: string;
     buttons: Array<{
       type: string;
+      id: string;
       title?: string;
       glyph?: keyof typeof glyphMap;                                        // EtsBootstrap.Glyphicon glyph
       format?: string;

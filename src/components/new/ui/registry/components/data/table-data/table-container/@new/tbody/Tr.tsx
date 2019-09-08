@@ -88,32 +88,44 @@ const TrHead: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Tr
-        id={`${props.registryKey}.${rowData[uniqKey]}`}
-        enable
-        isSelected={isSelected}
+      <React.Fragment>
+        <EtsBootstrap.Grid.GridBootstrapTbody.Tr
+          id={`${props.registryKey}.${rowData[uniqKey]}`}
+          enable
+          isSelected={isSelected}
 
-        rowData={rowData}
-        checkData={checkData}
+          rowData={rowData}
+          checkData={checkData}
 
-        onClick={handleClick}
-        onDoubleClick={handleDoubleClick}
+          onClick={handleClick}
+          onDoubleClick={handleDoubleClick}
 
-        registryKey={props.registryKey}
-      >
+          registryKey={props.registryKey}
+        >
+          {
+            rowFields.map((fieldMeta) => (
+              <Td
+                key={fieldMeta.key}
+                rowData={rowData}
+                fieldMeta={fieldMeta}
+                registryKey={props.registryKey}
+                indexRow={indexRow}
+              />
+            ))
+          }
+
+        </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
         {
-          rowFields.map((fieldMeta) => (
-            <Td
-              key={fieldMeta.key}
-              rowData={rowData}
-              fieldMeta={fieldMeta}
+          rowData.is_open && rowData.children.map((childRowData, childIndexRow) => (
+            <TrConnected
+              key={childRowData[uniqKey]}
+              rowData={childRowData}
               registryKey={props.registryKey}
-              indexRow={indexRow}
+              indexRow={childIndexRow}
             />
           ))
         }
-
-      </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+      </React.Fragment>
     );
   },
 );

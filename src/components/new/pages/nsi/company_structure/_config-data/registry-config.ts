@@ -20,7 +20,10 @@ export const config: TypeConfigData<CompanyStructure> = {
   header: {
     title: 'Структура предприятия',
     buttons: [
-      buttonsTypes.company_structure_create,
+      {
+        type: buttonsTypes.create,
+        title: 'Добавить подразделение',
+      },
     ],
   },
   list: {

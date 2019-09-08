@@ -34,7 +34,6 @@ import ButtonCompleteMission from './button-by-type/mission/ButtonCompleteMissio
 import ButtonToArchiveMission from './button-by-type/mission/ButtonToArchiveMission';
 import ButtonFromArchiveMission from './button-by-type/mission/ButtonFromArchiveMission';
 import ButtonFailMission from './button-by-type/mission/ButtonFailMission';
-import ButtonCreateCompanyStructure from './button-by-type/company_structure/ButtonCreateCompanyStructure';
 import ButtonColumnsControl from './button-by-type/columns_control/ButtonColumnsControl';
 import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
@@ -86,7 +85,6 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.missions_fail]: ButtonFailMission,
   [buttonsTypes.missions_to_archvie]: ButtonToArchiveMission,
   [buttonsTypes.missions_from_archvie]: ButtonFromArchiveMission,
-  [buttonsTypes.company_structure_create]: ButtonCreateCompanyStructure,
   [buttonsTypes.columns_control]: ButtonColumnsControl,
   [buttonsTypes.waybill_print]: ButtonWaybillExport,
   [buttonsTypes.inspect_show_acts]: ButtonInspectShowActs,

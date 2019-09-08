@@ -104,7 +104,6 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
               || props.buttons.some((elem) => buttonsTypes.mission_create === elem.type)
               || props.buttons.some((elem) => buttonsTypes.car_actual_add_battery === elem.type)
               || props.buttons.some((elem) => buttonsTypes.car_actual_add_tire === elem.type)
-              || props.buttons.some((elem) => buttonsTypes.company_structure_create === elem.type)
             );
 
             if (hasButton && !config.cantCreate) {

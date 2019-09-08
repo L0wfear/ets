@@ -6,7 +6,6 @@ import { technical_operation_relations_types } from '../components/data/header/b
 import { duty_mission_types } from '../components/data/header/buttons/component-button/button-by-type/duty_mission/constant';
 import { mission_types } from '../components/data/header/buttons/component-button/button-by-type/mission/constant';
 import { mission_template_types } from '../components/data/header/buttons/component-button/button-by-type/mission_template/constant';
-import { company_structure_types } from '../components/data/header/buttons/component-button/button-by-type/company_structure/constant';
 import { waybill_types } from '../components/data/header/buttons/component-button/button-by-type/waybill/constant';
 import { inspect_types } from '../components/data/header/buttons/component-button/button-by-type/inspect/constant';
 import { car_actual_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/constant';
@@ -30,7 +29,6 @@ const buttonsTypes =  {
   ...duty_mission_template_types,
   ...read_cars_contisions_car_types,
   ...mission_types,
-  ...company_structure_types,
   ...car_actual_types,
   ...order_types,
 };

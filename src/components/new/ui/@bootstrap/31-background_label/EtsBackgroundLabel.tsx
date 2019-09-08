@@ -1,10 +1,20 @@
-import * as React from 'react';
+// import * as React from 'react';
 import styled from 'styled-components';
-import * as Label from 'react-bootstrap/lib/Label';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
-export const LabelBackgroundStyled = styled(Label)`
+export type EtsBackgroundLabelProps = any;
+
+export const LabelBackgroundStyled = styled.span<EtsBackgroundLabelProps>`
   &&& {
+    display: inline;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    background-color: #777;
     margin-left: 10px;
     padding: 5px 10px;
     border-radius: ${UiConstants.borderFieldRadius};
@@ -14,14 +24,6 @@ export const LabelBackgroundStyled = styled(Label)`
   }
 `;
 
-export type EtsBackgroundLabelProps = any;
-
-const EtsBackgroundLabel: React.FC<EtsBackgroundLabelProps> = React.memo(
-  (props) => {
-    return (
-      <LabelBackgroundStyled {...props} />
-    );
-  },
-);
+const EtsBackgroundLabel = LabelBackgroundStyled;
 
 export default EtsBackgroundLabel;

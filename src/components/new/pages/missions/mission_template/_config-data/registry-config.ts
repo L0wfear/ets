@@ -26,7 +26,15 @@ export const config: TypeConfigData<MissionTemplate> = {
       buttonsTypes.read,
       buttonsTypes.remove,
       buttonsTypes.missions_by_templates,
-      buttonsTypes.copy_template,
+      {
+        id: 'open-copy-form',
+        type: buttonsTypes.read,
+        title: 'Копировать',
+        glyph: 'copy',
+        other_params: {
+          type: buttonsTypes.create,
+        },
+      },
     ],
   },
   filter: {

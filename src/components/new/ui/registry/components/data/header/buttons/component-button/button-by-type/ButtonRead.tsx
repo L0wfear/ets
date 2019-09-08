@@ -62,7 +62,7 @@ const ButtonRead: React.FC<ButtonReadProps> = React.memo(
         }
         props.setParams({
           [props.uniqKeyForParams]: get(props.selectedRow, props.uniqKey, null),
-          ...get(data, 'objChangeParams', {}),
+          ...get(data, 'other_params', {}),
         }),
         props.registrySetSelectedRowToShowInForm();
       },

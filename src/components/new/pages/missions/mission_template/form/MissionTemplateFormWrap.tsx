@@ -38,32 +38,22 @@ const MissionTemplateFormWrap: React.FC<any> = (props) => {
         />
       );
     }
-    if (props.type === buttonsTypes.copy_template) {
-      const copyElement = React.useMemo(
-        () => {
+    const copyElement = React.useMemo(
+      () => {
+        if (props.type === buttonsTypes.create) {
           const { id, ...elementData } = props.element;
 
           return elementData;
-        },
-        [props.element],
-      );
-
-      return (
-        <MissionTemplateFormLazy
-          showForm
-          element={copyElement}
-          onFormHide={props.onFormHide}
-
-          page={page}
-          path={path}
-        />
-      );
-    }
+        }
+        return props.element;
+      },
+      [props.element],
+    );
 
     return (
       <MissionTemplateFormLazy
         showForm
-        element={props.element}
+        element={copyElement}
         onFormHide={props.onFormHide}
 
         page={page}

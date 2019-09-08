@@ -24,7 +24,6 @@ import ButtonCompleteDutyMission from './button-by-type/duty_mission/ButtonCompl
 import ButtonToArchiveDutyMission from './button-by-type/duty_mission/ButtonToArchiveDutyMission';
 import ButtonFailDutyMission from './button-by-type/duty_mission/ButtonFailDutyMission';
 import ButtonFromArchiveDutyMission from './button-by-type/duty_mission/ButtonFromArchiveDutyMission';
-import ButtonCopyMissionTemplate from './button-by-type/mission_template/ButtonCopyMissionTemplate';
 import ButtonCreateMissionTemplate from './button-by-type/mission_template/ButtonCreateMissionTemplate';
 import ButtonCreateMission from './button-by-type/mission/ButtonCreateMission';
 import ButtonCreateMissionByOrder from './button-by-type/mission/ButtonCreateMissionByOrder';
@@ -76,7 +75,6 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.duty_missions_to_archvie ]: ButtonToArchiveDutyMission,
   [buttonsTypes.duty_missions_from_archvie]: ButtonFromArchiveDutyMission,
   [buttonsTypes.missions_by_templates]: ButtonCreateMissionTemplate,
-  [buttonsTypes.copy_template]: ButtonCopyMissionTemplate,
   [buttonsTypes.mission_create]: ButtonCreateMission,
   [buttonsTypes.mission_create_by_order]: ButtonCreateMissionByOrder,
   [buttonsTypes.missions_remove]: ButtonRemoveMission,

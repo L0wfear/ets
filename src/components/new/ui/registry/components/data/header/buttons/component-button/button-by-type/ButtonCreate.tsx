@@ -43,7 +43,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
       props.registrySetSelectedRowToShowInForm({});
       props.setParams({
         [props.uniqKeyForParams]: buttonsTypes.create,
-        ...get(data, 'objChangeParams', {}),
+        ...get(data, 'other_params', {}),
       });
     },
     [data],

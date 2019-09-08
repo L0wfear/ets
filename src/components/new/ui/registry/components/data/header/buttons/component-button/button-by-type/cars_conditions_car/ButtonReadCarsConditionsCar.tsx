@@ -64,18 +64,13 @@ class ButtonReadCarsConditionsCar extends React.Component<ButtonReadCarsConditio
 }
 
 export default compose<ButtonReadCarsConditionsCarProps, ButtonReadCarsConditionsCarOwnProps>(
-  connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, {}, ReduxState>(
+  connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
     }),
-    null,
-    null,
-    {
-      pure: false,
-    },
   ),
   withRequirePermissionsNew(),
-  connect<ButtonReadCarsConditionsCarStateProps, ButtonReadCarsConditionsCarDispatchProps, ButtonReadCarsConditionsCarOwnProps, ButtonReadCarsConditionsCarMergeProps, ReduxState>(
+  connect<ButtonReadCarsConditionsCarStateProps, ButtonReadCarsConditionsCarDispatchProps, ButtonReadCarsConditionsCarOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
@@ -87,10 +82,6 @@ export default compose<ButtonReadCarsConditionsCarProps, ButtonReadCarsCondition
         )
       ),
     }),
-    null,
-    {
-      pure: false,
-    },
   ),
   withSearch,
 )(ButtonReadCarsConditionsCar);

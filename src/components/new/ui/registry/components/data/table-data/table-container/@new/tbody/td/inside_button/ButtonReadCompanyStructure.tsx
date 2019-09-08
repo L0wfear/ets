@@ -14,7 +14,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 type ButtonReadCompanyStructureStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
-  permissions: string | boolean;
+  permissions: OneRegistryData['list']['permissions']['update'];
 };
 type ButtonReadCompanyStructureDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;

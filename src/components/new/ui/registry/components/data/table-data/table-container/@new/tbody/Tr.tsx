@@ -39,7 +39,10 @@ const TrHead: React.FC<Props> = React.memo(
     const buttons = etsUseSelector((state) => getHeaderData(state.registry, props.registryKey).buttons); // надо переделать
     const rowFields = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.rowFields);
 
-    const isPermitted = etsUseIsPermitted([permissions.create, permissions.read]);
+    const isPermitted = (
+      etsUseIsPermitted(permissions.create)
+      || etsUseIsPermitted(permissions.read)
+    );
     const checkData = checkedRows[uniqKey];
     const isSelected = get(selectedRow, uniqKey) === rowData[uniqKey];
 

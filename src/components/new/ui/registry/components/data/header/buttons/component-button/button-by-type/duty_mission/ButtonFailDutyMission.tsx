@@ -144,7 +144,7 @@ const ButtonFailDutyMission: React.FC<ButtonFailDutyMissionProps> = (props) => {
 };
 
 export default compose<ButtonFailDutyMissionProps, ButtonFailDutyMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),

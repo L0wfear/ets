@@ -117,7 +117,7 @@ const ButtonCompleteMission: React.FC<ButtonCompleteMissionProps> = (props) => {
 };
 
 export default compose<ButtonCompleteMissionProps, ButtonCompleteMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.update, //  прокидывается в следующий компонент
     }),

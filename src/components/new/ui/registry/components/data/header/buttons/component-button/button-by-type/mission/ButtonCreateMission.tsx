@@ -49,7 +49,7 @@ const ButtonCreateMission: React.FC<ButtonCreateMissionProps> = (props) => {
 
 export default compose<ButtonCreateMissionProps, ButtonCreateMissionOwnProps>(
   withSearch,
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),

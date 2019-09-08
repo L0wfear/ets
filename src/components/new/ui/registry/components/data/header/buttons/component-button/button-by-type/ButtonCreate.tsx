@@ -16,6 +16,7 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 
 type ButtonCreateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
+  selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonCreateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
@@ -41,9 +42,14 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   const handleClick = React.useCallback(
     () => {
       props.registrySetSelectedRowToShowInForm({});
+
+      const uniqKeyForParams = get(data, 'other_params.uniqKeyForParams.key') || props.uniqKeyForParams;
+      const path = get(data, 'other_params.uniqKeyForParams.path');
+      const paramsValue = path ? get(props.selectedRow, path) : buttonsTypes.create;
+
       props.setParams({
-        [props.uniqKeyForParams]: buttonsTypes.create,
-        ...get(data, 'other_params', {}),
+        [uniqKeyForParams]: paramsValue,
+        type: get(data, 'other_params.type', null),
       });
     },
     [data],
@@ -51,14 +57,14 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
 
   return (
     <EtsBootstrap.Button id={`${props.registryKey}.${data.id || 'open-create-form'}`} bsSize="small" onClick={handleClick}>
-      <EtsBootstrap.Glyphicon glyph={data.glyph || 'plus'} />{data.title || 'Создать'}
+      <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'plus') : null} />{data.title || 'Создать'}
     </EtsBootstrap.Button>
   );
 };
 
 export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
   withSearch,
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{ permissions: OneRegistryData['list']['permissions']['create'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
@@ -67,6 +73,7 @@ export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
   connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
+      selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any, { registryKey }) => ({
       registrySetSelectedRowToShowInForm: () => (

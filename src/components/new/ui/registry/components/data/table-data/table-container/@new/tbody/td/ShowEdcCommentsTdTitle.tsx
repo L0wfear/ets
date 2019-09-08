@@ -23,7 +23,7 @@ const ShowEdcCommentsTdTitle: React.FC<Props> = React.memo(
       () => {
         props.setParams({
           [uniqKeyForParams]: uniqValue,
-          type: buttonsTypes.edc_request_comments,
+          type: 'comments',
         });
       },
       [rowData, uniqKeyForParams, uniqValue, buttonsTypes],

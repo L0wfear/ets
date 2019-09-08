@@ -22,7 +22,7 @@ const EdcRequestInfoTdTitle: React.FC<Props> = React.memo(
       async () => {
         props.setParams({
           [uniqKeyForParams]: uniqValue,
-          type: buttonsTypes.edc_request_info,
+          type: 'info',
         });
       },
       [rowData, buttonsTypes, uniqKeyForParams, uniqValue, props.setParams],

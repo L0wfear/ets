@@ -13,7 +13,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ButtonRemoveCompanyStructureStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  permissions: string | boolean;
+  permissions: OneRegistryData['list']['permissions']['delete'];
 };
 type ButtonRemoveCompanyStructureDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;

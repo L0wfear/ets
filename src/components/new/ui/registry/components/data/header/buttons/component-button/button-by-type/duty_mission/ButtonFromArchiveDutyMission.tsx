@@ -104,7 +104,7 @@ const ButtonFromArchiveDutyMission: React.FC<ButtonFromArchiveDutyMissionProps> 
 };
 
 export default compose<ButtonFromArchiveDutyMissionProps, ButtonFromArchiveDutyMissionOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),

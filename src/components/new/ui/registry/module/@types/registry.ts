@@ -1,5 +1,7 @@
 import { glyphMap } from 'global-styled';
 import { TypeOneDisplayIf } from 'components/new/ui/registry/contants/displayIf';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 export type FilterOptionType<F> = {
   value: F[keyof F];
@@ -137,12 +139,19 @@ export interface OneRegistryData<F = any> {
     );
     is_current_structure_popover?: string;
     buttons: Array<{
-      type: string;
+      type: typeof buttonsTypes[keyof typeof buttonsTypes];
       id: string;
       title?: string;
-      glyph?: keyof typeof glyphMap;                                        // EtsBootstrap.Glyphicon glyph
+      glyph?: keyof typeof glyphMap | 'none';                                // EtsBootstrap.Glyphicon glyph
       format?: string;
-      other_params?: object;                                             // что заменять в params при клике
+      other_params?: {                                                       // что заменять в params при клике
+        type?: typeof buttonsTypes[keyof typeof buttonsTypes];
+        uniqKeyForParams?: {
+          key: string;
+          path: string;
+          permissions?: Parameters<typeof validatePermissions>[0];
+        }
+      };
     }>;
   };
   list: {
@@ -161,12 +170,12 @@ export interface OneRegistryData<F = any> {
       )
     },
     permissions: {
-      list: string | boolean;
-      create: string | boolean;
-      read: string | boolean;
-      update: string | boolean;
-      delete: string | boolean;
-      [otherKey: string]: string | boolean;
+      list: Parameters<typeof validatePermissions>[0];
+      create: Parameters<typeof validatePermissions>[0];
+      read: Parameters<typeof validatePermissions>[0];
+      update: Parameters<typeof validatePermissions>[0];
+      delete: Parameters<typeof validatePermissions>[0];
+      [otherKey: string]: Parameters<typeof validatePermissions>[0];
     };
     meta: {
       row_double_click: boolean;
@@ -216,7 +225,7 @@ export type TypeConfigData<F> = {
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];
     format?: OneRegistryData<F>['header']['format'];
     is_current_structure_popover?: OneRegistryData<F>['header']['is_current_structure_popover'];
-    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | string>,
+    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | typeof buttonsTypes[keyof typeof buttonsTypes]>,
   };
   filter?: Partial<OneRegistryData<F>['filter']>;
   list?: {

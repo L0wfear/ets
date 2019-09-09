@@ -7,7 +7,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { MapEtsProvider } from 'components/new/ui/map/context/MapetsContext';
-import LoadingPovider from 'components/new/utils/context/loading/LoadingPovider';
+import LoadingProvider from 'components/new/utils/context/loading/LoadingProvider';
 import EtsGlobalStyle from 'global-styled';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
@@ -47,10 +47,10 @@ const withCheckPrivateRouteMain = (Component) => {
 
     return (
       <MapEtsProvider>
-        <LoadingPovider>
+        <LoadingProvider>
           <EtsGlobalStyle />
           <Component />
-        </LoadingPovider>
+        </LoadingProvider>
       </MapEtsProvider>
     );
   };

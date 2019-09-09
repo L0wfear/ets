@@ -5,7 +5,7 @@ export default {
   path: '/daily-cleaning-reports-ets',
   title: 'Статус по уборке',
   entyity: 'cleaning_status_report',
-  noDotList: false,
+
   hiddenNav: true,
   component,
   permissions,

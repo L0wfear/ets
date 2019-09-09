@@ -19,7 +19,7 @@ export default {
   title: 'Ремонты ТС',
   isNewRegistry: true,
   entyity: 'autobase_repair',
-  noDotList: false,
+
   component,
   permissions,
 };

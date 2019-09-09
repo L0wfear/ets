@@ -14,8 +14,9 @@ import userActionLogList from 'components/new/pages/nsi/user_action_log/_config-
 import employeesList from 'components/new/pages/nsi/employee/_config-data';
 import normRegistryList from 'components/new/pages/nsi/norm_registry/_config-data';
 import dataForCalculation from 'components/new/pages/nsi/data_for_calculation/_config-data';
+import { ConfigParentData } from 'components/@next/@types/config_data';
 
-const children = {
+const children: ConfigParentData['children'] = {
   employeesList,
   employeeOnCarList,
   orderList,

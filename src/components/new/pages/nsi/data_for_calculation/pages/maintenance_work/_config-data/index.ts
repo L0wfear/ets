@@ -18,7 +18,7 @@ export default {
   title: 'Показатели регламентных работ',
   isNewRegistry: true,
   entyity: 'maintenance_work',
-  noDotList: false,
+
   component,
   permissions,
 };

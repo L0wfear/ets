@@ -13,8 +13,9 @@ import routeList from 'components/new/pages/routes_list/config-data';
 import programRegistryList from 'components/new/pages/program_registry/_config-data';
 import waybillList from 'components/new/pages/waybill/_config-data';
 import administration from 'components/new/pages/administration/_config-data';
+import { ConfigPageData, ConfigParentData } from 'components/@next/@types/config_data';
 
-const routerAndPermission = {
+const routerAndPermission: { [k: string]: ConfigPageData | ConfigParentData } = {
   monitor,
   coverageReports,
   dashboard,

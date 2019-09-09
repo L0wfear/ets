@@ -18,7 +18,7 @@ export default {
   title: 'Операции для расчета топлива',
   isNewRegistry: true,
   entyity: 'fuel_operation',
-  noDotList: false,
+
   component,
   permissions,
 };

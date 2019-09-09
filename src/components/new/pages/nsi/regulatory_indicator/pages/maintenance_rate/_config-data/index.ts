@@ -18,7 +18,7 @@ export default {
   title: 'Нормы на содержание объектов',
   isNewRegistry: true,
   entyity: 'maintenance_rate',
-  noDotList: false,
+
   component,
   permissions,
 };

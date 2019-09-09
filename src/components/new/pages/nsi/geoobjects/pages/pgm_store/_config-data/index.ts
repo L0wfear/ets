@@ -9,7 +9,7 @@ export default {
   title: 'Справочник пунктов отпуска ПГМ',
   isNewRegistry: true,
   entyity: 'pgm',
-  noDotList: false,
+
   component,
   permissions,
 };

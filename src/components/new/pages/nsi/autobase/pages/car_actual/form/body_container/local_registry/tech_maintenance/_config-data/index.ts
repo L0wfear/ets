@@ -19,7 +19,7 @@ export default {
   title: 'Тех. обслуживание',
   isNewRegistry: true,
   entyity: 'autobase_tech_maintenance',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -15,7 +15,7 @@ export default {
   title: 'Справочник характеристик объектов',
   isNewRegistry: true,
   entyity: 'ets_object_properties',
-  noDotList: false,
+
   component,
   permissions,
 };

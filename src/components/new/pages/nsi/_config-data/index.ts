@@ -1,41 +1,42 @@
 import { getChildrenData } from 'utils/routes/getChildrenData';
 
-// import employees from 'components/old/directories/employees/config-data';
-// import employeeOnCar from 'components/old/directories/employee_on_car/config-data';
-// import order from 'components/old/directories/order/config-data';
-// import technicalOperation from 'components/old/directories/technical_operation/config-data';
+import employeeOnCarList from 'components/new/pages/nsi/employee_on_car/_config-data';
+import orderList from 'components/new/pages/nsi/order/_config-data';
 import companyList from 'components/new/pages/nsi/company/_config-data';
-// import technicalOperationRelations from 'components/old/directories/technical_operation_relations/config-data';
-import cars from 'components/new/pages/nsi/autobase/_config-data';
-// import repairsRegistry from 'components/old/directories/repair/config-data';
-// import normative from 'components/old/directories/normative/config-data';
+import technicalOperationRelationsList from 'components/new/pages/nsi/technical_operation_relations/_config-data';
+import autobasePages from 'components/new/pages/nsi/autobase/_config-data';
+import repairsRegistryList from 'components/new/pages/nsi/repair/_config-data';
+import regulatoryIndicator from 'components/new/pages/nsi/regulatory_indicator/_config-data';
 import geoobjects from 'components/new/pages/nsi/geoobjects/_config-data';
+import medicalStatsList from 'components/new/pages/nsi/medical_stats/_config-data';
+import companyStructureList from 'components/new/pages/nsi/company_structure/_config-data';
+import userActionLogList from 'components/new/pages/nsi/user_action_log/_config-data';
+import employeesList from 'components/new/pages/nsi/employee/_config-data';
+import normRegistryList from 'components/new/pages/nsi/norm_registry/_config-data';
 import dataForCalculation from 'components/new/pages/nsi/data_for_calculation/_config-data';
-// import medicalStats from 'components/old/directories/medical_stats/config-data';
-// import companyStructure from 'components/old/directories/company_structure/config-data';
-// import userActionLog from 'components/old/directories/user_action_log/config-data';
+import { ConfigParentData } from 'components/@next/@types/config_data';
 
-const children = {
-//  employees,
-//  employeeOnCar,
-//  order,
-//  technicalOperation,
+const children: ConfigParentData['children'] = {
+  employeesList,
+  employeeOnCarList,
+  orderList,
+  normRegistryList,
   companyList,
-//  technicalOperationRelations,
+  technicalOperationRelationsList,
   dividerOne: { divider: true },
-  cars,
-//  repairsRegistry,
-//  normative,
+  autobasePages,
+  repairsRegistryList,
+  regulatoryIndicator,
   geoobjects,
   dataForCalculation,
-//  medicalStats,
+  medicalStatsList,
   dividerTwo: { divider: true },
-//  companyStructure,
-//  userActionLog,
+  companyStructureList,
+  userActionLogList,
 };
 
 export default {
-  title: 'НСИ new',
+  title: 'НСИ',
   children,
   ...getChildrenData(children),
 };

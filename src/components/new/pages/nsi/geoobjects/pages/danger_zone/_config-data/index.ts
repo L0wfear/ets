@@ -9,7 +9,7 @@ export default {
   title: 'Справочник особо опасных мест',
   isNewRegistry: true,
   entyity: 'danger_zone',
-  noDotList: false,
+
   component,
   permissions,
 };

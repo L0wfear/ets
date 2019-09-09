@@ -9,7 +9,7 @@ export default {
   title: 'Структура предприятия',
   isNewRegistry: true,
   entyity: 'company_structure',
-  noDotList: false,
+
   component,
   permissions,
 };

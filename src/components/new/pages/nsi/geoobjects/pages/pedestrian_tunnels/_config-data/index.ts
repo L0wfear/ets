@@ -9,7 +9,7 @@ export default {
   title: 'Справочник пешеходных тоннелей',
   isNewRegistry: true,
   entyity: 'pedestrian_tunnels',
-  noDotList: false,
+
   component,
   permissions,
 };

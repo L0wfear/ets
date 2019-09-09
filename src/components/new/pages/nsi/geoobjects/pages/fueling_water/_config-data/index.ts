@@ -9,7 +9,7 @@ export default {
   title: 'Справочник баз гидрантов',
   isNewRegistry: true,
   entyity: 'fueling_water',
-  noDotList: false,
+
   component,
   permissions,
 };

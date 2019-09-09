@@ -18,7 +18,7 @@ export default {
   title: 'Реестр техосмотров',
   isNewRegistry: true,
   entyity: 'autobase_tech_inspection',
-  noDotList: false,
+
   component,
   permissions,
 };

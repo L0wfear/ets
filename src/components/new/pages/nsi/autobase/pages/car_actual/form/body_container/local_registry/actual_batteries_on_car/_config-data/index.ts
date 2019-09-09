@@ -18,7 +18,7 @@ export default {
   title: 'Реестр аккумуляторов',
   isNewRegistry: true,
   entyity: 'autobase_battery',
-  noDotList: false,
+
   component,
   permissions,
 };

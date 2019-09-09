@@ -18,7 +18,7 @@ export default {
   title: 'Реестр регламентов ТО',
   isNewRegistry: true,
   entyity: 'autobase_tech_maintenance_order',
-  noDotList: false,
+
   component,
   permissions,
 };

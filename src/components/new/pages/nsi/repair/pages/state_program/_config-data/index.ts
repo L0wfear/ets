@@ -18,7 +18,7 @@ export default {
   title: 'Справочник государственных программ ремонта',
   isNewRegistry: true,
   entyity: 'repair_state_program',
-  noDotList: false,
+
   component,
   permissions,
 };

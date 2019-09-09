@@ -18,7 +18,7 @@ export default {
   title: 'Реестр страховок',
   isNewRegistry: true,
   entyity: 'autobase_insurance_policy',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -16,7 +16,7 @@ export default {
   title: 'Реестр сотрудников',
   isNewRegistry: true,
   entyity: 'employee',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -9,7 +9,7 @@ export default {
   isNewRegistry: true,
   title: 'Справочник Автобаз',
   entyity: 'carpool',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -18,7 +18,7 @@ export default {
   title: 'Реестр ремонтных организаций',
   isNewRegistry: true,
   entyity: 'autobase_company',
-  noDotList: false,
+
   component,
   permissions,
 };

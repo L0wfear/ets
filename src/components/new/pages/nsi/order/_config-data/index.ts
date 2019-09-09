@@ -15,7 +15,7 @@ export default {
   title: 'Реестр централизованных заданий',
   isNewRegistry: true,
   entyity: 'faxogramm',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -9,7 +9,7 @@ export default {
   title: 'Журнал наряд-заданий',
   isNewRegistry: true,
   entyity: 'duty_mission',
-  noDotList: false,
+
   component,
   permissions,
 };

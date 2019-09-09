@@ -18,7 +18,7 @@ export default {
   title: 'Нормы на расход расходных материалов',
   isNewRegistry: true,
   entyity: 'material_consumption_rate',
-  noDotList: false,
+
   component,
   permissions,
 };

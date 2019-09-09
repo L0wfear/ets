@@ -12,7 +12,7 @@ export default {
   title: 'Журнал действий пользователей',
   isNewRegistry: true,
   entyity: 'user_action_log',
-  noDotList: false,
+
   component,
   permissions,
 };

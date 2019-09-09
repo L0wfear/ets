@@ -18,7 +18,7 @@ export default {
   title: 'Планирование ремонтных работ',
   isNewRegistry: true,
   entyity: 'repair_program',
-  noDotList: false,
+
   component,
   permissions,
 };

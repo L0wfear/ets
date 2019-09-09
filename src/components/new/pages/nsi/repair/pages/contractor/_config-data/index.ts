@@ -18,7 +18,7 @@ export default {
   title: 'Справочник подрядчиков',
   isNewRegistry: true,
   entyity: 'repair_contractor',
-  noDotList: false,
+
   component,
   permissions,
 };

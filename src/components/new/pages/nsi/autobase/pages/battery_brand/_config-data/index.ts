@@ -18,7 +18,7 @@ export default {
   title: 'Марки аккумуляторов',
   isNewRegistry: true,
   entyity: 'autobase_battery_brand',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -1,14 +1,15 @@
 import * as React from 'react';
-
-import { DivNone, MarkNewRegistry } from 'global-styled/global-styled';
+import { compose } from 'recompose';
 import { isObject } from 'util';
-import { withRouterMatchUrl, showHeaderMenu, isActivemenu } from 'components/new/ui/app_header/utils';
+
+import { MarkNewRegistry } from 'global-styled/global-styled';
+import { showHeaderMenu, isActivemenu } from 'components/new/ui/app_header/utils';
 import { DivDivider, LinkSecontLvl, LinkNoHashSecontLvl, MenuTitleContainer } from 'components/new/ui/app_header/styled';
 import * as ClickOutHandler from 'react-onclickout';
 import { SecondMenuItemContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled/index';
 import { SecondMenuContainerMobi, DefaultSecondLvlMenuMobi } from 'components/new/ui/app_header/mobi/styled';
-import { compose } from 'recompose';
 import EtsBootstrap from '../../@bootstrap';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class OneMenu extends React.Component<any, any> {
   state = {
@@ -90,17 +91,16 @@ class OneMenu extends React.Component<any, any> {
 
   render() {
     const { showChildren } = this.state;
-    const { data, matchUrl } = this.props;
+    const { data } = this.props;
 
-    const active = !!isActivemenu(matchUrl, data.path, data.childrenPath);
+    const active = !!isActivemenu(this.props.match.url, data.path, data.childrenPath);
 
     return (
       <ClickOutHandler onClickOut={this.handleClickOut}>
         <SecondMenuItemContainer active={this.state.showChildren || active}>
           {this.getTitle()}
           {
-            isObject(data.children)
-            ? (
+            isObject(data.children) && (
               <EtsBootstrap.Collapse in={showChildren}>
                 <div>
                   <SecondMenuContainerMobi>
@@ -108,9 +108,6 @@ class OneMenu extends React.Component<any, any> {
                   </SecondMenuContainerMobi>
                 </div>
               </EtsBootstrap.Collapse>
-            )
-            : (
-              <DivNone />
             )
           }
         </SecondMenuItemContainer>
@@ -120,7 +117,7 @@ class OneMenu extends React.Component<any, any> {
 }
 
 const OneMenuWrap = compose<any, any>(
-  withRouterMatchUrl,
+  withSearch,
   showHeaderMenu,
 )(OneMenu);
 

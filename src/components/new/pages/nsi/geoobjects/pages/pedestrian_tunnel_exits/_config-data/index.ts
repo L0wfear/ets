@@ -9,7 +9,7 @@ export default {
   title: 'Справочник выходов из пешеходных тоннелей',
   isNewRegistry: true,
   entyity: 'pedestrian_tunnel_exits',
-  noDotList: false,
+
   component,
   permissions,
 };

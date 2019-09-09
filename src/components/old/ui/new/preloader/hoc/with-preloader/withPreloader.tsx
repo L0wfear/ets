@@ -1,12 +1,12 @@
 import * as React from 'react';
 
-import PreloadNew, { PropsPreloadNew } from 'components/old/ui/new/preloader/PreloadNew';
+import PreloadNew, { Props } from 'components/old/ui/new/preloader/PreloadNew';
 
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getLoadingCount } from 'redux-main/_middleware/ets-loading/module/selector';
 
 type TypeConfig = {
-  typePreloader?: PropsPreloadNew['typePreloader'];
+  typePreloader?: Props['typePreloader'];
   page?: string;
   path?: string;
 };

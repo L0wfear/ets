@@ -6,8 +6,8 @@ import { IUserNotification } from 'api/@types/services/index.h';
 
 import { READ_NOT_SELECT_OPTIONS_INT } from 'constants/dictionary';
 import DataTableComponent from 'components/old/ui/table/DataTable';
-import DateFormatter from 'components/old/ui/DateFormatter';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -107,7 +107,7 @@ const Icon = ({ type }) =>
   </div>;
 
 const renderers: ISchemaRenderer<IUserNotification> = {
-  created_at: ({ data }) => <DateFormatter date={data} />,
+  created_at: ({ data }) => makeDateFormated(data),
   is_read: (meta) =>
     <div style={statusStyle}>
       {!meta.rowData.is_read && <EtsBootstrap.Glyphicon glyph="envelope"/>}

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { withProps } from 'recompose';
 import * as moment from 'moment';
 
@@ -11,7 +10,7 @@ import {
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/long_repair/ReportHeader';
-import DateFormatter from 'components/old/ui/DateFormatter';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const serviceUrl = 'autobase/reports/long_repair';
 const reportUrl = 'long-repair';
@@ -157,10 +156,10 @@ const additionalSchemaMakers: IDataTableColSchema[] = [
 ];
 
 const renderers = {
-  fact_date_start: ({ data }) => <DateFormatter date={data} />,
-  fact_date_end: ({ data }) => <DateFormatter date={data} />,
-  plan_date_start: ({ data }) => <DateFormatter date={data} />,
-  plan_date_end: ({ data }) => <DateFormatter date={data} />,
+  fact_date_start: ({ data }) => makeDateFormated(data),
+  fact_date_end: ({ data }) => makeDateFormated(data),
+  plan_date_start: ({ data }) => makeDateFormated(data),
+  plan_date_end: ({ data }) => makeDateFormated(data),
 };
 
 const tableProps = {

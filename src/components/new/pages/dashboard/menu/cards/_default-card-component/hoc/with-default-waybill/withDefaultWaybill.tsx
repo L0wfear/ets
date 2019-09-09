@@ -1,63 +1,54 @@
 import * as React from 'react';
 
-import { compose } from 'recompose';
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
-import { connect } from 'react-redux';
+import withDefaultCard, { PropsToDefaultCard, ConfigType } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
-import { ReduxState } from 'redux-main/@types/state';
-import {
-  TypeConfigWithDefaultWaybill,
-  StatePropsDefaultWaybill,
-  DispatchPropsDefaultWaybill,
-  PropsDefaultWaybill,
-} from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/withDefaultWaybill.h';
 import { getDashboardState } from 'redux-main/reducers/selectors';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const withDefaultWaybill = (config: TypeConfigWithDefaultWaybill) => (Component) => (
-  compose<any, any>(
-    withDefaultCard({
-      path: config.path,
-      loadData: config.loadData,
-      InfoComponent: config.InfoComponent,
-    }),
-    connect<StatePropsDefaultWaybill, DispatchPropsDefaultWaybill, {}, ReduxState>(
-      (state) => ({
-        items: getDashboardState(state)[config.path].data.items,
-      }),
-      (dispatch) => ({
-        setInfoData: (infoData) => (
+type TypeConfigWithDefaultWaybill = ConfigType & {
+  setInfoData: any;
+  setInfoDataPropsMake: any;
+  ListComponent: any;
+};
+
+const withDefaultWaybill = <OwnProps extends PropsToDefaultCard>(config: TypeConfigWithDefaultWaybill) => (Component: React.ComponentType<{}>) => {
+  const defaultWaybillCard: React.FC<OwnProps & WithRequirePermissionAddProps> = React.memo(
+    (props) => {
+      const dispatch = etsUseDispatch();
+      const items = etsUseSelector((state) => getDashboardState(state)[config.path].data.items);
+
+      const handleClick = React.useCallback(
+        ({ currentTarget: { dataset: { path } } }) => {
           dispatch(
-            config.setInfoData(infoData),
-          )
-        ),
-      }),
-    ),
-  )(
-    class DefaultWaybill extends React.Component<PropsDefaultWaybill, {}> {
-      handleClick: any = ({ currentTarget: { dataset: { path } } }) => {
-        this.props.setInfoData(
-          config.setInfoDataPropsMake(
-            this.props,
-            path,
-          ),
-        );
-      }
+            config.setInfoData(
+              config.setInfoDataPropsMake(
+                items,
+                path,
+              ),
+            ),
+          );
+        },
+        [props, items],
+      );
 
-      render() {
-        const { ListComponent } = config;
-
-        return (
-          <div>
-            <ListComponent
-              items={this.props.items}
-              handleClick={this.handleClick}
-            />
-            <Component />
-          </div>
-        );
-      }
+      return (
+        <div>
+          <config.ListComponent
+            items={items}
+            handleClick={handleClick}
+          />
+          <Component />
+        </div>
+      );
     },
-  )
-);
+  );
+
+  return withDefaultCard<OwnProps>({
+    path: config.path,
+    loadData: config.loadData,
+    InfoComponent: config.InfoComponent,
+  })(defaultWaybillCard);
+};
 
 export default withDefaultWaybill;

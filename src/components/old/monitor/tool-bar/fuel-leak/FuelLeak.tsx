@@ -4,7 +4,7 @@ import * as cx from 'classnames';
 import { monitorPageChangeFuelEventsDate, monitorPageToggleFuelEvetnsLeakShow } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { loadFuelEvents } from 'redux-main/trash-actions/geometry/geometry';
 import { compose } from 'recompose';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import {
   MONITOR_PAGE_CHANGE_FUEL_EVENTS_LEAK_DATA,
@@ -159,7 +159,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default compose(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: 'map.leak_and_refill',
   }),
   connect(

@@ -3,7 +3,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import {
   PropsDefaultCard,
@@ -24,7 +24,7 @@ import { getDashboardState } from 'redux-main/reducers/selectors';
 
 const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: ConfigType) => (Component: React.ClassType<P, any, any>) => (
   compose<P, P>(
-    withRequirePermissionsNew<P>({
+    withRequirePermission<P>({
       permissions: `dashboard.${path}`,
     }),
     connect<StatePropsDefaultCard, DispatchPropsDefaultCard, OwnerPropsDefaultCard<P>, ReduxState>(

@@ -3,7 +3,7 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
 import { registryLoadDataByKey, registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { get } from 'lodash';
@@ -73,6 +73,6 @@ export default compose<ButtonReadCompanyStructureProps, ButtonReadCompanyStructu
       ),
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   withSearch,
 )(ButtonReadCompanyStructure);

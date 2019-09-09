@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -83,7 +83,7 @@ const ButtonChangeRouteTechnicalOperationRelations: React.FC<ButtonChangeRouteTe
 };
 
 export default compose<ButtonChangeRouteTechnicalOperationRelationsProps, ButtonChangeRouteTechnicalOperationRelationsOwnProps>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: routePermissions.update,
   }),
   connect<ButtonChangeRouteTechnicalOperationRelationsStateProps, ButtonChangeRouteTechnicalOperationRelationsDispatchProps, ButtonChangeRouteTechnicalOperationRelationsOwnProps, ReduxState>(

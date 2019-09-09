@@ -10,7 +10,7 @@ import { getListData, getServiceData, getHeaderData } from 'components/new/ui/re
 import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { DivNone } from 'global-styled/global-styled';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -88,7 +88,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         permissions: getPermissionsCreateReadUpdate(permissions || getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       }),
     ),
-    withRequirePermissionsNew(),
+    withRequirePermission(),
   )(
     ({ array, uniqKey, uniqKeyForParams, ...props }: Props) => {
       const [element, setElement] = React.useState(null);

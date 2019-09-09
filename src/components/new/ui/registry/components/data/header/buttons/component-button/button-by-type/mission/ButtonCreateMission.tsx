@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -54,7 +54,7 @@ export default compose<ButtonCreateMissionProps, ButtonCreateMissionOwnProps>(
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonCreateMissionStateProps, ButtonCreateMissionDispatchProps, ButtonCreateMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,

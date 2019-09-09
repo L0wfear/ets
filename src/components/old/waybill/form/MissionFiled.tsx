@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { isEmpty } from 'utils/functions';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
@@ -295,7 +295,7 @@ class MissionField extends React.Component<Props, any> {
 }
 
 export default compose<any, any>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: missionPermissions.read,
   }),
   connect<null, { dispatch: EtsDispatch; actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(

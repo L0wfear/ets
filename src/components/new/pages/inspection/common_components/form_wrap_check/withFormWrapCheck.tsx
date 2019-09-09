@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { createPortal } from 'react-dom';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { isBoolean } from 'util';
 
@@ -16,8 +16,11 @@ import { DivNone } from 'global-styled/global-styled';
 import { INSPECT_TYPE_FORM } from '../../autobase/global_constants';
 import { isInspectIsConducting } from 'redux-main/reducers/modules/inspect/inspect_utils';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { HiddenPageEtsContainer, PopupBottomForm } from './styled';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type WithInspectFormWrapCheckConfig = {
   loadingPage: string;
@@ -31,7 +34,9 @@ type WithInspectFormWrapCheckConfig = {
   title: React.ReactNode;
 };
 
-type InspectionFormWrapStateProps = {};
+type InspectionFormWrapStateProps = {
+  userData: InitialStateSession['userData'];
+};
 type InspectionFormWrapDispatchProps = {
   actionGetInspectById: any;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>
@@ -234,7 +239,9 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       typePreloader: 'mainpage',
     }),
     connect<InspectionFormWrapStateProps, InspectionFormWrapDispatchProps, InspectionFormWrapOwnProps, ReduxState>(
-      null,
+      (state) => ({
+        userData: getSessionState(state).userData,
+      }),
       (dispatch: any) => ({
         actionGetInspectById: (...arg) => (
           dispatch(
@@ -254,15 +261,16 @@ const withInspectFormWrapCheck = (config: WithInspectFormWrapCheckConfig) => (Co
       }),
     ),
     withSearch,
-    withRequirePermissionsNew({
+    withRequirePermission({
       permissions: config.inspectPermissions.update,
       withIsPermittedProps: true,
     }),
-    withRequirePermissionsNew({
-      permissions: config.inspectPermissions.update_closed,
-      withIsPermittedProps: true,
-      permissionName: 'isPermittedToUpdateClose',
-    }),
+    withProps<InspectionFormWrapStateProps & { isPermittedToUpdateClose: boolean }, any>(
+      (props) => ({
+        ...props,
+        isPermittedToUpdateClose: validatePermissions(config.inspectPermissions.update_closed, props.userData.permissionsSet),
+      }),
+    ),
   )(InspectionFormWrap);
 };
 

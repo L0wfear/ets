@@ -1,55 +1,39 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
-import { selectors } from 'redux-main/_middleware/etsLoading';
 import PreloadNew, { PropsPreloadNew } from 'components/old/ui/new/preloader/PreloadNew';
 
-import { ReduxState } from 'redux-main/@types/state';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getLoadingCount } from 'redux-main/_middleware/ets-loading/module/selector';
 
 type TypeConfig = {
   typePreloader?: PropsPreloadNew['typePreloader'];
   page?: string;
   path?: string;
-  withPagePath?: boolean;
 };
 
-type StateProps = {
-  isLoading: boolean;
-};
+type OwnPropsExtends = Partial<TypeConfig> & Record<string, any>;
 
-type OwnerProps = {
-  [key: string]: any;
-};
+const withPreloader = <OwnProps extends OwnPropsExtends>(configWithPreloader: TypeConfig) => (Component: React.ComponentType<OwnProps>) => {
+  const PreloaderWrap: React.FC<OwnProps> = React.memo(
+    (props) => {
+      const isLoading = etsUseSelector((state) => getLoadingCount(state.etsLoading, configWithPreloader.page || props.page, configWithPreloader.path || props.path));
 
-type PropsPreloaderWrap = StateProps & OwnerProps;
-
-const withPreloader = (configWithPreloader: TypeConfig) => (Component) => (
-  connect<StateProps, {}, OwnerProps, ReduxState>(
-    (state, { page, path }) => ({
-      isLoading: selectors.getLoadingCount(state.etsLoading, configWithPreloader.page || page, configWithPreloader.path || path),
-    }),
-  )(
-    class PreloaderWrap extends React.Component<PropsPreloaderWrap, {}> {
-      render() {
-        const { isLoading, dispatch, page, path, typePreloader, ...props } = this.props;
-
-        return (
-          <React.Fragment>
+      return (
+        <React.Fragment>
             {
               Boolean(isLoading) && (
-                <PreloadNew typePreloader={configWithPreloader.typePreloader || typePreloader} />
+                <PreloadNew typePreloader={configWithPreloader.typePreloader || props.typePreloader} />
               )
             }
             <Component
               {...props}
-                page={configWithPreloader.withPagePath ? page : undefined}
-                path={configWithPreloader.withPagePath ? path : undefined}
             />
           </React.Fragment>
-        );
-      }
+      );
     },
-  )
-);
+  );
+
+  return PreloaderWrap;
+};
 
 export default withPreloader;

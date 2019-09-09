@@ -20,4 +20,4 @@ const ModalBodyPreloader: React.FC<PropsModalBodyPreloader> = React.memo(
   },
 );
 
-export default withPreloader({})(ModalBodyPreloader);
+export default withPreloader<PropsModalBodyPreloader>({})(ModalBodyPreloader);

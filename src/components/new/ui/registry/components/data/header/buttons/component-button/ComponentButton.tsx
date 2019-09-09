@@ -14,7 +14,6 @@ import ButtonCreateDutyMission from './button-by-type/duty_mission_template/Butt
 import ButtonCloseEdcRequest from './button-by-type/edc_request/ButtonCloseEdcRequest';
 import ButtonCancelEdcRequest from './button-by-type/edc_request/ButtonCancelEdcRequest';
 import ButtonRejectEdcRequest from './button-by-type/edc_request/ButtonRejectEdcRequest';
-import ButtonReadCarsConditionsCar from './button-by-type/cars_conditions_car/ButtonReadCarsConditionsCar';
 import ButtonChangeDriverTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeDriverTechnicalOperationRelations';
 import ButtonChangeRouteTechnicalOperationRelations from './button-by-type/technical_operation_relations/ButtonChangeRouteTechnicalOperationRelations';
 import ButtonRemoveDutyMission from './button-by-type/duty_mission/ButtonRemoveDutyMission';
@@ -75,7 +74,6 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.edc_request_cancel]: ButtonCancelEdcRequest,
   [buttonsTypes.edc_request_close]: ButtonCloseEdcRequest,
   [buttonsTypes.duty_missions_by_templates]: ButtonCreateDutyMission,
-  [buttonsTypes.read_cars_contisions_car]: ButtonReadCarsConditionsCar,
   [buttonsTypes.mission_create]: ButtonCreateMission,
   [buttonsTypes.mission_create_by_order]: ButtonCreateMissionByOrder,
   [buttonsTypes.missions_remove]: ButtonRemoveMission,

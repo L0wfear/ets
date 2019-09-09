@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import waybillPermissions from './permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';

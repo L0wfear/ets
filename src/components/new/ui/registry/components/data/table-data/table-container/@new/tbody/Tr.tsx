@@ -10,6 +10,7 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import Td from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Td';
+import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 
 type OwnProps = {
   registryKey: string;
@@ -48,18 +49,22 @@ const TrHead: React.FC<Props> = React.memo(
 
     const handleDoubleClick = React.useCallback(
       () => {
-        const isPermittedToClick = (
-          isPermitted
-          && (
-            buttons.find(({ type }) => type === buttonsTypes.read)
-            || row_double_click
-          )
-        );
+        if (isPermitted) {
+          const buttonReadData = buttons.find(({ type }) => type === buttonsTypes.read);
+          if (buttonReadData) {
+            const changeObj = makePayloadToParamsForRead(
+              buttonReadData,
+              rowData,
+              uniqKeyForParams,
+              uniqKey,
+            );
 
-        if (isPermittedToClick) {
-          props.setParams({
-            [uniqKeyForParams]: get(rowData, uniqKey, null),
-          });
+            props.setParams(changeObj);
+          } else if (row_double_click) {
+            props.setParams({
+              [uniqKeyForParams]: get(rowData, uniqKey, null),
+            });
+          }
         }
       },
       [

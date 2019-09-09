@@ -1,4 +1,4 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import inspectActScanPermissions from './permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { InspectActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';

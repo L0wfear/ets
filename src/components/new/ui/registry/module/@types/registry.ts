@@ -9,10 +9,8 @@ export type FilterOptionType<F> = {
   [k: string]: any
 };
 
-export type TypeFieldsRegistry<F extends Record<string, any>> = (
-  TypeFields<F, string> & {
-    title?: string;
-  }
+export type TypeFieldsRegistry<F extends Record<string, any>, Title extends any> = (
+  TypeFields<F, Title>
 );
 export type CommonTypeField<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
   hidden?: boolean;
@@ -146,11 +144,12 @@ export interface OneRegistryData<F = any> {
       format?: string;
       other_params?: {                                                       // что заменять в params при клике
         type?: typeof buttonsTypes[keyof typeof buttonsTypes];
-        uniqKeyForParams?: {
+        otherUniqKeyForParamsData?: {
           key: string;
           path: string;
           permissions?: Parameters<typeof validatePermissions>[0];
         }
+        [k: string]: any;
       };
     }>;
   };
@@ -180,7 +179,7 @@ export interface OneRegistryData<F = any> {
     meta: {
       row_double_click: boolean;
       selected_row_in_params: boolean;
-      fields: Array<TypeFieldsRegistry<F>>;
+      fields: Array<TypeFieldsRegistry<F, string>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
       row_fields_table_width: number;
@@ -238,8 +237,9 @@ export type TypeConfigData<F> = {
       total_count?: OneRegistryData<F>['list']['processed']['total_count'];
     };
     meta: {
+      selected_row_in_params?: OneRegistryData<F>['list']['meta']['selected_row_in_params'];
       row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
-      fields?: OneRegistryData<F>['list']['meta']['fields'];
+      fields?: Array<TypeFieldsRegistry<F, string | DisplayIfTitle[]>>;
     };
     paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
   };

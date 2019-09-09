@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import employeeOnCarPermissions from './permissions';
 import { EmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/@types/employeeOnCar';
 import carActualPermissions from '../../autobase/pages/car_actual/_config-data/permissions';
@@ -28,7 +28,7 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
           title: 'Просмотреть карточку ТС',
           glyph: 'none',
           other_params: {
-            uniqKeyForParams: {
+            otherUniqKeyForParamsData: {
               key: config.list.data.uniqKeyForParams,
               path: 'asuods_id',
               permissions: [carActualPermissions.read, carActualPermissions.update],

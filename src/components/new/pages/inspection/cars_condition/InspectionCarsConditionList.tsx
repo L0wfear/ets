@@ -7,16 +7,14 @@ import InspectionCarsConditionData from 'components/new/pages/inspection/cars_co
 import InspectionCarsConditionFormLazy from 'components/new/pages/inspection/cars_condition/form';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-import { RouteComponentProps } from 'react-router';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export type InspectionCarsConditionListProps = (
-  RouteComponentProps<{}>
-);
+type OwnProps = {};
+type Props = OwnProps & {};
 
 const loadingPage = 'inspectionCarsCondition';
 
-const InspectionCarsConditionList: React.FC<InspectionCarsConditionListProps> = (props) => {
+const InspectionCarsConditionList: React.FC<Props> = (props) => {
   return (
     <>
       <EtsGreyPageWrap>
@@ -37,7 +35,7 @@ const InspectionCarsConditionList: React.FC<InspectionCarsConditionListProps> = 
   );
 };
 
-export default withPreloader({
+export default withPreloader<OwnProps>({
   page: loadingPage,
   typePreloader: 'mainpage',
 })(InspectionCarsConditionList);

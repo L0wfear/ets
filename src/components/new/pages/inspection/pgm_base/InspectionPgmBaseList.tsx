@@ -7,12 +7,14 @@ import InspectionPgmBaseData from './components/data/InspectionPgmBaseData';
 import InspectionPgmBaseFormLazy from 'components/new/pages/inspection/pgm_base/form';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-import { InspectionPgmBaseListProps } from './@types/InspectionPgmBaseList';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const loadingPage = 'inspectionPgmBase';
 
-const InspectionPgmBaseList: React.FC<InspectionPgmBaseListProps> = (props) => {
+type OwnProps = {};
+type Props = OwnProps & {};
+
+const InspectionPgmBaseList: React.FC<Props> = (props) => {
   return (
     <>
       <EtsGreyPageWrap>
@@ -33,7 +35,7 @@ const InspectionPgmBaseList: React.FC<InspectionPgmBaseListProps> = (props) => {
   );
 };
 
-export default withPreloader({
+export default withPreloader<OwnProps>({
   page: loadingPage,
   typePreloader: 'mainpage',
 })(InspectionPgmBaseList);

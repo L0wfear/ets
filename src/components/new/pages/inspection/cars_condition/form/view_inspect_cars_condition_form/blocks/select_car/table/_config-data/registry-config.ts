@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 
@@ -12,7 +12,20 @@ export const getConfig = (array: CarsConditionCars[]): TypeConfigData<CarsCondit
   header: {
     title: '',
     buttons: [
-      buttonsTypes.read_cars_contisions_car,
+      {
+        id: 'open-show_card-form',
+        type: buttonsTypes.read,
+        title: 'Посмотреть карточку',
+        glyph: 'none',
+        other_params: {
+          otherUniqKeyForParamsData: null,
+          type: null,
+          typeRightView: 'car_info',
+          selectedCarsConditionsCar: {
+            path: 'id',
+          },
+        },
+      },
     ],
   },
   filter: {

@@ -9,7 +9,7 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 
 import {
   TypeConfigData,
-} from 'components/new/ui/registry/hoc/withRegistry.h';
+} from 'components/new/ui/registry/module/@types/registry';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'redux';
 

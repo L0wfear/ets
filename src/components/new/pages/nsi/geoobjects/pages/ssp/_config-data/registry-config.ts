@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';

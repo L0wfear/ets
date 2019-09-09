@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
@@ -10,6 +11,7 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 
 type OwnProps = CommonTypesForButton & {
   onClick?: (item: any) => any;
@@ -40,7 +42,7 @@ const ButtonRead: React.FC<Props> = React.memo(
 
     const data = React.useMemo(
       () => (
-        get(props, 'data', {} as Props['data'])
+        get(props, 'data', {}) as Props['data']
       ),
       [props.data],
     );
@@ -51,16 +53,16 @@ const ButtonRead: React.FC<Props> = React.memo(
           return;
         }
 
-        const keyParams = get(data, 'other_params.uniqKeyForParams.key') || uniqKeyForParams;
-        const path = get(data, 'other_params.uniqKeyForParams.path');
-        const paramsValue = get(selectedRow, path ||  uniqKey, null);
+        const changeObj = makePayloadToParamsForRead(
+          data,
+          selectedRow,
+          uniqKeyForParams,
+          uniqKey,
+        );
 
-        props.setParams({
-          [keyParams]: paramsValue,
-          type: get(data, 'other_params.type', null),
-        });
+        props.setParams(changeObj);
         dispatch(
-          registrySetSelectedRowToShowInForm(),
+          registrySetSelectedRowToShowInForm(props.registryKey),
         );
       },
       [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams],

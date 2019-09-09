@@ -268,6 +268,5 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectCarsCondition);

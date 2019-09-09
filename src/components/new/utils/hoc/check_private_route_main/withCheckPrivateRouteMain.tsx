@@ -7,7 +7,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { compose } from 'recompose';
 import { MapEtsProvider } from 'components/new/ui/map/context/MapetsContext';
-import LoadingPovider from 'components/new/utils/context/loading/LoadingPovider';
+import LoadingProvider from 'components/new/utils/context/loading/LoadingProvider';
 import EtsGlobalStyle from 'global-styled';
 import FormProvider from '../../context/form/FormPovider';
 
@@ -47,12 +47,12 @@ const withCheckPrivateRouteMain = (Component) => {
 
     return (
       <MapEtsProvider>
-        <LoadingPovider>
+        <LoadingProvider>
           <FormProvider>
             <EtsGlobalStyle />
             <Component />
           </FormProvider>
-        </LoadingPovider>
+        </LoadingProvider>
       </MapEtsProvider>
     );
   };

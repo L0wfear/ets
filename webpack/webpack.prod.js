@@ -67,7 +67,7 @@ module.exports = {
                     targets: {
                       'chrome': '47',
                       'firefox': '42',
-                      'ie': '10',
+                      'ie': '11',
                     },
                     corejs: { version: 3, proposals: true },
                     useBuiltIns: 'entry', // 'usage' те функции, которые используются

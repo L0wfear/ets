@@ -25,7 +25,7 @@ const SelecteToMfRtFt: React.FC<Props> = React.memo(
   (props) => {
     return (
       <ButtonContainer>
-        <EtsBootstrap.Row>
+        <EtsBootstrap.Row margin={10}>
           <EtsBootstrap.Col md={3}>
             <SelectTechnicalOperation registryKey={props.registryKey} />
           </EtsBootstrap.Col>

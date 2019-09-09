@@ -161,7 +161,6 @@ export const config: TypeConfigData<EdcRequest> = {
         {
           key: 'show_edc_comments',
           title: 'Чат',
-          displayIfPermission: [edcRequestPermissions.create],
         },
         {
           key: 'emergency_name',

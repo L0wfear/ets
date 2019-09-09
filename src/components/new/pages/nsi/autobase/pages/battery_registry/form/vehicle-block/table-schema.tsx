@@ -120,6 +120,7 @@ const UninstalledAtRenderer: React.FC<
     onChange={onChange}
     boundKeys={[index, 'uninstalled_at']}
     disabled={!isPermitted}
+    makeGoodFormat
   />
 );
 

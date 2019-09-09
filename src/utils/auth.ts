@@ -1,19 +1,13 @@
 import { routToPer } from 'constants/routerAndPermission';
-import { isArray } from 'util';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 
-export const isPermitted = (permissionsSet, permissionName) => {
-  if (!isArray(permissionName)) {
-    return permissionsSet.has(permissionName);
-  }
-  return permissionName.some((pN) => permissionsSet.has(pN));
-};
-
-const requireAuth = (permissionsSet, url) => {
+const requireAuth = (permissionsSet: InitialStateSession['userData']['permissionsSet'], url: string) => {
   if (routToPer[url]) {
-    if (!isPermitted(permissionsSet, routToPer[url].p)) {
+    if (!validatePermissions(routToPer[url].p, permissionsSet)) {
       const routeVal = Object.entries(routToPer).reduce((obj: any, [key, rTp]) => {
         if (!obj.lvl || obj.lvl > rTp.lvl) {
-          if (isPermitted(permissionsSet, rTp.p)) {
+          if (validatePermissions(rTp.p, permissionsSet)) {
             obj = {
               lvl: rTp.lvl,
               path: key,

@@ -2,7 +2,6 @@ import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { connectToStores, staticProps } from 'utils/decorators';
-import enhanceWithPermissions from 'components/old/util/RequirePermissions';
 import UNSAFE_CheckableElementsList from 'components/old/program_registry/UNSAFE_CheckableElementsList';
 import {
   ButtonCreateNew,
@@ -16,21 +15,19 @@ import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-const Button = enhanceWithPermissions(EtsBootstrap.Button);
-
 export const ButtonChangeStatus = ({
   permissions,
   onClick,
   disabled,
   buttonName,
 }) => (
-  <Button
+  <EtsBootstrap.Button
     bsSize="small"
     onClick={onClick}
     permissions={permissions}
     disabled={disabled}>
     {buttonName}
-  </Button>
+  </EtsBootstrap.Button>
 );
 
 const bodyConfirmDialogs = {

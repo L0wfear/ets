@@ -1,7 +1,6 @@
 import React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/old/util/RequirePermissions';
 import { validateField } from 'utils/validate/validateField';
 
 import ProgramObjectFormDT from 'components/old/program_registry/UpdateFrom/inside_components/program_object/ProgramObjectFormDT';
@@ -10,6 +9,7 @@ import {
   formValidationSchema,
   elementsValidationSchema,
 } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/schema';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   constructor(props) {
@@ -186,4 +186,4 @@ class ProgramObjectFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default enhanceWithPermissions(ProgramObjectFormWrap);
+export default withRequirePermission()(ProgramObjectFormWrap);

@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import { createValidDateTime, getToday0am, getToday2359, diffDates } from 'components/@next/@utils/dates/dates';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type SelecteDateTimeRangeOwnProps = {
   registryKey: string;
@@ -14,26 +13,11 @@ type SelecteDateTimeRangeProps = (
   & WithSearchProps
 );
 
-const ButtonWrap = styled(EtsBootstrap.Button)``;
-
-const ButtonContainer = styled.div`
+const DatesContainer = styled.div`
   flex-grow: 1;
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
-
-  ${ButtonWrap} {
-    border-radius: 0;
-
-    &:first-child {
-      border-top-left-radius: 3px;
-      border-bottom-left-radius: 3px;
-    }
-    &:last-child {
-      border-top-right-radius: 3px;
-      border-bottom-right-radius: 3px;
-    }
-  }
 `;
 
 const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
@@ -60,7 +44,7 @@ const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
     );
 
     return (
-      <ButtonContainer>
+      <DatesContainer>
         <DatePickerRange
           date_start_id="date_from"
           date_start_value={date_from}
@@ -71,7 +55,7 @@ const SelecteDateTimeRange: React.FC<SelecteDateTimeRangeProps> = React.memo(
 
           onChange={handleChangeDate}
         />
-      </ButtonContainer>
+      </DatesContainer>
     );
   },
 );

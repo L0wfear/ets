@@ -1,38 +1,23 @@
 import * as React from 'react';
-
-import styled from 'styled-components';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
-import { ReduxState } from 'redux-main/@types/state';
-import { getServiceData } from 'components/new/ui/registry/module/selectors-registry';
-import { getRegistryState } from 'redux-main/reducers/selectors';
 import { get } from 'lodash';
+
+import { actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
+import { getServiceData } from 'components/new/ui/registry/module/selectors-registry';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type SelectedOdhDtDisabledStateProps = {
-  Service: OneRegistryData['Service'];
-};
-type SelectedOdhDtDisabledDispatchProps = {
-  actionChangeGlobalPaylaodInServiceData: HandleThunkActionCreator<typeof actionChangeGlobalPaylaodInServiceData>;
-};
-type SelectedOdhDtDisabledOwnProps = {
+type OwnProps = {
   registryKey: string;
 };
-type SelectedOdhDtDisabledMergedProps = (
-  SelectedOdhDtDisabledStateProps
-  & SelectedOdhDtDisabledDispatchProps
-  & SelectedOdhDtDisabledOwnProps
-);
 
-type SelectedOdhDtDisabledProps = SelectedOdhDtDisabledMergedProps;
+type Props = OwnProps & {};
 
-const ButtonWrap = styled(EtsBootstrap.Button)``;
-
-const SelectedOdhDtDisabled: React.FC<SelectedOdhDtDisabledProps> = React.memo(
+const SelectedOdhDtDisabled: React.FC<Props> = React.memo(
   (props) => {
-    const selectedType = get(props.Service, 'getRegistryData.payload.type', null);
+    const dispatch = etsUseDispatch();
+    const Service = etsUseSelector((state) => getServiceData(state, props.registryKey));
+    const selectedType = get(Service, 'getRegistryData.payload.type', null);
 
     const handleSelectOdh = React.useCallback(
       () => {
@@ -46,9 +31,11 @@ const SelectedOdhDtDisabled: React.FC<SelectedOdhDtDisabledProps> = React.memo(
           },
         };
 
-        props.actionChangeGlobalPaylaodInServiceData(props.registryKey, payload);
+        dispatch(
+          actionChangeGlobalPaylaodInServiceData(props.registryKey, payload),
+        );
       },
-      [props.Service, props.actionChangeGlobalPaylaodInServiceData],
+      [Service],
     );
 
     const handleSelectDt = React.useCallback(
@@ -62,29 +49,20 @@ const SelectedOdhDtDisabled: React.FC<SelectedOdhDtDisabledProps> = React.memo(
           },
         };
 
-        props.actionChangeGlobalPaylaodInServiceData(props.registryKey, payload);
+        dispatch(
+          actionChangeGlobalPaylaodInServiceData(props.registryKey, payload),
+        );
       },
-      [props.Service, props.actionChangeGlobalPaylaodInServiceData],
+      [Service],
     );
 
     return (
       <EtsButtonsContainer>
-        <ButtonWrap active={selectedType === 'odh'} onClick={handleSelectOdh}>ОДХ</ButtonWrap>
-        <ButtonWrap disabled active={selectedType === 'dt'} onClick={handleSelectDt}>ДТ</ButtonWrap>
+        <EtsBootstrap.Button active={selectedType === 'odh'} onClick={handleSelectOdh}>ОДХ</EtsBootstrap.Button>
+        <EtsBootstrap.Button disabled active={selectedType === 'dt'} onClick={handleSelectDt}>ДТ</EtsBootstrap.Button>
       </EtsButtonsContainer>
     );
   },
 );
 
-export default connect<SelectedOdhDtDisabledStateProps, SelectedOdhDtDisabledDispatchProps, SelectedOdhDtDisabledOwnProps, ReduxState>(
-  (state, { registryKey }) => ({
-    Service: getServiceData(getRegistryState(state), registryKey),
-  }),
-  (dispatch: any) => ({
-    actionChangeGlobalPaylaodInServiceData: (...arg) => (
-      dispatch(
-        actionChangeGlobalPaylaodInServiceData(...arg),
-      )
-    ),
-  }),
-)(SelectedOdhDtDisabled);
+export default SelectedOdhDtDisabled;

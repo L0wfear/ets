@@ -1,9 +1,9 @@
 import React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/old/util/RequirePermissions';
 import ProgramRemarkForm from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkForm';
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/schema';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 class ProgramRemarkFormWrap extends UNSAFE_FormWrap {
   constructor(props, context) {
@@ -60,4 +60,4 @@ class ProgramRemarkFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default enhanceWithPermissions(ProgramRemarkFormWrap);
+export default withRequirePermission()(ProgramRemarkFormWrap);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/old/util/RequirePermissions';
+
 import ProgramRegistryFormBase from 'components/old/program_registry/UpdateFrom/ProgramRegistryUForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import { get } from 'lodash';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { isNullOrUndefined } from 'util';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 const existButtonInForm = {
   exportPDF: 'repair_program_version.read',
@@ -29,7 +30,7 @@ const ButtonInFormDefPermission = ButtonInFormList.reduce(
   {},
 );
 
-const ProgramRegistryForm = enhanceWithPermissions(ProgramRegistryFormBase);
+const ProgramRegistryForm = withRequirePermission()(ProgramRegistryFormBase);
 const checkIsPermittedByStatus = (status) => {
   switch (status) {
     case 'sent_on_review':
@@ -394,5 +395,5 @@ export default compose(
   connect((state) => ({
     userPermissionsSet: getSessionState(state).userData.permissionsSet,
   })),
-  enhanceWithPermissions,
+  withRequirePermission(),
 )(ProgramRegistryFormWrap);

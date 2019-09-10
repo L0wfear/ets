@@ -9,26 +9,23 @@ import FileField from 'components/@next/@ui/renderFields/FileField/FileField';
 import SelectField from 'components/@next/@ui/renderFields/SelectField/SelectField';
 import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
 
+const ComponentByType: Record<ExtFieldType['type'], React.ComponentType<any>> = {
+  string: StringField,
+  text: TextAreaField,
+  select: SelectField,
+  date: DateField,
+  file: FileField,
+  number: NumberField,
+  boolean: CheckBoxField,
+};
+
 const Field: React.FC<ExtFieldType> = React.memo(
   (props) => {
-    switch (props.type) {
-      case 'string':
-        return <StringField {...props} />;
-      case 'text':
-        return <TextAreaField {...props} />;
-      case 'select':
-        return <SelectField {...props}/>;
-      case 'date':
-        return <DateField {...props} />;
-      case 'file':
-        return <FileField {...props} />;
-      case 'number':
-        return <NumberField {...props}/>;
-      case 'boolean':
-        return <CheckBoxField {...props}/>;
-      default:
-        return null;
-    }
+    const Component = ComponentByType[props.type] || ComponentByType.string;
+
+    return (
+      <Component {...props} />
+    );
   },
 );
 

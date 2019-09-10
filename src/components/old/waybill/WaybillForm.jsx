@@ -2212,7 +2212,7 @@ class WaybillForm extends UNSAFE_Form {
                         </EtsBootstrap.Col>
                         {Boolean(
                           !state.is_one_fuel_tank
-                            && (Boolean(state.car_refill[0])
+                            && (Boolean(state.equipment_refill[0])
                               || !(
                                 (IS_CLOSED && !this.state.canEditIfClose)
                                 || !isPermittedByKey.update

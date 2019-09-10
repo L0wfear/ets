@@ -1970,33 +1970,39 @@ class WaybillForm extends UNSAFE_Form {
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
                     <br />
-                    <EtsBootstrap.Col md={12} zIndex={2}>
-                      <EtsBootstrap.Col md={12}>
-                        <FieldWaybillCarRefill
-                          array={state.car_refill}
-                          errors={get(
-                            errors,
-                            'car_refill',
-                            state.car_refill.map(() => ({})),
-                          )} // временно
-                          title="Заправка топлива"
-                          handleChange={this.handleChangeCarReFill}
-                          fuel_given={state.fuel_given}
-                          structure_id={state.structure_id}
-                          fuel_type={state.fuel_type}
-                          IS_DRAFT_OR_ACTIVE={
-                            IS_CREATING || IS_DRAFT || IS_ACTIVE
-                          }
-                          disabled={
-                            (IS_CLOSED && !this.state.canEditIfClose)
-                            || !isPermittedByKey.update
-                          }
-                          canEditIfClose={this.state.canEditIfClose}
-                          page={this.props.page}
-                          path={this.props.path}
-                        />
+                    {(Boolean(state.car_refill[0])
+                      || !(
+                        (IS_CLOSED && !this.state.canEditIfClose)
+                        || !isPermittedByKey.update
+                      )) && (
+                      <EtsBootstrap.Col md={12} zIndex={2}>
+                        <EtsBootstrap.Col md={12}>
+                          <FieldWaybillCarRefill
+                            array={state.car_refill}
+                            errors={get(
+                              errors,
+                              'car_refill',
+                              state.car_refill.map(() => ({})),
+                            )} // временно
+                            title="Заправка топлива"
+                            handleChange={this.handleChangeCarReFill}
+                            fuel_given={state.fuel_given}
+                            structure_id={state.structure_id}
+                            fuel_type={state.fuel_type}
+                            IS_DRAFT_OR_ACTIVE={
+                              IS_CREATING || IS_DRAFT || IS_ACTIVE
+                            }
+                            disabled={
+                              (IS_CLOSED && !this.state.canEditIfClose)
+                              || !isPermittedByKey.update
+                            }
+                            canEditIfClose={this.state.canEditIfClose}
+                            page={this.props.page}
+                            path={this.props.path}
+                          />
+                        </EtsBootstrap.Col>
                       </EtsBootstrap.Col>
-                    </EtsBootstrap.Col>
+                    )}
                     <br />
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
@@ -2180,7 +2186,14 @@ class WaybillForm extends UNSAFE_Form {
                           )}
                         </EtsBootstrap.Col>
                         <br />
-                        {!state.is_one_fuel_tank ? (
+                        {Boolean(
+                          !state.is_one_fuel_tank
+                            && (Boolean(state.car_refill[0])
+                              || !(
+                                (IS_CLOSED && !this.state.canEditIfClose)
+                                || !isPermittedByKey.update
+                              )),
+                        ) && (
                           <EtsBootstrap.Col md={12} zIndex={2}>
                             <EtsBootstrap.Col md={12}>
                               <FieldWaybillCarRefill
@@ -2208,8 +2221,6 @@ class WaybillForm extends UNSAFE_Form {
                               />
                             </EtsBootstrap.Col>
                           </EtsBootstrap.Col>
-                        ) : (
-                          <DivNone />
                         )}
                         <EtsBootstrap.Col md={12} zIndex={1}>
                           <EtsBootstrap.Col md={12}>

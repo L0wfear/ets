@@ -63,11 +63,7 @@ module.exports = {
                 [
                   '@babel/preset-env',
                   {
-                    targets: {
-                      'chrome': '47',
-                      'firefox': '42',
-                      'ie': '11',
-                    },
+                    // remove targets
                     corejs: { version: 3, proposals: true },
                     useBuiltIns: 'entry', // 'usage' те функции, которые используются
                   },

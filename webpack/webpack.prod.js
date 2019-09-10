@@ -89,6 +89,12 @@ module.exports = {
                     loose: true,
                   },
                 ],
+                [
+                  'babel-plugin-styled-components',
+                  {
+                    "fileName": false
+                  },
+                ],
                 '@babel/plugin-syntax-dynamic-import',
               ],
             },
@@ -120,7 +126,7 @@ module.exports = {
         test: /\.(sc|c)ss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
@@ -299,20 +305,6 @@ module.exports = {
   ],
   optimization: {
     noEmitOnErrors: true,
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true
-        },
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        },
-      }
-    }
+    // remove splitChunks
   },
 };

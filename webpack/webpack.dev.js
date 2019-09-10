@@ -95,7 +95,12 @@ module.exports = {
                     loose: true,
                   },
                 ],
-                'babel-plugin-styled-components',
+                [
+                  'babel-plugin-styled-components',
+                  {
+                    "fileName": false
+                  },
+                ],
                 '@babel/plugin-syntax-dynamic-import',
                 'react-hot-loader/babel',
               ],

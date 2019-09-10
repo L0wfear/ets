@@ -1984,46 +1984,48 @@ class WaybillForm extends UNSAFE_Form {
                         <HrLine />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Col>
-                    {Boolean(state.car_refill[0])
-                      || (!(
-                        (IS_CLOSED && !this.state.canEditIfClose)
-                        || !isPermittedByKey.update
-                      ) && (
-                        <React.Fragment>
-                          <EtsBootstrap.Col md={12} zIndex={2}>
-                            <EtsBootstrap.Col md={12}>
-                              <FieldWaybillCarRefill
-                                array={state.car_refill}
-                                errors={get(
-                                  errors,
-                                  'car_refill',
-                                  state.car_refill.map(() => ({})),
-                                )} // временно
-                                title="Заправка топлива"
-                                handleChange={this.handleChangeCarReFill}
-                                fuel_given={state.fuel_given}
-                                structure_id={state.structure_id}
-                                fuel_type={state.fuel_type}
-                                IS_DRAFT_OR_ACTIVE={
-                                  IS_CREATING || IS_DRAFT || IS_ACTIVE
-                                }
-                                disabled={
-                                  (IS_CLOSED && !this.state.canEditIfClose)
-                                  || !isPermittedByKey.update
-                                }
-                                canEditIfClose={this.state.canEditIfClose}
-                                page={this.props.page}
-                                path={this.props.path}
-                              />
-                            </EtsBootstrap.Col>
-                          </EtsBootstrap.Col>
+                    {Boolean(
+                      state.car_refill[0]
+                        || !(
+                          (IS_CLOSED && !this.state.canEditIfClose)
+                          || !isPermittedByKey.update
+                        ),
+                    ) && (
+                      <React.Fragment>
+                        <EtsBootstrap.Col md={12} zIndex={2}>
                           <EtsBootstrap.Col md={12}>
-                            <EtsBootstrap.Col md={12}>
-                              <HrLine />
-                            </EtsBootstrap.Col>
+                            <FieldWaybillCarRefill
+                              array={state.car_refill}
+                              errors={get(
+                                errors,
+                                'car_refill',
+                                state.car_refill.map(() => ({})),
+                              )} // временно
+                              title="Заправка топлива"
+                              handleChange={this.handleChangeCarReFill}
+                              fuel_given={state.fuel_given}
+                              structure_id={state.structure_id}
+                              fuel_type={state.fuel_type}
+                              IS_DRAFT_OR_ACTIVE={
+                                IS_CREATING || IS_DRAFT || IS_ACTIVE
+                              }
+                              disabled={
+                                (IS_CLOSED && !this.state.canEditIfClose)
+                                || !isPermittedByKey.update
+                              }
+                              canEditIfClose={this.state.canEditIfClose}
+                              page={this.props.page}
+                              path={this.props.path}
+                            />
                           </EtsBootstrap.Col>
-                        </React.Fragment>
-                      ))}
+                        </EtsBootstrap.Col>
+                        <EtsBootstrap.Col md={12}>
+                          <EtsBootstrap.Col md={12}>
+                            <HrLine />
+                          </EtsBootstrap.Col>
+                        </EtsBootstrap.Col>
+                      </React.Fragment>
+                    )}
                     <EtsBootstrap.Col md={12} zIndex={1}>
                       <EtsBootstrap.Col md={12}>
                         <Taxes

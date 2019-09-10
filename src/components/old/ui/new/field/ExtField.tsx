@@ -81,15 +81,17 @@ export type ExtFieldFile<V = any> = ExtFieldCommon<V> & {
   type: 'file';
 } & IPropsFileInput;
 
-export type ExtFieldType = (
-  ExtFieldSelect
-  | ExtFieldDate
-  | ExtFieldBoolean
-  | ExtFieldString
-  | ExtFieldNumber
-  | ExtFieldText
-  | ExtFieldFile
-);
+export type ExtFieldTypeByKey = {
+  select: ExtFieldSelect;
+  date: ExtFieldDate;
+  boolean: ExtFieldBoolean;
+  string: ExtFieldString;
+  number: ExtFieldNumber;
+  text: ExtFieldText;
+  file: ExtFieldFile;
+};
+
+export type ExtFieldType = ExtFieldTypeByKey[keyof ExtFieldTypeByKey];
 
 export const ExtField: React.ComponentClass<ExtFieldType> = onChangeWithKeys(
   ({ boundKeys, ...props }) => {

@@ -7,9 +7,9 @@ import NumberField from 'components/@next/@ui/renderFields/NumberField/NumberFie
 import DateField from 'components/@next/@ui/renderFields/DateField/DateField';
 import FileField from 'components/@next/@ui/renderFields/FileField/FileField';
 import SelectField from 'components/@next/@ui/renderFields/SelectField/SelectField';
-import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldType, ExtFieldTypeByKey } from 'components/old/ui/new/field/ExtField';
 
-const ComponentByType: Record<ExtFieldType['type'], React.ComponentType<any>> = {
+const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<ExtFieldTypeByKey[K]> } = {
   string: StringField,
   text: TextAreaField,
   select: SelectField,
@@ -24,7 +24,7 @@ const Field: React.FC<ExtFieldType> = React.memo(
     const Component = ComponentByType[props.type] || ComponentByType.string;
 
     return (
-      <Component {...props} />
+      <Component {...props as any} />
     );
   },
 );

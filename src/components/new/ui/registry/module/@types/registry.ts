@@ -142,6 +142,9 @@ export interface OneRegistryData<F = any> {
       title?: string;
       glyph?: keyof typeof glyphMap | 'none';                                // EtsBootstrap.Glyphicon glyph
       format?: string;
+      modal_format?: 'yesno';
+      message_single?: string;
+      message_multi?: string;
       other_params?: {                                                       // что заменять в params при клике
         type?: typeof buttonsTypes[keyof typeof buttonsTypes];
         otherUniqKeyForParamsData?: {

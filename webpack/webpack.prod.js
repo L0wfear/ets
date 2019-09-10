@@ -5,7 +5,6 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const stand = process.env.STAND || 'dev';
 
@@ -184,11 +183,6 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "[name].[hash].css",
-    }),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
         path.join(__dirname, '..', 'dist'),

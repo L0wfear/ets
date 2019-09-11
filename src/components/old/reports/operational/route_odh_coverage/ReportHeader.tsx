@@ -10,7 +10,7 @@ import {
 } from 'components/old/reports/common/@types/ReportHeaderWrapper.h';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { actionGetAndSetInStoreTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';

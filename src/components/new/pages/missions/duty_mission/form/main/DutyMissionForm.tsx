@@ -39,7 +39,7 @@ import FieldBrigadeEmployeeIdListDutyMission from './inside_fields/brigade_emplo
 import FieldDatesDutyMission from './inside_fields/dates/FieldDatesDutyMission';
 import FieldStructureDutyMission from './inside_fields/structure/FieldStructureDutyMission';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getSomeUniqState } from 'redux-main/reducers/selectors/index';
 import FieldRouteIdDutyMission from './inside_fields/route_id/FieldRouteIdDutyMission';
 import FieldCarMissionIdDutyMission from './inside_fields/car_mission_id/FieldCarMissionIdDutyMission';

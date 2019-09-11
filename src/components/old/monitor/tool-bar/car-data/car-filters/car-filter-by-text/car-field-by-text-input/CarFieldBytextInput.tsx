@@ -2,7 +2,7 @@ import * as React from 'react';
 import { findDOMNode } from 'react-dom';
 
 import { connect } from 'react-redux';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { monitorPageChangeFilter } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 
 import {

@@ -16,7 +16,7 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 import normPermissions from '../_config-data/permissions';
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getDefaultNormElement } from './utils';
 import { normFormSchema } from './schema';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';

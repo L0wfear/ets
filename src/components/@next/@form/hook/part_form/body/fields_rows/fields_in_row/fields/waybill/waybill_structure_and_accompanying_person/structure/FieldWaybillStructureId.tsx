@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import useStructureOptions from 'components/new/utils/hooks/services/useOptions/useStructureOptions';
 import { FieldDataWaybillStuctureId } from 'components/@next/@form/@types/fields/waybill/valueOfArray';

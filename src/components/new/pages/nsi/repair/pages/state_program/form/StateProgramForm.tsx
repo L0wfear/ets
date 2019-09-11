@@ -22,7 +22,7 @@ import { StateProgram } from 'redux-main/reducers/modules/repair/state_program/@
 import { actionCreateStateProgram, actionUpdateStateProgram } from 'redux-main/reducers/modules/repair/state_program/actions_state_program';
 import useStateProgramStatusOptions from './use/useStateProgramStatusOptions';
 import { actionLoadStateProgramStatus } from 'redux-main/reducers/modules/repair/state_program_status/actions_state_program_status';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 const StateProgramForm: React.FC<PropsStateProgram> = (props) => {
   const {

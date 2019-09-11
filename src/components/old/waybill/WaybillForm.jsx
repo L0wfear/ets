@@ -5,7 +5,7 @@ import connectToStores from 'flummox/connect';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
 
 import ModalBody from 'components/old/ui/Modal';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import Div from 'components/old/ui/Div';
 import { isNotNull, isEmpty, hasMotohours } from 'utils/functions';

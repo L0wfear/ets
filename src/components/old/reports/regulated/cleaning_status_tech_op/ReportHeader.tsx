@@ -13,7 +13,7 @@ import { getYesterday9am, getToday859am, createValidDateTime } from 'components/
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';

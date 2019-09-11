@@ -2,7 +2,7 @@ import * as React from 'react';
 import { get } from 'lodash';
 
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { registryCheckLine } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';

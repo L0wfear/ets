@@ -4,7 +4,7 @@ import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import cx from 'classnames';
 import { SelectFieldUi } from 'components/@next/@ui/renderFields/SelectField/styled';
-import { ExtFieldSelect } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldSelect } from 'components/@next/@ui/renderFields/@types';
 
 const SelectField: React.FC<ExtFieldSelect> = React.memo(
   (props) => {

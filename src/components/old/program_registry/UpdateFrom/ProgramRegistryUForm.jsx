@@ -8,7 +8,7 @@ import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/uti
 import ModalBody from 'components/old/ui/Modal';
 import { connectToStores } from 'utils/decorators';
 import Field from 'components/@next/@ui/renderFields/Field';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FileField } from 'components/old/ui/input/fields';
 
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';

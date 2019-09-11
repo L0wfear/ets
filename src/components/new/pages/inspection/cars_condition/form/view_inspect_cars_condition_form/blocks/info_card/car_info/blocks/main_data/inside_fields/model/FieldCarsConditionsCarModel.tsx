@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { BlockCarInfoProps } from '../../../../@types/BlockCarInfo';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';

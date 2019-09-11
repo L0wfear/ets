@@ -30,7 +30,7 @@ import FieldDatesMission from './inside_fields/dates/FieldDatesMission';
 import FieldCarIdsMission from './inside_fields/car_ids/FieldCarIdsMission';
 import FieldForColumnMission from './inside_fields/for_column/FieldForColumnMission';
 import FieldRouteIdMission from './inside_fields/route_id/FieldRouteIdMission';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import FieldMissionSourceMission from './inside_fields/mission_source_id/FieldMissionSourceMission';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';

@@ -9,7 +9,7 @@ import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapp
 
 import { getToday0am, createValidDate } from 'components/@next/@utils/dates/dates';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {
   start_date: string;

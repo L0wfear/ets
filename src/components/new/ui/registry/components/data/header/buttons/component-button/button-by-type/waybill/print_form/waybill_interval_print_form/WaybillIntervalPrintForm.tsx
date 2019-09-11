@@ -2,7 +2,7 @@ import * as React from 'react';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { WaybillsReportForm, PropsWaybillIntervalPrintWithForm, PropsWaybillIntervalPrint, OwnWaybillIntervalPrintProps, StatePropsWaybillIntervalPrint } from './@types';
 import { getDefaultWaybillsReportFormElement } from './utils';

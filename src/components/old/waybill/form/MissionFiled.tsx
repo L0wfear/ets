@@ -4,7 +4,7 @@ import { isEmpty } from 'utils/functions';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { components } from 'react-select';
 
 import { getWarningNotification } from 'utils/notifications';

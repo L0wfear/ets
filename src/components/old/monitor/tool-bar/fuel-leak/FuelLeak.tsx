@@ -12,7 +12,7 @@ import {
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 const getActiveClassName = (activeMain) => (
   cx(

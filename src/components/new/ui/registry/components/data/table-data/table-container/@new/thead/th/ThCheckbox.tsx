@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { getRootRegistry } from 'components/new/ui/registry/module/selectors-registry';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { isAllChecked } from 'components/new/ui/registry/module/check_funk';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';

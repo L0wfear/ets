@@ -1,4 +1,4 @@
-import { ExtFieldDate, ExtFieldBoolean, ExtFieldString, ExtFieldNumber } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldDate, ExtFieldBoolean, ExtFieldString, ExtFieldNumber } from 'components/@next/@ui/renderFields/@types';
 
 export type DependenciesFieldFunc<K, F, P> = (
   value: K,

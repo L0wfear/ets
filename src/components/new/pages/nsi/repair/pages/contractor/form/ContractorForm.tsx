@@ -18,7 +18,7 @@ import { DivNone } from 'global-styled/global-styled';
 import contractorPermissions from '../_config-data/permissions';
 import { contractorFormSchema } from './schema';
 import { getDefaultContractorElement } from './utils';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { Contractor } from 'redux-main/reducers/modules/repair/contractor/@types/contractor';
 import { actionCreateContractor, actionUpdateContractor } from 'redux-main/reducers/modules/repair/contractor/actions_contractor';
 

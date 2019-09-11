@@ -19,7 +19,7 @@ import fuelOperationsPermissions from '../_config-data/permissions';
 import { fuelOperationsFormSchema } from './schema';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 import { getDefaultFuelOperationElement } from './utils';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useMeasureUnitOperationOptions from './use/useMeasureUnitOperationOptions';
 import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
 import { actionCreateFuelOperation, actionUpdateFuelOperation } from 'redux-main/reducers/modules/fuel_operations/actions_fuel_operations';

@@ -19,7 +19,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@types';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { isNumber } from 'util';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';

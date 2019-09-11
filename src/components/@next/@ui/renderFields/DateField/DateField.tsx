@@ -5,7 +5,7 @@ import cx from 'classnames';
 import { isNumber } from 'util';
 import { DateFieldUi } from 'components/@next/@ui/renderFields/DateField/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
-import { ExtFieldDate } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldDate } from 'components/@next/@ui/renderFields/@types';
 
 const DateField: React.FC<ExtFieldDate> = React.memo(
   (props) => {

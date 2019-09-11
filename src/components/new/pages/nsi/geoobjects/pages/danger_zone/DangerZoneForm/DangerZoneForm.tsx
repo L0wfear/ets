@@ -19,7 +19,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { actionsDangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/actions';

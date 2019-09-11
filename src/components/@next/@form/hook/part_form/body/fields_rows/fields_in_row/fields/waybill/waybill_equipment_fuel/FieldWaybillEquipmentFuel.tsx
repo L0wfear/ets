@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 import usePrevious from 'components/new/utils/hooks/usePrevious';

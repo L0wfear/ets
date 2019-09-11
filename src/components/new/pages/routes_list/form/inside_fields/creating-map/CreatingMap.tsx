@@ -24,7 +24,7 @@ import {
   PointInputContainer,
   RouteFormGeoList,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/styled/styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import RouteGeoList from 'components/new/pages/routes_list/route-info/geo-list/RouteGeoList';
 
 import {
@@ -39,7 +39,7 @@ import {
   setCacheDataForRoute,
   getCacheDataForRoute,
 } from 'components/new/pages/routes_list/form/inside_fields/creating-map/utils';
-import { ExtButton } from 'components/old/ui/new/button/ExtButton';
+
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import * as someUniq from 'redux-main/reducers/modules/some_uniq/some_uniq';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -489,13 +489,13 @@ class CreatingMap extends React.PureComponent<
                     boundKeys={index}
                     disabled={!isPermitted}
                   />
-                  <ExtButton
+                  <EtsBootstrap.Button
                     id={`route_edit_pn_remove_${index}`}
                     disabled={!isPermitted}
                     boundKeys={index}
                     onClick={this.handleRemovePoint}>
                     <EtsBootstrap.Glyphicon glyph="remove" />
-                  </ExtButton>
+                  </EtsBootstrap.Button>
                 </FlexContainer>
               </PointInputContainer>
             ))

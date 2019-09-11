@@ -22,7 +22,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import edcRequestPermissions from '../../_config-data/permissions';
 import { makeDate } from 'components/@next/@utils/dates/dates';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { get } from 'lodash';

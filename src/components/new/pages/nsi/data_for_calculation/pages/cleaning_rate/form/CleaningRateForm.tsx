@@ -19,7 +19,7 @@ import cleaningRatePermissions from '../_config-data/permissions';
 import { cleaningRateFormSchema } from './schema';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
 import { getDefaultCleaningRateElement, getCleaningRateProperties } from './utils';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useMeasureUnitOperationOptions from './use/useMeasureUnitOptions';
 import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
 import { actionCreateCleaningRate, actionUpdateCleaningRate } from 'redux-main/reducers/modules/cleaning_rate/actions_cleaning_rate';

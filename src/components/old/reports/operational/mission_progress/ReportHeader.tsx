@@ -10,7 +10,7 @@ import { getToday9am, getTomorrow9am, createValidDateTime } from 'components/@ne
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
 import Div from 'components/old/ui/Div';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { OBJECT_TYPE_OPTION } from 'constants/dictionary';
 
 interface IPropsMissionProgressReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {

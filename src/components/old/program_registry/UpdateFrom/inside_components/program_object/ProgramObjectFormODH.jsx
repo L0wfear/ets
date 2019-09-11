@@ -15,7 +15,7 @@ import { tabable } from 'components/old/compositions/hoc';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
 import Div from 'components/old/ui/Div';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import ModalBody from 'components/old/ui/Modal';
 
 import TabInfo from 'components/old/program_registry/UpdateFrom/inside_components/program_object/tabs/TabInfo';

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';

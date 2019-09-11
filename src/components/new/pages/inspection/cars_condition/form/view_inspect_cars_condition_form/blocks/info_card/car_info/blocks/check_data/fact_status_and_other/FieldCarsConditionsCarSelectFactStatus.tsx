@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BlockCarInfoProps } from '../../../@types/BlockCarInfo';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { factStatusOptions, statusAtCheckOptions } from '../options';
 import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';

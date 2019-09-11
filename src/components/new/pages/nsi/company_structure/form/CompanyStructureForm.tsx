@@ -2,7 +2,7 @@ import * as React from 'react';
 import memoize from 'memoize-one';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { companyStructureFormSchema } from 'components/new/pages/nsi/company_structure/form/schema';

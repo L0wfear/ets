@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { MarginTopRow } from './styled';
 import { get } from 'lodash';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';

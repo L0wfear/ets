@@ -29,7 +29,7 @@ import {
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { hasMotohours } from 'utils/functions';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { getDefaultTechMaintenanceElement } from './utils';
 import { techMaintFormSchema } from './shema';

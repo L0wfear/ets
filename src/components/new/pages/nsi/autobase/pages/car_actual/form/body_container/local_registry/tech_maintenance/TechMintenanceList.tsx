@@ -13,7 +13,7 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { get } from 'lodash';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import cx from 'classnames';
+
 import Div from 'components/old/ui/Div';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/styled';
-import { ExtFieldString } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
 
 const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {

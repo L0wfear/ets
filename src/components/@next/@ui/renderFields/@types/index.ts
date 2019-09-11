@@ -1,11 +1,8 @@
-import * as React from 'react';
-import Field from 'components/@next/@ui/renderFields/Field';
-import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import { DatePickerProps } from 'components/old/ui/input/date-picker/DatePicker';
 import { IPropsFileInput } from 'components/old/ui/input/FileInput/FileInput.h';
 
 export type ExtFieldCommon<V = any> = {
-  rel?: any;
+  ref?: any;
   id?: any;
   label?: string | boolean;
   error?: string | boolean;
@@ -17,6 +14,7 @@ export type ExtFieldCommon<V = any> = {
   modalKey?: string;
   hidden?: boolean;
   readOnly?: boolean;
+  value_string?: string;
 
   emptyValue?: any; // надо ли
 };
@@ -26,7 +24,6 @@ export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   multi?: boolean,
   options: any; // DefaultSelectOption<V, any, any>[] | any[];
   placeholder?: string;
-  value_string?: string;
 
   sortingFunction?: any;
   multiValueContainerReander?: any; // плохо
@@ -92,21 +89,3 @@ export type ExtFieldTypeByKey = {
 };
 
 export type ExtFieldType = ExtFieldTypeByKey[keyof ExtFieldTypeByKey];
-
-export const ExtField: React.ComponentClass<ExtFieldType> = onChangeWithKeys(
-  ({ boundKeys, ...props }) => {
-    if (props.disabled && props.value_string) {
-      return (
-        <Field
-          {...props}
-          type="string"
-          value={props.value_string}
-        />
-      );
-    }
-
-    return (
-      <Field {...props} />
-    );
-  },
-);

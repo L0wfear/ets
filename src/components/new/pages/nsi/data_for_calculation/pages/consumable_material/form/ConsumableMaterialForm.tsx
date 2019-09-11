@@ -19,7 +19,7 @@ import consumableMaterialPermissions from '../_config-data/permissions';
 import { consumableMaterialFormSchema } from './schema';
 import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
 import { getDefaultConsumableMaterialElement } from './utils';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useMeasureUnitOperationOptions from './use/useMeasureUnitOptions';
 import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
 import { actionCreateConsumableMaterial, actionUpdateConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/actions_consumable_material';

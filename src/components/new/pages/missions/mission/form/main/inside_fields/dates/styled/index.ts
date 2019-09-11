@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export const FieldDatesMissionContainer = styled.div`

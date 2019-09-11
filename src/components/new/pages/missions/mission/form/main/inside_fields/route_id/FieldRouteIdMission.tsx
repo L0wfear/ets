@@ -3,7 +3,7 @@ import memoize from 'memoize-one';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';

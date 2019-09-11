@@ -14,7 +14,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import { EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 

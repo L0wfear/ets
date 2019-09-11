@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { isString } from 'util';
 
 type ControlItemProps = {

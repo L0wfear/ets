@@ -4,7 +4,7 @@ import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiEl
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { NumberFieldUi } from 'components/@next/@ui/renderFields/NumberField/styled';
-import { ExtFieldNumber } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldNumber } from 'components/@next/@ui/renderFields/@types';
 
 const NumberField: React.FC<ExtFieldNumber> = React.memo(
   (props) => {

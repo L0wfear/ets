@@ -1,19 +1,21 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import Table from 'components/waybill/Table';
-import * as FormControl from 'react-bootstrap/lib/FormControl';
+import Table from 'components/old/waybill/Table';
 
-import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
-import Div from 'components/ui/Div';
+import Div from 'components/old/ui/Div';
 import { isEmpty } from 'utils/functions';
 import _, { get } from 'lodash';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
-import { EtsHeaderContainer } from 'components/new/ui/registry/components/data/header/styled/styled';
+import {
+  EtsHeaderContainer,
+  EtsHeaderContainerWrap,
+} from 'components/new/ui/registry/components/data/header/styled/styled';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
-import { Row } from 'react-bootstrap';
 import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 /**
  * Компонент таксировки ТС
@@ -116,7 +118,7 @@ export default class EquipmentTaxes extends React.Component {
 
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
-        if (props.readOnly) {
+        if (this.props.readOnly) {
           return row.operation_name;
         }
         const options = this.state.operations.map((op) => {
@@ -132,8 +134,8 @@ export default class EquipmentTaxes extends React.Component {
           <ReactSelect
             clearable={false}
             modalKey={this.props.modalKey}
-            id="norm_operation_id"
-            disabled={props.readOnly}
+            id={`norm_operation_id_${index}`}
+            disabled={this.props.readOnly}
             options={options}
             value={row.uniqKey}
             onChange={this.handleOperationChange.bind(this, index)}
@@ -146,6 +148,7 @@ export default class EquipmentTaxes extends React.Component {
         const factValueProps = {
           type: 'number',
           value: FACT_VALUE,
+          id: `FACT_VALUE_${index}`,
           disabled:
             typeof FUEL_RATE === 'undefined'
             || typeof OPERATION === 'undefined'
@@ -158,7 +161,7 @@ export default class EquipmentTaxes extends React.Component {
                 <span>{'label'}</span>
               </label>
             )}
-            <FormControl
+            <EtsBootstrap.FormControl
               {...factValueProps}
               onChange={this.handleFactValueChange.bind(this, index)}
             />
@@ -321,36 +324,38 @@ export default class EquipmentTaxes extends React.Component {
 
     return (
       <Div className="taxi-calc-block" hidden={hidden}>
-        <Row>
-          <EtsHeaderContainer>
-            <EtsHeaderTitle>{title}</EtsHeaderTitle>
-            <EtsButtonsContainer>
-              {!(this.props.readOnly || !fuelRates.length) && (
-                <React.Fragment>
-                  <ButtonTableInput
-                    width={160}
-                    id="add-operation"
-                    block
-                    onClick={this.addOperation}
-                    disabled={this.state.operations.length === taxes.length}>
-                    Добавить операцию
-                  </ButtonTableInput>
-                  <ButtonTableInput
-                    width={160}
-                    id="remove-operation"
-                    block
-                    disabled={
-                      this.state.selectedOperation === null
-                      || taxes.length === 0
-                    }
-                    onClick={this.removeOperation}>
-                    Удалить операцию
-                  </ButtonTableInput>
-                </React.Fragment>
-              )}
-            </EtsButtonsContainer>
-          </EtsHeaderContainer>
-        </Row>
+        <EtsBootstrap.Row>
+          <EtsHeaderContainerWrap>
+            <EtsHeaderContainer>
+              <EtsHeaderTitle>{title}</EtsHeaderTitle>
+              <EtsButtonsContainer>
+                {!(this.props.IS_CLOSED || !fuelRates.length) && (
+                  <React.Fragment>
+                    <ButtonTableInput
+                      width={160}
+                      id="add-operation"
+                      block
+                      onClick={this.addOperation}
+                      disabled={this.state.operations.length === taxes.length}>
+                      Добавить операцию
+                    </ButtonTableInput>
+                    <ButtonTableInput
+                      width={160}
+                      id="remove-operation"
+                      block
+                      disabled={
+                        this.state.selectedOperation === null
+                        || taxes.length === 0
+                      }
+                      onClick={this.removeOperation}>
+                      Удалить операцию
+                    </ButtonTableInput>
+                  </React.Fragment>
+                )}
+              </EtsButtonsContainer>
+            </EtsHeaderContainer>
+          </EtsHeaderContainerWrap>
+        </EtsBootstrap.Row>
         {!(fuelRates.length || !!hasTaxes) && <h5>{noDataMessage}</h5>}
         <Div hidden={!hasTaxes}>
           <Table

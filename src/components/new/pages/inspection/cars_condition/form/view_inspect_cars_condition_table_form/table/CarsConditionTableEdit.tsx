@@ -41,7 +41,7 @@ const CarsConditionTableEdit: React.FC<CarsConditionTableEditMergeProps> = (prop
         );
       };
     },
-    [],
+    [inspectId, getConfig],
   );
 
   return (

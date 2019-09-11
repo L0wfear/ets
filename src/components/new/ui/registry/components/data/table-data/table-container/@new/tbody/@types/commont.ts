@@ -6,5 +6,4 @@ export type CommontTdTiteProps = {
 
   registryKey: string;
   indexRow: number;
-  renderFieldsSchema: OneRegistryData['list']['meta']['renderFieldsSchema'];
 };

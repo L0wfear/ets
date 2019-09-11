@@ -34,7 +34,6 @@ const TrHead: React.FC<Props> = React.memo(
     const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
 
     const row_double_click = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.row_double_click);
-    const renderFieldsSchema = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.renderFieldsSchema);
     const selected_row_in_params = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.selected_row_in_params);
     const permissions = etsUseSelector((state) => getListData(state.registry, props.registryKey).permissions);
     const buttons = etsUseSelector((state) => getHeaderData(state.registry, props.registryKey).buttons); // надо переделать
@@ -109,7 +108,6 @@ const TrHead: React.FC<Props> = React.memo(
               fieldMeta={fieldMeta}
               registryKey={props.registryKey}
               indexRow={indexRow}
-              renderFieldsSchema={renderFieldsSchema}
             />
           ))
         }

@@ -46,9 +46,12 @@ const Td: React.FC<Props> = React.memo(
 
     const groupOpt = get(fieldMeta, 'groupOpt', null);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
-    const isActive = groupOpt
-      ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
-      : true;
+    const isActive = (
+      groupOpt
+        ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
+        : true
+    );
+
     return (
       isActive &&
         <Component
@@ -57,7 +60,6 @@ const Td: React.FC<Props> = React.memo(
           rowData={props.rowData}
           fieldMeta={props.fieldMeta}
           indexRow={props.indexRow}
-          renderFieldsSchema={props.renderFieldsSchema}
         />
     );
   },

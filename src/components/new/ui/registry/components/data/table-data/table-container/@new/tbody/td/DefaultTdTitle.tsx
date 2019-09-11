@@ -116,14 +116,8 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
       () => get(selectedRow, uniqKey, null),
       [selectedRow, uniqKey],
     );
-    const isSelected = React.useMemo(
-      () => selectedRowUniqKey === props.rowData[uniqKey],
-      [selectedRowUniqKey, props.rowData, uniqKey],
-    );
-    const extFieldIsRender = React.useMemo(
-      () => Boolean(props.fieldMeta.renderParams && isSelected),
-      [props.fieldMeta.renderParams, isSelected],
-    );
+    const isSelected = selectedRowUniqKey === props.rowData[uniqKey];
+    const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected);
 
     return extFieldIsRender
       ? (
@@ -132,7 +126,6 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
           registryKey={props.registryKey}
           metaKey={props.fieldMeta.key}
           indexRow={props.indexRow}
-          renderFieldsSchema={props.renderFieldsSchema}
         />
       )
       : (

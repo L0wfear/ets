@@ -13,7 +13,6 @@ type OwnProps = {
   registryKey: string;
   metaKey: string;
   indexRow: number;
-  renderFieldsSchema: any;
 };
 type Props = OwnProps & {};
 
@@ -38,20 +37,22 @@ const getValueFromEvent = (valueEvent, renderParams) => {
 
 const ExtFieldTd: React.FC<Props> = React.memo(
   (props) => {
-    const { renderParams, renderFieldsSchema } = props;
+    const [error, setError] = React.useState(null);
+    const { renderParams } = props;
     const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
+    const renderFieldsSchema = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.renderFieldsSchema);
+
     const value = get(valuesRenderRow, props.metaKey, null);
-    // const error = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.errors.${props.metaKey}`, null));
     const dispatch = etsUseDispatch();
 
-    const [error, setError] = React.useState(null);
-
-    React.useEffect(() => {
-      if (valuesRenderRow) {
-        const formErrors = validate(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
-        setError(get(formErrors, props.metaKey, null));
-      }
-    }, [valuesRenderRow]);
+    React.useEffect(
+      () => {
+        if (valuesRenderRow) {
+          const formErrors = validate(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
+          setError(get(formErrors, props.metaKey, null));
+        }
+      }, [valuesRenderRow],
+    );
 
     const handleChange = React.useCallback(
       (fieldValue) => {

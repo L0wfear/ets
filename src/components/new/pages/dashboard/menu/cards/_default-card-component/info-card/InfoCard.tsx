@@ -17,22 +17,24 @@ type PropsInfoCard = {
   handleClose: React.MouseEventHandler<HTMLDivElement>;
 };
 
-const InfoCard: React.FC<PropsInfoCard> = (props) => (
-  <InfoCardWrapContainer>
-    <CardInfoContainer>
-      <EtsBootstrap.DashboardCard block>
-      <CardTitleContainer>
-        <CardTitleContainerWrap>
-          <div>{props.title}</div>
-          <div className="pointer" onClick={props.handleClose}>X</div>
-        </CardTitleContainerWrap>
-      </CardTitleContainer>
-      <CardBodyContainer>
-        { props.children }
-      </CardBodyContainer>
-      </EtsBootstrap.DashboardCard>
-    </CardInfoContainer>
-  </InfoCardWrapContainer>
+const InfoCard: React.FC<PropsInfoCard> = React.memo(
+  (props) => (
+    <InfoCardWrapContainer>
+      <CardInfoContainer>
+        <EtsBootstrap.DashboardCard block>
+        <CardTitleContainer>
+          <CardTitleContainerWrap>
+            <div>{props.title}</div>
+            <div className="pointer" onClick={props.handleClose}>X</div>
+          </CardTitleContainerWrap>
+        </CardTitleContainer>
+        <CardBodyContainer>
+          { props.children }
+        </CardBodyContainer>
+        </EtsBootstrap.DashboardCard>
+      </CardInfoContainer>
+    </InfoCardWrapContainer>
+  ),
 );
 
 export default InfoCard;

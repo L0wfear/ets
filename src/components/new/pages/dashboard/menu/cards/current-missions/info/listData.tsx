@@ -71,7 +71,7 @@ export const listData: ListDataType = [
     path: ['car_data', 'driver_allowed'],
     title: 'Задание',
     RenderComponent: ({ infoData }) => (
-      infoData.car_data.driver_allowed && (
+      Boolean(infoData.car_data.driver_allowed) && (
         <div style={{ marginBottom: 5, marginTop: 5 }}>
           <span style={{ fontSize: 16, color: UiConstants.colorError }}>Не пройден внеплановый мед. осмотр</span>
         </div>

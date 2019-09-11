@@ -28,9 +28,9 @@ const getColor = (stand) => {
 
 module.exports = {
   entry: [
-    'react-hot-loader',
-    'whatwg-fetch',
     'core-js/stable',
+    'whatwg-fetch',
+    'react-hot-loader',
     'regenerator-runtime/runtime',
     './src/index',
   ],

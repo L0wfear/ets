@@ -3,6 +3,8 @@
  * Стартовый файл приложения
  * @module ets
  */
+import 'react-app-polyfill/ie11';
+
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';

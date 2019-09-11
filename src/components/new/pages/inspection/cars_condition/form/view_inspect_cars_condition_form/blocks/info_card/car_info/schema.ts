@@ -99,12 +99,12 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     },
     gby_district: {
       type: 'string',
-      title: 'gby_district',
+      title: 'Техника относится к ГБУ Жилищник района',
       required: true,
     },
     gby_operation_district: {
       type: 'string',
-      title: 'gby_operation_district',
+      title: 'Техника эксплуатируется жилищником района',
       required: true,
     },
     vin_by_hand: {

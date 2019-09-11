@@ -15,6 +15,9 @@ import ButtonShowActionLogTdTitle from 'components/new/ui/registry/components/da
 import EdcRequestInfoTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/EdcRequestInfoTdTitle';
 import DefaultTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/DefaultTdTitle';
 import { TypeFieldsAvalibaleKey } from 'components/new/ui/registry/module/@types/registry';
+import { get } from 'lodash';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 type Props = CommontTdTiteProps;
 
@@ -41,15 +44,21 @@ const Td: React.FC<Props> = React.memo(
 
     const Component = componentsByKey[fieldMeta.key] || DefaultTdTitle;
 
+    const groupOpt = get(fieldMeta, 'groupOpt', null);
+    const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
+    const isActive = groupOpt
+      ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
+      : true;
     return (
-      <Component
-        key={props.fieldMeta.key}
-        registryKey={props.registryKey}
-        rowData={props.rowData}
-        fieldMeta={props.fieldMeta}
-        indexRow={props.indexRow}
-        renderFieldsSchema={props.renderFieldsSchema}
-      />
+      isActive &&
+        <Component
+          key={props.fieldMeta.key}
+          registryKey={props.registryKey}
+          rowData={props.rowData}
+          fieldMeta={props.fieldMeta}
+          indexRow={props.indexRow}
+          renderFieldsSchema={props.renderFieldsSchema}
+        />
     );
   },
 );

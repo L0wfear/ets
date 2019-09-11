@@ -22,6 +22,10 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Disp
   dashIfEmpty?: boolean;
   title?: Title;
   renderParams?: ExtFieldType;
+  groupOpt?: {
+    key: string;
+    firstElem?: boolean;
+  };
 };
 
 export type TypeFieldsAvalibaleKey<F> = (
@@ -179,6 +183,12 @@ export interface OneRegistryData<F = any> {
       rowFields: any[],
       row_fields_table_width: number;
       treeFields: object,
+      groupColumn?: {
+        [key: string]: {
+          label: string,
+          isActive?: boolean,
+        },
+      },
     },
     paginator?: {
       currentPage?: number;

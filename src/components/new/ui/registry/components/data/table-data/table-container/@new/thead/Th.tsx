@@ -4,10 +4,12 @@ import {
   registryTriggerOnChangeSelectedField,
 } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import ThDefault from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 import ThCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThCheckbox';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { get } from 'lodash';
 
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;
@@ -40,15 +42,21 @@ const Th: React.FC<Props> = React.memo(
     );
 
     const Component = componentsByKey[metaField.key] || ThDefault;
+    const groupOpt = get(metaField, 'groupOpt', null);
+    const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
+    const isActive = groupOpt
+      ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
+      : true;
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapThead.Th
-        width={width}
-        canClick={sortable}
-        onClick={handleClick}
-      >
-        <Component metaField={metaField} registryKey={props.registryKey}/>
-      </EtsBootstrap.Grid.GridBootstrapThead.Th>
+      isActive &&
+        <EtsBootstrap.Grid.GridBootstrapThead.Th
+          width={width}
+          canClick={sortable}
+          onClick={handleClick}
+        >
+          <Component metaField={metaField} registryKey={props.registryKey}/>
+        </EtsBootstrap.Grid.GridBootstrapThead.Th>
     );
   },
 );

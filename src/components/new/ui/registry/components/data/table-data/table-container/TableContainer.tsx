@@ -32,6 +32,7 @@ const TableContainer: React.FC<Props> = React.memo(
     const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
 //     const row_fields_table_width = etsUseSelector((state) => getListData(getRegistryState(state), registryKey).meta.row_fields_table_width);
 //     const rowFields = etsUseSelector((state) => getListData(getRegistryState(state), registryKey).meta.rowFields);
+    const groupColumn = etsUseSelector((state) => getListData(getRegistryState(state), registryKey).meta.groupColumn);
 
     React.useEffect(
       () => {
@@ -40,11 +41,11 @@ const TableContainer: React.FC<Props> = React.memo(
       },
       [],
     );
-
+    // console.log('tableProps === ', { props, });
     return (
       <EtsBootstrap.Row>
         <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
-          <EtsTableWrap className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)}>
+          <EtsTableWrap className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)} isGroupColumn={groupColumn ? true : false}>
             <EtsBootstrap.Grid.GridTable fixedWidth={fixedWidth}>
               <Thead registryKey={registryKey}/>
               <Tbody registryKey={registryKey}/>

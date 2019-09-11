@@ -29,7 +29,9 @@ const registryDefaultObj: OneRegistryData = {
       total_count: 0,
       uniqKey: 'id',
       uniqKeyForParams: 'id',
-      selectedRow: null,
+      selectedRow: {
+        uniqKey: null,
+      },
       selectedRowToShow: null,
       checkedRows: {},
       fixedWidth: false,
@@ -52,6 +54,7 @@ const registryDefaultObj: OneRegistryData = {
       row_fields_table_width: 0,
       treeFields: {},
       renderFieldsSchema: null,
+      groupColumn: {},
     },
     paginator: {
       currentPage: 0,

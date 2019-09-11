@@ -45,6 +45,12 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
       row_double_click: false,
       is_render_field: true,
       renderFieldsSchema,
+      groupColumn: {
+        district: {
+          label: 'Жилищник',
+          isActive: false,
+        },
+      }, // Возможнл, переделать на ассоциативный массив
       fields: [
         {
           key: 'gov_number',
@@ -53,10 +59,17 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'string',
           },
+          groupOpt: {
+            key: 'district',
+            firstElem: true, // В группку не входит
+          },
         },
         {
           key: 'enumerated',
           title: '№',
+          groupOpt: {
+            key: 'district',
+          },
         },
         // {
         //   key: 'gov_number',
@@ -67,11 +80,17 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           key: 'gby_district',
           title: 'Техника относится к ГБУ Жилищник района (согласно балансовой/забансовой справке)',
           width: 100,
+          groupOpt: {
+            key: 'district',
+          },
         },
         {
           key: 'gby_operation_district',
           title: 'Техника эксплуатируется жилищником района',
           width: 100,
+          groupOpt: {
+            key: 'district',
+          },
         },
         {
           key: 'marka',

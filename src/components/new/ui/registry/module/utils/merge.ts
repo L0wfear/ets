@@ -182,6 +182,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
     renderFieldsSchema = registryDefaultObj.list.meta.renderFieldsSchema,
     is_render_field = registryDefaultObj.list.meta.is_render_field,
     selected_row_in_params = registryDefaultObj.list.meta.selected_row_in_params,
+    groupColumn = registryDefaultObj.list.meta.groupColumn,
   } = meta || {};
 
   const fieldsFiltred = fields.reduce(
@@ -237,6 +238,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
     selected_row_in_params,
     is_render_field,
     renderFieldsSchema,
+    groupColumn,
   };
 };
 

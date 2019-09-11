@@ -39,8 +39,8 @@ const getValueFromEvent = (valueEvent, renderParams) => {
 const ExtFieldTd: React.FC<Props> = React.memo(
   (props) => {
     const { renderParams, renderFieldsSchema } = props;
-    const value = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values.${props.metaKey}`, null));
     const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
+    const value = get(valuesRenderRow, props.metaKey, null);
     // const error = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.errors.${props.metaKey}`, null));
     const dispatch = etsUseDispatch();
 
@@ -65,7 +65,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
           ),
         );
       },
-      [props.metaKey, props.renderParams, renderFieldsSchema, valuesRenderRow],
+      [props.metaKey, props.renderParams, props.registryKey],
     );
 
     return (

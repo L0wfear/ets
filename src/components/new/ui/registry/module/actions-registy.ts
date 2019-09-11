@@ -869,6 +869,36 @@ export const registryResetGlobalCheck: any = (registryKey) => (dispatch, getStat
   }
 };
 
+export const registryChangeGroupActiveColumn: any = (registryKey, payload: {key: string, value: any}) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  const newVal = {
+    ...list.meta.groupColumn,
+    [payload.key]: payload.value,
+  };
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        meta: {
+          ...list.meta,
+          groupColumn: {
+            ...newVal,
+          },
+        },
+      },
+    ),
+  );
+};
+
 export const registryChangeRenderSelectedRow: any = (registryKey, payload: {key: string, value: any}) => (dispatch, getState) => {
   const {
     registry: {
@@ -895,7 +925,6 @@ export const registryChangeRenderSelectedRow: any = (registryKey, payload: {key:
       },
     ),
   );
-
 };
 
 export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {

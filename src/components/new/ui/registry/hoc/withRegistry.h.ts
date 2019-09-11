@@ -27,6 +27,7 @@ export type TypeConfigData<F> = {
       is_render_field?: OneRegistryData<F>['list']['meta']['is_render_field'];
       fields?: Array<TypeFields<F>>;
       renderFieldsSchema?: OneRegistryData<F>['list']['meta']['renderFieldsSchema'];
+      groupColumn?: OneRegistryData<F>['list']['meta']['groupColumn'];
     };
     paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
     rendersFields?: Partial<OneRegistryData<F>['list']['rendersFields']>;

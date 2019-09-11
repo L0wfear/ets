@@ -112,9 +112,20 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
     );
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
-    const isSelected = get(selectedRow, uniqKey) === props.rowData[uniqKey];
+    const selectedRowUniqKey = React.useMemo(
+      () => get(selectedRow, uniqKey, null),
+      [selectedRow, uniqKey],
+    );
+    const isSelected = React.useMemo(
+      () => selectedRowUniqKey === props.rowData[uniqKey],
+      [selectedRowUniqKey, props.rowData, uniqKey],
+    );
+    const extFieldIsRender = React.useMemo(
+      () => Boolean(props.fieldMeta.renderParams && isSelected),
+      [props.fieldMeta.renderParams, isSelected],
+    );
 
-    return Boolean(props.fieldMeta.renderParams && isSelected)
+    return extFieldIsRender
       ? (
         <ExtFieldTd
           renderParams={props.fieldMeta.renderParams}

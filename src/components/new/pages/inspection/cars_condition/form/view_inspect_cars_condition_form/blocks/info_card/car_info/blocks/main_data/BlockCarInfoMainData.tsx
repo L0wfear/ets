@@ -47,7 +47,21 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
         const loadData = async () => {
           try {
             const result = await dispatch(autobaseGetInspectConfig({ page: '', path: '' }));
-            setInspectionConfig(result);
+            if (result) {
+              const configOptionsList = Object.keys(result).reduce((newObj, key ) => {
+                const configOptionsByKeyList = Object.entries(result[key]).map(([keyEntry, valueEntry]) => {
+                  return {
+                    value: keyEntry,
+                    label: valueEntry,
+                  };
+                });
+                return {
+                  ...newObj,
+                  [key]: configOptionsByKeyList,
+                };
+              }, {});
+              setInspectionConfig(configOptionsList);
+            }
           } catch (error) {
             console.error(error); //tslint:disable-line
           }
@@ -93,7 +107,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange],
+      [state.data, props.handleChange, inspectionConfig],
     );
 
     const handleChangeDataOsago = React.useCallback(
@@ -105,7 +119,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange],
+      [state.data, props.handleChange, inspectionConfig],
     );
 
     const handleChangeData = React.useCallback(
@@ -117,7 +131,19 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange],
+      [state.data, props.handleChange, inspectionConfig],
+    );
+
+    const handleChangeDataOptions = React.useCallback(
+      (key, event) => {
+        props.handleChange({
+          data: {
+            ...state.data,
+            [key]: get(event, 'target.value', event),
+          },
+        });
+      },
+      [state.data, props.handleChange, inspectionConfig],
     );
 
     return (
@@ -353,6 +379,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           error={errors.environmental_class}
                           clearable={false}
                           disabled={!props.isPermitted}
+                          boundKeys={'environmental_class'}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Row>
@@ -368,6 +395,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           error={errors.engine_type}
                           clearable={false}
                           disabled={!props.isPermitted}
+                          boundKeys={'engine_type'}
                         />
                       </EtsBootstrap.Col>
                       <EtsBootstrap.Col md={6}>
@@ -395,6 +423,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           clearable={false}
                           disabled={!props.isPermitted}
                           etsIsLoading={countryOptionData.isLoading}
+                          boundKeys={'origin_country'}
                         />
                       </EtsBootstrap.Col>
                       <EtsBootstrap.Col md={6}>
@@ -403,11 +432,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           type="select"
                           label="Классификатор"
                           value={state.data.classifier}
-                          onChange={handleChangeData}
+                          onChange={handleChangeDataOptions}
                           options={ get(inspectionConfig, 'classifier', []) }
                           error={errors.data.classifier}
                           clearable={false}
                           disabled={!props.isPermitted}
+                          boundKeys={"classifier"}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Row>
@@ -423,6 +453,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           error={errors.kind}
                           clearable={false}
                           disabled={!props.isPermitted}
+                          boundKeys={'kind'}
                         />
                       </EtsBootstrap.Col>
                       <EtsBootstrap.Col md={6}>
@@ -436,6 +467,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           error={errors.kind_purchase}
                           clearable={false}
                           disabled={!props.isPermitted}
+                          boundKeys={'kind_purchase'}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Row>
@@ -565,9 +597,10 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="Технический осмотр пройден"
               value={state.data.tech_inspection_passed}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'tech_inspection_passed', [])}
               error={errors.data.tech_inspection_passed}
+              boundKeys={'tech_inspection_passed'}
               clearable={false}
               disabled={!props.isPermitted}
             />
@@ -580,11 +613,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="ГЛОНАСС стационарный"
               value={state.data.glonass_stationary}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'glonass_stationary', [])}
               error={errors.data.glonass_stationary}
               clearable={false}
               disabled={!props.isPermitted}
+              boundKeys={'glonass_stationary'}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -593,11 +627,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="ГЛОНАСС зарегистрирован"
               value={state.data.glonass_registered}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'glonass_registered', [])}
               error={errors.data.glonass_registered}
               clearable={false}
               disabled={!props.isPermitted}
+              boundKeys={'glonass_registered'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -608,11 +643,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="Логотип"
               value={state.data.logo}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'logo', [])}
               error={errors.data.logo}
               clearable={false}
               disabled={!props.isPermitted}
+              boundKeys={'logo'}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -637,11 +673,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="Техническое состояние"
               value={state.data.tech_condition}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'tech_condition', [])}
               error={errors.data.tech_condition}
               clearable={false}
               disabled={!props.isPermitted}
+              boundKeys={'tech_condition'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -877,11 +914,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="Заявка на ремонт"
               value={state.data.repair_application}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'repair_application', [])}
               error={errors.data.repair_application}
               clearable={false}
               disabled={!props.isPermitted}
+              boundKeys={'repair_application'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -905,11 +943,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="select"
               label="Причина ремонта"
               value={state.data.repair_reason}
-              onChange={handleChangeData}
+              onChange={handleChangeDataOptions}
               options={ get(inspectionConfig, 'repair_reason', [])}
               error={errors.data.repair_reason}
               clearable={false}
               disabled={!props.isPermitted}
+              boundKeys={'repair_reason'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

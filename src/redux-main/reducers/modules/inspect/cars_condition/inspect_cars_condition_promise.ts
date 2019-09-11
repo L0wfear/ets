@@ -134,7 +134,7 @@ export const promiseGetSetCarsConditionCars = async (inspection_id: number) => {
 export const promiseGetInspectConfig = async () => {
   const response = await InspectConfigService.get();
 
-  const result = get(response, 'result.rows', []);
+  const result = get(response, 'enums', {});
 
   return result;
 };

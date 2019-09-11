@@ -67,6 +67,7 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
 import { HrLine } from 'components/new/pages/login/styled/styled';
+import EquipmentTaxes from 'components/old/waybill/TaxEquipmentTaxeses';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -2257,7 +2258,7 @@ class WaybillForm extends UNSAFE_Form {
                         )}
                         <EtsBootstrap.Col md={12} zIndex={1}>
                           <EtsBootstrap.Col md={12}>
-                            <Taxes
+                            <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
                                 !isPermittedByKey.update
@@ -2281,7 +2282,6 @@ class WaybillForm extends UNSAFE_Form {
                                 this,
                                 'equipment_tax_data',
                               )}
-                              correctionRate={this.state.fuel_correction_rate}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                             />

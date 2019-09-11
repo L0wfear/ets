@@ -7,6 +7,7 @@ import { FluxContext } from 'utils/decorators';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
+import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { isNullOrUndefined, isObject, isArray } from 'util';
 import { connect } from 'react-redux';
@@ -242,7 +243,7 @@ class WaybillFormWrap extends React.Component {
         const equipmentFuelGiven = waybill.equipment_fuel_given
           ? parseFloat(waybill.equipment_fuel_given)
           : 0;
-        const equipmentFuelTaxes = Taxes.calculateFinalResult(
+        const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
           waybill.equipment_tax_data,
         );
 
@@ -371,7 +372,7 @@ class WaybillFormWrap extends React.Component {
     const equipmentFuelGiven = formState.equipment_fuel_given
       ? parseFloat(formState.equipment_fuel_given)
       : 0;
-    const equipmentFuelTaxes = Taxes.calculateFinalResult(
+    const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
       formState.equipment_tax_data,
     );
 
@@ -511,7 +512,7 @@ class WaybillFormWrap extends React.Component {
         ) {
           const lastEquipmentTax = last(formState.equipment_tax_data);
           lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-          lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
+          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         }
       }
     }

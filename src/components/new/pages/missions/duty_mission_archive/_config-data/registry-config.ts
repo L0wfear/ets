@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { DUTY_MISSION_STATUS_OPTIONS } from 'redux-main/reducers/modules/missions/duty_mission/constants';

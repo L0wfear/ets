@@ -10,6 +10,7 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import Td from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Td';
+import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 
 type OwnProps = {
   registryKey: string;
@@ -39,24 +40,31 @@ const TrHead: React.FC<Props> = React.memo(
     const buttons = etsUseSelector((state) => getHeaderData(state.registry, props.registryKey).buttons); // надо переделать
     const rowFields = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.rowFields);
 
-    const isPermitted = etsUseIsPermitted([permissions.create, permissions.read]);
+    const isPermitted = (
+      etsUseIsPermitted(permissions.create)
+      || etsUseIsPermitted(permissions.read)
+    );
     const checkData = checkedRows[uniqKey];
     const isSelected = get(selectedRow, uniqKey) === rowData[uniqKey];
 
     const handleDoubleClick = React.useCallback(
       () => {
-        const isPermittedToClick = (
-          isPermitted
-          && (
-            buttons.find(({ type }) => type === buttonsTypes.read)
-            || row_double_click
-          )
-        );
+        if (isPermitted) {
+          const buttonReadData = buttons.find(({ type }) => type === buttonsTypes.read);
+          if (buttonReadData) {
+            const changeObj = makePayloadToParamsForRead(
+              buttonReadData,
+              rowData,
+              uniqKeyForParams,
+              uniqKey,
+            );
 
-        if (isPermittedToClick) {
-          props.setParams({
-            [uniqKeyForParams]: get(rowData, uniqKey, null),
-          });
+            props.setParams(changeObj);
+          } else if (row_double_click) {
+            props.setParams({
+              [uniqKeyForParams]: get(rowData, uniqKey, null),
+            });
+          }
         }
       },
       [
@@ -88,31 +96,44 @@ const TrHead: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Tr
-        enable
-        isSelected={isSelected}
+      <React.Fragment>
+        <EtsBootstrap.Grid.GridBootstrapTbody.Tr
+          id={`${props.registryKey}.${rowData[uniqKey]}`}
+          enable
+          isSelected={isSelected}
 
-        rowData={rowData}
-        checkData={checkData}
+          rowData={rowData}
+          checkData={checkData}
 
-        onClick={handleClick}
-        onDoubleClick={handleDoubleClick}
+          onClick={handleClick}
+          onDoubleClick={handleDoubleClick}
 
-        registryKey={props.registryKey}
-      >
+          registryKey={props.registryKey}
+        >
+          {
+            rowFields.map((fieldMeta) => (
+              <Td
+                key={fieldMeta.key}
+                rowData={rowData}
+                fieldMeta={fieldMeta}
+                registryKey={props.registryKey}
+                indexRow={indexRow}
+              />
+            ))
+          }
+
+        </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
         {
-          rowFields.map((fieldMeta) => (
-            <Td
-              key={fieldMeta.key}
-              rowData={rowData}
-              fieldMeta={fieldMeta}
+          rowData.is_open && rowData.children.map((childRowData, childIndexRow) => (
+            <TrConnected
+              key={childRowData[uniqKey]}
+              rowData={childRowData}
               registryKey={props.registryKey}
-              indexRow={indexRow}
+              indexRow={childIndexRow}
             />
           ))
         }
-
-      </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
+      </React.Fragment>
     );
   },
 );

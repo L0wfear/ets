@@ -56,7 +56,7 @@ export type ExtFieldBoolean<V = any> = ExtFieldCommon<V> & {
 };
 
 export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
-  type?: 'string';
+  type: 'string';
   inline?: boolean;
   isLoading?: boolean;
   wrapStyle?: any;
@@ -66,30 +66,32 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
 };
 
 export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
-  type?: 'number';
+  type: 'number';
   showRedBorder?: boolean;
 };
 
 export type ExtFieldText<V = any> = ExtFieldCommon<V> & {
-  type?: 'text';
+  type: 'text';
 
   textAreaStyle?: any;
   rows?: number;
 };
 
 export type ExtFieldFile<V = any> = ExtFieldCommon<V> & {
-  type?: 'file';
+  type: 'file';
 } & IPropsFileInput;
 
-export type ExtFieldType = (
-  ExtFieldSelect
-  | ExtFieldDate
-  | ExtFieldBoolean
-  | ExtFieldString
-  | ExtFieldNumber
-  | ExtFieldText
-  | ExtFieldFile
-);
+export type ExtFieldTypeByKey = {
+  select: ExtFieldSelect;
+  date: ExtFieldDate;
+  boolean: ExtFieldBoolean;
+  string: ExtFieldString;
+  number: ExtFieldNumber;
+  text: ExtFieldText;
+  file: ExtFieldFile;
+};
+
+export type ExtFieldType = ExtFieldTypeByKey[keyof ExtFieldTypeByKey];
 
 export const ExtField: React.ComponentClass<ExtFieldType> = onChangeWithKeys(
   ({ boundKeys, ...props }) => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { FileField } from 'components/old/ui/input/fields';
 import { compose, withProps } from 'recompose';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
@@ -79,13 +79,13 @@ const AsigmentView: React.FC<AsigmentViewProps> = (props) => {
 };
 
 export default compose<any, any>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: employeePermissions.assignment_read,
   }),
   withProps((props: AsigmentViewProps) => ({ // Прокидывает пропсы в нижний клмпонент
     permissions: props.IS_CREATING ? employeePermissions.assignment_create : employeePermissions.assignment_update,
   })),
-  withRequirePermissionsNew({
+  withRequirePermission({
     withIsPermittedProps: true,
   }),
 )(AsigmentView);

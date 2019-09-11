@@ -39,7 +39,12 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
     const filterOptions = React.useMemo(
       () => optionData.options.filter(
         (option) => {
-          return !props.commission_members.find(({ employee_id }) => option.value === employee_id);
+          return (
+            !props.commission_members.find(
+              ({ employee_id }) => option.value === employee_id,
+            )
+            && option.rowData.active
+          );
         },
       ),
       [optionData.options, props.commission_members],

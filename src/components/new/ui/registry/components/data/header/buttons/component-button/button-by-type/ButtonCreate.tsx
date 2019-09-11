@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -16,6 +16,7 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 
 type ButtonCreateStateProps = {
   uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
+  selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonCreateDispatchProps = {
   registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
@@ -33,7 +34,7 @@ type ButtonCreateProps = (
 const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   const data = React.useMemo(
     () => (
-      get(props, 'data', {} as ButtonCreateOwnProps['data'])
+      get(props, 'data', {}) as ButtonCreateOwnProps['data']
     ),
     [props.data],
   );
@@ -41,32 +42,38 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
   const handleClick = React.useCallback(
     () => {
       props.registrySetSelectedRowToShowInForm({});
+
+      const uniqKeyForParams = get(data, 'other_params.uniqKeyForParams.key') || props.uniqKeyForParams;
+      const path = get(data, 'other_params.uniqKeyForParams.path');
+      const paramsValue = path ? get(props.selectedRow, path) : buttonsTypes.create;
+
       props.setParams({
-        [props.uniqKeyForParams]: buttonsTypes.create,
-        ...get(data, 'objChangeParams', {}),
+        [uniqKeyForParams]: paramsValue,
+        type: get(data, 'other_params.type', null),
       });
     },
     [data],
   );
 
   return (
-    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
-      <EtsBootstrap.Glyphicon glyph={data.glyph || 'plus'} />{data.title || 'Создать'}
+    <EtsBootstrap.Button id={`${props.registryKey}.${data.id || 'open-create-form'}`} bsSize="small" onClick={handleClick}>
+      <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'plus') : null} />{data.title || 'Создать'}
     </EtsBootstrap.Button>
   );
 };
 
 export default compose<ButtonCreateProps, ButtonCreateOwnProps>(
   withSearch,
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{ permissions: OneRegistryData['list']['permissions']['create'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonCreateStateProps, ButtonCreateDispatchProps, ButtonCreateOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
+      selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any, { registryKey }) => ({
       registrySetSelectedRowToShowInForm: () => (

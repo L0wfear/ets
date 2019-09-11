@@ -1,10 +1,12 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import * as ClickOutHandler from 'react-onclickout';
+
 import { SecondMenuItemContainer, SecondMenuContainer } from 'components/new/ui/app_header/desktop/left/page_menu/styled';
 import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl, DivDivider, MenuTitleContainer } from 'components/new/ui/app_header/styled';
-import * as ClickOutHandler from 'react-onclickout';
-import { DivNone, MarkNewRegistry } from 'global-styled/global-styled';
-import { withRouterMatchUrl, isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
-import { compose } from 'recompose';
+import { MarkNewRegistry } from 'global-styled/global-styled';
+import { isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 class SecondMenuItem extends React.Component<any, any> {
   state = {
@@ -91,7 +93,6 @@ class SecondMenuItem extends React.Component<any, any> {
   render() {
     const {
       data,
-      matchUrl,
     } = this.props;
 
     if (data.divider) {
@@ -105,23 +106,19 @@ class SecondMenuItem extends React.Component<any, any> {
       childrenPath,
     } = data;
 
-    const active = !!isActivemenu(matchUrl, path, childrenPath);
+    const active = !!isActivemenu(this.props.match.url, path, childrenPath);
 
     return (
       <ClickOutHandler onClickOut={this.handleClickOut}>
         <SecondMenuItemContainer noneEffect={data.divider || (!data.path && !data.children) } active={this.state.showChildren || active}>
           { this.getItem() }
           {
-            this.state.showChildren
-            ? (
+            this.state.showChildren && (
               <SecondMenuContainer position={this.props.position}>
                 {
                   Object.entries(data.children).map(this.renderChildrenItem)
                 }
               </SecondMenuContainer>
-            )
-            : (
-              <DivNone />
             )
           }
         </SecondMenuItemContainer>
@@ -131,7 +128,7 @@ class SecondMenuItem extends React.Component<any, any> {
 }
 
 const SecondMenuItemWithUrl = compose<any, any>(
-  withRouterMatchUrl,
+  withSearch,
   showHeaderMenu,
 )(SecondMenuItem);
 

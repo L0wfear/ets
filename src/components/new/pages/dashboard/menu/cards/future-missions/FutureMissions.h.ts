@@ -2,7 +2,6 @@ import {
   FutureMissionsFormDataType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/future-mission.h';
 
-import { OwnerPropsDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
@@ -25,4 +24,4 @@ export type PropsFutureMissions = (
   & OwnPropsFutureMissions
 );
 
-export type OutterPropsFutureMissions<P> = OwnerPropsDefaultCard<P>;
+export type OutterPropsFutureMissions<P> = any;

@@ -18,7 +18,7 @@ export default {
   title: 'Реестр шин',
   isNewRegistry: true,
   entyity: 'autobase_tire',
-  noDotList: false,
+
   component,
   permissions,
 };

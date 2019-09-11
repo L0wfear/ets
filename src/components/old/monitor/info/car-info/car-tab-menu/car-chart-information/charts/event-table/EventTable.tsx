@@ -1,14 +1,16 @@
 import * as React from 'react';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission, WithRequirePermissionAddProps, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { getMonitorPageState } from 'redux-main/reducers/selectors';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type PropsEventTable = {
+type OwnProps = {
   handleEventClick: any;
-};
+} & WithRequirePermissionProps;
 
-const EventTable: React.FC<PropsEventTable> = React.memo(
+type Props = OwnProps & WithRequirePermissionAddProps;
+
+const EventTable: React.FC<Props> = React.memo(
   (props) => {
     const front_events_list = etsUseSelector((state) => getMonitorPageState(state).carInfo.trackCaching.front_events_list);
 
@@ -50,6 +52,6 @@ const EventTable: React.FC<PropsEventTable> = React.memo(
   },
 );
 
-export default withRequirePermissionsNew({
+export default withRequirePermission<OwnProps>({
   permissions: 'map.leak_and_refill',
 })(EventTable);

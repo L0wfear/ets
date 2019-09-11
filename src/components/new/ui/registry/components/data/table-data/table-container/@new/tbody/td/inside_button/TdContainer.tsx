@@ -8,6 +8,7 @@ export type Props = {
   registryKey: string;
   value: string | number | React.ReactNode;
   isSelected: boolean;
+  id: string;
 };
 
 const TdContainer: React.FC<Props> = React.memo(
@@ -68,7 +69,7 @@ const TdContainer: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick}>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} id={props.id}>
         <EtsTdInnerWrapper>
           {value}
         </EtsTdInnerWrapper>

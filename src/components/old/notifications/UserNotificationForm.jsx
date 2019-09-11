@@ -1,10 +1,9 @@
 import React from 'react';
 
 import * as queryString from 'query-string';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import ModalBody from 'components/old/ui/Modal';
-import DateFormatter from 'components/old/ui/DateFormatter';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
 import { connect } from 'react-redux';
@@ -21,6 +20,7 @@ import {
 import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -50,7 +50,7 @@ const MainEmployeeDesc = ({ linkText, handleClick }) => (
   </div>
 );
 
-const insurance_policy = withRequirePermissionsNew({
+const insurance_policy = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
@@ -67,7 +67,7 @@ const insurance_policy = withRequirePermissionsNew({
   />
 ));
 
-const tech_inspection = withRequirePermissionsNew({
+const tech_inspection = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
 })(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => {
@@ -86,7 +86,7 @@ const tech_inspection = withRequirePermissionsNew({
   );
 });
 
-const tech_maintenance = withRequirePermissionsNew({
+const tech_maintenance = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
@@ -103,7 +103,7 @@ const tech_maintenance = withRequirePermissionsNew({
   />
 ));
 
-const repair = withRequirePermissionsNew({
+const repair = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
 })(({ gov_number, car_id, handleClick, isPermitted }) => (
@@ -120,7 +120,7 @@ const repair = withRequirePermissionsNew({
   />
 ));
 
-const medical_certificate = withRequirePermissionsNew({
+const medical_certificate = withRequirePermission({
   withIsPermittedProps: true,
   permissions: employeePermissions.list,
 })(({ employee_fio, employee_id, handleClick, isPermitted }) => (
@@ -206,7 +206,7 @@ class UserNotificationForm extends UNSAFE_Form {
             <span
               style={{ marginRight: 10, marginLeft: 4 }}
               className="pull-right">
-              <DateFormatter date={state.created_at} />
+              {makeDateFormated(state.created_at)}
             </span>
           </div>
         </EtsBootstrap.ModalHeader>

@@ -14,7 +14,7 @@ export const statusAtCheckOptions = [
   { value: 'off_mission', label: 'Отсутствует задание' },
   { value: 'not_used', label: 'Не используется' },
   { value: 'not_retooled', label: 'Не переоборудовано' },
-  { value: 'repair', label: 'Проводится ремонт' }, // new
+  { value: 'repair', label: 'Ремонт' },
   { value: 'write_off', label: 'Списание' },
   { value: 'not_passed_maintenance', label: 'Не пройден технический осмотр' },
   { value: 'off_osago', label: 'Отсутствует ОСАГО' },

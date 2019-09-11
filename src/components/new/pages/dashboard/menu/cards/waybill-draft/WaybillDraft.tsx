@@ -10,32 +10,26 @@ import {
 
 import WaybillDraftInfo from 'components/new/pages/dashboard/menu/cards/waybill-draft/info/WaybillDraftInfo';
 
-import {
-  PropsWaybillDraft,
-  StateWaybillDraft,
-} from 'components/new/pages/dashboard/menu/cards/waybill-draft/WaybillDraft.h';
-import { compose } from 'recompose';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
-class WaybillDraft extends React.Component<PropsWaybillDraft, StateWaybillDraft> {
-  render() {
+type Props = {};
+const WaybillDraft: React.FC<Props> = React.memo(
+  () => {
     return (
       <div className="waybill_draft"></div>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsWaybillDraft, PropsToDefaultCard>(
-  withDefaultWaybill({
-    path: 'waybill_draft',
-    loadData: dashboardLoadWaybillDraft,
-    InfoComponent: WaybillDraftInfo,
-    setInfoData: dashboardSetInfoDataInWaybillDraft,
-    ListComponent: ListNumber,
-    setInfoDataPropsMake: ({ items }, path: string) => (
-      items[
-        path.split('/').slice(-1)[0]
-      ]
-    ),
-  }),
-)(WaybillDraft);
+export default withDefaultWaybill<PropsToDefaultCard>({
+  path: 'waybill_draft',
+  loadData: dashboardLoadWaybillDraft,
+  InfoComponent: WaybillDraftInfo,
+  setInfoData: dashboardSetInfoDataInWaybillDraft,
+  ListComponent: ListNumber,
+  setInfoDataPropsMake: (items, path: string) => (
+    items[
+      path.split('/').slice(-1)[0]
+    ]
+  ),
+})(WaybillDraft);

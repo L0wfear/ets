@@ -11,6 +11,7 @@ export type PropsRouteFormWrap = InputRouteFormProps & {
 };
 
 export type StateRouteFormProps = {
+  userData: InitialStateSession['userData'];
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];
   geozoneMunicipalFacility: IStateSomeUniq['geozoneMunicipalFacility'];
@@ -38,12 +39,14 @@ export type InputRouteFormProps = {
 };
 
 export type OwnRouteFormProps = InputRouteFormProps & {
-  isPermittedToShowBridge: boolean;
 };
 
 export type PropsRouteWithForm = StateRouteFormProps &
   DispatchRouteFormProps &
-  OwnRouteFormProps;
+  OwnRouteFormProps
+  & {
+    isPermittedToShowBridge: boolean;
+  };
 
 export type FormStateRouteForm = Route & {
   normatives: any[];

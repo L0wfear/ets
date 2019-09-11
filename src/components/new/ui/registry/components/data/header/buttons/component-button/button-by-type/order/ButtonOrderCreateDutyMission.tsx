@@ -33,7 +33,7 @@ const ButtonOrderCreateDutyMission: React.FC<Props> = React.memo(
     const isDisabled = isDisabledForCreateDutyMission(selectedRow);
 
     return isPemitted && (
-      <EtsBootstrap.Button id="open-create-form" bsSize="small" disabled={isDisabled} onClick={handleClick}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-create_duty_mission_by_template_from_order-form`} bsSize="small" disabled={isDisabled} onClick={handleClick}>
         Создать наряд-задание по шаблону
       </EtsBootstrap.Button>
     );

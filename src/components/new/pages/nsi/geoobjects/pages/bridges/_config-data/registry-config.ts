@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
 import { Bridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/@types';

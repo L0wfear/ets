@@ -78,7 +78,7 @@ class CreateMission extends React.Component<
 
     return (
       <FlexCenterButton>
-        <EtsBootstrap.Button onClick={this.handleClickCreateMission} permissions={missionPermissions.create}>
+        <EtsBootstrap.Button id="monitor.create_mission" onClick={this.handleClickCreateMission} permissions={missionPermissions.create}>
           Создать децентрализованное задание
         </EtsBootstrap.Button>
         <MissionFormLazy

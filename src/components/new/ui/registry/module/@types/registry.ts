@@ -1,6 +1,8 @@
 import { glyphMap } from 'global-styled';
 import { TypeOneDisplayIf } from 'components/new/ui/registry/contants/displayIf';
 import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 export type FilterOptionType<F> = {
   value: F[keyof F];
@@ -8,10 +10,8 @@ export type FilterOptionType<F> = {
   [k: string]: any
 };
 
-export type TypeFieldsRegistry<F extends Record<string, any>> = (
-  TypeFields<F, string> & {
-    title?: string;
-  }
+export type TypeFieldsRegistry<F extends Record<string, any>, Title extends any> = (
+  TypeFields<F, Title>
 );
 export type CommonTypeField<F extends Record<string, any>, Title = string | DisplayIfTitle[]> = {
   hidden?: boolean;
@@ -143,11 +143,23 @@ export interface OneRegistryData<F = any> {
     );
     is_current_structure_popover?: string;
     buttons: Array<{
-      type: string;
+      type: typeof buttonsTypes[keyof typeof buttonsTypes];
+      id: string;
       title?: string;
-      glyph?: keyof typeof glyphMap;                                        // EtsBootstrap.Glyphicon glyph
+      glyph?: keyof typeof glyphMap | 'none';                                // EtsBootstrap.Glyphicon glyph
       format?: string;
-      objChangeParams?: object;                                             // что заменять в params при клике
+      modal_format?: 'yesno';
+      message_single?: string;
+      message_multi?: string;
+      other_params?: {                                                       // что заменять в params при клике
+        type?: typeof buttonsTypes[keyof typeof buttonsTypes];
+        otherUniqKeyForParamsData?: {
+          key: string;
+          path: string;
+          permissions?: Parameters<typeof validatePermissions>[0];
+        }
+        [k: string]: any;
+      };
     }>;
   };
   list: {
@@ -166,19 +178,19 @@ export interface OneRegistryData<F = any> {
       )
     },
     permissions: {
-      list: string | boolean;
-      create: string | boolean;
-      read: string | boolean;
-      update: string | boolean;
-      delete: string | boolean;
-      [otherKey: string]: string | boolean;
+      list: Parameters<typeof validatePermissions>[0];
+      create: Parameters<typeof validatePermissions>[0];
+      read: Parameters<typeof validatePermissions>[0];
+      update: Parameters<typeof validatePermissions>[0];
+      delete: Parameters<typeof validatePermissions>[0];
+      [otherKey: string]: Parameters<typeof validatePermissions>[0];
     };
     meta: {
       row_double_click: boolean;
       renderFieldsSchema: any;
       is_render_field: boolean;
       selected_row_in_params: boolean;
-      fields: Array<TypeFieldsRegistry<F>>;
+      fields: Array<TypeFieldsRegistry<F, string>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
       row_fields_table_width: number;
@@ -242,7 +254,7 @@ export type TypeConfigData<F> = {
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];
     format?: OneRegistryData<F>['header']['format'];
     is_current_structure_popover?: OneRegistryData<F>['header']['is_current_structure_popover'];
-    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | string>,
+    buttons?: Array<ValuesOf<OneRegistryData<F>['header']['buttons']> | typeof buttonsTypes[keyof typeof buttonsTypes]>,
   };
   filter?: Partial<OneRegistryData<F>['filter']>;
   list?: {
@@ -255,10 +267,15 @@ export type TypeConfigData<F> = {
       total_count?: OneRegistryData<F>['list']['processed']['total_count'];
     };
     meta: {
+      selected_row_in_params?: OneRegistryData<F>['list']['meta']['selected_row_in_params'];
       row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
-      fields?: OneRegistryData<F>['list']['meta']['fields'];
+      is_render_field?: OneRegistryData<F>['list']['meta']['is_render_field'];
+      renderFieldsSchema?: OneRegistryData<F>['list']['meta']['renderFieldsSchema'];
+      groupColumn?: OneRegistryData<F>['list']['meta']['groupColumn'];
+      fields?: Array<TypeFieldsRegistry<F, string | DisplayIfTitle[]>>;
     };
     paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
+    rendersFields?: Partial<OneRegistryData<F>['list']['rendersFields']>;
   };
 };
 

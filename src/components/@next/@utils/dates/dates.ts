@@ -121,7 +121,7 @@ export function formatDate(date: string | Date, format: string) {
   return moment(date).format(format);
 }
 
-export function getFormattedDateTime(date: string | Date) {
+export function getFormattedDateTime(date: string | number | Date) {
   if (!date) {
     return '';
   }
@@ -324,3 +324,13 @@ export const monthOptions = Array(12).fill(0).map(
     });
   },
 );
+
+export const makeDateFormated = (date: string | number | Date, time?: boolean, empty?: string) => {
+  if (!date) {
+    return empty || '';
+  }
+  if (time) {
+    return getFormattedDateTime(date);
+  }
+  return makeDate(date);
+};

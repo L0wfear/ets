@@ -9,7 +9,7 @@ export default {
   title: 'Путевые листы',
   isNewRegistry: true,
   entyity: 'waybill',
-  noDotList: false,
+
   component,
   permissions,
 };

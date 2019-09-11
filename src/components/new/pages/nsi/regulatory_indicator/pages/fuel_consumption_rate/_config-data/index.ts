@@ -18,7 +18,7 @@ export default {
   title: 'Нормы расхода топлива',
   isNewRegistry: true,
   entyity: 'fuel_consumption_rate',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -20,5 +20,5 @@ export default {
   title: 'Задания',
   children,
   ...getChildrenData(children),
-  checkHidden: (isShow, props) => isShow && !props.isOkrug,
+  checkHidden: (isShow, userData) => isShow && !userData.isOkrug,
 };

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -57,7 +57,7 @@ class ButtonRejectEdcRequest extends React.PureComponent<ButtonRejectEdcRequestP
 
 export default compose<ButtonRejectEdcRequestProps, ButtonRejectEdcRequestOwnProps>(
   withSearch,
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: edcRequestPermissions.update,
   }),
   connect<ButtonRejectEdcRequestStateProps, ButtonRejectEdcRequestDispatchProps, ButtonRejectEdcRequestOwnProps, ReduxState>(

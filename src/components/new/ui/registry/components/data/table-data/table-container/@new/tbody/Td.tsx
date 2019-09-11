@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import CheckboxTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CheckboxTdTitle';
@@ -15,7 +16,6 @@ import ButtonShowActionLogTdTitle from 'components/new/ui/registry/components/da
 import EdcRequestInfoTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/EdcRequestInfoTdTitle';
 import DefaultTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/DefaultTdTitle';
 import { TypeFieldsAvalibaleKey } from 'components/new/ui/registry/module/@types/registry';
-import { get } from 'lodash';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
@@ -36,13 +36,14 @@ const componentsByKey: Record<TypeFieldsAvalibaleKey<void>, React.ComponentType<
   edc_request_info: EdcRequestInfoTdTitle,
 };
 
-const Td: React.FC<Props> = React.memo(
+const Td: React.FC<Omit<Props, 'id'>> = React.memo(
   (props) => {
     const {
       fieldMeta,
     } = props;
 
     const Component = componentsByKey[fieldMeta.key] || DefaultTdTitle;
+    const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
 
     const groupOpt = get(fieldMeta, 'groupOpt', null);
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
@@ -55,6 +56,7 @@ const Td: React.FC<Props> = React.memo(
     return (
       isActive &&
         <Component
+          id={`${props.registryKey}.${props.rowData[uniqKey]}.${props.indexRow}.${fieldMeta.key}`}
           key={props.fieldMeta.key}
           registryKey={props.registryKey}
           rowData={props.rowData}

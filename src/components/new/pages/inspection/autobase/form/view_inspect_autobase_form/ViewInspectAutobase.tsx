@@ -161,6 +161,5 @@ export default compose<ViewInspectAutobaseProps, ViewInspectAutobaseOwnProps>(
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectAutobase);

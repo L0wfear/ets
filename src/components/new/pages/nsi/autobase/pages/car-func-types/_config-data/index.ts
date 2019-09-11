@@ -9,7 +9,7 @@ export default {
   title: 'Типы техники',
   isNewRegistry: true,
   entyity: 'type',
-  noDotList: false,
+
   component,
   permissions,
 };

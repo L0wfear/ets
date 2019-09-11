@@ -139,7 +139,9 @@ class PageMenu extends React.Component<any, any> {
           Object.entries(this.state.widthAndShowByKey).map(this.mapFirstLvl)
         }
         {
-          Object.entries(this.state.widthAndShowByKeyHidden).map(this.mapFirstLvlHidden)
+          Boolean(Object.values(this.state.widthAndShowByKeyHidden.hidden.children)[1]) && (
+            Object.entries(this.state.widthAndShowByKeyHidden).map(this.mapFirstLvlHidden)
+          )
         }
       </PageMenuMainDl>
     );

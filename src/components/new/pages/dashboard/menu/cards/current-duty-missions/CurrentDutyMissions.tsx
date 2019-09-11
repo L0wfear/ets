@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { compose } from 'recompose';
 
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import ListByTypeCurerntDutyMission from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/ListByTypeCurerntDutyMission';
 
 import {
@@ -14,7 +14,6 @@ import CurrentDutyMissionInfo from 'components/new/pages/dashboard/menu/cards/cu
 import {
   CurrentDutyMissionsItemsSubItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type OwnPropsCurrentDutyMissions = {};

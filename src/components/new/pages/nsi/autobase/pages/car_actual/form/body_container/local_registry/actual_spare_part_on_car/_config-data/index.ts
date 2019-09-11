@@ -18,7 +18,7 @@ export default {
   title: 'Реестр запчастей',
   isNewRegistry: true,
   entyity: 'autobasespare_part',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -1,4 +1,4 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { SparePart } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import sparePartPermissions from './permissions';
 

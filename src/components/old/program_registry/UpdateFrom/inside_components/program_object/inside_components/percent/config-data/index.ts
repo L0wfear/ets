@@ -5,7 +5,7 @@ export default {
   hiddenNav: true,
   title: 'Проставление процента выполнения работ',
   entyity: 'repair_program_version',
-  noDotList: false,
+
   component,
   permissions,
 };

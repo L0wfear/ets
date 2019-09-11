@@ -202,7 +202,7 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
     );
   }
 
-  if (type === buttonsTypes.edc_request_info) {
+  if (type === 'info') {
     return (
       <RequestInfoFormLazy
         element={props.element}
@@ -215,7 +215,7 @@ const EdcRequestFormLazy: React.FC<EdcRequestFormLazy> = (props) => {
     );
   }
 
-  if (type === buttonsTypes.edc_request_comments) {
+  if (type === 'comments') {
     return (
       <RequestCommentsFormLazy
         showForm

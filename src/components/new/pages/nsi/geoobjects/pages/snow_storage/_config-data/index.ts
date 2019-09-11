@@ -9,7 +9,7 @@ export default {
   title: 'Справочник пунктов временного складирования снега',
   isNewRegistry: true,
   entyity: 'snow_storage',
-  noDotList: false,
+
   component,
   permissions,
 };

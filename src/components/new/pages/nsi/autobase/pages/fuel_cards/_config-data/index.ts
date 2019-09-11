@@ -18,7 +18,7 @@ export default {
   title: 'Реестр топливных карт',
   isNewRegistry: true,
   entyity: 'fuel_cards',
-  noDotList: false,
+
   component,
   permissions,
 };

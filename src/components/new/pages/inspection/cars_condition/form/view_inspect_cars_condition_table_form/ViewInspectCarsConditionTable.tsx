@@ -76,6 +76,5 @@ export default compose<ViewInspectCarsConditionTableProps, ViewInspectCarsCondit
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectCarsConditionTable);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -60,7 +60,7 @@ const ButtonCreateMissionTemplate: React.FC<ButtonCreateMissionTemplateProps> = 
   );
 
   return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={disabled}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_by_template-form`} bsSize="small" onClick={handleClick} disabled={disabled}>
         Сформировать децентрализованное задание
       </EtsBootstrap.Button>
   );
@@ -68,7 +68,7 @@ const ButtonCreateMissionTemplate: React.FC<ButtonCreateMissionTemplateProps> = 
 
 export default compose<ButtonCreateMissionTemplateProps, ButtonCreateMissionTemplateOwnProps>(
   withSearch,
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: missionTemplatePermissions.create,
   }),
   connect<ButtonCreateMissionTemplateStateProps, ButtonCreateMissionTemplateDispatchProps, ButtonCreateMissionTemplateOwnProps, ReduxState>(

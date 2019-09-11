@@ -4,7 +4,7 @@ import EtsModalContainer from 'components/new/ui/@bootstrap/02-modal_container/E
 import EtsModalHeader from 'components/new/ui/@bootstrap/03-modal_header/EtsModalHeader';
 import EtsModalTitle from 'components/new/ui/@bootstrap/04-modal_title/EtsModalTitle';
 import EtsModalFooter from 'components/new/ui/@bootstrap/05-modal_footer/EtsModalFooter';
-import EtsRow from 'components/new/ui/@bootstrap/06-row/EtsRow';
+import EtsRow from 'components/new/ui/@bootstrap/row/EtsRow';
 import EtsCol from 'components/new/ui/@bootstrap/07-col/EtsCol';
 import EtsModalBody from 'components/new/ui/@bootstrap/08-modal_body/EtsModalBody';
 import EtsDropdown from 'components/new/ui/@bootstrap/09-dropdown/EtsDropdown';
@@ -15,7 +15,6 @@ import EtsNavDropdown from 'components/new/ui/@bootstrap/14-nav_dropdown/EtsNavD
 import EtsMenuItem from 'components/new/ui/@bootstrap/15-menu_item/EtsMenuItem';
 import EtsLabel from 'components/new/ui/@bootstrap/16-label/EtsLabel';
 import EtsFormControl from 'components/new/ui/@bootstrap/17-form_control/EtsFormControl';
-import EtsButtonGroup from 'components/new/ui/@bootstrap/18-button_group/EtsButtonGroup';
 import EtsPanel from 'components/new/ui/@bootstrap/20-panel/EtsPanel';
 import EtsPanelBody from 'components/new/ui/@bootstrap/21-panel_body/EtsPanelBody';
 import EtsPanelCollapse from 'components/new/ui/@bootstrap/22-panel_collapse/EtsPanelCollapse';
@@ -48,7 +47,6 @@ const EtsBootstrap = {
   Label: EtsLabel,
   BackgroundLabel: EtsBackgroundLabel,
   FormControl: EtsFormControl,
-  ButtonGroup: EtsButtonGroup,
   Panel: EtsPanel,
   PanelBody: EtsPanelBody,
   PanelCollapse: EtsPanelCollapse,

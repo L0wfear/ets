@@ -5,7 +5,7 @@ export default {
   path: '/car-condition-reports',
   title: 'Количество ТС в разрезе технического состояния',
   entyity: 'car_condition_report',
-  noDotList: false,
+
   component,
   permissions,
 };

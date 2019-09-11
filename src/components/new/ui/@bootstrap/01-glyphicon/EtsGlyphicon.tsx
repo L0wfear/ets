@@ -55,7 +55,7 @@ export const GlyphiconStyled = styled.span<EtsGlyphiconProps>`
 const EtsGlyphicon: React.FC<EtsGlyphiconProps> = React.memo(
   (props) => {
 
-    return Boolean(props.glyph) && (
+    return Boolean(props.glyph && props.glyph !== 'none') && (
       <GlyphiconStyled {...props} />
     );
   },

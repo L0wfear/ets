@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import tirePermissions from './permissions';
 
@@ -31,6 +31,7 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
       buttons: [
         buttonsTypes.filter,
         {
+          id: 'open-update-form',
           type: buttonsTypes.read,
           title: 'Выбрать',
           glyph: 'hand-up',

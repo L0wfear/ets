@@ -267,6 +267,8 @@ export const glyphMap = {
   'console': '\\e254',
   'superscript': '\\e255',
   'subscript': '\\e256',
+
+  'none': null,
 };
 
 const EtsGlobalStyle = createGlobalStyle`

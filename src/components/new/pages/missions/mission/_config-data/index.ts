@@ -9,7 +9,7 @@ export default {
   title: 'Журнал заданий',
   isNewRegistry: true,
   entyity: 'mission',
-  noDotList: false,
+
   component,
   permissions,
 };

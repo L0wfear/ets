@@ -27,7 +27,7 @@ const ButtonShowActionLogTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td id={props.id}>
         <EtsBootstrap.Button block onClick={handleClick}>Открыть историю</EtsBootstrap.Button>
       </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );

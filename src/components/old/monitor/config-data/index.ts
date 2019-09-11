@@ -6,7 +6,7 @@ export default {
   routePath: '/monitor/:gov_number?',
   title: 'Карта',
   entyity: 'monitor',
-  noDotList: true,
+
   component,
   permissions,
 };

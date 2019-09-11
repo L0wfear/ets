@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -23,7 +23,6 @@ type ButtonRemoveDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type ButtonRemoveOwnProps = CommonTypesForButton & {
-  format?: 'yesno' | 'default';
 };
 type ButtonRemoveMergeProps = {};
 
@@ -75,8 +74,8 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
   return (
     <>
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
-        <EtsBootstrap.Glyphicon glyph={data.glyph || 'remove'} />{data.title || 'Удалить'}
+      <EtsBootstrap.Button id={`${props.registryKey}.open-remove-form`} bsSize="small" onClick={handleClickOpenForm} disabled={!props.selectedRow && !Object.values(props.checkedRows).length}>
+        <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'remove') : null} />{data.title || 'Удалить'}
 
       </EtsBootstrap.Button>
       <ModalYesNo
@@ -84,22 +83,26 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         handleHide={handleClickCloseForm}
         handleSubmit={handleClickRemoveSelectedRows}
 
-        message={`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
+        message={
+          Boolean(checkedRowsAsArray[1])
+            ? data.message_multi || 'Вы уверены, что хотите удалить выбранные элементы?'
+            : data.message_single || 'Вы уверены, что хотите удалить выбранный элемент?'
+        }
 
-        titleOk={props.format === 'yesno' ? 'Да' : null}
-        titleCancel={props.format === 'yesno' ? 'Нет' : null}
+        titleOk={data.format === 'yesno' ? 'Да' : null}
+        titleCancel={data.format === 'yesno' ? 'Нет' : null}
       />
     </>
   );
 };
 
 export default compose<ButtonRemoveProps, ButtonRemoveOwnProps>(
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonRemoveStateProps, ButtonRemoveDispatchProps, ButtonRemoveOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,

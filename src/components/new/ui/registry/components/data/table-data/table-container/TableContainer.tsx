@@ -43,7 +43,7 @@ const TableContainer: React.FC<Props> = React.memo(
     );
     // console.log('tableProps === ', { props, });
     return (
-      <EtsBootstrap.Row>
+      <EtsBootstrap.Row margin={10}>
         <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
           <EtsTableWrap className="ets_table_wrap" addToMinusHeight={getAddToMinusHeight(format)} isGroupColumn={groupColumn ? true : false}>
             <EtsBootstrap.Grid.GridTable fixedWidth={fixedWidth}>

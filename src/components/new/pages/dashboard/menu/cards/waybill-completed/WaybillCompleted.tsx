@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 import List from 'components/new/pages/dashboard/menu/cards/waybill-completed/list/List';
 import {
@@ -21,7 +21,6 @@ import {
 import { compose } from 'recompose';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 
 class WaybillCompleted extends React.Component<PropsWaybillCompleted, StateWaybillCompleted> {
   handleClick: any = ({ currentTarget: { dataset: { path } } }) => {

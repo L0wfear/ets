@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import cleaningRatePermissions from './permissions';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
 

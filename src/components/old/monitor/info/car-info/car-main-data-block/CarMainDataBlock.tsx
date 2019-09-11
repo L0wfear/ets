@@ -46,10 +46,9 @@ const CarMainDataBlock: React.FC<PropsCarMainDataBlock> = React.memo(
           </div>
           <div className="car_info-img">
           {
-            type_image_name !== '' ?
-            <img id="car_info_image" role="presentation" className="car-info-image" src={'https://i.ibb.co/wd2FvRz/image.png' || (!!type_image_name ? `${config.images}${type_image_name}` : '')} />
-            :
-            <PreloadNew typePreloader="field" />
+            type_image_name !== ''
+              ? <img id="car_info_image" role="presentation" className="car-info-image" src={(type_image_name ? `${config.images}${type_image_name}` : '')} />
+              : <PreloadNew typePreloader="field" />
           }
           </div>
           <div>

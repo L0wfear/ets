@@ -1,8 +1,11 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import employeeOnCarPermissions from './permissions';
 import { EmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/@types/employeeOnCar';
 import carActualPermissions from '../../autobase/pages/car_actual/_config-data/permissions';
+import {
+  config,
+} from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
 
 export const registryKey = 'employeeOnCarRegistry';
 import { id } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
@@ -19,7 +22,19 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
     header: {
       title: 'Матрица распределения ТС и водителей',
       buttons: [
-        buttonsTypes.read_employee_on_car,
+        {
+          id: 'open-update_car-form',
+          type: buttonsTypes.read,
+          title: 'Просмотреть карточку ТС',
+          glyph: 'none',
+          other_params: {
+            otherUniqKeyForParamsData: {
+              key: config.list.data.uniqKeyForParams,
+              path: 'asuods_id',
+              permissions: [carActualPermissions.read, carActualPermissions.update],
+            },
+          },
+        },
         buttonsTypes.filter,
       ],
     },
@@ -51,10 +66,7 @@ export const getToConfig = (): TypeConfigData<EmployeeOnCar> => {
       ],
     },
     list: {
-      permissions: {
-        ...employeeOnCarPermissions,
-        read: carActualPermissions.update,
-      },
+      permissions: employeeOnCarPermissions,
       data: {
         uniqKey: 'frontId',
         fixedWidth: true,

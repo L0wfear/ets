@@ -18,7 +18,7 @@ export default {
   title: 'Показатели для расчета эффективности работы бригад',
   isNewRegistry: true,
   entyity: 'cleaning_rate',
-  noDotList: false,
+
   component,
   permissions,
 };

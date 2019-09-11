@@ -4,7 +4,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { ReduxState } from 'redux-main/@types/state';
 
 import { registryLoadDataByKey, registrySetSelectedRowToShowInForm, registryRemoveSelectedRows } from 'components/new/ui/registry/module/actions-registy';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { CompanyStructure } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
@@ -13,7 +13,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type ButtonRemoveCompanyStructureStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  permissions: string | boolean;
+  permissions: OneRegistryData['list']['permissions']['delete'];
 };
 type ButtonRemoveCompanyStructureDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
@@ -104,5 +104,5 @@ export default compose<ButtonRemoveCompanyStructureProps, ButtonRemoveCompanyStr
       ),
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
 )(ButtonRemoveCompanyStructure);

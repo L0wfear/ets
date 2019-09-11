@@ -18,7 +18,7 @@ export default {
   title: 'Производители аккумуляторов',
   isNewRegistry: true,
   entyity: 'autobase_battery_manufacturer',
-  noDotList: false,
+
   component,
   permissions,
 };

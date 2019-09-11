@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import withDefaultCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import { connect } from 'react-redux';
 
 import ListByTypeFutureMission from 'components/new/pages/dashboard/menu/cards/future-missions/list/ListByTypeFutureMission';
@@ -17,7 +17,6 @@ import {
 } from 'components/new/pages/dashboard/menu/cards/future-missions/FutureMissions.h';
 import { ReduxState } from 'redux-main/@types/state';
 import { compose } from 'recompose';
-import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 class FutureMissions extends React.Component<PropsFutureMissions, StateFutureMissions> {

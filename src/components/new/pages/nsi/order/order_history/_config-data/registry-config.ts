@@ -1,4 +1,4 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import userActionLogPermissions from 'components/new/pages/nsi/order/_config-data/permissions';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 

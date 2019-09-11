@@ -9,7 +9,7 @@ export default {
   title: 'Шаблоны заданий',
   isNewRegistry: true,
   entyity: 'mission_template',
-  noDotList: false,
+
   component,
   permissions,
 };

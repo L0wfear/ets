@@ -20,7 +20,7 @@ export default {
   title: 'Реестр транспортных средств',
   isNewRegistry: true,
   entyity: 'car',
-  noDotList: false,
+
   component,
   permissions,
 };

@@ -1,37 +1,23 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
+import { get } from 'lodash';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-import { ReduxState } from 'redux-main/@types/state';
+
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
-import { compose } from 'recompose';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { get } from 'lodash';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 
-type ButtonReadStateProps = {
-  uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
-  selectedRow: OneRegistryData['list']['data']['selectedRow'];
-};
-type ButtonReadDispatchProps = {
-  registrySetSelectedRowToShowInForm: any;
-};
-type ButtonReadOwnProps = CommonTypesForButton & {
+type OwnProps = CommonTypesForButton & {
   onClick?: (item: any) => any;
 };
-type ButtonReadMergeProps = {};
 
-type ButtonReadProps = (
-  ButtonReadStateProps
-  & ButtonReadDispatchProps
-  & ButtonReadOwnProps
-  & ButtonReadMergeProps
-) & WithSearchProps;
+type Props = OwnProps & WithSearchProps;
 
 let lasPermissions = {};
 let lastPermissionsArray = [];
@@ -46,57 +32,52 @@ const getPermissionsReadUpdate = (permission) => {
   return lastPermissionsArray;
 };
 
-const ButtonRead: React.FC<ButtonReadProps> = React.memo(
+const ButtonRead: React.FC<Props> = React.memo(
   (props) => {
+    const dispatch = etsUseDispatch();
+    const permissions = etsUseSelector((state) => getPermissionsReadUpdate(getListData(state.registry, props.registryKey).permissions));
+    const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
+    const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
+    const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
+
     const data = React.useMemo(
       () => (
-        get(props, 'data', {} as ButtonReadOwnProps['data'])
+        get(props, 'data', {}) as Props['data']
       ),
       [props.data],
     );
     const handleClick = React.useCallback(
       () => {
         if (props.onClick) {
-          props.onClick(props.selectedRow);
+          props.onClick(selectedRow);
           return;
         }
-        props.setParams({
-          [props.uniqKeyForParams]: get(props.selectedRow, props.uniqKey, null),
-          ...get(data, 'objChangeParams', {}),
-        }),
-        props.registrySetSelectedRowToShowInForm();
+
+        const changeObj = makePayloadToParamsForRead(
+          data,
+          selectedRow,
+          uniqKeyForParams,
+          uniqKey,
+        );
+
+        props.setParams(changeObj);
+        dispatch(
+          registrySetSelectedRowToShowInForm(props.registryKey),
+        );
       },
-      [data, props.onClick, props.selectedRow, props.uniqKey, props.uniqKeyForParams, props.registrySetSelectedRowToShowInForm],
+      [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams],
     );
 
-    return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
-        <EtsBootstrap.Glyphicon glyph={data.glyph || 'search'} />{data.title || 'Просмотреть'}
+    const isPermitted = etsUseIsPermitted(
+      get(data, 'other_params.uniqKeyForParams.permissions') || permissions,
+    );
+
+    return isPermitted && (
+      <EtsBootstrap.Button id={`${props.registryKey}.open-update-form`} bsSize="small" onClick={handleClick} disabled={!selectedRow}>
+        <EtsBootstrap.Glyphicon glyph={data.glyph !== 'none' ? (data.glyph || 'search') : null} />{data.title || 'Просмотреть'}
       </EtsBootstrap.Button>
     );
   },
 );
 
-export default compose<ButtonReadProps, ButtonReadOwnProps>(
-  withSearch,
-  connect<{ permissions: (string | boolean)[] }, DispatchProp, { registryKey: string }, ReduxState>(
-    (state, { registryKey }) => ({
-      permissions: getPermissionsReadUpdate(getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
-    }),
-  ),
-  withRequirePermissionsNew(),
-  connect<ButtonReadStateProps, ButtonReadDispatchProps, ButtonReadOwnProps, ReduxState>(
-    (state, { registryKey }) => ({
-      uniqKey: getListData(state.registry, registryKey).data.uniqKey,
-      uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
-      selectedRow: getListData(state.registry, registryKey).data.selectedRow,
-    }),
-    (dispatch: any, { registryKey }) => ({
-      registrySetSelectedRowToShowInForm: () => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(registryKey),
-        )
-      ),
-    }),
-  ),
-)(ButtonRead);
+export default withSearch<OwnProps>(ButtonRead);

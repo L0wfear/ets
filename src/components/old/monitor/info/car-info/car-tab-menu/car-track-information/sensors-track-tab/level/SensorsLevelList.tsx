@@ -6,7 +6,7 @@ import * as cx from 'classnames';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { compose } from 'recompose';
 import { carInfoToggleSensorShow } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import {
   DivNone,
@@ -102,7 +102,7 @@ export default compose<PropsSensorsLevelList, any>(
     type: 'loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: 'map.leak_and_refill',
     withIsPermittedProps: true,
   }),

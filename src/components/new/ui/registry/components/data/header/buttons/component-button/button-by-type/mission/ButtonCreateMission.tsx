@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -41,7 +41,7 @@ const ButtonCreateMission: React.FC<ButtonCreateMissionProps> = (props) => {
   );
 
   return (
-    <EtsBootstrap.Button id="open-create-form" bsSize="small" onClick={handleClick}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_by_templates-form`} bsSize="small" onClick={handleClick}>
       <EtsBootstrap.Glyphicon glyph="plus" /> Создать децентрализованное задание
     </EtsBootstrap.Button>
   );
@@ -49,12 +49,12 @@ const ButtonCreateMission: React.FC<ButtonCreateMissionProps> = (props) => {
 
 export default compose<ButtonCreateMissionProps, ButtonCreateMissionOwnProps>(
   withSearch,
-  connect<{ permissions: string | boolean }, DispatchProp, { registryKey: string }, ReduxState>(
+  connect<{  permissions: OneRegistryData['list']['permissions']['delete'] }, DispatchProp, { registryKey: string }, ReduxState>(
     (state, { registryKey }) => ({
       permissions: getListData(state.registry, registryKey).permissions.create, //  прокидывается в следующий компонент
     }),
   ),
-  withRequirePermissionsNew(),
+  withRequirePermission(),
   connect<ButtonCreateMissionStateProps, ButtonCreateMissionDispatchProps, ButtonCreateMissionOwnProps, ReduxState>(
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,

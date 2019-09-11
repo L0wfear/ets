@@ -6,8 +6,8 @@ import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/old/ui/table/DataTable';
-import DateFormatter from 'components/old/ui/DateFormatter';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
@@ -110,27 +110,24 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
   return meta;
 }
 
-const getRenders = (props) => {
-  const renderers: ISchemaRenderer = {
-    date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
-    date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
-    structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
-    brigade_employee_id_list_id: ({ data, rowData }) => (
-      <div>
-        {
-          rowData.brigade_employee_id_list_fio.join(', ')
-        }
-      </div>
-    ),
-  };
-  return renderers;
+const renderers: ISchemaRenderer = {
+  date_from: ({ data }) => makeDateFormated(data, true),
+  date_to: ({ data }) => makeDateFormated(data, true),
+  structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
+  brigade_employee_id_list_id: ({ data, rowData }) => (
+    <div>
+      {
+        rowData.brigade_employee_id_list_fio.join(', ')
+      }
+    </div>
+  ),
 };
 
 const Table: React.FC<any> = (props) => (
   <DataTable
     multiSelection={true}
     results={props.data}
-    renderers={getRenders(props)}
+    renderers={renderers}
     tableMeta={getTableMeta(props)}
     onRowSelected={props.onRowSelected}
     onRowChecked={props.onRowChecked}

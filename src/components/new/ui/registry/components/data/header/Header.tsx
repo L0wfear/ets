@@ -41,7 +41,7 @@ const Header: React.FC<HeaderProps> = React.memo(
 
     return (
       <EtsHeaderContainerWrap>
-        <EtsBootstrap.Row>
+        <EtsBootstrap.Row margin={10}>
           <EtsBootstrap.Col md={format === 'order_to' ? 8 : 12}>
             <EtsHeaderContainer>
               <Title registryKey={props.registryKey} />

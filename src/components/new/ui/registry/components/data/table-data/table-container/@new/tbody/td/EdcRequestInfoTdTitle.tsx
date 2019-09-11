@@ -22,14 +22,14 @@ const EdcRequestInfoTdTitle: React.FC<Props> = React.memo(
       async () => {
         props.setParams({
           [uniqKeyForParams]: uniqValue,
-          type: buttonsTypes.edc_request_info,
+          type: 'info',
         });
       },
       [rowData, buttonsTypes, uniqKeyForParams, uniqValue, props.setParams],
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td alignCenter id={props.id}>
         {
           rowData.rework && (
             <EtsBootstrap.Glyphicon onClick={ handleClick } glyph="info-sign" fontSize="32px" color={UiConstants.colorError} />

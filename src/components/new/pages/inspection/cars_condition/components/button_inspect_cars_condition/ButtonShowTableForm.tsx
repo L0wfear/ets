@@ -4,12 +4,12 @@ import { ReduxState } from 'redux-main/@types/state';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getLastConductingInspect } from 'components/new/pages/inspection/autobase/@selectors';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ButtonShowTableFormProps, ButtonShowTableFormStateProps, ButtonShowTableFormDispatchProps, ButtonShowTableFormOwnProps } from 'components/new/pages/inspection/cars_condition/components/button_inspect_cars_condition/@types';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 const ButtonShowTableForm: React.FC<ButtonShowTableFormProps> = (props) => {
 
@@ -41,8 +41,6 @@ export default compose<ButtonShowTableFormProps, ButtonShowTableFormOwnProps>(
       lastConductingInspect: getLastConductingInspect(getListData(getRegistryState(state), loadingPage)),
     }),
   ),
-  withRequirePermissionsNew({
-    withIsPermittedProps: true,
-  }),
+  withRequirePermission({}),
   withSearch,
 )(ButtonShowTableForm);

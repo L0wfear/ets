@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import userActionLogPermissions from './permissions';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import { ORDER_STATUS_LABELS } from 'constants/dictionary';

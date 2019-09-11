@@ -1,38 +1,25 @@
 import * as React from 'react';
 
-import styled from 'styled-components';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type SelectedOdhDtStateProps = {
-};
-type SelectedOdhDtDispatchProps = {
-  actionChangeGlobalPaylaodInServiceData: HandleThunkActionCreator<typeof actionChangeGlobalPaylaodInServiceData>;
-};
-type SelectedOdhDtOwnProps = {
+type OwnProps = {
   registryKey: string;
 };
-type SelectedOdhDtMergedProps = (
-  SelectedOdhDtStateProps
-  & SelectedOdhDtDispatchProps
-  & SelectedOdhDtOwnProps
-);
 
-type SelectedOdhDtProps = (
-  SelectedOdhDtMergedProps
+type Props = (
+  OwnProps
+  & {}
   & WithSearchProps
 );
 
-const ButtonWrap = styled(EtsBootstrap.Button)``;
-
-const SelectedOdhDt: React.FC<SelectedOdhDtProps> = React.memo(
+const SelectedOdhDt: React.FC<Props> = React.memo(
   (props) => {
     const selected_odh_dt_value = props.match.params.selected_odh_dt_value;
+    const dispatch = etsUseDispatch();
 
     React.useEffect(
       () => {
@@ -56,7 +43,9 @@ const SelectedOdhDt: React.FC<SelectedOdhDtProps> = React.memo(
             },
           };
 
-          props.actionChangeGlobalPaylaodInServiceData(props.registryKey, payload);
+          dispatch(
+            actionChangeGlobalPaylaodInServiceData(props.registryKey, payload),
+          );
         }
       },
       [selected_odh_dt_value],
@@ -82,23 +71,11 @@ const SelectedOdhDt: React.FC<SelectedOdhDtProps> = React.memo(
 
     return (
       <EtsButtonsContainer>
-        <ButtonWrap active={selected_odh_dt_value === 'odh'} onClick={handleSelectOdh}>ОДХ</ButtonWrap>
-        <ButtonWrap active={selected_odh_dt_value === 'dt'} onClick={handleSelectDt}>ДТ</ButtonWrap>
+        <EtsBootstrap.Button active={selected_odh_dt_value === 'odh'} onClick={handleSelectOdh}>ОДХ</EtsBootstrap.Button>
+        <EtsBootstrap.Button active={selected_odh_dt_value === 'dt'} onClick={handleSelectDt}>ДТ</EtsBootstrap.Button>
       </EtsButtonsContainer>
     );
   },
 );
 
-export default compose<SelectedOdhDtProps, SelectedOdhDtOwnProps>(
-  connect<SelectedOdhDtStateProps, SelectedOdhDtDispatchProps, SelectedOdhDtOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      actionChangeGlobalPaylaodInServiceData: (...arg) => (
-        dispatch(
-          actionChangeGlobalPaylaodInServiceData(...arg),
-        )
-      ),
-    }),
-  ),
-  withSearch,
-)(SelectedOdhDt);
+export default withSearch<OwnProps>(SelectedOdhDt);

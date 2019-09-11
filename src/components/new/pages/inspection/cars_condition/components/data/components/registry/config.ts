@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
@@ -53,6 +53,18 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           labelKey: 'monitoring_kind_text',
           type: 'multiselect',
           title: 'Вид проверки',
+        },
+        {
+          valueKey: 'checks_period',
+          labelKey: 'checks_period_text',
+          type: 'multiselect',
+          title: 'Период проверки',
+        },
+        {
+          valueKey: 'checks_type',
+          labelKey: 'checks_type_text',
+          type: 'multiselect',
+          title: 'Тип проверки',
         },
         {
           valueKey: 'cars_cnt',
@@ -116,6 +128,17 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
             key: 'status_text',
             title: 'Статус проверки',
             width: 200,
+          },
+          {
+            key: 'checks_period_text',
+            title: 'Период проверки',
+            width: 150,
+            dashIfEmpty: true,
+          },
+          {
+            key: 'checks_type_text',
+            title: 'Тип проверки',
+            width: 150,
           },
           {
             key: 'cars_cnt',

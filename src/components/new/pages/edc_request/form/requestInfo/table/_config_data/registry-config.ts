@@ -1,4 +1,4 @@
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import edcRequestPermissions from 'components/new/pages/edc_request/_config-data/permissions';
 import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 

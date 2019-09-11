@@ -9,7 +9,7 @@ import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/with
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { GlobalFormSchemaType } from 'components/new/GlobalForms';
 import { isNullOrUndefined } from 'util';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { WithformWrapRegistryWrapper } from 'components/new/pages/inspection/common_components/form_wrap_registry/styled';
 import { FooterEnd } from 'global-styled/global-styled';
@@ -104,7 +104,5 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
 
 export default compose<any, any>(
   withSearch,
-  withRequirePermissionsNew({
-    withIsPermittedProps: true,
-  }),
+  withRequirePermission({}),
 )(WithInspectFormWrapRegistry);

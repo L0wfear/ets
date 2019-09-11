@@ -19,7 +19,7 @@ export default {
   title: 'Матрица распределения ТС и водителей',
   isNewRegistry: true,
   entyity: 'employee_on_car',
-  noDotList: false,
+
   component,
   permissions,
 };

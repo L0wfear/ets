@@ -9,7 +9,7 @@ export default {
   title: 'Справочник ДТ',
   isNewRegistry: true,
   entyity: 'type',
-  noDotList: false,
+
   component,
   permissions,
 };

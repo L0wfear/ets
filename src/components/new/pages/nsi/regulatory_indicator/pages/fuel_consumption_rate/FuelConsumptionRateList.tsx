@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 import FuelRatesFormLazy from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/form';
 
@@ -6,65 +7,42 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type FuelRatesListStateProps = {};
-export type FuelRatesListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type FuelRatesListOwnProps = {};
-export type FuelRatesListMergedProps = (
-  FuelRatesListStateProps
-  & FuelRatesListDispatchProps
-  & FuelRatesListOwnProps
-);
-export type FuelRatesListProps = (
-  FuelRatesListMergedProps
-);
+export type OwnProps = {};
+export type Props = OwnProps & {};
 
-const FuelRatesList: React.FC<FuelRatesListProps> = (props) => {
-  React.useEffect(
-    () => {
-      props.registryAddInitialData(getToConfig());
-      return () => {
-        props.registryRemoveData(registryKey);
-      };
-    },
-    [],
-  );
+const FuelRatesList: React.FC<Props> = React.memo(
+  (props) => {
+    const dispatch = etsUseDispatch();
 
-  return (
-    <>
-      <Registry registryKey={registryKey} />
-      <FuelRatesFormLazy registryKey={registryKey} />
-    </>
-  );
-};
-
-export default compose<FuelRatesListProps, FuelRatesListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<FuelRatesListStateProps, FuelRatesListDispatchProps, FuelRatesListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
+    React.useEffect(
+      () => {
         dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(FuelRatesList);
+          registryAddInitialData(getToConfig()),
+        );
+        return () => {
+          dispatch(
+            registryRemoveData(registryKey),
+          );
+        };
+      },
+      [getToConfig],
+    );
+
+    return (
+      <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <FuelRatesFormLazy registryKey={registryKey} />
+      </React.Fragment>
+    );
+  },
+);
+
+export default withPreloader<OwnProps>({
+  page: registryKey,
+  typePreloader: 'mainpage',
+})(FuelRatesList);

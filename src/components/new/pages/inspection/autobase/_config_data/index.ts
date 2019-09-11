@@ -1,14 +1,17 @@
 import permissions from 'components/new/pages/inspection/autobase/_config_data/permissions';
 import component from 'components/new/pages/inspection/autobase/_config_data/components';
+import { ConfigPageData } from 'components/@next/@types/config_data';
 
-export default {
+const monitoring_autobase_page_config: ConfigPageData = {
   path: '/monitoring/autobase',
   routePath: '/monitoring/autobase/:id?/:type?',
   title: 'Обустройство автобаз',
   isNewRegistry: true,
   entyity: 'inspect.autobase',
-  noDotList: true,
-  checkHidden: (isShow, props) => isShow && !props.isOkrug,
+
+  checkHidden: (isShow, userData) => isShow && !userData.isOkrug,
   component,
   permissions,
 };
+
+export default monitoring_autobase_page_config;

@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 type TypeConfig = {
-  withIsPermittedProps?: boolean;       // true даёт isPermitted в пропсах оборачиваемого компонента
-  permissions?: string | string[];      // разрешения для проверки | можно прокинуть как пропсы
-  every?: boolean;                      // все ли разрешения должы быть у пользователя?
-  byEntity?: boolean;                   // даёт пермишен для проверки `${entity}.${type}`
-  type?: string;                        // смотри выше
+  withIsPermittedProps?: boolean;                                           // true даёт isPermitted в пропсах оборачиваемого компонента
+  permissions?: Parameters<typeof validatePermissions>[0]                   // разрешения для проверки | можно прокинуть как пропсы
+  every?: boolean;                                                          // все ли разрешения должы быть у пользователя?
+  byEntity?: boolean;                                                       // даёт пермишен для проверки `${entity}.${type}`
+  type?: string;                                                            // смотри выше
 };
 
 export type WithRequirePermissionAddProps = {

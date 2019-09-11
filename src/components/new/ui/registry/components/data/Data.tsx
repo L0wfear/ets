@@ -22,6 +22,32 @@ const Data: React.FC<Props> = React.memo(
       registryKey,
     } = props;
     const format = etsUseSelector((state) => getHeaderData(getRegistryState(state), registryKey).format);
+    const title = etsUseSelector((state) => getHeaderData(getRegistryState(state), props.registryKey).title);
+
+    React.useLayoutEffect(
+      () => {
+        const meta = document.querySelector('meta[property="og:title"]');
+        const etsName = __DEVELOPMENT__ ? `__ETS::${process.env.STAND.toUpperCase()}__` : 'ЕТС';
+        const new_title = `${etsName} ${title}`;
+
+        if (document) {
+          document.title = new_title;
+        }
+        if (meta) {
+          meta.setAttribute('content', new_title);
+        }
+
+        return () => {
+          const metaNew = document.querySelector('meta[property="og:title"]');
+          if (document) {
+            document.title = etsName;
+          }
+          if (metaNew) {
+            metaNew.setAttribute('content', etsName);
+          }
+        };
+      },
+    );
 
     return (
       <EtsDataContainer>

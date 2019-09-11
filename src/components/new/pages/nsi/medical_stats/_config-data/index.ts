@@ -12,7 +12,7 @@ export default {
   title: 'Статистика прохождения мед. осмотров',
   isNewRegistry: true,
   entyity: 'medical_stats',
-  noDotList: false,
+
   component,
   permissions,
 };

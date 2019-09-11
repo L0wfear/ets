@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -76,14 +76,14 @@ const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriver
   );
 
   return (
-    <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
+    <EtsBootstrap.Button id={`${props.registryKey}.open-update_car-form`} bsSize="small" onClick={handleClick} disabled={!props.selectedRow}>
       Изменить водителей
     </EtsBootstrap.Button>
   );
 };
 
 export default compose<ButtonChangeDriverTechnicalOperationRelationsProps, ButtonChangeDriverTechnicalOperationRelationsOwnProps>(
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: carActualPermissions.update,
   }),
   connect<ButtonChangeDriverTechnicalOperationRelationsStateProps, ButtonChangeDriverTechnicalOperationRelationsDispatchProps, ButtonChangeDriverTechnicalOperationRelationsOwnProps, ReduxState>(

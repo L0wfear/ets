@@ -1,134 +1,120 @@
 import * as React from 'react';
+
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
-
-import {
-  PropsDefaultCard,
-  StateDefaultCard,
-  ConfigType,
-  StatePropsDefaultCard,
-  DispatchPropsDefaultCard,
-  OwnerPropsDefaultCard,
-} from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.h';
+import { withRequirePermission, WithRequirePermissionProps, WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import {
   CardTitleContainer,
   CardTitleContainerWrap,
   CardBodyContainer,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
-import { ReduxState } from 'redux-main/@types/state';
 import { getDashboardState } from 'redux-main/reducers/selectors';
+import { etsUseSelector, etsUseDispatch, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
 
-const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: ConfigType) => (Component: React.ClassType<P, any, any>) => (
-  compose<P, P>(
-    withRequirePermissionsNew<P>({
-      permissions: `dashboard.${path}`,
-    }),
-    connect<StatePropsDefaultCard, DispatchPropsDefaultCard, OwnerPropsDefaultCard<P>, ReduxState>(
-      (state) => {
-        return ({
-          isLoading: getDashboardState(state)[path].isLoading,
-          title: getDashboardState(state)[path].data.title,
-          dateLoad: getDashboardState(state)[path].dateLoad,
-        });
-      },
-      (dispatch) => ({
-        loadData: () => (
+export type ConfigType = {
+  path: keyof InitialStateDashboard;
+  loadData: () => EtsAction<Promise<any>>;
+  InfoComponent?: React.ComponentType<any>;
+};
+
+export type PropsToDefaultCard = {
+  timeInterval?: number;
+  timeDelay: number;
+  page?: string;
+} & WithRequirePermissionProps;
+
+const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType) => (Component: React.ComponentType<OwnProps & WithRequirePermissionAddProps>) => {
+  const defaultCard: React.FC<OwnProps & WithRequirePermissionAddProps> = React.memo(
+    (props) => {
+      const [hasFirstLoad, setHasFirstLoad] = React.useState(false);
+
+      const isLoading = etsUseSelector((state) => getDashboardState(state)[config.path].isLoading);
+      const title = etsUseSelector((state) => getDashboardState(state)[config.path].data.title);
+      const dateLoad = etsUseSelector((state) => getDashboardState(state)[config.path].dateLoad);
+
+      const dispatch = etsUseDispatch();
+
+      const loadData = React.useCallback(
+        async () => {
           dispatch(
             config.loadData(),
-          )
-        ),
-      }),
-    ),
-  )(
-    class DefaultCard extends React.Component<PropsDefaultCard<P>, StateDefaultCard> {
-      state = {
-        timerId: 0,
-        inLoadByLocalRefresh: false,
-      };
+          );
+        },
+        [],
+      );
 
-      componentDidMount() {
-        this.loadData();
+      React.useEffect(
+        () => {
+          const timer_id = setTimeout(
+            async () => {
+              await loadData();
+              setHasFirstLoad(true);
+            },
+            props.timeDelay * 100 || 0,
+          );
 
-        this.setState({
-          timerId: setTimeout(() => {
-            this.setState({
-              timerId: setInterval(() => {
-                if (!this.props.isLoading) {
-                  this.loadData();
-                }
-              }, (this.props.timeInterval || 2 * 60) * 1000),
-            });
-          }, this.props.timeDelay * 100 || 0),
-        });
-      }
+          return () => clearTimeout(timer_id);
+        },
+        [],
+      );
 
-      componentDidUpdate(prevProps) {
-        if (prevProps.dateLoad !== this.props.dateLoad) {
-          if (!this.state.inLoadByLocalRefresh) {
-            clearTimeout(this.state.timerId);
-            clearInterval(this.state.timerId);
+      const dateLoadPrev = usePrevious(dateLoad);
 
-            this.setState({
-              timerId: setInterval(() => (
-                this.loadData()
-              ), 60 * 1000),
-            });
+      React.useEffect(
+        () => {
+          let timer_id = null;
+          if (hasFirstLoad && !isLoading && dateLoadPrev !== dateLoad) {
+            timer_id = setInterval(
+              async () => {
+                loadData();
+              },
+              60 * 1000,
+            );
           }
-        }
-      }
 
-      componentWillUnmount() {
-        clearTimeout(this.state.timerId);
-        clearInterval(this.state.timerId);
-      }
+          return () => clearInterval(timer_id);
+        },
+        [hasFirstLoad, isLoading, dateLoad, dateLoadPrev],
+      );
 
-      loadData = () => {
-        this.setState({ inLoadByLocalRefresh: true });
-        this.props.loadData()
-          .then(() => (
-            this.setState({ inLoadByLocalRefresh: false })
-          ));
-      }
+      return (
+        <EtsBootstrap.DashboardCard>
+          <div>
+            <CardTitleContainer>
+              <CardTitleContainerWrap>
+                <div>{title}</div>
+                <div className="button_refresh">
+                  <EtsBootstrap.Button onClick={loadData} disabled={isLoading}>
+                    <EtsBootstrap.Glyphicon
+                      isLoading={isLoading}
+                      glyph="refresh"
+                    />
+                  </EtsBootstrap.Button>
+                </div>
+              </CardTitleContainerWrap>
+            </CardTitleContainer>
+            <CardBodyContainer isLoading={isLoading}>
+              <Component {...props} />
+            </CardBodyContainer>
+          </div>
+          <div>
+            {
+              Boolean(config.InfoComponent) && (
+                <config.InfoComponent />
+              )
+            }
+          </div>
 
-      render() {
-        const { isLoading, title, loadData, dateLoad, ...props } = this.props;
-        return (
-          <EtsBootstrap.DashboardCard>
-            <div>
-              <CardTitleContainer>
-                <CardTitleContainerWrap>
-                  <div>{title}</div>
-                  <div className="button_refresh">
-                    <EtsBootstrap.Button onClick={this.loadData} disabled={isLoading}>
-                      <EtsBootstrap.Glyphicon
-                        isLoading={isLoading}
-                        glyph="refresh"
-                      />
-                    </EtsBootstrap.Button>
-                  </div>
-                </CardTitleContainerWrap>
-              </CardTitleContainer>
-              <CardBodyContainer isLoading={isLoading}>
-                <Component {...props} />
-              </CardBodyContainer>
-            </div>
-            <div>
-              {
-                Boolean(InfoComponent) && (
-                  <InfoComponent />
-                )
-              }
-            </div>
-
-          </EtsBootstrap.DashboardCard>
-        );
-      }
+        </EtsBootstrap.DashboardCard>
+      );
     },
-  )
-);
+  );
+
+  return withRequirePermission<OwnProps>({
+    permissions: `dashboard.${config.path}`,
+  })(defaultCard);
+};
 
 export default withDefaultCard;

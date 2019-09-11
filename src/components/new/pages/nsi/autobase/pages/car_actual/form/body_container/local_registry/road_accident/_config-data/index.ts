@@ -19,7 +19,7 @@ export default {
   title: 'Реестр ДТП',
   isNewRegistry: true,
   entyity: 'autobase_road_accident',
-  noDotList: false,
+
   component,
   permissions,
 };

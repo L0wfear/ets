@@ -68,7 +68,7 @@ const CheckboxTdTitle: React.FC<Props> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} onDoubleClick={handleDoubleClick}>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td onClick={handleClick} id={props.id} onDoubleClick={handleDoubleClick}>
         <ExtField
           type="boolean"
           error={false}

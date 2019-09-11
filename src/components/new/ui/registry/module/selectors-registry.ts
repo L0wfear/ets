@@ -26,8 +26,8 @@ type getRootRegistryFunc = (
   noTemplate?: boolean,
 ) => OneRegistryData;
 
-export const getServiceData: any = (registryState, registryKey) => (
-  (registryState[registryKey] || registryDefaultObj).Service
+export const getServiceData = (state: ReduxState, registryKey: string) => (
+  (getRegistryState(state)[registryKey] || registryDefaultObj).Service
 );
 
 export const getHeaderData: getHeaderDataFunc = (registryState, registryKey) => (
@@ -64,6 +64,7 @@ export const selectorShowArray = createSelector(
       perPage,
     } = paginator;
     const userServerFilters = get(Service, 'getRegistryData.userServerFilters', false);
+
     const currentPageEdit = userServerFilters ? 0 : currentPage;
 
     return processedArray.slice(currentPageEdit * perPage, (currentPageEdit + 1) * perPage);

@@ -1,8 +1,8 @@
 // import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { carsConditionCarFormDataSchema, carsConditionCarFormSchema } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/schema';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 
 export const registryKey = 'InspectCarsConditionsCarsExtendedRegistry';
 

@@ -191,6 +191,5 @@ export default compose<ViewInspectPgmBaseProps, ViewInspectPgmBaseOwnProps>(
   }),
   withPreloader({
     typePreloader: 'mainpage',
-    withPagePath: true,
   }),
 )(ViewInspectPgmBase);

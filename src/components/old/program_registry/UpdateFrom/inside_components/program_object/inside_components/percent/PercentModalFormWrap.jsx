@@ -4,10 +4,10 @@ import moment from 'moment';
 import { validateField } from 'utils/validate/validateField';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
-import enhanceWithPermissions from 'components/old/util/RequirePermissions';
 import PercentModalForm from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/PercentModalForm';
 
 import { formValidationSchema } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/inside_components/percent/schema';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 class PercentModalFormWrap extends UNSAFE_FormWrap {
   constructor(props) {
@@ -105,4 +105,4 @@ class PercentModalFormWrap extends UNSAFE_FormWrap {
   }
 }
 
-export default enhanceWithPermissions(PercentModalFormWrap);
+export default withRequirePermission()(PercentModalFormWrap);

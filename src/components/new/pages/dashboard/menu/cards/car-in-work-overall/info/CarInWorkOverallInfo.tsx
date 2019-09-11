@@ -1,50 +1,43 @@
 import * as React from 'react';
 
-import { compose } from 'recompose';
-import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
-import { connect } from 'react-redux';
-
 import InfoCard from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/InfoCard';
 
 import {
   dashboardSetInfoDataInCarInWorkOverall,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
-import {
-  PropsCarInWorkOverallInfo,
-} from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo.h';
 import { getDashboardState } from 'redux-main/reducers/selectors';
-import { ReduxState } from 'redux-main/@types/state';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const CarInWorkOverallInfo: React.FC<PropsCarInWorkOverallInfo> = ({ infoData, infoData: { subItems = [] } , ...props }) => (
-  <InfoCard title={infoData.title} handleClose={props.handleClose}>
-    <ul>
-      {
-        subItems.map(({ title }) => (
-          <li key={title}>
-            <span>{title}</span>
-          </li>
-        ))
-      }
-    </ul>
-  </InfoCard>
-);
+export type Props = {};
 
-export default compose<any, any>(
-  withShowByProps({
-    path: ['dashboard', 'car_in_work_overall', 'infoData'],
-    type: 'none',
-  }),
-  connect<any, any, any, ReduxState>(
-    (state) => ({
-      infoData: getDashboardState(state).car_in_work_overall.infoData,
-    }),
-    (dispatch: any) => ({
-      handleClose: () => (
+const CarInWorkOverallInfo: React.FC<Props> = React.memo(
+  () => {
+    const dispatch = etsUseDispatch();
+    const infoData = etsUseSelector((state) => getDashboardState(state).car_in_work_overall.infoData);
+    const handleClose = React.useCallback(
+      () => {
         dispatch(
           dashboardSetInfoDataInCarInWorkOverall(null),
-        )
-      ),
-    }),
-  ),
-)(CarInWorkOverallInfo);
+        );
+      },
+      [],
+    );
+
+    return Boolean(infoData) && (
+      <InfoCard title={infoData.title} handleClose={handleClose}>
+        <ul>
+          {
+            infoData.subItems.map(({ title }) => (
+              <li key={title}>
+                <span>{title}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </InfoCard>
+    );
+  },
+);
+
+export default CarInWorkOverallInfo;

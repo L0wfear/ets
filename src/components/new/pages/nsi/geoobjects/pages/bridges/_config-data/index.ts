@@ -9,7 +9,7 @@ export default {
   title: 'Справочник мостов',
   isNewRegistry: true,
   entyity: 'bridges',
-  noDotList: false,
+
   component,
   permissions,
 };

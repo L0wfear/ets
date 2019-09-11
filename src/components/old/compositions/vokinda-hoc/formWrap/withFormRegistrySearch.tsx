@@ -10,7 +10,7 @@ import { getListData, getServiceData, getHeaderData } from 'components/new/ui/re
 import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { DivNone } from 'global-styled/global-styled';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -79,7 +79,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
     withSearch,
     connect<any, any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } }, ReduxState>(
       (state, { registryKey, uniqKeyForParams, permissions }) => ({
-        getOneData: getServiceData(state.registry, registryKey).getOneData,
+        getOneData: getServiceData(state, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
         data: getListData(state.registry, registryKey).data,                        // Используется в children
         buttons: getHeaderData(state.registry, registryKey).buttons,
@@ -88,7 +88,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         permissions: getPermissionsCreateReadUpdate(permissions || getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
       }),
     ),
-    withRequirePermissionsNew(),
+    withRequirePermission(),
   )(
     ({ array, uniqKey, uniqKeyForParams, ...props }: Props) => {
       const [element, setElement] = React.useState(null);
@@ -104,7 +104,6 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
               || props.buttons.some((elem) => buttonsTypes.mission_create === elem.type)
               || props.buttons.some((elem) => buttonsTypes.car_actual_add_battery === elem.type)
               || props.buttons.some((elem) => buttonsTypes.car_actual_add_tire === elem.type)
-              || props.buttons.some((elem) => buttonsTypes.company_structure_create === elem.type)
             );
 
             if (hasButton && !config.cantCreate) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   getListData,
@@ -50,7 +50,7 @@ class ButtonCreateDutyMissionByEdcRequest extends React.PureComponent<ButtonCrea
     const can_create_duty_mission = get(props.selectedRow, 'can_create_duty_mission', false);
 
     return (
-      <EtsBootstrap.Button id="open-update-form" bsSize="small" onClick={this.handleClick} disabled={!can_create_duty_mission}>
+      <EtsBootstrap.Button id={`${props.registryKey}.open-create_duty_mission_by_edc-form`} bsSize="small" onClick={this.handleClick} disabled={!can_create_duty_mission}>
         <EtsBootstrap.Glyphicon glyph="plus" /> Создать наряд-задание
       </EtsBootstrap.Button>
     );
@@ -59,7 +59,7 @@ class ButtonCreateDutyMissionByEdcRequest extends React.PureComponent<ButtonCrea
 
 export default compose<ButtonCreateDutyMissionByEdcRequestProps, ButtonCreateDutyMissionByEdcRequestOwnProps>(
   withSearch,
-  withRequirePermissionsNew({
+  withRequirePermission({
     permissions: dutyMissionPermissions.update,
   }),
   connect<ButtonCreateDutyMissionByEdcRequestStateProps, ButtonCreateDutyMissionByEdcRequestDispatchProps, ButtonCreateDutyMissionByEdcRequestOwnProps, ReduxState>(

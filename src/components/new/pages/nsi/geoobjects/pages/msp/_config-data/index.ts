@@ -9,7 +9,7 @@ export default {
   title: 'Справочник МСП',
   isNewRegistry: true,
   entyity: 'type',
-  noDotList: false,
+
   component,
   permissions,
 };

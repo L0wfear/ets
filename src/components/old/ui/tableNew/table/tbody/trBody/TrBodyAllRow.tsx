@@ -12,7 +12,7 @@ class TrBody extends React.Component<any, any> {
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Tr className={className} onClick={this.handleClick} registryKey="none">
+      <EtsBootstrap.Grid.GridBootstrapTbody.Tr className={className} onClick={this.handleClick} enable registryKey="none">
         <EtsBootstrap.Grid.GridBootstrapTbody.Td colSpan={999999}>{rowData.displayName}</EtsBootstrap.Grid.GridBootstrapTbody.Td>
       </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
     );

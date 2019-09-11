@@ -11,8 +11,9 @@ import closeMission from 'components/new/pages/doc_header/07-close_mission/_conf
 import issueAWaybill from 'components/new/pages/doc_header/08-issue_a_waybill/_config-data';
 import createMissionByOrder from 'components/new/pages/doc_header/09-create_mission_by_order/_config-data';
 import issueAWaybillWithoutMission from 'components/new/pages/doc_header/10-issue_a_waybill_without_mission/_config-data';
+import { ConfigParentData } from 'components/@next/@types/config_data';
 
-const children = {
+const children: ConfigParentData['children'] = {
   master,
   dispatcher,
   okrug,

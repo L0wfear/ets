@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { get } from 'lodash';
 import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
-import { compose } from 'recompose';
+import { compose, withProps } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
 import { SchemaType, FormErrorType, PropertieFieldValidatorArrType } from 'components/old/ui/form/new/@types/validate.h';
 import { validate } from 'components/old/ui/form/new/validate';
 import { ReduxState } from 'redux-main/@types/state';
@@ -14,6 +13,7 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -139,19 +139,16 @@ export const removeEmptyString = (formState: any) => {
 
 const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithFormProps<P>, F>) => (Component) => (
   compose<any, any>(
-    withRequirePermissionsNew({
-      permissions: config.permissions.update,
-      withIsPermittedProps: true,
-      permissionName: 'isPermittedToUpdate',
-    }),
-    withRequirePermissionsNew({
-      permissions: config.permissions.create,
-      withIsPermittedProps: true,
-      permissionName: 'isPermittedToCreate',
-    }),
     connect<StateProps, DispatchProp, any, ReduxState>(
       (state) => ({
         userData: getSessionState(state).userData,
+      }),
+    ),
+    withProps<StateProps & { isPermittedToCreate: boolean, isPermittedToUpdate: boolean }, any>(
+      (props) => ({
+        ...props,
+        isPermittedToCreate: validatePermissions(config.permissions.create, props.userData.permissionsSet),
+        isPermittedToUpdate: validatePermissions(config.permissions.update, props.userData.permissionsSet),
       }),
     ),
   )(

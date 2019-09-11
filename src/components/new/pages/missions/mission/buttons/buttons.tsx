@@ -1,16 +1,16 @@
 import * as React from 'react';
 
-import withRequirePermissionsNew from 'components/old/util/RequirePermissionsNewRedux';
+import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 
-export const PermittedMissionFormLazy = withRequirePermissionsNew({
+export const PermittedMissionFormLazy = withRequirePermission<any>({
   permissions: 'mission.read',
-})(MissionFormLazy);
+})(MissionFormLazy as any);
 
-export const LinkToOpenMissionInfoForm = withRequirePermissionsNew({
+export const LinkToOpenMissionInfoForm = withRequirePermission<any>({
   permissions: 'mission.read',
-})((props) => (
+})((props: any) => (
   <div>
     <a className="pointer" onClick={props.openMissiomInfoForm} >Подробнее...</a>
   </div>

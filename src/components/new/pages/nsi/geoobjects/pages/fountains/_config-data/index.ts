@@ -9,7 +9,7 @@ export default {
   title: 'Справочник фонтанов',
   isNewRegistry: true,
   entyity: 'fountains',
-  noDotList: false,
+
   component,
   permissions,
 };

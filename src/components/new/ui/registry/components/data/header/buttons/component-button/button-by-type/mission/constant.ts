@@ -7,7 +7,7 @@ export const mission_types = {
   missions_complete: 'missions_complete',
   missions_to_archvie: 'missions_to_archvie',
   missions_from_archvie: 'missions_from_archvie',
-};
+} as const;
 
 export const mission_types_reverse = Object.entries(mission_types).reduce(
   (newObj, [key, value]) => {

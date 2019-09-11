@@ -5,7 +5,7 @@ export default {
   path: '/change-company',
   title: 'Смена компании',
   entyity: 'role',
-  noDotList: false,
+
   hiddenNav: true,
   component,
   permissions,

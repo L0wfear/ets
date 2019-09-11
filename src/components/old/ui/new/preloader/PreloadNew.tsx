@@ -4,17 +4,17 @@ import {
   CssloadLoader,
 } from 'components/old/ui/new/preloader/styled/styled';
 
-export type PropsPreloadNew = {
+export type Props = {
   typePreloader: 'mainpage' | 'field' | 'lazy';
 };
 
 const preloaderFieldGif = require('assets/images/preloader-field.gif');
 
-class PreloadNew extends React.Component<PropsPreloadNew, {}> {
-  render() {
+const PreloadNew: React.FC<Props> = React.memo(
+  (props) => {
     const {
       typePreloader,
-    } = this.props;
+    } = props;
 
     switch (typePreloader) {
       case 'mainpage':
@@ -31,7 +31,7 @@ class PreloadNew extends React.Component<PropsPreloadNew, {}> {
       default:
         return <div id="preloader-custom" className="custom-preloader" />;
     }
-  }
-}
+  },
+);
 
 export default PreloadNew;

@@ -5,7 +5,6 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const stand = process.env.STAND || 'dev';
 
@@ -29,8 +28,9 @@ const getColor = (stand) => {
 
 module.exports = {
   entry: [
-    'whatwg-fetch',
     'core-js/stable',
+    'whatwg-fetch',
+    'react-hot-loader',
     'regenerator-runtime/runtime',
     './src/index',
   ],
@@ -64,11 +64,7 @@ module.exports = {
                 [
                   '@babel/preset-env',
                   {
-                    targets: {
-                      'chrome': '47',
-                      'firefox': '42',
-                      'ie': '10',
-                    },
+                    // remove targets
                     corejs: { version: 3, proposals: true },
                     useBuiltIns: 'entry', // 'usage' те функции, которые используются
                   },
@@ -84,9 +80,21 @@ module.exports = {
                   },
                 ],
                 [
+                  '@babel/plugin-proposal-optional-chaining',
+                  {
+                    loose: true,
+                  }
+                ],
+                [
                   '@babel/plugin-proposal-class-properties',
                   {
                     loose: true,
+                  },
+                ],
+                [
+                  'babel-plugin-styled-components',
+                  {
+                    "fileName": false
                   },
                 ],
                 '@babel/plugin-syntax-dynamic-import',
@@ -120,7 +128,7 @@ module.exports = {
         test: /\.(sc|c)ss$/,
         use: [
           {
-            loader: MiniCssExtractPlugin.loader,
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
@@ -172,11 +180,6 @@ module.exports = {
   },
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      // Options similar to the same options in webpackOptions.output
-      // both options are optional
-      filename: "[name].[hash].css",
-    }),
     new CleanWebpackPlugin({
       cleanOnceBeforeBuildPatterns: [
         path.join(__dirname, '..', 'dist'),
@@ -299,20 +302,6 @@ module.exports = {
   ],
   optimization: {
     noEmitOnErrors: true,
-    splitChunks: {
-      cacheGroups: {
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true
-        },
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all'
-        },
-      }
-    }
+    // remove splitChunks
   },
 };

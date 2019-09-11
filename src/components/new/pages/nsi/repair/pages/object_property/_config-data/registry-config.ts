@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import objectPropertyPermissions from './permissions';
 import { ObjectProperty } from 'redux-main/reducers/modules/repair/object_property/@types/objectProperty';
 

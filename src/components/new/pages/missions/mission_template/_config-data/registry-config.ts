@@ -1,5 +1,5 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { TypeConfigData } from 'components/new/ui/registry/hoc/withRegistry.h';
+import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import missionTemplatePermissions from './permissions';
 import { displayIfContant } from 'components/new/ui/registry/contants/displayIf';
@@ -26,7 +26,15 @@ export const config: TypeConfigData<MissionTemplate> = {
       buttonsTypes.read,
       buttonsTypes.remove,
       buttonsTypes.missions_by_templates,
-      buttonsTypes.copy_template,
+      {
+        id: 'open-copy-form',
+        type: buttonsTypes.read,
+        title: 'Копировать',
+        glyph: 'copy',
+        other_params: {
+          type: buttonsTypes.create,
+        },
+      },
     ],
   },
   filter: {

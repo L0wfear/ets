@@ -156,20 +156,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 boundKeys="fuel_type"
                 disabled={!isPermitted}
               />
-              {STRUCTURE_FIELD_VIEW ? (
-                <FieldStructureDutyMission
-                  value={state.structure_id}
-                  name={state.structure_name}
-                  error={errors.structure_id}
-                  isPermitted={isPermitted}
-                  onChange={props.handleChange}
-                  page={page}
-                  path={path}
-                  disabled={!isPermitted}
-                />
-              ) : (
-                <DivNone />
-              )}
+              {
+                STRUCTURE_FIELD_VIEW && (
+                  <FieldStructureDutyMission
+                    value={state.structure_id}
+                    name={state.structure_name}
+                    error={errors.structure_id}
+                    isPermitted={isPermitted}
+                    onChange={props.handleChange}
+                    page={page}
+                    path={path}
+                    disabled={!isPermitted}
+                  />
+                )
+              }
               <ExtField
                 type="select"
                 label="Организация"
@@ -231,7 +231,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       const newElement: Partial<FuelCard> = {
         ...props.element,
         company_id: companiesDefaultValue,
-        structure_id: IS_CREATING ? (get(props, 'element.structure_id') || userStructureId) : get(props, 'element.structure_id'),
+        structure_id: !IS_CREATING ? get(props, 'element.structure_id') : userStructureId,
       };
 
       return getDefaultFuelCardElement(newElement);

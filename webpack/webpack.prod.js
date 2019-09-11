@@ -29,6 +29,7 @@ const getColor = (stand) => {
 module.exports = {
   entry: [
     'whatwg-fetch',
+    'core-js/modules/es7.promise.finally',
     'core-js/stable',
     'regenerator-runtime/runtime',
     './src/index',

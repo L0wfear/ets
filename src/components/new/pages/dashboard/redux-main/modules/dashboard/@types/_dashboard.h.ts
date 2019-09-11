@@ -61,8 +61,8 @@ import {
 export type DefaultCardType<T, I> = {
   data: T,
   isLoading: boolean;
-  dateLoad: Date | void;
-  infoData: I | void;
+  dateLoad: Date;
+  infoData: I | null;
 };
 
 export type InitialStateDashboard = {

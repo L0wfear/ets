@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+
 import { dashBoardResetData } from 'components/new/pages/dashboard/redux-main/modules/dashboard/actions-dashboard';
 
 import CurrentMissions from 'components/new/pages/dashboard/menu/cards/current-missions/CurrentMissions';
@@ -17,31 +17,22 @@ import WaybillClosed from 'components/new/pages/dashboard/menu/cards/waybill-clo
 
 import { DashboardMenuCardsContainer } from 'components/new/pages/dashboard/menu/cards/styled/styled';
 
-import { ReduxState } from 'redux-main/@types/state';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-export type StatePropsDashboardMenuCards = {};
+type Props = LoadingMeta & {};
 
-export type DispatchPropsDashboardMenuCards = {
-  dashBoardResetData: HandleThunkActionCreator<typeof dashBoardResetData>;
-};
-
-export type OwnerPropsDashboardMenuCards = {
-  page: string;
-};
-
-export type PropsDashboardMenuCards = (
-  StatePropsDashboardMenuCards
-  & DispatchPropsDashboardMenuCards
-  & OwnerPropsDashboardMenuCards
-);
-
-export interface StateDashboardMenuCards {}
-
-const DashboardMenuCards: React.FC<PropsDashboardMenuCards> = React.memo(
+const DashboardMenuCards: React.FC<Props> = React.memo(
   (props) => {
+    const dispatch = etsUseDispatch();
+
     React.useEffect(
       () => {
-        return () => props.dashBoardResetData();
+        return () => (
+          dispatch(
+            dashBoardResetData(),
+          )
+        );
       },
       [],
     );
@@ -65,14 +56,4 @@ const DashboardMenuCards: React.FC<PropsDashboardMenuCards> = React.memo(
   },
 );
 
-export default connect<StatePropsDashboardMenuCards, DispatchPropsDashboardMenuCards, OwnerPropsDashboardMenuCards, ReduxState>(
-  null,
-  (dispatch) => ({
-    dashBoardResetData: () => (
-      dispatch(
-        dashBoardResetData(),
-      )
-    ),
-  }),
-)
-(DashboardMenuCards);
+export default DashboardMenuCards;

@@ -79,7 +79,7 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
     withSearch,
     connect<any, any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } }, ReduxState>(
       (state, { registryKey, uniqKeyForParams, permissions }) => ({
-        getOneData: getServiceData(state.registry, registryKey).getOneData,
+        getOneData: getServiceData(state, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
         data: getListData(state.registry, registryKey).data,                        // Используется в children
         buttons: getHeaderData(state.registry, registryKey).buttons,

@@ -6,9 +6,9 @@ import { ISchemaRenderer } from 'components/old/ui/table/@types/schema.h';
 import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 
 import DataTableComponent from 'components/old/ui/table/DataTable';
-import DateFormatter from 'components/old/ui/DateFormatter';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OneSessionStructure } from 'redux-main/reducers/modules/session/@types/session';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 require('components/old/directories/order/forms/OrderMissionTemplate/MissionTableStyle.scss');
 
@@ -156,8 +156,8 @@ export function getTableMeta(props: GetTableMetaProps): IDataTableSchema {
 }
 
 const renderers: ISchemaRenderer = {
-  date_from: ({ data }) => (<DateFormatter date={data} time={true} />),
-  date_to: ({ data }) => (<DateFormatter date={data} time={true} />),
+  date_from: ({ data }) => makeDateFormated(data, true),
+  date_to: ({ data }) => makeDateFormated(data, true),
   structure_id: ({ rowData }) => <div>{get(rowData, 'structure_name') || '-'}</div>,
   car_type_names: ({ rowData }) => <div>{get(rowData, 'car_type_names_text') || '-'}</div>,
   for_column: ({ data }) => <div>{forColumnLabelFunction(data)}</div>,

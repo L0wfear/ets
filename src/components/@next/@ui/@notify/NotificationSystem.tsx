@@ -1,10 +1,6 @@
 import * as React from 'react';
 import NotificationSystemOrigin from 'react-notification-system';
 
-const notificationsDiv = document.createElement('div');
-notificationsDiv.id = 'notifications';
-document.body.appendChild(notificationsDiv);
-
 /*
   INFO
   https://github.com/igorprado/react-notification-system

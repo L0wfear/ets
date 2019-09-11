@@ -33,7 +33,7 @@ class TrBody extends React.Component<any, any> {
     );
 
     return (
-      <EtsBootstrap.Grid.GridBootstrapTbody.Tr registryKey="none" className={className} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick} >
+      <EtsBootstrap.Grid.GridBootstrapTbody.Tr enable registryKey="none" className={className} onClick={this.handleClick} onDoubleClick={this.handleDoubleClick} >
         { this.props.tableMeta.cols.map(this.renderTd) }
       </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
     );

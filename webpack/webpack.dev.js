@@ -90,12 +90,23 @@ module.exports = {
                   },
                 ],
                 [
+                  '@babel/plugin-proposal-optional-chaining',
+                  {
+                    loose: true,
+                  }
+                ],
+                [
                   '@babel/plugin-proposal-class-properties',
                   {
                     loose: true,
                   },
                 ],
-                'babel-plugin-styled-components',
+                [
+                  'babel-plugin-styled-components',
+                  {
+                    "fileName": false
+                  },
+                ],
                 '@babel/plugin-syntax-dynamic-import',
                 'react-hot-loader/babel',
               ],

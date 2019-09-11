@@ -23,7 +23,6 @@ type ButtonRemoveDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
 };
 type ButtonRemoveOwnProps = CommonTypesForButton & {
-  format?: 'yesno' | 'default';
 };
 type ButtonRemoveMergeProps = {};
 
@@ -84,10 +83,14 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
         handleHide={handleClickCloseForm}
         handleSubmit={handleClickRemoveSelectedRows}
 
-        message={`Вы уверены, что хотите удалить ${checkedRowsAsArray.length > 1 ? 'выбранные элементы' : 'выбранный элемент'}?`}
+        message={
+          Boolean(checkedRowsAsArray[1])
+            ? data.message_multi || 'Вы уверены, что хотите удалить выбранные элементы?'
+            : data.message_single || 'Вы уверены, что хотите удалить выбранный элемент?'
+        }
 
-        titleOk={props.format === 'yesno' ? 'Да' : null}
-        titleCancel={props.format === 'yesno' ? 'Нет' : null}
+        titleOk={data.format === 'yesno' ? 'Да' : null}
+        titleCancel={data.format === 'yesno' ? 'Нет' : null}
       />
     </>
   );

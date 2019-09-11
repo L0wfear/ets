@@ -1,13 +1,12 @@
-import * as React from 'react';
 import { withProps } from 'recompose';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
 import { ISchemaRenderer, ISchemaMaker } from 'components/old/ui/table/@types/schema.h';
 
-import DateFormatter from 'components/old/ui/DateFormatter';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/tech_maintenance_schedule/ReportHeader';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const serviceUrl = 'autobase/reports/tech_maintenance_schedule';
 const reportUrl = 'tech-maintenance-schedule';
@@ -31,7 +30,7 @@ const schemaMakers: ISchemaMaker = {
 };
 
 const renderers: ISchemaRenderer = {
-  latest_tech_maintenance_date: ({ data }) => <DateFormatter date={data} time={false} />,
+  latest_tech_maintenance_date: ({ data }) => makeDateFormated(data),
 };
 const tableProps = {
   initialSort: 'next_tech_maintenance_odometer_left',

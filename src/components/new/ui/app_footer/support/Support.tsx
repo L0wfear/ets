@@ -1,30 +1,21 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
-import { DivNone } from 'global-styled/global-styled';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
-import ModalTP from '../../modal_tp/ModalTP';
+import ModalTP from 'components/new/ui/modal_tp/ModalTP';
 import { SupportContainer, SupportTextContainer } from './styled';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type SupportStateProps = {
-  appConfig: InitialStateSession['appConfig'];
-};
-type SupportDispatchProps = DispatchProp;
-type SupportOwnProps = {};
-type SupportMergedProps = (
-  SupportStateProps
-  & SupportDispatchProps
-  & SupportOwnProps
-);
-type SupportProps = SupportMergedProps;
+type OwnProps = {};
+type Props = OwnProps & {};
 
-const Support: React.FC<SupportProps> = React.memo(
-  (props) => {
+const Support: React.FC<Props> = React.memo(
+  () => {
     const [showFormTp, setShowFormTp] = React.useState(false);
+    const appConfig = etsUseSelector((state) => getSessionState(state).appConfig);
+
     const {
-      appConfig: { footer_url },
-    } = props;
+      footer_url,
+    } = appConfig;
 
     const setShowFormTpOnTrue = React.useCallback(
       () => {
@@ -46,14 +37,11 @@ const Support: React.FC<SupportProps> = React.memo(
             Техническая поддержка
           </SupportTextContainer>
           {
-            footer_url
-              ? (
-                <SupportTextContainer href={footer_url}>
-                  {footer_url || '123123123'}
-                </SupportTextContainer>
-              ) : (
-                <DivNone />
-              )
+            Boolean(footer_url) && (
+              <SupportTextContainer href={footer_url}>
+                {footer_url || '123123123'}
+              </SupportTextContainer>
+            )
           }
         </SupportContainer>
         <ModalTP show={showFormTp} onHide={setShowFormTpOnFalse} />
@@ -62,8 +50,4 @@ const Support: React.FC<SupportProps> = React.memo(
   },
 );
 
-export default connect<SupportStateProps, SupportDispatchProps, SupportOwnProps, ReduxState>(
-  (state) => ({
-    appConfig: getSessionState(state).appConfig,
-  }),
-)(Support);
+export default Support;

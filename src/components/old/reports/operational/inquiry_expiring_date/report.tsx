@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { withProps } from 'recompose';
 
 import { IReportProps } from 'components/old/reports/@types/common.h';
@@ -6,7 +5,7 @@ import { IReportProps } from 'components/old/reports/@types/common.h';
 import { exportable } from 'utils/decorators';
 import ReportContainer from 'components/old/reports/common/ReportContainer';
 import ReportHeader from 'components/old/reports/operational/inquiry_expiring_date/ReportHeader';
-import DateFormatter from 'components/old/ui/DateFormatter';
+import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 
 const serviceUrl = 'autobase/reports/inquiry_expiring_date';
 const reportUrl = 'inquiry-expiring-date';
@@ -22,7 +21,7 @@ const schemaMakers = {
 };
 
 const renderers = {
-  inquiry_date_end: ({ data }) => <DateFormatter date={data} />,
+  inquiry_date_end: ({ data }) => makeDateFormated(data),
 };
 
 const reportProps: IReportProps = {

@@ -39,8 +39,10 @@ const DashboardMenuCards: React.FC<Props> = React.memo(
 
     return (
       <DashboardMenuCardsContainer>
+        {/* на хуках */}
         <CurrentMissions timeDelay={0} timeInterval={60} page={props.page} />
         <FutureMissions timeDelay={1} />
+        {/* НЕ на хуках */}
         <OdhNotCoveredByMissionsOfCurrentShift timeDelay={2} />
         <OdhNotCoveredByRoutes timeDelay={3} />
         <OdhCoveredByRoutes timeDelay={4}/>
@@ -48,8 +50,14 @@ const DashboardMenuCards: React.FC<Props> = React.memo(
         <Faxogramms timeDelay={6} />
         <CurrentDutyMissions timeDelay={7} />
         <WaybillDraft timeDelay={8} />
+
+        {/* на хуках */}
         <WaybillInProgress timeDelay={9} />
+
+        {/* НЕ на хуках */}
         <WaybillCompleted timeDelay={10} />
+
+        {/* на хуках */}
         <WaybillClosed timeDelay={11} />
       </DashboardMenuCardsContainer>
     );

@@ -34,7 +34,6 @@ const CollapseListByLvl: React.FC<Props> = React.memo(
                 <CollapseListFirstLvl
                   collapsetItems={subItems}
                   handleClick={props.handleClick}
-                  index={index}
                 />
               </CollapseText>
             </li>

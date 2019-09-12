@@ -12,8 +12,9 @@ import {
 import WaybillClosedInfo from 'components/new/pages/dashboard/menu/cards/waybill-closed/info/WaybillClosedInfo';
 
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-type Props = {};
+type Props = WithRequirePermissionAddProps;
 const WaybillClosed: React.FC<Props> = React.memo(
   () => {
     return (

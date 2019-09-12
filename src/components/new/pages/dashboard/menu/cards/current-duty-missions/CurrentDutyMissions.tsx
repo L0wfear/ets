@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 
 import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 import ListByTypeCurerntDutyMission from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/ListByTypeCurerntDutyMission';
@@ -15,11 +14,12 @@ import {
   CurrentDutyMissionsItemsSubItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-export type OwnPropsCurrentDutyMissions = {};
-export type PropsCurrentDutyMissions = OwnPropsCurrentDutyMissions;
+type OwpProps = PropsToDefaultCard;
+type Props = OwpProps & WithRequirePermissionAddProps;
 
-const CurrentDutyMissions: React.FC<PropsCurrentDutyMissions> = React.memo(
+const CurrentDutyMissions: React.FC<Props> = React.memo(
   () => {
     const dispatch = etsUseDispatch();
 
@@ -44,10 +44,8 @@ const CurrentDutyMissions: React.FC<PropsCurrentDutyMissions> = React.memo(
   },
 );
 
-export default compose<PropsCurrentDutyMissions, PropsToDefaultCard>(
-  withDefaultCard({
-    path: 'current_duty_missions',
-    loadData: dashboardLoadCurrentDutyMissions,
-    InfoComponent: CurrentDutyMissionInfo,
-  }),
-)(CurrentDutyMissions);
+export default withDefaultCard<OwpProps>({
+  path: 'current_duty_missions',
+  loadData: dashboardLoadCurrentDutyMissions,
+  InfoComponent: CurrentDutyMissionInfo,
+})(CurrentDutyMissions);

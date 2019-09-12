@@ -49,8 +49,8 @@ type PropsShowByProps = StateProps & OwnerProps;
  * @todo добработать
  * добавить ключ, означабщий загрузку | например Symbol.for('loading')
  */
-const withShowByProps = (configToShow: TypeConfigToShow) => (Component) => (
-  connect<StateProps, {}, OwnerProps, ReduxState>(
+const withShowByProps = <OwnProps extends any>(configToShow: TypeConfigToShow) => (Component: React.ComponentType<OwnProps> | any) => (
+  connect<StateProps, {}, OwnProps, ReduxState>(
     (state) => {
       const { checkErrorPath } = configToShow;
       let show = false;
@@ -72,7 +72,7 @@ const withShowByProps = (configToShow: TypeConfigToShow) => (Component) => (
     },
   )
   (
-    class ShowByProps extends React.Component<PropsShowByProps, {}> {
+    class ShowByProps extends React.Component<PropsShowByProps & OwnProps, {}> {
       render() {
         const { show, error, ...props } = this.props;
 

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isArray } from 'util';
+import { isArray, isNullOrUndefined } from 'util';
 
 import StringField from 'components/@next/@ui/renderFields/StringField/StringField';
 import TextAreaField from 'components/@next/@ui/renderFields/TextAreaField/TextAreaField';
@@ -26,7 +26,7 @@ const Field: React.FC<ExtFieldType> = React.memo(
 
     const onChange = React.useCallback(
       (...arg) => {
-        const addKeys = boundKeys || [];
+        const addKeys = !isNullOrUndefined(boundKeys) ? boundKeys : [];
         if (!isArray(addKeys)) {
           props.onChange(addKeys, ...arg);
         } else {

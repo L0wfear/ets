@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
 import { GlyphiconStyled } from '../01-glyphicon/EtsGlyphicon';
 import { withRequirePermission, WithRequirePermissionAddProps, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { isNullOrUndefined } from 'util';
 
 export type EtsButtonProps = WithRequirePermissionProps & {
   bsClass?: string;
@@ -177,7 +178,7 @@ const EtsButton: React.FC<EtsButtonPropsWrap> = React.memo(
             300,
           );
 
-          if (props.boundKeys) {
+          if (!isNullOrUndefined(props.boundKeys)) {
             props.onClick(props.boundKeys, ...arg);
           } else {
             props.onClick(...arg);

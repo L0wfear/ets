@@ -33,7 +33,7 @@ const Field: React.FC<ExtFieldType> = React.memo(
           props.onChange(...addKeys, ...arg);
         }
       },
-      [boundKeys],
+      [boundKeys, props.onChange],
     );
 
     if (props.disabled && props.value_string) {

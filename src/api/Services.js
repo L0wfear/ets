@@ -360,7 +360,7 @@ export const InspectContainerService = ETS_API_FACTORY.createApiServiceAdapter(
 export const InspectCarsService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/cars',
 );
-export const InspectConfigService = ETS_API_FACTORY.createApiServiceAdapter(
+export const InspectionConfigService = ETS_API_FACTORY.createApiServiceAdapter(
   'inspection/config',
 );
 

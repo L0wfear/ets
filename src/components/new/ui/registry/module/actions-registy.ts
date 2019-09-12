@@ -927,6 +927,29 @@ export const registryChangeRenderSelectedRow: any = (registryKey, payload: {key:
   );
 };
 
+export const registryChangeRenderOptions: any = (registryKey, payload: {options: any}) => (dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        rendersFields: {
+          ...list.rendersFields,
+          options: payload.options,
+        },
+      },
+    ),
+  );
+};
+
 export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
   const {
     registry: {

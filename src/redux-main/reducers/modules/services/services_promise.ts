@@ -1,4 +1,4 @@
-import { ServicesService } from 'api/Services';
+import { ServicesService, CountryService } from 'api/Services';
 import { get } from 'lodash';
 import { Service } from './@types/services';
 
@@ -36,4 +36,20 @@ export const promiseChangeServiceFiles = async (id: Service['id'], files: any[])
   }
 
   return response;
+};
+
+export const promiseLoadCountry = async () => {
+  let response = null;
+
+  try {
+    response = await CountryService.get();
+  } catch (error) {
+    console.error('Error', error); // tslint:disable-line
+  }
+
+  const result = get(response, 'result.rows', []);
+
+  return {
+    list: result,
+  };
 };

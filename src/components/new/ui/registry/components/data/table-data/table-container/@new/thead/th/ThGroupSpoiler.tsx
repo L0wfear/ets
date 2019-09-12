@@ -16,7 +16,7 @@ export const ThGroupSpoilerFirstStyled = styled.div`
   transform: translate(100%, -100%);
   border: 1px solid #ddd;
   border-radius: 3px;
-  /* box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 0 1px 15px 0 rgba(0,0,0,.1); */
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 0 1px 15px 0 rgba(0,0,0,.1);
   font-size: 12px;
   padding: 5px 10px;
   display: inline-flex;

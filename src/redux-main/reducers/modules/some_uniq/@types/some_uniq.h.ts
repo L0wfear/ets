@@ -66,4 +66,8 @@ export type IStateSomeUniq = {
   tracksCaching: TracksCaching;
 
   workModeList: WorkMode[];
+
+  inspectionConfig: {
+    [key: string]: {},
+  } | null;
 };

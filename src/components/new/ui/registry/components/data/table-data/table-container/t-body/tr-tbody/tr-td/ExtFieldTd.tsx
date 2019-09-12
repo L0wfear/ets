@@ -7,6 +7,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { validate } from 'components/old/ui/form/new/validate';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
@@ -38,6 +39,7 @@ const getValueFromEvent = (valueEvent, renderParams) => {
 const ExtFieldTd: React.FC<Props> = React.memo(
   (props) => {
     const [error, setError] = React.useState(null);
+    const [optionsRenderRow, setOptionsRenderRow] = React.useState(null);
     const { renderParams } = props;
     const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
     const renderFieldsSchema = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.renderFieldsSchema);
@@ -69,6 +71,14 @@ const ExtFieldTd: React.FC<Props> = React.memo(
       [props.metaKey, props.renderParams, props.registryKey],
     );
 
+    if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {
+      const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
+
+      React.useEffect(() => {
+        setOptionsRenderRow(inspectionConfig);
+      }, [inspectionConfig]);
+    }
+
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         <ExtField
@@ -80,7 +90,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
           value={value}
           onChange={handleChange}
           className={renderParams.className}
-          options={renderParams.options}
+          options={get(optionsRenderRow, props.metaKey, [])}
           // disabled={!props.isPermitted}
           error={error}
           readOnly={renderParams.readOnly}

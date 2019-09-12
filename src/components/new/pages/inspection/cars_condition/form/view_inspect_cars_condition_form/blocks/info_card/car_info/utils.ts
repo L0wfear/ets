@@ -47,6 +47,9 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   season: '',
   mileage: null,
   motohours: null,
+  okrug_name: null,
+  okrug_id: null,
+  last_repair_company_date: null,
   data: {
     defects_body: false,
     defects_chassis: false,

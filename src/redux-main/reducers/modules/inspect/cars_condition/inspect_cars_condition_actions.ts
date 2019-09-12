@@ -12,7 +12,6 @@ import {
   promiseUpdateCarsConditionsCar,
   promiseGetCarsConditionsCarById,
   makeInspectCarsConditionBack,
-  promiseGetInspectConfig,
 } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
@@ -187,16 +186,6 @@ const autobaseGetCarsConditionCars = (inspection_id: number, meta: LoadingMeta):
   const response = await etsLoadingCounter(
     dispatch,
     promiseGetSetCarsConditionCars(inspection_id),
-    meta,
-  );
-
-  return response;
-};
-
-export const autobaseGetInspectConfig = (meta: LoadingMeta): EtsAction<Promise<any>> => async (dispatch, getState) => {
-  const response = await etsLoadingCounter(
-    dispatch,
-    promiseGetInspectConfig(),
     meta,
   );
 

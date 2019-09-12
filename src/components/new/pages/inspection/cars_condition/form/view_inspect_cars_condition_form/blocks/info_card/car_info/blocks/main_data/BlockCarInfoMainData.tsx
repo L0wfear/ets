@@ -11,8 +11,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FormWithHandleChangeBoolean } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { AdditionalInfoBlock, AdditionalInfoWrapper } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/main_data/styled';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { autobaseGetInspectConfig } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import useCountryOptions from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
 import { get } from 'lodash';
 import { stateExploitationOptions, factStatusOptions, statusAtCheckOptions } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/options';
@@ -20,6 +19,8 @@ import IAVisibleWarningContainer from 'components/new/pages/inspection/container
 import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import FieldCarsConditionsCarSelectFactStatus from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/fact_status_and_other/FieldCarsConditionsCarSelectFactStatus';
 import { HrDelimiter } from 'global-styled/global-styled';
+import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -36,40 +37,19 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       formErrors: errors,
     } = props;
 
-    const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(false); // <<< заменить на false
-    const [defectShow, SetDefectShow] = React.useState(false); // <<< заменить на false
-    const [inspectionConfig, setInspectionConfig] = React.useState(null);
+    const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(false);
+    const [defectShow, SetDefectShow] = React.useState(false);
+    const [inspectionConfigOptions, setInspectionConfigOptions] = React.useState(null);
     const countryOptionData = useCountryOptions();
     const dispatch = etsUseDispatch();
+    const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
 
-    const callBackToLoadConfig = React.useCallback(
-      () => {
-        const loadData = async () => {
-          try {
-            const result = await dispatch(autobaseGetInspectConfig({ page: '', path: '' }));
-            if (result) {
-              const configOptionsList = Object.keys(result).reduce((newObj, key ) => {
-                const configOptionsByKeyList = Object.entries(result[key]).map(([keyEntry, valueEntry]) => {
-                  return {
-                    value: keyEntry,
-                    label: valueEntry,
-                  };
-                });
-                return {
-                  ...newObj,
-                  [key]: configOptionsByKeyList,
-                };
-              }, {});
-              setInspectionConfig(configOptionsList);
-            }
-          } catch (error) {
-            console.error(error); //tslint:disable-line
-          }
-        };
-        loadData();
-      },
-      [dispatch],
-    );
+    React.useEffect( () => {
+      if (inspectionConfig) {
+        setInspectionConfigOptions(inspectionConfig);
+      }
+    }, [inspectionConfig]);
+
     const handleChangeAdditionalInfoMain = React.useCallback(
       () => {
         SetAdditionalInfoMainShow(!additionalInfoMainShow);
@@ -85,7 +65,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     );
 
     React.useEffect(() => {
-      callBackToLoadConfig();
+      dispatch(actionInspectionConfigGetAndSetInStore({ page: '', path: '' }));
     }, []);
 
     React.useEffect(() => {
@@ -107,7 +87,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange, inspectionConfig],
+      [state.data, props.handleChange, inspectionConfigOptions],
     );
 
     const handleChangeDataOsago = React.useCallback(
@@ -119,7 +99,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange, inspectionConfig],
+      [state.data, props.handleChange, inspectionConfigOptions],
     );
 
     const handleChangeData = React.useCallback(
@@ -131,7 +111,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange, inspectionConfig],
+      [state.data, props.handleChange, inspectionConfigOptions],
     );
 
     const handleChangeDataOptions = React.useCallback(
@@ -143,7 +123,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           },
         });
       },
-      [state.data, props.handleChange, inspectionConfig],
+      [state.data, props.handleChange, inspectionConfigOptions],
     );
 
     return (
@@ -375,7 +355,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           label="Экологический стандарт ТС"
                           value={state.environmental_class}
                           onChange={props.handleChange}
-                          options={ get(inspectionConfig, 'environmental_class', [])}
+                          options={ get(inspectionConfigOptions, 'environmental_class', [])}
                           error={errors.environmental_class}
                           clearable={false}
                           disabled={!props.isPermitted}
@@ -391,7 +371,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           label="Тип двигателя"
                           value={state.engine_type}
                           onChange={props.handleChange}
-                          options={get(inspectionConfig, 'engine_type', [])}
+                          options={get(inspectionConfigOptions, 'engine_type', [])}
                           error={errors.engine_type}
                           clearable={false}
                           disabled={!props.isPermitted}
@@ -433,7 +413,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           label="Классификатор"
                           value={state.data.classifier}
                           onChange={handleChangeDataOptions}
-                          options={ get(inspectionConfig, 'classifier', []) }
+                          options={ get(inspectionConfigOptions, 'classifier', []) }
                           error={errors.data.classifier}
                           clearable={false}
                           disabled={!props.isPermitted}
@@ -449,7 +429,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           label="Вид техники"
                           value={state.kind}
                           onChange={props.handleChange}
-                          options={ get(inspectionConfig, 'kind', []) }
+                          options={ get(inspectionConfigOptions, 'kind', []) }
                           error={errors.kind}
                           clearable={false}
                           disabled={!props.isPermitted}
@@ -463,7 +443,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           label="Вид приобретения"
                           value={state.kind_purchase}
                           onChange={props.handleChange}
-                          options={ get(inspectionConfig, 'kind_purchase', []) }
+                          options={ get(inspectionConfigOptions, 'kind_purchase', []) }
                           error={errors.kind_purchase}
                           clearable={false}
                           disabled={!props.isPermitted}
@@ -598,7 +578,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Технический осмотр пройден"
               value={state.data.tech_inspection_passed}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'tech_inspection_passed', [])}
+              options={ get(inspectionConfigOptions, 'tech_inspection_passed', [])}
               error={errors.data.tech_inspection_passed}
               boundKeys={'tech_inspection_passed'}
               clearable={false}
@@ -614,7 +594,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="ГЛОНАСС стационарный"
               value={state.data.glonass_stationary}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'glonass_stationary', [])}
+              options={ get(inspectionConfigOptions, 'glonass_stationary', [])}
               error={errors.data.glonass_stationary}
               clearable={false}
               disabled={!props.isPermitted}
@@ -628,7 +608,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="ГЛОНАСС зарегистрирован"
               value={state.data.glonass_registered}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'glonass_registered', [])}
+              options={ get(inspectionConfigOptions, 'glonass_registered', [])}
               error={errors.data.glonass_registered}
               clearable={false}
               disabled={!props.isPermitted}
@@ -644,7 +624,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Логотип"
               value={state.data.logo}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'logo', [])}
+              options={ get(inspectionConfigOptions, 'logo', [])}
               error={errors.data.logo}
               clearable={false}
               disabled={!props.isPermitted}
@@ -674,7 +654,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Техническое состояние"
               value={state.data.tech_condition}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'tech_condition', [])}
+              options={ get(inspectionConfigOptions, 'tech_condition', [])}
               error={errors.data.tech_condition}
               clearable={false}
               disabled={!props.isPermitted}
@@ -915,7 +895,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Заявка на ремонт"
               value={state.data.repair_application}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'repair_application', [])}
+              options={ get(inspectionConfigOptions, 'repair_application', [])}
               error={errors.data.repair_application}
               clearable={false}
               disabled={!props.isPermitted}
@@ -944,7 +924,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Причина ремонта"
               value={state.data.repair_reason}
               onChange={handleChangeDataOptions}
-              options={ get(inspectionConfig, 'repair_reason', [])}
+              options={ get(inspectionConfigOptions, 'repair_reason', [])}
               error={errors.data.repair_reason}
               clearable={false}
               disabled={!props.isPermitted}

@@ -5,7 +5,7 @@ import {
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
-import { InspectCarsService, InspectConfigService, } from "api/Services";
+import { InspectCarsService, } from "api/Services";
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {
@@ -127,14 +127,6 @@ export const promiseGetSetCarsConditionCars = async (inspection_id: number) => {
   const response = await InspectCarsService.get({ inspection_id });
 
   const result = get(response, 'result.rows', []);
-
-  return result;
-};
-
-export const promiseGetInspectConfig = async () => {
-  const response = await InspectConfigService.get();
-
-  const result = get(response, 'enums', {});
 
   return result;
 };

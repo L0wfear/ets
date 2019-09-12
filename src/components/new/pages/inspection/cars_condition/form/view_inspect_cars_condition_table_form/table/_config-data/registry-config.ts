@@ -15,7 +15,7 @@ const renderFieldsSchema = { // Что бы не надо было менять 
   },
 };
 
-export const getConfig = (inspection_id: number, ): TypeConfigData<CarsConditionCars & CarsConditionCars['data']> => ({
+export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionCars & CarsConditionCars['data']> => ({
   Service: {
     getRegistryData: {
       entity: 'inspection/cars',
@@ -50,7 +50,19 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           label: 'Жилищник',
           isActive: false,
         },
-      }, // Возможнл, переделать на ассоциативный массив
+        ts_data: {
+          label: 'Данные о ТС',
+          isActive: false,
+        },
+        add_info: {
+          label: 'Доп. информация',
+          isActive: false,
+        },
+        repair_info: {
+          label: 'Ремонт',
+          isActive: false,
+        },
+      },
       fields: [
         {
           key: 'gov_number',
@@ -71,11 +83,14 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             key: 'district',
           },
         },
-        // {
-        //   key: 'gov_number',
-        //   title: 'Округ', // Нету
-        //   width: 100,
-        // },
+        {
+          key: 'okrug_name',
+          title: 'Округ',
+          width: 100,
+          groupOpt: {
+            key: 'district',
+          },
+        },
         {
           key: 'gby_district',
           title: 'Техника относится к ГБУ Жилищник района (согласно балансовой/забансовой справке)',
@@ -101,21 +116,34 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           key: 'model',
           title: 'Модель',
           width: 100,
+          groupOpt: {
+            key: 'ts_data',
+            firstElem: true, // В группку не входит
+          },
         },
         {
           key: 'type',
           title: 'Тип ТС',
           width: 200,
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'season',
           title: 'Сезон',
           width: 200,
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'vin',
           title: 'VIN',
           width: 200,
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'vin_incorrect',
@@ -123,6 +151,10 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'boolean',
+          },
+          format: 'boolean',
+          groupOpt: {
+            key: 'ts_data',
           },
         },
         {
@@ -132,11 +164,17 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'string',
           },
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'body_number',
           title: 'Заводской номер',
           width: 200,
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'body_number_incorrect',
@@ -144,6 +182,10 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'boolean',
+          },
+          format: 'boolean',
+          groupOpt: {
+            key: 'ts_data',
           },
         },
         {
@@ -153,6 +195,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'string',
           },
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'manufactured_at',
@@ -160,6 +205,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'number',
+          },
+          groupOpt: {
+            key: 'ts_data',
           },
         },
         {
@@ -171,6 +219,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'engine_type',
@@ -181,6 +232,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'max_weight',
@@ -189,6 +243,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'number',
             label: false,
+          },
+          groupOpt: {
+            key: 'ts_data',
           },
         },
         {
@@ -200,6 +257,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'classifier',
@@ -210,6 +270,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'ts_data',
+          },
         },
         {
           key: 'kind',
@@ -219,6 +282,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             type: 'select',
             label: false,
             options: [],
+          },
+          groupOpt: {
+            key: 'ts_data',
           },
         },
         {
@@ -237,6 +303,7 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'boolean',
           },
+          format: 'boolean',
         },
         {
           key: 'osago_finished_at',
@@ -262,6 +329,10 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'date',
           },
+          groupOpt: {
+            key: 'add_info',
+            firstElem: true, // В группку не входит
+          },
         },
         {
           key: 'given_at',
@@ -269,6 +340,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'date',
+          },
+          groupOpt: {
+            key: 'add_info',
           },
         },
         {
@@ -278,6 +352,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'date',
           },
+          groupOpt: {
+            key: 'add_info',
+          },
         },
         {
           key: 'tech_inspection_passed',
@@ -286,6 +363,10 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'boolean',
           },
+          groupOpt: {
+            key: 'add_info',
+          },
+          format: 'boolean',
         },
         {
           key: 'glonass_stationary',
@@ -295,6 +376,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             type: 'select',
             label: false,
             options: [],
+          },
+          groupOpt: {
+            key: 'add_info',
           },
         },
         {
@@ -306,6 +390,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'add_info',
+          },
         },
         {
           key: 'logo',
@@ -315,6 +402,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             type: 'select',
             label: false,
             options: [],
+          },
+          groupOpt: {
+            key: 'add_info',
           },
         },
         {
@@ -380,6 +470,7 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'boolean',
           },
+          format: 'boolean',
         },
         {
           key: 'reason_repair',
@@ -446,6 +537,7 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'boolean',
           },
+          format: 'boolean',
         },
         {
           key: 'last_tm_repair_company',
@@ -453,6 +545,10 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'string',
+          },
+          groupOpt: {
+            key: 'repair_info',
+            firstElem: true, // В группку не входит
           },
         },
         // {
@@ -469,6 +565,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'repair_info',
+          },
         },
         {
           key: 'last_repair_company',
@@ -476,6 +575,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'string',
+          },
+          groupOpt: {
+            key: 'repair_info',
           },
         },
         {
@@ -485,6 +587,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'date',
           },
+          groupOpt: {
+            key: 'repair_info',
+          },
         },
         {
           key: 'repair_from_date',
@@ -492,6 +597,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           width: 200,
           renderParams: {
             type: 'date',
+          },
+          groupOpt: {
+            key: 'repair_info',
           },
         },
         {
@@ -503,6 +611,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             label: false,
             options: [],
           },
+          groupOpt: {
+            key: 'repair_info',
+          },
         },
         {
           key: 'repair_application',
@@ -512,6 +623,9 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
             type: 'select',
             label: false,
             options: [],
+          },
+          groupOpt: {
+            key: 'repair_info',
           },
         },
         {
@@ -529,6 +643,7 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'boolean',
           },
+          format: 'boolean',
         },
         {
           key: 'act_readiness_not_issued',
@@ -537,6 +652,7 @@ export const getConfig = (inspection_id: number, ): TypeConfigData<CarsCondition
           renderParams: {
             type: 'boolean',
           },
+          format: 'boolean',
         },
       ],
     },

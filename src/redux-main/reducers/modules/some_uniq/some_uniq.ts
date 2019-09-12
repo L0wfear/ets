@@ -38,6 +38,7 @@ export const initialState: IStateSomeUniq = {
 
   edcRequestInfoList: [],
   workModeList: [],
+  inspectionConfig: null,
 };
 
 export default (state = initialState, { type, payload }) => {

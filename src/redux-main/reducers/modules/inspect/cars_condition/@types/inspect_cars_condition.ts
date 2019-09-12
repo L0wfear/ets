@@ -159,6 +159,9 @@ export type CarsConditionCars = {
   motohours: number;
   updated_at: string;
   season: string;
+  okrug_name: string;
+  okrug_id: string;
+  last_repair_company_date: string;
   data: {
     defects_body: boolean;
     defects_chassis: boolean;

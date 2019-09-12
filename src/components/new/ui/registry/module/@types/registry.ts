@@ -226,7 +226,6 @@ export interface OneRegistryData<F = any> {
         [key: string]: {
           value: any;
           label: string;
-          rowData: any;
         };
       },
     };

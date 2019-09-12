@@ -26,7 +26,9 @@ export const ORDER_STATUS_LABELS = {
 export const GEOZONE_OBJECTS = [
   { value: 'odh', label: 'Объект дорожного хозяйства' },
   { value: 'dt', label: 'Дворовая территория' },
-];
+  { value: 'dest', label: 'Пункты назначения' },
+  { value: 'all', label: 'Все объекты' },
+] as const;
 
 export const GEOZONE_ELEMENTS = {
   odh: [

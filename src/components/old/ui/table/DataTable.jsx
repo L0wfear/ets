@@ -874,6 +874,7 @@ export default class DataTable extends React.Component {
           currentPage={this.state.currentPage}
           globalCheckHandler={this.globalCheckHandler}
           reportKey={this.props.reportKey}
+          localState={this.props.localState}
         />
         {serverPagination ? (
           <div />

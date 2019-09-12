@@ -94,7 +94,7 @@ export interface IExtractedDataTableSchema {
 }
 
 export interface ISchemaRenderer<TRowData = IDataTableSelectedRowPropsData> {
-  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>) => any;
+  [field: string]: (rowMeta: IDataTableSelectedRowProps<TRowData>, props: any) => any;
 }
 
 export interface ISchemaMaker {

@@ -1,8 +1,18 @@
 import { get, groupBy } from 'lodash';
 import { isNullOrUndefined, isArray } from 'util';
 
-export const summRowWithAll = (rowValue, summValue) => isNaN(Number(rowValue)) ? summValue : rowValue + summValue;
-export const removeRedundantNumbers = (rowValue) => Math.round(rowValue * 1000) / 1000;
+export const summRowWithAll = (rowValue, summValue) => {
+  const value = get(rowValue, 'count') || rowValue;
+
+  return (
+    isNaN(Number(value))
+      ? summValue
+      : value + summValue
+  );
+};
+export const removeRedundantNumbers = (rowValue) => {
+  return Math.round(rowValue * 1000) / 1000;
+};
 export const openFields = (fields) => fields.map((meta) => {
   const [[keyName, metaData]] = Object.entries(meta);
   return {
@@ -122,10 +132,13 @@ export const makeDataForSummerTable = (data, { uniqName, reportKey }) => {
       }, []);
     }
 
-    if (reportKey === 'fuel_cards_report' || reportKey === 'mission_progress_report') {
+    if (reportKey === 'fuel_cards_report' || reportKey === 'mission_progress_report' || reportKey === 'car_usage_report') {
       if (rows.length) {
         const cols_wsd = openFields(fields);
-        const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => !aggr_fields.includes(keyName) && !is_row);
+
+        const diffCols_wsd = cols_wsd.filter(({ keyName, is_row }) => {
+          return !aggr_fields.includes(keyName) && !is_row;
+        });
 
         const filedsRule = fields.map((fieldData) => {
           const [[key, value]] = Object.entries(fieldData);

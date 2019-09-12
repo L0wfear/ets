@@ -33,4 +33,6 @@ export interface IStateReportContainer {
   exportFetching: boolean;
   filterValues: any;
   uniqName: string;
+
+  localState: Record<string, any>;
 }

@@ -231,32 +231,47 @@ const NormForm: React.FC<PropsNorm> = React.memo(
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={3}>
-            <ExtField
-              id="car_func_types_ids"
-              type="select"
-              label="Типы ТС"
-              multi
-              value={state.car_func_types_ids}
-              options={carTypeOptions}
-              onChange={props.handleChange} // заставь бэк адаптироваться или умереть
-              boundKeys="car_func_types_ids"
-              disabled={!isPermittedHardcode}
-            />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={3}>
-            <ExtField
-              id="sensor_type_ids"
-              type="select"
-              label="Типы навесного оборудования"
-              multi
-              value={state.sensor_type_ids}
-              options={sensorTypeOptions}
-              onChange={props.handleChange}
-              boundKeys="sensor_type_ids"
-              disabled={!isPermitted && false}
-            />
-          </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
+              <ExtField
+                id="car_func_types_ids"
+                type="select"
+                label="Типы ТС"
+                multi
+                value={state.car_func_types_ids}
+                options={carTypeOptions}
+                onChange={props.handleChange} // заставь бэк адаптироваться или умереть
+                boundKeys="car_func_types_ids"
+                disabled={!isPermittedHardcode}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
+              <ExtField
+                id="sensor_type_ids"
+                type="select"
+                label="Типы навесного оборудования"
+                multi
+                value={state.sensor_type_ids}
+                options={sensorTypeOptions}
+                onChange={props.handleChange}
+                boundKeys="sensor_type_ids"
+                disabled={!isPermitted && false}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
+              <ExtField
+                id="consumable_materials_names"
+                type="select"
+                hint="Расходные материалы заполняются в «НСИ -> Показатели для расчета -> Расходные материалы»"
+                label="Расходные материалы"
+                placeholder={null}
+                multi
+                value={state.consumable_materials_names}
+                options={state.consumable_materials_names.map((name) => ({ value: name, label: name }))}
+                onChange={props.handleChange}
+                boundKeys="consumable_materials_names"
+                disabled={!isPermittedHardcode}
+              />
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>

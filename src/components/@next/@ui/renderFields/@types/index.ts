@@ -34,6 +34,8 @@ export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   filterOption?: any;
   legacy?: boolean;
   components?: any; // нужно описать
+
+  hint?: string | React.ReactNode;
 };
 export type ExtFieldDate<V = any> = ExtFieldCommon<V> & {
   type: 'date';

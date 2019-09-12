@@ -9,6 +9,7 @@ export const defaultEmployee: Norm = {
   check_type_names: '',
   check_types: [],
   conditions: '',
+  consumable_materials_names: [],
   elements: [],
   elements_ids: [],
   elements_names: '',

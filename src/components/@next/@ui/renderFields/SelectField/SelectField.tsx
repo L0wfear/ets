@@ -1,10 +1,13 @@
 import * as React from 'react';
+import cx from 'classnames';
+import { isString } from 'util';
+
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
-import cx from 'classnames';
 import { SelectFieldUi } from 'components/@next/@ui/renderFields/SelectField/styled';
 import { ExtFieldSelect } from 'components/@next/@ui/renderFields/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const SelectField: React.FC<ExtFieldSelect> = React.memo(
   (props) => {
@@ -21,7 +24,28 @@ const SelectField: React.FC<ExtFieldSelect> = React.memo(
         hidden={props.hidden}
         className={className}
       >
-        {typeof label === 'string' && <FieldLabel id={id}>{label}</FieldLabel>}
+        {
+          isString(label) && (
+            <React.Fragment>
+              <FieldLabel id={id}>{label}</FieldLabel>&nbsp;
+              {
+                props.hint && (
+                  <EtsBootstrap.OverlayTrigger
+                    trigger={['hover', 'focus']}
+                    overlay={(
+                      <EtsBootstrap.Popover>
+                        {props.hint}
+                      </EtsBootstrap.Popover>
+                    )}
+                    placement="top"
+                  >
+                    <EtsBootstrap.Glyphicon glyph="info-sign"/>
+                  </EtsBootstrap.OverlayTrigger>
+                )
+              }
+            </React.Fragment>
+          )
+        }
         <SelectFieldUi
           {...selectProps}
           disabled={readOnly || props.disabled}

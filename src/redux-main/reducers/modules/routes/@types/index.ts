@@ -24,8 +24,8 @@ export type ObjectPointData = {
   coordinates: [number, number];
   frontId: number;
   name: string;
-  object_id: number | void;
-  object_name: string | void;
+  object_id: number;
+  object_name: string;
   shape: {
     type: 'Point',
     coordinates: [number, number];

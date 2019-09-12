@@ -62,7 +62,23 @@ class CreatingMap extends React.PureComponent<
   };
 
   componentDidMount() {
-    this.getToObjects();
+    const loadData = async () => {
+      const {
+        payload: { technical_operations_object_list },
+      } = await this.props.getTechnicalOperationsObjects();
+      this.setState({ technical_operations_object_list });
+
+      if (this.props.type && this.props.municipal_facility_id) {
+        const needUpdateObjectData = true;
+        this.loadGeometry(
+          this.props,
+          { ...this.state, technical_operations_object_list },
+          needUpdateObjectData,
+          true,
+        );
+      }
+    };
+    loadData();
   }
 
   static getDerivedStateFromProps(
@@ -83,6 +99,7 @@ class CreatingMap extends React.PureComponent<
         object_list,
         OBJECT_LIST_OPTIONS: makeObjectListOptions(
           geozone_municipal_facility_by_id,
+          object_list,
         ),
         objectListIdArr: makeObjectListIdArr(object_list),
         geozone_municipal_facility_by_id,
@@ -160,25 +177,11 @@ class CreatingMap extends React.PureComponent<
     }
   }
 
-  async getToObjects() {
-    const {
-      payload: { technical_operations_object_list },
-    } = await this.props.getTechnicalOperationsObjects();
-    this.setState({ technical_operations_object_list });
-
-    if (this.props.type && this.props.municipal_facility_id) {
-      const needUpdateObjectData = false;
-      this.loadGeometry(
-        this.props,
-        { ...this.state, technical_operations_object_list },
-        needUpdateObjectData,
-      );
-    }
-  }
   async loadGeometry(
     props: PropsCreatingMap,
     state: StateCreatingMap,
     needUpdateObjectData: boolean,
+    init?: boolean,
   ) {
     const { type, page, path } = props;
 
@@ -208,12 +211,14 @@ class CreatingMap extends React.PureComponent<
         } = mergeStateFromObjectList(
           props.object_list,
           geozoneMunicipalFacility.byId,
+          init,
         );
 
         this.setState({
           geozone_municipal_facility_by_id,
           OBJECT_LIST_OPTIONS: makeObjectListOptions(
             geozone_municipal_facility_by_id,
+            needUpdateObjectData ? objectList : props.object_list,
           ),
         });
 

@@ -10,6 +10,7 @@ import {
 } from 'redux-main/trash-actions/geometry/geometry.h';
 import { polyState } from 'constants/polygons';
 import { keyBy } from 'lodash';
+import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 export const routesToLoadByKeySet = new Set(
   Object.entries(routeTypesByKey)
@@ -17,9 +18,23 @@ export const routesToLoadByKeySet = new Set(
     .map(([key]) => key),
 );
 
+const mergeRestObjetRecordWithNew = (objectIndex: Record<ValuesOf<Route['object_list']>['object_id'], ValuesOf<Route['object_list']>>, newObjectList: Route['object_list']) => {
+  const newArr: Array<ValuesOf<Route['object_list']> & { is_invalid?: boolean }>  = [...newObjectList];
+
+  Object.values(objectIndex).forEach((rowData) => {
+    newArr.push({
+      ...rowData,
+      is_invalid: true,
+    });
+  });
+
+  return newArr;
+};
+
 export const mergeStateFromObjectList = (
   objectList: PropsCreatingMap['object_list'],
   geozoneMunicipalFacilityById: StateCreatingMap['geozone_municipal_facility_by_id'],
+  init?: boolean,
 ) => {
   const objectIndex = keyBy(objectList, 'object_id');
   const newObjectList = [];
@@ -34,6 +49,7 @@ export const mergeStateFromObjectList = (
       };
 
       newObjectList.push(objectIndex[id]);
+      delete objectIndex[id];
     } else if (newObj[id].state !== polyState.ENABLE) {
       newObj[id] = {
         ...newObj[id],
@@ -46,7 +62,7 @@ export const mergeStateFromObjectList = (
 
   return {
     geozone_municipal_facility_by_id,
-    objectList: newObjectList,
+    objectList: init ? mergeRestObjetRecordWithNew(objectIndex, newObjectList) : newObjectList,
   };
 };
 
@@ -87,13 +103,28 @@ export const changeStateInObjectList = (
 
 export const makeObjectListOptions = (
   geozone_municipal_facility_by_id: StateCreatingMap['geozone_municipal_facility_by_id'],
+  objectList: Route['object_list'],
 ) => {
-  return Object.values(geozone_municipal_facility_by_id).map(
-    ({ id, name }) => ({
-      value: id,
-      label: name,
-    }),
+  const objectIndex = keyBy(objectList, 'object_id');
+
+  const options_by_mf = Object.values(geozone_municipal_facility_by_id).map(
+    ({ id, name }) => {
+      delete objectIndex[id];
+      return ({
+        value: id,
+        label: name,
+      });
+    },
   );
+  Object.values(objectIndex).forEach((rowData: any) => {
+    options_by_mf.push({
+      value: rowData.object_id,
+      label: rowData.name,
+      is_invalid: rowData.is_invalid,
+    });
+  });
+
+  return options_by_mf;
 };
 
 export const makeObjectListIdArr = (

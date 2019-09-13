@@ -9,7 +9,6 @@ import { ReduxState } from 'redux-main/@types/state';
 import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { DivNone } from 'global-styled/global-styled';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
@@ -191,17 +190,13 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
         [uniqKeyForParams, props.setParamsAndSearch, props.match.params, props.searchState],
       );
 
-      return element
-        ? (
+      return Boolean(element) && (
           <Component
             {...props}
             type={type}
             element={element}
             onFormHide={handleHide}
           />
-        )
-        : (
-          <DivNone />
         );
     },
   )

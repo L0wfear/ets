@@ -40,7 +40,7 @@ type ConfigWithForm<P, F> = {
 
 type WithFormConfigProps = {
   element: any,
-  handleHide?: <A>(isSubmitted: boolean, result?: A) => any;
+  handleHide?: (isSubmitted: boolean, result?: any) => any;
   readOnly?: boolean;
 
   page: string;

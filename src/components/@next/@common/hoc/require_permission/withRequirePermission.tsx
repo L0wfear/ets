@@ -28,13 +28,15 @@ const makePermissionOnCheck = (config: TypeConfig, props: WithRequirePermissionP
   return config.permissions || props.permissions || true;
 };
 
-export const withRequirePermission = <PropsOwn extends WithRequirePermissionProps>(config: TypeConfig = {}) => (Component: React.ComponentType<PropsOwn & { isPermitted: boolean }>): React.FC<PropsOwn> => React.memo(
-  (props) => {
-    const permissionOnCheck = makePermissionOnCheck(config, props);
-    const isPermitted = etsUseIsPermitted(permissionOnCheck);
+export const withRequirePermission = <PropsOwn extends WithRequirePermissionProps>(config: TypeConfig = {}) => (
+  (Component: React.ComponentType<PropsOwn & WithRequirePermissionAddProps>): React.FC<PropsOwn> => React.memo(
+    (props) => {
+      const permissionOnCheck = makePermissionOnCheck(config, props);
+      const isPermitted = etsUseIsPermitted(permissionOnCheck);
 
-    return Boolean(config.withIsPermittedProps || isPermitted) && (
-      <Component {...props} isPermitted={isPermitted} />
-    );
-  },
+      return Boolean(config.withIsPermittedProps || isPermitted) && (
+        <Component {...props} isPermitted={isPermitted} />
+      );
+    },
+  )
 );

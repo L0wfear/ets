@@ -6,7 +6,7 @@ import EtsBootstrap from '../@bootstrap';
 import { EtsTableDataContainer } from '../registry/components/data/table-data/styled/styled';
 
 export type TableMeta<F> = {
-  key: string;
+  key: Extract<keyof F, string>;
   title: string;
   width: number;
   disabled?: boolean;
@@ -30,6 +30,9 @@ export type TableMeta<F> = {
     uniqValueInCol?: boolean;
   } | {
     format: 'number';
+  } | {
+    format: 'date',
+    time?: boolean;
   }
 );
 

@@ -5,28 +5,16 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsEmployeeFormLazy = {
-  showForm: boolean;
-  element: Employee | null;
-  onFormHide: OnFormHideType
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
 export type StatePropsEmployee = {
   category_license: ReduxState['session']['appConfig']['category_license'];
 };
-export type OwnEmployeeProps = {
-  element: Employee | null;
-  handleHide: OnFormHideType
-  page: string;
-  path?: string;
-};
+export type OwnEmployeeProps = (
+  WithFormRegistrySearchProps<Employee>
+  & WithFormRegistrySearchAddProps<Employee>
+  & {}
+);
 
 export type PropsEmployeeWithForm = (
   StatePropsEmployee

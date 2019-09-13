@@ -162,7 +162,7 @@ export interface OneRegistryData<F = any> {
       objectExtra: Record<string, any> // use lodash.get
       total_count: number;
       uniqKey: Extract<keyof F, string>;
-      uniqKeyForParams?: string;
+      uniqKeyForParams: string;
       selectedRow: F;
       selectedRowToShow: F;
       checkedRows: Record<keyof F, F>;

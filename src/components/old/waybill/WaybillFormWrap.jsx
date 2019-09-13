@@ -792,6 +792,7 @@ class WaybillFormWrap extends React.Component {
             clearSomeData={this.clearSomeData}
             isPermittedByKey={this.state.isPermittedByKey}
             setEdcRequestIds={this.setEdcRequestIds}
+            page={this.props.page}
             {...this.state}
           />
         )}

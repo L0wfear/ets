@@ -26,6 +26,7 @@ type FieldWaybillCarRefillDispatchProps = {
   fuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof fuelCardsGetAndSetInStore>;
 };
 type FieldWaybillCarRefillOwnProps = {
+  id: string;
   errors: any[];
   title: string;
   handleChange: TableInputProps['onChange'];
@@ -207,6 +208,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 
           header={
             <CarRefillTableHeader
+              id={props.id}
               title={props.title}
               selectedRowIndex={selectedRowIndex}
               array={props.array}

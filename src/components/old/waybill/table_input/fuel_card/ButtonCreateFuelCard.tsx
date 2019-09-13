@@ -10,6 +10,7 @@ import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 
 type ButtonCreateFuelCardOwnProps = {
+  id: string;
   handleUpdateFuelCard: () => any;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
@@ -65,7 +66,7 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 
     return (
       <React.Fragment>
-        <ButtonTableInput block width={props.buttonWidth} disabled={props.disabled} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
+        <ButtonTableInput id={`${props.page}_${props.id}_add_fuel_card`} block width={props.buttonWidth} disabled={props.disabled} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
         {
           showStatus && (
             <ErrorBoundaryForm>

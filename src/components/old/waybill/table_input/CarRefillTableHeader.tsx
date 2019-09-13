@@ -9,6 +9,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { isNullOrUndefined } from 'util';
 
 type CarRefillTableHeaderProps = {
+  id: string;
   selectedRowIndex: number;
   onChange: any;
   array: any[];
@@ -64,18 +65,19 @@ const CarRefillTableHeader: React.FC<CarRefillTableHeaderProps> = React.memo(
               {
                 props.visibleButtons
                   && (
-                    <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
+                    <ButtonTableInput id={`${props.page}_${props.id}_refill_add_row`} block width={props.buttonWidth} onClick={handleAddRow} disabled={props.disabled}>Добавить заправку</ButtonTableInput>
                   )
               }
               {
                 props.visibleButtons
                   && (
-                    <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={props.disabled || isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
+                    <ButtonTableInput id={`${props.page}_${props.id}_remove_row`} block width={props.buttonWidth} onClick={handleRemoveRow} disabled={props.disabled || isNullOrUndefined(props.selectedRowIndex)}>Удалить заправку</ButtonTableInput>
                   )
               }
               {
                 props.visibleButtons && (
                   <ButtonCreateFuelCard
+                    id={props.id}
                     handleUpdateFuelCard={props.handleUpdateFuelCard}
                     structure_id={props.structure_id}
                     fuel_type={props.fuel_type}

@@ -17,6 +17,8 @@ import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
+import { get } from 'lodash';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {
   const stateInspectCarsConditionOld = getInspectCarsCondition(getState());
@@ -212,7 +214,27 @@ export const actionCreateCarsConditionsCar = (carsConditionsCarRaw: Partial<Cars
   return response;
 };
 
-export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: Partial<CarsConditionCars>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+
+  if (!carsConditionsCarRaw.data) {
+    const defaultCarsConditionCarDataKeys = Object.keys(defaultCarsConditionCar.data);
+    const CarsConditionCarData: Partial<CarsConditionCars['data']> = defaultCarsConditionCarDataKeys.reduce((newElem, currentElemKey) => {
+      const val =  get(carsConditionsCarRaw, currentElemKey, defaultCarsConditionCar[currentElemKey]);
+      delete carsConditionsCarRaw[currentElemKey];
+      return {
+        [currentElemKey]: val,
+        ...newElem,
+      };
+    }, {});
+
+    carsConditionsCarRaw = {
+      ...carsConditionsCarRaw,
+      data: {
+        ...CarsConditionCarData,
+      },
+    };
+  }
+
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateCarsConditionsCar(carsConditionsCarRaw),

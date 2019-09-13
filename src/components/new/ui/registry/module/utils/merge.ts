@@ -179,6 +179,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   const {
     fields = registryDefaultObj.list.meta.fields,
     row_double_click = registryDefaultObj.list.meta.row_double_click,
+    changeRowRequestAction = registryDefaultObj.list.meta.changeRowRequestAction,
     renderFieldsSchema = registryDefaultObj.list.meta.renderFieldsSchema,
     is_render_field = registryDefaultObj.list.meta.is_render_field,
     selected_row_in_params = registryDefaultObj.list.meta.selected_row_in_params,
@@ -235,6 +236,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   return {
     ...makerDataMetaField(fieldsFiltred),
     row_double_click,
+    changeRowRequestAction,
     selected_row_in_params,
     is_render_field,
     renderFieldsSchema,

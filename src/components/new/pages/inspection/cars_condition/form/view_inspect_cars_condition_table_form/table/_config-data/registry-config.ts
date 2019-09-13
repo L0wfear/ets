@@ -3,6 +3,7 @@ import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_cond
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { carsConditionCarFormDataSchema, carsConditionCarFormSchema } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/schema';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
+import { actionUpdateCarsConditionsCar } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 
 export const registryKey = 'InspectCarsConditionsCarsExtendedRegistry';
 
@@ -43,6 +44,9 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
     },
     meta: {
       row_double_click: false,
+      changeRowRequestAction: {
+        action: actionUpdateCarsConditionsCar,
+      },
       is_render_field: true,
       renderFieldsSchema,
       groupColumn: {
@@ -309,8 +313,11 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'osago_finished_at',
           title: 'Срок действия ОСАГО',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
         },
         {
@@ -326,8 +333,11 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'diagnostic_card_finished_at',
           title: 'Дата окончания действия ГТО',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -338,8 +348,11 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'given_at',
           title: 'Дата регистрации',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -349,8 +362,11 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'exploitation_date_start',
           title: 'Дата начала эксплуатации',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -502,16 +518,22 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'last_tech_inspection_date',
           title: 'Дата прохождения последнего ТО шасси',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
         },
         {
           key: 'last_inspection_equipment',
           title: 'Дата прохождения последнего ТО спецоборудования',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
         },
         {
@@ -584,8 +606,11 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'last_repair',
           title: 'Дата проведения последнего ремонта',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
           groupOpt: {
             key: 'repair_info',
@@ -595,8 +620,11 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
           key: 'repair_from_date',
           title: 'В ремонте с даты',
           width: 200,
+          format: 'date',
           renderParams: {
             type: 'date',
+            time: false,
+            makeGoodFormat: true,
           },
           groupOpt: {
             key: 'repair_info',

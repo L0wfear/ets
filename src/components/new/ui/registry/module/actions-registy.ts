@@ -45,6 +45,7 @@ import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 /**
  * Да простят меня боги
@@ -973,6 +974,46 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
     SelectedRowObj.rendersFields = {
       values: selectedRow,
     };
+
+    const changeRowRequestAction = get(list, 'meta.changeRowRequestAction.action', null);
+    const rendersFieldsValues = get(list, 'rendersFields.values', null);
+
+    if (changeRowRequestAction && rendersFieldsValues) {
+      const listMetaFields = get(list, 'meta.fields', []);
+      const formatedRendersFieldsValues = { ...rendersFieldsValues };
+
+      if (listMetaFields.length) {
+        listMetaFields.forEach(({ key, renderParams }) => {
+          if (renderParams) {
+            let value: any = formatedRendersFieldsValues[key];
+
+            if (renderParams.type === 'number' && value) {
+              value = Number(value);
+            }
+            if (renderParams.type === 'date' && value) {
+              value = createValidDate(value);
+            }
+            if (renderParams.type === 'date' && renderParams.time) {
+              value = createValidDateTime(value);
+            }
+            formatedRendersFieldsValues[key] = value;
+          }
+        });
+      }
+
+      dispatch(
+        changeRowRequestAction(
+          formatedRendersFieldsValues,
+          { page: '', path: '' },
+        ),
+      ).then((res) => {
+        const putRes = get(res, 'result.rows.0');
+        // tslint:disable-next-line:no-console
+        // Добавить обновление выбранной строки из PUT запроса
+        // tslint:disable-next-line:no-console
+        console.log('put res === ', { putRes });
+      });
+    }
   }
 
   dispatch(

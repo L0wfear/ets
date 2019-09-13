@@ -8,6 +8,8 @@ import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/modu
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { validate } from 'components/old/ui/form/new/validate';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { isBoolean } from 'util';
+import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
@@ -26,8 +28,7 @@ const getValueFromEvent = (valueEvent, renderParams) => {
     case 'select': return valueEvent;
     case 'date': {
       if (valueEvent) {
-        return valueEvent; // Переделать
-        // return createValidDate(value) : createValidDateTime(value);
+        return isBoolean(renderParams.time) && !renderParams.time ? createValidDate(valueEvent) : createValidDateTime(valueEvent);
       }
       return valueEvent;
     }

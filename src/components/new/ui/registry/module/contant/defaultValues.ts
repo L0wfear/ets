@@ -46,6 +46,9 @@ const registryDefaultObj: OneRegistryData = {
     },
     meta: {
       row_double_click: true,
+      changeRowRequestAction: {
+        action: null,
+      },
       is_render_field: false,
       selected_row_in_params: false,
       fields: [],

@@ -1,54 +1,13 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { compose } from 'recompose';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
-const WaybillFormWrap = React.lazy(() => (
+const WaybillForm = React.lazy(() => (
   import(/* webpackChunkName: "waybill_form_wrap" */ 'components/new/pages/waybill/form/context/WaybillForm')
 ));
 
-type PropsWaybilFormlLazy = {
-  element: Partial<Waybill>;
-  registryKey?: string;
-  page?: string;
-  path?: string;
-
-  onFormHide: any;
-
-};
-
-const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
-  (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}waybill-form`;
-
-    return (
-      <ErrorBoundaryForm>
-        <React.Suspense fallback={<LoadingComponent />}>
-        {
-          props.element
-            && (
-              <WaybillFormWrap
-                element={props.element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            )
-        }
-        </React.Suspense>
-      </ErrorBoundaryForm>
-    );
-  },
-);
-
-export default compose<any, any>(
-  withFormRegistrySearch({
-    noCheckDataInRegistryArray: true,
-    uniqKeyName: 'id',
-  }),
-)(WaybilFormlLazy);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<Partial<Waybill>>, Waybill>({
+  add_path: 'waybill',
+  no_find_in_arr: true,
+  replace_uniqKey_on: 'id',
+})(WaybillForm);

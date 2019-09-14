@@ -11,6 +11,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type TypeConfig = {
   // hideWithClose?: string[];
@@ -35,6 +36,8 @@ export type WithFormRegistrySearchAddProps<F> = (
 );
 
 export type WithFormRegistrySearchProps<F = any> = {
+  uniqKeyForParams?: string;
+  permissions?: OneRegistryData['list']['permissions'];
   registryKey: string;
   handleHide?: WithFormRegistrySearchAddProps<F>['handleHide'];
   path?: string;
@@ -73,8 +76,8 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
 
         const array: any[] = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
-        const uniqKeyForParams = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
-        const permissions = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).permissions);
+        const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
+        const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
         const hasButtonToCreate = etsUseSelector((state) => {
           const buttons = getHeaderData(getRegistryState(state), props.registryKey).buttons;
           return (

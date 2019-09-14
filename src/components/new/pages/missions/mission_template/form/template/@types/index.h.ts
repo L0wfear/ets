@@ -1,13 +1,3 @@
-export type PropsMissionTemplateFormLazy = {
-  showForm: boolean;
-  element: Partial<MissionTemplate> | null;
-  onFormHide: OnFormHideType;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
@@ -15,8 +5,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
 export type StatePropsMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];
@@ -28,13 +17,8 @@ export type DispatchPropsMissionTemplate = {
     typeof missionsActions.actionPrintFormMissionTemplate
   >;
 };
-export type OwnMissionTemplateProps = {
-  element: Partial<MissionTemplate> | null;
-  handleHide: OnFormHideType;
 
-  page: string;
-  path?: string;
-};
+export type OwnMissionTemplateProps = WithFormRegistrySearchAddProps<MissionTemplate>;
 
 export type PropsMissionTemplateWithForm = StatePropsMissionTemplate &
   DispatchPropsMissionTemplate &
@@ -48,4 +32,3 @@ export type PropsMissionTemplateForm = OutputWithFormProps<
   any,
   any
 >;
-export type StateMissionTemplate = {};

@@ -1,11 +1,12 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnNormProps,
   PropsNorm,
@@ -30,7 +31,7 @@ const SEASONS = [
   { value: 1, label: 'Лето' },
   { value: 2, label: 'Зима' },
   { value: 3, label: 'Всесезон' },
-];
+] as const;
 
 const NormForm: React.FC<PropsNorm> = React.memo(
   (props) => {

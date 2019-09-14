@@ -1,59 +1,28 @@
 import * as React from 'react';
 
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import MissionInfoFormById from 'components/new/ui/mission_info_form/MissionInfoFormById';
+import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
-const MissionForm = React.lazy(() =>
+export const MissionFormReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "mission_form" */ 'components/new/pages/missions/mission/form/main/MissionForm'),
 );
 
-type MissionListFormWrapProps = {
-  element: Partial<Mission>;
-  type: string;
-
-  readOnly: boolean;
-  onFormHide: any;
-  page: string;
-  path: string;
-};
-
-const MissionListFormWrap: React.FC<MissionListFormWrapProps> = React.memo(
+const MissionListFormWrap: React.FC<WithFormRegistrySearchAddProps<Partial<Mission>>> = React.memo(
   (props) => {
-    const path = `${props.path ? `${props.path}-` : ''}-form`;
-
     if (props.element) {
       if (props.type === 'info') {
         return (
-          <MissionInfoFormById
-            element={props.element}
-            handleHide={props.onFormHide}
-
-            page="Mission"
-            path={path}
-          />
+          <MissionInfoFormById {...props} />
         );
       }
 
       if (props.type) {
-        props.onFormHide(false);
+        props.handleHide(false);
       }
 
       return (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <MissionForm
-              element={props.element}
-              handleHide={props.onFormHide}
-
-              page="mission-form"
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
+        <MissionFormReactLazy {...props} />
       );
     }
 
@@ -61,7 +30,8 @@ const MissionListFormWrap: React.FC<MissionListFormWrapProps> = React.memo(
   },
 );
 
-export default withFormRegistrySearch({
-  noCheckDataInRegistryArray: true,
-  uniqKeyName: 'id',
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<Partial<Mission>>, Partial<Mission>>({
+  add_path: 'mission',
+  no_find_in_arr: true,
+  replace_uniqKey_on: 'id',
 })(MissionListFormWrap);

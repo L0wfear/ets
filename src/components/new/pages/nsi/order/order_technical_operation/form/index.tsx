@@ -103,8 +103,14 @@ const MissionFormWrap: React.FC<Props> = React.memo(
           type_to === TypeCreateMissionByOrderTo.mission && (
             <MissionFormLazy
               showForm
-              onFormHide={handleHide}
+              handleHide={handleHide}
               element={partialMission}
+
+              type={null}
+
+              registryKey="mainpage"
+              page="order"
+              path="mission"
             />
           )
         }

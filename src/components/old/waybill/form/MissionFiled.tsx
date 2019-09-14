@@ -274,10 +274,15 @@ class MissionField extends React.Component<Props, any> {
           Создать задание
         </EtsBootstrap.Button>
         <MissionFormLazy
-          onFormHide={this.onMissionFormHide}
+          handleHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
           notChangeCar
+          type={null}
+
+          registryKey={this.props.registryKey}
+          page={this.props.page}
+          path={this.props.path}
         />
         {this.state.showMissionRejectForm && (
           <MissionRejectForm

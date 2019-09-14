@@ -1,46 +1,10 @@
-import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import { DivNone } from 'global-styled/global-styled';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { MissionFormReactLazy } from 'components/new/pages/missions/mission/form/main/MissionListFormWrap';
 
-const MissionForm = React.lazy(() =>
-  import(/* webpackChunkName: "mission_form" */ 'components/new/pages/missions/mission/form/main/MissionForm'),
-);
-
-type MissionArchiveListFormWrapProps = {
-  element: Partial<Mission>;
-
-  readOnly: boolean;
-  onFormHide: any;
-  page: string;
-  path: string;
-};
-
-const MissionArchiveListFormWrap: React.FC<MissionArchiveListFormWrapProps> = (props) => {
-  const path = `${props.path ? `${props.path}-` : ''}-form`;
-
-  return props.element ? (
-    <ErrorBoundaryForm>
-      <React.Suspense fallback={<LoadingComponent />}>
-        <MissionForm
-          element={props.element}
-          handleHide={props.onFormHide}
-
-          page="mission-form"
-          path={path}
-        />
-      </React.Suspense>
-    </ErrorBoundaryForm>
-  ) : (
-    <DivNone />
-  );
-};
-
-export default withFormRegistrySearch({
-  noCheckDataInRegistryArray: true,
-  uniqKeyName: 'id',
-  cantCreate: true,
-})(MissionArchiveListFormWrap);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<Mission>, Mission>({
+  add_path: 'archive_mission',
+  no_find_in_arr: true,
+  replace_uniqKey_on: 'id',
+  cant_create: true,
+})(MissionFormReactLazy);

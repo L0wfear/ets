@@ -156,8 +156,10 @@ const EdcRequestFormLazy: React.FC<Props> = (props) => {
         <MissionFormLazy
           showForm
           element={getDefaultMissionByEdcRequest(edc)}
-          onFormHide={props.handleHide}
+          handleHide={props.handleHide}
 
+          registryKey={props.page}
+          type={null}
           page={page}
           path={path}
         />

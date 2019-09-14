@@ -71,9 +71,13 @@ const RequestMissionsForm: React.FC<Props> = React.memo(
         <MissionFormLazy
           showForm
           element={rawElement}
-          onFormHide={handleHide}
+          handleHide={handleHide}
 
+          registryKey={registryKey}
           page={registryKey}
+          path="mission"
+
+          type={null}
         />
       );
     }

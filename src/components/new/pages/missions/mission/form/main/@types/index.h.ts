@@ -7,20 +7,7 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
-
-export type PropsMissionFormLazy = {
-  showForm: boolean;
-  element: Partial<Mission> | null;
-  onFormHide: OnFormHideType;
-
-  notChangeCar?: boolean;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
 export type StatePropsMission = {
   userStructureId: InitialStateSession['userData']['structure_id'];
@@ -39,15 +26,12 @@ export type DispatchPropsMission = {
   loadEdcRequiedByIdForMission: HandleThunkActionCreator<typeof missionsActions.loadEdcRequiedByIdForMission>;
   actionReseSetDependenceMissionDataForMissionForm: HandleThunkActionCreator<typeof missionsActions.actionReseSetDependenceMissionDataForMissionForm>;
 };
-export type OwnMissionProps = {
-  element: Partial<Mission> | null;
-  handleHide: OnFormHideType;
-
-  notChangeCar?: boolean;
-
-  page: string;
-  path?: string;
-};
+export type OwnMissionProps = (
+  WithFormRegistrySearchAddProps<Partial<Mission>>
+  & {
+    notChangeCar?: boolean;
+  }
+);
 
 export type PropsMissionWithForm = StatePropsMission &
   DispatchPropsMission &

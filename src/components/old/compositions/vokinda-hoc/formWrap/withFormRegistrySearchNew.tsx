@@ -23,6 +23,7 @@ type TypeConfig = {
 };
 
 export type WithFormRegistrySearchAddProps<F> = {
+  registryKey: string;
   page: string;                                           // page для лоудинга
   path: string;                                           // path для лоудинга
   handleHide: (isSubmitted: boolean, result?: F) => any;

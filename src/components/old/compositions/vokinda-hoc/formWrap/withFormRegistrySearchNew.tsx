@@ -20,13 +20,18 @@ type TypeConfig = {
   add_path: string;                                       // path для формы
 };
 
-export type WithFormRegistrySearchAddProps<F> = {
+export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
   registryKey: string;
   page: string;                                           // page для лоудинга
   path: string;                                           // path для лоудинга
   handleHide: (isSubmitted: boolean, result?: F) => any;
   element: F;
-} & WithSearchProps;
+};
+
+export type WithFormRegistrySearchAddProps<F> = (
+  WithFormRegistrySearchAddPropsWithoutWithSerach<F>
+  & WithSearchProps
+);
 
 export type WithFormRegistrySearchProps<F = any> = {
   registryKey: string;

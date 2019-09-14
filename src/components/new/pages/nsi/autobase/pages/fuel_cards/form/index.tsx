@@ -1,41 +1,14 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsFuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddPropsWithoutWithSerach } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 export const FuelCardsFormLazy = React.lazy(() => (
   import(/* webpackChunkName: "fuel_cards_form" */ 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm')
 ));
 
-const FuelCardsFormWrap: React.FC<PropsFuelCardsFormLazy> = React.memo(
-  (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}spare-part-form`;
-
-    return (
-      props.element
-        ? (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <FuelCardsFormLazy
-                element={props.element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            </React.Suspense>
-          </ErrorBoundaryForm>
-        )
-        : (
-          <DivNone />
-        )
-    );
-  },
-);
-
-export default withFormRegistrySearch({})(FuelCardsFormWrap);
+export const FuelCardsFormLazyWithSeacth = withSearch<WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<FuelCard>>>(FuelCardsFormLazy);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<FuelCard>, FuelCard>({
+  add_path: 'fueld_card',
+})(FuelCardsFormLazy);

@@ -3,7 +3,7 @@ import fuelCardsPermissions from 'components/new/pages/nsi/autobase/pages/fuel_c
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
+import { FuelCardsFormLazyWithSeacth } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
@@ -71,12 +71,13 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
           showStatus && (
             <ErrorBoundaryForm>
               <React.Suspense fallback={<LoadingComponent />}>
-                <FuelCardsFormLazy
+                <FuelCardsFormLazyWithSeacth
                   element={element}
                   handleHide={onFormHide}
 
+                  registryKey={props.page}
                   page={props.page}
-                  fromWaybill
+                  path="fueld_card"
                 />
               </React.Suspense>
             </ErrorBoundaryForm>

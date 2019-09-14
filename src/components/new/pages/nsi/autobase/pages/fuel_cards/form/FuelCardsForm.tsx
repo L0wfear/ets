@@ -9,11 +9,11 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
-  OwnFuelCardsProps,
   PropsFuelCards,
-  StatePropsFuelCards,
-  DispatchPropsFuelCards,
   PropsFuelCardsWithForm,
+  OwnFuelCardsProps,
+  DispatchPropsFuelCards,
+  StatePropsFuelCards,
 } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DivNone } from 'global-styled/global-styled';
@@ -218,7 +218,9 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     createAction: autobaseActions.autobaseCreateFuelCard,
     updateAction: autobaseActions.fuelCardsUpdate,
     mergeElement: (props) => {
-      const { companyOptions, userCompanyId, userStructureId } = props;
+      const { companyOptions, userData } = props;
+      const userCompanyId = userData.company_id;
+      const userStructureId = userData.structure_id;
 
       const IS_CREATING = !get(props, 'element.id', null);
       const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;
@@ -231,7 +233,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
       const newElement: Partial<FuelCard> = {
         ...props.element,
         company_id: companiesDefaultValue,
-        structure_id: !IS_CREATING ? get(props, 'element.structure_id') : userStructureId,
+        structure_id: !IS_CREATING ? get(props, 'element.structure_id') : get(props, 'element.structure_id') || userStructureId,
       };
 
       return getDefaultFuelCardElement(newElement);

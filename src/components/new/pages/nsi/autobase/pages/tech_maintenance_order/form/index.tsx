@@ -1,42 +1,12 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsTechMaintOrderFormWrap } from 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/form/@types/TechMaintenanceOrderForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { TechMaintOrder } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const TechMaintOrderFrom = React.lazy(() => (
   import(/* webpackChunkName: "tech_maint_order_form" */ 'components/new/pages/nsi/autobase/pages/tech_maintenance_order/form/TechMaintenanceOrderForm')
 ));
 
-const TechMaintOrderFormWrap: React.FC<PropsTechMaintOrderFormWrap> = React.memo(
-  (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}insurance-policy-form`;
-
-    return (
-      props.element
-        ? (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <TechMaintOrderFrom
-                element={props.element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            </React.Suspense>
-          </ErrorBoundaryForm>
-        )
-        :
-        (
-          <DivNone />
-        )
-    );
-  },
-);
-
-export default withFormRegistrySearch({})(TechMaintOrderFormWrap);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<TechMaintOrder>, TechMaintOrder>({
+  add_path: 'tech_maint_order',
+})(TechMaintOrderFrom);

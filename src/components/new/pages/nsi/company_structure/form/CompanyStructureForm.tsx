@@ -1,12 +1,13 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 import memoize from 'memoize-one';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { companyStructureFormSchema } from 'components/new/pages/nsi/company_structure/form/schema';
-import { get } from 'lodash';
 
 import {
   getdefaultCompanyStructureElement,
@@ -15,22 +16,20 @@ import {
   STRUCTURE_TYPES
 } from 'components/new/pages/nsi/company_structure/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import {
   OwnCompanyStructureProps,
   PropsCompanyStructure,
-  StateCompanyStructure,
   StatePropsCompanyStructure,
   PropsCompanyStructureWithForm,
 } from 'components/new/pages/nsi/company_structure/form/@types/CompanyStructureForm';
 import { CompanyStructure, CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { DivNone } from 'global-styled/global-styled';
-import { getCompanyStructureState, getGeoobjectState } from 'redux-main/reducers/selectors';
+import { getCompanyStructureState } from 'redux-main/reducers/selectors';
 import companyStructurePermissions from '../_config-data/permissions';
 import { createCompanyStructure, updateCompanyStructure, getAndSetInStoreCompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/actions';
 
-class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, StateCompanyStructure> {
+class CompanyStructureForm extends React.PureComponent<PropsCompanyStructure, {}> {
   componentDidMount() {
     this.props.dispatch(
       getAndSetInStoreCompanyStructureLinear(
@@ -169,7 +168,6 @@ export default compose<PropsCompanyStructure, OwnCompanyStructureProps>(
   connect<StatePropsCompanyStructure, {}, OwnCompanyStructureProps, ReduxState>(
     (state) => ({
       companyStructureLinearList: getCompanyStructureState(state).companyStructureLinearList,
-      carpoolList: getGeoobjectState(state).carpoolList,
     }),
   ),
   withForm<PropsCompanyStructureWithForm, CompanyStructure>({

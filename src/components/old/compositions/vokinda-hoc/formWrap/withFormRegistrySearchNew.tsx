@@ -39,6 +39,28 @@ export type WithFormRegistrySearchProps<F = any> = {
   path?: string;
 };
 
+const findRecondInDeepArray = <F extends any>(array: F[], uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
+  const children = [];
+
+  const selectedItem = array.find((rowData) => {
+    if (rowData[uniqKey] === uniqKeyValue) {
+      return true;
+    }
+    if ('children' in rowData) {
+      children.push(...rowData.children);
+    }
+  });
+
+  if (selectedItem) {
+    return selectedItem;
+  }
+  if (children[0]) {
+    return findRecondInDeepArray(children, uniqKey, uniqKeyValue);
+  }
+
+  return null;
+};
+
 export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearchProps<F>, F extends any>(config: TypeConfig) => (
   (Component: React.ComponentType<PropsOwn & WithFormRegistrySearchAddProps<F>>) => {
     const ComponentWrap: React.FC<PropsOwn & WithSearchProps>  = React.memo(
@@ -129,7 +151,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
                   }
                 } else {
                   const param_uniq_value_number = Number(param_uniq_value);
-                  const elementPick = array.find(({ [uniqKey]: id }) => id === param_uniq_value_number);
+                  const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_number);
 
                   if (elementPick || config.no_find_in_arr) {
                     if (isPermittedToSee) {

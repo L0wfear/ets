@@ -60,11 +60,14 @@ class BrigadeEfficiencyReport extends React.Component<PropsBrigadeEfficiencyRepo
     const dutyNumberForm = (
       <DutyMissionFormLazy
         key={'BrigadesEfficiency_DutyMissionForm'}
-        onFormHide={this.handleDutyMissionFormVisibility}
+        handleHide={this.handleDutyMissionFormVisibility}
         showForm={this.state.dutyMissionFormVisibility}
         element={this.state.dutyMissionSelectedItem}
         readOnly={true}
+        type={null}
+        registryKey="duty_mission"
         page="duty_mission"
+        path="duty_mission_form"
       />
     );
 

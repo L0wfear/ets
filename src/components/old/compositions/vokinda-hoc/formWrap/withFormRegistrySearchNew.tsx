@@ -13,11 +13,11 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 
 type TypeConfig = {
-  // uniqKeyName?: string;                               // имя уникального ключа для формы (см выше)
   // hideWithClose?: string[];
   cant_create?: boolean;                                  // может ли форма создать запись
   no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   add_path: string;                                       // path для формы
+  replace_uniqKey_on?: string                             // имя уникального ключа для формы
 };
 
 export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
@@ -169,7 +169,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
                         setElement(elementPick);
                       } else {
                         setElement({
-                          [uniqKey]: param_uniq_value_number,
+                          [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
                         } as any);
                       }
                     } else {

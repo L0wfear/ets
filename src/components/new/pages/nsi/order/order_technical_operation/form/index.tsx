@@ -112,8 +112,12 @@ const MissionFormWrap: React.FC<Props> = React.memo(
           (
             <DutyMissionFormLazy
               showForm
-              onFormHide={handleHide}
+              handleHide={handleHide}
               element={partialDutyMission}
+              type={null}
+              registryKey="duty_mission"
+              page="duty_mission"
+              path="duty_mission_form"
             />
           )
         }

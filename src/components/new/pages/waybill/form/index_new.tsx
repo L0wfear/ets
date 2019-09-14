@@ -48,7 +48,7 @@ const WaybilFormlLazy: React.FC<PropsWaybilFormlLazy> = React.memo(
 
 export default compose<any, any>(
   withFormRegistrySearch({
-  noCheckDataInRegistryArray: true,
-  uniqKeyName: 'id',
+    noCheckDataInRegistryArray: true,
+    uniqKeyName: 'id',
   }),
 )(WaybilFormlLazy);

@@ -6,64 +6,37 @@ import {
   config,
 } from 'components/new/pages/missions/duty_mission/_config-data/registry-config';
 
-import {
-  DutyMissionListProps,
-  DutyMissionListOwnProps,
-  DutyMissionListDispatchProps,
-  DutyMissionListStateProps,
-} from 'components/new/pages/missions/duty_mission/DutyMissionList.h';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
+import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import DutyMissionListFormWrap from 'components/new/pages/missions/duty_mission/form/main/DutyMissionListFormWrap';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const DutyMissionList: React.FC<DutyMissionListProps> = (props) => {
-  React.useEffect(
-    () => {
-      props.registryAddInitialData(config);
-      props.actionUnselectSelectedRowToShow(registryKey, true);
-      return () => {
-        props.registryRemoveData(registryKey);
-      };
-    },
-    [],
-  );
+const DutyMissionList: React.FC<{}> = React.memo(
+  () => {
+    const dispatch = etsUseDispatch();
 
-  return (
-    <>
-      <Registry registryKey={registryKey} />
-      <DutyMissionListFormWrap registryKey={registryKey} />
-    </>
-  );
-};
+    React.useEffect(
+      () => {
+        dispatch(registryAddInitialData(config));
+        return () => {
+          dispatch(registryRemoveData(registryKey));
+        };
+      },
+      [],
+    );
 
-export default compose<DutyMissionListProps, DutyMissionListOwnProps>(
-  withPreloader({
-    page: config.registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<DutyMissionListStateProps, DutyMissionListDispatchProps, DutyMissionListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-      actionUnselectSelectedRowToShow: (...arg) => (
-        dispatch(
-          actionUnselectSelectedRowToShow(...arg),
-        )
-      ),
-    }),
-  ),
-)(DutyMissionList);
+    return (
+      <React.Fragment>
+        <Registry registryKey={registryKey} />
+        <DutyMissionListFormWrap registryKey={registryKey} />
+      </React.Fragment>
+    );
+  },
+);
+
+export default withPreloader({
+  page: config.registryKey,
+  typePreloader: 'mainpage',
+})(DutyMissionList);

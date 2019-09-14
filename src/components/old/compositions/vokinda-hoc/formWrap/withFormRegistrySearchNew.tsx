@@ -47,13 +47,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
         const path = `${props.path ? `${props.path}-` : ''}${config.add_path}-form`;
 
         const dispatch = etsUseDispatch();
-        const isLoading = etsUseSelector(
-          (state) => (
-            !getRootRegistry(getRegistryState(state), props.registryKey, true)
-            || getRootRegistry(getRegistryState(state), props.registryKey).isLoading
-            || !getListData(getRegistryState(state), props.registryKey).data.array[0]
-          ),
-        );
+
         const array: any[] = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
         const uniqKeyForParams = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
@@ -70,7 +64,6 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
         const param_uniq_value = props.match.params[uniqKeyForParams];
 
         const param_uniq_value_prev = usePrevious(param_uniq_value);
-        const isLoading_prev = usePrevious(isLoading);
 
         const isPermittedToCreate = etsUseIsPermitted(permissions.create) && hasButtonToCreate;
         const isPermittedToRead = etsUseIsPermitted(permissions.read);
@@ -79,6 +72,23 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
           isPermittedToRead
           || isPermittedToUpdate
         );
+
+        const isLoading = etsUseSelector(
+          (state) => (
+            !getRootRegistry(getRegistryState(state), props.registryKey, true)
+            || (
+              (                                                                               // проверяем есть ли реестр
+                (
+                  getRootRegistry(getRegistryState(state), props.registryKey).isLoading
+                  || !getListData(getRegistryState(state), props.registryKey).data.array[0]
+                )
+                && !config.no_find_in_arr                                                     // можно не дожидаться загрузки реестра, чтобы отобразить форму
+              )
+              && param_uniq_value !== buttonsTypes.create                                     // для создания не нужен весь реестр
+            )
+          ),
+        );
+        const isLoading_prev = usePrevious(isLoading);
 
         const handleHide: WithFormRegistrySearchAddProps<F>['handleHide'] = React.useCallback(
           (isSubmitted, response) => {

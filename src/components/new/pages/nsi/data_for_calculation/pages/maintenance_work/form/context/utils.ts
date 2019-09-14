@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { MaintenanceWork } from 'redux-main/reducers/modules/maintenance_work/@types/maintenanceWork';
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
 export const defaultMaintenanceWork: MaintenanceWork = {
   id: null,

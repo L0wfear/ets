@@ -1,6 +1,6 @@
-import { FieldCommon } from "../common";
-import { MaintenanceWork } from "redux-main/reducers/modules/some_uniq/maintenance_work/@types";
-import { Waybill } from "redux-main/reducers/modules/waybill/@types";
+import { FieldCommon } from '../common';
+import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 /**
  * Схема для типа stirng

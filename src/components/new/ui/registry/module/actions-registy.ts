@@ -967,47 +967,6 @@ export const actionUnselectSelectedRowToShow: any = (registryKey: string, allRes
   }
 };
 
-export const registryLoadOneData: any = (registryKey, id) => async (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const getOneData = get(registryData, 'Service.getOneData', null);
-
-  if (getOneData) {
-    const result = await etsLoadingCounter(
-      dispatch,
-      getJSON(
-        `${configStand.backend}/${getOneData.entity}`,
-        { id },
-      ),
-      { page: registryKey, noTimeout: true },
-    );
-
-    let response = get(
-      result,
-      get(getOneData, 'typeAns', 'result.rows.0'),
-      null,
-    );
-
-    switch (getOneData.format) {
-      case 'dutyMissionTemplate': {
-        response = getFrontDutyMission(response);
-        break;
-      }
-      case 'employee': {
-        response = getFrontEmployee(response);
-        break;
-      }
-    }
-
-    dispatch(
-      registrySetSelectedRowToShowInForm(registryKey, response),
-    );
-
-    return response;
-  }
-
-  return null;
-};
-
 export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => async (dispatch, getState) => {
   let itemToRemove = rows;
   const registryData = get(getState(), `registry.${registryKey}`, null);

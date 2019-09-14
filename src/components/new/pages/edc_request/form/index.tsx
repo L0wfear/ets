@@ -2,8 +2,6 @@ import * as React from 'react';
 import { get } from 'lodash';
 import memoizeOne from 'memoize-one';
 
-import { DivNone } from 'global-styled/global-styled';
-
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
@@ -20,9 +18,10 @@ import RequestInfoFormLazy from './requestInfo';
 import RequestCommentsFormLazy from 'components/new/pages/edc_request/form/comments';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 
-type OwnProps = WithFormRegistrySearchProps<EdcRequest>;
-type Props = OwnProps & WithFormRegistrySearchAddProps<EdcRequest>;
+type OwnProps = WithFormRegistrySearchProps;
+type Props = OwnProps & WithFormRegistrySearchAddProps<Pick<EdcRequest, 'id'>>;
 
 const getDatesEdcRequest = (edc_request: EdcRequest) => {
   const ans = {
@@ -101,12 +100,30 @@ const getDefaultEdcRequestCancelElement = memoizeOne(
 );
 
 const EdcRequestFormLazy: React.FC<Props> = (props) => {
+  const [edc, setEdc] = React.useState<EdcRequest>(null);
   const type = get(props.match, 'params.type', null);
 
   const page = props.page;
   const path = props.path;
 
   const dispatch = etsUseDispatch();
+
+  React.useEffect(
+    () => {
+      if (props.element) {
+        const loadAction = async () => {
+          const edc_reques = await dispatch(
+            edcRequestActions.actionLoadEdcRequestById(props.element.id, props),
+          );
+
+          setEdc(edc_reques);
+        };
+
+        loadAction();
+      }
+    },
+    [props.element],
+  );
 
   React.useEffect(
     () => {
@@ -117,112 +134,109 @@ const EdcRequestFormLazy: React.FC<Props> = (props) => {
         if (type === buttonsTypes.edc_request_create_mission) {
           dispatch(
             missionsActions.actionSetDependenceEdcRequestForMission(
-              props.element,
+              edc,
             ),
           );
         }
         if (type === buttonsTypes.edc_request_create_duty_mission) {
           dispatch(
             missionsActions.actionSetDependenceEdcRequestForDutyMission(
-              props.element,
+              edc,
             ),
           );
         }
       }
     },
-    [props.element, type],
+    [edc, type],
   );
 
-  if (!props.element) {
-    return (
-      <DivNone />
-    );
+  if (edc) {
+    if (type === buttonsTypes.edc_request_create_mission) {
+      return (
+        <MissionFormLazy
+          showForm
+          element={getDefaultMissionByEdcRequest(edc)}
+          onFormHide={props.handleHide}
+
+          page={page}
+          path={path}
+        />
+      );
+    }
+
+    if (type === buttonsTypes.edc_request_create_duty_mission) {
+      return (
+        <DutyMissionFormLazy
+          showForm
+          element={getDefaultDutyMissionByEdcRequest(edc)}
+          onFormHide={props.handleHide}
+
+          page={page}
+          path={path}
+        />
+      );
+    }
+
+    if (type === buttonsTypes.edc_request_cancel) {
+      return (
+        <EdcRequestCancelFormLazy
+          showForm
+          element={getDefaultEdcRequestCancelElement(edc)}
+          edcReques={edc}
+          onFormHide={props.handleHide}
+
+          page={page}
+          path={path}
+        />
+      );
+    }
+
+    if (type === buttonsTypes.edc_request_reject) {
+      return (
+        <EdcRequestRejectFormLazy
+          showForm
+          element={getDefaultEdcRequestCancelElement(edc)}
+          edcReques={edc}
+          onFormHide={props.handleHide}
+
+          page={page}
+          path={path}
+        />
+      );
+    }
+
+    if (type === 'info') {
+      return (
+        <RequestInfoFormLazy
+          element={edc}
+          registryKey={page}
+          onFormHide={props.handleHide}
+
+          page={page}
+          path={path}
+        />
+      );
+    }
+
+    if (type === 'comments') {
+      return (
+        <RequestCommentsFormLazy
+          showForm
+
+          element={props.element}
+          onFormHide={props.handleHide}
+
+          page={page}
+          path={path}
+        />
+      );
+    }
   }
 
-  if (type === buttonsTypes.edc_request_create_mission) {
-    return (
-      <MissionFormLazy
-        showForm
-        element={getDefaultMissionByEdcRequest(props.element)}
-        onFormHide={props.handleHide}
-
-        page={page}
-        path={path}
-      />
-    );
-  }
-
-  if (type === buttonsTypes.edc_request_create_duty_mission) {
-    return (
-      <DutyMissionFormLazy
-        showForm
-        element={getDefaultDutyMissionByEdcRequest(props.element)}
-        onFormHide={props.handleHide}
-
-        page={page}
-        path={path}
-      />
-    );
-  }
-
-  if (type === buttonsTypes.edc_request_cancel) {
-    return (
-      <EdcRequestCancelFormLazy
-        showForm
-        element={getDefaultEdcRequestCancelElement(props.element)}
-        edcReques={props.element}
-        onFormHide={props.handleHide}
-
-        page={page}
-        path={path}
-      />
-    );
-  }
-
-  if (type === buttonsTypes.edc_request_reject) {
-    return (
-      <EdcRequestRejectFormLazy
-        showForm
-        element={getDefaultEdcRequestCancelElement(props.element)}
-        edcReques={props.element}
-        onFormHide={props.handleHide}
-
-        page={page}
-        path={path}
-      />
-    );
-  }
-
-  if (type === 'info') {
-    return (
-      <RequestInfoFormLazy
-        element={props.element}
-        registryKey={page}
-        onFormHide={props.handleHide}
-
-        page={page}
-        path={path}
-      />
-    );
-  }
-
-  if (type === 'comments') {
-    return (
-      <RequestCommentsFormLazy
-        showForm
-
-        element={props.element}
-        onFormHide={props.handleHide}
-
-        page={page}
-        path={path}
-      />
-    );
-  }
-
-  return <DivNone />;
+  return null;
 };
 
-export default withFormRegistrySearchNew<OwnProps, EdcRequest>({
+export default withFormRegistrySearchNew<OwnProps, Pick<EdcRequest, 'id'>>({
   add_path: 'edc',
+  no_find_in_arr: true,
 })(EdcRequestFormLazy);

@@ -19,6 +19,7 @@ type TypeConfig = {
   // hideWithClose?: string[];
   cant_create?: boolean;                                  // может ли форма создать запись
   add_path: string;                                       // path для формы
+  no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
 };
 
 export type WithFormRegistrySearchAddProps<F> = {
@@ -28,7 +29,7 @@ export type WithFormRegistrySearchAddProps<F> = {
   element: F;
 } & WithSearchProps;
 
-export type WithFormRegistrySearchProps<F> = {
+export type WithFormRegistrySearchProps<F = any> = {
   registryKey: string;
   handleHide?: WithFormRegistrySearchAddProps<F>['handleHide'];
   path?: string;
@@ -116,9 +117,15 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
                   const param_uniq_value_number = Number(param_uniq_value);
                   const elementPick = array.find(({ [uniqKey]: id }) => id === param_uniq_value_number);
 
-                  if (elementPick) {
+                  if (elementPick || config.no_find_in_arr) {
                     if (isPermittedToSee) {
-                      setElement(elementPick);
+                      if (elementPick) {
+                        setElement(elementPick);
+                      } else {
+                        setElement({
+                          [uniqKey]: param_uniq_value_number,
+                        } as any);
+                      }
                     } else {
                       global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
                       handleHide(false);

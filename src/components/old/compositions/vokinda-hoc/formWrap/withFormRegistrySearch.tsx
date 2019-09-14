@@ -6,8 +6,8 @@ import { isNullOrUndefined, isFunction } from 'util';
 
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { ReduxState } from 'redux-main/@types/state';
-import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
-import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
+import { getListData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
+import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -22,7 +22,6 @@ type WithFormRegistrySearchConfig = {
 };
 
 type StateProps = {
-  getOneData: OneRegistryData['Service']['getOneData'];
   array: OneRegistryData['list']['data']['array'];
   buttons: OneRegistryData['header']['buttons'];
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
@@ -78,7 +77,6 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
     withSearch,
     connect<any, any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } }, ReduxState>(
       (state, { registryKey, uniqKeyForParams, permissions }) => ({
-        getOneData: getServiceData(state, registryKey).getOneData,
         array: getListData(state.registry, registryKey).data.array,
         data: getListData(state.registry, registryKey).data,                        // Используется в children
         buttons: getHeaderData(state.registry, registryKey).buttons,
@@ -130,21 +128,8 @@ export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySe
                 return;
               }
 
-              if (props.getOneData) {
-                dispatch(
-                  registryLoadOneData(props.registryKey, uniqKeyValue),
-                ).then((responseElement) => {
-                  if (responseElement) {
-                    setElement(responseElement);
-                  } else {
-                    global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                    handleHide(false);
-                  }
-                });
-              } else {
-                global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                handleHide(false);
-              }
+              global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+              handleHide(false);
             } else if (element) {
               setElement(null);
             }

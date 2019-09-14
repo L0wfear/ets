@@ -9,7 +9,7 @@ const EdcRequestCancel = React.lazy(() =>
 
 type EdcRequestCommentsLazyProps = {
   showForm: boolean;
-  element: Partial<EdcRequest>;
+  element: Pick<EdcRequest, 'id'> & Partial<EdcRequest>;
   onFormHide: (...arg: any[]) => any;
 
   page: string;

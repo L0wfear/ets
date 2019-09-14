@@ -9,6 +9,7 @@ import ProgramRegistryFormCreateWrap from 'components/old/program_registry/Creat
 import ProgramRegistryFormUWrap from 'components/old/program_registry/UpdateFrom/ProgramRegistryFormUWrap';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { isObject } from 'util';
 
 const defSendFromState = (page, dispatch) => ({ callback, outFormState }) => {
   const schema = formValidationSchema;
@@ -75,11 +76,6 @@ const validate = (state, errors) => {
 
 const ProgramRegistrySwitcher: React.FC<any> = React.memo(
   (props) => {
-    const { showForm } = props;
-    if (!showForm) {
-      return null;
-    }
-
     const { element } = props;
 
     const dispatch = etsUseDispatch();
@@ -92,12 +88,14 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
     );
 
     return (
-      isEmpty(element)
+      isEmpty(element) || (isObject(element) && !Object.keys(element)[0])
         ? (
           <ProgramRegistryFormCreateWrap
             defSendFromState={defSendFromStateWrap}
             getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
             validate={validate}
+            showForm
+            onFormHide={props.handleHide}
             {...props}
           />
         )
@@ -106,7 +104,9 @@ const ProgramRegistrySwitcher: React.FC<any> = React.memo(
             defSendFromState={defSendFromStateWrap}
             getFrowmStateAndErrorAndCanSave={getFrowmStateAndErrorAndCanSave}
             validate={validate}
+            onFormHide={props.handleHide}
             {...props}
+            showForm
             entity={'repair_program_version'}
           />
         )

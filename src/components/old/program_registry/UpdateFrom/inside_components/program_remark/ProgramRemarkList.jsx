@@ -224,7 +224,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
           this.checkDisabledDelete()
           || program_version_status !== 'sent_on_review'
         }
-        permissions="repair_program_version.review"
+        permissions="route.review"
       />,
       <ButtonChangeStatus
         buttonName={'Отклонено'}
@@ -248,7 +248,7 @@ class ProgramRemarkList extends UNSAFE_CheckableElementsList {
         buttonName={'Добавить'}
         key={3}
         onClick={this.createElement}
-        permissions="repair_program_version.review"
+        permissions="route.review"
         disabled={program_version_status !== 'sent_on_review'}
       />,
     ];

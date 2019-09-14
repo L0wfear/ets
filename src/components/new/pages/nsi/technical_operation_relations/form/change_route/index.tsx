@@ -1,38 +1,13 @@
 import * as React from 'react';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { TechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/@types/technicalOperationRelations';
 
-import { DivNone } from 'global-styled/global-styled';
+const ChangeRouteFormReactLazy = React.lazy(() => (
+  import(/* webpackChunkName: "change_route" */ 'components/new/pages/nsi/technical_operation_relations/form/change_route/ChangeRouteForm')
+));
 
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import ChangeRouteForm from './ChangeRouteForm';
-
-type PropsChangeRouteFormLazy = any;
-
-class ChangeRouteFormLazy extends React.Component<PropsChangeRouteFormLazy, {}> {
-  render() {
-    const { element, ...props } = this.props;
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}car-form`;
-
-    return (
-      element
-        ? (
-          <ChangeRouteForm
-            element={element}
-            handleHide={props.onFormHide}
-
-            registryKey={props.registryKey}
-            page={page}
-            path={path}
-          />
-        )
-        : (
-          <DivNone />
-        )
-    );
-  }
-}
-
-export default withFormRegistrySearch({
-  cantCreate: true,
-  uniqKeyName: 'asuods_id',
-})(ChangeRouteFormLazy);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<Partial<TechnicalOperationRelations>>, TechnicalOperationRelations>({
+  add_path: 'change_route',
+  cant_create: true,
+  replace_uniqKey_on: 'asuods_id',
+})(ChangeRouteFormReactLazy);

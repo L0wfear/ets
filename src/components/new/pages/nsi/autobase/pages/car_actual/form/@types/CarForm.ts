@@ -2,7 +2,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { CarDriversData, CarRegistrationData, CarPassporntData } from 'redux-main/reducers/modules/autobase/car/@types';
 import { OneTabDataCommon } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type CarWrap = (
   Car

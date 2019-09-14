@@ -7,7 +7,7 @@ import BatteryRegistryFormLazy from 'components/new/pages/nsi/autobase/pages/bat
 import BatteryRegistryAddButtonData from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/car_actual_add_battery_registry_form/_config-data';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { ActualBatteriesOnCar } from 'redux-main/reducers/modules/autobase/actions_by_type/actual_batteries_on_car/@types';
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
@@ -49,6 +49,6 @@ const ActualBatteriesOnCarForm: React.FC<Props> = React.memo(
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<ActualBatteriesOnCar>, ActualBatteriesOnCar>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<ActualBatteriesOnCar>, ActualBatteriesOnCar>({
   add_path: 'actual_battery_on_car',
 })(ActualBatteriesOnCarForm);

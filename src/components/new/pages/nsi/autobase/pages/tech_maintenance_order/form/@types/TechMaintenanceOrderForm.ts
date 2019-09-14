@@ -4,7 +4,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { HandleThunkActionCreator } from 'react-redux';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsTechMaintOrder = {
   techMaintTypeList: IStateAutobase['techMaintTypeList'];

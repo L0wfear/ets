@@ -4,7 +4,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import MissionInfoFormWrap from './MissionInfoFormWrap';
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const MissionInfoFormById: React.FC<WithFormRegistrySearchAddProps<Partial<Mission>>> = React.memo(
   (props) => {

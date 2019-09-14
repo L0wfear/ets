@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import { getServiceData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { MaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 
 const MaintenanceRateForm = React.lazy(() => (
@@ -33,6 +33,6 @@ const MaintenanceRateFormLazy: React.FC<Props> = React.memo(
   },
 );
 
-export default withFormRegistrySearchNew<OwnProps, MaintenanceRate>({
+export default withFormRegistrySearch<OwnProps, MaintenanceRate>({
   add_path: 'maintenance-rate',
 })(MaintenanceRateFormLazy);

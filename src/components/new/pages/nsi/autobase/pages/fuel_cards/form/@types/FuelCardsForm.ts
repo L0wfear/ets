@@ -6,7 +6,7 @@ import {
   getSessionStructuresParams,
 } from 'redux-main/reducers/modules/session/selectors';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsFuelCards = {
   companyOptions: GetSessionCompanyOptionsAns;

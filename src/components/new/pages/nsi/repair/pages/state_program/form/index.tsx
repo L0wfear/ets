@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { StateProgram } from 'redux-main/reducers/modules/repair/state_program/@types/stateProgram';
 
 const StateProgramFrom = React.lazy(() => (
@@ -36,6 +36,6 @@ const StateProgramFormLazy: React.FC<WithFormRegistrySearchAddProps<StateProgram
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<StateProgram>, StateProgram>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<StateProgram>, StateProgram>({
   add_path: 'state_program',
 })(StateProgramFormLazy);

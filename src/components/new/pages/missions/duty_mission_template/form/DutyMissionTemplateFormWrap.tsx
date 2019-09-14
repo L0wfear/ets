@@ -7,7 +7,7 @@ import { getListData } from 'components/new/ui/registry/module/selectors-registr
 import DutyMissionTemplateFormLazy from './template';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_mission_template/@types/index.h';
 
 const DutyMissionTemplateFormWrap: React.FC<WithFormRegistrySearchAddProps<DutyMissionTemplate>> = (props) => {
@@ -43,6 +43,6 @@ const DutyMissionTemplateFormWrap: React.FC<WithFormRegistrySearchAddProps<DutyM
   return <DivNone />;
 };
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<DutyMissionTemplate>, DutyMissionTemplate>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<DutyMissionTemplate>, DutyMissionTemplate>({
   add_path: 'duty_mission_template',
 })(DutyMissionTemplateFormWrap);

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
@@ -34,6 +34,6 @@ const InsurancePolicyFormLazy: React.FC<WithFormRegistrySearchAddProps<Insurance
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<InsurancePolicy> & { selectedCarData?: CarWrap }, InsurancePolicy>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<InsurancePolicy> & { selectedCarData?: CarWrap }, InsurancePolicy>({
   add_path: 'insurance-policy',
 })(InsurancePolicyFormLazy);

@@ -5,7 +5,7 @@ import employeeActions from 'redux-main/reducers/modules/employee/actions-employ
 import { HandleThunkActionCreator } from 'react-redux';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsDutyMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];

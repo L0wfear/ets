@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddPropsWithoutWithSerach } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddPropsWithoutWithSerach } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 
 export const FuelCardsFormLazy = React.lazy(() => (
@@ -9,6 +9,6 @@ export const FuelCardsFormLazy = React.lazy(() => (
 ));
 
 export const FuelCardsFormLazyWithoutWithSeacth = withSearch<WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<FuelCard>>>(FuelCardsFormLazy);
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<FuelCard>, FuelCard>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<FuelCard>, FuelCard>({
   add_path: 'fueld_card',
 })(FuelCardsFormLazy);

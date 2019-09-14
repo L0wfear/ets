@@ -7,7 +7,7 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMission = {
   userStructureId: InitialStateSession['userData']['structure_id'];

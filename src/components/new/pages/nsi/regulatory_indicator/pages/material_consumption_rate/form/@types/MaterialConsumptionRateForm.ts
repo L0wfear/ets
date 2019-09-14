@@ -5,7 +5,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { actionResetConsumptionRateMaterial, actionGetAndSetInStoreConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/actions';
 import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMaterialConsumptionRate = {
   technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];

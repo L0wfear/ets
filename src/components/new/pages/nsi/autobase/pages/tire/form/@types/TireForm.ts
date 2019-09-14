@@ -2,7 +2,7 @@ import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsTire = {
   tireModelList: IStateAutobase['tireModelList'];

@@ -5,7 +5,7 @@ import {
 
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../../../@types/CarForm';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsTechMaintenance = {
   repairCompanyList: IStateAutobase['repairCompanyList'];

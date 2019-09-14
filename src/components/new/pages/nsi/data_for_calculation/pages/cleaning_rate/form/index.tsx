@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
 
 const CleaningRateFrom = React.lazy(() => (
@@ -30,6 +30,6 @@ const CleaningRateFormLazy: React.FC<WithFormRegistrySearchAddProps<CleaningRate
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<CleaningRate>, CleaningRate>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<CleaningRate>, CleaningRate>({
   add_path: 'cleaning-rate',
 })(CleaningRateFormLazy);

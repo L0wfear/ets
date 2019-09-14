@@ -9,7 +9,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsDutyMission = {
   userStructureId: InitialStateSession['userData']['structure_id'];

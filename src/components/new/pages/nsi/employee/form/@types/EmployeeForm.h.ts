@@ -5,7 +5,7 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Position } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { CompanyStructureLinear } from 'redux-main/reducers/modules/company_structure/@types/company_structure.h';
 import { ReduxState } from 'redux-main/@types/state';
-import { WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsEmployee = {
   category_license: ReduxState['session']['appConfig']['category_license'];

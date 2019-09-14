@@ -11,7 +11,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type Props = WithFormRegistrySearchAddProps<TechnicalOperationRelations>;

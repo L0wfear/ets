@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 const WaybillFormWrap: any = React.lazy(() => (
@@ -58,7 +58,7 @@ const WaybilFormlLazy: React.FC<WithFormRegistrySearchAddProps<Partial<Waybill>>
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<Partial<Waybill>>, Partial<Waybill>>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Partial<Waybill>>, Partial<Waybill>>({
   add_path: 'waybill',
   no_find_in_arr: true,
   replace_uniqKey_on: 'id',

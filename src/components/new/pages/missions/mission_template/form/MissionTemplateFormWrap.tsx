@@ -8,7 +8,7 @@ import MissionTemplateFormLazy from './template';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const MissionTemplateFormWrap: React.FC<WithFormRegistrySearchAddProps<MissionTemplate>> = React.memo(
@@ -59,6 +59,6 @@ const MissionTemplateFormWrap: React.FC<WithFormRegistrySearchAddProps<MissionTe
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<MissionTemplate>, MissionTemplate>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<MissionTemplate>, MissionTemplate>({
   add_path: 'mission_template',
 })(MissionTemplateFormWrap);

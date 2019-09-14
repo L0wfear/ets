@@ -6,7 +6,7 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import TireRegistryAddButtonData from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_tires_on_car/form/car_actual_add_tire_registry_form/_config-data';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import TireFormLazy from 'components/new/pages/nsi/autobase/pages/tire/form';
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { ActualTiresOnCar } from 'redux-main/reducers/modules/autobase/actions_by_type/actual_tires_on_car/@types';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
@@ -49,6 +49,6 @@ const ActualTireOnCarForm: React.FC<Props> = React.memo(
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<ActualTiresOnCar>, ActualTiresOnCar>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<ActualTiresOnCar>, ActualTiresOnCar>({
   add_path: 'actual_tire_on_car',
 })(ActualTireOnCarForm);

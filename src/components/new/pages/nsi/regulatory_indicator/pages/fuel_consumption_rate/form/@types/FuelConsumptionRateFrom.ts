@@ -15,7 +15,7 @@ import {
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsFuelRate = {
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;

@@ -66,7 +66,7 @@ const findRecondInDeepArray = <F extends any>(array: F[], uniqKey: keyof F, uniq
   return null;
 };
 
-export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearchProps<F>, F extends any>(config: TypeConfig) => (
+export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchProps<F>, F extends any>(config: TypeConfig) => (
   (Component: React.ComponentType<PropsOwn & WithFormRegistrySearchAddProps<F>>) => {
     const ComponentWrap: React.FC<PropsOwn & WithSearchProps>  = React.memo(
       (props) => {

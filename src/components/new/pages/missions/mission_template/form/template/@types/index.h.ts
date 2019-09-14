@@ -6,7 +6,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/
 import { getSessionStructuresParams } from 'redux-main/reducers/modules/session/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMissionTemplate = {
   userStructureId: InitialStateSession['userData']['structure_id'];

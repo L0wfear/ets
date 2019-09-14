@@ -3,7 +3,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsNorm = {
 };

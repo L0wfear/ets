@@ -5,7 +5,7 @@ import { getDefaultWaybillElement } from './utils';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { submitWaybill, promiseGetWaybillById } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
 import { WaybillFormStoreType } from './@types';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 /**
  * Статусы берём селекторами (useFormDataIsClosed)

@@ -5,7 +5,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { HandleThunkActionCreator } from 'react-redux';
 import { actionGetAndSetInStoreMaintenanceWork, actionResetMaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
 import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMaintenanceRate = {
   technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];

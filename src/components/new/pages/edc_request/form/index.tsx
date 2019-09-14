@@ -17,7 +17,7 @@ import EdcRequestRejectFormLazy from './reject';
 import RequestInfoFormLazy from './requestInfo';
 import RequestCommentsFormLazy from 'components/new/pages/edc_request/form/comments';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import edcRequestActions from 'redux-main/reducers/modules/edc_request/edc_request_actions';
 
 type OwnProps = WithFormRegistrySearchProps;
@@ -240,7 +240,7 @@ const EdcRequestFormLazy: React.FC<Props> = (props) => {
   return null;
 };
 
-export default withFormRegistrySearchNew<OwnProps, Pick<EdcRequest, 'id'>>({
+export default withFormRegistrySearch<OwnProps, Pick<EdcRequest, 'id'>>({
   add_path: 'edc',
   no_find_in_arr: true,
 })(EdcRequestFormLazy);

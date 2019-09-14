@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
@@ -34,6 +34,6 @@ const TechInspectionFormLazy: React.FC<WithFormRegistrySearchAddProps<TechInspec
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<TechInspection> & { selectedCarData?: CarWrap }, TechInspection>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<TechInspection> & { selectedCarData?: CarWrap }, TechInspection>({
   add_path: 'tech_inspection',
 })(TechInspectionFormLazy);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { TechMaintenance } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
 const TechMintenanceForm = React.lazy(() =>
@@ -34,6 +34,6 @@ const TechMaintenanceFormLazy: React.FC<WithFormRegistrySearchAddProps<TechMaint
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<TechMaintenance> & { selectedCarData?: CarWrap }, TechMaintenance>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<TechMaintenance> & { selectedCarData?: CarWrap }, TechMaintenance>({
   add_path: 'tech_maintenance',
 })(TechMaintenanceFormLazy);

@@ -9,7 +9,7 @@ import {
 } from 'components/old/ui/input/ReactSelect/utils';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../car_actual/form/@types/CarForm';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type PropsInsurancePolicyWithForm = WithFormRegistrySearchAddProps<InsurancePolicy> & { selectedCarData?: CarWrap };
 

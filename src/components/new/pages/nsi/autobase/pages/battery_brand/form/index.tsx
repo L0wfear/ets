@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const BatteryBrandFrom = React.lazy(() => (
@@ -9,6 +9,6 @@ const BatteryBrandFrom = React.lazy(() => (
 
 type OwnProps = WithFormRegistrySearchProps<BatteryBrand>;
 
-export default withFormRegistrySearchNew<OwnProps, BatteryBrand>({
+export default withFormRegistrySearch<OwnProps, BatteryBrand>({
   add_path: 'battery_brand',
 })(BatteryBrandFrom);

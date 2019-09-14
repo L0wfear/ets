@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 const MissionTemplateCreatingForm = React.lazy(() =>
   import(/* webpackChunkName: "mission_template_creating_form" */ 'components/new/pages/missions/mission_template/form/creating/MissionTemplateCreatingForm'),

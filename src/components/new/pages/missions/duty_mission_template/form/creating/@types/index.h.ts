@@ -5,7 +5,7 @@ import { DutyMissionTemplate } from 'redux-main/reducers/modules/missions/duty_m
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { IStateEmployee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsDutyMissionTemplate = {
   employeeIndex: IStateEmployee['employeeIndex'];

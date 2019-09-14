@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { withFormRegistrySearch, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 const EmployeeFrom = React.lazy(() => (
@@ -9,6 +9,6 @@ const EmployeeFrom = React.lazy(() => (
 
 type OwnProps = WithFormRegistrySearchProps<Employee>;
 
-export default withFormRegistrySearchNew<OwnProps, Employee>({
+export default withFormRegistrySearch<OwnProps, Employee>({
   add_path: 'employee',
 })(EmployeeFrom);

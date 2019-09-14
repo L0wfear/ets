@@ -7,7 +7,7 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { CarWrap } from '../../../car_actual/form/@types/CarForm';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsTechInspection = {
   userCompanyId: InitialStateSession['userData']['company_id'];

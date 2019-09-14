@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { WithFormRegistrySearchProps, withFormRegistrySearchNew, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
 const MaintenanceWorkFrom = React.lazy(() => (
@@ -36,6 +36,6 @@ const MaintenanceWorkFormLazy: React.FC<WithFormRegistrySearchAddProps<Maintenan
   },
 );
 
-export default withFormRegistrySearchNew<WithFormRegistrySearchProps<MaintenanceWork>, MaintenanceWork>({
+export default withFormRegistrySearch<WithFormRegistrySearchProps<MaintenanceWork>, MaintenanceWork>({
   add_path: 'maintenance_work',
 })(MaintenanceWorkFormLazy);

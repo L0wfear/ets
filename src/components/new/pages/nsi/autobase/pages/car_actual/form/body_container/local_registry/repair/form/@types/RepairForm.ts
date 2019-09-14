@@ -9,7 +9,7 @@ import {
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { CarWrap } from '../../../../../@types/CarForm';
-import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];

@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import SnowStoragePermissions from 'components/new/pages/nsi/geoobjects/pages/snow_storage/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { SnowStorageFormSchema } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/schema';
 
 import { getDefaultSnowStorageFormElement } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsSnowStorageForm,
   PropsSnowStorageForm,
   PropsSnowStorageFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/snow_storage/SnowStorageForm/@types/SnowStorageForm.h';
@@ -80,22 +79,22 @@ const SnowStorageForm: React.FC<PropsSnowStorageForm> = React.memo(
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsSnowStorageForm, OwnPropsSnowStorageForm>(
+export default compose<PropsSnowStorageForm, PropsSnowStorageFormWithForm>(
   withForm<PropsSnowStorageFormWithForm, SnowStorage>({
     uniqField: 'id',
     createAction: actionsSnowStorage.post,

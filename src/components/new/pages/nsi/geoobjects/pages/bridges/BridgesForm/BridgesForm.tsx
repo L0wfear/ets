@@ -1,20 +1,15 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import bridgesPermissions from 'components/new/pages/nsi/geoobjects/pages/bridges/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { bridgesFormSchema } from 'components/new/pages/nsi/geoobjects/pages/bridges/BridgesForm/schema';
 
 import { getDefaultBridgesFormElement } from 'components/new/pages/nsi/geoobjects/pages/bridges/BridgesForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnPropsBridgesForm,
   PropsBridgesForm,
-  StateBridgesForm,
-  StatePropsBridgesForm,
   PropsBridgesFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/bridges/BridgesForm/@types/BridgesForm.h';
 
@@ -25,28 +20,24 @@ import { FlexContainer, Flex } from 'global-styled/global-styled';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
-import { getSessionState } from 'redux-main/reducers/selectors';
 import { actionsBridges } from 'redux-main/reducers/modules/geoobject/actions_by_type/bridges/actions';
 
-class BridgesForm extends React.PureComponent<
-  PropsBridgesForm,
-  StateBridgesForm
-> {
-  render() {
-    const { formState: state, page, path } = this.props;
-
-    const IS_CREATING = !state.id;
+const BridgesForm: React.FC<PropsBridgesForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      page, path,
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Просмотр объекта' : 'Просмотр объекта';
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
         id="modal-bridges"
         show
-        onHide={this.props.hideWithoutChanges}
+        onHide={props.hideWithoutChanges}
         bsSize="large"
        >
         <EtsBootstrap.ModalHeader closeButton>
@@ -55,12 +46,12 @@ class BridgesForm extends React.PureComponent<
         <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
           <FlexContainer isWrap>
             <Flex grow={1} shrink={1} basis={200}>
-              {this.props.userData.isKgh || this.props.userData.isOkrug ? (
+              {props.userData.isKgh || props.userData.isOkrug ? (
                 <ExtField
                   type="string"
                   value={state.company_name || '-'}
                   label={
-                    this.props.userData.isKgh
+                    props.userData.isKgh
                       ? 'Наименование ГБУ:'
                       : 'Учреждение:'
                   }
@@ -112,27 +103,22 @@ class BridgesForm extends React.PureComponent<
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsBridgesForm, OwnPropsBridgesForm>(
-  connect<StatePropsBridgesForm, {}, OwnPropsBridgesForm, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-    }),
-  ),
+export default compose<PropsBridgesForm, PropsBridgesFormWithForm>(
   withForm<PropsBridgesFormWithForm, Bridges>({
     uniqField: 'id',
     createAction: actionsBridges.post,

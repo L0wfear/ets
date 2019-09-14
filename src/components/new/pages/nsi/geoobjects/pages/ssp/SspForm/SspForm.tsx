@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { isNumber } from 'util';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import sspPermissions from 'components/new/pages/nsi/geoobjects/pages/ssp/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { sspFormSchema } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/schema';
-import { get } from 'lodash';
 
 import { getDefaultSspFormElement } from 'components/new/pages/nsi/geoobjects/pages/ssp/SspForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -20,7 +21,6 @@ import { Ssp } from 'redux-main/reducers/modules/geoobject/actions_by_type/ssp/@
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { isNumber } from 'util';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
@@ -111,15 +111,15 @@ const SspForm: React.FC<PropsSspForm> = React.memo(
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && (
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

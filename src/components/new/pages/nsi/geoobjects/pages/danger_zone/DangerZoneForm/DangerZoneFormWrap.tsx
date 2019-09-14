@@ -1,41 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsDangerZoneFormWrap } from 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/@types/DangerZoneForm.h';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { DangerZone } from 'redux-main/reducers/modules/geoobject/actions_by_type/danger_zone/@types';
 
 const DangerZoneFrom = React.lazy(() => (
   import(/* webpackChunkName: "DangerZone_form" */ 'components/new/pages/nsi/geoobjects/pages/danger_zone/DangerZoneForm/DangerZoneForm')
 ));
 
-class DangerZoneFormWrap extends React.Component<PropsDangerZoneFormWrap, {}> {
-  render() {
-    const { element, ...props } = this.props;
-    const page = props.registryKey;
-    const path = `${props.path ? `${props.path}-` : ''}DangerZone-form`;
-
-    return element ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <DangerZoneFrom
-              element={element}
-              handleHide={props.onFormHide}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
-  }
-}
-
-export default withFormRegistrySearch({})(DangerZoneFormWrap);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<DangerZone>, DangerZone>({
+  add_path: 'DangerZone',
+})(DangerZoneFrom);

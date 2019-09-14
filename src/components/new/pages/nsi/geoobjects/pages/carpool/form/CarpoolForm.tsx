@@ -14,7 +14,6 @@ import { carpoolSchema } from 'components/new/pages/nsi/geoobjects/pages/carpool
 import { getDefaultCarpoolElement } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsCarpoolForm,
   PropsCarpoolForm,
   PropsCarpoolFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/@types/CarpoolForm.h';
@@ -86,7 +85,7 @@ const CarpoolForm: React.FC<PropsCarpoolForm> = React.memo(
   },
 );
 
-export default compose<PropsCarpoolForm, OwnPropsCarpoolForm>(
+export default compose<PropsCarpoolForm, PropsCarpoolFormWithForm>(
   withForm<PropsCarpoolFormWithForm, Carpool>({
     uniqField: 'id',
     createAction: actionsCarpool.post,

@@ -1,41 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsPedestrianTunnelExitsFormWrap } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/@types/PedestrianTunnelExitsForm.h';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { PedestrianTunnelExits } from 'redux-main/reducers/modules/geoobject/actions_by_type/pedestrian_tunnel_exits/@types';
 
 const PedestrianTunnelExitsFrom = React.lazy(() => (
   import(/* webpackChunkName: "PedestrianTunnelExits_form" */ 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/PedestrianTunnelExitsForm')
 ));
 
-class PedestrianTunnelExitsFormWrap extends React.Component<PropsPedestrianTunnelExitsFormWrap, {}> {
-  render() {
-    const { element, ...props } = this.props;
-    const page = props.registryKey;
-    const path = `${props.path ? `${props.path}-` : ''}PedestrianTunnelExits-form`;
-
-    return element ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <PedestrianTunnelExitsFrom
-              element={element}
-              handleHide={props.onFormHide}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
-  }
-}
-
-export default withFormRegistrySearch({})(PedestrianTunnelExitsFormWrap);
+export default withFormRegistrySearchNew<WithFormRegistrySearchProps<PedestrianTunnelExits>, PedestrianTunnelExits>({
+  add_path: 'PedestrianTunnelExits',
+})(PedestrianTunnelExitsFrom);

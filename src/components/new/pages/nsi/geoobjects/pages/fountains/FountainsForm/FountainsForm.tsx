@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import fountainsPermissions from 'components/new/pages/nsi/geoobjects/pages/fountains/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { fountainsFormSchema } from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsForm/schema';
 
 import { getDefaultFountainsFormElement } from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsFountainsForm,
   PropsFountainsForm,
   PropsFountainsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/fountains/FountainsForm/@types/FountainsForm.h';
@@ -159,22 +158,22 @@ const FountainsForm: React.FC<PropsFountainsForm> = React.memo(
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsFountainsForm, OwnPropsFountainsForm>(
+export default compose<PropsFountainsForm, PropsFountainsFormWithForm>(
   withForm<PropsFountainsFormWithForm, Fountains>({
     uniqField: 'id',
     createAction: actionsFountains.post,

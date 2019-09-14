@@ -1,21 +1,19 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import odhPermissions from 'components/new/pages/nsi/geoobjects/pages/odh/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { odhFormSchema } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/schema';
 
 import { getDefaultOdhFormElement } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsOdhForm,
   PropsOdhForm,
   PropsOdhFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/odh/OdhForm/@types/OdhForm.h';
 
-import { DivNone } from 'global-styled/global-styled';
 import { Odh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/@types';
 import FieldCompanyStructureId from './fields/company_structure_id/FieldCompanyStructureId';
 import { actionsOdh } from 'redux-main/reducers/modules/geoobject/actions_by_type/odh/actions';
@@ -133,12 +131,8 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
         {
-          isPermitted // либо обновление, либо создание
-          ? (
+          isPermitted &&  (
             <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
           )
         }
         </EtsBootstrap.ModalFooter>
@@ -147,7 +141,7 @@ const OdhForm: React.FC<PropsOdhForm> = React.memo(
   },
 );
 
-export default compose<PropsOdhForm, OwnPropsOdhForm>(
+export default compose<PropsOdhForm, PropsOdhFormWithForm>(
   withForm<PropsOdhFormWithForm, Odh>({
     uniqField: 'id',
     createAction: actionsOdh.post,

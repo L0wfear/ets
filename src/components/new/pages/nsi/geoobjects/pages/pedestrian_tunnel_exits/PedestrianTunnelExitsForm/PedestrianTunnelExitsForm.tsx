@@ -9,7 +9,6 @@ import { PedestrianTunnelExitsFormSchema } from 'components/new/pages/nsi/geoobj
 import { getDefaultPedestrianTunnelExitsFormElement } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsPedestrianTunnelExitsForm,
   PropsPedestrianTunnelExitsForm,
   PropsPedestrianTunnelExitsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnel_exits/PedestrianTunnelExitsForm/@types/PedestrianTunnelExitsForm.h';
@@ -89,22 +88,22 @@ const PedestrianTunnelExitsForm: React.FC<PropsPedestrianTunnelExitsForm> = Reac
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsPedestrianTunnelExitsForm, OwnPropsPedestrianTunnelExitsForm>(
+export default compose<PropsPedestrianTunnelExitsForm, PropsPedestrianTunnelExitsFormWithForm>(
   withForm<PropsPedestrianTunnelExitsFormWithForm, PedestrianTunnelExits>({
     uniqField: 'id',
     createAction: actionsPedestrianTunnelExits.post,

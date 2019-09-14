@@ -9,7 +9,6 @@ import { PedestrianTunnelsFormSchema } from 'components/new/pages/nsi/geoobjects
 import { getDefaultPedestrianTunnelsFormElement } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsPedestrianTunnelsForm,
   PropsPedestrianTunnelsForm,
   PropsPedestrianTunnelsFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/pedestrian_tunnels/PedestrianTunnelsForm/@types/PedestrianTunnelsForm.h';
@@ -27,7 +26,8 @@ const PedestrianTunnelsForm: React.FC<PropsPedestrianTunnelsForm> = React.memo(
   (props) => {
     const {
       formState: state,
-      page, path,
+      page,
+      path,
       IS_CREATING,
       isPermitted,
     } = props;
@@ -95,22 +95,22 @@ const PedestrianTunnelsForm: React.FC<PropsPedestrianTunnelsForm> = React.memo(
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsPedestrianTunnelsForm, OwnPropsPedestrianTunnelsForm>(
+export default compose<PropsPedestrianTunnelsForm, PropsPedestrianTunnelsFormWithForm>(
   withForm<PropsPedestrianTunnelsFormWithForm, PedestrianTunnels>({
     uniqField: 'id',
     createAction: actionsPedestrianTunnels.post,

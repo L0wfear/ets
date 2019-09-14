@@ -6,7 +6,6 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnConsumableMaterialProps,
   PropsConsumableMaterial,
   PropsConsumableMaterialWithForm,
 } from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/@types/ConsumableMaterialForm';
@@ -83,7 +82,7 @@ const ConsumableMaterialForm: React.FC<PropsConsumableMaterial> = (props) => {
   );
 };
 
-export default compose<PropsConsumableMaterial, OwnConsumableMaterialProps>(
+export default compose<PropsConsumableMaterial, PropsConsumableMaterialWithForm>(
   withForm<PropsConsumableMaterialWithForm, ConsumableMaterial>({
     uniqField: 'id',
     createAction: actionCreateConsumableMaterial,

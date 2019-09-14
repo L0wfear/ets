@@ -9,31 +9,13 @@ import {
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { CarWrap } from '../../../../../@types/CarForm';
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsRepairFormWrap = {
-  element: Repair | null;
-  selectedCarData?: CarWrap;
-  onFormHide: OnFormHideType;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
 export type StatePropsRepair = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
 
-export type OwnRepairProps = {
-  element: Repair | null;
-  handleHide: OnFormHideType;
-  selectedCarData?: CarWrap;
-
-  page: string;
-  path?: string;
-};
+export type OwnRepairProps = WithFormRegistrySearchAddProps<Repair> & { selectedCarData?: CarWrap };
 
 export type PropsRepairWithForm = StatePropsRepair &
   OwnRepairProps;

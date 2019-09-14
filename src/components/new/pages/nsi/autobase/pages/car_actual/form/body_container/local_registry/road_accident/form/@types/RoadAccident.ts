@@ -3,31 +3,9 @@ import {
 } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { CarWrap } from '../../../../../@types/CarForm';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsRoadAccidentFormLazy = {
-  element: RoadAccident | null;
-  onFormHide: OnFormHideType;
-  selectedCarData?: CarWrap;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
-export type OwnRoadAccidentProps = {
-  element: RoadAccident | null;
-  handleHide: OnFormHideType;
-  selectedCarData?: CarWrap;
-
-  page: string;
-  path?: string;
-};
-
-export type PropsRoadAccidentWithForm = (
-  & OwnRoadAccidentProps
-);
+export type PropsRoadAccidentWithForm = WithFormRegistrySearchAddProps<RoadAccident> & { selectedCarData?: CarWrap };
 
 export type PropsRoadAccident = OutputWithFormProps<
   PropsRoadAccidentWithForm,

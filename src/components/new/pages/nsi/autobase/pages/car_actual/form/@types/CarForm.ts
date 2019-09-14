@@ -13,32 +13,7 @@ export type CarWrap = (
   }
 );
 
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsCarFormLazy = {
-  element: Partial<CarWrap>;
-  onFormHide: OnFormHideType
-
-  registryKey?: string;
-  page?: string;
-  path?: string;
-};
-
-export type StatePropsCar = {
-};
-export type DispatchPropsCar = {
-};
-export type OwnCarProps = WithFormRegistrySearchAddProps<Partial<Car>>;
-
-export type MergedCarProps = (
-  StatePropsCar
-  & DispatchPropsCar
-  & OwnCarProps
-);
-
-export type PropsCarWithForm = (
-  MergedCarProps
-);
+export type PropsCarWithForm = WithFormRegistrySearchAddProps<Partial<Car>>;
 
 export type PropsCar = OutputWithFormProps<
   PropsCarWithForm,

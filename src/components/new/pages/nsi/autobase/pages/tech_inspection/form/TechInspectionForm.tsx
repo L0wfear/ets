@@ -1,16 +1,18 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { isNullOrUndefined } from 'util';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import techInspectionPermissions from 'components/new/pages/nsi/autobase/pages/tech_inspection/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { techInspectionFormSchema } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/shema';
 
 import { getDefaultTechInspectionElement } from 'components/new/pages/nsi/autobase/pages/tech_inspection/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnTechInspectionProps,
   PropsTechInspection,
@@ -20,10 +22,8 @@ import {
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
-import { isNullOrUndefined } from 'util';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
-import { get } from 'lodash';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
 import { autobaseCreateTechInspection, autobaseUpdateTechInspection } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_inspection/actions';
 

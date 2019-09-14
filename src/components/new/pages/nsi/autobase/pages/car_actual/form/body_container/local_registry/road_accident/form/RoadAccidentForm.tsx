@@ -1,22 +1,21 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { roadAccidentFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/schema';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnRoadAccidentProps,
   PropsRoadAccident,
   PropsRoadAccidentWithForm,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/@types/RoadAccident';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
-import { isNullOrUndefined } from 'util';
 import { getDefaultRoadAccidentElement } from './utils';
 import roadAccidentPermissions from '../_config-data/permissions';
 import { getSessionState } from 'redux-main/reducers/selectors';
@@ -36,9 +35,8 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
     formErrors: errors,
 
     page, path,
+    IS_CREATING,
   } = props;
-
-  const IS_CREATING = !state.id;
 
   const title = !IS_CREATING
     ? 'Изменение записи'
@@ -59,7 +57,7 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
       const { data } = await dispatch(
         autobaseGetSetRoadAccidentCause(
           {},
-          { page, path },
+          props,
         ),
       );
 
@@ -209,7 +207,7 @@ const RoadAccidentForm: React.FC<PropsRoadAccident> = (props) => {
   );
 };
 
-export default compose<PropsRoadAccident, OwnRoadAccidentProps>(
+export default compose<PropsRoadAccident, PropsRoadAccidentWithForm>(
   withForm<PropsRoadAccidentWithForm, RoadAccident>({
     uniqField: 'id',
     createAction: autobaseCreateRoadAccident,

@@ -19,6 +19,7 @@ type TypeConfig = {
   no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   add_path: string;                                       // path для формы
   replace_uniqKey_on?: string                             // имя уникального ключа для формы
+  search_which_need_to_remove?: Array<string>;            // Что удалить из search при закрытии формы
 };
 
 export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
@@ -119,8 +120,13 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
         const handleHide: WithFormRegistrySearchAddProps<F>['handleHide'] = React.useCallback(
           (isSubmitted, response) => {
             setElement(null);
-            props.setParams({
-              [uniqKeyForParams]: null,
+            props.setParamsAndSearch({
+              params: {
+                [uniqKeyForParams]: null,
+              },
+              search: Object.fromEntries(
+                (config.search_which_need_to_remove || []).map((name) => [name, null]),
+              ),
             });
 
             dispatch(

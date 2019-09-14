@@ -22,7 +22,7 @@ export const withSpecificPermissions = (user) => {
   permissions.push(...getFullAccess('docs_issue_a_waybill_without_mission'));
   /* end docs */
 
-  // permissions.push(...getFullAccess('your_permission'));
+  permissions.push(...getFullAccess('services'));
 
   user.permissions.forEach((permission) => {
     if (permission.match(/^pgm\./)) {

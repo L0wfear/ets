@@ -11,18 +11,6 @@ import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/miss
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
-export type PropsDutyMissionFormLazy = {
-  showForm: boolean;
-  element: Partial<DutyMission> | null;
-  onFormHide: OnFormHideType;
-  readOnly?: boolean;
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
 export type StatePropsDutyMission = {
   userStructureId: InitialStateSession['userData']['structure_id'];
   userStructureName: InitialStateSession['userData']['structure_name'];

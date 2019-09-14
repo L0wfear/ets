@@ -8,7 +8,6 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnBatteryRegistryProps,
   PropsBatteryRegistry,
   StateBatteryRegistry,
   PropsBatteryRegistryWithForm,
@@ -243,7 +242,7 @@ class BatteryRegistryForm extends React.PureComponent<
   }
 }
 
-export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
+export default compose<PropsBatteryRegistry, PropsBatteryRegistryWithForm>(
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
     uniqField: 'id',
     createAction: autobaseCreateBatteryRegistry,

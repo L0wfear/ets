@@ -8,17 +8,6 @@ import {
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
-
-export type PropsFuelCardsFormLazy = {
-  element: Partial<FuelCard>;
-  onFormHide: OnFormHideType;
-
-  registryKey?: string;
-  page?: string;
-  path?: string;
-};
-
 export type StatePropsFuelCards = {
   companyOptions: GetSessionCompanyOptionsAns;
   fuelTypeOptions: any[];

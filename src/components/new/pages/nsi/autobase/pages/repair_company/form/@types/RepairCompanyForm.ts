@@ -1,32 +1,8 @@
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { DispatchProp } from 'react-redux';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsRepairCompanyFormLazy = {
-  element: Partial<RepairCompany>;
-  onFormHide: OnFormHideType
-
-  registryKey?: string;
-  page?: string;
-  path?: string;
-};
-
-export type StatePropsRepairCompany = {};
-export type DispatchPropsRepairCompany = DispatchProp;
-export type OwnRepairCompanyProps = {
-  element: Partial<RepairCompany>;
-  handleHide: OnFormHideType
-  page: string;
-  path?: string;
-};
-
-export type PropsRepairCompanyWithForm = (
-  StatePropsRepairCompany
-  & DispatchPropsRepairCompany
-  & OwnRepairCompanyProps
-);
+export type PropsRepairCompanyWithForm = WithFormRegistrySearchAddProps<RepairCompany>;
 
 export type PropsRepairCompany = OutputWithFormProps<
   PropsRepairCompanyWithForm,
@@ -34,5 +10,3 @@ export type PropsRepairCompany = OutputWithFormProps<
   [ RepairCompany ],
   any
 >;
-export type StateRepairCompany = {
-};

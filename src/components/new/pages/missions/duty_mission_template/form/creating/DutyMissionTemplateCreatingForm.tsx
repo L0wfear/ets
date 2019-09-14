@@ -89,7 +89,7 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
         );
 
         if (response.every((ans) => Boolean(ans))) {
-          props.handleHide(true, response);
+          props.handleHide(true, response as any);
         }
       }
     },

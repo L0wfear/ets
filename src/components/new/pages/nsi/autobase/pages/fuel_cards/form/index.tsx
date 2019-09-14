@@ -8,7 +8,7 @@ export const FuelCardsFormLazy = React.lazy(() => (
   import(/* webpackChunkName: "fuel_cards_form" */ 'components/new/pages/nsi/autobase/pages/fuel_cards/form/FuelCardsForm')
 ));
 
-export const FuelCardsFormLazyWithSeacth = withSearch<WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<FuelCard>>>(FuelCardsFormLazy);
+export const FuelCardsFormLazyWithoutWithSeacth = withSearch<WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<FuelCard>>>(FuelCardsFormLazy);
 export default withFormRegistrySearchNew<WithFormRegistrySearchProps<FuelCard>, FuelCard>({
   add_path: 'fueld_card',
 })(FuelCardsFormLazy);

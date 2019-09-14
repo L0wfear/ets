@@ -26,6 +26,7 @@ export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
   path: string;                                           // path для лоудинга
   handleHide: (isSubmitted: boolean, result?: F) => any;
   element: F;
+  type: string | null;
 };
 
 export type WithFormRegistrySearchAddProps<F> = (
@@ -84,7 +85,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
           );
         });
         const param_uniq_value = props.match.params[uniqKeyForParams];
-
+        const type = props.match.params.type;
         const param_uniq_value_prev = usePrevious(param_uniq_value);
 
         const isPermittedToCreate = etsUseIsPermitted(permissions.create) && hasButtonToCreate;
@@ -129,6 +130,15 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
           },
           [props.match.params, props.setParams, uniqKeyForParams],
         );
+
+        // React.useEffect(
+        //   () => {
+        //     if (type && !buttonsTypes[type]) {
+        //       handleHide(false);
+        //     }
+        //   },
+        //   [handleHide],
+        // );
 
         React.useEffect(
           () => {
@@ -197,6 +207,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
                     path={path}
                     handleHide={handleHide}
                     element={element}
+                    type={type}
                   />
                 )
               }

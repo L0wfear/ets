@@ -1,17 +1,13 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnConsumableMaterialProps,
   PropsConsumableMaterial,
-  StatePropsConsumableMaterial,
-  DispatchPropsConsumableMaterial,
   PropsConsumableMaterialWithForm,
 } from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/@types/ConsumableMaterialForm';
 import { DivNone } from 'global-styled/global-styled';
@@ -20,8 +16,7 @@ import { consumableMaterialFormSchema } from './schema';
 import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
 import { getDefaultConsumableMaterialElement } from './utils';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import useMeasureUnitOperationOptions from './use/useMeasureUnitOptions';
-import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
+import useMeasureUnitOptions from './use/useMeasureUnitOptions';
 import { actionCreateConsumableMaterial, actionUpdateConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/actions_consumable_material';
 
 const ConsumableMaterialForm: React.FC<PropsConsumableMaterial> = (props) => {
@@ -42,9 +37,8 @@ const ConsumableMaterialForm: React.FC<PropsConsumableMaterial> = (props) => {
 
   const {
     measureUnitOptions,
-  } = useMeasureUnitOperationOptions(
-    props.actionLoadMeasureUnit,
-    page, path,
+  } = useMeasureUnitOptions(
+    props,
   );
 
   return (
@@ -90,16 +84,6 @@ const ConsumableMaterialForm: React.FC<PropsConsumableMaterial> = (props) => {
 };
 
 export default compose<PropsConsumableMaterial, OwnConsumableMaterialProps>(
-  connect<StatePropsConsumableMaterial, DispatchPropsConsumableMaterial, OwnConsumableMaterialProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      actionLoadMeasureUnit: (...arg) => (
-        dispatch(
-          actionLoadMeasureUnit(...arg),
-        )
-      ),
-    }),
-  ),
   withForm<PropsConsumableMaterialWithForm, ConsumableMaterial>({
     uniqField: 'id',
     createAction: actionCreateConsumableMaterial,

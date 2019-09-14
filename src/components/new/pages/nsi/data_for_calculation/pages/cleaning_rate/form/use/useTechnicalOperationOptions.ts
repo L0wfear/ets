@@ -1,25 +1,20 @@
 import * as React from 'react';
-import { HandleThunkActionCreator } from 'react-redux';
+
 import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { MeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/@types';
 import { actionGetTechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-type UseTechnicalOperationOptionsAns = {
-  technicalOperationOptions: DefaultSelectListMapper<MeasureUnit>,
-};
-
-type UseTechnicalOperationOptions = (
-  loadTechnicalOperation: HandleThunkActionCreator<typeof actionGetTechnicalOperationRegistry>,
-  page: string,
-  path: string,
-) => UseTechnicalOperationOptionsAns;
-
-const useTechnicalOperationOptions: UseTechnicalOperationOptions = (loadTechnicalOperation, page, path) => {
+const useTechnicalOperationOptions = (meta: LoadingMeta) => {
   const [technicalOperationOptions, setTechnicalOperationOptions] = React.useState<DefaultSelectListMapper<MeasureUnit>>([]);
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {
-      loadTechnicalOperation({}, { page, path }).then(
+      dispatch(
+        actionGetTechnicalOperationRegistry({}, meta),
+      ).then(
         ({ data }) => (
           setTechnicalOperationOptions(
             data.map(defaultSelectListMapper),

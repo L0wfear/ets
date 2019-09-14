@@ -1,25 +1,20 @@
 import * as React from 'react';
-import { HandleThunkActionCreator } from 'react-redux';
+
 import { DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
 import { MeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/@types';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type UseMeasureUnitOperationOptionsAns = {
-  measureUnitOperationOptions: DefaultSelectListMapper<MeasureUnit>,
-};
-
-type UseMeasureUnitOperationOptions = (
-  loadMeasureUnitOperation: HandleThunkActionCreator<typeof actionLoadMeasureUnit>,
-  page: string,
-  path: string,
-) => UseMeasureUnitOperationOptionsAns;
-
-const useMeasureUnitOperationOptions: UseMeasureUnitOperationOptions = (loadMeasureUnitOperation, page, path) => {
+const useMeasureUnitOperationOptions = (meta: LoadingMeta) => {
   const [measureUnitOperationOptions, setMeasureUnitOperationOptions] = React.useState<DefaultSelectListMapper<MeasureUnit>>([]);
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {
-      loadMeasureUnitOperation({ type: 'operation' }, { page, path }).then(
+      dispatch(
+        actionLoadMeasureUnit({ type: 'operation' }, meta),
+      ).then(
         ({ data }) => (
           setMeasureUnitOperationOptions(
             data.map(defaultSelectListMapper),

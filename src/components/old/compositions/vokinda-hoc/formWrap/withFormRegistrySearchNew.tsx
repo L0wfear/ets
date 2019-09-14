@@ -13,13 +13,11 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 
 type TypeConfig = {
-  // cantCreate?: boolean;                               // может ли форма создать запись
-  // noCheckDataInRegistryArray?: boolean;               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   // uniqKeyName?: string;                               // имя уникального ключа для формы (см выше)
   // hideWithClose?: string[];
   cant_create?: boolean;                                  // может ли форма создать запись
-  add_path: string;                                       // path для формы
   no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
+  add_path: string;                                       // path для формы
 };
 
 export type WithFormRegistrySearchAddProps<F> = {

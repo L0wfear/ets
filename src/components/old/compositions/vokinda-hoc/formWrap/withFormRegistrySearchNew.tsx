@@ -4,7 +4,7 @@ import { isFunction } from 'util';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 import PreloaderMainPage from 'components/old/ui/PreloaderMainPage';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { getListData, getRootRegistry } from 'components/new/ui/registry/module/selectors-registry';
+import { getListData, getRootRegistry, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -17,7 +17,8 @@ type TypeConfig = {
   // noCheckDataInRegistryArray?: boolean;               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   // uniqKeyName?: string;                               // имя уникального ключа для формы (см выше)
   // hideWithClose?: string[];
-  add_path: string;
+  cant_create?: boolean;                                  // может ли форма создать запись
+  add_path: string;                                       // path для формы
 };
 
 export type WithFormRegistrySearchAddProps<F> = {
@@ -52,13 +53,21 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
         const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
         const uniqKeyForParams = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
         const permissions = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).permissions);
-
+        const hasButtonToCreate = etsUseSelector((state) => {
+          const buttons = getHeaderData(getRegistryState(state), props.registryKey).buttons;
+          return (
+            buttons.some((buttonData) => (
+              buttonsTypes.create === buttonData.type
+              || buttonsTypes.mission_create === buttonData.type
+            ))
+          );
+        });
         const param_uniq_value = props.match.params[uniqKeyForParams];
 
         const param_uniq_value_prev = usePrevious(param_uniq_value);
         const isLoading_prev = usePrevious(isLoading);
 
-        const isPermittedToCreate = etsUseIsPermitted(permissions.create);
+        const isPermittedToCreate = etsUseIsPermitted(permissions.create) && hasButtonToCreate;
         const isPermittedToRead = etsUseIsPermitted(permissions.read);
         const isPermittedToUpdate = etsUseIsPermitted(permissions.update);
         const isPermittedToSee = (
@@ -97,7 +106,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
 
               if (triggerOnUpdate) {
                 if (param_uniq_value === buttonsTypes.create) {
-                  if (isPermittedToCreate) {
+                  if (isPermittedToCreate && !config.cant_create) {
                     setElement({} as any);
                   } else {
                     global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');

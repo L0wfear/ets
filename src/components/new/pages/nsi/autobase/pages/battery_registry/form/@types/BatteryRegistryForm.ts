@@ -1,6 +1,7 @@
 import { BatteryRegistry, BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
@@ -13,12 +14,7 @@ export type PropsBatteryRegistryFormLazy = {
   path?: string;
 };
 
-export type OwnBatteryRegistryProps = {
-  element: Partial<BatteryRegistry>;
-  handleHide: OnFormHideType
-  page: string;
-  path?: string;
-};
+export type OwnBatteryRegistryProps = WithFormRegistrySearchAddProps<BatteryRegistry>;
 
 export type PropsBatteryRegistryWithForm = (
   OwnBatteryRegistryProps

@@ -1,41 +1,14 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsBatteryBrandFormLazy } from 'components/new/pages/nsi/autobase/pages/battery_brand/form/@types/BatteryBrandForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearchNew, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearchNew';
+import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const BatteryBrandFrom = React.lazy(() => (
   import(/* webpackChunkName: "battery_brand_form" */ 'components/new/pages/nsi/autobase/pages/battery_brand/form/BatteryBrandForm')
 ));
 
-const BatteryBrandFormLazy: React.FC<PropsBatteryBrandFormLazy> = React.memo(
-  (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}battery_brand-form`;
+type OwnProps = WithFormRegistrySearchProps<BatteryBrand>;
 
-    return (
-      props.element
-        ? (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <BatteryBrandFrom
-                element={props.element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            </React.Suspense>
-          </ErrorBoundaryForm>
-        )
-        : (
-          <DivNone />
-        )
-    );
-  },
-);
-
-export default withFormRegistrySearch({})(BatteryBrandFormLazy);
+export default withFormRegistrySearchNew<OwnProps, BatteryBrand>({
+  add_path: 'battery_brand',
+})(BatteryBrandFrom);

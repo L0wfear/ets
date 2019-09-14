@@ -8,12 +8,10 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnBatteryBrandProps,
   PropsBatteryBrand,
   PropsBatteryBrandWithForm,
 } from 'components/new/pages/nsi/autobase/pages/battery_brand/form/@types/BatteryBrandForm';
 import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DivNone } from 'global-styled/global-styled';
 import { batteryBrandFormSchema } from './schema';
 import batteryBrandPermissions from '../_config-data/permissions';
 import { getDefaultBatteryBrandElement } from './utils';
@@ -93,12 +91,8 @@ const BatteryBrandForm: React.FC<PropsBatteryBrand> = (props) => {
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
       {
-        isPermitted // либо обновление, либо создание
-        ? (
+        isPermitted && (
           <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-        )
-        : (
-          <DivNone />
         )
       }
       </EtsBootstrap.ModalFooter>
@@ -106,7 +100,7 @@ const BatteryBrandForm: React.FC<PropsBatteryBrand> = (props) => {
   );
 };
 
-export default compose<PropsBatteryBrand, OwnBatteryBrandProps>(
+export default compose<PropsBatteryBrand, PropsBatteryBrandWithForm>(
   withForm<PropsBatteryBrandWithForm, BatteryBrand>({
     uniqField: 'id',
     createAction: autobaseCreateBatteryBrand,

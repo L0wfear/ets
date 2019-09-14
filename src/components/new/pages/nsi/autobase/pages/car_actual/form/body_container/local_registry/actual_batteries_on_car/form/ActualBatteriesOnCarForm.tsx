@@ -40,7 +40,7 @@ const ActualBatteriesOnCarForm: React.FC<Props> = React.memo(
       }
       if (!isNaN(idValue)) {
         return (
-          <BatteryRegistryFormLazy registryKey={props.registryKey} page={props.registryKey} />
+          <BatteryRegistryFormLazy registryKey={props.registryKey} />
         );
       }
     }

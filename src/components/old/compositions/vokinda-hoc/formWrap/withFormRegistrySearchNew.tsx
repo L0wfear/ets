@@ -45,6 +45,7 @@ export const withFormRegistrySearchNew = <PropsOwn extends WithFormRegistrySearc
           (state) => (
             !getRootRegistry(getRegistryState(state), props.registryKey, true)
             || getRootRegistry(getRegistryState(state), props.registryKey).isLoading
+            || !getListData(getRegistryState(state), props.registryKey).data.array[0]
           ),
         );
         const array: any[] = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);

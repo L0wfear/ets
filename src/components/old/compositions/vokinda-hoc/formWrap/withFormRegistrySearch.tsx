@@ -14,7 +14,6 @@ import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 type TypeConfig = {
-  // hideWithClose?: string[];
   cant_create?: boolean;                                  // может ли форма создать запись
   no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
   add_path: string;                                       // path для формы

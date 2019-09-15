@@ -983,6 +983,7 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
     },
   };
 
+  let changedListData = false; // <<< переделать костыль
   if (!isEqualSelectedRow) {
     SelectedRowObj.rendersFields = {
       values: selectedRow,
@@ -1014,29 +1015,47 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
         });
       }
 
+      changedListData = true; // <<< переделать костыль
+
       dispatch(
         changeRowRequestAction(
           formatedRendersFieldsValues,
           { page: '', path: '' },
         ),
-      ).then((res) => {
+      ).then(async (res) => {
         const putRes = get(res, 'result.rows.0');
-        // tslint:disable-next-line:no-console
-        // Добавить обновление выбранной строки из PUT запроса
-        // tslint:disable-next-line:no-console
-        console.log('put res === ', { putRes });
+        const uniqKey = get(SelectedRowObj, 'data.uniqKey', 'id');
+
+        const arrayWithPutObj = get(SelectedRowObj, 'data.array', []).map((elem) => {
+          if (elem[uniqKey] === putRes[uniqKey]) {
+            return putRes;
+          }
+          return elem;
+        });
+        SelectedRowObj.data.array = [...arrayWithPutObj];
+
+        dispatch(
+          registryChangeListData(
+            registryKey,
+            {
+              ...SelectedRowObj,
+            },
+          ),
+        );
       });
     }
   }
 
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...SelectedRowObj,
-      },
-    ),
-  );
+  if (!changedListData) {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...SelectedRowObj,
+        },
+      ),
+    );
+  }
 
   const children = get(selectedRow, 'children', null);
 

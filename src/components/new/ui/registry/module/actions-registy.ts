@@ -964,7 +964,69 @@ export const registryChangeRenderOptions: any = (registryKey, payload: {options:
   );
 };
 
-export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, getState) => {
+const registrySelectRowWithPutRequest = async (SelectedRowObj, registryKey, selectedRow, dispatch, getState) => {
+  const {
+    registry: {
+      [registryKey]: {
+        list,
+      },
+    },
+  } = getState();
+  SelectedRowObj.rendersFields = {
+    values: selectedRow,
+  };
+
+  const changeRowRequestAction = get(list, 'meta.changeRowRequestAction.action', null);
+  const rendersFieldsValues = get(list, 'rendersFields.values', null);
+
+  if (changeRowRequestAction && rendersFieldsValues) {
+    const listMetaFields = get(list, 'meta.fields', []);
+    const formatedRendersFieldsValues = { ...rendersFieldsValues };
+
+    if (listMetaFields.length) {
+      listMetaFields.forEach(({ key, renderParams }) => {
+        if (renderParams) {
+          let value: any = formatedRendersFieldsValues[key];
+
+          if (renderParams.type === 'number' && value) {
+            value = Number(value);
+          }
+          if (renderParams.type === 'date' && value) {
+            value = createValidDate(value);
+          }
+          if (renderParams.type === 'date' && renderParams.time) {
+            value = createValidDateTime(value);
+          }
+          formatedRendersFieldsValues[key] = value;
+        }
+      });
+    }
+
+    try {
+      const response = await dispatch(
+        changeRowRequestAction(
+          formatedRendersFieldsValues,
+          { page: '', path: '' },
+        ),
+      );
+
+      const putRes = get(response, 'result.rows.0');
+      const uniqKey = get(SelectedRowObj, 'data.uniqKey', 'id');
+
+      const arrayWithPutObj = get(SelectedRowObj, 'data.array', []).map((elem) => {
+        if (elem[uniqKey] === putRes[uniqKey]) {
+          return putRes;
+        }
+        return elem;
+      });
+      SelectedRowObj.data.array = [...arrayWithPutObj];
+    } catch (error) {
+      console.error(error); //tslint:disable-line
+    }
+  }
+};
+
+export const registrySelectRow: any = (registryKey, selectedRow) => async (dispatch, getState) => {
   const {
     registry: {
       [registryKey]: {
@@ -983,79 +1045,18 @@ export const registrySelectRow: any = (registryKey, selectedRow) => (dispatch, g
     },
   };
 
-  let changedListData = false; // <<< переделать костыль
   if (!isEqualSelectedRow) {
-    SelectedRowObj.rendersFields = {
-      values: selectedRow,
-    };
-
-    const changeRowRequestAction = get(list, 'meta.changeRowRequestAction.action', null);
-    const rendersFieldsValues = get(list, 'rendersFields.values', null);
-
-    if (changeRowRequestAction && rendersFieldsValues) {
-      const listMetaFields = get(list, 'meta.fields', []);
-      const formatedRendersFieldsValues = { ...rendersFieldsValues };
-
-      if (listMetaFields.length) {
-        listMetaFields.forEach(({ key, renderParams }) => {
-          if (renderParams) {
-            let value: any = formatedRendersFieldsValues[key];
-
-            if (renderParams.type === 'number' && value) {
-              value = Number(value);
-            }
-            if (renderParams.type === 'date' && value) {
-              value = createValidDate(value);
-            }
-            if (renderParams.type === 'date' && renderParams.time) {
-              value = createValidDateTime(value);
-            }
-            formatedRendersFieldsValues[key] = value;
-          }
-        });
-      }
-
-      changedListData = true; // <<< переделать костыль
-
-      dispatch(
-        changeRowRequestAction(
-          formatedRendersFieldsValues,
-          { page: '', path: '' },
-        ),
-      ).then(async (res) => {
-        const putRes = get(res, 'result.rows.0');
-        const uniqKey = get(SelectedRowObj, 'data.uniqKey', 'id');
-
-        const arrayWithPutObj = get(SelectedRowObj, 'data.array', []).map((elem) => {
-          if (elem[uniqKey] === putRes[uniqKey]) {
-            return putRes;
-          }
-          return elem;
-        });
-        SelectedRowObj.data.array = [...arrayWithPutObj];
-
-        dispatch(
-          registryChangeListData(
-            registryKey,
-            {
-              ...SelectedRowObj,
-            },
-          ),
-        );
-      });
-    }
+    await registrySelectRowWithPutRequest(SelectedRowObj, registryKey, selectedRow, dispatch, getState);
   }
 
-  if (!changedListData) {
-    dispatch(
-      registryChangeListData(
-        registryKey,
-        {
-          ...SelectedRowObj,
-        },
-      ),
-    );
-  }
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...SelectedRowObj,
+      },
+    ),
+  );
 
   const children = get(selectedRow, 'children', null);
 

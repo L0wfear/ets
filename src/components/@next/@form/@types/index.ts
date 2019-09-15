@@ -57,7 +57,7 @@ export type ValueOfArrayField = CommonFieldType & {
 };
 
 export type SchemaFormContextBody<F extends object> = {
-  fields: {
+  validate_fields: {
     [K in keyof F]?: (
       StringField
       | ValueOfArrayField

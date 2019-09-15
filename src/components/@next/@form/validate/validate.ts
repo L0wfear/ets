@@ -12,10 +12,10 @@ import { validateMultiValueOfArray } from 'components/@next/@form/validate/multi
 
 export const validate = <F extends Record<string, any>>(shemaBody: SchemaFormContext<F>['body'], formState: F): FormErrorBySchema<F> => {
   const formError = Object.fromEntries(
-    Object.keys(shemaBody.fields).map((key) => [key, '']),
+    Object.keys(shemaBody.validate_fields).map((key) => [key, '']),
   );
 
-  Object.entries(shemaBody.fields).forEach(
+  Object.entries(shemaBody.validate_fields).forEach(
     (fieldSchemaEntries) => {
       const key = fieldSchemaEntries[0] as keyof F;
       const fieldData = fieldSchemaEntries[1];

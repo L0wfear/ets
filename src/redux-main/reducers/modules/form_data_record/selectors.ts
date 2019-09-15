@@ -20,8 +20,8 @@ export const getFormDataIsPermittedByKey = <F extends object, Store extends obje
   || getFormDataIsPermittedToUpdateByKey<F, Store>(state, key)
 );
 
-export const getFormDataMetaByKey = <F extends object, Store extends object = {}>(state: ReduxState, key: keyof IStateFormDataRecord) => (
-  getFormDataByKey<F, Store>(state, key).meta
+export const getFormDataMetaByKey = (state: ReduxState, key: keyof IStateFormDataRecord) => (
+  getFormDataByKey<any>(state, key).meta
 );
 
 export const getFormDataFormStateByKey = <F extends object, Store extends object = {}>(state: ReduxState, key: keyof IStateFormDataRecord) => (

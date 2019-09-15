@@ -16,7 +16,7 @@ export const metaMaintenanceWork: ConfigFormData<MaintenanceWork> = {
       },
     },
     body: {
-      fields: {
+      validate_fields: {
         name: {
           type: 'string',
           title: 'Наименование',

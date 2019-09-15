@@ -7,7 +7,7 @@ import { validate, canSaveTest} from 'components/@next/@form/validate/validate';
 import { getFormDataByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
 import { FORM_SET_DATA, FORM_REMOVE_DATA, FORM_CHANGE_DATA } from 'redux-main/reducers/modules/form_data_record/form_data_record_reducer';
 import { OneFormDataByKey, FormKeys, ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
-import { metaMaintenanceWork } from 'redux-main/reducers/modules/form_data_record/form_data/maintenance_work/default';
+import { metaMaintenanceWork } from 'redux-main/reducers/modules/form_data_record/form_data/maintenance_work/form_meta';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 

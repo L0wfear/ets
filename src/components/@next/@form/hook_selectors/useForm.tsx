@@ -31,10 +31,20 @@ const useFormData = <F extends object, Store extends object = {}>(formDataKey: s
 /**
  * получение флага 'Создаётся ли элемент' формы
  */
-const useFormDataSchemaIsCreating = <F extends object, Store extends object = {}>(formDataKey: string) => {
+const useFormDataIsCreating = <F extends object, Store extends object = {}>(formDataKey: string) => {
   const IS_CREATING = etsUseSelector((state) => getFormDataIsCreatingByKey<F, Store>(state, formDataKey));
 
   return IS_CREATING;
+};
+
+/**
+ * получение флага 'Создаётся ли элемент' формы
+ */
+const useFormDataTitle = (formDataKey: FormKeys) => {
+  const IS_CREATING = useFormDataIsCreating(formDataKey);
+  const title = mapFormMeta[formDataKey].schema.header.title;
+
+  return IS_CREATING ? title.update : title.update;
 };
 
 /**
@@ -87,7 +97,7 @@ const useFormDataHandleChange = <F extends object, Store extends object = {}>(fo
  * получение meta формы
  */
 const useFormDataMeta = <F extends object, Store extends object = {}>(formDataKey: string) => {
-  const meta = etsUseSelector((state) => getFormDataMetaByKey<F, Store>(state, formDataKey));
+  const meta = etsUseSelector((state) => getFormDataMetaByKey(state, formDataKey));
 
   return meta;
 };
@@ -219,7 +229,7 @@ const useFormDataLoadOptions = <Store extends object, K extends keyof Store>(for
 
 export default {
   useFormData,
-  useFormDataSchemaIsCreating,
+  useFormDataIsCreating,
   useFormDataHandleChangeStore,
   useFormDataMeta,
   useFormDataFormState,
@@ -236,4 +246,5 @@ export default {
   useFormDataStore,
   useFormDataStorePickValue,
   useFormDataLoadOptions,
+  useFormDataTitle,
 };

@@ -1,7 +1,7 @@
 import { BooleanField } from 'components/@next/@form/@types';
 import { isBoolean } from 'util';
 
-export const validateBoolean = <F extends Record<string, any>>(key: keyof F, fieldData: BooleanField, formState: F) => {
+export const validateBoolean = <F extends Record<string, any>>(key: keyof F, fieldData: BooleanField<F>, formState: F) => {
   const {
     [key]: value,
   } = formState;

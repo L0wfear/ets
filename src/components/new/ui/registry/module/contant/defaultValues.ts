@@ -9,6 +9,7 @@ const registryDefaultObj: OneRegistryData = {
       payload: {},
     },
   },
+  path: null,
   filter: {
     fields: [],
     isOpen: false,

@@ -41,6 +41,11 @@ export const validate = <F extends Record<string, any>>(shemaBody: SchemaFormCon
       if (fieldData.type === 'multiValueOfArray') {
         formError[key] = validateMultiValueOfArray<F>(key, fieldData, formState);
       }
+      if (!formError[key] && isArray(fieldData.dependencies)) {
+        fieldData.dependencies.some(
+          (func) => formError[key] = func(formState[key as string], formState),
+        );
+      }
     },
   );
 

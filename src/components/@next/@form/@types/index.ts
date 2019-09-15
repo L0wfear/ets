@@ -9,29 +9,32 @@ type SchemaFormContextHeader = {
   };
 };
 
-type CommonFieldType = {
+type CommonFieldType<F extends Record<string, any>, K extends keyof F = keyof F> = {
   title: string;
   required?: boolean;
+  dependencies?: Array<
+    (value: F[K], formState: F) => any
+  >;
 };
 
-export type MultiValueOfArrayField = CommonFieldType & {
-  type: 'multiValueOfArray',
+export type MultiValueOfArrayField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'multiValueOfArray';
 };
 
-export type DateTimeField = CommonFieldType & {
-  type: 'datetime',
+export type DateTimeField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'datetime';
 };
 
-export type DateField = CommonFieldType & {
-  type: 'date',
+export type DateField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'date';
 };
 
-export type BooleanField = CommonFieldType & {
-  type: 'boolean',
+export type BooleanField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'boolean';
 };
 
-export type NumberField = CommonFieldType & {
-  type: 'number',
+export type NumberField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'number';
 
   minLength?: number;
   maxLength?: number;
@@ -45,29 +48,29 @@ export type NumberField = CommonFieldType & {
   float?: number;
 };
 
-export type StringField = CommonFieldType & {
-  type: 'string',
+export type StringField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'string';
 
   minLength?: number;
   maxLength?: number;
 };
 
-export type ValueOfArrayField = CommonFieldType & {
-  type: 'valueOfArray',
+export type ValueOfArrayField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'valueOfArray';
 };
 
 export type SchemaFormContextBody<F extends object> = {
   validate_fields: {
     [K in keyof F]?: (
-      StringField
-      | ValueOfArrayField
-      | NumberField
-      | BooleanField
-      | DateField
-      | DateTimeField
-      | MultiValueOfArrayField
+      StringField<F, K>
+      | ValueOfArrayField<F, K>
+      | NumberField<F, K>
+      | BooleanField<F, K>
+      | DateField<F, K>
+      | DateTimeField<F, K>
+      | MultiValueOfArrayField<F, K>
     )
-  },
+  };
 };
 
 /**

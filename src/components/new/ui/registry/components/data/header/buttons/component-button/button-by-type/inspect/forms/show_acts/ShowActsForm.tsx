@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import TableData from 'components/new/ui/registry/components/data/table-data/TableData';
 import Paginator from 'components/new/ui/registry/components/data/paginator/Paginator';
-import { EtsHeaderContainer, EtsHeaderContainerWrap } from '../../../../../../styled/styled';
+import { EtsHeaderContainer, EtsHeaderContainerWrap } from 'components/new/ui/registry/components/data/header/styled/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import inspectActScanPermissions from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/permissions';
 
@@ -13,13 +13,16 @@ import {
   registryKey,
 } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/registry/registry-config';
 import { registryAddInitialData, registryRemoveData, registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import { EtsButtonsContainer } from '../../../../../styled/styled';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import ButtonRemove from '../../../ButtonRemove';
-import InspectActFileForm from './form/InspectActFileForm';
 import ButtonRead from '../../../ButtonRead';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+
+const InspectActFileFormContext = React.lazy(() => (
+  import(/* webpackChunkName: "services" */ 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/form/InspectActFileFormContext')
+));
 
 type Props = {
   element: { id: number };
@@ -49,7 +52,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         dispatch(
-          registryAddInitialData(getConfig(props.element.id)), // не сработает из других мест ЕТС
+          registryAddInitialData(getConfig(props.element.id, props.path)), // не сработает из других мест ЕТС
         );
 
         return () => {
@@ -85,7 +88,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
     );
 
     const handleHide = React.useCallback(
-      (isSubmitted) => {
+      (isSubmitted, result?: any) => {
         changeElement(null);
 
         if (isSubmitted) {
@@ -132,8 +135,9 @@ const ShowActsForm: React.FC<Props> = React.memo(
           </EtsBootstrap.ModalFooter>
         </EtsBootstrap.ModalContainer>
         {
-          element && (
-            <InspectActFileForm
+          Boolean(element) && (
+            <InspectActFileFormContext
+              registryKey={registryKey}
               page={registryKey}
               path={path}
 

@@ -1,7 +1,7 @@
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import { DateField } from 'components/@next/@form/@types';
 
-export const validateDate = <F extends Record<string, any>>(key: keyof F, fieldData: DateField, formState: F) => {
+export const validateDate = <F extends Record<string, any>>(key: keyof F, fieldData: DateField<F>, formState: F) => {
   const {
     [key]: value,
   } = formState;

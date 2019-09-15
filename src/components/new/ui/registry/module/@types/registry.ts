@@ -123,6 +123,7 @@ export interface OneRegistryData<F = any> {
   idRequestTime: number;
   isLoading: boolean;
   Service: any;
+  path?: string;
   header: {
     title?: any;
     titlePopover: string;
@@ -222,6 +223,7 @@ export type TypeConfigData<F> = {
   noInitialLoad?: boolean;
   Service: OneRegistryData<F>['Service'];
   registryKey: string;
+  path?: string;
   header?: {
     title?: OneRegistryData<F>['header']['title'];
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];

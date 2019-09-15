@@ -15,7 +15,10 @@ const useForm = <F>(formKey: FormKeys, props: WithFormRegistrySearchAddProps<F>)
         actionInitialFormByKey(
           formKey,
           props.element,
-          props.meta,
+          props.meta || {
+            page: props.page,
+            path: props.path,
+          },
         ),
       );
       return () => dispatch(actionRemoveFormData(formKey));

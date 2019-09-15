@@ -12,14 +12,14 @@ export const initialState: IStateFormDataRecord = {};
 const formDataRecord = (state = initialState, { type, payload }) => {
   switch (type) {
     case FORM_SET_DATA: {
-      console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️'); // tslint:disable-line:no-console
+      console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey); // tslint:disable-line:no-console
       return {
         ...state,
         [payload.formKey]: payload.formData,
       };
     }
     case FORM_REMOVE_DATA: {
-      console.log('❌❌❌❌❌❌❌❌❌❌'); // tslint:disable-line:no-console
+      console.log('❌❌❌❌❌❌❌❌❌❌', payload.formKey); // tslint:disable-line:no-console
       const {
         ...otherState
       } = state;

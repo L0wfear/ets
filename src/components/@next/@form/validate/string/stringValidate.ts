@@ -1,7 +1,7 @@
 import { isString } from 'util';
 import { StringField } from 'components/@next/@form/@types';
 
-export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField, formState: F) => {
+export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField<F>, formState: F) => {
   const {
     [key]: value,
   } = formState;

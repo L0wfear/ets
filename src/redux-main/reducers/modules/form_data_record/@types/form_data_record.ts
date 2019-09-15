@@ -4,6 +4,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 export type FormKeys = (
   'maintenance_work'
+  | 'inspect_one_act_scan'
 );
 
 export type OneFormDataByKey<F extends object> = {

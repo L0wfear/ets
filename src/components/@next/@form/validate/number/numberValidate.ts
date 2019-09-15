@@ -1,7 +1,7 @@
 import { NumberField } from 'components/@next/@form/@types';
 import { isNumber, isNullOrUndefined } from 'util';
 
-export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField, formState: F) => {
+export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField<F>, formState: F) => {
   const {
     [key]: value,
   } = formState;

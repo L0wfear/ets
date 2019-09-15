@@ -29,7 +29,7 @@ export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
   meta?: LoadingMeta;                                      // для будущего лоудинга
   handleHide: (isSubmitted: boolean, result?: F) => any;
   element: F;
-  type: string | null;
+  type?: string | null;
 };
 
 export type WithFormRegistrySearchAddProps<F> = (

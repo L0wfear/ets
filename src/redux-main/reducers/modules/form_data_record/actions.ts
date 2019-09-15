@@ -10,9 +10,11 @@ import { OneFormDataByKey, FormKeys, ConfigFormData } from 'redux-main/reducers/
 import { metaMaintenanceWork } from 'redux-main/reducers/modules/form_data_record/form_data/maintenance_work/form_meta';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { metaInspectOneActScan } from 'redux-main/reducers/modules/form_data_record/form_data/inspect_one_act_scan/form_meta';
 
 export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   maintenance_work: metaMaintenanceWork,
+  inspect_one_act_scan: metaInspectOneActScan,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({

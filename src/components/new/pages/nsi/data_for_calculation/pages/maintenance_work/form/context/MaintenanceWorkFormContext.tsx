@@ -1,4 +1,4 @@
-import withFormContext from 'components/@next/@form/hook/withFormContext';
+import withFormContextOld from 'components/@next/@form/hook/withFormContextOld';
 import { maintenanceWorkFormSchema } from './schema';
 import maintenanceWorkPermissions from '../../_config-data/permissions';
 import { getDefaultMaintenanceWorkElement } from './utils';
@@ -7,7 +7,7 @@ import { submitMaintenanceWork } from 'redux-main/reducers/modules/maintenance_w
 import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 // удалил старую форму вместе с этим коммитом
-export default withFormContext<WithFormRegistrySearchAddProps<MaintenanceWork>, MaintenanceWork, {}>(
+export default withFormContextOld<WithFormRegistrySearchAddProps<MaintenanceWork>, MaintenanceWork, {}>(
   (props) => ({
     key: 'maintenance_work_form',
     uniqField: 'id',

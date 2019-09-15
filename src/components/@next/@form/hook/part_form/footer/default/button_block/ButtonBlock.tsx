@@ -16,7 +16,7 @@ const ComponentsByKey: Record<ValuesOf<ValuesOf<DefautlFooterButtons['buttons']>
 const ButtonBlock: React.FC<ButtonBlockProps> = React.memo(
   (props) => {
     return (
-      <div>
+      <React.Fragment>
         {
           props.blockButtons.map((buttonType) => {
             const ComponentName = ComponentsByKey[buttonType];
@@ -32,7 +32,7 @@ const ButtonBlock: React.FC<ButtonBlockProps> = React.memo(
             );
           })
         }
-      </div>
+      </React.Fragment>
     );
   },
 );

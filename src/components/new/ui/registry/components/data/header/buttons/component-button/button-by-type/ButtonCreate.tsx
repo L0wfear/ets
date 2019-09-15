@@ -52,7 +52,7 @@ const ButtonCreate: React.FC<ButtonCreateProps> = (props) => {
         type: get(data, 'other_params.type', null),
       });
     },
-    [data],
+    [data, props.setParams, props.match.params, props.setDataInSearch, props.searchState],
   );
 
   return (

@@ -65,7 +65,7 @@ const ButtonRead: React.FC<Props> = React.memo(
           registrySetSelectedRowToShowInForm(props.registryKey),
         );
       },
-      [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams],
+      [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams, props.setParams, props.match.params, props.setDataInSearch, props.searchState],
     );
 
     const isPermitted = etsUseIsPermitted(

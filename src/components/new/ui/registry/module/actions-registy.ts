@@ -451,13 +451,41 @@ export const registryChangeServiceData = (registryKey, Service) => ({
   },
 });
 
-export const registryChangeListData = (registryKey: string, list: OneRegistryData['list']) => ({
-  type: REGISTRY_CHANGE_LIST,
-  payload: {
-    registryKey,
-    list,
-  },
-});
+export const registryChangeListData = (registryKey: string, listRaw: OneRegistryData['list']): EtsAction<void> => (dispatch, getState) => {
+  const registyData = get(getState(), ['registry', registryKey]);
+  const getRegistryData = get(registyData, 'Service.getRegistryData');
+  const userServerFilters = get(getRegistryData, 'userServerFilters', false);
+  const filter = get(registyData, 'filter');
+  const listOld = get(registyData, 'list', null);
+
+  let processed = listRaw.processed;
+
+  const triggerOnUpdate = (
+    listRaw.data.array !== listOld.data.array
+    || processed.sort !== listOld.processed.sort
+    || processed.filterValues !== listOld.processed.filterValues
+  );
+
+  if (triggerOnUpdate) {
+    processed = { ...listRaw.processed };
+
+    if (!getRegistryData || !userServerFilters) {
+      processed.processedArray = makeProcessedArray(listRaw.data.array, processed, filter.fields);
+      processed.total_count = processed.processedArray.length;
+    }
+  }
+
+  return dispatch({
+    type: REGISTRY_CHANGE_LIST,
+    payload: {
+      registryKey,
+      list: {
+        ...listRaw,
+        processed,
+      },
+    },
+  });
+};
 
 export const registryChangeFilterData = (registryKey, filter) => ({
   type: REGISTRY_CHANGE_FILTER,
@@ -516,11 +544,6 @@ export const registryResetAllTypeFilter = (registryKey) => (dispatch, getState) 
     filterValues: applyFilterFromRaw(filter),
   };
 
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-    processed.total_count = processed.processedArray.length;
-  }
-
   dispatch(
     registryChangeFilterData(
       registryKey,
@@ -575,11 +598,6 @@ export const applyFilterValues = (registryKey, filterValues) => (dispatch, getSt
     }
 
     console.log('SAVE FILTER', filterAsString); // tslint:disable-line:no-console
-  }
-
-  if (!getRegistryData || !userServerFilters) {
-    processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-    processed.total_count = processed.processedArray.length;
   }
 
   dispatch(
@@ -715,7 +733,6 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field, sortabl
     const registyData = get(getState(), ['registry', registryKey], null);
     const getRegistryData = get(registyData, 'Service.getRegistryData', null);
     const userServerFilters = get(getRegistryData, 'userServerFilters', false);
-    const filter = get(registyData, 'filter', {});
     const list = get(registyData, 'list', null);
 
     const {
@@ -744,10 +761,6 @@ export const registryTriggerOnChangeSelectedField = (registryKey, field, sortabl
       ...list.processed,
       sort,
     };
-
-    if (!getRegistryData || !userServerFilters) {
-      processed.processedArray = makeProcessedArray(list.data.array, processed, filter.fields);
-    }
 
     dispatch(
       registryChangeListData(

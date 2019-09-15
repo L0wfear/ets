@@ -16,7 +16,7 @@ import { getStructureAfterChageCar } from 'components/@next/@form/hook/part_form
 
 type FieldWaybillStructureIdProps = {
   fieldData: FieldDataWaybillStuctureId;
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillStructureId: React.FC<FieldWaybillStructureIdProps> = React.memo(

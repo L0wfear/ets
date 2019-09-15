@@ -7,7 +7,7 @@ import useWaybillCarActualOptions from './useWaybillCarActualOptions';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 type FieldWaybillTrailerIdArrayProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

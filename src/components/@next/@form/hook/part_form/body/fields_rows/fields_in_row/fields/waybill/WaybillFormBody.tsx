@@ -16,7 +16,7 @@ import FieldWaybillCommonFuelStart from './waybill_common_fuel_start/FieldWaybil
 import WaybillCarFuelBlock from './waybill_car_fuel_block/WaybillCarFuelBlock';
 
 type WaybillFormBodyProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const WaybillFormBody: React.FC<WaybillFormBodyProps> = React.memo(

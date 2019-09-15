@@ -8,7 +8,7 @@ import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/us
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 type FieldWaybillIsOneFuelTankProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

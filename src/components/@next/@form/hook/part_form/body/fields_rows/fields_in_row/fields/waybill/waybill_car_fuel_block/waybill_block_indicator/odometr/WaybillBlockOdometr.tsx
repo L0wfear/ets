@@ -5,7 +5,7 @@ import WaybillFieldOdometrEnd from 'components/@next/@form/hook/part_form/body/f
 import WaybillFieldOdometrDiff from 'components/@next/@form/hook/part_form/body/fields_rows/fields_in_row/fields/waybill/waybill_car_fuel_block/waybill_block_indicator/odometr/02-odometr_diff/WaybillFieldOdometrDiff';
 
 type WaybillBlockOdometrProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

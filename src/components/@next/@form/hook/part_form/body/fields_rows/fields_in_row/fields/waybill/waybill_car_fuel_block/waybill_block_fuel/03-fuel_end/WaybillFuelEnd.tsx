@@ -6,7 +6,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type WaybillFuelEndProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -8,7 +8,7 @@ import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/
 import useWorkModeOptions from 'components/new/utils/hooks/services/useOptions/useWorkModeOptionsOptions';
 
 type FieldWaybillWorkModeIdArrayProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

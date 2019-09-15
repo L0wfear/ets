@@ -7,7 +7,7 @@ import WaybillBlockMotohours from './motohours/WaybillBlockMotohours';
 import WaybillBlockOdometr from './odometr/WaybillBlockOdometr';
 
 type WaybillBlockIndicatorProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

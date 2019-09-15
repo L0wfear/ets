@@ -4,7 +4,7 @@ import FieldCreateMission from './button_create_mission/FieldCreateMission';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillMissionsProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillMissions: React.FC<FieldWaybillMissionsProps> = React.memo(

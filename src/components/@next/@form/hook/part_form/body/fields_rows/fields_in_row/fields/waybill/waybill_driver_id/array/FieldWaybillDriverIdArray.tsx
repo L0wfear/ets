@@ -8,7 +8,7 @@ import { defaultSortingFunction } from 'components/old/ui/input/ReactSelect/util
 import { useWaybillDrivers } from './useWaybillDrivers';
 
 type FieldWaybillDriverIdArrayProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

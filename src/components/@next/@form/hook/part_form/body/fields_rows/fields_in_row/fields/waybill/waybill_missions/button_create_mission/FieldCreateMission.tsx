@@ -5,7 +5,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type FieldCreateMissionProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldCreateMission: React.FC<FieldCreateMissionProps> = React.memo(

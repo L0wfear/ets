@@ -9,7 +9,7 @@ import { getDefaultWaybill } from 'components/new/pages/waybill/form/context/uti
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WaybillFuelTypeProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -13,7 +13,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type FieldIsBnsoBrokenProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -8,7 +8,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 
 type WaybillFieldOdometrEndProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -10,7 +10,7 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 
 type FieldWaybillCarIdArrayProps = {
-  formDataKey: string;
+  formDataKey: any;
   md: number;
 };
 

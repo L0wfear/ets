@@ -9,14 +9,10 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 type TypeConfig = {
   typePreloader?: Props['typePreloader'];
-} & (
-  {
-    path?: string;
-    page?: string;
-  } | {
-    meta?: LoadingMeta;
-  }
-);
+  path?: string;
+  page?: string;
+  meta?: LoadingMeta;
+};
 
 type OwnPropsExtends = Partial<TypeConfig> & Record<string, any>;
 
@@ -41,15 +37,13 @@ const withPreloader = <OwnProps extends OwnPropsExtends>(configWithPreloader: Ty
 
       return (
         <React.Fragment>
-            {
-              Boolean(isLoading) && (
-                <PreloadNew typePreloader={configWithPreloader.typePreloader || props.typePreloader} />
-              )
-            }
-            <Component
-              {...props}
-            />
-          </React.Fragment>
+          {
+            Boolean(isLoading) && (
+              <PreloadNew typePreloader={configWithPreloader.typePreloader || props.typePreloader} />
+            )
+          }
+          <Component {...props} />
+        </React.Fragment>
       );
     },
   );

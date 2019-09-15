@@ -6,7 +6,7 @@ import { carActualOptionLabel } from './useWaybillCarActualOptions';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 type FieldWaybillCarIdStringProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

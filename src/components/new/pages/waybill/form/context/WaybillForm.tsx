@@ -10,7 +10,7 @@
 // /**
 //  * Статусы берём селекторами (useFormDataIsClosed)
 //  */
-// export default withFormContext<WithFormRegistrySearchAddProps<Partial<Waybill>>, Waybill, WaybillFormStoreType>(
+// export default withFormContext<WithFormRegistrySearchAddProps<Partial<Waybill>>, Waybill>(
 //   (props) => ({
 //     key: 'waybill_form',
 //     uniqField: 'id',

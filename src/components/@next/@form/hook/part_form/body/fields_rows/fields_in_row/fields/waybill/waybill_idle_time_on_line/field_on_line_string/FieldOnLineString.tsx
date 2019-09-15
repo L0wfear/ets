@@ -14,7 +14,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 type FieldOnLineStringProps = {
-  formDataKey: string;
+  formDataKey: any;
   fieldData: (
     FieldDataDowntimeHoursWork
     | FieldDataDowntimeHoursDuty

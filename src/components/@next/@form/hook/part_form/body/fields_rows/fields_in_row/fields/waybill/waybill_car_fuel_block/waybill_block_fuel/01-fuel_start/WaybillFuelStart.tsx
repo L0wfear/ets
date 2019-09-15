@@ -9,7 +9,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getDefaultWaybill } from 'components/new/pages/waybill/form/context/utils';
 
 type WaybillFuelStartProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -5,7 +5,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillActivatedByEmployeeNameProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillActivatedByEmployeeName: React.FC<FieldWaybillActivatedByEmployeeNameProps> = React.memo(

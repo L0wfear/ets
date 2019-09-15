@@ -7,14 +7,10 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 type PropsModalBodyPreloader = {
   typePreloader?: Props['typePreloader'];
-} & (
-  {
-    path?: string;
-    page?: string;
-  } | {
-    meta: LoadingMeta;
-  }
-);
+  path?: string;
+  page?: string;
+  meta?: LoadingMeta;
+};
 
 const ModalBodyPreloader: React.FC<PropsModalBodyPreloader> = React.memo(
   (props) => {

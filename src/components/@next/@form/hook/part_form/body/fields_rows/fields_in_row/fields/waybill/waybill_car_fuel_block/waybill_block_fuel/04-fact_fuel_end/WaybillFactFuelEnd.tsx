@@ -8,7 +8,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 
 type WaybillFactFuelEndProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

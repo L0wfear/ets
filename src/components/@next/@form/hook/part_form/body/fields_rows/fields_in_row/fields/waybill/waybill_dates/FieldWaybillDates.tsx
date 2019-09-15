@@ -5,7 +5,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillDates = {
   md?: number;
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillDates: React.FC<FieldWaybillDates> = React.memo(

@@ -3,7 +3,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 export type FieldDefaultProps = {
   fieldData: any;
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldDefault: React.FC<FieldDefaultProps> = React.memo(

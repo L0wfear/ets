@@ -11,7 +11,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillAccompanyingPersonIdOwnProps = {
   fieldData: FieldDataWaybillAccompanyingPersonId;
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonIdOwnProps> = React.memo(

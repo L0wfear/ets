@@ -4,7 +4,7 @@ import FieldWaybillDriverIdString from './string/FieldWaybillDriverIdString';
 import FieldWaybillDriverIdArray from './array/FieldWaybillDriverIdArray';
 
 type FieldWaybillDriverIdProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -6,7 +6,7 @@ import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/us
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillClosedByEmployeeNameProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillClosedByEmployeeName: React.FC<FieldWaybillClosedByEmployeeNameProps> = React.memo(

@@ -4,7 +4,7 @@ import { FieldDataDowntimeHoursWork, FieldDataDowntimeHoursDuty, FieldDataDownti
 import FieldOnLineString from './field_on_line_string/FieldOnLineString';
 
 type FieldWaybillIdleTimeOnLineProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

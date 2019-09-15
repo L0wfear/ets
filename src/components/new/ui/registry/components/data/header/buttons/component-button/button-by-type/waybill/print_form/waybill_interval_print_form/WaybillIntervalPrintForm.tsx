@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect, DispatchProp } from 'react-redux';
+
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
@@ -8,10 +11,8 @@ import { WaybillsReportForm, PropsWaybillIntervalPrintWithForm, PropsWaybillInte
 import { getDefaultWaybillsReportFormElement } from './utils';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { waybillsReportFormSchema } from './schema';
-import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { connect, DispatchProp } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 import { saveData } from 'utils/functions';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';

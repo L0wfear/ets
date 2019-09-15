@@ -8,7 +8,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type WaybillBlockCarRefillProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

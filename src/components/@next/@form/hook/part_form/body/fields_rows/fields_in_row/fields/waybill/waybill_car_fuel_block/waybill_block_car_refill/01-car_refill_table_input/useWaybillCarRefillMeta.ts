@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import useForm from "components/@next/@form/hook_selectors/useForm";
-import { WaybillFormStoreType } from "components/new/pages/waybill/form/context/@types";
 import { Waybill } from "redux-main/reducers/modules/waybill/@types";
 import { TableMeta } from 'components/new/ui/table_input/TableInput';
 
@@ -46,8 +45,8 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill']>> = {
   format: 'number',
 };
 
-export const useWaybillCarRefillMeta = (formDataKey: string) => {
-  const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
+export const useWaybillCarRefillMeta = (formDataKey: any) => {
+  const store = useForm.useFormDataStore<Waybill>(formDataKey);
 
   return React.useMemo(
     () => {

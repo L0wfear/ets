@@ -13,7 +13,7 @@ import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WaybillButtonCreateFuelCardProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = React.memo(
@@ -38,7 +38,7 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
     );
 
     const handleChangeStore = useForm.useFormDataHandleChangeStore<WaybillFormStoreType>(props.formDataKey);
-    const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(props.formDataKey);
+    const store = useForm.useFormDataStore<Waybill>(props.formDataKey);
     const onFormHide = React.useCallback(
       (isSubmitted: boolean | any, result: FuelCard) => {
         if (isSubmitted) {

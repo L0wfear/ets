@@ -7,7 +7,7 @@ import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOption
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
 type Props = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldMeasureUnitId: React.FC<Props> = React.memo(

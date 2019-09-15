@@ -3,7 +3,7 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldSelectMissionProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldSelectMission: React.FC<FieldSelectMissionProps> = React.memo(

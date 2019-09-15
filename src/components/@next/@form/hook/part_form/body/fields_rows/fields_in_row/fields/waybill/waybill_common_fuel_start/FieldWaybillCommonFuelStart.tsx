@@ -5,7 +5,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 type FieldWaybillCommonFuelStartProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

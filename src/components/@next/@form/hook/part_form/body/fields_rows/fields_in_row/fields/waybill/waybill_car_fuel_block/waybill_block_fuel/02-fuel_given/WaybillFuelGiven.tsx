@@ -7,7 +7,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 type WaybillFuelGivenProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

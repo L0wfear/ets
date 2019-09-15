@@ -7,7 +7,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
 type Props = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldName: React.FC<Props> = React.memo(

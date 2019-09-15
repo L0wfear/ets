@@ -6,7 +6,7 @@ import { FieldDataWaybillStuctureId, FieldDataWaybillAccompanyingPersonId } from
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillStructureAndAccompanyingPersonProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldDataStructureId: FieldDataWaybillStuctureId = {

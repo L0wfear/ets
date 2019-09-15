@@ -9,7 +9,7 @@ import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
 import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
-import { isNullOrUndefined, isObject, isArray } from 'util';
+import { isNullOrUndefined } from 'util';
 import { connect } from 'react-redux';
 import {
   getAutobaseState,
@@ -25,6 +25,7 @@ import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_car
 import { validateField } from 'utils/validate/validateField';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { canSaveTest } from 'components/@next/@form/validate/validate';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -41,17 +42,6 @@ const canSaveNotCheckField = [
 ];
 
 const canCloseNotCheckField = ['distance'];
-
-const canSaveTest = (errorsData) => {
-  if (isObject(errorsData)) {
-    return Object.values(errorsData).every((error) => canSaveTest(error));
-  }
-  if (isArray(errorsData)) {
-    return errorsData.every((error) => canSaveTest(error));
-  }
-
-  return !errorsData;
-};
 
 const canSaveTestWrap = (formError) => {
   const filredFormErrors = Object.entries(formError).reduce(

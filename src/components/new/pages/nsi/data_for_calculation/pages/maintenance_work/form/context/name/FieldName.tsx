@@ -5,9 +5,10 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 type Props = {
-  formDataKey: any;
+  formDataKey: FormKeys;
 };
 
 const FieldName: React.FC<Props> = React.memo(

@@ -14,6 +14,7 @@ import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { canSaveTest } from 'components/@next/@form/validate/validate';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -88,17 +89,6 @@ export type OutputWithFormProps<P, F, T extends any = any, A extends any = any> 
     actionWrap: <PromiseAns extends any>(promiseFunc: () => Promise<PromiseAns>) => Promise<PromiseAns>;
   }
 );
-
-const canSaveTest = (errorsData: any) => {
-  if (isObject(errorsData)) {
-    return Object.values(errorsData).every((error) => canSaveTest(error));
-  }
-  if (isArray(errorsData)) {
-    return errorsData.every((error) => canSaveTest(error));
-  }
-
-  return !errorsData;
-};
 
 const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataForm) => {
   let formState = propsForm.element;

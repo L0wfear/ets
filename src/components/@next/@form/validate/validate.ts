@@ -1,27 +1,36 @@
 import { isObject, isArray } from 'util';
 
-import { SchemaFormContext, FormErrorBySchema } from 'components/@next/@form/@types';
+import { FormErrorBySchema, SchemaFormContextBody } from 'components/@next/@form/@types';
+import { ReduxState } from 'redux-main/@types/state';
 
-import { validateString } from 'components/@next/@form/validate/string/stringValidate';
-import { validateValueOfArray } from 'components/@next/@form/validate/valueOfArray/valueOfArrayValidate';
-import { validateNumber } from 'components/@next/@form/validate/number/numberValidate';
-import { validateBoolean } from 'components/@next/@form/validate/boolean/booleanValidate';
 import { validateDate } from 'components/@next/@form/validate/date/dateValidate';
+import { validateNumber } from 'components/@next/@form/validate/number/numberValidate';
+import { validateString } from 'components/@next/@form/validate/string/stringValidate';
+import { validateBoolean } from 'components/@next/@form/validate/boolean/booleanValidate';
 import { validateDatetime } from 'components/@next/@form/validate/datetime/datetimeValidate';
+import { validateValueOfArray } from 'components/@next/@form/validate/valueOfArray/valueOfArrayValidate';
 import { validateMultiValueOfArray } from 'components/@next/@form/validate/multiValueOfArray/multiValueOfArrayValidate';
 
-export const validate = <F extends Record<string, any>>(shemaBody: SchemaFormContext<F>['body'], formState: F): FormErrorBySchema<F> => {
-  const formError = Object.fromEntries(
-    Object.keys(shemaBody.validate_fields).map((key) => [key, '']),
-  );
+// проверка formErrors на ошибки
+export const canSaveTest = <F extends Record<string, any>>(formError: FormErrorBySchema<F> | FormErrorBySchema<F>[any]): boolean => {
+  if (isObject(formError)) {
+    return Object.values(formError).every((error) => canSaveTest(error));
+  }
+  if (isArray(formError)) {
+    return formError.every((error) => canSaveTest(error));
+  }
 
-  Object.entries(shemaBody.validate_fields).forEach(
-    (fieldSchemaEntries) => {
-      const key = fieldSchemaEntries[0] as keyof F;
+  return !formError;
+};
+
+export const validate = <F extends Record<string, any>>(validate_fields: SchemaFormContextBody<F>['validate_fields'], formState: F, reduxState: ReduxState) => {
+  return Object.entries(validate_fields).reduce(
+    (formError: FormErrorBySchema<F>, fieldSchemaEntries) => {
+      const key = fieldSchemaEntries[0] as keyof FormErrorBySchema<F>;
       const fieldData = fieldSchemaEntries[1];
 
-      if (fieldData.type === 'boolean') {
-        formError[key] = validateBoolean<F>(key, fieldData, formState);
+      if (fieldData.type === 'date') {
+        formError[key] = validateDate<F>(key, fieldData, formState);
       }
       if (fieldData.type === 'number') {
         formError[key] = validateNumber<F>(key, fieldData, formState);
@@ -29,37 +38,30 @@ export const validate = <F extends Record<string, any>>(shemaBody: SchemaFormCon
       if (fieldData.type === 'string') {
         formError[key] = validateString<F>(key, fieldData, formState);
       }
-      if (fieldData.type === 'valueOfArray') {
-        formError[key] = validateValueOfArray<F>(key, fieldData, formState);
-      }
-      if (fieldData.type === 'date') {
-        formError[key] = validateDate<F>(key, fieldData, formState);
+      if (fieldData.type === 'boolean') {
+        formError[key] = validateBoolean<F>(key, fieldData, formState);
       }
       if (fieldData.type === 'datetime') {
         formError[key] = validateDatetime<F>(key, fieldData, formState);
       }
+      if (fieldData.type === 'valueOfArray') {
+        formError[key] = validateValueOfArray<F>(key, fieldData, formState);
+      }
       if (fieldData.type === 'multiValueOfArray') {
         formError[key] = validateMultiValueOfArray<F>(key, fieldData, formState);
       }
-      if (!formError[key] && isArray(fieldData.dependencies)) {
+      if (fieldData.type === 'schema') {
+        formError[key] = validate<F>(fieldData.validate_fields, formState, reduxState);
+      }
+
+      if (canSaveTest(formError[key]) && isArray(fieldData.dependencies)) {
         fieldData.dependencies.some(
-          (func) => formError[key] = func(formState[key as string], formState),
+          (func) => formError[key] = func(formState[key as string], formState, reduxState),
         );
       }
+
+      return formError;
     },
+    {},
   );
-
-  return formError;
-};
-
-// проверка formErrors на ошибки
-export const canSaveTest = (errors: object | string | string[]) => {
-  if (isObject(errors)) {
-    return Object.values(errors).every((error) => canSaveTest(error));
-  }
-  if (isArray(errors)) {
-    return errors.every((error) => canSaveTest(error));
-  }
-
-  return !errors;
 };

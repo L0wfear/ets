@@ -7,7 +7,7 @@ export type FormKeys = (
   | 'inspect_one_act_scan'
 );
 
-export type OneFormDataByKey<F extends object> = {
+export type OneFormDataByKey<F extends Record<string, any>> = {
   formState: F;                                                                 // состояни формы
   formErrors: FormErrorBySchema<F>;                                             // состояние ошибок
   IS_CREATING: boolean;                                                         // флаг создания элемента
@@ -18,7 +18,7 @@ export type OneFormDataByKey<F extends object> = {
 };
 
 export type ConfigFormData<F extends Record<string, any>> = {
-  uniqField: keyof F;                                                           // ключ, отсутсвие знаения которого говорит, что элемент создаётся
+  uniqField: Extract<keyof F, string>;                                          // ключ, отсутсвие знаения которого говорит, что элемент создаётся
   schema: SchemaFormContext<F>;                                                 // схема, по которой всё генерируется и валидируется
   permissions: {                                                                // разрешения
     create: string | boolean | Array<string | boolean>;                         // создание

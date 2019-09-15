@@ -1,3 +1,5 @@
+import { ReduxState } from 'redux-main/@types/state';
+
 /**
  * схема шапки формы
  * для добавления другого формат нужно расшарить тип
@@ -13,7 +15,7 @@ type CommonFieldType<F extends Record<string, any>, K extends keyof F = keyof F>
   title: string;
   required?: boolean;
   dependencies?: Array<
-    (value: F[K], formState: F) => any
+    (value: F[K], formState: F, reduxState: ReduxState) => FormErrorBySchema<F>[K]
   >;
 };
 
@@ -59,10 +61,16 @@ export type ValueOfArrayField<F extends Record<string, any>, K extends keyof F =
   type: 'valueOfArray';
 };
 
-export type SchemaFormContextBody<F extends object> = {
+export type SchemaField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'schema';
+  validate_fields: SchemaFormContextBody<F[K]>['validate_fields'];
+};
+
+export type SchemaFormContextBody<F extends Record<string, any>> = {
   validate_fields: {
-    [K in keyof F]?: (
+    [K in Extract<keyof F, string>]?: (
       StringField<F, K>
+      | SchemaField<F, K>
       | ValueOfArrayField<F, K>
       | NumberField<F, K>
       | BooleanField<F, K>
@@ -76,7 +84,7 @@ export type SchemaFormContextBody<F extends object> = {
 /**
  * схема формы
  */
-export type SchemaFormContext<F extends object> = {
+export type SchemaFormContext<F extends Record<string, any>> = {
   header: SchemaFormContextHeader;
   body: SchemaFormContextBody<F>;
 };
@@ -85,4 +93,4 @@ export type SchemaFormContext<F extends object> = {
  * тип formErrors по схеме
  * @todo
  */
-export type FormErrorBySchema<F> = any;
+export type FormErrorBySchema<F extends Record<string, any>> = Partial<Record<keyof F, string | any>>;

@@ -11,18 +11,6 @@ import { validateDatetime } from 'components/@next/@form/validate/datetime/datet
 import { validateValueOfArray } from 'components/@next/@form/validate/valueOfArray/valueOfArrayValidate';
 import { validateMultiValueOfArray } from 'components/@next/@form/validate/multiValueOfArray/multiValueOfArrayValidate';
 
-const hasError = (errorsData: any) => {
-  if (isArray(errorsData)) {
-    return errorsData.every((error) => hasError(error));
-  }
-
-  if (isObject(errorsData)) {
-    return Object.values(errorsData).some((error) => hasError(error));
-  }
-
-  return Boolean(errorsData);
-};
-
 const mergeErrors = (errorOld: any, error: any) => {
   if (!errorOld) {
     return error;

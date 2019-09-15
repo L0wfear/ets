@@ -1,6 +1,6 @@
 import { ValueOfArrayField } from 'components/@next/@form/@types';
 
-export const validateValueOfArray = <F>(key: keyof F, fieldData: ValueOfArrayField<F>, formState: F) => {
+export const validateValueOfArray = <F extends Record<string, any>>(key: keyof F, fieldData: ValueOfArrayField<F>, formState: F) => {
   const {
     [key]: value,
   } = formState;

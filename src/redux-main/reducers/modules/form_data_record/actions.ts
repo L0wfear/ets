@@ -41,6 +41,7 @@ export const actionChangeFormData = <F extends Record<string, any>>(formKey: For
 });
 
 export const actionChangeFormState = <F extends Record<string, any>>(formKey: FormKeys, partialFormState: Partial<F>): EtsAction<any> => (dispatch, getState) => {
+  const formMeta = mapFormMeta[formKey] as ConfigFormData<F>;
   const formDataOld = getFormDataByKey<F>(getState(), formKey);
 
   if (formDataOld) {
@@ -49,7 +50,7 @@ export const actionChangeFormState = <F extends Record<string, any>>(formKey: Fo
       ...formData.formState,
       ...partialFormState,
     };
-    const formErrors = validate<F>(mapFormMeta[formKey].schema.body, formState);
+    const formErrors = validate<F>(formMeta.schema.body.validate_fields, formState, getState());
     const canSave = canSaveTest(formErrors);
 
     formData.formState = formState;
@@ -74,7 +75,7 @@ const actionInitialForm = <F extends Record<string, any>>(formKey: FormKeys, for
   const sessionState = getSessionState(getState());
   const permissionsSet = sessionState.userData.permissionsSet;
 
-  const formErrors = validate<F>(formMeta.schema.body, formState);
+  const formErrors = validate<F>(formMeta.schema.body.validate_fields, formState, getState());
   const canSave = canSaveTest(formErrors);
 
   dispatch(

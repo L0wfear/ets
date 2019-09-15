@@ -38,7 +38,7 @@ export type ConfigParentData = {
   children: Record<string, ConfigParentData | ConfigPageDataOrDivider>,
   hiddenNav?: boolean,
   permissions: {
-    [P in keyof ConfigPageData['permissions']]: Array<ConfigPageData['permissions'][P] | ConfigParentData['permissions'][P]>;
+    [P in keyof ConfigPageData['permissions']]: ConfigPageData['permissions'][P];
   };
   childrenPath: Array<ConfigPageData['path']>;
 };

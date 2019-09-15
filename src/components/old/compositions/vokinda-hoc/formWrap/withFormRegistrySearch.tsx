@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isFunction } from 'util';
+import { isFunction, isBoolean } from 'util';
 
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 import PreloaderMainPage from 'components/old/ui/PreloaderMainPage';
@@ -12,6 +12,7 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 type TypeConfig = {
   cant_create?: boolean;                                  // может ли форма создать запись
@@ -25,6 +26,7 @@ export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
   registryKey: string;
   page: string;                                           // page для лоудинга
   path: string;                                           // path для лоудинга
+  meta?: LoadingMeta;                                      // для будущего лоудинга
   handleHide: (isSubmitted: boolean, result?: F) => any;
   element: F;
   type: string | null;
@@ -117,7 +119,8 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
         const isLoading_prev = usePrevious(isLoading);
 
         const handleHide: WithFormRegistrySearchAddProps<F>['handleHide'] = React.useCallback(
-          (isSubmitted, response) => {
+          (isSubmittedRaw, response) => {
+            const isSubmitted = isBoolean(isSubmittedRaw) ? isSubmittedRaw : false;
             setElement(null);
             props.setParamsAndSearch({
               params: {
@@ -204,6 +207,14 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
           ],
         );
 
+        const meta = React.useMemo(
+          () => ({
+            page: props.registryKey,
+            path,
+          }),
+          [props.registryKey, path],
+        );
+
         return (
           <ErrorBoundaryForm>
             <React.Suspense fallback={<PreloaderMainPage />}>
@@ -216,6 +227,8 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
                     handleHide={handleHide}
                     element={element}
                     type={type}
+
+                    meta={meta}
                   />
                 )
               }

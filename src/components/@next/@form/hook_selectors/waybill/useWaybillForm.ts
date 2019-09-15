@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import useForm from '../useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
-import { getFormDataFormStateByKey, getFormDataIsCreatingByKey, getFormDataPErmissionsByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
+import { getFormDataFormStateByKey, getFormDataIsCreatingByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 /**
  * является ли открытый ПЛ черновиком (IS_DRAFT)
@@ -169,16 +169,8 @@ const useFormDataGetSelectedTrailer = (formDataKey: string) => {
 };
 
 const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string) => {
-  return etsUseSelector(
-    (state) => {
-      const permissionsSet = getSessionState(state).userData.permissionsSet;
-      const permissions = getFormDataPErmissionsByKey<Waybill, WaybillFormStoreType>(state, formDataKey);
-
-      return (
-        validatePermissions(permissions.departure_and_arrival_values, permissionsSet)
-      );
-    },
-  );
+  return true;
+  // return etsUseIsPermitted(permissions.departure_and_arrival_values);
 };
 
 const useWaybillFormData = {

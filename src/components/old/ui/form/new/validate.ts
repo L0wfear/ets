@@ -1,17 +1,15 @@
-import {
-  SchemaType,
-} from 'components/old/ui/form/new/@types/validate.h';
 import { get } from 'lodash';
-
-import { validateString } from 'components/old/ui/form/new/string/stringValidate';
-import { validateNumber } from 'components/old/ui/form/new/number/numberValidate';
-import { validateValueOfArray } from 'components/old/ui/form/new/valueOfArray/valueOfArrayValidate';
-import { validateMultiValueOfArray } from 'components/old/ui/form/new/multiValueOfArray/multiValueOfArrayValidate';
-import { validateDate } from 'components/old/ui/form/new/date/dateValidate';
-import { validateDatetime } from 'components/old/ui/form/new/datetime/datetimeValidate';
-import { validateBoolean } from 'components/old/ui/form/new/boolean/booleanValidate';
-
 import { isObject, isArray } from 'util';
+
+import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
+
+import { validateDate } from 'components/@next/@form/validate/date/dateValidate';
+import { validateString } from 'components/@next/@form/validate/string/stringValidate';
+import { validateNumber } from 'components/@next/@form/validate/number/numberValidate';
+import { validateBoolean } from 'components/@next/@form/validate/boolean/booleanValidate';
+import { validateDatetime } from 'components/@next/@form/validate/datetime/datetimeValidate';
+import { validateValueOfArray } from 'components/@next/@form/validate/valueOfArray/valueOfArrayValidate';
+import { validateMultiValueOfArray } from 'components/@next/@form/validate/multiValueOfArray/multiValueOfArrayValidate';
 
 const hasError = (errorsData: any) => {
   if (isArray(errorsData)) {
@@ -106,31 +104,31 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
       if (!skipValidate) {
         switch (fieldData.type) {
           case 'string': {
-            formError[key] = validateString<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateString<F>(key, fieldData, formState);
             break;
           }
           case 'number': {
-            formError[key] = validateNumber<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateNumber<F>(key, fieldData, formState);
             break;
           }
           case 'valueOfArray': {
-            formError[key] = validateValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateValueOfArray<F>(key, fieldData, formState);
             break;
           }
           case 'multiValueOfArray': {
-            formError[key] = validateMultiValueOfArray<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateMultiValueOfArray<F>(key, fieldData, formState);
             break;
           }
           case 'date': {
-            formError[key] = validateDate<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateDate<F>(key, fieldData, formState);
             break;
           }
           case 'datetime': {
-            formError[key] = validateDatetime<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateDatetime<F>(key, fieldData, formState);
             break;
           }
           case 'boolean': {
-            formError[key] = validateBoolean<any, F, P, RootFormState>(key, fieldData, formState, props, rootFormState);
+            formError[key] = validateBoolean<F>(key, fieldData, formState);
             break;
           }
           case 'schema': {

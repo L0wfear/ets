@@ -1,7 +1,7 @@
-import { DateTimePropertie } from 'components/old/ui/form/new/@types/validate.h';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { DateTimeField } from 'components/@next/@form/@types';
 
-export const validateDatetime = <K, F, P, RootFormState>(key: keyof F, fieldData: DateTimePropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {
+export const validateDatetime = <F extends Record<string, any>>(key: keyof F, fieldData: DateTimeField, formState: F) => {
   const {
     [key]: value,
   } = formState;

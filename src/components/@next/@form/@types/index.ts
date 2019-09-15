@@ -1,79 +1,81 @@
-import { ContextFormField } from "./fields";
-
-export type TitleDisplayIf = {
-  title: string;
-  disaplayIf: (
-    'IS_CREATING'
-  );
-  reverse?: boolean;
-};
-
-export type DefaultHeaderType = {
-  type: 'default',
-  title: TitleDisplayIf[];
-};
-export type WaybillHeaderType = {
-  type: 'waybill',
-};
-type NewHeaderType = {
-  type: never;
-  your: any;
-  keys: any;
-};
 /**
  * схема шапки формы
  * для добавления другого формат нужно расшарить тип
  */
-export type SchemaFormContextHeader = (
-  DefaultHeaderType
-  | WaybillHeaderType
-  | NewHeaderType
-);
-
-export type FieldsRow = Array<ContextFormField>;
-
-export type SchemaFormContextBody = {
-  fields: Array<FieldsRow>;
+type SchemaFormContextHeader = {
+  title: {
+    create: string;
+    update: string;
+  };
 };
 
-/**
- * типы кнопок футера
- */
-export type ButtonType = (
-  'save'
-  | 'cancel'
-);
-export type ButtonBLock = ButtonType[];
+type CommonFieldType = {
+  title: string;
+  required?: boolean;
+};
 
-export type DefautlFooterButtons = {
-  type: 'default';
-  buttons: ButtonBLock[];
+export type MultiValueOfArrayField = CommonFieldType & {
+  type: 'multiValueOfArray',
 };
-export type WaybillFooterButtons = {
-  type: 'waybill',
+
+export type DateTimeField = CommonFieldType & {
+  type: 'datetime',
 };
-type NewFooterButtonsType = {
-  type: never;
-  your: any;
-  keys: any;
+
+export type DateField = CommonFieldType & {
+  type: 'date',
 };
-/**
- * схема футера формы
- * если нужно что-то другое, то расшариваем
- */
-export type SchemaFormContextFooter = (
-  DefautlFooterButtons
-  | WaybillFooterButtons
-  | NewFooterButtonsType
-);
+
+export type BooleanField = CommonFieldType & {
+  type: 'boolean',
+};
+
+export type NumberField = CommonFieldType & {
+  type: 'number',
+
+  minLength?: number;
+  maxLength?: number;
+
+  min?: number;
+  max?: number;
+
+  minNotEqual?: number;
+
+  integer?: boolean;
+  float?: number;
+};
+
+export type StringField = CommonFieldType & {
+  type: 'string',
+
+  minLength?: number;
+  maxLength?: number;
+};
+
+export type ValueOfArrayField = CommonFieldType & {
+  type: 'valueOfArray',
+};
+
+export type SchemaFormContextBody<F extends object> = {
+  fields: {
+    [K in keyof F]?: (
+      StringField
+      | ValueOfArrayField
+      | NumberField
+      | BooleanField
+      | DateField
+      | DateTimeField
+      | MultiValueOfArrayField
+    )
+  },
+};
 
 /**
  * схема формы
  */
-export type SchemaFormContext<F> = {
+export type SchemaFormContext<F extends object> = {
   header: SchemaFormContextHeader;
-  body: SchemaFormContextBody;
-  footer: SchemaFormContextFooter;
+  body: SchemaFormContextBody<F>;
 };
 
 /**

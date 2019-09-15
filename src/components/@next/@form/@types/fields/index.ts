@@ -1,5 +1,4 @@
 import { FieldsString } from "./string";
-import { FieldsValueOfArray } from "./valueOfArray";
 import { FieldsWaybill } from "./waybill";
 
 /**
@@ -8,6 +7,5 @@ import { FieldsWaybill } from "./waybill";
  */
 export type ContextFormField = (
   FieldsString
-  | FieldsValueOfArray
   | FieldsWaybill
 );

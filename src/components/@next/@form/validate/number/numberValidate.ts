@@ -1,7 +1,7 @@
-import { NumberPropertie } from 'components/old/ui/form/new/@types/validate.h';
+import { NumberField } from 'components/@next/@form/@types';
 import { isNumber, isNullOrUndefined } from 'util';
 
-export const validateNumber = <K, F extends Record<string, any>, P, RootFormState>(key: keyof F, fieldData: NumberPropertie<K, F, P>, formState: F, props: P, rootFormState: RootFormState) => {
+export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField, formState: F) => {
   const {
     [key]: value,
   } = formState;

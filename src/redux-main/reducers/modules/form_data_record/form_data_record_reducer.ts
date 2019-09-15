@@ -15,22 +15,22 @@ const formDataRecord = (state = initialState, { type, payload }) => {
       console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️'); // tslint:disable-line:no-console
       return {
         ...state,
-        [payload.formData.key]: payload.formData,
+        [payload.formKey]: payload.formData,
       };
     }
     case FORM_REMOVE_DATA: {
       console.log('❌❌❌❌❌❌❌❌❌❌'); // tslint:disable-line:no-console
       const {
-        [payload.key]: any,
         ...otherState
       } = state;
+      delete otherState[payload.formKey];
 
       return otherState;
     }
     case FORM_CHANGE_DATA: {
       return {
         ...state,
-        [payload.formData.key]: payload.formData,
+        [payload.formKey]: payload.formData,
       };
     }
     default: {

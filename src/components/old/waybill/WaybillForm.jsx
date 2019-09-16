@@ -43,6 +43,7 @@ import {
 
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 import Taxes from 'components/old/waybill/Taxes';
+import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 
 import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/old/waybill/form/BsnoStatus';
@@ -2213,7 +2214,7 @@ class WaybillForm extends UNSAFE_Form {
                         )}
                         <EtsBootstrap.Col md={12} zIndex={1}>
                           <EtsBootstrap.Col md={12}>
-                            <Taxes
+                            <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
                                 !isPermittedByKey.update
@@ -2237,7 +2238,6 @@ class WaybillForm extends UNSAFE_Form {
                                 this,
                                 'equipment_tax_data',
                               )}
-                              correctionRate={this.state.fuel_correction_rate}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                             />

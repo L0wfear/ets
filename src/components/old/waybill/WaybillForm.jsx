@@ -43,6 +43,7 @@ import {
 
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 import Taxes from 'components/old/waybill/Taxes';
+import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 
 import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/old/waybill/form/BsnoStatus';
@@ -67,7 +68,6 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
 import { HrLine } from 'components/new/pages/login/styled/styled';
-import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 

@@ -63,21 +63,12 @@ class CreatingMap extends React.PureComponent<
 
   componentDidMount() {
     const loadData = async () => {
-      const {
-        page,
-        path,
-      } = this.props;
-
       const technical_operations_object_list = await this.props.dispatch(
         actionGetTechnicalOperationObjects(
           {},
-          {
-            page,
-            path,
-          },
+          this.props,
         ),
       );
-
       this.setState({ technical_operations_object_list });
 
       if (this.props.type && this.props.municipal_facility_id) {

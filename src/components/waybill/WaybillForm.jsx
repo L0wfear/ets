@@ -62,6 +62,7 @@ import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 import FieldWaybillCarRefill from './table_input/FieldWaybillCarRefill';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import FuelType from './form/FuelType';
+import EquipmentTaxes from 'components/waybill/EquipmentTaxes';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -2150,7 +2151,7 @@ class WaybillForm extends UNSAFE_Form {
                         )}
                         <EtsBootstrap.Col md={12} style={{ zIndex: 1 }}>
                           <EtsBootstrap.Col md={12}>
-                            <Taxes
+                            <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
                                 !isPermittedByKey.update
@@ -2173,7 +2174,6 @@ class WaybillForm extends UNSAFE_Form {
                                 this,
                                 'equipment_tax_data',
                               )}
-                              correctionRate={this.state.fuel_correction_rate}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                             />

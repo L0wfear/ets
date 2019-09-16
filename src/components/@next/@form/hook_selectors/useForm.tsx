@@ -96,7 +96,7 @@ const useFormDataHandleChange = <F extends Record<string, any>>(formDataKey: For
 /**
  * получение meta формы
  */
-const useFormDataMeta = <F extends Record<string, any>>(formDataKey: FormKeys) => {
+const useFormDataMeta = <F extends Record<string, any> = any>(formDataKey: FormKeys) => {
   const meta = etsUseSelector((state) => getFormDataMetaByKey(state, formDataKey));
 
   return meta;
@@ -175,6 +175,15 @@ const useFormDataFormErrors = <F extends Record<string, any>>(formDataKey: FormK
 };
 
 /**
+ * получение состояния ошибок (formErrors)
+ */
+const useFormDataFormErrorsPickValue = <F extends Record<string, any>, ReturnType>(formDataKey: FormKeys, key: keyof F) => {
+  const pirckError: ReturnType = etsUseSelector((state) => getFormDataFormErrorsByKey<F>(state, formDataKey)[key]);
+
+  return pirckError;
+};
+
+/**
  * получение статуса возможности сабмита формы
  */
 const useFormDataCanSave = <F extends Record<string, any>>(formDataKey: FormKeys) => {
@@ -235,6 +244,7 @@ export default {
   useFormDataFormState,
   useFormDataFormStatePickValue,
   useFormDataFormErrors,
+  useFormDataFormErrorsPickValue,
   useFormDataIsPermitted,
   useFormDataHandleChange,
   useFormDataCanSave,

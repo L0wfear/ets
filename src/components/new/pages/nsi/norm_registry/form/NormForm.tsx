@@ -16,16 +16,16 @@ import {
 } from 'components/new/pages/nsi/norm_registry/form/@types';
 import { DivNone } from 'global-styled/global-styled';
 import normPermissions from '../_config-data/permissions';
-import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getDefaultNormElement } from './utils';
 import { normFormSchema } from './schema';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
-import normRegistryActions from 'redux-main/reducers/modules/norm_registry/actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionGetTechnicalOperationObjects } from 'redux-main/reducers/modules/some_uniq/technical_operation_objects/technical_operation_objects_actions';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
+import { actionUpdateNorm } from 'redux-main/reducers/modules/some_uniq/norm_registry/actions';
 
 const SEASONS = [
   { value: 1, label: 'Лето' },
@@ -318,7 +318,7 @@ export default compose<PropsNorm, OwnNormProps>(
     }),
   ),
   withForm<PropsNormWithForm, Norm>({
-    updateAction: normRegistryActions.actionUpdateNorm,
+    updateAction: actionUpdateNorm,
     uniqField: 'id',
     mergeElement: (props) => {
       return getDefaultNormElement(props.element);

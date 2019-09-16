@@ -14,8 +14,8 @@ const FieldNotes: React.FC<Props> = React.memo(
   (props) => {
     const { path } = useForm.useFormDataMeta<InspectOneActScan>(props.formDataKey);
     const formStateValue = useForm.useFormDataFormStatePickValue<InspectOneActScan, InspectOneActScan['notes']>(props.formDataKey, 'notes');
+    const error = useForm.useFormDataFormErrorsPickValue<InspectOneActScan, string>(props.formDataKey, 'notes');
 
-    const formErrors = useForm.useFormDataFormErrors<InspectOneActScan>(props.formDataKey);
     const handleChange = useForm.useFormDataHandleChange<InspectOneActScan>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<InspectOneActScan>(props.formDataKey);
 
@@ -33,7 +33,7 @@ const FieldNotes: React.FC<Props> = React.memo(
         type="string"
         label="Примечание"
         value={formStateValue}
-        error={formErrors.notes}
+        error={error}
         onChange={handleChangeWrap}
         disabled={!isPermitted}
       />

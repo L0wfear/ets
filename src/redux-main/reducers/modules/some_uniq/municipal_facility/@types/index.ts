@@ -31,3 +31,10 @@ export type MunicipalFacility = {
   seasons: string[];
   work_type_codes: number[];
 };
+
+export type MunicipalFacilityMeasureUnit = {
+  measure_unit_id: number;
+  id: number;
+  municipal_facility_id: number;
+  measure_unit_name: number;
+};

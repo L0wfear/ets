@@ -9,14 +9,13 @@ import {
   PropsFuelOperations,
   PropsFuelOperationsWithForm,
 } from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/@types/FuelOperationsForm';
-import { DivNone } from 'global-styled/global-styled';
 import fuelOperationsPermissions from '../_config-data/permissions';
 import { fuelOperationsFormSchema } from './schema';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 import { getDefaultFuelOperationElement } from './utils';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import useMeasureUnitOperationOptions from './use/useMeasureUnitOperationOptions';
 import { actionCreateFuelOperation, actionUpdateFuelOperation } from 'redux-main/reducers/modules/fuel_operations/actions_fuel_operations';
+import useMeasureUnitOperationOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOperationOptions';
 
 const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
   const {
@@ -30,9 +29,7 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
 
   const title = !IS_CREATING ? 'Изменение операции для расчета топлива' : 'Добавление операции для расчета топлива';
 
-  const {
-    measureUnitOperationOptions,
-  } = useMeasureUnitOperationOptions(
+  const measureUnitOperationOptions = useMeasureUnitOperationOptions(
     props,
   );
 
@@ -84,12 +81,8 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
       </ModalBodyPreloader>
       <EtsBootstrap.ModalFooter>
         {
-          isPermitted // либо обновление, либо создание
-          ? (
+          isPermitted && (
             <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
           )
         }
         <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>

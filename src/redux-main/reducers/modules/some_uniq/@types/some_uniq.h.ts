@@ -1,6 +1,6 @@
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 import { TechnicalOperationRegistry } from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/@types';
-import { MunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
+import { MunicipalFacility, MunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/@types';
 import { MissionSource } from 'redux-main/reducers/modules/some_uniq/mission_source/@types';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
@@ -17,6 +17,7 @@ import { CarsTravelTime } from '../cars_travel_time/@types';
 import { EdcRequestInfo } from '../edc_request_info/@types';
 import { TracksCaching } from '../tracks_caching/@types';
 import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -39,6 +40,7 @@ export type IStateSomeUniq = {
   technicalOperationRegistryForMissionList: TechnicalOperationRegistry[];
   technicalOperationRegistryForDutyMissionList: TechnicalOperationRegistry[];
   municipalFacilityList: MunicipalFacility[];
+  municipalFacilityMeasureUnitList: MunicipalFacilityMeasureUnit[];
   municipalFacilityForMissionList: MunicipalFacility[];
   municipalFacilityForDutyMissionList: MunicipalFacility[];
   missionSource: {
@@ -66,4 +68,6 @@ export type IStateSomeUniq = {
   tracksCaching: TracksCaching;
 
   workModeList: WorkMode[];
+
+  normList: Norm[];
 };

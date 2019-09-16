@@ -1,5 +1,5 @@
 import { SchemaType } from 'components/old/ui/form/new/@types/validate.h';
-import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { PropsNorm } from './@types';
 
 export const normFormSchema: SchemaType<Norm, PropsNorm> = {

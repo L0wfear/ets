@@ -9,15 +9,14 @@ import {
   PropsCleaningRate,
   PropsCleaningRateWithForm,
 } from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/form/@types/CleaningRateForm';
-import { DivNone } from 'global-styled/global-styled';
-import cleaningRatePermissions from '../_config-data/permissions';
 import { cleaningRateFormSchema } from './schema';
 import { CleaningRate } from 'redux-main/reducers/modules/cleaning_rate/@types/cleaningRate';
-import { getDefaultCleaningRateElement, getCleaningRateProperties } from './utils';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import useMeasureUnitOptions from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/use/useMeasureUnitOptions';
 import { actionCreateCleaningRate, actionUpdateCleaningRate } from 'redux-main/reducers/modules/cleaning_rate/actions_cleaning_rate';
 import useTechnicalOperationOptions from './use/useTechnicalOperationOptions';
+import useMeasureUnitOptions from 'components/new/utils/hooks/services/useOptions/useMeasureUnitOptions';
+import cleaningRatePermissions from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/_config-data/permissions';
+import { getCleaningRateProperties, getDefaultCleaningRateElement } from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_rate/form/utils';
 
 const CleaningRateForm: React.FC<PropsCleaningRate> = React.memo(
   (props) => {
@@ -36,11 +35,7 @@ const CleaningRateForm: React.FC<PropsCleaningRate> = React.memo(
         : 'Добавление показателя для расчета'
     );
 
-    const {
-      measureUnitOptions,
-    } = useMeasureUnitOptions(
-      props,
-    );
+    const measureUnitOptions = useMeasureUnitOptions(null, props);
 
     const {
       technicalOperationOptions,
@@ -98,12 +93,8 @@ const CleaningRateForm: React.FC<PropsCleaningRate> = React.memo(
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           {
-            isPermitted // либо обновление, либо создание
-            ? (
+            isPermitted && (
               <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-            )
-            : (
-              <DivNone />
             )
           }
           <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>

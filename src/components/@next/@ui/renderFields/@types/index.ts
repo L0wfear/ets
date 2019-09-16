@@ -67,6 +67,8 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
 export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
   type: 'number';
   showRedBorder?: boolean;
+
+  addonRight?: string;
 };
 
 export type ExtFieldText<V = any> = ExtFieldCommon<V> & {

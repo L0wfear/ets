@@ -1,4 +1,4 @@
-import { get, keyBy } from 'lodash';
+import { get, keyBy, uniqBy, uniq } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
@@ -35,7 +35,6 @@ import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 import { getFrontDutyMission } from 'redux-main/reducers/modules/missions/duty_mission/promise';
 import { getFrontEmployee } from 'redux-main/reducers/modules/employee/employee/promise';
 import { getFrontTypesAttr } from 'redux-main/reducers/modules/autobase/types_attr/promise';
-import { getFrontNorm } from 'redux-main/reducers/modules/norm_registry/promise';
 import { getFrontCar } from 'redux-main/reducers/modules/autobase/car/promise';
 import { getFrontEmployeeOnCar } from 'redux-main/reducers/modules/employee_on_car/promise_employee_on_car';
 import { getFrontTechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/promise_technical_operation_relations';
@@ -45,6 +44,8 @@ import { getRegistryState, getSessionState } from 'redux-main/reducers/selectors
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ConsumableMaterialWrap, ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
+import { getFrontNorm } from 'redux-main/reducers/modules/some_uniq/norm_registry/promise';
 
 /**
  * Да простят меня боги
@@ -343,6 +344,26 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
           [],
         );
         break;
+      }
+      case 'consumable_material_wrap': {
+        arrayRaw = (arrayRaw as ConsumableMaterial[]).map(
+          (rowData): ConsumableMaterialWrap => ({
+            ...rowData,
+            technical_operation_ids: uniqBy(rowData.norms, 'technical_operation_id')
+              .map(({ technical_operation_id }) => technical_operation_id),
+            technical_operation_names: uniqBy(rowData.norms, 'technical_operation_name')
+              .map(({ technical_operation_name }) => technical_operation_name),
+            municipal_facility_ids: uniqBy(rowData.norms, 'municipal_facility_id')
+              .map(({ municipal_facility_id }) => municipal_facility_id),
+            municipal_facility_names: uniqBy(rowData.norms, 'municipal_facility_name')
+              .map(({ municipal_facility_name }) => municipal_facility_name),
+            to_element: uniq(
+              rowData.norms.map(({ technical_operation_name, municipal_facility_name }) => (
+                `${technical_operation_name}[${municipal_facility_name}]`
+              )),
+            ),
+          }),
+        );
       }
     }
 

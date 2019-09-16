@@ -5,6 +5,7 @@ import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 export type FormKeys = (
   'maintenance_work'
   | 'inspect_one_act_scan'
+  | 'consumable_material'
 );
 
 export type OneFormDataByKey<F extends Record<string, any>> = {
@@ -27,7 +28,7 @@ export type ConfigFormData<F extends Record<string, any>> = {
   };
   bsSizeForm?: EtsModalContainerProps['bsSize'];                                // размер формы
   default_element: F;
-  handleSubmitPromise: (formState: F) => Promise<F | any>,
+  handleSubmitPromise: (formState: F) => Promise<F>,
 };
 
 export type IStateFormDataRecord = Partial<Record<FormKeys, OneFormDataByKey<any>>>;

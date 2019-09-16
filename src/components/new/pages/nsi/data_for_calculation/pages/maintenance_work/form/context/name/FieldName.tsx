@@ -16,7 +16,7 @@ const FieldName: React.FC<Props> = React.memo(
     const { path } = useForm.useFormDataMeta<MaintenanceWork>(props.formDataKey);
     const formStateValue = useForm.useFormDataFormStatePickValue<MaintenanceWork, MaintenanceWork['name']>(props.formDataKey, 'name');
 
-    const formErrors = useForm.useFormDataFormErrors<MaintenanceWork>(props.formDataKey);
+    const error = useForm.useFormDataFormErrorsPickValue<MaintenanceWork, string>(props.formDataKey, 'name');
     const handleChange = useForm.useFormDataHandleChange<MaintenanceWork>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<MaintenanceWork>(props.formDataKey);
 
@@ -34,7 +34,7 @@ const FieldName: React.FC<Props> = React.memo(
         type="string"
         label='Наименование'
         value={formStateValue}
-        error={formErrors.name}
+        error={error}
         onChange={handleChangeWrap}
         disabled={!isPermitted}
       />

@@ -66,6 +66,10 @@ export type SchemaField<F extends Record<string, any>, K extends keyof F = keyof
   validate_fields: SchemaFormContextBody<F[K]>['validate_fields'];
 };
 
+export type AnyField<F extends Record<string, any>, K extends keyof F = keyof F> = CommonFieldType<F, K> & {
+  type: 'any';
+};
+
 export type SchemaFormContextBody<F extends Record<string, any>> = {
   validate_fields: {
     [K in Extract<keyof F, string>]?: (
@@ -77,6 +81,7 @@ export type SchemaFormContextBody<F extends Record<string, any>> = {
       | DateField<F, K>
       | DateTimeField<F, K>
       | MultiValueOfArrayField<F, K>
+      | AnyField<F, K>
     )
   };
 };

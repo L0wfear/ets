@@ -1,6 +1,13 @@
 import { NumberField } from 'components/@next/@form/@types';
 import { isNumber, isNullOrUndefined } from 'util';
+import { getRequiredFieldMessage, getRequiredFieldNumberMessage } from 'components/@next/@utils/getErrorString/getErrorString';
 
+export const floatValidate = (value: number, float: number, title: string) => {
+  const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${float + 1},}$`);
+  if (value.toString().match(regexp)) {
+    return `Поле ${title} должно быть неотрицательным числом с ${float} знаками после запятой`;
+  }
+};
 export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField<F>, formState: F) => {
   const {
     [key]: value,
@@ -11,12 +18,12 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
   } = fieldData;
 
   if ( fieldData.required && (value === "" || isNullOrUndefined(value)) ) {
-    return `Поле "${title}" должно быть заполнено`;
+    return getRequiredFieldMessage(title);
   }
 
   if (!isNullOrUndefined(value)) {
     if (isNaN(Number(value.toString().replace(/,/g, '.')))) {
-      return `Поле "${title}" должно быть числом`;
+      return getRequiredFieldNumberMessage(title);
     }
 
     const numberValue = Number(value);
@@ -30,25 +37,25 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
     }
 
     if (isNumber(fieldData.min) && numberValue < fieldData.min) {
-      return `Поле "${fieldData.title}" должно быть больше либо равно ${fieldData.min}`;
+      return `Поле "${title}" должно быть больше либо равно ${fieldData.min}`;
     }
 
     if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual) {
-      return `Поле "${fieldData.title}" должно быть больше ${fieldData.minNotEqual}`;
+      return `Поле "${title}" должно быть больше ${fieldData.minNotEqual}`;
     }
 
     if (isNumber(fieldData.max) && numberValue > fieldData.max) {
-      return `Поле "${fieldData.title}" должно быть не больше ${fieldData.max}`;
+      return `Поле "${title}" должно быть не больше ${fieldData.max}`;
     }
 
     if (fieldData.integer && Math.ceil(numberValue) !== numberValue) {
-      return `Поле "${fieldData.title}" целым должно быть числом`;
+      return `Поле "${title}" целым должно быть числом`;
     }
 
     if (!fieldData.integer && fieldData.float) {
-      const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${fieldData.float + 1},}$`);
-      if (numberValue.toString().match(regexp)) {
-        return `Поле ${fieldData.title} должно быть неотрицательным числом с ${fieldData.float} знаками после запятой`;
+      const error = floatValidate(numberValue, fieldData.float, title);
+      if (error) {
+        return error;
       }
     }
 
@@ -56,7 +63,7 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
       return '';
     }
 
-    return `Поле "${title}" должно быть числом`;
+    return getRequiredFieldNumberMessage(title);
   }
 
   return '';

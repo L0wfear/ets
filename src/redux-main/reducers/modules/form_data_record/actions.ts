@@ -7,14 +7,17 @@ import { validate, canSaveTest} from 'components/@next/@form/validate/validate';
 import { getFormDataByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
 import { FORM_SET_DATA, FORM_REMOVE_DATA, FORM_CHANGE_DATA } from 'redux-main/reducers/modules/form_data_record/form_data_record_reducer';
 import { OneFormDataByKey, FormKeys, ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
-import { metaMaintenanceWork } from 'redux-main/reducers/modules/form_data_record/form_data/maintenance_work/form_meta';
 import { getSessionState } from 'redux-main/reducers/selectors';
+
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { metaMaintenanceWork } from 'redux-main/reducers/modules/form_data_record/form_data/maintenance_work/form_meta';
 import { metaInspectOneActScan } from 'redux-main/reducers/modules/form_data_record/form_data/inspect_one_act_scan/form_meta';
+import { metaConsumableMaterial } from 'redux-main/reducers/modules/form_data_record/form_data/consumable_material/form_meta';
 
 export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   maintenance_work: metaMaintenanceWork,
   inspect_one_act_scan: metaInspectOneActScan,
+  consumable_material: metaConsumableMaterial,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({

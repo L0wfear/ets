@@ -12,6 +12,7 @@ export const initialState: IStateSomeUniq = {
   technicalOperationRegistryForMissionList: [],
   technicalOperationRegistryForDutyMissionList: [],
   municipalFacilityList: [],
+  municipalFacilityMeasureUnitList: [],
   municipalFacilityForMissionList: [],
   municipalFacilityForDutyMissionList: [],
   missionSource: {
@@ -38,6 +39,8 @@ export const initialState: IStateSomeUniq = {
 
   edcRequestInfoList: [],
   workModeList: [],
+
+  normList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

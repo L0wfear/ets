@@ -1,5 +1,5 @@
 import { isObject, isNullOrUndefined } from 'util';
-import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
+import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 
 export const defaultEmployee: Norm = {
   asuods_id: null,

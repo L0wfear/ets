@@ -1,12 +1,10 @@
-import {
-  cloneDeep,
-  get,
-} from 'lodash';
+import { cloneDeep, get } from 'lodash';
+import { isString } from 'util';
+
 import {
   Norm, NormRegistrySensorTypes,
-} from 'redux-main/reducers/modules/norm_registry/@types';
+} from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { CleaningNormRegistryService } from 'api/Services';
-import { isString } from 'util';
 
 export const getFrontNorm = (normRaw: any, index) => {
   if (normRaw) {

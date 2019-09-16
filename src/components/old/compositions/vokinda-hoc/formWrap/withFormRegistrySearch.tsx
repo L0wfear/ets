@@ -155,41 +155,44 @@ export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchPr
           () => {
             if (!isLoading) {
               const triggerOnUpdate = (
-                param_uniq_value
-                && (
-                  param_uniq_value !== param_uniq_value_prev
-                  || isLoading !== isLoading_prev
-                )
+                param_uniq_value !== param_uniq_value_prev
+                || isLoading !== isLoading_prev
               );
 
               if (triggerOnUpdate) {
-                if (param_uniq_value === buttonsTypes.create) {
-                  if (isPermittedToCreate && !config.cant_create) {
-                    setElement({} as any);
-                  } else {
-                    global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
-                    handleHide(false);
-                  }
-                } else {
-                  const param_uniq_value_number = Number(param_uniq_value);
-                  const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_number);
-
-                  if (elementPick || config.no_find_in_arr) {
-                    if (isPermittedToSee) {
-                      if (elementPick) {
-                        setElement(elementPick);
-                      } else {
-                        setElement({
-                          [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
-                        } as any);
-                      }
+                if (param_uniq_value_prev && !param_uniq_value) {
+                  handleHide(false);
+                  return;
+                }
+                if (param_uniq_value) {
+                  if (param_uniq_value === buttonsTypes.create) {
+                    if (isPermittedToCreate && !config.cant_create) {
+                      setElement({} as any);
                     } else {
                       global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
                       handleHide(false);
                     }
                   } else {
-                    global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                    handleHide(false);
+                    const param_uniq_value_number = Number(param_uniq_value);
+                    const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_number);
+
+                    if (elementPick || config.no_find_in_arr) {
+                      if (isPermittedToSee) {
+                        if (elementPick) {
+                          setElement(elementPick);
+                        } else {
+                          setElement({
+                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                          } as any);
+                        }
+                      } else {
+                        global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
+                        handleHide(false);
+                      }
+                    } else {
+                      global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+                      handleHide(false);
+                    }
                   }
                 }
               }

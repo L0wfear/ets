@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField, ExtFieldType } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { ExtFieldType } from 'components/@next/@ui/renderFields/@types';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';

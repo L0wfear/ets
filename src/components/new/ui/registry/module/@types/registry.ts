@@ -1,6 +1,6 @@
 import { glyphMap } from 'global-styled';
 import { TypeOneDisplayIf } from 'components/new/ui/registry/contants/displayIf';
-import { ExtFieldType } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldType } from 'components/@next/@ui/renderFields/@types';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 

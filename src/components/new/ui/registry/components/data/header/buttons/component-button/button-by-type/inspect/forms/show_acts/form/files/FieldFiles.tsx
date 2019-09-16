@@ -22,9 +22,9 @@ const FieldFiles: React.FC<Props> = React.memo(
     const isPermitted = useForm.useFormDataIsPermitted<InspectOneActScan>(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
-      (event) => {
+      (key, event) => {
         const value = get(event, 'target.value', event);
-        handleChange({ files: value || [] });
+        handleChange({ [key]: value || [] });
       },
       [handleChange],
     );
@@ -37,6 +37,7 @@ const FieldFiles: React.FC<Props> = React.memo(
         error={error}
         onChange={handleChangeWrap}
         disabled={!isPermitted || !IS_CREATING}
+        boundKeys="files"
       />
     );
   },

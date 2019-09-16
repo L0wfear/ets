@@ -10,9 +10,9 @@ export const fileFormatter = withHandlers({
     isLoading = identity,
     value = [],
     multiple = false,
-  }) => async (e) => {
+  }) => async (boundKeys, e) => {
     if (Array.isArray(e)) {
-      onChange(e);
+      onChange(boundKeys, e);
       return;
     }
 
@@ -67,11 +67,12 @@ export const fileFormatter = withHandlers({
     }));
 
     if (!multiple) {
-      onChange([...fileWrappers]);
-      return;
+
+    onChange(boundKeys, [...fileWrappers]);
+    return;
     }
 
-    onChange([...value, ...fileWrappers]);
+    onChange(boundKeys, [...value, ...fileWrappers]);
   },
 });
 
@@ -90,9 +91,9 @@ export const fileCountLimiter = withHandlers({
     maxSizePerFile = mbToBytes(MAX_SIZE_PER_FILE_MB),
     onChange,
     value = [],
-  }) => (e) => {
+  }) => (boundKeys, e) => {
     if (Array.isArray(e)) {
-      onChange(e);
+      onChange(boundKeys, e);
       return;
     }
 
@@ -120,6 +121,6 @@ export const fileCountLimiter = withHandlers({
       return;
     }
 
-    onChange(e);
+    onChange(boundKeys, e);
   },
 });

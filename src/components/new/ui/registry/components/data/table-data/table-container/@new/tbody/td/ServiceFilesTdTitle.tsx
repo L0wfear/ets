@@ -18,7 +18,7 @@ const ServiceFilesTdTitle: React.FC<Props> = React.memo(
     const dispatch = etsUseDispatch();
 
     const handleChange = React.useCallback(
-      async (files: any[]) => {
+      async (key, files: any[]) => {
 
         if (props.isPermitted) {
           try {
@@ -58,6 +58,7 @@ const ServiceFilesTdTitle: React.FC<Props> = React.memo(
           error={false}
           onChange={handleChange}
           disabled={!props.isPermitted}
+          boundKeys="files"
           withDateTime
           askBefoeRemove
         />

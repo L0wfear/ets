@@ -43,6 +43,7 @@ class MakeFileModal extends React.Component<any, any> {
                 <EtsBootstrap.Col md={12}>
                   <FileField
                     label="Файл"
+                    type="file"
                     value={this.state.files}
                     onChange={this.handleChange}
                     boundKeys="files"

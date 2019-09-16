@@ -1,36 +1,39 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
+import { withFormRegistrySearch, WithFormRegistrySearchAddProps, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-import { PropsRoadAccidentFormLazy } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/@types/RoadAccident';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
-import { memoizeMergeElement } from '../../../../utils';
-
-const RoadAccidentFrom = React.lazy(() =>
+const RoadAccidentFromReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "road_accident_form" */ 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/form/RoadAccidentForm'),
 );
 
-const RoadAccidentFormLazy: React.FC<PropsRoadAccidentFormLazy> = (props) => {
-  const page = props.loadingPageName || props.page;
-  const path = `${props.path ? `${props.path}-` : ''}road_accident-form`;
+const RoadAccidentFormLazy: React.FC<WithFormRegistrySearchAddProps<RoadAccident> & { selectedCarData?: CarWrap }> = React.memo(
+  (props) => {
+    const element = React.useMemo(
+      () => {
+        if (!props.element.car_id && props.selectedCarData) {
+          return {
+            ...props.element,
+            car_id: props.selectedCarData.asuods_id,
+            car_gov_number: props.selectedCarData.gov_number,
+          };
+        }
 
-  return props.element ? (
-    <ErrorBoundaryForm>
-      <React.Suspense fallback={<LoadingComponent />}>
-        <RoadAccidentFrom
-          element={memoizeMergeElement(props.element, props.selectedCarData)}
-          handleHide={props.onFormHide}
+        return props.element;
+      },
+      [props.element, props.selectedCarData],
+    );
 
-          page={page}
-          path={path}
-        />
-      </React.Suspense>
-    </ErrorBoundaryForm>
-  ) : (
-    <DivNone />
-  );
-};
+    return (
+      <RoadAccidentFromReactLazy
+        {...props}
+        element={element}
+      />
+    );
+  },
+);
 
-export default withFormRegistrySearch<Pick<PropsRoadAccidentFormLazy, 'selectedCarData' >>({})(RoadAccidentFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<RoadAccident> & { selectedCarData?: CarWrap }, RoadAccident>({
+  add_path: 'road_accident',
+})(RoadAccidentFormLazy);

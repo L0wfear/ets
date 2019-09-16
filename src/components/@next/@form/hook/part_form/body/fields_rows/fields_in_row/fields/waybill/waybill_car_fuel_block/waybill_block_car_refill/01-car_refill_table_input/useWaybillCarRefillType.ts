@@ -5,8 +5,8 @@ import { WaybillFormStoreType } from "components/new/pages/waybill/form/context/
 import useRefillTypeList from 'components/new/utils/hooks/services/useList/useRefillTypeList';
 import { Waybill } from "redux-main/reducers/modules/waybill/@types";
 
-export const useWaybillLoadCarRefillType = (formDataKey: string) => {
-  const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
+export const useWaybillLoadCarRefillType = (formDataKey: any) => {
+  const store = useForm.useFormDataStore<Waybill>(formDataKey);
 
   useForm.useFormDataLoadOptions<WaybillFormStoreType, 'refillTypeList'>(
     formDataKey,

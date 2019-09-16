@@ -1,5 +1,6 @@
 import * as React from 'react';
 import DataTable from 'components/old/ui/tableNew/DataTable';
+import { TechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/@types/technicalOperationRelations';
 
 const ROUTE_TYPE_OPTIONS = {
   mixed: {
@@ -39,8 +40,13 @@ export const meta = {
     },
   ],
 };
+type Props = {
+  data: TechnicalOperationRelations['routes'];
+  onRowClick: ({ props: { data } }: { props: { data: ValuesOf<TechnicalOperationRelations['routes']>} }) => any;
+  selected: ValuesOf<TechnicalOperationRelations['routes']>;
+};
 
-const ChangeRouteTable: React.FC<any> = (props) => {
+const ChangeRouteTable: React.FC<Props> = (props) => {
   return (
     <DataTable
       data={props.data}

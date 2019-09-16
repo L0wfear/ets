@@ -1,7 +1,7 @@
 import { isString } from 'util';
-import { FieldStringCommon } from '../../@types/fields/string';
+import { StringField } from 'components/@next/@form/@types';
 
-export const validateString = <F, K extends keyof F>(key: keyof F, fieldData: FieldStringCommon<F, K>, formState: F) => {
+export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField<F>, formState: F) => {
   const {
     [key]: value,
   } = formState;
@@ -23,7 +23,7 @@ export const validateString = <F, K extends keyof F>(key: keyof F, fieldData: Fi
   }
 
   if (value && isString(value) && value.length !== value.trim().length) {
-    return `Поле "${fieldData.title}" не должно начинаться и заканчиваться пробелом`;
+    return `Поле "${title}" не должно начинаться и заканчиваться пробелом`;
   }
 
   if (isString(value) || value === null) {

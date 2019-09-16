@@ -2,40 +2,29 @@ import * as React from 'react';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-import { PropsMissionFormLazy } from './@types/index.h';
+import { WithFormRegistrySearchAddPropsWithoutWithSerach } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { MissionFormReactLazy } from 'components/new/pages/missions/mission/form/main/MissionListFormWrap';
 
-const MissionForm = React.lazy(() => (
-  import(/* webpackChunkName: "mission_form" */ 'components/new/pages/missions/mission/form/main/MissionForm')
-));
+type OwnProps = WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<Mission>> & {
+  showForm: boolean;
+  notChangeCar?: boolean;
+};
+type Props = OwnProps & WithSearchProps;
 
-class MissionFormLazy extends React.Component<PropsMissionFormLazy, {}> {
-  render() {
-    const { showForm, ...props } = this.props;
-    const page = props.loadingPageName || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}mission_form`;
+const MissionFormWithoutRegistry: React.FC<Props> = React.memo(
+  ({ showForm, ...props }) => {
+    return showForm && (
+      <ErrorBoundaryForm>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <MissionFormReactLazy
+            {...props}
+          />
+        </React.Suspense>
+      </ErrorBoundaryForm>
+    );
+  },
+);
 
-    return showForm ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <MissionForm
-              element={props.element}
-              handleHide={props.onFormHide}
-
-              notChangeCar={props.notChangeCar}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
-  }
-}
-
-export default MissionFormLazy;
+export default withSearch<OwnProps>(MissionFormWithoutRegistry);

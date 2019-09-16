@@ -129,6 +129,7 @@ export interface OneRegistryData<F = any> {
   idRequestTime: number;
   isLoading: boolean;
   Service: any;
+  path?: string;
   header: {
     title?: any;
     titlePopover: string;
@@ -168,7 +169,7 @@ export interface OneRegistryData<F = any> {
       objectExtra: Record<string, any> // use lodash.get
       total_count: number;
       uniqKey: Extract<keyof F, string>;
-      uniqKeyForParams?: string;
+      uniqKeyForParams: string;
       selectedRow: F;
       selectedRowToShow: F;
       checkedRows: Record<keyof F, F>;
@@ -251,6 +252,7 @@ export type TypeConfigData<F> = {
   noInitialLoad?: boolean;
   Service: OneRegistryData<F>['Service'];
   registryKey: string;
+  path?: string;
   header?: {
     title?: OneRegistryData<F>['header']['title'];
     titlePopover?: OneRegistryData<F>['header']['titlePopover'];

@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 import RepairFormLazy from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form';
 
@@ -6,46 +8,32 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
+
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { get } from 'lodash';
-import { CarWrap } from '../../../@types/CarForm';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-export type RepairListStateProps = {};
-export type RepairListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type RepairListOwnProps = {
+export type OwnProps = {
   selectedCarData?: CarWrap;
 };
-export type RepairListMergedProps = (
-  RepairListStateProps
-  & RepairListDispatchProps
-  & RepairListOwnProps
-);
-export type RepairListProps = (
-  RepairListMergedProps
-);
+export type Props = OwnProps & {};
 
-const RepairList: React.FC<RepairListProps> = (props) => {
+const RepairList: React.FC<Props> = (props) => {
   const {
     selectedCarData,
   } = props;
   const car_id = get(selectedCarData, 'asuods_id', null);
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(car_id));
+      dispatch(registryAddInitialData(getToConfig(car_id)));
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
-    [car_id],
+    [car_id, getToConfig],
   );
 
   return (
@@ -56,24 +44,7 @@ const RepairList: React.FC<RepairListProps> = (props) => {
   );
 };
 
-export default compose<RepairListProps, RepairListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<RepairListStateProps, RepairListDispatchProps, RepairListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(RepairList);
+export default withPreloader<OwnProps>({
+  page: registryKey,
+  typePreloader: 'mainpage',
+})(RepairList);

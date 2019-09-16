@@ -7,8 +7,9 @@ import { FluxContext } from 'utils/decorators';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
+import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
-import { isNullOrUndefined, isObject, isArray } from 'util';
+import { isNullOrUndefined } from 'util';
 import { connect } from 'react-redux';
 import {
   getAutobaseState,
@@ -24,6 +25,7 @@ import * as fuelCardsActions from 'redux-main/reducers/modules/autobase/fuel_car
 import { validateField } from 'utils/validate/validateField';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
+import { canSaveTest } from 'components/@next/@form/validate/validate';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -40,17 +42,6 @@ const canSaveNotCheckField = [
 ];
 
 const canCloseNotCheckField = ['distance'];
-
-const canSaveTest = (errorsData) => {
-  if (isObject(errorsData)) {
-    return Object.values(errorsData).every((error) => canSaveTest(error));
-  }
-  if (isArray(errorsData)) {
-    return errorsData.every((error) => canSaveTest(error));
-  }
-
-  return !errorsData;
-};
 
 const canSaveTestWrap = (formError) => {
   const filredFormErrors = Object.entries(formError).reduce(
@@ -242,7 +233,7 @@ class WaybillFormWrap extends React.Component {
         const equipmentFuelGiven = waybill.equipment_fuel_given
           ? parseFloat(waybill.equipment_fuel_given)
           : 0;
-        const equipmentFuelTaxes = Taxes.calculateFinalResult(
+        const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
           waybill.equipment_tax_data,
         );
 
@@ -371,7 +362,7 @@ class WaybillFormWrap extends React.Component {
     const equipmentFuelGiven = formState.equipment_fuel_given
       ? parseFloat(formState.equipment_fuel_given)
       : 0;
-    const equipmentFuelTaxes = Taxes.calculateFinalResult(
+    const equipmentFuelTaxes = EquipmentTaxes.calculateFinalResult(
       formState.equipment_tax_data,
     );
 
@@ -511,7 +502,7 @@ class WaybillFormWrap extends React.Component {
         ) {
           const lastEquipmentTax = last(formState.equipment_tax_data);
           lastEquipmentTax.FACT_VALUE = formState.motohours_equip_diff;
-          lastEquipmentTax.RESULT = Taxes.getResult(lastEquipmentTax);
+          lastEquipmentTax.RESULT = EquipmentTaxes.getResult(lastEquipmentTax);
         }
       }
     }
@@ -715,7 +706,6 @@ class WaybillFormWrap extends React.Component {
   };
 
   handleClose = async (taxesControl) => {
-    const { formState } = this.state;
     if (!taxesControl) {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
@@ -724,7 +714,8 @@ class WaybillFormWrap extends React.Component {
       );
       return;
     }
-    const prevStatus = formState.status;
+
+    const formState = cloneDeep(this.state.formState);
 
     confirmDialog({
       title:
@@ -739,7 +730,7 @@ class WaybillFormWrap extends React.Component {
             .updateWaybill(formState);
           this.props.onCallback();
         } catch (e) {
-          formState.status = prevStatus; // eslint-disable-line
+          //
         }
       })
       .catch(() => {});
@@ -791,6 +782,7 @@ class WaybillFormWrap extends React.Component {
             clearSomeData={this.clearSomeData}
             isPermittedByKey={this.state.isPermittedByKey}
             setEdcRequestIds={this.setEdcRequestIds}
+            page={this.props.page}
             {...this.state}
           />
         )}

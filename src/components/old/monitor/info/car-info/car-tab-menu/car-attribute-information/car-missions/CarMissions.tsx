@@ -118,9 +118,15 @@ class CarMissions extends React.Component<PropsCarMissions, StateCarMissions> {
           showMissionForm={this.showMissionForm}
         />
         <MissionFormLazy
-          onFormHide={this.hideMain}
+          handleHide={this.hideMain}
           showForm={!!missionToShow && !!this.state.selectedMissionIdToShowMain}
           element={missionToShow}
+
+          type={null}
+
+          registryKey="mainpage"
+          page="mainpage"
+          path="mission"
         />
         <MissionInfoFormWrap
           onFormHide={this.hideInfo}

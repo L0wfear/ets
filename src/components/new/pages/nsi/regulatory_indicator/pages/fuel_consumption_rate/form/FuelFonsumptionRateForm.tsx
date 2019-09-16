@@ -1,16 +1,17 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   fuelRateCreate,
   fuelRateUpdate,
@@ -35,7 +36,6 @@ import {
 import { getSomeUniqSpecialModelOptions } from 'redux-main/reducers/modules/some_uniq/special_model/selectors';
 import { getCompanyStructureLinearOptions } from 'redux-main/reducers/modules/company_structure/selectors';
 import { getFuelRateOperationsIsActiveOptions } from 'redux-main/reducers/modules/fuel_rates/selectors';
-import { get } from 'lodash';
 import { getDefaultFuelRateElement } from './utils';
 import { fuelRateSchema } from './schema';
 import fuelRatesPermissions from '../_config-data/permissions';

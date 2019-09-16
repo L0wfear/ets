@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import PgmStorePermissions from 'components/new/pages/nsi/geoobjects/pages/pgm_store/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { PgmStoreFormSchema } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreForm/schema';
 
 import { getDefaultPgmStoreFormElement } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsPgmStoreForm,
   PropsPgmStoreForm,
   PropsPgmStoreFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/pgm_store/PgmStoreForm/@types/PgmStoreForm.h';
@@ -17,7 +16,7 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { actionsPgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
@@ -98,22 +97,22 @@ const PgmStoreForm: React.FC<PropsPgmStoreForm> = React.memo(
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsPgmStoreForm, OwnPropsPgmStoreForm>(
+export default compose<PropsPgmStoreForm, PropsPgmStoreFormWithForm>(
   withForm<PropsPgmStoreFormWithForm, PgmStore>({
     uniqField: 'id',
     createAction: actionsPgmStore.post,

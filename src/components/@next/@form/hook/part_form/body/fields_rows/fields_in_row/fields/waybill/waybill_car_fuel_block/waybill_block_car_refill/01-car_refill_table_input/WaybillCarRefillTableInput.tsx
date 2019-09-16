@@ -8,7 +8,7 @@ import { useWaybillCarRefillMeta } from './useWaybillCarRefillMeta';
 import { useWaybillLoadCarRefillType } from './useWaybillCarRefillType';
 
 type WaybillCarRefillTableInputProps = {
-  formDataKey: string;
+  formDataKey: any;
   selectedRowIndex: number;
   setSelectedRowIndex: React.Dispatch<React.SetStateAction<number>>;
 };

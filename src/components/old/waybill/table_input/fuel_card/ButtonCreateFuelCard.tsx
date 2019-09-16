@@ -3,13 +3,14 @@ import fuelCardsPermissions from 'components/new/pages/nsi/autobase/pages/fuel_c
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
+import { FuelCardsFormLazyWithoutWithSeacth } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 
 type ButtonCreateFuelCardOwnProps = {
+  id: string;
   handleUpdateFuelCard: () => any;
   structure_id: Waybill['structure_id'];
   fuel_type: Waybill['fuel_type'];
@@ -65,17 +66,19 @@ const ButtonCreateFuelCard: React.FC<ButtonCreateFuelCardProps> = React.memo(
 
     return (
       <React.Fragment>
-        <ButtonTableInput block width={props.buttonWidth} disabled={props.disabled} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
+        <ButtonTableInput id={`${props.page}_${props.id}_add_fuel_card`} block width={props.buttonWidth} disabled={props.disabled} onClick={handleCreateFuelCard}>Создать топл. карту</ButtonTableInput>
         {
           showStatus && (
             <ErrorBoundaryForm>
               <React.Suspense fallback={<LoadingComponent />}>
-                <FuelCardsFormLazy
+                <FuelCardsFormLazyWithoutWithSeacth
                   element={element}
                   handleHide={onFormHide}
 
+                  registryKey={props.page}
                   page={props.page}
-                  fromWaybill
+                  path="fueld_card"
+                  type={null}
                 />
               </React.Suspense>
             </ErrorBoundaryForm>

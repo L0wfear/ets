@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 
 interface IPropsReportHeader extends IPropsReportHeaderCommon, IPropsReportHeaderWrapper {

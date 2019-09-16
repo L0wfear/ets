@@ -1,8 +1,9 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { insurancePolicyFormSchema } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/schema';
 
@@ -10,7 +11,6 @@ import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/uti
 import { getDefaultInsurancePolicyElement } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnInsurancePolicyProps,
   PropsInsurancePolicy,
   PropsInsurancePolicyWithForm,
 } from 'components/new/pages/nsi/autobase/pages/insurance_policy/form/@types/InsurancePolicyForm';
@@ -18,7 +18,6 @@ import { InsurancePolicy } from 'redux-main/reducers/modules/autobase/@types/aut
 import { DivNone } from 'global-styled/global-styled';
 import { FileField } from 'components/old/ui/input/fields';
 
-import { get } from 'lodash';
 import insurancePolicyPermissions from '../_config-data/permissions';
 import { autobaseCreateInsurancePolicy, autobaseUpdateInsurancePolicy } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_policy/actions';
 import { autobaseGetInsuranceType } from 'redux-main/reducers/modules/autobase/actions_by_type/insurance_type/actions';
@@ -244,7 +243,7 @@ const InsurancePolicyForm: React.FC<PropsInsurancePolicy> = (props) => {
   );
 };
 
-export default compose<PropsInsurancePolicy, OwnInsurancePolicyProps>(
+export default compose<PropsInsurancePolicy, PropsInsurancePolicyWithForm>(
   withForm<PropsInsurancePolicyWithForm, InsurancePolicy>({
     uniqField: 'id',
     createAction: autobaseCreateInsurancePolicy,

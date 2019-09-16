@@ -1,41 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsMspFormWrap } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/@types/MspForm.h';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { WithFormRegistrySearchProps, withFormRegistrySearch } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
 
 const MspFrom = React.lazy(() => (
   import(/* webpackChunkName: "msp_form" */ 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/MspForm')
 ));
 
-class MspFormWrap extends React.Component<PropsMspFormWrap, {}> {
-  render() {
-    const { element, ...props } = this.props;
-    const page = props.registryKey;
-    const path = `${props.path ? `${props.path}-` : ''}msp-form`;
-
-    return element ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <MspFrom
-              element={element}
-              handleHide={props.onFormHide}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
-  }
-}
-
-export default withFormRegistrySearch({})(MspFormWrap);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Msp>, Msp>({
+  add_path: 'msp',
+})(MspFrom);

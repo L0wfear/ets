@@ -4,7 +4,7 @@ import cx from 'classnames';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { TextAreaFieldUi } from 'components/@next/@ui/renderFields/TextAreaField/styled';
-import { ExtFieldText } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldText } from 'components/@next/@ui/renderFields/@types';
 
 const TextAreaField: React.FC<ExtFieldText> = React.memo(
   (props) => {

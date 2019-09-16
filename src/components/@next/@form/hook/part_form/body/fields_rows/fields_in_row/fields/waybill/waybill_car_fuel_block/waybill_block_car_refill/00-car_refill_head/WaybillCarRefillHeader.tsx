@@ -11,7 +11,7 @@ import WaybillButtonCarRefillAdd from './buttons/WaybillButtonCarRefillAdd';
 import WaybillButtonCarRefillRemove from './buttons/WaybillButtonCarRefillRemove';
 
 type WaybillCarRefillHeaderProps = {
-  formDataKey: string;
+  formDataKey: any;
   selectedRowIndex: number;
   setSelectedRowIndex: React.Dispatch<React.SetStateAction<number>>;
 };

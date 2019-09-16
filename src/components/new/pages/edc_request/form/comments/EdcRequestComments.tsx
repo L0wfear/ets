@@ -9,7 +9,7 @@ import useEdcRequestCommentsList from 'components/new/utils/hooks/services/useLi
 import BlockCommentData from './blocks/commet/BlockCommentData';
 
 type EdcRequestCommentsProps = {
-  element: Partial<EdcRequest>;
+  element: Pick<EdcRequest, 'id'> & Partial<EdcRequest>;
   handleHide: (...arg: any[]) => any;
 
   page: string;

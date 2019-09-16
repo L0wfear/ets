@@ -2,7 +2,7 @@ import * as React from 'react';
 import memoizeOne from 'memoize-one';
 import { uniqBy } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getNumberValueFromSerch, getStringArrValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';

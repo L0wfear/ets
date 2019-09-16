@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { CenterCol, FlexRow } from './styled';
 import config from 'config';
 import { DivNone } from 'global-styled/global-styled';

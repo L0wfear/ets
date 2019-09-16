@@ -12,10 +12,6 @@ export const config: TypeConfigData<EdcRequest> = {
       typeAns: 'result',
       userServerFilters: true,
     },
-    getOneData: {
-      entity: 'edc_request',
-      typeAns: 'result.0',
-    },
   },
   registryKey,
   header: {
@@ -110,7 +106,7 @@ export const config: TypeConfigData<EdcRequest> = {
       fixedWidth: true,
     },
     meta: {
-      row_double_click: true,
+      row_double_click: false,
       fields: [
         {
           key: 'enumerated',

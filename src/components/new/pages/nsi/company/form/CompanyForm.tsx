@@ -1,43 +1,36 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import companyPermissions from 'components/new/pages/nsi/company/_config-data/permissions';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import companyPermissions from 'components/new/pages/nsi/company/_config-data/permissions';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { companySchema } from 'components/new/pages/nsi/company/form/shema';
 import companyActions from 'redux-main/reducers/modules/company/actions';
 
 import { getDefaultCompanyElement } from 'components/new/pages/nsi/company/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnCompanyProps,
   PropsCompany,
-  StateCompany,
-  StatePropsCompany,
-  DispatchPropsCompany,
   PropsCompanyWithForm,
 } from 'components/new/pages/nsi/company/form/@types/CompanyList.h';
 import { Company } from 'redux-main/reducers/modules/company/@types';
-import { DivNone } from 'global-styled/global-styled';
 
-class CompanyForm extends React.PureComponent<PropsCompany, StateCompany> {
-  render() {
+const CompanyForm: React.FC<PropsCompany> = React.memo(
+  (props) => {
     const {
       formState: state,
       formErrors: errors,
       page,
       path,
-    } = this.props;
-
-    const IS_CREATING = !state.company_id;
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Карточка организации' : 'Карточка организации';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-companies" show onHide={this.props.hideWithoutChanges}>
+      <EtsBootstrap.ModalContainer id="modal-companies" show onHide={props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -51,7 +44,7 @@ class CompanyForm extends React.PureComponent<PropsCompany, StateCompany> {
                 label="Наименование"
                 value={state.short_name}
                 error={errors.short_name}
-                onChange={this.props.handleChange}
+                onChange={props.handleChange}
                 boundKeys="short_name"
                 disabled
               />
@@ -64,7 +57,7 @@ class CompanyForm extends React.PureComponent<PropsCompany, StateCompany> {
                 label="Наличие дистанционного мед. осмотра"
                 value={state.has_remote_checkup}
                 error={errors.has_remote_checkup}
-                onChange={this.props.handleChangeBoolean}
+                onChange={props.handleChangeBoolean}
                 boundKeys="has_remote_checkup"
                 disabled={!isPermitted}
               />
@@ -73,24 +66,17 @@ class CompanyForm extends React.PureComponent<PropsCompany, StateCompany> {
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
         {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
+          isPermitted && (
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
         }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsCompany, OwnCompanyProps>(
-  connect<StatePropsCompany, DispatchPropsCompany, OwnCompanyProps, ReduxState>(
-    null,
-  ),
+export default compose<PropsCompany, PropsCompanyWithForm>(
   withForm<PropsCompanyWithForm, Company>({
     uniqField: 'company_id',
     createAction: companyActions.actionCreateCompany,

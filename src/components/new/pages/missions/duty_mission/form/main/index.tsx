@@ -2,39 +2,29 @@ import * as React from 'react';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-import { PropsDutyMissionFormLazy } from './@types/index.h';
+import { DutyMissionFormLazy } from 'components/new/pages/missions/duty_mission/form/main/DutyMissionListFormWrap';
+import { WithFormRegistrySearchAddPropsWithoutWithSerach } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
-const DutyMissionForm = React.lazy(() =>
-  import(/* webpackChunkName: "duty_mission_form" */ 'components/new/pages/missions/duty_mission/form/main/DutyMissionForm'),
-);
+type OwnProps = WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<DutyMission>> & {
+  showForm: boolean;
+  readOnly?: boolean;
+};
+type Props = OwnProps & WithSearchProps;
 
-class DutyMissionFormLazy extends React.Component<
-  PropsDutyMissionFormLazy,
-  {}
-> {
-  render() {
-    const { showForm, ...props } = this.props;
-    // const page = props.loadingPageName || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}-form`;
-
-    return showForm ? (
+const DutyMissionFormWithoutRegistry: React.FC<Props> = React.memo(
+  ({ showForm, ...props }) => {
+    return showForm && (
       <ErrorBoundaryForm>
         <React.Suspense fallback={<LoadingComponent />}>
-          <DutyMissionForm
-            element={props.element}
-            handleHide={props.onFormHide}
-            readOnly={props.readOnly}
-
-            page="duty_mission-form"
-            path={path}
+          <DutyMissionFormLazy
+            {...props}
           />
         </React.Suspense>
       </ErrorBoundaryForm>
-    ) : (
-      <DivNone />
     );
-  }
-}
+  },
+);
 
-export default DutyMissionFormLazy;
+export default withSearch<OwnProps>(DutyMissionFormWithoutRegistry);

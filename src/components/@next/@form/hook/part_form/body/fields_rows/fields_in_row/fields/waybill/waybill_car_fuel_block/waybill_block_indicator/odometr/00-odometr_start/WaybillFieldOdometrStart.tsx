@@ -2,13 +2,13 @@ import * as React from 'react';
 import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 type WaybillFieldOdometrStartProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { isArray, isNullOrUndefined } from 'util';
 
 import StringField from 'components/@next/@ui/renderFields/StringField/StringField';
 import TextAreaField from 'components/@next/@ui/renderFields/TextAreaField/TextAreaField';
@@ -7,7 +8,7 @@ import NumberField from 'components/@next/@ui/renderFields/NumberField/NumberFie
 import DateField from 'components/@next/@ui/renderFields/DateField/DateField';
 import FileField from 'components/@next/@ui/renderFields/FileField/FileField';
 import SelectField from 'components/@next/@ui/renderFields/SelectField/SelectField';
-import { ExtFieldType, ExtFieldTypeByKey } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldType, ExtFieldTypeByKey } from 'components/@next/@ui/renderFields/@types';
 
 const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<ExtFieldTypeByKey[K]> } = {
   string: StringField,
@@ -20,11 +21,33 @@ const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<Ext
 };
 
 const Field: React.FC<ExtFieldType> = React.memo(
-  (props) => {
+  ({ boundKeys, ...props }) => {
     const Component = ComponentByType[props.type] || ComponentByType.string;
 
+    const onChange = React.useCallback(
+      (...arg) => {
+        const addKeys = !isNullOrUndefined(boundKeys) ? boundKeys : [];
+        if (!isArray(addKeys)) {
+          props.onChange(addKeys, ...arg);
+        } else {
+          props.onChange(...addKeys, ...arg);
+        }
+      },
+      [boundKeys, props.onChange],
+    );
+
+    if (props.disabled && props.value_string) {
+      return (
+        <StringField
+          {...props as any}
+          type="string"
+          value={props.value_string}
+        />
+      );
+    }
+
     return (
-      <Component {...props as any} />
+      <Component {...props as any} onChange={onChange} />
     );
   },
 );

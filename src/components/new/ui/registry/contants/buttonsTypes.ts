@@ -6,7 +6,6 @@ import { mission_types } from '../components/data/header/buttons/component-butto
 import { mission_template_types } from '../components/data/header/buttons/component-button/button-by-type/mission_template/constant';
 import { waybill_types } from '../components/data/header/buttons/component-button/button-by-type/waybill/constant';
 import { inspect_types } from '../components/data/header/buttons/component-button/button-by-type/inspect/constant';
-import { car_actual_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/constant';
 import { order_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant';
 
 const buttonsTypes =  {
@@ -25,7 +24,6 @@ const buttonsTypes =  {
   ...edc_form_permitted_type,
   ...duty_mission_template_types,
   ...mission_types,
-  ...car_actual_types,
   ...order_types,
 } as const;
 

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import {
   PropsFieldAssignToWaybillMission,
 } from 'components/new/pages/missions/mission/form/main/inside_fields/assign_to_waybill/FieldAssignToWaybillMission.d';

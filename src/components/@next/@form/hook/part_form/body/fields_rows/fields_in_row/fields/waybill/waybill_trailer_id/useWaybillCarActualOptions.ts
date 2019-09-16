@@ -20,7 +20,7 @@ export const trailerFilter = (car: Car, trailer_id: Waybill['trailer_id'], struc
   );
 };
 
-const useWaybillCarActualOptions = (formDataKey: string, trailer_id: Waybill['trailer_id'], structure_id: Waybill['structure_id']) => {
+const useWaybillCarActualOptions = (formDataKey: any, trailer_id: Waybill['trailer_id'], structure_id: Waybill['structure_id']) => {
   const listData = useCarActualOptions();
 
   const waybillCarActualTrailerOptions = React.useMemo(

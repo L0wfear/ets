@@ -1,11 +1,12 @@
 import * as React from 'react';
 
-import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
+import { isEmpty } from 'utils/functions';
+import { FluxContext } from 'utils/decorators';
 
 import ProgramRegistryFormBase from 'components/old/program_registry/UpdateFrom/ProgramRegistryUForm';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-import { get } from 'lodash';
+import { get, cloneDeep } from 'lodash';
 
 import { getSessionState } from 'redux-main/reducers/selectors';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
@@ -30,7 +31,10 @@ const ButtonInFormDefPermission = ButtonInFormList.reduce(
   {},
 );
 
-const ProgramRegistryForm = withRequirePermission()(ProgramRegistryFormBase);
+const ProgramRegistryForm = withRequirePermission({
+  byEntity: true,
+  type: 'read',
+})(ProgramRegistryFormBase);
 const checkIsPermittedByStatus = (status) => {
   switch (status) {
     case 'sent_on_review':
@@ -60,7 +64,8 @@ const checkIsPermittedByStatusForContractorLine = (status) => {
   }
 };
 
-class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
+@FluxContext
+class ProgramRegistryFormWrap extends React.Component {
   constructor(props) {
     super(props);
     this.preventDefaultNotification = true;
@@ -93,6 +98,35 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
     };
 
     this.updateVersionList(data);
+    this.componentDidUpdate({});
+  }
+
+  componentDidUpdate(prevProps) {
+    const { props } = this;
+
+    const prevId = get(prevProps.element, 'id');
+    const id = get(props.element, 'id');
+
+    if (prevId !== id) {
+      let element = {};
+      if (props.element !== null) {
+        element = cloneDeep(props.element);
+      } else {
+        element = !isEmpty(this.defaultElement)
+          ? cloneDeep(this.defaultElement)
+          : {};
+      }
+      const formErrors = this.validate(element, {});
+
+      this.setState({
+        formState: element,
+        formErrors,
+        canSave: Object.values(formErrors).reduce(
+          (boolean, oneError) => boolean && !oneError,
+          true,
+        ),
+      });
+    }
   }
 
   /**
@@ -324,6 +358,31 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
       });
   };
 
+  handleFormStateChange = (field, e) => {
+    const value
+      = e !== undefined && e !== null && !!e.target ? e.target.value : e;
+    let { formErrors } = this.state;
+    const { formState } = this.state;
+    const newState = {};
+
+    console.info('Form changed', field, value);
+    formState[field] = value;
+
+    formErrors = this.validate(formState, formErrors);
+
+    newState.canSave = Object.values(formErrors).reduce(
+      (boolean, oneError) => boolean && !oneError,
+      true,
+    );
+
+    newState.formState = formState;
+    newState.formErrors = formErrors;
+
+    this.setState(newState);
+
+    return newState;
+  };
+
   updateVersionOuter = (payload) => {
     const percentUpdate = get(payload, 'percentUpdate', false);
     return this.updateVersionList({ id: this.props.element.id, percentUpdate });
@@ -367,7 +426,7 @@ class ProgramRegistryFormWrap extends UNSAFE_FormWrap {
         isPermittetForObjectFact={isPermittetForObjectFact}
         canSave={canSave}
         handleFormChange={this.handleFormStateChange}
-        show={this.props.showForm}
+        show
         onHide={this.props.handleHide}
         fromCreating={fromCreating}
         permissionForButton={permissionForButton}

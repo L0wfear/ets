@@ -1,18 +1,19 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { FileField } from 'components/old/ui/input/fields';
 import { compose } from 'recompose';
+import { get } from 'lodash';
+import { connect } from 'react-redux';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { FileField } from 'components/old/ui/input/fields';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { employeeFormSchema } from 'components/new/pages/nsi/employee/form/schema';
-import { get } from 'lodash';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
 import { getSetCompanyStructureDescendantsByUser } from 'redux-main/reducers/modules/company_structure/actions';
 
 import { getDefaultEmployeeElement, filterCars } from 'components/new/pages/nsi/employee/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnEmployeeProps,
   PropsEmployee,
@@ -21,7 +22,6 @@ import {
   PropsEmployeeWithForm,
 } from 'components/new/pages/nsi/employee/form/@types/EmployeeForm.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
-import { DivNone } from 'global-styled/global-styled';
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
@@ -312,7 +312,7 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     disabled={!isPermitted}
                     onChange={this.handleChangeSnils}
                     boundKeys="snils"
-                    maxlength={14}
+                    maxLength={14}
                   />
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>
@@ -638,12 +638,8 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
         {
-          isPermitted // либо обновление, либо создание
-          ? (
+          isPermitted && (
             <EtsBootstrap.Button id="save_employee" disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
           )
         }
         </EtsBootstrap.ModalFooter>

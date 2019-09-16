@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 import themeButton from 'components/new/ui/@bootstrap/@themes/default/button/themeButton';
 import { GlyphiconStyled } from '../01-glyphicon/EtsGlyphicon';
 import { withRequirePermission, WithRequirePermissionAddProps, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { isNullOrUndefined } from 'util';
 
 export type EtsButtonProps = WithRequirePermissionProps & {
   bsClass?: string;
@@ -13,11 +14,12 @@ export type EtsButtonProps = WithRequirePermissionProps & {
   className?: string;
   disabled?: boolean;
   id?: string;
-  onClick?: (event?: any) => void;
+  onClick?: (...arg: any[]) => void;
   title?: string;
   type?: 'submit' | 'button';
   whiteSpace?: 'normal';
 
+  boundKeys?: any; // not use
   style?: object;
 };
 type EtsButtonPropsWrap = EtsButtonProps & WithRequirePermissionAddProps;
@@ -175,10 +177,15 @@ const EtsButton: React.FC<EtsButtonPropsWrap> = React.memo(
             },
             300,
           );
-          props.onClick(...arg);
+
+          if (!isNullOrUndefined(props.boundKeys)) {
+            props.onClick(props.boundKeys, ...arg);
+          } else {
+            props.onClick(...arg);
+          }
         }
       },
-      [Boolean(props.disabled), localDisabled, props.onClick],
+      [Boolean(props.disabled), localDisabled, props.onClick, props.boundKeys],
     );
 
     return (

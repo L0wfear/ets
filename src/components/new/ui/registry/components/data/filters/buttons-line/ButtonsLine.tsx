@@ -42,7 +42,7 @@ const ButtonsLIne: React.FC<PropsButtonsLIne> = React.memo(
 
         props.registryResetAllTypeFilter(props.registryKey);
       },
-      [],
+      [props.setDataInSearch, props.match.params, props.searchState],
     );
 
     return (

@@ -7,7 +7,7 @@ interface IPropsTitle {
   text: string;
 }
 
-const Title: React.StatelessComponent<IPropsTitle> = (props) => {
+const Title: React.FC<IPropsTitle> = (props) => {
   const popover = (
     <EtsBootstrap.Popover id="car-usage-title-popover" className="car-usage-report-title__popover">
       {props.hint}

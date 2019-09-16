@@ -21,7 +21,7 @@ import {
 import RouteInfo from 'components/new/pages/routes_list/route-info/RouteInfo';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { DivNone } from 'global-styled/global-styled';

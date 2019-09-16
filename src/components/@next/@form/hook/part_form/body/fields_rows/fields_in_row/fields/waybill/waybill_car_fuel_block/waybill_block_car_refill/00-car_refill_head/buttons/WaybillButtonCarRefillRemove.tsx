@@ -5,7 +5,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type WaybillButtonCarRefillRemoveProps = {
-  formDataKey: string;
+  formDataKey: any;
   selectedRowIndex: number;
   setSelectedRowIndex: React.Dispatch<React.SetStateAction<number>>;
 };

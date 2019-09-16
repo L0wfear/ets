@@ -5,7 +5,7 @@ import connectToStores from 'flummox/connect';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
 
 import ModalBody from 'components/old/ui/Modal';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import Div from 'components/old/ui/Div';
 import { isNotNull, isEmpty, hasMotohours } from 'utils/functions';
@@ -43,6 +43,7 @@ import {
 
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 import Taxes from 'components/old/waybill/Taxes';
+import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 
 import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/old/waybill/form/BsnoStatus';
@@ -1995,6 +1996,7 @@ class WaybillForm extends UNSAFE_Form {
                         <EtsBootstrap.Col md={12} zIndex={2}>
                           <EtsBootstrap.Col md={12}>
                             <FieldWaybillCarRefill
+                              id="car_refill"
                               array={state.car_refill}
                               errors={get(
                                 errors,
@@ -2222,6 +2224,7 @@ class WaybillForm extends UNSAFE_Form {
                             <EtsBootstrap.Col md={12} zIndex={2}>
                               <EtsBootstrap.Col md={12}>
                                 <FieldWaybillCarRefill
+                                  id="equipment_refill"
                                   array={state.equipment_refill}
                                   errors={get(
                                     errors,
@@ -2257,7 +2260,7 @@ class WaybillForm extends UNSAFE_Form {
                         )}
                         <EtsBootstrap.Col md={12} zIndex={1}>
                           <EtsBootstrap.Col md={12}>
-                            <Taxes
+                            <EquipmentTaxes
                               modalKey={modalKey}
                               hidden={
                                 !isPermittedByKey.update
@@ -2281,7 +2284,6 @@ class WaybillForm extends UNSAFE_Form {
                                 this,
                                 'equipment_tax_data',
                               )}
-                              correctionRate={this.state.fuel_correction_rate}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                             />

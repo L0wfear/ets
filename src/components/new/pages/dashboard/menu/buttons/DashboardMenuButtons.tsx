@@ -102,16 +102,23 @@ const DashboardMenuButtons: React.FC<Props> = React.memo(
             )
         }
         <MissionFormLazy
-          onFormHide={handleFormHideMissionForm}
+          handleHide={handleFormHideMissionForm}
           showForm={showMissionForm}
           element={null}
+          registryKey="mainpage"
           page={props.page}
+          path="mission"
+          type={null}
         />
         <DutyMissionFormLazy
-          onFormHide={handleFormHideDutyMissionForm}
+          handleHide={handleFormHideDutyMissionForm}
           showForm={showDutyMissionForm}
           element={null}
           page={props.page}
+
+          type={null}
+          registryKey={props.page}
+          path="duty_mission_form"
         />
       </DashboardMenuButtonsContainer>
     );

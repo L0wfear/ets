@@ -32,6 +32,7 @@ export type Norm = {
   check_type_names: string
   check_types: string[];
   conditions: string;
+  consumable_materials_names: string[];
   elements: NormRegistryElement[];
   elements_ids: number[];
   elements_names: string;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import { CheckBoxFieldUi } from 'components/@next/@ui/renderFields/CheckBoxField/styled';
-import { ExtFieldBoolean } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldBoolean } from 'components/@next/@ui/renderFields/@types';
 
 const CheckBoxField: React.FC<ExtFieldBoolean> = React.memo(
   (props) => {

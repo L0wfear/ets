@@ -4,7 +4,7 @@ import { isEmpty } from 'utils/functions';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { components } from 'react-select';
 
 import { getWarningNotification } from 'utils/notifications';
@@ -274,10 +274,15 @@ class MissionField extends React.Component<Props, any> {
           Создать задание
         </EtsBootstrap.Button>
         <MissionFormLazy
-          onFormHide={this.onMissionFormHide}
+          handleHide={this.onMissionFormHide}
           showForm={this.state.showMissionForm}
           element={this.state.selectedMission}
           notChangeCar
+          type={null}
+
+          registryKey={this.props.registryKey}
+          page={this.props.page}
+          path={this.props.path}
         />
         {this.state.showMissionRejectForm && (
           <MissionRejectForm

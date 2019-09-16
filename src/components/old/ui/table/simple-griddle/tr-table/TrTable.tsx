@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as cx from 'classnames';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { isNullOrUndefined } from 'util';
 
 type PropsTrTable = {
   rowData: any;
@@ -17,6 +18,7 @@ type PropsTrTable = {
   columns: string[];
 
   checked: any;
+  localState: Record<string, any>;
 };
 
 class TrTable extends React.Component<PropsTrTable, any> {
@@ -90,7 +92,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
               }
               {
                 customComponent ?
-                  customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] })
+                  customComponent({ rowData: {...rowData, rowNumber}, data: rowData[columnName] }, this.props)
                 :
                   columnName === 'rowNumber' ?
                   rowNumber
@@ -108,7 +110,7 @@ class TrTable extends React.Component<PropsTrTable, any> {
                       </div>
                     )
                     :
-                    rowData[columnName]
+                    (!isNullOrUndefined(rowData[columnName]) ? rowData[columnName] : '').toString()
               }
             </td>
           );

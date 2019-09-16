@@ -1,43 +1,36 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnRepairCompanyProps,
   PropsRepairCompany,
-  StateRepairCompany,
-  StatePropsRepairCompany,
-  DispatchPropsRepairCompany,
   PropsRepairCompanyWithForm,
 } from 'components/new/pages/nsi/autobase/pages/repair_company/form/@types/RepairCompanyForm';
 import { RepairCompany } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DivNone } from 'global-styled/global-styled';
 import { getDefaultRepairCompanyElement } from './utils';
 import { repairCompanyFormSchema } from './schema';
 import repairCompanyPermissions from '../_config-data/permissions';
 
-class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRepairCompany> {
-  render() {
+const RepairCompanyForm: React.FC<PropsRepairCompany> = React.memo(
+  (props) => {
     const {
       formState: state,
       formErrors: errors,
       page,
       path,
-    } = this.props;
-
-    const IS_CREATING = !state.id;
+      IS_CREATING,
+      isPermitted,
+    } = props;
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
-    const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-repair-company" show onHide={this.props.hideWithoutChanges}>
+      <EtsBootstrap.ModalContainer id="modal-repair-company" show onHide={props.hideWithoutChanges}>
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -50,7 +43,7 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
                 label="Наименование ремонтной организации"
                 value={state.name}
                 error={errors.name}
-                onChange={this.props.handleChange}
+                onChange={props.handleChange}
                 boundKeys="name"
                 modalKey={path}
               />
@@ -60,7 +53,7 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
                 label="Примечание"
                 value={state.comment}
                 error={errors.comment}
-                onChange={this.props.handleChange}
+                onChange={props.handleChange}
                 boundKeys="comment"
                 modalKey={path}
               />
@@ -69,24 +62,17 @@ class RepairCompanyForm extends React.PureComponent<PropsRepairCompany, StateRep
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
         {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!this.props.canSave} onClick={this.props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
+          isPermitted && (
+            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
           )
         }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default compose<PropsRepairCompany, OwnRepairCompanyProps>(
-  connect<StatePropsRepairCompany, DispatchPropsRepairCompany, OwnRepairCompanyProps, ReduxState>(
-    null,
-  ),
+export default compose<PropsRepairCompany, PropsRepairCompanyWithForm>(
   withForm<PropsRepairCompanyWithForm, RepairCompany>({
     uniqField: 'id',
     createAction: autobaseActions.autobaseCreateRepairCompany,

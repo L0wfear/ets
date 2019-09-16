@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import ModalBody from 'components/old/ui/Modal';
 import Div from 'components/old/ui/Div';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
 export default class PercentModalForm extends UNSAFE_Form {

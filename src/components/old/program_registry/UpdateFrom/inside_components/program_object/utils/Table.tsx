@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DataTableHeadLine, DataTableHeadLineTitle } from 'components/old/ui/table/styled';
 import Div from 'components/old/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

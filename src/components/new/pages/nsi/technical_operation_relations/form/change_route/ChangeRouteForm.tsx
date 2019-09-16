@@ -1,52 +1,29 @@
 import * as React from 'react';
+import { isBoolean } from 'util';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import RouteFormWrap from 'components/new/pages/routes_list/form/RouteFormWrap';
 import ChangeRouteTable from './ChangeRouteTable';
 import { TechnicalOperationRelations } from 'redux-main/reducers/modules/technical_operation_relations/@types/technicalOperationRelations';
-import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import routesActions from 'redux-main/reducers/modules/routes/actions';
-import { ReduxState } from 'redux-main/@types/state';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { registryLoadDataByKey } from 'components/new/ui/registry/module/actions-registy';
-import { isBoolean } from 'util';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import routePermissions from 'components/new/pages/routes_list/config-data/permissions';
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type ChangeRouteFormStateProps = {};
-type ChangeRouteFormDispatchProps = {
-  actionLoadRouteById: HandleThunkActionCreator<typeof routesActions.actionLoadRouteById>;
-  actionRemoveRoute: HandleThunkActionCreator<typeof routesActions.actionRemoveRoute>;
-  registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-};
-type ChangeRouteFormOwnProps = {
-  element: TechnicalOperationRelations;
-  handleHide: any;
-  registryKey: string;
-
-  page: string;
-  path?: string;
-};
-type ChangeRouteFormOwnMergedProps = (
-  ChangeRouteFormStateProps
-  & ChangeRouteFormDispatchProps
-  & ChangeRouteFormOwnProps
-);
-
-type ChangeRouteFormProps = (
-  ChangeRouteFormOwnMergedProps
-  & WithSearchProps
-);
+type Props = WithFormRegistrySearchAddProps<TechnicalOperationRelations>;
 /**
  *
  * @todo перевести на нормальные реестр
  */
-const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
+const ChangeRouteForm: React.FC<Props> = (props) => {
   const [routeSelected, setRouteSelected] = React.useState<ValuesOf<TechnicalOperationRelations['routes']>>(null);
   const [routeElement, setRouteElement] = React.useState<Partial<Route>>(null);
+
+  const dispatch = etsUseDispatch();
   const {
     element,
   } = props;
@@ -58,7 +35,7 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
 
   const reloadRegistry = React.useCallback(
     () => {
-      props.registryLoadDataByKey(props.registryKey);
+      dispatch(registryLoadDataByKey(props.registryKey));
     },
     [],
   );
@@ -119,13 +96,7 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
         return;
       }
       try {
-        await props.actionRemoveRoute(
-          routeSelected.id,
-          {
-            page,
-            path,
-          },
-        );
+        await dispatch(routesActions.actionRemoveRoute(routeSelected.id, props));
         reloadRegistry();
       } catch (error) {
         console.log(error); // tslint:disable-line
@@ -137,10 +108,7 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
   const handleChangeRoute = React.useCallback(
     async () => {
       try {
-        const route_data = await props.actionLoadRouteById(
-          routeSelected.id,
-          { page, path },
-        );
+        const route_data = await dispatch(routesActions.actionLoadRouteById(routeSelected.id, props));
 
         setRouteElement(
           route_data,
@@ -208,26 +176,4 @@ const ChangeRouteForm: React.FC<ChangeRouteFormProps> = (props) => {
   );
 };
 
-export default compose<ChangeRouteFormProps, ChangeRouteFormOwnProps>(
-  withSearch,
-  connect<ChangeRouteFormStateProps, ChangeRouteFormDispatchProps, ChangeRouteFormOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      actionLoadRouteById: (...arg) => (
-        dispatch(
-          routesActions.actionLoadRouteById(...arg),
-        )
-      ),
-      actionRemoveRoute: (...arg) => (
-        dispatch(
-          routesActions.actionRemoveRoute(...arg),
-        )
-      ),
-      registryLoadDataByKey: (...arg) => (
-        dispatch(
-          registryLoadDataByKey(...arg),
-        )
-      ),
-    }),
-  ),
-)(ChangeRouteForm);
+export default ChangeRouteForm;

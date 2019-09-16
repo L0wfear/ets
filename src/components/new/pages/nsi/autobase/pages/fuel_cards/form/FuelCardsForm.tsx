@@ -1,6 +1,6 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { get } from 'lodash';
@@ -9,11 +9,11 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';
 import {
-  OwnFuelCardsProps,
   PropsFuelCards,
-  StatePropsFuelCards,
-  DispatchPropsFuelCards,
   PropsFuelCardsWithForm,
+  OwnFuelCardsProps,
+  DispatchPropsFuelCards,
+  StatePropsFuelCards,
 } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form/@types/FuelCardsForm';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DivNone } from 'global-styled/global-styled';
@@ -156,20 +156,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 boundKeys="fuel_type"
                 disabled={!isPermitted}
               />
-              {STRUCTURE_FIELD_VIEW ? (
-                <FieldStructureDutyMission
-                  value={state.structure_id}
-                  name={state.structure_name}
-                  error={errors.structure_id}
-                  isPermitted={isPermitted}
-                  onChange={props.handleChange}
-                  page={page}
-                  path={path}
-                  disabled={!isPermitted}
-                />
-              ) : (
-                <DivNone />
-              )}
+              {
+                STRUCTURE_FIELD_VIEW && (
+                  <FieldStructureDutyMission
+                    value={state.structure_id}
+                    name={state.structure_name}
+                    error={errors.structure_id}
+                    isPermitted={isPermitted}
+                    onChange={props.handleChange}
+                    page={page}
+                    path={path}
+                    disabled={!isPermitted}
+                  />
+                )
+              }
               <ExtField
                 type="select"
                 label="Организация"
@@ -218,7 +218,9 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     createAction: autobaseActions.autobaseCreateFuelCard,
     updateAction: autobaseActions.fuelCardsUpdate,
     mergeElement: (props) => {
-      const { companyOptions, userCompanyId, userStructureId } = props;
+      const { companyOptions, userData } = props;
+      const userCompanyId = userData.company_id;
+      const userStructureId = userData.structure_id;
 
       const IS_CREATING = !get(props, 'element.id', null);
       const companiesFieldIsDisable = companyOptions.length <= 1 ? true : false;

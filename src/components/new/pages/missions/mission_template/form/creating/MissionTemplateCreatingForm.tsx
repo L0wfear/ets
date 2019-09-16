@@ -23,7 +23,7 @@ import {
   PropsMissionTemplateWithForm,
   MissionTemplateCreating,
 } from './@types/MissionTemplateCreatingForm';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldNormIdMissionTemplateCreating from './inside_fields/norm_id/FieldNormIdMissionTemplateCreating';
 import FieldDatesMissionTemplateCreating from './inside_fields/dates/FieldDatesMissionTemplateCreating';

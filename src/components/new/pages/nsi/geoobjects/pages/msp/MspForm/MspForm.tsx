@@ -10,7 +10,6 @@ import { mspFormSchema } from 'components/new/pages/nsi/geoobjects/pages/msp/Msp
 import { getDefaultMspFormElement } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsMspForm,
   PropsMspForm,
   PropsMspFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/msp/MspForm/@types/MspForm.h';
@@ -19,7 +18,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { Msp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/@types';
 
 import { FlexContainer, Flex } from 'global-styled/global-styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import MapGeoobjectWrap from 'components/new/pages/nsi/geoobjects/ui/form/form-components/map-geoobject/MapGeoobjectWrap';
 import { actionsMsp } from 'redux-main/reducers/modules/geoobject/actions_by_type/msp/actions';
@@ -97,22 +96,22 @@ const MspForm: React.FC<PropsMspForm> = React.memo(
           </FlexContainer>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted && false ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            (isPermitted && false) && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+            )
+          }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   },
 );
 
-export default compose<PropsMspForm, OwnPropsMspForm>(
+export default compose<PropsMspForm, PropsMspFormWithForm>(
   withForm<PropsMspFormWithForm, Msp>({
     uniqField: 'id',
     createAction: actionsMsp.post,

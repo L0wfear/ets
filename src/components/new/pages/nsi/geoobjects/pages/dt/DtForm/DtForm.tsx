@@ -1,21 +1,19 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import dtPermissions from 'components/new/pages/nsi/geoobjects/pages/dt/_config-data/permissions';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { dtFormSchema } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/schema';
 
 import { getDefaultDtFormElement } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsDtForm,
   PropsDtForm,
   PropsDtFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/dt/DtForm/@types/DtForm.h';
 
-import { DivNone } from 'global-styled/global-styled';
 import { Dt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/@types';
 import FieldCompanyStructureId from '../../odh/OdhForm/fields/company_structure_id/FieldCompanyStructureId';
 import { actionsDt } from 'redux-main/reducers/modules/geoobject/actions_by_type/dt/actions';
@@ -86,12 +84,8 @@ const DtForm: React.FC<PropsDtForm> = React.memo(
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
         {
-          isPermitted // либо обновление, либо создание
-          ? (
+          isPermitted && (
             <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
           )
         }
         </EtsBootstrap.ModalFooter>
@@ -100,7 +94,7 @@ const DtForm: React.FC<PropsDtForm> = React.memo(
   },
 );
 
-export default compose<PropsDtForm, OwnPropsDtForm>(
+export default compose<PropsDtForm, PropsDtFormWithForm>(
   withForm<PropsDtFormWithForm, Dt>({
     uniqField: 'yard_id',
     createAction: actionsDt.post,

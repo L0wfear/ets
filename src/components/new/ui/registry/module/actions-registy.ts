@@ -67,6 +67,7 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
   const mergeConfig: any = {
     isLoading: !config.noInitialLoad,
     Service: config.Service,
+    path: config.path || null,
     filter: mergeFilter(config.filter),
     header: mergeHeader(config.header),
     trash: config.trash,
@@ -208,6 +209,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
   );
 
   const registryData = get(getState(), `registry.${registryKey}`, null);
+  const path = get(registryData, 'path', null);
   const getRegistryData = get(registryData, 'Service.getRegistryData', null);
   const userServerFilters = get(getRegistryData, 'userServerFilters', false);
   const list: any = get(registryData, 'list', null);
@@ -255,7 +257,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
           `${configStand.backend}/${getRegistryData.entity}`,
           payload,
         ),
-        { page: registryKey, noTimeout: isBoolean(getRegistryData.noTimeout) ? getRegistryData.noTimeout : true },
+        { page: registryKey, noTimeout: isBoolean(getRegistryData.noTimeout) ? getRegistryData.noTimeout : true, path },
       );
     } catch (error) {
       console.error(error); //tslint:disable-line
@@ -676,9 +678,10 @@ export const registyLoadPrintForm = (registryKey, useFiltredData?: boolean): Ets
       ),
       format: 'xls',
     };
+    const registryData = get(getState(), `registry.${registryKey}`, null);
+    const path = get(registryData, 'path', null);
 
     if (useFiltredData) {
-      const registryData = get(getState(), `registry.${registryKey}`, null);
       const list: any = get(registryData, 'list', null);
       const processedArray: any = get(list, 'processed.processedArray', {}) || {};
 
@@ -693,19 +696,20 @@ export const registyLoadPrintForm = (registryKey, useFiltredData?: boolean): Ets
           `${configStand.backend}/${getBlobData.entity}?${paylaodAsString}`,
           { rows: processedArray },
         ),
-        { page: registryKey },
+        { page: registryKey, path },
       );
       processResponse(result);
       blob = get(result, 'blob', null);
       fileName = get(result, 'fileName', '');
     } else {
+
       const result = await etsLoadingCounter(
         dispatch,
         getBlob(
           `${configStand.backend}/${getBlobData.entity}`,
           payload,
         ),
-        { page: registryKey },
+        { page: registryKey, path },
       );
       processResponse(result);
       blob = get(result, 'blob', null);
@@ -1134,47 +1138,6 @@ export const actionUnselectSelectedRowToShow: any = (registryKey: string, allRes
   }
 };
 
-export const registryLoadOneData: any = (registryKey, id) => async (dispatch, getState) => {
-  const registryData = get(getState(), `registry.${registryKey}`, null);
-  const getOneData = get(registryData, 'Service.getOneData', null);
-
-  if (getOneData) {
-    const result = await etsLoadingCounter(
-      dispatch,
-      getJSON(
-        `${configStand.backend}/${getOneData.entity}`,
-        { id },
-      ),
-      { page: registryKey, noTimeout: true },
-    );
-
-    let response = get(
-      result,
-      get(getOneData, 'typeAns', 'result.rows.0'),
-      null,
-    );
-
-    switch (getOneData.format) {
-      case 'dutyMissionTemplate': {
-        response = getFrontDutyMission(response);
-        break;
-      }
-      case 'employee': {
-        response = getFrontEmployee(response);
-        break;
-      }
-    }
-
-    dispatch(
-      registrySetSelectedRowToShowInForm(registryKey, response),
-    );
-
-    return response;
-  }
-
-  return null;
-};
-
 export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => async (dispatch, getState) => {
   let itemToRemove = rows;
   const registryData = get(getState(), `registry.${registryKey}`, null);
@@ -1185,6 +1148,7 @@ export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => as
     'Service.removeOneData',
     get(registryData, 'Service.getRegistryData', null),
   );
+  const pathToLoadingMeta = get(registryData, 'path', null);
 
   if (!itemToRemove) {
     const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
@@ -1223,7 +1187,7 @@ export const registryRemoveSelectedRows: any = (registryKey, rows?: any[]) => as
               payload,
               'json',
             ),
-            { page: registryKey },
+            { page: registryKey, path: pathToLoadingMeta },
           );
           processResponse(response);
         } catch (error) {

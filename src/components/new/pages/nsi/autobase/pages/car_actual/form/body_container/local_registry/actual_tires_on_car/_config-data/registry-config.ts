@@ -20,7 +20,11 @@ export const getToConfig = (car_id): TypeConfigData<Tire> => {
     header: {
       title: 'Установленные шины на текущую дату',
       buttons: [
-        buttonsTypes.car_actual_add_tire,
+        {
+          id: 'add_tire',
+          type: buttonsTypes.create,
+          title: 'Добавить',
+        },
         buttonsTypes.read,
       ],
     },

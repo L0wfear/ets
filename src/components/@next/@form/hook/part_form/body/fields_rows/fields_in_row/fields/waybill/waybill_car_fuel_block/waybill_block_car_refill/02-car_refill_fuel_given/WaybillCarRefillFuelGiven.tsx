@@ -5,7 +5,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { FooterEnd } from 'global-styled/global-styled';
 
 type WaybillCarRefillFuelGivenProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const WaybillCarRefillFuelGiven: React.FC<WaybillCarRefillFuelGivenProps> = React.memo(

@@ -1,7 +1,6 @@
 import * as PropTypes from 'prop-types';
 import flummoxConnectToStores from 'flummox/connect';
 import exportable from './exportable';
-import bindable from './bindable';
 
 // TODO перенести HOC в отдельную папку, т.к. они могут использоваться не только как декораторы
 
@@ -41,4 +40,4 @@ function connectToStores(...args) {
   };
 }
 
-export { exportable, bindable, connectToStores, FluxContext, staticProps };
+export { exportable, connectToStores, FluxContext, staticProps };

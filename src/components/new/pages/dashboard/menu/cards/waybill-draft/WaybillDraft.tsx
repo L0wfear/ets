@@ -11,8 +11,9 @@ import {
 import WaybillDraftInfo from 'components/new/pages/dashboard/menu/cards/waybill-draft/info/WaybillDraftInfo';
 
 import { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-type Props = {};
+type Props = WithRequirePermissionAddProps;
 const WaybillDraft: React.FC<Props> = React.memo(
   () => {
     return (

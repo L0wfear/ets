@@ -102,6 +102,11 @@ export const config: TypeConfigData<Norm> = {
           mergeWithArray: true,
         },
       },
+      {
+        valueKey: 'consumable_materials_names',
+        title: 'Расходные материалы',
+        type: 'multiselect',
+      },
     ],
   },
   list: {
@@ -177,6 +182,11 @@ export const config: TypeConfigData<Norm> = {
           key: 'sensor_types_text',
           title: 'Типы навесного оборудования',
           width: 200,
+        },
+        {
+          key: 'consumable_materials_names',
+          title: 'Расходные материалы',
+          width: 400,
         },
       ],
     },

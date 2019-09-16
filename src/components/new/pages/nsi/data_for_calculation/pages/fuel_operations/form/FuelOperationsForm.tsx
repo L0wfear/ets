@@ -1,17 +1,12 @@
 import * as React from 'react';
+import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
-  OwnFuelOperationsProps,
   PropsFuelOperations,
-  StatePropsFuelOperations,
-  DispatchPropsFuelOperations,
   PropsFuelOperationsWithForm,
 } from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/@types/FuelOperationsForm';
 import { DivNone } from 'global-styled/global-styled';
@@ -19,9 +14,8 @@ import fuelOperationsPermissions from '../_config-data/permissions';
 import { fuelOperationsFormSchema } from './schema';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 import { getDefaultFuelOperationElement } from './utils';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useMeasureUnitOperationOptions from './use/useMeasureUnitOperationOptions';
-import { actionLoadMeasureUnit } from 'redux-main/reducers/modules/some_uniq/measure_unit/actions';
 import { actionCreateFuelOperation, actionUpdateFuelOperation } from 'redux-main/reducers/modules/fuel_operations/actions_fuel_operations';
 
 const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
@@ -39,8 +33,7 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
   const {
     measureUnitOperationOptions,
   } = useMeasureUnitOperationOptions(
-    props.actionLoadMeasureUnit,
-    page, path,
+    props,
   );
 
   return (
@@ -105,17 +98,7 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
   );
 };
 
-export default compose<PropsFuelOperations, OwnFuelOperationsProps>(
-  connect<StatePropsFuelOperations, DispatchPropsFuelOperations, OwnFuelOperationsProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      actionLoadMeasureUnit: (...arg) => (
-        dispatch(
-          actionLoadMeasureUnit(...arg),
-        )
-      ),
-    }),
-  ),
+export default compose<PropsFuelOperations, PropsFuelOperationsWithForm>(
   withForm<PropsFuelOperationsWithForm, FuelOperationActive>({
     uniqField: 'id',
     createAction: actionCreateFuelOperation,

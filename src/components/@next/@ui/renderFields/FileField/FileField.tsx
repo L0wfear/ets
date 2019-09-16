@@ -4,7 +4,7 @@ import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import cx from 'classnames';
 import { FileInputUi } from 'components/@next/@ui/renderFields/FileField/styled';
-import { ExtFieldFile } from 'components/old/ui/new/field/ExtField';
+import { ExtFieldFile } from 'components/@next/@ui/renderFields/@types';
 
 const FileField: React.FC<ExtFieldFile> = React.memo(
   (props) => {

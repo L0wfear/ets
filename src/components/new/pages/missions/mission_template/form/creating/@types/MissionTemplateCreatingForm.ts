@@ -18,17 +18,6 @@ export type MissionTemplateCreating = (
   >
 );
 
-export type PropsMissionTemplateCreatingFormLazy = {
-  showForm: boolean;
-  element: null;
-  onFormHide: OnFormHideType;
-  missionTemplates: Record<string, MissionTemplate>;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
-
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
 
 export type StatePropsMissionTemplate = {

@@ -8,8 +8,8 @@ const registryDefaultObj: OneRegistryData = {
     getRegistryData: {
       payload: {},
     },
-    getOneData: null,
   },
+  path: null,
   filter: {
     fields: [],
     isOpen: false,

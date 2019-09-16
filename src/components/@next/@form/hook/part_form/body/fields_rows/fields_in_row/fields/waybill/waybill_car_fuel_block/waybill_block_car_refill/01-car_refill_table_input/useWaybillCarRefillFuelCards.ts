@@ -9,7 +9,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { makeFuelCardIdOptions } from './waybill_car_refill_fuel_cards';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export const useWaybillLoadCarRefillFuelCards = (formDataKey: string) => {
+export const useWaybillLoadCarRefillFuelCards = (formDataKey: any) => {
   const car_refill = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_refill']>(formDataKey, 'car_refill');
   const fuel_type = useForm.useFormDataFormStatePickValue<Waybill, Waybill['fuel_type']>(formDataKey, 'fuel_type');
 
@@ -17,7 +17,7 @@ export const useWaybillLoadCarRefillFuelCards = (formDataKey: string) => {
     (state) => getSessionState(state).userData,
   );
 
-  const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(formDataKey);
+  const store = useForm.useFormDataStore<Waybill>(formDataKey);
 
   useForm.useFormDataLoadOptions<WaybillFormStoreType, 'fuelCardsList'>(
     formDataKey,

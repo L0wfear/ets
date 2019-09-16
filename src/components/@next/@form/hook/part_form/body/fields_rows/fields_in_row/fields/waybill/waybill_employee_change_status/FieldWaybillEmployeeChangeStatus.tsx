@@ -5,7 +5,7 @@ import FieldWaybillClosedByEmployeeName from './closed_by_employee_name/FieldWay
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillEmployeeChangeStatusProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillEmployeeChangeStatus: React.FC<FieldWaybillEmployeeChangeStatusProps> = React.memo(

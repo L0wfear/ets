@@ -5,19 +5,7 @@ import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { HandleThunkActionCreator } from 'react-redux';
 import { actionGetAndSetInStoreMaintenanceWork, actionResetMaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/actions';
 import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
-
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
-
-export type PropsMaintenanceRateFormLazy = {
-  element: Partial<MaintenanceRate>;
-  onFormHide: OnFormHideType;
-  type: string | null;
-
-  registryKey?: string;
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMaintenanceRate = {
   technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];
@@ -46,13 +34,7 @@ export type DispatchPropsMaintenanceRate = {
   >;
 };
 
-export type OwnMaintenanceRateProps = {
-  element: Partial<MaintenanceRate>;
-  handleHide: OnFormHideType;
-  page: string;
-  path?: string;
-  type?: any;
-};
+export type OwnMaintenanceRateProps = WithFormRegistrySearchAddProps<MaintenanceRate>;
 
 export type PropsMaintenanceRateWithForm = StatePropsMaintenanceRate &
   DispatchPropsMaintenanceRate &

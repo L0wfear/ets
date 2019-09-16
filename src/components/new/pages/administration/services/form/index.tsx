@@ -1,43 +1,14 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
+import { withFormRegistrySearch, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
-const ServicesForm = React.lazy(() =>
+const ServicesFormReactLazy = React.lazy(() =>
   import(/* webpackChunkName: "service_history" */ 'components/new/pages/administration/services/form/ServicesForm'),
 );
 
-type ServicesFormLazyProps = {
-  registryKey: string;
-  element: Service;
-  onFormHide: (isSubmitted: boolean | any, result?: any) => any;
-};
-
-const ServicesFormLazy: React.FC<ServicesFormLazyProps> = React.memo(
-  (props) => {
-    return (
-      props.element && (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <ServicesForm
-              element={props.element}
-              handleHide={props.onFormHide}
-
-              page={props.registryKey}
-              path={`${props.registryKey}_services`}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-    );
-  },
-);
-
-export default withFormRegistrySearch(
-  {
-    cantCreate: true,
-    hideWithClose: ['date_from', 'date_to', 'service_history_registry_page'],
-  },
-)(ServicesFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Service>, Service>({
+  add_path: 'services',
+  cant_create: true,
+  search_which_need_to_remove: ['date_from', 'date_to', 'service_history_registry_page', 'service_history_registry_filters'],
+})(ServicesFormReactLazy);

@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { get } from 'lodash';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -13,8 +16,6 @@ import { DivNone } from 'global-styled/global-styled';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import {
@@ -29,12 +30,11 @@ import {
 import { getAutobaseState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { hasMotohours } from 'utils/functions';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { getDefaultTechMaintenanceElement } from './utils';
 import { techMaintFormSchema } from './shema';
 import techMaintenancePermissions from '../_config-data/permissions';
-import { get } from 'lodash';
 import { autobaseCreateTechMaintenance, autobaseUpdateTechMaintenance } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint/actions';
 import { repairCompanyGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/repair_company/actions';
 import { techMaintOrderGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tech_maint_order/actions';

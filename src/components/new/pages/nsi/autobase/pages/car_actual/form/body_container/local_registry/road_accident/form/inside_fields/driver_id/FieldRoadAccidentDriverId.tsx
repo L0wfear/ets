@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { makeDriverFioLicenceLabel } from 'redux-main/reducers/modules/employee/driver/promise';
 import { PropsRoadAccident } from '../../@types/RoadAccident';

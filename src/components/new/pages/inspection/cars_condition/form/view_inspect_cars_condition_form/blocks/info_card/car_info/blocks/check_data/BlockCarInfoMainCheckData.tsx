@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+// import { stateExploitationOptions } from './options';
 import { get } from 'lodash';
 import { filedToCheckDefectDataDocs, filedToCheckDefectDataOtherSecond } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import BlockCarsConditionCarSelectPhotoDefect from './photo_defect/BlockCarsConditionCarSelectPhotoDefect';

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';

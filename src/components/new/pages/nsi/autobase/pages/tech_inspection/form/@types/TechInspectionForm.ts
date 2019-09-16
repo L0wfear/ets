@@ -7,32 +7,12 @@ import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/for
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import { CarWrap } from '../../../car_actual/form/@types/CarForm';
-
-export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
-
-export type PropsTechInspectionFormLazy = {
-  showForm: boolean;
-  element: TechInspection | null;
-  selectedCarData?: CarWrap;
-
-  onFormHide: OnFormHideType;
-
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsTechInspection = {
   userCompanyId: InitialStateSession['userData']['company_id'];
 };
-export type OwnTechInspectionProps = {
-  element: TechInspection | null;
-  handleHide: OnFormHideType;
-  selectedCarData?: CarWrap;
-
-  page: string;
-  path?: string;
-};
+export type OwnTechInspectionProps = WithFormRegistrySearchAddProps<TechInspection> & { selectedCarData?: CarWrap };
 
 export type PropsTechInspectionWithForm = (
   StatePropsTechInspection

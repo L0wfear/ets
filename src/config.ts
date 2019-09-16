@@ -12,47 +12,57 @@ const WS_PROTO = (
 );
 const STAND = process.env.STAND;
 
+const hostTypes = {
+  develop: {
+    dev: 'dev2-ets.gost-group.com/',
+    gost_stage: 'ets-stage.gost-group.com/',
+    ets_test: 'ets-test.mos.ru/',
+    ets_hotfix: 'ets-hotfix.mos.ru/',
+    prod: 'ets.mos.ru/',
+  },
+  origin: HOST,
+};
 const urls = {
   develop: {
-    dev: 'http://dev2-ets.gost-group.com/',
-    gost_stage: 'https://ets-stage.gost-group.com/',
-    ets_test: 'https://ets-test.mos.ru/',
-    ets_hotfix: 'https://ets-hotfix.mos.ru/',
-    prod: 'http://ets.mos.ru/',
+    dev: `http://${hostTypes.develop.dev}`,
+    gost_stage: `https://${hostTypes.develop.gost_stage}`,
+    ets_test: `https://${hostTypes.develop.ets_test}`,
+    ets_hotfix: `https://${hostTypes.develop.ets_hotfix}`,
+    prod: `https://${hostTypes.develop.prod}`,
   },
   origin: `${PROTO}//${HOST}${PATHNAME}`,
 };
 
 const ADMIN_URL = {
   develop: {
-    dev: 'http://dev2-ets.gost-group.com/admin',
-    gost_stage: 'https://ets-stage.gost-group.com/admin/',
-    ets_test: 'https://ets-test.mos.ru/admin/',
-    ets_hotfix: 'https://ets-hotfix.mos.ru/admin/',
-    prod: 'http://ets.mos.ru/admin/',
+    dev: `${urls.develop.dev}admin`,
+    gost_stage: `${urls.develop.gost_stage}admin`,
+    ets_test: `${urls.develop.ets_test}admin`,
+    ets_hotfix: `${urls.develop.ets_hotfix}admin`,
+    prod: `${urls.develop.prod}admin`,
   },
   origin: `${PROTO}//${HOST}${PATHNAME}admin/`,
 };
 
 const DOC_URL = {
   develop: {
-    dev: 'http://dev2-ets.gost-group.com/docs/',
-    gost_stage: 'https://ets-stage.gost-group.com/docs/',
-    ets_test: 'https://ets-test.mos.ru/docs/',
-    ets_hotfix: 'https://ets-hotfix.mos.ru/docs/',
-    prod: 'http://ets.mos.ru/docs/',
+    dev: `${urls.develop.dev}docs/`,
+    gost_stage: `${urls.develop.gost_stage}docs/`,
+    ets_test: `${urls.develop.ets_test}docs/`,
+    ets_hotfix: `${urls.develop.ets_hotfix}docs/`,
+    prod: `${urls.develop.prod}docs/`,
   },
   origin: `${PROTO}//${HOST}${PATHNAME}docs/`,
 };
 
 const config = {
   develop: {
-    images: 'https://ets.mos.ru/ets/data/images/',
+    images: `${urls.develop.prod}data/images`,
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    images: `https://ets.mos.ru/ets/data/images/`,
+    images: `${urls.develop.prod}data/images`,
     docs: DOC_URL.origin,
     admin: ADMIN_URL.origin,
   },
@@ -71,11 +81,11 @@ const notification_config = {
 
 export const configApi = {
   develop: {
-    dev: 'http://dev2-ets.gost-group.com/services',
-    gost_stage: 'https://ets-stage.gost-group.com/services',
-    ets_test: 'https://ets-test.mos.ru/services',
-    ets_hotfix: 'https://ets-hotfix.mos.ru/services',
-    prod: 'https://ets.mos.ru/services',
+    dev: `${urls.develop.dev}services`,
+    gost_stage: `${urls.develop.gost_stage}services`,
+    ets_test: `${urls.develop.ets_test}services`,
+    ets_hotfix: `${urls.develop.ets_hotfix}services`,
+    prod: `${urls.develop.prod}services`,
   },
   origin: `${PROTO}//${HOST}${PATHNAME}services`,
 };

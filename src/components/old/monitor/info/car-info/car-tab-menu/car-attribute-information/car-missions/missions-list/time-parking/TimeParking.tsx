@@ -40,7 +40,7 @@ const mapStateToProps = (state) => ({
 export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'parkings'],
-    type: 'small-loader-field',
+    type: 'field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
   }),
   connect(

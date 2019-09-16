@@ -5,7 +5,7 @@ import WaybillFieldMotohoursEnd from 'components/@next/@form/hook/part_form/body
 import WaybillFieldMotohoursDiff from 'components/@next/@form/hook/part_form/body/fields_rows/fields_in_row/fields/waybill/waybill_car_fuel_block/waybill_block_indicator/motohours/02-motohours_diff/WaybillFieldMotohoursDiff';
 
 type WaybillBlockMotohoursProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

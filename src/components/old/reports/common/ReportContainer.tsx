@@ -62,6 +62,7 @@ class ReportContainer extends React.Component<
       selectedRow: null,
       filterValues: get(props, 'tableProps.filterValuesRaw', {}),
       uniqName: props.uniqName || '_uniq_field',
+      localState: {},
     };
   }
 
@@ -455,9 +456,37 @@ class ReportContainer extends React.Component<
     };
 
     if (this.props.notUseServerSummerTable) {
+      const reportKey = get(this.props, 'tableProps.reportKey', null);
+      let report = [...this.props.list];
+      if (reportKey === 'car_usage_report') {
+        const schema = Object.fromEntries(
+          this.makeTableSchema(
+            this.props.schemaMakers,
+            this.props.additionalSchemaMakers || [],
+            this.props.tableMetaInfo,
+            'mainList',
+          ).cols.map((rowData) => [rowData.name, rowData]),
+        );
+        const show_gov_numbers = get(this.state, 'localState.show_gov_numbers');
+
+        report = report.map((d: any) => {
+          Object.entries(schema).forEach(([key, metaRender]: any) => {
+            if (key in d && metaRender.needStr) {
+              const count = get(d[key], 'count');
+              const data = get(d[key], 'gov_numbers') || [];
+
+              d[`${key}_str`] = `${count}`;
+              if (show_gov_numbers) {
+                d[`${key}_str`] = `${d[`${key}_str`]}:\n${data.sort().join('\n')}`;
+              }
+            }
+          });
+          return d;
+        });
+      }
       payload = {
         rows: {
-          report: [...this.props.list],
+          report,
           summary: [...this.props.summaryList],
         },
       };
@@ -523,6 +552,16 @@ class ReportContainer extends React.Component<
     return { cols };
   }
 
+  setLocalState = (obj: Partial<IStateReportContainer['localState']>) => {
+    this.setState((oldState) => ({
+      ...oldState,
+      localState: {
+        ...oldState.localState,
+        ...obj,
+      },
+    }));
+  }
+
   render() {
     const {
       enumerated = false,
@@ -530,6 +569,7 @@ class ReportContainer extends React.Component<
       enableSort = true,
       initialSort = false,
       schemaMakers,
+      summarySchemaMakers,
       tableMetaInfo,
       summaryTableMetaInfo,
       additionalSchemaMakers = [],
@@ -546,7 +586,7 @@ class ReportContainer extends React.Component<
       'mainList',
     );
     const summaryTableMeta = this.makeTableSchema(
-      {},
+      summarySchemaMakers,
       [],
       { fields: summaryTableMetaInfo },
       'summaryList',
@@ -568,7 +608,7 @@ class ReportContainer extends React.Component<
       'summary' in this.props.meta.levels && this.props.summaryList.length > 0;
 
     const summaryTable =
-      (this.props.notUseServerSummerTable ? (
+      (this.props.notUseServerSummerTable && isSummaryEnable ? (
         <DataTableNew
           title={this.props.summaryTitle || 'Итого'}
           tableMeta={summaryTableMeta}
@@ -621,6 +661,8 @@ class ReportContainer extends React.Component<
           queryState={queryState}
           onClick={this.handleReportSubmit}
           readOnly={false}
+          localState={this.state.localState}
+          setLocalState={this.setLocalState}
         />
         <Table
           title={title}
@@ -636,6 +678,7 @@ class ReportContainer extends React.Component<
           filterValues={this.state.filterValues}
           onRowDoubleClick={this.props.onRowDoubleClick}
           useServerFilter
+          localState={this.state.localState}
           {...this.props.tableProps}>
           <EtsBootstrap.Button
             bsSize="small"

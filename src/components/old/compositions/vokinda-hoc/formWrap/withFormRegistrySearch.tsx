@@ -1,210 +1,246 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
-import { get } from 'lodash';
-import { compose } from 'recompose';
-import { isNullOrUndefined, isFunction } from 'util';
+import { isFunction, isBoolean } from 'util';
 
+import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
+import PreloaderMainPage from 'components/old/ui/PreloaderMainPage';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getListData, getRootRegistry, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
+import { getRegistryState } from 'redux-main/reducers/selectors';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { ReduxState } from 'redux-main/@types/state';
-import { getListData, getServiceData, getHeaderData } from 'components/new/ui/registry/module/selectors-registry';
-import { registryResetSelectedRowToShowInForm, registryLoadOneData } from 'components/new/ui/registry/module/actions-registy';
-import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { DivNone } from 'global-styled/global-styled';
-import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import usePrevious from 'components/new/utils/hooks/usePrevious';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-type WithFormRegistrySearchConfig = {
-  cantCreate?: boolean;                   // может ли форма создать запись
-  noCheckDataInRegistryArray?: boolean;   // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
-  uniqKeyName?: string;                   // имя уникального ключа для формы (см выше)
-  hideWithClose?: string[];
+type TypeConfig = {
+  cant_create?: boolean;                                  // может ли форма создать запись
+  no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
+  add_path: string;                                       // path для формы
+  replace_uniqKey_on?: string                             // имя уникального ключа для формы
+  search_which_need_to_remove?: Array<string>;            // Что удалить из search при закрытии формы
 };
 
-type StateProps = {
-  getOneData: OneRegistryData['Service']['getOneData'];
-  array: OneRegistryData['list']['data']['array'];
-  buttons: OneRegistryData['header']['buttons'];
-  uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  uniqKeyForParams: OneRegistryData['list']['data']['uniqKeyForParams'];
-};
-
-type OwnProps = {
+export type WithFormRegistrySearchAddPropsWithoutWithSerach<F> = {
   registryKey: string;
-  handleHide?: (isSubmitted?: any, response?: any) => any;
+  page: string;                                           // page для лоудинга
+  path: string;                                           // path для лоудинга
+  meta?: LoadingMeta;                                      // для будущего лоудинга
+  handleHide: (isSubmitted: boolean, result?: F) => any;
+  element: F;
+  type?: string | null;
 };
 
-type Props = (
-  DispatchProp
-  & OwnProps
-  & StateProps
+export type WithFormRegistrySearchAddProps<F> = (
+  WithFormRegistrySearchAddPropsWithoutWithSerach<F>
   & WithSearchProps
 );
 
-let lasPermissions = {};
-let lastPermissionsArray = [];
+export type WithFormRegistrySearchProps<F = any> = {
+  uniqKeyForParams?: string;
+  permissions?: OneRegistryData['list']['permissions'];
+  registryKey: string;
+  handleHide?: WithFormRegistrySearchAddProps<F>['handleHide'];
+  path?: string;
+};
 
-const getPermissionsCreateReadUpdate = (permission) => {
-  if (lasPermissions !== permission) {
-    lasPermissions = permission;
+const findRecondInDeepArray = <F extends any>(array: F[], uniqKey: keyof F, uniqKeyValue: F[keyof F]) => {
+  const children = [];
 
-    lastPermissionsArray = [permission.create, permission.read, permission.update];
+  const selectedItem = array.find((rowData) => {
+    if (rowData[uniqKey] === uniqKeyValue) {
+      return true;
+    }
+    if ('children' in rowData) {
+      children.push(...rowData.children);
+    }
+  });
+
+  if (selectedItem) {
+    return selectedItem;
+  }
+  if (children[0]) {
+    return findRecondInDeepArray(children, uniqKey, uniqKeyValue);
   }
 
-  return lastPermissionsArray;
+  return null;
 };
 
-const reduceArrayToObj = (newObj, rowData, uniqKey) => {
-  return {
-    ...newObj,
-    [rowData[uniqKey]]: rowData,
-    ...get(rowData, 'children', []).reduce(
-      (newObjChild, rowDataChild) => reduceArrayToObj(newObjChild, rowDataChild, uniqKey),
-      {},
-    ),
-  };
-};
+export const withFormRegistrySearch = <PropsOwn extends WithFormRegistrySearchProps<F>, F extends any>(config: TypeConfig) => (
+  (Component: React.ComponentType<PropsOwn & WithFormRegistrySearchAddProps<F>>) => {
+    const ComponentWrap: React.FC<PropsOwn & WithSearchProps>  = React.memo(
+      (props) => {
+        const [element, setElement] = React.useState<F>(null);
+        const path = `${props.path ? `${props.path}-` : ''}${config.add_path}-form`;
 
-const findRecondInDeepArray = (array: any[], uniqKey, uniqKeyValue) => {
-  return array.reduce(
-    (newObj, rowData) => reduceArrayToObj(newObj, rowData, uniqKey),
-    {},
-  )[uniqKeyValue];
-};
+        const dispatch = etsUseDispatch();
 
-// вызов тригерится на ключ в url
-export const withFormRegistrySearch = <P extends any>(config: WithFormRegistrySearchConfig) => (Component) => (
-  compose<any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } } & P>(
-    withSearch,
-    connect<any, any, { registryKey: string, uniqKeyForParams?: string, permissions?: { [k: string]: string } }, ReduxState>(
-      (state, { registryKey, uniqKeyForParams, permissions }) => ({
-        getOneData: getServiceData(state, registryKey).getOneData,
-        array: getListData(state.registry, registryKey).data.array,
-        data: getListData(state.registry, registryKey).data,                        // Используется в children
-        buttons: getHeaderData(state.registry, registryKey).buttons,
-        uniqKey: getListData(state.registry, registryKey).data.uniqKey,
-        uniqKeyForParams: uniqKeyForParams || getListData(state.registry, registryKey).data.uniqKeyForParams,
-        permissions: getPermissionsCreateReadUpdate(permissions || getListData(state.registry, registryKey).permissions), //  прокидывается в следующий компонент
-      }),
-    ),
-    withRequirePermission(),
-  )(
-    ({ array, uniqKey, uniqKeyForParams, ...props }: Props) => {
-      const [element, setElement] = React.useState(null);
-      const uniqKeyValue = getNumberValueFromSerch(props.match.params[uniqKeyForParams]);
-      const type = props.match.params.type;
-      const dispatch = etsUseDispatch();
+        const array: any[] = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.array);
+        const uniqKey: string = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.uniqKey);
+        const uniqKeyForParams = etsUseSelector((state) => props.uniqKeyForParams || getListData(getRegistryState(state), props.registryKey).data.uniqKeyForParams);
+        const permissions = etsUseSelector((state) => props.permissions || getListData(getRegistryState(state), props.registryKey).permissions);
+        const hasButtonToCreate = etsUseSelector((state) => {
+          const buttons = getHeaderData(getRegistryState(state), props.registryKey).buttons;
+          return (
+            buttons.some((buttonData) => (
+              buttonsTypes.create === buttonData.type
+              || buttonsTypes.mission_create === buttonData.type
+            ))
+          );
+        });
+        const param_uniq_value = props.match.params[uniqKeyForParams];
+        const type = props.match.params.type;
+        const param_uniq_value_prev = usePrevious(param_uniq_value);
 
-      React.useEffect(
-        () => {
-          if (props.match.params[uniqKeyForParams] === buttonsTypes.create && props.buttons.length) {
-            const hasButton = (
-              props.buttons.some((elem) => buttonsTypes.create === elem.type)
-              || props.buttons.some((elem) => buttonsTypes.mission_create === elem.type)
-              || props.buttons.some((elem) => buttonsTypes.car_actual_add_battery === elem.type)
-              || props.buttons.some((elem) => buttonsTypes.car_actual_add_tire === elem.type)
+        const isPermittedToCreate = etsUseIsPermitted(permissions.create) && hasButtonToCreate;
+        const isPermittedToRead = etsUseIsPermitted(permissions.read);
+        const isPermittedToUpdate = etsUseIsPermitted(permissions.update);
+        const isPermittedToSee = (
+          isPermittedToRead
+          || isPermittedToUpdate
+        );
+
+        const isLoading = etsUseSelector(
+          (state) => (
+            !getRootRegistry(getRegistryState(state), props.registryKey, true)
+            || (
+              (                                                                               // проверяем есть ли реестр
+                (
+                  getRootRegistry(getRegistryState(state), props.registryKey).isLoading
+                  || !getListData(getRegistryState(state), props.registryKey).data.array[0]
+                )
+                && !config.no_find_in_arr                                                     // можно не дожидаться загрузки реестра, чтобы отобразить форму
+              )
+              && param_uniq_value !== buttonsTypes.create                                     // для создания не нужен весь реестр
+            )
+          ),
+        );
+        const isLoading_prev = usePrevious(isLoading);
+
+        const handleHide: WithFormRegistrySearchAddProps<F>['handleHide'] = React.useCallback(
+          (isSubmittedRaw, response) => {
+            const isSubmitted = isBoolean(isSubmittedRaw) ? isSubmittedRaw : false;
+            setElement(null);
+            props.setParamsAndSearch({
+              params: {
+                [uniqKeyForParams]: null,
+              },
+              search: Object.fromEntries(
+                (config.search_which_need_to_remove || []).map((name) => [name, null]),
+              ),
+            });
+
+            dispatch(
+              registryResetSelectedRowToShowInForm(props.registryKey, isSubmitted, response),
             );
 
-            if (hasButton && !config.cantCreate) {
-              setElement({});
-            } else {
-              global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
-              props.setParams(
-                { [uniqKeyForParams]: null },
-                'replace',
-              );
+            if (isFunction(props.handleHide)) {
+              props.handleHide(isSubmitted, response);
             }
-            return;
-          }
-
-          if (!isNullOrUndefined(uniqKeyValue)) {
-            if (config.noCheckDataInRegistryArray) {
-              setElement({
-                [config.uniqKeyName || uniqKeyForParams]: uniqKeyValue,
-              });
-              return;
-            }
-
-            if (array.length) {
-              const newElement = findRecondInDeepArray(array, uniqKey, uniqKeyValue);
-              if (newElement || config.noCheckDataInRegistryArray) {
-                setElement(newElement);
-                return;
-              }
-
-              if (props.getOneData) {
-                dispatch(
-                  registryLoadOneData(props.registryKey, uniqKeyValue),
-                ).then((responseElement) => {
-                  if (responseElement) {
-                    setElement(responseElement);
-                  } else {
-                    global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                    handleHide(false);
-                  }
-                });
-              } else {
-                global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
-                handleHide(false);
-              }
-            } else if (element) {
-              setElement(null);
-            }
-          }
-        },
-        [props.match.params[uniqKeyForParams], uniqKeyValue, array],
-      );
-      const handleHide = React.useCallback(
-        (isSubmitted: boolean, response?: any) => {
-          setElement(null);
-
-          props.setParams({
-            [uniqKeyForParams]: null,
-          });
-          props.setParamsAndSearch({
-            params: { [uniqKeyForParams]: null },
-            search: (
-              config.hideWithClose
-                ? (
-                  config.hideWithClose.reduce(
-                    (newObj, key) => {
-                      newObj[key] = null;
-
-                      return newObj;
-                    },
-                    {},
-                  )
-                )
-                : {}
-            ),
-          });
-
-          dispatch(
-            registryResetSelectedRowToShowInForm(props.registryKey, isSubmitted, response),
-          );
-
-          if (isFunction(props.handleHide)) {
-            props.handleHide(isSubmitted, response);
-          }
-        },
-        [uniqKeyForParams, props.setParamsAndSearch, props.match.params, props.searchState],
-      );
-
-      return element
-        ? (
-          <Component
-            {...props}
-            type={type}
-            element={element}
-            onFormHide={handleHide}
-          />
-        )
-        : (
-          <DivNone />
+          },
+          [props.match.params, props.setParams, uniqKeyForParams],
         );
-    },
-  )
-);
 
-export default withFormRegistrySearch;
+        // React.useEffect(
+        //   () => {
+        //     if (type && !buttonsTypes[type]) {
+        //       handleHide(false);
+        //     }
+        //   },
+        //   [handleHide],
+        // );
+
+        React.useEffect(
+          () => {
+            if (!isLoading) {
+              const triggerOnUpdate = (
+                param_uniq_value !== param_uniq_value_prev
+                || isLoading !== isLoading_prev
+              );
+
+              if (triggerOnUpdate) {
+                if (param_uniq_value_prev && !param_uniq_value) {
+                  handleHide(false);
+                  return;
+                }
+                if (param_uniq_value) {
+                  if (param_uniq_value === buttonsTypes.create) {
+                    if (isPermittedToCreate && !config.cant_create) {
+                      setElement({} as any);
+                    } else {
+                      global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
+                      handleHide(false);
+                    }
+                  } else {
+                    const param_uniq_value_number = Number(param_uniq_value);
+                    const elementPick = findRecondInDeepArray(array, uniqKey, param_uniq_value_number);
+
+                    if (elementPick || config.no_find_in_arr) {
+                      if (isPermittedToSee) {
+                        if (elementPick) {
+                          setElement(elementPick);
+                        } else {
+                          setElement({
+                            [config.replace_uniqKey_on || uniqKey]: param_uniq_value_number,
+                          } as any);
+                        }
+                      } else {
+                        global.NOTIFICATION_SYSTEM.notify('Действие запрещено', 'warning', 'tr');
+                        handleHide(false);
+                      }
+                    } else {
+                      global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+                      handleHide(false);
+                    }
+                  }
+                }
+              }
+            }
+          },
+          [
+            isPermittedToCreate,
+            isPermittedToSee,
+            isLoading,
+            isLoading_prev,
+            param_uniq_value,
+            param_uniq_value_prev,
+            array,
+            handleHide,
+          ],
+        );
+
+        const meta = React.useMemo(
+          () => ({
+            page: props.registryKey,
+            path,
+          }),
+          [props.registryKey, path],
+        );
+
+        return (
+          <ErrorBoundaryForm>
+            <React.Suspense fallback={<PreloaderMainPage />}>
+              {
+                element && (
+                  <Component
+                    {...props}
+                    page={props.registryKey}
+                    path={path}
+                    handleHide={handleHide}
+                    element={element}
+                    type={type}
+
+                    meta={meta}
+                  />
+                )
+              }
+          </React.Suspense>
+        </ErrorBoundaryForm>
+        );
+      },
+    );
+
+    return withSearch<PropsOwn>(ComponentWrap);
+  }
+);

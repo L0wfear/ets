@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillActivatedByEmployeeNameProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillActivatedByEmployeeName: React.FC<FieldWaybillActivatedByEmployeeNameProps> = React.memo(

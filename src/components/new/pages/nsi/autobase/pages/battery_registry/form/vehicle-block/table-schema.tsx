@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { uniqBy, get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import { IDataTableSchema } from 'components/old/ui/table/@types/schema.h';
 import {

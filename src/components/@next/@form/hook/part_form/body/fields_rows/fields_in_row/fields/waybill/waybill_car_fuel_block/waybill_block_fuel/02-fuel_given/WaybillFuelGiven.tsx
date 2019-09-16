@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 type WaybillFuelGivenProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

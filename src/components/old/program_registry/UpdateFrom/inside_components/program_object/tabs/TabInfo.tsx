@@ -9,7 +9,7 @@ import { OBJ_TAB_INDEX } from 'components/old/program_registry/UpdateFrom/inside
 import Table from 'components/old/program_registry/UpdateFrom/inside_components/program_object/utils/Table';
 import { ITableMetaInfo } from 'components/old/program_registry/UpdateFrom/inside_components/program_object/utils/Table.h';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 const nullFunc = () => null;

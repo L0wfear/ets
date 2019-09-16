@@ -38,13 +38,17 @@ const FileListItem: React.FC<any> = React.memo(
       <EtsBootstrap.Col md={12}>
         <FileInputWrapper>
           <SingleInputFileItem>
-            <ButtonRemoveFile
-              bsClass="close"
-              bsSize="xsmall"
-              onClick={onFileRemove}
-              disabled={props.disabled}
-              children="×"
-            />
+            {
+              !props.disabled && (
+                <ButtonRemoveFile
+                  bsClass="close"
+                  bsSize="xsmall"
+                  onClick={onFileRemove}
+                  disabled={props.disabled}
+                  children="×"
+                />
+              )
+            }
             <a href={props.url} title={props.name} target="_blanc">{props.name}</a>
           </SingleInputFileItem>
           {

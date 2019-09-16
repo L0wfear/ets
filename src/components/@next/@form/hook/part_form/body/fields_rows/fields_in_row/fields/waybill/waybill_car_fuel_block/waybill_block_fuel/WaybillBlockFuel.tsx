@@ -9,7 +9,7 @@ import WaybillFuelEnd from './03-fuel_end/WaybillFuelEnd';
 import WaybillFactFuelEnd from './04-fact_fuel_end/WaybillFactFuelEnd';
 
 type WaybillBlockFuelProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

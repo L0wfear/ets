@@ -3,7 +3,7 @@ import * as React from 'react';
 import fuelCardsPermissions from 'components/new/pages/nsi/autobase/pages/fuel_cards/_config-data/permissions';
 import LoadingComponent from 'components/old/ui/PreloaderMainPage';
 import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-import { FuelCardsFormLazy } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
+import { FuelCardsFormLazyWithoutWithSeacth } from 'components/new/pages/nsi/autobase/pages/fuel_cards/form';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import { getSessionState } from 'redux-main/reducers/selectors';
@@ -13,7 +13,7 @@ import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WaybillButtonCreateFuelCardProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = React.memo(
@@ -38,7 +38,7 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
     );
 
     const handleChangeStore = useForm.useFormDataHandleChangeStore<WaybillFormStoreType>(props.formDataKey);
-    const store = useForm.useFormDataStore<Waybill, WaybillFormStoreType>(props.formDataKey);
+    const store = useForm.useFormDataStore<Waybill>(props.formDataKey);
     const onFormHide = React.useCallback(
       (isSubmitted: boolean | any, result: FuelCard) => {
         if (isSubmitted) {
@@ -74,12 +74,14 @@ const WaybillButtonCreateFuelCard: React.FC<WaybillButtonCreateFuelCardProps> = 
           showStatus && (
             <ErrorBoundaryForm>
               <React.Suspense fallback={<LoadingComponent />}>
-                <FuelCardsFormLazy
+                <FuelCardsFormLazyWithoutWithSeacth
                   element={element}
                   handleHide={onFormHide}
 
                   page={page}
-                  fromWaybill
+                  registryKey={page}
+                  path="fueld_card"
+                  type={null}
                 />
               </React.Suspense>
             </ErrorBoundaryForm>

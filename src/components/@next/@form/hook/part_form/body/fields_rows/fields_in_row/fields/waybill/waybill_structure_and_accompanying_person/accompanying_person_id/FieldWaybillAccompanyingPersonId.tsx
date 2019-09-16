@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import useEmployeeFullNameOptions from 'components/new/utils/hooks/services/useOptions/useEmployeeFullNameOptions';
 import { FieldDataWaybillAccompanyingPersonId } from 'components/@next/@form/@types/fields/waybill/valueOfArray';
@@ -11,7 +11,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillAccompanyingPersonIdOwnProps = {
   fieldData: FieldDataWaybillAccompanyingPersonId;
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillAccompanyingPersonId: React.FC<FieldWaybillAccompanyingPersonIdOwnProps> = React.memo(

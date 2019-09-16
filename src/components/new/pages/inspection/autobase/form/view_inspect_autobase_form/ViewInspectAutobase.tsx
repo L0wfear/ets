@@ -2,7 +2,7 @@ import * as React from 'react';
 import { compose } from 'recompose';
 
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { FooterEnd } from 'global-styled/global-styled';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 import ViewInspectAutobaseButtonSubmit from './button_sumbit/ViewInspectAutobaseButtonSubmit';

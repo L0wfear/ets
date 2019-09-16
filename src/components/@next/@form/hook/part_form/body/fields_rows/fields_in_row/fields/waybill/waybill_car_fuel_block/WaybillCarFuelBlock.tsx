@@ -8,7 +8,7 @@ import WaybillBlockFuel from './waybill_block_fuel/WaybillBlockFuel';
 import WaybillBlockCarRefill from './waybill_block_car_refill/WaybillBlockCarRefill';
 
 type WaybillCarFuelBlockProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

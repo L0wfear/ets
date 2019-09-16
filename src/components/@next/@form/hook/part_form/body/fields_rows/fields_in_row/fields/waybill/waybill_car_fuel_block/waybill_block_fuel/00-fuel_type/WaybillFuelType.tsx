@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
@@ -9,7 +9,7 @@ import { getDefaultWaybill } from 'components/new/pages/waybill/form/context/uti
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type WaybillFuelTypeProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

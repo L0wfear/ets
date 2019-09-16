@@ -1,22 +1,21 @@
 import * as React from 'react';
 
-import useForm from '../useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
-import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
-import { getFormDataFormStateByKey, getFormDataIsCreatingByKey, getFormDataPErmissionsByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
+import { getFormDataFormStateByKey, getFormDataIsCreatingByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 /**
  * является ли открытый ПЛ черновиком (IS_DRAFT)
  */
-const useFormDataIsDraft = (formDataKey: string) => {
+const useFormDataIsDraft = (formDataKey: any) => {
   const IS_DRAFT = etsUseSelector(
     (state) => {
-      const IS_CREATING = getFormDataIsCreatingByKey<Waybill, WaybillFormStoreType>(state, formDataKey);
-      const formState = getFormDataFormStateByKey<Waybill, WaybillFormStoreType>(state, formDataKey);
+      const IS_CREATING = getFormDataIsCreatingByKey<Waybill>(state, formDataKey);
+      const formState = getFormDataFormStateByKey<Waybill>(state, formDataKey);
 
       return (
         IS_CREATING
@@ -33,8 +32,8 @@ const useFormDataIsDraft = (formDataKey: string) => {
 /**
  * является ли открытый ПЛ активным (IS_ACTIVE)
  */
-export const useFormDataIsActive = (formDataKey: string) => {
-  const IS_ACTIVE = etsUseSelector((state) => getFormDataFormStateByKey<Waybill, WaybillFormStoreType>(state, formDataKey).status === 'active');
+export const useFormDataIsActive = (formDataKey: any) => {
+  const IS_ACTIVE = etsUseSelector((state) => getFormDataFormStateByKey<Waybill>(state, formDataKey).status === 'active');
 
   return IS_ACTIVE;
 };
@@ -42,8 +41,8 @@ export const useFormDataIsActive = (formDataKey: string) => {
 /**
  * является ли открытый ПЛ закрытым (IS_CLOSED)
  */
-export const useFormDataIsClosed = (formDataKey: string) => {
-  const IS_CLOSED = etsUseSelector((state) => getFormDataFormStateByKey<Waybill, WaybillFormStoreType>(state, formDataKey).status === 'closed');
+export const useFormDataIsClosed = (formDataKey: any) => {
+  const IS_CLOSED = etsUseSelector((state) => getFormDataFormStateByKey<Waybill>(state, formDataKey).status === 'closed');
 
   return IS_CLOSED;
 };
@@ -51,7 +50,7 @@ export const useFormDataIsClosed = (formDataKey: string) => {
 /**
  * является ли открытый ПЛ активным или закрытым (IS_CLOSE_OR_IS_ACTIVE)
  */
-const useFormDataIsActiveOrIsClosed = (formDataKey: string) => {
+const useFormDataIsActiveOrIsClosed = (formDataKey: any) => {
   const IS_ACTIVE = useFormDataIsActive(formDataKey);
   const IS_CLOSED = useFormDataIsClosed(formDataKey);
 
@@ -61,12 +60,12 @@ const useFormDataIsActiveOrIsClosed = (formDataKey: string) => {
 /**
  * можно ли редактировать закрытый ПЛ | можно, если нет он последний и нет активного для выбранного тс
  */
-const useFormDataCanEditIfClose = (formDataKey: string) => {
+const useFormDataCanEditIfClose = (formDataKey: any) => {
   const canEditIfClose = etsUseSelector(
     (state) => {
       const permissionsSet = getSessionState(state).userData.permissionsSet;
-      const formState = getFormDataFormStateByKey<Waybill, WaybillFormStoreType>(state, formDataKey);
-      const IS_CLOSED = getFormDataFormStateByKey<Waybill, WaybillFormStoreType>(state, formDataKey).status === 'closed';
+      const formState = getFormDataFormStateByKey<Waybill>(state, formDataKey);
+      const IS_CLOSED = getFormDataFormStateByKey<Waybill>(state, formDataKey).status === 'closed';
 
       return (
         IS_CLOSED
@@ -124,9 +123,9 @@ const useFormDataPickStructureData = (options: Array<any>) => {
   );
 };
 
-const useFormDataGetSelectedCar = (formDataKey: string) => {
+const useFormDataGetSelectedCar = (formDataKey: any) => {
   const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(formDataKey, 'car_id');
-  const carActualList = useForm.useFormDataStorePickValue<Waybill, WaybillFormStoreType>(formDataKey, 'carActualList');
+  const carActualList = useForm.useFormDataStorePickValue<Waybill>(formDataKey, 'carActualList');
 
   const selectedCar = React.useMemo(
     () => {
@@ -146,9 +145,9 @@ const useFormDataGetSelectedCar = (formDataKey: string) => {
   return selectedCar;
 };
 
-const useFormDataGetSelectedTrailer = (formDataKey: string) => {
+const useFormDataGetSelectedTrailer = (formDataKey: any) => {
   const trailer_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['trailer_id']>(formDataKey, 'trailer_id');
-  const carActualList = useForm.useFormDataStorePickValue<Waybill, WaybillFormStoreType>(formDataKey, 'carActualList');
+  const carActualList = useForm.useFormDataStorePickValue<Waybill>(formDataKey, 'carActualList');
 
   const selectedTrailer = React.useMemo(
     () => {
@@ -168,17 +167,9 @@ const useFormDataGetSelectedTrailer = (formDataKey: string) => {
   return selectedTrailer;
 };
 
-const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: string) => {
-  return etsUseSelector(
-    (state) => {
-      const permissionsSet = getSessionState(state).userData.permissionsSet;
-      const permissions = getFormDataPErmissionsByKey<Waybill, WaybillFormStoreType>(state, formDataKey);
-
-      return (
-        validatePermissions(permissions.departure_and_arrival_values, permissionsSet)
-      );
-    },
-  );
+const useFormDataIsPermittedForDepartureAndArrivalValues = (formDataKey: any) => {
+  return true;
+  // return etsUseIsPermitted(permissions.departure_and_arrival_values);
 };
 
 const useWaybillFormData = {

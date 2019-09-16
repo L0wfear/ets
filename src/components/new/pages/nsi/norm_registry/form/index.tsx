@@ -1,41 +1,11 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
-
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsNormFormLazy } from 'components/new/pages/nsi/norm_registry/form/@types';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearch, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
 
 const NormFrom = React.lazy(() => (
   import(/* webpackChunkName: "norm_form" */ 'components/new/pages/nsi/norm_registry/form/NormForm')
 ));
 
-class NormFormLazy extends React.Component<PropsNormFormLazy, {}> {
-  render() {
-    const { element, ...props } = this.props;
-    const page = props.loadingPageName || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}norm-form`;
-
-    return element ?
-      (
-        <ErrorBoundaryForm>
-          <React.Suspense fallback={<LoadingComponent />}>
-            <NormFrom
-              element={element}
-              handleHide={props.onFormHide}
-
-              page={page}
-              path={path}
-            />
-          </React.Suspense>
-        </ErrorBoundaryForm>
-      )
-      :
-      (
-        <DivNone />
-      );
-  }
-}
-
-export default withFormRegistrySearch({})(NormFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Norm>, Norm>({
+  add_path: 'norm',
+})(NormFrom);

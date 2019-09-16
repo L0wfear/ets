@@ -82,10 +82,16 @@ class CreateMission extends React.Component<
           Создать децентрализованное задание
         </EtsBootstrap.Button>
         <MissionFormLazy
-          onFormHide={this.handleHideMissionForm}
+          handleHide={this.handleHideMissionForm}
           showForm={showMissionForm}
           element={element}
           notChangeCar
+
+          type={null}
+
+          registryKey="mainpage"
+          page="mainpage"
+          path="mission"
         />
       </FlexCenterButton>
     );

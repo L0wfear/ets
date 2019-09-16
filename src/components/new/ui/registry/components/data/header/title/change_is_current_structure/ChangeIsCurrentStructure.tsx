@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getBooleanValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import { actionChangeGlobalPaylaodInServiceData, actionUnselectSelectedRowToShow, registryResetAllTypeFilter } from 'components/new/ui/registry/module/actions-registy';

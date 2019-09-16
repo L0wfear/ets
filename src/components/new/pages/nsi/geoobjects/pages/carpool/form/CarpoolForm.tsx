@@ -14,13 +14,12 @@ import { carpoolSchema } from 'components/new/pages/nsi/geoobjects/pages/carpool
 import { getDefaultCarpoolElement } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnPropsCarpoolForm,
   PropsCarpoolForm,
   PropsCarpoolFormWithForm,
 } from 'components/new/pages/nsi/geoobjects/pages/carpool/form/@types/CarpoolForm.h';
 
 import { Carpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/@types';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { actionsCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
@@ -86,7 +85,7 @@ const CarpoolForm: React.FC<PropsCarpoolForm> = React.memo(
   },
 );
 
-export default compose<PropsCarpoolForm, OwnPropsCarpoolForm>(
+export default compose<PropsCarpoolForm, PropsCarpoolFormWithForm>(
   withForm<PropsCarpoolFormWithForm, Carpool>({
     uniqField: 'id',
     createAction: actionsCarpool.post,

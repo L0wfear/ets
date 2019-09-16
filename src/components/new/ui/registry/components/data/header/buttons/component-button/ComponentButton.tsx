@@ -36,8 +36,6 @@ import ButtonWaybillExport from './button-by-type/waybill/ButtonWaybillExport';
 import ButtonExportFiltredData from './button-by-type/ButtonExportFiltredData';
 import ButtonInspectShowActs from './button-by-type/inspect/ButtonInspectShowActs';
 import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs';
-import ButtonCarActualAddBattery from './button-by-type/car_actual/ButtonCarActualAddBattery';
-import ButtonCarActualAddTire from './button-by-type/car_actual/ButtonCarActualAddTire';
 import ButtonOrderCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateMission';
 import ButtonOrderCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateDutyMission';
 import ButtonOrderExport from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderExport';
@@ -83,8 +81,6 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.missions_to_archvie]: ButtonToArchiveMission,
   [buttonsTypes.missions_from_archvie]: ButtonFromArchiveMission,
   [buttonsTypes.columns_control]: ButtonColumnsControl,
-  [buttonsTypes.car_actual_add_battery]: ButtonCarActualAddBattery,
-  [buttonsTypes.car_actual_add_tire]: ButtonCarActualAddTire,
   [buttonsTypes.order_create_mission_by_templates]: ButtonOrderCreateMission,
   [buttonsTypes.order_create_duty_mission_by_templates]: ButtonOrderCreateDutyMission,
   [buttonsTypes.order_export]: ButtonOrderExport,

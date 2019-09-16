@@ -51,7 +51,7 @@ const TrHead: React.FC<Props> = React.memo(
       () => {
         if (isPermitted) {
           const buttonReadData = buttons.find(({ type }) => type === buttonsTypes.read);
-          if (buttonReadData) {
+          if (buttonReadData && row_double_click) {
             const changeObj = makePayloadToParamsForRead(
               buttonReadData,
               rowData,

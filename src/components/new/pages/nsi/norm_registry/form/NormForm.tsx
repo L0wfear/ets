@@ -1,11 +1,12 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnNormProps,
   PropsNorm,
@@ -16,7 +17,7 @@ import {
 import { DivNone } from 'global-styled/global-styled';
 import normPermissions from '../_config-data/permissions';
 import { Norm } from 'redux-main/reducers/modules/norm_registry/@types';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { getDefaultNormElement } from './utils';
 import { normFormSchema } from './schema';
 import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
@@ -30,7 +31,7 @@ const SEASONS = [
   { value: 1, label: 'Лето' },
   { value: 2, label: 'Зима' },
   { value: 3, label: 'Всесезон' },
-];
+] as const;
 
 const NormForm: React.FC<PropsNorm> = React.memo(
   (props) => {
@@ -231,32 +232,47 @@ const NormForm: React.FC<PropsNorm> = React.memo(
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
           <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={3}>
-            <ExtField
-              id="car_func_types_ids"
-              type="select"
-              label="Типы ТС"
-              multi
-              value={state.car_func_types_ids}
-              options={carTypeOptions}
-              onChange={props.handleChange} // заставь бэк адаптироваться или умереть
-              boundKeys="car_func_types_ids"
-              disabled={!isPermittedHardcode}
-            />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={3}>
-            <ExtField
-              id="sensor_type_ids"
-              type="select"
-              label="Типы навесного оборудования"
-              multi
-              value={state.sensor_type_ids}
-              options={sensorTypeOptions}
-              onChange={props.handleChange}
-              boundKeys="sensor_type_ids"
-              disabled={!isPermitted && false}
-            />
-          </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
+              <ExtField
+                id="car_func_types_ids"
+                type="select"
+                label="Типы ТС"
+                multi
+                value={state.car_func_types_ids}
+                options={carTypeOptions}
+                onChange={props.handleChange} // заставь бэк адаптироваться или умереть
+                boundKeys="car_func_types_ids"
+                disabled={!isPermittedHardcode}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
+              <ExtField
+                id="sensor_type_ids"
+                type="select"
+                label="Типы навесного оборудования"
+                multi
+                value={state.sensor_type_ids}
+                options={sensorTypeOptions}
+                onChange={props.handleChange}
+                boundKeys="sensor_type_ids"
+                disabled={!isPermitted && false}
+              />
+            </EtsBootstrap.Col>
+            <EtsBootstrap.Col md={3}>
+              <ExtField
+                id="consumable_materials_names"
+                type="select"
+                hint="Расходные материалы заполняются в «НСИ -> Показатели для расчета -> Расходные материалы»"
+                label="Расходные материалы"
+                placeholder={null}
+                multi
+                value={state.consumable_materials_names}
+                options={state.consumable_materials_names.map((name) => ({ value: name, label: name }))}
+                onChange={props.handleChange}
+                boundKeys="consumable_materials_names"
+                disabled={!isPermittedHardcode}
+              />
+            </EtsBootstrap.Col>
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import {
   PropsFieldAssignToWaybillMissionWithCarId, StatePropsFieldAssignToWaybillMissionWithCarId, DispatchPropsPropsFieldAssignToWaybillMissionWithCarId, OwnPropsPropsFieldAssignToWaybillMissionWithCarId,
 } from 'components/new/pages/missions/mission/form/main/column_assignment/inside_fields/assign_to_waybill/FieldAssignToWaybillMissionWithCarId.d';

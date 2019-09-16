@@ -10,7 +10,7 @@ import { dutyDutyMissionTemplateFormSchema } from './schema';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { DivNone } from 'global-styled/global-styled';
 import {
   getSessionState,
@@ -40,175 +40,177 @@ import { ReduxState } from 'redux-main/@types/state';
  * Форма шаблона наряд-заданий
  * Собирается из формы наряд-задания
  */
-const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = (props) => {
-  const {
-    formState: state,
-    formErrors: errors,
-    STRUCTURE_FIELD_VIEW,
-    page, path,
-  } = props;
+const DutyMissionTemplateForm: React.FC<PropsDutyMissionTemplateForm> = React.memo(
+  (props) => {
+    const {
+      formState: state,
+      formErrors: errors,
+      STRUCTURE_FIELD_VIEW,
+      page, path,
+    } = props;
 
-  const IS_CREATING = !state.id;
-  const isPermitted = !IS_CREATING
-    ? props.isPermittedToUpdate
-    : props.isPermittedToCreate;
+    const IS_CREATING = !state.id;
+    const isPermitted = !IS_CREATING
+      ? props.isPermittedToUpdate
+      : props.isPermittedToCreate;
 
-  // Получение сотрудников для валидации бригадира и бригады в схеме
-  React.useEffect(
-    () => {
-      if (isPermitted) {
-        props.employeeGetAndSetInStore({}, { page, path });
+    // Получение сотрудников для валидации бригадира и бригады в схеме
+    React.useEffect(
+      () => {
+        if (isPermitted) {
+          props.employeeGetAndSetInStore({}, { page, path });
 
-        return () => {
-          props.employeeEmployeeResetSetEmployee();
-        };
-      }
-    },
-    [isPermitted],
-  );
-  const title = !IS_CREATING ? 'Шаблон наряд-задания' : 'Создание шаблона наряд-задания';
+          return () => {
+            props.employeeEmployeeResetSetEmployee();
+          };
+        }
+      },
+      [isPermitted],
+    );
+    const title = !IS_CREATING ? 'Шаблон наряд-задания' : 'Создание шаблона наряд-задания';
 
-  return (
-    <EtsBootstrap.ModalContainer
-      id="modal-duty-mission-template"
-      show
-      onHide={props.hideWithoutChanges}
-      bsSize="large"
-    >
-      <EtsBootstrap.ModalHeader closeButton>
-        <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
-      </EtsBootstrap.ModalHeader>
-      <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={12}>
-            <FieldTechnicalOperationDutyMission
-              value={state.technical_operation_id}
-              name={state.technical_operation_name}
-              disabled={!isPermitted}
-              isPermitted={isPermitted}
-              error={errors.technical_operation_id}
-              onChange={props.handleChange}
-              IS_TEMPLATE
-              DUTY_MISSION_IS_ORDER_SOURCE={false}
-              page={page}
-              path={path}
-            />
-          </EtsBootstrap.Col>
-        </EtsBootstrap.Row>
-        <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={12}>
-            <FieldMunicipalFacilityIdDutyMission
-              value={state.municipal_facility_id}
-              name={state.municipal_facility_name}
-              disabled={!state.technical_operation_id || !isPermitted}
-              error={errors.municipal_facility_id}
-              isPermitted={isPermitted}
-              onChange={props.handleChange}
-              technical_operation_id={state.technical_operation_id}
-              IS_TEMPLATE
-              DUTY_MISSION_IS_ORDER_SOURCE={false}
-              page={page}
-              path={path}
-            />
-          </EtsBootstrap.Col>
-        </EtsBootstrap.Row>
-        <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
-            <FieldForemanIdDutyMission
-              value={state.foreman_id}
-              foreman_fio={state.foreman_fio}
-              foreman_full_fio={state.foreman_full_fio}
-              name={state.foreman_fio}
-              error={errors.foreman_id}
-              isPermitted={isPermitted}
-              disabled={!isPermitted}
-              onChange={props.handleChange}
-              structure_id={state.structure_id}
-              page={page}
-              path={path}
-            />
-          </EtsBootstrap.Col>
-          {STRUCTURE_FIELD_VIEW ? (
-            <EtsBootstrap.Col md={6}>
-              <FieldStructureDutyMission
-                value={state.structure_id}
-                name={state.structure_name}
-                error={errors.structure_id}
+    return (
+      <EtsBootstrap.ModalContainer
+        id="modal-duty-mission-template"
+        show
+        onHide={props.hideWithoutChanges}
+        bsSize="large"
+      >
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
+        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <FieldTechnicalOperationDutyMission
+                value={state.technical_operation_id}
+                name={state.technical_operation_name}
                 disabled={!isPermitted}
                 isPermitted={isPermitted}
+                error={errors.technical_operation_id}
                 onChange={props.handleChange}
+                IS_TEMPLATE
+                DUTY_MISSION_IS_ORDER_SOURCE={false}
                 page={page}
                 path={path}
               />
             </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <FieldMunicipalFacilityIdDutyMission
+                value={state.municipal_facility_id}
+                name={state.municipal_facility_name}
+                disabled={!state.technical_operation_id || !isPermitted}
+                error={errors.municipal_facility_id}
+                isPermitted={isPermitted}
+                onChange={props.handleChange}
+                technical_operation_id={state.technical_operation_id}
+                IS_TEMPLATE
+                DUTY_MISSION_IS_ORDER_SOURCE={false}
+                page={page}
+                path={path}
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={STRUCTURE_FIELD_VIEW ? 6 : 12}>
+              <FieldForemanIdDutyMission
+                value={state.foreman_id}
+                foreman_fio={state.foreman_fio}
+                foreman_full_fio={state.foreman_full_fio}
+                name={state.foreman_fio}
+                error={errors.foreman_id}
+                isPermitted={isPermitted}
+                disabled={!isPermitted}
+                onChange={props.handleChange}
+                structure_id={state.structure_id}
+                page={page}
+                path={path}
+              />
+            </EtsBootstrap.Col>
+            {STRUCTURE_FIELD_VIEW ? (
+              <EtsBootstrap.Col md={6}>
+                <FieldStructureDutyMission
+                  value={state.structure_id}
+                  name={state.structure_name}
+                  error={errors.structure_id}
+                  disabled={!isPermitted}
+                  isPermitted={isPermitted}
+                  onChange={props.handleChange}
+                  page={page}
+                  path={path}
+                />
+              </EtsBootstrap.Col>
+            ) : (
+              <DivNone />
+            )}
+            <EtsBootstrap.Col md={12}>
+              <FieldBrigadeEmployeeIdListDutyMission
+                brigade_employee_id_list={state.brigade_employee_id_list}
+                value={state.brigade_employee_id_list_id}
+                name={state.brigade_employee_id_list_fio}
+                error={errors.brigade_employee_id_list_id}
+                isPermitted={isPermitted}
+                disabled={!isPermitted}
+                onChange={props.handleChange}
+                foreman_id={state.foreman_id}
+                structure_id={state.structure_id}
+                page={page}
+                path={path}
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+          <FieldRouteIdDutyMission
+            error={errors.route_id}
+            value={state.route_id}
+            name={state.route_name}
+            municipal_facility_id={state.municipal_facility_id}
+            municipal_facility_name={state.municipal_facility_name}
+            technical_operation_id={state.technical_operation_id}
+            technical_operation_name={state.technical_operation_name}
+            DUTY_MISSION_IS_ORDER_SOURCE={false}
+            disabled={!isPermitted}
+            isPermitted={isPermitted}
+            structure_id={state.structure_id}
+            structure_name={state.structure_name}
+            onChange={props.handleChange}
+            fromMission={true}
+            fromMissionTemplate={true}
+            page={page}
+            path={path}
+          />
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12}>
+              <ExtField
+                id="comment"
+                modalKey={page}
+                type="string"
+                label="Комментарий"
+                value={state.comment}
+                error={errors.comment}
+                disabled={!isPermitted}
+                onChange={props.handleChange}
+                boundKeys="comment"
+              />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
+        </ModalBodyPreloader>
+        <EtsBootstrap.ModalFooter>
+          {isPermitted ? ( // либо обновление, либо создание
+            <EtsBootstrap.Button
+              disabled={!props.canSave}
+              onClick={props.defaultSubmit}>
+              Сохранить
+            </EtsBootstrap.Button>
           ) : (
             <DivNone />
           )}
-          <EtsBootstrap.Col md={12}>
-            <FieldBrigadeEmployeeIdListDutyMission
-              brigade_employee_id_list={state.brigade_employee_id_list}
-              value={state.brigade_employee_id_list_id}
-              name={state.brigade_employee_id_list_fio}
-              error={errors.brigade_employee_id_list_id}
-              isPermitted={isPermitted}
-              disabled={!isPermitted}
-              onChange={props.handleChange}
-              foreman_id={state.foreman_id}
-              structure_id={state.structure_id}
-              page={page}
-              path={path}
-            />
-          </EtsBootstrap.Col>
-        </EtsBootstrap.Row>
-        <FieldRouteIdDutyMission
-          error={errors.route_id}
-          value={state.route_id}
-          name={state.route_name}
-          municipal_facility_id={state.municipal_facility_id}
-          municipal_facility_name={state.municipal_facility_name}
-          technical_operation_id={state.technical_operation_id}
-          technical_operation_name={state.technical_operation_name}
-          DUTY_MISSION_IS_ORDER_SOURCE={false}
-          disabled={!isPermitted}
-          isPermitted={isPermitted}
-          structure_id={state.structure_id}
-          structure_name={state.structure_name}
-          onChange={props.handleChange}
-          fromMission={true}
-          fromMissionTemplate={true}
-          page={page}
-          path={path}
-        />
-        <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={12}>
-            <ExtField
-              id="comment"
-              modalKey={page}
-              type="string"
-              label="Комментарий"
-              value={state.comment}
-              error={errors.comment}
-              disabled={!isPermitted}
-              onChange={props.handleChange}
-              boundKeys="comment"
-            />
-          </EtsBootstrap.Col>
-        </EtsBootstrap.Row>
-      </ModalBodyPreloader>
-      <EtsBootstrap.ModalFooter>
-        {isPermitted ? ( // либо обновление, либо создание
-          <EtsBootstrap.Button
-            disabled={!props.canSave}
-            onClick={props.defaultSubmit}>
-            Сохранить
-          </EtsBootstrap.Button>
-        ) : (
-          <DivNone />
-        )}
-      </EtsBootstrap.ModalFooter>
-    </EtsBootstrap.ModalContainer>
-  );
-};
+        </EtsBootstrap.ModalFooter>
+      </EtsBootstrap.ModalContainer>
+    );
+  },
+);
 
 export default compose<PropsDutyMissionTemplateForm, OwnDutyMissionTemplateProps>(
   connect<StatePropsDutyMissionTemplate, DispatchPropsDutyMissionTemplate, OwnDutyMissionTemplateProps, ReduxState>(

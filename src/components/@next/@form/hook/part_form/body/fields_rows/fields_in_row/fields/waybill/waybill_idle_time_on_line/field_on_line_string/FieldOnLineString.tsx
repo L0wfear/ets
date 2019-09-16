@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 import {
@@ -14,7 +14,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 type FieldOnLineStringProps = {
-  formDataKey: string;
+  formDataKey: any;
   fieldData: (
     FieldDataDowntimeHoursWork
     | FieldDataDowntimeHoursDuty

@@ -5,7 +5,7 @@ import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type WaybillButtonCarRefillAddProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const WaybillButtonCarRefillAdd: React.FC<WaybillButtonCarRefillAddProps> = React.memo(

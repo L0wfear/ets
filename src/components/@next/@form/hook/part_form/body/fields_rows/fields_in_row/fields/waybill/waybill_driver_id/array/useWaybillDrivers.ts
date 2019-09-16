@@ -9,7 +9,7 @@ import useMedicalStatsAllowedDriverList from "components/new/utils/hooks/service
 import waybillFilterDrivers from './waybill_filter_driver';
 import useEmployeeBindedToCarApiList from 'components/new/utils/hooks/services/useList/useEmployeeBindedToCarList';
 
-export const useWaybillDrivers = (formDataKey: string) => {
+export const useWaybillDrivers = (formDataKey: any) => {
   const car_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['car_id']>(formDataKey, 'car_id');
   const gov_number = useForm.useFormDataFormStatePickValue<Waybill, Waybill['gov_number']>(formDataKey, 'gov_number');
   const plan_departure_date = useForm.useFormDataFormStatePickValue<Waybill, Waybill['plan_departure_date']>(formDataKey, 'plan_departure_date');

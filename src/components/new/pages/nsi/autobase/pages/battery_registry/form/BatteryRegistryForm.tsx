@@ -1,27 +1,24 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { get } from 'lodash';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnBatteryRegistryProps,
   PropsBatteryRegistry,
   StateBatteryRegistry,
   PropsBatteryRegistryWithForm,
 } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/@types/BatteryRegistryForm';
 import { BatteryRegistry, BatteryOnCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { DivNone } from 'global-styled/global-styled';
 import BatteryToVehicleBlockComponent from 'components/new/pages/nsi/autobase/pages/battery_registry/form/vehicle-block/BatteryToVehicleBlock';
 import { onChangeWithKeys } from 'components/old/compositions/hoc';
 import { getDefaultBatteryRegistryElement } from './utils';
 import { batteryRegistryFormSchema } from 'components/new/pages/nsi/autobase/pages/battery_registry/form/schema';
 import batteryRegistryPermissions from 'components/new/pages/nsi/autobase/pages/battery_registry/_config-data/permissions';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { config } from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/registry-config';
 import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
 import { autobaseGetSetBatteryBrand } from 'redux-main/reducers/modules/autobase/actions_by_type/battery_brand/actions';
@@ -230,23 +227,22 @@ class BatteryRegistryForm extends React.PureComponent<
           </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
-          {isPermitted ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!this.props.canSave}
-              onClick={this.props.defaultSubmit}>
-              Сохранить
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
+          {
+            isPermitted && ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!this.props.canSave}
+                onClick={this.props.defaultSubmit}>
+                Сохранить
+              </EtsBootstrap.Button>
+          )
+        }
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
   }
 }
 
-export default compose<PropsBatteryRegistry, OwnBatteryRegistryProps>(
-  withSearch,
+export default compose<PropsBatteryRegistry, PropsBatteryRegistryWithForm>(
   withForm<PropsBatteryRegistryWithForm, BatteryRegistry>({
     uniqField: 'id',
     createAction: autobaseCreateBatteryRegistry,

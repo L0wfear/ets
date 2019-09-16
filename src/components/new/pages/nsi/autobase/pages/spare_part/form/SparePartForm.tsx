@@ -1,13 +1,13 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
 import { compose } from 'recompose';
+
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import {
-  OwnSparePartProps,
   PropsSparePart,
   StateSparePart,
   PropsSparePartWithForm,
@@ -197,7 +197,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
   }
 }
 
-export default compose<PropsSparePart, OwnSparePartProps>(
+export default compose<PropsSparePart, PropsSparePartWithForm>(
   withForm<PropsSparePartWithForm, SparePart>({
     uniqField: 'id',
     createAction: autobaseCreateSparePart,

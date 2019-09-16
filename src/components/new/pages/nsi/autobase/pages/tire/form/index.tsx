@@ -1,41 +1,12 @@
 import * as React from 'react';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
-import { DivNone } from 'global-styled/global-styled';
-
-import { PropsTireFormLazy } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
-import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { withFormRegistrySearch, WithFormRegistrySearchProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
+import { Tire } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const TireFrom = React.lazy(() => (
   import(/* webpackChunkName: "tire_form" */ 'components/new/pages/nsi/autobase/pages/tire/form/TireForm')
 ));
 
-const TireFormLazy: React.FC<PropsTireFormLazy> = React.memo(
-  (props) => {
-    const page = props.registryKey || props.page;
-    const path = `${props.path ? `${props.path}-` : ''}battery-brand-form`;
-
-    return (
-      props.element
-        ? (
-          <ErrorBoundaryForm>
-            <React.Suspense fallback={<LoadingComponent />}>
-              <TireFrom
-                element={props.element}
-                handleHide={props.onFormHide}
-
-                page={page}
-                path={path}
-              />
-            </React.Suspense>
-          </ErrorBoundaryForm>
-        )
-        : (
-          <DivNone />
-        )
-    );
-  },
-);
-
-export default withFormRegistrySearch({})(TireFormLazy);
+export default withFormRegistrySearch<WithFormRegistrySearchProps<Tire>, Tire>({
+  add_path: 'tire',
+})(TireFrom);

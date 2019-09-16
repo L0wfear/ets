@@ -6,7 +6,7 @@ import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillPlanDatesOwnProps = {
-  formDataKey: string;
+  formDataKey: any;
 };
 
 const FieldWaybillPlanDates: React.FC<FieldWaybillPlanDatesOwnProps> = React.memo(

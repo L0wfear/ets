@@ -1,29 +1,26 @@
 import * as React from 'react';
 
-import { connect } from 'react-redux';
 import DefaultDashboardCardList from 'components/new/pages/dashboard/menu/cards/_default-list/DefaultDashboardCardList';
 
 import CollapseListByLvl from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/CollapseListByLvl/CollapseListByLvl';
-import { ReduxState } from 'redux-main/@types/state';
-import {
-  StatePropsListByTypeCurerntMission,
-  DispatchPropsListByTypeCurerntMission,
-  OwnPropsListByTypeCurerntMission,
-  PropsListByTypeCurerntMission,
-  StateListByTypeCurerntMission,
-} from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/ListByTypeCurerntMission.h';
 import { getDashboardState } from 'redux-main/reducers/selectors';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CurrentMissionsItemsSubItemsSubItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
-class ListByTypeCurerntMission extends React.PureComponent<PropsListByTypeCurerntMission, StateListByTypeCurerntMission> {
-  render() {
-    const {
-      items = [],
-      ...props
-    } = this.props;
+export type Props = {
+  titleKey: 'title_centralized' | 'title_decentralized';
+  itemsKey: 'items_centralized' | 'items_decentralized';
+  handleClick: (lastSubItem: CurrentMissionsItemsSubItemsSubItemsType) => any;
+};
+
+const ListByTypeCurerntMission: React.FC<Props> = React.memo(
+  (props) => {
+    const title = etsUseSelector((state) => getDashboardState(state).current_missions.data[props.titleKey]);
+    const items = etsUseSelector((state) => getDashboardState(state).current_missions.data[props.itemsKey]);
 
     return (
       <DefaultDashboardCardList
-        title={props.title}
+        title={title}
         noClickOnTitle={!items.length}
       >
         <CollapseListByLvl
@@ -32,12 +29,7 @@ class ListByTypeCurerntMission extends React.PureComponent<PropsListByTypeCurern
         />
       </DefaultDashboardCardList>
     );
-  }
-}
+  },
+);
 
-export default connect<StatePropsListByTypeCurerntMission, DispatchPropsListByTypeCurerntMission, OwnPropsListByTypeCurerntMission, ReduxState>(
-  (state, { titleKey, itemsKey } ) => ({
-    title: getDashboardState(state).current_missions.data[titleKey],
-    items: getDashboardState(state).current_missions.data[itemsKey],
-  }),
-)(ListByTypeCurerntMission);
+export default ListByTypeCurerntMission;

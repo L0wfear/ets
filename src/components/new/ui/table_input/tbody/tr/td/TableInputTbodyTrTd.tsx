@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { TableMeta } from '../../../TableInput';
 import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import { ExtField } from 'components/old/ui/new/field/ExtField';
+import ExtField from 'components/@next/@ui/renderFields/Field';
 import { get } from 'lodash';
 import { isArray } from 'util';
 

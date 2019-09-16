@@ -5,7 +5,7 @@ import FieldWaybillWorkModeIdString from './FieldWaybillWorkModeIdString';
 import FieldWaybillWorkModeIdArray from './FieldWaybillWorkModeIdArray';
 
 type FieldWaybillWorkModeIdProps = {
-  formDataKey: string;
+  formDataKey: any;
   md?: number;
 };
 

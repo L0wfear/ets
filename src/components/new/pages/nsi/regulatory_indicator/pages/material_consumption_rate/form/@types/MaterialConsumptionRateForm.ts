@@ -5,19 +5,7 @@ import { HandleThunkActionCreator } from 'react-redux';
 import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { actionResetConsumptionRateMaterial, actionGetAndSetInStoreConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/actions';
 import { actionGetAndSetInStoreCleanCategories, actionResetCleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/actions';
-
-export type OnFormHideType = (isSubmited: boolean, result?: any) => void;
-
-export type PropsMaterialConsumptionRateFormLazy = {
-  showForm: boolean;
-  element: Partial<MaterialConsumptionRate>;
-  onFormHide: OnFormHideType;
-
-  registryKey?: string;
-  loadingPageName?: string;
-  page?: string;
-  path?: string;
-};
+import { WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export type StatePropsMaterialConsumptionRate = {
   technicalOperationRegistryList: IStateSomeUniq['technicalOperationRegistryList'];
@@ -46,12 +34,7 @@ export type DispatchPropsMaterialConsumptionRate = {
   >;
 };
 
-export type OwnMaterialConsumptionRateProps = {
-  element: Partial<MaterialConsumptionRate>;
-  handleHide: OnFormHideType;
-  page: string;
-  path?: string;
-};
+export type OwnMaterialConsumptionRateProps = WithFormRegistrySearchAddProps<MaterialConsumptionRate>;
 
 export type PropsMaterialConsumptionRateWithForm = StatePropsMaterialConsumptionRate &
   DispatchPropsMaterialConsumptionRate &

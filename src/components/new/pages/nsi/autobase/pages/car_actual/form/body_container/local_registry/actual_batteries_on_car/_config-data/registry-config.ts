@@ -25,7 +25,11 @@ export const getToConfig = (car_id: number): TypeConfigData<BatteryRegistry> => 
     header: {
       title: 'Установленные аккумуляторы на текущую дату',
       buttons: [
-        buttonsTypes.car_actual_add_battery,
+        {
+          id: 'add_battery',
+          type: buttonsTypes.create,
+          title: 'Добавить',
+        },
         buttonsTypes.read,
       ],
     },

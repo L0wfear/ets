@@ -46,7 +46,7 @@ export const carFilter = (car: Car, car_id: Waybill['car_id'], structure_id: Way
   );
 };
 
-const useWaybillCarActualOptions = (formDataKey: string, car_id: Waybill['car_id'], structure_id: Waybill['structure_id']) => {
+const useWaybillCarActualOptions = (formDataKey: any, car_id: Waybill['car_id'], structure_id: Waybill['structure_id']) => {
   const listData = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'carActualList'>(
     formDataKey,
     'carActualList',

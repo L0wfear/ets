@@ -23,7 +23,7 @@ const DistanceAggValue: React.FC<PropsDistanceAggValue> = ({ distance }) => (
 export default compose<PropsDistanceAggValue, {}>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
-    type: 'small-loader-field',
+    type: 'field',
     checkErrorPath: ['monitorPage', 'carInfo', 'trackCaching', 'error'],
     canNull: true,
   }),

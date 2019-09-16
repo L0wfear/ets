@@ -10,6 +10,8 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noImplicitThis": true,
     "noLib": false,
     "noEmit": false,
     "jsx": "react",
@@ -27,7 +29,7 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.tsx",
+    "src/**/*.tsx"
   ],
   "exclude": [
     "node_modules",

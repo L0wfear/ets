@@ -44,8 +44,8 @@ const InspectionPgmBaseSelectData: React.FC<InspectionPgmBaseSelectCarpoolProps>
     <>
       <SelectPgmBaseOkrug />
       <SelectPgmBaseCompany />
-      <SelectPgmBaseTypeId />
       <SelectPgmBaseAddress />
+      <SelectPgmBaseTypeId />
     </>
   );
 };

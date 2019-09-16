@@ -85,7 +85,7 @@ const SelectCarsConditionChecksType: React.FC<SelectCarsConditionChecksTypeProps
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (

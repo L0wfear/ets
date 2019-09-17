@@ -27,7 +27,7 @@ const MaintenanceWorkForm: React.FC<Props> = React.memo(
       <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
         <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
-          <DefaultFieldString<MaintenanceWork> formDataKey={formDataKey} fild_label="Наименование" field_name="name" />
+          <DefaultFieldString<MaintenanceWork> formDataKey={formDataKey} field_label="Наименование" field_name="name" />
           <FieldMeasureUnitId formDataKey={formDataKey} />
         </ModalBodyPreloader>
         <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />

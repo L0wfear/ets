@@ -8,11 +8,11 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import { mapFormMeta } from 'redux-main/reducers/modules/form_data_record/actions';
 import ModalHeaderDefault from 'components/@next/@form/hook/part_form/ModalHeaderDefault';
 import ModalFooterDefault from 'components/@next/@form/hook/part_form/ModalFooterDefault';
-import FieldIsExcludingMileage from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/is_excluding_mileage/FieldIsExcludingMileage';
-import FieldEquipment from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/equipment/FieldEquipment';
-import FieldMeasureUnitId from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/measure_unit_id/FieldMeasureUnitId';
-import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
+
+import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
+import DefaultFieldBoolean from 'components/@next/@form/defult_fields/DefaultFieldBoolean';
+import FieldMeasureUnitId from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/measure_unit_id/FieldMeasureUnitId';
 
 type Props = {
   formDataKey: 'fuel_operations';
@@ -30,10 +30,10 @@ const FuelOperationsForm: React.FC<Props> = React.memo(
       <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
         <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
-          <DefaultFieldString<FuelOperationActive> formDataKey={formDataKey} fild_label="Операция" field_name="name" />
+          <DefaultFieldString<FuelOperationActive> formDataKey={formDataKey} field_label="Операция" field_name="name" />
           <FieldMeasureUnitId formDataKey={formDataKey} />
-          <FieldIsExcludingMileage formDataKey={formDataKey} />
-          <FieldEquipment formDataKey={formDataKey} />
+          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} field_label="Без учета пробега" field_name="is_excluding_mileage" />
+          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} field_label="Для спецоборудования" field_name="equipment" />
         </ModalBodyPreloader>
         <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />
       </EtsBootstrap.ModalContainer>

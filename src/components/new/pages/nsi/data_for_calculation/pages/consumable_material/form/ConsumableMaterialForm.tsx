@@ -8,7 +8,6 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import { mapFormMeta } from 'redux-main/reducers/modules/form_data_record/actions';
 import ModalHeaderDefault from 'components/@next/@form/hook/part_form/ModalHeaderDefault';
 import ModalFooterDefault from 'components/@next/@form/hook/part_form/ModalFooterDefault';
-import FieldShortName from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/short_name/FieldShortName';
 import FieldMeasureUnitId from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/measure_unit_id/FieldMeasureUnitId';
 import FieldNorms from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/form/norms/FieldNorms';
 import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
@@ -30,10 +29,10 @@ const MaintenanceWorkForm: React.FC<Props> = React.memo(
       <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
         <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
-          <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} fild_label="Наименование" field_name="name" />
+          <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} field_label="Наименование" field_name="name" />
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>
-              <FieldShortName formDataKey={formDataKey} />
+              <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} field_label="Сокращенное наименование" field_name="name" />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
               <FieldMeasureUnitId formDataKey={formDataKey} />

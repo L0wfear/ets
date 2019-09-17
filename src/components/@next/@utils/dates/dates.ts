@@ -332,3 +332,13 @@ export const monthOptions = Array(12).fill(0).map(
     });
   },
 );
+
+export const makeDateFormated = (date: string | Date, time?: boolean, empty?: string) => {
+  if (!date) {
+    return empty || '';
+  }
+  if (time) {
+    return getFormattedDateTime(date);
+  }
+  return makeDate(date);
+};

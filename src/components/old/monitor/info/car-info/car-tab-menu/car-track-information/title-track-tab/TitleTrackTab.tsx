@@ -32,9 +32,6 @@ type PropsTitleTrackTab = {
   disabledForToday: boolean;
   changeDate: any;
 
-  date_start: Date;
-  date_end: Date;
-
   fetchMissionsData: any;
   fetchTrack: any;
   asuods_id: number;
@@ -107,21 +104,6 @@ class TitleTrackTab extends React.Component<
     }
   };
 
-  handleChangeDate = (field: 'date_start' | 'date_end', value: any) => {
-    if (value) {
-      const dates = {
-        ...this.props,
-        [field]: value,
-      };
-      const errorDates = this.validateDates(dates.date_start, dates.date_end);
-
-      this.props.changeDate(field, value);
-      if (errorDates !== this.state.errorDates) {
-        this.setState({ errorDates });
-      }
-    }
-  };
-
   validateDates = (date_start, date_end) => {
     let errorDates = '';
     if (diffDates(date_end, date_start, 'minutes', false) <= 0) {
@@ -140,10 +122,29 @@ class TitleTrackTab extends React.Component<
     return errorDates;
   }
 
+  handleChangeDate = (field: 'date_start' | 'date_end', value: any) => {
+    if (value) {
+      const date_start = this.state.date_start;
+      const date_end = this.state.date_end;
+
+      const partialState = {
+        date_start,
+        date_end,
+        [field]: createValidDateTime(value),
+        errorDates: '',
+        gps_code: this.props.gps_code,
+      };
+
+      partialState.errorDates = this.validateDates(partialState.date_start, partialState.date_end);
+
+      // this.props.changeDate(field, value);
+      this.setState({ ...partialState });
+    }
+  };
+
   handleChangeDateStartEnd = (date_start, date_end) => {
     if (date_start && date_end) {
-      this.props.changeDate('date_start', date_start);
-      this.props.changeDate('date_end', date_end);
+      this.setState({ date_start, date_end });
       const errorDates = this.validateDates(date_start, date_end);
       if (errorDates !== this.state.errorDates) {
         this.setState({ errorDates });
@@ -159,11 +160,11 @@ class TitleTrackTab extends React.Component<
   };
 
   makeNewPeriodBackward: any = () => {
-    let newDateStart: any = this.props.date_start;
-    let newDateEnd: any = this.props.date_end;
+    let newDateStart: any = this.state.date_start;
+    let newDateEnd: any = this.state.date_end;
 
-    newDateStart = minusTime(this.props.date_start, 10, 'days');
-    newDateEnd = this.props.date_start;
+    newDateStart = minusTime(this.state.date_start, 10, 'days');
+    newDateEnd = this.state.date_start;
     this.handleChangeDateStartEnd(newDateStart, newDateEnd);
     setTimeout(() => {
       if (!(this.props.forToday ||
@@ -176,11 +177,11 @@ class TitleTrackTab extends React.Component<
   };
 
   makeNewPeriodForward: any = () => {
-    let newDateStart: any = this.props.date_start;
-    let newDateEnd: any = this.props.date_end;
+    let newDateStart: any = this.state.date_start;
+    let newDateEnd: any = this.state.date_end;
 
-    newDateStart = addTime(this.props.date_start, 10, 'days');
-    newDateEnd = addTime(this.props.date_start, 20, 'days');
+    newDateStart = addTime(this.state.date_start, 10, 'days');
+    newDateEnd = addTime(this.state.date_start, 20, 'days');
 
     this.handleChangeDateStartEnd(newDateStart, newDateEnd);
     setTimeout(() => {
@@ -225,37 +226,37 @@ class TitleTrackTab extends React.Component<
         <div className="car_info-track_date_control">
           <ButtonsRowMargin>
             <EtsBootstrap.Button
-              title="Перезагрузить данные"
-              className="reload-button"
-              onClick={this.reloadTrackAndMissions}
-              disabled={
-                forToday ||
-                this.props.disabledForToday ||
-                disbledByTrackPlayStatys ||
-                !!errorDates
-              }>
-              <EtsBootstrap.Glyphicon glyph="repeat" />
-            </EtsBootstrap.Button>
-            <EtsBootstrap.Button
-              title={`Сдвинуть период трека на ${daysIntoPeriod} дней назад`}
-              className="backward-button"
-              onClick={this.makeNewPeriodBackward}
-              disabled={forToday ||
-                this.props.disabledForToday ||
-                disbledByTrackPlayStatys ||
-                !!errorDates}>
-              <EtsBootstrap.Glyphicon glyph="backward" />
-            </EtsBootstrap.Button>
-            <EtsBootstrap.Button
-              title={`Сдвинуть период трека на ${daysIntoPeriod} дней вперёд`}
-              className="forward-button"
-              onClick={this.makeNewPeriodForward}
-              disabled={forToday ||
-                this.props.disabledForToday ||
-                disbledByTrackPlayStatys ||
-                !!errorDates}>
-              <EtsBootstrap.Glyphicon glyph="forward" />
-            </EtsBootstrap.Button>
+                title="Перезагрузить данные"
+                className="reload-button"
+                onClick={this.reloadTrackAndMissions}
+                disabled={
+                  forToday ||
+                  this.props.disabledForToday ||
+                  disbledByTrackPlayStatys ||
+                  !!errorDates
+                }>
+                <EtsBootstrap.Glyphicon glyph="repeat" />
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
+                title={`Сдвинуть период трека на ${daysIntoPeriod} дней назад`}
+                className="backward-button"
+                onClick={this.makeNewPeriodBackward}
+                disabled={forToday ||
+                  this.props.disabledForToday ||
+                  disbledByTrackPlayStatys ||
+                  !!errorDates}>
+                <EtsBootstrap.Glyphicon glyph="backward" />
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
+                title={`Сдвинуть период трека на ${daysIntoPeriod} дней вперёд`}
+                className="forward-button"
+                onClick={this.makeNewPeriodForward}
+                disabled={forToday ||
+                  this.props.disabledForToday ||
+                  disbledByTrackPlayStatys ||
+                  !!errorDates}>
+                <EtsBootstrap.Glyphicon glyph="forward" />
+              </EtsBootstrap.Button>
           </ButtonsRowMargin>
           <div className={'flex-line-unset'}>
             <ExtField

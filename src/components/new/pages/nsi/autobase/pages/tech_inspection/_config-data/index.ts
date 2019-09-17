@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Реестр техосмотров',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_tech_inspection',
 
   component,

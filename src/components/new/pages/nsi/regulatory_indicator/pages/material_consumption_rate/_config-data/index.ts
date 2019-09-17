@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Нормы на расход расходных материалов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'material_consumption_rate',
 
   component,

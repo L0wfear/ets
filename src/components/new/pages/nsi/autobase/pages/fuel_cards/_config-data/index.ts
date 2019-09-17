@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Реестр топливных карт',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'fuel_cards',
 
   component,

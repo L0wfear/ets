@@ -6,7 +6,7 @@ const inspection_container_page_config: ConfigPageData = {
   path: '/inspection/container',
   routePath: '/inspection/container/',
   title: 'container',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'inspect.container',
 
   checkHidden: (isShow, userData) => isShow && !userData.isOkrug,

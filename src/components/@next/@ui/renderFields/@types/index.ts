@@ -22,7 +22,7 @@ export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   type: 'select';
   clearable?: boolean;
   multi?: boolean,
-  options: any; // DefaultSelectOption<V, any, any>[] | any[];
+  options: any[]; // DefaultSelectOption<V, any, any>[] | any[];
   placeholder?: string;
 
   sortingFunction?: any;

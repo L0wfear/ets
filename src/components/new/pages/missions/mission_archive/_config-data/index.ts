@@ -7,7 +7,7 @@ export default {
   path: '/missions/missions_archive',
   routePath: `/missions/missions_archive/:${config.list.data.uniqKeyForParams}?/:type?`,
   title: 'Архив заданий',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'mission',
 
   component,

@@ -12,7 +12,7 @@ export const initialState: IStateFormDataRecord = {};
 const formDataRecord = (state = initialState, { type, payload }) => {
   switch (type) {
     case FORM_SET_DATA: {
-      console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey); // tslint:disable-line:no-console
+      console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey, payload.formData); // tslint:disable-line:no-console
       return {
         ...state,
         [payload.formKey]: payload.formData,

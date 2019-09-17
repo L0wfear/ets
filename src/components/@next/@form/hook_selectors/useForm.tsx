@@ -13,8 +13,7 @@ import {
   getFormDataCanSaveByKey,
   getFormDataFormStatePickValueByKey,
 } from 'redux-main/reducers/modules/form_data_record/selectors';
-import { actionChangeFormState, mapFormMeta } from 'redux-main/reducers/modules/form_data_record/actions';
-import { defaultAction } from 'redux-main/default.actions';
+import { actionChangeFormState, mapFormMeta, actionSubmitFormState } from 'redux-main/reducers/modules/form_data_record/actions';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 /* _______________ селекторы хуки _______________ */
@@ -106,25 +105,13 @@ const useFormDataMeta = <F extends Record<string, any> = any>(formDataKey: FormK
  * получение функции сабмита формы
  */
 const useFormDataHandleSubmitPromise = <F extends Record<string, any>>(formDataKey: FormKeys) => {
-  const handleSubmitPromise = mapFormMeta[formDataKey].handleSubmitPromise;
-  const formState = useFormDataFormState<F>(formDataKey);
-
-  const meta = useFormDataMeta<F>(formDataKey);
   const dispatch = etsUseDispatch();
 
   return React.useCallback(
     () => {
-      return dispatch(
-        defaultAction(
-          handleSubmitPromise(formState),
-          meta,
-        ),
-      );
+      return dispatch(actionSubmitFormState(formDataKey));
     },
-    [
-      formState,
-      meta,
-    ],
+    [],
   );
 };
 

@@ -17,7 +17,7 @@ export default {
   routePath,
   hiddenNav: true,
   title: 'Реестр ДТП',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_road_accident',
 
   component,

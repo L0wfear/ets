@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Операции для расчета топлива',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'fuel_operation',
 
   component,

@@ -1,5 +1,6 @@
 import { get, keyBy, uniqBy, uniq } from 'lodash';
 import { isBoolean, isNullOrUndefined } from 'util';
+
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 import {

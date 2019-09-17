@@ -7,7 +7,7 @@ export default {
   path: '/waybills',
   routePath: `/waybills/:${config.list.data.uniqKeyForParams}?/:type?`,
   title: 'Путевые листы',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'waybill',
 
   component,

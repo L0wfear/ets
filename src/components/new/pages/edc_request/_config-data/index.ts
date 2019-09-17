@@ -9,7 +9,7 @@ const edc_request_page_config: ConfigPageData = {
   path: '/edc_request',
   routePath: `/edc_request/:${config.list.data.uniqKeyForParams}?/:type?/:${getConfig([], 0).list.data.uniqKeyForParams}?`,
   title: 'Заявки',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'edc_request',
 
   component,

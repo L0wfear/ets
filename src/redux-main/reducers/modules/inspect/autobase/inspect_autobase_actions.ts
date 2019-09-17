@@ -14,10 +14,10 @@ import {
 } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_promise';
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
-import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectAutobase } from 'components/new/pages/inspection/autobase/form/view_inspect_autobase_form/utils';
 import { get } from 'lodash';
 import { actionsCarpool } from 'redux-main/reducers/modules/geoobject/actions_by_type/carpool/actions';
+import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
 
 export const actionSetInspectAutobase = (partailState: Partial<IStateInspectAutobase>): EtsAction<IStateInspectAutobase> => (dispatch, getState) => {
   const stateInspectAutobaseOld = getInspectAutobase(getState());

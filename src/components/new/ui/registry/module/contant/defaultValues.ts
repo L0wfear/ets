@@ -1,7 +1,7 @@
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { MAX_ITEMS_PER_PAGE } from 'constants/ui';
 
-const registryDefaultObj: OneRegistryData = {
+const registryDefaultObj: OneRegistryData<any> = {
   idRequestTime: 1,
   isLoading: false,
   Service: {

@@ -68,6 +68,13 @@ export const promiseGetNormsByParams = async (payload: PromiseGetNormPayload) =>
   return result;
 };
 
+export const promiseSubmitNorm = (norm: Norm) => {
+  if (!norm.id) {
+    throw new Error('не определена функция создания');
+  }
+  return promiseUpdateNorm(norm);
+};
+
 export const promiseUpdateNorm = (norm: Norm) => {
   return CleaningNormRegistryService.path(norm.id).put(
     getBackNorm(norm),

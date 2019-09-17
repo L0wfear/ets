@@ -6,7 +6,7 @@ const monitoring_autobase_page_config: ConfigPageData = {
   path: '/monitoring/autobase',
   routePath: '/monitoring/autobase/:id?/:type?',
   title: 'Обустройство автобаз',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'inspect.autobase',
 
   checkHidden: (isShow, userData) => isShow && !userData.isOkrug,

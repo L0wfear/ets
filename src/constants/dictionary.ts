@@ -28,7 +28,7 @@ export const GEOZONE_OBJECTS = [
   { value: 'dt', label: 'Дворовая территория' },
   { value: 'dest', label: 'Пункты назначения' },
   { value: 'all', label: 'Все объекты' },
-] as const;
+];
 
 export const GEOZONE_ELEMENTS = {
   odh: [

@@ -53,7 +53,7 @@ const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
           label="Единица измерения"
           value={state.measure_unit_id}
           error={errors.measure_unit_id}
-          options={measureUnitOperationOptions}
+          options={measureUnitOperationOptions.options}
           onChange={props.handleChange}
           boundKeys="measure_unit_id"
           disabled={!isPermitted}

@@ -15,7 +15,7 @@ const technical_operation_relations_page_config: ConfigPageData = {
   path,
   routePath,
   title: 'Сводная форма связей',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'technical_operation_relations',
 
   component,

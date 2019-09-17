@@ -7,6 +7,7 @@ import * as ClickOutHandler from 'react-onclickout';
 import { isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
 import { compose } from 'recompose';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class MainMenuItem extends React.Component<any, any> {
   node = React.createRef<any>();
@@ -58,7 +59,19 @@ class MainMenuItem extends React.Component<any, any> {
         <LinkNoHashFirstLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultFirstLvlMenu>
             <MenuTitleContainer>
-              { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+              { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
               {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
             </MenuTitleContainer>
           </DefaultFirstLvlMenu>
@@ -70,7 +83,19 @@ class MainMenuItem extends React.Component<any, any> {
       <LinkFirstLvl id={`link-${key}`} to={`${data.pathFormMenu || data.path || ''}`}>
         <DefaultFirstLvlMenu>
           <MenuTitleContainer>
-            { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
             {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
           </MenuTitleContainer>
         </DefaultFirstLvlMenu>

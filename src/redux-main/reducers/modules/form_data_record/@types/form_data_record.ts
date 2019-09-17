@@ -6,6 +6,7 @@ export type FormKeys = (
   'maintenance_work'
   | 'inspect_one_act_scan'
   | 'consumable_material'
+  | 'norm'
 );
 
 export type OneFormDataByKey<F extends Record<string, any>> = {

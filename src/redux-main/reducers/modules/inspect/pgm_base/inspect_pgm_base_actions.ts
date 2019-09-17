@@ -14,10 +14,10 @@ import {
 } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_promise';
 import { actionUpdateInspect } from 'redux-main/reducers/modules/inspect/inspect_actions';
 import { getTodayCompletedInspect, getTodayConductingInspect } from '../inspect_utils';
-import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { defaultInspectPgmBase } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/utils';
 import { get } from 'lodash';
 import { actionsPgmStore } from 'redux-main/reducers/modules/geoobject/actions_by_type/pgm_store/actions';
+import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
 
 export const actionSetInspectPgmBase = (partailState: Partial<IStateInspectPgmBase>): EtsAction<IStateInspectPgmBase> => (dispatch, getState) => {
   const stateInspectPgmBaseOld = getInspectPgmBase(getState());

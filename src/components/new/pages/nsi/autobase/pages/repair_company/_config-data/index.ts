@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Реестр ремонтных организаций',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_company',
 
   component,

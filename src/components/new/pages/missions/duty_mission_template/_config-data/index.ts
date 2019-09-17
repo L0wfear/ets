@@ -8,7 +8,7 @@ const missions_duty_mission_templates_page_config: ConfigPageData = {
   path: '/missions/duty_mission_templates',
   routePath: `/missions/duty_mission_templates/:${config.list.data.uniqKeyForParams}?/:type?`,
   title: 'Шаблоны наряд-заданий',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'duty_mission-template',
 
   component,

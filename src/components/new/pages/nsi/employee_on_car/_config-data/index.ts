@@ -17,7 +17,7 @@ export default {
   path,
   routePath,
   title: 'Матрица распределения ТС и водителей',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'employee_on_car',
 
   component,

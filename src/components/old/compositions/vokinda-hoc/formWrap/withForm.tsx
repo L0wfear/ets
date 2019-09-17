@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isFunction, isString, isBoolean, isObject, isArray } from 'util';
+import { isFunction, isString, isBoolean } from 'util';
 import { compose, withProps } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 
@@ -15,6 +15,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 import { canSaveTest } from 'components/@next/@form/validate/validate';
+import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -106,25 +107,6 @@ const getInitState = (propsForm: WithFormProps<any>, configForm: any, hasDataFor
     canSave: canSaveTest(formErrors),
     hasData: hasDataForm,
   };
-};
-
-export const removeEmptyString = (formState: any) => {
-  Object.keys(formState).forEach((key) => {
-    if (formState[key] === '') {
-      formState[key] = null;
-      return;
-    }
-
-    if (isObject(formState[key])) {
-      removeEmptyString(formState[key]);
-      return;
-    }
-    if (isArray(formState[key]) && isObject(formState[key][0])) {
-      formState[key].forEach((obj) => {
-        removeEmptyString(obj);
-      });
-    }
-  });
 };
 
 const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithFormProps<P>, F>) => (Component) => (

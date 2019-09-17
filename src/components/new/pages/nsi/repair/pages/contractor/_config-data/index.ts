@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Справочник подрядчиков',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'repair_contractor',
 
   component,

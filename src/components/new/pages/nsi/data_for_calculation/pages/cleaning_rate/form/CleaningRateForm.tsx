@@ -83,7 +83,7 @@ const CleaningRateForm: React.FC<PropsCleaningRate> = React.memo(
           <ExtField
             type="select"
             label="Единица измерения"
-            options={measureUnitOptions}
+            options={measureUnitOptions.options}
             value={state.measure_unit_id}
             error={errors.measure_unit_id}
             onChange={props.handleChange}

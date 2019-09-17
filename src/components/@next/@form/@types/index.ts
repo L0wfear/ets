@@ -72,7 +72,7 @@ export type AnyField<F extends Record<string, any>, K extends keyof F = keyof F>
 
 export type SchemaFormContextBody<F extends Record<string, any>> = {
   validate_fields: {
-    [K in Extract<keyof F, string>]?: (
+    [K in keyof F]?: (
       StringField<F, K>
       | SchemaField<F, K>
       | ValueOfArrayField<F, K>

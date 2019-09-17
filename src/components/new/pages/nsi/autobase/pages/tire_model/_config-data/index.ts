@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Модели шин',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_tire_model',
 
   component,

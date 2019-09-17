@@ -37,7 +37,7 @@ export const removeEmptyString = <F extends Record<string, any>>(formState: F) =
   });
 };
 
-const getFormatedValue = <F extends Record<string, any>>(fieldMetaData: SchemaFormContextBody<F>['validate_fields'][any], value: any, strick?: boolean) => {
+export const getFormatedValue = <F extends Record<string, any>>(fieldMetaData: SchemaFormContextBody<F>['validate_fields'][any], value: any, strick?: boolean) => {
   if (fieldMetaData) {
     switch (fieldMetaData.type) {
       case 'number':
@@ -137,7 +137,7 @@ export const actionSubmitFormState = <F extends Record<string, any>>(formKey: Fo
         const key: keyof F = validateFieldEntrie[0];
         const validateFieldData = validateFieldEntrie[1];
 
-        formState[key] = getFormatedValue(validateFieldData, formState[key]);
+        formState[key] = getFormatedValue(validateFieldData, formState[key], true);
 
       },
     );

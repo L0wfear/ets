@@ -97,21 +97,38 @@ class TitleTrackTab extends React.Component<
         ...this.props,
         [field]: value,
       };
-      let errorDates = '';
+      const errorDates = this.validateDates(dates.date_start, dates.date_end);
 
-      if (diffDates(dates.date_end, dates.date_start, 'minutes', false) <= 0) {
-        errorDates = 'Дата начала должна быть раньше даты окончания';
-      } else if (
-        diffDates(dates.date_end, dates.date_start, 'days') >
-        (process.env.STAND === 'prod' ? 10 : 30)
-      ) {
-        errorDates = `Период формирования трека не должен превышать ${
-          process.env.STAND === 'prod' ? 10 : 30
-        } суток`;
-      } else {
-        errorDates = '';
-      }
       this.props.changeDate(field, value);
+      if (errorDates !== this.state.errorDates) {
+        this.setState({ errorDates });
+      }
+    }
+  };
+
+  validateDates = (date_start, date_end) => {
+    let errorDates = '';
+    if (diffDates(date_end, date_start, 'minutes', false) <= 0) {
+      errorDates = 'Дата начала должна быть раньше даты окончания';
+    } else if (
+      diffDates(date_end, date_start, 'days') >
+      (process.env.STAND === 'prod' ? 10 : 30)
+    ) {
+      errorDates = `Период формирования трека не должен превышать ${
+        process.env.STAND === 'prod' ? 10 : 30
+      } суток`;
+    } else {
+      errorDates = '';
+    }
+
+    return errorDates;
+  }
+
+  handleChangeDateStartEnd = (date_start, date_end) => {
+    if (date_start && date_end) {
+      this.props.changeDate('date_start', date_start);
+      this.props.changeDate('date_end', date_end);
+      const errorDates = this.validateDates(date_start, date_end);
       if (errorDates !== this.state.errorDates) {
         this.setState({ errorDates });
       }
@@ -136,19 +153,15 @@ class TitleTrackTab extends React.Component<
 
     newDateStart = minusTime(this.props.date_start, 10, 'days');
     newDateEnd = this.props.date_start;
-    this.handleChangeDate('date_start', newDateStart);
+    this.handleChangeDateStartEnd(newDateStart, newDateEnd);
     setTimeout(() => {
-      this.handleChangeDate('date_end', newDateEnd);
-
       if (!(this.props.forToday ||
         this.props.disabledForToday ||
         this.props.status !== 'stop' ||
         !!this.state.errorDates)) {
           this.reloadTrackAndMissions();
       }
-
     }, 0);
-
   };
 
   makeNewPeriodForward: any = () => {
@@ -158,9 +171,8 @@ class TitleTrackTab extends React.Component<
     newDateStart = addTime(this.props.date_start, 10, 'days');
     newDateEnd = addTime(this.props.date_start, 20, 'days');
 
-    this.handleChangeDate('date_end', newDateEnd);
+    this.handleChangeDateStartEnd(newDateStart, newDateEnd);
     setTimeout(() => {
-      this.handleChangeDate('date_start', newDateStart);
       if (!(this.props.forToday ||
         this.props.disabledForToday ||
         this.props.status !== 'stop' ||

@@ -26,7 +26,6 @@ export const initialState: IStateSomeUniq = {
     list: [],
     byId: null,
   },
-  consumptionRateMaterialList: [],
   workKindList: [],
   technicalOperationObjectsList: [],
   technicalOperationTypesList: [],

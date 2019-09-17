@@ -279,7 +279,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
                   if (valueNumberString || valueNumberString === 0) {
                     const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
                     if (!isNaN(Number(valueReplaced))) {
-                      if (valueReplaced.match(/^.\d*$/)) {
+                      if (valueReplaced.match(/^\.\d*$/)) {
                         newValue = `0${valueReplaced}`;
                       }
                       newValue = valueReplaced;

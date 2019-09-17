@@ -6,9 +6,7 @@ import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseD
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 /* --------------- обновление стора --------------- */
-export const actionSetCleanCategories = (
-  cleanCategoriesList: IStateSomeUniq['cleanCategoriesList'],
-) => (dispatch) =>
+export const actionSetCleanCategories = (cleanCategoriesList: IStateSomeUniq['cleanCategoriesList']): EtsAction<ReturnType<typeof someUniqSetNewData>> => (dispatch) =>
   dispatch(
     someUniqSetNewData({
       cleanCategoriesList,

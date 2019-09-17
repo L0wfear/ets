@@ -6,7 +6,6 @@ import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenan
 import { CleanCategories } from 'redux-main/reducers/modules/some_uniq/clean_categories/@types';
 import { GeozoneMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/geozone_municipal_facility/@types';
 import { GeozoneMunicipalFacilityById } from 'redux-main/trash-actions/geometry/geometry.h';
-import { ConsumptionRateMaterial } from 'redux-main/reducers/modules/some_uniq/material_consumption_rate/@types';
 import { WorkKind } from '../work_kind/@types/work_kind';
 import { TechnicalOperationObjects } from '../technical_operation_objects/@types/technical_operation_objects';
 import { TechnicalOperationTypes } from '../technical_operation_types/@types/technical_operation_types';
@@ -54,7 +53,6 @@ export type IStateSomeUniq = {
     list: GeozoneMunicipalFacility[];
     byId: GeozoneMunicipalFacilityById | null;
   };
-  consumptionRateMaterialList: ConsumptionRateMaterial[];
   workKindList: WorkKind[];
   technicalOperationObjectsList: TechnicalOperationObjects[];
   technicalOperationTypesList: TechnicalOperationTypes[];

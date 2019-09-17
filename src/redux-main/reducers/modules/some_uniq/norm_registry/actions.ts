@@ -15,7 +15,7 @@ export const actionSetSensorType = (normList: IStateSomeUniq['normList']): EtsAc
 
   return normList;
 };
-export const actionResetSensorType = (): EtsAction<IStateSomeUniq['normList']> => (dispatch) => {
+export const actionResetNormList = (): EtsAction<IStateSomeUniq['normList']> => (dispatch) => {
   const normList = dispatch(
     actionSetSensorType([]),
   );

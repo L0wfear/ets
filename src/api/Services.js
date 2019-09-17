@@ -149,9 +149,6 @@ export const ConsumableMaterialService = ETS_API_FACTORY.createApiServiceAdapter
 export const MeasureUnitService = ETS_API_FACTORY.createApiServiceAdapter(
   'measure_unit',
 );
-export const MaterialConsumptionRateService = ETS_API_FACTORY.createApiServiceAdapter(
-  'material_consumption_rate',
-);
 export const CleanCategoriesService = ETS_API_FACTORY.createApiServiceAdapter(
   'clean_categories',
 );
@@ -400,4 +397,8 @@ export const CarsTravelTimeDetailService = ETS_API_FACTORY.createApiServiceAdapt
 
 export const EdcRequestInfoDetailService = ETS_API_FACTORY.createApiServiceAdapter(
   'edc/request',
+);
+
+export const CleaningAreaRateService = ETS_API_FACTORY.createApiServiceAdapter(
+  'cleaning_area_rate',
 );

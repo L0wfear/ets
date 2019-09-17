@@ -1,24 +1,21 @@
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
-import fuelRatesPermissions from './permissions';
-import { MaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
+import { CleaningAreaRate } from 'redux-main/reducers/modules/cleaning_area_rate/@types/cleaningAreaRate';
+import cleaningAreaRatePermissions from './permissions';
+import { CleaningAreaRateService } from 'api/Services';
 
-export const registryKey = 'MaterialConsumptionRateRegistry';
+export const registryKey = 'CleaningAreaRateRegistry';
 
-export const getToConfig = (): TypeConfigData<MaterialConsumptionRate> => {
+export const getToConfig = (): TypeConfigData<CleaningAreaRate> => {
   return {
     Service: {
       getRegistryData: {
-        entity: 'material_consumption_rate',
-      },
-      removeOneData: {
-        entity: 'material_consumption_rate',
-        uniqKeyLikeQueryString: false,
+        entity: CleaningAreaRateService._path,
       },
     },
     registryKey,
     header: {
-      title: 'Справочник норм на расход расходных материалов',
+      title: 'Коэффициенты площади уборки',
       buttons: [
         buttonsTypes.filter,
         buttonsTypes.create,
@@ -36,43 +33,37 @@ export const getToConfig = (): TypeConfigData<MaterialConsumptionRate> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'consumable_material_id',
-          labelKey: 'consumable_material_name',
-          title: 'Расходный материал',
-          type: 'multiselect',
-        },
-        {
-          valueKey: 'season_id',
-          labelKey: 'season_name',
-          title: 'Сезон',
+          valueKey: 'municipal_facility_id',
+          labelKey: 'municipal_facility_name',
+          title: 'Элемент',
           type: 'multiselect',
         },
         {
           valueKey: 'clean_category_id',
           labelKey: 'clean_category_name',
-          title: 'Категория',
+          title: 'Категория ОДХ',
           type: 'multiselect',
         },
         {
           valueKey: 'clean_subcategory_id',
           labelKey: 'clean_subcategory_name',
-          title: 'Подкатегория',
+          title: 'Подкатегория ОДХ',
           type: 'multiselect',
         },
         {
           valueKey: 'value',
-          title: 'Норма',
+          title: 'Коэффициент площади уборки',
           type: 'advanced-number',
-          step: 0.001,
+          step: 0.01,
         },
       ],
     },
     list: {
-      permissions: fuelRatesPermissions,
+      permissions: cleaningAreaRatePermissions,
       data: {
         uniqKey: 'id',
         fixedWidth: true,
-        uniqKeyForParams: 'material_consumption_rates_registry_id',
+        uniqKeyForParams: 'cleaning_area_rates_registry_id',
       },
       meta: {
         fields: [
@@ -83,33 +74,27 @@ export const getToConfig = (): TypeConfigData<MaterialConsumptionRate> => {
           {
             key: 'technical_operation_name',
             title: 'Технологическая операция',
-            width: 250,
+            width: 225,
           },
           {
-            key: 'consumable_material_name',
-            title: 'Расходный материал',
+            key: 'municipal_facility_name',
+            title: 'Элемент',
             width: 200,
           },
           {
-            key: 'season_name',
-            title: 'Сезон',
-            width: 100,
-          },
-          {
             key: 'clean_category_name',
-            title: 'Категория',
-            width: 100,
+            title: 'Категория ОДХ',
+            width: 200,
           },
           {
             key: 'clean_subcategory_name',
-            title: 'Подкатегория',
+            title: 'Подкатегория ОДХ',
             width: 200,
           },
           {
             key: 'value',
-            title: 'Норма',
-            width: 100,
-            format: 'toFixed3',
+            title: 'Коэффициент площади уборки',
+            width: 250,
           },
         ],
       },

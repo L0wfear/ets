@@ -16,6 +16,7 @@ import { metaNorm } from 'redux-main/reducers/modules/form_data_record/form_data
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { defaultAction } from 'redux-main/default.actions';
 import { SchemaFormContextBody } from 'components/@next/@form/@types';
+import { metaCleaningAreaRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_area_rate/form_meta';
 
 export const removeEmptyString = <F extends Record<string, any>>(formState: F) => {
   Object.keys(formState).forEach((key: keyof F) => {
@@ -35,6 +36,7 @@ export const removeEmptyString = <F extends Record<string, any>>(formState: F) =
     }
   });
 };
+
 const getFormatedValue = <F extends Record<string, any>>(fieldMetaData: SchemaFormContextBody<F>['validate_fields'][any], value: any, strick?: boolean) => {
   if (fieldMetaData) {
     switch (fieldMetaData.type) {
@@ -47,7 +49,7 @@ const getFormatedValue = <F extends Record<string, any>>(fieldMetaData: SchemaFo
         if (valueNumberString || valueNumberString === 0) {
           const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
           if (!isNaN(Number(valueReplaced))) {
-            if (valueReplaced.match(/^.\d*$/)) {
+            if (valueReplaced.match(/^\.\d*$/)) {
               return `0${valueReplaced}`;
             }
           }
@@ -75,6 +77,7 @@ export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   inspect_one_act_scan: metaInspectOneActScan,
   consumable_material: metaConsumableMaterial,
   norm: metaNorm,
+  cleaning_area_rate: metaCleaningAreaRate,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({
@@ -99,6 +102,28 @@ export const actionChangeFormData = <F extends Record<string, any>>(formKey: For
     formData,
   },
 });
+
+export const actionUpdateFormErrors = <F extends Record<string, any>>(formKey: FormKeys): EtsAction<Promise<any>> => async (dispatch, getState) => {
+  const formMeta = mapFormMeta[formKey] as ConfigFormData<F>;
+  const formDataOld = getFormDataByKey<F>(getState(), formKey);
+
+  if (formDataOld) {
+    const formData = { ...formDataOld };
+
+    const formErrors = validate<F>(formMeta.schema.body.validate_fields, formData.formState, getState());
+    const canSave = canSaveTest(formErrors);
+
+    formData.formErrors = formErrors;
+    formData.canSave = canSave;
+
+    dispatch(
+      actionChangeFormData(
+        formKey,
+        formData,
+      ),
+    );
+  }
+};
 
 export const actionSubmitFormState = <F extends Record<string, any>>(formKey: FormKeys): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const formMeta = mapFormMeta[formKey] as ConfigFormData<F>;

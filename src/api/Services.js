@@ -322,7 +322,6 @@ export const CleaningOneNormService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 export const CleaningNormRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning/norm_registry',
-  {},
 );
 export const CleaningMunicipalFacilityService = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning/municipal_facility',

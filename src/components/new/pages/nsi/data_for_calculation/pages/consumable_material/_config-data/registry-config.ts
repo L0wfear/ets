@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import consumableMaterialPermissions from './permissions';
 import { ConsumableMaterialWrap } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
+import { ConsumableMaterialService } from 'api/Services';
 
 export const registryKey = 'consumableMaterialRegistry';
 
@@ -9,11 +10,11 @@ export const getToConfig = (): TypeConfigData<ConsumableMaterialWrap> => {
   return {
     Service: {
       getRegistryData: {
-        entity: 'consumable_material',
+        entity: ConsumableMaterialService._path,
         format: 'consumable_material_wrap',
       },
       removeOneData: {
-        entity: 'consumable_material',
+        entity: ConsumableMaterialService._path,
         uniqKeyLikeQueryString: false,
       },
     },

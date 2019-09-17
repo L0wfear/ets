@@ -2,13 +2,14 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/nsi/norm_registry/_config-data/permissions';
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
+import { CleaningNormRegistryService } from 'api/Services';
 
 export const registryKey = 'normRegistry';
 
 export const config: TypeConfigData<Norm> = {
   Service: {
     getRegistryData: {
-      entity: 'cleaning/norm_registry',
+      entity: CleaningNormRegistryService._path,
       format: 'normRegistry',
     },
   },

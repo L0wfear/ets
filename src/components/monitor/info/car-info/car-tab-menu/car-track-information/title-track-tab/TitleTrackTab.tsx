@@ -13,11 +13,12 @@ import {
 } from 'components/monitor/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
 import { initialState } from 'components/monitor/info/car-info/redux-main/modules/car-info';
-import { diffDates } from 'utils/dates';
+import { diffDates, addTime, minusTime, } from 'utils/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
 import { CAR_INFO_SET_TRACK_CACHING } from 'components/monitor/info/car-info/redux-main/modules/car-info';
+import { ButtonsRowMargin } from 'components/monitor/info/car-info/car-tab-menu/styled';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -129,10 +130,51 @@ class TitleTrackTab extends React.Component<
     this.props.fetchTrack(payload);
   };
 
+  makeNewPeriodBackward: any = () => {
+    let newDateStart: any = this.props.date_start;
+    let newDateEnd: any = this.props.date_end;
+
+    newDateStart = minusTime(this.props.date_start, 10, 'days');
+    newDateEnd = this.props.date_start;
+    this.handleChangeDate('date_start', newDateStart);
+    setTimeout(() => {
+      this.handleChangeDate('date_end', newDateEnd);
+
+      if (!(this.props.forToday ||
+        this.props.disabledForToday ||
+        this.props.status !== 'stop' ||
+        !!this.state.errorDates)) {
+          this.reloadTrackAndMissions();
+      }
+
+    }, 0);
+
+  };
+
+  makeNewPeriodForward: any = () => {
+    let newDateStart: any = this.props.date_start;
+    let newDateEnd: any = this.props.date_end;
+
+    newDateStart = addTime(this.props.date_start, 10, 'days');
+    newDateEnd = addTime(this.props.date_start, 20, 'days');
+
+    this.handleChangeDate('date_end', newDateEnd);
+    setTimeout(() => {
+      this.handleChangeDate('date_start', newDateStart);
+      if (!(this.props.forToday ||
+        this.props.disabledForToday ||
+        this.props.status !== 'stop' ||
+        !!this.state.errorDates)) {
+          this.reloadTrackAndMissions();
+      }
+    }, 0);
+  };
+
   render() {
     const { forToday } = this.props;
     const disbledByTrackPlayStatys = this.props.status !== 'stop';
     const { errorDates } = this.state;
+    const daysIntoPeriod = 10;
 
     return (
       <div className="car_info_block column tab-data">
@@ -155,6 +197,40 @@ class TitleTrackTab extends React.Component<
           </div>
         </div>
         <div className="car_info-track_date_control">
+          <ButtonsRowMargin>
+            <Button
+              title="Перезагрузить данные"
+              className="reload-button"
+              onClick={this.reloadTrackAndMissions}
+              disabled={
+                forToday ||
+                this.props.disabledForToday ||
+                disbledByTrackPlayStatys ||
+                !!errorDates
+              }>
+              <Glyphicon glyph="repeat" />
+            </Button>
+            <Button
+              title={`Сдвинуть период трека на ${daysIntoPeriod} дней назад`}
+              className="backward-button"
+              onClick={this.makeNewPeriodBackward}
+              disabled={forToday ||
+                this.props.disabledForToday ||
+                disbledByTrackPlayStatys ||
+                !!errorDates}>
+              <Glyphicon glyph="backward" />
+            </Button>
+            <Button
+              title={`Сдвинуть период трека на ${daysIntoPeriod} дней вперёд`}
+              className="forward-button"
+              onClick={this.makeNewPeriodForward}
+              disabled={forToday ||
+                this.props.disabledForToday ||
+                disbledByTrackPlayStatys ||
+                !!errorDates}>
+              <Glyphicon glyph="forward" />
+            </Button>
+          </ButtonsRowMargin>
           <div className={'flex-line-unset'}>
             <ExtField
               type={'date'}
@@ -173,18 +249,6 @@ class TitleTrackTab extends React.Component<
               boundKeys="date_end"
               disabled={forToday || this.props.disabledForToday}
             />
-            <Button
-              title="Перезагрузить данные"
-              className="reload-button"
-              onClick={this.reloadTrackAndMissions}
-              disabled={
-                forToday ||
-                this.props.disabledForToday ||
-                disbledByTrackPlayStatys ||
-                !!errorDates
-              }>
-              <Glyphicon glyph="repeat" />
-            </Button>
           </div>
           <div>
             <span className={'error'}>{errorDates}</span>

@@ -1,7 +1,7 @@
 export type FuelOperation = (
   FuelOperationActive
   & {
-    is_active: boolean;
+    is_active?: boolean;
   }
 );
 

@@ -3,6 +3,7 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import fuelOperationsPermissions from './permissions';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
 import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import { FuelOperationsService } from 'api/Services';
 
 export const registryKey = 'fuelOperationsRegistry';
 
@@ -10,17 +11,17 @@ export const getToConfig = (): TypeConfigData<FuelOperationActive> => {
   return {
     Service: {
       getRegistryData: {
-        entity: 'fuel_operations',
+        entity: FuelOperationsService._path,
         payload: {
           is_active: true,
         },
       },
       removeOneData: {
-        entity: 'fuel_operations',
+        entity: FuelOperationsService._path,
         uniqKeyLikeQueryString: true,
       },
       getBlobData: {
-        entity: 'fuel_operations',
+        entity: FuelOperationsService._path,
         payload: {
           is_active: true,
           format: 'xls',

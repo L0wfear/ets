@@ -1,13 +1,12 @@
 import * as React from 'react';
-import { get } from 'lodash';
+import { cloneDeep, get } from 'lodash';
 import { isFunction, isString, isBoolean } from 'util';
 import { compose, withProps } from 'recompose';
 import { connect, DispatchProp } from 'react-redux';
 
-import { SchemaType, FormErrorType, PropertieFieldValidatorArrType } from 'components/old/ui/form/new/@types/validate.h';
+import { SchemaType, FormErrorType, PropertieType } from 'components/old/ui/form/new/@types/validate.h';
 import { validate } from 'components/old/ui/form/new/validate';
 import { ReduxState } from 'redux-main/@types/state';
-import { createValidDateTime, createValidDate } from 'components/@next/@utils/dates/dates';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -15,7 +14,7 @@ import { getSessionState } from 'redux-main/reducers/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 import { canSaveTest } from 'components/@next/@form/validate/validate';
-import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
+import { removeEmptyString, getFormatedValue } from 'redux-main/reducers/modules/form_data_record/actions';
 
 /**
  * @params uniqField - уникальный ключ формы
@@ -270,42 +269,7 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
 
         this.setState(({ formState: { ...formState } }) => {
           Object.entries(objChangeItareble).forEach(([key, value]) => {
-            let newValue = value;
-            if (key in config.schema.properties) {
-              switch (config.schema.properties[key].type as PropertieFieldValidatorArrType<F, WithFormProps<P>>['type']) {
-                case 'number':
-                  const valueNumberString: number | string = (value as number | string);
-
-                  if (valueNumberString || valueNumberString === 0) {
-                    const valueReplaced = valueNumberString.toString().replace(/,/g, '.');
-                    if (!isNaN(Number(valueReplaced))) {
-                      if (valueReplaced.match(/^\.\d*$/)) {
-                        newValue = `0${valueReplaced}`;
-                      }
-                      newValue = valueReplaced;
-                    } else {
-                      newValue = valueReplaced;
-                    }
-                  } else {
-                    newValue = null;
-                  }
-                  break;
-                case 'string':
-                case 'boolean':
-                  newValue = value;
-                  break;
-                case 'date':
-                  newValue = createValidDate(value);
-                  break;
-                case 'datetime':
-                  newValue = createValidDateTime(value);
-                  break;
-                default:
-                  newValue = Boolean(value) || value === 0 ? value : null;
-              }
-            }
-            formState[key] = newValue;
-
+            formState[key] = getFormatedValue(config.schema.properties[key], value);
             console.log('FORM CHANGE STATE', key, formState[key]); // tslint:disable-line:no-console
           });
 
@@ -453,22 +417,15 @@ const withForm = <P extends WithFormConfigProps, F>(config: ConfigWithForm<WithF
       }
 
       defaultSubmit: FormWithDefaultSubmit = async () => {
-        const formatedFormState = { ...this.state.formState };
-        Object.entries(config.schema.properties).forEach(([key, { type }]: any) => {
-          let value: any = formatedFormState[key];
+        const formatedFormState = cloneDeep(this.state.formState);
+        Object.entries(config.schema.properties).forEach(
+          (validateFieldEntrie) => {
+            const key = validateFieldEntrie[0] as keyof F;
+            const validateFieldData = validateFieldEntrie[1] as PropertieType<F, any>;
 
-          if (type === 'number' && value) {
-            value = Number(value);
-          }
-
-          if (type === 'date' && value) {
-            value = createValidDate(value);
-          }
-          if (type === 'datetime' && value) {
-            value = createValidDateTime(value);
-          }
-          formatedFormState[key] = value;
-        });
+            formatedFormState[key] = getFormatedValue(validateFieldData as any, formatedFormState[key], true);
+          },
+        );
 
         removeEmptyString(formatedFormState);
 

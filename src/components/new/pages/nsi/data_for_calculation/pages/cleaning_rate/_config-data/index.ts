@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Показатели для расчета эффективности работы бригад',
-  isNewRegistry: false,
+  isNewRegistry: true,
   entyity: 'cleaning_rate',
 
   component,

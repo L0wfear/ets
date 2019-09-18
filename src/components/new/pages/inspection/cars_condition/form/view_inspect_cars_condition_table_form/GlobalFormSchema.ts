@@ -12,5 +12,10 @@ export const globalFormShema: GlobalFormSchemaType = {
       key: 'inspectId',
       required: true,
     },
+    {
+      type: 'string',
+      key: 'showCreateBtn',
+      required: true,
+    },
   ],
 };

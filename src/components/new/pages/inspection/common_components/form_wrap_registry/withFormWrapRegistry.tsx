@@ -62,11 +62,13 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
 
   const onFormHide = React.useCallback(
     () => {
-      props.globalFormShema.dataInSearchKeyList.forEach((elem) => {
-        props.setDataInSearch({
-          [elem.key]: null,
-        });
-      });
+      if (props.globalFormShema.dataInSearchKeyList.length) {
+        const resetObj = props.globalFormShema.dataInSearchKeyList.reduce((accElem, currentElem) => ({
+          ...accElem,
+          [currentElem.key]: null,
+        }), {});
+        props.setDataInSearch(resetObj);
+      }
     },
     [showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams],
   );

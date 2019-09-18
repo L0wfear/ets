@@ -4,8 +4,12 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
 import { registryAddNewRow } from 'components/new/ui/registry/module/actions-registy';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { get } from 'lodash';
 
-type Props = CommonTypesForButton & {};
+type Props = CommonTypesForButton
+& {} &  WithSearchProps;
 
 const ButtonAddNewRowTable: React.FC<Props> = React.memo(
   (props) => {
@@ -20,7 +24,9 @@ const ButtonAddNewRowTable: React.FC<Props> = React.memo(
       [props.registryKey],
     );
 
-    return (
+    const showCreateBtn =  get(props, 'searchState.showCreateBtn', null);
+
+    return showCreateBtn && (
       <React.Fragment>
         <EtsBootstrap.Button
           id="add-new-row-btn"
@@ -35,4 +41,4 @@ const ButtonAddNewRowTable: React.FC<Props> = React.memo(
   },
 );
 
-export default ButtonAddNewRowTable;
+export default withSearch(ButtonAddNewRowTable);

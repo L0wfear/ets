@@ -1146,6 +1146,7 @@ export const registrySelectRow: any = (registryKey, selectedRow) => async (dispa
   const uniqKeyCurrent = get(list, 'data.uniqKey', null);
   const prevSelectedRowKeyVal = get(list, `data.selectedRow.${uniqKeyCurrent}`, 1);
   const prevSelectedRow = get(list, `data.selectedRow`, null);
+  const is_render_field = get(list, `meta.is_render_field`, null);
 
   const isEqualSelectedRow = uniqKeyCurrent && get(selectedRow, `${uniqKeyCurrent}`, 0) === prevSelectedRowKeyVal;
   const selectedRowObj = {
@@ -1166,7 +1167,7 @@ export const registrySelectRow: any = (registryKey, selectedRow) => async (dispa
     },
   };
 
-  if (!isEqualSelectedRow) {
+  if (!isEqualSelectedRow && is_render_field) {
     await registrySelectRowWithPutRequest(
       {
         prev: selectedRowObjPrev,
@@ -1179,16 +1180,16 @@ export const registrySelectRow: any = (registryKey, selectedRow) => async (dispa
       },
       dispatch, getState,
     );
+  } else {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...selectedRowObj,
+        },
+      ),
+    );
   }
-
-  // dispatch(
-  //   registryChangeListData(
-  //     registryKey,
-  //     {
-  //       ...selectedRowObj,
-  //     },
-  //   ),
-  // );
 
   const children = get(selectedRow, 'children', null);
 

@@ -84,7 +84,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
     return (
       <BoxContainer>
         <h4>Выбор ТС для просмотра карточки</h4>
-        <ButtonShowTableForm loadingPage={props.loadingPage} />
+        <ButtonShowTableForm loadingPage={props.loadingPage} showCreateBtn={showCreateBtn} />
         <div>
           <span>Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице</span>
         </div>

@@ -10,6 +10,7 @@ export type ButtonShowTableFormDispatchProps = {
 };
 export type ButtonShowTableFormOwnProps = {
   loadingPage: string;
+  showCreateBtn: boolean;
 };
 
 export type ButtonShowTableFormMergedProps = (

@@ -20,13 +20,14 @@ const ButtonShowTableForm: React.FC<ButtonShowTableFormProps> = (props) => {
         props.setDataInSearch({
           showFormType: 'showTableForm',
           inspectId,
+          showCreateBtn: props.showCreateBtn ? 'showCreateBtn' : null,
         });
       }
     },
     [props.match.params, props.match.url, props.location.search, props.setParams],
   );
 
-  return props.isPermitted && (
+  return (
     <EtsBootstrap.Button onClick={handleClickShowTableForm}>
       <EtsBootstrap.Glyphicon glyph="list-alt"/>
       Открыть форму заполнения

@@ -4,18 +4,25 @@ import { get } from 'lodash';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 type Props<F extends Record<string, any>> = {
-  field_name: AllowedNames<F, string | number>;
+  field_name: AllowedNames<F, number>;
+  field_label?: AllowedNames<F, string>;
   name: string;
 
   disabled?: boolean;
   formDataKey: FormKeys;
+
+  hookGetOptionsData: (meta: LoadingMeta) => { isLoading: boolean; options: Array<{ value: number; label: string; }>}
+  clearable?: boolean;
+  multi?: boolean;
 };
 
 const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): React.ReactElement => {
-  const { path } = useForm.useFormDataMeta<F>(props.formDataKey);
+  const meta = useForm.useFormDataMeta<F>(props.formDataKey);
   const formStateValue = useForm.useFormDataFormStatePickValue<F, string>(props.formDataKey, props.field_name);
+  const value_string = useForm.useFormDataFormStatePickValue<F, string>(props.formDataKey, props.field_name);
   const error = useForm.useFormDataFormErrorsPickValue<F, string>(props.formDataKey, props.field_name);
   const handleChange = useForm.useFormDataHandleChange<F>(props.formDataKey);
   const isPermitted = useForm.useFormDataIsPermitted<F>(props.formDataKey);
@@ -31,15 +38,23 @@ const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): Rea
     [handleChange, props.field_name],
   );
 
+  const measureUnitOptionsData = props.hookGetOptionsData(meta);
+
   return (
     <ExtField
-      id={`${path}_${props.field_name}`}
-      type="string"
+      id={`${meta.path}_${props.field_name}`}
+      type="select"
+      clearable={props.clearable}
+      multi={props.multi}
       label={props.name}
       value={formStateValue}
       error={error}
+      options={measureUnitOptionsData.options}
       onChange={handleChangeWrap}
-      disabled={!isPermitted || props.disabled}
+      disabled={!isPermitted}
+
+      etsIsLoading={measureUnitOptionsData.isLoading}
+      value_string={value_string}
     />
   );
 };

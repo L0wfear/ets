@@ -29,10 +29,10 @@ const MaintenanceWorkForm: React.FC<Props> = React.memo(
       <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
         <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
-          <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} field_label="Наименование" field_name="name" />
+          <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} name="Наименование" field_name="name" />
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>
-              <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} field_label="Сокращенное наименование" field_name="name" />
+              <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} name="Сокращенное наименование" field_name="name" />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
               <FieldMeasureUnitId formDataKey={formDataKey} />

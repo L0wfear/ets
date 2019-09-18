@@ -32,7 +32,7 @@ const CleaningRateForm: React.FC<Props> = React.memo(
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
           <FieldTechnicalOperationId formDataKey={formDataKey} />
           <FieldProperty formDataKey={formDataKey} />
-          <DefaultFieldString<CleaningRate> formDataKey={formDataKey} field_label="Коэффициент" field_name="value" />
+          <DefaultFieldString<CleaningRate> formDataKey={formDataKey} name="Коэффициент" field_name="value" />
           <FieldMeasureUnitId formDataKey={formDataKey} />
         </ModalBodyPreloader>
         <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />

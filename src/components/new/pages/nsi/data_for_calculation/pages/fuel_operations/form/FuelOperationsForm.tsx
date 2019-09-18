@@ -30,10 +30,10 @@ const FuelOperationsForm: React.FC<Props> = React.memo(
       <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
         <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
-          <DefaultFieldString<FuelOperationActive> formDataKey={formDataKey} field_label="Операция" field_name="name" />
+          <DefaultFieldString<FuelOperationActive> formDataKey={formDataKey} name="Операция" field_name="name" />
           <FieldMeasureUnitId formDataKey={formDataKey} />
-          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} field_label="Без учета пробега" field_name="is_excluding_mileage" />
-          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} field_label="Для спецоборудования" field_name="equipment" />
+          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} name="Без учета пробега" field_name="is_excluding_mileage" />
+          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} name="Для спецоборудования" field_name="equipment" />
         </ModalBodyPreloader>
         <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />
       </EtsBootstrap.ModalContainer>

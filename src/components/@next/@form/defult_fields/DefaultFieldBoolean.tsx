@@ -7,7 +7,7 @@ import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/fo
 
 type Props<F extends Record<string, any>> = {
   field_name: AllowedNames<F, boolean>;
-  field_label: string;
+  name: string;
 
   disabled?: boolean;
   formDataKey: FormKeys;
@@ -35,7 +35,7 @@ const DefaultFieldBoolean = <F extends Record<string, any>>(props: Props<F>): Re
     <ExtField
       id={`${path}_${props.field_name}`}
       type="boolean"
-      label={props.field_label}
+      label={props.name}
       value={formStateValue}
       error={error}
       onChange={handleChangeWrap}

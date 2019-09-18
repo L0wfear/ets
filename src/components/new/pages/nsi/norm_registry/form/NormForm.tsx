@@ -37,25 +37,25 @@ const NormForm: React.FC<Props> = React.memo(
 
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={3}>
-              <DefaultFieldString<Norm> formDataKey={formDataKey} field_label="Наименование" field_name="name" disabled />
+              <DefaultFieldString<Norm> formDataKey={formDataKey} name="Наименование" field_name="name" disabled />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={3}>
-              <DefaultFieldString<Norm> formDataKey={formDataKey} field_label="Элемент" field_name="elements_text" disabled />
+              <DefaultFieldString<Norm> formDataKey={formDataKey} name="Элемент" field_name="elements_text" disabled />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={3}>
-              <DefaultFieldString<Norm> formDataKey={formDataKey} field_label="Сезон" field_name="season_name" disabled />
+              <DefaultFieldString<Norm> formDataKey={formDataKey} name="Сезон" field_name="season_name" disabled />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={3}>
-              <DefaultFieldString<Norm> formDataKey={formDataKey} field_label="Способ выполнения" field_name="kind_task_names_text" disabled />
+              <DefaultFieldString<Norm> formDataKey={formDataKey} name="Способ выполнения" field_name="kind_task_names_text" disabled />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
 
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={3}>
-              <DefaultFieldString<Norm> formDataKey={formDataKey} field_label="Способ уборки" field_name="work_type_name" disabled />
+              <DefaultFieldString<Norm> formDataKey={formDataKey} name="Способ уборки" field_name="work_type_name" disabled />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={3}>
-              <DefaultFieldString<Norm> formDataKey={formDataKey} field_label="Условия" field_name="conditions" disabled />
+              <DefaultFieldString<Norm> formDataKey={formDataKey} name="Условия" field_name="conditions" disabled />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={3}>
               <FieldNormPeriod formDataKey={props.formDataKey} />

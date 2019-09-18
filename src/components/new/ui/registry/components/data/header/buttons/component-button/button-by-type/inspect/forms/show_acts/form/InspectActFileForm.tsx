@@ -28,7 +28,7 @@ const InspectActFileForm: React.FC<Props> = React.memo(
         <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
         <ModalBodyPreloader meta={meta} typePreloader="mainpage">
           <FieldFiles formDataKey={formDataKey}/>
-          <DefaultFieldString<InspectOneActScan> formDataKey={formDataKey} field_label="Примечание" field_name="notes" />
+          <DefaultFieldString<InspectOneActScan> formDataKey={formDataKey} name="Примечание" field_name="notes" />
         </ModalBodyPreloader>
         <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />
       </EtsBootstrap.ModalContainer>

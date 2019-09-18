@@ -36,3 +36,10 @@ export const promiseUpdateCleaningRate = async (cleaningRate: CleaningRate) => {
 
   return result;
 };
+
+export const promiseSubmitCleaningRate = (cleaningRate: CleaningRate) => {
+  if (cleaningRate.id) {
+    return promiseUpdateCleaningRate(cleaningRate);
+  }
+  return promiseCreateCleaningRate(cleaningRate);
+};

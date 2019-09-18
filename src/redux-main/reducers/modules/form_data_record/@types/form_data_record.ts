@@ -9,6 +9,7 @@ export type FormKeys = (
   | 'norm'
   | 'cleaning_area_rate'
   | 'fuel_operations'
+  | 'cleaning_rate'
 );
 
 export type OneFormDataByKey<F extends Record<string, any>> = {

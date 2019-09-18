@@ -34,14 +34,11 @@ type PropsMapGeoobjectWrap = {
   entity: string;
 };
 
-type StateMapGeoobjectWrap = {
-};
-
-class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateMapGeoobjectWrap> {
-  render() {
+const MapGeoobjectWrap: React.FC<PropsMapGeoobjectWrap> = React.memo(
+  (props) => {
     const geoobjects = makeGeoobjects(
-      this.props.geoobjectData,
-      this.props.entity,
+      props.geoobjectData,
+      props.entity,
     );
 
     return (
@@ -52,9 +49,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
               <MapEts enableInteractions setMapToContext={setMapToContext} removeMapToContext={removeMapToContext} mapKey="goobjectInfo">
                 {
                   ({ map, centerOn }) => (
-                    <>
-                      <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={geoobjects} />
-                    </>
+                    <LayerOneGeometry map={map} centerOn={centerOn} geoobjects={geoobjects} />
                   )
                 }
               </MapEts>
@@ -63,7 +58,7 @@ class MapGeoobjectWrap extends React.PureComponent<PropsMapGeoobjectWrap, StateM
         }
       </MapEtsConsumer>
     );
-  }
-}
+  },
+);
 
 export default MapGeoobjectWrap;

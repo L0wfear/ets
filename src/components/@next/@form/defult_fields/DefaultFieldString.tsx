@@ -6,7 +6,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 type Props<F extends Record<string, any>> = {
-  field_name: AllowedNames<F, string>;
+  field_name: AllowedNames<F, string | number>;
   field_label: string;
 
   disabled?: boolean;

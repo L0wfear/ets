@@ -18,6 +18,7 @@ import { defaultAction } from 'redux-main/default.actions';
 import { SchemaFormContextBody } from 'components/@next/@form/@types';
 import { metaCleaningAreaRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_area_rate/form_meta';
 import { metaFuelOperations } from 'redux-main/reducers/modules/form_data_record/form_data/fuel_operations/form_meta';
+import { metaCleaningRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_rate/form_meta';
 
 export const removeEmptyString = <F extends Record<string, any>>(formState: F) => {
   Object.keys(formState).forEach((key: keyof F) => {
@@ -80,6 +81,7 @@ export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   norm: metaNorm,
   cleaning_area_rate: metaCleaningAreaRate,
   fuel_operations: metaFuelOperations,
+  cleaning_rate: metaCleaningRate,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({

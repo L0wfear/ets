@@ -1,12 +1,12 @@
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import inspectActScanPermissions from './permissions';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { InspectActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';
+import { InspectOneActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';
 import { InspectRegistryService } from 'api/Services';
 
 export const registryKey = 'inspect_acts';
 
-export const getConfig = (inspection_id: number, path: string): TypeConfigData<InspectActScan> => ({
+export const getConfig = (inspection_id: number, path: string): TypeConfigData<InspectOneActScan> => ({
   Service: {
     getRegistryData: {
       entity: `${InspectRegistryService._path}/${inspection_id}`,

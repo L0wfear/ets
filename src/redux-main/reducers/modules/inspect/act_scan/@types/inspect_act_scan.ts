@@ -15,6 +15,7 @@ export type InspectActScan = {
 
 export type InspectOneActScan = {
   id: number;
+  name: string;
   inspection_id: number;
   files: any[],
   notes: string;

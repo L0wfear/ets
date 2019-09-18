@@ -9,6 +9,8 @@ const car_usage_repor_page_config: ConfigPageData = {
 
   component,
   permissions,
+
+  isNewRegistry: false,
 };
 
 export default car_usage_repor_page_config;

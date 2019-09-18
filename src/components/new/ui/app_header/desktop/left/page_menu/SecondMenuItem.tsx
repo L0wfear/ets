@@ -41,6 +41,20 @@ class SecondMenuItem extends React.Component<any, any> {
       return (
         <LinkSecontLvl id={`show-${key}`} to="" onClick={this.handleClickToOpenMenu}>
           <DefaultSecondLvlMenu>
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )
+            }
             <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
           </DefaultSecondLvlMenu>

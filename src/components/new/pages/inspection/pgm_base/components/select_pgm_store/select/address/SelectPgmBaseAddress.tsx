@@ -41,30 +41,30 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
     setDataInSearch,
   } = props;
   const companyId = getNumberValueFromSerch(searchState.companyId);
-  const pgmAddress = searchState.pgmAddress;
+  const pgmBaseId = getNumberValueFromSerch(searchState.pgmBaseId);
 
   React.useEffect(
     () => {
-      if (pgmAddress && props.pgmBaseList.length) {
+      if (pgmBaseId && props.pgmBaseList.length) {
         const currentPgmBaseInCompany = filterPgmBaseByCompany(
           props.pgmBaseList,
           companyId,
-        ).some(({ address }) => address === pgmAddress);
+        ).some(({ id }) => id === pgmBaseId);
 
         if (!currentPgmBaseInCompany) {
           const newPartialSearch: any = {
             ...searchState,
-            pgmAddress: null,
+            pgmBaseId: null,
           };
 
           setDataInSearch(newPartialSearch);
         }
       }
     },
-    [companyId, pgmAddress, props.companyList, searchState, props.match.params],
+    [companyId, pgmBaseId, props.companyList, searchState, props.match.params],
   );
 
-  const pgmAddressOptions = React.useMemo(
+  const pgmBaseIdOptions = React.useMemo(
     () => {
       if (companyId) {
         return uniqBy(
@@ -73,7 +73,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
             companyId,
           ).map(
             (pgmBase) => ({
-              value: pgmBase.address,
+              value: pgmBase.id,
               label: pgmBase.address,
               rowData: pgmBase,
             }),
@@ -93,7 +93,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
         ...searchState,
       };
 
-      newPartialSearch.pgmAddress = selectedPgmBaseId;
+      newPartialSearch.pgmBaseId = selectedPgmBaseId;
 
       setDataInSearch(newPartialSearch);
     },
@@ -110,10 +110,10 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
       <SelectField md={9} sm={6}>
         <ExtField
           type="select"
-          value={pgmAddress}
+          value={pgmBaseId}
           disabled={!companyId}
           label={false}
-          options={pgmAddressOptions}
+          options={pgmBaseIdOptions}
           onChange={setPgmBaseId}
           clearable={false}
         />

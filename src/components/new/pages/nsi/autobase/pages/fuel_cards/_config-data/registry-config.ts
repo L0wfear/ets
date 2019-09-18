@@ -7,22 +7,37 @@ import { displayIfContant } from 'components/new/ui/registry/contants/displayIf'
 
 export const registryKey = 'fuelCardsRegistry';
 
-export const getToConfig = (): TypeConfigData<FuelCard> => {
+export const getToConfig = (is_archive: boolean = false, title: string = 'Реестр топливных карт'): TypeConfigData<FuelCard> => {
+  let buttons: TypeConfigData<FuelCard>['header']['buttons'] = [
+    buttonsTypes.filter,
+    buttonsTypes.create,
+    buttonsTypes.read,
+    buttonsTypes.remove,
+    buttonsTypes.fuel_card_to_archive,
+    buttonsTypes.export,
+  ];
+
+  if (is_archive) {
+    buttons = [
+      buttonsTypes.filter,
+      buttonsTypes.read,
+      buttonsTypes.fuel_card_from_archive,
+    ];
+  }
+
   return {
     Service: {
       getRegistryData: {
         entity: 'fuel_cards',
+        payload: {
+          is_archive,
+        },
       },
     },
     registryKey,
     header: {
-      title: 'Реестр топливных карт',
-      buttons: [
-        buttonsTypes.filter,
-        buttonsTypes.create,
-        buttonsTypes.read,
-        buttonsTypes.export,
-      ],
+      title,
+      buttons,
     },
     filter: {
       fields: [

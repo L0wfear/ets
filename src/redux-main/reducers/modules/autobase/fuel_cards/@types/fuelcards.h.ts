@@ -5,6 +5,8 @@ export type FuelCard = {
   company_id: number | null;
   company_name: string | null;
   company: string | null; // Организация
+  is_used_in_waybill: boolean | null;
+  is_archive: boolean;
   fuel_type_text: string | null;
   structure_id: number | null;
   is_common: boolean | null;

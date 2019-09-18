@@ -10,7 +10,9 @@ export const defaultFuelCard: FuelCard = {
   company: null,
   fuel_type_text: null,
   structure_id: null,
+  is_archive: false,
   is_common: false,
+  is_used_in_waybill: false,
   structure_name: null,
 };
 

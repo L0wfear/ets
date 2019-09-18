@@ -126,6 +126,7 @@ export type Car = {
   equipment_sensors_str: string;
   equipment_sensors_types_ids: number[];
   exploitation_date_start: string;
+  factory_number: string;
   for_driver_license: boolean;
   for_special_license: boolean;
   fuel_correction_rate: number;
@@ -154,6 +155,7 @@ export type Car = {
   type_id: number;
   type_image_name: string;
   type_name: string;
+  vin: string;
 };
 
 export type CarFuncTypes = {

@@ -24,6 +24,7 @@ export const getDefaultCar = (): CarWrap => ({
   equipment_sensors_str: '',
   equipment_sensors_types_ids: [],
   exploitation_date_start: '',
+  factory_number: '',
   for_driver_license: null,
   for_special_license: null,
   fuel_correction_rate: null,
@@ -52,6 +53,7 @@ export const getDefaultCar = (): CarWrap => ({
   type_id: null,
   type_image_name: '',
   type_name: '',
+  vin: '',
 
   drivers_data: {
     car_id: null,

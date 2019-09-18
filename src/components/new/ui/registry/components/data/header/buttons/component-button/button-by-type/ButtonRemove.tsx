@@ -26,6 +26,8 @@ type ButtonRemoveOwnProps = {
   registryKey: string;
 
   format?: 'yesno' | 'default';
+
+  onClick?: (selectedRow: any, checkedRows?: Record<string, any>) => Promise<any>;
 };
 type ButtonRemoveMergeProps = {};
 
@@ -54,7 +56,11 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
   const handleClickRemoveSelectedRows = React.useCallback(
     async () => {
       try {
-        await props.registryRemoveSelectedRows(props.registryKey);
+        if (props.onClick) {
+          await props.onClick(props.selectedRow, props.checkedRows);
+        } else {
+          await props.registryRemoveSelectedRows(props.registryKey);
+        }
       } catch (error) {
         handleClickCloseForm();
         return;
@@ -64,7 +70,7 @@ const ButtonRemove: React.FC<ButtonRemoveProps> = (props) => {
 
       handleClickCloseForm();
     },
-    [props.selectedRow, props.checkedRows],
+    [props.onClick, props.selectedRow, props.checkedRows],
   );
   const checkedRowsAsArray = Object.values(props.checkedRows);
 

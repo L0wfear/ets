@@ -22,6 +22,7 @@ export const ThGroupSpoilerFirstStyled = styled.div`
   display: inline-flex;
   align-items: center;
   justify-content: flex-start;
+  white-space: nowrap;
   ${GlyphiconStyled} {
     margin-right: 5px;
   }
@@ -34,13 +35,13 @@ export const ThGroupSpoilerFirstStyled = styled.div`
     height: 0;
   }
   &:before {
-    left: 0px;
+    left: -2px;
     border: 11px solid transparent;
     border-top-color: #ddd;
   }
   &:after {
     left: 1px;
-    border: 10px solid transparent;
+    border: 8px solid transparent;
     border-top-color: #ffffff;
   }
 `;

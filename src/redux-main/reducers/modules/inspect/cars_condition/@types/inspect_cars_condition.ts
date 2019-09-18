@@ -207,3 +207,5 @@ export type CarsConditionCars = {
   };
   files: any[];
 };
+
+export type CarsConditionTableDefects = CarsConditionCars & CarsConditionCars['data'];

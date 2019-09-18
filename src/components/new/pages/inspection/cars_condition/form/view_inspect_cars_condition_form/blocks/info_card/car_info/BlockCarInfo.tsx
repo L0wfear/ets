@@ -58,7 +58,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           {
             isPermitted
               ? (
-                <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
+                <EtsBootstrap.Button disabled={props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
               )
               : (
                 <DivNone />

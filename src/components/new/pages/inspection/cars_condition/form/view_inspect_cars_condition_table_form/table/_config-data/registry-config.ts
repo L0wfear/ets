@@ -1,9 +1,9 @@
-// import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
 import { carsConditionCarFormDataSchema, carsConditionCarFormSchema } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/schema';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
-import { actionUpdateCarsConditionsCar } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import { actionUpdateCarsConditionsCar, actionCreateCarsConditionsCar } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
+import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 
 export const registryKey = 'InspectCarsConditionsCarsExtendedRegistry';
 
@@ -24,16 +24,27 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
         inspection_id,
         view: "extended",
       },
+      format: 'cars_condition_extended',
     },
   },
   registryKey,
   header: {
     title: 'Форма заполнения',
     buttons: [
+      // buttonsTypes.columns_control,
+      buttonsTypes.filter,
+      buttonsTypes.show_сars_condition_table_defects,
+      buttonsTypes.ButtonAddNewRowTable,
     ],
   },
   filter: {
-    fields: [],
+    fields: [
+      {
+        valueKey: 'gov_number',
+        type: 'multiselect',
+        title: 'Гос.№',
+      },
+    ],
   },
   list: {
     permissions: inspectCarsConditionPermissions,
@@ -44,8 +55,16 @@ export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionC
     },
     meta: {
       row_double_click: false,
-      changeRowRequestAction: {
-        action: actionUpdateCarsConditionsCar,
+      rowRequestActions: {
+        actionUpdate: {
+          action: actionUpdateCarsConditionsCar,
+        },
+        actionCreate: {
+          action: actionCreateCarsConditionsCar,
+          payload: {
+            inspection_id,
+          },
+        },
       },
       is_render_field: true,
       renderFieldsSchema,

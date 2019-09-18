@@ -89,6 +89,19 @@ export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {
   return inspectCarsCondition;
 };
 
+export const makeInspectCarsConditionExtendedFront = (elem) => { // Перенос data на верхний уровень
+  const dataVal = get(elem, 'data', null);
+  if (dataVal) {
+    delete elem.data;
+    return {
+      ...elem,
+      ...dataVal,
+    };
+  } else {
+    return elem;
+  }
+};
+
 export const promiseGetInspectCarsCondition = async (payload: { carsConditionId: number }) => {
   const response = await promiseGetInspectRegistry<InspectCarsCondition>({
     base_id: payload.carsConditionId,

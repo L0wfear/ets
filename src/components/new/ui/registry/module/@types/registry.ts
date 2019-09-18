@@ -188,8 +188,9 @@ export interface OneRegistryData<F = any> {
     };
     meta: {
       row_double_click: boolean;
-      changeRowRequestAction?: {
-        action: any;
+      rowRequestActions?: {
+        actionUpdate?: any;
+        actionCreate?: any;
       };
       renderFieldsSchema: any;
       is_render_field: boolean;
@@ -273,7 +274,7 @@ export type TypeConfigData<F> = {
     meta: {
       selected_row_in_params?: OneRegistryData<F>['list']['meta']['selected_row_in_params'];
       row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
-      changeRowRequestAction?: OneRegistryData<F>['list']['meta']['changeRowRequestAction'];
+      rowRequestActions?: OneRegistryData<F>['list']['meta']['rowRequestActions'];
       is_render_field?: OneRegistryData<F>['list']['meta']['is_render_field'];
       renderFieldsSchema?: OneRegistryData<F>['list']['meta']['renderFieldsSchema'];
       groupColumn?: OneRegistryData<F>['list']['meta']['groupColumn'];

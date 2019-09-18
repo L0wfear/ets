@@ -39,9 +39,11 @@ import ButtonInspectGetActs from './button-by-type/inspect/ButtonInspectGetActs'
 import ButtonOrderCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateMission';
 import ButtonOrderCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderCreateDutyMission';
 import ButtonOrderExport from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderExport';
+import ButtonCarsConditionTableDefectsForm from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonCarsConditionTableDefectsForm';
 import ButtonOrderToCreateMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateMission';
 import ButtonOrderToCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateDutyMission';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
+import ButtonAddNewRowTable from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonAddNewRowTable';
 
 type Props = CommonTypesForButton;
 
@@ -50,6 +52,8 @@ type AllButtons = Record<typeof buttonsTypes[keyof typeof buttonsTypes], React.C
 const buttonComponents: AllButtons = {
   [buttonsTypes.export]: ButtonExport,
   [buttonsTypes.export_filtred_data]: ButtonExportFiltredData,
+  [buttonsTypes.show_сars_condition_table_defects]: ButtonCarsConditionTableDefectsForm,
+  [buttonsTypes.ButtonAddNewRowTable]: ButtonAddNewRowTable,
   [buttonsTypes.filter]: ButtonToggleFilter,
   [buttonsTypes.create]: ButtonCreate,
   [buttonsTypes.read]: ButtonRead,

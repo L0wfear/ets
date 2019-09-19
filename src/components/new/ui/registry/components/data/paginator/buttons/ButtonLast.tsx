@@ -6,61 +6,60 @@ import {
   registryChangeDataPaginatorCurrentPage,
 } from 'components/new/ui/registry/module/actions-registy';
 import { ButtonPaginatorWrap } from './styled';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ReduxState } from 'redux-main/@types/state';
 
-type PropsButtonLast = {
-  registryKey: string;
+type StateProps = {
   active: boolean;
   index: number;
-
-  handleButtonClick: any;
+};
+type OwnProps = {
+  registryKey: string;
 };
 
-type StatePaginator = {
-};
+type Props = StateProps & OwnProps;
 
-class ButtonLast extends React.PureComponent<PropsButtonLast, StatePaginator> {
-  render() {
-    const { index } = this.props;
+const ButtonLast: React.FC<Props> = React.memo(
+  (props) => {
+    const { index } = props;
+
+    const dispatch = etsUseDispatch();
+    const handleClick = React.useCallback(
+      () => {
+        dispatch(
+          registryChangeDataPaginatorCurrentPage(
+            props.registryKey,
+            index,
+          ),
+        );
+      },
+      [index],
+    );
 
     return (
       <ButtonPaginatorWrap
         themeName="paginator"
-        disabled={this.props.active}
-        data-index={index}
-        onClick={this.props.handleButtonClick}
+        disabled={props.active}
+        onClick={handleClick}
       >
         Последняя
       </ButtonPaginatorWrap>
     );
-  }
-}
+  },
+);
 
-const mapStateToProps = (state, { registryKey }) => {
-  const {
-    processed: { total_count },
-    paginator,
-  } = getListData(state.registry, registryKey);
+export default connect<StateProps, {}, OwnProps, ReduxState>(
+  (state, { registryKey }) => {
+    const {
+      processed: { total_count },
+      paginator,
+    } = getListData(state.registry, registryKey);
 
-  const index = Math.ceil(total_count / paginator.perPage) - 1;
+    const index = Math.ceil(total_count / paginator.perPage) - 1;
 
-  return {
-    active: index === paginator.currentPage,
-    index,
-  };
-};
-
-const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  handleButtonClick: ({ currentTarget: { dataset: { index } } }) => (
-    dispatch(
-      registryChangeDataPaginatorCurrentPage(
-        registryKey,
-        Number(index),
-      ),
-    )
-  ),
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+    return {
+      active: index === paginator.currentPage,
+      index,
+    };
+  },
 )(ButtonLast);

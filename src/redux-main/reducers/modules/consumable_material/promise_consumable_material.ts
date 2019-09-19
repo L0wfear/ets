@@ -1,6 +1,28 @@
-import { ConsumableMaterial } from "./@types/consumableMaterial";
+import { get, uniqBy, uniq } from 'lodash';
+
+import { ConsumableMaterial, ConsumableMaterialWrap } from "./@types/consumableMaterial";
 import { ConsumableMaterialService } from "api/Services";
-import { get } from 'lodash';
+
+export const makeConsumableMaterialFront = (array: ConsumableMaterial[]) => (
+  (array).map(
+    (rowData): ConsumableMaterialWrap => ({
+      ...rowData,
+      technical_operation_ids: uniqBy(rowData.norms, 'technical_operation_id')
+        .map(({ technical_operation_id }) => technical_operation_id),
+      technical_operation_names: uniqBy(rowData.norms, 'technical_operation_name')
+        .map(({ technical_operation_name }) => technical_operation_name),
+      municipal_facility_ids: uniqBy(rowData.norms, 'municipal_facility_id')
+        .map(({ municipal_facility_id }) => municipal_facility_id),
+      municipal_facility_names: uniqBy(rowData.norms, 'municipal_facility_name')
+        .map(({ municipal_facility_name }) => municipal_facility_name),
+      to_element: uniq(
+        rowData.norms.map(({ technical_operation_name, municipal_facility_name }) => (
+          `${technical_operation_name}[${municipal_facility_name}]`
+        )),
+      ),
+    }),
+  )
+);
 
 export const promiseSubmitConsumableMaterial = (consumableMateria: ConsumableMaterial) => {
   if (!consumableMateria.id) {

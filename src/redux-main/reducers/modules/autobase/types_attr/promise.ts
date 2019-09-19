@@ -2,7 +2,7 @@ import { TypesAttrService } from 'api/Services';
 import { get } from 'lodash';
 import { TypesAttr } from '../@types/autobase.h';
 
-export const getFrontTypesAttr = (typesAttr: TypesAttr, index) => {
+export const getFrontTypesAttr = (typesAttr: TypesAttr, index: number) => {
   typesAttr.id = index + 1;
 
   return typesAttr;

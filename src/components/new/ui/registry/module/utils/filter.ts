@@ -53,7 +53,7 @@ export const makeRawFilterValues = (filter) => {
   }, {});
 };
 
-export const setEmptyRawFilters = ({ rawFilterValues }) => {
+export const setEmptyRawFilters = (rawFilterValues) => {
   return Object.entries(rawFilterValues).reduce((newObj, [valueKey, filterObjByType]) => {
     newObj[valueKey] = typeFilter.reduce((newObjType, { type, defaultValue }) => {
       newObjType[type] = {
@@ -68,7 +68,7 @@ export const setEmptyRawFilters = ({ rawFilterValues }) => {
   }, {});
 };
 
-export const applyFilterFromRaw = ({ rawFilterValues }) => {
+export const applyFilterFromRaw = (rawFilterValues: OneRegistryData<any>['filter']['rawFilterValues']) => {
   return Object.entries(rawFilterValues).reduce((newObj, [valueKey, typeObjData]) => {
     Object.entries(typeObjData).forEach(([ type, valueData ]) => {
       const { value } = valueData;

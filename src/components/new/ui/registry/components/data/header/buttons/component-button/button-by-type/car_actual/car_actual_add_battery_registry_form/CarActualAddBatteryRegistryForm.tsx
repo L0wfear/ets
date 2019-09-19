@@ -17,6 +17,7 @@ import BatteryRegistryFormLazy from 'components/new/pages/nsi/autobase/pages/bat
 import { CarActualRegistryFormContext } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/CarFormContext';
 import { get } from 'lodash';
 import * as registryAddButtonConfig from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export type CarActualAddBatteryRegistryFormStateProps = {};
 export type CarActualAddBatteryRegistryFormDispatchProps = {
@@ -45,11 +46,12 @@ const CarActualAddBatteryRegistryForm: React.FC<CarActualAddBatteryRegistryFormP
   const CarActualRegistryFormValue = React.useContext(CarActualRegistryFormContext);
   const company_id = get(CarActualRegistryFormValue, 'currentSelectedCar.company_id', null);
 
+  const dispatch = etsUseDispatch();
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(null, company_id));
+      dispatch(registryAddInitialData(getToConfig(null, company_id)));
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
     [],

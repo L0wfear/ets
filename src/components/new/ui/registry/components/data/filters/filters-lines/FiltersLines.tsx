@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getFilterData } from 'components/new/ui/registry/module/selectors-registry';
 import MultiselectRegistryFilter from 'components/new/ui/registry/components/data/filters/filters-lines/multiselect/MultiselectRegistryFilter';
 import {
@@ -24,7 +24,7 @@ type PropsFiltersLines = {
   registryKey: string;
   fileds: any[];
   userData: InitialStateSession['userData'];
-  onChangeFilterRawValue: (valueKey: string, type: string, value: any) => any;
+  registryChangeFilterRawValues: HandleThunkActionCreator<typeof registryChangeFilterRawValues>;
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
 } & WithSearchProps;
 
@@ -33,7 +33,7 @@ type StateFiltersLines = {
 
 class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLines> {
   handleChange = (valueKey, type, value) => {
-    this.props.onChangeFilterRawValue(valueKey, type, value);
+    this.props.registryChangeFilterRawValues(this.props.registryKey, valueKey, type, value);
   }
 
   fieldMap = ({ type, ...otherFilterData }, index) => {
@@ -153,7 +153,7 @@ const mapStateToProps = (state, { registryKey }) => ({
 });
 
 const mapDispatchToProps = (dispatch, { registryKey }) => ({
-  onChangeFilterRawValue: (valueKey, type, value) => (
+  registryChangeFilterRawValues: (valueKey, type, value) => (
     dispatch(
       registryChangeFilterRawValues(
         registryKey,

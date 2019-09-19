@@ -7,7 +7,6 @@ import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
@@ -21,7 +20,6 @@ type ButtonCreateDutyMissionByEdcRequestStateProps = {
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonCreateDutyMissionByEdcRequestDispatchProps = {
-  registrySetSelectedRowToShowInForm: any;
 };
 type ButtonCreateDutyMissionByEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonCreateDutyMissionByEdcRequestMergeProps = (
@@ -40,8 +38,7 @@ class ButtonCreateDutyMissionByEdcRequest extends React.PureComponent<ButtonCrea
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_create_duty_mission,
-    }),
-    this.props.registrySetSelectedRowToShowInForm();
+    });
   }
 
   render() {
@@ -67,13 +64,6 @@ export default compose<ButtonCreateDutyMissionByEdcRequestProps, ButtonCreateDut
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
-    }),
-    (dispatch: any, { registryKey }) => ({
-      registrySetSelectedRowToShowInForm: () => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(registryKey),
-        )
-      ),
     }),
   ),
 )(ButtonCreateDutyMissionByEdcRequest);

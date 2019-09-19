@@ -7,7 +7,7 @@ import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm, actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
+import { actionUnselectSelectedRowToShow } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
@@ -20,7 +20,6 @@ type ButtonChangeDriverTechnicalOperationRelationsStateProps = {
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonChangeDriverTechnicalOperationRelationsDispatchProps = {
-  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
   actionUnselectSelectedRowToShow: HandleThunkActionCreator<typeof actionUnselectSelectedRowToShow>;
 };
 type ButtonChangeDriverTechnicalOperationRelationsOwnProps = CommonTypesForButton & {};
@@ -51,8 +50,7 @@ const ButtonChangeDriverTechnicalOperationRelations: React.FC<ButtonChangeDriver
       props.setParams({
         technical_operation_relations_type_form: 'change_driver',
         car_actual_asuods_id: get(props.selectedRow, 'car_id', null),
-      }),
-      props.registrySetSelectedRowToShowInForm(props.registryKey);
+      });
     },
     [props.registryKey, props.setParams, props.match.params, props.selectedRow],
   );
@@ -93,11 +91,6 @@ export default compose<ButtonChangeDriverTechnicalOperationRelationsProps, Butto
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
     }),
     (dispatch: any) => ({
-      registrySetSelectedRowToShowInForm: (...arg) => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(...arg),
-        )
-      ),
       actionUnselectSelectedRowToShow: (...arg) => (
         dispatch(
           actionUnselectSelectedRowToShow(...arg),

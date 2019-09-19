@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { ReduxState } from 'redux-main/@types/state';
@@ -7,7 +7,6 @@ import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
@@ -20,7 +19,6 @@ type ButtonCreateMissionTemplateStateProps = {
   checkedRows: OneRegistryData['list']['data']['checkedRows'];
 };
 type ButtonCreateMissionTemplateDispatchProps = {
-  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
 };
 type ButtonCreateMissionTemplateOwnProps = CommonTypesForButton & {};
 type ButtonCreateMissionTemplateMergeProps = {};
@@ -75,13 +73,6 @@ export default compose<ButtonCreateMissionTemplateProps, ButtonCreateMissionTemp
     (state, { registryKey }) => ({
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       checkedRows: getListData(state.registry, registryKey).data.checkedRows,
-    }),
-    (dispatch: any) => ({
-      registrySetSelectedRowToShowInForm: (...arg) => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(...arg),
-        )
-      ),
     }),
   ),
 )(ButtonCreateMissionTemplate);

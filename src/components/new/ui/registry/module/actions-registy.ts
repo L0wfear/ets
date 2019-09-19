@@ -995,12 +995,12 @@ export const registryRemoveSelectedRows = <F extends Record<string, any>>(regist
   const pathToLoadingMeta = get(registryData, 'path');
 
   if (!itemToRemove) {
-    const checkedRowsCurrent: any = get(list, 'data.checkedRows', {});
-    const selectedRowCurrent: any = get(list, 'data.selectedRow', {});
+    const checkedRowsCurrent = get(data, 'checkedRows') || {};
+    const selectedRowCurrent = get(data, 'selectedRow');
 
     itemToRemove = Object.values(checkedRowsCurrent);
 
-    if (!itemToRemove.length) {
+    if (!itemToRemove.length && selectedRowCurrent) {
       itemToRemove.push(selectedRowCurrent);
     }
   }
@@ -1011,7 +1011,7 @@ export const registryRemoveSelectedRows = <F extends Record<string, any>>(regist
 
   try {
     await Promise.all(
-      itemToRemove.map(async ({ [uniqKey]: uniqKeyValue }: any) => {
+      itemToRemove.map(async ({ [uniqKey]: uniqKeyValue }: F) => {
         let path = `${configStand.backend}/${removeOneData.entity}`;
         const payload: any = {};
 

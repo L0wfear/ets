@@ -8,6 +8,7 @@ import { getOptionsConfigByObject } from 'utils/functions';
 import { actionLoadInspectionCountry, actionLoadAutobaseEngineType } from 'redux-main/reducers/modules/services/services_actions';
 import { getCountryOptions } from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
 import { getAutobaseEngineTypeOptions } from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
+import { seasonInspectionOptions } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/main_data/inside_fields/season/FieldCarsConditionsCarSeason';
 
 export const actionSetInspectionConfig = (inspectionConfig: InspectionConfig): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
   dispatch(
@@ -49,6 +50,7 @@ export const actionInspectionConfigGetAndSetInStore = (...arg: Parameters<typeof
       ...optionListByKey,
       origin_country: countryOptions.options,
       engine_type: autobaseEngineTypeOptions.options,
+      season: seasonInspectionOptions,
     }),
   );
 

@@ -45,6 +45,13 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Гос. номер',
       required: true,
       maxLength: 9,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow', null)) {
+            return true;
+          }
+        },
+      ],
     },
     marka: {
       type: 'valueOfArray',
@@ -96,6 +103,13 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       type: 'string',
       title: 'VIN',
       maxLength: 17,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow', null)) {
+            return true;
+          }
+        },
+      ],
     },
     gby_district: {
       type: 'string',
@@ -107,20 +121,52 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Техника эксплуатируется жилищником района',
       required: true,
     },
+    vin_incorrect: {
+      type: 'string',
+      title: 'Некорректный VIN:',
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow', null)) {
+            return true;
+          }
+        },
+      ],
+    },
     vin_by_hand: {
       type: 'string',
       title: 'VIN (ручной ввод)',
       maxLength: 17,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'vin_incorrect', null) || !get(formState, 'isNewRow', null)) {
+            return true;
+          }
+        },
+      ],
     },
     body_number: {
       type: 'string',
       title: 'Заводской номер (из системы)',
       maxLength: 128,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow', null)) {
+            return true;
+          }
+        },
+      ],
     },
     body_number_by_hand: {
       type: 'string',
       title: 'Заводской номер (ручной ввод)',
       maxLength: 128,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'body_number_incorrect', null)) {
+            return true;
+          }
+        },
+      ],
     },
     manufactured_at: {
       type: 'number',
@@ -155,8 +201,15 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Номер ОСАГО',
       dependencies: [
         (value, formState) => {
-          if (( !get(formState, 'data.osago_not_required', null) || !get(formState, 'osago_not_required', null)) && !value) {
+          if (( !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null)) && !value) {
             return 'Поле "Номер ОСАГО" должно быть заполнено';
+          }
+        },
+      ],
+      dependenciesDisable: [
+        (_, formState) => {
+          if (get(formState, 'osago_not_required', null)) {
+            return true;
           }
         },
       ],
@@ -166,8 +219,15 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Действует до',
       dependencies: [
         (value, formState) => {
-          if (( !get(formState, 'data.osago_not_required', null) || !get(formState, 'osago_not_required', null)) && !value) {
+          if (( !get(formState, 'data.osago_not_required', null) && !get(formState, 'osago_not_required', null)) && !value) {
             return 'Поле "Действует до" должно быть заполнено';
+          }
+        },
+      ],
+      dependenciesDisable: [
+        (_, formState) => {
+          if (get(formState, 'osago_not_required', null)) {
+            return true;
           }
         },
       ],
@@ -217,6 +277,13 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       type: 'valueOfArray',
       title: 'Сезон',
       required: true,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow', null)) {
+            return true;
+          }
+        },
+      ],
     },
     data: {
       type: 'schema',

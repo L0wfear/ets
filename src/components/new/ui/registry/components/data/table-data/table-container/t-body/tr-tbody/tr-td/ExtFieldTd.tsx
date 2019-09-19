@@ -7,7 +7,7 @@ import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseD
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { validate } from 'components/old/ui/form/new/validate';
+import { validate, validateDisable } from 'components/old/ui/form/new/validate';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
@@ -43,6 +43,7 @@ const getValueFromEvent = (valueEvent, renderParams) => {
 const ExtFieldTd: React.FC<Props> = React.memo(
   (props) => {
     const [error, setError] = React.useState(null);
+    const [disabled, setDisabled] = React.useState(null);
     const [optionsRenderRow, setOptionsRenderRow] = React.useState(null);
     const { renderParams } = props;
     const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
@@ -59,7 +60,9 @@ const ExtFieldTd: React.FC<Props> = React.memo(
       () => {
         if (valuesRenderRow) {
           const formErrors = validate(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
+          const formDisabled = validateDisable(renderFieldsSchema, valuesRenderRow, {...valuesRenderRow, ...props}, valuesRenderRow);
           setError(get(formErrors, props.metaKey, null));
+          setDisabled(get(formDisabled, props.metaKey, null));
         }
       }, [valuesRenderRow],
     );
@@ -86,6 +89,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
         setOptionsRenderRow(inspectionConfig);
       }, [inspectionConfig]);
     }
+    const isReadOnly = (renderParams.type === 'string' && (!isPermittedToUpdate || disabled)) || renderParams.readOnly;
 
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
@@ -99,9 +103,9 @@ const ExtFieldTd: React.FC<Props> = React.memo(
           onChange={handleChange}
           className={renderParams.className}
           options={get(optionsRenderRow, props.metaKey, [])}
-          disabled={!isPermittedToUpdate}
+          disabled={!isPermittedToUpdate || disabled}
           error={error}
-          readOnly={renderParams.readOnly}
+          readOnly={isReadOnly}
           inline={renderParams.inline}
         />
       </EtsBootstrap.Grid.GridBootstrapTbody.Td>

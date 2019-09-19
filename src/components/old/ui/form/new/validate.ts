@@ -145,3 +145,27 @@ export const validate = <F, P, RootFormState>(shema: SchemaType<F, P>, formState
 
   return formError;
 };
+
+export const validateDisable = <F, P, RootFormState>(shema: SchemaType<F, P>, formState: F, props: P, rootFormState: RootFormState): any => {
+  const {
+    properties,
+  } = shema;
+
+  const formDisable: any = {};
+
+  for (const key in properties) {
+    if (key in properties) {
+      const fieldData: any = properties[key];
+      if (fieldData.dependenciesDisable) {
+        fieldData.dependenciesDisable.some((dependencieValidator) => {
+          const isDisable = dependencieValidator(formState[key], formState, props, rootFormState);
+
+          formDisable[key] = mergeErrors(formDisable[key], isDisable);
+          return true;
+        });
+      }
+    }
+  }
+
+  return formDisable;
+};

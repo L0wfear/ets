@@ -9,7 +9,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import ThDefault from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 import ThCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThCheckbox';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { get } from 'lodash';
+import { get, isEmpty, } from 'lodash';
 
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;
@@ -47,6 +47,7 @@ const Th: React.FC<Props> = React.memo(
     const isActive = groupOpt
       ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
       : true;
+    const isStickyTh = isEmpty(groupColumn);
 
     return (
       isActive &&
@@ -54,6 +55,7 @@ const Th: React.FC<Props> = React.memo(
           width={width}
           canClick={sortable}
           onClick={handleClick}
+          isStickyTh={isStickyTh}
         >
           <Component metaField={metaField} registryKey={props.registryKey}/>
         </EtsBootstrap.Grid.GridBootstrapThead.Th>

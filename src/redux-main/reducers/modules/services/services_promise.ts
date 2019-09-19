@@ -1,4 +1,4 @@
-import { ServicesService, CountryService } from 'api/Services';
+import { ServicesService, CountryService, EngineTypeService } from 'api/Services';
 import { get } from 'lodash';
 import { Service } from './@types/services';
 
@@ -43,6 +43,22 @@ export const promiseLoadCountry = async () => {
 
   try {
     response = await CountryService.get();
+  } catch (error) {
+    console.error('Error', error); // tslint:disable-line
+  }
+
+  const result = get(response, 'result.rows', []);
+
+  return {
+    list: result,
+  };
+};
+
+export const promiseLoadAutobaseEngineType = async () => {
+  let response = null;
+
+  try {
+    response = await EngineTypeService.get();
   } catch (error) {
     console.error('Error', error); // tslint:disable-line
   }

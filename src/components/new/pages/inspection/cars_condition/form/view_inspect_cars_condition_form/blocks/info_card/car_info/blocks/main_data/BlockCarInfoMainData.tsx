@@ -21,6 +21,7 @@ import FieldCarsConditionsCarSelectFactStatus from 'components/new/pages/inspect
 import { HrDelimiter } from 'global-styled/global-styled';
 import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import useAutobaseEngineTypeOptions from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 
 type BlockCarInfoMainDataProps = (
   {
@@ -41,6 +42,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     const [defectShow, SetDefectShow] = React.useState(false);
     const [inspectionConfigOptions, setInspectionConfigOptions] = React.useState(null);
     const countryOptionData = useCountryOptions();
+    const engineTypeOptionData = useAutobaseEngineTypeOptions();
     const dispatch = etsUseDispatch();
     const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
 
@@ -371,7 +373,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           label="Тип двигателя"
                           value={state.engine_type}
                           onChange={props.handleChange}
-                          options={get(inspectionConfigOptions, 'engine_type', [])}
+                          options={engineTypeOptionData.options}
+                          etsIsLoading={engineTypeOptionData.isLoading}
                           error={errors.engine_type}
                           clearable={false}
                           disabled={!props.isPermitted}

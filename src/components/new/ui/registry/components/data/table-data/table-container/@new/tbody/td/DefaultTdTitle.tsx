@@ -15,6 +15,8 @@ import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/t
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import TdContainer from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
 import ExtFieldTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: CommontTdTiteProps['fieldMeta']) => {
   let value = rowData[fieldMeta.key];
@@ -114,7 +116,11 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
     const isSelected = get(selectedRow, uniqKey) === props.rowData[uniqKey];
 
-    const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected);
+    const registryPermissions = etsUseSelector((state) => getListData(state.registry, props.registryKey).permissions);
+    const userDataPermissionsSet = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
+    const isPermittedToUpdate = validatePermissions(registryPermissions.update, userDataPermissionsSet);
+
+    const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected && !isPermittedToUpdate);
 
     return extFieldIsRender
       ? (

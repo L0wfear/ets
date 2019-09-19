@@ -11,6 +11,8 @@ import { validate } from 'components/old/ui/form/new/validate';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
+import { getSessionState } from 'redux-main/reducers/selectors';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
@@ -45,6 +47,10 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     const { renderParams } = props;
     const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
     const renderFieldsSchema = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.renderFieldsSchema);
+
+    const registryPermissions = etsUseSelector((state) => getListData(state.registry, props.registryKey).permissions);
+    const userDataPermissionsSet = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
+    const isPermittedToUpdate = validatePermissions(registryPermissions.update, userDataPermissionsSet);
 
     const value = get(valuesRenderRow, props.metaKey, null);
     const dispatch = etsUseDispatch();
@@ -93,7 +99,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
           onChange={handleChange}
           className={renderParams.className}
           options={get(optionsRenderRow, props.metaKey, [])}
-          // disabled={!props.isPermitted}
+          disabled={!isPermittedToUpdate}
           error={error}
           readOnly={renderParams.readOnly}
           inline={renderParams.inline}

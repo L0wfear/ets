@@ -28,20 +28,13 @@ const useForm = <F>(formKey: FormKeys, props: WithFormRegistrySearchAddProps<F>)
     [formKey, props.element, props.meta],
   );
 
-  const handleHide = React.useCallback(
-    (isSubmitted: any, result?: any) => {
-      props.handleHide(isSubmitted, result);
-    },
-    [props.handleHide],
-  );
-
   const hasData = etsUseSelector((state) => Boolean(getFormDataByKey(state, formKey)));
   const value = React.useMemo(
     () => ({
       hasData,
-      handleHide,
+      handleHide: props.handleHide,
     }),
-    [handleHide, hasData],
+    [props.handleHide, hasData],
   );
 
   return value;

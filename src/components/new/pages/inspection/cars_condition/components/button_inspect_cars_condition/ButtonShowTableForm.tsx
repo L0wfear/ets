@@ -1,33 +1,42 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
+
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
-import { compose } from 'recompose';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { getLastConductingInspect } from 'components/new/pages/inspection/autobase/@selectors';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { ButtonShowTableFormProps, ButtonShowTableFormStateProps, ButtonShowTableFormDispatchProps, ButtonShowTableFormOwnProps } from 'components/new/pages/inspection/cars_condition/components/button_inspect_cars_condition/@types';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
-import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-const ButtonShowTableForm: React.FC<ButtonShowTableFormProps> = (props) => {
+import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+
+type OwnProps = {
+  loadingPage: string;
+};
+
+type Props = (
+  OwnProps
+  & WithSearchProps
+);
+
+const ButtonShowTableForm: React.FC<Props> = (props) => {
+  const inspectId = getNumberValueFromSerch(props.match.params.id);
+
+  const permissions = etsUseSelector((state) => getListData(getRegistryState(state), props.loadingPage).permissions.update); //  прокидывается в следующий компонент
+  const isPermitted = etsUseIsPermitted(permissions);
 
   const handleClickShowTableForm = React.useCallback(
     async () => {
-      const inspectId = getNumberValueFromSerch(props.match.params.id);
       if (inspectId) {
         props.setDataInSearch({
-          showFormType: 'showTableForm',
           inspectId,
-          showCreateBtn: props.showCreateBtn ? 'showCreateBtn' : null,
         });
       }
     },
-    [props.match.params, props.match.url, props.location.search, props.setParams],
+    [inspectId, props.match.params, props.match.url, props.location.search, props.setParams],
   );
 
-  return (
+  return isPermitted && (
     <EtsBootstrap.Button onClick={handleClickShowTableForm}>
       <EtsBootstrap.Glyphicon glyph="list-alt"/>
       Открыть форму заполнения
@@ -35,13 +44,4 @@ const ButtonShowTableForm: React.FC<ButtonShowTableFormProps> = (props) => {
   );
 };
 
-export default compose<ButtonShowTableFormProps, ButtonShowTableFormOwnProps>(
-  connect<ButtonShowTableFormStateProps, ButtonShowTableFormDispatchProps, ButtonShowTableFormOwnProps, ReduxState>(
-    (state, { loadingPage }) => ({
-      permissions: getListData(getRegistryState(state), loadingPage).permissions.update, //  прокидывается в следующий компонент
-      lastConductingInspect: getLastConductingInspect(getListData(getRegistryState(state), loadingPage)),
-    }),
-  ),
-  withRequirePermission({}),
-  withSearch,
-)(ButtonShowTableForm);
+export default withSearch<OwnProps>(ButtonShowTableForm);

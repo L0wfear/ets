@@ -8,11 +8,12 @@ import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/car
 import { ExtFieldContainer } from './styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
-import { get } from 'lodash';
 import { monitoringKindSeasonReadiness } from 'components/new/pages/inspection/cars_condition/components/select_data/constants';
 import ButtonShowTableForm from 'components/new/pages/inspection/cars_condition/components/button_inspect_cars_condition/ButtonShowTableForm';
+import { canCreateCarInCondition } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
 type BlockCarsConditionSelectCarOwnProps = {
+  monitoring_kind: InspectCarsCondition['monitoring_kind'];
   cars_cnt: InspectCarsCondition['cars_cnt'];
   checked_cars_cnt: InspectCarsCondition['checked_cars_cnt'];
   error_checked_cars_cnt: string;
@@ -30,6 +31,7 @@ type BlockCarsConditionSelectCarProps = (
 const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = React.memo(
   (props) => {
     const {
+      monitoring_kind,
       carsConditionCarsList,
     } = props;
 
@@ -53,7 +55,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           });
         }
       },
-      [props.setParams],
+      [props.setParams, props.searchState],
     );
 
     const handleCreateNewCardCar = React.useCallback(
@@ -79,12 +81,12 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
       },
       [carsConditionCarsList],
     );
-    const monitoringKind = get(props, 'searchState.monitoringKind', null);
-    const showCreateBtn = props.isActiveInspect && monitoringKindSeasonReadiness.key !== monitoringKind;
+    const showCreateBtn = canCreateCarInCondition(monitoring_kind, props.isActiveInspect);
+
     return (
       <BoxContainer>
         <h4>Выбор ТС для просмотра карточки</h4>
-        <ButtonShowTableForm loadingPage={props.loadingPage} showCreateBtn={showCreateBtn} />
+        <ButtonShowTableForm loadingPage={props.loadingPage} />
         <div>
           <span>Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице</span>
         </div>
@@ -98,7 +100,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           />
         </ExtFieldContainer>
         {
-          monitoringKindSeasonReadiness.key !== monitoringKind &&
+          monitoringKindSeasonReadiness.key !== monitoring_kind &&
           (
             <p>
               <span>

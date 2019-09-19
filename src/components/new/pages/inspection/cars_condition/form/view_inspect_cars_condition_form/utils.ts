@@ -1,6 +1,8 @@
+import { cloneDeep, get } from 'lodash';
 import { isObject, isNullOrUndefined } from 'util';
-import { cloneDeep } from 'lodash';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { STATUS_INSPECT_COMPLETED, STATUS_INSPECT_CONDITING } from 'redux-main/reducers/modules/inspect/inspect_utils';
+import { monitoringKindSeasonReadiness } from 'components/new/pages/inspection/cars_condition/components/select_data/constants';
 
 export const defaultInspectCarsCondition: InspectCarsCondition = {
   agents_from_gbu: [],
@@ -86,4 +88,37 @@ export const getDefaultInspectCarsConditionElement = (element: Partial<InspectCa
   }
 
   return newElement;
+};
+
+const isPermittedChangeCloseParams = (inspect_data: InspectCarsCondition, isPermittedToUpdateClose: boolean) => {
+  const status = get(inspect_data, 'status');
+
+  return (
+    status === STATUS_INSPECT_COMPLETED
+    && isPermittedToUpdateClose
+  );
+};
+
+export const isPermittedEditCarContidion = (inspect_data: InspectCarsCondition, isPermittedToUpdateClose: boolean) => {
+  const status = get(inspect_data, 'status');
+
+  return (
+    status === STATUS_INSPECT_CONDITING
+    || isPermittedChangeCloseParams(inspect_data, isPermittedToUpdateClose)
+  );
+};
+
+export const canCreateCarInCondition = (monitoring_kind: InspectCarsCondition['monitoring_kind'], isPermittedEditCarContidionBool: boolean) => {
+  return (
+    isPermittedEditCarContidionBool
+    && monitoringKindSeasonReadiness.key !== monitoring_kind
+  );
+};
+
+export const canCreateCarInConditionGlobal = (inspect_data: InspectCarsCondition, isPermittedToUpdateClose: boolean) => {
+  const monitoring_kind = get(inspect_data, 'monitoring_kind');
+  return canCreateCarInCondition(
+    monitoring_kind,
+    isPermittedEditCarContidion(inspect_data, isPermittedToUpdateClose),
+  );
 };

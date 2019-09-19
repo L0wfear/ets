@@ -52,16 +52,13 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
 };
 
 export const actionGetInspectCarsConditionById = (id: Parameters<typeof promiseGetInspectCarsConditionById>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetInspectCarsConditionById>> => async (dispatch, getState) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetInspectCarsConditionById(id),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
+  const result = await etsLoadingCounter(
+    dispatch,
+    promiseGetInspectCarsConditionById(id),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
 
 export const actionResetCompany = (): EtsAction<null> => (dispatch) => {

@@ -47,6 +47,7 @@ import { validateMissionsByCheckedElements } from 'components/new/pages/missions
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { makeInspectCarsConditionExtendedFront } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_promise';
+import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
 /**
  * Да простят меня боги
@@ -54,14 +55,6 @@ import { makeInspectCarsConditionExtendedFront } from 'redux-main/reducers/modul
  */
 
 export const registryAddInitialData: any = ({ registryKey, ...config }) => (dispatch, getState) => {
-  if (!config.noInitialLoad) {
-    setTimeout(() => (
-      dispatch(
-        registryLoadDataByKey(registryKey),
-      )
-    ), 100);
-  }
-
   const STRUCTURES = getSessionStructuresOptions(getState());
   const userData = getSessionState(getState()).userData;
 
@@ -105,13 +98,21 @@ export const registryAddInitialData: any = ({ registryKey, ...config }) => (disp
     },
   );
 
-  return dispatch({
+  dispatch({
     type: REGISTRY_ADD_INITIAL_DATA,
     payload: {
       registryKey,
       config: mergeConfig,
     },
   });
+
+  if (!config.noInitialLoad) {
+    return dispatch(
+      registryLoadDataByKey(registryKey),
+    );
+  }
+
+  return Promise.resolve();
 };
 
 export const registryRemoveData = (registryKey) => ({
@@ -922,175 +923,6 @@ export const registryChangeGroupActiveColumn: any = (registryKey, payload: {key:
   );
 };
 
-export const registryChangeRenderSelectedRow: any = (registryKey, payload: {key: string, value: any}) => (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
-
-  const newVal = {
-    ...list.rendersFields.values,
-    [payload.key]: payload.value,
-  };
-
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...list,
-        rendersFields: {
-          ...list.rendersFields,
-          values: newVal,
-        },
-      },
-    ),
-  );
-};
-
-export const registryChangeRenderOptions: any = (registryKey, payload: {options: any}) => (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
-
-  dispatch(
-    registryChangeListData(
-      registryKey,
-      {
-        ...list,
-        rendersFields: {
-          ...list.rendersFields,
-          options: payload.options,
-        },
-      },
-    ),
-  );
-};
-
-// отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
-const registrySelectRowWithPutRequest = async (selectedRowObj, registryKey, selectedRow, dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
-  selectedRowObj.current.rendersFields = {
-    values: selectedRow.current,
-  };
-  selectedRowObj.prev.rendersFields = {
-    values: selectedRow.current,
-  };
-
-  const rowRequestActionUpdate = get(list, 'meta.rowRequestActions.actionUpdate.action', null);
-  const rowRequestActionCreate = get(list, 'meta.rowRequestActions.actionCreate.action', null);
-  const rowRequestActionUpdatePayload = get(list, 'meta.rowRequestActions.actionUpdate.payload', null);
-  const rowRequestActionCreatePayload = get(list, 'meta.rowRequestActions.actionCreate.payload', null);
-
-  const rendersFieldsValues = get(list, 'rendersFields.values', null);
-  const isNewRow = get(selectedRow.prev, 'isNewRow', false);
-
-  if ((rowRequestActionUpdate || (isNewRow && rowRequestActionCreate)) && rendersFieldsValues) {
-    const listMetaFields = get(list, 'meta.fields', []);
-    const formatedRendersFieldsValues = { ...rendersFieldsValues };
-
-    if (listMetaFields.length) {
-      listMetaFields.forEach(({ key, renderParams }) => {
-        if (renderParams) {
-          let value: any = formatedRendersFieldsValues[key];
-
-          if (renderParams.type === 'number' && value) {
-            value = Number(value);
-          }
-          if (renderParams.type === 'date' && value) {
-            value = createValidDate(value);
-          }
-          if (renderParams.type === 'date' && renderParams.time) {
-            value = createValidDateTime(value);
-          }
-          formatedRendersFieldsValues[key] = value;
-        }
-      });
-    }
-
-    try {
-      const response = isNewRow ? await dispatch(
-        rowRequestActionCreate(
-          {
-            ...formatedRendersFieldsValues,
-            ...rowRequestActionCreatePayload,
-            id: null,
-          },
-          { page: '', path: '' },
-        ),
-      ) : await dispatch(
-        rowRequestActionUpdate(
-          {
-            ...formatedRendersFieldsValues,
-            ...rowRequestActionUpdatePayload,
-          },
-          { page: '', path: '' },
-        ),
-      );
-
-      let putRes = {};
-
-      if (registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {
-        const responseList = get(response, 'result.rows', []).map(makeInspectCarsConditionExtendedFront);
-        if (responseList.length) {
-          putRes = responseList[0];
-        } else {
-          throw new Error("Неверный формат даанных с сервера, или пустое значение");
-        }
-      } else {
-        putRes = get(response, 'result.rows.0');
-      }
-
-      const uniqKey = get(selectedRowObj.prev, 'data.uniqKey', 'id');
-
-      const arrayWithPutObjList = get(selectedRowObj.prev, 'data.array', []).map((elem) => {
-        if (elem[uniqKey] === putRes[uniqKey] || elem[uniqKey] === formatedRendersFieldsValues[uniqKey] ) { // во втором условии находим строку(новую) и заменяем полностью объект, что бы не оставался старый id
-          return putRes;
-        }
-        return elem;
-      });
-
-      selectedRowObj.prev.data.array = isNewRow && !isNullOrUndefined(putRes)
-        ? [...arrayWithPutObjList, putRes]
-        : [...arrayWithPutObjList];
-
-      selectedRowObj.prev.data.selectedRow = selectedRow.current;
-      dispatch(
-        registryChangeListData(
-          registryKey,
-          {
-            ...selectedRowObj.prev,
-          },
-        ),
-      );
-    } catch (error) {
-      console.error(error); //tslint:disable-line
-      return null;
-    }
-  } else {
-    dispatch(
-      registryChangeListData(
-        registryKey,
-        {
-          ...selectedRowObj.current,
-        },
-      ),
-    );
-  }
-};
-
 // добавление новой строки в реестре, по кнопкке ButtonAddNewRowTable
 export const registryAddNewRow: any = (registryKey, payload: { defaultRowValue, }) => (dispatch, getState) => {
   const {
@@ -1134,59 +966,37 @@ export const registryAddNewRow: any = (registryKey, payload: { defaultRowValue, 
 
 };
 
-export const registrySelectRow: any = (registryKey, selectedRow) => async (dispatch, getState) => {
-  const {
-    registry: {
-      [registryKey]: {
-        list,
-      },
-    },
-  } = getState();
+export const registrySelectRow = <F extends Record<string, any>>(registryKey: string, selectedRow: F): EtsAction<Promise<void>> => async (dispatch, getState) => {
+  const list = getListData(getRegistryState(getState()), registryKey) as OneRegistryData<F>['list'];
 
-  const uniqKeyCurrent = get(list, 'data.uniqKey', null);
-  const prevSelectedRowKeyVal = get(list, `data.selectedRow.${uniqKeyCurrent}`, 1);
-  const prevSelectedRow = get(list, `data.selectedRow`, null);
-  const is_render_field = get(list, `meta.is_render_field`, null);
+  const data = get(list, 'data');
+  const prevRendersFields = get(list, 'rendersFields');
+  const uniqKey = get(data, 'uniqKey');
+  const prevSelectedRow = get(data, 'selectedRow');
 
-  const isEqualSelectedRow = uniqKeyCurrent && get(selectedRow, `${uniqKeyCurrent}`, 0) === prevSelectedRowKeyVal;
-  const selectedRowObj = {
+  const isEqualSelectedRow = (
+    uniqKey
+    && get(selectedRow, uniqKey, 0) === get(prevSelectedRow, uniqKey, 1)
+  );
+
+  const list_new: OneRegistryData['list'] = {
     ...list,
     data: {
       ...list.data,
       selectedRow,
     },
-  };
-  selectedRowObj.rendersFields = {
-    values: selectedRow,
-  };
-  const selectedRowObjPrev = {
-    ...list,
-    data: {
-      ...list.data,
-      selectedRow: prevSelectedRow,
+    rendersFields: {
+      ...list.rendersFields,
+      values: selectedRow,
     },
   };
 
-  if (!isEqualSelectedRow && is_render_field) {
-    await registrySelectRowWithPutRequest(
-      {
-        prev: selectedRowObjPrev,
-        current: selectedRowObj,
-      },
-      registryKey,
-      {
-        prev: prevSelectedRow,
-        current: selectedRow,
-      },
-      dispatch, getState,
-    );
-  } else {
-    dispatch(
-      registryChangeListData(
+  if (!isEqualSelectedRow) {
+    await dispatch(
+      registrySelectRowWithPutRequest(
         registryKey,
-        {
-          ...selectedRowObj,
-        },
+        list_new,
+        prevRendersFields,
       ),
     );
   }
@@ -1195,7 +1005,7 @@ export const registrySelectRow: any = (registryKey, selectedRow) => async (dispa
 
   if (children && children.length) {
     const listNew = getListData(getRegistryState(getState()), registryKey);
-    const uniqKey = listNew.data.uniqKey;
+
     const processedArray = listNew.processed.processedArray.map(
       (rowData) => {
         if (rowData[uniqKey] === selectedRow[uniqKey]) {
@@ -1355,4 +1165,169 @@ export const registryResetSelectedRowToShowInForm: any = (registryKey, isSubmitt
       registryLoadDataByKey(registryKey, responseDataList),
     );
   }
+};
+
+export const registryChangeObjectExtra = (registryKey: string, partialObjectExtra: Record<string, any>): EtsAction<void> => (dispatch, getState) => {
+  const list = getListData(getRegistryState(getState()), registryKey);
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        data: {
+          ...list.data,
+          objectExtra: {
+            ...list.data.objectExtra,
+            ...partialObjectExtra,
+          },
+        },
+      },
+    ),
+  );
+};
+
+// отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
+const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields']): EtsAction<any> => async (dispatch) => {
+  const meta = get(list_new, 'meta');
+  const rowRequestActions = get(meta, 'rowRequestActions');
+  const actionCreate = get(rowRequestActions, 'actionCreate');
+  const rowRequestActionCreate = get(actionCreate, 'action');
+  const rowRequestActionCreatePayload = get(actionCreate, 'payload');
+  const actionUpdate = get(rowRequestActions, 'actionUpdate');
+  const rowRequestActionUpdate = get(actionUpdate, 'action');
+  const rowRequestActionUpdatePayload = get(actionUpdate, 'payload');
+
+  const rendersFieldsValues = get(prevRendersFields, 'values');
+  const isNewRow = get(rendersFieldsValues, 'isNewRow', false);
+
+  if ((rowRequestActionUpdate || (isNewRow && rowRequestActionCreate)) && rendersFieldsValues) {
+    const listMetaFields = get(meta, 'fields', []);
+    const formatedRendersFieldsValues = { ...rendersFieldsValues };
+
+    if (listMetaFields.length) {
+      listMetaFields.forEach(({ key, renderParams }) => {
+        if (renderParams) {
+          let value: any = formatedRendersFieldsValues[key];
+
+          if (renderParams.type === 'number' && value) {
+            value = Number(value);
+          }
+          if (renderParams.type === 'date' && value) {
+            value = createValidDate(value);
+          }
+          if (renderParams.type === 'date' && renderParams.time) {
+            value = createValidDateTime(value);
+          }
+          formatedRendersFieldsValues[key] = value;
+        }
+      });
+
+      removeEmptyString(formatedRendersFieldsValues);
+    }
+
+    try {
+      let response = null;
+      if (isNewRow) {
+        response = await dispatch(
+          rowRequestActionCreate(
+            {
+              ...formatedRendersFieldsValues,
+              ...rowRequestActionCreatePayload,
+              id: null,
+            },
+            { page: '', path: '' },
+          ),
+        );
+      } else {
+        response = await dispatch(
+          rowRequestActionUpdate(
+            {
+              ...formatedRendersFieldsValues,
+              ...rowRequestActionUpdatePayload,
+            },
+            { page: '', path: '' },
+          ),
+        );
+      }
+
+      let putRes = get(response, 'result.rows.0');
+
+      if (!putRes) {
+        throw new Error("Неверный формат даанных с сервера, или пустое значение");
+      }
+
+      if (registryKey === 'InspectCarsConditionsCarsExtendedRegistry') {
+        putRes = makeInspectCarsConditionExtendedFront(putRes);
+      }
+
+      const uniqKey = get(list_new, 'data.uniqKey');
+      const arrayWithPutObjList = get(list_new, 'data.array', []).map((elem) => {
+        if (elem[uniqKey] === putRes[uniqKey] || elem[uniqKey] === formatedRendersFieldsValues[uniqKey] ) { // во втором условии находим строку(новую) и заменяем полностью объект, что бы не оставался старый id
+          return putRes;
+        }
+        return elem;
+      });
+
+      list_new.data.array = arrayWithPutObjList;
+
+      if (isNewRow && !isNullOrUndefined(putRes)) {
+        list_new.data.array.push(putRes);
+      }
+
+      list_new.data.selectedRow = list_new.data.selectedRow;
+
+    } catch (error) {
+      console.error(error); //tslint:disable-line
+      return;
+    }
+  }
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list_new,
+      },
+    ),
+  );
+};
+
+export const registryChangeRenderSelectedRow = (registryKey: string, payload: { key: string, value: any }): EtsAction<void> => (dispatch, getState) => {
+  const list = getListData(getRegistryState(getState()), registryKey);
+
+  const newVal = {
+    ...list.rendersFields.values,
+    [payload.key]: payload.value,
+  };
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        rendersFields: {
+          ...list.rendersFields,
+          values: newVal,
+        },
+      },
+    ),
+  );
+};
+
+export const registryChangeRenderOptions = (registryKey: string, payload: {options: any}): EtsAction<void> => (dispatch, getState) => {
+  const list = getListData(getRegistryState(getState()), registryKey);
+
+  dispatch(
+    registryChangeListData(
+      registryKey,
+      {
+        ...list,
+        rendersFields: {
+          ...list.rendersFields,
+          options: payload.options,
+        },
+      },
+    ),
+  );
 };

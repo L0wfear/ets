@@ -121,7 +121,7 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
 // export default compose<PropsCarsConditionTableDefects, PropsCarsConditionTableDefectsWithForm>(
 //   withForm<PropsCarsConditionTableDefectsWithForm, CarsConditionTableDefects>({
 export default compose<PropsCarsConditionTableDefects, PropsCarsConditionTableDefectsWithForm>(
-  withForm<any, CarsConditionTableDefects>({ // <<< замена any
+  withForm<PropsCarsConditionTableDefectsWithForm, CarsConditionTableDefects>({ // <<< замена any
     uniqField: 'id',
     schema: carsConditionTableDefectsFormSchema,
     permissions: carsConditionTableDefectsPermissions,

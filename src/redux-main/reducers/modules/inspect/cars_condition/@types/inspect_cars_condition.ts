@@ -88,7 +88,7 @@ export type InspectCarsCondition = {
     fio: string;
     tel: string;
   };
-  monitoring_kind: string;
+  monitoring_kind: string | null;
   monitoring_kind_text: string;
   open_employee_fio: string;
   open_employee_id: number;

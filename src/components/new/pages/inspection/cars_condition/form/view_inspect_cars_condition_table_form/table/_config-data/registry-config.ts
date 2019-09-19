@@ -16,7 +16,7 @@ const renderFieldsSchema = { // Что бы не надо было менять 
   },
 };
 
-export const getConfig = (inspection_id: number ): TypeConfigData<CarsConditionCars & CarsConditionCars['data']> => ({
+export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCars & CarsConditionCars['data']> => ({
   Service: {
     getRegistryData: {
       entity: 'inspection/cars',

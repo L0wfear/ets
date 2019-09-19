@@ -987,6 +987,12 @@ export const registryAddNewRow: any = (registryKey, payload: { defaultRowValue, 
     ),
   );
 
+  dispatch(
+    registrySelectRow(
+      registryKey,
+      newRow,
+    ),
+  );
 };
 
 export const registrySelectRow = <F extends Record<string, any>>(registryKey: string, selectedRow: F): EtsAction<Promise<void>> => async (dispatch, getState) => {

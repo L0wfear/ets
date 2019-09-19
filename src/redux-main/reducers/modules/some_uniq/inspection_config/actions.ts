@@ -5,8 +5,9 @@ import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCoun
 import { EtsActionReturnType, EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { getOptionsConfigByObject } from 'utils/functions';
-import { actionLoadInspectionCountry } from 'redux-main/reducers/modules/services/services_actions';
+import { actionLoadInspectionCountry, actionLoadAutobaseEngineType } from 'redux-main/reducers/modules/services/services_actions';
 import { getCountryOptions } from 'components/new/utils/hooks/services/useOptions/useCountryOptions';
+import { getAutobaseEngineTypeOptions } from 'components/new/utils/hooks/services/useOptions/useAutobaseEngineTypeOptions';
 
 export const actionSetInspectionConfig = (inspectionConfig: InspectionConfig): EtsAction<EtsActionReturnType<typeof someUniqSetNewData>> => (dispatch) => (
   dispatch(
@@ -35,14 +36,19 @@ export const actionInspectionConfigGetAndSetInStore = (...arg: Parameters<typeof
   const country = await dispatch(
     actionLoadInspectionCountry(...arg),
   );
+  const engineType = await dispatch(
+    actionLoadAutobaseEngineType(...arg),
+  );
 
   const countryOptions = getCountryOptions(country);
+  const autobaseEngineTypeOptions = getAutobaseEngineTypeOptions(engineType);
   const optionListByKey = getOptionsConfigByObject(result.data);
 
   dispatch(
     actionSetInspectionConfig({
       ...optionListByKey,
       origin_country: countryOptions.options,
+      engine_type: autobaseEngineTypeOptions.options,
     }),
   );
 

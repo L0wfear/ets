@@ -407,3 +407,6 @@ export const EdcRequestInfoDetailService = ETS_API_FACTORY.createApiServiceAdapt
 export const CleaningAreaRateService = ETS_API_FACTORY.createApiServiceAdapter(
   'cleaning_area_rate',
 );
+export const EngineTypeService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/engine_type',
+);

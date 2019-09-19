@@ -72,11 +72,11 @@ const ThGroupSpoiler: React.FC<Props> = React.memo(
 
     const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
     const dispatch = etsUseDispatch();
+    const isActive = !get(groupColumn, `${metaField.groupOpt.key}.isActive`, true);
 
     const changeGroupActiveColumn = React.useCallback((eventClick) => {
       eventClick.stopPropagation();
       const groupKey = get(metaField, 'groupOpt.key', null);
-      const isActive = !get(groupColumn, `${metaField.groupOpt.key}.isActive`, true);
       if (groupKey) {
         dispatch(
           registryChangeGroupActiveColumn(
@@ -99,7 +99,15 @@ const ThGroupSpoiler: React.FC<Props> = React.memo(
           groupColumn && metaField.groupOpt.firstElem &&
             (
               <ThGroupSpoilerFirstStyled  onClick={changeGroupActiveColumn}>
-                <EtsBootstrap.Glyphicon glyph='resize-horizontal' />
+                {
+                  isActive
+                  ? (
+                    <EtsBootstrap.Glyphicon glyph='plus' />
+                  )
+                  : (
+                    <EtsBootstrap.Glyphicon glyph='minus' />
+                  )
+                }
                 {get(groupColumn, `${metaField.groupOpt.key}.label`, 'Определи key в groupOpt')}
               </ThGroupSpoilerFirstStyled>
             )

@@ -330,6 +330,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
                     files: [file],
                     name: file.name,
                     notes: file.notes,
+                    url: file.url,
                   });
                 }
               },

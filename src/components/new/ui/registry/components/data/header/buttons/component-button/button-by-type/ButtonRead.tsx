@@ -6,11 +6,10 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
-import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 
 type OwnProps = CommonTypesForButton & {
@@ -34,7 +33,6 @@ const getPermissionsReadUpdate = (permission) => {
 
 const ButtonRead: React.FC<Props> = React.memo(
   (props) => {
-    const dispatch = etsUseDispatch();
     const permissions = etsUseSelector((state) => getPermissionsReadUpdate(getListData(state.registry, props.registryKey).permissions));
     const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
@@ -61,9 +59,6 @@ const ButtonRead: React.FC<Props> = React.memo(
         );
 
         props.setParams(changeObj);
-        dispatch(
-          registrySetSelectedRowToShowInForm(props.registryKey),
-        );
       },
       [data, props.onClick, selectedRow, uniqKey, uniqKeyForParams, props.setParams, props.match.params, props.setDataInSearch, props.searchState],
     );

@@ -19,7 +19,7 @@ export const createEmployee = employeeCreateEmployee;
 export const updateEmployee = employeeUpdateEmployee;
 export const removeEmployee = employeeDeleteEmployee;
 
-export const getFrontEmployee = (row) => {
+export const getFrontEmployee = (row: Employee) => {
   const files = get(row, 'files', []);
 
   row.driver_license_files = files.filter((file) => file.kind === 'driver_license');

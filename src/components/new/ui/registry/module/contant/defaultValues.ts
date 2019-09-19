@@ -6,6 +6,7 @@ const registryDefaultObj: OneRegistryData<any> = {
   isLoading: false,
   Service: {
     getRegistryData: {
+      entity: '',
       payload: {},
     },
   },
@@ -32,7 +33,6 @@ const registryDefaultObj: OneRegistryData<any> = {
       selectedRow: {
         uniqKey: null,
       },
-      selectedRowToShow: null,
       checkedRows: {},
       fixedWidth: false,
       proxyCheckData: null,

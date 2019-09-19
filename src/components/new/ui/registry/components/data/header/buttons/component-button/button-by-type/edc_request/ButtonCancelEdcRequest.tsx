@@ -7,7 +7,6 @@ import {
   getListData,
 } from 'components/new/ui/registry/module/selectors-registry';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { registrySetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { get } from 'lodash';
@@ -21,7 +20,6 @@ type ButtonCancelEdcRequestStateProps = {
   selectedRow: OneRegistryData['list']['data']['selectedRow'];
 };
 type ButtonCancelEdcRequestDispatchProps = {
-  registrySetSelectedRowToShowInForm: any;
 };
 type ButtonCancelEdcRequestOwnProps = CommonTypesForButton & {};
 type ButtonCancelEdcRequestMergeProps = {};
@@ -38,8 +36,7 @@ class ButtonCancelEdcRequest extends React.PureComponent<ButtonCancelEdcRequestP
     this.props.setParams({
       [this.props.uniqKeyForParams]: get(this.props.selectedRow, this.props.uniqKey, null),
       type: buttonsTypes.edc_request_cancel,
-    }),
-    this.props.registrySetSelectedRowToShowInForm();
+    });
   }
 
   render() {
@@ -65,13 +62,6 @@ export default compose<ButtonCancelEdcRequestProps, ButtonCancelEdcRequestOwnPro
       uniqKey: getListData(state.registry, registryKey).data.uniqKey,
       uniqKeyForParams: getListData(state.registry, registryKey).data.uniqKeyForParams,
       selectedRow: getListData(state.registry, registryKey).data.selectedRow,
-    }),
-    (dispatch: any, { registryKey }) => ({
-      registrySetSelectedRowToShowInForm: () => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(registryKey),
-        )
-      ),
     }),
   ),
 )(ButtonCancelEdcRequest);

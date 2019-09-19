@@ -3,7 +3,7 @@ import { connect, HandleThunkActionCreator } from 'react-redux';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { ReduxState } from 'redux-main/@types/state';
 
-import { registryLoadDataByKey, registrySetSelectedRowToShowInForm, registryRemoveSelectedRows } from 'components/new/ui/registry/module/actions-registy';
+import { registryLoadDataByKey, registryRemoveSelectedRows } from 'components/new/ui/registry/module/actions-registy';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { compose } from 'recompose';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
@@ -17,7 +17,6 @@ type ButtonRemoveCompanyStructureStateProps = {
 };
 type ButtonRemoveCompanyStructureDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;
-  registrySetSelectedRowToShowInForm: HandleThunkActionCreator<typeof registrySetSelectedRowToShowInForm>;
   registryRemoveSelectedRows: HandleThunkActionCreator<typeof registryRemoveSelectedRows>;
 };
 type ButtonRemoveCompanyStructureOwnProps = {
@@ -59,7 +58,6 @@ const ButtonRemoveCompanyStructure: React.FC<ButtonRemoveCompanyStructureProps> 
         }
 
         props.registryLoadDataByKey(props.registryKey);
-        props.registrySetSelectedRowToShowInForm(props.registryKey, null);
         handleClickCloseForm();
       },
       [props.rowData],
@@ -87,11 +85,6 @@ export default compose<ButtonRemoveCompanyStructureProps, ButtonRemoveCompanyStr
       permissions: getListData(state.registry, registryKey).permissions.delete, //  прокидывается в следующий компонент
     }),
     (dispatch: any) => ({
-      registrySetSelectedRowToShowInForm: (...arg) => (
-        dispatch(
-          registrySetSelectedRowToShowInForm(...arg),
-        )
-      ),
       registryLoadDataByKey: (...arg) => (
         dispatch(
           registryLoadDataByKey(...arg),

@@ -9,7 +9,7 @@ export const registryKey = 'inspect_acts';
 export const getConfig = (inspection_id: number, path: string): TypeConfigData<InspectOneActScan> => ({
   Service: {
     getRegistryData: {
-      entity: `${InspectRegistryService._path}/${inspection_id}`,
+      entity: InspectRegistryService.path(inspection_id)._path,
       format: 'inspect_act_scan',
     },
   },

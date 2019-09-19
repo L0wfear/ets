@@ -1,9 +1,10 @@
 import { cloneDeep } from 'lodash';
-import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
 import { isArray, isBoolean, isObject, isString, isNumber } from 'util';
+
+import registryDefaultObj from 'components/new/ui/registry/module/contant/defaultValues';
 import { makeRawFilterValues } from 'components/new/ui/registry/module/utils/filter';
 import { makerDataMetaField } from 'components/new/ui/registry/module/utils/meta';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { OneRegistryData, TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { makeProcessedArray } from './processed';
 import { getSessionStructuresOptions } from 'redux-main/reducers/modules/session/selectors';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
@@ -15,7 +16,7 @@ type OtherData = {
   userData: InitialStateSession['userData'];
 };
 
-export const mergeFilter = (filter: OneRegistryData['filter']) => {
+export const mergeFilter = <F extends Record<string, any>>(filter: TypeConfigData<F>['filter']) => {
   const rawFilterValues = makeRawFilterValues(filter);
 
   if (!filter) {
@@ -67,7 +68,7 @@ export const mergeFilter = (filter: OneRegistryData['filter']) => {
   );
 };
 
-export const mergeHeader = (header: OneRegistryData['header']) => (
+export const mergeHeader = <F extends Record<string, any>>(header: TypeConfigData<F>['header']): any => (
   header
   ? (
     Object.entries(registryDefaultObj.header).reduce((newObj, [key, value]) => {
@@ -113,7 +114,7 @@ export const mergeHeader = (header: OneRegistryData['header']) => (
   )
 );
 
-export const mergeListData = (data: OneRegistryData['list']['data']) => (
+export const mergeListData = <F extends Record<string, any>>(data: TypeConfigData<F>['list']['data']): any => (
   data
   ? (
     Object.entries(registryDefaultObj.list.data).reduce((newObj, [key, value]) => {
@@ -171,11 +172,11 @@ export const mergeListData = (data: OneRegistryData['list']['data']) => (
   )
 );
 
-export const mergeListPermissions = (permissions: OneRegistryData['list']['permissions']) => {
+export const mergeListPermissions = <F extends Record<string, any>>(permissions: TypeConfigData<F>['list']['permissions']) => {
   return permissions;
 };
 
-export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, otherData: OtherData) => {
+export const mergeListMeta = <F extends Record<string, any>>(meta: Partial<TypeConfigData<F>['list']['meta']>, otherData: OtherData) => {
   const {
     fields = registryDefaultObj.list.meta.fields,
     row_double_click = registryDefaultObj.list.meta.row_double_click,
@@ -186,7 +187,7 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
     groupColumn = registryDefaultObj.list.meta.groupColumn,
   } = meta || {};
 
-  const fieldsFiltred = fields.reduce(
+  const fieldsFiltred = (fields as any).reduce(
     (newArr, fieldData) => {
       let formatedTitle = null;
 
@@ -304,10 +305,10 @@ export const mergeListProcessed = (processed: Partial<OneRegistryData['list']['p
   return processedNew;
 };
 
-export const mergeList = (list: OneRegistryData['list'], fields: OneRegistryData['filter']['fields'], otherData: OtherData) => {
+export const mergeList = <F extends Record<string, any>>(list: TypeConfigData<F>['list'], fields: OneRegistryData['filter']['fields'], otherData: OtherData): any => {
   const listNew: Partial<OneRegistryData['list']> = {};
 
-  listNew.data = mergeListData(list.data) as any;
+  listNew.data = mergeListData(list.data);
   listNew.permissions = mergeListPermissions(list.permissions);
   listNew.meta = mergeListMeta(list.meta, otherData);
   listNew.paginator = mergeListPaginator(list.paginator);

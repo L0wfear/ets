@@ -26,6 +26,8 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Disp
     key: string;
     firstElem?: boolean;
   };
+
+  max_size_to_scroll?: number;
 };
 
 export type TypeFieldsAvalibaleKey<F> = (
@@ -72,7 +74,6 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'waybill_all_missions_status'
       | 'waybill_status_name'
     );
-    max_size_to_scroll?: number;
   } | {
     key: TypeFieldsAvalibaleKey<void>;
   }
@@ -127,12 +128,43 @@ export type OneFilterType<F> = {
 );
 
 export interface OneRegistryData<F = any> {
-  idRequestTime: number;
+  idRequestTime: number;                      // id запроса. Нужен, чтобы старый (долгий) запрос не перетёр новые данные
   isLoading: boolean;
-  Service: any;
-  path?: string;
+  Service: {
+    getRegistryData?: {
+      entity: string;
+      payload?: Record<string, any>;
+      noTimeout?: boolean;
+      format?: (                              // ключ, по которому проходится switch case для форматирования ответа
+        'inspect_act_scan'
+        | 'mission'
+        | 'consumable_material_wrap'
+        | 'carActual'
+        | 'duty_mission'
+        | 'dutyMissionTemplate'
+        | 'typesAttr'
+        | 'employee_on_car'
+        | 'employee'
+        | 'normRegistry'
+        | 'technical_operation_relations'
+        | 'cars_condition_extended'
+      );
+      typeAns?: 'result.rows' | 'result';     // путь до массива в ответе
+      typeExtra?: 'result.extra';             // путь до экстры
+      userServerFilters?: boolean;            // используется ли серверная фильтрация/ пагинация
+    },
+    removeOneData?: {
+      entity: string;
+      uniqKeyLikeQueryString?: boolean;       // true - `${entity}/${id}` | false - `${entity}?id=${id}`
+    },
+    getBlobData?: {
+      entity: string;
+      payload?: Record<string, any>;
+    },
+  };
+  path: string;
   header: {
-    title?: any;
+    title: string;
     titlePopover: string;
     format: (
       'default'
@@ -172,7 +204,6 @@ export interface OneRegistryData<F = any> {
       uniqKey: Extract<keyof F, string>;
       uniqKeyForParams: string;
       selectedRow: F;
-      selectedRowToShow: F;
       checkedRows: Record<keyof F, F>;
       fixedWidth: boolean;
       proxyCheckData?: (
@@ -198,7 +229,7 @@ export interface OneRegistryData<F = any> {
       selected_row_in_params: boolean;
       fields: Array<TypeFieldsRegistry<F, string>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
-      rowFields: any[],
+      rowFields: TypeFieldsWithoutDeep<F, string>[],
       row_fields_table_width: number;
       treeFields: object,
       groupColumn?: {
@@ -265,7 +296,7 @@ export type TypeConfigData<F> = {
   filter?: Partial<OneRegistryData<F>['filter']>;
   list?: {
     data?: Partial<OneRegistryData<F>['list']['data']>;
-    permissions?: Partial<OneRegistryData<F>['list']['permissions']>;
+    permissions: OneRegistryData<F>['list']['permissions'];
     processed?: {
       processedArray?: OneRegistryData<F>['list']['processed']['processedArray'];
       sort?: Partial<OneRegistryData<F>['list']['processed']['sort']>;

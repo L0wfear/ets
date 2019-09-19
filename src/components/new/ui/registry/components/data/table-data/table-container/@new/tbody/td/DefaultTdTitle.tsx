@@ -120,7 +120,7 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
     const userDataPermissionsSet = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
     const isPermittedToUpdate = validatePermissions(registryPermissions.update, userDataPermissionsSet);
 
-    const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected && !isPermittedToUpdate);
+    const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected && isPermittedToUpdate);
 
     return extFieldIsRender
       ? (

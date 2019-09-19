@@ -1,8 +1,8 @@
 import etsLoadingCounter from "redux-main/_middleware/ets-loading/etsLoadingCounter";
 import { LoadingMeta } from "redux-main/_middleware/@types/ets_loading.h";
-import { promiseChangeServiceActiveStatus, promiseChangeServiceFiles } from "./services_promise";
+import { promiseChangeServiceActiveStatus, promiseChangeServiceFiles, promiseLoadCountry } from "./services_promise";
 import { Service } from "./@types/services";
-import { EtsAction } from "components/@next/ets_hoc/etsUseDispatch";
+import { EtsAction, EtsActionReturnType } from "components/@next/ets_hoc/etsUseDispatch";
 
 export const actionChangeServiceActiveStatus = (slug: string, is_active: boolean, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseChangeServiceActiveStatus>> => async (dispatch) => {
   const result = await etsLoadingCounter(
@@ -22,4 +22,12 @@ export const actionChangeServiceFiles = (id: Service['id'], files: any[], meta: 
   );
 
   return result;
+};
+
+export const actionLoadInspectionCountry = (meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseLoadCountry>> => async (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseLoadCountry(),
+    meta,
+  );
 };

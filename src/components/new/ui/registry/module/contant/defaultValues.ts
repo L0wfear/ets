@@ -29,7 +29,9 @@ const registryDefaultObj: OneRegistryData<any> = {
       total_count: 0,
       uniqKey: 'id',
       uniqKeyForParams: 'id',
-      selectedRow: null,
+      selectedRow: {
+        uniqKey: null,
+      },
       selectedRowToShow: null,
       checkedRows: {},
       fixedWidth: false,
@@ -44,12 +46,19 @@ const registryDefaultObj: OneRegistryData<any> = {
     },
     meta: {
       row_double_click: true,
+      rowRequestActions: {
+        actionUpdate: null,
+        actionCreate: null,
+      },
+      is_render_field: false,
       selected_row_in_params: false,
       fields: [],
       fieldsInDeepArr: [],
       rowFields: [],
       row_fields_table_width: 0,
       treeFields: {},
+      renderFieldsSchema: null,
+      groupColumn: {},
     },
     paginator: {
       currentPage: 0,
@@ -63,6 +72,11 @@ const registryDefaultObj: OneRegistryData<any> = {
         reverse: false,
       },
       total_count: 0,
+    },
+    rendersFields: {
+      errors: {},
+      values: {},
+      options: {},
     },
   },
 };

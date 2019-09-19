@@ -331,3 +331,20 @@ export const getTextCanvas = async (text: string, style: string) => {
 export const getCanvasOfElement = (element: HTMLElement) => {
   return html2canvas(element, { scale: 2 });
 };
+
+export const getOptionsConfigByObject = (optionsObj) => {
+  return optionsObj
+  ? Object.keys(optionsObj).reduce((newObj, key ) => {
+    const configOptionsByKeyList = Object.entries(optionsObj[key]).map(([keyEntry, valueEntry]) => {
+      return {
+        value: keyEntry,
+        label: valueEntry,
+      };
+    });
+    return {
+      ...newObj,
+      [key]: configOptionsByKeyList,
+    };
+  }, {})
+  : null;
+};

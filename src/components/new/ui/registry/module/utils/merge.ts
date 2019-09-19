@@ -179,7 +179,11 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   const {
     fields = registryDefaultObj.list.meta.fields,
     row_double_click = registryDefaultObj.list.meta.row_double_click,
+    rowRequestActions = registryDefaultObj.list.meta.rowRequestActions,
+    renderFieldsSchema = registryDefaultObj.list.meta.renderFieldsSchema,
+    is_render_field = registryDefaultObj.list.meta.is_render_field,
     selected_row_in_params = registryDefaultObj.list.meta.selected_row_in_params,
+    groupColumn = registryDefaultObj.list.meta.groupColumn,
   } = meta || {};
 
   const fieldsFiltred = fields.reduce(
@@ -232,7 +236,11 @@ export const mergeListMeta = (meta: Partial<OneRegistryData['list']['meta']>, ot
   return {
     ...makerDataMetaField(fieldsFiltred),
     row_double_click,
+    rowRequestActions,
     selected_row_in_params,
+    is_render_field,
+    renderFieldsSchema,
+    groupColumn,
   };
 };
 

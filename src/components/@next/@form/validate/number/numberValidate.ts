@@ -40,6 +40,9 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
       return `Поле "${title}" должно быть больше либо равно ${fieldData.min}`;
     }
 
+    if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual && fieldData.minNotEqual === -1) {
+      return `Поле "${fieldData.title}" должно быть неотрицательным числом`;
+    }
     if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual) {
       return `Поле "${title}" должно быть больше ${fieldData.minNotEqual}`;
     }

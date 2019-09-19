@@ -34,9 +34,11 @@ const TextAreaField: React.FC<ExtFieldText> = React.memo(
 
     return (
       <SingleUiElementWrapper hidden={hidden} className={wrapperClassName}>
-        <FieldLabel>
-          <span>{label}</span>
-        </FieldLabel>
+        {typeof props.label === 'string' && (
+          <FieldLabel>
+            <span>{label}</span>
+          </FieldLabel>
+        )}
         <TextAreaFieldUi
           id={id}
           style={textAreaStyle}

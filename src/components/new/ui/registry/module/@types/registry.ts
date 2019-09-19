@@ -1,5 +1,6 @@
 import { glyphMap } from 'global-styled';
 import { TypeOneDisplayIf } from 'components/new/ui/registry/contants/displayIf';
+import { ExtFieldType } from 'components/@next/@ui/renderFields/@types';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 
@@ -20,6 +21,11 @@ export type CommonTypeField<F extends Record<string, any>, Title = string | Disp
   width?: number;
   dashIfEmpty?: boolean;
   title?: Title;
+  renderParams?: ExtFieldType;
+  groupOpt?: {
+    key: string;
+    firstElem?: boolean;
+  };
 };
 
 export type TypeFieldsAvalibaleKey<F> = (
@@ -183,12 +189,24 @@ export interface OneRegistryData<F = any> {
     };
     meta: {
       row_double_click: boolean;
+      rowRequestActions?: {
+        actionUpdate?: any;
+        actionCreate?: any;
+      };
+      renderFieldsSchema: any;
+      is_render_field: boolean;
       selected_row_in_params: boolean;
       fields: Array<TypeFieldsRegistry<F, string>>;
       fieldsInDeepArr: Array<Array<TypeFieldsWithoutDeep<F>>>,
       rowFields: any[],
       row_fields_table_width: number;
       treeFields: object,
+      groupColumn?: {
+        [key: string]: {
+          label: string,
+          isActive?: boolean,
+        },
+      },
     },
     paginator?: {
       currentPage?: number;
@@ -205,6 +223,18 @@ export interface OneRegistryData<F = any> {
       },
       total_count?: number,
     },
+    rendersFields?: { // для расширенного реестра Excel
+      errors: { // для вывода ошибок в реестре
+        [key: string]: any; // key - уникаальный ключ строки
+      },
+      values: F, // тоже что и в selectedRow
+      options: {
+        [key: string]: {
+          value: any;
+          label: string;
+        };
+      },
+    };
   };
   filter: {
     isOpen?: boolean;
@@ -245,9 +275,14 @@ export type TypeConfigData<F> = {
     meta: {
       selected_row_in_params?: OneRegistryData<F>['list']['meta']['selected_row_in_params'];
       row_double_click?: OneRegistryData<F>['list']['meta']['row_double_click'];
+      rowRequestActions?: OneRegistryData<F>['list']['meta']['rowRequestActions'];
+      is_render_field?: OneRegistryData<F>['list']['meta']['is_render_field'];
+      renderFieldsSchema?: OneRegistryData<F>['list']['meta']['renderFieldsSchema'];
+      groupColumn?: OneRegistryData<F>['list']['meta']['groupColumn'];
       fields?: Array<TypeFieldsRegistry<F, string | DisplayIfTitle[]>>;
     };
     paginator?: Partial<OneRegistryData<F>['list']['paginator']>;
+    rendersFields?: Partial<OneRegistryData<F>['list']['rendersFields']>;
   };
 };
 

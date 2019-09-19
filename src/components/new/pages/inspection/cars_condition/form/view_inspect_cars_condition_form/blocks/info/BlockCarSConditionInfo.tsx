@@ -6,6 +6,7 @@ import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
 import { FormErrorType, SchemaType } from 'components/old/ui/form/new/@types/validate.h';
 import { PropsViewInspectCarsConditionWithForm } from '../../@types/ViewInspectCarsContidion';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarSConditionInfoProps = {
   head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'],
@@ -57,88 +58,106 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
 
     return (
       <BoxContainer>
-        <ExtField
-          type="string"
-          label="Организация:"
-          value={props.company_short_name}
-          readOnly
-          inline
-        />
-        <ExtField
-          type="string"
-          label="Вид проверки:"
-          value={props.monitoring_kind_text}
-          readOnly
-          inline
-        />
-        {
-          props.checks_period_text
-            ? (
-              <ExtField
-                type="string"
-                label="Период проверки:"
-                value={props.checks_period_text}
-                readOnly
-                inline
-              />
-            )
-            : (
-              <DivNone />
-            )
-        }
-        <ExtField
-          type="string"
-          label="Тип проверки:"
-          value={props.checks_type_text}
-          readOnly
-          inline
-        />
-
-        <br />
-        <ExtField
-          id="head_balance_holder_base_fio"
-          type="string"
-          label="Руководитель предприятия:"
-          value={props.head_balance_holder_base.fio}
-          error={error_head_balance_holder_base.fio}
-          onChange={handleChangeHeadBalanceHolderBase}
-          boundKeys="fio"
-          disabled={!isPermitted}
-          readOnly={!isActiveInspect}
-        />
-        <ExtField
-          id="head_balance_holder_base_tel"
-          type="string"
-          label="Телефон:"
-          value={props.head_balance_holder_base.tel}
-          error={error_head_balance_holder_base.tel}
-          onChange={handleChangeHeadBalanceHolderBase}
-          boundKeys="tel"
-          disabled={!isPermitted}
-          readOnly={!isActiveInspect}
-        />
-        <ExtField
-          id="head_operating_base_fio"
-          type="string"
-          label="Лицо, ответственное за автотранспортную деятельность:"
-          value={props.head_operating_base.fio}
-          error={error_head_operating_base.fio}
-          onChange={handleChangeHeadOperatingBase}
-          boundKeys="fio"
-          disabled={!isPermitted}
-          readOnly={!isActiveInspect}
-        />
-        <ExtField
-          id="head_operating_base_tel"
-          type="string"
-          label="Телефон:"
-          value={props.head_operating_base.tel}
-          error={error_head_operating_base.tel}
-          onChange={handleChangeHeadOperatingBase}
-          boundKeys="tel"
-          disabled={!isPermitted}
-          readOnly={!isActiveInspect}
-        />
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="string"
+              label="Организация:"
+              value={props.company_short_name}
+              readOnly
+              inline
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="string"
+              label="Вид проверки:"
+              value={props.monitoring_kind_text}
+              readOnly
+              inline
+            />
+          </EtsBootstrap.Col>
+          {
+            props.checks_period_text
+              ? (
+                <EtsBootstrap.Col md={6}>
+                  <ExtField
+                    type="string"
+                    label="Период проверки:"
+                    value={props.checks_period_text}
+                    readOnly
+                    inline
+                  />
+                </EtsBootstrap.Col>
+              )
+              : (
+                <DivNone />
+              )
+          }
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="string"
+              label="Тип проверки:"
+              value={props.checks_type_text}
+              readOnly
+              inline
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              id="head_balance_holder_base_fio"
+              type="string"
+              label="Руководитель предприятия:"
+              value={props.head_balance_holder_base.fio}
+              error={error_head_balance_holder_base.fio}
+              onChange={handleChangeHeadBalanceHolderBase}
+              boundKeys="fio"
+              disabled={!isPermitted}
+              readOnly={!isActiveInspect}
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              id="head_balance_holder_base_tel"
+              type="string"
+              label="Телефон:"
+              value={props.head_balance_holder_base.tel}
+              error={error_head_balance_holder_base.tel}
+              onChange={handleChangeHeadBalanceHolderBase}
+              boundKeys="tel"
+              disabled={!isPermitted}
+              readOnly={!isActiveInspect}
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              id="head_operating_base_fio"
+              type="string"
+              label="Лицо, ответственное за автотранспортную деятельность:"
+              value={props.head_operating_base.fio}
+              error={error_head_operating_base.fio}
+              onChange={handleChangeHeadOperatingBase}
+              boundKeys="fio"
+              disabled={!isPermitted}
+              readOnly={!isActiveInspect}
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              id="head_operating_base_tel"
+              type="string"
+              label="Телефон:"
+              value={props.head_operating_base.tel}
+              error={error_head_operating_base.tel}
+              onChange={handleChangeHeadOperatingBase}
+              boundKeys="tel"
+              disabled={!isPermitted}
+              readOnly={!isActiveInspect}
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
       </BoxContainer>
     );
   },

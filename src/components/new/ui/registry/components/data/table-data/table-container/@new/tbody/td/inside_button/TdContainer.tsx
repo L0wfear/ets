@@ -24,6 +24,7 @@ const TdContainer: React.FC<Props> = React.memo(
     const value = React.useMemo(
       () => {
         let valueRaw = props.value;
+
         if (isString(props.value)) {
           valueRaw = (
             props.value

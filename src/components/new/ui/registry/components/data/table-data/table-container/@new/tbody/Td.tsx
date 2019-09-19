@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import CheckboxTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/CheckboxTdTitle';
@@ -15,8 +16,8 @@ import ButtonShowActionLogTdTitle from 'components/new/ui/registry/components/da
 import EdcRequestInfoTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/EdcRequestInfoTdTitle';
 import DefaultTdTitle from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/DefaultTdTitle';
 import { TypeFieldsAvalibaleKey } from 'components/new/ui/registry/module/@types/registry';
-import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 type Props = CommontTdTiteProps;
 
@@ -44,15 +45,24 @@ const Td: React.FC<Omit<Props, 'id'>> = React.memo(
     const Component = componentsByKey[fieldMeta.key] || DefaultTdTitle;
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
 
+    const groupOpt = get(fieldMeta, 'groupOpt', null);
+    const groupColumn = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.groupColumn);
+    const isActive = (
+      groupOpt
+        ? get(groupColumn, `${groupOpt.key}.isActive`, true) || groupOpt.firstElem
+        : true
+    );
+
     return (
-      <Component
-        id={`${props.registryKey}.${props.rowData[uniqKey]}.${props.indexRow}.${fieldMeta.key}`}
-        key={props.fieldMeta.key}
-        registryKey={props.registryKey}
-        rowData={props.rowData}
-        fieldMeta={props.fieldMeta}
-        indexRow={props.indexRow}
-      />
+      isActive &&
+        <Component
+          id={`${props.registryKey}.${props.rowData[uniqKey]}.${props.indexRow}.${fieldMeta.key}`}
+          key={props.fieldMeta.key}
+          registryKey={props.registryKey}
+          rowData={props.rowData}
+          fieldMeta={props.fieldMeta}
+          indexRow={props.indexRow}
+        />
     );
   },
 );

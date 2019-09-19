@@ -17,6 +17,9 @@ import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
+import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
+import { get } from 'lodash';
+import { isNullOrUndefined } from 'util';
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {
   const stateInspectCarsConditionOld = getInspectCarsCondition(getState());
@@ -49,16 +52,13 @@ export const actionGetAndSetInStoreCompany = (payload: object, meta: LoadingMeta
 };
 
 export const actionGetInspectCarsConditionById = (id: Parameters<typeof promiseGetInspectCarsConditionById>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetInspectCarsConditionById>> => async (dispatch, getState) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: promiseGetInspectCarsConditionById(id),
-    meta: {
-      promise: true,
-      ...meta,
-    },
-  });
+  const result = await etsLoadingCounter(
+    dispatch,
+    promiseGetInspectCarsConditionById(id),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
 
 export const actionResetCompany = (): EtsAction<null> => (dispatch) => {
@@ -212,7 +212,26 @@ export const actionCreateCarsConditionsCar = (carsConditionsCarRaw: Partial<Cars
   return response;
 };
 
-export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: Partial<CarsConditionCars>, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+export const actionUpdateCarsConditionsCar = (carsConditionsCarRaw: any, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateCarsConditionsCar>> => async (dispatch) => {
+  if (isNullOrUndefined(carsConditionsCarRaw.data)) {
+    const defaultCarsConditionCarDataKeys = Object.keys(defaultCarsConditionCar.data);
+    const CarsConditionCarData: Partial<CarsConditionCars['data']> = defaultCarsConditionCarDataKeys.reduce((newElem, currentElemKey) => {
+      const val =  get(carsConditionsCarRaw, currentElemKey, defaultCarsConditionCar[currentElemKey]);
+      delete carsConditionsCarRaw[currentElemKey];
+      return {
+        [currentElemKey]: val,
+        ...newElem,
+      };
+    }, {});
+
+    carsConditionsCarRaw = {
+      ...carsConditionsCarRaw,
+      data: {
+        ...CarsConditionCarData,
+      },
+    };
+  }
+
   const response = await etsLoadingCounter(
     dispatch,
     promiseUpdateCarsConditionsCar(carsConditionsCarRaw),

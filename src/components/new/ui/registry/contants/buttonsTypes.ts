@@ -17,6 +17,8 @@ const buttonsTypes =  {
   read: 'read',
   remove: 'remove',
   columns_control: 'columns_control',
+  show_сars_condition_table_defects: 'show_сars_condition_table_defects',
+  ButtonAddNewRowTable: 'button_add_new_row_table',
   ...inspect_types,
   ...waybill_types,
   ...mission_template_types,

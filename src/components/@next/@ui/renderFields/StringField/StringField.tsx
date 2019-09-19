@@ -40,7 +40,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
     if (isLoading) {
       return (
         <Div hidden={hidden}>
-          {typeof label === 'string' && (
+          {typeof props.label === 'string' && (
             <FieldLabel style={{ paddingTop: 5 }} id={id}>
               {label}
             </FieldLabel>
@@ -61,7 +61,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
       <SingleUiElementWrapper hidden={hidden} style={wrapStyle || {}}>
         {/* Выпилить отовсюду form-group */}
         <div className="form-group">
-          {typeof label === 'string' && (
+          {typeof props.label === 'string' && (
             <FieldLabel className="control-label" id={id} htmlFor={value_id}>
               <span>{label}</span>
             </FieldLabel>
@@ -83,7 +83,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
       </SingleUiElementWrapper>
     ) : (
       <SingleUiElementWrapper hidden={hidden} className={className}>
-        {typeof label === 'string' && (
+        {typeof props.label === 'string' && (
           <FieldLabel style={{ paddingTop: 5, paddingRight: 5 }} htmlFor={value_id}>
             {label}
           </FieldLabel>

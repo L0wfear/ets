@@ -183,6 +183,8 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               cars_cnt={state.cars_cnt}
               checked_cars_cnt={state.checked_cars_cnt}
               error_checked_cars_cnt={errors.checked_cars_cnt}
+              loadingPage={props.loadingPage}
+              monitoring_kind={state.monitoring_kind}
             />
             <BlockCarsConditionSetInspectEmployee
               type={props.type}

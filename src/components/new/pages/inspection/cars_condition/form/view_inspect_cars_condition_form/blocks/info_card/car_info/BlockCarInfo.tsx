@@ -9,9 +9,10 @@ import BlockCarInfoMainData from './blocks/main_data/BlockCarInfoMainData';
 import BlockCarInfoMainCheckData from './blocks/check_data/BlockCarInfoMainCheckData';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
-import { DivNone, FooterEnd } from 'global-styled/global-styled';
+import { DivNone, FooterEnd, HrDelimiter } from 'global-styled/global-styled';
 import { actionCreateCarsConditionsCar, actionUpdateCarsConditionsCar, actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 
 const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
   (props) => {
@@ -28,18 +29,24 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
     );
 
     return (
-      <div>
-        <h4>Карточка выбранного ТС</h4>
+      <BoxContainer>
+        {
+          !IS_CREATING
+          ? <h2>Карточка выбранного ТС</h2>
+          : <h2>Создание карточки ТС</h2>
+        }
         <BlockCarInfoMainData
           IS_CREATING={IS_CREATING}
           formState={state}
           formErrors={errors}
           handleChange={props.handleChange}
+          handleChangeBoolean={props.handleChangeBoolean}
           isPermitted={isPermitted}
 
           page={props.page}
           path={props.path}
         />
+        <HrDelimiter></HrDelimiter>
         <BlockCarInfoMainCheckData
           IS_CREATING={IS_CREATING}
           formState={state}
@@ -51,7 +58,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           {
             isPermitted
               ? (
-                <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
+                <EtsBootstrap.Button disabled={props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
               )
               : (
                 <DivNone />
@@ -59,7 +66,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           }
           <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Закрыть</EtsBootstrap.Button>
         </FooterEnd>
-      </div>
+      </BoxContainer>
     );
   },
 );

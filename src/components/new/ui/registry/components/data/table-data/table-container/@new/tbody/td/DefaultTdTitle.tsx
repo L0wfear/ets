@@ -14,6 +14,7 @@ import config from 'config';
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import TdContainer from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
+import ExtFieldTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
 
 const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: CommontTdTiteProps['fieldMeta']) => {
   let value = rowData[fieldMeta.key];
@@ -113,15 +114,26 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
     const isSelected = get(selectedRow, uniqKey) === props.rowData[uniqKey];
 
-    return (
-      <TdContainer
-        id={props.id}
-        registryKey={props.registryKey}
-        value={title}
-        isSelected={isSelected}
-        max_size_to_scroll={props.fieldMeta.max_size_to_scroll || 300}
-      />
-    );
+    const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected);
+
+    return extFieldIsRender
+      ? (
+        <ExtFieldTd
+          renderParams={props.fieldMeta.renderParams}
+          registryKey={props.registryKey}
+          metaKey={props.fieldMeta.key}
+          indexRow={props.indexRow}
+        />
+      )
+      : (
+        <TdContainer
+          id={props.id}
+          registryKey={props.registryKey}
+          value={title}
+          isSelected={isSelected}
+          max_size_to_scroll={props.fieldMeta.max_size_to_scroll || 300}
+        />
+      );
   },
 );
 

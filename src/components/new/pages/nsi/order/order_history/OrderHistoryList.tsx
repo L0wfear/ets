@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import Registry from 'components/new/ui/registry/components/Registry';
-import { Order } from 'redux-main/reducers/modules/order/@types';
+import { OrderHistory } from 'redux-main/reducers/modules/order/@types';
 import { orderHistroyRegistryKey, getToConfig } from 'components/new/pages/nsi/order/order_history/_config-data/registry-config';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 import { orderRegistryKey, getToConfig as orderGetToConfig } from 'components/new/pages/nsi/order/_config-data/registry-config';
@@ -25,11 +25,11 @@ const defaultState = { list: null, currentIndex: 1, isOpen: false };
 
 const OrderHistoryList: React.FC<Props> = React.memo(
   (props) => {
-    const [orderHistroyData, setOrderHistoryData] = React.useState<{ list: Order[], currentIndex: number, isOpen: boolean }>(defaultState);
+    const [orderHistroyData, setOrderHistoryData] = React.useState<{ list: OrderHistory[], currentIndex: number, isOpen: boolean }>(defaultState);
     const order_id = getNumberValueFromSerch(props.match.params[orderGetToConfig(null, null).list.data.uniqKeyForParams]);
     const dispatch = etsUseDispatch();
 
-    const selectedOrderHistroyTo: Order = React.useMemo(
+    const selectedOrderHistroyTo: OrderHistory = React.useMemo(
       () => {
         return get(orderHistroyData.list, `${orderHistroyData.currentIndex - 1}`);
       },

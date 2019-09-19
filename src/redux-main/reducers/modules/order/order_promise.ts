@@ -2,7 +2,7 @@ import {
   OrderService,
 } from 'api/Services';
 import { get } from 'lodash';
-import { Order } from './@types';
+import { Order, OrderHistory } from './@types';
 import { saveData } from 'utils/functions';
 import { TypeDownload } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
 
@@ -21,7 +21,7 @@ export const promiseLoadOrderHistory = async (id: Order['id']) => {
   } catch {
     //
   }
-  const result: Array<Order> = get(responce, 'result.rows', null);
+  const result: Array<OrderHistory> = get(responce, 'result.rows', null);
 
   return result;
 };

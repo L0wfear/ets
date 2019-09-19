@@ -1,10 +1,10 @@
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import userActionLogPermissions from 'components/new/pages/nsi/order/_config-data/permissions';
-import { Order } from 'redux-main/reducers/modules/order/@types';
+import { OrderHistory } from 'redux-main/reducers/modules/order/@types';
 
 export const orderHistroyRegistryKey = 'order_history';
 
-export const getToConfig = (array: Order['technical_operations'], instruction: Order['order_info']): TypeConfigData<ValuesOf<Order['technical_operations']>> => {
+export const getToConfig = (array: OrderHistory['technical_operations'], instruction: OrderHistory['order_info']): TypeConfigData<ValuesOf<OrderHistory['technical_operations']>> => {
   return {
     noInitialLoad: true,
     Service: {},
@@ -15,6 +15,7 @@ export const getToConfig = (array: Order['technical_operations'], instruction: O
     list: {
       permissions: userActionLogPermissions,
       data: {
+        uniqKey: 'order_operation_history_id',
         array,
         objectExtra: {
           array: [

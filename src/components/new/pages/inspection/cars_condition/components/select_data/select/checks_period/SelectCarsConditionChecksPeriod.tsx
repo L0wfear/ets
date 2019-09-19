@@ -92,7 +92,7 @@ const SelectCarsConditionChecksPeriod: React.FC<SelectCarsConditionChecksPeriodP
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   const notSelect = (

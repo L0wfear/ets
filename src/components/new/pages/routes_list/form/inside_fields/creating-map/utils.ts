@@ -1,3 +1,5 @@
+import { keyBy } from 'lodash';
+
 import {
   PropsCreatingMap,
   StateCreatingMap,
@@ -9,7 +11,6 @@ import {
   GeozoneMunicipalFacilityById,
 } from 'redux-main/trash-actions/geometry/geometry.h';
 import { polyState } from 'constants/polygons';
-import { keyBy } from 'lodash';
 import { Route } from 'redux-main/reducers/modules/routes/@types';
 
 export const routesToLoadByKeySet = new Set(

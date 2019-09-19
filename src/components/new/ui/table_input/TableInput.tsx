@@ -4,12 +4,20 @@ import TableInputThead from './thead/TableInputThead';
 import TableInputTbody from './tbody/TableInputTbody';
 import EtsBootstrap from '../@bootstrap';
 import { EtsTableDataContainer } from '../registry/components/data/table-data/styled/styled';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+
+export type PropsToTdReactComponent = {
+  formDataKey: FormKeys;
+  indexRow: number;
+};
 
 export type TableMeta<F> = {
   key: Extract<keyof F, string>;
   title: string;
   width: number;
+  ReactComponentType?: React.ComponentType<PropsToTdReactComponent>;
   disabled?: boolean;
+  default_value?: any;
   disabledIf?: {
     type: 'compare_with_value_in_option',
     path_to_option: string,
@@ -31,6 +39,8 @@ export type TableMeta<F> = {
   } | {
     format: 'number';
   } | {
+    format: 'boolean';
+  } | {
     format: 'date',
     time?: boolean;
   }
@@ -47,6 +57,8 @@ export type TableInputProps = {
   setSelectedRowIndex: any;
 
   disabled: boolean;
+
+  formDataKey?: FormKeys;
 };
 
 const TableInput: React.FC<TableInputProps> = React.memo(
@@ -94,6 +106,8 @@ const TableInput: React.FC<TableInputProps> = React.memo(
                         selectedRowIndex={props.selectedRowIndex}
                         setSelectedRowIndex={props.setSelectedRowIndex}
                         disabled={disabled}
+
+                        formDataKey={props.formDataKey}
                       />
                     </EtsTable>
                   </EtsTableWrapNoScroll>

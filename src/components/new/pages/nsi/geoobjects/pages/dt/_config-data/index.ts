@@ -7,7 +7,7 @@ export default {
   path: '/nsi/geoobjects/dt',
   routePath: `/nsi/geoobjects/dt/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник ДТ',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'type',
 
   component,

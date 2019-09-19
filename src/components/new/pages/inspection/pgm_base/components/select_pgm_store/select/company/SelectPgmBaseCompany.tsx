@@ -89,7 +89,7 @@ const SelectPgmBaseCompany: React.FC<SelectPgmBaseCompanyProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (

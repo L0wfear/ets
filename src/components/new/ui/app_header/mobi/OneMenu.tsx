@@ -63,7 +63,19 @@ class OneMenu extends React.Component<any, any> {
         <LinkNoHashSecontLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultSecondLvlMenuMobi>
             <MenuTitleContainer>
-              { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+              { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
               {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
             </MenuTitleContainer>
           </DefaultSecondLvlMenuMobi>
@@ -75,7 +87,19 @@ class OneMenu extends React.Component<any, any> {
       <LinkSecontLvl id={`link-${key}`} to={`${data.pathFormMenu || data.path || ''}`} onClick={this.handleMiddlewareClick}>
         <DefaultSecondLvlMenuMobi>
           <MenuTitleContainer>
-            { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
             {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
           </MenuTitleContainer>
         </DefaultSecondLvlMenuMobi>

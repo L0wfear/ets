@@ -12,14 +12,14 @@ type Props = {
 
 const FieldMeasureUnitId: React.FC<Props> = React.memo(
   (props) => {
-    const { path } = useForm.useFormDataMeta<MaintenanceWork>(props.formDataKey);
+    const meta = useForm.useFormDataMeta<MaintenanceWork>(props.formDataKey);
     const measure_unit_id = useForm.useFormDataFormStatePickValue<MaintenanceWork, MaintenanceWork['measure_unit_id']>(props.formDataKey, 'measure_unit_id');
     const measure_unit_name = useForm.useFormDataFormStatePickValue<MaintenanceWork, MaintenanceWork['measure_unit_name']>(props.formDataKey, 'measure_unit_name');
-    const formErrors = useForm.useFormDataFormErrors<MaintenanceWork>(props.formDataKey);
+    const error = useForm.useFormDataFormErrorsPickValue<MaintenanceWork, string>(props.formDataKey, 'measure_unit_id');
     const handleChange = useForm.useFormDataHandleChange<MaintenanceWork>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<MaintenanceWork>(props.formDataKey);
 
-    const measureUnitOptionsData = useMeasureUnitOptions();
+    const measureUnitOptionsData = useMeasureUnitOptions(null, meta);
 
     const options = React.useMemo(
       () => {
@@ -47,12 +47,12 @@ const FieldMeasureUnitId: React.FC<Props> = React.memo(
 
     return (
       <ExtField
-        id={`${path}_measure_unit_id`}
+        id={`${meta.path}_measure_unit_id`}
         type="select"
         clearable={false}
         label="Единица измерения "
         value={measure_unit_id}
-        error={formErrors.measure_unit_id}
+        error={error}
         options={options}
         onChange={handleChangeWrap}
         disabled={!isPermitted}

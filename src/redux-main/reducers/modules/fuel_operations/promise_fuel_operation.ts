@@ -37,3 +37,11 @@ export const promiseUpdateFuelOperation = async (fuelOperationNew: FuelOperation
 
   return result;
 };
+
+export const promiseSubmitFuelOperation = (fuelOperationNew: FuelOperationActive) => {
+  if (fuelOperationNew.id) {
+    return promiseUpdateFuelOperation(fuelOperationNew);
+  }
+
+  return promiseCreateFuelOperation(fuelOperationNew);
+};

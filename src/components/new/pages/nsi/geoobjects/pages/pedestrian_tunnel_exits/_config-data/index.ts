@@ -7,7 +7,7 @@ export default {
   path: '/nsi/geoobjects/pedestrian_tunnel_exits',
   routePath: `/nsi/geoobjects/pedestrian_tunnel_exits/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник выходов из пешеходных тоннелей',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'pedestrian_tunnel_exits',
 
   component,

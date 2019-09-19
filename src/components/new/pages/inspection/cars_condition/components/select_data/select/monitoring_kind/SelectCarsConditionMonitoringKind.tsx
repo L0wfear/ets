@@ -85,7 +85,7 @@ const SelectCarsConditionMonitoringKind: React.FC<SelectCarsConditionMonitoringK
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (

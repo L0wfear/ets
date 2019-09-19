@@ -55,7 +55,7 @@ const SelectPgmBaseOkrug: React.FC<SelectPgmBaseOkrugProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (

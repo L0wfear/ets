@@ -7,7 +7,7 @@ const service_page_config: ConfigPageData = {
   path: '/administration/services',
   routePath: `/administration/services/:${config.list.data.uniqKeyForParams}?`,
   title: 'Управление сервисами',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'services',
 
   component,

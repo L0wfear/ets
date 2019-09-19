@@ -44,6 +44,8 @@ import ButtonOrderToCreateMission from 'components/new/ui/registry/components/da
 import ButtonOrderToCreateDutyMission from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/ButtonOrderToCreateDutyMission';
 import { CommonTypesForButton } from 'components/new/ui/registry/components/data/header/buttons/component-button/@types/common';
 import ButtonAddNewRowTable from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/ButtonAddNewRowTable';
+import ButtonFuelCardToArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardToArchive';
+import ButtonFuelCardFromArchive from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/ButtonFuelCardFromArchive';
 
 type Props = CommonTypesForButton;
 
@@ -90,6 +92,9 @@ const buttonComponents: AllButtons = {
   [buttonsTypes.order_export]: ButtonOrderExport,
   [buttonsTypes.order_to_create_mission]: ButtonOrderToCreateMission,
   [buttonsTypes.order_to_create_duty_mission]: ButtonOrderToCreateDutyMission,
+
+  [buttonsTypes.fuel_card_to_archive]: ButtonFuelCardToArchive,
+  [buttonsTypes.fuel_card_from_archive]: ButtonFuelCardFromArchive,
 };
 
 const ComponentButton: React.FC<Props> = (props) => {

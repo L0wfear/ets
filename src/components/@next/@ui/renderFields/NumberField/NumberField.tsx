@@ -5,10 +5,11 @@ import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { NumberFieldUi } from 'components/@next/@ui/renderFields/NumberField/styled';
 import { ExtFieldNumber } from 'components/@next/@ui/renderFields/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const NumberField: React.FC<ExtFieldNumber> = React.memo(
   (props) => {
-    const { error, modalKey, showRedBorder, ...mainProps } = props;
+    const { error, modalKey, showRedBorder, addonRight, ...mainProps } = props;
 
     const inputClassName = cx({ 'has-error': error || showRedBorder });
     let { value } = props;
@@ -29,14 +30,40 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
               <span>{props.label}</span>
             </FieldLabel>
           )}
-          <NumberFieldUi
-            lang="en"
-            type="number"
-            className={inputClassName}
-            {...mainProps}
-            id={id}
-            value={value}
-          />
+          {
+            addonRight
+              ? (
+              <EtsBootstrap.InputGroup>
+                <NumberFieldUi
+                  lang="en"
+                  type="number"
+                  className={inputClassName}
+                  {...mainProps}
+                  id={id}
+                  value={value}
+                />
+                {
+                  addonRight && (
+                    <EtsBootstrap.InputGroup.Addon>
+                      {addonRight}
+                    </EtsBootstrap.InputGroup.Addon>
+                  )
+                  }
+                </EtsBootstrap.InputGroup>
+              )
+              :
+              (
+                <NumberFieldUi
+                  lang="en"
+                  type="number"
+                  className={inputClassName}
+                  {...mainProps}
+                  id={id}
+                  value={value}
+                />
+              )
+          }
+
         </div>
         <ErrorsBlock
           hidden={!error}

@@ -155,20 +155,8 @@ class WaybillFormWrap extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actionLoadRefillTypeAndSetInStore(
-      {},
-      {
-        page: this.props.page,
-        path: this.props.path,
-      },
-    );
-    this.props.fuelCardsGetAndSetInStore(
-      {},
-      {
-        page: this.props.page,
-        path: this.props.path,
-      },
-    );
+    this.props.actionLoadRefillTypeAndSetInStore({}, this.props);
+    this.props.fuelCardsGetAndSetInStore({}, this.props);
 
     const currentDate = new Date();
 

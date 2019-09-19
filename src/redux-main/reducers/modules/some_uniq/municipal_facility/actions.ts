@@ -1,6 +1,6 @@
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
-import { promiseGetMunicipalFacility } from 'redux-main/reducers/modules/some_uniq/municipal_facility/promise';
+import { promiseGetMunicipalFacility, promiseGetMunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/promise';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
@@ -13,6 +13,14 @@ export const actionSetMunicipalFacility = (municipalFacilityList: IStateSomeUniq
     }),
   );
 };
+export const actionSetMunicipalFacilityMeasureUnit = (municipalFacilityMeasureUnitList: IStateSomeUniq['municipalFacilityMeasureUnitList']): EtsAction<void> => (dispatch) => {
+  dispatch(
+    someUniqSetNewData({
+      municipalFacilityMeasureUnitList,
+    }),
+  );
+};
+
 export const actionSetMunicipalFacilityForMission = (municipalFacilityForMissionList: IStateSomeUniq['municipalFacilityForMissionList']): EtsAction<void> => (dispatch) => {
   dispatch(
     someUniqSetNewData({
@@ -60,6 +68,14 @@ export const actionGetMunicipalFacility = (payload = {}, meta: LoadingMeta): Ets
   )
 );
 
+export const actionGetMunicipalFacilityMeasureUnit = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacilityMeasureUnit>> => async (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetMunicipalFacilityMeasureUnit(payload),
+    meta,
+  )
+);
+
 /* --------------- запрос и установка в стор --------------- */
 export const actionGetAndSetInStoreMunicipalFacility = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
   const data = await dispatch(
@@ -72,6 +88,19 @@ export const actionGetAndSetInStoreMunicipalFacility = (payload = {}, meta: Load
 
   return data;
 };
+
+export const actionGetAndSetInStoreMunicipalFacilityMeasureUnit = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacilityMeasureUnit>> => async (dispatch) => {
+  const data = await dispatch(
+    actionGetMunicipalFacilityMeasureUnit(payload, meta),
+  );
+
+  dispatch(
+    actionSetMunicipalFacilityMeasureUnit(data),
+  );
+
+  return data;
+};
+
 export const actionGetAndSetInStoreMunicipalFacilityForMission = (payload = {}, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMunicipalFacility>> => async (dispatch) => {
   const data = await dispatch(
     actionGetMunicipalFacility(

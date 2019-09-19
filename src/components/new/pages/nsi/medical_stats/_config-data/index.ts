@@ -10,7 +10,7 @@ export default {
   path,
   routePath,
   title: 'Статистика прохождения мед. осмотров',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'medical_stats',
 
   component,

@@ -60,7 +60,7 @@ const SelectCarsConditionCompany: React.FC<SelectCarsConditionCompanyProps> = (p
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (

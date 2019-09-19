@@ -6,21 +6,24 @@ const getAllChildrenPermissionListToArr = (chidrenArr: Array<ConfigParentData | 
       const {
         permissionsArr: permissionsArrChild,
         childrenPath: childrenPathChild,
+        isNewRegistry: childrenIsNewRegistry,
       } = getAllChildrenPermissionListToArr(Object.values(child.children));
       newObj.permissionsArr.push(...permissionsArrChild);
       newObj.childrenPath.push(...childrenPathChild);
+      newObj.isNewRegistry = newObj.isNewRegistry && childrenIsNewRegistry;
     } else if (!('divider' in child) && !('hiddenNav' in child)) {
       if (child.path) {
         newObj.childrenPath.push(child.path);
       }
       newObj.permissionsArr.push(child.permissions);
+      newObj.isNewRegistry = newObj.isNewRegistry && child.isNewRegistry;
     }
 
     return newObj;
-  }, { permissionsArr: [], childrenPath: [] });
+  }, { permissionsArr: [], childrenPath: [], isNewRegistry: true, });
 
-export const getChildrenData = (children: ConfigParentData['children']): Pick<ConfigParentData, 'permissions' | 'childrenPath'> => {
-  const { permissionsArr, childrenPath } = getAllChildrenPermissionListToArr(Object.values(children));
+export const getChildrenData = (children: ConfigParentData['children']): Pick<ConfigParentData, 'permissions' | 'childrenPath' | 'isNewRegistry'> => {
+  const { permissionsArr, childrenPath, isNewRegistry } = getAllChildrenPermissionListToArr(Object.values(children));
 
   const permissionsKeys = permissionsArr.reduce((keysArr, oneComponent) => {
     Object.keys(oneComponent).forEach((key) => {
@@ -33,6 +36,7 @@ export const getChildrenData = (children: ConfigParentData['children']): Pick<Co
   }, []);
 
   return {
+    isNewRegistry,
     permissions: permissionsArr.reduce((permData, rowP) => {
       permissionsKeys.forEach((key) => {
         if (Array.isArray(rowP[key])) {

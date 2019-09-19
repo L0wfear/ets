@@ -16,14 +16,15 @@ const FieldFiles: React.FC<Props> = React.memo(
     const formStateValue = useForm.useFormDataFormStatePickValue<InspectOneActScan, InspectOneActScan['files']>(props.formDataKey, 'files');
     const IS_CREATING = useForm.useFormDataIsCreating(props.formDataKey);
 
-    const formErrors = useForm.useFormDataFormErrors<InspectOneActScan>(props.formDataKey);
+    const error = useForm.useFormDataFormErrorsPickValue<InspectOneActScan, string>(props.formDataKey, 'files');
+
     const handleChange = useForm.useFormDataHandleChange<InspectOneActScan>(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<InspectOneActScan>(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
-      (event) => {
+      (key, event) => {
         const value = get(event, 'target.value', event);
-        handleChange({ files: value || [] });
+        handleChange({ [key]: value || [] });
       },
       [handleChange],
     );
@@ -33,9 +34,10 @@ const FieldFiles: React.FC<Props> = React.memo(
         id={`${path}_files`}
         label="Файл"
         value={formStateValue}
-        error={formErrors.files}
+        error={error}
         onChange={handleChangeWrap}
         disabled={!isPermitted || !IS_CREATING}
+        boundKeys="files"
       />
     );
   },

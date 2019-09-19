@@ -3,6 +3,8 @@ import {
   createFuelCard,
   updateFuelCard,
   getFuelCards,
+  promiseChangeArchiveStatus,
+  promiseLoadFuelCardById,
 } from 'redux-main/reducers/modules/autobase/fuel_cards/promises';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
@@ -72,4 +74,27 @@ export const fuelCardsUpdate = (fuelCardsOld: FuelCard, meta: LoadingMeta): EtsA
   );
 
   return fuelCards;
+};
+
+export const actionFuelCardToArchive = (fuelCardId: FuelCard['id'], meta: LoadingMeta): EtsAction<Promise<void>> => async (dispatch) => {
+  await etsLoadingCounter(
+    dispatch,
+    promiseChangeArchiveStatus(fuelCardId, true),
+    meta,
+  );
+};
+export const actionFuelCardFromArchive = (fuelCardId: FuelCard['id'], meta: LoadingMeta): EtsAction<Promise<void>> => async (dispatch) => {
+  await etsLoadingCounter(
+    dispatch,
+    promiseChangeArchiveStatus(fuelCardId, false),
+    meta,
+  );
+};
+
+export const actionLoadFuelCardById = (fuelCardId: FuelCard['id'], meta: LoadingMeta): EtsAction<Promise<FuelCard>> => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    promiseLoadFuelCardById(fuelCardId),
+    meta,
+  );
 };

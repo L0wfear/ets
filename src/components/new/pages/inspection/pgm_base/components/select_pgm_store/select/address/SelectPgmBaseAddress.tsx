@@ -31,8 +31,8 @@ type SelectPgmBaseProps = (
   & WithSearchProps
 );
 
-const filterPgmBaseByCompany = (pgmBaseList: PgmStore[], companyId: number, pgmBaseId: number) => (
-  pgmBaseList.filter(({ company_id, pgm_stores_type_id }) => company_id === companyId && pgm_stores_type_id === pgmBaseId)
+const filterPgmBaseByCompany = (pgmBaseList: PgmStore[], companyId: number) => (
+  pgmBaseList.filter(({ company_id }) => company_id === companyId)
 );
 
 const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
@@ -41,7 +41,6 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
     setDataInSearch,
   } = props;
   const companyId = getNumberValueFromSerch(searchState.companyId);
-  const pgmBaseTypeId = getNumberValueFromSerch(searchState.pgmBaseTypeId);
   const pgmBaseId = getNumberValueFromSerch(searchState.pgmBaseId);
 
   React.useEffect(
@@ -50,7 +49,6 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
         const currentPgmBaseInCompany = filterPgmBaseByCompany(
           props.pgmBaseList,
           companyId,
-          pgmBaseTypeId,
         ).some(({ id }) => id === pgmBaseId);
 
         if (!currentPgmBaseInCompany) {
@@ -63,17 +61,16 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
         }
       }
     },
-    [companyId, pgmBaseTypeId, pgmBaseId, props.companyList, searchState],
+    [companyId, pgmBaseId, props.companyList, searchState, props.match.params],
   );
 
   const pgmBaseIdOptions = React.useMemo(
     () => {
-      if (companyId && pgmBaseTypeId) {
+      if (companyId) {
         return uniqBy(
           filterPgmBaseByCompany(
             props.pgmBaseList,
             companyId,
-            pgmBaseTypeId,
           ).map(
             (pgmBase) => ({
               value: pgmBase.id,
@@ -87,7 +84,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
 
       return [];
     },
-    [props.pgmBaseList, companyId, pgmBaseTypeId],
+    [props.pgmBaseList, companyId],
   );
 
   const setPgmBaseId = React.useCallback(
@@ -100,7 +97,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
 
       setDataInSearch(newPartialSearch);
     },
-    [searchState],
+    [searchState, props.match.params],
   );
 
   return (
@@ -114,7 +111,7 @@ const SelectPgmBase: React.FC<SelectPgmBaseProps> = (props) => {
         <ExtField
           type="select"
           value={pgmBaseId}
-          disabled={!companyId || !pgmBaseTypeId}
+          disabled={!companyId}
           label={false}
           options={pgmBaseIdOptions}
           onChange={setPgmBaseId}

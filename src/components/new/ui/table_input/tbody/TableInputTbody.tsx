@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TableMeta } from '../TableInput';
 import TableInputTbodyTr from './tr/TableInputTbodyTr';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type TableInputTbodyProps = {
   meta: TableMeta<any>[];
@@ -10,6 +11,8 @@ export type TableInputTbodyProps = {
   selectedRowIndex: number;
   setSelectedRowIndex: (indexRow: number) => any;
   disabled?: boolean;
+
+  formDataKey?: FormKeys;
 };
 
 const TableInputTbody: React.FC<TableInputTbodyProps> = React.memo(
@@ -43,6 +46,8 @@ const TableInputTbody: React.FC<TableInputTbodyProps> = React.memo(
               meta={props.meta}
               onChange={handleChange}
               disabled={props.disabled}
+
+              formDataKey={props.formDataKey}
             />
           ))
         }

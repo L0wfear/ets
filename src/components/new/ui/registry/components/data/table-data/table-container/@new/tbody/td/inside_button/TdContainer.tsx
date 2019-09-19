@@ -9,6 +9,8 @@ export type Props = {
   value: string | number | React.ReactNode;
   isSelected: boolean;
   id: string;
+
+  max_size_to_scroll: number;
 };
 
 const TdContainer: React.FC<Props> = React.memo(
@@ -32,13 +34,13 @@ const TdContainer: React.FC<Props> = React.memo(
                   let text = oneLineComment;
 
                   if (!showAll || !isSelected) {
-                    const shortTest = (isString(props.value) ? props.value : '').slice(0, 300);
-                    if (shortTest.length >= 300) {
+                    const shortTest = (isString(props.value) ? props.value : '').slice(0, props.max_size_to_scroll);
+                    if (shortTest.length >= props.max_size_to_scroll) {
                       text = `${shortTest} ...`;
                     }
 
                   }
-                  if (text.length > 300) {
+                  if (text.length > props.max_size_to_scroll) {
                     return (
                       <EtsTbodyScrollContainer key={i}>{text}</EtsTbodyScrollContainer>
                     );
@@ -54,7 +56,7 @@ const TdContainer: React.FC<Props> = React.memo(
 
         return valueRaw;
       },
-      [ props.value, showAll, isSelected ],
+      [props.value, showAll, isSelected, props.max_size_to_scroll],
     );
 
     const handleClick = React.useCallback(

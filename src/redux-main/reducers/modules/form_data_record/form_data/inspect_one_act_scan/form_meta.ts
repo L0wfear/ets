@@ -42,5 +42,6 @@ export const metaInspectOneActScan: ConfigFormData<InspectOneActScan> = {
     inspection_id: null,
     files: [],
     notes: '',
+    name: '',
   },
 };

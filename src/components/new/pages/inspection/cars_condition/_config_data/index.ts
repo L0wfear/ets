@@ -7,7 +7,7 @@ const monitoring_cars_condition_page_config: ConfigPageData = {
   routePath: '/monitoring/cars_condition/:id?/:type?/:typeRightView?/:selectedCarsConditionsCar?',
   title: 'Мониторинг транспортных средств',
   entyity: 'inspect.cars_condition',
-  isNewRegistry: true,
+  isNewRegistry: false,
 
   checkHidden: (isShow, userData) => isShow && !userData.isOkrug,
   component,

@@ -7,6 +7,7 @@ import { DefaultSecondLvlMenu, LinkSecontLvl, LinkNoHashSecontLvl, DivDivider, M
 import { MarkNewRegistry } from 'global-styled/global-styled';
 import { isActivemenu, showHeaderMenu } from 'components/new/ui/app_header/utils';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 class SecondMenuItem extends React.Component<any, any> {
   state = {
@@ -40,6 +41,20 @@ class SecondMenuItem extends React.Component<any, any> {
       return (
         <LinkSecontLvl id={`show-${key}`} to="" onClick={this.handleClickToOpenMenu}>
           <DefaultSecondLvlMenu>
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )
+            }
             <span>{data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}</span>
             <span className="caret"/>
           </DefaultSecondLvlMenu>
@@ -52,7 +67,19 @@ class SecondMenuItem extends React.Component<any, any> {
         <LinkNoHashSecontLvl id={`link-${key}`} href={data.pathFormMenu || data.path} >
           <DefaultSecondLvlMenu>
             <MenuTitleContainer>
-              { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+              { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
               {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
             </MenuTitleContainer>
           </DefaultSecondLvlMenu>
@@ -64,7 +91,19 @@ class SecondMenuItem extends React.Component<any, any> {
       <LinkSecontLvl id={`link-${key}`} to={`${data.pathFormMenu || data.path || ''}`} onClick={this.handleMiddlewareClick}>
         <DefaultSecondLvlMenu>
           <MenuTitleContainer>
-            { __DEVELOPMENT__ && data.isNewRegistry && <MarkNewRegistry />}
+            { __DEVELOPMENT__ && data.isNewRegistry && (
+                <EtsBootstrap.OverlayTrigger
+                  trigger={['hover', 'focus']}
+                  overlay={(
+                    <EtsBootstrap.Popover>
+                      Формочка на редаксе
+                    </EtsBootstrap.Popover>
+                  )}
+                  placement="top"
+                >
+                  <MarkNewRegistry />
+                </EtsBootstrap.OverlayTrigger>
+              )}
             {data.TitleComponent ? <data.TitleComponent data={data} /> : data.title}
           </MenuTitleContainer>
         </DefaultSecondLvlMenu>

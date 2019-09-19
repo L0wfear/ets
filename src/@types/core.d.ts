@@ -30,3 +30,13 @@ declare namespace ETSCore {
  * @example ValuesOf<Array<TypeOfElement>> = TypeOfElement
  */
 type ValuesOf<T extends any[]>= T[number];
+
+/**
+ * Получить ключи подходящих по типу значений
+ * @example AllowedNames<{ a: string; b: number }, string> = a
+ * @example AllowedNames<{ a: string; b: number }, number> = b
+ * @example AllowedNames<{ a: string; b: number }, object> = never
+ */
+type AllowedNames<Base, Condition> = {
+  [Key in keyof Base]: Base[Key] extends Condition ? Key : never
+}[keyof Base];

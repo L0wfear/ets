@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Марки аккумуляторов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'autobase_battery_brand',
 
   component,

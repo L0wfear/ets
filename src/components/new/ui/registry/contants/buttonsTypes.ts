@@ -7,6 +7,7 @@ import { mission_template_types } from '../components/data/header/buttons/compon
 import { waybill_types } from '../components/data/header/buttons/component-button/button-by-type/waybill/constant';
 import { inspect_types } from '../components/data/header/buttons/component-button/button-by-type/inspect/constant';
 import { order_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant';
+import { fuel_cards_types } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/fuel_cards/constant';
 
 const buttonsTypes =  {
   export: 'export',
@@ -27,6 +28,7 @@ const buttonsTypes =  {
   ...duty_mission_template_types,
   ...mission_types,
   ...order_types,
+  ...fuel_cards_types,
 } as const;
 
 export default buttonsTypes;

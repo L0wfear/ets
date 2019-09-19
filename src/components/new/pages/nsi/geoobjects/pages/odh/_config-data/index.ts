@@ -7,7 +7,7 @@ export default {
   path: '/nsi/geoobjects/odh',
   routePath: `/nsi/geoobjects/odh/:${config.list.data.uniqKeyForParams}?`,
   title: 'Справочник ОДХ',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'type',
 
   component,

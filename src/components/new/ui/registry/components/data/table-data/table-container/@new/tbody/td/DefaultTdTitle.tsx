@@ -131,6 +131,7 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
           registryKey={props.registryKey}
           value={title}
           isSelected={isSelected}
+          max_size_to_scroll={props.fieldMeta.max_size_to_scroll || 300}
         />
       );
   },

@@ -13,7 +13,7 @@ export default {
   path,
   routePath,
   title: 'Справочник характеристик объектов',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'ets_object_properties',
 
   component,

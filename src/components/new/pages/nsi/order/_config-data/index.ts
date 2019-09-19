@@ -13,7 +13,7 @@ export default {
   path,
   routePath,
   title: 'Реестр централизованных заданий',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'faxogramm',
 
   component,

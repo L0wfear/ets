@@ -54,10 +54,12 @@ export const makeFuelCardIdOptions = memoizeOne(
     return fuelCardsList.reduce<DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]>(
       (newArr, rowData) => {
         const triggerOnShow = (
-          (
+          !rowData.is_archive
+          && (
             fuel_type === rowData.fuel_type
             || !fuel_type
-          ) && (
+          )
+          && (
             !userCompanyId
             || rowData.company_id === userCompanyId
             && (

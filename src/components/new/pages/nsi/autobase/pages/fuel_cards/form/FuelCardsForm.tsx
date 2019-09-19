@@ -154,7 +154,7 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 value={state.fuel_type}
                 onChange={props.handleChange}
                 boundKeys="fuel_type"
-                disabled={!isPermitted}
+                disabled={!isPermitted || state.is_used_in_waybill}
               />
               {
                 STRUCTURE_FIELD_VIEW && (
@@ -217,6 +217,7 @@ export default compose<PropsFuelCards, OwnFuelCardsProps>(
     uniqField: 'id',
     createAction: autobaseActions.autobaseCreateFuelCard,
     updateAction: autobaseActions.fuelCardsUpdate,
+    getRecordAction: autobaseActions.actionLoadFuelCardById,
     mergeElement: (props) => {
       const { companyOptions, userData } = props;
       const userCompanyId = userData.company_id;

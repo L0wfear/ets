@@ -7,7 +7,7 @@ export default {
   path: '/nsi/companies', // /company
   routePath: `/nsi/companies/:${config.list.data.uniqKeyForParams}?`,
   title: 'Реестр организаций',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'company',
 
   component,

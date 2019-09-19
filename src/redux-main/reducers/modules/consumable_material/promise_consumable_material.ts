@@ -2,6 +2,14 @@ import { ConsumableMaterial } from "./@types/consumableMaterial";
 import { ConsumableMaterialService } from "api/Services";
 import { get } from 'lodash';
 
+export const promiseSubmitConsumableMaterial = (consumableMateria: ConsumableMaterial) => {
+  if (!consumableMateria.id) {
+    return promiseCreateConsumableMaterial(consumableMateria);
+  }
+
+  return promiseUpdateConsumableMaterial(consumableMateria);
+};
+
 export const promiseCreateConsumableMaterial = async (consumableMaterialNew: ConsumableMaterial) => {
   const response = await ConsumableMaterialService.post(
     {

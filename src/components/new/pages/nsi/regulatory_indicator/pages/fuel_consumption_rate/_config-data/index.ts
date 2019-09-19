@@ -16,7 +16,7 @@ export default {
   path,
   routePath,
   title: 'Нормы расхода топлива',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'fuel_consumption_rate',
 
   component,

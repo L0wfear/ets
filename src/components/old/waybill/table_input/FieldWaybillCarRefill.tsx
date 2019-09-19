@@ -171,12 +171,14 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
     React.useEffect(
       () => {
         if (props.fuel_type && props.fuel_type !== previosFuelType) {
-          const availabelFuelCars = (makeFuelCardStrickOptions(
-            props.fuelCardsList,
-            props.fuel_type,
-            props.userCompanyId,
-            props.userStructureId,
-          ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[]).reduce(
+          const availabelFuelCars = (
+            makeFuelCardStrickOptions(
+              props.fuelCardsList,
+              props.fuel_type,
+              props.userCompanyId,
+              props.userStructureId,
+            ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[])
+          .reduce(
             (newSet, { rowData }) => {
               newSet.add(rowData.id);
 

@@ -8,7 +8,7 @@ const missions_duty_missions_archive_page_config: ConfigPageData = {
   path: '/missions/duty_missions_archive',
   routePath: `/missions/duty_missions_archive/:${config.list.data.uniqKeyForParams}?/:type?`,
   title: 'Архив наряд-заданий',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'duty_mission',
 
   component,

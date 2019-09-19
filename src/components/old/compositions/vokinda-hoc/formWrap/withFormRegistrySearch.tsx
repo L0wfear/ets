@@ -13,11 +13,12 @@ import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { registryResetSelectedRowToShowInForm } from 'components/new/ui/registry/module/actions-registy';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 type TypeConfig = {
   cant_create?: boolean;                                  // может ли форма создать запись
   no_find_in_arr?: boolean;                               // не искать данные по элементу в списке реестра (пробросить с getRecordAction в withForm)
-  add_path: string;                                       // path для формы
+  add_path: FormKeys | string;                            // path для формы
   replace_uniqKey_on?: string                             // имя уникального ключа для формы
   search_which_need_to_remove?: Array<string>;            // Что удалить из search при закрытии формы
 };

@@ -7,7 +7,7 @@ export default {
   path: '/missions/duty_missions',
   routePath: `/missions/duty_missions/:${config.list.data.uniqKeyForParams}?/:type?`,
   title: 'Журнал наряд-заданий',
-  isNewRegistry: true,
+  isNewRegistry: false,
   entyity: 'duty_mission',
 
   component,

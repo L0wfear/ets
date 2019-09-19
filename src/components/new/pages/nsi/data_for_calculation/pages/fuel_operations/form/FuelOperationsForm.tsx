@@ -1,112 +1,44 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getFormDataMetaByKey } from 'redux-main/reducers/modules/form_data_record/selectors';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
-import {
-  PropsFuelOperations,
-  PropsFuelOperationsWithForm,
-} from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/@types/FuelOperationsForm';
-import { DivNone } from 'global-styled/global-styled';
-import fuelOperationsPermissions from '../_config-data/permissions';
-import { fuelOperationsFormSchema } from './schema';
+
+import { mapFormMeta } from 'redux-main/reducers/modules/form_data_record/actions';
+import ModalHeaderDefault from 'components/@next/@form/hook/part_form/ModalHeaderDefault';
+import ModalFooterDefault from 'components/@next/@form/hook/part_form/ModalFooterDefault';
 import { FuelOperationActive } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
-import { getDefaultFuelOperationElement } from './utils';
-import ExtField from 'components/@next/@ui/renderFields/Field';
-import useMeasureUnitOperationOptions from './use/useMeasureUnitOperationOptions';
-import { actionCreateFuelOperation, actionUpdateFuelOperation } from 'redux-main/reducers/modules/fuel_operations/actions_fuel_operations';
 
-const FuelOperationsForm: React.FC<PropsFuelOperations> = (props) => {
-  const {
-    formState: state,
-    formErrors: errors,
-    page,
-    path,
-    IS_CREATING,
-    isPermitted,
-  } = props;
+import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
+import DefaultFieldBoolean from 'components/@next/@form/defult_fields/DefaultFieldBoolean';
+import FieldMeasureUnitId from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/form/measure_unit_id/FieldMeasureUnitId';
 
-  const title = !IS_CREATING ? 'Изменение операции для расчета топлива' : 'Добавление операции для расчета топлива';
-
-  const {
-    measureUnitOperationOptions,
-  } = useMeasureUnitOperationOptions(
-    props,
-  );
-
-  return (
-    <EtsBootstrap.ModalContainer id="modal-fuel-operation" show onHide={props.hideWithoutChanges}>
-      <EtsBootstrap.ModalHeader closeButton>
-        <EtsBootstrap.ModalTitle>{ title }</EtsBootstrap.ModalTitle>
-      </EtsBootstrap.ModalHeader>
-      <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-        <ExtField
-          type="string"
-          label="Операция"
-          value={state.name}
-          error={errors.name}
-          onChange={props.handleChange}
-          boundKeys="name"
-          disabled={!isPermitted}
-        />
-        <ExtField
-          type="select"
-          label="Единица измерения"
-          value={state.measure_unit_id}
-          error={errors.measure_unit_id}
-          options={measureUnitOperationOptions}
-          onChange={props.handleChange}
-          boundKeys="measure_unit_id"
-          disabled={!isPermitted}
-        />
-        <ExtField
-          type="boolean"
-          label="Без учета пробега"
-          value={state.is_excluding_mileage}
-          error={errors.is_excluding_mileage}
-          onChange={props.handleChangeBoolean}
-          boundKeys="is_excluding_mileage"
-          disabled={!isPermitted}
-          className="checkbox-input flex-reverse"
-        />
-        <ExtField
-          type="boolean"
-          label="Для спецоборудования"
-          value={state.equipment}
-          error={errors.equipment}
-          onChange={props.handleChangeBoolean}
-          boundKeys="equipment"
-          disabled={!isPermitted}
-          className="checkbox-input flex-reverse"
-        />
-      </ModalBodyPreloader>
-      <EtsBootstrap.ModalFooter>
-        {
-          isPermitted // либо обновление, либо создание
-          ? (
-            <EtsBootstrap.Button disabled={!props.canSave} onClick={props.defaultSubmit}>Сохранить</EtsBootstrap.Button>
-          )
-          : (
-            <DivNone />
-          )
-        }
-        <EtsBootstrap.Button onClick={props.hideWithoutChanges}>Отменить</EtsBootstrap.Button>
-      </EtsBootstrap.ModalFooter>
-    </EtsBootstrap.ModalContainer>
-  );
+type Props = {
+  formDataKey: 'fuel_operations';
+  handleHide: any;
 };
 
-export default compose<PropsFuelOperations, PropsFuelOperationsWithForm>(
-  withForm<PropsFuelOperationsWithForm, FuelOperationActive>({
-    uniqField: 'id',
-    createAction: actionCreateFuelOperation,
-    updateAction: actionUpdateFuelOperation,
-    mergeElement: (props) => {
-      return getDefaultFuelOperationElement(props.element);
-    },
-    schema: fuelOperationsFormSchema,
-    permissions: fuelOperationsPermissions,
-  }),
-)(FuelOperationsForm);
+const FuelOperationsForm: React.FC<Props> = React.memo(
+  (props) => {
+    const { formDataKey } = props;
+
+    const bsSizeForm = mapFormMeta[formDataKey].bsSizeForm;
+    const meta = etsUseSelector((state) => getFormDataMetaByKey(state, formDataKey));
+
+    return (
+      <EtsBootstrap.ModalContainer id={`modal-${formDataKey}}`} show onHide={props.handleHide} bsSize={bsSizeForm}>
+        <ModalHeaderDefault formDataKey={formDataKey} handleHide={props.handleHide} />
+        <ModalBodyPreloader meta={meta} typePreloader="mainpage">
+          <DefaultFieldString<FuelOperationActive> formDataKey={formDataKey} name="Операция" field_name="name" />
+          <FieldMeasureUnitId formDataKey={formDataKey} />
+          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} name="Без учета пробега" field_name="is_excluding_mileage" />
+          <DefaultFieldBoolean<FuelOperationActive> formDataKey={formDataKey} name="Для спецоборудования" field_name="equipment" />
+        </ModalBodyPreloader>
+        <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />
+      </EtsBootstrap.ModalContainer>
+    );
+  },
+);
+
+export default FuelOperationsForm;

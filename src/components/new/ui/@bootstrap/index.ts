@@ -27,6 +27,7 @@ import EtsDashboardCard from './29-dashboard_card/EtsDashboardCard';
 import EtsViewCarousel from './30-view_carousel/EtsViewCarousel';
 import EtsBackgroundLabel from 'components/new/ui/@bootstrap/31-background_label/EtsBackgroundLabel';
 import EtsGridBootstrap from 'components/new/ui/@bootstrap/grid_bootstrap/EtsGridBootstrap';
+import EtsInputGroup from 'components/new/ui/@bootstrap/input_group/EtsInputGroup';
 
 const EtsBootstrap = {
   Button: EtsButton,
@@ -59,6 +60,8 @@ const EtsBootstrap = {
   ViewCarousel: EtsViewCarousel,
 
   Grid: EtsGridBootstrap,
+
+  InputGroup: EtsInputGroup,
 };
 
 export default EtsBootstrap;

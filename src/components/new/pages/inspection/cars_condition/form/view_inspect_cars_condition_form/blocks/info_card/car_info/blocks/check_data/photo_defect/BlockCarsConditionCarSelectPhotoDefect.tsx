@@ -23,9 +23,9 @@ const BlockCarsConditionCarSelectPhotoDefect: React.FC<BlockCarsConditionCarSele
     );
 
     const handleChange = React.useCallback(
-      (newFile) => {
+      (key, newFile) => {
         props.onChange({
-          files: [
+          [key]: [
             ...files.filter(({ kind }) => kind !== 'photo_defect'),
             ...newFile.map((rowData) => {
               return {
@@ -47,6 +47,7 @@ const BlockCarsConditionCarSelectPhotoDefect: React.FC<BlockCarsConditionCarSele
         value={value}
         onChange={handleChange}
         disabled={!props.isPermitted}
+        boundKeys="files"
       />
     );
   },

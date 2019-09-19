@@ -22,7 +22,7 @@ export type ExtFieldSelect<V = any> = ExtFieldCommon<V> & {
   type: 'select';
   clearable?: boolean;
   multi?: boolean,
-  options: any; // DefaultSelectOption<V, any, any>[] | any[];
+  options: any[]; // DefaultSelectOption<V, any, any>[] | any[];
   placeholder?: string;
 
   sortingFunction?: any;
@@ -67,6 +67,8 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
 export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {
   type: 'number';
   showRedBorder?: boolean;
+
+  addonRight?: string;
 };
 
 export type ExtFieldText<V = any> = ExtFieldCommon<V> & {
@@ -78,6 +80,7 @@ export type ExtFieldText<V = any> = ExtFieldCommon<V> & {
 
 export type ExtFieldFile<V = any> = ExtFieldCommon<V> & {
   type: 'file';
+  boundKeys: any;
 } & IPropsFileInput;
 
 export type ExtFieldTypeByKey = {

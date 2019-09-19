@@ -15,7 +15,6 @@ import { IStateFuelRates } from 'redux-main/reducers/modules/fuel_rates/@types/f
 import { IStateMaintenanceRate } from 'redux-main/reducers/modules/maintenance_rate/@types/maintenanceRate.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { IStateCompany } from 'redux-main/reducers/modules/company/@types';
-import { IStateMaterialConsumptionRate } from 'redux-main/reducers/modules/material_consumption_rate/@types/materialConsumptionRate.h';
 import { IStateInspect } from 'redux-main/reducers/modules/inspect/@types/inspect_reducer';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
 import { IStateFormDataRecord } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
@@ -43,7 +42,6 @@ export interface ReduxState {
 
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
-  materialConsumptionRate: IStateMaterialConsumptionRate;
   formDataRecord: IStateFormDataRecord;
   [key: string]: any;
 }

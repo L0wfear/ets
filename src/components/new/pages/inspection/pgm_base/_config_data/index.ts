@@ -7,7 +7,7 @@ const monitoring_pgm_base_page_config: ConfigPageData = {
   routePath: '/monitoring/pgm_base/:id?/:type?',
   title: 'Состояние баз хранения ПГМ',
   entyity: 'inspect.pgm_base',
-  isNewRegistry: true,
+  isNewRegistry: false,
 
   checkHidden: (isShow, userData) => isShow && !userData.isOkrug,
   component,

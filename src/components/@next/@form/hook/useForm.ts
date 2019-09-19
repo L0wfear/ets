@@ -11,35 +11,30 @@ const useForm = <F>(formKey: FormKeys, props: WithFormRegistrySearchAddProps<F>)
 
   React.useEffect(
     () => {
-      dispatch(
-        actionInitialFormByKey(
-          formKey,
-          props.element,
-          props.meta || {
-            page: props.page,
-            path: props.path,
-          },
-        ),
-      );
+      if (props.element) {
+        dispatch(
+          actionInitialFormByKey(
+            formKey,
+            props.element,
+            props.meta || {
+              page: props.page,
+              path: props.path,
+            },
+          ),
+        );
+      }
       return () => dispatch(actionRemoveFormData(formKey));
     },
     [formKey, props.element, props.meta],
-  );
-
-  const handleHide = React.useCallback(
-    (isSubmitted: any, result?: any) => {
-      props.handleHide(isSubmitted, result);
-    },
-    [props.handleHide],
   );
 
   const hasData = etsUseSelector((state) => Boolean(getFormDataByKey(state, formKey)));
   const value = React.useMemo(
     () => ({
       hasData,
-      handleHide,
+      handleHide: props.handleHide,
     }),
-    [handleHide, hasData],
+    [props.handleHide, hasData],
   );
 
   return value;

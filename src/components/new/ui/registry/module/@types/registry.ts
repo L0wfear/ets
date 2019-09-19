@@ -72,6 +72,7 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'waybill_all_missions_status'
       | 'waybill_status_name'
     );
+    max_size_to_scroll?: number;
   } | {
     key: TypeFieldsAvalibaleKey<void>;
   }

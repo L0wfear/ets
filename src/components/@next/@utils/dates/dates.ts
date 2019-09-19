@@ -334,3 +334,8 @@ export const makeDateFormated = (date: string | number | Date, time?: boolean, e
   }
   return makeDate(date);
 };
+
+export const minusTime = (date, count, typeAdd) =>
+  moment(date)
+    .subtract(count, typeAdd)
+    .format();

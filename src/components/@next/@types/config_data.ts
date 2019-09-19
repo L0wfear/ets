@@ -9,6 +9,8 @@ export type ConfigPageData = {
   pathFormMenu?: string;
   routePath?: string;
   title: string | React.ReactElement;
+
+  hiddenNav?: boolean;
   isNewRegistry?: boolean;
   entyity?: string;
   component?: React.ComponentType<WithSearchProps | any>;
@@ -41,4 +43,5 @@ export type ConfigParentData = {
     [P in keyof ConfigPageData['permissions']]: ConfigPageData['permissions'][P];
   };
   childrenPath: Array<ConfigPageData['path']>;
+  isNewRegistry: boolean;
 };

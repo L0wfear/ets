@@ -51,7 +51,7 @@ const SelectCarpoolCompany: React.FC<Props> = React.memo(
 
         setDataInSearch(newPartialSearch);
       },
-      [searchState],
+      [searchState, props.match.params],
     );
 
     return (

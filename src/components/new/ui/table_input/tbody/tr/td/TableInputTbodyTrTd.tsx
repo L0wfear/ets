@@ -115,6 +115,21 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
               />
             )
         }
+        {
+          metaData.format === 'date'
+            && (
+              <ExtField
+                type="date"
+                time={metaData.time}
+                id={props.metaData.key}
+                label={false}
+                value={props.value}
+                error={props.error}
+                onChange={handleChange}
+                disabled={disabled || metaData.disabled || props.disabled}
+              />
+            )
+        }
       </EtsTbodyTrTd>
     );
   },

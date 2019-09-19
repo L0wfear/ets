@@ -16,7 +16,7 @@ import {
 import { cloneDeep } from 'lodash';
 import { actionUpdateInspect } from '../inspect_actions';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
-import { removeEmptyString } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
+import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
 import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
 import { get } from 'lodash';
 import { isNullOrUndefined } from 'util';

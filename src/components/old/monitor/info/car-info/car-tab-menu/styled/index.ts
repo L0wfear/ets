@@ -7,3 +7,12 @@ export const CarInfoButtonsRow = styled.div`
     flex: 1 1 auto;
   }
 `;
+
+export const ButtonsRowMargin = styled.div`
+  >button {
+    margin: 5px;
+  }
+  >button:first-child {
+    margin-left: 0px;
+  }
+`;

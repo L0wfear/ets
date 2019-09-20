@@ -1260,6 +1260,18 @@ class WaybillForm extends UNSAFE_Form {
     });
   };
 
+  handleChangeTaxes = (taxes) => {
+    this.handleChange('taxes', isArray(taxes) ? [...taxes] : taxes);
+  };
+  handleChangeEquipmentTaxes = (equipment_tax_data) => {
+    this.handleChange(
+      'equipment_tax_data',
+      isArray(equipment_tax_data)
+        ? [...equipment_tax_data]
+        : equipment_tax_data,
+    );
+  };
+
   render() {
     const {
       loadingFields,
@@ -2047,7 +2059,7 @@ class WaybillForm extends UNSAFE_Form {
                           taxes={tax_data}
                           operations={this.state.operations}
                           fuelRates={this.state.fuelRates}
-                          onChange={this.handleChange.bind(this, 'tax_data')}
+                          onChange={this.handleChangeTaxes}
                           correctionRate={this.state.fuel_correction_rate}
                           baseFactValue={
                             CAR_HAS_ODOMETER
@@ -2280,10 +2292,7 @@ class WaybillForm extends UNSAFE_Form {
                               fuelRates={this.state.equipmentFuelRates}
                               title="Расчет топлива по норме для оборудования"
                               noDataMessage="Для данного ТС нормы расхода топлива для спецоборудования не указаны."
-                              onChange={this.handleChange.bind(
-                                this,
-                                'equipment_tax_data',
-                              )}
+                              onChange={this.handleChangeEquipmentTaxes}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
                             />

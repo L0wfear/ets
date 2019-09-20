@@ -331,7 +331,6 @@ export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey
     if (getRegistryData.format in mapKeyMapArray) {
       arrayRaw = mapKeyMapArray[getRegistryData.format](arrayRaw);
     }
-
     total_count = arrayRaw.length;
 
     if (userServerFilters) {
@@ -410,13 +409,14 @@ export const registryChangeData = <F extends Record<string, any>>(registryKey: s
   const userServerFilters = get(getRegistryData, 'userServerFilters');
   const list = get(registryData, 'list');
   const data = get(list, 'data');
-  const uniqKey = get(data, 'data');
+  const uniqKey = get(data, 'uniqKey');
 
   if (list) {
     let array = arrayRaw;
     if (!userServerFilters) {
       array = arrayRaw.sort((a, b) => b[uniqKey] - a[uniqKey]);
     }
+
     dispatch(
       registryChangeListData(
         registryKey,
@@ -455,6 +455,9 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
     if (!getRegistryData || !userServerFilters) {
       processed.processedArray = makeProcessedArray(listRaw.data.array, processed, filter.fields);
       processed.total_count = processed.processedArray.length;
+    } else {
+      processed.processedArray = listRaw.data.array;
+      processed.total_count = processed.processedArray.length;
     }
   }
 
@@ -478,7 +481,7 @@ export const registryChangeFilterData = (registryKey: string, filter: OneRegistr
   },
 });
 
-export const registryChangeFilterRawValues = (registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+export const registryChangeFilterRawValues = <F extends Record<string, any>>(registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const filter = get(registryData, 'filter');
 

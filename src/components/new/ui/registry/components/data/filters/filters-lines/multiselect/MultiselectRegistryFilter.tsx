@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { isNumber, isBoolean, isArray, isObject } from 'util';
+import { get, uniqBy } from 'lodash';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import {
   getListData,
   getFilterData,
 } from 'components/new/ui/registry/module/selectors-registry';
-
-import { get, uniqBy } from 'lodash';
 
 import {
   EtsFilter,
@@ -20,7 +20,6 @@ import { getJSON } from 'api/adapter';
 import configStand from 'config';
 import { actionFetchWithCount } from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
-import { isNumber, isBoolean, isArray, isObject } from 'util';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type PropsMultiselectRegistryFilter = {

@@ -104,7 +104,7 @@ export default class ReactSelect extends React.Component<any, any> {
   }
 
   menuListRender = (props: any) => {
-    if (props.options.length > 500 && !detectIE()) {
+    if (props.children.length > 500 && !detectIE()) {
       return <VirtualizedSelectList {...props} noOptionsMessage = {this.noOptionsMessage}/>;
     }
     return <MenuList {...props} />;
@@ -145,8 +145,8 @@ export default class ReactSelect extends React.Component<any, any> {
     const { value } = this.props;
 
     return !isNotVisible && (
-      label.toLocaleLowerCase().includes(
-        filterValue.toLocaleLowerCase(),
+      label.toLocaleLowerCase().replace(/ё/g, 'е').includes(
+        filterValue.replace(/ё/g, 'е').toLocaleLowerCase(),
       )
       && (
         isArray(value)

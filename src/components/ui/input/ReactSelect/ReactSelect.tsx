@@ -100,7 +100,7 @@ export default class ReactSelect extends React.Component<any, any> {
   }
 
   menuListRender = (props: any) => {
-    if (props.options.length > 500 && !detectIE()) {
+    if (props.children.length > 500 && !detectIE()) {
       return <VirtualizedSelectList {...props} />;
     }
     return <MenuList {...props} />;

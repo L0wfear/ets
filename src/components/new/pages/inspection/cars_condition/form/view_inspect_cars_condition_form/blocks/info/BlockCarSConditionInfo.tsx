@@ -71,7 +71,7 @@ const BlockCarSConditionInfo: React.FC<BlockCarSConditionInfoProps> = React.memo
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Вид проверки:"
+              label="Вид мониторинга:"
               value={props.monitoring_kind_text}
               readOnly
               inline

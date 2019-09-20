@@ -52,7 +52,7 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           valueKey: 'monitoring_kind',
           labelKey: 'monitoring_kind_text',
           type: 'multiselect',
-          title: 'Вид проверки',
+          title: 'Вид мониторинга',
         },
         {
           valueKey: 'checks_period',
@@ -121,7 +121,7 @@ export const getInspectionCarsConditionDataRegistryConfig = (searchState: any): 
           },
           {
             key: 'monitoring_kind_text',
-            title: 'Вид проверки',
+            title: 'Вид мониторинга',
             width: 200,
           },
           {

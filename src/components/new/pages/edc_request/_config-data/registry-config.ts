@@ -11,6 +11,9 @@ export const config: TypeConfigData<EdcRequest> = {
       entity: 'edc_request',
       typeAns: 'result',
       userServerFilters: true,
+      payload: {
+        sort_by: 'create_date:desc',
+      },
     },
   },
   registryKey,

@@ -242,12 +242,15 @@ const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegi
     const offset = get(paginator, 'currentPage', 0);
     const filterValues = get(processed, 'filterValues') || {};
     const sort = get(processed, 'sort') || {};
+    const payloadSortBy = get(payload, 'sort_by', '');
 
     payload = {
       ...payload,
       limit: MAX_ITEMS_PER_PAGE,
       offset: offset * perPage,
-      sort_by: sort.field ? `${sort.field}:${sort.reverse ? 'desc' : 'asc'}` : '',
+      sort_by: sort.field
+        ? `${sort.field}:${sort.reverse ? 'desc' : 'asc'}`
+        : payloadSortBy,
       filter: JSON.stringify(filterValues),
     };
   }

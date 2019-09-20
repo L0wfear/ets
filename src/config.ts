@@ -57,12 +57,12 @@ const DOC_URL = {
 
 const config = {
   develop: {
-    images: `${urls.develop.prod}data/images`,
+    images: `${urls.develop.prod}ets/data/images/`,
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    images: `${urls.develop.prod}data/images`,
+    images: `${urls.develop.prod}ets/data/images/`,
     docs: DOC_URL.origin,
     admin: ADMIN_URL.origin,
   },

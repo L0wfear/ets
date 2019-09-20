@@ -2374,7 +2374,7 @@ class WaybillForm extends UNSAFE_Form {
                     <EtsBootstrap.Col md={6}>
                       <ExtField
                         id="downtime-hours-work"
-                        type="string"
+                        type="number"
                         label="Работа"
                         disabled={
                           (IS_CLOSED && !this.state.canEditIfClose)
@@ -2389,7 +2389,7 @@ class WaybillForm extends UNSAFE_Form {
                     <EtsBootstrap.Col md={6}>
                       <ExtField
                         id="downtime-hours-duty"
-                        type="string"
+                        type="number"
                         label="Дежурство"
                         disabled={
                           (IS_CLOSED && !this.state.canEditIfClose)
@@ -2410,7 +2410,7 @@ class WaybillForm extends UNSAFE_Form {
                     <EtsBootstrap.Col md={6}>
                       <ExtField
                         id="downtime-hours-dinner"
-                        type="string"
+                        type="number"
                         label="Обед"
                         disabled={
                           (IS_CLOSED && !this.state.canEditIfClose)
@@ -2425,7 +2425,7 @@ class WaybillForm extends UNSAFE_Form {
                     <EtsBootstrap.Col md={6}>
                       <ExtField
                         id="downtime-hours-repair"
-                        type="string"
+                        type="number"
                         label="Ремонт"
                         disabled={
                           (IS_CLOSED && !this.state.canEditIfClose)

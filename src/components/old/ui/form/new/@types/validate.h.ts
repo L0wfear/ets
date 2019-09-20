@@ -66,7 +66,8 @@ export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   max?: number;
   integer?: boolean;
   float?: number;
-
+  regexp?: string;
+  regexpErrorText?: string;
 };
 
 export type ValueOfArrayPropertie<K, F, P> = CommonPropertie<K, F, P> & {

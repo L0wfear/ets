@@ -11,6 +11,15 @@ import { isArray } from 'util';
 import memoizeOne from 'memoize-one';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 
+const validateDowntime = (value, fieldName) => {
+  const regExpVal = new RegExp('^\\d{1,3}((\\.|\\,)\\d{1,2})?$');
+  // ограничение ввода до 3 знака перед запятой и 2 знаков после запятой
+  if (value && !regExpVal.test(value)) {
+    return `Поле "${fieldName}" должно быть положительным числом со значением до трёх знаков перед запятой и двух знаков после запятой`;
+  }
+  return false;
+};
+
 const validateFuelCardId = (
   rowData,
   car_refill,
@@ -202,26 +211,32 @@ export const waybillSchema = {
     {
       key: 'downtime_hours_work',
       title: 'Работа',
-      required: false,
       type: 'number',
+      minNotEqual: 0,
+      regexp: '^\\d{1,3}((\\.|\\,)\\d{1,2})?$',
+      regexpErrorText: 'Ошибка ввода',
+      // regexp: '^\d{1,3}((\.|\,)\d{1,2})?$',
     },
     {
       key: 'downtime_hours_duty',
       title: 'Дежурство',
       required: false,
       type: 'number',
+      minNotEqual: 0,
     },
     {
       key: 'downtime_hours_dinner',
       title: 'Обед',
       required: false,
       type: 'number',
+      minNotEqual: 0,
     },
     {
       key: 'downtime_hours_repair',
       title: 'Ремонт',
       required: false,
       type: 'number',
+      minNotEqual: 0,
     },
     {
       key: 'car_refill',
@@ -355,6 +370,11 @@ export const waybillSchema = {
           ) {
             return 'Поле "Работа" должно быть меньше 1000';
           }
+
+          if (value) {
+            return validateDowntime(value, 'Работа');
+          }
+
           return false;
         },
       },
@@ -369,6 +389,9 @@ export const waybillSchema = {
               .match(/^\d{4,}/)
           ) {
             return 'Поле "Дежурство" должно быть меньше 1000';
+          }
+          if (value) {
+            return validateDowntime(value, 'Дежурство');
           }
           return false;
         },
@@ -385,6 +408,9 @@ export const waybillSchema = {
           ) {
             return 'Поле "Обед" должно быть меньше 1000';
           }
+          if (value) {
+            return validateDowntime(value, 'Обед');
+          }
           return false;
         },
       },
@@ -399,6 +425,9 @@ export const waybillSchema = {
               .match(/^\d{4,}/)
           ) {
             return 'Поле "Ремонт" должно быть меньше 1000';
+          }
+          if (value) {
+            return validateDowntime(value, 'Ремонт');
           }
           return false;
         },

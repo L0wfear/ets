@@ -21,6 +21,7 @@ export const ConfigTrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAda
 
 export const RootService = ETS_API_FACTORY.createApiServiceAdapter('');
 export const ConfigService = ETS_API_FACTORY.createApiServiceAdapter('config');
+export const FilesService = ETS_API_FACTORY.createApiServiceAdapter('files');
 
 // TODO разбить на отдельные файлы
 

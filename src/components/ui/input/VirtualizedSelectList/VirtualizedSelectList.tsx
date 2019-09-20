@@ -2,6 +2,8 @@ import * as React from 'react';
 import { List } from 'react-virtualized';
 import { VirtualizedOption } from './styled/styled';
 
+const styleList = { width: '100%' };
+
 const VirtualizedSelectList = (props: any) => {
   const rows = props.children;
   const rowRenderer = ({ key, index, style }) => (
@@ -15,7 +17,7 @@ const VirtualizedSelectList = (props: any) => {
 
   return (
     <List
-      style={{ width: '100%', }}
+      style={styleList}
       width={800}
       height={menuHeight}
       rowHeight={rowHeight}

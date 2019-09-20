@@ -65,6 +65,7 @@
         "@types/react-redux": "^7.1.2",
         "@types/react-router-dom": "^4.3.5",
         "@types/react-select": "^2.0.19",
+        "@types/react-virtualized": "^9.21.4",
         "@types/react-widgets": "^4.3.3",
         "@types/recompose": "^0.30.7",
         "@types/styled-components": "=4.1.8",

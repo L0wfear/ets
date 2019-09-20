@@ -55,14 +55,25 @@ const DOC_URL = {
   origin: `${PROTO}//${HOST}${PATHNAME}docs/`,
 };
 
+const IMAGE_URL = {
+  develop: {
+    dev: `${urls.develop.dev}ets/data/images/`,
+    gost_stage: `${urls.develop.gost_stage}ets/data/images/`,
+    ets_test: `${urls.develop.ets_test}ets/data/images/`,
+    ets_hotfix: `${urls.develop.ets_hotfix}ets/data/images/`,
+    prod: `${urls.develop.prod}ets/data/images/`,
+  },
+  origin: `${PROTO}//${HOST}${PATHNAME}ets/data/images/`,
+};
+
 const config = {
   develop: {
-    images: `${urls.develop.prod}ets/data/images/`,
+    images: IMAGE_URL.develop[process.env.STAND],
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    images: `${urls.develop.prod}ets/data/images/`,
+    images: IMAGE_URL.origin,
     docs: DOC_URL.origin,
     admin: ADMIN_URL.origin,
   },

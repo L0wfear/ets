@@ -12,7 +12,7 @@ type FieldCarsConditionsCarSeasonProps = {
   path?: string;
 };
 
-const seasonOptions = [
+export const seasonInspectionOptions: any = [
   { value: 'Лето', label: 'Лето' },
   { value: 'Зима', label: 'Зима' },
   { value: 'Всесезон', label: 'Всесезон' },
@@ -25,7 +25,7 @@ const FieldCarsConditionsCarSeason: React.FC<FieldCarsConditionsCarSeasonProps> 
       label="Сезон:"
       value={props.value}
       onChange={props.handleChange}
-      options={seasonOptions}
+      options={seasonInspectionOptions}
       error={props.error}
       boundKeys="season"
       clearable={false}

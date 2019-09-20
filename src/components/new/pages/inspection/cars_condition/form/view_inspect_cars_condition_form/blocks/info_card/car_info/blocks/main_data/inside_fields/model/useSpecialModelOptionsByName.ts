@@ -20,7 +20,7 @@ const useSpecialModelOptionsByName: UseSpecialModelOptionsByName = (loadLoadSpec
   React.useEffect(
     () => {
       loadLoadSpecialModelList({}, { page, path }).then(
-        ({ payload: { data } }) => (
+        ({ data }) => (
           setSpecialModelOptions(
             (data as SpecialModel[]).map((rowData) => ({
               value: rowData.name,

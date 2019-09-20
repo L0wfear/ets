@@ -159,6 +159,11 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           groupOpt: {
             key: 'ts_data',
           },
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'vin',
@@ -166,6 +171,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           width: 200,
           groupOpt: {
             key: 'ts_data',
+          },
+          renderParams: {
+            type: 'string',
           },
         },
         {
@@ -197,6 +205,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           width: 200,
           groupOpt: {
             key: 'ts_data',
+          },
+          renderParams: {
+            type: 'string',
           },
         },
         {

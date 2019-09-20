@@ -6,7 +6,14 @@ export type DependenciesFieldFunc<K, F, P> = (
   props: P,
 ) => any;
 
+export type dependenciesDisableFieldFunc<K, F, P> = (
+  value: K,
+  formState: F,
+  props: P,
+) => any;
+
 export type DependenciesField<K, F, P> = DependenciesFieldFunc<K, F, P>[];
+export type dependenciesDisableField<K, F, P> = dependenciesDisableFieldFunc<K, F, P>[];
 
 export type CommonPropertie<K, F, P> = {
   title: string;
@@ -40,6 +47,7 @@ export type CommonPropertie<K, F, P> = {
   )
 
   dependencies?: DependenciesField<K, F, P>;
+  dependenciesDisable?: dependenciesDisableField<K, F, P>;
 };
 
 export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {

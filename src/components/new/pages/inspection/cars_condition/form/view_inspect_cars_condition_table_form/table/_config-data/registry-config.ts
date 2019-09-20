@@ -484,16 +484,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
-          key: 'status_at_check',
-          title: 'Нахождение ТС на момент проверки',
-          width: 200,
-          renderParams: {
-            type: 'select',
-            label: false,
-            options: [],
-          },
-        },
-        {
           key: 'waybill_number',
           title: 'Выдан ПЛ номер',
           width: 200,
@@ -512,6 +502,25 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         {
           key: 'not_passed_verification_glonass',
           title: 'Не пройдена проверка фактической работы техники с использованием ГЛОНАСС',
+          width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
+          format: 'boolean',
+        },
+        {
+          key: 'status_at_check',
+          title: 'Нахождение ТС на момент проверки',
+          width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
+        },
+        {
+          key: 'on_base',
+          title: 'ТС находится на базе',
           width: 200,
           renderParams: {
             type: 'boolean',
@@ -672,6 +681,15 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           groupOpt: {
             key: 'repair_info',
           },
+        },
+        {
+          key: 'not_maintenance_and_repair',
+          title: 'Тех. обслуживание, ремонт не произведены',
+          width: 200,
+          renderParams: {
+            type: 'boolean',
+          },
+          format: 'boolean',
         },
         {
           key: 'repair_application',

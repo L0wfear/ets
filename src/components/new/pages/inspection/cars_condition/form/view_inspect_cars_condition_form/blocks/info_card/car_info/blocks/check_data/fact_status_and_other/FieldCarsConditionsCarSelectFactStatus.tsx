@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { BlockCarInfoProps } from '../../../@types/BlockCarInfo';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { DivNone } from 'global-styled/global-styled';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import styled, { keyframes } from 'styled-components';
@@ -30,7 +29,6 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
     const {
       formState: state,
       formErrors: errors,
-      isPermitted,
     } = props;
 
     const handleChangeData = React.useCallback(
@@ -56,7 +54,7 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
       <FieldCarsConditionsCarSelectFactStatusWrapper>
         {
           state.fact_status === 'on_line'
-            ? (
+            && (
               <React.Fragment>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
@@ -92,26 +90,6 @@ const FieldCarsConditionsCarSelectFactStatus: React.FC<FieldCarsConditionsCarSel
                   />
                 </EtsBootstrap.Col>
               </React.Fragment>
-            )
-            : (
-              state.fact_status === 'repair'
-                ? (
-                  <EtsBootstrap.Col md={6}>
-                    <ExtField
-                      id="reason_repair"
-                      type="string"
-                      label="Причина ремонта:"
-                      value={state.data.reason_repair}
-                      error={errors.data.reason_repair}
-                      disabled={!isPermitted}
-                      onChange={handleChangeData}
-                      boundKeys="reason_repair"
-                    />
-                  </EtsBootstrap.Col>
-                )
-                : (
-                  <DivNone />
-                )
             )
         }
       </FieldCarsConditionsCarSelectFactStatusWrapper>

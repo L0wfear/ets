@@ -92,12 +92,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       [state.data, props.handleChange, inspectionConfigOptions],
     );
 
-    const handleChangeDataOsago = React.useCallback(
-      () => {
+    const handleChangeDataBoolean = React.useCallback(
+      (key) => {
         props.handleChange({
           data: {
             ...state.data,
-            osago_not_required: !state.data.osago_not_required,
+            [key]: !state.data[key],
           },
         });
       },
@@ -489,7 +489,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="boolean"
               label="ОСАГО не требуется:"
               value={state.data.osago_not_required}
-              onChange={handleChangeDataOsago}
+              onChange={handleChangeDataBoolean}
               boundKeys="osago_not_required"
               disabled={!props.isPermitted}
             />
@@ -733,6 +733,19 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   disabled={!props.isPermitted}
                 />
               </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  id="on_base"
+                  type="boolean"
+                  label="ТС находится на базе"
+                  value={state.on_base}
+                  error={errors.on_base}
+                  onChange={props.handleChangeBoolean}
+                  boundKeys="on_base"
+                  className="checkbox-input flex-reverse"
+                  disabled={!props.isPermitted || state.status_at_check !== 'on_line'}
+                />
+              </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             <FieldCarsConditionsCarSelectFactStatus
               formState={state}
@@ -848,6 +861,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               onChange={props.handleChangeBoolean}
               boundKeys="self_tm_repair"
               disabled={!props.isPermitted}
+              className={'checkbox-input flex-reverse'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -932,6 +946,17 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               clearable={false}
               disabled={!props.isPermitted}
               boundKeys={'repair_reason'}
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="boolean"
+              label="Тех. обслуживание, ремонт не произведены"
+              value={state.data.not_maintenance_and_repair}
+              onChange={handleChangeDataBoolean}
+              boundKeys="not_maintenance_and_repair"
+              disabled={!props.isPermitted}
+              className={'checkbox-input flex-reverse'}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

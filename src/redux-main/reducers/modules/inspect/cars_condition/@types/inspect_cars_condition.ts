@@ -162,6 +162,7 @@ export type CarsConditionCars = {
   okrug_name: string;
   okrug_id: string;
   last_repair_company_date: string;
+  on_base?: boolean;
   data: {
     defects_body: boolean;
     defects_chassis: boolean;
@@ -204,6 +205,7 @@ export type CarsConditionCars = {
     tech_condition: string;
     repair_from_date: string;
     repair_reason: string;
+    not_maintenance_and_repair?: boolean;
   };
   files: any[];
 };

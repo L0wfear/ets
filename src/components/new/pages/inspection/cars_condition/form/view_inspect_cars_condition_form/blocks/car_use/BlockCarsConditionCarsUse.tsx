@@ -140,6 +140,7 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
         <ExtField
           id="comment"
           type="text"
+          label="Другое"
           value={state.comment}
           onChange={handleChange}
           boundKeys="comment"

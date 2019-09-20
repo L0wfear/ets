@@ -168,6 +168,17 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
         },
       ],
     },
+    on_base: {
+      type: 'boolean',
+      title: 'ТС находится на базе',
+      dependenciesDisable: [
+        (_, formState) => {
+          if (get(formState, 'status_at_check', null) !== 'on_line') {
+            return true;
+          }
+        },
+      ],
+    },
     manufactured_at: {
       type: 'number',
       title: 'Год выпуска',
@@ -179,7 +190,6 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     given_at: {
       type: 'date',
       title: 'Дата регистрации',
-      required: true,
     },
     exploitation_date_start: {
       type: 'date',

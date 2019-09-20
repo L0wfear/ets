@@ -7,7 +7,9 @@ type Props = {
   [k: string]: any;
 };
 
-const styleList = { width: '100%' };
+const styleList = {
+  width: '100%',
+};
 const rowHeight = 36;
 
 const VirtualizedSelectList = React.memo(

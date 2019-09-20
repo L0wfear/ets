@@ -124,7 +124,7 @@ export default class Taxes extends React.Component {
 
     this.tableCellRenderers = {
       OPERATION: (OPERATION, row, index) => {
-        if (props.readOnly) {
+        if (this.props.readOnly) {
           return row.operation_name;
         }
         const options = this.state.operations.map((op) => {
@@ -141,7 +141,7 @@ export default class Taxes extends React.Component {
             clearable={false}
             modalKey={this.props.modalKey}
             id="norm_operation_id"
-            disabled={props.readOnly}
+            disabled={this.props.readOnly}
             options={options}
             value={row.uniqKey}
             onChange={this.handleOperationChange.bind(this, index)}
@@ -333,7 +333,7 @@ export default class Taxes extends React.Component {
           <EtsHeaderContainer>
             <EtsHeaderTitle>{title}</EtsHeaderTitle>
             <EtsButtonsContainer>
-              {!(this.props.readOnly || !fuelRates.length) && (
+              {!(this.props.IS_CLOSED || !fuelRates.length) && (
                 <React.Fragment>
                   <ButtonTableInput
                     width={160}

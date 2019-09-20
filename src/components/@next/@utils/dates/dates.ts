@@ -325,7 +325,7 @@ export const monthOptions = Array(12).fill(0).map(
   },
 );
 
-export const makeDateFormated = (date: string | number | Date, time?: boolean, empty?: string) => {
+export const makeDateFormated = (date: string | Date, time?: boolean, empty?: string) => {
   if (!date) {
     return empty || '';
   }

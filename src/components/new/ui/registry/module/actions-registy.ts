@@ -416,6 +416,7 @@ export const registryChangeData = <F extends Record<string, any>>(registryKey: s
     if (!userServerFilters) {
       array = arrayRaw.sort((a, b) => b[uniqKey] - a[uniqKey]);
     }
+
     dispatch(
       registryChangeListData(
         registryKey,
@@ -453,6 +454,9 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
     processed = { ...listRaw.processed };
     if (!getRegistryData || !userServerFilters) {
       processed.processedArray = makeProcessedArray(listRaw.data.array, processed, filter.fields);
+      processed.total_count = processed.processedArray.length;
+    } else {
+      processed.processedArray = listRaw.data.array;
       processed.total_count = processed.processedArray.length;
     }
   }

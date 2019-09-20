@@ -6,7 +6,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import { actionChangeActFiles } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_actions';
+import { actionChangeActFiles, actionUpdateFile } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_actions';
 import { PropsInspectActFileForm, OwnInspectActFileFormProps, PropsInspectActFileFormWithForm } from './@types/InspectActFileForm';
 import inspectActScanPermissions from '../registry/permissions';
 import { getDefaultInspectActFileElement } from './utils';
@@ -71,7 +71,7 @@ export default compose<PropsInspectActFileForm, OwnInspectActFileFormProps>(
   withForm<PropsInspectActFileFormWithForm, InspectOneActScan>({
     uniqField: 'id',
     createAction: actionChangeActFiles,
-    updateAction: actionChangeActFiles,
+    updateAction: actionUpdateFile,
     mergeElement: (props) => {
       return getDefaultInspectActFileElement(props.element);
     },

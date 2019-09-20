@@ -213,9 +213,6 @@ export const waybillSchema = {
       title: 'Работа',
       type: 'number',
       minNotEqual: 0,
-      regexp: '^\\d{1,3}((\\.|\\,)\\d{1,2})?$',
-      regexpErrorText: 'Ошибка ввода',
-      // regexp: '^\d{1,3}((\.|\,)\d{1,2})?$',
     },
     {
       key: 'downtime_hours_duty',

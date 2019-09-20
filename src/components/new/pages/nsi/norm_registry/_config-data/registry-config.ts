@@ -71,7 +71,7 @@ export const config: TypeConfigData<Norm> = {
         type: 'multiselect',
       },
       {
-        valueKey: 'objects_names',
+        valueKey: 'objects_text',
         title: 'Объект',
         type: 'multiselect',
         getRegistryData: {

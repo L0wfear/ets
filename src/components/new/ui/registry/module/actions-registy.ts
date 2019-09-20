@@ -481,7 +481,7 @@ export const registryChangeFilterData = (registryKey: string, filter: OneRegistr
   },
 });
 
-export const registryChangeFilterRawValues = (registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
+export const registryChangeFilterRawValues = <F extends Record<string, any>>(registryKey: string, valueKey: string, type: 'in' | 'eq' | 'neq' | 'like' | 'gt' | 'lt', value: any): EtsAction<EtsActionReturnType<typeof registryChangeFilterData>> => (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const filter = get(registryData, 'filter');
 

@@ -313,6 +313,11 @@ export const addTime = (date, count, typeAdd) =>
     .add(count, typeAdd)
     .format();
 
+export const minusTime = (date, count, typeAdd) =>
+  moment(date)
+    .subtract(count, typeAdd)
+    .format();
+
 export const diffDayOfDate = (dateA, dateB) =>
   diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');
 

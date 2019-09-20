@@ -94,7 +94,7 @@ export const getToConfig = (): TypeConfigData<ConsumableMaterialWrap> => {
           },
           {
             key: 'to_element',
-            title: 'Единица измерения',
+            title: 'Технологическая операция и элемент',
             width: 200,
             format: 'array',
             max_size_to_scroll: 650,

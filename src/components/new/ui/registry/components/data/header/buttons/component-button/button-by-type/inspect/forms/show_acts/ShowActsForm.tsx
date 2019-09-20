@@ -18,6 +18,8 @@ import ButtonRemove from '../../../ButtonRemove';
 import InspectActFileForm from './form/InspectActFileForm';
 import ButtonRead from '../../../ButtonRead';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionChangeActFiles } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_actions';
+import { InspectOneActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';
 
 type Props = {
   element: { id: number };
@@ -74,6 +76,25 @@ const ShowActsForm: React.FC<Props> = React.memo(
       [],
     );
 
+    const handleClickRemoveFile = React.useCallback(
+      (selectedRow: InspectOneActScan) => {
+        return dispatch(
+          actionChangeActFiles(
+            {
+              ...selectedRow,
+              inspection_id: props.element.id,
+              files: selectedRow.files.map((d) => ({
+                ...d,
+                action: 'delete',
+              })),
+            },
+            props,
+          ),
+        );
+      },
+      [props.element.id],
+    );
+
     const handleHide = React.useCallback(
       (isSubmitted) => {
         changeElement(null);
@@ -106,7 +127,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
                 </EtsBootstrap.Button>
                 <EtsButtonsContainer>
                   <ButtonRead registryKey={registryKey} onClick={handleOpenFormEdit} />
-                  <ButtonRemove registryKey={registryKey} format="yesno"/>
+                  <ButtonRemove registryKey={registryKey} onClick={handleClickRemoveFile} format="yesno"/>
                 </EtsButtonsContainer>
               </EtsHeaderContainer>
               <TableData registryKey={registryKey} />

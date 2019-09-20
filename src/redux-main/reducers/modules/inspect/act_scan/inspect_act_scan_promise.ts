@@ -1,6 +1,6 @@
 
 import { InspectOneActScan } from "./@types/inspect_act_scan";
-import { InspectionService } from "api/Services";
+import { InspectionService, FilesService } from "api/Services";
 
 export const promiseChangeActFiles = async (fileData: InspectOneActScan): Promise<InspectOneActScan> => {
   let response = null;
@@ -14,6 +14,23 @@ export const promiseChangeActFiles = async (fileData: InspectOneActScan): Promis
           kind: 'act_scan',
         }),
       ),
+      notes: fileData.notes,
+    },
+    false,
+    'json',
+  );
+
+  return response;
+};
+
+export const promiseUpdateActFiles = async (fileData: InspectOneActScan): Promise<InspectOneActScan> => {
+  let response = null;
+  const [oneFileData] = fileData.files;
+
+  response = await FilesService.path(fileData.id).put(
+    {
+      ...oneFileData,
+      notes: fileData.notes,
     },
     false,
     'json',

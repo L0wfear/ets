@@ -331,7 +331,6 @@ export const registryLoadDataByKey = <F extends Record<string, any>>(registryKey
     if (getRegistryData.format in mapKeyMapArray) {
       arrayRaw = mapKeyMapArray[getRegistryData.format](arrayRaw);
     }
-
     total_count = arrayRaw.length;
 
     if (userServerFilters) {
@@ -410,7 +409,7 @@ export const registryChangeData = <F extends Record<string, any>>(registryKey: s
   const userServerFilters = get(getRegistryData, 'userServerFilters');
   const list = get(registryData, 'list');
   const data = get(list, 'data');
-  const uniqKey = get(data, 'data');
+  const uniqKey = get(data, 'uniqKey');
 
   if (list) {
     let array = arrayRaw;

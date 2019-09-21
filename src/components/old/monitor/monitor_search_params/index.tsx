@@ -34,6 +34,7 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
       },
       [carActualGpsNumberIndex, gov_number],
     );
+    const carData_prev = usePrevious(carData);
 
     React.useEffect(
       () => {
@@ -64,6 +65,9 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     /****************************** dates ******************************/
     const date_start = props.searchState.date_start;
     const date_end = props.searchState.date_end;
+    const date_start_prev = usePrevious(props.searchState.date_start);
+    const date_end_prev = usePrevious(props.searchState.date_end);
+    const refresh = props.searchState.refresh;
 
     React.useEffect(
       () => {
@@ -87,18 +91,26 @@ export const MonitorSearchParamsDefault: React.FC<Props> = React.memo(
     React.useEffect(
       () => {
         if (date_start && date_end && carData.data) {
-          const payload = {
-            asuods_id: carData.data.asuods_id,
-            gps_code: carData.data.gps_code,
-            date_start,
-            date_end,
-          };
+          if (date_start !== date_start_prev || date_end !== date_end_prev || refresh || !carData_prev.dataIsLoaded) {
+            const payload = {
+              asuods_id: carData.data.asuods_id,
+              gps_code: carData.data.gps_code,
+              date_start,
+              date_end,
+            };
 
-          dispatch(fetchTrack(payload));
-          dispatch(fetchCarInfo(payload, { page: 'mainpage' }));
+            dispatch(fetchTrack(payload));
+            dispatch(fetchCarInfo(payload, { page: 'mainpage' }));
+
+            if (refresh) {
+              props.setDataInSearch({
+                refresh: null,
+              });
+            }
+          }
         }
       },
-      [date_start, date_end, carData],
+      [date_start, date_start_prev, date_end, date_end_prev, carData, carData_prev, refresh, props.match.params, props.setDataInSearch],
     );
 
     /****************************** end ******************************/

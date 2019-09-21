@@ -51,6 +51,7 @@ type StateTitleTrackTab = {
   date_start: string;
   date_end: string;
 };
+const daysIntoPeriod = 10;
 
 class TitleTrackTab extends React.Component<
   PropsTitleTrackTab,
@@ -152,16 +153,22 @@ class TitleTrackTab extends React.Component<
     }
   };
 
-  reloadTrackAndMissions: any = () => {
+  refreshTrackAndMissions = () => {
+    const refresh = true;
+    this.reloadTrackAndMissions(refresh);
+  };
+
+  reloadTrackAndMissions = (refresh: boolean = false) => {
     this.props.setDataInSearch({
       date_start: createValidDateTime(this.state.date_start),
       date_end: createValidDateTime(this.state.date_end),
+      refresh: refresh ? 1 : null,
     });
   };
 
-  makeNewPeriodBackward: any = () => {
-    let newDateStart: any = this.state.date_start;
-    let newDateEnd: any = this.state.date_end;
+  makeNewPeriodBackward = () => {
+    let newDateStart = this.state.date_start;
+    let newDateEnd = this.state.date_end;
 
     newDateStart = minusTime(this.state.date_start, 10, 'days');
     newDateEnd = this.state.date_start;
@@ -176,9 +183,9 @@ class TitleTrackTab extends React.Component<
     }, 0);
   };
 
-  makeNewPeriodForward: any = () => {
-    let newDateStart: any = this.state.date_start;
-    let newDateEnd: any = this.state.date_end;
+  makeNewPeriodForward = () => {
+    let newDateStart = this.state.date_start;
+    let newDateEnd = this.state.date_end;
 
     newDateStart = addTime(this.state.date_start, 10, 'days');
     newDateEnd = addTime(this.state.date_start, 20, 'days');
@@ -198,7 +205,6 @@ class TitleTrackTab extends React.Component<
     const { forToday } = this.props;
     const disbledByTrackPlayStatys = this.props.status !== 'stop';
     const { errorDates } = this.state;
-    const daysIntoPeriod = 10;
 
     return (
       <CarInfoBlockTabDataColumn>

@@ -2,8 +2,8 @@ import * as React from 'react';
 
 // https://ru.reactjs.org/docs/hooks-faq.html#is-there-something-like-instance-variables
 // https://ru.reactjs.org/docs/hooks-faq.html#can-i-run-an-effect-only-on-updates
-const usePrevious = (anyValue) => {
-  const container = React.useRef();
+const usePrevious = <F extends any>(anyValue: F): F => {
+  const container = React.useRef<F>();
 
   React.useEffect(() => {
     container.current = anyValue;

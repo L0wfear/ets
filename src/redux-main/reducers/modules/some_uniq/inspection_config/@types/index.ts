@@ -1,3 +1,3 @@
 export type InspectionConfig = {
-  [key: string]: string;
+  [key: string]: any[];
 };

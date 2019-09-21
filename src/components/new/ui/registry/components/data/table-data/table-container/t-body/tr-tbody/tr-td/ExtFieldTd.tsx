@@ -13,12 +13,14 @@ import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import TdContainer, { TdContainerProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
   registryKey: string;
   metaKey: string;
   indexRow: number;
+  tdContainerProps: TdContainerProps;
 };
 type Props = OwnProps & {};
 
@@ -89,25 +91,37 @@ const ExtFieldTd: React.FC<Props> = React.memo(
         setOptionsRenderRow(inspectionConfig);
       }, [inspectionConfig]);
     }
-    const isReadOnly = (renderParams.type === 'string' && (!isPermittedToUpdate || disabled)) || renderParams.readOnly;
+    // const isReadOnly = (renderParams.type === 'string' && (!isPermittedToUpdate || disabled)) || renderParams.readOnly;
+    const isReadOnly = !isPermittedToUpdate || disabled || renderParams.readOnly;
+
+    const isDisabled = !isPermittedToUpdate || disabled;
 
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
-        <ExtField
-          id={`${props.registryKey}.${props.indexRow}.${props.metaKey}`}
-          type={renderParams.type}
-          multi={renderParams.multi}
-          time={renderParams.time}
-          label={renderParams.label}
-          value={value}
-          onChange={handleChange}
-          className={renderParams.className}
-          options={get(optionsRenderRow, props.metaKey, [])}
-          disabled={!isPermittedToUpdate || disabled}
-          error={error}
-          readOnly={isReadOnly}
-          inline={renderParams.inline}
-        />
+        {
+          !isDisabled ?
+            (
+              <ExtField
+                id={`${props.registryKey}.${props.indexRow}.${props.metaKey}`}
+                type={renderParams.type}
+                multi={renderParams.multi}
+                time={renderParams.time}
+                label={renderParams.label}
+                value={value}
+                onChange={handleChange}
+                className={renderParams.className}
+                options={get(optionsRenderRow, props.metaKey, [])} // Опции для инспекций задаются тут actionInspectionConfigGetAndSetInStore, храняться в some_unique
+                disabled={isDisabled}
+                error={error}
+                readOnly={isReadOnly}
+                inline={renderParams.inline}
+              />
+            )
+            : (
+              <TdContainer {...props.tdContainerProps} />
+            )
+        }
+
       </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   },

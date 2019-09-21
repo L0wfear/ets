@@ -14,6 +14,14 @@ type UseSpecialModelOptionsByName = (
   path: string,
 ) => UseSpecialModelOptionsByNameAns;
 
+export const getSpecialModelOptions = ({data}) => {
+  return (data as SpecialModel[]).map((rowData) => ({
+    value: rowData.name,
+    label: rowData.name,
+    rowData,
+  }));
+};
+
 const useSpecialModelOptionsByName: UseSpecialModelOptionsByName = (loadLoadSpecialModelList, page, path) => {
   const [specialModelOptions, setSpecialModelOptions] = React.useState<UseSpecialModelOptionsByNameAns['specialModelOptions']>([]);
 
@@ -22,11 +30,7 @@ const useSpecialModelOptionsByName: UseSpecialModelOptionsByName = (loadLoadSpec
       loadLoadSpecialModelList({}, { page, path }).then(
         ({ data }) => (
           setSpecialModelOptions(
-            (data as SpecialModel[]).map((rowData) => ({
-              value: rowData.name,
-              label: rowData.name,
-              rowData,
-            })),
+            getSpecialModelOptions({ data }),
           )
         ),
       ).catch((error) => {

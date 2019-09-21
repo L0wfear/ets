@@ -4,7 +4,7 @@ import { isString } from 'util';
 import { EtsTbodyScrollContainer, EtsTbodyTextContainer, EtsTdInnerWrapper } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export type Props = {
+export type TdContainerProps = {
   registryKey: string;
   value: string | number | React.ReactNode;
   isSelected: boolean;
@@ -13,7 +13,7 @@ export type Props = {
   max_size_to_scroll: number;
 };
 
-const TdContainer: React.FC<Props> = React.memo(
+const TdContainer: React.FC<TdContainerProps> = React.memo(
   (props) => {
     const [showAll, setShowAll] = React.useState(false);
 

@@ -13,7 +13,7 @@ import SimpleLinkA from 'components/new/ui/simple_a/link';
 import config from 'config';
 import { CommontTdTiteProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/@types/commont';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
-import TdContainer from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
+import TdContainer, { TdContainerProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
 import ExtFieldTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 
@@ -120,6 +120,14 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
 
     const extFieldIsRender = Boolean(props.fieldMeta.renderParams && isSelected && isPermittedToUpdate);
 
+    const tdContainerProps: TdContainerProps = {
+      id: props.id,
+      registryKey: props.registryKey,
+      value: title,
+      isSelected,
+      max_size_to_scroll: props.fieldMeta.max_size_to_scroll || 300,
+    };
+
     return extFieldIsRender
       ? (
         <ExtFieldTd
@@ -127,16 +135,11 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
           registryKey={props.registryKey}
           metaKey={props.fieldMeta.key}
           indexRow={props.indexRow}
+          tdContainerProps={tdContainerProps}
         />
       )
       : (
-        <TdContainer
-          id={props.id}
-          registryKey={props.registryKey}
-          value={title}
-          isSelected={isSelected}
-          max_size_to_scroll={props.fieldMeta.max_size_to_scroll || 300}
-        />
+        <TdContainer {...tdContainerProps} />
       );
   },
 );

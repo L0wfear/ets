@@ -14,6 +14,14 @@ type useLoadModelOptionsByTitle = (
   path: string,
 ) => useLoadModelOptionsByTitleAns;
 
+export const getModelOptionsByTitle = ({data}) => {
+  return data.map((rowData) => ({
+    value: rowData.title,
+    label: rowData.title,
+    rowData,
+  }));
+};
+
 const useLoadModelOptionsByTitle: useLoadModelOptionsByTitle = (loadLoadModelList, page, path) => {
   const [modelOptions, setModelOptions] = React.useState<useLoadModelOptionsByTitleAns['modelOptions']>([]);
 
@@ -21,13 +29,7 @@ const useLoadModelOptionsByTitle: useLoadModelOptionsByTitle = (loadLoadModelLis
     () => {
       loadLoadModelList({}, { page, path }).then(
         ({ data }) => (
-          setModelOptions(
-            (data).map((rowData) => ({
-              value: rowData.title,
-              label: rowData.title,
-              rowData,
-            })),
-          )
+          setModelOptions(getModelOptionsByTitle({ data, }))
         ),
       ).catch((error) => {
         console.error(error); //tslint:disable-line

@@ -14,6 +14,14 @@ type UseCarFuncTypesOptionsByName = (
   path: string,
 ) => UseCarFuncTypesOptionsByNameAns;
 
+export const getCarFuncTypesOptionsByName = ({data}) => {
+  return (data as CarFuncTypes[]).map((rowData) => ({
+    value: rowData.short_name,
+    label: rowData.short_name,
+    rowData,
+  }));
+};
+
 const useCarFuncTypesOptionsByName: UseCarFuncTypesOptionsByName = (loadCarFuncTypes, page, path) => {
   const [carFuncTypeOptions, setCarFuncTypeOptions] = React.useState<UseCarFuncTypesOptionsByNameAns['carFuncTypeOptions']>([]);
 
@@ -21,13 +29,7 @@ const useCarFuncTypesOptionsByName: UseCarFuncTypesOptionsByName = (loadCarFuncT
     () => {
       loadCarFuncTypes({}, { page, path }).then(
         ({ data }) => (
-          setCarFuncTypeOptions(
-            (data as CarFuncTypes[]).map((rowData) => ({
-              value: rowData.short_name,
-              label: rowData.short_name,
-              rowData,
-            })),
-          )
+          setCarFuncTypeOptions(getCarFuncTypesOptionsByName({ data }))
         ),
       ).catch((error) => {
         console.error(error); //tslint:disable-line

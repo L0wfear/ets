@@ -133,23 +133,38 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         {
           key: 'marka',
           title: 'Марка',
-          width: 100,
+          width: 200,
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
+          },
         },
         {
           key: 'model',
           title: 'Модель',
-          width: 100,
+          width: 200,
           groupOpt: {
             key: 'ts_data',
             firstElem: true, // В группку не входит
+          },
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
           },
         },
         {
           key: 'type',
           title: 'Тип ТС',
-          width: 200,
+          width: 250,
           groupOpt: {
             key: 'ts_data',
+          },
+          renderParams: {
+            type: 'select',
+            label: false,
+            options: [],
           },
         },
         {

@@ -56,17 +56,57 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     marka: {
       type: 'valueOfArray',
       title: 'Марка',
-      required: true,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow')) {
+            return true;
+          }
+        },
+      ],
+      dependencies: [
+        (value, formState) => {
+          if (!get(formState, 'marka') && get(formState, 'isNewRow') && !value) {
+            return 'Поле "Марка" должно быть заполнено';
+          }
+        },
+      ],
     },
     model: {
       type: 'valueOfArray',
       title: 'Модель',
-      required: true,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow')) {
+            return true;
+          }
+        },
+      ],
+      dependencies: [
+        (value, formState) => {
+          if (!get(formState, 'marka') && get(formState, 'isNewRow') && !value) {
+            return 'Поле "Модель" должно быть заполнено';
+          }
+        },
+      ],
     },
     type: {
       type: 'valueOfArray',
       title: 'Тип ТС',
       required: true,
+      dependenciesDisable: [
+        (_, formState) => {
+          if (!get(formState, 'isNewRow')) {
+            return true;
+          }
+        },
+      ],
+      dependencies: [
+        (value, formState) => {
+          if (!get(formState, 'type') && get(formState, 'isNewRow') && !value) {
+            return 'Поле "Тип ТС" должно быть заполнено';
+          }
+        },
+      ],
     },
     environmental_class: {
       type: 'valueOfArray',
@@ -286,11 +326,17 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     season: {
       type: 'valueOfArray',
       title: 'Сезон',
-      required: true,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow', null)) {
+          if (!get(formState, 'isNewRow')) {
             return true;
+          }
+        },
+      ],
+      dependencies: [
+        (value, formState) => {
+          if (!get(formState, 'type') && get(formState, 'isNewRow') && !value) {
+            return 'Поле "Сезон" должно быть заполнено';
           }
         },
       ],

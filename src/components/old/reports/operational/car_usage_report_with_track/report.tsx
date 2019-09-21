@@ -15,11 +15,12 @@ const renderCarData = ({ data }, props) => {
     return get(data, 'count');
   }
 
+  const gov_numbers = get(data, 'gov_numbers') || [];
   return (
     <div>
-      <div><b>{get(data, 'count')}:</b></div>
+      <div><b>{get(data, 'count')}{Boolean(gov_numbers.length) ? ':' : ''}</b></div>
       {
-        (get(data, 'gov_numbers') || []).map((gov_number) => (
+        Boolean(gov_numbers.length) && gov_numbers.map((gov_number) => (
           <div key={gov_number}>{gov_number}</div>
         ))
       }

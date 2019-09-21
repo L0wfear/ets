@@ -458,6 +458,8 @@ class ReportContainer extends React.Component<
     if (this.props.notUseServerSummerTable) {
       const reportKey = get(this.props, 'tableProps.reportKey', null);
       let report = [...this.props.list];
+      let summary = [...this.props.summaryList];
+
       if (reportKey === 'car_usage_report') {
         const schema = Object.fromEntries(
           this.makeTableSchema(
@@ -476,9 +478,20 @@ class ReportContainer extends React.Component<
               const data = get(d[key], 'gov_numbers') || [];
 
               d[`${key}_str`] = `${count}`;
-              if (show_gov_numbers) {
+              if (show_gov_numbers && data.length) {
                 d[`${key}_str`] = `${d[`${key}_str`]}:\n${data.sort().join('\n')}`;
               }
+            }
+          });
+          return d;
+        });
+
+        summary = summary.map((d: any) => {
+          Object.entries(schema).forEach(([key, metaRender]: any) => {
+            if (key in d && metaRender.needStr) {
+              const count = d[key];
+
+              d[`${key}_str`] = `${count}`;
             }
           });
           return d;
@@ -487,7 +500,7 @@ class ReportContainer extends React.Component<
       payload = {
         rows: {
           report,
-          summary: [...this.props.summaryList],
+          summary,
         },
       };
     }

@@ -867,6 +867,12 @@ export const registryAddNewRow = (registryKey: string, payload: { defaultRowValu
     newRowVal = makeInspectCarsConditionExtendedFront(newRowVal);
   }
 
+  newRowVal = {
+    ...newRowVal,
+    id: list.data.array.length + 1,
+    isNewRow: true,
+  };
+
   dispatch(
     registryChangeListData(
       registryKey,
@@ -877,8 +883,6 @@ export const registryAddNewRow = (registryKey: string, payload: { defaultRowValu
           array: [
             {
               ...newRowVal,
-              id: list.data.array.length + 1,
-              isNewRow: true,
             },
             ...list.data.array,
           ],

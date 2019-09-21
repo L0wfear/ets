@@ -22,7 +22,6 @@ export const LineDataButtonLine = styled(LineData)`
 `;
 
 export const StatusLabel = styled.b`
-  text-decoration: underline;
   text-decoration-skip-ink: none;
   padding: 0 15px;
 `;

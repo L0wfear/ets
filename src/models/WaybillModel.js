@@ -7,7 +7,7 @@ import {
 } from 'components/@next/@utils/dates/dates';
 import { getTrailers } from 'components/old/waybill/utils';
 import { get } from 'lodash';
-import { isArray } from 'util';
+import { isArray, isNumber } from 'util';
 import memoizeOne from 'memoize-one';
 import { makeFuelCardIdOptions } from 'components/old/waybill/table_input/utils';
 
@@ -594,7 +594,7 @@ const closingDependencies = {
       validator(value, { odometr_start, gov_number }) {
         const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
         if (CAR_HAS_ODOMETER) {
-          if (odometr_start && !value) {
+          if ((odometr_start || isNumber(odometr_start)) && !value) {
             return 'Поле "Одометр. Возвращение в гараж, км" должно быть заполнено';
           }
           if (value && value < odometr_start) {
@@ -610,7 +610,7 @@ const closingDependencies = {
       validator(value, { motohours_start, gov_number }) {
         const CAR_HAS_ODOMETER = gov_number ? !hasMotohours(gov_number) : null;
         if (!CAR_HAS_ODOMETER) {
-          if (motohours_start && !value) {
+          if ((motohours_start || isNumber(motohours_start)) && !value) {
             return 'Поле "Счетчик моточасов.Возвращение в гараж, м/ч" должно быть заполнено';
           }
           if (value && value < motohours_start) {
@@ -625,7 +625,10 @@ const closingDependencies = {
     {
       validator(value, { motohours_equip_start, equipment_fuel }) {
         if (equipment_fuel) {
-          if (motohours_equip_start && !value) {
+          if (
+            (motohours_equip_start || isNumber(motohours_equip_start))
+            && !value
+          ) {
             return 'Поле "Счетчик моточасов оборудования. Возвращение в гараж, м/ч" должно быть заполнено';
           }
           if (value && value < motohours_equip_start) {

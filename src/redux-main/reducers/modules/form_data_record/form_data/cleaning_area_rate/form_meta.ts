@@ -47,7 +47,7 @@ export const metaCleaningAreaRate: ConfigFormData<CleaningAreaRate> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     municipal_facility_id: null,
     clean_subcategory_id: null,
     technical_operation_id: null,
@@ -58,5 +58,5 @@ export const metaCleaningAreaRate: ConfigFormData<CleaningAreaRate> = {
     clean_category_name: '',
     technical_operation_name: '',
     clean_subcategory_name: '',
-  },
+  }),
 };

@@ -37,11 +37,11 @@ export const metaInspectOneActScan: ConfigFormData<InspectOneActScan> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     id: null,
     inspection_id: null,
     files: [],
     notes: '',
     name: '',
-  },
+  }),
 };

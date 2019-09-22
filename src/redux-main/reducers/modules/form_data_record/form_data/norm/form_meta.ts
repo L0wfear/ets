@@ -24,7 +24,7 @@ export const metaNorm: ConfigFormData<Norm> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     asuods_id: null,
     car_func_types: [],
     car_func_types_ids: [],
@@ -69,5 +69,5 @@ export const metaNorm: ConfigFormData<Norm> = {
     work_type_id: null,
     work_type_name: '',
     type_oper_name: '',
-  },
+  }),
 };

@@ -5,7 +5,7 @@ import MissionInfoFormById from 'components/new/ui/mission_info_form/MissionInfo
 import { WithFormRegistrySearchProps, withFormRegistrySearch, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 
 export const MissionFormReactLazy = React.lazy(() =>
-  import(/* webpackChunkName: "mission_form" */ 'components/new/pages/missions/mission/form/main/MissionForm'),
+  import(/* webpackChunkName: "mission_form" */ 'components/new/pages/missions/mission/form/main/MissionFormContext'),
 );
 
 const MissionListFormWrap: React.FC<WithFormRegistrySearchAddProps<Partial<Mission>>> = React.memo(

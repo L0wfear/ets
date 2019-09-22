@@ -1,6 +1,7 @@
 import { SchemaFormContext, FormErrorBySchema } from 'components/@next/@form/@types';
 import { EtsModalContainerProps } from 'components/new/ui/@bootstrap/02-modal_container/EtsModalContainer';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { ReduxState } from 'redux-main/@types/state';
 
 export type FormKeys = (
   'maintenance_work'
@@ -10,10 +11,12 @@ export type FormKeys = (
   | 'cleaning_area_rate'
   | 'fuel_operations'
   | 'cleaning_rate'
+  | 'mission'
 );
 
 export type OneFormDataByKey<F extends Record<string, any>> = {
   formState: F;                                                                 // состояни формы
+  originalFormState: F;                                                         // состояние формы при инициализации
   formErrors: FormErrorBySchema<F>;                                             // состояние ошибок
   IS_CREATING: boolean;                                                         // флаг создания элемента
   canSave: boolean;                                                             // можно ли сохранить
@@ -31,8 +34,16 @@ export type ConfigFormData<F extends Record<string, any>> = {
     [k: string]: string | boolean | Array<string | boolean>;                    // что ещё угодно
   };
   bsSizeForm?: EtsModalContainerProps['bsSize'];                                // размер формы
-  default_element: F;
-  handleSubmitPromise: (formState: F) => Promise<F>,
-};
+  getDefaultElement: (reduxState: ReduxState) => F;
+  getOneRecordPromise?: (id: number) => Promise<F>;
+  handleSubmitPromise: (formState: F, ...any: any[]) => Promise<Partial<F>>,
+
+} & (
+  F extends { structure_id: number; structure_name: string }
+    ? {
+      user_structure_on_new?: boolean;                                              // Вставлять подразделение пользователя при создании
+    }
+    : {}
+);
 
 export type IStateFormDataRecord = Partial<Record<FormKeys, OneFormDataByKey<any>>>;

@@ -30,10 +30,10 @@ export const metaMaintenanceWork: ConfigFormData<MaintenanceWork> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     id: null,
     name: '',
     measure_unit_id: null,
     measure_unit_name: '',
-  },
+  }),
 };

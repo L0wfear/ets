@@ -5,20 +5,15 @@ import {
   StatePropsMission,
   DispatchPropsMission,
   OwnMissionProps,
-  PropsMissionWithForm,
 } from './@types/index.h';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { ReduxState } from 'redux-main/@types/state';
-import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
-import { getDefaultMissionElement } from './utils';
-import { missionFormSchema } from './schema';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { DivNone } from 'global-styled/global-styled';
-import { getSessionState, getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors';
+import { getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors';
 
 import FieldTechnicalOperationMission from 'components/new/pages/missions/mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationMission';
 import withMapInConsumer from 'components/new/ui/map/context/withMapInConsumer';
@@ -44,7 +39,6 @@ import {
 } from 'global-styled/global-styled';
 import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData';
 import { isOrderSource } from 'components/new/pages/missions/utils';
-import missionPermissions from '../../_config-data/permissions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
@@ -108,9 +102,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
         state.mission_source_id,
         this.props.order_mission_source_id,
       ),
-      isPermitted: !IS_CREATING
-        ? props.isPermittedToUpdate
-        : props.isPermittedToCreate,
+      isPermitted: props.isPermitted,
       IS_ASSIGNED,
       IS_NOT_ASSIGNED,
       IS_EXPIRED,
@@ -154,42 +146,48 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   }
 
   componentDidMount() {
-    const {
-      page, path,
-      formState: state,
-      dependeceOrder,
-      waybillData,
-      edcRequest,
-    } = this.props;
+    const loadData = async () => {
+      const {
+        page, path,
+        formState: state,
+        dependeceOrder,
+        waybillData,
+        edcRequest,
+      } = this.props;
 
-    const {
-      isPermitted,
-      MISSION_IS_ORDER_SOURCE,
-    } = this.state;
+      const {
+        isPermitted,
+        MISSION_IS_ORDER_SOURCE,
+      } = this.state;
 
-    if (isPermitted) {
-      if (MISSION_IS_ORDER_SOURCE && !dependeceOrder) {
-        this.props.actionLoadOrderAndTechnicalOperationByIdForMission(
-          state.order_id,
-          state.order_operation_id,
-          { page, path },
-        );
+      if (isPermitted) {
+        if (MISSION_IS_ORDER_SOURCE && !dependeceOrder) {
+          await this.props.actionLoadOrderAndTechnicalOperationByIdForMission(
+            state.order_id,
+            state.order_operation_id,
+            { page, path },
+          );
+        }
+
+        if ((state.waybill_id && state.waybill_id !== -1) && !waybillData || (waybillData && waybillData.id && waybillData.id !== state.waybill_id)) {
+          await this.props.actionLoadWaybillDataByIdForMission(
+            state.waybill_id,
+            { page, path },
+          );
+        }
+
+        if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
+          await this.props.loadEdcRequiedByIdForMission(
+            state.request_id,
+            { page, path },
+          );
+        }
+
+        this.props.updateFormErrors();
       }
+    };
 
-      if ((state.waybill_id && state.waybill_id !== -1) && !waybillData || (waybillData && waybillData.id && waybillData.id !== state.waybill_id)) {
-        this.props.actionLoadWaybillDataByIdForMission(
-          state.waybill_id,
-          { page, path },
-        );
-      }
-
-      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
-        this.props.loadEdcRequiedByIdForMission(
-          state.request_id,
-          { page, path },
-        );
-      }
-    }
+    loadData();
   }
 
   componentDidUpdate(prevProps) {
@@ -769,8 +767,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 export default compose<PropsMissionForm, OwnMissionProps>(
   connect<StatePropsMission, DispatchPropsMission, OwnMissionProps, ReduxState>(
     (state) => ({
-      userStructureId: getSessionState(state).userData.structure_id,
-      userStructureName: getSessionState(state).userData.structure_name,
       ...getSessionStructuresParams(state),
       order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
       edcRequest: getMissionsState(state).missionData.edcRequest,
@@ -799,22 +795,4 @@ export default compose<PropsMissionForm, OwnMissionProps>(
     }),
   ),
   withMapInConsumer(),
-  withForm<PropsMissionWithForm, Mission>({
-    uniqField: 'id',
-    createAction: missionsActions.actionCreateMission,
-    updateAction: missionsActions.actionUpdateMission,
-    getRecordAction: missionsActions.actionGetMissionById,
-    mergeElement: ({ element, userStructureId, userStructureName }) => {
-      return getDefaultMissionElement({
-        ...element,
-        structure_id: (element && element.structure_id) || userStructureId,
-        structure_name:
-          element && (element.structure_name || element.structure_id)
-            ? null
-            : userStructureName,
-      });
-    },
-    schema: missionFormSchema,
-    permissions: missionPermissions,
-  }),
 )(MissionForm);

@@ -27,6 +27,10 @@ export const getFormDataMetaByKey = (state: ReduxState, key: keyof IStateFormDat
 export const getFormDataFormStateByKey = <F extends object>(state: ReduxState, key: keyof IStateFormDataRecord) => (
   getFormDataByKey<F>(state, key).formState
 );
+export const getFormDataOriginFormStateByKey = <F extends object>(state: ReduxState, key: keyof IStateFormDataRecord) => (
+  getFormDataByKey<F>(state, key).originalFormState
+);
+
 export const getFormDataFormStatePickValueByKey = <F extends object>(state: ReduxState, key: keyof IStateFormDataRecord, value_key: keyof F) => (
   getFormDataByKey<F>(state, key).formState[value_key]
 );

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import {
@@ -12,9 +13,11 @@ import {
   getFormDataFormErrorsByKey,
   getFormDataCanSaveByKey,
   getFormDataFormStatePickValueByKey,
+  getFormDataOriginFormStateByKey,
 } from 'redux-main/reducers/modules/form_data_record/selectors';
 import { actionChangeFormState, mapFormMeta, actionSubmitFormState } from 'redux-main/reducers/modules/form_data_record/actions';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import { isObject } from 'util';
 
 /* _______________ селекторы хуки _______________ */
 
@@ -80,14 +83,26 @@ const useFormDataHandleChange = <F extends Record<string, any>>(formDataKey: For
   const dispatch = etsUseDispatch();
 
   return React.useCallback(
-    (partialFormState: Partial<F>) => (
-      dispatch(
-        actionChangeFormState<F>(
-          formDataKey,
-          partialFormState,
-        ),
-      )
-    ),
+    (partialFormState: Partial<F> | keyof F, value?: F[keyof F]) => {
+      if (isObject(partialFormState)) {
+        dispatch(
+          actionChangeFormState<F>(
+            formDataKey,
+            partialFormState as Partial<F> ,
+          ),
+        );
+      } else {
+        const partialFormStateNew = {
+          [partialFormState as keyof F]: get(value, 'target.value', value),
+        } as Partial<F> ;
+        dispatch(
+          actionChangeFormState<F>(
+            formDataKey,
+            partialFormStateNew,
+          ),
+        );
+      }
+    },
     [],
   );
 };
@@ -108,8 +123,8 @@ const useFormDataHandleSubmitPromise = <F extends Record<string, any>>(formDataK
   const dispatch = etsUseDispatch();
 
   return React.useCallback(
-    () => {
-      return dispatch(actionSubmitFormState(formDataKey));
+    (...arg) => {
+      return dispatch(actionSubmitFormState(formDataKey, ...arg));
     },
     [],
   );
@@ -141,6 +156,15 @@ const useFormDataFormState = <F extends Record<string, any>>(formDataKey: FormKe
   const formState = etsUseSelector((state) => getFormDataFormStateByKey<F>(state, formDataKey));
 
   return formState;
+};
+
+/**
+ * получение состояния зачений формы (originalFormState)
+ */
+const useFormDataOriginalFormState = <F extends Record<string, any>>(formDataKey: FormKeys) => {
+  const originalFormState = etsUseSelector((state) => getFormDataOriginFormStateByKey<F>(state, formDataKey));
+
+  return originalFormState;
 };
 
 /**
@@ -228,6 +252,7 @@ export default {
   useFormDataIsCreating,
   useFormDataHandleChangeStore,
   useFormDataMeta,
+  useFormDataOriginalFormState,
   useFormDataFormState,
   useFormDataFormStatePickValue,
   useFormDataFormErrors,

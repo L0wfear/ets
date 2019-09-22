@@ -173,6 +173,13 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promis
   };
 };
 
+export const promiseSubmitMission = async (mission: Mission) => {
+  if (mission.id) {
+    return promiseUpdateMission(mission);
+  }
+  return promiseCreateMission(mission, [], false);
+};
+
 export const promiseChangeArchiveMissionStatus = async (
   id: Mission['id'],
   is_archive: boolean,

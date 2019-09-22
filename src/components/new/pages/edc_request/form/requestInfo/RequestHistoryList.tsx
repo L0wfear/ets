@@ -3,7 +3,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 
 import { getSomeUniqState } from 'redux-main/reducers/selectors';

@@ -14,8 +14,8 @@ type UseSpecialModelOptionsByName = (
   path: string,
 ) => UseSpecialModelOptionsByNameAns;
 
-export const getSpecialModelOptions = ({data}) => {
-  return (data as SpecialModel[]).map((rowData) => ({
+export const getSpecialModelOptions = (data: SpecialModel[]) => {
+  return data.map((rowData) => ({
     value: rowData.name,
     label: rowData.name,
     rowData,
@@ -30,7 +30,7 @@ const useSpecialModelOptionsByName: UseSpecialModelOptionsByName = (loadLoadSpec
       loadLoadSpecialModelList({}, { page, path }).then(
         ({ data }) => (
           setSpecialModelOptions(
-            getSpecialModelOptions({ data }),
+            getSpecialModelOptions(data),
           )
         ),
       ).catch((error) => {

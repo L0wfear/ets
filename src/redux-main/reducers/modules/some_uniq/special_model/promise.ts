@@ -2,7 +2,7 @@ import { SpecialModelService } from 'api/Services';
 import { get } from 'lodash';
 import { SpecialModel } from 'redux-main/reducers/modules/some_uniq/special_model/@types';
 
-export const promiseGetSpecialModel = async (payload) => {
+export const promiseGetSpecialModel = async (payload: object) => {
   let response = null;
   try {
     response = await SpecialModelService.get(payload);
@@ -11,7 +11,7 @@ export const promiseGetSpecialModel = async (payload) => {
     response = null;
   }
 
-  const data: SpecialModel = get(response, 'result.rows', []);
+  const data: SpecialModel[] = get(response, 'result.rows', []);
 
   return {
     data,

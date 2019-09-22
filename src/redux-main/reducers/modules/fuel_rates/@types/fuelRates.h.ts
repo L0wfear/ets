@@ -1,4 +1,4 @@
-import { FuelOperation } from "../../fuel_operations/@types/fuelOperations";
+import { FuelOperation } from '../../fuel_operations/@types/fuelOperations';
 
 export type FuelRate = {
   body_capacity: number | null;

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import useCountryList from '../useList/useCountryList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { Country } from 'redux-main/reducers/modules/some_uniq/country/@types';
 
-export const getCountryOptions = (listData) => {
+export const getCountryOptions = (listData: { list: Country[], isLoading?: boolean }) => {
   return {
     options: listData.list.map((rowData) => ({
       value: rowData.id,

@@ -1,8 +1,8 @@
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { RefillType } from "./@types/refillType";
-import { LoadingMeta } from "redux-main/_middleware/@types/ets_loading.h";
-import etsLoadingCounter from "redux-main/_middleware/ets-loading/etsLoadingCounter";
-import { promiseLoadRefillType } from "./promise_refill_type";
+import { RefillType } from './@types/refillType';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { promiseLoadRefillType } from './promise_refill_type';
 
 import { someUniqSetNewData } from 'redux-main/reducers/modules/some_uniq/common';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';

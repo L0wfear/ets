@@ -1,5 +1,5 @@
-import { InspectAutobase } from "redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase";
-import { INSPECT_TYPE_FORM } from "components/new/pages/inspection/autobase/global_constants";
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 

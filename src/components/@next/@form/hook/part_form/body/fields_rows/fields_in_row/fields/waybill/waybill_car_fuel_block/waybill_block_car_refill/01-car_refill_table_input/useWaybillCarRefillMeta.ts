@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import useForm from "components/@next/@form/hook_selectors/useForm";
-import { Waybill } from "redux-main/reducers/modules/waybill/@types";
+import useForm from 'components/@next/@form/hook_selectors/useForm';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import { TableMeta } from 'components/new/ui/table_input/TableInput';
 
 const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill']>> = {

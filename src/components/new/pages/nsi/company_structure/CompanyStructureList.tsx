@@ -13,7 +13,7 @@ import { registryAddInitialData, registryRemoveData } from 'components/new/ui/re
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 
 export type CompanyStructureListStateProps = {};
 export type CompanyStructureListDispatchProps = {

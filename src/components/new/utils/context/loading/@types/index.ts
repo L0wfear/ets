@@ -1,5 +1,5 @@
-import { LoadingMeta } from "redux-main/_middleware/@types/ets_loading.h";
-import { LoadingServiceGeneric } from "./common";
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { LoadingServiceGeneric } from './common';
 import {
   CountryApi,
   TypesApi,
@@ -17,7 +17,7 @@ import {
   WorkModeApi,
   RefillTypeApi,
   FuelCardsApi,
-} from "./all";
+} from './all';
 
 type UrlValues = (
   CountryApi['url']

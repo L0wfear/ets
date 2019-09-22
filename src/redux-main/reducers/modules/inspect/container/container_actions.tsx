@@ -1,9 +1,9 @@
-import { InspectContainer } from "./@types/container";
-import { LoadingMeta } from "redux-main/_middleware/@types/ets_loading.h";
+import { InspectContainer } from './@types/container';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
-import { promiseUpdateInspectContainer, promiseCreateInspectContainer, promiseGetInspectContainer, promiseRemoveInspectContainer } from "./container_promise";
-import etsLoadingCounter from "redux-main/_middleware/ets-loading/etsLoadingCounter";
-import { PgmStore } from "../../geoobject/actions_by_type/pgm_store/@types";
+import { promiseUpdateInspectContainer, promiseCreateInspectContainer, promiseGetInspectContainer, promiseRemoveInspectContainer } from './container_promise';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { PgmStore } from '../../geoobject/actions_by_type/pgm_store/@types';
 
 const actionGetInspectContainer = (inspection_id: PgmStore['id'], meta: LoadingMeta): EtsAction<any> => async (dispatch, getState) => {
   const result = await etsLoadingCounter(

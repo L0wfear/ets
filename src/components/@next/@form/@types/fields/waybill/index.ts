@@ -1,4 +1,4 @@
-import { FieldCommon } from "../common";
+import { FieldCommon } from 'components/@next/@form/@types/fields/common';
 
 /**
  * Тип для компонента с Подразделение, датами и сопровождающим

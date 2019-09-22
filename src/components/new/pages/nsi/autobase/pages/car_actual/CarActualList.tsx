@@ -12,7 +12,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 
 export type CarActualListStateProps = {};
 export type CarActualListDispatchProps = {

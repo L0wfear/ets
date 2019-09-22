@@ -1,5 +1,5 @@
-import { Waybill } from "redux-main/reducers/modules/waybill/@types";
-import { FieldValueOFArrayCommon } from "../../valueOfArray";
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { FieldValueOFArrayCommon } from 'components/@next/@form/@types/fields/valueOfArray';
 
 /**
  * Тип поля stucture_id

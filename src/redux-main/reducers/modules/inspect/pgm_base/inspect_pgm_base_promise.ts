@@ -1,11 +1,11 @@
-import { InspectPgmBase } from "./@types/inspect_pgm_base";
+import { InspectPgmBase } from './@types/inspect_pgm_base';
 import {
   promiseGetInspectRegistry,
   promiseCreateInspection,
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { get, keyBy, cloneDeep } from 'lodash';
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from 'util';
 
 export const defaultInspectPgmBaseData: InspectPgmBase['data'] = {
   lack_traffic_scheme_at_entrance: false,

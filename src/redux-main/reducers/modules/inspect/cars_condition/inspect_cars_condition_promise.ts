@@ -1,11 +1,11 @@
-import { InspectCarsCondition, CarsConditionCars } from "./@types/inspect_cars_condition";
+import { InspectCarsCondition, CarsConditionCars } from './@types/inspect_cars_condition';
 import {
   promiseGetInspectRegistry,
   promiseCreateInspection,
   promiseGetInspectionByIdType,
 } from 'redux-main/reducers/modules/inspect/inspect_promise';
 import { cloneDeep, get, keyBy } from 'lodash';
-import { InspectCarsService, } from "api/Services";
+import { InspectCarsService, } from 'api/Services';
 
 // дефолтное значение для "Руководитель предприятия"
 const deafult_head_balance_holder_base: InspectCarsCondition['head_balance_holder_base'] = {

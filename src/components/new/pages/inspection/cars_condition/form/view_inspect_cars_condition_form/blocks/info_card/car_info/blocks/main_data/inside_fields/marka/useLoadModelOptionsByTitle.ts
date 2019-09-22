@@ -14,7 +14,7 @@ type useLoadModelOptionsByTitle = (
   path: string,
 ) => useLoadModelOptionsByTitleAns;
 
-export const getModelOptionsByTitle = ({data}) => {
+export const getModelOptionsByTitle = (data: ModelElement[]) => {
   return data.map((rowData) => ({
     value: rowData.title,
     label: rowData.title,
@@ -29,7 +29,7 @@ const useLoadModelOptionsByTitle: useLoadModelOptionsByTitle = (loadLoadModelLis
     () => {
       loadLoadModelList({}, { page, path }).then(
         ({ data }) => (
-          setModelOptions(getModelOptionsByTitle({ data, }))
+          setModelOptions(getModelOptionsByTitle(data))
         ),
       ).catch((error) => {
         console.error(error); //tslint:disable-line

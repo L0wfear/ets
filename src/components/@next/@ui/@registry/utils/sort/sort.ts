@@ -2,7 +2,7 @@ import {
   isString,
   isNumber,
   isArray,
-} from "util";
+} from 'util';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 

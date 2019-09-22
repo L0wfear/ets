@@ -1,4 +1,4 @@
-import { FieldCommon } from "../common";
+import { FieldCommon } from 'components/@next/@form/@types/fields/common';
 
 /**
  * Схема для типа valueOfArray

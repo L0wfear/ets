@@ -1,4 +1,4 @@
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 import {
   PropsMissionTemplateCreatingForm,
   MissionTemplateCreating,

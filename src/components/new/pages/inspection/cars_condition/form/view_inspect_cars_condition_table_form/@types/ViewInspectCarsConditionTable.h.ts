@@ -1,9 +1,9 @@
-import { HandleThunkActionCreator } from "react-redux";
-import { InspectCarsCondition } from "redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition";
-import { INSPECT_TYPE_FORM } from "components/new/pages/inspection/autobase/global_constants";
+import { HandleThunkActionCreator } from 'react-redux';
+import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 import { OutputWithFormProps } from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
-import inspectionCarsConditionActions from "redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions";
+import inspectionCarsConditionActions from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 
 export type OnFormHideType = (isSubmitted: any, result?: any) => void;
 

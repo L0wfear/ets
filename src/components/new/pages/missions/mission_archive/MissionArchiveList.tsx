@@ -10,7 +10,7 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 
 import MissionArchiveListFormWrap from 'components/new/pages/missions/mission_archive/form/main/MissionArchiveListFormWrap';
 
-import { registryAddInitialData, registryRemoveData } from "components/new/ui/registry/module/actions-registy";
+import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const MissionArchiveList: React.FC<{}> = React.memo(

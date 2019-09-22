@@ -1,4 +1,4 @@
-import { isNullOrUndefined } from "util";
+import { isNullOrUndefined } from 'util';
 
 export const useSearchMergeNewState = (searchState, data) => {
   const query = {

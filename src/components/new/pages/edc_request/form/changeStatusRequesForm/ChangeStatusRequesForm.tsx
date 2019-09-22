@@ -11,7 +11,7 @@ import TableMissionsRequest from 'components/new/pages/edc_request/form/requestI
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import withSearch from 'components/new/utils/hooks/hoc/withSearch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 
 import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';

@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { MaintenanceWorkService } from "api/Services";
+import { MaintenanceWorkService } from 'api/Services';
 import { MaintenanceWork } from 'redux-main/reducers/modules/some_uniq/maintenance_work/@types';
 
 export const submitMaintenanceWork = async (maintenanceWork: MaintenanceWork) => {

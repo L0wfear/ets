@@ -4,7 +4,7 @@ import Registry from 'components/new/ui/registry/components/Registry';
 import { EdcRequestInfo } from 'redux-main/reducers/modules/some_uniq/edc_request_info/@types';
 import { get } from 'lodash';
 import { createValidDateDots } from 'components/@next/@utils/dates/dates';
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 import { compose } from 'recompose';
 import { ReduxState } from 'redux-main/@types/state';

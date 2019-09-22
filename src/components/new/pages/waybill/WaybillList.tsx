@@ -15,7 +15,7 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 
 import WaybilFormlLazy from 'components/new/pages/waybill/form';
 
-import { HandleThunkActionCreator } from "react-redux";
+import { HandleThunkActionCreator } from 'react-redux';
 
 export type WaybillListStateProps = {};
 export type WaybillListDispatchProps = {

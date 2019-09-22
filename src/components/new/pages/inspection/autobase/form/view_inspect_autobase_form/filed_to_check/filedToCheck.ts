@@ -1,5 +1,5 @@
-import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
-import { InspectAutobase } from "redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase";
+import { FiledToCheck } from 'components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning';
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
 
 export const filedToCheck: FiledToCheck<InspectAutobase['data']> = [
   {

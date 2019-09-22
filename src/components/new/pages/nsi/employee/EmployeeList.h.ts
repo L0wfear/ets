@@ -1,5 +1,5 @@
-import { HandleThunkActionCreator } from "react-redux";
-import { registryAddInitialData, registryRemoveData } from "components/new/ui/registry/module/actions-registy";
+import { HandleThunkActionCreator } from 'react-redux';
+import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
 export type EmployeeListStateProps = {};
 export type EmployeeListDispatchProps = {

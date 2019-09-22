@@ -1,5 +1,5 @@
-import { FieldsString } from "./string";
-import { FieldsWaybill } from "./waybill";
+import { FieldsString } from 'components/@next/@form/@types/fields/string';
+import { FieldsWaybill } from 'components/@next/@form/@types/fields/waybill';
 
 /**
  * поля схемы

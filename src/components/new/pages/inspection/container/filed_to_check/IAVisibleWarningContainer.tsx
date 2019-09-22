@@ -2,7 +2,7 @@ import * as React from 'react';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { groupBy, get } from 'lodash';
 import { DivNone } from 'global-styled/global-styled';
-import { FiledToCheck } from "components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning";
+import { FiledToCheck } from 'components/new/pages/inspection/autobase/components/vsible_warning/@types/visibleWarning';
 import { IAVisibleWarningInputContainer } from '../../autobase/components/vsible_warning/styled/IAVisibleWarning';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';

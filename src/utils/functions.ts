@@ -5,6 +5,7 @@
 
 import { isPlainObject, every, includes } from 'lodash';
 import html2canvas from 'html2canvas';
+import { InspectionConfig } from 'redux-main/reducers/modules/some_uniq/inspection_config/@types';
 
 /**
  * Example
@@ -332,19 +333,27 @@ export const getCanvasOfElement = (element: HTMLElement) => {
   return html2canvas(element, { scale: 2 });
 };
 
-export const getOptionsConfigByObject = (optionsObj) => {
-  return optionsObj
-  ? Object.keys(optionsObj).reduce((newObj, key ) => {
-    const configOptionsByKeyList = Object.entries(optionsObj[key]).map(([keyEntry, valueEntry]) => {
-      return {
-        value: keyEntry,
-        label: valueEntry,
-      };
-    });
-    return {
-      ...newObj,
-      [key]: configOptionsByKeyList,
-    };
-  }, {})
-  : null;
+export const getOptionsConfigByObject = (optionsObj: InspectionConfig) => {
+  if (optionsObj) {
+  return Object.keys(optionsObj).reduce(
+      (newObj, key ) => {
+        const configOptionsByKeyList = Object.entries(optionsObj[key]).map(
+          ([keyEntry, valueEntry]) => {
+            return {
+              value: keyEntry,
+              label: valueEntry,
+            };
+          },
+        );
+
+        return {
+          ...newObj,
+          [key]: configOptionsByKeyList,
+        };
+      },
+      {},
+    );
+  }
+
+  return null;
 };

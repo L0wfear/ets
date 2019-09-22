@@ -17,7 +17,7 @@ export const actionResetSpecialModel = (): EtsAction<EtsActionReturnType<typeof 
     actionSetSpecialModel([]),
   )
 );
-export const actionLoadSpecialModel = (payload: Parameters<typeof promiseGetSpecialModel>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof actionLoadSpecialModel>> => async (dispatch) => (
+export const actionLoadSpecialModel = (payload: Parameters<typeof promiseGetSpecialModel>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetSpecialModel>> => async (dispatch) => (
   etsLoadingCounter(
     dispatch,
     promiseGetSpecialModel(payload),

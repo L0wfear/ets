@@ -1,7 +1,7 @@
 import { get, uniqBy, uniq } from 'lodash';
 
-import { ConsumableMaterial, ConsumableMaterialWrap } from "./@types/consumableMaterial";
-import { ConsumableMaterialService } from "api/Services";
+import { ConsumableMaterial, ConsumableMaterialWrap } from './@types/consumableMaterial';
+import { ConsumableMaterialService } from 'api/Services';
 
 export const makeConsumableMaterialFront = (array: ConsumableMaterial[]) => (
   (array).map(

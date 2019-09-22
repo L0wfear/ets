@@ -1,8 +1,9 @@
 import * as React from 'react';
 import useAutobaseEngineTypeList from '../useList/useAutobaseEngineTypeList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { EngineType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getAutobaseEngineTypeOptions = (listData) => {
+export const getAutobaseEngineTypeOptions = (listData: { list: EngineType[], isLoading?: boolean }) => {
   return {
     options: listData.list.map((rowData) => ({
       value: rowData.id,

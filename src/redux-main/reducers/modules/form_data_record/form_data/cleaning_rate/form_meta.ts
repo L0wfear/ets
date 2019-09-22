@@ -41,7 +41,7 @@ export const metaCleaningRate: ConfigFormData<CleaningRate> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     id: null,
     measure_unit_id: null,
     measure_unit_name: '',
@@ -51,5 +51,5 @@ export const metaCleaningRate: ConfigFormData<CleaningRate> = {
     technical_operation_name: '',
     type: 'odh',
     value: null,
-  },
+  }),
 };

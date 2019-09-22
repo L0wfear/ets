@@ -15,11 +15,18 @@ type Props = OwnProps & WithSearchProps;
 
 const MissionFormWithoutRegistry: React.FC<Props> = React.memo(
   ({ showForm, ...props }) => {
+    const element = React.useMemo(
+      () => {
+        return props.element || {};
+      },
+      [props.element],
+    );
     return showForm && (
       <ErrorBoundaryForm>
         <React.Suspense fallback={<LoadingComponent />}>
           <MissionFormReactLazy
             {...props}
+            element={element}
           />
         </React.Suspense>
       </ErrorBoundaryForm>

@@ -100,12 +100,12 @@ export const metaConsumableMaterial: ConfigFormData<ConsumableMaterial> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     id: null,
     name: '',
     short_name: '',
     measure_unit_id: null,
     measure_unit_name: '',
     norms: [],
-  },
+  }),
 };

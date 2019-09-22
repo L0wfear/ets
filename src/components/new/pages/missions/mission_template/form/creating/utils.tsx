@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { isObject, isNullOrUndefined } from 'util';
+import { HandleThunkActionCreator } from 'react-redux';
+import { cloneDeep, get, groupBy } from 'lodash';
+
 import { MissionTemplateCreating } from './@types/MissionTemplateCreatingForm';
 import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 import { routeTypesBySlug } from 'constants/route';
 import { diffDates, addTime, getToday9am, getTomorrow9am } from 'components/@next/@utils/dates/dates';
-import { cloneDeep, get, groupBy } from 'lodash';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
-import { HandleThunkActionCreator } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import IntervalPicker from 'components/old/ui/input/IntervalPicker';
-import { getDefaultMissionElement } from '../../../mission/form/main/utils';
+import { metaMission } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
 
 export const makeDefaultMissionTemplate = (): MissionTemplateCreating => {
-  const defaultMission = getDefaultMissionElement(null);
+  const defaultMission = metaMission.getDefaultElement(null);
 
   const defaultMissionTemplateCreating: MissionTemplateCreating = {
     mission_source_id: defaultMission.mission_source_id,
@@ -187,7 +188,7 @@ export const createMissionByTemplate = async (
   try {
     await actionCreateMission(
       {
-        ...getDefaultMissionElement(null),
+        ...metaMission.getDefaultElement(null),
         ...elementRaw,
       },
       element.assign_to_waybill,

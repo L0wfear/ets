@@ -5,7 +5,7 @@ import { ReduxState } from 'redux-main/@types/state';
  * для добавления другого формат нужно расшарить тип
  */
 type SchemaFormContextHeader = {
-  title: {
+  title?: {
     create: string;
     update: string;
   };

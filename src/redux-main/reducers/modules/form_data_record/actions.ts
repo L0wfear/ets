@@ -19,6 +19,8 @@ import { SchemaFormContextBody } from 'components/@next/@form/@types';
 import { metaCleaningAreaRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_area_rate/form_meta';
 import { metaFuelOperations } from 'redux-main/reducers/modules/form_data_record/form_data/fuel_operations/form_meta';
 import { metaCleaningRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_rate/form_meta';
+import { metaMission } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const removeEmptyString = <F extends Record<string, any>>(formState: F) => {
   Object.keys(formState).forEach((key: keyof F) => {
@@ -82,6 +84,7 @@ export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   cleaning_area_rate: metaCleaningAreaRate,
   fuel_operations: metaFuelOperations,
   cleaning_rate: metaCleaningRate,
+  mission: metaMission,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({
@@ -129,7 +132,7 @@ export const actionUpdateFormErrors = <F extends Record<string, any>>(formKey: F
   }
 };
 
-export const actionSubmitFormState = <F extends Record<string, any>>(formKey: FormKeys): EtsAction<Promise<any>> => async (dispatch, getState) => {
+export const actionSubmitFormState = <F extends Record<string, any>>(formKey: FormKeys, ...arg: any[]): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const formMeta = mapFormMeta[formKey] as ConfigFormData<F>;
   const formData = getFormDataByKey<F>(getState(), formKey);
 
@@ -150,7 +153,7 @@ export const actionSubmitFormState = <F extends Record<string, any>>(formKey: Fo
 
     return dispatch(
       defaultAction(
-        formMeta.handleSubmitPromise(formState),
+        formMeta.handleSubmitPromise(formState, ...arg),
         {
           ...formData.meta,
           noTimeout: true,
@@ -214,6 +217,7 @@ const actionInitialForm = <F extends Record<string, any>>(formKey: FormKeys, for
       formKey,
       {
         formState,
+        originalFormState: formState,
         formErrors,
         IS_CREATING,
         canSave,
@@ -226,12 +230,33 @@ const actionInitialForm = <F extends Record<string, any>>(formKey: FormKeys, for
   );
 };
 
-export const actionGetInitialFormState = <F>(formKey: FormKeys, element: F, meta: LoadingMeta): EtsAction<Promise<F>> => async (dispatch) => {
-  const defFormState = cloneDeep((mapFormMeta[formKey] as ConfigFormData<F>).default_element);
+export const actionGetInitialFormState = <F extends Record<string, any>>(formKey: FormKeys, element: F, meta: LoadingMeta): EtsAction<Promise<F>> => async (dispatch, getState) => {
+  const formMeta = mapFormMeta[formKey] as ConfigFormData<F>;
+  const uniqField =  formMeta.uniqField;
 
-  if (isObject(element)) {
-    Object.keys(defFormState).forEach((key) => {
-      defFormState[key] = !isNullOrUndefined(element[key]) ? element[key] : defFormState[key];
+  let formState = element;
+  const id = element[uniqField];
+
+  if (formMeta.getOneRecordPromise && id) {
+    formState = await etsLoadingCounter(
+      dispatch,
+      formMeta.getOneRecordPromise(id),
+      meta,
+    );
+  }
+
+  if ((formMeta as ConfigFormData<F & { structure_id: number; structure_name: string }>).user_structure_on_new) {
+    const userData = getSessionState(getState()).userData;
+    const formStateExtends = formState as F & { structure_id: number; structure_name: string };
+    formStateExtends.structure_id = formState.structure_id || userData.structure_id;
+    formStateExtends.structure_name = formState.structure_name || userData.structure_name;
+  }
+
+  const defFormState = cloneDeep(formMeta.getDefaultElement(getState()));
+
+  if (isObject(formState)) {
+    Object.keys(defFormState).forEach((key: keyof F) => {
+      defFormState[key] = !isNullOrUndefined(formState[key]) ? formState[key] : cloneDeep(defFormState[key]);
     });
   }
 

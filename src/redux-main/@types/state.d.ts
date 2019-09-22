@@ -43,5 +43,4 @@ export interface ReduxState {
   fuelRates: IStateFuelRates;
   maintenanceRate: IStateMaintenanceRate;
   formDataRecord: IStateFormDataRecord;
-  [key: string]: any;
 }

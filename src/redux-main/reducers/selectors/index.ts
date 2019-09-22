@@ -64,9 +64,6 @@ export const getFuelRatesState = (state: ReduxState) => (
 export const getMaintenanceRateState = (state: ReduxState) => (
   state.maintenanceRate
 );
-export const getMaterialConsumptionRateState = (state: ReduxState) => (
-  state.materialConsumptionRate
-);
 export const getFormDataRecordState = (state: ReduxState) => (
   state.formDataRecord
 );

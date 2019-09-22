@@ -31,12 +31,12 @@ export const metaFuelOperations: ConfigFormData<FuelOperationActive> = {
       },
     },
   },
-  default_element: {
+  getDefaultElement: (reduxState) => ({
     equipment: false,
     id: null,
     is_excluding_mileage: false,
     measure_unit_id: null,
     measure_unit_name: '',
     name: '',
-  },
+  }),
 };

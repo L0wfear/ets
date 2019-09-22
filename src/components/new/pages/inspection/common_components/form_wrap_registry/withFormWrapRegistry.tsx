@@ -6,13 +6,16 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { PopupBottomForm, TitleForm, ContainerForm, FooterForm } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
+import { TypeConfigData, OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { GlobalFormSchemaType } from 'components/new/GlobalForms';
 import { isNullOrUndefined } from 'util';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import { WithformWrapRegistryWrapper } from 'components/new/pages/inspection/common_components/form_wrap_registry/styled';
 import { FooterEnd } from 'global-styled/global-styled';
+import { getListData } from 'components/new/ui/registry/module/selectors-registry';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { registrySelectRowWithPutRequest } from 'components/new/ui/registry/module/actions-registy';
 
 type InspectionFormWrapStateProps = {};
 type InspectionFormWrapDispatchProps = {
@@ -38,6 +41,10 @@ type InspectionFormWrapMergedProps = (
 
 const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
   const { isPermitted } = props;
+  const dispatch = etsUseDispatch();
+  const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryConfig.registryKey).data.selectedRow);
+  const saveIsDisable = selectedRow ? false : true;
+  const list = etsUseSelector((state) => getListData(state.registry, props.registryConfig.registryKey));
 
   React.useEffect(() => {
     if ( !isPermitted ) {
@@ -72,6 +79,28 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
     },
     [showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams],
   );
+  const saveSelectedRow = React.useCallback(
+    () => {
+      const list_new: OneRegistryData['list'] = {
+        ...list,
+        data: {
+          ...list.data,
+          selectedRow: null,
+        },
+        rendersFields: {
+          ...list.rendersFields,
+          values: null,
+        },
+      };
+
+      dispatch(registrySelectRowWithPutRequest(
+        props.registryConfig.registryKey,
+        list_new,
+        list.rendersFields,
+      ));
+    },
+    [selectedRow, props.registryConfig, showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams, list],
+  );
 
   return isPermitted && createPortal(
     <WithformWrapRegistryWrapper z_index = {1001}>
@@ -93,6 +122,7 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
           </ContainerForm>
           <FooterForm md={12} sm={12}>
             <FooterEnd>
+              <EtsBootstrap.Button disabled={saveIsDisable} onClick={saveSelectedRow}>Сохранить выделенную запись</EtsBootstrap.Button>
               <EtsBootstrap.Button onClick={onFormHide}>Закрыть карточку</EtsBootstrap.Button>
             </FooterEnd>
           </FooterForm>

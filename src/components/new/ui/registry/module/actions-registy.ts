@@ -1104,7 +1104,7 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
 };
 
 // отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
-const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields']): EtsAction<any> => async (dispatch) => {
+export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields']): EtsAction<any> => async (dispatch) => {
   const meta = get(list_new, 'meta');
   const rowRequestActions = get(meta, 'rowRequestActions');
   const actionCreate = get(rowRequestActions, 'actionCreate');

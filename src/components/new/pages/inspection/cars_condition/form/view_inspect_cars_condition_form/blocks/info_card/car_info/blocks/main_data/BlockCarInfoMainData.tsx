@@ -781,7 +781,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             </EtsBootstrap.Row>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
-        <HrDelimiter></HrDelimiter>
+        <HrDelimiter />
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={12}>
             <h4>

@@ -21,6 +21,9 @@ type Props = OwnProps & {} & WithSearchProps;
 const ButtonAddNewRowTable: React.FC<Props> = React.memo(
   (props) => {
     const dispatch = etsUseDispatch();
+    const selectedRow = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.selectedRow);
+
+    const isDisable = get(selectedRow, 'isNewRow', null) ? true : false;
 
     const objectExtra = etsUseSelector((state) => getListData(getRegistryState(state), props.registryKey).data.objectExtra);
     const inspect_data: InspectCarsCondition = get(objectExtra, 'inspect_data');
@@ -43,6 +46,7 @@ const ButtonAddNewRowTable: React.FC<Props> = React.memo(
           id="add-new-row-btn"
           bsSize="small"
           onClick={handleClick}
+          disabled={isDisable}
         >
           <EtsBootstrap.Glyphicon glyph="plus" />
           Добавить новое ТС

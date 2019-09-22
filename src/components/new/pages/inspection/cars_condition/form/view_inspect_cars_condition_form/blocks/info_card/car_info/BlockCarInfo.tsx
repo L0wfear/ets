@@ -46,7 +46,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           page={props.page}
           path={props.path}
         />
-        <HrDelimiter></HrDelimiter>
+        <HrDelimiter />
         <BlockCarInfoMainCheckData
           IS_CREATING={IS_CREATING}
           formState={state}

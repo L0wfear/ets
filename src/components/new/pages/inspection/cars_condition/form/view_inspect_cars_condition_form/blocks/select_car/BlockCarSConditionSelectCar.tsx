@@ -5,12 +5,13 @@ import { CarsConditionCars, InspectCarsCondition } from 'redux-main/reducers/mod
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 import BlockCarsConditionSelectCarList from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/select_car/table/BlockCarsConditionSelectCarList';
-import { ExtFieldContainer } from './styled';
+import { ExtFieldContainer, GreyTextContainer, SelectCarConditionTitleWrapper, CarConditionTitle } from './styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { monitoringKindSeasonReadiness } from 'components/new/pages/inspection/cars_condition/components/select_data/constants';
 import ButtonShowTableForm from 'components/new/pages/inspection/cars_condition/components/button_inspect_cars_condition/ButtonShowTableForm';
 import { canCreateCarInCondition } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+import { HrDelimiter } from 'global-styled/global-styled';
 
 type BlockCarsConditionSelectCarOwnProps = {
   monitoring_kind: InspectCarsCondition['monitoring_kind'];
@@ -85,11 +86,16 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
 
     return (
       <BoxContainer>
-        <h4>Выбор ТС для просмотра карточки</h4>
-        <ButtonShowTableForm loadingPage={props.loadingPage} />
-        <div>
-          <span>Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице</span>
-        </div>
+        <SelectCarConditionTitleWrapper>
+          <CarConditionTitle>Выбор ТС для просмотра карточки</CarConditionTitle>
+          <ButtonShowTableForm loadingPage={props.loadingPage} />
+        </SelectCarConditionTitleWrapper>
+
+        <GreyTextContainer>
+          <p>
+            Введите гос. номер транспортного средства для отображения соответствующей карточки в окно поиска или выберите нужную ТС в таблице
+          </p>
+        </GreyTextContainer>
         <ExtFieldContainer>
           <ExtField
             id="selected_car"
@@ -97,17 +103,19 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             value={selectedCarsConditionsCar}
             options={carsData.carsConditionCarsOptions}
             onChange={handleSelectCar}
+            label={false}
           />
         </ExtFieldContainer>
+        <HrDelimiter />
         {
           monitoringKindSeasonReadiness.key !== monitoring_kind &&
           (
-            <p>
-              <span>
+            <GreyTextContainer>
+              <p>
                 Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
                 После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
-              </span>
-            </p>
+              </p>
+            </GreyTextContainer>
           )
         }
         {
@@ -118,6 +126,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             </EtsBootstrap.Button>
           )
         }
+        <HrDelimiter />
         <EtsBootstrap.Row>
           <BlockCarsConditionSelectCarList
             carsConditionCarsList={carsConditionCarsList}

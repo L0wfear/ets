@@ -9,6 +9,11 @@ import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtil
 import { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import styled from 'styled-components';
+
+export const ButtonShowTableFormStyled = styled(EtsBootstrap.Button)`
+  margin-bottom: 10px;
+`;
 
 type OwnProps = {
   loadingPage: string;
@@ -37,10 +42,10 @@ const ButtonShowTableForm: React.FC<Props> = (props) => {
   );
 
   return isPermitted && (
-    <EtsBootstrap.Button onClick={handleClickShowTableForm}>
+    <ButtonShowTableFormStyled onClick={handleClickShowTableForm}>
       <EtsBootstrap.Glyphicon glyph="list-alt"/>
       Открыть форму заполнения
-    </EtsBootstrap.Button>
+    </ButtonShowTableFormStyled>
   );
 };
 

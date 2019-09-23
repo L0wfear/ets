@@ -32,7 +32,7 @@ const MaintenanceWorkForm: React.FC<Props> = React.memo(
           <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} name="Наименование" field_name="name" />
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>
-              <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} name="Сокращенное наименование" field_name="name" />
+              <DefaultFieldString<ConsumableMaterial> formDataKey={formDataKey} name="Сокращенное наименование" field_name="short_name" />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
               <FieldMeasureUnitId formDataKey={formDataKey} />

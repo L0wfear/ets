@@ -173,11 +173,11 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promis
   };
 };
 
-export const promiseSubmitMission = async (mission: Mission) => {
+export const promiseSubmitMission = async (mission: Mission, assign_to_waybill?: string[]) => {
   if (mission.id) {
     return promiseUpdateMission(mission);
   }
-  return promiseCreateMission(mission, [], false);
+  return promiseCreateMission(mission, assign_to_waybill, false);
 };
 
 export const promiseChangeArchiveMissionStatus = async (

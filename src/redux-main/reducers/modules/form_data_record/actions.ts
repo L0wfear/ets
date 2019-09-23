@@ -250,8 +250,10 @@ export const actionGetInitialFormState = <F extends Record<string, any>>(formKey
   if ((formMeta as ConfigFormData<F & { structure_id: number; structure_name: string }>).user_structure_on_new) {
     const userData = getSessionState(getState()).userData;
     const formStateExtends = formState as F & { structure_id: number; structure_name: string };
-    formStateExtends.structure_id = formState.structure_id || userData.structure_id;
-    formStateExtends.structure_name = formState.structure_name || userData.structure_name;
+    if (!id) {
+      formStateExtends.structure_id = formState.structure_id || userData.structure_id;
+      formStateExtends.structure_name = formState.structure_name || userData.structure_name;
+    }
   }
 
   const defFormState = cloneDeep(formMeta.getDefaultElement(getState()));

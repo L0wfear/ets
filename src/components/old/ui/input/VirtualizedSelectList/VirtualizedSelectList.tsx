@@ -20,7 +20,7 @@ const VirtualizedSelectList = React.memo(
     );
 
     const childrenCount = rows.length;
-    const menuHeight = childrenCount * rowHeight;
+    const menuHeight = rowHeight * 10;
 
     return (
       <List

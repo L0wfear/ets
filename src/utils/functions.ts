@@ -357,3 +357,12 @@ export const getOptionsConfigByObject = (optionsObj: InspectionConfig) => {
 
   return null;
 };
+
+export const onlyNumbersIntoInputsNumbersById = (id) => {
+  const selector = id
+    ? `input[type="number"]#${id}`
+    : 'input[type="number"]'; // возможно не у всех инпатов есть id
+  document.querySelectorAll(selector).forEach((elem) => {
+    elem.addEventListener('keydown', (e: KeyboardEvent) => e.keyCode === 69 ? event.preventDefault() : true);
+  });
+};

@@ -149,3 +149,44 @@ export interface MissionDataType {
   technical_operation_data: TypeTechnicalOperationData;
   waybill_data: TypeWaybillData;
 }
+
+export type MissionReassignationCreate = {
+  mark: 'create',
+};
+export type MissionReassignationUpdate = {
+  mark: 'update',
+  missions: Array<
+    Pick<
+      Mission,
+      'car_id'
+      | 'comment'
+      | 'column_id'
+      | 'date_start'
+      | 'date_end'
+      | 'description'
+      | 'faxogramm_id'
+      | 'id'
+      | 'mission_source_id'
+      | 'name'
+      | 'number'
+      | 'passes_count'
+      | 'route_id'
+      | 'status'
+      | 'structure_id'
+      | 'technical_operation_id'
+      | 'technical_operation_name'
+      | 'waybill_id'
+    > & {
+    date_create: "2019-09-10T21:38:45"
+    fail_reason: any;
+  }>;
+  waybill_id: number;
+  waybill_number: number;
+  waybill_plan_arrival_date: string;
+  waybill_plan_departure_date: string;
+};
+
+export type MissionReassignation = (
+  MissionReassignationCreate
+  | MissionReassignationUpdate
+);

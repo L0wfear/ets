@@ -2,16 +2,18 @@ import {
   cloneDeep,
   get,
 } from 'lodash';
-import { MissionPrintService, MissionService, MissionDataService } from 'api/missions/index';
+import { MissionPrintService, MissionService, MissionDataService, MissionReassignationService } from 'api/missions/index';
 import {
   Mission,
   GetMissionPayload,
   MissionDataType,
+  MissionReassignation,
 } from 'redux-main/reducers/modules/missions/mission/@types';
 
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const getMissionDataById = async (id: number) => {
   let responce = null;
@@ -201,4 +203,65 @@ export const promiseRemoveMission = async (
   id: number,
 ): Promise<Partial<Mission>> => {
   return MissionService.delete({ id }, false, 'json');
+};
+
+export const promiseGetMissionReassignationParameters = async (payload: {car_id: Car['asuods_id'], mission_id: Mission['id'] }) => {
+  let response = null;
+  try {
+    response = await MissionReassignationService.get(payload);
+  } catch {
+    //
+  }
+
+  const result: MissionReassignation = get(response, 'result');
+
+  return result;
+};
+
+type PayloadCreateMission = {
+  car_id: Mission['car_id'];
+  mission_id: Mission['id'];
+  comment: Mission['comment'];
+  date_start: Mission['date_start'];
+  date_end: Mission['date_end'];
+  action_at: string | Date,
+  reason_id: string,
+  status: string;
+};
+export const promisePostMissionReassignationParameters = async (payload: PayloadCreateMission) => {
+  let response = null;
+  try {
+    response = await MissionReassignationService.post(
+      {
+        ...payload,
+        date_start: createValidDateTime(payload.date_start),
+        date_end: createValidDateTime(payload.date_end),
+      },
+      false,
+      'json',
+      );
+  } catch {
+    //
+  }
+
+  return response;
+};
+
+export const promisePutMissionReassignationParameters = async (payload: PayloadCreateMission) => {
+  let response = null;
+  try {
+    response = await MissionReassignationService.put(
+      {
+        ...payload,
+        date_start: createValidDateTime(payload.date_start),
+        date_end: createValidDateTime(payload.date_end),
+      },
+      false,
+      'json',
+      );
+  } catch {
+    //
+  }
+
+  return response;
 };

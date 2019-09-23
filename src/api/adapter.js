@@ -75,6 +75,7 @@ function checkResponse(url, response, body, method) {
     });
     const errorThrow = {
       error: body,
+      errorIsShow: true,
       error_text: new Error('Errors in response body'),
     };
     throw errorThrow;

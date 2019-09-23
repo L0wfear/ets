@@ -4,7 +4,6 @@ import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { isEmpty, flattenObject } from 'utils/functions';
 import {
   MissionService,
-  MissionReassignationService,
   MissionTemplateCarService,
   Cleaning,
 } from 'api/missions';
@@ -27,24 +26,6 @@ const getMissionFilterStatus = (waybillStatus) => {
 };
 export default class MissionsActions extends Actions {
   /* ---------- MISSION ---------- */
-
-  getMissionReassignationParameters(payload) {
-    if (!payload.car_id) return Promise.reject(new Error('empty car_id'));
-    return MissionReassignationService.get(payload);
-  }
-
-  createMissionFromReassignation(payload) {
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.post(payload, false, 'json');
-  }
-
-  updateMissionFromReassignation(payload) {
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.put(payload, false, 'json');
-  }
-
   getMissionsByCarAndDates(
     car_id,
     date_from,
@@ -205,9 +186,5 @@ export default class MissionsActions extends Actions {
           },
         }) => normData,
       );
-  }
-
-  getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
-    return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }
 }

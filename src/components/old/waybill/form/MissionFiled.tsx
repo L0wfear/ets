@@ -287,7 +287,7 @@ class MissionField extends React.Component<Props, any> {
         {this.state.showMissionRejectForm && (
           <MissionRejectForm
             show={this.state.showMissionRejectForm}
-            onReject={this.onReject}
+            onRejectForWaybill={this.onReject}
             mission={rejectedMission}
             // missions={missionsList}
             action_at={this.state.action_at}

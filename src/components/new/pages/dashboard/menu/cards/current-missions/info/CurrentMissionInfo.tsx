@@ -41,7 +41,7 @@ import missionPermissions from 'components/new/pages/missions/mission/_config-da
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
     showMissionInfoForm: false,
-    showMissionRejectForm: false,
+    missionRejectForm: null,
     action_at: null,
   };
 
@@ -107,13 +107,26 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       {
         page: 'dashboard',
       },
-    )).then((time) => {
+    )).then(async (time) => {
         const action_at = time.date;
 
-        this.setState({
-          showMissionRejectForm: true,
-          action_at,
-        });
+        let mission = null;
+        try {
+          mission = await this.props.actionGetMissionById(
+            this.props.infoData.mission_data.id,
+            {
+              page: 'dashboard',
+            },
+          );
+        } catch (error) {
+          console.error(error); // tslint:disable-line
+        }
+        if (mission) {
+          this.setState({
+            missionRejectForm: mission,
+            action_at,
+          });
+        }
       })
       .catch(({ errorIsShow }) => {
         if (!errorIsShow) {
@@ -123,7 +136,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   onReject = (refresh) => {
-    this.setState({ showMissionRejectForm: false });
+    this.setState({ missionRejectForm: null });
     if (refresh) {
       this.props.handleClose();
       this.refreshCard();
@@ -158,15 +171,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           <EtsBootstrap.Button onClick={this.rejectMission} permissions={missionPermissions.update}>Не выполнено</EtsBootstrap.Button>
         </RightButtonBlockContainer>
         {
-          this.state.showMissionRejectForm && (
+          Boolean(this.state.missionRejectForm) && (
             <MissionRejectForm
               show
               onReject={this.onReject}
-              mission={{
-                ...infoData.mission_data,
-                car_gov_number: infoData.car_data.gov_number,
-                waybill_number: infoData.waybill_data.number,
-              }}
+              mission={this.state.missionRejectForm}
               action_at={this.state.action_at}
             />
           )

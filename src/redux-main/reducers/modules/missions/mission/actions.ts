@@ -13,8 +13,11 @@ import {
   promiseRemoveMissions,
   promiseRemoveMission,
   getMissionDataById,
+  promiseGetMissionReassignationParameters,
+  promisePostMissionReassignationParameters,
+  promisePutMissionReassignationParameters,
 } from 'redux-main/reducers/modules/missions/mission/promise';
-import { Mission, MissionDataType } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Mission, MissionDataType, MissionReassignation } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -451,6 +454,36 @@ const actionReseSetDependenceMissionDataForMissionForm = (): ActionReseSetDepend
     return missionData;
   }
 );
+
+export const actionGetMissionReassignationParameters = (payload: Parameters<typeof promiseGetMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseGetMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionPostMissionReassignationParameters = (payload: Parameters<typeof promisePostMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promisePostMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionPutMissionReassignationParameters = (payload: Parameters<typeof promisePutMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promisePutMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
 
 export default {
   actionSetMissionPartialData,

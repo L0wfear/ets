@@ -5,6 +5,7 @@ import {
   Norm, NormRegistrySensorTypes,
 } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
 import { CleaningNormRegistryService } from 'api/Services';
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 export const getFrontNorm = (normRaw: any, index) => {
   if (normRaw) {
@@ -64,6 +65,21 @@ export const promiseGetNormsByParams = async (payload: PromiseGetNormPayload) =>
   }
 
   const result: Norm[] = get(response, 'result.rows', []);
+
+  return result;
+};
+
+export const promiseGetNormByIdAndDate = async (payload: { norm_id: Norm['id'], datetime: string | Date }) => {
+  let response = null;
+  try {
+    response = await CleaningNormRegistryService.path(payload.norm_id).get({
+      datetime: createValidDateTime(payload.datetime),
+    });
+  } catch (error) {
+    console.error(error); // tslint:disable-line
+  }
+
+  const result: Norm = get(response, 'result.rows.0', null);
 
   return result;
 };

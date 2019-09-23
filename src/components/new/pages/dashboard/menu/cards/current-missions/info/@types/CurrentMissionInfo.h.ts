@@ -4,6 +4,7 @@ import {
 import { HandleThunkActionCreator } from 'react-redux';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 export type CurrentMissionInfoDispatchProps = {
   dispatch: EtsDispatch,
@@ -21,6 +22,6 @@ export type PropsCurrentMissionInfo = {
 
 export type StateCurrentMissionInfo = {
   showMissionInfoForm: boolean;
-  showMissionRejectForm: boolean;
+  missionRejectForm: Mission;
   action_at: string | Date;
 };

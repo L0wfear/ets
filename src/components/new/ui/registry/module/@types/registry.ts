@@ -166,6 +166,8 @@ export interface OneRegistryData<F = any> {
       glyph?: keyof typeof glyphMap;                                        // EtsBootstrap.Glyphicon glyph
       format?: string;
       objChangeParams?: object;                                             // что заменять в params при клике
+      message_single?: string;
+      message_multi?: string;
     }>;
   };
   list: {

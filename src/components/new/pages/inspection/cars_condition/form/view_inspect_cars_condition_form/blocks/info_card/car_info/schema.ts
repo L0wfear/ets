@@ -36,19 +36,20 @@ export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'
 export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarInfoProps> = {
   properties: {
     gov_number: {
-      validateIf: {
-        type: 'has_data',
-        path: 'id',
-        reverse: true,
-      },
       type: 'string',
       title: 'Гос. номер',
-      required: true,
       maxLength: 9,
       dependenciesDisable: [
         (_, formState) => {
           if (!get(formState, 'isNewRow', null)) {
             return true;
+          }
+        },
+      ],
+      dependencies: [
+        (_, formState) => {
+          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null)) && !get(formState, 'gov_number', null)) {
+            return 'Поле "Гос. номер" должно быть заполнено';
           }
         },
       ],

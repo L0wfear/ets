@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { IStateFormDataRecord } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import { IStateFormDataRecord, ConfigFormData, FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 const FORM = createPath('FORM');
 
@@ -9,7 +9,7 @@ export const FORM_CHANGE_DATA = FORM`CHANGE_DATA`;
 
 export const initialState: IStateFormDataRecord = {};
 
-const formDataRecord = (state = initialState, { type, payload }) => {
+const formDataRecord = (state = initialState, { type, payload }: { type: string, payload: { formKey: FormKeys, formData?: ConfigFormData<any> }}) => {
   switch (type) {
     case FORM_SET_DATA: {
       console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey, payload.formData); // tslint:disable-line:no-console

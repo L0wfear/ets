@@ -7,7 +7,7 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { TypeCreateMissionByOrderTo, TypeCreateMissionByOrder } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/order/constant_data';
-import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
+import DutyMissionFormWithoutRegistry from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormWithoutRegistry';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
@@ -116,7 +116,7 @@ const MissionFormWrap: React.FC<Props> = React.memo(
         }
         { type_to === TypeCreateMissionByOrderTo.duty_mission &&
           (
-            <DutyMissionFormLazy
+            <DutyMissionFormWithoutRegistry
               showForm
               handleHide={handleHide}
               element={partialDutyMission}

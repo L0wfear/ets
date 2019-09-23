@@ -21,6 +21,7 @@ import { metaFuelOperations } from 'redux-main/reducers/modules/form_data_record
 import { metaCleaningRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_rate/form_meta';
 import { metaMission } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { metaDutyMission } from 'redux-main/reducers/modules/form_data_record/form_data/duty_mission/form_meta';
 
 export const removeEmptyString = <F extends Record<string, any>>(formState: F) => {
   Object.keys(formState).forEach((key: keyof F) => {
@@ -85,6 +86,7 @@ export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   fuel_operations: metaFuelOperations,
   cleaning_rate: metaCleaningRate,
   mission: metaMission,
+  duty_mission: metaDutyMission,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({

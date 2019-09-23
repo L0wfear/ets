@@ -71,7 +71,7 @@ const actionGetDutyMission = (payloadOwn: object, meta: LoadingMeta): EtsAction<
 
   return payload;
 };
-const actionGetDutyMissionById = (id: DutyMission['id'], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetDutyMissionById>>  => async (dispatch) => {
+export const actionGetDutyMissionById = (id: DutyMission['id'], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetDutyMissionById>>  => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseGetDutyMissionById(id),

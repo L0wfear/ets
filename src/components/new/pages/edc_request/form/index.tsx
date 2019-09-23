@@ -4,7 +4,7 @@ import memoizeOne from 'memoize-one';
 
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { EdcRequest } from 'redux-main/reducers/modules/edc_request/@types';
-import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
+import DutyMissionFormWithoutRegistry from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormWithoutRegistry';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { diffDates, getDateWithMoscowTz, createValidDateTime, makeDataFromRaw, isValidDate } from 'components/@next/@utils/dates/dates';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
@@ -168,7 +168,7 @@ const EdcRequestFormLazy: React.FC<Props> = (props) => {
 
     if (type === buttonsTypes.edc_request_create_duty_mission) {
       return (
-        <DutyMissionFormLazy
+        <DutyMissionFormWithoutRegistry
           showForm
           element={getDefaultDutyMissionByEdcRequest(edc)}
           handleHide={props.handleHide}

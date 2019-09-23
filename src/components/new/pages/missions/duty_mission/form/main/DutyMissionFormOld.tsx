@@ -1,35 +1,28 @@
 import * as React from 'react';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import {
   PropsDutyMissionForm,
   StatePropsDutyMission,
   DispatchPropsDutyMission,
   OwnDutyMissionProps,
-  PropsDutyMissionWithForm,
 } from './@types/index.h';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
-import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { ReduxState } from 'redux-main/@types/state';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import {
-  getDefaultDutyMissionElement,
   dutyMissionIsDisplay,
   dutyMissionIsClosed,
   dutyMissionIsAssigned,
   dutyMissionIsComplete,
 } from './utils';
-import { dutyDutyMissionFormSchema } from './schema';
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { DivNone } from 'global-styled/global-styled';
-import {
-  getSessionState,
-  getEmployeeState,
-} from 'redux-main/reducers/selectors';
 
 import FieldTechnicalOperationDutyMission from 'components/new/pages/missions/duty_mission/form/main/inside_fields/technical_operation/FieldTechnicalOperationDutyMission';
 import FieldMunicipalFacilityIdDutyMission from './inside_fields/municipal_facility_id/FieldMunicipalFacilityIdDutyMission';
@@ -54,7 +47,6 @@ import {
 } from 'components/@next/@utils/dates/dates';
 import FieldNormIdDutyMission from './inside_fields/norm_id/FieldNormIdDutyMission';
 
-import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 import { isOrderSource } from 'components/new/pages/missions/utils';
 import FieldMissionSourceMission from 'components/new/pages/missions/mission/form/main/inside_fields/mission_source_id/FieldMissionSourceMission';
 import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main/inside_fields/edc_request/FieldEdcRequestData';
@@ -89,47 +81,52 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   }
 
   componentDidMount() {
-    const {
-      page, path,
-      formState: state,
-      dependeceOrder,
-      edcRequest,
-    } = this.props;
+    const loadData = async () => {
+      const {
+        page, path,
+        formState: state,
+        dependeceOrder,
+        edcRequest,
+      } = this.props;
 
-    const {
-      isPermitted,
-      IS_CREATING,
-      DUTY_MISSION_IS_ORDER_SOURCE,
-      DUTY_MISSION_IS_DISPLAY,
-    } = this.state;
+      const {
+        isPermitted,
+        IS_CREATING,
+        DUTY_MISSION_IS_ORDER_SOURCE,
+        DUTY_MISSION_IS_DISPLAY,
+      } = this.state;
 
-    this.props.employeeGetAndSetInStore({}, { page, path });
+      await this.props.employeeGetAndSetInStore({}, { page, path });
 
-    if (isPermitted) {
-      if (
-        DUTY_MISSION_IS_ORDER_SOURCE &&
-        !DUTY_MISSION_IS_DISPLAY
-      ) {
-        if (!dependeceOrder) {
-          this.props.actionLoadOrderAndTechnicalOperationByIdForDutyMission(
-            state.faxogramm_id,
-            state.order_operation_id,
+      if (isPermitted) {
+        if (
+          DUTY_MISSION_IS_ORDER_SOURCE &&
+          !DUTY_MISSION_IS_DISPLAY
+        ) {
+          if (!dependeceOrder) {
+            await this.props.actionLoadOrderAndTechnicalOperationByIdForDutyMission(
+              state.faxogramm_id,
+              state.order_operation_id,
+              { page, path },
+            );
+          }
+          if (IS_CREATING) {
+            this.checkOnMosckowTime();
+          }
+        }
+
+        if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
+          await this.props.loadEdcRequiedByIdForDutyMission(
+            state.request_id,
             { page, path },
           );
         }
-        if (IS_CREATING) {
-          this.checkOnMosckowTime();
-        }
       }
 
-      if ((state.request_id  && state.request_id !== -1) && !edcRequest || (edcRequest && edcRequest.id && edcRequest.id !== state.request_id)) {
-        this.props.loadEdcRequiedByIdForDutyMission(
-          state.request_id,
-          { page, path },
-        );
-      }
-    }
+      this.props.updateFormErrors();
+    };
 
+    loadData();
   }
 
   async checkOnMosckowTime() {
@@ -181,20 +178,12 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
     this.props.actionReseSetDependenceMissionDataForDutyMissionForm();
   }
 
-  handleGetPrintFormWrap = async () => {
-    this.props.actionWrap(
-      () => this.handleGetPrintForm(),
-    );
-  }
   handleGetPrintForm = async () => {
     const { formState: state, page, path } = this.props;
 
     const { DUTY_MISSION_IS_DISPLAY } = this.state;
 
-    const result: DutyMission = await this.props.submitAction(state, {
-      page,
-      path,
-    });
+    const result: DutyMission = await this.props.submitAction(state);
 
     if (result) {
       let printFormData = null;
@@ -240,6 +229,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
       page,
       path,
       STRUCTURE_FIELD_VIEW,
+      isPermitted,
     } = this.props;
 
     const {
@@ -261,10 +251,6 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
         </EtsBootstrap.BackgroundLabel>
       </div>
     );
-
-    const isPermitted = !IS_CREATING
-      ? this.props.isPermittedToUpdate
-      : this.props.isPermittedToCreate;
 
     return (
       <EtsBootstrap.ModalContainer
@@ -524,7 +510,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
           {isPermitted ? ( // либо обновление, либо создание
             <EtsButtonsContainer>
               <EtsBootstrap.Button
-                onClick={this.handleGetPrintFormWrap}
+                onClick={this.handleGetPrintForm}
                 disabled={!this.props.canSave}>
                 <EtsBootstrap.Glyphicon id="dm-download-all" glyph="download-alt" />{' '}
                 {DUTY_MISSION_IS_DISPLAY ? 'Просмотр' : 'Выдать'}
@@ -545,20 +531,10 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
 }
 
 export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
-  connect<
-    StatePropsDutyMission,
-    DispatchPropsDutyMission,
-    OwnDutyMissionProps,
-    ReduxState
-  >(
+  connect<StatePropsDutyMission, DispatchPropsDutyMission, OwnDutyMissionProps, ReduxState>(
     (state) => ({
       edcRequest: getMissionsState(state).dutyMissionData.edcRequest,
       dependeceOrder: getMissionsState(state).dutyMissionData.dependeceOrder,
-      dependeceTechnicalOperation: getMissionsState(state).dutyMissionData
-        .dependeceTechnicalOperation,
-      userStructureId: getSessionState(state).userData.structure_id,
-      userStructureName: getSessionState(state).userData.structure_name,
-      employeeIndex: getEmployeeState(state).employeeIndex,
       STRUCTURE_FIELD_VIEW: getSessionStructuresParams(state)
         .STRUCTURE_FIELD_VIEW,
       order_mission_source_id: getSomeUniqState(state).missionSource
@@ -592,22 +568,4 @@ export default compose<PropsDutyMissionForm, OwnDutyMissionProps>(
       ),
     }),
   ),
-  withForm<PropsDutyMissionWithForm, DutyMission>({
-    uniqField: 'id',
-    createAction: missionsActions.actionCreateDutyMission,
-    updateAction: missionsActions.actionUpdateDutyMission,
-    getRecordAction: missionsActions.actionGetDutyMissionById,
-    mergeElement: ({ element, userStructureId, userStructureName }) => {
-      return getDefaultDutyMissionElement({
-        ...element,
-        structure_id: (element && element.structure_id) || userStructureId,
-        structure_name:
-          element && (element.structure_name || element.structure_id)
-            ? null
-            : userStructureName,
-      });
-    },
-    schema: dutyDutyMissionFormSchema,
-    permissions: dutyMissionPermissions,
-  }),
 )(DutyMissionForm);

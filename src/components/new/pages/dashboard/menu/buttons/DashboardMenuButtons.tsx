@@ -16,7 +16,7 @@ import {
   CardTitleContainer,
   CardBodyContainer,
 } from 'components/new/pages/dashboard/menu/buttons/styled/styled';
-import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
+import DutyMissionFormWithoutRegistry from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormWithoutRegistry';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { LinkToOrder } from 'components/new/pages/nsi/order/_config-data/buttons';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
@@ -110,7 +110,7 @@ const DashboardMenuButtons: React.FC<Props> = React.memo(
           path="mission"
           type={null}
         />
-        <DutyMissionFormLazy
+        <DutyMissionFormWithoutRegistry
           handleHide={handleFormHideDutyMissionForm}
           showForm={showDutyMissionForm}
           element={null}

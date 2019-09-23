@@ -15,12 +15,7 @@ export const metaMission: ConfigFormData<Mission> = {
   handleSubmitPromise: promiseSubmitMission,
   getOneRecordPromise: promiseGetMissionById,
   schema: {
-    header: {
-      title: {
-        create: 'Коэффициенты площади уборки',
-        update: 'Коэффициенты площади уборки',
-      },
-    },
+    header: {},
     body: {
       validate_fields: {
         technical_operation_id: {

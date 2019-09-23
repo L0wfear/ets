@@ -21,6 +21,7 @@ import { metaFuelOperations } from 'redux-main/reducers/modules/form_data_record
 import { metaCleaningRate } from 'redux-main/reducers/modules/form_data_record/form_data/cleaning_rate/form_meta';
 import { metaMission } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { metaDutyMission } from 'redux-main/reducers/modules/form_data_record/form_data/duty_mission/form_meta';
 
 export const removeEmptyString = <F extends Record<string, any>>(formState: F) => {
   Object.keys(formState).forEach((key: keyof F) => {
@@ -85,6 +86,7 @@ export const mapFormMeta: { [K in FormKeys]: ConfigFormData<any> } = {
   fuel_operations: metaFuelOperations,
   cleaning_rate: metaCleaningRate,
   mission: metaMission,
+  duty_mission: metaDutyMission,
 };
 
 export const actionAddForm = <F extends Record<string, any>>(formKey: FormKeys, formData: OneFormDataByKey<F>) => ({
@@ -248,8 +250,10 @@ export const actionGetInitialFormState = <F extends Record<string, any>>(formKey
   if ((formMeta as ConfigFormData<F & { structure_id: number; structure_name: string }>).user_structure_on_new) {
     const userData = getSessionState(getState()).userData;
     const formStateExtends = formState as F & { structure_id: number; structure_name: string };
-    formStateExtends.structure_id = formState.structure_id || userData.structure_id;
-    formStateExtends.structure_name = formState.structure_name || userData.structure_name;
+    if (!id) {
+      formStateExtends.structure_id = formState.structure_id || userData.structure_id;
+      formStateExtends.structure_name = formState.structure_name || userData.structure_name;
+    }
   }
 
   const defFormState = cloneDeep(formMeta.getDefaultElement(getState()));

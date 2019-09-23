@@ -3,7 +3,7 @@ import { get } from 'lodash';
 // import withFormRegistrySearch from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { DivNone } from 'global-styled/global-styled';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
-import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
+import DutyMissionFormWithoutRegistry from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormWithoutRegistry';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { getConfig, registryKey } from 'components/new/pages/edc_request/form/requestInfo/table/_config_data/registry-config';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
@@ -84,7 +84,7 @@ const RequestMissionsForm: React.FC<Props> = React.memo(
 
     if (type_mission === 'duty_mission') {
       return (
-        <DutyMissionFormLazy
+        <DutyMissionFormWithoutRegistry
           showForm
           element={rawElement}
           handleHide={handleHide}

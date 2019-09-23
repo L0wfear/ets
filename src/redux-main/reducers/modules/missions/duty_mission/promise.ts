@@ -119,6 +119,13 @@ export const promiseUpdateDutyMission = async (payloadOwn: Partial<DutyMission>)
   return dutyDutyMission;
 };
 
+export const promiseSubmitDutyMission = async (mission: DutyMission) => {
+  if (mission.id) {
+    return promiseUpdateDutyMission(mission);
+  }
+  return promiseCreateDutyMission(mission);
+};
+
 export const promiseChangeArchiveDutuMissionStatus = async (id: DutyMission['id'], is_archive: boolean) => {
   const responce = await DutyMissionArchiveService.path(id).put({ is_archive }, false, 'json');
 

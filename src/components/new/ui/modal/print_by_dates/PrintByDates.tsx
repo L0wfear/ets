@@ -4,6 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import { getToday9am, diffDates, getTomorrow9am, addTime, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import DatePickerRange from '../../date_picker/DatePickerRange';
+import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 
 export type IPropsPrintByDates = {
   onHide: (...arg: any[]) => any;
@@ -16,7 +17,8 @@ const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
     const [datesData, setDatesData] = React.useState({
       date_from: createValidDateTime(getToday9am()),
       date_to: createValidDateTime(getTomorrow9am()),
-      error: '',
+      error_date_from: '',
+      error_date_to: '',
     });
 
     const handleSubmit = React.useCallback(
@@ -42,18 +44,35 @@ const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
 
     const handleChange = React.useCallback(
       (field, value) => {
-        const newState = {
-          ...datesData,
-          [field]: value,
-        };
+        setDatesData(
+          (oldState) => {
+            const newState = {
+              ...oldState,
+              [field]: value,
+            };
 
-        newState.error = (
-          diffDates(newState.date_from, newState.date_to) > 0
-            ? 'Дата окончания дололжна быть позже'
-            : ''
+            newState.error_date_to = (
+              (
+                diffDates(newState.date_from, newState.date_to) > 0
+                  ? 'Дата окончания дололжна быть позже'
+                  : ''
+              )
+              || (
+                !newState.date_to
+                  ? 'Дата должна быть заполнена'
+                  : ''
+              )
+            );
+
+            newState.error_date_from = (
+              !newState.date_from
+                ? 'Дата должна быть заполнена'
+                : ''
+            );
+
+            return newState;
+          },
         );
-
-        setDatesData(newState);
       },
       [datesData],
     );
@@ -70,10 +89,10 @@ const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
             label="Выберите период:"
             date_start_id="date_from"
             date_start_value={datesData.date_from}
-            date_start_error={false}
+            date_start_error={datesData.error_date_from}
             date_end_id="date_to"
             date_end_value={datesData.date_to}
-            date_end_error={datesData.error}
+            date_end_error={datesData.error_date_to}
             date_start_time={false}
             date_end_time={false}
 
@@ -81,10 +100,10 @@ const PrintByDates: React.FC<IPropsPrintByDates> = React.memo(
           />
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.ButtonGroup>
-            <EtsBootstrap.Button onClick={handleSubmit} disabled={Boolean(datesData.error)}>ОК</EtsBootstrap.Button>
+          <EtsButtonsContainer>
+            <EtsBootstrap.Button onClick={handleSubmit} disabled={Boolean(datesData.error_date_from || datesData.error_date_to)}>ОК</EtsBootstrap.Button>
             <EtsBootstrap.Button onClick={props.onHide}>Отмена</EtsBootstrap.Button>
-          </EtsBootstrap.ButtonGroup>
+          </EtsButtonsContainer>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );

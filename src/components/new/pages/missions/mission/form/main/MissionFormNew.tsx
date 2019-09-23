@@ -49,6 +49,8 @@ const MissionFormNew: React.FC<Props> = React.memo(
         canSave={canSave}
         submitAction={handleSubmitPromise}
         notChangeCar={props.notChangeCar}
+
+        formDataKey={props.formDataKey}
       />
     );
   },

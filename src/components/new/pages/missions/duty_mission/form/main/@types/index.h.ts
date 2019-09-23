@@ -40,6 +40,8 @@ export type OwnDutyMissionProps = (
     updateFormErrors: () => any,
     submitAction: (mission: DutyMission) => Promise<any>;
     defaultSubmit: () => Promise<any>;
+
+    formDataKey: string;  // ключ к стору
   }
   & {
     readOnly?: boolean;

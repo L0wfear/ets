@@ -54,6 +54,8 @@ const DutyMissionFormNew: React.FC<Props> = React.memo(
         updateFormErrors={updateFormErrors}
         submitAction={handleSubmitPromise}
         defaultSubmit={defaultSubmit}
+
+        formDataKey={props.formDataKey}
       />
     );
   },

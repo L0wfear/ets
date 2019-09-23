@@ -156,20 +156,20 @@ const FuelCardsForm: React.FC<PropsFuelCards> = React.memo(
                 boundKeys="fuel_type"
                 disabled={!isPermitted}
               />
-              {STRUCTURE_FIELD_VIEW ? (
-                <FieldStructureDutyMission
-                  value={state.structure_id}
-                  name={state.structure_name}
-                  error={errors.structure_id}
-                  isPermitted={isPermitted}
-                  onChange={props.handleChange}
-                  page={page}
-                  path={path}
-                  disabled={!isPermitted}
-                />
-              ) : (
-                <DivNone />
-              )}
+              {
+                STRUCTURE_FIELD_VIEW && (
+                  <FieldStructureDutyMission
+                    value={state.structure_id}
+                    name={state.structure_name}
+                    error={errors.structure_id}
+                    isPermitted={isPermitted}
+                    onChange={props.handleChange}
+                    page={page}
+                    path={path}
+                    disabled={!isPermitted}
+                  />
+                )
+              }
               <ExtField
                 type="select"
                 label="Организация"

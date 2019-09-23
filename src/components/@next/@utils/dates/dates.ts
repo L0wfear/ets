@@ -311,6 +311,14 @@ export const addTime = (date: string | Date, count: number, typeAdd: Moment.unit
     .add(count, typeAdd)
     .format();
 
+export const minusTime = (date, count, typeAdd) =>
+  moment(date)
+    .subtract(count, typeAdd)
+    .format();
+
+export const diffDayOfDate = (dateA, dateB) =>
+  diffDates(moment(dateA).endOf('day'), moment(dateB).endOf('day'), 'days');
+
 export const diffDatesByDays = (dateA: string | Date, dateB: string | Date) =>
   diffDates(createValidDate(dateA), createValidDate(dateB), 'days');
 
@@ -324,3 +332,13 @@ export const monthOptions = Array(12).fill(0).map(
     });
   },
 );
+
+export const makeDateFormated = (date: string | Date, time?: boolean, empty?: string) => {
+  if (!date) {
+    return empty || '';
+  }
+  if (time) {
+    return getFormattedDateTime(date);
+  }
+  return makeDate(date);
+};

@@ -3,6 +3,8 @@ import * as PropTypes from 'prop-types';
 import Select, { components } from 'react-select';
 import * as cx from 'classnames';
 import { get } from 'lodash';
+import { isArray, isNullOrUndefined, isString, isObject } from 'util';
+
 import { EtsPreloaderFieldContainer } from 'components/new/ui/registry/components/data/filters/filters-lines/styled/styled';
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
 
@@ -12,10 +14,10 @@ import {
 } from 'components/old/ui/input/ReactSelect/utils';
 import { SingleValueProps } from 'react-select/src/components/SingleValue';
 import { MultiValueProps } from 'react-select/src/components/MultiValue';
-import { isArray, isNullOrUndefined, isString, isObject } from 'util';
 import { SingleValue, MultiValue, MenuList } from 'components/old/ui/input/ReactSelect/styled/styled';
 import { DivRelative } from 'global-styled/global-styled';
 import VirtualizedSelectList from '../VirtualizedSelectList/VirtualizedSelectList';
+import { detectIE } from 'utils/functions';
 
 require('components/old/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -102,8 +104,8 @@ export default class ReactSelect extends React.Component<any, any> {
   }
 
   menuListRender = (props: any) => {
-    if (props.options.length > 500) {
-      return <VirtualizedSelectList {...props} noOptionsMessage = {this.noOptionsMessage}/>;
+    if (props.children.length > 500 && !detectIE()) {
+      return <VirtualizedSelectList {...props} />;
     }
     return <MenuList {...props} />;
   }

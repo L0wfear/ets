@@ -11,7 +11,7 @@ import {
 } from 'components/old/monitor/info/car-info/redux-main/modules/actions-car-info';
 import DistanceAgg from 'components/old/monitor/info/car-info/car-tab-menu/car-track-information/title-track-tab/DistanceAgg';
 import { getTrackDefaultDateEnd, getTrackDefaultDateStart } from 'components/old/monitor/info/car-info/redux-main/modules/car-info';
-import { diffDates, createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { diffDates, createValidDateTime, minusTime, addTime } from 'components/@next/@utils/dates/dates';
 import { ReduxState } from 'redux-main/@types/state';
 import { isArray } from 'util';
 // выпилить
@@ -24,6 +24,7 @@ import { InitialStateSession } from 'redux-main/reducers/modules/session/session
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
+import { ButtonsRowMargin } from 'components/old/monitor/info/car-info/car-tab-menu/styled';
 
 type PropsTitleTrackTab = {
   forToday: boolean;
@@ -50,6 +51,7 @@ type StateTitleTrackTab = {
   date_start: string;
   date_end: string;
 };
+const daysIntoPeriod = 10;
 
 class TitleTrackTab extends React.Component<
   PropsTitleTrackTab,
@@ -103,6 +105,24 @@ class TitleTrackTab extends React.Component<
     }
   };
 
+  validateDates = (date_start, date_end) => {
+    let errorDates = '';
+    if (diffDates(date_end, date_start, 'minutes', false) <= 0) {
+      errorDates = 'Дата начала должна быть раньше даты окончания';
+    } else if (
+      diffDates(date_end, date_start, 'days') >
+      (process.env.STAND === 'prod' ? 10 : 30)
+    ) {
+      errorDates = `Период формирования трека не должен превышать ${
+        process.env.STAND === 'prod' ? 10 : 30
+      } суток`;
+    } else {
+      errorDates = '';
+    }
+
+    return errorDates;
+  }
+
   handleChangeDate = (field: 'date_start' | 'date_end', value: any) => {
     if (value) {
       const date_start = this.state.date_start;
@@ -116,26 +136,69 @@ class TitleTrackTab extends React.Component<
         gps_code: this.props.gps_code,
       };
 
-      if (diffDates(partialState.date_end, partialState.date_start, 'minutes', false) <= 0) {
-        partialState.errorDates = 'Дата начала должна быть раньше даты окончания';
-      } else if (
-        diffDates(partialState.date_end, partialState.date_start, 'days') > this.props.map_track_days
-      ) {
-        partialState.errorDates = `Период формирования трека не должен превышать ${this.props.map_track_days} суток`;
-      } else {
-        partialState.errorDates = '';
-      }
+      partialState.errorDates = this.validateDates(partialState.date_start, partialState.date_end);
 
       // this.props.changeDate(field, value);
       this.setState({ ...partialState });
     }
   };
 
-  reloadTrackAndMissions: any = () => {
+  handleChangeDateStartEnd = (date_start, date_end) => {
+    if (date_start && date_end) {
+      this.setState({ date_start, date_end });
+      const errorDates = this.validateDates(date_start, date_end);
+      if (errorDates !== this.state.errorDates) {
+        this.setState({ errorDates });
+      }
+    }
+  };
+
+  refreshTrackAndMissions = () => {
+    const refresh = true;
+    this.reloadTrackAndMissions(refresh);
+  };
+
+  reloadTrackAndMissions = (refresh: boolean = false) => {
     this.props.setDataInSearch({
       date_start: createValidDateTime(this.state.date_start),
       date_end: createValidDateTime(this.state.date_end),
+      refresh: refresh ? 1 : null,
     });
+  };
+
+  makeNewPeriodBackward = () => {
+    let newDateStart = this.state.date_start;
+    let newDateEnd = this.state.date_end;
+
+    newDateStart = minusTime(this.state.date_start, 10, 'days');
+    newDateEnd = this.state.date_start;
+    this.handleChangeDateStartEnd(newDateStart, newDateEnd);
+    setTimeout(() => {
+      if (!(this.props.forToday ||
+        this.props.disabledForToday ||
+        this.props.status !== 'stop' ||
+        !!this.state.errorDates)) {
+          this.reloadTrackAndMissions();
+      }
+    }, 0);
+  };
+
+  makeNewPeriodForward = () => {
+    let newDateStart = this.state.date_start;
+    let newDateEnd = this.state.date_end;
+
+    newDateStart = addTime(this.state.date_start, 10, 'days');
+    newDateEnd = addTime(this.state.date_start, 20, 'days');
+
+    this.handleChangeDateStartEnd(newDateStart, newDateEnd);
+    setTimeout(() => {
+      if (!(this.props.forToday ||
+        this.props.disabledForToday ||
+        this.props.status !== 'stop' ||
+        !!this.state.errorDates)) {
+          this.reloadTrackAndMissions();
+      }
+    }, 0);
   };
 
   render() {
@@ -167,6 +230,40 @@ class TitleTrackTab extends React.Component<
           </CarInfoToggleForToday>
         </CarInfoTrackDateTitle>
         <div className="car_info-track_date_control">
+          <ButtonsRowMargin>
+            <EtsBootstrap.Button
+                title="Перезагрузить данные"
+                className="reload-button"
+                onClick={this.reloadTrackAndMissions}
+                disabled={
+                  forToday ||
+                  this.props.disabledForToday ||
+                  disbledByTrackPlayStatys ||
+                  !!errorDates
+                }>
+                <EtsBootstrap.Glyphicon glyph="repeat" />
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
+                title={`Сдвинуть период трека на ${daysIntoPeriod} дней назад`}
+                className="backward-button"
+                onClick={this.makeNewPeriodBackward}
+                disabled={forToday ||
+                  this.props.disabledForToday ||
+                  disbledByTrackPlayStatys ||
+                  !!errorDates}>
+                <EtsBootstrap.Glyphicon glyph="backward" />
+              </EtsBootstrap.Button>
+              <EtsBootstrap.Button
+                title={`Сдвинуть период трека на ${daysIntoPeriod} дней вперёд`}
+                className="forward-button"
+                onClick={this.makeNewPeriodForward}
+                disabled={forToday ||
+                  this.props.disabledForToday ||
+                  disbledByTrackPlayStatys ||
+                  !!errorDates}>
+                <EtsBootstrap.Glyphicon glyph="forward" />
+              </EtsBootstrap.Button>
+          </ButtonsRowMargin>
           <div className={'flex-line-unset'}>
             <ExtField
               type={'date'}
@@ -185,18 +282,6 @@ class TitleTrackTab extends React.Component<
               boundKeys="date_end"
               disabled={forToday || this.props.disabledForToday}
             />
-            <EtsBootstrap.Button
-              title="Перезагрузить данные"
-              className="reload-button"
-              onClick={this.reloadTrackAndMissions}
-              disabled={
-                forToday ||
-                this.props.disabledForToday ||
-                disbledByTrackPlayStatys ||
-                !!errorDates
-              }>
-              <EtsBootstrap.Glyphicon glyph="repeat" />
-            </EtsBootstrap.Button>
           </div>
           <ErrorsBlock
             showError

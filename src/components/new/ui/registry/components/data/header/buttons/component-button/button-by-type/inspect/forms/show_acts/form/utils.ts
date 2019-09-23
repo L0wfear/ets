@@ -8,6 +8,7 @@ export const defaultInspectActFile: InspectOneActScan = {
   inspection_id: null,
   files: [],
   notes: '',
+  name: '',
 };
 
 export const getDefaultInspectActFileElement = (element: Partial<InspectOneActScan>): InspectOneActScan => {

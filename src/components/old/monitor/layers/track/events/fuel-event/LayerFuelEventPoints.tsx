@@ -30,10 +30,7 @@ type PropsLayerFuelEventPoints = {
   fuelEventPoint: any;
 };
 
-type StateLayerFuelEventPoints = {
-};
-
-class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints, StateLayerFuelEventPoints> {
+class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints, {}> {
   componentDidMount() {
     this.props.addLayer({ id: 'FuelEventPoints', zIndex: 4, renderMode: 'vector' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
@@ -60,7 +57,10 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
       );
     } else {
       if (fuelEventPoint !== prevProps.fuelEventPoint) {
-        this.removeOneFuelEventPoint(prevProps.fuelEventPoint);
+        const from_click = get(prevProps.fuelEventPoint, 'from_click');
+        if (!from_click) {
+          this.removeOneFuelEventPoint(prevProps.fuelEventPoint);
+        }
         this.addOneFuelEventPoint(fuelEventPoint);
       }
     }
@@ -76,7 +76,10 @@ class LayerFuelEventPoints extends React.PureComponent<PropsLayerFuelEventPoints
     const parkingPoint = this.props.front_events_list.find((point) => point.started_at_msk === timestamp);
 
     if (parkingPoint) {
-      this.props.carInfoSetFuelEventPoint(parkingPoint);
+      this.props.carInfoSetFuelEventPoint({
+        ...parkingPoint,
+        from_click: true,
+      });
     } else {
       // tslint:disable-next-line
       console.warn(`not find with timestamp = {timestamp}`);

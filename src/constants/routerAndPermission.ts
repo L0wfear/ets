@@ -36,7 +36,7 @@ const getRouterToPermission = (rAp, level) => {
   return Object.values(rAp).reduce((rtp, val: any) => {
     if (!val.divider) {
       if (!val.children) {
-        rtp[val.path] = {
+        rtp[val.routePath || val.path] = {
           p: val.permissions.list,
           lvl: level,
         };

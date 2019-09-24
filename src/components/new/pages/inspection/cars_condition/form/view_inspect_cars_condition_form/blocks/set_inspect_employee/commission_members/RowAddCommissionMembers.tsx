@@ -6,6 +6,7 @@ import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useInspectAuditorsOptions from 'components/new/utils/hooks/services/useOptions/useInspectAuditorsOptions';
 import { RowAddCommissionMembersWrapper } from './styled';
+import { AgentsFromGbuMemberDataContainer } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/agents_from_gbu/styled';
 
 type RowAddCommissionMembersProps = {
   handleAddChangeCommissionMembers: (commission_members: ValuesOf<InspectCarsCondition['commission_members']>) => any;
@@ -54,27 +55,25 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
       <RowAddCommissionMembersWrapper>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
-            <ExtField
-              type="select"
-              value={selectedEmployee}
-              label={false}
-              error=""
-              options={filterOptions}
-              onChange={setSelectedEmployee}
-              legacy={false}
-              etsIsLoading={optionData.isLoading}
-            />
-          </EtsBootstrap.Col>
-        </EtsBootstrap.Row>
-        <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={6}>
-            <EtsBootstrap.Button
-              block
-              disabled={!selectedEmployee}
-              onClick={handleClickAddCommissionEmployee}
-            >
+            <AgentsFromGbuMemberDataContainer>
+              <ExtField
+                type="select"
+                value={selectedEmployee}
+                label={false}
+                error=""
+                options={filterOptions}
+                onChange={setSelectedEmployee}
+                legacy={false}
+                etsIsLoading={optionData.isLoading}
+              />
+              <EtsBootstrap.Button
+                block
+                disabled={!selectedEmployee}
+                onClick={handleClickAddCommissionEmployee}
+              >
               <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
             </EtsBootstrap.Button>
+          </AgentsFromGbuMemberDataContainer>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </RowAddCommissionMembersWrapper>

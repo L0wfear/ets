@@ -76,7 +76,8 @@ module.exports = {
                   '@babel/preset-env',
                   {
                     corejs: { version: 3, proposals: true },
-                    useBuiltIns: 'entry', // 'usage' те функции, которые используются
+                    useBuiltIns: 'usage', // 'usage' те функции, которые используются
+                    configPath: path.join(__dirname, '..'),
                   },
                 ],
                 '@babel/preset-typescript',

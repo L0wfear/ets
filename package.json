@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "0.32.280",
+    "version": "0.32.281",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -169,6 +169,10 @@
             "git add"
         ]
     },
+    "browserslist": [
+        "last 1 version",
+        "ie 11"
+    ],
     "engines": {
         "node": ">=5.1.0",
         "npm": ">=3.5.2"

@@ -59,32 +59,26 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
 
   componentDidMount() {
     const {
-      isPermitted,
       car_ids,
       for_column,
     } = this.props;
 
-    if (isPermitted) {
-      if (this.props.isPermitted && car_ids.length) {
-        this.getTechnicalOperations(car_ids, for_column);
-      }
+    if (car_ids.length) {
+      this.getTechnicalOperations(car_ids, for_column);
     }
   }
 
   componentDidUpdate(prevProps) {
     const {
-      isPermitted,
       car_ids,
       for_column,
     } = this.props;
 
-    if (isPermitted) {
-      if (car_ids !== prevProps.car_ids) {
-        if (car_ids.length) {
-          this.getTechnicalOperations(car_ids, for_column);
-        } else {
-          this.handleChange(null);
-        }
+    if (car_ids !== prevProps.car_ids) {
+      if (car_ids.length) {
+        this.getTechnicalOperations(car_ids, for_column);
+      } else {
+        this.handleChange(null);
       }
     }
   }

@@ -237,7 +237,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
   handleSubmit = async () => {
     const response = await this.props.submitAction(
-      this.props.formState,
       this.state.assign_to_waybill,
     );
 

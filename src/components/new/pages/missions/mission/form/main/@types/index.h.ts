@@ -36,7 +36,7 @@ export type OwnMissionProps = (
     handleHide: (isSubmitted: any, result?: Mission | Partial<Mission> | any) => any;
     hideWithoutChanges: (...arg: any[]) => any;
     handleChange: (obj: Partial<Mission>) => any;
-    submitAction: (mission: Mission, assign_to_waybill: string[]) => Promise<any>;
+    submitAction: (assign_to_waybill: string[]) => Promise<any>;
 
     formDataKey: string;  // ключ к стору
   }

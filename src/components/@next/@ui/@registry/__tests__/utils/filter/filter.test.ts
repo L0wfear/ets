@@ -77,6 +77,10 @@ describe('Тестирование функции фильтрации реес�
           field_key: null,
           field_key2: null,
         },
+        {
+          field_key: null,
+          field_key2: '11',
+        },
       ];
       const filter_fields: FilterFields<any> = [
         {

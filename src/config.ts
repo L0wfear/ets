@@ -24,7 +24,7 @@ const hostTypes = {
 };
 const urls = {
   develop: {
-    dev: `http://${hostTypes.develop.dev}`,
+    dev: `https://${hostTypes.develop.dev}`,
     gost_stage: `https://${hostTypes.develop.gost_stage}`,
     ets_test: `https://${hostTypes.develop.ets_test}`,
     ets_hotfix: `https://${hostTypes.develop.ets_hotfix}`,

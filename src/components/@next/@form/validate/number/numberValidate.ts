@@ -6,7 +6,7 @@ import { get } from 'lodash';
 export const floatValidate = (value: number, float: number, title: string) => {
   const regexp = new RegExp(`^[+]?[0-9]*[\.|,][0-9]{${float + 1},}$`);
   if (value.toString().match(regexp)) {
-    return `Поле ${title} должно быть неотрицательным числом с ${float} знаками после запятой`;
+    return `Поле "${title}" должно быть неотрицательным числом с ${float} знаками после запятой`;
   }
 };
 export const validateNumber = <F extends Record<string, any>>(key: keyof F, fieldData: NumberField<F>, formState: F) => {

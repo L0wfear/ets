@@ -8,7 +8,6 @@ export const CommissionMembersDataContainer = styled.div`
   flex: 1;
   align-items: center;
   flex-wrap: wrap;
-  padding-bottom: 15px;
 `;
 
 export const CommissionAgentsMembersItem = styled.div`

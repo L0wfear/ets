@@ -9,6 +9,7 @@ import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_bas
 import { AgentsFromGbuWrapper } from './styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { CommissionMembersDataContainer } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/commission_members/styled';
+import { SlimH4 } from 'global-styled/global-styled';
 
 type AgentsFromGbuProps = {
   isPermittedChangeListParams: boolean;
@@ -48,7 +49,7 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
 
     return (
       <AgentsFromGbuWrapper>
-        <h5>Представители ГБУ:</h5>
+        <SlimH4>Представители ГБУ</SlimH4>
         {
           Boolean(props.error) && (
             <EtsBootstrap.Row>
@@ -60,22 +61,24 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             </EtsBootstrap.Row>
           )
         }
-        <CommissionMembersDataContainer>
-          {
-            props.agents_from_gbu.map((agent, index) => (
-              <ViewAgentFromGbuEmployee
-                key={index + 1}
-                canRemove={props.isPermittedChangeListParams}
-                index={index}
-                handleRemove={handleRemoveAgent}
-                company_short_name={props.company_short_name}
+        { props.agents_from_gbu.length && (
+          <CommissionMembersDataContainer>
+            {
+              props.agents_from_gbu.map((agent, index) => (
+                <ViewAgentFromGbuEmployee
+                  key={index + 1}
+                  canRemove={props.isPermittedChangeListParams}
+                  index={index}
+                  handleRemove={handleRemoveAgent}
+                  company_short_name={props.company_short_name}
 
-                fio={agent.fio}
-                position={agent.position}
-              />
-            ))
-          }
-        </CommissionMembersDataContainer>
+                  fio={agent.fio}
+                  position={agent.position}
+                />
+              ))
+            }
+          </CommissionMembersDataContainer>
+        )}
         <RowAddRowAddAgentFromGbu
           isPermitted={props.isPermittedChangeListParams}
           handleAddChangeRowAddAgentFromGbu={handleAddChangeRowAddAgentFromGbu}

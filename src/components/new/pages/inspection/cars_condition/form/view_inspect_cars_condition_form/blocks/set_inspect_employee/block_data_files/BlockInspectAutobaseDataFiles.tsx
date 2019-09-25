@@ -56,7 +56,7 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
             <EtsBootstrap.Col md={12}>
               <FileField
                 id="file"
-                label="Фотографии подтверждающих документов"
+                label={"Фотографии подтверждающих\nдокументов"}
                 multiple
                 value={valuePhotosOfSupportingDocuments}
                 onChange={onChangeDataFile}

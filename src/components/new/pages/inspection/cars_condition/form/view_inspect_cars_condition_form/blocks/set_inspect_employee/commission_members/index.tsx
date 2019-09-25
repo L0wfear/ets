@@ -8,6 +8,7 @@ import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_bas
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { CommissionEmployeeWrapper, CommissionMembersDataContainer } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/commission_members/styled';
+import { SlimH4, HrDelimiter } from 'global-styled/global-styled';
 
 type CommissionMembersProps = {
   isPermittedChangeListParams: boolean;
@@ -50,9 +51,10 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
 
     return (
       <CommissionEmployeeWrapper>
-        <h4>Подписанты:</h4>
+        <HrDelimiter />
+        <h3>Подписанты</h3>
         <div>
-          <h5>Проверяющие от Доринвеста:</h5>
+          <SlimH4>Проверяющие от Доринвеста</SlimH4>
           {
             Boolean(props.error) && (
               <EtsBootstrap.Row>

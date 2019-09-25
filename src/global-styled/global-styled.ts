@@ -147,3 +147,9 @@ export const HrDelimiter = styled.div`
   border-bottom: 1px solid #ddd;
   margin: 30px 0px;
 `;
+
+// <<< Переделать это УГ, привести к дизайн системе
+export const SlimH4 = styled.h4`
+  font-weight: 500!important;
+  margin-top: 25px;
+`;

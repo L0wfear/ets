@@ -99,7 +99,6 @@ describe('Тестирование функции фильтрации реес�
       expect(filterArray(array, { field_key__in: [4] }, filter_fields).length).toBe(0);
       expect(filterArray(array, { field_key__in: [1, 2] }, filter_fields).length).toBe(2);
       expect(filterArray(array, { field_key__in: [1, 2, 4] }, filter_fields).length).toBe(2);
-
       expect(filterArray(array, { field_key2__in: [] }, filter_fields2).length).toBe(0);
       expect(filterArray(array, { field_key2__in: [1] }, filter_fields2).length).toBe(2);
       expect(filterArray(array, { field_key2__in: [2] }, filter_fields2).length).toBe(1);

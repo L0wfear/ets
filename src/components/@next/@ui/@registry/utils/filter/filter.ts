@@ -17,14 +17,12 @@ const filterArrayByIn = <F extends any>(row_value: any, filter_value: any, field
     }
     if (isString(row_value)) {
       return filter_value.every((oneValue) => {
-        if ( isString(oneValue)) {
-          if (row_value.includes(',')) {
-            return !row_value.includes(oneValue);
-          } else {
-            const rowSpaceBeginEndLessInUppercase = row_value.replace(/^\s+|\s+$/g, '').toUpperCase(); // удааляем пробелы в начале и в конце и преобразуем результат в upperCase
-            return rowSpaceBeginEndLessInUppercase !== oneValue.toUpperCase();
-          }
+        if (isString(oneValue) && !row_value.includes(',')) {
+          const rowSpaceBeginEndLessInUppercase = row_value.trim().toUpperCase(); // удааляем пробелы в начале и в конце и преобразуем результат в upperCase
+          return rowSpaceBeginEndLessInUppercase !== oneValue.toUpperCase();
         }
+        return !row_value.includes(oneValue);
+
       });
     }
     return !filter_value.includes(row_value);

@@ -14,7 +14,7 @@ type RowAddRowAddAgentFromGbuProps = RowAddRowAddAgentFromGbuMergedProps;
 
 const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.memo(
   (props) => {
-    const [newAgent, setNewAgent] = React.useState<ValuesOf<InspectCarsCondition['agents_from_gbu']>>({fio: null, position: null});
+    const [newAgent, setNewAgent] = React.useState<ValuesOf<InspectCarsCondition['agents_from_gbu']>>({ fio: null, position: null });
 
     const newAgentPosition = get(newAgent, 'position');
     const newAgentFio = get(newAgent, 'fio');

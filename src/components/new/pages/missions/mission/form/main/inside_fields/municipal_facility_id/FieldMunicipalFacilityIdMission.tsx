@@ -60,12 +60,11 @@ class FieldMunicipalFacilityIdMission extends React.PureComponent<PropsFieldMuni
   componentDidMount() {
     const {
       date_start,
-      isPermitted,
       technical_operation_id,
       technicalOperationRegistryForMissionList,
     } = this.props;
 
-    if (isPermitted && technical_operation_id && technicalOperationRegistryForMissionList.length) {
+    if (technical_operation_id && technicalOperationRegistryForMissionList.length) {
       const selectedToData = technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id);
       if (selectedToData && date_start) {
         this.getMunicipalFacilitys(selectedToData, date_start);
@@ -76,40 +75,37 @@ class FieldMunicipalFacilityIdMission extends React.PureComponent<PropsFieldMuni
   componentDidUpdate(prevProps: PropsFieldMunicipalFacilityIdMission) {
     const {
       date_start,
-      isPermitted,
       technical_operation_id,
       technicalOperationRegistryForMissionList,
     } = this.props;
 
-    if (isPermitted) {
-      const prev_normatives = (get(prevProps.technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id), 'normatives') || []).map(({ id }) => id).toString();
-      const normatives = (get(technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id), 'normatives') || []).map(({ id }) => id).toString();
+    const prev_normatives = (get(prevProps.technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id), 'normatives') || []).map(({ id }) => id).toString();
+    const normatives = (get(technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id), 'normatives') || []).map(({ id }) => id).toString();
 
-      const isDiffTechnicalOperationId = (
-        prevProps.technical_operation_id !== technical_operation_id
-        || prev_normatives !== normatives
-      );
+    const isDiffTechnicalOperationId = (
+      prevProps.technical_operation_id !== technical_operation_id
+      || prev_normatives !== normatives
+    );
 
-      const triggerOnUpdate = (
-        technical_operation_id
-        && (
-          (
-            isDiffTechnicalOperationId
-            && technicalOperationRegistryForMissionList.length
-          )
-          || !prevProps.technicalOperationRegistryForMissionList.length
-          || date_start !== prevProps.date_start
+    const triggerOnUpdate = (
+      technical_operation_id
+      && (
+        (
+          isDiffTechnicalOperationId
+          && technicalOperationRegistryForMissionList.length
         )
-      );
+        || !prevProps.technicalOperationRegistryForMissionList.length
+        || date_start !== prevProps.date_start
+      )
+    );
 
-      if (triggerOnUpdate) {
-        const selectedToData = technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id);
-        if (selectedToData) {
-          this.getMunicipalFacilitys(selectedToData, date_start);
-        }
-      } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
-        this.handleChange(null);
+    if (triggerOnUpdate) {
+      const selectedToData = technicalOperationRegistryForMissionList.find(({ id }) => technical_operation_id === id);
+      if (selectedToData) {
+        this.getMunicipalFacilitys(selectedToData, date_start);
       }
+    } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
+      this.handleChange(null);
     }
   }
 

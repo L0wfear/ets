@@ -2067,6 +2067,7 @@ class WaybillForm extends UNSAFE_Form {
                               : state.motohours_diff
                           }
                           type={CAR_HAS_ODOMETER ? 'odometr' : 'motohours'}
+                          errorsAll={errors}
                         />
                         <ErrorsBlock error={errors.tax_data} />
                       </EtsBootstrap.Col>

@@ -14,10 +14,10 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 import { CarWrap } from '../../../@types/CarForm';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type OwnProps = {
+type OwnProps = {
   selectedCarData?: CarWrap;
 };
-export type Props = OwnProps & {};
+type Props = OwnProps & {};
 
 const RoadAccidentList: React.FC<Props> = React.memo(
   (props) => {

@@ -7,26 +7,13 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/data_for_calculation/pages/fuel_operations/_config-data/registry-config';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { FuelOperation } from 'redux-main/reducers/modules/fuel_operations/@types/fuelOperations';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 
-type Props = {};
-
-const FuelOperationsList: React.FC<Props> = React.memo(
+type OwnProps = {};
+const FuelOperationsList: React.FC<OwnProps> = React.memo(
   () => {
-    const dispatch = etsUseDispatch();
-    React.useEffect(
-      () => {
-        dispatch(registryAddInitialData(getToConfig()));
-        return () => {
-          dispatch(registryRemoveData(registryKey));
-        };
-      },
-      [],
-    );
-
     return (
       <React.Fragment>
         <Registry registryKey={registryKey} />
@@ -36,7 +23,4 @@ const FuelOperationsList: React.FC<Props> = React.memo(
   },
 );
 
-export default withPreloader<{}>({
-  page: registryKey,
-  typePreloader: 'mainpage',
-})(FuelOperationsList);
+export default withRegistry<FuelOperation, OwnProps>(getToConfig())(FuelOperationsList);

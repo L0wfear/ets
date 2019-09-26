@@ -9,14 +9,27 @@ import {
   getAdmNotReadNotifications,
   setNotifyFromWs,
 } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
+import { UserNotification } from 'redux-main/reducers/modules/user_notifications/@types/user_notifications.h';
 
-import {
-  StateUserNotificationWs,
-  StatePropsUserNotificationWs,
-  DispatchPropsUserNotificationWs,
-  OwnPropsUserNotificationWs,
-  PropsUserNotificationWs,
-} from 'components/old/notifications/@types/UserNotificationWs.h';
+type StateUserNotificationWs = {
+  getNotReadInterval: any;
+};
+
+type StatePropsUserNotificationWs = {
+  token: any;
+};
+type DispatchPropsUserNotificationWs = {
+  getOrderNotRead: () => any;
+  getAdmNotReadNotifications: () => any;
+  setNotifyFromWs: (notify: UserNotification) => any;
+};
+type OwnPropsUserNotificationWs = {
+};
+type PropsUserNotificationWs = (
+  StatePropsUserNotificationWs
+  & DispatchPropsUserNotificationWs
+  & OwnPropsUserNotificationWs
+);
 
 /* ETS2 */
 class NotificationBadge extends React.Component<PropsUserNotificationWs, StateUserNotificationWs> {

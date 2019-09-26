@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get } from 'lodash';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -6,30 +7,23 @@ import { makeDate } from 'components/@next/@utils/dates/dates';
 import * as orderNotifiyMp3 from 'components/new/ui/modal_notification/audio/orderNotifiy.mp3';
 import * as orderNotifiyOgg from 'components/new/ui/modal_notification/audio/orderNotifiy.ogg';
 import { setMakeReadOrderNotification } from 'redux-main/reducers/modules/user_notifications/actions-user_notifications';
-import { connect } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
 
-import {
-  StateNotifiactionOrders,
-  StatePropsNotifiactionOrders,
-  DispatchPropsNotifiactionOrders,
-  OwnPropsNotifiactionOrders,
-  PropsNotifiactionOrders,
-} from 'components/new/ui/modal_notification/NotifiactionOrders.h';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, StateNotifiactionOrders> {
-  refAudio: any;
-
-  onHide = () => {
-    const { orderNotReadList: [{ id }] } = this.props;
-
-    this.props.setMakeReadOrderNotification(id);
-  }
-
-  render() {
-    const { orderNotReadList: [firstOrderNotify] } = this.props;
+type OwnProps = {};
+const NotifiactionOrders: React.FC<OwnProps> = React.memo(
+  () => {
+    const firstOrderNotify = etsUseSelector((state) => getUserNotificationsState(state).orderNotReadList[0]);
+    const dispatch = etsUseDispatch();
+    const onHide = React.useCallback(
+      () => {
+        const id = get(firstOrderNotify, 'id');
+        dispatch(setMakeReadOrderNotification(id));
+      },
+      [firstOrderNotify],
+    );
 
     if (!firstOrderNotify) {
       return (<DivNone />);
@@ -42,7 +36,7 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
     } = firstOrderNotify;
 
     return (
-      <EtsBootstrap.ModalContainer id="notifiaction_orders" show onHide={this.onHide}>
+      <EtsBootstrap.ModalContainer id="notifiaction_orders" show onHide={onHide}>
         <EtsBootstrap.ModalHeader closeButton>
           <div className="flex-space-between" style={{ fontWeight: 'bold' }}>
             <span style={{ marginRight: 10, marginLeft: 4 }}>{title}</span>
@@ -57,22 +51,11 @@ class NotifiactionOrders extends React.PureComponent<PropsNotifiactionOrders, St
           </audio>
         </EtsBootstrap.ModalBody>
         <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button onClick={this.onHide}>Закрыть</EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={onHide}>Закрыть</EtsBootstrap.Button>
         </EtsBootstrap.ModalFooter>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
-export default connect<StatePropsNotifiactionOrders, DispatchPropsNotifiactionOrders, OwnPropsNotifiactionOrders, ReduxState>(
-  (state) => ({
-    orderNotReadList: getUserNotificationsState(state).orderNotReadList,
-  }),
-  (dispatch: any) => ({
-    setMakeReadOrderNotification: (id) => (
-      dispatch(
-        setMakeReadOrderNotification(id),
-      )
-    ),
-  }),
-)(NotifiactionOrders);
+export default NotifiactionOrders;

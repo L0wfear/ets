@@ -6,35 +6,20 @@ import {
   config,
 } from 'components/new/pages/missions/mission/_config-data/registry-config';
 
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import MissionListFormWrap from 'components/new/pages/missions/mission/form/main/MissionListFormWrap';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
-const MissionList: React.FC<{}> = React.memo(
+type OwnProps = {};
+const MissionList: React.FC<OwnProps> = React.memo(
   () => {
-    const dispatch = etsUseDispatch();
-    React.useEffect(
-      () => {
-        dispatch(registryAddInitialData(config));
-
-        return () => {
-          dispatch(registryRemoveData(registryKey));
-        };
-      },
-      [],
-    );
-
     return (
-      <>
+      <React.Fragment>
         <Registry registryKey={registryKey} />
         <MissionListFormWrap registryKey={registryKey} />
-      </>
+      </React.Fragment>
     );
   },
 );
 
-export default withPreloader({
-  page: config.registryKey,
-  typePreloader: 'mainpage',
-})(MissionList);
+export default withRegistry<Mission, OwnProps>(config)(MissionList);

@@ -7,32 +7,12 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/regulatory_indicator/pages/fuel_consumption_rate/_config-data/registry-config';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
+import { FuelRate } from 'redux-main/reducers/modules/fuel_rates/@types/fuelRates.h';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-
-export type OwnProps = {};
-export type Props = OwnProps & {};
-
-const FuelRatesList: React.FC<Props> = React.memo(
-  (props) => {
-    const dispatch = etsUseDispatch();
-
-    React.useEffect(
-      () => {
-        dispatch(
-          registryAddInitialData(getToConfig()),
-        );
-        return () => {
-          dispatch(
-            registryRemoveData(registryKey),
-          );
-        };
-      },
-      [getToConfig],
-    );
-
+type OwnProps = {};
+const FuelRatesList: React.FC<OwnProps> = React.memo(
+  () => {
     return (
       <React.Fragment>
         <Registry registryKey={registryKey} />
@@ -42,7 +22,4 @@ const FuelRatesList: React.FC<Props> = React.memo(
   },
 );
 
-export default withPreloader<OwnProps>({
-  page: registryKey,
-  typePreloader: 'mainpage',
-})(FuelRatesList);
+export default withRegistry<FuelRate, OwnProps>(getToConfig())(FuelRatesList);

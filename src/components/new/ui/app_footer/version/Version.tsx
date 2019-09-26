@@ -20,7 +20,7 @@ const Version: React.FC<Props> = React.memo(
       () => {
         const isPermittedSwitchApiVersion = appConfig.can_switch_api_version;
 
-        if (appConfig.project_name === 'ets-dev2' || isPermittedSwitchApiVersion) {
+        if (appConfig.project_name === 'ets-dev' || isPermittedSwitchApiVersion) {
           setClickOnVersionCount(clickOnVersionCount + 1);
         }
       },

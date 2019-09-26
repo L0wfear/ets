@@ -2295,6 +2295,7 @@ class WaybillForm extends UNSAFE_Form {
                               onChange={this.handleChangeEquipmentTaxes}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
+                              errorsAll={errors}
                             />
                             <ErrorsBlock error={errors.equipment_tax_data} />
                           </EtsBootstrap.Col>

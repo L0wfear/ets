@@ -13,6 +13,7 @@ import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/
 import { SpanGreen, FooterEnd, SpanRed } from 'global-styled/global-styled';
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 
 /**
  * Компонент таксировки ТС
@@ -127,16 +128,24 @@ export default class EquipmentTaxes extends React.Component {
           return op;
         });
 
+        const errors = get(this.state, 'errorsAll.equipment_tax_data_rows', []);
+        const errorsMsg = errors.length
+          ? get(errors, `${index}.OPERATION`)
+          : '';
+
         return (
-          <ReactSelect
-            clearable={false}
-            modalKey={this.props.modalKey}
-            id="norm_operation_id"
-            disabled={this.props.readOnly}
-            options={options}
-            value={row.uniqKey}
-            onChange={this.handleOperationChange.bind(this, index)}
-          />
+          <div>
+            <ReactSelect
+              clearable={false}
+              modalKey={this.props.modalKey}
+              id="norm_operation_id"
+              disabled={this.props.readOnly}
+              options={options}
+              value={row.uniqKey}
+              onChange={this.handleOperationChange.bind(this, index)}
+            />
+            <ErrorsBlock hidden={!errorsMsg} error={errorsMsg} />
+          </div>
         );
       },
       measure_unit_name: (measure_unit_name) => measure_unit_name || '-',
@@ -150,6 +159,11 @@ export default class EquipmentTaxes extends React.Component {
             || typeof OPERATION === 'undefined'
             || this.props.readOnly,
         };
+        const errors = get(this.state, 'errorsAll.equipment_tax_data_rows', []);
+        const errorsMsg = errors.length
+          ? get(errors, `${index}.FACT_VALUE`)
+          : '';
+
         return (
           <div className="form-group">
             {false && (
@@ -161,6 +175,7 @@ export default class EquipmentTaxes extends React.Component {
               {...factValueProps}
               onChange={this.handleFactValueChange.bind(this, index)}
             />
+            <ErrorsBlock hidden={!errorsMsg} error={errorsMsg} />
           </div>
         );
       },
@@ -171,11 +186,12 @@ export default class EquipmentTaxes extends React.Component {
       selectedOperation: null,
       operations: [],
       fuelRates: [],
+      errorsAll: {},
     };
   }
 
   static getDerivedStateFromProps(nexProps, prevState) {
-    const { fuelRates, taxes = prevState.tableData } = nexProps;
+    const { fuelRates, taxes = prevState.tableData, errorsAll } = nexProps;
     let { operations } = nexProps;
 
     operations = operations.map((data) => ({
@@ -207,7 +223,7 @@ export default class EquipmentTaxes extends React.Component {
 
     taxes.map((tax) => ({ ...tax, RESULT: EquipmentTaxes.getResult(tax) }));
 
-    return { operations, fuelRates, tableData: taxes };
+    return { operations, fuelRates, tableData: taxes, errorsAll };
   }
 
   handleFactValueChange = (index, e) => {
@@ -278,7 +294,7 @@ export default class EquipmentTaxes extends React.Component {
 
   addOperation = () => {
     const { tableData } = this.state;
-    const { baseFactValue } = this.props;
+    const { baseFactValue, errorsAll } = this.props;
     const overallValue = EquipmentTaxes.calculateFinalFactValue(
       this.state.tableData,
     );
@@ -288,7 +304,8 @@ export default class EquipmentTaxes extends React.Component {
         ? (baseFactValue - overallValue).toFixed(3)
         : null;
     tableData.push({ FACT_VALUE: value });
-    this.setState({ tableData });
+    this.setState({ tableData, errorsAll });
+    this.props.onChange(tableData);
   };
 
   removeOperation = () => {

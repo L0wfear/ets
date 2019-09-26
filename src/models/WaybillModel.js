@@ -93,6 +93,20 @@ const checkCarRefill = memoizeOne(
   },
 );
 
+const checkEquipmentTaxData = (equipment_tax_data) => {
+  return equipment_tax_data.map((rowData) => {
+    return {
+      OPERATION: !rowData.OPERATION
+        ? 'Поле "Операция" должно быть заполнено'
+        : '',
+      FACT_VALUE:
+        !rowData.FACT_VALUE || !rowData.FACT_VALUE === 0
+          ? 'Поле "Значение" должно быть заполнено'
+          : '',
+    };
+  });
+};
+
 export const waybillSchema = {
   properties: [
     {
@@ -578,6 +592,11 @@ const closingProperties = [
     title: 'Расчет топлива по норме для оборудования',
     type: 'array',
   },
+  {
+    key: 'equipment_tax_data_rows',
+    title: 'Расчет топлива по норме для оборудования(таблица)',
+    type: 'array',
+  },
 ];
 
 const closingDependencies = {
@@ -710,13 +729,21 @@ const closingDependencies = {
         if (
           equipment_fuel
           && hasEquipmentFuelRates
-          && (!isArray(value)
-            || !value.filter(
-              ({ FACT_VALUE, OPERATION }) =>
-                (FACT_VALUE || FACT_VALUE === 0) && OPERATION,
-            ).length)
+          && (!isArray(value) || (isArray(value) && !value.length))
         ) {
           return 'В Поле "Расчет топлива по норме для оборудования" необходимо добавить операцию';
+        }
+      },
+    },
+  ],
+  equipment_tax_data_rows: [
+    {
+      validator: (
+        _,
+        { equipment_tax_data, equipment_fuel, hasEquipmentFuelRates },
+      ) => {
+        if (equipment_fuel && hasEquipmentFuelRates) {
+          return checkEquipmentTaxData(equipment_tax_data);
         }
       },
     },

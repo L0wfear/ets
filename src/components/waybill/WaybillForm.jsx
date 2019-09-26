@@ -2158,6 +2158,7 @@ class WaybillForm extends UNSAFE_Form {
                               )}
                               baseFactValue={state.motohours_equip_diff}
                               type="motohours"
+                              errorsAll={errors}
                             />
                             <div className="error">
                               {errors.equipment_tax_data}

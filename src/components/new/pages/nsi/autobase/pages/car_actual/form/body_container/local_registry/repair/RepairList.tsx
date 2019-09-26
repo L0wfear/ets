@@ -14,10 +14,10 @@ import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/wi
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
-export type OwnProps = {
+type OwnProps = {
   selectedCarData?: CarWrap;
 };
-export type Props = OwnProps & {};
+type Props = OwnProps & {};
 
 const RepairList: React.FC<Props> = (props) => {
   const {

@@ -69,4 +69,5 @@ export const SingleUiElementWrapperStyled = styled.div`
 
 export const FieldLabel = styled.label`
   margin-bottom: 5px;
+  white-space: pre-wrap; /* что бы можно было писаать символ переноса строки { Текст /n лейбла} */
 `;

@@ -17,6 +17,12 @@ class AppHeader extends React.Component<{}, any> {
       'resize',
       this.resizeWindow,
     );
+
+    document.addEventListener('keydown', (e: any) => {
+      if ('getAttribute' in e.target && e.target.getAttribute('type') === 'number' && e.keyCode === 69) {
+        event.preventDefault();
+      }
+    });
   }
 
   componentWillUnmount() {

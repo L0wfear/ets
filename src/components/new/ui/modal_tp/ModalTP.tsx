@@ -1,13 +1,17 @@
 import * as React from 'react';
 
 import config from 'config';
-import { PropsModalTP } from 'components/new/ui/modal_tp/ModalTP.h';
 import EtsBootstrap from '../@bootstrap';
 
-class ModalTP extends React.PureComponent<PropsModalTP, {}> {
-  render() {
+type Props = {
+  onHide: any;
+  show: boolean;
+};
+
+const ModalTP: React.FC<Props> = React.memo(
+  (props) => {
     return (
-      <EtsBootstrap.ModalContainer id="tp" show={this.props.show} onHide={this.props.onHide} position="center">
+      <EtsBootstrap.ModalContainer id="tp" show={props.show} onHide={props.onHide} position="center">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>Техническая поддержка</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
@@ -27,7 +31,7 @@ class ModalTP extends React.PureComponent<PropsModalTP, {}> {
         </EtsBootstrap.ModalBody>
       </EtsBootstrap.ModalContainer>
     );
-  }
-}
+  },
+);
 
 export default ModalTP;

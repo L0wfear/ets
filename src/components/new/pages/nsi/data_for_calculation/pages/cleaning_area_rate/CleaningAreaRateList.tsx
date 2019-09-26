@@ -6,27 +6,13 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/data_for_calculation/pages/cleaning_area_rate/_config-data/registry-config';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
+import { CleaningAreaRate } from 'redux-main/reducers/modules/cleaning_area_rate/@types/cleaningAreaRate';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+type OwnProps = {};
 
-export type Props = {};
-
-const CleaningAreaRateList: React.FC<Props> = React.memo(
+const CleaningAreaRateList: React.FC<OwnProps> = React.memo(
   () => {
-    const dispatch = etsUseDispatch();
-
-    React.useEffect(
-      () => {
-        dispatch(registryAddInitialData(getToConfig()));
-        return () => {
-          dispatch(registryRemoveData(registryKey));
-        };
-      },
-      [getToConfig],
-    );
-
     return (
       <React.Fragment>
         <Registry registryKey={registryKey} />
@@ -36,7 +22,4 @@ const CleaningAreaRateList: React.FC<Props> = React.memo(
   },
 );
 
-export default withPreloader<{}>({
-  page: registryKey,
-  typePreloader: 'mainpage',
-})(CleaningAreaRateList);
+export default withRegistry<CleaningAreaRate, OwnProps>(getToConfig())(CleaningAreaRateList);

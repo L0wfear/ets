@@ -16,24 +16,39 @@ import {
 import CarInWorkOverallInfo from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/info/CarInWorkOverallInfo';
 
 import {
-  PropsCarInWorkOverall,
-  StateCarInWorkOverall,
-  StatePropsCarInOveral,
-  DispatchPropsCarInOveral,
-  OwnPropsCarInOveral,
-} from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/CarInWorkOverall.h';
-import {
   getDashboardState,
   getSessionState,
 } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
 import { actionMonitorPageLoadCarActual } from 'components/old/monitor/redux-main/models/actions-monitor-page';
+import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { HandleThunkActionCreator } from 'react-redux';
 
-class CarInWorkOverall extends React.Component<
-  PropsCarInWorkOverall,
-  StateCarInWorkOverall
-> {
+type StateProps = {
+  items: InitialStateDashboard['car_in_work_overall']['data']['items'];
+  points_ws: InitialStateSession['appConfig']['points_ws'];
+  token: InitialStateSession['token'];
+  carActualGpsNumberIndex: any;
+};
+type DispatchProps = {
+  setInfoData: HandleThunkActionCreator<typeof dashboardSetInfoDataInCarInWorkOverall>;
+  actionMonitorPageLoadCarActual: HandleThunkActionCreator<typeof actionMonitorPageLoadCarActual>;
+};
+type OwnProps = {};
+
+type Props = StateProps &
+  DispatchProps &
+  OwnProps;
+
+type State = {
+  ws: any;
+  carsTrackState: any;
+  countNotInTouch: number | {};
+};
+
+class CarInWorkOverall extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -164,18 +179,13 @@ class CarInWorkOverall extends React.Component<
   }
 }
 
-export default compose<PropsCarInWorkOverall, PropsToDefaultCard>(
+export default compose<Props, PropsToDefaultCard>(
   withDefaultCard({
     path: 'car_in_work_overall',
     loadData: dashboardLoadCarInWorkOverall,
     InfoComponent: CarInWorkOverallInfo,
   }),
-  connect<
-    StatePropsCarInOveral,
-    DispatchPropsCarInOveral,
-    OwnPropsCarInOveral,
-    ReduxState
-  >(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({
       items: getDashboardState(state).car_in_work_overall.data.items,
       token: getSessionState(state).token,

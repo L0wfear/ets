@@ -3,8 +3,15 @@ import * as cx from 'classnames';
 import { get } from 'lodash';
 
 import {
-  PropsList,
-} from 'components/new/pages/dashboard/menu/cards/car-in-work-overall/list/List.h';
+  CarInWorkOverallItemsType,
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/car-in-work-overall.h';
+
+type PropsList = {
+  items: CarInWorkOverallItemsType[];
+  handleClick: React.MouseEventHandler<HTMLLIElement>;
+  classNameContainer?: string;
+  addIndex: number;
+};
 
 class List extends React.PureComponent<PropsList, {}> {
   handleClick: React.MouseEventHandler<HTMLLIElement> = (event) => {

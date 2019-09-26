@@ -9,17 +9,43 @@ import ExtField from 'components/@next/@ui/renderFields/Field';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
 import memoize from 'memoize-one';
-import {
-  StatePropsModalSwitchApiVersion,
-  DispatchPropsModalSwitchApiVersion,
-  OwnPropsModalSwitchApiVersion,
-  PropsModalSwitchApiVersion,
-  StateModalSwitchApiVersion,
-  OneOptionInStateModalSwitchApiVersion,
-} from 'components/new/ui/modal_switch_api_version/ModalSwitchApiVersion.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import config from 'config';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+
+type StateProps = {
+  appConfig: InitialStateSession['appConfig'];
+  appConfigTracksCaching: InitialStateSession['appConfigTracksCaching'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  onHide: () => void;
+};
+
+type NoneVersionOption = {
+  value: number | null;
+  label: string;
+};
+
+type DefaultVersionOption = {
+  value: string;
+  label: string;
+};
+
+type OneOptionInStateModalSwitchApiVersion = NoneVersionOption | DefaultVersionOption;
+
+type StateModalSwitchApiVersion = {
+  serviceValue: OneOptionInStateModalSwitchApiVersion['value'];
+  tracksCachingValue: OneOptionInStateModalSwitchApiVersion['value'];
+};
+type PropsModalSwitchApiVersion = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
 const modalKey = 'ModalSwitchApiVersion';
 const defaultNonVersionoption = {
@@ -176,12 +202,7 @@ class ModalSwitchApiVersion extends React.PureComponent<PropsModalSwitchApiVersi
   }
 }
 
-export default connect<
-  StatePropsModalSwitchApiVersion,
-  DispatchPropsModalSwitchApiVersion,
-  OwnPropsModalSwitchApiVersion,
-  ReduxState
->((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>((state) => ({
   appConfig: getSessionState(state).appConfig,
   appConfigTracksCaching: getSessionState(state).appConfigTracksCaching,
 }))(ModalSwitchApiVersion);

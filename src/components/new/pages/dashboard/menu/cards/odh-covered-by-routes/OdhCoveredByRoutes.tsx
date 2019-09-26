@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { compose } from 'recompose';
+
 import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 import CollapseButton from 'components/old/ui/collapse/button/CollapseButton';
@@ -12,21 +14,29 @@ import {
 import OdhCoveredByRoutesInfo from 'components/new/pages/dashboard/menu/cards/odh-covered-by-routes/info/OdhCoveredByRoutesInfo';
 
 import {
-  PropsOdhCoveredByRoutes,
-  StateOdhCoveredByRoutes,
-  StatePropsOdhCoveredByRoutes,
-  DispatchPropsOdhCoveredByRoutes,
-  OwnPropsOdhCoveredByRoutes,
-} from 'components/new/pages/dashboard/menu/cards/odh-covered-by-routes/OdhCoveredByRoutes.h';
-
-import {
   DivNone,
 } from 'global-styled/global-styled';
-import { compose } from 'recompose';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
+import { OdhCoveredByRoutesItemsType } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/odh-covered-by-routes.h';
 
-class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateOdhCoveredByRoutes> {
+type StateProps = {
+  items: OdhCoveredByRoutesItemsType[];
+};
+
+type DispatchProps = {
+  setInfoData: (infoData: OdhCoveredByRoutesItemsType) => any;
+};
+
+type OwnProps = {};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class OdhCoveredByRoutes extends React.PureComponent<Props, {}> {
   handleClickMission: React.MouseEventHandler<HTMLLIElement> = ({ currentTarget: { dataset: { path } } }) => {
     this.props.setInfoData(
       this.props.items[
@@ -62,13 +72,13 @@ class OdhCoveredByRoutes extends React.Component<PropsOdhCoveredByRoutes, StateO
   }
 }
 
-export default compose<PropsOdhCoveredByRoutes, PropsToDefaultCard>(
+export default compose<Props, PropsToDefaultCard>(
   withDefaultCard({
     path: 'odh_covered_by_routes',
     loadData: dashboardLoadOdhCoveredByRoutes,
     InfoComponent: OdhCoveredByRoutesInfo,
   }),
-  connect<StatePropsOdhCoveredByRoutes, DispatchPropsOdhCoveredByRoutes, OwnPropsOdhCoveredByRoutes, ReduxState>(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({
       items: getDashboardState(state).odh_covered_by_routes.data.items,
     }),

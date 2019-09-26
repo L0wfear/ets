@@ -46,31 +46,35 @@ const default_cars_use: InspectCarsCondition['data']['cars_use'] = {
 };
 
 const makeInspectCarsConditionFront = (inspectCarsConditionBackend) => {
-  const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionBackend);
+  // if (inspectCarsConditionBackend) {
+    const inspectCarsCondition: InspectCarsCondition = cloneDeep(inspectCarsConditionBackend);
 
-  inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', cloneDeep(deafult_head_balance_holder_base));
-  inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', cloneDeep(default_head_operating_base));
+    inspectCarsCondition.head_balance_holder_base = get(inspectCarsCondition, 'head_balance_holder_base', cloneDeep(deafult_head_balance_holder_base));
+    inspectCarsCondition.head_operating_base = get(inspectCarsCondition, 'head_operating_base', cloneDeep(default_head_operating_base));
 
-  inspectCarsCondition.data = {
-    types_cars: get(inspectCarsCondition, 'data.types_cars', []).map((rowData, index) => {
-      rowData.customId = index + 1;
-      rowData.disabled = true;
-      return rowData;
-    }),
-    types_harvesting_unit: get(inspectCarsCondition, 'data.types_harvesting_unit', []).map((rowData, index) => {
-      rowData.customId = index + 1;
-      return rowData;
-    }),
-    preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
-    headcount: get(inspectCarsCondition, 'data.headcount', cloneDeep(default_headcount)),
-    cars_use: {
-      ...cloneDeep(default_cars_use),
-      ...get(inspectCarsCondition, 'data.cars_use', {}),
-    },
-  };
-  inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
+    inspectCarsCondition.data = {
+      types_cars: get(inspectCarsCondition, 'data.types_cars', []).map((rowData, index) => {
+        rowData.customId = index + 1;
+        rowData.disabled = true;
+        return rowData;
+      }),
+      types_harvesting_unit: get(inspectCarsCondition, 'data.types_harvesting_unit', []).map((rowData, index) => {
+        rowData.customId = index + 1;
+        return rowData;
+      }),
+      preparing_cars_check: get(inspectCarsCondition, 'data.preparing_cars_check', cloneDeep(default_preparing_cars_check)),
+      headcount: get(inspectCarsCondition, 'data.headcount', cloneDeep(default_headcount)),
+      cars_use: {
+        ...cloneDeep(default_cars_use),
+        ...get(inspectCarsCondition, 'data.cars_use', {}),
+      },
+    };
+    inspectCarsCondition.files = get(inspectCarsCondition, 'files', []);
 
-  return inspectCarsCondition;
+    return inspectCarsCondition;
+  // }
+
+  // return null;
 };
 
 export const makeInspectCarsConditionBack = (inspectCarsConditionFront) => {

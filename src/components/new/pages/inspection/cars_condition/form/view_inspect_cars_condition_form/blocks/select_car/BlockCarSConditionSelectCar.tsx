@@ -106,16 +106,18 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
             label={false}
           />
         </ExtFieldContainer>
-        <HrDelimiter />
         {
           monitoringKindSeasonReadiness.key !== monitoring_kind &&
           (
-            <GreyTextContainer>
-              <p>
-                Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
-                После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
-              </p>
-            </GreyTextContainer>
+            <React.Fragment>
+              <HrDelimiter />
+              <GreyTextContainer>
+                <p>
+                  Для добавления информации о ТС, находящейся на базе, но отсутствующей на балансе, необходимо создать отдельную карточку.
+                  После создания карточка отобразиться в таблице проверенных и требующих проверки ТС в рамках текущей проверки
+                </p>
+              </GreyTextContainer>
+            </React.Fragment>
           )
         }
         {

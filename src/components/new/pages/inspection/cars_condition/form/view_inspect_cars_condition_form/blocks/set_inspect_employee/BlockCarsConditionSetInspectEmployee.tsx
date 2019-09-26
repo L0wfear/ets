@@ -9,6 +9,7 @@ import { ViewInspectAutobaseProps } from 'components/new/pages/inspection/autoba
 import { ViewInspectPgmBaseProps } from 'components/new/pages/inspection/pgm_base/form/view_inspect_pgm_base_form/@types/ViewInspectPgmBase';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
 import BlockInspectAutobaseDataFiles from './block_data_files/BlockInspectAutobaseDataFiles';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type BlockCarsConditionSetInspectEmployeeProps = {
   type: keyof typeof INSPECT_TYPE_FORM;
@@ -41,23 +42,29 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
 
     return (
       <BoxContainer>
-        <BlockInspectAutobaseDataFiles
-          files={props.files}
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={6}>
+            <BlockInspectAutobaseDataFiles
+              files={props.files}
 
-          isPermittedListPhotosOfSupportingDocuments={props.isPermittedListPhotosOfSupportingDocuments}
-          isPermittedListPhotosDefect={props.isPermittedListPhotosDefect}
-          onChange={props.handleChange}
-        />
-        <ExtField
-          type="date"
-          label="Срок, до которого необходимо представить отчет об устранении выявленных недостатков"
-          value={props.resolve_to}
-          time={false}
-          error={props.error_resolve_to}
-          disabled={!isPermittedChangeListParams}
-          onChange={props.handleChange}
-          boundKeys="resolve_to"
-        />
+              isPermittedListPhotosOfSupportingDocuments={props.isPermittedListPhotosOfSupportingDocuments}
+              isPermittedListPhotosDefect={props.isPermittedListPhotosDefect}
+              onChange={props.handleChange}
+            />
+          </EtsBootstrap.Col>
+          <EtsBootstrap.Col md={6}>
+            <ExtField
+              type="date"
+              label="Срок, до которого необходимо представить отчет об устранении выявленных недостатков"
+              value={props.resolve_to}
+              time={false}
+              error={props.error_resolve_to}
+              disabled={!isPermittedChangeListParams}
+              onChange={props.handleChange}
+              boundKeys="resolve_to"
+            />
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <CommissionMembers
           isPermittedChangeListParams={isPermittedChangeListParams}
 
@@ -69,7 +76,6 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
           page={props.page}
           path={props.path}
         />
-        <br />
         <AgentsFromGbu
           isPermittedChangeListParams={isPermittedChangeListParams}
           agents_from_gbu={props.agents_from_gbu}

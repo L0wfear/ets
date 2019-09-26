@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
@@ -6,27 +7,13 @@ import {
   config,
 } from 'components/new/pages/missions/duty_mission/_config-data/registry-config';
 
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
 import DutyMissionListFormWrap from 'components/new/pages/missions/duty_mission/form/main/DutyMissionListFormWrap';
-import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+import withRegistry from 'components/new/ui/registry/hoc/withRegistry';
 
-const DutyMissionList: React.FC<{}> = React.memo(
+type OwnProps = {};
+const DutyMissionList: React.FC<OwnProps> = React.memo(
   () => {
-    const dispatch = etsUseDispatch();
-
-    React.useEffect(
-      () => {
-        dispatch(registryAddInitialData(config));
-        return () => {
-          dispatch(registryRemoveData(registryKey));
-        };
-      },
-      [],
-    );
-
     return (
       <React.Fragment>
         <Registry registryKey={registryKey} />
@@ -36,7 +23,4 @@ const DutyMissionList: React.FC<{}> = React.memo(
   },
 );
 
-export default withPreloader({
-  page: config.registryKey,
-  typePreloader: 'mainpage',
-})(DutyMissionList);
+export default withRegistry<DutyMission, OwnProps>(config)(DutyMissionList);

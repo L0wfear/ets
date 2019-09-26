@@ -14,7 +14,7 @@ const STAND = process.env.STAND;
 
 const hostTypes = {
   develop: {
-    dev: 'dev2-ets.gost-group.com/',
+    dev: 'dev-ets.gost-group.com/',
     gost_stage: 'ets-stage.gost-group.com/',
     ets_test: 'ets-test.mos.ru/',
     ets_hotfix: 'ets-hotfix.mos.ru/',
@@ -24,7 +24,7 @@ const hostTypes = {
 };
 const urls = {
   develop: {
-    dev: `http://${hostTypes.develop.dev}`,
+    dev: `https://${hostTypes.develop.dev}`,
     gost_stage: `https://${hostTypes.develop.gost_stage}`,
     ets_test: `https://${hostTypes.develop.ets_test}`,
     ets_hotfix: `https://${hostTypes.develop.ets_hotfix}`,
@@ -81,7 +81,7 @@ const config = {
 
 const notification_config = {
   develop: {
-    dev: 'ws://dev2-ets.gost-group.com/services/notification_ws',
+    dev: 'wss://dev-ets.gost-group.com/services/notification_ws',
     gost_stage: 'wss://ets-stage.gost-group.com/services/notification_ws',
     ets_test: 'wss://ets-test.mos.ru/services/notification_ws',
     ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',

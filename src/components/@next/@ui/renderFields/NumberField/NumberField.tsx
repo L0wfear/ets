@@ -1,12 +1,12 @@
 import * as React from 'react';
 import cx from 'classnames';
+
 import SingleUiElementWrapper from 'components/@next/@ui/renderFields/SingleUiElementWrapper';
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { NumberFieldUi } from 'components/@next/@ui/renderFields/NumberField/styled';
 import { ExtFieldNumber } from 'components/@next/@ui/renderFields/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { onlyNumbersIntoInputsNumbersById } from 'utils/functions';
 
 const NumberField: React.FC<ExtFieldNumber> = React.memo(
   (props) => {
@@ -22,10 +22,6 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
     const id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
       : undefined;
-
-    React.useEffect(() => {
-      onlyNumbersIntoInputsNumbersById(id);
-    }, [id]);
 
     return (
       <SingleUiElementWrapper hidden={props.hidden}>

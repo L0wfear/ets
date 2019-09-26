@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
+
 export type EtsPageWrapProps = {
   inheritDisplay?: boolean;
   autoHeight?: boolean;
@@ -146,4 +147,10 @@ export const ButtonGroupWrapperMargin = styled.div`
 export const HrDelimiter = styled.div`
   border-bottom: 1px solid #ddd;
   margin: 30px 0px;
+`;
+
+// <<< Переделать это УГ, привести к дизайн системе
+export const SlimH4 = styled.h4`
+  font-weight: 500!important;
+  margin-top: 25px;
 `;

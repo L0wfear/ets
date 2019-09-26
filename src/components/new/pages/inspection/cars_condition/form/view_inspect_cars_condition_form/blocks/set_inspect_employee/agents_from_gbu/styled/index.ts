@@ -24,13 +24,12 @@ const fadeIn = keyframes`
   }
 `;
 
-export const AgentsFromGbuDataContainerAddMember = styled(EtsBootstrap.Col)`
+export const AgentsFromGbuMemberDataContainer = styled.div`
   border-radius: 3px;
   margin: 5px 0;
 
   border-radius: 3px;
   padding: 20px 15px;
-  padding-top: 10px;
   border: 1px solid #ddd;
   margin-top: 15px;
   position: relative;

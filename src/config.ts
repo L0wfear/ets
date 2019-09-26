@@ -25,67 +25,23 @@ const urls = {
   origin: `${PROTO}//${hostPathName.origin}`,
 };
 
-const ADMIN_URL = {
-  develop: `${urls.develop}admin`,
-  origin: `${urls.origin}admin/`,
-};
-
-const DOC_URL = {
-  develop: `${urls.develop}docs/`,
-  origin: `${urls.origin}docs/`,
-};
-
-const IMAGE_URL = {
-  develop: `${urls.develop}ets/data/images/`,
-  origin: `${urls.origin}ets/data/images/`,
-};
-
-const config = {
-  develop: {
-    images: IMAGE_URL.develop,
-    docs: DOC_URL.develop,
-    admin: ADMIN_URL.develop,
-  },
-  origin: {
-    images: IMAGE_URL.origin,
-    docs: DOC_URL.origin,
-    admin: ADMIN_URL.origin,
-  },
-};
-
-export const configApi = {
-  develop: `${urls.develop}services`,
-  origin: `${urls.origin}services`,
-};
-
-const notification_config = {
-  develop: `wss://${hostPathName.develop}services/notification_ws`,
-  origin: `wss//${hostPathName.origin}services/notification_ws`,
-};
-
-const configs = {
-  url: urls.develop,
-  images: config.develop.images,
-  docs: config.develop.docs,
-  admin: config.develop.admin,
-  backend: configApi.develop,
-  notification_ws: notification_config.develop,
-  tracksCaching: `https://psd.mos.ru/tracks-caching${
-    STAND !== 'prod' ? '-dev' : ''
-  }`,
-};
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
-try {
-  configs.url = urls[pathToConfig];
-  configs.images = config[pathToConfig].images;
-  configs.docs = config[pathToConfig].docs;
-  configs.admin = config[pathToConfig].admin;
-  configs.backend = configApi[pathToConfig];
-  configs.notification_ws = notification_config[pathToConfig];
-} catch (e) {
-  // tslint:disable-next-line
-  console.warn(e);
-}
+const ADMIN_URL = `${urls[pathToConfig]}admin`;
+const DOC_URL = `${urls[pathToConfig]}docs/`;
+const IMAGE_URL = `${urls[pathToConfig]}ets/data/images/`;
+export const configApi = `${urls[pathToConfig]}services`;
+const notification_config = `wss://${hostPathName[pathToConfig]}services/notification_ws`;
+const tracksCaching = `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`;
+
+const configs = {
+  url: urls[pathToConfig],
+  images: IMAGE_URL,
+  docs: DOC_URL,
+  admin: ADMIN_URL,
+  backend: configApi,
+  notification_ws: notification_config,
+  tracksCaching,
+};
 
 export default configs;

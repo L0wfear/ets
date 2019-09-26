@@ -3,10 +3,9 @@
  * Flummox stores
  */
 import employees from './EmployeesStore';
-import fuelRates from './FuelRatesStore';
 import loading from './LoadingStore';
 import missions from './MissionsStore';
 import notifications from './NotificationsStore';
 import repair from './RepairStore';
 
-export { employees, fuelRates, loading, missions, notifications, repair };
+export { employees, loading, missions, notifications, repair };

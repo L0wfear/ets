@@ -4,21 +4,43 @@ import { isArray, isNumber } from 'util';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
-import { IVehicle } from 'api/@types/services/index.h';
 import { checkErrorDate } from 'components/old/waybill/utils_react';
 
 import { isNotEqualAnd, hasMotohours } from 'utils/functions';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { actionLoadFuelRatesByCarModel, actionLoadEquipmentFuelRatesByCarModel } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
+import { EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
   COMPRESSOR: 15,
-};
+} as const;
+
+export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
+  Promise.resolve(
+    get(carIndex[car_id], 'fuel_correction_rate') || 1,
+  );
+
+export const getFuelRatesBySeason = (
+  promise: EtsActionReturnType<typeof actionLoadFuelRatesByCarModel | typeof actionLoadEquipmentFuelRatesByCarModel>,
+  currentSeason: 'winter' | 'summer',
+) => (
+  promise.then(({ fuelRatesList }) =>
+    fuelRatesList.filter(({ winter_rate, summer_rate }) =>
+      currentSeason === 'winter'
+        ? isNumber(winter_rate)
+        : isNumber(summer_rate),
+    ),
+  )
+);
+
+/** без типизации */
 
 // declarative functional approach
-const vehicleFilter = (structure_id: string, car_id: number | void) =>
-  R.filter<IVehicle>(
+const vehicleFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
+  R.filter<Car>(
     (c) =>
       c.asuods_id === car_id ||
       ((!structure_id ||
@@ -27,29 +49,23 @@ const vehicleFilter = (structure_id: string, car_id: number | void) =>
         c.available_to_bind),
   );
 
-// todo вернуть интерфес
-//  R.filter<IVehicle>((c) =>
-const carFilter: any = (structure_id, car_id) =>
+const carFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
   R.pipe(
     vehicleFilter(structure_id, car_id),
-    R.filter<IVehicle>(
-      (c) =>
-        !c.is_trailer ||
-        [
-          VALID_VEHICLES_TYPES.COMPRESSOR,
-          VALID_VEHICLES_TYPES.GENERATOR,
-        ].includes(c.type_id),
+    R.filter<Car>(
+      (c) => (
+        !c.is_trailer
+        || c.type_id === VALID_VEHICLES_TYPES.COMPRESSOR
+        || c.type_id === VALID_VEHICLES_TYPES.GENERATOR
+      ),
     ),
   );
-// todo вернуть интерфейс
-//  R.filter<IVehicle>((c) => c.is_trailer),
-const trailerFilter: any = (structure_id, trailer_id) =>
+const trailerFilter: any = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) =>
   R.pipe(
     vehicleFilter(structure_id, trailer_id),
-    R.filter<IVehicle>((c) => c.is_trailer),
+    R.filter<Car>((c) => c.is_trailer),
   );
 
-// <IVehicle, any>
 export const vehicleMapper = R.map<any, any>((c) => {
   return ({
     value: c.asuods_id,
@@ -60,17 +76,18 @@ export const vehicleMapper = R.map<any, any>((c) => {
   });
 });
 
-export const getCars = (structure_id, car_id) =>
+export const getCars = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
   R.pipe(
     carFilter(structure_id, car_id),
     vehicleMapper,
   );
 
-export const getTrailers = (structure_id, trailer_id) =>
+export const getTrailers = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (
   R.pipe(
     trailerFilter(structure_id, trailer_id),
     vehicleMapper,
-  );
+  )
+);
 
 const isNotEmpty = (value) => isNotEqualAnd([undefined, null, ''], value);
 export const driverHasLicenseWithActiveDate = ({
@@ -204,37 +221,6 @@ export const getDatesToByOrderOperationId = (order: Order, order_operation_id) =
     },
   };
 };
-
-export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
-  Promise.resolve(
-    get(carIndex[car_id], 'fuel_correction_rate') || 1,
-  );
-
-export const getFuelRatesByCarModel = (
-  action,
-  { car_id, date_create: datetime },
-  currentSeason,
-) =>
-  action({ car_id, datetime }).then(({ result: fuelRatesList }) =>
-    fuelRatesList.filter(({ winter_rate, summer_rate }) =>
-      currentSeason === 'winter'
-        ? isNumber(winter_rate)
-        : isNumber(summer_rate),
-    ),
-  );
-
-export const getEquipmentFuelRatesByCarModel = (
-  action,
-  { car_id, date_create: datetime },
-  currentSeason,
-) =>
-  action({ car_id, datetime }).then(({ result: equipmentFuelRatesList }) =>
-    equipmentFuelRatesList.filter(({ winter_rate, summer_rate }) =>
-      currentSeason === 'winter'
-        ? isNumber(winter_rate)
-        : isNumber(summer_rate),
-    ),
-  );
 
 export const checkMissionSelectBeforeClose = (
   formState,

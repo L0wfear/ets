@@ -7,7 +7,6 @@ export default class LoadingStore extends Store {
 
     const repairActions = flux.getActions('repair');
     const waybillsActions = flux.getActions('waybills');
-    const fuelRateActions = flux.getActions('fuelRates');
     const employeesActions = flux.getActions('employees');
     const missionsActons = flux.getActions('missions');
 
@@ -39,11 +38,6 @@ export default class LoadingStore extends Store {
       waybillsActions.updateWaybill,
       waybillsActions.getWaybill,
       waybillsActions.getLastClosedWaybill,
-
-      fuelRateActions.getFuelRates,
-      fuelRateActions.getFuelOperations,
-      fuelRateActions.getFuelRatesByCarModel,
-      fuelRateActions.getEquipmentFuelRatesByCarModel,
 
       employeesActions.getEmployees,
       employeesActions.getDrivers,

@@ -3,6 +3,9 @@ import memoize from 'memoize-one';
 import * as PropTypes from 'prop-types';
 import connectToStores from 'flummox/connect';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
+import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import ModalBody from 'components/old/ui/Modal';
 import ExtField from 'components/@next/@ui/renderFields/Field';
@@ -24,14 +27,13 @@ import {
   getCars,
   getDatesToByOrderOperationId,
   getDrivers,
-  getEquipmentFuelRatesByCarModel,
   getFuelCorrectionRate,
-  getFuelRatesByCarModel,
   getTitleByStatus,
   getTrailers,
   getWaybillDrivers,
   validateTaxesControl,
   vehicleMapper,
+  getFuelRatesBySeason,
 } from 'components/old/waybill/utils';
 
 import { confirmDialogChangeDate } from 'components/old/waybill/utils_react';
@@ -49,14 +51,12 @@ import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/old/waybill/form/BsnoStatus';
 
 import MissionField from 'components/old/waybill/form/MissionFiled';
-import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import {
   getSessionState,
   getAutobaseState,
   getSomeUniqState,
 } from 'redux-main/reducers/selectors';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+
 import { BorderDash } from 'global-styled/global-styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
@@ -76,6 +76,12 @@ import {
   carGetAndSetInStore,
   autobaseResetSetCar,
 } from 'redux-main/reducers/modules/autobase/car/actions';
+import {
+  actionLoadFuelRatesByCarModel,
+  fuelRatesGet,
+  fuelOperationsGet,
+  actionLoadEquipmentFuelRatesByCarModel,
+} from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -287,12 +293,11 @@ class WaybillForm extends UNSAFE_Form {
     ]);
 
     if (IS_CREATING || IS_DRAFT) {
-      flux
-        .getActions('fuelRates')
-        .getFuelRates()
-        .then(({ result: fuelRateAll }) =>
+      this.props
+        .dispatch(fuelRatesGet({}, this.props))
+        .then(({ fuelRatesList }) =>
           this.setState({
-            fuelRateAllList: fuelRateAll.map((d) => d.car_model_id),
+            fuelRateAllList: fuelRatesList.map((d) => d.car_model_id),
           }),
         )
         .catch((e) => {
@@ -331,18 +336,25 @@ class WaybillForm extends UNSAFE_Form {
       const currentSeason = this.props.formState.season;
 
       Promise.all([
-        getFuelRatesByCarModel(
-          flux.getActions('fuelRates').getFuelRatesByCarModel,
-          formState,
+        getFuelRatesBySeason(
+          this.props.dispatch(
+            actionLoadFuelRatesByCarModel(
+              { car_id: formState.car_id, datetime: formState.date_create },
+              this.props,
+            ),
+          ),
           currentSeason,
         ),
-        flux
-          .getActions('fuelRates')
-          .getFuelOperations({ is_active: true })
-          .then(({ result: fuelOperationsList }) => fuelOperationsList),
-        getEquipmentFuelRatesByCarModel(
-          flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel,
-          formState,
+        this.props
+          .dispatch(fuelOperationsGet({ is_active: true }, this.props))
+          .then(({ fuelRateOperations }) => fuelRateOperations),
+        getFuelRatesBySeason(
+          this.props.dispatch(
+            actionLoadEquipmentFuelRatesByCarModel(
+              { car_id: formState.car_id, datetime: formState.date_create },
+              this.props,
+            ),
+          ),
           currentSeason,
         ),
         getFuelCorrectionRate(this.props.carIndex, formState),

@@ -93,8 +93,8 @@ const checkCarRefill = memoizeOne(
   },
 );
 
-const checkEquipmentTaxData = (equipment_tax_data) => {
-  return equipment_tax_data.map((rowData) => {
+const checkTaxData = (tax_data) => {
+  return tax_data.map((rowData) => {
     return {
       OPERATION: !rowData.OPERATION
         ? 'Поле "Операция" должно быть заполнено'
@@ -602,6 +602,11 @@ const closingProperties = [
     title: 'Расчет топлива по норме для оборудования(таблица)',
     type: 'array',
   },
+  {
+    key: 'tax_data_rows',
+    title: 'Расчет топлива по норме(таблица)',
+    type: 'array',
+  },
 ];
 
 const closingDependencies = {
@@ -747,13 +752,7 @@ const closingDependencies = {
   tax_data: [
     {
       validator: (value) => {
-        if (
-          !isArray(value)
-          || !value.filter(
-            ({ FACT_VALUE, OPERATION }) =>
-              (FACT_VALUE || FACT_VALUE === 0) && OPERATION,
-          ).length
-        ) {
+        if (!isArray(value) || (isArray(value) && !value.length)) {
           return 'В поле "Расчет топлива по норме" необходимо добавить операцию';
         }
       },
@@ -766,7 +765,16 @@ const closingDependencies = {
         { equipment_tax_data, equipment_fuel, hasEquipmentFuelRates },
       ) => {
         if (equipment_fuel && hasEquipmentFuelRates) {
-          return checkEquipmentTaxData(equipment_tax_data);
+          return checkTaxData(equipment_tax_data);
+        }
+      },
+    },
+  ],
+  tax_data_rows: [
+    {
+      validator: (_, { tax_data, equipment_fuel, hasEquipmentFuelRates }) => {
+        if (equipment_fuel && hasEquipmentFuelRates) {
+          return checkTaxData(tax_data);
         }
       },
     },

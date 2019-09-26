@@ -68,10 +68,6 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
 import { HrLine } from 'components/new/pages/login/styled/styled';
-import {
-  actionPostMissionReassignationParameters,
-  actionPutMissionReassignationParameters,
-} from 'redux-main/reducers/modules/missions/mission/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -1133,27 +1129,10 @@ class WaybillForm extends UNSAFE_Form {
     const acceptedRejectMissionsIdList = rejectMissionList.map(
       async (rejectMission) => {
         try {
-          let response = null;
-
-          if (
-            rejectMission.handlerName
-            === 'actionPostMissionReassignationParameters'
-          ) {
-            response = await this.props.actionPostMissionReassignationParameters(
-              rejectMission.payload,
-            );
-          } else if (
-            rejectMission.handlerName
-            === 'actionPutMissionReassignationParameters'
-          ) {
-            response = await this.props.actionPutMissionReassignationParameters(
-              rejectMission.payload,
-            );
-          } else if (rejectMission.handlerName === 'updateMission') {
-            response = await this.context.flux
-              .getActions('missions')
-              .updateMission(rejectMission.payload);
-
+          const response = await this.context.flux
+            .getActions('missions')
+            [rejectMission.handlerName](rejectMission.payload);
+          if (rejectMission.handlerName === 'updateMission') {
             const successEdcRequestIds = response.result
               .filter((value) => value)
               .filter(({ close_request }) => close_request)
@@ -1168,10 +1147,8 @@ class WaybillForm extends UNSAFE_Form {
           }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
-
           rejectMissionSubmitError = true;
-          const missionId = get(rejectMission.payload, 'mission_id', '');
-
+          const missionId = get(rejectMission, 'id', '');
           if (!errorData.errorIsShow) {
             const errorText = get(
               errorData.error_text,
@@ -2504,24 +2481,15 @@ WaybillForm.contextTypes = {
 };
 
 export default compose(
-  connect(
-    (state) => ({
-      appConfig: getSessionState(state).appConfig,
-      userStructureId: getSessionState(state).userData.structure_id,
-      userCompanyId: getSessionState(state).userData.company_id,
-      userStructures: getSessionState(state).userData.structures,
-      userPermissionsSet: getSessionState(state).userData.permissionsSet,
-      fuelCardsList: getAutobaseState(state).fuelCardsList,
-      workModeList: getSomeUniqState(state).workModeList,
-      order_mission_source_id: getSomeUniqState(state).missionSource
-        .order_mission_source_id,
-    }),
-    (dispatch) => ({
-      dispatch,
-      actionPostMissionReassignationParameters: (...arg) =>
-        dispatch(actionPostMissionReassignationParameters(...arg)),
-      actionPutMissionReassignationParameters: (...arg) =>
-        dispatch(actionPutMissionReassignationParameters(...arg)),
-    }),
-  ),
+  connect((state) => ({
+    appConfig: getSessionState(state).appConfig,
+    userStructureId: getSessionState(state).userData.structure_id,
+    userCompanyId: getSessionState(state).userData.company_id,
+    userStructures: getSessionState(state).userData.structures,
+    userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    fuelCardsList: getAutobaseState(state).fuelCardsList,
+    workModeList: getSomeUniqState(state).workModeList,
+    order_mission_source_id: getSomeUniqState(state).missionSource
+      .order_mission_source_id,
+  })),
 )(connectToStores(WaybillForm, ['objects', 'employees', 'missions']));

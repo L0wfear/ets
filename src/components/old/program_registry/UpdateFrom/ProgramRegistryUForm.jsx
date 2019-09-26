@@ -55,7 +55,7 @@ const getTitleByStatus = (status) => {
   }
 };
 
-@connectToStores(['repair', 'objects'])
+@connectToStores(['repair'])
 class ProgramRegistryForm extends UNSAFE_Form {
   constructor(props) {
     super(props);

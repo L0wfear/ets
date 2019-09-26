@@ -24,7 +24,7 @@ const setTypeOptionsBySlug = (slug, allOptions) => {
   }
 };
 
-@connectToStores(['repair', 'objects'])
+@connectToStores(['repair'])
 class ProgramRegistryForm extends UNSAFE_Form {
   state = { REPAIR_TYPES_OPTIONS: [] };
   componentDidMount() {

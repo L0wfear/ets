@@ -102,12 +102,12 @@ class MissionField extends React.Component<Props, any> {
 
   createMission = () => {
     const {
-      carsList = [],
+      carList = [],
       state,
       state: { car_id },
     } = this.props;
 
-    const carData: Car = carsList.find(
+    const carData: Car = carList.find(
       ({ asuods_id }) => asuods_id === car_id,
     );
 

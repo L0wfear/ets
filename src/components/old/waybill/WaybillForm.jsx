@@ -72,6 +72,10 @@ import {
   actionPostMissionReassignationParameters,
   actionPutMissionReassignationParameters,
 } from 'redux-main/reducers/modules/missions/mission/actions';
+import {
+  carGetAndSetInStore,
+  autobaseResetSetCar,
+} from 'redux-main/reducers/modules/autobase/car/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -266,7 +270,12 @@ class WaybillForm extends UNSAFE_Form {
     this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
     await Promise.all([
-      flux.getActions('objects').getCars(),
+      this.props.dispatch(
+        carGetAndSetInStore(
+          {},
+          { page: this.props.page, path: this.props.path },
+        ),
+      ),
       flux.getActions('employees').getEmployees(),
       this.props.dispatch(
         actionsWorkMode.getArrayAndSetInStore({}, this.props),
@@ -336,7 +345,7 @@ class WaybillForm extends UNSAFE_Form {
           formState,
           currentSeason,
         ),
-        getFuelCorrectionRate(this.props.carsList, formState),
+        getFuelCorrectionRate(this.props.carIndex, formState),
       ])
         .then(
           ([
@@ -429,6 +438,10 @@ class WaybillForm extends UNSAFE_Form {
           });
         });
     }
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(autobaseResetSetCar());
   }
 
   handlePlanDepartureDates = (field, value) => {
@@ -598,10 +611,8 @@ class WaybillForm extends UNSAFE_Form {
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
-    const { gps_code = null }
-      = this.props.carsList.find(
-        ({ asuods_id }) => asuods_id === formState.car_id,
-      ) || {};
+    const gps_code
+      = get(this.props.carIndex[formState.car_id], 'gps_code') || null;
 
     const { fact_departure_date, fact_arrival_date } = formState;
 
@@ -765,7 +776,7 @@ class WaybillForm extends UNSAFE_Form {
           this.props.formState.structure_id,
           lastCarUsedWaybill.trailer_id,
         );
-        const TRAILERS = getTrailersByStructId(this.props.carsList);
+        const TRAILERS = getTrailersByStructId(this.props.carList);
 
         if (TRAILERS.find((c) => c.value === lastCarUsedWaybill.trailer_id)) {
           fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
@@ -811,7 +822,7 @@ class WaybillForm extends UNSAFE_Form {
     const {
       formState: { driver_id, car_id },
     } = this.props;
-    const carData = this.props.carsIndex[car_id];
+    const carData = this.props.carIndex[car_id];
 
     const changeObj = { structure_id };
 
@@ -1307,8 +1318,8 @@ class WaybillForm extends UNSAFE_Form {
       formState: state,
       formErrors: errors,
       entity,
-      carsList = [],
-      carsIndex = {},
+      carList,
+      carIndex,
       waybillDriversList = [],
       employeesList = [],
       uniqEmployeesBindedoOnCarList = [],
@@ -1336,7 +1347,7 @@ class WaybillForm extends UNSAFE_Form {
       state.trailer_id,
     );
 
-    let CARS = getCarsByStructId(carsList);
+    let CARS = getCarsByStructId(carList);
 
     if (state.car_id && !CARS.find((c) => c.value === state.car_id)) {
       CARS = [
@@ -1354,7 +1365,7 @@ class WaybillForm extends UNSAFE_Form {
       ];
     }
 
-    let TRAILERS = getTrailersByStructId(carsList);
+    let TRAILERS = getTrailersByStructId(carList);
 
     if (
       state.trailer_id
@@ -1415,7 +1426,7 @@ class WaybillForm extends UNSAFE_Form {
     const IS_DRAFT = state.status && state.status === 'draft';
     const IS_CLOSED = state.status && state.status === 'closed';
 
-    const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '')
+    const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
       .includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number
@@ -1458,8 +1469,7 @@ class WaybillForm extends UNSAFE_Form {
         value: state.driver_id,
       });
     }
-    const { gps_code }
-      = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
+    const gps_code = get(carIndex[state.car_id], 'gps_code');
     let distanceOrTrackOrNodata = state.distance;
 
     if (isNullOrUndefined(distanceOrTrackOrNodata)) {
@@ -2099,7 +2109,7 @@ class WaybillForm extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             {state.equipment_fuel && (
-              <>
+              <React.Fragment>
                 <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={12}>
                     <h3>Спецоборудование</h3>
@@ -2326,13 +2336,13 @@ class WaybillForm extends UNSAFE_Form {
                     </BorderDash>
                   </EtsBootstrap.Col>
                 </EtsBootstrap.Row>
-              </>
+              </React.Fragment>
             )}
           </Div>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>
               <MissionField
-                carsList={this.props.carsList}
+                carList={this.props.carList}
                 state={state}
                 errors={errors}
                 missionsList={missionsList}
@@ -2515,6 +2525,8 @@ export default compose(
       workModeList: getSomeUniqState(state).workModeList,
       order_mission_source_id: getSomeUniqState(state).missionSource
         .order_mission_source_id,
+      carList: getAutobaseState(state).carList,
+      carIndex: getAutobaseState(state).carIndex,
     }),
     (dispatch) => ({
       dispatch,
@@ -2524,4 +2536,4 @@ export default compose(
         dispatch(actionPutMissionReassignationParameters(...arg)),
     }),
   ),
-)(connectToStores(WaybillForm, ['objects', 'employees', 'missions']));
+)(connectToStores(WaybillForm, ['employees', 'missions']));

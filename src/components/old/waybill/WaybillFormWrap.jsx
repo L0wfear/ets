@@ -16,7 +16,6 @@ import {
   getSomeUniqState,
   getSessionState,
 } from 'redux-main/reducers/selectors';
-import connectToStores from 'flummox/connect';
 import {
   actionLoadRefillTypeAndSetInStore,
   actionResetRefillTypeAndSetInStore,
@@ -753,7 +752,7 @@ class WaybillFormWrap extends React.Component {
   render() {
     const { entity } = this.props;
     return (
-      <>
+      <React.Fragment>
         {this.state.formState && (
           <WaybillForm
             formState={this.state.formState}
@@ -781,7 +780,7 @@ class WaybillFormWrap extends React.Component {
               array={this.state.edcRequestIds}
             />
           ))}
-      </>
+      </React.Fragment>
     );
   }
 }
@@ -793,6 +792,8 @@ export default connect(
     userStructureId: getSessionState(state).userData.structure_id,
     fuelCardsList: getAutobaseState(state).fuelCardsList,
     refillTypeList: getSomeUniqState(state).refillTypeList,
+    carList: getAutobaseState(state).carList,
+    carIndex: getAutobaseState(state).carIndex,
   }),
   (dispatch) => ({
     actionLoadRefillTypeAndSetInStore: (...arg) =>
@@ -803,4 +804,4 @@ export default connect(
       dispatch(fuelCardsActions.fuelCardsGetAndSetInStore(...arg)),
     resetSetFuelCards: () => dispatch(fuelCardsActions.resetSetFuelCards()),
   }),
-)(connectToStores(WaybillFormWrap, ['objects']));
+)(WaybillFormWrap);

@@ -1,12 +1,15 @@
 import * as R from 'ramda';
+import { get } from 'lodash';
+import { isArray, isNumber } from 'util';
+
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { IVehicle } from 'api/@types/services/index.h';
 import { checkErrorDate } from 'components/old/waybill/utils_react';
 
 import { isNotEqualAnd, hasMotohours } from 'utils/functions';
-import { isArray, isNumber } from 'util';
 import { Order } from 'redux-main/reducers/modules/order/@types';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
@@ -202,13 +205,9 @@ export const getDatesToByOrderOperationId = (order: Order, order_operation_id) =
   };
 };
 
-export const getFuelCorrectionRate = (carsList, { car_id }) =>
+export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
   Promise.resolve(
-    (
-      carsList.find(({ asuods_id }) => asuods_id === car_id) || {
-        fuel_correction_rate: 1,
-      }
-    ).fuel_correction_rate || 1,
+    get(carIndex[car_id], 'fuel_correction_rate') || 1,
   );
 
 export const getFuelRatesByCarModel = (

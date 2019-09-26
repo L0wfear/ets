@@ -89,7 +89,7 @@ export const getNormByMissionAndCar = async (getCleaningOneNorm, carsIndex, miss
 
 const loadingPage = 'OrderMissionTemplateList';
 
-@connectToStores(['missions', 'employees', 'objects'])
+@connectToStores(['missions', 'employees'])
 @FluxContext
 class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTemplate> {
   context!: ETSCore.LegacyContext;

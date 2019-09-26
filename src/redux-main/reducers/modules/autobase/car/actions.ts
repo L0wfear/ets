@@ -1,7 +1,7 @@
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { autobaseSetNewData } from 'redux-main/reducers/modules/autobase/actions_by_type/common';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
-import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
 import {
   getCars,
   promiseLoadCarDrivers,
@@ -20,16 +20,17 @@ import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form
 import { getDefaultCarElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/utils';
 
 /* ---------- Car ---------- */
-export const autobaseSetCar = (carList: Car[]) => (dispatch) => (
+export const autobaseSetCar = (carList: Car[], carIndex: Record<Car['asuods_id'], Car>): EtsAction<EtsActionReturnType<typeof autobaseSetNewData>> => (dispatch) => (
   dispatch(
     autobaseSetNewData({
       carList,
+      carIndex,
     }),
   )
 );
-export const autobaseResetSetCar = () => (dispatch) => (
+export const autobaseResetSetCar = (): EtsAction<EtsActionReturnType<typeof autobaseSetCar>> => (dispatch) => (
   dispatch(
-    autobaseSetCar([]),
+    autobaseSetCar([], {}),
   )
 );
 export const autobaseGetSetCar = (payloadOwn: object, meta: LoadingMeta): EtsAction<ReturnType<typeof getCars>> => async (dispatch) => {
@@ -41,8 +42,8 @@ export const autobaseGetSetCar = (payloadOwn: object, meta: LoadingMeta): EtsAct
 
   return result;
 };
-export const carGetAndSetInStore = (payload = {}, meta: LoadingMeta) => async (dispatch) => {
-  const { data } = await dispatch(
+export const carGetAndSetInStore = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseGetSetCar>> => async (dispatch) => {
+  const result = await dispatch(
     autobaseGetSetCar(
       payload,
       meta,
@@ -50,12 +51,10 @@ export const carGetAndSetInStore = (payload = {}, meta: LoadingMeta) => async (d
   );
 
   dispatch(
-    autobaseSetCar(data),
+    autobaseSetCar(result.data, result.dataIndex),
   );
 
-  return {
-    carList: data,
-  };
+  return result;
 };
 
 export const actionsGetCarFormDataByAsuodsId = (asuods_id: Car['asuods_id'], meta: LoadingMeta): EtsAction<Promise<CarWrap>> => async (dispatch) => {

@@ -428,6 +428,7 @@ export type IStateAutobase = {
   insuranceTypeList: InsuranceType[];
   insurancePolicyList: InsurancePolicy[];
   carList: Car[];
+  carIndex: Record<Car['asuods_id'], Car>;
   carFuncTypesList: CarFuncTypes[];
   repairList: Repair[];
   repairCompanyList: RepairCompany[];

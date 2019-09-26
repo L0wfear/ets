@@ -1,18 +1,11 @@
-function parseFilename(contentDisposition) {
-  let filename;
-
+export const parseFilename = (contentDisposition: string) => {
   try {
     const result = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDisposition);
 
     if (result && result[1]) {
-      filename = decodeURIComponent(result[1]).replace(/['"]/g, '');
+      return decodeURIComponent(result[1]).replace(/['"]/g, '');
     }
   } catch (e) {
-    filename = null;
+    return null;
   }
-  return filename;
-}
-
-export {
-  parseFilename,
 };

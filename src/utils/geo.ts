@@ -1,4 +1,6 @@
-export function swapCoords(props) {
+import { isArray } from 'util';
+
+export function swapCoords(props: Array<number>) {
   try {
     const [x, y] = props;
 
@@ -10,15 +12,16 @@ export function swapCoords(props) {
   }
 }
 
-export function unwrapCoords({ x, y }) {
+export function unwrapCoords({ x, y }: { x: number, y: number }) {
   return [x, y];
 }
 
-export function roundCoordinates(coords, level = 4) {
-  let result = coords;
-  if (!coords.length) {
+export function roundCoordinates(coords: Array<number> | { x: number, y: number }, level = 4) {
+  let result: number[] = null;
+  if (!isArray(coords)) {
     result = unwrapCoords(coords);
+  } else {
+    result = coords;
   }
-  const round = (coord) => Math.round(coord * Math.pow(10, level)) / Math.pow(10, level);
-  return result.map(round);
+  return result.map((coord) => Math.round(coord * Math.pow(10, level)) / Math.pow(10, level));
 }

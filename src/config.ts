@@ -7,7 +7,7 @@ const PATHNAME = window.location.pathname;
 
 const STAND = process.env.STAND;
 
-const host_dev = {
+export const host_dev = {
   dev: 'dev-ets.gost-group.com/',
   gost_stage: 'ets-stage.gost-group.com/',
   ets_test: 'ets-test.mos.ru/',
@@ -30,7 +30,7 @@ const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 const ADMIN_URL = `${urls[pathToConfig]}admin`;
 const DOC_URL = `${urls[pathToConfig]}docs/`;
 const IMAGE_URL = `${urls[pathToConfig]}ets/data/images/`;
-export const configApi = `${urls[pathToConfig]}services`;
+const configApi = `${urls[pathToConfig]}services`;
 const notification_config = `wss://${hostPathName[pathToConfig]}services/notification_ws`;
 const tracksCaching = `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`;
 

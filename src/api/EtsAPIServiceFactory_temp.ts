@@ -1,9 +1,9 @@
 import ApiServiceFactory from './ApiServiceFactory';
-import config, { configApi } from 'config';
+import config, { host_dev } from 'config';
 
 const ETS_API_FACTORY_ETS_TEST = new ApiServiceFactory({
   apiUrl:
-    process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix' ? configApi : config.backend,
+    process.env.STAND === 'gost_stage' || process.env.STAND === 'ets_hotfix' ? `https://${host_dev.ets_test}services` : config.backend,
   otherToken: true,
   headers: () => {
     const token = JSON.parse(

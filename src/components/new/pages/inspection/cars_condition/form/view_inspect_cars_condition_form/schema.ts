@@ -35,7 +35,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
       validateIf: [
         {
           type: 'has_data',
-          path: 'checks_period_text',
+          path: 'checks_period',
         },
         {
           type: 'equal_to_value',
@@ -51,7 +51,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
       validateIf: [
         {
           type: 'has_data',
-          path: 'checks_period_text',
+          path: 'checks_period',
         },
         {
           type: 'equal_to_value',
@@ -66,7 +66,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     master_plan_approved: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'string',
       title: 'Сводный план подготовки техники утвержден',
@@ -75,7 +75,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     named_plan_approved: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'string',
       title: 'Поименный план подготовки техники утвержден',
@@ -84,7 +84,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     planned_target: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'valueOfArray',
       title: 'Плановые показатели',
@@ -93,7 +93,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     statements_defects_issued: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'valueOfArray',
       title: 'Ведомости дефектов на каждую единицу техники, перечисленную в поименном плане',
@@ -102,7 +102,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     statements_defects_not_issued_cnt: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'number',
       title: 'Не оформлено ведомостей дефектов на <кол-во> единиц техник',
@@ -110,7 +110,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     drawbacks_eliminated: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'string',
       title: 'Устранены ранее выявленные недостатки',
@@ -118,7 +118,7 @@ const preparingCarsCheckSchema: SchemaType<InspectCarsCondition['data']['prepari
     drawbacks_new: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
       },
       type: 'string',
       title: 'Новые замечани',
@@ -131,7 +131,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     waybill_issue_log_exists: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'valueOfArray',
@@ -141,7 +141,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     waybill_issue_log_used: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'valueOfArray',
@@ -151,7 +151,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     comment: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'string',
@@ -161,7 +161,7 @@ const headCountListCarsUseSchema: SchemaType<InspectCarsCondition['data']['cars_
     comment_detected: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'string',
@@ -176,7 +176,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
     staff_drivers: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'number',
@@ -187,7 +187,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
     staff_mechanics: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'number',
@@ -198,7 +198,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
     list_drivers: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       required: true,
@@ -210,7 +210,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
     list_mechanics: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'number',
@@ -222,7 +222,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
     staffing_drivers: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'number',
@@ -231,7 +231,7 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
     staffing_mechanics: {
       validateIf: {
         type: 'has_data',
-        path: 'checks_period_text',
+        path: 'checks_period',
         reverse: true,
       },
       type: 'number',

@@ -2,6 +2,7 @@ import styled, { keyframes } from 'styled-components';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
+import { FooterEnd } from 'global-styled/global-styled';
 
 export const AgentsFromGbuDataContainer = styled.div`
   display: flex;
@@ -10,8 +11,8 @@ export const AgentsFromGbuDataContainer = styled.div`
   padding: 5px 0;
 `;
 export const RowAddRowAddAgentFromGbuWrapper = styled.div`
-  ${ButtonStyled} {
-    max-width: 300px;
+  &&& ${ButtonStyled} {
+    width: auto!important;
   }
 `;
 
@@ -53,6 +54,11 @@ export const AgentsFromGbuMemberDataContainer = styled.div`
     border: 10px solid transparent;
     border-bottom-color: #fff;
   }
+  ${FooterEnd} {
+    position: absolute;
+    right: 8px;
+    top: -1px;
+  }
 `;
 
 export const AgentsFromGbuWrapper = styled.div`
@@ -72,4 +78,8 @@ export const AgentsFromGbuCloseBtn = styled(EtsBootstrap.Button)`
       color: ${UiConstants.colorError};
     }
   }
+`;
+
+export const AgentsFromGbuAddBtn = styled(EtsBootstrap.Button)`
+  margin-top: 10px;
 `;

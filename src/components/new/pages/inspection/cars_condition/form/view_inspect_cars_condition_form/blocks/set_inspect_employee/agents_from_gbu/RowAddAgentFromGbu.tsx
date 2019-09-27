@@ -2,12 +2,15 @@ import * as React from 'react';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { RowAddRowAddAgentFromGbuWrapper, AgentsFromGbuMemberDataContainer } from './styled';
+import { RowAddRowAddAgentFromGbuWrapper, AgentsFromGbuMemberDataContainer, AgentsFromGbuCloseBtn } from './styled';
 import { get } from 'lodash';
+import { FooterEnd } from 'global-styled/global-styled';
 
 type RowAddRowAddAgentFromGbuMergedProps = {
   isPermitted: boolean;
   handleAddChangeRowAddAgentFromGbu: (agents_from_gbu: ValuesOf<InspectCarsCondition['agents_from_gbu']>) => any;
+  handleCloseGbu: any;
+  showCloseBtn: boolean;
 };
 
 type RowAddRowAddAgentFromGbuProps = RowAddRowAddAgentFromGbuMergedProps;
@@ -26,6 +29,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
           position: newAgent.position,
         });
         setNewAgent(null);
+        props.handleCloseGbu();
       },
       [newAgent],
     );
@@ -45,6 +49,15 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
         {
           Boolean(props.isPermitted) && (
             <AgentsFromGbuMemberDataContainer>
+              {
+                props.showCloseBtn && (
+                  <FooterEnd>
+                    <AgentsFromGbuCloseBtn onClick={props.handleCloseGbu}>
+                      <EtsBootstrap.Glyphicon glyph="remove"/>
+                    </AgentsFromGbuCloseBtn>
+                  </FooterEnd>
+                )
+              }
               <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={6}>
                     <ExtField
@@ -71,8 +84,7 @@ const RowAddRowAddAgentFromGbu: React.FC<RowAddRowAddAgentFromGbuProps> = React.
                     disabled={!newAgentFio || !newAgentPosition}
                     onClick={handleClickAddAgentFromGbu}
                   >
-                    <EtsBootstrap.Glyphicon glyph='plus' />
-                    Добавить представителей ГБУ
+                    Сохранить
                   </EtsBootstrap.Button>
                 </EtsBootstrap.Col>
               </EtsBootstrap.Row>

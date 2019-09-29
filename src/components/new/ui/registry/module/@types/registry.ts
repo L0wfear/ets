@@ -109,7 +109,7 @@ export type DisplayIfTitle = {
 };
 
 export type OneFilterType<F> = {
-  valueKey: keyof F;
+  valueKey: Extract<keyof F, string>;
   title: string | DisplayIfTitle[];
   displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   options?: FilterOptionType<F>[];

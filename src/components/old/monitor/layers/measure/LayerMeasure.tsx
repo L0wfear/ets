@@ -64,7 +64,7 @@ class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, St
   };
 
   componentDidMount() {
-    this.props.addLayer({ id: 'MeasureLines', zIndex: 100, renderMode: 'vector' }).then(() => {
+    this.props.addLayer({ id: 'MeasureLines', zIndex: 100, renderMode: 'hybrid' }).then(() => {
       this.props.setDataInLayer('singleclick', undefined);
     });
   }

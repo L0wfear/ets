@@ -1,6 +1,8 @@
 import * as React from 'react';
 import SourceVector from 'ol/source/Vector';
 import LayerVector from 'ol/layer/Vector';
+import LayerVectorImage from 'ol/layer/VectorImage';
+
 import Feature from 'ol/Feature';
 import Map from 'ol/Map';
 
@@ -14,7 +16,7 @@ type PropsLayerProps = {
 
 type StateLayerProps = {
   vectorSource: SourceVector | null;
-  olLayer: LayerVector | null;
+  olLayer: LayerVectorImage | LayerVector | null;
 };
 
 type TypeConfig = {
@@ -30,14 +32,20 @@ const withLayerProps = (config: TypeConfig = {}) => (Component) => (
       olLayer: null,
     };
 
-    addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'vector' }) => {
+    addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer = ({ id = Math.random(), zIndex, renderMode = 'hybrid' }) => {
       return new Promise((res) => {
         const vectorSource = new SourceVector();
 
-        const olLayer = new LayerVector({
-          source: vectorSource,
-          renderMode,
-        });
+        let olLayer = null;
+        if (renderMode === 'image') {
+          olLayer = new LayerVectorImage({
+            source: vectorSource,
+          });
+        } else {
+          olLayer = new LayerVector({
+            source: vectorSource,
+          });
+        }
 
         // Определяет, что это не слой с картой
         olLayer.set('notMap', true);

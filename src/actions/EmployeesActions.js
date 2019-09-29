@@ -1,9 +1,5 @@
 import { Actions } from 'flummox';
-import {
-  EmployeeService,
-  DriverService,
-  WaybillDriverService,
-} from 'api/Services';
+import { EmployeeService, WaybillDriverService } from 'api/Services';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 const makeFilesToFrontendAll = (rows) =>
@@ -30,10 +26,6 @@ export default class EmployeesActions extends Actions {
       ...props,
     };
     return getEmployees(payload);
-  }
-
-  getDrivers() {
-    return DriverService.get();
   }
 
   getWaybillDrivers({ type = 'before', date_from, date_to, ...restPayload }) {

@@ -11,12 +11,10 @@ export default class EmployeeStore extends Store {
       employeesActions.getWaybillDrivers,
       this.handleGetWaybillDrivers,
     );
-    this.register(employeesActions.getDrivers, this.handleGetDrivers);
 
     this.state = {
       employeesList: [],
       employeesIndex: {},
-      driversList: [],
       waybillDriversList: [],
     };
   }
@@ -31,10 +29,6 @@ export default class EmployeeStore extends Store {
       employeesList: data,
       employeesIndex: keyBy(data, 'id'),
     });
-  }
-
-  handleGetDrivers({ result }) {
-    this.setState({ driversList: result });
   }
 
   handleGetWaybillDrivers({ result }) {

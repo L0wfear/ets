@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 
 import {
   getFilterData,
@@ -18,30 +18,43 @@ import { DivNone } from 'global-styled/global-styled';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
 import InputDate from 'components/new/ui/field/InputDate';
 import { createValidDate, createValidDateTime } from 'utils/dates';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { ReduxState } from 'redux-main/@types/state';
 
-type PropsAdvancedDateFilter = {
+type StateProps = {
+  filterValuesObj: OneRegistryData['filter']['rawFilterValues'][any];
+};
+type DispatchProps = {
+  dispatch: DispatchProp['dispatch'];
+};
+type OwnProps = {
   filterData: {
     title: string;
     valueKey: string;
     labelKey?: string;
     disabled?: boolean;
   };
-  filterValuesObj: any;
   formatedTitle: string;
   onChange: (valueKey: string, type: string, value: any) => any;
   time: boolean;
-};
+}
+;
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
-type StateAdvancedDateFilter = {
+type State = {
   activeTypeArr: string[];
   optionsType: any;
 };
 
-class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, StateAdvancedDateFilter> {
-  constructor(props) {
+class AdvancedDateFilter extends React.PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
     const eq = ['eq'];
-    const activeTypeArr: StateAdvancedDateFilter['activeTypeArr'] = eq;
+    const activeTypeArr: State['activeTypeArr'] = eq;
 
     this.state = {
       activeTypeArr,
@@ -182,10 +195,8 @@ class AdvancedDateFilter extends React.PureComponent<PropsAdvancedDateFilter, St
   }
 }
 
-const mapStateToProps = (state, { registryKey, filterData }) => ({
-  filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
-});
-
-export default connect(
-  mapStateToProps,
+export default connect<StateProps, DispatchProps, any, ReduxState>(
+  (state, { registryKey, filterData }) => ({
+    filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
+  }),
 )(AdvancedDateFilter);

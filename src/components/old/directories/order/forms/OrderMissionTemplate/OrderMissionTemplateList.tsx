@@ -447,7 +447,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
                   onAllRowsChecked={this.onAllChecked}
                   onRowChecked={this.onRowChecked}
                   employeesList={this.props.employeesList}
-                  employeesIndex={this.props.employeesIndex}
+                  employeeIndex={this.props.employeeIndex}
 
                   structures={structures}
                 />

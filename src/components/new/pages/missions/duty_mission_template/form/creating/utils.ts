@@ -25,18 +25,18 @@ export const getDefaultDutyMissionTemplateElement = (element?: Partial<Pick<Duty
   return newElement;
 };
 
-export const checkMissionsOnStructureIdBrigade = (missionsArr: DutyMissionTemplate[], employeesIndex: Record<Employee['id'], Employee>) => {
+export const checkMissionsOnStructureIdBrigade = (missionsArr: DutyMissionTemplate[], employeeIndex: Record<Employee['id'], Employee>) => {
   const missionsWithStructureId = missionsArr.filter(({ structure_id }) => !!structure_id);
 
   if (missionsWithStructureId) {
     const notPermitedMissionsNumber = missionsWithStructureId.reduce((newArr, { foreman_id, brigade_employee_id_list, structure_id, number }) => {
       brigade_employee_id_list.forEach((employeeData) => {
-        if (!isPermittedEmployeeForDutyMission(employeesIndex[employeeData.employee_id], structure_id)) {
+        if (!isPermittedEmployeeForDutyMission(employeeIndex[employeeData.employee_id], structure_id)) {
           newArr.push(`<${number}>`);
         }
       });
 
-      if (!isPermittedEmployeeForDutyMission(employeesIndex[foreman_id], structure_id)) {
+      if (!isPermittedEmployeeForDutyMission(employeeIndex[foreman_id], structure_id)) {
         newArr.push(`<${number}>`);
       }
 

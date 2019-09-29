@@ -106,7 +106,7 @@ export const driverHasSpecialLicenseWithActiveDate = ({
     diffDates(new Date(), special_license_date_end) < 0);
 
 const hasOdometr = (gov_number) => !hasMotohours(gov_number);
-export const getDrivers = (state, employeesIndex, driversList) => {
+export const getDrivers = (state, employeeIndex, driversList) => {
   const licenceSwitcher = R.cond([
     [hasOdometr, R.always(driverHasLicenseWithActiveDate)],
     [hasMotohours, R.always(driverHasSpecialLicenseWithActiveDate)],
@@ -117,7 +117,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
   const driverAfterCheckOnCarEmpl = driversList.filter(
     ({ id, employee_id }) => {
       const key = id || employee_id;
-      const driverData = employeesIndex[key];
+      const driverData = employeeIndex[key];
 
       if (!driverData) {
         return false;
@@ -151,7 +151,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
   return driverListTrue
     .filter(({ id, employee_id }) => {
       const key = id || employee_id;
-      const driverData = employeesIndex[key];
+      const driverData = employeeIndex[key];
 
       if (!driverData) {
         return false;
@@ -166,7 +166,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
     })
     .map(({ id, employee_id }) => {
       const key = id || employee_id;
-      const driverData = employeesIndex[key];
+      const driverData = employeeIndex[key];
 
       const personnel_number = driverData.personnel_number
         ? `[${driverData.personnel_number}] `

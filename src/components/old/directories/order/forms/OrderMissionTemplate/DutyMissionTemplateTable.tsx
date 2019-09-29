@@ -81,7 +81,7 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
           options: uniqBy(
             props.employeesList.map(({ id }) => ({
               value: id,
-              label: employeeFIOLabelFunction(props.employeesIndex, id),
+              label: employeeFIOLabelFunction(props.employeeIndex, id),
             })),
             'value',
           ),

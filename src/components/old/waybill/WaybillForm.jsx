@@ -84,7 +84,10 @@ import {
   actionLoadEquipmentFuelRatesByCarModel,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import { actionGetTrackInfo } from 'redux-main/reducers/modules/some_uniq/track/actions';
-import { actionGetAndSetInStoreEmployeeBindedToCarService } from 'redux-main/reducers/modules/employee/employee/actions';
+import {
+  actionGetAndSetInStoreEmployeeBindedToCarService,
+  employeeGetAndSetInStore,
+} from 'redux-main/reducers/modules/employee/employee/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -285,7 +288,7 @@ class WaybillForm extends UNSAFE_Form {
           { page: this.props.page, path: this.props.path },
         ),
       ),
-      flux.getActions('employees').getEmployees(),
+      this.props.dispatch(employeeGetAndSetInStore({}, this.props)),
       this.props.dispatch(
         actionsWorkMode.getArrayAndSetInStore({}, this.props),
       ),
@@ -704,7 +707,7 @@ class WaybillForm extends UNSAFE_Form {
         if (driver_id) {
           const DRIVERS = getDrivers(
             { ...formState, driver_id },
-            this.props.employeesIndex,
+            this.props.employeeIndex,
             this.props.waybillDriversList,
           );
 
@@ -867,10 +870,10 @@ class WaybillForm extends UNSAFE_Form {
       changeObj.car_id = null;
       changeObj.driver_id = null;
     } else if (driver_id) {
-      const driver = this.props.employeesIndex[driver_id];
+      const driver = this.props.employeeIndex[driver_id];
       const DRIVERS = getDrivers(
         { ...this.props.formState, structure_id },
-        this.props.employeesIndex,
+        this.props.employeeIndex,
         this.props.waybillDriversList,
       );
 
@@ -1349,11 +1352,11 @@ class WaybillForm extends UNSAFE_Form {
       carList,
       carIndex,
       waybillDriversList = [],
-      employeesList = [],
+      employeeList = [],
       uniqEmployeesBindedOnCarList,
       appConfig,
       workModeList,
-      employeesIndex = {},
+      employeeIndex,
       isPermittedByKey = {},
       userStructures,
       userStructureId,
@@ -1444,7 +1447,7 @@ class WaybillForm extends UNSAFE_Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const EMPLOYEES = employeesList.map(({ id, full_name }) => ({
+    const EMPLOYEES = employeeList.map(({ id, full_name }) => ({
       value: id,
       label: full_name,
     }));
@@ -1464,7 +1467,7 @@ class WaybillForm extends UNSAFE_Form {
       = IS_CREATING || IS_DRAFT
         ? getDrivers(
           state,
-          employeesIndex,
+          employeeIndex,
           uniqEmployeesBindedOnCarList[0]
             ? uniqEmployeesBindedOnCarList
             : waybillDriversList,
@@ -1491,7 +1494,7 @@ class WaybillForm extends UNSAFE_Form {
     if (state.driver_id && !DRIVERS.some((d) => d.value === state.driver_id)) {
       DRIVERS.push({
         label: employeeFIOLabelFunction(
-          this.props.employeesIndex,
+          this.props.employeeIndex,
           state.driver_id,
         ),
         value: state.driver_id,
@@ -1795,7 +1798,7 @@ class WaybillForm extends UNSAFE_Form {
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
                 value={employeeFIOLabelFunction(
-                  employeesIndex,
+                  employeeIndex,
                   state.driver_id,
                   true,
                 )}
@@ -2558,5 +2561,7 @@ export default compose(
     carIndex: getAutobaseState(state).carIndex,
     uniqEmployeesBindedOnCarList: getEmployeeState(state)
       .uniqEmployeesBindedOnCarList,
+    employeeList: getEmployeeState(state).employeeList,
+    employeeIndex: getEmployeeState(state).employeeIndex,
   })),
 )(connectToStores(WaybillForm, ['employees', 'missions']));

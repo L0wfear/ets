@@ -39,7 +39,6 @@ export default class LoadingStore extends Store {
       waybillsActions.getWaybill,
       waybillsActions.getLastClosedWaybill,
 
-      employeesActions.getEmployees,
       employeesActions.getWaybillDrivers,
 
       missionsActons.updateMission,

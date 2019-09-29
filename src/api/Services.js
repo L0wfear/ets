@@ -9,7 +9,7 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: config.tracksCaching,
 });
 
-export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
+export const TrackInfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
   'info',
 ); // в payload нужно прокидывать version из localStorage
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(

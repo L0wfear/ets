@@ -82,6 +82,7 @@ import {
   fuelOperationsGet,
   actionLoadEquipmentFuelRatesByCarModel,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
+import { actionGetTrackInfo } from 'redux-main/reducers/modules/some_uniq/track/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -638,9 +639,17 @@ class WaybillForm extends UNSAFE_Form {
       loadingFields.consumption = true;
       this.setState({ loadingFields });
 
-      this.context.flux
-        .getActions('cars')
-        .getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
+      this.props
+        .dispatch(
+          actionGetTrackInfo(
+            {
+              gps_code,
+              from_dt: fact_departure_date,
+              to_dt: fact_arrival_date,
+            },
+            this.props,
+          ),
+        )
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,

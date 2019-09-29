@@ -10,8 +10,11 @@ import { isNotEqualAnd, hasMotohours } from 'utils/functions';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { actionLoadFuelRatesByCarModel, actionLoadEquipmentFuelRatesByCarModel } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
-import { EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
+import { EtsActionReturnType, EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { HandleThunkActionCreator } from 'react-redux';
+import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
@@ -335,14 +338,24 @@ export const checkMissionSelectBeforeClose = (
     )
     .then(checkErrorDate);
 
-export const getWaybillDrivers = (action, formState) => {
+export const getWaybillDrivers = (
+  dispatch: EtsDispatch,
+  action: HandleThunkActionCreator<typeof actionGetAndSetInStoreWaybillDriver>,
+  formState: Waybill,
+  meta: LoadingMeta,
+) => {
   const { status } = formState;
   if (!status || status === 'draft') {
-    return action({
-      company_id: formState.company_id,
-      date_from: formState.plan_departure_date,
-      date_to: formState.plan_arrival_date,
-    });
+    return dispatch(
+      action(
+        {
+          company_id: formState.company_id,
+          date_from: formState.plan_departure_date,
+          date_to: formState.plan_arrival_date,
+        },
+        meta,
+      ),
+    );
   }
 
   return Promise.resolve();

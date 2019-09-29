@@ -55,6 +55,7 @@ import {
   getSessionState,
   getAutobaseState,
   getSomeUniqState,
+  getEmployeeState,
 } from 'redux-main/reducers/selectors';
 
 import { BorderDash } from 'global-styled/global-styled';
@@ -83,6 +84,7 @@ import {
   actionLoadEquipmentFuelRatesByCarModel,
 } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import { actionGetTrackInfo } from 'redux-main/reducers/modules/some_uniq/track/actions';
+import { actionGetAndSetInStoreEmployeeBindedToCarService } from 'redux-main/reducers/modules/employee/employee/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -689,7 +691,12 @@ class WaybillForm extends UNSAFE_Form {
 
   getLatestWaybillDriver = (formState) => {
     const { car_id } = formState;
-    this.context.flux.getActions('employees').getEmployeeBindedToCar(car_id);
+    this.props.dispatch(
+      actionGetAndSetInStoreEmployeeBindedToCarService(
+        { asuods_id: car_id },
+        this.props,
+      ),
+    );
     this.context.flux
       .getActions('waybills')
       .getLatestWaybillDriver(car_id, formState.driver_id)
@@ -1171,15 +1178,15 @@ class WaybillForm extends UNSAFE_Form {
             rejectMission.handlerName
             === 'actionPostMissionReassignationParameters'
           ) {
-            response = await this.props.actionPostMissionReassignationParameters(
-              rejectMission.payload,
+            response = await this.props.dispatch(
+              actionPostMissionReassignationParameters(rejectMission.payload),
             );
           } else if (
             rejectMission.handlerName
             === 'actionPutMissionReassignationParameters'
           ) {
-            response = await this.props.actionPutMissionReassignationParameters(
-              rejectMission.payload,
+            response = await this.props.dispatch(
+              actionPutMissionReassignationParameters(rejectMission.payload),
             );
           } else if (rejectMission.handlerName === 'updateMission') {
             response = await this.context.flux
@@ -1343,7 +1350,7 @@ class WaybillForm extends UNSAFE_Form {
       carIndex,
       waybillDriversList = [],
       employeesList = [],
-      uniqEmployeesBindedoOnCarList = [],
+      uniqEmployeesBindedOnCarList,
       appConfig,
       workModeList,
       employeesIndex = {},
@@ -1458,8 +1465,8 @@ class WaybillForm extends UNSAFE_Form {
         ? getDrivers(
           state,
           employeesIndex,
-          uniqEmployeesBindedoOnCarList.length
-            ? uniqEmployeesBindedoOnCarList
+          uniqEmployeesBindedOnCarList[0]
+            ? uniqEmployeesBindedOnCarList
             : waybillDriversList,
         )
         : [];
@@ -2537,26 +2544,19 @@ WaybillForm.contextTypes = {
 };
 
 export default compose(
-  connect(
-    (state) => ({
-      appConfig: getSessionState(state).appConfig,
-      userStructureId: getSessionState(state).userData.structure_id,
-      userCompanyId: getSessionState(state).userData.company_id,
-      userStructures: getSessionState(state).userData.structures,
-      userPermissionsSet: getSessionState(state).userData.permissionsSet,
-      fuelCardsList: getAutobaseState(state).fuelCardsList,
-      workModeList: getSomeUniqState(state).workModeList,
-      order_mission_source_id: getSomeUniqState(state).missionSource
-        .order_mission_source_id,
-      carList: getAutobaseState(state).carList,
-      carIndex: getAutobaseState(state).carIndex,
-    }),
-    (dispatch) => ({
-      dispatch,
-      actionPostMissionReassignationParameters: (...arg) =>
-        dispatch(actionPostMissionReassignationParameters(...arg)),
-      actionPutMissionReassignationParameters: (...arg) =>
-        dispatch(actionPutMissionReassignationParameters(...arg)),
-    }),
-  ),
+  connect((state) => ({
+    appConfig: getSessionState(state).appConfig,
+    userStructureId: getSessionState(state).userData.structure_id,
+    userCompanyId: getSessionState(state).userData.company_id,
+    userStructures: getSessionState(state).userData.structures,
+    userPermissionsSet: getSessionState(state).userData.permissionsSet,
+    fuelCardsList: getAutobaseState(state).fuelCardsList,
+    workModeList: getSomeUniqState(state).workModeList,
+    order_mission_source_id: getSomeUniqState(state).missionSource
+      .order_mission_source_id,
+    carList: getAutobaseState(state).carList,
+    carIndex: getAutobaseState(state).carIndex,
+    uniqEmployeesBindedOnCarList: getEmployeeState(state)
+      .uniqEmployeesBindedOnCarList,
+  })),
 )(connectToStores(WaybillForm, ['employees', 'missions']));

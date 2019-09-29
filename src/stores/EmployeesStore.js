@@ -8,10 +8,6 @@ export default class EmployeeStore extends Store {
     const employeesActions = flux.getActions('employees');
     this.register(employeesActions.getEmployees, this.handleGetEmployees);
     this.register(
-      employeesActions.getEmployeeBindedToCar,
-      this.handleGetEmployeeBindedToCar,
-    );
-    this.register(
       employeesActions.getWaybillDrivers,
       this.handleGetWaybillDrivers,
     );
@@ -20,8 +16,6 @@ export default class EmployeeStore extends Store {
     this.state = {
       employeesList: [],
       employeesIndex: {},
-      employeesBindedoOnCarList: [],
-      uniqEmployeesBindedoOnCarList: [],
       driversList: [],
       waybillDriversList: [],
     };
@@ -36,23 +30,6 @@ export default class EmployeeStore extends Store {
     this.setState({
       employeesList: data,
       employeesIndex: keyBy(data, 'id'),
-    });
-  }
-
-  handleGetEmployeeBindedToCar(result) {
-    this.setState({
-      employeesBindedoOnCarList: result,
-      uniqEmployeesBindedoOnCarList: Object.values(
-        result.reduce((newObj, partialEmployee) => {
-          if (!newObj[partialEmployee.employee_id]) {
-            newObj[partialEmployee.employee_id] = partialEmployee;
-          } else if (partialEmployee.binding_type === 'primary') {
-            newObj[partialEmployee.employee_id] = partialEmployee;
-          }
-
-          return newObj;
-        }, {}),
-      ),
     });
   }
 

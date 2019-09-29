@@ -13,7 +13,7 @@ const validateValue = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow:
       return getRequiredFieldMessage('Норма');
     }
 
-    const floadError = floatValidate(Number(rowData.value), 3, 'Норма');
+    const floadError = floatValidate(Number(rowData.value), 4, 'Норма');
     if (floadError) {
       return floadError;
     }

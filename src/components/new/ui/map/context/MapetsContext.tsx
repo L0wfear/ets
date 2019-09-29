@@ -2,7 +2,7 @@ import * as React from 'react';
 import Map from 'ol/Map';
 
 import { StateMapEtsProvider } from 'components/new/ui/map/context/MapetsContext.h';
-import { resizeBase64 } from 'utils/functions';
+import { resizeBase64, getCanvasOfElement } from 'utils/functions';
 
 const defaultState: StateMapEtsProvider = {
   mapByKeys: {},
@@ -56,11 +56,13 @@ export class MapEtsProvider extends React.Component<{}, StateMapEtsProvider> {
       const { mapByKeys: { [key]: map } } = this.state;
 
       if (map) {
-        map.once('postcompose', async (event) => {
-          const image: any = await resizeBase64(event.context.canvas.toDataURL('image/png'));
+        map.once('postrender', async (event) => {
+          const canvas = await getCanvasOfElement(event.map.getTargetElement());
+
+          const image: any = await resizeBase64(canvas.toDataURL('image/png'));
           res({
             image,
-            canvas: event.context.canvas,
+            canvas,
           });
         });
         map.render();

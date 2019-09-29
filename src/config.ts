@@ -5,138 +5,43 @@ const PROTO = window.location.protocol;
 const HOST = window.location.host;
 const PATHNAME = window.location.pathname;
 
-const WS_PROTO = (
-  PROTO === 'https:'
-    ? 'wss:'
-    : 'ws:'
-);
 const STAND = process.env.STAND;
 
-const hostTypes = {
-  develop: {
-    dev: 'dev-ets.gost-group.com/',
-    gost_stage: 'ets-stage.gost-group.com/',
-    ets_test: 'ets-test.mos.ru/',
-    ets_hotfix: 'ets-hotfix.mos.ru/',
-    prod: 'ets.mos.ru/',
-  },
-  origin: HOST,
+export const host_dev = {
+  dev: 'dev-ets.gost-group.com/',
+  gost_stage: 'ets-stage.gost-group.com/',
+  ets_test: 'ets-test.mos.ru/',
+  ets_hotfix: 'ets-hotfix.mos.ru/',
+  prod: 'ets.mos.ru/',
 };
+
+const hostPathName = {
+  develop: host_dev[STAND],
+  origin: `${HOST}${PATHNAME}`,
+};
+
 const urls = {
-  develop: {
-    dev: `https://${hostTypes.develop.dev}`,
-    gost_stage: `https://${hostTypes.develop.gost_stage}`,
-    ets_test: `https://${hostTypes.develop.ets_test}`,
-    ets_hotfix: `https://${hostTypes.develop.ets_hotfix}`,
-    prod: `https://${hostTypes.develop.prod}`,
-  },
-  origin: `${PROTO}//${HOST}${PATHNAME}`,
+  develop: `https://${hostPathName.develop}`,
+  origin: `${PROTO}//${hostPathName.origin}`,
 };
 
-const ADMIN_URL = {
-  develop: {
-    dev: `${urls.develop.dev}admin`,
-    gost_stage: `${urls.develop.gost_stage}admin`,
-    ets_test: `${urls.develop.ets_test}admin`,
-    ets_hotfix: `${urls.develop.ets_hotfix}admin`,
-    prod: `${urls.develop.prod}admin`,
-  },
-  origin: `${PROTO}//${HOST}${PATHNAME}admin/`,
-};
-
-const DOC_URL = {
-  develop: {
-    dev: `${urls.develop.dev}docs/`,
-    gost_stage: `${urls.develop.gost_stage}docs/`,
-    ets_test: `${urls.develop.ets_test}docs/`,
-    ets_hotfix: `${urls.develop.ets_hotfix}docs/`,
-    prod: `${urls.develop.prod}docs/`,
-  },
-  origin: `${PROTO}//${HOST}${PATHNAME}docs/`,
-};
-
-const IMAGE_URL = {
-  develop: {
-    dev: `${urls.develop.dev}ets/data/images/`,
-    gost_stage: `${urls.develop.gost_stage}ets/data/images/`,
-    ets_test: `${urls.develop.ets_test}ets/data/images/`,
-    ets_hotfix: `${urls.develop.ets_hotfix}ets/data/images/`,
-    prod: `${urls.develop.prod}ets/data/images/`,
-  },
-  origin: `${PROTO}//${HOST}${PATHNAME}ets/data/images/`,
-};
-
-const config = {
-  develop: {
-    images: IMAGE_URL.develop[process.env.STAND],
-    docs: DOC_URL.develop[process.env.STAND],
-    admin: ADMIN_URL.develop[process.env.STAND],
-  },
-  origin: {
-    images: IMAGE_URL.origin,
-    docs: DOC_URL.origin,
-    admin: ADMIN_URL.origin,
-  },
-};
-
-const notification_config = {
-  develop: {
-    dev: 'wss://dev-ets.gost-group.com/services/notification_ws',
-    gost_stage: 'wss://ets-stage.gost-group.com/services/notification_ws',
-    ets_test: 'wss://ets-test.mos.ru/services/notification_ws',
-    ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',
-    prod: 'wss://ets.mos.ru/services/notification_ws',
-  },
-  origin: `${WS_PROTO}//${HOST}${PATHNAME}services/notification_ws`,
-};
-
-export const configApi = {
-  develop: {
-    dev: `${urls.develop.dev}services`,
-    gost_stage: `${urls.develop.gost_stage}services`,
-    ets_test: `${urls.develop.ets_test}services`,
-    ets_hotfix: `${urls.develop.ets_hotfix}services`,
-    prod: `${urls.develop.prod}services`,
-  },
-  origin: `${PROTO}//${HOST}${PATHNAME}services`,
-};
-
-const configs = {
-  url: urls.develop.dev,
-  images: config.develop.images,
-  docs: config.develop.docs,
-  admin: config.develop.admin,
-  backend: configApi.develop.dev,
-  notification_ws: notification_config.develop.dev,
-  tracksCaching: `https://psd.mos.ru/tracks-caching${
-    STAND !== 'prod' ? '-dev' : ''
-  }`,
-};
 const pathToConfig = __DEVELOPMENT__ ? 'develop' : 'origin';
 
-try {
-  configs.url = (
-    pathToConfig === 'develop'
-      ? urls[pathToConfig][STAND]
-      : urls.origin
-  );
-  configs.images = config[pathToConfig].images;
-  configs.docs = config[pathToConfig].docs;
-  configs.admin = config[pathToConfig].admin;
-  configs.backend = (
-    pathToConfig === 'develop'
-      ? configApi[pathToConfig][STAND]
-      : configApi.origin
-  );
+const ADMIN_URL = `${urls[pathToConfig]}admin`;
+const DOC_URL = `${urls[pathToConfig]}docs/`;
+const IMAGE_URL = `${urls[pathToConfig]}ets/data/images/`;
+const configApi = `${urls[pathToConfig]}services`;
+const notification_config = `wss://${hostPathName[pathToConfig]}services/notification_ws`;
+const tracksCaching = `https://psd.mos.ru/tracks-caching${STAND !== 'prod' ? '-dev' : ''}`;
 
-  configs.notification_ws = (
-    pathToConfig === 'develop'
-      ? notification_config[pathToConfig][STAND]
-      : notification_config.origin
-  );
-} catch (e) {
-  // tslint:disable-next-line
-  console.warn(e);
-}
+const configs = {
+  url: urls[pathToConfig],
+  images: IMAGE_URL,
+  docs: DOC_URL,
+  admin: ADMIN_URL,
+  backend: configApi,
+  notification_ws: notification_config,
+  tracksCaching,
+};
 
 export default configs;

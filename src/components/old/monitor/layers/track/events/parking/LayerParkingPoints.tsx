@@ -29,7 +29,7 @@ type StateLayerParkingPoints = {
 
 class LayerParkingPoints extends React.PureComponent<PropsLayerParkingPoints, StateLayerParkingPoints> {
   componentDidMount() {
-    this.props.addLayer({ id: 'ParkingPoints', zIndex: 4, renderMode: 'vector' }).then(() => {
+    this.props.addLayer({ id: 'ParkingPoints', zIndex: 4, renderMode: 'hybrid' }).then(() => {
       this.props.setDataInLayer('singleclick', this.singleclick);
 
       this.drawTrackPoints(this.props.front_parkings);

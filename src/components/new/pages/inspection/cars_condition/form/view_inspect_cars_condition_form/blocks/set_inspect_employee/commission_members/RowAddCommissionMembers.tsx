@@ -6,12 +6,15 @@ import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useInspectAuditorsOptions from 'components/new/utils/hooks/services/useOptions/useInspectAuditorsOptions';
 import { RowAddCommissionMembersWrapper } from './styled';
-import { AgentsFromGbuMemberDataContainer } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/agents_from_gbu/styled';
+import { AgentsFromGbuMemberDataContainer, AgentsFromGbuCloseBtn } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/set_inspect_employee/agents_from_gbu/styled';
+import { FooterEnd } from 'global-styled/global-styled';
 
 type RowAddCommissionMembersProps = {
   handleAddChangeCommissionMembers: (commission_members: ValuesOf<InspectCarsCondition['commission_members']>) => any;
   commission_members: InspectCarsCondition['commission_members'];
   company_id: InspectCarsCondition['company_id']
+  handleCloseCommissionMembers: any;
+  showCloseBtn: boolean;
 
   page: string;
   path?: string;
@@ -31,6 +34,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
           position: selectedEmployee.rowData.position_name,
         });
         setSelectedEmployee(null);
+        props.handleCloseCommissionMembers();
       },
       [selectedEmployee],
     );
@@ -56,6 +60,15 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <AgentsFromGbuMemberDataContainer>
+            {
+                props.showCloseBtn && (
+                  <FooterEnd>
+                    <AgentsFromGbuCloseBtn onClick={props.handleCloseCommissionMembers}>
+                      <EtsBootstrap.Glyphicon glyph="remove"/>
+                    </AgentsFromGbuCloseBtn>
+                  </FooterEnd>
+                )
+              }
               <ExtField
                 type="select"
                 value={selectedEmployee}
@@ -71,7 +84,7 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
                 disabled={!selectedEmployee}
                 onClick={handleClickAddCommissionEmployee}
               >
-              <EtsBootstrap.Glyphicon glyph="plus" /> {'Добавить проверяющего'}
+              {'Сохранить'}
             </EtsBootstrap.Button>
           </AgentsFromGbuMemberDataContainer>
           </EtsBootstrap.Col>

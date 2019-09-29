@@ -16,7 +16,7 @@ import { PropsLayerPlayPoint } from 'components/old/monitor/layers/track/play-po
 class LayerPlayPoint extends React.PureComponent<PropsLayerPlayPoint, {}> {
   componentDidMount() {
     this.props
-      .addLayer({ id: 'PlayPoint', zIndex: 11, renderMode: 'vector' })
+      .addLayer({ id: 'PlayPoint', zIndex: 11, renderMode: 'hybrid' })
       .then(() => {
         this.props.setDataInLayer('singleclick', undefined);
 

@@ -48,11 +48,12 @@ export const getToConfig = (): TypeConfigData<BatteryManufacturer> => {
           {
             key: 'enumerated',
             title: '№',
+            width: 1,
           },
           {
             key: 'name',
             title: 'Производитель аккумулятора',
-            width: 400,
+            width: 800,
           },
         ],
       },

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+import { connect } from 'react-redux';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as ClickOutHandler from 'react-onclickout';
 import { ReduxState } from 'redux-main/@types/state';
 import ColumnsPopup from './column_popup/ColumnsPopup';
-import { actionChangeRegistryMetaFields } from 'components/new/ui/registry/module/actions-registy';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 
@@ -12,7 +11,6 @@ type ButtonColumnsControlStateProps = {
   hasHiddenField: boolean;
 };
 type ButtonColumnsControlDispatchProps = {
-  actionChangeRegistryMetaFields: HandleThunkActionCreator<typeof actionChangeRegistryMetaFields>;
 };
 type ButtonColumnsControlOwnProps = {
   registryKey: string;

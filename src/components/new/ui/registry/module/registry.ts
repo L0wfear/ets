@@ -74,7 +74,7 @@ export interface OneRegistryData {
   filter: {
     isOpen?: boolean;
     fields: OneFilterType<any>[],
-    rawFilterValues?: {},
+    rawFilterValues?: Record<string, any>,
     displayIf?: TypeOneDisplayIf | TypeOneDisplayIf[];
   };
 }

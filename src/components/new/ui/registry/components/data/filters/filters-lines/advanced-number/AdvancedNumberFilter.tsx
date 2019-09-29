@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
+import { connect, DispatchProp } from 'react-redux';
 
 import {
   getFilterData,
@@ -17,8 +17,17 @@ import {
 import InputNumber from 'components/new/ui/field/InputNumber';
 import { DivNone } from 'global-styled/global-styled';
 import ReactSelect from 'components/ui/input/ReactSelect/ReactSelect';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
+import { ReduxState } from 'redux-main/@types/state';
 
-type PropsAdvancedNumberFilter = {
+type StateProps = {
+  filterValuesObj: OneRegistryData['filter']['rawFilterValues'][any];
+};
+type DispatchProps = {
+  dispatch: DispatchProp['dispatch'];
+};
+type OwnProps = {
+  registryKey: string;
   filterData: {
     title: string;
     valueKey: string;
@@ -26,21 +35,25 @@ type PropsAdvancedNumberFilter = {
     disabled?: boolean;
     step: number;
   };
-  filterValuesObj: any;
   formatedTitle: string;
   onChange: (valueKey: string, type: string, value: any) => any;
 };
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
-type StateAdvancedNumberFilter = {
+type State = {
   activeTypeArr: string[];
   optionsType: any;
 };
 
-class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter, StateAdvancedNumberFilter> {
+class AdvancedNumberFilter extends React.PureComponent<Props, State> {
   constructor(props) {
     super(props);
     const eq = ['eq'];
-    const activeTypeArr: StateAdvancedNumberFilter['activeTypeArr'] = eq;
+    const activeTypeArr: State['activeTypeArr'] = eq;
 
     this.state = {
       activeTypeArr,
@@ -162,10 +175,8 @@ class AdvancedNumberFilter extends React.PureComponent<PropsAdvancedNumberFilter
   }
 }
 
-const mapStateToProps = (state, { registryKey, filterData }) => ({
-  filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
-});
-
-export default connect(
-  mapStateToProps,
+export default connect<StateProps, DispatchProps, any, ReduxState>(
+  (state, { registryKey, filterData }) => ({
+    filterValuesObj: getFilterData(state.registry, registryKey).rawFilterValues[filterData.valueKey],
+  }),
 )(AdvancedNumberFilter);

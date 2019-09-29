@@ -18,11 +18,12 @@ import AdvancedStringLikeFilter from './advanced-string-like/AdvancedStringLikeF
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { compose } from 'recompose';
 import AdvancedSelectLikeFilter from './advanced-select-like/AdvancedSelectLikeFilter';
+import { OneRegistryData } from 'components/new/ui/registry/module/registry';
 
 type PropsFiltersLines = {
   wasFirstOpen: boolean;
   registryKey: string;
-  fileds: any[];
+  fileds: OneRegistryData['filter']['fields'];
   userData: InitialStateSession['userData'];
   onChangeFilterRawValue: (valueKey: string, type: string, value: any) => any;
   STRUCTURES: ReturnType<typeof getSessionStructuresOptions>;
@@ -36,10 +37,10 @@ class FiltersLines extends React.PureComponent<PropsFiltersLines, StateFiltersLi
     this.props.onChangeFilterRawValue(valueKey, type, value);
   }
 
-  fieldMap = ({ type, ...otherFilterData }, index) => {
+  fieldMap = ({ type, ...otherFilterData }: ValuesOf<OneRegistryData['filter']['fields']>, index) => {
     const { registryKey } = this.props;
 
-    let formatedTitle = otherFilterData.title;
+    let formatedTitle: any = otherFilterData.title;
 
     if (isArray(otherFilterData.title)) {
       formatedTitle = otherFilterData.title.reduce((filtredTitle, titleSomeValue) => {

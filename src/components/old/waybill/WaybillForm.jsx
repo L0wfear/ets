@@ -89,6 +89,7 @@ import {
   employeeGetAndSetInStore,
 } from 'redux-main/reducers/modules/employee/employee/actions';
 import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
+import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -764,10 +765,9 @@ class WaybillForm extends UNSAFE_Form {
             );
           }
           this.props.clearSomeData();
-          return this.context.flux
-            .getActions('waybills')
-            .getLastClosedWaybill(car_id)
-            .then(({ result: lastCarUsedWaybill }) =>
+          return this.props
+            .dispatch(actionGetLastClosedWaybill({ car_id }, this.props))
+            .then((lastCarUsedWaybill) =>
               res({
                 ...fieldsToChange,
                 ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
@@ -791,7 +791,7 @@ class WaybillForm extends UNSAFE_Form {
     }, 0);
   };
 
-  getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
+  getFieldsToChangeBasedOnLastWaybill = (lastCarUsedWaybill) => {
     let fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
@@ -838,11 +838,10 @@ class WaybillForm extends UNSAFE_Form {
    */
   refresh = async () => {
     const state = this.props.formState;
-    const { flux } = this.context;
 
-    const { result: lastCarUsedWaybill } = await flux
-      .getActions('waybills')
-      .getLastClosedWaybill(state.car_id);
+    const lastCarUsedWaybill = await this.props.dispatch(
+      actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
+    );
     const plan_departure_date
       = diffDates(new Date(), state.plan_departure_date) > 0
         ? new Date()
@@ -1123,11 +1122,9 @@ class WaybillForm extends UNSAFE_Form {
       formState: { car_id },
     } = this.props;
 
-    const {
-      result: [lastCarUsedWaybill],
-    } = await this.context.flux
-      .getActions('waybills')
-      .getLastClosedWaybill(car_id);
+    const lastCarUsedWaybill = await this.props.dispatch(
+      actionGetLastClosedWaybill({ car_id }, this.props),
+    );
 
     const closedEquipmentData = getClosedEquipmentData(lastCarUsedWaybill);
     closedEquipmentData.equipment_fuel = true;

@@ -1,4 +1,4 @@
-import { WaybillService, WaybillJournalReportService, WaybillsReportService, LatestWaybillDriverService } from 'api/Services';
+import { WaybillService, WaybillJournalReportService, WaybillsReportService, LatestWaybillDriverService, WaybillClosedService } from 'api/Services';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import {
   get,
@@ -6,6 +6,7 @@ import {
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { monthOptions, makeDate } from 'components/@next/@utils/dates/dates';
 import { isArray } from 'util';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const getOneWaybillFront = (waybillRaw) => {
   const waybill: Waybill = waybillRaw;
@@ -178,6 +179,23 @@ export const submitWaybill = async (waybillRaw: Partial<Waybill>) => {
     ...waybillRaw,
     ...get(response, 'result.0', null),
   };
+
+  return result;
+};
+
+export const promiseGetLastClosedWaybill = async (payloadOwn: { car_id: Car['asuods_id'] }) => {
+  const payload = {
+    car_id: payloadOwn.car_id,
+  };
+  let response = null;
+
+  try {
+    response = await WaybillClosedService.get(payload);
+  } catch {
+    //
+  }
+
+  const result: Waybill = get(response, 'result.rows.0') || get(response, 'result.0') || null;
 
   return result;
 };

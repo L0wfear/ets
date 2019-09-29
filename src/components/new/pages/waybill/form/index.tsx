@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { withFormRegistrySearch, WithFormRegistrySearchProps, WithFormRegistrySearchAddProps } from 'components/old/compositions/vokinda-hoc/formWrap/withFormRegistrySearch';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = React.lazy(() => (
   import(/* webpackChunkName: "waybill_form_wrap" */ 'components/old/waybill/WaybillFormWrap')
@@ -21,7 +21,7 @@ const WaybilFormlLazy: React.FC<WithFormRegistrySearchAddProps<Partial<Waybill>>
 
         const id = get(props.element, 'id', null);
         if (id) {
-          dispatch(waybillActions.actionGetWaybillById(id, props)).then(
+          dispatch(actionGetWaybillById(id, props)).then(
             (waybill) => {
               if (waybill) {
                 setElementMemo(waybill);

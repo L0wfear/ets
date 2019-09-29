@@ -29,6 +29,13 @@ export const FilesService = ETS_API_FACTORY.createApiServiceAdapter('files');
 export const WaybillService = ETS_API_FACTORY.createApiServiceAdapter(
   'waybill',
 );
+export const WaybillClosedService = ETS_API_FACTORY.createApiServiceAdapter(
+  'waybill/closed',
+);
+export const WaybillAvailableMissionsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'waybill/available_missions',
+);
+
 export const WaybillCarService = ETS_API_FACTORY.createApiServiceAdapter(
   'filters/waybill/cars',
 );

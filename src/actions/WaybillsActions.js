@@ -12,13 +12,6 @@ import { isArray } from 'util';
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
 export default class WaybillsActions extends Actions {
-  getLastClosedWaybill(car_id) {
-    const payload = {
-      car_id,
-    };
-    return WaybillService.path('closed').get(payload);
-  }
-
   getLatestWaybillDriver(car_id, driver_id) {
     const payload = {};
 

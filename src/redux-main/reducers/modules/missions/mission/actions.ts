@@ -29,12 +29,13 @@ import {
 } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+
 import edcRequestActions from '../../edc_request/edc_request_actions';
 import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): EtsAction<IStateMissions['missionData']> => (
   dispatch,
@@ -240,8 +241,8 @@ const loadEdcRequiedByIdForMission = (id: number, meta: LoadingMeta): EtsAction<
 const actionLoadWaybillDataByIdForMission = (
   waybill_id: number,
   meta: LoadingMeta,
-): EtsAction<EtsActionReturnType<typeof waybillActions.actionGetWaybillById>> => async (dispatch) => {
-  const waybillData = await dispatch(waybillActions.actionGetWaybillById(waybill_id, meta));
+): EtsAction<EtsActionReturnType<typeof actionGetWaybillById>> => async (dispatch) => {
+  const waybillData = await dispatch(actionGetWaybillById(waybill_id, meta));
 
   dispatch(
     actionSetDependenceWaybillDataForMission(

@@ -8,7 +8,7 @@ import {
   Cleaning,
 } from 'api/missions';
 
-import { WaybillService } from 'api/Services';
+import { WaybillAvailableMissionsService } from 'api/Services';
 
 export const parseFilterObject = (filter) =>
   Object.entries(flattenObject(filter)).reduce(
@@ -57,7 +57,7 @@ export default class MissionsActions extends Actions {
       payload.waybill_id = waybill_id;
     }
 
-    return WaybillService.path('available_missions').get(payload);
+    return WaybillAvailableMissionsService.get(payload);
   }
 
   /**

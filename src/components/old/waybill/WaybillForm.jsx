@@ -92,6 +92,7 @@ import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules
 import {
   actionGetLastClosedWaybill,
   actionGetLatestWaybillDriver,
+  actionGetWaybillById,
 } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
@@ -277,7 +278,6 @@ class WaybillForm extends UNSAFE_Form {
       formState,
       formState: { status },
     } = this.props;
-    const { flux } = this.context;
 
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
@@ -322,10 +322,9 @@ class WaybillForm extends UNSAFE_Form {
     }
 
     if (!IS_CREATING) {
-      await flux
-        .getActions('waybills')
-        .getWaybill(formState.id)
-        .then(({ result: waybill }) => {
+      await this.props
+        .dispatch(actionGetWaybillById(formState.id, this.props))
+        .then((waybill) => {
           this.handleMultipleChange(waybill);
           this.setState({
             canEditIfClose: waybill.closed_editable

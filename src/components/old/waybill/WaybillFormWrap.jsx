@@ -536,7 +536,6 @@ class WaybillFormWrap extends React.Component {
    * @return {undefined}
    */
   handlePrint = async (printonly, print_form_type) => {
-    const { flux } = this.context;
     const { formState } = this.state;
 
     const currentWaybillId = formState.id;
@@ -552,7 +551,7 @@ class WaybillFormWrap extends React.Component {
       children: makeReactMessage('Формирование печатной формы'),
     });
     const callback = (waybill_id = currentWaybillId) =>
-      flux
+      this.context.flux
         .getActions('waybills')
         .printWaybill(print_form_type, waybill_id)
         .then((respoce) => saveData(respoce.blob, respoce.fileName))
@@ -582,12 +581,11 @@ class WaybillFormWrap extends React.Component {
    */
   submitActiveWaybill = async (closeForm, state = this.state.formState) => {
     const formState = { ...state };
-    const { flux } = this.context;
 
     if (closeForm) {
       // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
       try {
-        await flux.getActions('waybills').updateWaybill(formState);
+        await this.context.flux.getActions('waybills').updateWaybill(formState);
       } catch ({ error_text }) {
         console.log(error_text); // eslint-disable-line
         return;
@@ -616,13 +614,14 @@ class WaybillFormWrap extends React.Component {
   handleFormSubmit = async (state = this.state.formState, callback) => {
     const formState = cloneDeep(state);
     const waybillStatus = formState.status;
-    const { flux } = this.context;
 
     if (!waybillStatus) {
       // если создаем ПЛ
       if (typeof callback === 'function') {
         formState.status = 'draft';
-        const r = await flux.getActions('waybills').createWaybill(formState);
+        const r = await this.context.flux
+          .getActions('waybills')
+          .createWaybill(formState);
 
         // TODO сейчас возвращается один ПЛ
         const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
@@ -631,7 +630,9 @@ class WaybillFormWrap extends React.Component {
           formState.status = 'active';
           formState.id = id;
 
-          await flux.getActions('waybills').updateWaybill(formState);
+          await this.context.flux
+            .getActions('waybills')
+            .updateWaybill(formState);
           callback(id);
         } catch ({ errorIsShow }) {
           !errorIsShow
@@ -650,7 +651,9 @@ class WaybillFormWrap extends React.Component {
       } else {
         formState.status = 'draft';
         try {
-          await flux.getActions('waybills').createWaybill(formState);
+          await this.context.flux
+            .getActions('waybills')
+            .createWaybill(formState);
         } catch ({ error_text }) {
           console.log(error_text); // eslint-disable-line
           return;
@@ -663,7 +666,9 @@ class WaybillFormWrap extends React.Component {
         formState.status = 'active';
 
         try {
-          await flux.getActions('waybills').updateWaybill(formState);
+          await this.context.flux
+            .getActions('waybills')
+            .updateWaybill(formState);
         } catch (e) {
           return;
         }
@@ -673,7 +678,9 @@ class WaybillFormWrap extends React.Component {
         }
       } else {
         try {
-          await flux.getActions('waybills').updateWaybill(formState);
+          await this.context.flux
+            .getActions('waybills')
+            .updateWaybill(formState);
         } catch (e) {
           return;
         }
@@ -683,7 +690,7 @@ class WaybillFormWrap extends React.Component {
       this.submitActiveWaybill();
     } else if (waybillStatus === 'closed') {
       try {
-        await flux.getActions('waybills').updateWaybill(formState);
+        await this.context.flux.getActions('waybills').updateWaybill(formState);
       } catch ({ error_text }) {
         console.log(error_text); // eslint-disable-line
         return;

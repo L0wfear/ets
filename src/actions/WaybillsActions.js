@@ -1,61 +1,13 @@
 import { Actions } from 'flummox';
-import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { clone, mapKeys } from 'lodash';
+
+import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { hasMotohours, isEmpty } from 'utils/functions';
 import { WaybillService, RootService } from 'api/Services';
-import { isArray } from 'util';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
 export default class WaybillsActions extends Actions {
-  getWaybill(id) {
-    return WaybillService.path(id)
-      .get()
-      .then(({ result }) => {
-        const waybill = result;
-        if (waybill) {
-          if (isArray(waybill.tax_data)) {
-            waybill.tax_data = waybill.tax_data.map((tax) => {
-              tax.originOperation = true;
-              tax.uniqKey = `originOperation_${tax.OPERATION}`;
-              tax.operation_name = `${tax.operation_name}, ${tax.measure_unit_name}`;
-              if (tax.comment) {
-                tax.operation_name = `${tax.operation_name} (${tax.comment})`;
-              }
-              if (tax.is_excluding_mileage) {
-                tax.operation_name = `${tax.operation_name} [без учета пробега]`;
-              }
-              return tax;
-            });
-          } else {
-            waybill.tax_data = [];
-          }
-          if (isArray(waybill.equipment_tax_data)) {
-            waybill.equipment_tax_data = waybill.equipment_tax_data.map(
-              (tax) => {
-                tax.originOperation = true;
-                tax.uniqKey = `originOperation_${tax.OPERATION}`;
-                tax.operation_name = `${tax.operation_name}, ${tax.measure_unit_name}`;
-                if (tax.comment) {
-                  tax.operation_name = `${tax.operation_name} (${tax.comment})`;
-                }
-                if (tax.is_excluding_mileage) {
-                  tax.operation_name = `${tax.operation_name} [без учета пробега]`;
-                }
-                return tax;
-              },
-            );
-          } else {
-            waybill.equipment_tax_data = [];
-          }
-        }
-
-        return {
-          result: waybill,
-        };
-      });
-  }
-
   printWaybill(print_form_type, waybill_id) {
     const payload = {
       waybill_id,

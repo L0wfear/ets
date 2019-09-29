@@ -89,7 +89,10 @@ import {
   employeeGetAndSetInStore,
 } from 'redux-main/reducers/modules/employee/employee/actions';
 import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
-import { actionGetLastClosedWaybill } from 'redux-main/reducers/modules/waybill/waybill_actions';
+import {
+  actionGetLastClosedWaybill,
+  actionGetLatestWaybillDriver,
+} from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -706,10 +709,17 @@ class WaybillForm extends UNSAFE_Form {
         this.props,
       ),
     );
-    this.context.flux
-      .getActions('waybills')
-      .getLatestWaybillDriver(car_id, formState.driver_id)
-      .then(({ result: { driver_id = null } }) => {
+    this.props
+      .dispatch(
+        actionGetLatestWaybillDriver(
+          {
+            car_id,
+            driver_id: formState.driver_id,
+          },
+          this.props,
+        ),
+      )
+      .then((driver_id) => {
         if (driver_id) {
           const DRIVERS = getDrivers(
             { ...formState, driver_id },

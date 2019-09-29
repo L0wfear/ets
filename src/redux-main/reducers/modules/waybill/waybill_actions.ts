@@ -1,5 +1,5 @@
 import {
-  promiseGetWaybillById, promiseGetBlobWaybilljournalReport, promiseGetBlobWaybillReport, promiseGetLastClosedWaybill,
+  promiseGetWaybillById, promiseGetBlobWaybilljournalReport, promiseGetBlobWaybillReport, promiseGetLastClosedWaybill, promiseGetLatestWaybillDriver,
 } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
 import {
   Waybill,
@@ -51,6 +51,14 @@ export const actionGetLastClosedWaybill = (payload: Parameters<typeof promiseGet
   etsLoadingCounter(
     dispatch,
     promiseGetLastClosedWaybill(payload),
+    meta,
+  )
+);
+
+export const actionGetLatestWaybillDriver = (payload: Parameters<typeof promiseGetLatestWaybillDriver>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetLatestWaybillDriver>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetLatestWaybillDriver(payload),
     meta,
   )
 );

@@ -1,15 +1,16 @@
 import * as React from 'react';
+
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { RoadAccident } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { makeDriverFioLicenceLabel } from 'redux-main/reducers/modules/employee/driver/promise';
 import { PropsRoadAccident } from '../../@types/RoadAccident';
 import employeeActions from 'redux-main/reducers/modules/employee/actions-employee';
-import { get } from 'lodash';
 
 import { filterDriverAccident } from '../../../../../../utils';
-import { getLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
+
 import { createValidDate } from 'components/@next/@utils/dates/dates';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionGetLatestWaybillDriver } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 type Props = {
   isPermitted: boolean;
@@ -82,17 +83,21 @@ const FieldRoadAccidentDriverId: React.FC<Props> = React.memo(
         const loadData = async () => {
           setOptionData((oldState) => ({ ...oldState, isLoadingLastDriver: true }));
 
-          let responseData = null;
+          let lastDriverId = null;
           try {
-            responseData = await getLatestWaybillDriver({
-              car_id,
-              road_accident_date: createValidDate(accident_date),
-            });
+            lastDriverId = await dispatch(
+              actionGetLatestWaybillDriver(
+                {
+                  car_id,
+                  road_accident_date: createValidDate(accident_date),
+                },
+                props,
+              ),
+            );
           } catch (error) {
             console.error(error); // tslint:disable-line
           }
 
-          const lastDriverId = get(responseData, 'result.driver_id', null);
           if (lastDriverId) {
             props.handleChange('driver_id', lastDriverId);
           }

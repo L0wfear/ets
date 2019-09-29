@@ -2,30 +2,12 @@ import { Actions } from 'flummox';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { clone, mapKeys } from 'lodash';
 import { hasMotohours, isEmpty } from 'utils/functions';
-import {
-  WaybillService,
-  LatestWaybillDriverService,
-  RootService,
-} from 'api/Services';
+import { WaybillService, RootService } from 'api/Services';
 import { isArray } from 'util';
 
 const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
 export default class WaybillsActions extends Actions {
-  getLatestWaybillDriver(car_id, driver_id) {
-    const payload = {};
-
-    if (!isEmpty(car_id)) {
-      payload.car_id = car_id;
-    }
-
-    if (!isEmpty(driver_id)) {
-      payload.driver_id = driver_id;
-    }
-
-    return LatestWaybillDriverService.get(payload);
-  }
-
   getWaybill(id) {
     return WaybillService.path(id)
       .get()

@@ -7,6 +7,7 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import { monthOptions, makeDate } from 'components/@next/@utils/dates/dates';
 import { isArray } from 'util';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 export const getOneWaybillFront = (waybillRaw) => {
   const waybill: Waybill = waybillRaw;
@@ -144,14 +145,17 @@ export const promiseGetBlobWaybillReport = async (payloadOwn: { date_start: stri
   };
 };
 
-export const getLatestWaybillDriver = async (payload: {car_id?: number | null, driver_id?: number | null, road_accident_date?: string | null }) => {
+export const promiseGetLatestWaybillDriver = async (payload: {car_id?: number | null, driver_id?: number | null, road_accident_date?: string | null }) => {
   let response = null;
   try {
     response = await LatestWaybillDriverService.get(payload);
   } catch (error) {
     console.error(error); // tslint:disable-line
   }
-  return response;
+
+  const result: Employee['id'] = get(response, 'result.driver_id', null);
+
+  return result;
 };
 
 export const submitWaybill = async (waybillRaw: Partial<Waybill>) => {

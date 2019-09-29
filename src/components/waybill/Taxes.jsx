@@ -136,16 +136,26 @@ export default class Taxes extends React.Component {
           return op;
         });
 
+        const errors = get(this.state, 'errorsAll.tax_data_rows', []);
+        const errorsMsg = errors.length
+          ? get(errors, `${index}.OPERATION`)
+          : '';
+
         return (
-          <ReactSelect
-            clearable={false}
-            modalKey={this.props.modalKey}
-            id="norm_operation_id"
-            disabled={this.props.readOnly}
-            options={options}
-            value={row.uniqKey}
-            onChange={this.handleOperationChange.bind(this, index)}
-          />
+          <div>
+            <ReactSelect
+              clearable={false}
+              modalKey={this.props.modalKey}
+              id="norm_operation_id"
+              disabled={this.props.readOnly}
+              options={options}
+              value={row.uniqKey}
+              onChange={this.handleOperationChange.bind(this, index)}
+            />
+            <div className="error" style={{ marginTop: '5px' }}>
+              {errorsMsg}
+            </div>
+          </div>
         );
       },
       measure_unit_name: (measure_unit_name) => measure_unit_name || '-',
@@ -161,6 +171,12 @@ export default class Taxes extends React.Component {
             || typeof OPERATION === 'undefined'
             || this.props.readOnly,
         };
+
+        const errors = get(this.state, 'errorsAll.tax_data_rows', []);
+        const errorsMsg = errors.length
+          ? get(errors, `${index}.FACT_VALUE`)
+          : '';
+
         return (
           <div className="form-group">
             {false && (
@@ -172,6 +188,9 @@ export default class Taxes extends React.Component {
               {...factValueProps}
               onChange={this.handleFactValueChange.bind(this, index)}
             />
+            <div className="error" style={{ marginTop: '5px' }}>
+              {errorsMsg}
+            </div>
           </div>
         );
       },
@@ -186,7 +205,7 @@ export default class Taxes extends React.Component {
   }
 
   static getDerivedStateFromProps(nexProps, prevState) {
-    const { fuelRates, taxes = prevState.tableData } = nexProps;
+    const { fuelRates, taxes = prevState.tableData, errorsAll } = nexProps;
     let { operations } = nexProps;
 
     operations = operations.map((data) => ({
@@ -218,7 +237,7 @@ export default class Taxes extends React.Component {
 
     taxes.map((tax) => ({ ...tax, RESULT: Taxes.getResult(tax) }));
 
-    return { operations, fuelRates, tableData: taxes };
+    return { operations, fuelRates, tableData: taxes, errorsAll };
   }
 
   handleFactValueChange = (index, e) => {
@@ -289,7 +308,7 @@ export default class Taxes extends React.Component {
 
   addOperation = () => {
     const { tableData } = this.state;
-    const { correctionRate, baseFactValue } = this.props;
+    const { correctionRate, baseFactValue, errorsAll } = this.props;
     const overallValue = Taxes.calculateFinalFactValue(this.state.tableData);
 
     const value
@@ -297,7 +316,8 @@ export default class Taxes extends React.Component {
         ? (baseFactValue - overallValue).toFixed(3)
         : null;
     tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
-    this.setState({ tableData });
+    this.setState({ tableData, errorsAll });
+    this.props.onChange(tableData);
   };
 
   removeOperation = () => {

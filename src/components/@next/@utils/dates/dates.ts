@@ -104,13 +104,12 @@ export function createValidDateHM(date: string | Date) {
   return moment(date).format('YYYY.MM.DD HH:mm');
 }
 
-export function createValidDateTime(date: string | Date) {
+export function createValidDateTime(date: string | Date | Moment.Moment, withSeconds = false) {
   if (!date) {
     return null;
   }
-  return moment(date)
-    .seconds(0)
-    .format('YYYY-MM-DDTHH:mm:ss');
+  const newData = !withSeconds ? moment(date).seconds(0) : moment(date);
+  return newData.format('YYYY-MM-DDTHH:mm:ss');
 }
 
 export function formatDate(date: string | Date, format: string) {
@@ -146,7 +145,7 @@ export function getFormattedTimeWithSecond(date: string | Date) {
   return moment(date).format(`${global.APP_TIME_WITH_SECOND_FORMAT}`);
 }
 
-export function getFormattedDateTimeSeconds(date: string | Date) {
+export function getFormattedDateTimeSeconds(date: string | Date | Moment.Moment) {
   if (!date) {
     return '';
   }

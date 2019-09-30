@@ -53,6 +53,7 @@ import FieldEdcRequestData from 'components/new/pages/missions/mission/form/main
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import FieldConsumableMaterials from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/FieldConsumableMaterials';
 
 class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
   constructor(props) {
@@ -389,6 +390,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                       onChange={this.props.handleChange}
                       page={page}
                       path={path}
+
+                      formDataKey={this.props.formDataKey}
                     />
                   </EtsBootstrap.Col>
                 ) : (
@@ -422,6 +425,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 error_fact_date_start={errors.fact_date_start}
                 fact_date_end={state.fact_date_end}
                 error_fact_date_end={errors.fact_date_end}
+                consumable_materials={state.consumable_materials}
 
                 is_cleaning_norm={state.is_cleaning_norm}
                 object_type_name={state.object_type_name}
@@ -434,6 +438,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 onChange={this.props.handleChange}
                 page={page}
                 path={path}
+
+                formDataKey={this.props.formDataKey}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -456,12 +462,15 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             isPermitted={isPermitted && !DUTY_MISSION_IS_DISPLAY}
             structure_id={state.structure_id}
             structure_name={state.structure_name}
+            consumable_materials={state.consumable_materials}
+            formDataKey={this.props.formDataKey}
             onChange={this.props.handleChange}
             fromMission={true}
             fromMissionTemplate={false}
             page={page}
             path={path}
           />
+          <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField

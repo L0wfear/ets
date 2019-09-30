@@ -134,7 +134,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names: car_model_names_new,
             car_special_model_names: car_special_model_names_new,
             car_type_names: car_type_names_new,
-            car_type_names_text: car_type_names_new.join(', '),
+
+            technical_operation_id: null,
+            technical_operation_name: '',
+            municipal_facility_id: null,
+            municipal_facility_name: '',
+            route_id: null,
+            route_name: '',
+            route_type: null,
+            object_type_id: null,
+            object_type_name: '',
+            consumable_materials: [],
           });
         }
 
@@ -171,7 +181,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names: car_model_names_new,
             car_special_model_names: car_special_model_names_new,
             car_type_names: car_type_names_new,
-            car_type_names_text: car_type_names_new.join(', '),
+
+            technical_operation_id: null,
+            technical_operation_name: '',
+            municipal_facility_id: null,
+            municipal_facility_name: '',
+            route_id: null,
+            route_name: '',
+            route_type: null,
+            object_type_id: null,
+            object_type_name: '',
+            consumable_materials: [],
           });
         }
       }
@@ -250,7 +270,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_model_names: car_model_names_new,
           car_special_model_names: car_special_model_names_new,
           car_type_names: car_type_names_new,
-          car_type_names_text: car_type_names_new.join(', '),
+
+          technical_operation_id: null,
+          technical_operation_name: '',
+          municipal_facility_id: null,
+          municipal_facility_name: '',
+          route_id: null,
+          route_name: '',
+          route_type: null,
+          object_type_id: null,
+          object_type_name: '',
+          consumable_materials: [],
         });
       }
     }
@@ -276,7 +306,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
           car_type_names,
           car_model_names,
           car_special_model_names,
-          car_type_names_text: car_type_names.join(', '),
+
+          technical_operation_id: null,
+          technical_operation_name: '',
+          municipal_facility_id: null,
+          municipal_facility_name: '',
+          route_id: null,
+          route_name: '',
+          route_type: null,
+          object_type_id: null,
+          object_type_name: '',
+          consumable_materials: [],
         });
       } else {
         if (!value) {
@@ -288,7 +328,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names: [],
             car_special_model_names: [],
             car_type_names: [],
-            car_type_names_text: '',
+
+            technical_operation_id: null,
+            technical_operation_name: '',
+            municipal_facility_id: null,
+            municipal_facility_name: '',
+            route_id: null,
+            route_name: '',
+            route_type: null,
+            object_type_id: null,
+            object_type_name: '',
+            consumable_materials: [],
           });
         } else {
           let car_gov_numbers = get(option, ['rowData', 'gov_number'], '');
@@ -313,7 +363,17 @@ class FieldCarIdsMission extends React.PureComponent<PropsFieldCarIdsMission, St
             car_model_names,
             car_special_model_names,
             car_type_names,
-            car_type_names_text: car_type_names.join(', '),
+
+            technical_operation_id: null,
+            technical_operation_name: '',
+            municipal_facility_id: null,
+            municipal_facility_name: '',
+            route_id: null,
+            route_name: '',
+            route_type: null,
+            object_type_id: null,
+            object_type_name: '',
+            consumable_materials: [],
           };
 
           if (!is_common && structure_id) {

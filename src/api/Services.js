@@ -150,6 +150,10 @@ export const VectorObjectService = ETS_API_FACTORY.createApiServiceAdapter(
 export const ConsumableMaterialService = ETS_API_FACTORY.createApiServiceAdapter(
   'consumable_material',
 );
+
+export const ConsumableMaterialCountMissionService = ETS_API_FACTORY.createApiServiceAdapter(
+  'consumable_material_count',
+);
 export const MeasureUnitService = ETS_API_FACTORY.createApiServiceAdapter(
   'measure_unit',
 );

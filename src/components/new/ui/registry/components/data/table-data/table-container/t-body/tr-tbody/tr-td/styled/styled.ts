@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
+import { SingleUiElementWrapperStyled } from 'components/@next/@ui/renderFields/styled';
 
 export const EtsTbodyScrollContainer = styled.div`
   max-height: 120px;
@@ -42,6 +44,19 @@ export const EtsTbodyTrTd = styled.td<{ alignCenter?: boolean, }>`
     word-break: break-word;
     input {
       cursor: pointer;
+    }
+
+    ${ButtonStyled} {
+      margin: 0 1px;
+      min-height: 38px;
+    }
+    ${SingleUiElementWrapperStyled} {
+      width: 100%
+    }
+    input {
+      &[disabled] {
+        background: #eee;
+      }
     }
   }
   .col-md-12 {

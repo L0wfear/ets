@@ -107,6 +107,11 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
         this.props.onChange({
           municipal_facility_id: null,
           municipal_facility_name: '',
+          route_id: null,
+          route_name: '',
+          route_type: '',
+          object_type_id: null,
+          object_type_name: '',
         });
       }
     }
@@ -147,6 +152,11 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
       this.props.onChange({
         municipal_facility_id: null,
         municipal_facility_name: '',
+        route_id: null,
+        route_name: '',
+        route_type: '',
+        object_type_id: null,
+        object_type_name: '',
       });
     }
   }
@@ -158,6 +168,11 @@ class FieldMunicipalFacilityIdDutyMission extends React.PureComponent<PropsField
       props.onChange({
         municipal_facility_id: value,
         municipal_facility_name: get(option, 'label', null),
+        route_id: null,
+        route_name: '',
+        route_type: '',
+        object_type_id: null,
+        object_type_name: '',
       });
     }
   }

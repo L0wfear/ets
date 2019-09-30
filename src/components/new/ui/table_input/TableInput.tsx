@@ -43,6 +43,8 @@ export type TableMeta<F> = {
   } | {
     format: 'date',
     time?: boolean;
+  } | {
+    format: 'string';
   }
 );
 

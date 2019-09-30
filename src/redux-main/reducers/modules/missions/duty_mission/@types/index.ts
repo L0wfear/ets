@@ -1,4 +1,5 @@
 import { DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 
 export type DutyMission = {
   author: string;
@@ -51,4 +52,7 @@ export type DutyMission = {
   technical_operation_id: number | null;
   technical_operation_name: string;
   work_class_id: number | null;
+
+  is_mission_progress_countable: boolean | null;
+  consumable_materials: Array<ConsumableMaterialCountMission>;
 };

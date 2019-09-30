@@ -133,7 +133,6 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       const {
         value,
         dependeceTechnicalOperation,
-        structure_id,
         municipal_facility_id,
         technical_operation_id,
         for_column,
@@ -156,15 +155,9 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
         )
       );
 
-      if (!technical_operation_id || !municipal_facility_id) {
-        this.handleRouteIdChange(null);
-      }
-
       if (triggerOne) {
         if (technical_operation_id && municipal_facility_id && value) {
           this.getRoutesWithCheckCurrent(technical_operation_id, municipal_facility_id, for_column);
-        } else {
-          this.handleRouteIdChange(null);
         }
       }
 
@@ -212,15 +205,6 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
 
       if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {
         this.loadSelectedRoute(value);
-      }
-      if (structure_id !== prevProps.structure_id) {
-        if (structure_id) {
-          const route_structure_id = get(this.state.selectedRoute, 'structure_id', null);
-
-          if (route_structure_id !== structure_id) {
-            this.handleRouteIdChange(null);
-          }
-        }
       }
     }
   }
@@ -330,6 +314,17 @@ class FieldRouteIdMission extends React.PureComponent<PropsFieldRouteIdMission, 
       `${get(route, 'rowData.type', null)}.title`,
       null,
     );
+
+    if (this.props.formDataKey === 'mission' && !route_id && this.props.consumable_materials[0]) {
+      try {
+        await global.confirmDialog({
+          title: 'Внимание!',
+          body: 'При удалении маршрута будет очищена таблица расходных материалов. Продолжить?',
+        });
+      } catch {
+        return;
+      }
+    }
 
     this.props.onChange({
       route_id,

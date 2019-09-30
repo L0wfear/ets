@@ -137,31 +137,18 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
             (routeOptionData) => routeOptionData.value === value,
           );
 
-          if (!selectedRouteNotInOption) {
+          if (value && !selectedRouteNotInOption) {
             this.handleRouteIdChange(null);
           }
         }
       }
 
-      if (!technical_operation_id || !municipal_facility_id) {
+      if (value && (!technical_operation_id || !municipal_facility_id)) {
         this.handleRouteIdChange(null);
       }
 
       if (value !== prevProps.value && value !== get(this.state.selectedRoute, 'id', null)) {
         this.loadSelectedRoute(value);
-      }
-      if (structure_id !== prevProps.structure_id) {
-        if (structure_id) {
-          const route_structure_id = get(
-            this.state.selectedRoute,
-            'structure_id',
-            null,
-          );
-
-          if (route_structure_id !== structure_id) {
-            this.handleRouteIdChange(null);
-          }
-        }
       }
     }
   }
@@ -244,6 +231,17 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
       `${get(route, 'rowData.type', '')}.title`,
       null,
     );
+
+    if (this.props.formDataKey === 'duty_mission' && !route_id && this.props.consumable_materials[0]) {
+      try {
+        await global.confirmDialog({
+          title: 'Внимание!',
+          body: 'При удалении маршрута будет очищена таблица расходных материалов. Продолжить?',
+        });
+      } catch {
+        return;
+      }
+    }
 
     this.props.onChange({
       route_id,

@@ -258,7 +258,7 @@ const makePayloadForLoad = (getRegistryData: OneRegistryData['Service']['getRegi
   return payload;
 };
 
-export const actionGetRegistryData = async (registryKey: string): EtsAction<Promise<any>> => async (dispatch, getState) => {
+export const actionGetRegistryData = (registryKey: string): EtsAction<Promise<any>> => async (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const Service = get(registryData, 'Service');
   const path = get(registryData, 'path');

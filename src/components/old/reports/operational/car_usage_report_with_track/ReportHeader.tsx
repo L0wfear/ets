@@ -76,7 +76,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
             label="Объекты"
             options={GEOZONE_OBJECTS}
             value={geozone_type}
-            boundKeys="object_type"
+            boundKeys="geozone_type"
             onChange={this.props.handleChange}
             clearable={false}
             disabled={readOnly}

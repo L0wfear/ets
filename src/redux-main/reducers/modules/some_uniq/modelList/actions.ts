@@ -18,7 +18,7 @@ export const actionResetModelList = (): EtsAction<EtsActionReturnType<typeof act
   )
 );
 
-export const actionGetModelList = (payload = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetModelList>> => async (dispatch) => (
+export const actionGetModelList = (payload: Parameters<typeof promiseGetModelList>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof promiseGetModelList>> => async (dispatch) => (
   etsLoadingCounter(
     dispatch,
     promiseGetModelList(payload),

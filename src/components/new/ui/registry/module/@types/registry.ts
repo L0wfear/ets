@@ -73,6 +73,7 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'company_structure_actions'
       | 'waybill_all_missions_status'
       | 'waybill_status_name'
+      | 'inspectionSelect'
     );
   } | {
     key: TypeFieldsAvalibaleKey<void>;

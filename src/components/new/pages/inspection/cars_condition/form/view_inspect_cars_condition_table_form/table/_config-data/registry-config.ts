@@ -134,6 +134,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'marka',
           title: 'Марка',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -144,6 +145,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'model',
           title: 'Модель',
           width: 200,
+          format: 'inspectionSelect',
           groupOpt: {
             key: 'ts_data',
             firstElem: true, // В группку не входит
@@ -158,6 +160,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'type',
           title: 'Тип ТС',
           width: 250,
+          format: 'inspectionSelect',
           groupOpt: {
             key: 'ts_data',
           },
@@ -171,6 +174,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'season',
           title: 'Сезон',
           width: 200,
+          format: 'inspectionSelect',
           groupOpt: {
             key: 'ts_data',
           },
@@ -263,6 +267,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'environmental_class',
           title: 'Экологический стандарт ТС',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -276,6 +281,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'engine_type',
           title: 'Тип двигателя',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -301,6 +307,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'origin_country',
           title: 'Страна изготовитель',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -314,6 +321,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'classifier',
           title: 'Классификатор',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -327,6 +335,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'kind',
           title: 'Вид техники',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -421,18 +430,21 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'tech_inspection_passed',
           title: 'Технический осмотр пройден',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
-            type: 'boolean',
+            type: 'select',
+            label: false,
+            options: [],
           },
           groupOpt: {
             key: 'add_info',
           },
-          format: 'boolean',
         },
         {
           key: 'glonass_stationary',
           title: 'ГЛОНАСС стационарный',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -446,6 +458,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'glonass_registered',
           title: 'ГЛОНАСС зарегистрирован',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -459,6 +472,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'logo',
           title: 'Логотип',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -472,6 +486,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'state_exploitation',
           title: 'Состояние эксплуатации',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -482,6 +497,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'tech_condition',
           title: 'Техническое состояние',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -492,6 +508,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'fact_status',
           title: 'Фактический статус ТС',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -502,17 +519,11 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'waybill_number',
           title: 'Выдан ПЛ номер',
           width: 200,
-          renderParams: {
-            type: 'number',
-          },
         },
         {
           key: 'mission_numbers',
           title: 'Активное задание',
           width: 200,
-          renderParams: {
-            type: 'string',
-          },
         },
         {
           key: 'not_passed_verification_glonass',
@@ -527,6 +538,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'status_at_check',
           title: 'Нахождение ТС на момент проверки',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -546,6 +558,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'reason_repair',
           title: 'Причина ремонта',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -636,6 +649,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'kind_purchase',
           title: 'Вид приобретения',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -688,6 +702,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'repair_reason',
           title: 'Причина ремонта',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,
@@ -710,6 +725,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           key: 'repair_application',
           title: 'Заявка на ремонт',
           width: 200,
+          format: 'inspectionSelect',
           renderParams: {
             type: 'select',
             label: false,

@@ -49,6 +49,17 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     [props.onChange, makeGoodFormat, preventDateTime],
   );
 
+  React.useEffect(() => {
+    if (value && makeGoodFormat) {
+      value = (
+        (time || preventDateTime)
+          ? createValidDateTime(value)
+          : createValidDate(value)
+      );
+    }
+    props.onChange(value);
+  }, []);
+
   return (
     <DTPicker
       id={props.id}

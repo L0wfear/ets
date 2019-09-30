@@ -65,6 +65,7 @@ module.exports = {
         test: /\.(jsx|js|ts|tsx)$/,
         exclude: /node_modules/,
         use: [
+          "thread-loader",
           {
             loader: 'babel-loader',
             options: {

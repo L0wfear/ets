@@ -397,12 +397,13 @@ export const waybillSchema = {
       {
         validator: (value) => {
           if (
-            value
-            && parseFloat(value)
-              .toFixed(1)
-              .match(/^\d{4,}/)
+            (value
+              && parseFloat(value)
+                .toFixed(1)
+                .match(/^\d{4,}/))
+            || value <= 0
           ) {
-            return 'Поле "Обед" должно быть меньше 1000';
+            return 'Поле "Обед" должно быть неотрицательным числом и меньше 1000';
           }
           return false;
         },
@@ -412,12 +413,13 @@ export const waybillSchema = {
       {
         validator: (value) => {
           if (
-            value
-            && parseFloat(value)
-              .toFixed(1)
-              .match(/^\d{4,}/)
+            (value
+              && parseFloat(value)
+                .toFixed(1)
+                .match(/^\d{4,}/))
+            || value <= 0
           ) {
-            return 'Поле "Ремонт" должно быть меньше 1000';
+            return 'Поле "Ремонт" должно быть неотрицательным числом и меньше 1000';
           }
           return false;
         },

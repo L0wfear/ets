@@ -103,7 +103,7 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
       } = payloadFormated;
       const getInspectionOptionsByKeyList = get( inspectionConfig, fieldMeta.key, null);
       if (getInspectionOptionsByKeyList) {
-        const optionVal = getInspectionOptionsByKeyList.find((elem) => elem.value === value);
+        const optionVal = getInspectionOptionsByKeyList.find((elem) => elem.value.toString() === value);
         value = optionVal ? optionVal.label : value;
       }
     }
@@ -124,7 +124,7 @@ const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
     };
     const title = React.useMemo(
       () => makeFormatedTitle(props.rowData, props.fieldMeta, payloadFormated),
-      [props.rowData, props.fieldMeta, payloadFormated, ],
+      [props.rowData, props.fieldMeta, payloadFormated, inspectionConfig, ],
     );
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);

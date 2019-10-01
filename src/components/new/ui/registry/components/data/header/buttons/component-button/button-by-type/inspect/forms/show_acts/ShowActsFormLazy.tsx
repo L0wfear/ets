@@ -1,7 +1,5 @@
 import * as React from 'react';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
-import LoadingComponent from 'components/old/ui/PreloaderMainPage';
-import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 import { inspect_types } from '../../constant';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
@@ -48,17 +46,13 @@ const ShowActsFormLazy: React.FC<Props> = React.memo(
     );
 
     return element && (
-      <ErrorBoundaryForm>
-        <React.Suspense fallback={<LoadingComponent />}>
-          <ShowActsForm
-            element={element}
-            handleHide={onFormHide}
+      <ShowActsForm
+        element={element}
+        handleHide={onFormHide}
 
-            page="main"
-            path="main-inspect_show_acts"
-          />
-        </React.Suspense>
-      </ErrorBoundaryForm>
+        page="main"
+        path="main-inspect_show_acts"
+      />
     );
   },
 );

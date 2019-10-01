@@ -35,7 +35,7 @@ export const validationSchema: IValidationSchema = {
     },
     {
       key: 'checks_period_use_cnt',
-      title: 'Используемая только в летний период',
+      title: 'В выбранный период',
       type: 'number',
       integer: true,
       required: false,
@@ -63,7 +63,7 @@ export const meta: IDataTableSchema = {
     },
     {
       name: 'checks_period_use_cnt',
-      displayName: 'Используемая только в летний период',
+      displayName: 'В выбранный период',
       type: 'input',
     },
   ],

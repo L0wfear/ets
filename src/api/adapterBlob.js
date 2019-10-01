@@ -51,7 +51,7 @@ function httpMethodBlob(urlOwn, dataOwn, method) {
 }
 
 export const getBlob = async (url, data) => {
-  let ans = '';
+  let ans = null;
 
   try {
     ans = await httpMethodBlob(url, data, 'get');

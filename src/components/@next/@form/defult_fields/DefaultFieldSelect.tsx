@@ -19,7 +19,7 @@ type Props<F extends Record<string, any>> = {
   multi?: boolean;
 };
 
-const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): React.ReactElement => {
+const DefaultFieldSelect = <F extends Record<string, any>>(props: Props<F>): React.ReactElement => {
   const meta = useForm.useFormDataMeta<F>(props.formDataKey);
   const formStateValue = useForm.useFormDataFormStatePickValue<F, string>(props.formDataKey, props.field_name);
   const value_string = useForm.useFormDataFormStatePickValue<F, string>(props.formDataKey, props.field_name);
@@ -38,7 +38,7 @@ const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): Rea
     [handleChange, props.field_name],
   );
 
-  const measureUnitOptionsData = props.hookGetOptionsData(meta);
+  const optionsData = props.hookGetOptionsData(meta);
 
   return (
     <ExtField
@@ -49,15 +49,15 @@ const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): Rea
       label={props.name}
       value={formStateValue}
       error={error}
-      options={measureUnitOptionsData.options}
+      options={optionsData.options}
       onChange={handleChangeWrap}
-      disabled={!isPermitted}
+      disabled={!isPermitted || props.disabled}
 
-      etsIsLoading={measureUnitOptionsData.isLoading}
+      etsIsLoading={optionsData.isLoading}
       value_string={value_string}
     />
   );
 };
 
-// export default React.memo(DefaultFieldString);
-export default DefaultFieldString;
+// export default React.memo(DefaultFieldSelect);
+export default DefaultFieldSelect;

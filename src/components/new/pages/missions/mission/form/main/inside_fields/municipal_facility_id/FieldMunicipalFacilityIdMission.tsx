@@ -104,8 +104,6 @@ class FieldMunicipalFacilityIdMission extends React.PureComponent<PropsFieldMuni
       if (selectedToData) {
         this.getMunicipalFacilitys(selectedToData, date_start);
       }
-    } else if (isDiffTechnicalOperationId && !technical_operation_id && this.props.value) {
-      this.handleChange(null);
     }
   }
 
@@ -152,6 +150,11 @@ class FieldMunicipalFacilityIdMission extends React.PureComponent<PropsFieldMuni
       props.onChange({
         municipal_facility_id: value,
         municipal_facility_name: get(option, 'label', ''),
+        route_id: null,
+        route_name: '',
+        route_type: null,
+        object_type_id: null,
+        object_type_name: '',
       });
     }
   }

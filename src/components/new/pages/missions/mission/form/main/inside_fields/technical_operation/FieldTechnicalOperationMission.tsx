@@ -127,6 +127,13 @@ class FieldTechnicalOperationMission extends React.PureComponent<PropsFieldTechn
       props.onChange({
         technical_operation_id: value,
         technical_operation_name: get(option, 'label', ''),
+        municipal_facility_id: null,
+        municipal_facility_name: '',
+        route_id: null,
+        route_name: '',
+        route_type: null,
+        object_type_id: null,
+        object_type_name: '',
       });
     }
   }

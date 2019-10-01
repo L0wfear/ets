@@ -146,7 +146,7 @@ export default class ReactSelect extends React.Component<any, any> {
 
     return !isNotVisible && (
       label.toLocaleLowerCase().replace(/ё/g, 'е').includes(
-        filterValue.replace(/ё/g, 'е').toLocaleLowerCase(),
+        filterValue.toLocaleLowerCase().replace(/ё/g, 'е'),
       )
       && (
         isArray(value)

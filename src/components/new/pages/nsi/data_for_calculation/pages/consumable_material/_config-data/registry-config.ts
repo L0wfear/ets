@@ -42,12 +42,6 @@ export const getToConfig = (): TypeConfigData<ConsumableMaterialWrap> => {
           type: 'multiselect',
         },
         {
-          valueKey: 'measure_unit_id',
-          labelKey: 'measure_unit_name',
-          title: 'Единица измерения',
-          type: 'multiselect',
-        },
-        {
           valueKey: 'technical_operation_names',
           title: 'Технологическая операция',
           type: 'multiselect',

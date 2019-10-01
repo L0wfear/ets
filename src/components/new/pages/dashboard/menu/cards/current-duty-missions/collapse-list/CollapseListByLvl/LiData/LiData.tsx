@@ -1,27 +1,30 @@
 import * as React from 'react';
-
 import {
-  PropsLiData,
-  StateLiData,
-} from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/CollapseListByLvl/LiData/LiData.h';
+  CurrentDutyMissionsItemsSubItemsSubItemsType,
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
-class LiData extends React.PureComponent<PropsLiData, StateLiData> {
-  handleClick: React.MouseEventHandler<HTMLLIElement> = () => {
-    const { props } = this;
-    props.handleClick(
-      props.subItem,
+type Props = {
+  subItem: CurrentDutyMissionsItemsSubItemsSubItemsType;
+  handleClick: (lastSubItem: CurrentDutyMissionsItemsSubItemsSubItemsType) => any;
+};
+
+const LiData: React.FC<Props> = React.memo(
+  (props) => {
+    const handleClick = React.useCallback(
+      () => {
+        props.handleClick(
+          props.subItem,
+        );
+      },
+      [props.handleClick, props.subItem],
     );
-  }
-
-  render() {
-    const { subItem } = this.props;
 
     return (
-      <li className="pointer" onClick={this.handleClick}>
-        {subItem.title}
+      <li className="pointer" onClick={handleClick}>
+        {props.subItem.title}
       </li>
     );
-  }
-}
+  },
+);
 
 export default LiData;

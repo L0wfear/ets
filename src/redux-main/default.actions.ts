@@ -114,9 +114,9 @@ export const defaultActions = <F extends any>(path: string, setStoreAction: (obj
       )
     ),
     // работает
-    blob: <Payload extends any>(payload: Payload, meta: LoadingMeta): EtsAction<Promise<DefaultAns<F>>> => (dispatch) => (
+    blob: <Payload extends any>(payload: Payload, meta: LoadingMeta): EtsAction<Promise<{ blob: any; fileName: any; }>> => (dispatch) => (
       dispatch(
-        defaultAction<DefaultAns<F>>(
+        defaultAction<{ blob: any; fileName: any; }>(
           RootService.path(path).getBlob(payload),
           meta,
         ),

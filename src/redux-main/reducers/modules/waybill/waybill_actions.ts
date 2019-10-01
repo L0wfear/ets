@@ -12,8 +12,7 @@ import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 export const actionGetWaybillById = (
   id: Waybill['id'],
   meta: LoadingMeta,
-): EtsAction<
-  ReturnType<typeof promiseGetWaybillById>,
+): EtsAction<ReturnType<typeof promiseGetWaybillById>
 > => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',

@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { get } from 'lodash';
 
-import { TableMeta } from '../../TableInput';
-import { EtsTrTbody } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/styled/styled';
 import TableInputTbodyTrTd from './td/TableInputTbodyTrTd';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { TableMeta } from 'components/new/ui/table_input/TableInput';
 
 export type TableInputTbodyTrProps = {
   meta: TableMeta<any>[];
@@ -41,14 +40,14 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
       [props.rowData, props.rowIndex, props.onChange],
     );
     return (
-      <EtsTrTbody enable isSelected={props.isSelected} onClick={handleRowClick} registryKey="">
+      <EtsBootstrap.Grid.GridBootstrapTbody.Tr enable isSelected={props.isSelected} onClick={handleRowClick} registryKey="">
         {
           props.meta.map((metaData) => (
             metaData.ReactComponentType
               ? (
-                <EtsTbodyTrTd alignCenter={metaData.format === 'boolean'}>
+                <EtsBootstrap.Grid.GridBootstrapTbody.Td key={metaData.key} alignCenter={metaData.format === 'boolean'}>
                   <metaData.ReactComponentType key={metaData.key} formDataKey={props.formDataKey} indexRow={props.rowIndex} />
-                </EtsTbodyTrTd>
+                </EtsBootstrap.Grid.GridBootstrapTbody.Td>
               )
               : (
                 <TableInputTbodyTrTd
@@ -64,7 +63,7 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
               )
           ))
         }
-      </EtsTrTbody>
+      </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
     );
   },
 );

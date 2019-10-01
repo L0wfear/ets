@@ -1,4 +1,6 @@
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StateFieldDatesDutyMission = {
 };
@@ -6,6 +8,7 @@ export type StateFieldDatesDutyMission = {
 export type StatePropsFieldDatesDutyMission = {
 };
 export type DispatchPropsFieldDatesDutyMission = {
+  dispatch: EtsDispatch;
 };
 
 export type OwnPropsFieldDatesDutyMission = {
@@ -22,6 +25,11 @@ export type OwnPropsFieldDatesDutyMission = {
   is_cleaning_norm?: DutyMission['is_cleaning_norm'];
   object_type_name?: DutyMission['object_type_name'];
   norm_id?: DutyMission['norm_id'];
+  municipal_facility_id?: DutyMission['municipal_facility_id'];
+  route_id?: DutyMission['route_id'];
+  id?: DutyMission['id'];
+  order_operation_id?: DutyMission['order_operation_id'];
+  consumable_materials?: DutyMission['consumable_materials'];
 
   DUTY_MISSION_IS_DISPLAY?: boolean;
   DUTY_MISSION_IS_CLOSED?: boolean;
@@ -32,6 +40,8 @@ export type OwnPropsFieldDatesDutyMission = {
 
   page: string;
   path: string;
+
+  formDataKey?: FormKeys;
 };
 
 export type PropsFieldDatesDutyMission = (

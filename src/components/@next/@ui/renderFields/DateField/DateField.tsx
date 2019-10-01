@@ -17,6 +17,7 @@ const DateField: React.FC<ExtFieldDate> = React.memo(
       : undefined;
 
     const dateClassName = cx({ 'has-error': error });
+
     return (
       <SingleUiElementWrapper
         hidden={props.hidden}

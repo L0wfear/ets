@@ -88,7 +88,7 @@ export type IStateMonitorPage = {
   },
 };
 
-const initialState: IStateMonitorPage = {
+export const initialMonitorState: IStateMonitorPage = {
   carActualGpsNumberIndex: {},
   carInfo: carInfoReducer(carInfoInitialState, {}),
   SHOW_GOV_NUMBER: false,
@@ -151,7 +151,7 @@ const initialState: IStateMonitorPage = {
   },
 };
 
-export default (state = initialState, { type, payload }) => {
+export default (state = initialMonitorState, { type, payload }) => {
   switch (type) {
     case MONITOR_PAGE_SET_CAR_ACTUAL_INDEX: {
       return {
@@ -235,16 +235,16 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         status: {
-          ...initialState.status,
+          ...initialMonitorState.status,
         },
         carsByStatus: {
-          ...initialState.carsByStatus,
+          ...initialMonitorState.carsByStatus,
         },
       };
     }
     case MONITOR_PAGE_RESER: {
       return {
-        ...initialState,
+        ...initialMonitorState,
       };
     }
     case MONITOR_PAGE_ADD_TO_SELECTED_GEOMETRY: {

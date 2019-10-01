@@ -1,8 +1,13 @@
-import { cloneDeep, mapKeys } from 'lodash';
-import { getServerErrorNotification } from 'utils/notifications';
+import { get, cloneDeep, mapKeys } from 'lodash';
+import {
+  getServerErrorNotification,
+  getWarningNotification,
+  getInfoNotification,
+} from 'utils/notifications';
 
 import { checkInternalErrors } from 'utils/raven';
 import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';
+import RequestWarningError from 'utils/errors/RequestWarningError';
 
 let headers = {};
 
@@ -63,22 +68,51 @@ function checkResponse(url, response, body, method) {
       autoDismiss: 0,
     });
     throw error;
-  } else if (body && body.errors && body.errors.length) {
-    const error = `ERROR /${method} ${usedUrl}`;
-    console.error(error);
+  } else {
+    let errorThrow = null;
+    const warnings = get(body, 'warnings') || [];
+    const info = get(body, 'info') || [];
+    const errors = get(body, 'errors') || [];
 
-    body.errors.forEach((er) => {
-      console.error(er);
-      global.NOTIFICATION_SYSTEM.notify(
-        getServerErrorNotification(`/${method} ${serviceName}`),
-      );
-    });
-    const errorThrow = {
-      error: body,
-      errorIsShow: true,
-      error_text: new Error('Errors in response body'),
-    };
-    throw errorThrow;
+    if (warnings.length) {
+      warnings.forEach((w) => {
+        const errorIsShow = !w.hidden;
+
+        global.NOTIFICATION_SYSTEM.notify(
+          getWarningNotification(w.message || w),
+        );
+
+        errorThrow = {
+          error: body,
+          error_text: new RequestWarningError(w),
+          errorIsShow,
+        };
+      });
+    }
+    if (info.length) {
+      info.forEach((i) => {
+        global.NOTIFICATION_SYSTEM.notify(getInfoNotification(i.message || i));
+      });
+    }
+    if (errors.length) {
+      const error = `ERROR /${method} ${usedUrl}`;
+      console.error(error);
+
+      errors.forEach((er) => {
+        console.error(er);
+        global.NOTIFICATION_SYSTEM.notify(
+          getServerErrorNotification(`/${method} ${serviceName}`),
+        );
+      });
+      errorThrow = {
+        error: body,
+        error_text: new Error('Errors in response body'),
+      };
+    }
+
+    if (errorThrow) {
+      throw errorThrow;
+    }
   }
 }
 

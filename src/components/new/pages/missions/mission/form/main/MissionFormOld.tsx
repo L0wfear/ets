@@ -41,6 +41,9 @@ import FieldEdcRequestData from './inside_fields/edc_request/FieldEdcRequestData
 import { isOrderSource } from 'components/new/pages/missions/utils';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { EtsButtonsContainer } from 'components/new/ui/registry/components/data/header/buttons/styled/styled';
+import FieldConsumableMaterials from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/FieldConsumableMaterials';
+import DefaultFieldString from 'components/@next/@form/defult_fields/DefaultFieldString';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
 const smallPrintMapKey = 'smallPrintMapKey';
 
@@ -48,9 +51,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   constructor(props: PropsMissionForm) {
     super(props);
 
-    const { formState: state } = props;
+    const { formState: state, IS_CREATING } = props;
 
-    const IS_CREATING = !state.status;
     const IS_COMPLETE = state.status === 'complete';
     const IS_FAIL = state.status === 'fail';
     const IS_ASSIGNED = state.status === 'assigned';
@@ -59,12 +61,16 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     const IS_IN_PROGRESS = state.status === 'in_progress';
     const IS_DEFERRED = diffDates(state.date_start, new Date()) > 0;
     const IS_POST_CREATING_NOT_ASSIGNED = (
-      IS_NOT_ASSIGNED
+      (
+        !IS_CREATING
+        && IS_NOT_ASSIGNED
+      )
       || (
         IS_CREATING
         && state.waybill_id
       )
     );
+
     const IS_POST_CREATING_ASSIGNED = (IS_ASSIGNED || IS_EXPIRED || IS_IN_PROGRESS) && IS_DEFERRED;
     const IS_DISPLAY = (
       !IS_CREATING
@@ -95,7 +101,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     this.state = {
       isChanged: false,
       assign_to_waybill: [state.waybill_id ? 'not_assign' : 'assign_to_new_draft'],
-      IS_CREATING,
       IS_COMPLETE,
       IS_FAIL,
       MISSION_IS_ORDER_SOURCE: isOrderSource(
@@ -108,7 +113,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       IS_EXPIRED,
       IS_IN_PROGRESS,
       IS_DEFERRED,
-      IS_POST_CREATING_NOT_ASSIGNED,
       IS_POST_CREATING_ASSIGNED,
       IS_DISPLAY,
       IS_DISABLED_ASSIGNED,
@@ -288,7 +292,6 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
   render() {
     const {
       MISSION_IS_ORDER_SOURCE,
-      IS_CREATING,
       IS_ASSIGNED,
       IS_COMPLETE,
       IS_FAIL,
@@ -307,6 +310,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
       STRUCTURE_FIELD_VIEW,
       page,
       path,
+      IS_CREATING,
     } = this.props;
 
     const title = (
@@ -320,7 +324,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
     );
 
     return (
-      <>
+      <React.Fragment>
         <EtsBootstrap.ModalContainer
           id="modal-mission"
           show
@@ -339,12 +343,8 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       ? (
                         <EtsBootstrap.Col md={3}>
                           <FieldForColumnMission
-                            value={state.for_column}
-                            error={errors.car_ids}
-                            onChange={this.props.handleChange}
                             disabled={!isPermitted} // внутри ещё проверка
-                            page={page}
-                            path={path}
+                            formDataKey={this.props.formDataKey}
                           />
                         </EtsBootstrap.Col>
                       )
@@ -409,17 +409,12 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       ? (
                         <EtsBootstrap.Col md={12}>
                           <FieldStructureMission
-                            value={state.structure_id}
-                            name={state.structure_name}
                             disabled={
                               !isPermitted
                               || Boolean(state.waybill_id)
                               || !IS_CREATING
                             }
-                            error={errors.structure_id}
-                            onChange={this.props.handleChange}
-                            page={page}
-                            path={path}
+                            formDataKey={this.props.formDataKey}
                           />
                         </EtsBootstrap.Col>
                     ) : (
@@ -581,6 +576,10 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       disabled={IS_DISABLED_ASSIGNED}
 
                       is_cleaning_norm={state.is_cleaning_norm}
+                      consumable_materials={state.consumable_materials}
+                      municipal_facility_id={state.municipal_facility_id}
+                      route_id={state.route_id}
+                      id={state.id}
                       norm_ids={state.norm_ids}
                       object_type_name={state.object_type_name}
 
@@ -624,6 +623,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                   municipal_facility_name={state.municipal_facility_name}
                   technical_operation_id={state.technical_operation_id}
                   technical_operation_name={state.technical_operation_name}
+                  consumable_materials={state.consumable_materials}
                   for_column={state.for_column}
 
                   fromMissionTemplate={false}
@@ -661,23 +661,12 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                   page={page}
                   path={path}
+                  formDataKey={this.props.formDataKey}
                 />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            <EtsBootstrap.Row>
-              <EtsBootstrap.Col md={12}>
-                <ExtField
-                  id="m-comment"
-                  type="string"
-                  label="Комментарий"
-                  value={state.comment}
-                  error={errors.comment}
-                  disabled={IS_FAIL || IS_COMPLETE}
-                  onChange={this.props.handleChange}
-                  boundKeys="comment"
-                />
-              </EtsBootstrap.Col>
-            </EtsBootstrap.Row>
+            <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
+            <DefaultFieldString<Mission> formDataKey={this.props.formDataKey} name="Комментарий" field_name="comment" disabled={IS_FAIL || IS_COMPLETE} />
             <FieldNormIdMission
               value={state.norm_ids}
               datetime={state.date_start}
@@ -697,7 +686,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
             {isPermitted ? ( // либо обновление, либо создание
               <DisplayFlexAlignCenterFooterForm>
                 {
-                  !state.status && !state.waybill_id && !state.for_column || this.state.likeNewMission
+                  IS_CREATING && !state.waybill_id && !state.for_column || this.state.likeNewMission
                     ? (
                       <FieldAssignToWaybillMission
                         value={this.state.assign_to_waybill[0]}
@@ -713,7 +702,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                 }
                 <EtsButtonsContainer>
                 {
-                  !state.for_column && state.status
+                  !state.for_column && !IS_CREATING
                     ? (
                       <React.Fragment>
                         <EtsBootstrap.Dropdown
@@ -758,7 +747,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
           page={this.props.page}
           path={this.props.path}
         />
-      </>
+      </React.Fragment>
     );
   }
 }

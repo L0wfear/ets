@@ -132,9 +132,9 @@ export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_
     const responceColumn = await MissionService.path('column').post(
       {
         missions: payload.car_ids.map((car_id, index) => {
-
-          const newObj = {
+          const newObj: Mission = {
             ...payload,
+            consumable_materials: null,
             assign_to_waybill: assign_to_waybill[index],
           };
 

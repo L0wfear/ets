@@ -9,6 +9,7 @@ import {
   getSessionStructuresOptions,
 } from 'redux-main/reducers/modules/session/selectors';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StateFieldStructureDutyMission = {};
 
@@ -33,6 +34,8 @@ export type OwnPropsFieldStructureDutyMission = {
 
   page: string;
   path: string;
+
+  formDataKey?: FormKeys;
 };
 
 export type PropsFieldStructureDutyMission = StatePropsFieldStructureDutyMission &

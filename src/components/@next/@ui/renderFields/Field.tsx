@@ -26,11 +26,13 @@ const ExtField: React.FC<ExtFieldType> = React.memo(
 
     const onChange = React.useCallback(
       (...arg) => {
-        const addKeys = !isNullOrUndefined(boundKeys) ? boundKeys : [];
-        if (!isArray(addKeys)) {
-          props.onChange(addKeys, ...arg);
-        } else {
-          props.onChange(...addKeys, ...arg);
+        if (props.onChange) {
+          const addKeys = !isNullOrUndefined(boundKeys) ? boundKeys : [];
+          if (!isArray(addKeys)) {
+            props.onChange(addKeys, ...arg);
+          } else {
+            props.onChange(...addKeys, ...arg);
+          }
         }
       },
       [boundKeys, props.onChange],

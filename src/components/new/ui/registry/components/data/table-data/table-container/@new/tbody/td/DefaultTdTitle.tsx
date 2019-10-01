@@ -16,8 +16,9 @@ import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import TdContainer, { TdContainerProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
 import ExtFieldTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
-const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: CommontTdTiteProps['fieldMeta']) => {
+const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: CommontTdTiteProps['fieldMeta'], payloadFormated) => {
   let value = rowData[fieldMeta.key];
 
   if ('format' in fieldMeta) {
@@ -96,6 +97,16 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
     if (format === 'waybill_status_name') {
       value = WAYBILL_STATUSES[value];
     }
+    if (format === 'inspectionSelect') {
+      const {
+        inspectionConfig,
+      } = payloadFormated;
+      const getInspectionOptionsByKeyList = get( inspectionConfig, fieldMeta.key, null);
+      if (getInspectionOptionsByKeyList) {
+        const optionVal = getInspectionOptionsByKeyList.find((elem) => elem.value.toString() === value);
+        value = optionVal ? optionVal.label : value;
+      }
+    }
   }
 
   if ('dashIfEmpty' in fieldMeta && fieldMeta.dashIfEmpty) {
@@ -107,9 +118,13 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
 
 const DefaultTdTitle: React.FC<CommontTdTiteProps> = React.memo(
   (props) => {
+    const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
+    const payloadFormated = {
+      inspectionConfig,
+    };
     const title = React.useMemo(
-      () => makeFormatedTitle(props.rowData, props.fieldMeta),
-      [props.rowData, props.fieldMeta],
+      () => makeFormatedTitle(props.rowData, props.fieldMeta, payloadFormated),
+      [props.rowData, props.fieldMeta, payloadFormated, inspectionConfig, ],
     );
     const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
     const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);

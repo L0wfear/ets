@@ -24,10 +24,24 @@ class FieldStructureDutyMission extends React.PureComponent<PropsFieldStructureD
     const { props } = this;
 
     if (value !== props.value) {
-      props.onChange({
-        structure_id: value,
-        structure_name: get(option, 'label', null),
-      });
+
+      if (this.props.formDataKey === 'duty_mission') {
+        (props.onChange as any)({
+          structure_id: value,
+          structure_name: get(option, 'label', null),
+
+          route_id: null,
+          route_name: '',
+          route_type: '',
+          object_type_id: null,
+          object_type_name: '',
+        });
+      } else {
+        props.onChange({
+          structure_id: value,
+          structure_name: get(option, 'label', null),
+        });
+      }
     }
   }
 

@@ -37,14 +37,13 @@ export const actionCreateInspect = (payload: any, company_id: number, type: Type
   return result;
 };
 
-export const actionUpdateInspect = (id: number, data: any, files: any[], type: TypeOfInspect, meta: LoadingMeta, payload: any ): EtsAction<any> => async (dispatch, getState) => {
+export const actionUpdateInspect = (id: number, data: any, files: any[], meta: LoadingMeta, payload: any ): EtsAction<any> => async (dispatch) => {
   const result = await etsLoadingCounter(
     dispatch,
     promiseUpdateInspection(
       id,
       data,
       files,
-      type,
       payload,
     ),
     meta,

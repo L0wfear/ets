@@ -1,61 +1,79 @@
 
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { get } from 'lodash';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { ReduxState } from 'redux-main/@types/state';
-import {
-  PropsFieldStructureMission,
-  StatePropsFieldStructureMission,
-  DispatchPropsFieldStructureMission,
-  OwnPropsFieldStructureMission,
-  StateFieldStructureMission,
-} from 'components/new/pages/missions/mission/form/main/inside_fields/structure/FieldStructureMission.h';
 import {
   getSessionStructuresOptions,
   getSessionStructuresParams,
 } from 'redux-main/reducers/modules/session/selectors';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
 
-class FieldStructureMission extends React.PureComponent<PropsFieldStructureMission, StateFieldStructureMission> {
-  handleChange = (value, option) => {
-    const { props } = this;
+type Props = {
+  disabled: boolean;
 
-    if (value !== props.value) {
-      props.onChange({
-        structure_id: value,
-        structure_name: get(option, 'label', null),
-      });
-    }
-  }
+  formDataKey: FormKeys & 'mission';
+};
 
-  render() {
-    const {
-      props,
-    } = this;
+const FieldStructureMission: React.FC<Props> = React.memo(
+  (props) => {
+    const { page } = useForm.useFormDataMeta(props.formDataKey);
+    const STRUCTURES = etsUseSelector((state) => getSessionStructuresOptions(state));
+    const SessionStructuresParams = etsUseSelector((state) => getSessionStructuresParams(state));
+    const structure_id = useForm.useFormDataFormStatePickValue<Mission, Mission['structure_id']>(props.formDataKey, 'structure_id');
+    const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
+    const error = useForm.useFormDataFormErrorsPickValue<Mission, string>(props.formDataKey, 'structure_id');
+
+    const handleChangeWrap = React.useCallback(
+      (valueNew, option) => {
+        if (valueNew !== structure_id) {
+          handleChange({
+            structure_id: valueNew,
+            structure_name: get(option, 'label', null),
+            car_gov_numbers: [],
+            car_ids: [],
+            car_type_ids: [],
+            car_model_names: [],
+            car_special_model_names: [],
+            car_type_names: [],
+
+            technical_operation_id: null,
+            technical_operation_name: '',
+            municipal_facility_id: null,
+            municipal_facility_name: '',
+            route_id: null,
+            route_name: '',
+            route_type: null,
+            object_type_id: null,
+            object_type_name: '',
+
+            consumable_materials: [],
+          });
+        }
+      },
+      [handleChange, structure_id],
+    );
 
     return (
       <ExtField
         type="select"
         id="structure_id"
-        modalKey={props.page}
+        modalKey={page}
         label="Подразделение"
-        disabled={props.STRUCTURE_FIELD_READONLY || props.disabled}
-        clearable={props.STRUCTURE_FIELD_DELETABLE}
-        options={props.STRUCTURES}
+        disabled={SessionStructuresParams.STRUCTURE_FIELD_READONLY || props.disabled}
+        clearable={SessionStructuresParams.STRUCTURE_FIELD_DELETABLE}
+        options={STRUCTURES}
         placeholder="Не выбрано"
         emptyValue={null}
-        value={props.value}
-        error={props.error}
-        onChange={this.handleChange}
+        value={structure_id}
+        error={error}
+        onChange={handleChangeWrap}
       />
     );
-  }
-}
+  },
+);
 
-export default connect<StatePropsFieldStructureMission, DispatchPropsFieldStructureMission, OwnPropsFieldStructureMission, ReduxState>(
-  (state) => ({
-    STRUCTURES: getSessionStructuresOptions(state),
-    ...getSessionStructuresParams(state),
-  }),
-)(FieldStructureMission);
+export default FieldStructureMission;

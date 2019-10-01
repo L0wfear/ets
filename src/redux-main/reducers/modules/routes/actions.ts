@@ -66,7 +66,7 @@ const actionLoadAndSetInStoreRoutes = (
 const actionLoadRouteById = (
   id: number,
   meta: LoadingMeta,
-): EtsAction<ReturnType<typeof promiseLoadRouteById>, > => async (dispatch) => {
+): EtsAction<ReturnType<typeof promiseLoadRouteById>> => async (dispatch) => {
   const { payload } = await dispatch({
     type: 'none',
     payload: promiseLoadRouteById(id),

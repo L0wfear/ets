@@ -10,9 +10,9 @@ import { get } from 'lodash';
 import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter';
 import { getBlob, postBlob } from './adapterBlob';
 import { mocks } from './mocks';
-import { isBoolean, isFunction } from 'util';
+import { isFunction } from 'util';
 
-export const processResponse = (r, callback) => {
+export const processResponse = (r) => {
   if (r.warnings && r.warnings.length) {
     // Show warnings
     if (Array.isArray(r.warnings)) {
@@ -108,10 +108,6 @@ export const processResponse = (r, callback) => {
       throw errorThrow;
     }
   }
-  if (typeof callback === 'function') {
-    // If callback is specified, call it
-    return callback();
-  }
 
   return r;
 };
@@ -175,71 +171,89 @@ export default class APIService {
     const url = this.getUrl();
     this.resetPath();
 
-    return getJSON(url, payload, this.otherToken).then((r) =>
-      processResponse(r),
-    );
+    return getJSON(url, payload, this.otherToken);
   }
 
   getBlob(payload = {}) {
     this.log('GET BLOB');
     const url = this.getUrl();
     this.resetPath();
-    return getBlob(url, payload).then((r) => processResponse(r));
+    return getBlob(url, payload);
   }
 
   postBlob(payload = {}) {
     this.log('GET (POST) BLOB');
     const url = this.getUrl();
     this.resetPath();
-    return postBlob(url, payload).then((r) => processResponse(r));
+    return postBlob(url, payload);
   }
 
   post(payload = {}, callback, type = 'form', params = {}) {
     this.log('POST');
     const url = this.getUrl();
     this.resetPath();
-    return postJSON(url, payload, type, params, this.otherToken).then((r) =>
-      processResponse(
-        r,
-        isBoolean(callback) || isFunction(callback) ? callback : this.get,
-      ),
-    );
+    return postJSON(url, payload, type, params, this.otherToken).then((r) => {
+      if (isFunction(callback)) {
+        callback();
+      } else {
+        if (callback !== false) {
+          this.get();
+        }
+      }
+
+      return r;
+    });
   }
 
   put(payload = {}, callback, type = 'form') {
     this.log('PUT');
     const url = this.getUrl();
     this.resetPath();
-    return putJSON(url, payload, type).then((r) =>
-      processResponse(
-        r,
-        isBoolean(callback) || isFunction(callback) ? callback : this.get,
-      ),
-    );
+    return putJSON(url, payload, type).then((r) => {
+      if (isFunction(callback)) {
+        callback();
+      } else {
+        if (callback !== false) {
+          this.get();
+        }
+      }
+
+      return r;
+    });
   }
 
   patch(payload = {}, callback, type = 'form') {
     this.log('PATCH');
     const url = this.getUrl();
     this.resetPath();
-    return patchJSON(url, payload, type).then((r) =>
-      processResponse(
-        r,
-        isBoolean(callback) || isFunction(callback) ? callback : this.get,
-      ),
-    );
+    return patchJSON(url, payload, type).then((r) => {
+      if (isFunction(callback)) {
+        callback();
+      } else {
+        if (callback !== false) {
+          this.get();
+        }
+      }
+
+      return r;
+    });
   }
 
   delete(payload = {}, callback, type = 'form') {
     this.log('DELETE');
     const url = this.getUrl();
     this.resetPath();
-    return deleteJSON(url, payload, type).then((r) =>
-      processResponse(
-        r,
-        isBoolean(callback) || isFunction(callback) ? callback : this.get,
-      ),
-    );
+    return deleteJSON(url, payload, type).then((r) => {
+      if (isFunction(callback)) {
+        callback();
+      } else {
+        if (callback !== false) {
+          this.get();
+        }
+      }
+
+      return r;
+    });
   }
 
   getUrl() {

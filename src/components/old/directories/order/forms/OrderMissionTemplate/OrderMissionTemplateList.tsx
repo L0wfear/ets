@@ -39,9 +39,6 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import LoadingOverlayLegacy from 'components/old/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
 import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
-import {
-  get,
-} from 'lodash';
 import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
 
 export const makePayloadFromState = (formState, type_id) => ({
@@ -53,13 +50,13 @@ export const makePayloadFromState = (formState, type_id) => ({
   needs_brigade: false,
 });
 
-export const getNormByMissionAndCar = async (getCleaningOneNorm, carsIndex, missionArr: any[]) => {
+export const getNormByMissionAndCar = async (getCleaningOneNorm, missionArr: any[]) => {
   const ans = await Promise.all(
     missionArr.map(async (missionData: any) => {
       const carIdNormIdArray = await Promise.all(
-        missionData.car_ids.map(async (car_id) => {
+        missionData.car_ids.map(async (car_id, index) => {
           const normData = await getCleaningOneNorm({
-            ...makePayloadFromState(missionData, get(carsIndex, [car_id, 'type_id'], null)),
+            ...makePayloadFromState(missionData, missionData.car_type_ids[index]),
           });
 
           return {
@@ -232,7 +229,6 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       if (typeClick === typeTemplate.missionTemplate) {
         const norm_id = await getNormByMissionAndCar(
           this.context.flux.getActions('missions').getCleaningOneNorm,
-          this.props.carsIndex,
           missionArr,
         );
         goodResponse = await createMissionByOrder(this.context.flux, missionArr, order_mission_source_id, assign_to_waybill, faxogramm_id, norm_id);
@@ -346,7 +342,6 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       if (typeClick === typeTemplate.missionTemplate) {
         const norm_id = await getNormByMissionAndCar(
           this.context.flux.getActions('missions').getCleaningOneNorm,
-          this.props.carsIndex,
           missionArr,
         );
         goodResponse = await createMissionByOrder(this.context.flux, missionArr, order_mission_source_id, assign_to_waybill_for_column, faxogramm_id, norm_id);

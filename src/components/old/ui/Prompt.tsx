@@ -57,30 +57,32 @@ class Prompt extends React.Component<any, any> {
 
   render() {
     return (
-      <EtsBootstrap.ModalContainer
-        id="delete-form"
-        show={this.state.isVisible}
-        bsSize={this.state.bsSize}
-      >
-        <EtsBootstrap.ModalHeader>
-          <EtsBootstrap.ModalTitle>
-            {this.state.title}
-          </EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
-        <EtsBootstrap.ModalBody>
-          {typeof this.state.body === 'function'
-            ? this.state.body(this)
-            : this.state.body}
-        </EtsBootstrap.ModalBody>
-        <EtsBootstrap.ModalFooter>
-          <EtsBootstrap.Button onClick={this.ok}>
-            {this.state.okName || 'Ок'}
-          </EtsBootstrap.Button>
-          <EtsBootstrap.Button onClick={this.cancel}>
-            {this.state.cancelName || 'Отмена'}
-          </EtsBootstrap.Button>
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
+      <div id="prompt">
+        <EtsBootstrap.ModalContainer
+          id="delete-form"
+          show={this.state.isVisible}
+          bsSize={this.state.bsSize}
+        >
+          <EtsBootstrap.ModalHeader>
+            <EtsBootstrap.ModalTitle>
+              {this.state.title}
+            </EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
+          <EtsBootstrap.ModalBody>
+            {typeof this.state.body === 'function'
+              ? this.state.body(this)
+              : this.state.body}
+          </EtsBootstrap.ModalBody>
+          <EtsBootstrap.ModalFooter>
+            <EtsBootstrap.Button onClick={this.ok}>
+              {this.state.okName || 'Ок'}
+            </EtsBootstrap.Button>
+            <EtsBootstrap.Button onClick={this.cancel}>
+              {this.state.cancelName || 'Отмена'}
+            </EtsBootstrap.Button>
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
+      </div>
     );
   }
 }

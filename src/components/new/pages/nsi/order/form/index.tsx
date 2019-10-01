@@ -48,7 +48,7 @@ const MissionByTemplateFormWrap: React.FC<Props> = React.memo(
       [props.setParams],
     );
 
-    return Boolean(selectedRow) && (type === TypeCreateMissionByOrder.mission || type === TypeCreateMissionByOrder.duty_mission) && (
+    return Boolean(orderDates.faxogramm_id && (type === TypeCreateMissionByOrder.mission || type === TypeCreateMissionByOrder.duty_mission)) && (
       <OrderMissionTemplateList
         showForm
         onFormHide={handleHide}

@@ -9,6 +9,7 @@ import {
 import { ConfigService, ConfigTrackService } from 'api/Services';
 import { InitialStateSession } from './@types/session';
 import config from 'config';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const actionSetAppConfig = (appConfig: InitialStateSession['appConfig']) => ({
   type: SESSION_SET_CONFIG,
@@ -64,8 +65,8 @@ const setVersionInLocalStorage = (appConfigTracksCaching: InitialStateSession['a
   localStorage.setItem(global.API__KEY, JSON.stringify(versions));
 };
 
-export const actionLoadAppConfigTracksCaching = async () => async (dispatch) => {
-  let appConfigTracksCaching: InitialStateSession['appConfigTracksCaching'] = null;
+export const actionLoadAppConfigTracksCaching = (): EtsAction<Promise<InitialStateSession['appConfigTracksCaching']>> => async (dispatch) => {
+  let appConfigTracksCaching = null;
 
   try {
     appConfigTracksCaching = await ConfigTrackService.get();

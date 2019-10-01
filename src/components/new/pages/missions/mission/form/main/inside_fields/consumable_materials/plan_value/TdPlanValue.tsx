@@ -61,7 +61,7 @@ const TdPlanValue: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_fact_value_locked || !is_plan_value_locked;
+    const disabled = !isPermitted || is_fact_value_locked || is_plan_value_locked;
 
     return (
       <ExtField

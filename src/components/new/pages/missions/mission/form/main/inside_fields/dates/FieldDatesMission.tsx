@@ -41,7 +41,9 @@ type OwnProps = {
   norm_ids: Mission['norm_ids'];
   is_cleaning_norm: Mission['is_cleaning_norm'];
   consumable_materials: Mission['consumable_materials'];
+  order_operation_id: Mission['order_operation_id'];
   municipal_facility_id: Mission['municipal_facility_id'];
+
   route_id: Mission['route_id'];
   id: Mission['id'];
   object_type_name: Mission['object_type_name'];
@@ -127,6 +129,7 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
       route_id,
       id,
       consumable_materials,
+      order_operation_id,
     } = this.props;
 
     if (!date_start && consumable_materials[0]) {
@@ -156,6 +159,9 @@ class FieldDatesMission extends React.PureComponent<Props, {}> {
 
       if (id) {
         payload.mission_id = id;
+      }
+      if (order_operation_id) {
+        payload.order_operation_id = order_operation_id;
       }
 
       const { data: ConsumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, this.props));

@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import withShowByProps from 'components/old/compositions/vokinda-hoc/show-by-props/withShowByProps';
 import { getStyleForTrackLine } from 'components/old/monitor/layers/track/lines/feature-style';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsLayerTrackLines = {
   addLayer: ETSCore.Map.InjectetLayerProps.FuncAddLayer,
@@ -63,6 +64,8 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
       track,
       lastPoint,
       front_cars_sensors_equipment,
+      speed_lim,
+      mkad_speed_lim,
     } = this.props;
 
     const newIsChecked = Object.values(front_cars_sensors_equipment)
@@ -85,6 +88,11 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
 
     if (oldIsChecked !== newIsChecked || SHOW_TRACK !== prevProps.SHOW_TRACK)  {
       this.changeStyleForLines(SHOW_TRACK, newIsChecked);
+    }
+
+    if (speed_lim !== prevProps.speed_lim || mkad_speed_lim !== prevProps.mkad_speed_lim) {
+      this.props.removeFeaturesFromSource(null, true);
+      this.drawTrackLines(this.props.track, SHOW_TRACK, newIsChecked);
     }
   }
 
@@ -168,32 +176,22 @@ class LayerTrackLines extends React.PureComponent<PropsLayerTrackLines, StateLay
   }
 }
 
-const mapStateToProps = (state) => ({
-  SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
-  track: state.monitorPage.carInfo.trackCaching.track,
-  lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
-  forToday: state.monitorPage.carInfo.forToday,
-  mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
-  speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
-  front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-});
-
 // рендериться пустой div, компонент не маунтиться, если нет в сторе path, указанного ниже (Lodash)
 export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'trackCaching', 'track'],
     type: 'none',
   }),
-  withShowByProps({
-    path: ['monitorPage', 'carInfo', 'missionsData', 'missions'],
-    type: 'none',
-  }),
-  connect(
-    mapStateToProps,
-    mapDispatchToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      SHOW_TRACK: state.monitorPage.statusGeo.SHOW_TRACK,
+      track: state.monitorPage.carInfo.trackCaching.track,
+      lastPoint: state.monitorPage.carInfo.trackCaching.track === -1 ? false : (state.monitorPage.carInfo.trackCaching.track.slice(-1)[0] || null),
+      forToday: state.monitorPage.carInfo.forToday,
+      mkad_speed_lim: state.monitorPage.carInfo.missionsData.mkad_speed_lim,
+      speed_lim: state.monitorPage.carInfo.missionsData.speed_lim,
+      front_cars_sensors_equipment: state.monitorPage.carInfo.trackCaching.front_cars_sensors_equipment,
+    }),
   ),
   withLayerProps({
     centerOn: true,

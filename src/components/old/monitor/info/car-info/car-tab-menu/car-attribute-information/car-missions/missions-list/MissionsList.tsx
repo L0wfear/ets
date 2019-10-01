@@ -7,6 +7,7 @@ import { NO_DATA_TEXT } from 'constants/statuses';
 
 import TimeParking from 'components/old/monitor/info/car-info/car-tab-menu/car-attribute-information/car-missions/missions-list/time-parking/TimeParking';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { ReduxState } from 'redux-main/@types/state';
 
 type PropsCarMissions = {
   showMissionInfoForm: any;
@@ -71,17 +72,15 @@ class MissionsList extends React.Component<PropsCarMissions, {}> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  missions: state.monitorPage.carInfo.missionsData.missions,
-});
-
 export default compose<any, any>(
   withShowByProps({
     path: ['monitorPage', 'carInfo', 'missionsData', 'missions'],
     type: 'loader-field',
     checkErrorPath: ['monitorPage', 'carInfo', 'missionsData', 'error'],
   }),
-  connect(
-    mapStateToProps,
+  connect<any, any, any, ReduxState>(
+    (state) => ({
+      missions: state.monitorPage.carInfo.missionsData.missions,
+    }),
   ),
 )(MissionsList);

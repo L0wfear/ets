@@ -28,6 +28,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
     const route_id = useForm.useFormDataFormStatePickValue<Mission, Mission['route_id']>(props.formDataKey, 'route_id');
     const id = useForm.useFormDataFormStatePickValue<Mission, Mission['id']>(props.formDataKey, 'id');
     const order_operation_id = useForm.useFormDataFormStatePickValue<Mission, Mission['order_operation_id']>(props.formDataKey, 'order_operation_id');
+    const passes_count = useForm.useFormDataFormStatePickValue<Mission, Mission['passes_count']>(props.formDataKey, 'passes_count');
     const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(props.formDataKey);
 
     const norm_id = React.useMemo(
@@ -43,13 +44,20 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
     const dispatch = etsUseDispatch();
     const handleUpdateConsumptionMaterial = React.useCallback(
       async () => {
+        const passes_count_number = Number(passes_count);
         const payload: Parameters<typeof actionConsumableMaterialCountMissionGetAndSetInStore>[0] = {
           type: 'mission',
           norm_id,
           municipal_facility_id,
           date: date_start,
           route_id,
+          passes_count: (
+            Boolean(!isNaN(passes_count_number) && passes_count_number > 0 && passes_count_number < 11)
+              ? passes_count_number
+              : 1
+          ),
         };
+
         if (id) {
           payload.mission_id = id;
         }
@@ -81,8 +89,6 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
                   municipal_facility_measure_unit_id: newRowData.municipal_facility_measure_unit_id,
                   municipal_facility_measure_unit_name: newRowData.municipal_facility_measure_unit_name,
                   is_plan_value_locked: newRowData.is_plan_value_locked,
-                  plan_value: rowData.is_plan_value_locked ? rowData.plan_value : rowData.plan_value,
-                  fact_value: rowData.is_fact_value_locked ? rowData.fact_value : rowData.fact_value,
                 };
 
                 resultRowData.consumption = resultRowData.is_fact_value_locked ? resultRowData.consumption : resultRowData.fact_value * resultRowData.norm_value;
@@ -95,7 +101,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
           ),
         });
       },
-      [consumable_materials, consumableMateriaForMission, norm_id, municipal_facility_id, id, order_operation_id, date_start, route_id],
+      [consumable_materials, passes_count, consumableMateriaForMission, norm_id, municipal_facility_id, id, order_operation_id, date_start, route_id],
     );
 
     const canUpdate = (

@@ -545,6 +545,14 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
+        <HrDelimiter />
+        <EtsBootstrap.Row>
+          <EtsBootstrap.Col md={12}>
+            <h4>
+              Общая информация
+            </h4>
+          </EtsBootstrap.Col>
+        </EtsBootstrap.Row>
         <EtsBootstrap.Row>
           <EtsBootstrap.Col md={6}>
             <ExtField

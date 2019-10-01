@@ -138,6 +138,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Разрешенная максимальная масса, кг',
       type: 'number',
       float: 2,
+      minNotEqual: 0,
       required: true,
     },
     vin: {
@@ -304,10 +305,12 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     mileage: {
       type: 'number',
       title: 'Пробег на дату проведения проверки',
+      minNotEqual: 0,
     },
     motohours: {
       type: 'number',
       title: 'Наработка м/ч на дату проверки',
+      minNotEqual: 0,
     },
     fact_status: {
       type: 'valueOfArray',

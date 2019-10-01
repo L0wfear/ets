@@ -57,6 +57,9 @@ const SelectCarsConditionCompany: React.FC<SelectCarsConditionCompanyProps> = (p
       };
 
       newPartialSearch.companyId = selectedCompanyId;
+      newPartialSearch.checksType = null;
+      newPartialSearch.monitoringKind = null;
+      newPartialSearch.checksPeriod = null;
 
       setDataInSearch(newPartialSearch);
     },

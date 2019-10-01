@@ -399,10 +399,6 @@ export const EdcRejectionReasonService = ETS_API_FACTORY.createApiServiceAdapter
 export const SensorTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'sensor_type',
 );
-export const MedicalStatsService = ETS_API_FACTORY.createApiServiceAdapter(
-  'medical_stats',
-);
-
 export const RefillTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'refill_type',
 );

@@ -89,7 +89,7 @@ function checkResponse(url, response, body, method) {
         };
       });
     }
-    if (warnings.length) {
+    if (info.length) {
       info.forEach((i) => {
         global.NOTIFICATION_SYSTEM.notify(getInfoNotification(i.message || i));
       });

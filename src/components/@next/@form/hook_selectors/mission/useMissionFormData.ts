@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isObject } from 'util';
+import { isObject, isNumber } from 'util';
 
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -165,6 +165,23 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
       const prev_date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
       const prev_route_id = formState.route_id;
 
+      const passes_count_number = Number(newPartialFormState.passes_count);
+      const passes_count_prev_number = Number(formState.passes_count);
+      const passes_count = (
+        formDataKey === 'duty_mission'
+          ? 1
+          : !isNaN(passes_count_number) && passes_count_number > 0 && passes_count_number < 11
+            ? passes_count_number
+            : 1
+      );
+      const prev_passes_count = (
+        formDataKey === 'duty_mission'
+          ? 1
+          : isNumber(passes_count_prev_number) && passes_count_prev_number > 0 && passes_count_prev_number < 11
+            ? passes_count_prev_number
+            : 1
+      );
+
       const triggerOnReset = newPartialFormState.consumable_materials[0] && (
         !newPartialFormState.technical_operation_id
         || !newPartialFormState.municipal_facility_id
@@ -193,11 +210,15 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
           && newPartialFormState.municipal_facility_id
           && date_start
           && newPartialFormState.route_id
+          && newPartialFormState.passes_count
+          && passes_count
           && (
             norm_id !== prev_norm_id
             || newPartialFormState.municipal_facility_id !== prev_municipal_facility_id
             || date_start !== prev_date_start
             || newPartialFormState.route_id !== prev_route_id
+            || newPartialFormState.passes_count !== newPartialFormState.passes_count
+            || passes_count !== prev_passes_count
           ),
       );
 
@@ -208,6 +229,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
           municipal_facility_id: newPartialFormState.municipal_facility_id,
           date: date_start,
           route_id: newPartialFormState.route_id,
+          passes_count,
         };
         if (newPartialFormState.id) {
           payload.mission_id = newPartialFormState.id;
@@ -217,10 +239,9 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         }
         const { data, dataIndex } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
 
-        if ((newPartialFormState.municipal_facility_id !== prev_municipal_facility_id || norm_id !== prev_norm_id || !prev_date_start || !prev_route_id)) {
+        if ((newPartialFormState.municipal_facility_id !== prev_municipal_facility_id || norm_id !== prev_norm_id || !prev_date_start || !prev_route_id) || passes_count !== passes_count_prev_number) {
           newPartialFormState.consumable_materials = data.map((rowData) => ({
             ...rowData,
-            plan_value: rowData.plan_value || 0,
           }));
         }
 
@@ -235,7 +256,6 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
               if (dataIndex[rowData.consumable_material_id]) {
                 newArr.push({
                   ...dataIndex[rowData.consumable_material_id],
-                  plan_value: dataIndex[rowData.consumable_material_id].plan_value || 0,
                 });
               }
 

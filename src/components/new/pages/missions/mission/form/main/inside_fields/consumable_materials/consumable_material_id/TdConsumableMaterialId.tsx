@@ -23,7 +23,7 @@ export const getConsumableMaterialIdOptions = memoizeOne(
 
         return ({
           value: rowData.consumable_material_id,
-          label: rowData.consumable_material_name,
+          label: rowData.consumable_material_short_name,
           rowData,
           isNotVisible,
         });
@@ -35,7 +35,7 @@ export const getConsumableMaterialIdOptions = memoizeOne(
       ...Object.values(consumable_materials_index).map(
         (rowData) => ({
           value: rowData.consumable_material_id,
-          label: rowData.consumable_material_name,
+          label: rowData.consumable_material_short_name,
           rowData,
           isNotVisible: true,
         }),
@@ -78,7 +78,7 @@ const TdConsumableMaterialId: React.FC<Props> = React.memo(
     );
     const value_string = React.useMemo(
       () => {
-        return get(consumable_materials[props.indexRow], 'consumable_material_name');
+        return get(consumable_materials[props.indexRow], 'consumable_material_short_name');
       },
       [consumable_materials, props.indexRow],
     );

@@ -577,6 +577,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                       is_cleaning_norm={state.is_cleaning_norm}
                       consumable_materials={state.consumable_materials}
+                      order_operation_id={state.order_operation_id}
                       municipal_facility_id={state.municipal_facility_id}
                       route_id={state.route_id}
                       id={state.id}
@@ -593,7 +594,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                   <EtsBootstrap.Col md={12}>
                     <ExtField
                       id="passes-count"
-                      type="string"
+                      type="number"
                       label="Количество циклов"
                       error={errors.passes_count}
                       disabled={

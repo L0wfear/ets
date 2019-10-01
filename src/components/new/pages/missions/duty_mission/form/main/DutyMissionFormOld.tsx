@@ -426,6 +426,7 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 fact_date_end={state.fact_date_end}
                 error_fact_date_end={errors.fact_date_end}
                 consumable_materials={state.consumable_materials}
+                order_operation_id={state.order_operation_id}
 
                 is_cleaning_norm={state.is_cleaning_norm}
                 object_type_name={state.object_type_name}

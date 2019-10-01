@@ -2,12 +2,12 @@ import * as React from 'react';
 
 import LiData from 'components/new/pages/dashboard/menu/cards/current-duty-missions/collapse-list/CollapseListByLvl/LiData/LiData';
 import {
-  CurrentDutyMissionsItemsSubItemsType,
+  CurrentDutyMissionsItemsSubItemsSubItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 
 type Props = {
-  collapsetItems: CurrentDutyMissionsItemsSubItemsType[];
-  handleClick: (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => any;
+  collapsetItems: CurrentDutyMissionsItemsSubItemsSubItemsType[];
+  handleClick: (lastSubItem: CurrentDutyMissionsItemsSubItemsSubItemsType) => any;
   classNameContainer?: string;
   index: number;
 };

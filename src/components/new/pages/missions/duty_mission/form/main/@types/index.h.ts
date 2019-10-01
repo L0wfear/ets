@@ -7,6 +7,7 @@ import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/som
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StatePropsDutyMission = {
   STRUCTURE_FIELD_VIEW: ReturnType<
@@ -41,7 +42,7 @@ export type OwnDutyMissionProps = (
     submitAction: (mission: DutyMission) => Promise<any>;
     defaultSubmit: () => Promise<any>;
 
-    formDataKey: string;  // ключ к стору
+    formDataKey: FormKeys & 'duty_mission';  // ключ к стору
   }
   & {
     readOnly?: boolean;

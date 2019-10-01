@@ -1,3 +1,5 @@
+import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
+
 export type Mission = {
   author: string;
   can_be_closed: boolean;
@@ -51,7 +53,7 @@ export type Mission = {
   request_id?: number;
   request_number?: string;
   route_id: number | null;
-  route_type: string;
+  route_type: 'mixed' | 'simple_dt' | 'points';
   route_name: string;
   status: string; // @todo
   status_name: string;
@@ -63,6 +65,9 @@ export type Mission = {
   type_name: string;
   waybill_id: number | null;
   waybill_number: number | null;
+
+  is_mission_progress_countable: boolean | null;
+  consumable_materials: Array<ConsumableMaterialCountMission>;
 };
 
 export type GetMissionPayload = {

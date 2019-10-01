@@ -6,6 +6,8 @@ import * as InspectionCarsConditionTableConfig from 'components/new/pages/inspec
 import { globalFormShema } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_table_form/GlobalFormSchema';
 import CarsConditionTableEdit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_table_form/table/CarsConditionTableEdit';
 import inspectCarsConditionPermissions from 'components/new/pages/inspection/cars_condition/_config_data/permissions';
+import LoadingComponent from 'components/old/ui/PreloaderMainPage';
+import ErrorBoundaryForm from 'components/new/ui/error_boundary_registry/ErrorBoundaryForm';
 
 type Props = {};
 
@@ -22,17 +24,19 @@ export type GlobalFormSchemaType = {
 const GlobalForms: React.FC<Props> = React.memo(
   (props) => {
     return (
-      <React.Fragment>
-        <ShowActsFormLazy />
-        <InspectionCarsConditionTableFormLazy
-          registryConfig={InspectionCarsConditionTableConfig}
-          {...props}
-          title={"Форма заполнения данных ТС"}
-          globalFormShema={globalFormShema}
-          registryComponent={<CarsConditionTableEdit />}
-          permissions={Object.values(inspectCarsConditionPermissions)}
-        />
-      </React.Fragment>
+      <ErrorBoundaryForm>
+        <React.Suspense fallback={<LoadingComponent />}>
+          <ShowActsFormLazy />
+          <InspectionCarsConditionTableFormLazy
+            registryConfig={InspectionCarsConditionTableConfig}
+            {...props}
+            title={"Форма заполнения данных ТС"}
+            globalFormShema={globalFormShema}
+            registryComponent={<CarsConditionTableEdit />}
+            permissions={Object.values(inspectCarsConditionPermissions)}
+          />
+        </React.Suspense>
+      </ErrorBoundaryForm>
     );
   },
 );

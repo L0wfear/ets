@@ -5,6 +5,7 @@ import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionUpdateFormErrors } from 'redux-main/reducers/modules/form_data_record/actions';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import DutyMissionFormOld from 'components/new/pages/missions/duty_mission/form/main/DutyMissionFormOld';
+import {  useMissionFormDataHandeChange } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   formDataKey: 'duty_mission';
@@ -19,7 +20,7 @@ const DutyMissionFormNew: React.FC<Props> = React.memo(
     // const bsSizeForm = mapFormMeta[formDataKey].bsSizeForm;
     const meta = useForm.useFormDataMeta<DutyMission>(props.formDataKey);
     const formState = useForm.useFormDataFormState<DutyMission>(props.formDataKey);
-    const handleChange = useForm.useFormDataHandleChange<DutyMission>(props.formDataKey);
+    const handleChange = useMissionFormDataHandeChange<DutyMission>(props.formDataKey);
     const isPermitted = useForm.useFormDataSchemaIsPermitted(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<DutyMission>(props.formDataKey);
     const canSave = useForm.useFormDataCanSave<DutyMission>(props.formDataKey);

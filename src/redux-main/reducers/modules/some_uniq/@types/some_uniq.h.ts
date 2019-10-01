@@ -17,6 +17,7 @@ import { EdcRequestInfo } from '../edc_request_info/@types';
 import { TracksCaching } from '../tracks_caching/@types';
 import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
 import { Norm } from 'redux-main/reducers/modules/some_uniq/norm_registry/@types';
+import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 
 export type ModelElement = {
   body_capacity: number | null;
@@ -71,4 +72,6 @@ export type IStateSomeUniq = {
   inspectionConfig: {
     [key: string]: {},
   } | null;
+
+  consumableMaterialCountMissionList: ConsumableMaterialCountMission[];
 };

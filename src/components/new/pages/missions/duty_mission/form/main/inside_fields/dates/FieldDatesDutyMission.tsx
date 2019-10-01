@@ -1,6 +1,8 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { get, keyBy } from 'lodash';
+
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ReduxState } from 'redux-main/@types/state';
 import {
@@ -12,7 +14,6 @@ import {
 } from 'components/new/pages/missions/duty_mission/form/main/inside_fields/dates/FieldDatesDutyMission.h';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DivNone } from 'global-styled/global-styled';
-import { get } from 'lodash';
 
 import {
   ColStartDatePicker,
@@ -20,8 +21,9 @@ import {
   ColEndDatePicker,
 } from './styled';
 import { routeTypesByTitle } from 'constants/route';
-import { addTime } from 'components/@next/@utils/dates/dates';
+import { addTime, createValidDateTime, addSecond } from 'components/@next/@utils/dates/dates';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionLoadConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/actions';
 
 /**
  * Поля дат наряд-задания (плановые и фактические)
@@ -49,6 +51,95 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
         }
       }
     }
+  }
+
+  handleChangeDateStart = async (field: string, date) => {
+    if (this.props.formDataKey === 'duty_mission') {
+      const {
+        plan_date_start,
+        norm_id,
+        municipal_facility_id,
+        route_id,
+        id,
+        consumable_materials,
+      } = this.props;
+
+      const date_start = date || (field === 'fact_date_start' ? plan_date_start : null);
+
+      if (!date_start && consumable_materials[0]) {
+        try {
+          await global.confirmDialog({
+            title: 'Внимание!',
+            body: ' При удалении даты начала задания будет очищена таблица расходных материалов. Продолжить?',
+          });
+        } catch {
+            // реакт виджет хранит своё состояние
+            // если не менять пропсов, то он показывает старое время
+            const { fact_date_start: old } = this.props;
+            const { plan_date_start: old_2 } = this.props;
+            if (old) {
+              await this.props.onChange({ fact_date_start: createValidDateTime(addSecond(old, 60)) });
+
+              setImmediate(() => this.props.onChange({ fact_date_start: old }));
+              return;
+            }
+            await this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old_2, 60)) });
+
+            setImmediate(() => this.props.onChange({ plan_date_start: old_2 }));
+            return;
+        }
+      }
+
+      if (norm_id && municipal_facility_id && (date_start) && route_id && consumable_materials[0]) {
+        const payload: Parameters<typeof actionLoadConsumableMaterialCountMission>[0] = {
+          type: 'duty_mission',
+          norm_id,
+          municipal_facility_id,
+          date: date_start,
+          route_id,
+        };
+
+        if (id) {
+          payload.mission_id = id;
+        }
+
+        const { data: ConsumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, this.props));
+        const ConsumableMaterialCountMissionListIndex = keyBy(ConsumableMaterialCountMissionList, 'consumable_material_id');
+
+        const triggerOnAsk = (
+          ConsumableMaterialCountMissionList.length !== consumable_materials.length
+          || consumable_materials.some((rowData) => (
+            !ConsumableMaterialCountMissionListIndex[rowData.consumable_material_id]
+            || ConsumableMaterialCountMissionListIndex[rowData.consumable_material_id].consumable_material_norm_id !== rowData.consumable_material_norm_id
+          ))
+        );
+
+        if (triggerOnAsk) {
+          try {
+            await global.confirmDialog({
+              title: 'Внимание!',
+              body: 'В наряд задании: "При изменении начала выполнения наряд-задания будут изменены нормы на расход расходных материалов. Продолжить?',
+            });
+          } catch {
+            // реакт виджет хранит своё состояние
+            // если не менять пропсов, то он показывает старое время
+            const { fact_date_start: old } = this.props;
+            const { plan_date_start: old_2 } = this.props;
+            if (old) {
+              await this.props.onChange({ fact_date_start: createValidDateTime(addSecond(old, 60)) });
+
+              setImmediate(() => this.props.onChange({ fact_date_start: old }));
+              return;
+            }
+            this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old_2, 60)) });
+
+            await setImmediate(() => this.props.onChange({ plan_date_start: old_2 }));
+            return;
+          }
+        }
+      }
+    }
+    this.props.onChange({ [field]: date });
   }
 
   render() {
@@ -86,7 +177,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
               error={error_plan_date_start}
               date={plan_date_start}
               disabled={DUTY_MISSION_IS_DISPLAY || !isPermitted}
-              onChange={this.props.onChange}
+              onChange={this.handleChangeDateStart}
               boundKeys="plan_date_start"
             />
           </ColStartDatePicker>
@@ -124,7 +215,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
                       error={error_fact_date_start}
                       date={fact_date_start}
                       disabled={DUTY_MISSION_IS_CLOSED || !isPermitted}
-                      onChange={this.props.onChange}
+                      onChange={this.handleChangeDateStart}
                       boundKeys="fact_date_start"
                     />
                   </ColStartDatePicker>

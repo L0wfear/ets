@@ -13,8 +13,14 @@ export type CurrentDutyMissionsItemsSubItemDatasType = {
   technical_operation_name: string;
 };
 
-export type CurrentDutyMissionsItemsSubItemsType = {
+export type CurrentDutyMissionsItemsSubItemsSubItemsType = {
   data: CurrentDutyMissionsItemsSubItemDatasType,
+  tooltip?: string;
+  title: string;
+};
+
+export type CurrentDutyMissionsItemsSubItemsType = {
+  subItems: CurrentDutyMissionsItemsSubItemsSubItemsType[],
   tooltip?: string;
   title: string;
 };

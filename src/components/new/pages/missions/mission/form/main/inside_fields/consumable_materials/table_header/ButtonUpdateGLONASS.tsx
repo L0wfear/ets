@@ -1,0 +1,125 @@
+import * as React from 'react';
+
+import { ButtonTableInput } from 'components/new/ui/table_input/styled';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { actionConsumableMaterialCountMissionGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/actions';
+import { useMissionFormDataIsNoCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+
+type Props = {
+  buttonWidth: number;
+
+  formDataKey: FormKeys & ('mission' | 'duty_mission');
+};
+
+const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
+  (props) => {
+    const meta = useForm.useFormDataMeta(props.formDataKey);
+    const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
+    const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
+    const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+
+    const missiom_norm_ids = useForm.useFormDataFormStatePickValue<Mission, Mission['norm_ids']>(props.formDataKey, 'norm_ids');
+    const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
+    const date_start = useForm.useFormDataFormStatePickValue<Mission, Mission['date_start']>(props.formDataKey, 'date_start');
+    const route_id = useForm.useFormDataFormStatePickValue<Mission, Mission['route_id']>(props.formDataKey, 'route_id');
+    const id = useForm.useFormDataFormStatePickValue<Mission, Mission['id']>(props.formDataKey, 'id');
+    const order_operation_id = useForm.useFormDataFormStatePickValue<Mission, Mission['order_operation_id']>(props.formDataKey, 'order_operation_id');
+    const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(props.formDataKey);
+
+    const norm_id = React.useMemo(
+      () => {
+        if (props.formDataKey === 'mission') {
+          return missiom_norm_ids.length > 1 ? null : missiom_norm_ids[0];
+        }
+
+      },
+      [missiom_norm_ids, props.formDataKey],
+    );
+
+    const dispatch = etsUseDispatch();
+    const handleUpdateConsumptionMaterial = React.useCallback(
+      async () => {
+        const payload: Parameters<typeof actionConsumableMaterialCountMissionGetAndSetInStore>[0] = {
+          type: 'mission',
+          norm_id,
+          municipal_facility_id,
+          date: date_start,
+          route_id,
+        };
+        if (id) {
+          payload.mission_id = id;
+        }
+        if (order_operation_id) {
+          payload.order_operation_id = order_operation_id;
+        }
+
+        const { dataIndex } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+
+        handleChange({
+          consumable_materials: consumable_materials.map(
+            (rowData) => {
+              const newRowData = dataIndex[rowData.consumable_material_id];
+
+              if (newRowData) {
+                let resultRowData = {
+                  ...rowData,
+                };
+                if (props.formDataKey === 'mission') {
+                  resultRowData.mission_progress_fact_value = newRowData.mission_progress_fact_value;
+                }
+                resultRowData = {
+                  ...rowData,
+                  consumable_material_measure_unit_id: newRowData.consumable_material_measure_unit_id,
+                  consumable_material_measure_unit_name: newRowData.consumable_material_measure_unit_name,
+                  consumable_material_norm_id: newRowData.consumable_material_norm_id,
+                  consumable_material_norm_value: newRowData.consumable_material_norm_value,
+                  norm_value: newRowData.norm_value,
+                  municipal_facility_measure_unit_id: newRowData.municipal_facility_measure_unit_id,
+                  municipal_facility_measure_unit_name: newRowData.municipal_facility_measure_unit_name,
+                  is_plan_value_locked: newRowData.is_plan_value_locked,
+                  plan_value: rowData.is_plan_value_locked ? rowData.plan_value : rowData.plan_value,
+                  fact_value: rowData.is_fact_value_locked ? rowData.fact_value : rowData.fact_value,
+                };
+
+                resultRowData.consumption = resultRowData.is_fact_value_locked ? resultRowData.consumption : resultRowData.fact_value * resultRowData.norm_value;
+
+                return resultRowData;
+              }
+
+              return rowData;
+            },
+          ),
+        });
+      },
+      [consumable_materials, consumableMateriaForMission, norm_id, municipal_facility_id, id, order_operation_id, date_start, route_id],
+    );
+
+    const canUpdate = (
+      Boolean(
+        consumable_materials[0]
+        && norm_id
+        && municipal_facility_id
+        && date_start
+        && route_id
+        && IS_NOT_COMPLETED,
+      )
+    );
+
+    return (
+      <ButtonTableInput
+        block
+        width={props.buttonWidth}
+        onClick={handleUpdateConsumptionMaterial}
+        disabled={!canUpdate}
+      >
+        Обновить ГЛОНАСС
+      </ButtonTableInput>
+    );
+  },
+);
+
+export default ButtonUpdateGLONASS;

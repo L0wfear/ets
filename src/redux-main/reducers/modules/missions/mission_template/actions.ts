@@ -68,7 +68,7 @@ type ThunkActionResetCarsMissionTemplate = EtsAction<
   Pick<
     IStateMissions,
     'carForMissionTemplateIndex' | 'carForMissionTemplateList'
-  >,
+  >
 >;
 export const actionResetCarsMissionTemplate = (): ThunkActionResetCarsMissionTemplate => (
   dispatch,

@@ -6,6 +6,7 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { GetMapImageInBase64ByKeyType } from 'components/new/ui/map/context/MapetsContext.h';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StatePropsMission = {
   order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
@@ -25,6 +26,7 @@ export type DispatchPropsMission = {
 
 export type OwnMissionProps = (
   {
+    IS_CREATING: boolean;
     originalFormState: Mission;
     formState: Mission;
     formErrors: Partial<Record<keyof Mission, string>>;
@@ -38,7 +40,7 @@ export type OwnMissionProps = (
     handleChange: (obj: Partial<Mission>) => any;
     submitAction: (assign_to_waybill: string[]) => Promise<any>;
 
-    formDataKey: string;  // ключ к стору
+    formDataKey: FormKeys & 'mission';  // ключ к стору
   }
   & {
     notChangeCar?: boolean;

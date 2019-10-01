@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { TableMeta } from '../../../TableInput';
-import { EtsTbodyTrTd } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/styled/styled';
-import ExtField from 'components/@next/@ui/renderFields/Field';
 import { get } from 'lodash';
 import { isArray } from 'util';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import ExtField from 'components/@next/@ui/renderFields/Field';
+import { TableMeta } from 'components/new/ui/table_input/TableInput';
 
 export type TableInputTbodyTrTdProps = {
   meta: TableMeta<any>[];
@@ -84,7 +84,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     );
 
     return (
-      <EtsTbodyTrTd>
+      <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
           metaData.format === 'number'
             && (
@@ -130,7 +130,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
               />
             )
         }
-      </EtsTbodyTrTd>
+      </EtsBootstrap.Grid.GridBootstrapTbody.Td>
     );
   },
 );

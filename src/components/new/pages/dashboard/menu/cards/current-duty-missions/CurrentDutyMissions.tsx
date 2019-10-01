@@ -11,7 +11,7 @@ import {
 import CurrentDutyMissionInfo from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/CurrentDutyMissionsInfo';
 
 import {
-  CurrentDutyMissionsItemsSubItemsType,
+  CurrentDutyMissionsItemsSubItemsSubItemsType,
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
@@ -24,7 +24,7 @@ const CurrentDutyMissions: React.FC<Props> = React.memo(
     const dispatch = etsUseDispatch();
 
     const handleClick = React.useCallback(
-      (lastSubItem: CurrentDutyMissionsItemsSubItemsType) => {
+      (lastSubItem: CurrentDutyMissionsItemsSubItemsSubItemsType) => {
         dispatch(
           dashboardLoadRouteDataForCurrentDutyMissions(
             lastSubItem.data,

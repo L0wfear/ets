@@ -41,6 +41,7 @@ export const initialState: IStateSomeUniq = {
   inspectionConfig: null,
 
   normList: [],
+  consumableMaterialCountMissionList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

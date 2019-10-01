@@ -9,6 +9,9 @@ import { promiseGetDutyMissionById, promiseSubmitDutyMission } from 'redux-main/
 import { isPermittedEmployeeForDutyMission } from 'components/new/pages/missions/duty_mission/form/main/utils';
 import { getEmployeeState, getMissionsState } from 'redux-main/reducers/selectors';
 import { DUTY_MISSION_STATUS, DUTY_MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
+import memoizeOne from 'memoize-one';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 export const metaDutyMission: ConfigFormData<DutyMission> = {
   uniqField: 'id',
@@ -238,6 +241,19 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
             },
           ],
         },
+        consumable_materials: {
+          title: 'Расходные материалы',
+          type: 'multiValueOfArray',
+          dependencies: [
+            memoizeOne(
+              (consumable_materials, { status }) => consumable_materials.map((rowData) => ({
+                consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
+                fact_value: !rowData.fact_value && checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)'),
+                consumption: !rowData.consumption && checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)'),
+              })),
+            ),
+          ],
+        },
       },
     },
   },
@@ -289,5 +305,8 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
     technical_operation_id: null,
     technical_operation_name: '',
     work_class_id: null,
+
+    is_mission_progress_countable: false,
+    consumable_materials: [],
   }),
 };

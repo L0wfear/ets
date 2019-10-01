@@ -1,46 +1,58 @@
 
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { ReduxState } from 'redux-main/@types/state';
-import {
-  PropsFieldForColumnMission,
-  StatePropsFieldForColumnMission,
-  DispatchPropsFieldForColumnMission,
-  OwnPropsFieldForColumnMission,
-  StateFieldForColumnMission,
-} from 'components/new/pages/missions/mission/form/main/inside_fields/for_column/FieldForColumnMission.h';
 import { YES_NO_SELECT_OPTIONS_INT } from 'constants/dictionary';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 
-class FieldForColumnMission extends React.PureComponent<PropsFieldForColumnMission, StateFieldForColumnMission> {
-  handleChange = () => {
-    this.props.onChange({
-      for_column: !this.props.value,
-    });
-  }
+type Props = {
+  disabled: boolean;
+  formDataKey: FormKeys & 'mission';
+};
 
-  render() {
-    const {
-      props,
-    } = this;
+const FieldForColumnMission: React.FC<Props> = React.memo(
+  (props) => {
+    const { page } = useForm.useFormDataMeta(props.formDataKey);
+    const for_column = useForm.useFormDataFormStatePickValue<Mission, Mission['for_column']>(props.formDataKey, 'for_column');
+    const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
+
+    const handleChangeWrap = React.useCallback(
+      () => {
+        handleChange({
+          for_column: !for_column,
+
+          technical_operation_id: null,
+          technical_operation_name: '',
+          municipal_facility_id: null,
+          municipal_facility_name: '',
+          route_id: null,
+          route_name: '',
+          route_type: null,
+          object_type_id: null,
+          object_type_name: '',
+
+          consumable_materials: [],
+        });
+      },
+      [handleChange, for_column],
+    );
 
     return (
       <ExtField
         id="for_column"
-        modalKey={props.page}
+        modalKey={page}
         type="select"
         label="Колонна"
         disabled={props.disabled}
-        value={+props.value}
+        value={+for_column}
         options={YES_NO_SELECT_OPTIONS_INT}
-        onChange={this.handleChange}
+        onChange={handleChangeWrap}
         clearable={false}
       />
     );
-  }
-}
+  },
+);
 
-export default connect<StatePropsFieldForColumnMission, DispatchPropsFieldForColumnMission, OwnPropsFieldForColumnMission, ReduxState>(
-  null,
-)(FieldForColumnMission);
+export default FieldForColumnMission;

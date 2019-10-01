@@ -1,5 +1,5 @@
 import { createPath } from 'redux-main/redux-utils';
-import { IStateFormDataRecord, ConfigFormData, FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
+import { IStateFormDataRecord, FormKeys, OneFormDataByKey } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 const FORM = createPath('FORM');
 
@@ -9,7 +9,7 @@ export const FORM_CHANGE_DATA = FORM`CHANGE_DATA`;
 
 export const initialState: IStateFormDataRecord = {};
 
-const formDataRecord = (state = initialState, { type, payload }: { type: string, payload: { formKey: FormKeys, formData?: ConfigFormData<any> }}) => {
+const formDataRecord = (state = initialState, { type, payload }: { type: string, payload: { formKey: FormKeys, formData?: OneFormDataByKey<any> }}) => {
   switch (type) {
     case FORM_SET_DATA: {
       console.log('⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️⭕️', payload.formKey, payload.formData); // tslint:disable-line:no-console
@@ -28,6 +28,10 @@ const formDataRecord = (state = initialState, { type, payload }: { type: string,
       return otherState;
     }
     case FORM_CHANGE_DATA: {
+      // console.log('✏️️️️️️️✏️✏️✏️✏️✏️✏️✏️✏️✏️', payload.formKey); // tslint:disable-line:no-console
+      // console.info(payload.formData.formState); // tslint:disable-line:no-console
+      // console.info(payload.formData.formErrors); // tslint:disable-line:no-console
+
       return {
         ...state,
         [payload.formKey]: payload.formData,

@@ -7,6 +7,10 @@ import { promiseSubmitMission, promiseGetMissionById } from 'redux-main/reducers
 import { createValidDateTime, getTomorrow9am, getDateWithMoscowTz, diffDates } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { getMissionsState } from 'redux-main/reducers/selectors';
+import memoizeOne from 'memoize-one';
+import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
+import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 export const metaMission: ConfigFormData<Mission> = {
   uniqField: 'id',
@@ -254,6 +258,19 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'valueOfArray',
           required: true,
         },
+        consumable_materials: {
+          title: 'Расходные материалы',
+          type: 'multiValueOfArray',
+          dependencies: [
+            memoizeOne(
+              (consumable_materials, { status }) => consumable_materials.map((rowData) => ({
+                consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
+                fact_value: !rowData.fact_value && checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)'),
+                consumption: !rowData.consumption && checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)'),
+              })),
+            ),
+          ],
+        },
       },
     },
   },
@@ -262,7 +279,7 @@ export const metaMission: ConfigFormData<Mission> = {
     author: '',
     can_be_closed: false,
     can_be_closed_wb: false,
-    can_edit_car_and_route: false,
+    can_edit_car_and_route: true,
     car_gov_number: '',
     car_gov_numbers: [],
     car_id: null,
@@ -277,12 +294,14 @@ export const metaMission: ConfigFormData<Mission> = {
     car_type_names: [],
     column_id: null,
     comment: '',
+    consumable_materials: [],
     current_percentage: null,
     date_end: createValidDateTime(getTomorrow9am()),
     date_start: createValidDateTime(getDateWithMoscowTz()),
     description: '',
     id: null,
     is_archive: false,
+    is_mission_progress_countable: false,
     is_new: true,
     is_valid_to_order_operation: null,
     for_column: false,
@@ -310,10 +329,10 @@ export const metaMission: ConfigFormData<Mission> = {
     request_id: null,
     request_number: '',
     route_id: null,
-    route_type: '',
+    route_type: null,
     route_name: '',
-    status: '',
-    status_name: '',
+    status: MISSION_STATUS.not_assigned,
+    status_name: MISSION_STATUS_LABELS.not_assigned,
     structure_id: null,
     structure_name: '',
     technical_operation_id: null,

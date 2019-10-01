@@ -5,6 +5,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionUpdateFormErrors } from 'redux-main/reducers/modules/form_data_record/actions';
+import { useMissionFormDataHandeChange } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   formDataKey: 'mission';
@@ -20,10 +21,11 @@ const MissionFormNew: React.FC<Props> = React.memo(
     const originalFormState = useForm.useFormDataOriginalFormState<Mission>(props.formDataKey);
     const meta = useForm.useFormDataMeta<Mission>(props.formDataKey);
     const formState = useForm.useFormDataFormState<Mission>(props.formDataKey);
-    const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
+    const handleChange = useMissionFormDataHandeChange<Mission>(props.formDataKey);
     const isPermitted = useForm.useFormDataSchemaIsPermitted(props.formDataKey);
     const formErrors = useForm.useFormDataFormErrors<Mission>(props.formDataKey);
     const canSave = useForm.useFormDataCanSave<Mission>(props.formDataKey);
+    const IS_CREATING = useForm.useFormDataIsCreating<Mission>(props.formDataKey);
     const handleSubmitPromise = useForm.useFormDataHandleSubmitPromise<Mission>(props.formDataKey);
 
     const dispatch = etsUseDispatch();
@@ -36,6 +38,7 @@ const MissionFormNew: React.FC<Props> = React.memo(
 
     return (
       <MissionFormOld
+        IS_CREATING={IS_CREATING}
         originalFormState={originalFormState}
         formState={formState}
         isPermitted={isPermitted}

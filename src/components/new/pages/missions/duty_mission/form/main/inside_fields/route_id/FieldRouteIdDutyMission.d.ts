@@ -6,6 +6,7 @@ import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { IStateRoutes } from 'redux-main/reducers/modules/routes/@types/index';
 import { DefaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
+import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 
 export type StatePropsFieldRouteIdDutyMission = {
   routesList: IStateRoutes['routesList'];
@@ -32,6 +33,7 @@ export type OwnPropsFieldRouteIdDutyMission = {
   municipal_facility_name: DutyMission['municipal_facility_name'];
   technical_operation_id: DutyMission['technical_operation_id'];
   technical_operation_name: DutyMission['technical_operation_name'];
+  consumable_materials?: DutyMission['consumable_materials'],
   request_id?: DutyMission['request_id'];
   fromMission: boolean;
   fromMissionTemplate: boolean;
@@ -46,6 +48,8 @@ export type OwnPropsFieldRouteIdDutyMission = {
   onChange: (obj: Partial<DutyMission>) => void;
   page: string;
   path: string;
+
+  formDataKey?: FormKeys;
 };
 
 export type PropsFieldRouteIdDutyMission = (

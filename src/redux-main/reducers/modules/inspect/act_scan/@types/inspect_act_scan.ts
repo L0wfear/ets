@@ -1,3 +1,7 @@
+import { InspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/@types/inspect_autobase';
+import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
+import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
+
 export type InspectActScan = {
   company_id: number;
   content_type: string;
@@ -19,4 +23,5 @@ export type InspectOneActScan = {
   inspection_id: number;
   files: any[],
   notes: string;
+  inspection?: InspectAutobase | InspectPgmBase | InspectCarsCondition;
 };

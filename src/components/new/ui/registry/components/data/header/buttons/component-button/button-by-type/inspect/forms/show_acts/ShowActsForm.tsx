@@ -19,8 +19,10 @@ import ButtonRead from '../../../ButtonRead';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
-import { actionChangeActFiles } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_actions';
 import { InspectOneActScan } from 'redux-main/reducers/modules/inspect/act_scan/@types/inspect_act_scan';
+import { actionUpdateInspectAutobase } from 'redux-main/reducers/modules/inspect/autobase/inspect_autobase_actions';
+import { actionUpdateInspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/inspect_pgm_base_actions';
+import { actionUpdateInspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 
 const InspectActFileFormContext = React.lazy(() => (
   import(/* webpackChunkName: "services" */ 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/inspect/forms/show_acts/form/InspectActFileFormContext')
@@ -91,19 +93,53 @@ const ShowActsForm: React.FC<Props> = React.memo(
 
     const handleClickRemoveFile = React.useCallback(
       (selectedRow: InspectOneActScan) => {
-        return dispatch(
-          actionChangeActFiles(
-            {
-              ...selectedRow,
-              inspection_id: props.element.id,
-              files: selectedRow.files.map((d) => ({
-                ...d,
+        const [file] = selectedRow.files;
+        const newFiles = selectedRow.inspection.files.map(
+          (rowData) => {
+            if (rowData.id === file.id) {
+              return {
+                ...rowData,
                 action: 'delete',
-              })),
-            },
-            props,
-          ),
+              };
+            }
+
+            return rowData;
+          },
         );
+
+        if (selectedRow.inspection.type === 'autobase') {
+          return dispatch(
+            actionUpdateInspectAutobase(
+              {
+                ...selectedRow.inspection,
+                files: newFiles,
+              },
+              props,
+            ),
+          );
+        }
+        if (selectedRow.inspection.type === 'pgm_base') {
+          return dispatch(
+            actionUpdateInspectPgmBase(
+              {
+                ...selectedRow.inspection,
+                files: newFiles,
+              },
+              props,
+            ),
+          );
+        }
+        if (selectedRow.inspection.type === 'cars_condition') {
+          return dispatch(
+            actionUpdateInspectCarsCondition(
+              {
+                ...selectedRow.inspection,
+                files: newFiles,
+              },
+              props,
+            ),
+          );
+        }
       },
       [props.element.id],
     );

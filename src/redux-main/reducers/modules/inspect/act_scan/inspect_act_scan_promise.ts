@@ -4,7 +4,8 @@ import { InspectionService, FilesService } from 'api/Services';
 
 export const makeInspectActScanFilesFront = (array: InspectOneActScan[]) => (
   array.reduce(
-    (newArr, { files = [] }) => {
+    (newArr, inspection) => {
+      const { files = [] } = inspection;
       files.forEach(
         (file) => {
           if (file.kind === 'act_scan') {
@@ -14,6 +15,7 @@ export const makeInspectActScanFilesFront = (array: InspectOneActScan[]) => (
               name: file.name,
               notes: file.notes,
               url: file.url,
+              inspection,
             });
           }
         },

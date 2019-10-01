@@ -1,7 +1,7 @@
 import { Actions } from 'flummox';
 import { clone, cloneDeep } from 'lodash';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { isEmpty, flattenObject } from 'utils/functions';
+import { isEmpty } from 'utils/functions';
 import {
   MissionService,
   MissionTemplateCarService,
@@ -9,15 +9,6 @@ import {
 } from 'api/missions';
 
 import { WaybillAvailableMissionsService } from 'api/Services';
-
-export const parseFilterObject = (filter) =>
-  Object.entries(flattenObject(filter)).reduce(
-    (newFilter, [key, { value }]) => ({
-      ...newFilter,
-      [Array.isArray(value) ? `${key}__in` : key]: value,
-    }),
-    {},
-  );
 
 // возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
 // если у ПЛ нет статуса, то нужны исключительно неназначенные задания!

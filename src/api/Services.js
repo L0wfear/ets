@@ -265,6 +265,9 @@ export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase');
 export const CarDrivers = ETS_API_FACTORY.createApiServiceAdapter(
   'car_drivers',
 );
+export const AutoBaseBatteryRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/battery_registry',
+);
 export const CarRegistrationRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/car_registration_registry',
 );
@@ -421,4 +424,8 @@ export const CleaningAreaRateService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 export const EngineTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/engine_type',
+);
+
+export const ReportServiceHistoryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'report/service_history',
 );

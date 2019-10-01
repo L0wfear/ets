@@ -27,6 +27,18 @@ export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code'
     to_dt: makeUnixTime(payloadOwn.to_dt),
     version,
   };
-
-  return TrackInfoService.get(payload) as Promise<TrackInfo>;
+  try {
+    const response = await TrackInfoService.get(payload) as Promise<TrackInfo>;
+    return response;
+  } catch {
+    global.NOTIFICATION_SYSTEM.notify(
+      'Ошибка загрузки данных трека',
+      'error',
+      'tr',
+    );
+    return {
+      distance: null,
+      consumption: null,
+    };
+  }
 };

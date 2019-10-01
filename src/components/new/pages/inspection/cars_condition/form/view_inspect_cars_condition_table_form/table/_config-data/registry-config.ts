@@ -42,7 +42,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
       {
         valueKey: 'gov_number',
         type: 'multiselect',
-        title: 'Гос.№',
+        title: 'Гос.номер',
       },
     ],
   },
@@ -89,7 +89,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
       fields: [
         {
           key: 'gov_number',
-          title: 'Гос.№',
+          title: 'Гос.номер',
           width: 200,
           renderParams: {
             type: 'string',
@@ -116,7 +116,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'gby_district',
-          title: 'Техника относится к ГБУ Жилищник района (согласно балансовой/забансовой справке)',
+          title: 'Техника относится к ГБУ Жилищник района',
           width: 200,
           groupOpt: {
             key: 'district',
@@ -186,7 +186,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'vin',
-          title: 'VIN',
+          title: 'VIN (из системы)',
           width: 200,
           groupOpt: {
             key: 'ts_data',
@@ -209,7 +209,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'vin_by_hand',
-          title: 'Корректный VIN',
+          title: 'VIN (ручной ввод)',
           width: 200,
           renderParams: {
             type: 'string',
@@ -220,7 +220,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'body_number',
-          title: 'Заводской номер',
+          title: 'Заводской номер (из системы)',
           width: 200,
           groupOpt: {
             key: 'ts_data',
@@ -243,7 +243,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'body_number_by_hand',
-          title: 'Корректный заводской номер',
+          title: 'Заводской номер (ручной ввод)',
           width: 200,
           renderParams: {
             type: 'string',
@@ -365,7 +365,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'osago_finished_at',
-          title: 'Срок действия ОСАГО',
+          title: 'действует до',
           width: 200,
           format: 'date',
           renderParams: {
@@ -376,7 +376,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'diagnostic_card',
-          title: '№ диагностической карты / талона ГТО',
+          title: 'Номер диагностической карты',
           width: 200,
           renderParams: {
             type: 'string',
@@ -385,7 +385,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'diagnostic_card_finished_at',
-          title: 'Дата окончания действия ГТО',
+          title: 'действует до',
           width: 200,
           format: 'date',
           renderParams: {

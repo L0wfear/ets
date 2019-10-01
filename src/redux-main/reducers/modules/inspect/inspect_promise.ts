@@ -58,7 +58,7 @@ export const promiseCreateInspection = async (payload: PromiseCreateInspectionPa
   return inspectAutobase;
 };
 
-export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], type: TypeOfInspect, payload: any) => {
+export const promiseUpdateInspection = async (id: number, data: InspectAutobase['data'], files: any[], payload: any) => {
 
   const newPayload = {
     ...payload,
@@ -69,7 +69,6 @@ export const promiseUpdateInspection = async (id: number, data: InspectAutobase[
     {
       data,
       files,
-      type,
       ...newPayload,
     },
     false,

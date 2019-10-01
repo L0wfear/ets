@@ -321,7 +321,8 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
       }
       case 'inspect_act_scan': {
         arrayRaw = arrayRaw.reduce(
-          (newArr, { files = [] }) => {
+          (newArr, inspection) => {
+            const { files = [] } = inspection;
             files.forEach(
               (file) => {
                 if (file.kind === 'act_scan') {
@@ -331,6 +332,7 @@ export const registryLoadDataByKey: any = (registryKey, responseDataList: any[] 
                     name: file.name,
                     notes: file.notes,
                     url: file.url,
+                    inspection,
                   });
                 }
               },

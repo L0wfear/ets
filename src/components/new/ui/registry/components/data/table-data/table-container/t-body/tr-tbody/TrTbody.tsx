@@ -304,7 +304,7 @@ class TrTbody extends React.PureComponent<PropsTrTbody, StateTrTbody> {
     const isPermittedToClick = (
       props.isPermitted
       && (
-        props.buttons.find(({ type }) => type === buttonsTypes.read)
+        (props.row_double_click !== false && props.buttons.find(({ type }) => type === buttonsTypes.read))
         || (isBoolean(props.row_double_click) ? props.row_double_click : true)
       )
     );

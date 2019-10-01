@@ -18,13 +18,14 @@ export const getConsumableMaterialIdOptions = memoizeOne(
     const consumable_materials_index = keyBy(consumable_materials, 'consumable_material_id');
     const options = consumableMateriaForMission.map(
       (rowData) => {
+        const isNotVisible = consumable_materials_index[rowData.consumable_material_id];
         delete consumable_materials_index[rowData.consumable_material_id];
 
         return ({
           value: rowData.consumable_material_id,
           label: rowData.consumable_material_name,
           rowData,
-          isNotVisible: consumable_materials_index[rowData.consumable_material_id],
+          isNotVisible,
         });
       },
     );
@@ -36,7 +37,7 @@ export const getConsumableMaterialIdOptions = memoizeOne(
           value: rowData.consumable_material_id,
           label: rowData.consumable_material_name,
           rowData,
-          isNotVisible: false,
+          isNotVisible: true,
         }),
       ),
     ];

@@ -5,7 +5,7 @@ import config from 'config';
 import { InfoService } from 'api/Services';
 
 export default class CarActions extends Actions {
-  getInfoFromCar(gps_code, from_dt, to_dt) {
+  async getInfoFromCar(gps_code, from_dt, to_dt) {
     let version = get(
       JSON.parse(localStorage.getItem(global.API__KEY) || '{}'),
       [config.tracksCaching],
@@ -27,6 +27,19 @@ export default class CarActions extends Actions {
       version,
     };
 
-    return InfoService.get(payload);
+    try {
+      const result = await InfoService.get(payload);
+      return result;
+    } catch {
+      global.NOTIFICATION_SYSTEM.notify(
+        'Ошибка загрузки данных трека',
+        'error',
+        'tr',
+      );
+      return {
+        distance: null,
+        consumption: null,
+      };
+    }
   }
 }

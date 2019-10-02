@@ -108,6 +108,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
               {
                 ...selectedRow.inspection,
                 files: newFiles,
+                action: 'save',
               },
               props,
             ),
@@ -119,6 +120,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
               {
                 ...selectedRow.inspection,
                 files: newFiles,
+                action: 'save',
               },
               props,
             ),
@@ -130,6 +132,7 @@ const ShowActsForm: React.FC<Props> = React.memo(
               {
                 ...selectedRow.inspection,
                 files: newFiles,
+                action: 'save',
               },
               props,
             ),

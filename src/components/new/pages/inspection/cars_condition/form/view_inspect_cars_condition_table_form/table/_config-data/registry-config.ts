@@ -34,7 +34,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
       // buttonsTypes.columns_control,
       buttonsTypes.filter,
       buttonsTypes.show_сars_condition_table_defects,
-      buttonsTypes.ButtonAddNewRowTable,
+      // buttonsTypes.ButtonAddNewRowTable,
     ],
   },
   filter: {

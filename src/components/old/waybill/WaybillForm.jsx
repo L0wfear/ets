@@ -1427,11 +1427,14 @@ class WaybillForm extends UNSAFE_Form {
     const taxeTotalHidden = allTaxes.length === 0;
 
     if (state.driver_id && !DRIVERS.some((d) => d.value === state.driver_id)) {
+      const personnel_number = get(
+        this.props.employeesIndex,
+        `${state.driver_id}.personnel_number`,
+      );
       DRIVERS.push({
-        label: employeeFIOLabelFunction(
-          this.props.employeesIndex,
-          state.driver_id,
-        ),
+        label: `${personnel_number ? `[${personnel_number}] ` : ''}${
+          state.driver_name
+        }`,
         value: state.driver_id,
       });
     }

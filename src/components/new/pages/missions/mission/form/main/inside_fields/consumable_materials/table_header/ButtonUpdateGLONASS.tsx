@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { keyBy } from 'lodash';
 
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
@@ -64,7 +65,24 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
           payload.order_operation_id = order_operation_id;
         }
 
-        const { dataIndex } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+        const { dataIndex: dataIndexRaw } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+        const consumable_materials_index = keyBy(consumable_materials, 'consumable_material_id');
+        const dataIndex = Object.fromEntries(
+          Object.entries(dataIndexRaw).map(([key, data]) => {
+            if (key in consumable_materials_index) {
+              return [
+                key,
+                {
+                  ...data,
+                  is_fact_value_locked: consumable_materials_index[key].is_fact_value_locked,
+                  is_plan_value_locked: consumable_materials_index[key].is_plan_value_locked,
+                },
+              ];
+            }
+
+            return [key, data];
+          }),
+        );
 
         handleChange({
           consumable_materials: mergeConsumableMaterials(consumable_materials, dataIndex),

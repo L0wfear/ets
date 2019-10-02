@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isObject, isNumber } from 'util';
+import { isObject, isNumber, isNullOrUndefined } from 'util';
 
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -19,14 +19,24 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
 
       if (rowDataInIndex) {
         const plan_value = rowDataInIndex.is_plan_value_locked ? rowDataInIndex.plan_value : rowData.plan_value;
-        let fact_value = rowData.fact_value;
+        let fact_value = Number(rowData.fact_value);
+        if (isNaN(fact_value)) {
+          fact_value = null;
+        }
 
         if (rowDataInIndex.is_fact_value_locked ) {
-          fact_value = rowDataInIndex.fact_value || plan_value;
+          fact_value = rowDataInIndex.fact_value;
+          if (isNullOrUndefined(fact_value)) {
+            if (isNumber(rowDataInIndex.mission_progress_fact_value)) {
+              fact_value = rowDataInIndex.mission_progress_fact_value;
+            } else {
+              fact_value = plan_value;
+            }
+          }
         }
 
         let consumption = null;
-        if (rowDataInIndex.norm_value && fact_value) {
+        if (isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
           consumption = fact_value * rowDataInIndex.norm_value;
         }
 
@@ -139,6 +149,74 @@ export const useMissionFormDataIsCompleted = (formDataKey: FormKeys) => {
 
   return checkIsMissionComplete(status);
 
+};
+
+export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormKeys) => {
+  const meta = useForm.useFormDataMeta(formDataKey);
+  const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
+  const dispatch = etsUseDispatch();
+
+  React.useEffect(
+    () => {
+      const norm_id = formDataKey === 'mission'
+      ? (
+        formState.norm_ids.length > 1
+          ? null
+          : formState.norm_ids[0]
+      )
+      : (
+        formState.norm_id
+      );
+      const date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
+
+      const passes_count_number = Number(formState.passes_count);
+      const passes_count = (
+        formDataKey === 'duty_mission'
+          ? 1
+          : !isNaN(passes_count_number) && passes_count_number > 0 && passes_count_number < 11
+            ? passes_count_number
+            : 1
+      );
+
+      const payload: Parameters<typeof actionConsumableMaterialCountMissionGetAndSetInStore>[0] = {
+        type: formDataKey === 'mission' ? 'mission' : 'duty_mission',
+        norm_id,
+        municipal_facility_id: formState.municipal_facility_id,
+        date: date_start,
+        route_id: formState.route_id,
+        passes_count,
+      };
+      if (formState.id) {
+        payload.mission_id = formState.id;
+      }
+      if (formState.order_operation_id) {
+        payload.order_operation_id = formState.order_operation_id;
+      }
+
+      const triggerOnUpdate = Boolean(
+        payload.norm_id
+        && payload.municipal_facility_id
+        && payload.date
+        && payload.route_id
+        && payload.passes_count,
+      );
+
+      if (triggerOnUpdate) {
+        dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+      }
+    },
+    [
+      // formState.date_start,
+      // formState.fact_date_start,
+      // formState.plan_date_start,
+      // formState.norm_id,
+      // formState.passes_count,
+      // formState.municipal_facility_id,
+      // formState.route_id,
+      // formState.id,
+      // formState.order_operation_id,
+    ],
+  );
 };
 
 export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {

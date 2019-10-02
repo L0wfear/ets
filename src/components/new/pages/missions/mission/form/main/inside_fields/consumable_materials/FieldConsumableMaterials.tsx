@@ -18,7 +18,7 @@ import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/fo
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
-import { useMissionFormDataIsNotAssignOrIsAssignWithNotActiveWaybill, useMissionFormDataIsNotAssign } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNotAssignOrIsAssignWithNotActiveWaybill, useMissionFormDataIsNotAssign, useMissionDataLoadConsumableMateriaForMission } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 /**
  * 6
@@ -83,6 +83,8 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
     const IS_NOT_ASSIGN = useMissionFormDataIsNotAssign(props.formDataKey);
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
+
+    useMissionDataLoadConsumableMateriaForMission(props.formDataKey);
 
     const disabled = (
       !isPermitted

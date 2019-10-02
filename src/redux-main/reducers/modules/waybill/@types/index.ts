@@ -4,6 +4,7 @@ type WaybillCarRefill = {
   fuel_card_id: number;
   type_id: number;
   value: number;
+  number: string;
 };
 
 type WaybillEquipmentRefill = WaybillCarRefill;

@@ -9,7 +9,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
-import { useMissionFormDataIsNoCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNoCompleted, mergeConsumableMaterials } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = PropsToTdReactComponent;
 
@@ -18,13 +18,14 @@ export const getConsumableMaterialIdOptions = memoizeOne(
     const consumable_materials_index = keyBy(consumable_materials, 'consumable_material_id');
     const options = consumableMateriaForMission.map(
       (rowData) => {
+        const isNotVisible = consumable_materials_index[rowData.consumable_material_id];
         delete consumable_materials_index[rowData.consumable_material_id];
 
         return ({
           value: rowData.consumable_material_id,
-          label: rowData.consumable_material_name,
+          label: rowData.consumable_material_short_name,
           rowData,
-          isNotVisible: consumable_materials_index[rowData.consumable_material_id],
+          isNotVisible,
         });
       },
     );
@@ -34,9 +35,9 @@ export const getConsumableMaterialIdOptions = memoizeOne(
       ...Object.values(consumable_materials_index).map(
         (rowData) => ({
           value: rowData.consumable_material_id,
-          label: rowData.consumable_material_name,
+          label: rowData.consumable_material_short_name,
           rowData,
-          isNotVisible: false,
+          isNotVisible: true,
         }),
       ),
     ];
@@ -51,22 +52,31 @@ const TdConsumableMaterialId: React.FC<Props> = React.memo(
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
 
+    const consumableMateriaForMissionIndex = React.useMemo(
+      () => {
+        return keyBy(consumableMateriaForMission, 'consumable_material_id');
+      },
+      [consumableMateriaForMission],
+    );
+
     const handleChangeWrap = React.useCallback(
       (valueNew, option) => {
         handleChange({
           consumable_materials: consumable_materials.map((rowData, index) => {
             if (index === props.indexRow) {
-              return {
-                ...rowData,
-                ...get(option, 'rowData', {}),
-              };
+              return mergeConsumableMaterials(
+                [
+                  get(option, 'rowData'),
+                ],
+                consumableMateriaForMissionIndex,
+              )[0];
             }
 
             return rowData;
           }),
         });
       },
-      [handleChange, consumable_materials, props.indexRow],
+      [handleChange, consumable_materials, props.indexRow, consumableMateriaForMissionIndex],
     );
 
     const value = React.useMemo(
@@ -77,7 +87,7 @@ const TdConsumableMaterialId: React.FC<Props> = React.memo(
     );
     const value_string = React.useMemo(
       () => {
-        return get(consumable_materials[props.indexRow], 'consumable_material_name');
+        return get(consumable_materials[props.indexRow], 'consumable_material_short_name');
       },
       [consumable_materials, props.indexRow],
     );

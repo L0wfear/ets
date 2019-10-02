@@ -168,6 +168,7 @@ export const makePartialMission = (missionTemplate: MissionTemplateWithAssign, m
     mission_source_id: missionTemplateCreating.mission_source_id,
     mission_source_name: missionTemplateCreating.mission_source_name,
     hidden: true,
+    consumable_materials: null,
   };
 };
 

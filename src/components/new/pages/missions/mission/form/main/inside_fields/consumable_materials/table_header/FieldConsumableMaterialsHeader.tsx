@@ -15,6 +15,7 @@ import { TableMeta } from 'components/new/ui/table_input/TableInput';
 import { getConsumableMaterialIdOptions } from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/consumable_material_id/TdConsumableMaterialId';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import ButtonUpdateGLONASS from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/table_header/ButtonUpdateGLONASS';
+import { useMissionFormDataIsNoCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   selectedRowIndex: number;
@@ -37,6 +38,7 @@ const FieldConsumableMaterialsHeader: React.FC<Props> = React.memo(
     const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(props.formDataKey, 'is_mission_progress_countable');
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+    const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(props.formDataKey);
 
     const isPermitted = (
       useForm.useFormDataIsPermitted<Mission>(props.formDataKey)
@@ -106,7 +108,7 @@ const FieldConsumableMaterialsHeader: React.FC<Props> = React.memo(
                       <ButtonTableInput block width={props.buttonWidth} onClick={handleAddRow} disabled={!can_add}>Добавить</ButtonTableInput>
                       <ButtonTableInput block width={props.buttonWidth} onClick={handleRemoveRow} disabled={isNullOrUndefined(props.selectedRowIndex)}>Удалить</ButtonTableInput>
                       {
-                        Boolean(is_mission_progress_countable) && (
+                        Boolean(is_mission_progress_countable && IS_NOT_COMPLETED) && (
                           <ButtonUpdateGLONASS buttonWidth={props.buttonWidth} formDataKey={props.formDataKey}/>
                         )
                       }

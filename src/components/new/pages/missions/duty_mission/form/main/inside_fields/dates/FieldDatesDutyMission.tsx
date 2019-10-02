@@ -62,6 +62,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
         route_id,
         id,
         consumable_materials,
+        order_operation_id,
       } = this.props;
 
       const date_start = date || (field === 'fact_date_start' ? plan_date_start : null);
@@ -101,6 +102,9 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
 
         if (id) {
           payload.mission_id = id;
+        }
+        if (order_operation_id) {
+          payload.order_operation_id = order_operation_id;
         }
 
         const { data: ConsumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, this.props));

@@ -84,6 +84,8 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
     );
     const showCreateBtn = canCreateCarInCondition(monitoring_kind, props.isActiveInspect);
 
+    const disableCreateBtn = Boolean(props.match.params.selectedCarsConditionsCar);
+
     return (
       <BoxContainer>
         <SelectCarConditionTitleWrapper>
@@ -123,7 +125,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
         {
           showCreateBtn &&
           (
-            <EtsBootstrap.Button disabled={!props.isPermitted} onClick={handleCreateNewCardCar}>
+            <EtsBootstrap.Button disabled={!props.isPermitted || disableCreateBtn} onClick={handleCreateNewCardCar}>
               Создать карточку
             </EtsBootstrap.Button>
           )

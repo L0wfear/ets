@@ -390,6 +390,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       car_special_model_names={state.car_special_model_names}
                       car_type_ids={state.car_type_ids}
                       car_type_names={state.car_type_names}
+                      order_operation_id={state.order_operation_id}
 
                       loadByNormId={IS_ASSIGNED || MISSION_IS_ORDER_SOURCE}
                       norm_ids={state.norm_ids}
@@ -513,6 +514,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                       car_ids={state.car_ids}
                       for_column={state.for_column}
+                      order_operation_id={state.order_operation_id}
 
                       IS_TEMPLATE={false}
                       MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}
@@ -577,6 +579,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                       is_cleaning_norm={state.is_cleaning_norm}
                       consumable_materials={state.consumable_materials}
+                      order_operation_id={state.order_operation_id}
                       municipal_facility_id={state.municipal_facility_id}
                       route_id={state.route_id}
                       id={state.id}
@@ -593,7 +596,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                   <EtsBootstrap.Col md={12}>
                     <ExtField
                       id="passes-count"
-                      type="string"
+                      type="number"
                       label="Количество циклов"
                       error={errors.passes_count}
                       disabled={

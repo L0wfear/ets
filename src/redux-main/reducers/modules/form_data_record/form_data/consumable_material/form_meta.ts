@@ -2,7 +2,7 @@ import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_mater
 import consumableMaterialPermissions from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/_config-data/permissions';
 import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 import { promiseSubmitConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
-import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
 import { ReduxState } from 'redux-main/@types/state';
 import { diffDates } from 'components/@next/@utils/dates/dates';
@@ -16,6 +16,10 @@ const validateValue = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow:
     const floadError = floatValidate(Number(rowData.value), 4, 'Норма');
     if (floadError) {
       return floadError;
+    }
+
+    if (rowData.value && rowData.value <= 0) {
+      return getRequiredFieldNumberMoreThen('Норма', 0);
     }
   }
 };

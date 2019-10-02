@@ -15,7 +15,7 @@ import { WithformWrapRegistryWrapper } from 'components/new/pages/inspection/com
 import { FooterEnd } from 'global-styled/global-styled';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-import { registrySelectRowWithPutRequest } from 'components/new/ui/registry/module/actions-registy';
+import { registrySelectRowWithPutRequest, registryResetAllTypeFilter } from 'components/new/ui/registry/module/actions-registy';
 
 type InspectionFormWrapStateProps = {};
 type InspectionFormWrapDispatchProps = {
@@ -69,13 +69,21 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
 
   const onFormHide = React.useCallback(
     () => {
+      let resetObj = {};
       if (props.globalFormShema.dataInSearchKeyList.length) {
-        const resetObj = props.globalFormShema.dataInSearchKeyList.reduce((accElem, currentElem) => ({
+        resetObj = props.globalFormShema.dataInSearchKeyList.reduce((accElem, currentElem) => ({
           ...accElem,
           [currentElem.key]: null,
         }), {});
-        props.setDataInSearch(resetObj);
       }
+      const filterKey = `${props.registryConfig.registryKey}_filters`;
+      props.setDataInSearch({
+        ...resetObj,
+        [filterKey]: null,
+      });
+
+      dispatch(registryResetAllTypeFilter(props.registryConfig.registryKey));
+
     },
     [showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams],
   );

@@ -42,6 +42,13 @@ const TdConsumption: React.FC<Props> = React.memo(
       [consumable_materials, props.indexRow],
     );
 
+    const norm_value = React.useMemo(
+      () => {
+        return get(consumable_materials[props.indexRow], 'norm_value');
+      },
+      [consumable_materials, props.indexRow],
+    );
+
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const error = React.useMemo(
       () => {
@@ -50,7 +57,7 @@ const TdConsumption: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || !IS_NOT_ASSIGN_OR_IS_ASSIGN_WITH_ACTIVE_WAYBILL;
+    const disabled = !isPermitted || !IS_NOT_ASSIGN_OR_IS_ASSIGN_WITH_ACTIVE_WAYBILL || !!norm_value;
 
     return (
       <ExtField

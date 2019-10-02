@@ -12,6 +12,7 @@ import {
 import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 export const getMissionDataById = async (id: number) => {
   let responce = null;
@@ -173,7 +174,19 @@ export const promiseUpdateMission = async (payloadOwn: Partial<Mission>): Promis
   };
 };
 
-export const promiseSubmitMission = async (mission: Mission, assign_to_waybill?: string[]) => {
+export const promiseSubmitMission = async (missionOwn: Mission, assign_to_waybill?: string[]) => {
+  const mission = cloneDeep(missionOwn);
+  try {
+    mission.consumable_materials = mission.consumable_materials.map((rowData) => ({
+      ...rowData,
+      plan_value: getNumberValueFromSerch(rowData.plan_value),
+      fact_value: getNumberValueFromSerch(rowData.fact_value),
+      consumption: getNumberValueFromSerch(rowData.consumption),
+    }));
+  } catch {
+    //
+  }
+
   if (mission.id) {
     return promiseUpdateMission(mission);
   }

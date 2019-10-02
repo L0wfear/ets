@@ -10,6 +10,39 @@ import { actionConsumableMaterialCountMissionGetAndSetInStore, actionResetSetCon
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+
+export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>) => {
+  return consumable_materials_old.reduce<ConsumableMaterialCountMission[]>(
+    (newArr, rowData) => {
+      const rowDataInIndex = consumable_materials_new_index[rowData.consumable_material_id];
+
+      if (rowDataInIndex) {
+        const plan_value = rowDataInIndex.is_plan_value_locked ? rowDataInIndex.plan_value : rowData.plan_value;
+        let fact_value = rowData.fact_value;
+
+        if (rowDataInIndex.is_fact_value_locked ) {
+          fact_value = rowDataInIndex.fact_value || plan_value;
+        }
+
+        let consumption = null;
+        if (rowDataInIndex.norm_value && fact_value) {
+          consumption = fact_value * rowDataInIndex.norm_value;
+        }
+
+        newArr.push({
+          ...rowDataInIndex,
+          plan_value,
+          fact_value,
+          consumption,
+        });
+      }
+
+      return newArr;
+    },
+    [],
+  );
+};
 
 export const checkIsMissionNotComplete = (status: Mission['status']) => {
   return (
@@ -128,13 +161,13 @@ export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {
 
 export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pick<Mission, 'consumable_materials'> & Record<string, any>>(formDataKey: FormKeys) => {
   const meta = useForm.useFormDataMeta(formDataKey);
-  const handleChange = useForm.useFormDataHandleChange<F>(formDataKey);
-  const formState = useForm.useFormDataFormState<F>(formDataKey);
+  const handleChange = useForm.useFormDataHandleChange<Partial<Mission> & Partial<DutyMission>>(formDataKey);
+  const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
   const dispatch = etsUseDispatch();
   const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
 
   return React.useCallback(
-    async (partialObj: Partial<F>) => {
+    async (partialObj: Partial<Mission> & Partial<DutyMission>) => {
       const newPartialFormState = {
         ...formState,
         ...partialObj,
@@ -239,7 +272,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         }
         const { data, dataIndex } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
 
-        if ((newPartialFormState.municipal_facility_id !== prev_municipal_facility_id || norm_id !== prev_norm_id || !prev_date_start || !prev_route_id) || passes_count !== passes_count_prev_number) {
+        if ((newPartialFormState.municipal_facility_id !== prev_municipal_facility_id || norm_id !== prev_norm_id || !prev_date_start || !prev_route_id)) {
           newPartialFormState.consumable_materials = data.map((rowData) => ({
             ...rowData,
           }));
@@ -248,21 +281,11 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         const triggerOnUpdateConsumableMaterials = (
           (prev_date_start && (prev_date_start !== date_start))
           || (prev_route_id && (prev_route_id !== newPartialFormState.route_id))
+          || (passes_count !== passes_count_prev_number)
         );
 
         if (triggerOnUpdateConsumableMaterials) {
-          newPartialFormState.consumable_materials = (newPartialFormState.consumable_materials as ConsumableMaterialCountMission[]).reduce(
-            (newArr, rowData) => {
-              if (dataIndex[rowData.consumable_material_id]) {
-                newArr.push({
-                  ...dataIndex[rowData.consumable_material_id],
-                });
-              }
-
-              return newArr;
-            },
-            [],
-          );
+          newPartialFormState.consumable_materials = mergeConsumableMaterials(newPartialFormState.consumable_materials, dataIndex);
         }
       }
 

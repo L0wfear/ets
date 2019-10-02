@@ -31,6 +31,7 @@ export type OwnPropsFieldTechnicalOperationMission = {
 
   car_ids: Mission['car_ids'];
   for_column: Mission['for_column'];
+  order_operation_id?: Mission['order_operation_id'];
 
   page: string;
   path: string;

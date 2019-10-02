@@ -30,7 +30,7 @@ declare namespace ETSCore {
  * @example ValuesOf<Array<TypeOfElement>> = TypeOfElement
  */
 type ValuesOf<T extends any[]>= T[number];
-
+type Dictionary<T extends any>= Record<string, T>;
 /**
  * Получить ключи подходящих по типу значений
  * @example AllowedNames<{ a: string; b: number }, string> = a

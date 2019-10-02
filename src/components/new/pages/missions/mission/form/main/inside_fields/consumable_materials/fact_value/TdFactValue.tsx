@@ -94,7 +94,7 @@ const TdFactValue: React.FC<Props> = React.memo(
         {
           props.formDataKey !== 'duty_mission' && isMissionFormDataIsNotCompleted && (
             <EtsBootstrap.Button disabled={!isPermitted} onClick={handleChangeLock}>
-              <EtsBootstrap.Glyphicon glyph={!is_fact_value_locked ? "pencil" : "pushpin"} />
+              <EtsBootstrap.Glyphicon glyph={!is_fact_value_locked ? "user" : "lock"} />
             </EtsBootstrap.Button>
           )
         }

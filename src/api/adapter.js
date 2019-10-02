@@ -76,8 +76,6 @@ function checkResponse(url, response, body, method) {
 
     if (warnings.length) {
       warnings.forEach((w) => {
-        const errorIsShow = !w.hidden;
-
         global.NOTIFICATION_SYSTEM.notify(
           getWarningNotification(w.message || w),
         );
@@ -85,7 +83,7 @@ function checkResponse(url, response, body, method) {
         errorThrow = {
           error: body,
           error_text: new RequestWarningError(w),
-          errorIsShow,
+          errorIsShow: true,
         };
       });
     }
@@ -107,6 +105,7 @@ function checkResponse(url, response, body, method) {
       errorThrow = {
         error: body,
         error_text: new Error('Errors in response body'),
+        errorIsShow: true,
       };
     }
 
@@ -197,13 +196,11 @@ function httpMethod(
           }
         }
       } catch (error) {
-        return Promise.reject({ error, error_text: 'none' });
+        return Promise.reject(error);
       }
       return Promise.resolve(responseBody, r);
     } catch (error) {
-      const error_text = 'Неверный формат ответа с сервера';
-      console.error(error_text, url);
-      return Promise.reject({ error, error_text });
+      return Promise.reject(error);
     }
   });
 

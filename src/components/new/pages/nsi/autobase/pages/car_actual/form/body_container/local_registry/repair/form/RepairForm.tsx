@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { get } from 'lodash';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { isNullOrUndefined } from 'util';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { ExtField } from 'components/old/ui/new/field/ExtField';
-import { compose } from 'recompose';
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 import { repairFormSchema } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/schema';
 import autobaseActions from 'redux-main/reducers/modules/autobase/actions-autobase';
@@ -11,7 +14,6 @@ import { defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/uti
 import { getDefaultRepairElement } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/utils';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import { ReduxState } from 'redux-main/@types/state';
-import { connect } from 'react-redux';
 import {
   OwnRepairProps,
   PropsRepair,
@@ -22,7 +24,6 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/form/@types/RepairForm';
 import { Repair } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { DivNone } from 'global-styled/global-styled';
-import { isNullOrUndefined } from 'util';
 import { FileField } from 'components/old/ui/input/fields';
 import { getSessionState } from 'redux-main/reducers/selectors';
 
@@ -83,6 +84,8 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
       (isNullOrUndefined(state.company_id) ||
         state.can_edit ||
         state.company_id === this.props.userCompanyId);
+
+    const value_string_repair = get(AUTOBASE_REPAIR_STATUS[state.status], 'name') || null;
 
     return (
       <EtsBootstrap.ModalContainer
@@ -222,7 +225,7 @@ class RepairForm extends React.PureComponent<PropsRepair, StateRepair> {
                   type="select"
                   label="Итог проведенного ремонта"
                   value={state.status}
-                  value_string={AUTOBASE_REPAIR_STATUS[state.status].name}
+                  value_string={value_string_repair}
                   error={errors.status}
                   options={statusOptions}
                   emptyValue={null}

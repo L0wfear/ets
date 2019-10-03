@@ -65,7 +65,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
         order_operation_id,
       } = this.props;
 
-      const date_start = date || (field === 'fact_date_start' ? plan_date_start : null);
+      const date_start = date || plan_date_start;
 
       if (!date_start && consumable_materials[0]) {
         try {
@@ -76,17 +76,10 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
         } catch {
             // реакт виджет хранит своё состояние
             // если не менять пропсов, то он показывает старое время
-            const { fact_date_start: old } = this.props;
-            const { plan_date_start: old_2 } = this.props;
-            if (old) {
-              await this.props.onChange({ fact_date_start: createValidDateTime(addSecond(old, 60)) });
+            const { plan_date_start: old } = this.props;
+            await this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old, 60)) });
 
-              setImmediate(() => this.props.onChange({ fact_date_start: old }));
-              return;
-            }
-            await this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old_2, 60)) });
-
-            setImmediate(() => this.props.onChange({ plan_date_start: old_2 }));
+            setImmediate(() => this.props.onChange({ plan_date_start: old }));
             return;
         }
       }
@@ -127,17 +120,10 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
           } catch {
             // реакт виджет хранит своё состояние
             // если не менять пропсов, то он показывает старое время
-            const { fact_date_start: old } = this.props;
-            const { plan_date_start: old_2 } = this.props;
-            if (old) {
-              await this.props.onChange({ fact_date_start: createValidDateTime(addSecond(old, 60)) });
+            const { plan_date_start: old } = this.props;
+            this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old, 60)) });
 
-              setImmediate(() => this.props.onChange({ fact_date_start: old }));
-              return;
-            }
-            this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old_2, 60)) });
-
-            await setImmediate(() => this.props.onChange({ plan_date_start: old_2 }));
+            await setImmediate(() => this.props.onChange({ plan_date_start: old }));
             return;
           }
         }

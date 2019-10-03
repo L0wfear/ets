@@ -231,14 +231,16 @@ export const waybillSchema = {
       title: 'Обед',
       required: false,
       type: 'number',
-      minNotEqual: 0,
+      min: 0,
+      max: 1000,
     },
     {
       key: 'downtime_hours_repair',
       title: 'Ремонт',
       required: false,
       type: 'number',
-      minNotEqual: 0,
+      min: 0,
+      max: 1000,
     },
     {
       key: 'car_refill',
@@ -388,38 +390,6 @@ export const waybillSchema = {
               || value <= 0)
           ) {
             return 'Поле "Дежурство" должно быть неотрицательным числом и меньше 1000';
-          }
-          return false;
-        },
-      },
-    ],
-    downtime_hours_dinner: [
-      {
-        validator: (value) => {
-          if (
-            (value
-              && parseFloat(value)
-                .toFixed(1)
-                .match(/^\d{4,}/))
-            || value <= 0
-          ) {
-            return 'Поле "Обед" должно быть неотрицательным числом и меньше 1000';
-          }
-          return false;
-        },
-      },
-    ],
-    downtime_hours_repair: [
-      {
-        validator: (value) => {
-          if (
-            (value
-              && parseFloat(value)
-                .toFixed(1)
-                .match(/^\d{4,}/))
-            || value <= 0
-          ) {
-            return 'Поле "Ремонт" должно быть неотрицательным числом и меньше 1000';
           }
           return false;
         },

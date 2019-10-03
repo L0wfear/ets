@@ -121,6 +121,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           groupOpt: {
             key: 'district',
           },
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'gby_operation_district',
@@ -128,6 +131,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           width: 200,
           groupOpt: {
             key: 'district',
+          },
+          renderParams: {
+            type: 'string',
           },
         },
         {
@@ -726,6 +732,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           width: 200,
           renderParams: {
             type: 'boolean',
+          },
+          groupOpt: {
+            key: 'repair_info',
           },
           format: 'boolean',
         },

@@ -76,6 +76,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
                   ...data,
                   is_fact_value_locked: consumable_materials_index[key].is_fact_value_locked,
                   is_plan_value_locked: consumable_materials_index[key].is_plan_value_locked,
+                  is_consumption_locked: consumable_materials_index[key].is_plan_value_locked,
                 },
               ];
             }

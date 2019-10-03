@@ -1,4 +1,5 @@
 import { get } from 'lodash';
+import memoizeOne from 'memoize-one';
 
 import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -7,10 +8,27 @@ import { promiseSubmitMission, promiseGetMissionById } from 'redux-main/reducers
 import { createValidDateTime, getTomorrow9am, getDateWithMoscowTz, diffDates } from 'components/@next/@utils/dates/dates';
 import { routeTypesByTitle } from 'constants/route';
 import { getMissionsState } from 'redux-main/reducers/selectors';
-import memoizeOne from 'memoize-one';
 import { MISSION_STATUS, MISSION_STATUS_LABELS } from 'redux-main/reducers/modules/missions/mission/constants';
-import { getRequiredFieldMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { checkIsMissionComplete } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
+
+export const defaultCheckConsumableMaterialsNumberValue = (field_value_string: ValuesOf<Mission['consumable_materials']>[keyof ValuesOf<Mission['consumable_materials']>], title) => {
+  if (field_value_string) {
+    const field_value = Number(field_value_string);
+
+    if (field_value < 0) {
+      return getRequiredFieldNumberMoreThen(title, 0);
+    }
+
+    const error_float = floatValidate(field_value, 3, title);
+    if (error_float) {
+      return error_float;
+    }
+  }
+
+  return '';
+};
 
 export const metaMission: ConfigFormData<Mission> = {
   uniqField: 'id',
@@ -263,10 +281,20 @@ export const metaMission: ConfigFormData<Mission> = {
           type: 'multiValueOfArray',
           dependencies: [
             memoizeOne(
-              (consumable_materials, { status }) => consumable_materials.map((rowData) => ({
+              (consumable_materials, { status }) => consumable_materials.map((rowData): Partial<Record<keyof ValuesOf<Mission['consumable_materials']>, string>> => ({
                 consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
-                fact_value: !rowData.fact_value && checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)'),
-                consumption: !rowData.consumption && checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)'),
+                plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работ (план)'),
+                mission_progress_fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.mission_progress_fact_value, 'Объем работ (ГЛОНАСС)'),
+                fact_value: (
+                  !rowData.fact_value
+                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работ (факт)')
+                    : defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работ (факт)')
+                ),
+                consumption: (
+                  !rowData.consumption
+                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')
+                    : defaultCheckConsumableMaterialsNumberValue(rowData.consumption, 'Расход (итого)')
+                ),
               })),
             ),
           ],

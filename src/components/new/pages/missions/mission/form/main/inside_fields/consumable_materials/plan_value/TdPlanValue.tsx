@@ -39,16 +39,22 @@ const TdPlanValue: React.FC<Props> = React.memo(
       [consumable_materials, props.indexRow],
     );
 
-    const is_plan_value_locked = React.useMemo(
+    const consumable_material_measure_unit_name = React.useMemo(
       () => {
-        return get(consumable_materials[props.indexRow], 'is_plan_value_locked');
+        return get(consumable_materials[props.indexRow], 'consumable_material_measure_unit_name');
       },
       [consumable_materials, props.indexRow],
     );
 
-    const is_fact_value_locked = React.useMemo(
+    const consumable_material_id = React.useMemo(
       () => {
-        return get(consumable_materials[props.indexRow], 'is_fact_value_locked');
+        return get(consumable_materials[props.indexRow], 'consumable_material_id');
+      },
+      [consumable_materials, props.indexRow],
+    );
+    const is_plan_value_locked = React.useMemo(
+      () => {
+        return get(consumable_materials[props.indexRow], 'is_plan_value_locked');
       },
       [consumable_materials, props.indexRow],
     );
@@ -61,17 +67,18 @@ const TdPlanValue: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_fact_value_locked || is_plan_value_locked;
+    const disabled = !isPermitted || is_plan_value_locked || !consumable_material_id;
 
     return (
       <ExtField
-        type="string"
+        type="number"
         id={metaPlanValue.key}
         label={false}
         value={value}
         error={error}
         onChange={handleChangeWrap}
         disabled={disabled}
+        addonRight={consumable_material_measure_unit_name}
       />
     );
   },

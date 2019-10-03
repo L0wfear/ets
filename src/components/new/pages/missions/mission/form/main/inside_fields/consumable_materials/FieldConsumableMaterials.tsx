@@ -11,7 +11,7 @@ import { metaPlanValue } from 'components/new/pages/missions/mission/form/main/i
 import { metaFactValue } from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/fact_value/TdFactValue';
 import { metaMissionProgressFactValue } from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/mission_progress_fact_value/TdMissionProgressFactValue';
 import { metaConsumption } from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/consumption/TdConsumption';
-import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlock';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
@@ -19,6 +19,7 @@ import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@
 import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 import { DUTY_MISSION_STATUS } from 'redux-main/reducers/modules/missions/duty_mission/constants';
 import { useMissionFormDataIsNotAssignOrIsAssignWithNotActiveWaybill, useMissionFormDataIsNotAssign, useMissionDataLoadConsumableMateriaForMission } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { actionGetAndSetInStoreMunicipalFacilityMeasureUnit } from 'redux-main/reducers/modules/some_uniq/municipal_facility/actions';
 
 /**
  * 6
@@ -72,6 +73,7 @@ const isPermittedChangeByStatus = (status: Mission['status'] | DutyMission['stat
 const FieldConsumableMaterials: React.FC<Props> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
+    const meta = useForm.useFormDataMeta<Mission>(props.formDataKey);
 
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
@@ -84,6 +86,8 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
 
+    const dispatch = etsUseDispatch();
+    dispatch(actionGetAndSetInStoreMunicipalFacilityMeasureUnit(null, meta));
     useMissionDataLoadConsumableMateriaForMission(props.formDataKey);
 
     const disabled = (

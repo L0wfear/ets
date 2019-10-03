@@ -36,7 +36,7 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
         }
 
         let consumption = null;
-        if (isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
+        if (rowDataInIndex.is_consumption_locked && isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
           consumption = fact_value * rowDataInIndex.norm_value;
         }
 
@@ -134,10 +134,15 @@ export const useMissionFormDataIsNoCompleted = (formDataKey: FormKeys) => {
  * @param formDataKey FormKeys
  */
 export const useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill = (formDataKey: FormKeys) => {
+  const status = useForm.useFormDataFormStatePickValue<Mission, Mission['status']>(formDataKey, 'status');
   const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(formDataKey);
   const IS_ASSIGN_WITH_ACTIVE_WAYBILL = useMissionFormDataIsAssignWithNotActiveWaybill(formDataKey, true);
 
-  return IS_NOT_COMPLETED || IS_ASSIGN_WITH_ACTIVE_WAYBILL;
+  return (
+    status === MISSION_STATUS.assigned
+      ? IS_ASSIGN_WITH_ACTIVE_WAYBILL
+      : IS_NOT_COMPLETED
+  );
 };
 
 /**

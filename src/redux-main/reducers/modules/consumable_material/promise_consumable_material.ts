@@ -2,6 +2,7 @@ import { get, uniqBy, uniq } from 'lodash';
 
 import { ConsumableMaterial, ConsumableMaterialWrap } from './@types/consumableMaterial';
 import { ConsumableMaterialService } from 'api/Services';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 export const makeConsumableMaterialFront = (array: ConsumableMaterial[]) => (
   (array).map(
@@ -24,7 +25,15 @@ export const makeConsumableMaterialFront = (array: ConsumableMaterial[]) => (
   )
 );
 
-export const promiseSubmitConsumableMaterial = (consumableMateria: ConsumableMaterial) => {
+export const promiseSubmitConsumableMaterial = (consumableMateriaOwn: ConsumableMaterial) => {
+  const consumableMateria = {
+    ...consumableMateriaOwn,
+    norms: consumableMateriaOwn.norms.map((rowData) => ({
+      ...rowData,
+      value: getNumberValueFromSerch(rowData.value),
+    })),
+  };
+
   if (!consumableMateria.id) {
     return promiseCreateConsumableMaterial(consumableMateria);
   }

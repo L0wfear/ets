@@ -202,7 +202,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       return;
     }
 
-    missionArr = missionArr.map(({ front_invalid_interval, ...other }) => other);
+    missionArr = missionArr.map(({ front_invalid_interval, ...other }) => ({
+      consumable_materials: null,
+      ...other,
+    }));
 
     if (hasMissionForColumn) {
       this.setState({

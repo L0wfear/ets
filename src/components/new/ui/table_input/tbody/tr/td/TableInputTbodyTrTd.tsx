@@ -22,7 +22,7 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
     } = props;
 
     const handleChange = React.useCallback(
-      (valueRaw) => {
+      (valueRaw, option?) => {
         let value = get(valueRaw, 'target.value', valueRaw);
         switch (metaData.format) {
           case 'number': {
@@ -31,12 +31,16 @@ const TableInputTbodyTrTd: React.FC<TableInputTbodyTrTdProps> = React.memo(
           }
         }
 
-        props.onChange(
-          metaData.key,
-          value,
-        );
+        if (metaData.onChange) {
+          metaData.onChange(props.onChange)(valueRaw, option);
+        } else {
+          props.onChange(
+            metaData.key,
+            value,
+          );
+        }
       },
-      [metaData.key, metaData.format, props.onChange],
+      [metaData.onChange, metaData.key, metaData.format, props.onChange],
     );
 
     React.useEffect(

@@ -9,7 +9,7 @@ import {
   TRendererFunction,
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
-import { IBatteryAvailableCar } from 'api/@types/services/autobase.h';
+import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 export const validationSchema: IValidationSchema = {
   properties: [
@@ -70,7 +70,7 @@ export const meta: IDataTableSchema = {
 };
 
 interface IPropsTypeRenderer extends IPropsDataTableInputRenderer {
-  vehicleList: IBatteryAvailableCar[];
+  vehicleList: BatteryAvailableCar[];
 }
 
 const TypeRenderer: React.FC<IPropsTypeRenderer> = ({

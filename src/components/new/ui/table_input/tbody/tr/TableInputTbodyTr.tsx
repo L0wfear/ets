@@ -5,6 +5,7 @@ import TableInputTbodyTrTd from './td/TableInputTbodyTrTd';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { TableMeta } from 'components/new/ui/table_input/TableInput';
+import { isObject } from 'util';
 
 export type TableInputTbodyTrProps = {
   meta: TableMeta<any>[];
@@ -29,13 +30,23 @@ const TableInputTbodyTr: React.FC<TableInputTbodyTrProps> = React.memo(
     );
     const handleChange = React.useCallback(
       (key, value) => {
-        props.onChange(
-          props.rowIndex,
-          {
-            ...props.rowData,
-            [key]: value,
-          },
-        );
+        if (isObject(key)) {
+          props.onChange(
+            props.rowIndex,
+            {
+              ...props.rowData,
+              ...key,
+            },
+          );
+        } else {
+          props.onChange(
+            props.rowIndex,
+            {
+              ...props.rowData,
+              [key]: value,
+            },
+          );
+        }
       },
       [props.rowData, props.rowIndex, props.onChange],
     );

@@ -1,6 +1,6 @@
 import { NumberField } from 'components/@next/@form/@types';
 import { isNumber, isNullOrUndefined } from 'util';
-import { getRequiredFieldMessage, getRequiredFieldNumberMessage } from 'components/@next/@utils/getErrorString/getErrorString';
+import { getRequiredFieldMessage, getRequiredFieldNumberMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { get } from 'lodash';
 
 export const floatValidate = (value: number, float: number, title: string) => {
@@ -49,7 +49,7 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
       return `Поле "${fieldData.title}" должно быть неотрицательным числом`;
     }
     if (isNumber(fieldData.minNotEqual) && numberValue <= fieldData.minNotEqual) {
-      return `Поле "${title}" должно быть больше ${fieldData.minNotEqual}`;
+      return getRequiredFieldNumberMoreThen(title, fieldData.minNotEqual);
     }
 
     if (isNumber(fieldData.max) && numberValue > fieldData.max) {

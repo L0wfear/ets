@@ -390,6 +390,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                       car_special_model_names={state.car_special_model_names}
                       car_type_ids={state.car_type_ids}
                       car_type_names={state.car_type_names}
+                      order_operation_id={state.order_operation_id}
 
                       loadByNormId={IS_ASSIGNED || MISSION_IS_ORDER_SOURCE}
                       norm_ids={state.norm_ids}
@@ -513,6 +514,7 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
 
                       car_ids={state.car_ids}
                       for_column={state.for_column}
+                      order_operation_id={state.order_operation_id}
 
                       IS_TEMPLATE={false}
                       MISSION_IS_ORDER_SOURCE={MISSION_IS_ORDER_SOURCE}

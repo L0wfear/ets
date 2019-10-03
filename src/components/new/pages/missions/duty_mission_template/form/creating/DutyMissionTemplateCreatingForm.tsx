@@ -83,6 +83,7 @@ const DutyMissionTemplateCreatingForm: React.FC<PropsDutyMissionTemplateCreating
                 ...dutyMissionTamplate,
                 ...props.formState,
                 status: 'not_assigned', // зачем-то
+                consumable_materials: null,
               },
             )
           )),

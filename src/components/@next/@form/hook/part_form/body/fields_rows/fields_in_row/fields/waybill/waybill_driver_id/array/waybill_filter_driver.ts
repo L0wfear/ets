@@ -63,7 +63,7 @@ const waybillFilterDrivers = memoizeOne(
     car_id: number,
     structure_id: number,
     driver_id?: number,
-    driver_fio?: string,
+    driver_name?: string,
   ) => {
     const initialList = makeEmployeeList(
       employeeBindedToCarList,
@@ -126,10 +126,10 @@ const waybillFilterDrivers = memoizeOne(
       [],
     );
 
-    if (driver_id && driver_fio && !options.find(({ rowData }) => rowData.id === driver_id )) {
+    if (driver_id && driver_name && !options.find(({ rowData }) => rowData.id === driver_id )) {
       options.push({
         value: driver_id,
-        label: driver_fio,
+        label: driver_name,
         rowData: {},
       });
     }

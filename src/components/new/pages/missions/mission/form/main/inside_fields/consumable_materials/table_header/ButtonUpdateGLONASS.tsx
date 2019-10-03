@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { keyBy } from 'lodash';
 
 import { ButtonTableInput } from 'components/new/ui/table_input/styled';
 import { FormKeys } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
@@ -7,7 +8,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { actionConsumableMaterialCountMissionGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/actions';
-import { useMissionFormDataIsNoCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { mergeConsumableMaterials } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   buttonWidth: number;
@@ -29,7 +30,6 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
     const id = useForm.useFormDataFormStatePickValue<Mission, Mission['id']>(props.formDataKey, 'id');
     const order_operation_id = useForm.useFormDataFormStatePickValue<Mission, Mission['order_operation_id']>(props.formDataKey, 'order_operation_id');
     const passes_count = useForm.useFormDataFormStatePickValue<Mission, Mission['passes_count']>(props.formDataKey, 'passes_count');
-    const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(props.formDataKey);
 
     const norm_id = React.useMemo(
       () => {
@@ -65,40 +65,27 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
           payload.order_operation_id = order_operation_id;
         }
 
-        const { dataIndex } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+        const { dataIndex: dataIndexRaw } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+        const consumable_materials_index = keyBy(consumable_materials, 'consumable_material_id');
+        const dataIndex = Object.fromEntries(
+          Object.entries(dataIndexRaw).map(([key, data]) => {
+            if (key in consumable_materials_index) {
+              return [
+                key,
+                {
+                  ...data,
+                  is_fact_value_locked: consumable_materials_index[key].is_fact_value_locked,
+                  is_plan_value_locked: consumable_materials_index[key].is_plan_value_locked,
+                },
+              ];
+            }
+
+            return [key, data];
+          }),
+        );
 
         handleChange({
-          consumable_materials: consumable_materials.map(
-            (rowData) => {
-              const newRowData = dataIndex[rowData.consumable_material_id];
-
-              if (newRowData) {
-                let resultRowData = {
-                  ...rowData,
-                };
-                if (props.formDataKey === 'mission') {
-                  resultRowData.mission_progress_fact_value = newRowData.mission_progress_fact_value;
-                }
-                resultRowData = {
-                  ...rowData,
-                  consumable_material_measure_unit_id: newRowData.consumable_material_measure_unit_id,
-                  consumable_material_measure_unit_name: newRowData.consumable_material_measure_unit_name,
-                  consumable_material_norm_id: newRowData.consumable_material_norm_id,
-                  consumable_material_norm_value: newRowData.consumable_material_norm_value,
-                  norm_value: newRowData.norm_value,
-                  municipal_facility_measure_unit_id: newRowData.municipal_facility_measure_unit_id,
-                  municipal_facility_measure_unit_name: newRowData.municipal_facility_measure_unit_name,
-                  is_plan_value_locked: newRowData.is_plan_value_locked,
-                };
-
-                resultRowData.consumption = resultRowData.is_fact_value_locked ? resultRowData.consumption : resultRowData.fact_value * resultRowData.norm_value;
-
-                return resultRowData;
-              }
-
-              return rowData;
-            },
-          ),
+          consumable_materials: mergeConsumableMaterials(consumable_materials, dataIndex),
         });
       },
       [consumable_materials, passes_count, consumableMateriaForMission, norm_id, municipal_facility_id, id, order_operation_id, date_start, route_id],
@@ -110,8 +97,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
         && norm_id
         && municipal_facility_id
         && date_start
-        && route_id
-        && IS_NOT_COMPLETED,
+        && route_id,
       )
     );
 

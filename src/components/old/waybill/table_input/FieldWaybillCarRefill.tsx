@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect, HandleThunkActionCreator } from 'react-redux';
+import { get } from 'lodash';
 
 import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_input/TableInput';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
@@ -89,6 +90,12 @@ const metaFuelCardId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipm
       match: false,
     },
   ],
+  onChange: (onChange) => (value, option) => {
+    onChange({
+      fuel_card_id: value,
+      number: get(option, 'label') || null,
+    });
+  },
   width: 200,
   options: [],
 };

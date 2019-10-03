@@ -461,7 +461,7 @@ export const registryChangeListData = (registryKey: string, listRaw: OneRegistry
       processed.total_count = processed.processedArray.length;
     } else {
       processed.processedArray = listRaw.data.array;
-      processed.total_count = processed.processedArray.length;
+      processed.total_count = listRaw.data.total_count;
     }
   }
 

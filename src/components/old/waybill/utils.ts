@@ -1,12 +1,12 @@
 import * as R from 'ramda';
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
-import { IVehicle } from 'api/@types/services/index.h';
 import { checkErrorDate } from 'components/old/waybill/utils_react';
 
 import { isNotEqualAnd, hasMotohours } from 'utils/functions';
 import { isArray, isNumber } from 'util';
 import { Order } from 'redux-main/reducers/modules/order/@types';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
@@ -14,8 +14,8 @@ const VALID_VEHICLES_TYPES = {
 };
 
 // declarative functional approach
-const vehicleFilter = (structure_id: string, car_id: number | void) =>
-  R.filter<IVehicle>(
+const vehicleFilter = (structure_id: number, car_id: number | void) =>
+  R.filter<Car>(
     (c) =>
       c.asuods_id === car_id ||
       ((!structure_id ||
@@ -25,11 +25,11 @@ const vehicleFilter = (structure_id: string, car_id: number | void) =>
   );
 
 // todo вернуть интерфес
-//  R.filter<IVehicle>((c) =>
+//  R.filter<Car>((c) =>
 const carFilter: any = (structure_id, car_id) =>
   R.pipe(
     vehicleFilter(structure_id, car_id),
-    R.filter<IVehicle>(
+    R.filter<Car>(
       (c) =>
         !c.is_trailer ||
         [
@@ -39,14 +39,14 @@ const carFilter: any = (structure_id, car_id) =>
     ),
   );
 // todo вернуть интерфейс
-//  R.filter<IVehicle>((c) => c.is_trailer),
+//  R.filter<Car>((c) => c.is_trailer),
 const trailerFilter: any = (structure_id, trailer_id) =>
   R.pipe(
     vehicleFilter(structure_id, trailer_id),
-    R.filter<IVehicle>((c) => c.is_trailer),
+    R.filter<Car>((c) => c.is_trailer),
   );
 
-// <IVehicle, any>
+// <Car, any>
 export const vehicleMapper = R.map<any, any>((c) => {
   return ({
     value: c.asuods_id,

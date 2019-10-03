@@ -18,6 +18,7 @@ export type TableMeta<F> = {
   ReactComponentType?: React.ComponentType<PropsToTdReactComponent>;
   disabled?: boolean;
   default_value?: any;
+  onChange?: (onChange: (partilaF: Partial<F>) => any) => (value, option?: any) => any;
   disabledIf?: {
     type: 'compare_with_value_in_option',
     path_to_option: string,

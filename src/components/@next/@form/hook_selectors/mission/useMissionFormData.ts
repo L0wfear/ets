@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isObject, isNumber } from 'util';
+import { isObject, isNumber, isNullOrUndefined } from 'util';
 
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -10,6 +10,49 @@ import { actionConsumableMaterialCountMissionGetAndSetInStore, actionResetSetCon
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
+
+export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>) => {
+  return consumable_materials_old.reduce<ConsumableMaterialCountMission[]>(
+    (newArr, rowData) => {
+      const rowDataInIndex = consumable_materials_new_index[rowData.consumable_material_id];
+
+      if (rowDataInIndex) {
+        const plan_value = rowDataInIndex.is_plan_value_locked ? rowDataInIndex.plan_value : rowData.plan_value;
+        let fact_value = Number(rowData.fact_value);
+        if (isNaN(fact_value)) {
+          fact_value = null;
+        }
+
+        if (rowDataInIndex.is_fact_value_locked ) {
+          fact_value = rowDataInIndex.fact_value;
+          if (isNullOrUndefined(fact_value)) {
+            if (isNumber(rowDataInIndex.mission_progress_fact_value)) {
+              fact_value = rowDataInIndex.mission_progress_fact_value;
+            } else {
+              fact_value = plan_value;
+            }
+          }
+        }
+
+        let consumption = null;
+        if (isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
+          consumption = fact_value * rowDataInIndex.norm_value;
+        }
+
+        newArr.push({
+          ...rowDataInIndex,
+          plan_value,
+          fact_value,
+          consumption,
+        });
+      }
+
+      return newArr;
+    },
+    [],
+  );
+};
 
 export const checkIsMissionNotComplete = (status: Mission['status']) => {
   return (
@@ -108,6 +151,74 @@ export const useMissionFormDataIsCompleted = (formDataKey: FormKeys) => {
 
 };
 
+export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormKeys) => {
+  const meta = useForm.useFormDataMeta(formDataKey);
+  const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
+  const dispatch = etsUseDispatch();
+
+  React.useEffect(
+    () => {
+      const norm_id = formDataKey === 'mission'
+      ? (
+        formState.norm_ids.length > 1
+          ? null
+          : formState.norm_ids[0]
+      )
+      : (
+        formState.norm_id
+      );
+      const date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
+
+      const passes_count_number = Number(formState.passes_count);
+      const passes_count = (
+        formDataKey === 'duty_mission'
+          ? 1
+          : !isNaN(passes_count_number) && passes_count_number > 0 && passes_count_number < 11
+            ? passes_count_number
+            : 1
+      );
+
+      const payload: Parameters<typeof actionConsumableMaterialCountMissionGetAndSetInStore>[0] = {
+        type: formDataKey === 'mission' ? 'mission' : 'duty_mission',
+        norm_id,
+        municipal_facility_id: formState.municipal_facility_id,
+        date: date_start,
+        route_id: formState.route_id,
+        passes_count,
+      };
+      if (formState.id) {
+        payload.mission_id = formState.id;
+      }
+      if (formState.order_operation_id) {
+        payload.order_operation_id = formState.order_operation_id;
+      }
+
+      const triggerOnUpdate = Boolean(
+        payload.norm_id
+        && payload.municipal_facility_id
+        && payload.date
+        && payload.route_id
+        && payload.passes_count,
+      );
+
+      if (triggerOnUpdate) {
+        dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
+      }
+    },
+    [
+      // formState.date_start,
+      // formState.fact_date_start,
+      // formState.plan_date_start,
+      // formState.norm_id,
+      // formState.passes_count,
+      // formState.municipal_facility_id,
+      // formState.route_id,
+      // formState.id,
+      // formState.order_operation_id,
+    ],
+  );
+};
+
 export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {
   const handleChange = useMissionFormDataHandeToUpdateConsumableMaterials<Mission>(formDataKey);
 
@@ -128,13 +239,13 @@ export const useMissionFormDataHandeChange = <F>(formDataKey: FormKeys) => {
 
 export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pick<Mission, 'consumable_materials'> & Record<string, any>>(formDataKey: FormKeys) => {
   const meta = useForm.useFormDataMeta(formDataKey);
-  const handleChange = useForm.useFormDataHandleChange<F>(formDataKey);
-  const formState = useForm.useFormDataFormState<F>(formDataKey);
+  const handleChange = useForm.useFormDataHandleChange<Partial<Mission> & Partial<DutyMission>>(formDataKey);
+  const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
   const dispatch = etsUseDispatch();
   const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
 
   return React.useCallback(
-    async (partialObj: Partial<F>) => {
+    async (partialObj: Partial<Mission> & Partial<DutyMission>) => {
       const newPartialFormState = {
         ...formState,
         ...partialObj,
@@ -239,7 +350,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         }
         const { data, dataIndex } = await dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
 
-        if ((newPartialFormState.municipal_facility_id !== prev_municipal_facility_id || norm_id !== prev_norm_id || !prev_date_start || !prev_route_id) || passes_count !== passes_count_prev_number) {
+        if ((newPartialFormState.municipal_facility_id !== prev_municipal_facility_id || norm_id !== prev_norm_id || !prev_date_start || !prev_route_id)) {
           newPartialFormState.consumable_materials = data.map((rowData) => ({
             ...rowData,
           }));
@@ -248,21 +359,11 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         const triggerOnUpdateConsumableMaterials = (
           (prev_date_start && (prev_date_start !== date_start))
           || (prev_route_id && (prev_route_id !== newPartialFormState.route_id))
+          || (passes_count !== passes_count_prev_number)
         );
 
         if (triggerOnUpdateConsumableMaterials) {
-          newPartialFormState.consumable_materials = (newPartialFormState.consumable_materials as ConsumableMaterialCountMission[]).reduce(
-            (newArr, rowData) => {
-              if (dataIndex[rowData.consumable_material_id]) {
-                newArr.push({
-                  ...dataIndex[rowData.consumable_material_id],
-                });
-              }
-
-              return newArr;
-            },
-            [],
-          );
+          newPartialFormState.consumable_materials = mergeConsumableMaterials(newPartialFormState.consumable_materials, dataIndex);
         }
       }
 

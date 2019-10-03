@@ -4,6 +4,7 @@ type WaybillCarRefill = {
   fuel_card_id: number;
   type_id: number;
   value: number;
+  number: string;
 };
 
 type WaybillEquipmentRefill = WaybillCarRefill;
@@ -40,6 +41,7 @@ export type Waybill = {
   downtime_hours_work: number;
   driver_id: number;
   driver_fio: string;
+  driver_name: string;
   equipment_fact_fuel_end: number;
   equipment_fuel: boolean;
   equipment_fuel_end: number;

@@ -17,7 +17,7 @@ export const useWaybillDrivers = (formDataKey: any) => {
   const company_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['company_id']>(formDataKey, 'company_id');
   const structure_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['structure_id']>(formDataKey, 'structure_id');
   const driver_id = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_id']>(formDataKey, 'driver_id');
-  const driver_fio = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_fio']>(formDataKey, 'driver_fio');
+  const driver_name = useForm.useFormDataFormStatePickValue<Waybill, Waybill['driver_name']>(formDataKey, 'driver_name');
 
   const employeeBindedToCarListData = useForm.useFormDataLoadOptions<WaybillFormStoreType, 'employeeBindedToCar'>(
     formDataKey,
@@ -57,7 +57,7 @@ export const useWaybillDrivers = (formDataKey: any) => {
             car_id,
             structure_id,
             driver_id,
-            driver_fio,
+            driver_name,
           );
         }
       }
@@ -75,7 +75,7 @@ export const useWaybillDrivers = (formDataKey: any) => {
       car_id,
       structure_id,
       driver_id,
-      driver_fio,
+      driver_name,
     ],
   );
 

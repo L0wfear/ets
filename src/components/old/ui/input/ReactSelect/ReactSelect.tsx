@@ -18,6 +18,7 @@ import { SingleValue, MultiValue, MenuList } from 'components/old/ui/input/React
 import { DivRelative } from 'global-styled/global-styled';
 import VirtualizedSelectList from '../VirtualizedSelectList/VirtualizedSelectList';
 import { detectIE } from 'utils/functions';
+import memoizeOne from 'memoize-one';
 
 require('components/old/ui/input/ReactSelect/ReactSelect.scss');
 
@@ -211,6 +212,10 @@ export default class ReactSelect extends React.Component<any, any> {
 
     return <MultiValue innerProps={newInnerProps} {...props} />;
   }
+  makeOptions = memoizeOne(
+    (options, sortingFunction) => options.sort(sortingFunction),
+  );
+
   render() {
     const {
       placeholder = 'Выберите...',
@@ -226,7 +231,7 @@ export default class ReactSelect extends React.Component<any, any> {
       ...props
     } = this.props;
 
-    const sortedOptions = options.sort(sortingFunction);
+    const sortedOptions = this.makeOptions(options, sortingFunction);
     const instanceId = modalKey ? `${modalKey}-${this.props.id}` : this.props.id;
 
     let value = props.value;

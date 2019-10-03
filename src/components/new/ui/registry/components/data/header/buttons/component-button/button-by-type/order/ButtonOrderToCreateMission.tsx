@@ -23,7 +23,6 @@ type Props = (
 const ButtonOrderToCreateMission: React.FC<Props> = React.memo(
   (props) => {
     const selectedOrderTORow: ValuesOf<Order['technical_operations']> = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
-
     const array = etsUseSelector((state) => getListData(state.registry, orderRegistryKey).data.array);
     const order_id = getNumberValueFromSerch(props.match.params.order_id);
     const order_operation_id = getNumberValueFromSerch(props.match.params.order_operation_id);
@@ -78,7 +77,7 @@ const ButtonOrderToCreateMission: React.FC<Props> = React.memo(
       [selectedOrderRow, selectedOrderTORowBYParams],
     );
 
-    const isDisabled = isDisabledForCreateMissionByTO(selectedOrderRow, selectedOrderTORow);
+    const isDisabled = isDisabledForCreateMissionByTO(selectedOrderRow, selectedOrderTORowBYParams || selectedOrderTORow);
 
     return isPemitted && (
       <EtsBootstrap.Button id={`${props.registryKey}.open-create_mission_from_order-form`} bsSize="small" disabled={isDisabled} onClick={handleClick}>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
+
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 
 import ButtonFirst from 'components/new/ui/registry/components/data/paginator/buttons/ButtonFirst';
@@ -8,33 +8,22 @@ import ButtonNext from 'components/new/ui/registry/components/data/paginator/but
 import ButtonLast from 'components/new/ui/registry/components/data/paginator/buttons/ButtonLast';
 
 import { EtsPaginatorContainer } from 'components/new/ui/registry/components/data/paginator/styled/styled';
-import { ReduxState } from 'redux-main/@types/state';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 
 import NumberButtons from './buttons/number_buttons/NumberButtons';
-import { compose } from 'recompose';
 import EtsPaginatorCheckSearch from './EtsPaginatorCheckSearch';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type PaginatorNewStateProps = {
-  perPage: OneRegistryData['list']['paginator']['perPage'];
-  currentPage: OneRegistryData['list']['paginator']['currentPage'];
-  total_count: OneRegistryData['list']['processed']['total_count'];
-};
-type PaginatorNewDispatchProps = DispatchProp;
-type PaginatorNewOwnProps = {
+type Props = {
   registryKey: string;
 };
-type PaginatorNewProps = (
-  PaginatorNewStateProps
-  & PaginatorNewDispatchProps
-  & PaginatorNewOwnProps
-);
 
-const PaginatorNew: React.FC<PaginatorNewProps> = React.memo(
-  (props) => {
-    const { registryKey } = props;
+const PaginatorNew: React.FC<Props> = React.memo(
+  ({ registryKey }) => {
+    const total_count = etsUseSelector((state) => getListData(state.registry, registryKey).processed.total_count);
+    const currentPage = etsUseSelector((state) => getListData(state.registry, registryKey).paginator.currentPage);
+    const perPage = etsUseSelector((state) => getListData(state.registry, registryKey).paginator.perPage);
 
-    const countPages = Math.ceil(props.total_count / props.perPage);
+    const countPages = Math.ceil(total_count / perPage);
     const countButtonsForRender = Math.min(countPages, 11);
 
     const buttons = React.useMemo(
@@ -46,10 +35,10 @@ const PaginatorNew: React.FC<PaginatorNewProps> = React.memo(
 
             let number = index;
 
-            if (props.currentPage > halfButtonCount) {
-              number = index + props.currentPage + 1 - halfButtonCount;
+            if (currentPage > halfButtonCount) {
+              number = index + currentPage + 1 - halfButtonCount;
             }
-            if (props.currentPage >= (countPages - halfButtonCount)) {
+            if (currentPage >= (countPages - halfButtonCount)) {
               number = index + (countPages - countButtonsForRender);
             }
 
@@ -57,13 +46,13 @@ const PaginatorNew: React.FC<PaginatorNewProps> = React.memo(
               <NumberButtons
                 key={number}
                 number={number}
-                registryKey={props.registryKey}
+                registryKey={registryKey}
               />
             );
           },
         );
       },
-      [countButtonsForRender, props.currentPage, props.registryKey, countPages],
+      [countButtonsForRender, currentPage, registryKey, countPages],
     );
 
     return (
@@ -88,12 +77,4 @@ const PaginatorNew: React.FC<PaginatorNewProps> = React.memo(
   },
 );
 
-export default compose<PaginatorNewProps, PaginatorNewOwnProps>(
-  connect<PaginatorNewStateProps, PaginatorNewDispatchProps, PaginatorNewOwnProps, ReduxState>(
-    (state, { registryKey }) => ({
-      total_count: getListData(state.registry, registryKey).processed.total_count,
-      currentPage: getListData(state.registry, registryKey).paginator.currentPage,
-      perPage: getListData(state.registry, registryKey).paginator.perPage,
-    }),
-  ),
-)(PaginatorNew);
+export default PaginatorNew;

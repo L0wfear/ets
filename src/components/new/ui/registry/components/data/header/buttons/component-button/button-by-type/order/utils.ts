@@ -50,11 +50,11 @@ export const isDisabledForCreateMissionByTO = (order: Order, technical_operation
     const dateTo = get(technical_operation, 'date_to') || get(order, 'date_to');
 
     return Boolean(
-      !num_exec ||
-      diffDates(new Date(), dateTo) > 0 ||
-      status === 'cancelled' ||
-      status === 'suspended' ||
-      (isString(work_type_name) && work_type_name.match(/^Ручн*/)),
+      !num_exec
+      || (diffDates(new Date(), dateTo) > 0)
+      || status === 'cancelled'
+      || status === 'suspended'
+      || (isString(work_type_name) && work_type_name.match(/^Ручн*/)),
     );
   }
 

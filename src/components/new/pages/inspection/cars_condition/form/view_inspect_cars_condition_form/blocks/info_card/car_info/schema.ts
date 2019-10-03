@@ -77,14 +77,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Модель',
       dependenciesDisable: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null)) && !get(formState, 'model', null)) {
+          if (!get(formState, 'isNewRow')) {
             return true;
           }
         },
       ],
       dependencies: [
-        (value, formState) => {
-          if (!get(formState, 'marka') && get(formState, 'isNewRow') && !value) {
+        (_, formState) => {
+          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null)) && !get(formState, 'model', null)) {
             return 'Поле "Модель" должно быть заполнено';
           }
         },

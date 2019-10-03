@@ -26,6 +26,7 @@ type Props = (
 
 const ButtonShowTableForm: React.FC<Props> = (props) => {
   const inspectId = getNumberValueFromSerch(props.match.params.id);
+  const disableBtn = Boolean(props.match.params.selectedCarsConditionsCar);
 
   const permissions = etsUseSelector((state) => getListData(getRegistryState(state), props.loadingPage).permissions.update); //  прокидывается в следующий компонент
   const isPermitted = etsUseIsPermitted(permissions);
@@ -42,7 +43,7 @@ const ButtonShowTableForm: React.FC<Props> = (props) => {
   );
 
   return isPermitted && (
-    <ButtonShowTableFormStyled onClick={handleClickShowTableForm}>
+    <ButtonShowTableFormStyled onClick={handleClickShowTableForm} disabled={disableBtn}>
       <EtsBootstrap.Glyphicon glyph="list-alt"/>
       Открыть форму заполнения
     </ButtonShowTableFormStyled>

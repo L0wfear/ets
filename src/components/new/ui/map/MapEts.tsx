@@ -1,9 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import {
-  PropsMapEts,
-  StateMapEts,
-} from 'components/new/ui/map/MapEts.h';
 
 import {
   getMap,
@@ -12,6 +8,9 @@ import {
   mouseSingleClick,
   centerOn,
 } from 'components/new/ui/map/utils';
+
+import { ReduxState } from 'redux-main/@types/state';
+import { PropsMapEts, StateMapEts, StateProps, DispatchProps, OwnProps } from 'components/new/ui/map/MapEts.h';
 
 /**
  * @todo свои кнопки зума на styled-components чтобы убрать импорт css
@@ -99,7 +98,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
       noCheckDisabledCenterOn,
     );
   }
-  setContainer = (node) => this._container = node;
+  setContainer: React.LegacyRef<HTMLDivElement> = (node) => this._container = node;
 
   render() {
     return (
@@ -111,12 +110,10 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  userData: state.session.userData,
-  zoom: state.session.userData.map_config.zoom || 6,
-  center: state.session.userData.map_config.coordinates || [0, 0],
-});
-
-export default connect(
-  mapStateToProps,
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
+    userData: state.session.userData,
+    zoom: state.session.userData.map_config.zoom || 6,
+    center: state.session.userData.map_config.coordinates,
+  }),
 )(MapEts);

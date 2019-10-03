@@ -7,7 +7,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FlexContainer } from 'global-styled/global-styled';
-import { useMissionFormDataIsNoCompleted, mergeConsumableMaterials } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, mergeConsumableMaterials } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { isNumber } from 'util';
@@ -19,7 +19,7 @@ const TdFactValue: React.FC<Props> = React.memo(
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
-    const isMissionFormDataIsNotCompleted = useMissionFormDataIsNoCompleted(props.formDataKey);
+    const isMissionFormDataIsNotCompleted = useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill(props.formDataKey);
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
 
     const handleChangeWrap = React.useCallback(
@@ -54,6 +54,18 @@ const TdFactValue: React.FC<Props> = React.memo(
       },
       [consumableMateriaForMission],
     );
+    const consumable_material_measure_unit_name = React.useMemo(
+      () => {
+        return get(consumable_materials[props.indexRow], 'consumable_material_measure_unit_name');
+      },
+      [consumable_materials, props.indexRow],
+    );
+    const consumable_material_id = React.useMemo(
+      () => {
+        return get(consumable_materials[props.indexRow], 'consumable_material_id');
+      },
+      [consumable_materials, props.indexRow],
+    );
 
     const is_fact_value_locked = React.useMemo(
       () => {
@@ -63,27 +75,41 @@ const TdFactValue: React.FC<Props> = React.memo(
     );
 
     const handleChangeLock = React.useCallback(
-      () => {
+      async () => {
+        let changed_consumable_materials = consumable_materials.find((_, index) => index === props.indexRow);
+        changed_consumable_materials.is_fact_value_locked = !is_fact_value_locked;
+
+        if (!changed_consumable_materials.is_fact_value_locked) {
+          try {
+            await global.confirmDialog({
+              title: 'Внимание!',
+              body: 'Объем работ (факт) не будет заполняться автоматически данными по ГЛОНАСС.\nПродолжить?',
+            });
+          } catch {
+            return;
+          }
+        } else {
+          if (changed_consumable_materials.mission_progress_fact_value !== changed_consumable_materials.fact_value) {
+            try {
+              await global.confirmDialog({
+                title: 'Внимание!',
+                body: 'Объем работ (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работ(факт)" будут очищены.\n Продолжить?',
+              });
+            } catch {
+              return;
+            }
+          }
+          // compare glonass/ fa
+          changed_consumable_materials = mergeConsumableMaterials(
+            [changed_consumable_materials],
+            consumableMateriaForMissionIndex,
+          )[0];
+        }
+
         handleChange({
           consumable_materials: consumable_materials.map((rowData, index) => {
             if (index === props.indexRow) {
-              const is_fact_value_locked_new = !is_fact_value_locked;
-              if (is_fact_value_locked_new) {
-                return mergeConsumableMaterials(
-                  [
-                    {
-                      ...rowData,
-                      is_fact_value_locked: is_fact_value_locked_new,
-                    },
-                  ],
-                  consumableMateriaForMissionIndex,
-                )[0];
-              }
-
-              return {
-                ...rowData,
-                is_fact_value_locked: is_fact_value_locked_new,
-              };
+              return changed_consumable_materials;
             }
 
             return rowData;
@@ -99,6 +125,12 @@ const TdFactValue: React.FC<Props> = React.memo(
       },
       [consumable_materials, props.indexRow],
     );
+    const plan_value = React.useMemo(
+      () => {
+        return get(consumable_materials[props.indexRow], 'plan_value');
+      },
+      [consumable_materials, props.indexRow],
+    );
 
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const error = React.useMemo(
@@ -108,21 +140,24 @@ const TdFactValue: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_fact_value_locked;
+    const disabled = !isPermitted || is_fact_value_locked || !consumable_material_id;
+    const can_edit = get(consumableMateriaForMissionIndex[consumable_material_id], 'is_fact_value_locked');
 
     return (
       <FlexContainer alignItems="end">
         <ExtField
-          type="string"
+          type="number"
           id={metaFactValue.key}
           label={false}
           value={value}
           error={error}
           onChange={handleChangeWrap}
           disabled={disabled}
+          addonRight={consumable_material_measure_unit_name}
+          showRedBorder={value !== plan_value}
         />
         {
-          props.formDataKey !== 'duty_mission' && isMissionFormDataIsNotCompleted && (
+          props.formDataKey !== 'duty_mission' && isMissionFormDataIsNotCompleted && can_edit && (
             <EtsBootstrap.Button disabled={!isPermitted} onClick={handleChangeLock}>
               <EtsBootstrap.Glyphicon glyph={!is_fact_value_locked ? "user" : "lock"} />
             </EtsBootstrap.Button>

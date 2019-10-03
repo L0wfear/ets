@@ -36,7 +36,7 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
         }
 
         let consumption = null;
-        if (isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
+        if (rowDataInIndex.is_consumption_locked && isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
           consumption = fact_value * rowDataInIndex.norm_value;
         }
 
@@ -134,10 +134,15 @@ export const useMissionFormDataIsNoCompleted = (formDataKey: FormKeys) => {
  * @param formDataKey FormKeys
  */
 export const useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill = (formDataKey: FormKeys) => {
+  const status = useForm.useFormDataFormStatePickValue<Mission, Mission['status']>(formDataKey, 'status');
   const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(formDataKey);
   const IS_ASSIGN_WITH_ACTIVE_WAYBILL = useMissionFormDataIsAssignWithNotActiveWaybill(formDataKey, true);
 
-  return IS_NOT_COMPLETED || IS_ASSIGN_WITH_ACTIVE_WAYBILL;
+  return (
+    status === MISSION_STATUS.assigned
+      ? IS_ASSIGN_WITH_ACTIVE_WAYBILL
+      : IS_NOT_COMPLETED
+  );
 };
 
 /**
@@ -167,7 +172,7 @@ export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormK
       : (
         formState.norm_id
       );
-      const date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
+      const date_start = formState.date_start || formState.plan_date_start;
 
       const passes_count_number = Number(formState.passes_count);
       const passes_count = (
@@ -207,7 +212,6 @@ export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormK
     },
     [
       // formState.date_start,
-      // formState.fact_date_start,
       // formState.plan_date_start,
       // formState.norm_id,
       // formState.passes_count,
@@ -272,8 +276,8 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         );
 
       const prev_municipal_facility_id = formState.municipal_facility_id;
-      const date_start = newPartialFormState.date_start || newPartialFormState.fact_date_start || newPartialFormState.plan_date_start;
-      const prev_date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
+      const date_start = newPartialFormState.date_start || newPartialFormState.plan_date_start;
+      const prev_date_start = formState.date_start || formState.plan_date_start;
       const prev_route_id = formState.route_id;
 
       const passes_count_number = Number(newPartialFormState.passes_count);

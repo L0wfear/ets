@@ -19,15 +19,18 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
       value = '';
     }
 
-    const id = props.id
+    const label_id = props.id
       ? `${modalKey ? `${modalKey}-` : ''}${props.id}-label`
+      : undefined;
+    const value_id = props.id
+      ? `${modalKey ? `${modalKey}-` : ''}${props.id}-value`
       : undefined;
 
     return (
       <SingleUiElementWrapper hidden={props.hidden}>
         <div className="form-group">
           {typeof props.label === 'string' && (
-            <FieldLabel className="control-label">
+            <FieldLabel className="control-label" id={label_id}>
               <span>{props.label}</span>
             </FieldLabel>
           )}
@@ -40,7 +43,7 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
                   type="number"
                   className={inputClassName}
                   {...mainProps}
-                  id={id}
+                  id={value_id}
                   value={value}
                 />
                 {
@@ -59,7 +62,7 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
                   type="number"
                   className={inputClassName}
                   {...mainProps}
-                  id={id}
+                  id={value_id}
                   value={value}
                 />
               )

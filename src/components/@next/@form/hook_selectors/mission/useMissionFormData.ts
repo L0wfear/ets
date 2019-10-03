@@ -24,7 +24,7 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
           fact_value = null;
         }
 
-        if (rowDataInIndex.is_fact_value_locked ) {
+        if (rowDataInIndex.is_fact_value_locked) {
           fact_value = rowDataInIndex.fact_value;
           if (isNullOrUndefined(fact_value)) {
             if (isNumber(rowDataInIndex.mission_progress_fact_value)) {

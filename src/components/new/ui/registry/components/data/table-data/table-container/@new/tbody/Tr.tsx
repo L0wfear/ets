@@ -104,7 +104,7 @@ const TrHead: React.FC<Props> = React.memo(
           );
         }
       },
-      [selected_row_in_params, handleDoubleClick],
+      [selected_row_in_params, handleDoubleClick, registryIsPermitedFuctionResult],
     );
 
     return (

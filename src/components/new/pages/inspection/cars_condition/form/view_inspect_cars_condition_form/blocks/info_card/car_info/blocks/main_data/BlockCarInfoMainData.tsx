@@ -478,6 +478,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Действует до:"
               value={state.osago_finished_at}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.osago_finished_at}
               boundKeys="osago_finished_at"
@@ -514,6 +515,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Действует до:"
               value={state.diagnostic_card_finished_at}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.diagnostic_card_finished_at}
               boundKeys="diagnostic_card_finished_at"
@@ -561,6 +563,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата регистрации:"
               value={state.given_at}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.given_at}
               boundKeys="given_at"
@@ -574,6 +577,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата начала эксплуатации:"
               value={state.exploitation_date_start}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.exploitation_date_start}
               boundKeys="exploitation_date_start"
@@ -805,6 +809,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата прохождения последнего ТО шасси:"
               value={state.last_tech_inspection_date}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.last_tech_inspection_date}
               boundKeys="last_tech_inspection_date"
@@ -818,6 +823,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата прохождения последнего ТО спецоборудования:"
               value={state.last_inspection_equipment}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.last_inspection_equipment}
               boundKeys="last_inspection_equipment"
@@ -893,6 +899,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="Дата проведения последнего ремонта:"
               value={state.last_repair}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={props.handleChange}
               error={errors.last_repair}
               boundKeys="last_repair"
@@ -936,6 +943,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               label="В ремонте с даты:"
               value={state.data.repair_from_date}
               makeGoodFormat
+              makeGoodFormatInitial
               onChange={handleChangeData}
               error={errors.data.repair_from_date}
               boundKeys="repair_from_date"

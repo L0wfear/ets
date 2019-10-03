@@ -15,7 +15,7 @@ import { TableMeta } from 'components/new/ui/table_input/TableInput';
 import { getConsumableMaterialIdOptions } from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/consumable_material_id/TdConsumableMaterialId';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import ButtonUpdateGLONASS from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/table_header/ButtonUpdateGLONASS';
-import { useMissionFormDataIsNoCompleted, useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   selectedRowIndex: number;

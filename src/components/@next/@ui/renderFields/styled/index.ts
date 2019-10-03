@@ -4,6 +4,8 @@ import { ErrorField } from 'components/@next/@ui/renderFields/ErrorsBlock/styled
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 export const SingleUiElementWrapperStyled = styled.div`
+  white-space: pre;
+
   margin-bottom: 10px;
   position: relative;
   /* ${SelectFieldUi} {

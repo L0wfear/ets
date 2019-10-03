@@ -145,8 +145,8 @@ export default class ReactSelect extends React.Component<any, any> {
     const { value } = this.props;
 
     return !isNotVisible && (
-      label.toLocaleLowerCase().includes(
-        filterValue.toLocaleLowerCase(),
+      label.trim().toLocaleLowerCase().includes(
+        filterValue.trim().toLocaleLowerCase(),
       )
       && (
         isArray(value)

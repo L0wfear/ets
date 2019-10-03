@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { createPortal } from 'react-dom';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-// import Registry from 'components/new/ui/registry/components/Registry';
+
 import { PopupBottomForm, TitleForm, ContainerForm, FooterForm } from 'components/new/pages/inspection/common_components/form_wrap_check/styled';
 import { compose } from 'recompose';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
@@ -16,6 +16,7 @@ import { FooterEnd } from 'global-styled/global-styled';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { registrySelectRowWithPutRequest, registryResetAllTypeFilter } from 'components/new/ui/registry/module/actions-registy';
+import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
 type InspectionFormWrapStateProps = {};
 type InspectionFormWrapDispatchProps = {
@@ -110,6 +111,9 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
     [selectedRow, props.registryConfig, showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams, list],
   );
 
+  const isPermittedUpdateInsp = isPermittedUpdateCarContidion(props.registryConfig.registryKey);
+  const showSaveBtn = isPermittedUpdateInsp.isPermittedToUpdate && isPermittedUpdateInsp.isPermittedToUpdateClose;
+
   return isPermitted && createPortal(
     <WithformWrapRegistryWrapper z_index = {1001}>
       <PopupBottomForm show={showForm}>
@@ -130,8 +134,13 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
           </ContainerForm>
           <FooterForm md={12} sm={12}>
             <FooterEnd>
-              <EtsBootstrap.Button disabled={saveIsDisable} onClick={saveSelectedRow}>Сохранить выделенную запись</EtsBootstrap.Button>
-              <EtsBootstrap.Button onClick={onFormHide}>Закрыть карточку</EtsBootstrap.Button>
+              {
+                showSaveBtn &&
+                (
+                  <EtsBootstrap.Button disabled={saveIsDisable} onClick={saveSelectedRow}>Сохранить выделенную запись</EtsBootstrap.Button>
+                )
+              }
+              <EtsBootstrap.Button onClick={onFormHide}>Закрыть форму</EtsBootstrap.Button>
             </FooterEnd>
           </FooterForm>
         </React.Fragment>

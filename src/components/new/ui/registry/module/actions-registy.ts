@@ -51,6 +51,7 @@ import { getFrontNorm } from 'redux-main/reducers/modules/some_uniq/norm_registr
 import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/actions';
 import { makeInspectActScanFilesFront } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_promise';
 import { makeConsumableMaterialFront } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
+import { registryIsPermitedByKey } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Tr';
 
 const mapKeyMapArray: Record<OneRegistryData<any>['Service']['getRegistryData']['format'], (array: any[]) => any[]> = {
   dutyMissionTemplate: (array) => array.map(getFrontDutyMission),
@@ -899,12 +900,14 @@ export const registryAddNewRow = (registryKey: string, payload: { defaultRowValu
   );
 };
 
-export const registrySelectRow = <F extends Record<string, any>>(registryKey: string, selectedRow: F): EtsAction<Promise<void>> => async (dispatch, getState) => {
+export const registrySelectRow = <F extends Record<string, any>>(registryKey: string, selectedRow: F, registryIsPermitedFuctionResult?: ReturnType<(typeof registryIsPermitedByKey)[keyof typeof registryIsPermitedByKey]>): EtsAction<Promise<void>> => async (dispatch, getState) => {
   const registryData = get(getRegistryState(getState()), registryKey);
   const list = get(registryData, 'list') as OneRegistryData<F>['list'];
 
   const data = get(list, 'data');
   const prevRendersFields = get(list, 'rendersFields');
+  const rendersFieldsValues = get(list, 'rendersFields.values');
+
   const uniqKey = get(data, 'uniqKey');
   const prevSelectedRow = get(data, 'selectedRow');
 
@@ -925,12 +928,26 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     },
   };
 
-  if (!isEqualSelectedRow) {
+  const sendPutPostRequest = rendersFieldsValues
+    && registryIsPermitedFuctionResult
+    && registryIsPermitedFuctionResult.isPermittedToUpdate
+    && registryIsPermitedFuctionResult.isPermittedToUpdateClose;
+
+  if (!isEqualSelectedRow && sendPutPostRequest) {
     await dispatch(
       registrySelectRowWithPutRequest(
         registryKey,
         list_new,
         prevRendersFields,
+      ),
+    );
+  } else {
+    dispatch(
+      registryChangeListData(
+        registryKey,
+        {
+          ...list_new,
+        },
       ),
     );
   }
@@ -1102,7 +1119,7 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
     ),
   );
 };
-
+// Да простят меня боги v.2
 // отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
 export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields']): EtsAction<any> => async (dispatch) => {
   const meta = get(list_new, 'meta');
@@ -1117,7 +1134,7 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
   const rendersFieldsValues = get(prevRendersFields, 'values');
   const isNewRow = get(rendersFieldsValues, 'isNewRow', false);
 
-  if ((rowRequestActionUpdate || (isNewRow && rowRequestActionCreate)) && rendersFieldsValues) {
+  if ((rowRequestActionUpdate || (isNewRow && rowRequestActionCreate))) {
     const listMetaFields = get(meta, 'fields', []);
     const formatedRendersFieldsValues = { ...rendersFieldsValues };
 

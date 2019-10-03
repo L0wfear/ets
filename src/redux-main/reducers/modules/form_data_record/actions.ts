@@ -46,7 +46,7 @@ export const getFormatedValue = <F extends Record<string, any>>(fieldMetaData: S
   if (fieldMetaData) {
     switch (fieldMetaData.type) {
       case 'number':
-        if (strick) {
+        if (strick) { // При сабмите преобразует в число, данная функция вызываается в handleChange
           return value ? Number(value) : null;
         }
         const valueNumberString = value;

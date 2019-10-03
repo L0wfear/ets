@@ -933,23 +933,25 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
     && registryIsPermitedFuctionResult.isPermittedToUpdate
     && registryIsPermitedFuctionResult.isPermittedToUpdateClose;
 
-  if (!isEqualSelectedRow && sendPutPostRequest) {
-    await dispatch(
-      registrySelectRowWithPutRequest(
-        registryKey,
-        list_new,
-        prevRendersFields,
-      ),
-    );
-  } else {
-    dispatch(
-      registryChangeListData(
-        registryKey,
-        {
-          ...list_new,
-        },
-      ),
-    );
+  if (!isEqualSelectedRow) {
+    if (sendPutPostRequest) {
+      await dispatch(
+        registrySelectRowWithPutRequest(
+          registryKey,
+          list_new,
+          prevRendersFields,
+        ),
+      );
+    } else {
+      dispatch(
+        registryChangeListData(
+          registryKey,
+          {
+            ...list_new,
+          },
+        ),
+      );
+    }
   }
 
   const children = get(selectedRow, 'children', null);

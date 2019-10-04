@@ -30,6 +30,11 @@ export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'
       title: 'Логотип',
       required: true,
     },
+    comments: {
+      type: 'string',
+      title: 'Замечания',
+      trimSpace: true,
+    },
   },
 };
 

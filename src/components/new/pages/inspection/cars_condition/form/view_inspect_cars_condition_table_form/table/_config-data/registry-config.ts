@@ -565,17 +565,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           format: 'boolean',
         },
         {
-          key: 'reason_repair',
-          title: 'Причина ремонта',
-          width: 200,
-          format: 'inspectionSelect',
-          renderParams: {
-            type: 'select',
-            label: false,
-            options: [],
-          },
-        },
-        {
           key: 'mileage',
           title: 'Пробег на дату проведения проверки',
           width: 200,

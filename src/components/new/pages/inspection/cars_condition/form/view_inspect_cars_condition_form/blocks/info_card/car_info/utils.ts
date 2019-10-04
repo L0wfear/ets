@@ -83,7 +83,6 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     waybill_number: null,
     mission_numbers: null,
     not_passed_verification_glonass: false,
-    reason_repair: '',
     repair_application: '',
     classifier: '',
     tech_inspection_passed: '',

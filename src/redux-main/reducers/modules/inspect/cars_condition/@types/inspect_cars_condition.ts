@@ -195,7 +195,6 @@ export type CarsConditionCars = {
     waybill_number?: number;
     mission_numbers?: number;
     not_passed_verification_glonass?: boolean;
-    reason_repair?: string;
     repair_application: string;
     classifier: string;
     tech_inspection_passed: string;

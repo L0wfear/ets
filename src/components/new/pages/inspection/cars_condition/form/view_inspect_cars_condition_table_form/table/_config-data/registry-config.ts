@@ -641,11 +641,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             firstElem: true, // В группку не входит
           },
         },
-        // {
-        //   key: 'comments', // нет такого атрибута
-        //   title: 'Замечания по ТО',
-        //   width: 200,
-        // },
         {
           key: 'kind_purchase',
           title: 'Вид приобретения',

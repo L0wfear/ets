@@ -70,6 +70,21 @@ const ExtFieldTd: React.FC<Props> = React.memo(
 
     const handleChange = React.useCallback(
       (fieldValue) => {
+        // OMG
+        if (props.registryKey === 'InspectCarsConditionsCarsExtendedRegistry' && props.metaKey === "osago_not_required") {
+          ['osago', 'osago_finished_at'].forEach((elem) => {
+            dispatch(
+              registryChangeRenderSelectedRow(
+                props.registryKey,
+                {
+                  key: elem,
+                  value: null,
+                },
+              ),
+            );
+          });
+        }
+
         dispatch(
           registryChangeRenderSelectedRow(
             props.registryKey,

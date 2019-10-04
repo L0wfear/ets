@@ -132,15 +132,6 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     type: 'boolean',
     className: 'checkbox-input flex-reverse',
   },
-  // {
-  //   key: 'osago_not_required',
-  //   title: 'ОСАГО не требуется',
-  //   type: 'boolean',
-  //   className: 'checkbox-input flex-reverse',
-  //   reset: [
-  //     'no_valid_osago',
-  //   ],
-  // },
   {
     key: 'no_valid_osago',
     title: 'Отсутствие действующего полиса ОСАГО',

@@ -30,7 +30,7 @@ const FieldValue: React.FC<Props> = React.memo(
     return (
       <ExtField
         id={`${meta.path}_value`}
-        type="string"
+        type="number"
         label="Коэффициент площади уборки"
         value={formStateValue}
         error={error}

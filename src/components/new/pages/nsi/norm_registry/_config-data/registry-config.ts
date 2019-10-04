@@ -189,6 +189,7 @@ export const config: TypeConfigData<Norm> = {
           title: 'Расходные материалы',
           width: 400,
           format: 'array',
+          max_size_to_scroll: 300,
         },
       ],
     },

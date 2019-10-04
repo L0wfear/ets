@@ -74,7 +74,7 @@ const TdDateStart: React.FC<Props> = React.memo(
 
 export const metaDateStart: TableMeta<ValuesOf<ConsumableMaterial['norms']>> = {
   key: 'date_start',
-  title: 'Дата с.',
+  title: 'Дата с',
   format: 'date',
   width: 100,
 

@@ -203,6 +203,13 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
     this.setState({ assign_to_waybill });
   }
 
+  getNormId = (missionArr: any[]) => {
+    return getNormByMissionAndCar(
+      this.context.flux.getActions('missions').getCleaningOneNorm,
+      missionArr,
+    );
+  }
+
   handleSubmit = async () => {
     const {
       assign_to_waybill,
@@ -263,10 +270,7 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
       let goodResponse = true;
 
       if (typeClick === typeTemplate.missionTemplate) {
-        const norm_id = await getNormByMissionAndCar(
-          this.context.flux.getActions('missions').getCleaningOneNorm,
-          missionArr,
-        );
+        const norm_id = await this.getNormId(missionArr);
         goodResponse = await createMissionByOrder(this.context.flux, missionArr, order_mission_source_id, assign_to_waybill, faxogramm_id, norm_id);
       }
       if (typeClick === typeTemplate.missionDutyTemplate) {
@@ -379,10 +383,7 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
       let goodResponse = true;
 
       if (typeClick === typeTemplate.missionTemplate) {
-        const norm_id = await getNormByMissionAndCar(
-          this.context.flux.getActions('missions').getCleaningOneNorm,
-          missionArr,
-        );
+        const norm_id = await this.getNormId(missionArr);
         goodResponse = await createMissionByOrder(this.context.flux, missionArr, order_mission_source_id, assign_to_waybill_for_column, faxogramm_id, norm_id);
       }
 

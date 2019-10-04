@@ -14,6 +14,7 @@ export type PropsToTdReactComponent = {
 export type TableMeta<F> = {
   key: Extract<keyof F, string>;
   title: string;
+  titlePopup?: string;
   width: number;
   ReactComponentType?: React.ComponentType<PropsToTdReactComponent>;
   disabled?: boolean;

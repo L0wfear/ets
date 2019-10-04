@@ -38,7 +38,11 @@ const MaintenanceWorkForm: React.FC<Props> = React.memo(
               <FieldMeasureUnitId formDataKey={formDataKey} />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-          <FieldNorms formDataKey={formDataKey} />
+          <EtsBootstrap.Row>
+            <EtsBootstrap.Col md={12} zIndex={0}>
+              <FieldNorms formDataKey={formDataKey} />
+            </EtsBootstrap.Col>
+          </EtsBootstrap.Row>
         </ModalBodyPreloader>
         <ModalFooterDefault formDataKey={formDataKey} handleHide={props.handleHide} />
       </EtsBootstrap.ModalContainer>

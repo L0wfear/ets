@@ -17,8 +17,25 @@ const TableInputThead: React.FC<TableInputTheadProps> = React.memo(
                 key={metaData.key}
                 canClick={false}
                 width={metaData.width}
-                children={metaData.title}
-              />
+              >
+                {metaData.title}
+                {' '}
+                {
+                  Boolean(metaData.titlePopup) && (
+                    <EtsBootstrap.OverlayTrigger
+                      trigger={['hover', 'focus']}
+                      overlay={(
+                        <EtsBootstrap.Popover>
+                          {metaData.titlePopup}
+                        </EtsBootstrap.Popover>
+                      )}
+                      placement="top"
+                    >
+                      <EtsBootstrap.Glyphicon glyph="info-sign"/>
+                    </EtsBootstrap.OverlayTrigger>
+                  )
+                }
+              </EtsBootstrap.Grid.GridBootstrapThead.Th>
             ))
           }
         </EtsBootstrap.Grid.GridBootstrapThead.Tr>

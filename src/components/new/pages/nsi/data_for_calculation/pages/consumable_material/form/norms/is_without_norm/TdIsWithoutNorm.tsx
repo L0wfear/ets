@@ -5,7 +5,6 @@ import { PropsToTdReactComponent, TableMeta } from 'components/new/ui/table_inpu
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 type Props = PropsToTdReactComponent;
 
@@ -20,8 +19,8 @@ const TdIsWithoutNorm: React.FC<Props> = React.memo(
     );
 
     const handleChangeWrap = React.useCallback(
-      async (valueNew) => {
-        const is_without_norm = valueNew;
+      async (event) => {
+        const is_without_norm = get(event, 'target.checked', event);
         const rowDataCallback = norms[props.indexRow];
 
         const triggerOnAsk = (
@@ -75,15 +74,14 @@ const TdIsWithoutNorm: React.FC<Props> = React.memo(
 
     return (
       <ExtField
-        type="select"
+        type="boolean"
         id={metaIsWithoutNorm.key}
         label={false}
-        clearable={false}
         value={value}
-        options={YES_NO_SELECT_OPTIONS_BOOL}
         onChange={handleChangeWrap}
         disabled={disabled}
-      />
+        className="checkbox-input flex-reverse"
+    />
     );
   },
 );
@@ -91,9 +89,8 @@ const TdIsWithoutNorm: React.FC<Props> = React.memo(
 export const metaIsWithoutNorm: TableMeta<ValuesOf<ConsumableMaterial['norms']>> = {
   key: 'is_without_norm',
   title: 'Нет нормы',
-  format: 'select',
+  format: 'boolean',
   width: 100,
-  options: [],
   default_value: false,
 
   ReactComponentType: TdIsWithoutNorm,

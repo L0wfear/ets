@@ -45,6 +45,8 @@ import { Order } from 'redux-main/reducers/modules/order/@types';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 type StateProps = {
   carList: Car[];
@@ -80,14 +82,21 @@ export const makePayloadFromState = (formState, type_id) => ({
   needs_brigade: false,
 });
 
-export const getNormByMissionAndCar = async (getCleaningOneNorm, missionArr: any[]) => {
+export const getNormByMissionAndCar = async (
+  dispatch: EtsDispatch,
+  missionArr: any[],
+  metaLoading: LoadingMeta,
+) => {
   const ans = await Promise.all(
     missionArr.map(async (missionData: any) => {
       const carIdNormIdArray = await Promise.all(
         missionData.car_ids.map(async (car_id, index) => {
-          const normData = await getCleaningOneNorm({
-            ...makePayloadFromState(missionData, missionData.car_type_ids[index]),
-          });
+          const normData = await dispatch(
+            actionLoadCleaningOneNorm(
+              { ...makePayloadFromState(missionData, missionData.car_type_ids[index]) },
+              metaLoading,
+            ),
+          );
 
           return {
             car_id,
@@ -205,8 +214,9 @@ class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemp
 
   getNormId = (missionArr: any[]) => {
     return getNormByMissionAndCar(
-      this.context.flux.getActions('missions').getCleaningOneNorm,
+      this.props.dispatch,
       missionArr,
+      meta,
     );
   }
 

@@ -33,7 +33,6 @@ export default class LoadingStore extends Store {
       repairActions.programVersionSendFor,
 
       missionsActons.createMissions,
-      missionsActons.getCleaningOneNorm,
     );
 
     this.state = {

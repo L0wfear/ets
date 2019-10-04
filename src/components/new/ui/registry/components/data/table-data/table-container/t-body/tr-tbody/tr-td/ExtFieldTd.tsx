@@ -11,9 +11,9 @@ import { validate, validateDisable } from 'components/old/ui/form/new/validate';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { isBoolean } from 'util';
 import { createValidDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { validatePermissions } from 'components/@next/@utils/validate_permissions/validate_permissions';
-import { getSessionState } from 'redux-main/reducers/selectors';
 import TdContainer, { TdContainerProps } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/td/inside_button/TdContainer';
+import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
+import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
 type OwnProps = {
   renderParams: ExtFieldType | any;
@@ -52,9 +52,8 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     const renderFieldsSchema = etsUseSelector((state) => getListData(state.registry, props.registryKey).meta.renderFieldsSchema);
 
     const registryPermissions = etsUseSelector((state) => getListData(state.registry, props.registryKey).permissions);
-    const userDataPermissionsSet = etsUseSelector((state) => getSessionState(state).userData.permissionsSet);
-    const isPermittedToUpdate = validatePermissions(registryPermissions.update, userDataPermissionsSet);
-
+    let isPermittedToUpdate = etsUseIsPermitted(registryPermissions.update);
+    let isPermittedToUpdateClose = false;
     const value = get(valuesRenderRow, props.metaKey, null);
     const dispatch = etsUseDispatch();
 
@@ -90,6 +89,10 @@ const ExtFieldTd: React.FC<Props> = React.memo(
       React.useEffect(() => {
         setOptionsRenderRow(inspectionConfig);
       }, [inspectionConfig]);
+
+      const isPermittedUpdateInsp = isPermittedUpdateCarContidion(props.registryKey);
+      isPermittedToUpdate = isPermittedUpdateInsp.isPermittedToUpdate;
+      isPermittedToUpdateClose = isPermittedUpdateInsp.isPermittedToUpdateClose;
     }
     // const isReadOnly = (renderParams.type === 'string' && (!isPermittedToUpdate || disabled)) || renderParams.readOnly;
     const isReadOnly = !isPermittedToUpdate || disabled || renderParams.readOnly;
@@ -99,7 +102,7 @@ const ExtFieldTd: React.FC<Props> = React.memo(
     return (
       <EtsBootstrap.Grid.GridBootstrapTbody.Td>
         {
-          !isDisabled ?
+          !isDisabled && isPermittedToUpdate && isPermittedToUpdateClose ?
             (
               <ExtField
                 id={`${props.registryKey}.${props.indexRow}.${props.metaKey}`}

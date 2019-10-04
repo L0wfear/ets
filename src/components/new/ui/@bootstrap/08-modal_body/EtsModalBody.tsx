@@ -18,7 +18,7 @@ export type EtsModalBodyProps = {
 const EtsModalBody: React.FC<EtsModalBodyProps> = React.memo(
   (props) => {
     return (
-      <ModalBodyStyled themeName={props.themeName}>
+      <ModalBodyStyled themeName={props.themeName} className="modal-body">
         {props.children}
       </ModalBodyStyled>
     );

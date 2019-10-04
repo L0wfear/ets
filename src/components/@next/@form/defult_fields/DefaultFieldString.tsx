@@ -14,7 +14,7 @@ type Props<F extends Record<string, any>> = {
 };
 
 const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): React.ReactElement => {
-  const { path } = useForm.useFormDataMeta<F>(props.formDataKey);
+  const { formDataKey } = props;
   const formStateValue = useForm.useFormDataFormStatePickValue<F, string>(props.formDataKey, props.field_name);
   const error = useForm.useFormDataFormErrorsPickValue<F, string>(props.formDataKey, props.field_name);
   const handleChange = useForm.useFormDataHandleChange<F>(props.formDataKey);
@@ -33,7 +33,7 @@ const DefaultFieldString = <F extends Record<string, any>>(props: Props<F>): Rea
 
   return (
     <ExtField
-      id={`${path}_${props.field_name}`}
+      id={`${formDataKey}_${props.field_name}`}
       type="string"
       label={props.name}
       value={formStateValue}

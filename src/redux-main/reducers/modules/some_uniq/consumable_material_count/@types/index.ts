@@ -16,4 +16,5 @@ export type ConsumableMaterialCountMission = {
   fact_value: number;
   consumption: number;
   is_fact_value_locked: boolean;
+  is_consumption_locked: boolean;
 };

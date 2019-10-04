@@ -16,6 +16,7 @@ export interface DatePickerProps {
   calendar?: boolean;
   disabled?: boolean;
   makeGoodFormat?: boolean;
+  makeGoodFormatInitial?: boolean;
   preventDateTime?: boolean;
 }
 
@@ -24,6 +25,7 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     time = true,
     calendar = true,
     makeGoodFormat = false,
+    makeGoodFormatInitial = false,
     preventDateTime,
   } = props;
   let { date: value } = props;
@@ -49,16 +51,16 @@ const DatePicker: React.FC<DatePickerProps> = (props) => {
     [props.onChange, makeGoodFormat, preventDateTime],
   );
 
-  // React.useEffect(() => {
-  //   if (value && makeGoodFormat) {
-  //     value = (
-  //       (time || preventDateTime)
-  //         ? createValidDateTime(value)
-  //         : createValidDate(value)
-  //     );
-  //   }
-  //   props.onChange(value);
-  // }, []);
+  React.useEffect(() => {
+    if (value && makeGoodFormat && makeGoodFormatInitial) {
+      value = (
+        (time || preventDateTime)
+          ? createValidDateTime(value)
+          : createValidDate(value)
+      );
+      props.onChange(value);
+    }
+  }, []);
 
   return (
     <DTPicker

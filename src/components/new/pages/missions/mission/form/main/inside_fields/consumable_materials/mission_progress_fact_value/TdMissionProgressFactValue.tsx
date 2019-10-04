@@ -38,6 +38,12 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
       },
       [consumable_materials, props.indexRow],
     );
+    const consumable_material_measure_unit_name = React.useMemo(
+      () => {
+        return get(consumable_materials[props.indexRow], 'consumable_material_measure_unit_name');
+      },
+      [consumable_materials, props.indexRow],
+    );
 
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const error = React.useMemo(
@@ -51,13 +57,14 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
 
     return (
       <ExtField
-        type="string"
+        type="number"
         id={metaMissionProgressFactValue.key}
         label={false}
         value={value}
         error={error}
         onChange={handleChangeWrap}
         disabled={disabled || true}
+        addonRight={consumable_material_measure_unit_name}
       />
     );
   },

@@ -20,6 +20,7 @@ const WaybillButtonCarRefillAdd: React.FC<WaybillButtonCarRefillAddProps> = Reac
           fuel_card_id: null,
           type_id: null,
           value: null,
+          number: null,
         });
 
         handleChange({

@@ -11,6 +11,11 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import Td from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Td';
 import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
+import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
+
+export const registryIsPermitedByKey: Record<string, (registryKey: string) => Record<'isPermittedToUpdate' | 'isPermittedToUpdateClose', boolean>> = {
+  InspectCarsConditionsCarsExtendedRegistry: isPermittedUpdateCarContidion,
+};
 
 type OwnProps = {
   registryKey: string;
@@ -79,6 +84,12 @@ const TrHead: React.FC<Props> = React.memo(
       ],
     );
 
+    const registryIsPermitedFuction = get(registryIsPermitedByKey, props.registryKey);
+    let registryIsPermitedFuctionResult = null;
+    if (registryIsPermitedFuction) {
+      registryIsPermitedFuctionResult = registryIsPermitedFuction(props.registryKey);
+    }
+
     const handleClick = React.useCallback(
       () => {
         if (selected_row_in_params) {
@@ -88,11 +99,12 @@ const TrHead: React.FC<Props> = React.memo(
             registrySelectRow(
               props.registryKey,
               props.rowData,
+              registryIsPermitedFuctionResult,
             ),
           );
         }
       },
-      [selected_row_in_params, handleDoubleClick],
+      [selected_row_in_params, handleDoubleClick, registryIsPermitedFuctionResult],
     );
 
     return (

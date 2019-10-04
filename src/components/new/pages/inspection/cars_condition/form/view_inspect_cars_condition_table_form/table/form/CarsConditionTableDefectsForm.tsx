@@ -16,32 +16,19 @@ import IAVisibleWarningContainer from 'components/new/pages/inspection/container
 import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataDocs } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
-// import { getDefaultCarsConditionCarElement } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
 import { get } from 'lodash';
 import { registryChangeRenderSelectedRow } from 'components/new/ui/registry/module/actions-registy';
 import BlockCarsConditionCarSelectPhotoDefect from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/photo_defect/BlockCarsConditionCarSelectPhotoDefect';
-// import { getValueFromEventExtField } from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
+import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
-// const getPermissionsReadUpdate = (permission) => {
-//   if (lasPermissions !== permission) {
-//     lasPermissions = permission;
-
-//     lastPermissionsArray = [permission.read, permission.update];
-//   }
-
-//   return lastPermissionsArray;
-// };
-
-// const CarsConditionTableDefectsForm: React.FC<PropsCarsConditionTableDefects> = (props) => {
 const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
   const dispatch = etsUseDispatch();
-  // const permissions = etsUseSelector((state) => getPermissionsReadUpdate(getListData(state.registry, props.registryKey).permissions));
-  // const uniqKeyForParams = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKeyForParams);
-  // const uniqKey = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.uniqKey);
-  // const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryKey).data.selectedRow);
   const title = 'Детализация дефектов';
   const valuesRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.values`, null));
   const errorsRenderRow = etsUseSelector((state) => get(getListData(state.registry, props.registryKey), `rendersFields.errors`, null));
+
+  const isPermittedUpdateInsp = isPermittedUpdateCarContidion(props.registryKey);
+  const isPermitted = isPermittedUpdateInsp.isPermittedToUpdate && isPermittedUpdateInsp.isPermittedToUpdateClose;
 
   const handleChange = React.useCallback(
     (fieldValue) => {
@@ -74,7 +61,7 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
               onChange={handleChange}
               data={valuesRenderRow}
               errors={errorsRenderRow}
-              isPermitted={props.isPermitted}
+              isPermitted={isPermitted}
               filedToCheck={filedToCheckDefectDataOuter}
             />
           </EtsBootstrap.Col>
@@ -84,7 +71,7 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
               onChange={handleChange}
               data={valuesRenderRow}
               errors={errorsRenderRow}
-              isPermitted={props.isPermitted}
+              isPermitted={isPermitted}
               filedToCheck={filedToCheckDefectDataFirstStart}
             />
           </EtsBootstrap.Col>
@@ -96,7 +83,7 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
               onChange={handleChange}
               data={valuesRenderRow}
               errors={errorsRenderRow}
-              isPermitted={props.isPermitted}
+              isPermitted={isPermitted}
               filedToCheck={filedToCheckDefectDataDocs}
             />
           </EtsBootstrap.Col>
@@ -104,7 +91,7 @@ const CarsConditionTableDefectsForm: React.FC<any> = (props) => {
             <BlockCarsConditionCarSelectPhotoDefect
               files={valuesRenderRow.files || []}
               onChange={handleChange}
-              isPermitted={props.isPermitted}
+              isPermitted={isPermitted}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

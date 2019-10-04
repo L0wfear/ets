@@ -35,6 +35,7 @@ export const getDefaultWaybill = (company_id): Waybill => ({
   downtime_hours_work: null,
   driver_id: null,
   driver_fio: '',
+  driver_name: '',
   equipment_fact_fuel_end: null,
   equipment_fuel: null,
   equipment_fuel_end: null,

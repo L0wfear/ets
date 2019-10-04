@@ -2,10 +2,9 @@ import Map from 'ol/Map';
 import View, { FitOptions, ViewOptions } from 'ol/View';
 import { Extent } from 'ol/extent';
 
-import {
-  SetMapToContextType,
-  RemoveMapToContextType,
-} from 'components/new/ui/map/context/MapetsContext.h';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { SetMapToContextType, RemoveMapToContextType } from 'components/new/ui/map/context/MapetsContext.h';
 
 export type StateMapEts = {
   map: Map,
@@ -16,9 +15,16 @@ export type StateMapEts = {
   enableInteractions: boolean;
 };
 
-export type PropsMapEts = {
-  center: [number, number];
-  zoom: number,
+export type StateProps = {
+  userData: InitialStateSession['userData'],
+  zoom: InitialStateSession['userData']['map_config']['zoom'],
+  center: InitialStateSession['userData']['map_config']['coordinates'],
+};
+export type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+export type OwnProps = {
   enableInteractions: boolean;
   children(props: StateMapEts): React.ReactNode,
   disabledCenterOn?: boolean;
@@ -30,6 +36,12 @@ export type PropsMapEts = {
   mapKey: string;
   rotationAngle?: number;
 };
+
+export type PropsMapEts = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
 export namespace MapUtils {
   export type getViewFunc = (

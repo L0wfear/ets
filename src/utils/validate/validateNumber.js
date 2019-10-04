@@ -52,9 +52,14 @@ const fixedValidators = [
       if (typeof config.min === 'undefined' || isNaN(parsedValue))
         return undefined;
       return parsedValue < config.min
-        ? `Поле "${config.title || config.key}" должно быть не меньше ${
-          config.min
-        }`
+        ? config.alt_min && config.max
+          ? `Поле "${config.title
+              || config.key}" должно быть неотрицательным числом и меньше ${
+            config.max
+          }`
+          : `Поле "${config.title || config.key}" должно быть не меньше ${
+            config.min
+          }`
         : undefined;
     },
   },
@@ -65,9 +70,14 @@ const fixedValidators = [
       if (typeof config.max === 'undefined' || isNaN(parsedValue))
         return undefined;
       return parsedValue > config.max
-        ? `Поле "${config.title || config.key}" должно быть не больше ${
-          config.max
-        }`
+        ? config.alt_min && config.max
+          ? `Поле "${config.title
+              || config.key}" должно быть неотрицательным числом и меньше ${
+            config.max
+          }`
+          : `Поле "${config.title || config.key}" должно быть не больше ${
+            config.min
+          }`
         : undefined;
     },
   },

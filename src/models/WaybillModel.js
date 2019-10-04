@@ -218,6 +218,9 @@ export const waybillSchema = {
       title: 'Работа',
       type: 'number',
       float: 2,
+      min: 0,
+      max: 1000,
+      alt_min: true,
     },
     {
       key: 'downtime_hours_duty',
@@ -225,20 +228,29 @@ export const waybillSchema = {
       required: false,
       type: 'number',
       float: 2,
+      min: 0,
+      max: 1000,
+      alt_min: true,
     },
     {
       key: 'downtime_hours_dinner',
       title: 'Обед',
       required: false,
       type: 'number',
-      minNotEqual: 0,
+      float: 2,
+      min: 0,
+      max: 1000,
+      alt_min: true,
     },
     {
       key: 'downtime_hours_repair',
       title: 'Ремонт',
       required: false,
       type: 'number',
-      minNotEqual: 0,
+      float: 2,
+      min: 0,
+      max: 1000,
+      alt_min: true,
     },
     {
       key: 'car_refill',
@@ -359,70 +371,6 @@ export const waybillSchema = {
       {
         type: 'gt',
         field: 'plan_departure_date',
-      },
-    ],
-    downtime_hours_work: [
-      {
-        validator: (value) => {
-          if (
-            value
-            && (parseFloat(value)
-              .toFixed(1)
-              .match(/^\d{4,}/)
-              || value <= 0)
-          ) {
-            return 'Поле "Работа" должно быть неотрицательным числом и меньше 1000';
-          }
-          return false;
-        },
-      },
-    ],
-    downtime_hours_duty: [
-      {
-        validator: (value) => {
-          if (
-            value
-            && (parseFloat(value)
-              .toFixed(1)
-              .match(/^\d{4,}/)
-              || value <= 0)
-          ) {
-            return 'Поле "Дежурство" должно быть неотрицательным числом и меньше 1000';
-          }
-          return false;
-        },
-      },
-    ],
-    downtime_hours_dinner: [
-      {
-        validator: (value) => {
-          if (
-            (value
-              && parseFloat(value)
-                .toFixed(1)
-                .match(/^\d{4,}/))
-            || value <= 0
-          ) {
-            return 'Поле "Обед" должно быть неотрицательным числом и меньше 1000';
-          }
-          return false;
-        },
-      },
-    ],
-    downtime_hours_repair: [
-      {
-        validator: (value) => {
-          if (
-            (value
-              && parseFloat(value)
-                .toFixed(1)
-                .match(/^\d{4,}/))
-            || value <= 0
-          ) {
-            return 'Поле "Ремонт" должно быть неотрицательным числом и меньше 1000';
-          }
-          return false;
-        },
       },
     ],
     trailer_id: [

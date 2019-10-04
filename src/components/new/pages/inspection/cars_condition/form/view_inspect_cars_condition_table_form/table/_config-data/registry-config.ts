@@ -121,6 +121,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           groupOpt: {
             key: 'district',
           },
+          renderParams: {
+            type: 'string',
+          },
         },
         {
           key: 'gby_operation_district',
@@ -128,6 +131,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           width: 200,
           groupOpt: {
             key: 'district',
+          },
+          renderParams: {
+            type: 'string',
           },
         },
         {
@@ -372,6 +378,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
         },
         {
@@ -392,6 +399,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -407,6 +415,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -421,6 +430,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'add_info',
@@ -590,6 +600,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
         },
         {
@@ -601,6 +612,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
         },
         {
@@ -679,6 +691,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'repair_info',
@@ -693,6 +706,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             type: 'date',
             time: false,
             makeGoodFormat: true,
+            makeGoodFormatInitial: true,
           },
           groupOpt: {
             key: 'repair_info',
@@ -718,6 +732,9 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           width: 200,
           renderParams: {
             type: 'boolean',
+          },
+          groupOpt: {
+            key: 'repair_info',
           },
           format: 'boolean',
         },

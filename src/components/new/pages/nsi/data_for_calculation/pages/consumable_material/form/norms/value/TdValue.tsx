@@ -8,7 +8,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type Props = PropsToTdReactComponent;
 
-const getAddon = (measure_unit_name_element, measure_unit_name) => {
+export const getAddon = (measure_unit_name_element, measure_unit_name) => {
   if (measure_unit_name === measure_unit_name_element) {
     return measure_unit_name;
   }

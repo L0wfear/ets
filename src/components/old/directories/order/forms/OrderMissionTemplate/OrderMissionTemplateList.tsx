@@ -1,11 +1,12 @@
 import * as React from 'react';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-
+import { connect } from 'react-redux';
 import {
   isEmpty,
 } from 'lodash';
 
-import { FluxContext, connectToStores } from 'utils/decorators';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+
+import { FluxContext } from 'utils/decorators';
 
 import Div from 'components/old/ui/Div';
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
@@ -30,16 +31,45 @@ import {
 } from 'components/old/directories/order/forms/OrderMissionTemplate/OrderMissionTemplateList.h';
 import { createMissionByOrder, getValidDutyMissionFromOrderTemplate } from 'components/old/directories/order/forms/utils/createMissionsByOrder';
 import { getWarningNotification } from 'utils/notifications';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
-import { getSessionState, getSomeUniqState } from 'redux-main/reducers/selectors';
+import { getSessionState, getSomeUniqState, getAutobaseState } from 'redux-main/reducers/selectors';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import LoadingOverlayLegacy from 'components/old/directories/order/forms/OrderMissionTemplate/LoadingOverlayLegacy';
 import { DivNone } from 'global-styled/global-styled';
 import ColumnAssignmentMissionTemplate from './ColumnAssignmentMissionTemplate';
 import { validateMissionsByCheckedElements } from 'components/new/pages/missions/utils';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { Order } from 'redux-main/reducers/modules/order/@types';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/actions';
+
+type StateProps = {
+  carList: Car[];
+  userData: InitialStateSession['userData'];
+  order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  typeClick: typeof typeTemplate[keyof typeof typeTemplate];
+  onFormHide: () => any;
+  technical_operations: Order['technical_operations'];
+  orderDates: {
+    order_date: Order['order_date'];
+    order_date_to: Order['order_date_to'];
+    faxogramm_id: Order['id'];
+    status: Order['status'];
+  };
+};
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
 
 export const makePayloadFromState = (formState, type_id) => ({
   datetime: formState.date_start,
@@ -85,10 +115,14 @@ export const getNormByMissionAndCar = async (getCleaningOneNorm, missionArr: any
 };
 
 const loadingPage = 'OrderMissionTemplateList';
+const loadingPath = 'OrderMissionTemplateListPath';
+const meta = {
+  page: loadingPage,
+  path: loadingPath,
+};
 
-@connectToStores(['missions'])
 @FluxContext
-class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTemplate> {
+class OrderMissionTemplate extends React.Component<Props, IStateOrderMissionTemplate> {
   context!: ETSCore.LegacyContext;
 
   state: any = {
@@ -106,12 +140,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
 
   componentDidMount() {
     const { structures } = this.props.userData;
-    if (this.props.typeClick === typeTemplate.missionTemplate) {
-      const payload = {
-        order_id: this.props.orderDates.faxogramm_id || null,
-      };
-      this.context.flux.getActions('missions').getMissionTemplatesCars(payload);
-    }
+    this.props.dispatch(carGetAndSetInStore({}, meta));
 
     this.getMissionsList().then(({ data }) => {
       const missionsList = getMissionListByFilter(data);
@@ -154,13 +183,17 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     };
 
     switch (typeClick) {
-      case typeTemplate.missionTemplate: return this.props.actionGetMissionTemplate(
-        payload,
-        { page: loadingPage },
+      case typeTemplate.missionTemplate: return this.props.dispatch(
+        missionsActions.actionGetMissionTemplate(
+          payload,
+          meta,
+        ),
       );
-      case typeTemplate.missionDutyTemplate: return this.props.actionGetDutyMissionTemplate(
-        payload,
-        { page: loadingPage },
+      case typeTemplate.missionDutyTemplate: return this.props.dispatch(
+        missionsActions.actionGetDutyMissionTemplate(
+          payload,
+          meta,
+        ),
       );
       default: Promise.reject({ error: 'no typeClick' });
     }
@@ -239,8 +272,11 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
       if (typeClick === typeTemplate.missionDutyTemplate) {
         goodResponse = await Promise.all(
           missionArr.map((dutyMission: any) => (
-            this.props.actionCreateDutyMission(
-              getValidDutyMissionFromOrderTemplate(dutyMission, order_mission_source_id, faxogramm_id),
+            this.props.dispatch(
+              missionsActions.actionCreateDutyMission(
+                getValidDutyMissionFromOrderTemplate(dutyMission, order_mission_source_id, faxogramm_id),
+                meta,
+              ),
             )
           )),
         ).then((responseArr) => responseArr.every((ans) => ans));
@@ -386,14 +422,13 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
           assign_to_waybill={assign_to_waybill_for_column}
           hideColumnAssignmentMissionTemplate={this.hideColumnAssignmentMissionTemplate}
           handleChange={this.handleChangeAssignToWaybillForColumn}
-          carsList={this.props.carsList}
+          carsList={this.props.carList}
           handleSubmit={this.handleSubmitFromAssignmentModal}
         />
       );
     }
 
     const {
-      showForm,
       typeClick,
     } = this.props;
 
@@ -409,23 +444,25 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
     const hasMissionForColumn = Object.values(checkedElements).some((mission: any) => mission.for_column);
 
     return (
-      <EtsBootstrap.ModalContainer id="modal-order-mission-template" show={showForm} onHide={this.onFormHide} bsSize="large">
+      <EtsBootstrap.ModalContainer show id="modal-order-mission-template" onHide={this.onFormHide} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
           <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
-        <ModalBodyPreloader page={loadingPage} typePreloader="mainpage">
+        <ModalBodyPreloader meta={meta} typePreloader="mainpage">
           <LoadingOverlayLegacy />
           {
             typeClick === typeTemplate.missionTemplate
               ? (
                 <MissionTemplateTable
                   data={missionsList}
-                  govNumberFilter={this.props.govNumberFilter}
                   selected={selectedElement}
                   checked={checkedElements}
                   onRowSelected={this.onRowSelected}
                   onAllRowsChecked={this.onAllChecked}
                   onRowChecked={this.onRowChecked}
+
+                  order_id={this.props.orderDates.faxogramm_id}
+                  {...meta}
 
                   structures={structures}
                 />
@@ -444,8 +481,7 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
                   onRowSelected={this.onRowSelected}
                   onAllRowsChecked={this.onAllChecked}
                   onRowChecked={this.onRowChecked}
-                  employeesList={this.props.employeesList}
-                  employeeIndex={this.props.employeeIndex}
+                  {...meta}
 
                   structures={structures}
                 />
@@ -474,34 +510,10 @@ class OrderMissionTemplate extends React.Component<any, IStateOrderMissionTempla
   }
 }
 
-type DispatchPropsOrderMissionTemplate = {
-  actionGetMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionGetMissionTemplate>;
-  actionGetDutyMissionTemplate: HandleThunkActionCreator<typeof missionsActions.actionGetDutyMissionTemplate>;
-  actionCreateDutyMission: HandleThunkActionCreator<typeof missionsActions.actionCreateDutyMission>;
-};
-
-export default compose<any, any>(
-  connect<any, DispatchPropsOrderMissionTemplate, any, ReduxState>(
-    (state) => ({
-      userData: getSessionState(state).userData,
-      order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
-    }),
-    (dispatch: any) => ({
-      actionGetMissionTemplate: (...arg) => (
-        dispatch(
-          missionsActions.actionGetMissionTemplate(...arg),
-        )
-      ),
-      actionGetDutyMissionTemplate: (...arg) => (
-        dispatch(
-          missionsActions.actionGetDutyMissionTemplate(...arg),
-        )
-      ),
-      actionCreateDutyMission: (...arg) => (
-        dispatch(
-          missionsActions.actionCreateDutyMission(...arg),
-        )
-      ),
-    }),
-  ),
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
+    userData: getSessionState(state).userData,
+    order_mission_source_id: getSomeUniqState(state).missionSource.order_mission_source_id,
+    carList: getAutobaseState(state).carList,
+  }),
 )(OrderMissionTemplate);

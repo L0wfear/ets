@@ -8,10 +8,12 @@ import { IPropsDataTable } from 'components/old/ui/table/@types/DataTable.h';
 import DataTableComponent from 'components/old/ui/table/DataTable';
 import { employeeFIOLabelFunction } from 'utils/labelFunctions';
 import { makeDateFormated } from 'components/@next/@utils/dates/dates';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { employeeEmployeeGetSetEmployee } from 'redux-main/reducers/modules/employee/employee/actions';
 
 const DataTable: React.ComponentClass<IPropsDataTable<any>> = DataTableComponent as any;
 
-export function getTableMeta(props: any = {}): IDataTableSchema {
+export function getTableMeta(props: any = {}, employeesOptions: any[]): IDataTableSchema {
   const meta: IDataTableSchema = {
     cols: [
       {
@@ -78,13 +80,7 @@ export function getTableMeta(props: any = {}): IDataTableSchema {
         filter: {
           type: 'multiselect',
           someInRowValue: true,
-          options: uniqBy(
-            props.employeesList.map(({ id }) => ({
-              value: id,
-              label: employeeFIOLabelFunction(props.employeeIndex, id),
-            })),
-            'value',
-          ),
+          options: employeesOptions,
         },
       },
       {
@@ -123,20 +119,46 @@ const renderers: ISchemaRenderer = {
   ),
 };
 
-const Table: React.FC<any> = (props) => (
-  <DataTable
-    multiSelection={true}
-    results={props.data}
-    renderers={renderers}
-    tableMeta={getTableMeta(props)}
-    onRowSelected={props.onRowSelected}
-    onRowChecked={props.onRowChecked}
-    onAllRowsChecked={props.onAllRowsChecked}
-    selected={props.selected}
-    checked={props.checked}
-    selectField="frontId"
-    initialSort="frontId"
-    />
+const Table: React.FC<any> = React.memo(
+  (props) => {
+    const [employeesOptions, setOptions] = React.useState([]);
+    const dispatch = etsUseDispatch();
+    React.useEffect(
+      () => {
+        const loadData = async () => {
+          const { data, dataIndex } = await dispatch(employeeEmployeeGetSetEmployee({}, props));
+          setOptions(
+            uniqBy(
+              data.map(({ id }) => ({
+                value: id,
+                label: employeeFIOLabelFunction(dataIndex, id),
+              })),
+              'value',
+            ),
+          );
+        };
+
+        loadData();
+      },
+      [props.order_id],
+    );
+
+    return (
+      <DataTable
+        multiSelection={true}
+        results={props.data}
+        renderers={renderers}
+        tableMeta={getTableMeta(props, employeesOptions)}
+        onRowSelected={props.onRowSelected}
+        onRowChecked={props.onRowChecked}
+        onAllRowsChecked={props.onAllRowsChecked}
+        selected={props.selected}
+        checked={props.checked}
+        selectField="frontId"
+        initialSort="frontId"
+        />
+    );
+  },
 );
 
 export default Table;

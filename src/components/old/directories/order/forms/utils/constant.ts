@@ -1,7 +1,7 @@
 export const typeTemplate = {
   missionDutyTemplate: 'missionDutyTemplate',
   missionTemplate: 'missionTemplate',
-};
+} as const;
 
 export const ASSING_BY_KEY = {
   assign_to_active: 'assign_to_active',

@@ -2,17 +2,9 @@ import { Actions } from 'flummox';
 import { clone } from 'lodash';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
-import {
-  MissionService,
-  MissionTemplateCarService,
-  Cleaning,
-} from 'api/missions';
+import { MissionService, Cleaning } from 'api/missions';
 
 export default class MissionsActions extends Actions {
-  getMissionTemplatesCars(payload = {}) {
-    return MissionTemplateCarService.get(payload);
-  }
-
   createMissions(missionTemplates, missionsCreationTemplate) {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(

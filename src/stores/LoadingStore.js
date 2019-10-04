@@ -6,7 +6,6 @@ export default class LoadingStore extends Store {
     super();
 
     const repairActions = flux.getActions('repair');
-    const waybillsActions = flux.getActions('waybills');
     const missionsActons = flux.getActions('missions');
 
     this.reg(
@@ -33,15 +32,9 @@ export default class LoadingStore extends Store {
       repairActions.programVersionSendToClose,
       repairActions.programVersionSendFor,
 
-      waybillsActions.createWaybill,
-      waybillsActions.updateWaybill,
-
-      missionsActons.updateMission,
       missionsActons.createMissions,
       missionsActons.getCleaningOneNorm,
     );
-
-    this.reg(true, missionsActons.getMissionsByCarAndDates);
 
     this.state = {
       operationsCount: 0,

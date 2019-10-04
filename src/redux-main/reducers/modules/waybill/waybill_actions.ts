@@ -1,5 +1,5 @@
 import {
-  promiseGetWaybillById, promiseGetBlobWaybilljournalReport, promiseGetBlobWaybillReport, promiseGetLastClosedWaybill, promiseGetLatestWaybillDriver,
+  promiseGetWaybillById, promiseGetBlobWaybilljournalReport, promiseGetBlobWaybillReport, promiseGetLastClosedWaybill, promiseGetLatestWaybillDriver, promisePrintWaybill, promiseUpdateWaybill, promiseCreateWaybill, promiseGetMissionsByCarAndDates,
 } from 'redux-main/reducers/modules/waybill/promises/waybill_promises';
 import {
   Waybill,
@@ -58,6 +58,44 @@ export const actionGetLatestWaybillDriver = (payload: Parameters<typeof promiseG
   etsLoadingCounter(
     dispatch,
     promiseGetLatestWaybillDriver(payload),
+    meta,
+  )
+);
+
+export const actionPrintWaybill = (payload: Parameters<typeof promisePrintWaybill>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promisePrintWaybill>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promisePrintWaybill(payload),
+    meta,
+  )
+);
+
+export const actionCreateWaybill = (payload: Parameters<typeof promiseCreateWaybill>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateWaybill>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseCreateWaybill(payload),
+    {
+      ...meta,
+      noTimeout: true,
+    },
+  )
+);
+
+export const actionUpdateWaybill = (payload: Parameters<typeof promiseUpdateWaybill>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseUpdateWaybill>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseUpdateWaybill(payload),
+    {
+      ...meta,
+      noTimeout: true,
+    },
+  )
+);
+
+export const actionGetMissionsByCarAndDates = (payload: Parameters<typeof promiseGetMissionsByCarAndDates>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMissionsByCarAndDates>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetMissionsByCarAndDates(payload),
     meta,
   )
 );

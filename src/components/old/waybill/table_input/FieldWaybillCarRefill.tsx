@@ -1,32 +1,19 @@
 import * as React from 'react';
-import { connect, HandleThunkActionCreator } from 'react-redux';
 import { get } from 'lodash';
 
 import TableInput, { TableInputProps, TableMeta } from 'components/new/ui/table_input/TableInput';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { ReduxState } from 'redux-main/@types/state';
 import { DisplayFlexAlignCenterFooterForm, FooterEnd } from 'global-styled/global-styled';
 import { getSomeUniqState, getAutobaseState, getSessionState } from 'redux-main/reducers/selectors';
-import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
-import { IStateAutobase } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import CarRefillTableHeader from './CarRefillTableHeader';
 import { fuelCardsGetAndSetInStore } from 'redux-main/reducers/modules/autobase/fuel_cards/actions-fuelcards';
-import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import { makeFuelCardIdOptions, makeFuelCardStrickOptions } from './utils';
 import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
 import { DefaultSelectOption } from 'components/old/ui/input/ReactSelect/utils';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
-type FieldWaybillCarRefillStateProps = {
-  fuelCardsList: IStateAutobase['fuelCardsList'];
-  refillTypeList: IStateSomeUniq['refillTypeList'],
-  userCompanyId: InitialStateSession['userData']['company_id'];
-  userStructureId: InitialStateSession['userData']['structure_id'];
-};
-type FieldWaybillCarRefillDispatchProps = {
-  fuelCardsGetAndSetInStore: HandleThunkActionCreator<typeof fuelCardsGetAndSetInStore>;
-};
-type FieldWaybillCarRefillOwnProps = {
+type Props = {
   id: string;
   errors: any[];
   title: string;
@@ -52,13 +39,6 @@ type FieldWaybillCarRefillOwnProps = {
     fuel_type: Waybill['equipment_fuel_type'];
   }
 );
-type FieldWaybillCarRefillMergedProps = (
-  FieldWaybillCarRefillStateProps
-  & FieldWaybillCarRefillDispatchProps
-  & FieldWaybillCarRefillOwnProps
-);
-
-type FieldWaybillCarRefillProps = FieldWaybillCarRefillMergedProps;
 
 const metaTypeId: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_refill']>> = {
   key: 'type_id',
@@ -107,24 +87,30 @@ const metaValue: TableMeta<ValuesOf<Waybill['car_refill'] | Waybill['equipment_r
   format: 'number',
 };
 
-const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
+const FieldWaybillCarRefill: React.FC<Props> = React.memo(
   (props) => {
     const [selectedRowIndex, setSelectedRowIndex] = React.useState(null);
+
+    const fuelCardsList = etsUseSelector((state) => getAutobaseState(state).fuelCardsList);
+    const refillTypeList = etsUseSelector((state) => getSomeUniqState(state).refillTypeList);
+    const userCompanyId = etsUseSelector((state) => getSessionState(state).userData.company_id);
+    const userStructureId = etsUseSelector((state) => getSessionState(state).userData.structure_id);
+    const dispatch = etsUseDispatch();
 
     const fuelCardIdOptions = React.useMemo(
       () => {
         return makeFuelCardIdOptions(
-          props.fuelCardsList,
+          fuelCardsList,
           props.array,
           props.fuel_type,
-          props.userCompanyId,
+          userCompanyId,
           props.structure_id,
         );
       },
       [
-        props.fuelCardsList,
+        fuelCardsList,
         props.structure_id,
-        props.userCompanyId,
+        userCompanyId,
         props.array,
         props.fuel_type,
       ],
@@ -132,14 +118,14 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 
     const typeIdOptions = React.useMemo(
       () => {
-        return props.refillTypeList.map((rowData) => ({
+        return refillTypeList.map((rowData) => ({
           value: rowData.id,
           label: rowData.name,
           isNotVisible: !rowData.is_selectable,
           rowData,
         }));
       },
-      [props.refillTypeList],
+      [refillTypeList],
     );
 
     const metaCarRefillRaw = React.useMemo(
@@ -163,12 +149,8 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
 
     const handleUpdateFuelCard = React.useCallback(
       () => {
-        props.fuelCardsGetAndSetInStore(
-          {},
-          {
-            page: props.page,
-            path: props.path,
-          },
+        dispatch(
+          fuelCardsGetAndSetInStore({}, props),
         );
       },
       [],
@@ -180,10 +162,10 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
         if (props.fuel_type && props.fuel_type !== previosFuelType) {
           const availabelFuelCars = (
             makeFuelCardStrickOptions(
-              props.fuelCardsList,
+              fuelCardsList,
               props.fuel_type,
-              props.userCompanyId,
-              props.userStructureId,
+              userCompanyId,
+              userStructureId,
             ) as DefaultSelectOption<FuelCard['id'], FuelCard['number'], FuelCard>[])
           .reduce(
             (newSet, { rowData }) => {
@@ -204,7 +186,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           );
         }
       },
-      [previosFuelType, props.fuel_type, props.fuelCardsList, props.userCompanyId, props.userStructureId, props.array, props.handleChange, props.structure_id],
+      [previosFuelType, props.fuel_type, fuelCardsList, userCompanyId, userStructureId, props.array, props.handleChange, props.structure_id],
     );
 
     return (
@@ -255,18 +237,4 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
   },
 );
 
-export default connect<FieldWaybillCarRefillStateProps, FieldWaybillCarRefillDispatchProps, FieldWaybillCarRefillOwnProps, ReduxState>(
-  (state) => ({
-    fuelCardsList: getAutobaseState(state).fuelCardsList,
-    refillTypeList: getSomeUniqState(state).refillTypeList,
-    userCompanyId: getSessionState(state).userData.company_id,
-    userStructureId: getSessionState(state).userData.structure_id,
-  }),
-  (dispatch: any) => ({
-    fuelCardsGetAndSetInStore: (...arg) => (
-      dispatch(
-        fuelCardsGetAndSetInStore(...arg),
-      )
-    ),
-  }),
-)(FieldWaybillCarRefill);
+export default FieldWaybillCarRefill;

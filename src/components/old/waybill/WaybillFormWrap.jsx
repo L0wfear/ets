@@ -1,16 +1,16 @@
 import React from 'react';
 import { clone, cloneDeep, get, last } from 'lodash';
+import { connect } from 'react-redux';
+import { isNullOrUndefined } from 'util';
+
 import { getWarningNotification } from 'utils/notifications';
 import { saveData, printData } from 'utils/functions';
 import { waybillSchema, waybillClosingSchema } from 'models/WaybillModel';
-import { FluxContext } from 'utils/decorators';
 import WaybillForm from 'components/old/waybill/WaybillForm';
 import { getDefaultBill } from 'stores/WaybillsStore';
 import Taxes from 'components/old/waybill/Taxes';
 import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
-import { isNullOrUndefined } from 'util';
-import { connect } from 'react-redux';
 import {
   getAutobaseState,
   getSomeUniqState,
@@ -25,6 +25,11 @@ import { validateField } from 'utils/validate/validateField';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import ChangeStatusRequesFormLazy from 'components/new/pages/edc_request/form/changeStatusRequesForm';
 import { canSaveTest } from 'components/@next/@form/validate/validate';
+import {
+  actionPrintWaybill,
+  actionUpdateWaybill,
+  actionCreateWaybill,
+} from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const canSaveNotCheckField = [
   'fact_arrival_date',
@@ -123,10 +128,10 @@ const filterFormErrorByPerission = (isPermittedByKey, formErrors) =>
 // добавил из-за перерендера
 let timeId = 0;
 
-@FluxContext
 class WaybillFormWrap extends React.Component {
   static defaultProps = {
     onCallback: () => {},
+    path: 'WabillForm',
   };
 
   constructor(props) {
@@ -154,8 +159,10 @@ class WaybillFormWrap extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actionLoadRefillTypeAndSetInStore({}, this.props);
-    this.props.fuelCardsGetAndSetInStore({}, this.props);
+    this.props.dispatch(actionLoadRefillTypeAndSetInStore({}, this.props));
+    this.props.dispatch(
+      fuelCardsActions.fuelCardsGetAndSetInStore({}, this.props),
+    );
 
     const currentDate = new Date();
 
@@ -306,9 +313,32 @@ class WaybillFormWrap extends React.Component {
 
   componentWillUnmount() {
     clearTimeout(timeId);
-    this.props.actionResetRefillTypeAndSetInStore();
-    this.props.resetSetFuelCards();
+    this.props.dispatch(actionResetRefillTypeAndSetInStore());
+    this.props.dispatch(fuelCardsActions.resetSetFuelCards());
   }
+
+  createWaybill = async (waybill) => {
+    try {
+      const result = await this.props.dispatch(
+        actionCreateWaybill(waybill, this.props),
+      );
+      global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+      return result;
+    } catch {
+      //
+    }
+  };
+  updateWaybill = async (waybill) => {
+    try {
+      const result = await this.props.dispatch(
+        actionUpdateWaybill(waybill, this.props),
+      );
+      global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
+      return result;
+    } catch {
+      //
+    }
+  };
 
   validate = (state, errors) => {
     if (typeof this.schema === 'undefined') return errors;
@@ -535,7 +565,7 @@ class WaybillFormWrap extends React.Component {
    * @param {number 1|2} print_form_type - Идентификатор печатной формы
    * @return {undefined}
    */
-  handlePrint = async (printonly, print_form_type) => {
+  handlePrint = async (printonly, type) => {
     const { formState } = this.state;
 
     const currentWaybillId = formState.id;
@@ -550,14 +580,22 @@ class WaybillFormWrap extends React.Component {
       uid: 'waybilPrintCurrForm',
       children: makeReactMessage('Формирование печатной формы'),
     });
-    const callback = (waybill_id = currentWaybillId) =>
-      this.context.flux
-        .getActions('waybills')
-        .printWaybill(print_form_type, waybill_id)
+    const callback = (waybill_id = currentWaybillId) => {
+      return this.props
+        .dispatch(
+          actionPrintWaybill(
+            {
+              type,
+              waybill_id,
+            },
+            this.props,
+          ),
+        )
         .then((respoce) => saveData(respoce.blob, respoce.fileName))
         .catch((error) => {
           console.warn('waybillFormWrap saveData', error); // eslint-disable-line
         });
+    };
 
     try {
       if (printonly) {
@@ -585,7 +623,7 @@ class WaybillFormWrap extends React.Component {
     if (closeForm) {
       // если нет ошибки при отправке запросов, то сохраняем ПЛ и закрываем форму ПЛ
       try {
-        await this.context.flux.getActions('waybills').updateWaybill(formState);
+        await this.updateWaybill(formState);
       } catch ({ error_text }) {
         console.log(error_text); // eslint-disable-line
         return;
@@ -619,9 +657,7 @@ class WaybillFormWrap extends React.Component {
       // если создаем ПЛ
       if (typeof callback === 'function') {
         formState.status = 'draft';
-        const r = await this.context.flux
-          .getActions('waybills')
-          .createWaybill(formState);
+        const r = await this.createWaybill(formState);
 
         // TODO сейчас возвращается один ПЛ
         const [{ id }] = get(r, 'result', [{ id: null }]) || [{ id: null }];
@@ -630,9 +666,7 @@ class WaybillFormWrap extends React.Component {
           formState.status = 'active';
           formState.id = id;
 
-          await this.context.flux
-            .getActions('waybills')
-            .updateWaybill(formState);
+          await this.updateWaybill(formState);
           callback(id);
         } catch ({ errorIsShow }) {
           !errorIsShow
@@ -651,9 +685,7 @@ class WaybillFormWrap extends React.Component {
       } else {
         formState.status = 'draft';
         try {
-          await this.context.flux
-            .getActions('waybills')
-            .createWaybill(formState);
+          await this.createWaybill(formState);
         } catch ({ error_text }) {
           console.log(error_text); // eslint-disable-line
           return;
@@ -666,9 +698,7 @@ class WaybillFormWrap extends React.Component {
         formState.status = 'active';
 
         try {
-          await this.context.flux
-            .getActions('waybills')
-            .updateWaybill(formState);
+          await this.updateWaybill(formState);
         } catch (e) {
           return;
         }
@@ -678,9 +708,7 @@ class WaybillFormWrap extends React.Component {
         }
       } else {
         try {
-          await this.context.flux
-            .getActions('waybills')
-            .updateWaybill(formState);
+          await this.updateWaybill(formState);
         } catch (e) {
           return;
         }
@@ -690,7 +718,7 @@ class WaybillFormWrap extends React.Component {
       this.submitActiveWaybill();
     } else if (waybillStatus === 'closed') {
       try {
-        await this.context.flux.getActions('waybills').updateWaybill(formState);
+        await this.updateWaybill(formState);
       } catch ({ error_text }) {
         console.log(error_text); // eslint-disable-line
         return;
@@ -719,9 +747,7 @@ class WaybillFormWrap extends React.Component {
       .then(async () => {
         try {
           formState.status = 'closed';
-          await this.context.flux
-            .getActions('waybills')
-            .updateWaybill(formState);
+          await this.updateWaybill(formState);
           this.props.onCallback();
         } catch (e) {
           //
@@ -730,16 +756,23 @@ class WaybillFormWrap extends React.Component {
       .catch(() => {});
   };
 
-  handlePrintFromMiniButton = (print_form_type = 'plate_special') => {
-    const {
-      formState: { id: waybill_id },
-    } = this.state;
+  handlePrintFromMiniButton = async (type = 'plate_special') => {
+    const { formState } = this.state;
 
-    this.context.flux
-      .getActions('waybills')
-      .printWaybill(print_form_type, waybill_id)
-      .then(({ blob }) => printData(blob))
-      .catch(() => {});
+    try {
+      const { blob } = this.props.dispatch(
+        actionPrintWaybill(
+          {
+            type,
+            waybill_id: formState.id,
+          },
+          this.props,
+        ),
+      );
+      printData(blob);
+    } catch {
+      //
+    }
   };
   setEdcRequestIds = (edcRequestIds) => {
     if (this.state.edcRequestIds) {
@@ -777,6 +810,7 @@ class WaybillFormWrap extends React.Component {
             isPermittedByKey={this.state.isPermittedByKey}
             setEdcRequestIds={this.setEdcRequestIds}
             page={this.props.page}
+            path={this.props.path}
             {...this.state}
           />
         )}
@@ -792,23 +826,12 @@ class WaybillFormWrap extends React.Component {
   }
 }
 
-export default connect(
-  (state) => ({
-    currentUser: state.session.userData,
-    userCompanyId: getSessionState(state).userData.company_id,
-    userStructureId: getSessionState(state).userData.structure_id,
-    fuelCardsList: getAutobaseState(state).fuelCardsList,
-    refillTypeList: getSomeUniqState(state).refillTypeList,
-    carList: getAutobaseState(state).carList,
-    carIndex: getAutobaseState(state).carIndex,
-  }),
-  (dispatch) => ({
-    actionLoadRefillTypeAndSetInStore: (...arg) =>
-      dispatch(actionLoadRefillTypeAndSetInStore(...arg)),
-    actionResetRefillTypeAndSetInStore: (...arg) =>
-      dispatch(actionResetRefillTypeAndSetInStore(...arg)),
-    fuelCardsGetAndSetInStore: (...arg) =>
-      dispatch(fuelCardsActions.fuelCardsGetAndSetInStore(...arg)),
-    resetSetFuelCards: () => dispatch(fuelCardsActions.resetSetFuelCards()),
-  }),
-)(WaybillFormWrap);
+export default connect((state) => ({
+  currentUser: state.session.userData,
+  userCompanyId: getSessionState(state).userData.company_id,
+  userStructureId: getSessionState(state).userData.structure_id,
+  fuelCardsList: getAutobaseState(state).fuelCardsList,
+  refillTypeList: getSomeUniqState(state).refillTypeList,
+  carList: getAutobaseState(state).carList,
+  carIndex: getAutobaseState(state).carIndex,
+}))(WaybillFormWrap);

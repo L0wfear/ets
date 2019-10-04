@@ -1,13 +1,10 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
-import * as PropTypes from 'prop-types';
-import connectToStores from 'flummox/connect';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
 import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-import ModalBody from 'components/old/ui/Modal';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import Div from 'components/old/ui/Div';
@@ -93,7 +90,10 @@ import {
   actionGetLastClosedWaybill,
   actionGetLatestWaybillDriver,
   actionGetWaybillById,
+  actionGetMissionsByCarAndDates,
 } from 'redux-main/reducers/modules/waybill/waybill_actions';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -287,12 +287,7 @@ class WaybillForm extends UNSAFE_Form {
     this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
     await Promise.all([
-      this.props.dispatch(
-        carGetAndSetInStore(
-          {},
-          { page: this.props.page, path: this.props.path },
-        ),
-      ),
+      this.props.dispatch(carGetAndSetInStore({}, this.props)),
       this.props.dispatch(employeeGetAndSetInStore({}, this.props)),
       this.props.dispatch(
         actionsWorkMode.getArrayAndSetInStore({}, this.props),
@@ -562,14 +557,19 @@ class WaybillForm extends UNSAFE_Form {
       return;
     }
 
-    this.context.flux
-      .getActions('missions')
-      .getMissionsByCarAndDates(
-        car_id,
-        formState.fact_departure_date || formState.plan_departure_date,
-        formState.fact_arrival_date || formState.plan_arrival_date,
-        status,
-        formState.id,
+    this.props
+      .dispatch(
+        actionGetMissionsByCarAndDates(
+          {
+            car_id,
+            date_from:
+              formState.fact_departure_date || formState.plan_departure_date,
+            date_to: formState.fact_arrival_date || formState.plan_arrival_date,
+            status,
+            waybill_id: formState.id,
+          },
+          this.props,
+        ),
       )
       .then(({ result: { rows: newMissionsList = [] } = {} }) => {
         const missionsList = uniqBy(newMissionsList, 'id');
@@ -1203,21 +1203,26 @@ class WaybillForm extends UNSAFE_Form {
               actionPutMissionReassignationParameters(rejectMission.payload),
             );
           } else if (rejectMission.handlerName === 'updateMission') {
-            response = await this.context.flux
-              .getActions('missions')
-              .updateMission(rejectMission.payload);
+            response = await this.props.dispatch(
+              missionsActions.actionUpdateMission(
+                rejectMission.payload,
+                this.props,
+              ),
+            );
 
-            const successEdcRequestIds = response.result
-              .filter((value) => value)
-              .filter(({ close_request }) => close_request)
-              .map(({ request_id, request_number }) => ({
-                request_id,
-                request_number,
-              }));
-            if (successEdcRequestIds.length) {
-              this.props.setEdcRequestIds(successEdcRequestIds);
+            if (response) {
+              const { close_request, request_id, request_number } = response;
+
+              if (close_request) {
+                this.props.setEdcRequestIds([
+                  {
+                    request_id,
+                    request_number,
+                  },
+                ]);
+              }
             }
-            return get(response, 'result.0.id', null);
+            return get(response, 'id', null);
           }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
@@ -1538,7 +1543,10 @@ class WaybillForm extends UNSAFE_Form {
           </EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
 
-        <ModalBody>
+        <ModalBodyPreloader
+          page={this.props.page}
+          path={this.props.path}
+          typePreloader="mainpage">
           <EtsBootstrap.Row>
             <Div>
               {IS_CLOSED || IS_ACTIVE ? (
@@ -2402,6 +2410,8 @@ class WaybillForm extends UNSAFE_Form {
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
                 requestFormHide={this.requestFormHide}
+                page={this.props.page}
+                path={this.props.path}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
@@ -2531,7 +2541,7 @@ class WaybillForm extends UNSAFE_Form {
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-        </ModalBody>
+        </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           <WaybillFooter
             isCreating={IS_CREATING}
@@ -2556,10 +2566,6 @@ class WaybillForm extends UNSAFE_Form {
   }
 }
 
-WaybillForm.contextTypes = {
-  flux: PropTypes.object,
-};
-
 export default compose(
   connect((state) => ({
     appConfig: getSessionState(state).appConfig,
@@ -2580,4 +2586,4 @@ export default compose(
 
     waybillDriverList: getEmployeeState(state).waybillDriverList,
   })),
-)(connectToStores(WaybillForm, ['missions']));
+)(WaybillForm);

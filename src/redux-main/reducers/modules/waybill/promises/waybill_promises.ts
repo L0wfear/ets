@@ -1,13 +1,18 @@
-import { WaybillService, WaybillJournalReportService, WaybillsReportService, LatestWaybillDriverService, WaybillClosedService } from 'api/Services';
-import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import {
+  cloneDeep,
   get,
 } from 'lodash';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
-import { monthOptions, makeDate } from 'components/@next/@utils/dates/dates';
 import { isArray } from 'util';
+
+import { WaybillService, WaybillJournalReportService, WaybillsReportService, LatestWaybillDriverService, WaybillClosedService, RootService, WaybillAvailableMissionsService } from 'api/Services';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
+import { monthOptions, makeDate, createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { hasMotohours, isEmpty } from 'utils/functions';
+
+const updateFieldsToTest = ['fuel_given', 'equipment_fuel_given'];
 
 export const getOneWaybillFront = (waybillRaw) => {
   const waybill: Waybill = waybillRaw;
@@ -64,12 +69,139 @@ export const promiseLoadPFWaybill = async (payloadOwn) => {
   throw new Error('Define promiseLoadPFWaybill');
 };
 
-export const promiseCreateWaybill = async (ownPayload) => {
-  throw new Error('Define promiseCreateWaybill');
+export const promiseCreateWaybill = async (waybill: Waybill) => {
+  // const payload = cloneDeep(waybill);
+  const payload = cloneDeep(waybill) as any;
+  payload.plan_departure_date = createValidDateTime(
+    payload.plan_departure_date,
+  );
+  payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
+
+  payload.equipment_fuel = +payload.equipment_fuel;
+  delete payload.car_special_model_name;
+  delete payload.car_model_name;
+  delete payload.garage_number;
+  delete payload.all_missions_completed_or_failed;
+  delete payload.hasEquipmentFuelRates;
+
+  Object.entries(payload).forEach(
+    ([key, value]) => {
+      if (isEmpty(value)) {
+        delete payload[key];
+      }
+    },
+  );
+
+  if (hasMotohours(payload.gov_number)) {
+    delete payload.odometr_start;
+  } else {
+    delete payload.motohours_start;
+  }
+
+  if (isEmpty(payload.mission_id_list)) {
+    payload.mission_id_list = [];
+  }
+
+  if (
+    !isEmpty(payload.mission_id_list)
+    && payload.mission_id_list.length === 0
+  ) {
+    payload.mission_id_list = [];
+  }
+
+  return WaybillService.post(payload, false, 'json');
 };
-export const promiseUpdateWaybill = async (ownPayload) => {
-  throw new Error('Define promiseUpdateWaybill');
+
+export const promiseUpdateWaybill = async (waybill: Partial<Waybill>) => {
+  // const payload = cloneDeep(waybill);
+  const payload = cloneDeep(waybill) as any;
+  payload.plan_departure_date = createValidDateTime(
+    payload.plan_departure_date,
+  );
+  payload.plan_arrival_date = createValidDateTime(payload.plan_arrival_date);
+  payload.equipment_fuel = +payload.equipment_fuel;
+
+  payload.fact_departure_date = createValidDateTime(
+    payload.fact_departure_date,
+  );
+  payload.fact_arrival_date = createValidDateTime(payload.fact_arrival_date);
+
+  if (payload.tax_data) {
+    const tax_data = payload.tax_data
+      .filter((t) => !isEmpty(t.FACT_VALUE))
+      .map((tax) => {
+        delete tax.originOperation;
+        delete tax.isDisabled;
+        delete tax.operation_name;
+        delete tax.uniqKey;
+
+        return tax;
+      });
+    payload.tax_data = tax_data;
+  }
+  if (payload.equipment_tax_data) {
+    const equipment_tax_data = payload.equipment_tax_data
+      .filter((t) => !isEmpty(t.FACT_VALUE))
+      .map((tax) => {
+        delete tax.originOperation;
+        delete tax.isDisabled;
+        delete tax.operation_name;
+        delete tax.uniqKey;
+
+        return tax;
+      });
+    payload.equipment_tax_data = equipment_tax_data;
+  }
+
+  updateFieldsToTest.forEach((key) => {
+    if (!isEmpty(payload[key])) {
+      payload[key] = parseFloat(payload[key]).toFixed(3);
+    }
+  });
+
+  delete payload.odometr_diff;
+  delete payload.motohours_diff;
+  delete payload.motohours_equip_diff;
+  delete payload.date_create;
+  delete payload.closing_date;
+  delete payload.all_missions_completed_or_failed;
+  delete payload.car_special_model_name;
+  delete payload.car_model_name;
+  delete payload.garage_number;
+  delete payload.hasEquipmentFuelRates;
+
+  if (hasMotohours(payload.gov_number)) {
+    delete payload.odometr_start;
+  } else {
+    delete payload.motohours_start;
+  }
+
+  Object.entries(payload).forEach(
+    ([key, value]) => {
+      if (isEmpty(value)) {
+        payload[key] = null;
+      }
+    },
+  );
+
+  if (isEmpty(payload.motohours_equip_start)) {
+    payload.motohours_equip_start = null;
+  }
+
+  if (isEmpty(payload.mission_id_list)) {
+    payload.mission_id_list = [];
+  }
+
+  if (
+    !isEmpty(payload.mission_id_list)
+    && payload.mission_id_list.length === 0
+  ) {
+    payload.mission_id_list = [];
+  }
+
+  return WaybillService.put(payload, false, 'json');
 };
+
 export const promiseDeleteWaybill = (id) => {
   throw new Error('Define promiseDeleteWaybill');
 };
@@ -202,4 +334,52 @@ export const promiseGetLastClosedWaybill = async (payloadOwn: { car_id: Car['asu
   const result: Waybill = get(response, 'result.rows.0') || get(response, 'result.0') || null;
 
   return result;
+};
+
+type PromisePrintWaybillPayload = {
+  type: '',
+  waybill_id: Waybill['id'],
+};
+export const promisePrintWaybill = (payload: PromisePrintWaybillPayload) => {
+  return RootService.path(payload.type).getBlob({ waybill_id: payload.waybill_id });
+};
+
+// возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
+// если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
+const getMissionFilterStatus = (waybillStatus) => {
+  return waybillStatus ? undefined : 'not_assigned';
+};
+type PromiseGetMissionsByCarAndDatesPayload = {
+  car_id: Waybill['car_id'],
+  date_from: Waybill['fact_departure_date'] | Waybill['plan_departure_date'],
+  date_to: Waybill['fact_arrival_date'] | Waybill['plan_arrival_date'],
+  status: Waybill['status'],
+  waybill_id: Waybill['id'],
+};
+export const promiseGetMissionsByCarAndDates = async (payloadOwn: PromiseGetMissionsByCarAndDatesPayload) => {
+  const payload: Dictionary<any> = {};
+
+  const status = getMissionFilterStatus(payloadOwn.status);
+
+  if (!isEmpty(payloadOwn.car_id)) {
+    payload.car_id = payloadOwn.car_id;
+  }
+
+  if (!isEmpty(payloadOwn.date_from)) {
+    payload.date_from = createValidDateTime(payloadOwn.date_from);
+  }
+
+  if (!isEmpty(payloadOwn.date_to)) {
+    payload.date_to = createValidDateTime(payloadOwn.date_to);
+  }
+
+  if (!isEmpty(status)) {
+    payload.status = status;
+  }
+
+  if (payloadOwn.waybill_id) {
+    payload.waybill_id = payloadOwn.waybill_id;
+  }
+
+  return WaybillAvailableMissionsService.get(payload);
 };

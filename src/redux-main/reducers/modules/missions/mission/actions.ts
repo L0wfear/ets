@@ -300,7 +300,7 @@ const actionChangeArchiveMissionStatus = (
   return payload;
 };
 
-const actionUpdateMission = (
+export const actionUpdateMission = (
   missionOld: Mission & { action_at?: string },
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseUpdateMission>> => async (dispatch) => {

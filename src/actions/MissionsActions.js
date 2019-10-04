@@ -1,5 +1,5 @@
 import { Actions } from 'flummox';
-import { clone, cloneDeep } from 'lodash';
+import { clone } from 'lodash';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
 import {
@@ -8,68 +8,7 @@ import {
   Cleaning,
 } from 'api/missions';
 
-import { WaybillAvailableMissionsService } from 'api/Services';
-
-// возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
-// если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-const getMissionFilterStatus = (waybillStatus) => {
-  return waybillStatus ? undefined : 'not_assigned';
-};
 export default class MissionsActions extends Actions {
-  /* ---------- MISSION ---------- */
-  getMissionsByCarAndDates(
-    car_id,
-    date_from,
-    date_to,
-    waybillStatus,
-    waybill_id,
-  ) {
-    const payload = {};
-
-    const status = getMissionFilterStatus(waybillStatus);
-
-    if (!isEmpty(car_id)) {
-      payload.car_id = car_id;
-    }
-
-    if (!isEmpty(date_from)) {
-      payload.date_from = createValidDateTime(date_from);
-    }
-
-    if (!isEmpty(date_to)) {
-      payload.date_to = createValidDateTime(date_to);
-    }
-
-    if (!isEmpty(status)) {
-      payload.status = status;
-    }
-
-    if (!!waybill_id && !isEmpty(waybill_id)) {
-      payload.waybill_id = waybill_id;
-    }
-
-    return WaybillAvailableMissionsService.get(payload);
-  }
-
-  /**
-   * рак
-   * @todo missionsActions.actionUpdateMission
-   */
-  updateMission(mission) {
-    const payload = cloneDeep(mission);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    delete payload.number;
-    delete payload.car_gov_number;
-    delete payload.technical_operation_name;
-    delete payload.route_name;
-    delete payload.mission_source_name;
-    delete payload.waybill_number;
-
-    return MissionService.put(payload, false, 'json');
-  }
-
-  /* ---------- MISSION TEMPLATES ---------- */
   getMissionTemplatesCars(payload = {}) {
     return MissionTemplateCarService.get(payload);
   }

@@ -4,7 +4,6 @@ import { get } from 'lodash';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import useStructureOptions from 'components/new/utils/hooks/services/useOptions/useStructureOptions';
-import { FieldDataWaybillStuctureId } from 'components/@next/@form/@types/fields/waybill/valueOfArray';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
@@ -15,7 +14,7 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 import { getStructureAfterChageCar } from 'components/@next/@form/hook/part_form/body/fields_rows/fields_in_row/fields/waybill/waybill_structure_and_accompanying_person/structure/getStructureAfterChageCar';
 
 type FieldWaybillStructureIdProps = {
-  fieldData: FieldDataWaybillStuctureId;
+  fieldData: any;
   formDataKey: any;
 };
 

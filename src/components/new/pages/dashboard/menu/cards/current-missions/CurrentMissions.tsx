@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { compose } from 'recompose';
 import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 import ListByTypeCurerntMission from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/ListByTypeCurerntMission';
@@ -18,11 +17,12 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-export type OwnPropsCurrentMissions = {};
-export type PropsCurrentMissions = OwnPropsCurrentMissions;
+type OwnProps = PropsToDefaultCard;
+type Props = OwnProps & WithRequirePermissionAddProps;
 
-const CurrentMissions: React.FC<PropsCurrentMissions> = React.memo(
+const CurrentMissions: React.FC<Props> = React.memo(
   () => {
     const dispatch = etsUseDispatch();
     const handleClick = React.useCallback(
@@ -43,10 +43,8 @@ const CurrentMissions: React.FC<PropsCurrentMissions> = React.memo(
   },
 );
 
-export default compose<PropsCurrentMissions, PropsToDefaultCard>(
-  withDefaultCard({
-    path: 'current_missions',
-    loadData: dashboardLoadCurrentMissions,
-    InfoComponent: CurrentMissionInfo,
-  }),
-)(CurrentMissions);
+export default withDefaultCard<OwnProps>({
+  path: 'current_missions',
+  loadData: dashboardLoadCurrentMissions,
+  InfoComponent: CurrentMissionInfo,
+})(CurrentMissions);

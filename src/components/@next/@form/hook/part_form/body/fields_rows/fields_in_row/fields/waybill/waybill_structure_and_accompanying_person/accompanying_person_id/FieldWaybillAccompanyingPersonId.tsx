@@ -3,14 +3,13 @@ import { get } from 'lodash';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import useEmployeeFullNameOptions from 'components/new/utils/hooks/services/useOptions/useEmployeeFullNameOptions';
-import { FieldDataWaybillAccompanyingPersonId } from 'components/@next/@form/@types/fields/waybill/valueOfArray';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 import { WaybillFormStoreType } from 'components/new/pages/waybill/form/context/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillAccompanyingPersonIdOwnProps = {
-  fieldData: FieldDataWaybillAccompanyingPersonId;
+  fieldData: any;
   formDataKey: any;
 };
 

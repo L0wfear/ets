@@ -4,22 +4,13 @@ import { get } from 'lodash';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
-import {
-  FieldDataDowntimeHoursWork,
-  FieldDataDowntimeHoursDuty,
-  FieldDataDowntimeHoursDinner,
-  FieldDataDowntimeHoursRepair,
-} from 'components/@next/@form/@types/fields/string';
-import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import useForm from 'components/@next/@form/hook_selectors/useForm';
 
 type FieldOnLineStringProps = {
   formDataKey: any;
   fieldData: (
-    FieldDataDowntimeHoursWork
-    | FieldDataDowntimeHoursDuty
-    | FieldDataDowntimeHoursDinner
-    | FieldDataDowntimeHoursRepair
+    any
   );
 };
 

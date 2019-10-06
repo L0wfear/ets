@@ -15,9 +15,10 @@ import {
 } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
 
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { WithRequirePermissionAddProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 type OwnProps = PropsToDefaultCard;
-type Props = OwnProps;
+type Props = OwnProps & WithRequirePermissionAddProps;
 
 const CurrentMissions: React.FC<Props> = React.memo(
   () => {
@@ -41,7 +42,7 @@ const CurrentMissions: React.FC<Props> = React.memo(
 );
 
 export default withDefaultCard<OwnProps>({
-    path: 'current_missions',
-loadData: dashboardLoadCurrentMissions,
+  path: 'current_missions',
+  loadData: dashboardLoadCurrentMissions,
   InfoComponent: CurrentMissionInfo,
 })(CurrentMissions);

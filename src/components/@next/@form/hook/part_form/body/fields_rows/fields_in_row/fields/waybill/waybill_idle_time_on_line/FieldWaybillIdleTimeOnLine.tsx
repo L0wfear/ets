@@ -1,6 +1,5 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import { FieldDataDowntimeHoursWork, FieldDataDowntimeHoursDuty, FieldDataDowntimeHoursRepair, FieldDataDowntimeHoursDinner } from 'components/@next/@form/@types/fields/string';
 import FieldOnLineString from './field_on_line_string/FieldOnLineString';
 
 type FieldWaybillIdleTimeOnLineProps = {
@@ -8,22 +7,22 @@ type FieldWaybillIdleTimeOnLineProps = {
   md?: number;
 };
 
-const fieldDataDowntimeHoursWork: FieldDataDowntimeHoursWork = {
+const fieldDataDowntimeHoursWork: any = {
   key: 'downtime_hours_work',
   title: 'Работа',
   md: 6,
 };
-const fieldDataDowntimeHoursDuty: FieldDataDowntimeHoursDuty = {
+const fieldDataDowntimeHoursDuty: any = {
   key: 'downtime_hours_duty',
   title: 'Дежурство',
   md: 6,
 };
-const fieldDataDowntimeHoursDinner: FieldDataDowntimeHoursDinner = {
+const fieldDataDowntimeHoursDinner: any = {
   key: 'downtime_hours_dinner',
   title: 'Обед',
   md: 6,
 };
-const fieldDataDowntimeHoursRepair: FieldDataDowntimeHoursRepair = {
+const fieldDataDowntimeHoursRepair: any = {
   key: 'downtime_hours_repair',
   title: 'Ремонт',
   md: 6,

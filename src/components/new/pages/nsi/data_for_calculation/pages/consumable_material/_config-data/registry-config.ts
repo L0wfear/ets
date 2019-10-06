@@ -79,17 +79,17 @@ export const getToConfig = (): TypeConfigData<ConsumableMaterialWrap> => {
           {
             key: 'short_name',
             title: 'Сокращенное наименование',
-            width: 200,
+            width: 150,
           },
           {
             key: 'measure_unit_name',
             title: 'Единица измерения',
-            width: 200,
+            width: 100,
           },
           {
             key: 'to_element',
             title: 'Технологическая операция и элемент',
-            width: 200,
+            width: 300,
             format: 'array',
             max_size_to_scroll: 650,
           },

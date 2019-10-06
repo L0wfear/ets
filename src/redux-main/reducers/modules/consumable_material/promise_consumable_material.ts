@@ -18,7 +18,7 @@ export const makeConsumableMaterialFront = (array: ConsumableMaterial[]) => (
         .map(({ municipal_facility_name }) => municipal_facility_name),
       to_element: uniq(
         rowData.norms.map(({ technical_operation_name, municipal_facility_name }) => (
-          `${technical_operation_name}[${municipal_facility_name}]`
+          `${technical_operation_name} [${municipal_facility_name}]`
         )),
       ),
     }),

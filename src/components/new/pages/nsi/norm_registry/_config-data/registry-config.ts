@@ -157,7 +157,7 @@ export const config: TypeConfigData<Norm> = {
         {
           key: 'conditions',
           title: 'Условия',
-          width: 100,
+          width: 200,
         },
         {
           key: 'norm_period',
@@ -188,6 +188,8 @@ export const config: TypeConfigData<Norm> = {
           key: 'consumable_materials_names',
           title: 'Расходные материалы',
           width: 400,
+          format: 'array',
+          max_size_to_scroll: 300,
         },
       ],
     },

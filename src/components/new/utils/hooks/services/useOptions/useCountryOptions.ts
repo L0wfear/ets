@@ -3,10 +3,10 @@ import useCountryList from '../useList/useCountryList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { Country } from 'redux-main/reducers/modules/some_uniq/country/@types';
 
-export const getCountryOptions = (listData: { list: Country[], isLoading?: boolean }) => {
+export const getCountryOptions = (listData: { list: Country[], isLoading?: boolean }, keyValue: string) => {
   return {
     options: listData.list.map((rowData) => ({
-      value: rowData.id,
+      value: rowData[keyValue],
       label: rowData.short_name,
       rowData,
     })),
@@ -19,7 +19,7 @@ const useCountryOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['pa
 
   const countryOptions = React.useMemo(
     () => {
-      return getCountryOptions(listData);
+      return getCountryOptions(listData, 'id');
     },
     [listData],
   );

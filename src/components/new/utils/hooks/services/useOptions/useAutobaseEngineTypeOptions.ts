@@ -3,10 +3,10 @@ import useAutobaseEngineTypeList from '../useList/useAutobaseEngineTypeList';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EngineType } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 
-export const getAutobaseEngineTypeOptions = (listData: { list: EngineType[], isLoading?: boolean }) => {
+export const getAutobaseEngineTypeOptions = (listData: { list: EngineType[], isLoading?: boolean }, keyValue: string) => {
   return {
     options: listData.list.map((rowData) => ({
-      value: rowData.id,
+      value: rowData[keyValue],
       label: rowData.name,
       rowData,
     })),
@@ -18,7 +18,7 @@ const useAutobaseEngineTypeOptions = (page: LoadingMeta['page'] = '', path: Load
   const listData = useAutobaseEngineTypeList(page, path);
 
   const optionData = React.useMemo(
-    () => getAutobaseEngineTypeOptions(listData),
+    () => getAutobaseEngineTypeOptions(listData, 'id'),
     [listData],
   );
   return optionData;

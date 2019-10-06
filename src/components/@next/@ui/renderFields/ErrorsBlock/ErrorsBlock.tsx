@@ -6,7 +6,7 @@ import { ExtFieldCommon } from 'components/@next/@ui/renderFields/@types';
 
 // ErrorsBlock
 
-export type ErrorsBlockProps = {
+type ErrorsBlockProps = {
   showError?: boolean;
   error: ExtFieldCommon['error'];
   hidden?: boolean;

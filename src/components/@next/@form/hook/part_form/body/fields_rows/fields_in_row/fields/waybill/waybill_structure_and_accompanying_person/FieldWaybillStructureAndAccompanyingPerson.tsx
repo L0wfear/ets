@@ -2,18 +2,17 @@ import * as React from 'react';
 import useWaybillFormData from 'components/@next/@form/hook_selectors/waybill/useWaybillForm';
 import FieldWaybillStructureId from './structure/FieldWaybillStructureId';
 import FieldWaybillAccompanyingPersonId from './accompanying_person_id/FieldWaybillAccompanyingPersonId';
-import { FieldDataWaybillStuctureId, FieldDataWaybillAccompanyingPersonId } from 'components/@next/@form/@types/fields/waybill/valueOfArray';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 type FieldWaybillStructureAndAccompanyingPersonProps = {
   formDataKey: any;
 };
 
-const FieldDataStructureId: FieldDataWaybillStuctureId = {
+const FieldDataStructureId: any = {
   key: 'structure_id',
   title: 'Подразделение',
 };
-const FieldDataAccompanyingPersonId: FieldDataWaybillAccompanyingPersonId = {
+const FieldDataAccompanyingPersonId: any = {
   key: 'accompanying_person_id',
   title: 'Сопровождающий',
   clearable: true,

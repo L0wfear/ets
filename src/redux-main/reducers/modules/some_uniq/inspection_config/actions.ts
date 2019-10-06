@@ -71,8 +71,8 @@ export const actionInspectionConfigGetAndSetInStore = (...arg: Parameters<typeof
     autobaseGetSetCarFuncTypes({}, ...arg),
   );
 
-  const countryOptions = getCountryOptions(country);
-  const autobaseEngineTypeOptions = getAutobaseEngineTypeOptions(engineType);
+  const countryOptions = getCountryOptions(country, 'short_name');
+  const autobaseEngineTypeOptions = getAutobaseEngineTypeOptions(engineType, 'name');
   const modelOptions = getSpecialModelOptions(model.data);
   const markaOptions = getModelOptionsByTitle(marka.data);
   const typeOptions = getCarFuncTypesOptionsByName(type.data);

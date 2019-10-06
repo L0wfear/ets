@@ -32,14 +32,13 @@ const TdContainer: React.FC<TdContainerProps> = React.memo(
               .map(
                 (oneLineComment, i) => {
                   let text = oneLineComment;
-
                   if (!showAll || !isSelected) {
-                    const shortTest = (isString(props.value) ? props.value : '').slice(0, props.max_size_to_scroll);
-                    if (shortTest.length >= props.max_size_to_scroll) {
+                    const shortTest = (isString(props.value) ? props.value : '').slice(0, 300);
+                    if (text.length >= 300) {
                       text = `${shortTest} ...`;
                     }
-
                   }
+
                   if (text.length > props.max_size_to_scroll) {
                     return (
                       <EtsTbodyScrollContainer key={i}>{text}</EtsTbodyScrollContainer>
@@ -59,15 +58,24 @@ const TdContainer: React.FC<TdContainerProps> = React.memo(
       [props.value, showAll, isSelected, props.max_size_to_scroll],
     );
 
-    const handleClick = React.useCallback(
+    React.useEffect(
       () => {
-        if ( !isSelected ) {
+        if (!isSelected && showAll) {
           setShowAll(false);
-        } else {
-          setShowAll(!showAll);
         }
       },
       [isSelected, showAll],
+    );
+
+    const handleClick = React.useCallback(
+      () => {
+        if (!isSelected) {
+          setShowAll(false);
+        } else {
+          setShowAll((state) => !state);
+        }
+      },
+      [isSelected],
     );
 
     return (

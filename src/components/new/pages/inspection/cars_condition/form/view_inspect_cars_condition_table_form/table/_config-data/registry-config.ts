@@ -565,17 +565,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           format: 'boolean',
         },
         {
-          key: 'reason_repair',
-          title: 'Причина ремонта',
-          width: 200,
-          format: 'inspectionSelect',
-          renderParams: {
-            type: 'select',
-            label: false,
-            options: [],
-          },
-        },
-        {
           key: 'mileage',
           title: 'Пробег на дату проведения проверки',
           width: 200,
@@ -652,11 +641,6 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
             firstElem: true, // В группку не входит
           },
         },
-        // {
-        //   key: 'comments', // нет такого атрибута
-        //   title: 'Замечания по ТО',
-        //   width: 200,
-        // },
         {
           key: 'kind_purchase',
           title: 'Вид приобретения',

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
-export type EtsPageWrapProps = {
+type EtsPageWrapProps = {
   inheritDisplay?: boolean;
   autoHeight?: boolean;
   smallPaddings?: boolean;

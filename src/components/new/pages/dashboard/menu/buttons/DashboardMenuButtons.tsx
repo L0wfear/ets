@@ -26,11 +26,11 @@ import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
-export type OwpProps = {
+type OwpProps = {
   page: string;
 };
 
-export type Props = OwpProps & {};
+type Props = OwpProps & {};
 
 const DashboardMenuButtons: React.FC<Props> = React.memo(
   (props) => {

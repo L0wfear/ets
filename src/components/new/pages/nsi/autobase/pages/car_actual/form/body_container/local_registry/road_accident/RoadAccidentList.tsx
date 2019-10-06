@@ -10,9 +10,8 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/road_accident/_config-data/registry-config';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-import { CarWrap } from '../../../@types/CarForm';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
 type OwnProps = {
   selectedCarData?: CarWrap;
@@ -38,18 +37,14 @@ const RoadAccidentList: React.FC<Props> = React.memo(
     );
 
     return (
-      <>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <RoadAccidentFormLazy
           registryKey={registryKey}
           selectedCarData={selectedCarData}
         />
-      </>
+      </Registry>
     );
   },
 );
 
-export default withPreloader<OwnProps>({
-  page: registryKey,
-  typePreloader: 'mainpage',
-})(RoadAccidentList);
+export default RoadAccidentList;

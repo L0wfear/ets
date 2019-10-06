@@ -12,12 +12,11 @@ import { BatteryBrand } from 'redux-main/reducers/modules/autobase/@types/autoba
 
 type OwnProps = {};
 const BatteryBrandList: React.FC<OwnProps> = React.memo(
-  (props) => {
+  () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <BatteryBrandFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

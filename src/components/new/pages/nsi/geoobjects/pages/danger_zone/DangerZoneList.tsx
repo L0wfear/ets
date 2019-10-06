@@ -15,10 +15,9 @@ type OwnProps = {};
 const DangerZoneList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <DangerZoneFormWrap registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

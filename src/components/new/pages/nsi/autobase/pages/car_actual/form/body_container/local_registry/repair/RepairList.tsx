@@ -10,7 +10,6 @@ import {
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/repair/_config-data/registry-config';
 
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { CarWrap } from 'components/new/pages/nsi/autobase/pages/car_actual/form/@types/CarForm';
 
@@ -37,14 +36,10 @@ const RepairList: React.FC<Props> = (props) => {
   );
 
   return (
-    <>
-      <Registry registryKey={registryKey} />
+    <Registry registryKey={registryKey}>
       <RepairFormLazy registryKey={registryKey} selectedCarData={selectedCarData} />
-    </>
+    </Registry>
   );
 };
 
-export default withPreloader<OwnProps>({
-  page: registryKey,
-  typePreloader: 'mainpage',
-})(RepairList);
+export default RepairList;

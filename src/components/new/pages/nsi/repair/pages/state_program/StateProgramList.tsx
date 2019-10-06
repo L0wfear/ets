@@ -14,10 +14,9 @@ type OwnProps = {};
 const StateProgramList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <StateProgramFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

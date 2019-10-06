@@ -14,10 +14,9 @@ type OwnProps = {};
 const NormRegistryList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-        <>
-          <Registry registryKey={registryKey} />
-          <NormRegistryFormLazy registryKey={registryKey} />
-        </>
+      <Registry registryKey={registryKey}>
+        <NormRegistryFormLazy registryKey={registryKey} />
+      </Registry>
     );
   },
 );

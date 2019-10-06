@@ -1,10 +1,12 @@
 import { swapCoords } from 'utils/geo';
 import * as insider from 'point-in-polygon';
+import { cloneDeep } from 'lodash';
 import { sensorsMapOptions } from 'constants/sensors';
 import { makeDate, makeTime } from 'components/@next/@utils/dates/dates';
 
 import { initialMaxSpeed } from 'components/old/monitor/info/car-info/redux-main/modules/constatnts';
 import { IStateMonitorPage } from 'components/old/monitor/redux-main/models/monitor-page';
+import { async_map } from 'components/@next/@utils/async/async.array';
 
 export const getCarTabInfo = (carInfoData: any) => {
   return {
@@ -51,7 +53,7 @@ export const checkOnMkad = ({ coords_msk }, odh_mkad) =>
     return false;
   });
 
-export const checkAndModifyTrack = (
+export const checkAndModifyTrack = async (
   { track: track_old, cars_sensors, events, parkings },
   odh_mkad,
 ) => {
@@ -99,53 +101,58 @@ export const checkAndModifyTrack = (
     return newObj;
   }, {});
 
-  const track = track_old.map(({ ...point }: any) => {
-    point.coords = swapCoords(point.coords);
-    point.coords_msk = swapCoords(point.coords_msk);
-    point.checkCoordsMsk = {
-      onMkad: checkOnMkad(point, odh_mkad),
-    };
+  // чтобы не тормозила карта во время обработки
+  const track = await async_map(
+    track_old,
+    (pointOwn) => {
+      const point = cloneDeep(pointOwn);
+      point.coords = swapCoords(point.coords);
+      point.coords_msk = swapCoords(point.coords_msk);
+      point.checkCoordsMsk = {
+        onMkad: checkOnMkad(point, odh_mkad),
+      };
 
-    isCorssingMKAD = isCorssingMKAD || point.checkCoordsMsk.onMkad;
+      isCorssingMKAD = isCorssingMKAD || point.checkCoordsMsk.onMkad;
 
-    if (point.sensors && point.sensors.level) {
-      const { sensors: { level = [] } = {} } = point;
-      level.forEach((sensorData) => {
-        front_cars_sensors_level[sensorData.sensor_id].data.push([
+      if (point.sensors && point.sensors.level) {
+        const { sensors: { level = [] } = {} } = point;
+        level.forEach((sensorData) => {
+          front_cars_sensors_level[sensorData.sensor_id].data.push([
+            point.timestamp,
+            sensorData.val,
+          ]);
+          front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
+            point.timestamp,
+            sensorData.raw,
+          ]);
+        });
+      }
+
+      const { sensors: { equipment = [] } = {} } = point;
+
+      const equipmentObj = equipment.reduce(
+        (newObj, { sensor_id, ...sensorData }) => ({
+          ...newObj,
+          [sensor_id]: {
+            ...sensorData,
+          },
+        }),
+        {},
+      );
+
+      Object.entries(
+        front_cars_sensors_equipment as IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'],
+      ).forEach(([key, value]) => {
+        value.data.push([
           point.timestamp,
-          sensorData.val,
-        ]);
-        front_cars_sensors_level[sensorData.sensor_id].raw_data.push([
-          point.timestamp,
-          sensorData.raw,
+          (equipmentObj[key] && equipmentObj[key].val) || null,
+          point.checkCoordsMsk.onMkad,
         ]);
       });
-    }
 
-    const { sensors: { equipment = [] } = {} } = point;
-
-    const equipmentObj = equipment.reduce(
-      (newObj, { sensor_id, ...sensorData }) => ({
-        ...newObj,
-        [sensor_id]: {
-          ...sensorData,
-        },
-      }),
-      {},
-    );
-
-    Object.entries(
-      front_cars_sensors_equipment as IStateMonitorPage['carInfo']['trackCaching']['front_cars_sensors_equipment'],
-    ).forEach(([key, value]) => {
-      value.data.push([
-        point.timestamp,
-        (equipmentObj[key] && equipmentObj[key].val) || null,
-        point.checkCoordsMsk.onMkad,
-      ]);
-    });
-
-    return point;
-  });
+      return point;
+    },
+  );
 
   const front_events_list = Object.values(events)
     .reduce<any[]>((newArr, eventData: any[]) => {

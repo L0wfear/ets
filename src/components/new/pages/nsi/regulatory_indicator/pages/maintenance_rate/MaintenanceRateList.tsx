@@ -15,10 +15,9 @@ type OwnProps = {};
 const MaintenanceRateList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <MaintenanceRateFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

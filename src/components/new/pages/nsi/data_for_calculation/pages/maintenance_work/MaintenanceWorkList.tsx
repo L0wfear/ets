@@ -15,10 +15,9 @@ type OwnProps = {};
 const MaintenanceWorkList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <MaintenanceWorkFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

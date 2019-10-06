@@ -14,10 +14,9 @@ type OwnProps = {};
 const CompanyStructureList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <CompanyStructureFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

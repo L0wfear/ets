@@ -6,6 +6,7 @@ import { getRegistryState } from 'redux-main/reducers/selectors';
 
 import TemplateRegistry from 'components/new/ui/template/registry/TemplateRegistry';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 type OwnProps = {
   registryKey: string;
@@ -18,15 +19,22 @@ const Registry: React.FC<Props> =  React.memo(
     const hasData = etsUseSelector((state) => Boolean(getRootRegistry(getRegistryState(state), props.registryKey, true)));
 
     return (
-      hasData
-        ? (
-          <Data registryKey={props.registryKey} />
-        )
-        : (
-          <TemplateRegistry/>
-        )
+      <React.Fragment>
+        {
+          hasData
+            ? (
+              <Data registryKey={props.registryKey} />
+            )
+            : (
+              <TemplateRegistry/>
+            )
+        }
+        {props.children}
+      </React.Fragment>
     );
   },
 );
 
-export default Registry;
+export default withPreloader<OwnProps>({
+  typePreloader: 'mainpage',
+})(Registry);

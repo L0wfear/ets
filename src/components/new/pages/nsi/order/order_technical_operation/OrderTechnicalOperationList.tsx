@@ -41,10 +41,9 @@ const OrderTechnicalOperationList: React.FC<Props> = React.memo(
     );
 
     return Boolean(selectedRow) && (
-      <React.Fragment>
-        <Registry registryKey={orderTechnicaOperationRegistryKey} />
+      <Registry registryKey={orderTechnicaOperationRegistryKey}>
         <OrderMissionFormWrap registryKey={orderTechnicaOperationRegistryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

@@ -13,10 +13,9 @@ type Props = {};
 const CarpoolList: React.FC<Props> = React.memo(
   () => {
     return (
-       <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <CarpoolFormWrap registryKey={registryKey} />
-       </React.Fragment>
+      </Registry>
     );
   },
 );

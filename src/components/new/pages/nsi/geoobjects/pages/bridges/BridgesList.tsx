@@ -15,10 +15,9 @@ type OwnPorps = {};
 const BridgesList: React.FC<OwnPorps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <BridgesFormWrap registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

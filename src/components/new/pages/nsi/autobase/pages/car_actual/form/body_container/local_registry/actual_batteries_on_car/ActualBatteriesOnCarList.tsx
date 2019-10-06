@@ -1,79 +1,42 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/actual_batteries_on_car/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
-import { get } from 'lodash';
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import ActualBatteriesOnCarForm from './form/ActualBatteriesOnCarForm';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
-export type BatteryRegistryListStateProps = {};
-export type BatteryRegistryListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type BatteryRegistryListOwnProps = {
+type Props = {
   selectedCarData?: Car;
 };
-export type BatteryRegistryListMergedProps = (
-  BatteryRegistryListStateProps
-  & BatteryRegistryListDispatchProps
-  & BatteryRegistryListOwnProps
-);
-export type BatteryRegistryListProps = (
-  BatteryRegistryListMergedProps
-);
-
-const BatteryRegistryList: React.FC<BatteryRegistryListProps> = (props) => {
+const BatteryRegistryList: React.FC<Props> = (props) => {
   const {
     selectedCarData,
   } = props;
 
   const car_id = get(selectedCarData, 'asuods_id', null);
-
+  const dispatch = etsUseDispatch();
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(car_id));
+      dispatch(registryAddInitialData(getToConfig(car_id)));
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
     [car_id],
   );
 
   return (
-    <>
-      <Registry registryKey={registryKey} />
+    <Registry registryKey={registryKey}>
       <ActualBatteriesOnCarForm registryKey={registryKey} />
-    </>
+    </Registry>
   );
 };
 
-export default compose<BatteryRegistryListProps, BatteryRegistryListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<BatteryRegistryListStateProps, BatteryRegistryListDispatchProps, BatteryRegistryListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(BatteryRegistryList);
+export default BatteryRegistryList;

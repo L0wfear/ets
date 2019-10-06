@@ -1,7 +1,7 @@
 import * as React from 'react';
-
 import { compose } from 'recompose';
-import { connect } from 'react-redux';
+import { isBoolean } from 'util';
+
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { getDefaultMissionTemplateElement, checkMissionsOnStructureIdCar, makeMissionsByTemplate, createMissionByTemplate, makePartialMission } from './utils';
 import { missionTemplateCreatingFormSchema } from './schema';
@@ -14,12 +14,8 @@ import missionTemplatePermissions from 'components/new/pages/missions/mission_te
 
 import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm';
 
-import { ReduxState } from 'redux-main/@types/state';
 import {
   PropsMissionTemplateCreatingForm,
-  StatePropsMissionTemplate,
-  DispatchPropsMissionTemplate,
-  OwnMissionTemplateProps,
   PropsMissionTemplateWithForm,
   MissionTemplateCreating,
 } from './@types/MissionTemplateCreatingForm';
@@ -29,280 +25,262 @@ import FieldNormIdMissionTemplateCreating from './inside_fields/norm_id/FieldNor
 import FieldDatesMissionTemplateCreating from './inside_fields/dates/FieldDatesMissionTemplateCreating';
 import FieldAssignToWaybillMissionTemplateCreating from './inside_fields/assign_to_waybill/FieldAssignToWaybillMissionTemplateCreating';
 import ColumnAssignmentFormWrap from './inside_fields/column_assignment_form_wrap/ColumnAssignmentFormWrap';
-import { isBoolean } from 'util';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { ASSING_BY_KEY } from 'components/old/directories/order/forms/utils/constant';
+import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 
 /**
  * Форма шаблона наряд-заданий
  * Собирается из формы наряд-задания
  */
-const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = (props) => {
-  const [showColumnAssignmentFormWrap, setShowColumnAssignmentFormWrap] = React.useState(false);
-  const {
-    formState: state,
-    formErrors: errors,
-    page, path,
-    isPermitted,
-  } = props;
+const MissionTemplateCreatingForm: React.FC<PropsMissionTemplateCreatingForm> = React.memo(
+  (props) => {
+    const [showColumnAssignmentFormWrap, setShowColumnAssignmentFormWrap] = React.useState(false);
+    const {
+      formState: state,
+      formErrors: errors,
+      page, path,
+      isPermitted,
+    } = props;
 
-  const title = 'Формирование заданий из шаблонов';
+    const carForMissionIndex = etsUseSelector((stateRedux) => getMissionsState(stateRedux).missionData.carsIndex);
 
-  // для валидации перед заданием и отображения тс при создании на колонну
-  React.useEffect(
-    () => {
-      props.actionGetAndSetInStoreCarForMission(
-        {},
-        { page, path },
-      );
-
-      return () => {
-        props.actionResetCarsMission();
-      };
-    },
-    [],
-  );
-
-  // если нет шаблонов, то ливаем
-  React.useEffect(
-    () => {
-      if (!Object.values(state.missionTemplates).length) {
-        props.handleHide(false);
-      }
-    },
-    [state.missionTemplates],
-  );
-
-  /**
-   * мясо
-   */
-  const handleSubmit = React.useCallback(
-    async () => {
-      const missionTemplatesAsArr = Object.values(state.missionTemplates);
-
-      const notPermitedMissionsNumber = checkMissionsOnStructureIdCar(missionTemplatesAsArr, props.carForMissionIndex);                       // проверка на принадлежность тс к подразделениям шаблонов
-      if (notPermitedMissionsNumber.length) {
-        global.NOTIFICATION_SYSTEM.notify(
-          `Подразделение выбранного шаблона задания № ${
-            notPermitedMissionsNumber.join(', ')
-          } не соответствует подразделению транспортного средства. Необходимо скорректировать шаблон задания, либо выбрать другой шаблон.`,
-          'error',
+    const title = 'Формирование заданий из шаблонов';
+    const dispatch = etsUseDispatch();
+    // для валидации перед заданием и отображения тс при создании на колонну
+    React.useEffect(
+      () => {
+        dispatch(
+          missionsActions.actionGetAndSetInStoreCarForMission({}, props),
         );
 
-        return [];
-      }
+        return () => {
+          dispatch(
+            missionsActions.actionResetCarsMission(),
+          );
+        };
+      },
+      [],
+    );
 
-      const missionTemplateByCar = makeMissionsByTemplate(state.missionTemplates, state.assign_to_waybill);                   // группировка заданий по ТС
+    // если нет шаблонов, то ливаем
+    React.useEffect(
+      () => {
+        if (!Object.values(state.missionTemplates).length) {
+          props.handleHide(false);
+        }
+      },
+      [state.missionTemplates],
+    );
 
-      return Promise.all(
-        Object.values(missionTemplateByCar).map(async (missionsByCar) => {
-          if (missionsByCar[0].assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {                                  // Если первое задание идёт с привязкой к новому черновику ПЛ
-            const hasError = await createMissionByTemplate(
-              props.submitAction,
-              makePartialMission(
-                missionsByCar[0],
-                state,
-              ),
-              {
-                page, path,
-              },
-            );
+    /**
+     * мясо
+     */
+    const handleSubmit = React.useCallback(
+      async () => {
+        const missionTemplatesAsArr = Object.values(state.missionTemplates);
 
-            if (!hasError) {
-              return Promise.all(                                                                                             // То остальные задания должны докидываться в уже созданный ПЛ
-                missionsByCar.slice(1).map((missionData) => (
-                  createMissionByTemplate(
-                    props.submitAction,
-                    makePartialMission(
-                      {
-                        ...missionData,
-                        assign_to_waybill: missionData.assign_to_waybill.map(() => ASSING_BY_KEY.assign_to_available_draft),
-                      },
-                      state,
-                    ),
-                    {
-                      page, path,
-                    },
-                  )
-                )),
-              );
-            }
+        const notPermitedMissionsNumber = checkMissionsOnStructureIdCar(missionTemplatesAsArr, carForMissionIndex);                       // проверка на принадлежность тс к подразделениям шаблонов
+        if (notPermitedMissionsNumber.length) {
+          global.NOTIFICATION_SYSTEM.notify(
+            `Подразделение выбранного шаблона задания № ${
+              notPermitedMissionsNumber.join(', ')
+            } не соответствует подразделению транспортного средства. Необходимо скорректировать шаблон задания, либо выбрать другой шаблон.`,
+            'error',
+          );
 
-            return [[hasError]];
-          }
+          return [];
+        }
 
-          return Promise.all(                                           // Стандартное создание
-            missionsByCar.map((missionData) => (
-              createMissionByTemplate(
+        const missionTemplateByCar = makeMissionsByTemplate(state.missionTemplates, state.assign_to_waybill);                   // группировка заданий по ТС
+
+        return Promise.all(
+          Object.values(missionTemplateByCar).map(async (missionsByCar) => {
+            if (missionsByCar[0].assign_to_waybill[0] === ASSING_BY_KEY.assign_to_new_draft) {                                  // Если первое задание идёт с привязкой к новому черновику ПЛ
+              const hasError = await createMissionByTemplate(
                 props.submitAction,
                 makePartialMission(
-                  missionData,
+                  missionsByCar[0],
                   state,
                 ),
-                {
-                  page, path,
-                },
-              )
-            )),
-          );
-        }),
-      );
-    },
-    [state, props.submitAction, props.carForMissionIndex],
-  );
+                props,
+              );
 
-  const handleSubmitWrap = React.useCallback(
-    async () => {
-      if (!Object.values(state.missionTemplates).some(({ car_ids }) => car_ids.length > 1)) {     // Если создаётся НЕ на колонну
-        let result = [];
-        try {
-          result = await handleSubmit();
-        } catch (error) {
-          return;
+              if (!hasError) {
+                return Promise.all(                                                                                             // То остальные задания должны докидываться в уже созданный ПЛ
+                  missionsByCar.slice(1).map((missionData) => (
+                    createMissionByTemplate(
+                      props.submitAction,
+                      makePartialMission(
+                        {
+                          ...missionData,
+                          assign_to_waybill: missionData.assign_to_waybill.map(() => ASSING_BY_KEY.assign_to_available_draft),
+                        },
+                        state,
+                      ),
+                      props,
+                    )
+                  )),
+                );
+              }
+
+              return [[hasError]];
+            }
+
+            return Promise.all(                                           // Стандартное создание
+              missionsByCar.map((missionData) => (
+                createMissionByTemplate(
+                  props.submitAction,
+                  makePartialMission(
+                    missionData,
+                    state,
+                  ),
+                  props,
+                )
+              )),
+            );
+          }),
+        );
+      },
+      [state, props.submitAction, carForMissionIndex],
+    );
+
+    const handleSubmitWrap = React.useCallback(
+      async () => {
+        if (!Object.values(state.missionTemplates).some(({ car_ids }) => car_ids.length > 1)) {     // Если создаётся НЕ на колонну
+          let result = [];
+          try {
+            result = await handleSubmit();
+          } catch (error) {
+            return;
+          }
+
+          if (!result.some((resultByCar) => resultByCar.some((hasEror) => hasEror))) {
+            props.handleHide(true);
+          }
+        } else {                                                                                    // Если на колонну, то открываем форму
+          setShowColumnAssignmentFormWrap(true);
         }
+      },
+      [state, handleSubmit],
+    );
 
-        if (!result.some((resultByCar) => resultByCar.some((hasEror) => hasEror))) {
+    const handleSubmitColumnt = React.useCallback(
+      async (isSubmitted) => {
+        if (isBoolean(isSubmitted) && isSubmitted) {
+          const response = await handleSubmit();
+          if (response[0][0]) {                         // сложна
+            return false;
+          }
           props.handleHide(true);
+          return true;
         }
-      } else {                                                                                    // Если на колонну, то открываем форму
-        setShowColumnAssignmentFormWrap(true);
-      }
-    },
-    [state, handleSubmit],
-  );
+        setShowColumnAssignmentFormWrap(false);
+      },
+      [state, handleSubmit],
+    );
 
-  const handleSubmitColumnt = React.useCallback(
-    async (isSubmitted) => {
-      if (isBoolean(isSubmitted) && isSubmitted) {
-        const response = await handleSubmit();
-        if (response[0][0]) {                         // сложна
-          return false;
-        }
-        props.handleHide(true);
-        return true;
-      }
-      setShowColumnAssignmentFormWrap(false);
-    },
-    [state, handleSubmit],
-  );
-
-  return (
-    <React.Fragment>
-      <EtsBootstrap.ModalContainer
-        id="modal-duty-mission-template-creating"
-        show
-        onHide={props.hideWithoutChanges}
-        bsSize="large"
-      >
-        <EtsBootstrap.ModalHeader closeButton>
-          <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
-        </EtsBootstrap.ModalHeader>
-        <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
-          <FieldDatesMissionTemplateCreating
-            date_start={state.date_start}
-            error_date_start={errors.date_start}
-            date_end={state.date_end}
-            error_date_end={errors.date_end}
-            isPermitted={isPermitted}
-            disabled={!isPermitted}
-
-            missionTemplates={state.missionTemplates}
-
-            onChange={props.handleChange}
-            page={page}
-            path={path}
-            />
-          <EtsBootstrap.Row>
-            <EtsBootstrap.Col md={12}>
-              <FieldMissionSourceMission
-                value={state.mission_source_id}
-                name={state.mission_source_name}
-                error={errors.mission_source_id}
-                disabled={!isPermitted}
-                isPermitted={isPermitted}
-                onChange={props.handleChange}
-                page={page}
-                path={path}
-              />
-              <div className="help-block-mission-source">
-                Задания на основе централизованных заданий необходимо
-                создавать во вкладке "НСИ"-"Реестр централизованных заданий".
-              </div>
-            </EtsBootstrap.Col>
-            <EtsBootstrap.Col md={12}>
-              <ExtField
-                id="passes-count"
-                type="number"
-                label="Количество циклов"
-                error={errors.passes_count}
-                disabled={!isPermitted}
-                value={state.passes_count}
-                onChange={props.handleChange}
-                boundKeys="passes_count"
-              />
-            </EtsBootstrap.Col>
-            <FieldNormIdMissionTemplateCreating
+    return (
+      <React.Fragment>
+        <EtsBootstrap.ModalContainer
+          id="modal-duty-mission-template-creating"
+          show
+          onHide={props.hideWithoutChanges}
+          bsSize="large"
+        >
+          <EtsBootstrap.ModalHeader closeButton>
+            <EtsBootstrap.ModalTitle>{title}</EtsBootstrap.ModalTitle>
+          </EtsBootstrap.ModalHeader>
+          <ModalBodyPreloader page={page} path={path} typePreloader="mainpage">
+            <FieldDatesMissionTemplateCreating
               date_start={state.date_start}
+              error_date_start={errors.date_start}
+              date_end={state.date_end}
+              error_date_end={errors.date_end}
+              isPermitted={isPermitted}
+              disabled={!isPermitted}
+
               missionTemplates={state.missionTemplates}
 
               onChange={props.handleChange}
               page={page}
               path={path}
+              />
+            <EtsBootstrap.Row>
+              <EtsBootstrap.Col md={12}>
+                <FieldMissionSourceMission
+                  value={state.mission_source_id}
+                  name={state.mission_source_name}
+                  error={errors.mission_source_id}
+                  disabled={!isPermitted}
+                  isPermitted={isPermitted}
+                  onChange={props.handleChange}
+                  page={page}
+                  path={path}
+                />
+                <div className="help-block-mission-source">
+                  Задания на основе централизованных заданий необходимо
+                  создавать во вкладке "НСИ"-"Реестр централизованных заданий".
+                </div>
+              </EtsBootstrap.Col>
+              <EtsBootstrap.Col md={12}>
+                <ExtField
+                  id="passes-count"
+                  type="number"
+                  label="Количество циклов"
+                  error={errors.passes_count}
+                  disabled={!isPermitted}
+                  value={state.passes_count}
+                  onChange={props.handleChange}
+                  boundKeys="passes_count"
+                />
+              </EtsBootstrap.Col>
+              <FieldNormIdMissionTemplateCreating
+                date_start={state.date_start}
+                missionTemplates={state.missionTemplates}
+
+                onChange={props.handleChange}
+                page={page}
+                path={path}
+              />
+            </EtsBootstrap.Row>
+          </ModalBodyPreloader>
+          <EtsBootstrap.ModalFooter>
+            <FieldAssignToWaybillMissionTemplateCreating
+              assign_to_waybill={state.assign_to_waybill}
+              missionTemplates={state.missionTemplates}
+              onChange={props.handleChange}
+
+              page={page}
             />
-          </EtsBootstrap.Row>
-        </ModalBodyPreloader>
-        <EtsBootstrap.ModalFooter>
-          <FieldAssignToWaybillMissionTemplateCreating
-            assign_to_waybill={state.assign_to_waybill}
-            missionTemplates={state.missionTemplates}
-            onChange={props.handleChange}
+            {isPermitted ? ( // либо обновление, либо создание
+              <EtsBootstrap.Button
+                disabled={!props.canSave}
+                onClick={handleSubmitWrap}>
+                Сформировать
+              </EtsBootstrap.Button>
+            ) : (
+              <DivNone />
+            )}
+          </EtsBootstrap.ModalFooter>
+        </EtsBootstrap.ModalContainer>
+        <ColumnAssignmentFormWrap
+          showColumnAssignmentFormWrap={showColumnAssignmentFormWrap}
+          missionTemplates={state.missionTemplates}
+          assign_to_waybill={state.assign_to_waybill}
 
-            page={page}
-          />
-          {isPermitted ? ( // либо обновление, либо создание
-            <EtsBootstrap.Button
-              disabled={!props.canSave}
-              onClick={handleSubmitWrap}>
-              Сформировать
-            </EtsBootstrap.Button>
-          ) : (
-            <DivNone />
-          )}
-        </EtsBootstrap.ModalFooter>
-      </EtsBootstrap.ModalContainer>
-      <ColumnAssignmentFormWrap
-        showColumnAssignmentFormWrap={showColumnAssignmentFormWrap}
-        missionTemplates={state.missionTemplates}
-        assign_to_waybill={state.assign_to_waybill}
+          handleSubmit={handleSubmitColumnt}
 
-        handleSubmit={handleSubmitColumnt}
+          onChange={props.handleChange}
+          page={page}
+          path={path}
+        />
+      </React.Fragment>
+    );
+  },
+);
 
-        onChange={props.handleChange}
-        page={page}
-        path={path}
-      />
-    </React.Fragment>
-  );
-};
-
-export default compose<PropsMissionTemplateCreatingForm, OwnMissionTemplateProps>(
-  connect<StatePropsMissionTemplate, DispatchPropsMissionTemplate, OwnMissionTemplateProps, ReduxState>(
-    (state) => ({
-      carForMissionIndex: getMissionsState(state).missionData.carsIndex,
-    }),
-    (dispatch: any) => ({
-      actionGetAndSetInStoreCarForMission: (...arg) => (
-        dispatch(
-          missionsActions.actionGetAndSetInStoreCarForMission(...arg),
-        )
-      ),
-      actionResetCarsMission: (...arg) => (
-        dispatch(
-          missionsActions.actionResetCarsMission(...arg),
-        )
-      ),
-    }),
-  ),
+export default compose<PropsMissionTemplateCreatingForm, PropsMissionTemplateWithForm>(
   withForm<PropsMissionTemplateWithForm, MissionTemplateCreating>({
     uniqField: false,
     createAction: missionsActions.actionCreateMission,

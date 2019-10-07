@@ -240,11 +240,16 @@ export const actionGetInitialFormState = <F extends Record<string, any>>(formKey
   const id = element[uniqField];
 
   if (formMeta.getOneRecordPromise && id) {
-    formState = await etsLoadingCounter(
-      dispatch,
-      formMeta.getOneRecordPromise(id),
-      meta,
-    );
+    try {
+      formState = await etsLoadingCounter(
+        dispatch,
+        formMeta.getOneRecordPromise(id),
+        meta,
+      );
+    } catch (error) {
+      global.NOTIFICATION_SYSTEM.notify('Выбранная запись не найдена', 'info', 'tr');
+      throw error;
+    }
   }
 
   if ((formMeta as ConfigFormData<F & { structure_id: number; structure_name: string }>).user_structure_on_new) {
@@ -268,13 +273,19 @@ export const actionGetInitialFormState = <F extends Record<string, any>>(formKey
 };
 
 export const actionInitialFormByKey = <F>(formKey: FormKeys, element: F, meta: LoadingMeta): EtsAction<any> => async (dispatch) => {
-  const formState = await dispatch(
-    actionGetInitialFormState<F>(
-      formKey,
-      element,
-      meta,
-    ),
-  );
+  let formState = null;
+
+  try {
+    formState = await dispatch(
+      actionGetInitialFormState<F>(
+        formKey,
+        element,
+        meta,
+      ),
+    );
+  } catch {
+    return false;
+  }
 
   dispatch(
     actionInitialForm(
@@ -283,4 +294,6 @@ export const actionInitialFormByKey = <F>(formKey: FormKeys, element: F, meta: L
       meta,
     ),
   );
+
+  return true;
 };

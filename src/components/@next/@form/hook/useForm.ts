@@ -11,21 +11,29 @@ const useForm = <F>(formKey: FormKeys, props: WithFormRegistrySearchAddProps<F>)
 
   React.useEffect(
     () => {
-      if (props.element) {
-        dispatch(
-          actionInitialFormByKey(
-            formKey,
-            props.element,
-            props.meta || {
-              page: props.page,
-              path: props.path,
-            },
-          ),
-        );
-      }
+      const addData = async () => {
+        if (props.element) {
+          const good = await dispatch(
+            actionInitialFormByKey(
+              formKey,
+              props.element,
+              props.meta || {
+                page: props.page,
+                path: props.path,
+              },
+            ),
+          );
+
+          if (!good) {
+            props.handleHide(false);
+          }
+        }
+      };
+
+      addData();
       return () => dispatch(actionRemoveFormData(formKey));
     },
-    [formKey, props.element, props.meta],
+    [formKey, props.element, props.meta, props.handleHide],
   );
 
   const hasData = etsUseSelector((state) => Boolean(getFormDataByKey(state, formKey)));

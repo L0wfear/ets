@@ -56,7 +56,7 @@ export interface IDataTableColSchema {
   /**
    * Table field and form field displaying names
    */
-  displayName?: string;
+  displayName?: React.ReactNode;
   /**
    * Show/hide table column
    */

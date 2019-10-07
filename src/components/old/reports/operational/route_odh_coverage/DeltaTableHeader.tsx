@@ -4,7 +4,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 interface IPropsDeltaTableHeader {
   tooltip?: string;
-  name: string;
+  name: React.ReactNode;
 }
 
 const DeltaTableHeader: React.FC<IPropsDeltaTableHeader> = ({ tooltip, name }) => {

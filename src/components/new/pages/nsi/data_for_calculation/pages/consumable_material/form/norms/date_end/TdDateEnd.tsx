@@ -32,13 +32,6 @@ const TdDateEnd: React.FC<Props> = React.memo(
       [handleChange, norms, props.indexRow],
     );
 
-    const is_without_norm = React.useMemo(
-      () => {
-        return get(norms[props.indexRow], 'is_without_norm');
-      },
-      [norms, props.indexRow],
-    );
-
     const value = React.useMemo(
       () => {
         return get(norms[props.indexRow], 'date_end');
@@ -54,7 +47,7 @@ const TdDateEnd: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_without_norm;
+    const disabled = !isPermitted;
 
     return (
       <ExtField

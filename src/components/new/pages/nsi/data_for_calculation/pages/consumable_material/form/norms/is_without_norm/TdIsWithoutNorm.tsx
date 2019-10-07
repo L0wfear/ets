@@ -30,8 +30,6 @@ const TdIsWithoutNorm: React.FC<Props> = React.memo(
               rowDataCallback.value
               || rowDataCallback.value === 0
             )
-            || rowDataCallback.date_start
-            || rowDataCallback.date_end
           )
         );
 
@@ -52,8 +50,6 @@ const TdIsWithoutNorm: React.FC<Props> = React.memo(
               return {
                 ...currentRowData,
                 value: is_without_norm ? null : currentRowData.value,
-                date_start: is_without_norm ? null : currentRowData.date_start,
-                date_end: is_without_norm ? null : currentRowData.date_end,
                 is_without_norm,
               };
             }

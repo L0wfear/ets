@@ -110,7 +110,6 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     key: 'owner_not_match',
     title: 'Данные владельца (на кого зарегистрирована техника) и учреждения не совпадают с реальными данными',
     type: 'boolean',
-    sub: 20,
     className: 'checkbox-input flex-reverse',
   },
   {
@@ -123,7 +122,6 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     key: 'registration_not_match_vin',
     title: 'Данные свидетельства о регистрации ТС не совпадают с данными на табличке с VIN / заводским номером',
     type: 'boolean',
-    sub: 20,
     className: 'checkbox-input flex-reverse',
   },
   {
@@ -136,7 +134,6 @@ export const filedToCheckDefectDataDocs: FiledToCheck<CarsConditionCars['data']>
     key: 'no_valid_osago',
     title: 'Отсутствие действующего полиса ОСАГО',
     type: 'boolean',
-    sub: 20,
     hidden: 'osago_not_required',
     className: 'checkbox-input flex-reverse',
   },

@@ -275,6 +275,7 @@ class FieldRouteIdDutyMission extends React.PureComponent<PropsFieldRouteIdDutyM
 
           this.props.onChange({
             object_type_name,
+            route_type: get(route_data, 'type') || null,
           });
 
         } else {

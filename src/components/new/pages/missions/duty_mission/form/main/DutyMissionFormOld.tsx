@@ -471,7 +471,11 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
             page={page}
             path={path}
           />
-          <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
+          {
+             state.technical_operation_id && state.municipal_facility_id && state.route_id && state.norm_id && (
+                <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
+              )
+          }
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={6}>
               <ExtField

@@ -27,7 +27,7 @@ const validateValue = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow:
 const validateDateStart = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow: number, formState: ConsumableMaterial, reduxState: ReduxState) => {
   if (!rowData.is_without_norm) {
     if (!rowData.date_start) {
-      return getRequiredFieldMessage('Дата с.');
+      return getRequiredFieldMessage('Дата с');
     }
   }
 };
@@ -43,11 +43,11 @@ const validateDateEnd = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRo
           && diffDates(rowDateNorm.date_start, rowData.date_start) > 0
         ));
         if (isNotLastRow) {
-          return getRequiredFieldMessage('Дата по.');
+          return getRequiredFieldMessage('Дата по');
         }
       } else {
         if (diffDates(rowData.date_start, rowData.date_end) >= 0) {
-          return '"Дата по." должно быть позже "Дата с."';
+          return '"Дата по" должно быть поже "Дата с"';
         }
       }
     }

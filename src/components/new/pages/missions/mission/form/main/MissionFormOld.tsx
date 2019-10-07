@@ -668,7 +668,11 @@ class MissionForm extends React.PureComponent<PropsMissionForm, any> {
                 />
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
-            <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
+            {
+              state.car_ids[0] && state.technical_operation_id && state.municipal_facility_id && state.route_id && state.norm_ids[0] && (
+                <FieldConsumableMaterials formDataKey={this.props.formDataKey} />
+              )
+            }
             <DefaultFieldString<Mission> formDataKey={this.props.formDataKey} name="Комментарий" field_name="comment" disabled={IS_FAIL || IS_COMPLETE} />
             <FieldNormIdMission
               value={state.norm_ids}

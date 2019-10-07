@@ -80,7 +80,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           try {
             await global.confirmDialog({
               title: 'Внимание!',
-              body: 'Объем работ (факт) не будет заполняться автоматически данными по ГЛОНАСС.\nПродолжить?',
+              body: 'Объем работы (факт) не будет заполняться автоматически данными по ГЛОНАСС.\nПродолжить?',
             });
           } catch {
             return;
@@ -90,7 +90,7 @@ const TdFactValue: React.FC<Props> = React.memo(
             try {
               await global.confirmDialog({
                 title: 'Внимание!',
-                body: 'Объем работ (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работ(факт)" будут очищены.\n Продолжить?',
+                body: 'Объем работы (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работы(факт)" будут очищены.\n Продолжить?',
               });
             } catch {
               return;
@@ -167,7 +167,7 @@ const TdFactValue: React.FC<Props> = React.memo(
 
 export const metaFactValue: TableMeta<ValuesOf<Mission['consumable_materials']>> = {
   key: 'fact_value',
-  title: 'Объем работ (факт)',
+  title: 'Объем работы (факт)',
   format: 'string',
   width: 100,
 

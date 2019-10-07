@@ -84,7 +84,7 @@ const TdPlanValue: React.FC<Props> = React.memo(
 
 export const metaPlanValue: TableMeta<ValuesOf<Mission['consumable_materials']>> = {
   key: 'plan_value',
-  title: 'Объем работ (план)',
+  title: 'Объем работы (план)',
   format: 'string',
   width: 100,
 

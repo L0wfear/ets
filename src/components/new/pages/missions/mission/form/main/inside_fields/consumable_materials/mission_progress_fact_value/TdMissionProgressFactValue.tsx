@@ -71,7 +71,7 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
 
 export const metaMissionProgressFactValue: TableMeta<ValuesOf<Mission['consumable_materials']>> = {
   key: 'mission_progress_fact_value',
-  title: 'Объем работ (ГЛОНАСС)',
+  title: 'Объем работы (ГЛОНАСС)',
   titlePopup: 'После закрытия задания данное поле не будет обновляться',
   format: 'string',
   width: 100,

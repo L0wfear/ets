@@ -31,7 +31,7 @@ const TdFactValue: React.FC<Props> = React.memo(
               const fact_value_like_number = Number(fact_value);
               let consumption = null;
               if (isNumber(rowData.norm_value) && !isNaN(fact_value_like_number)) {
-                consumption = fact_value * rowData.norm_value;
+                consumption = Number((fact_value * rowData.norm_value).toFixed(3));
               }
 
               return {

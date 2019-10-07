@@ -252,8 +252,8 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
                 plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работ (план)'),
                 fact_value: (
                   !rowData.fact_value
-                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)')
-                    : defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работ (факт)')
+                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работ (факт)')
+                    : defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работ (факт)')
                 ),
                 consumption: (
                   !rowData.consumption

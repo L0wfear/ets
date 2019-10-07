@@ -311,7 +311,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
               title: 'Внимание!',
               body: formDataKey === 'mission'
                 ? 'При изменении технологической операции или элемента будет обновлен список расходных материалов. Продолжить?'
-                : '"При изменении технологической операции или элемента будет обновлен список расходных материалов. Продолжить?',
+                : 'При изменении технологической операции или элемента будет обновлен список расходных материалов. Продолжить?',
             });
           }
         } catch {
@@ -325,7 +325,6 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
           && newPartialFormState.municipal_facility_id
           && date_start
           && newPartialFormState.route_id
-          && newPartialFormState.passes_count
           && passes_count
           && (
             norm_id !== prev_norm_id

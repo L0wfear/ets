@@ -69,7 +69,7 @@ const fixedValidators = [
       const parsedValue = parseInt(value, 10);
       if (typeof config.max === 'undefined' || isNaN(parsedValue))
         return undefined;
-      return parsedValue > config.max
+      return parsedValue >= config.max
         ? config.alt_min && config.max
           ? `Поле "${config.title
               || config.key}" должно быть неотрицательным числом и меньше ${

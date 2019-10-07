@@ -15,7 +15,7 @@ import { TableMeta } from 'components/new/ui/table_input/TableInput';
 import { getConsumableMaterialIdOptions } from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/consumable_material_id/TdConsumableMaterialId';
 import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some_uniq/consumable_material_count/@types';
 import ButtonUpdateGLONASS from 'components/new/pages/missions/mission/form/main/inside_fields/consumable_materials/table_header/ButtonUpdateGLONASS';
-import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, useMissionFormDataIsNoCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = {
   selectedRowIndex: number;
@@ -39,7 +39,7 @@ const FieldConsumableMaterialsHeader: React.FC<Props> = React.memo(
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
     const IS_NOT_COMPLETED_WITH_ACTIVE_WAYBILL = useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill(props.formDataKey);
-    const IS_NOT_COMPLETED = useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill(props.formDataKey);
+    const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(props.formDataKey);
 
     const isPermitted = (
       useForm.useFormDataIsPermitted<Mission>(props.formDataKey)

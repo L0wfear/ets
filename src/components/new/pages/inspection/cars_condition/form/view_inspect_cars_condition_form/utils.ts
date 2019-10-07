@@ -137,7 +137,7 @@ export const isPermittedUpdateCarContidion = (registryKey: string) => {
   const isPermittedToUpdate = isPermittedEditCarContidion(inspect_data, isPermittedToUpdateUser);
 
   const isPermittedToUpdateCloseUser = etsUseIsPermitted(registryPermissions.update_closed);
-  const isPermittedToUpdateClose = canCreateCarInConditionGlobal(inspect_data, isPermittedToUpdateCloseUser);
+  const isPermittedToUpdateClose = isPermittedEditCarContidion(inspect_data, isPermittedToUpdateCloseUser);
 
   return {
     isPermittedToUpdate,

@@ -109,7 +109,7 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
           onClick={handleShowGbu}
         >
           <EtsBootstrap.Glyphicon glyph='plus' />
-          Добавить представителей ГБУ
+          Добавить представителя ГБУ
         </AgentsFromGbuAddBtn>
         {
           showGbu && (

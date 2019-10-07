@@ -46,14 +46,51 @@ function checkResponse(url, response, body, method) {
   );
   const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
 
+  const warnings = get(body, 'warnings') || [];
+  const info = get(body, 'info') || [];
+  const errors = get(body, 'errors') || [];
+
+  if (
+    response.status === 403
+    && !warnings.length
+    && !info.length
+    && !errors.length
+  ) {
+    const error = {
+      error: body,
+      error_text: new Error('Доступ запрещен'),
+      errorIsShow: true,
+    };
+    global.NOTIFICATION_SYSTEM.notify({
+      title: 'Ошибка',
+      message: error.error_text.message,
+      level: 'error',
+      dismissible: true,
+      position: 'tr',
+      autoDismiss: 0,
+    });
+
+    throw error;
+  }
   if (response.status === 500) {
     // global.NOTIFICATION_SYSTEM.notify(getServerErrorNotification(`/${method} ${serviceName}, код ответа 500`));
     const error = {
       error: body,
-      error_text: new Error('Server responded with 500'),
+      error_text: new Error('Произошла ошибка сервера'),
+      errorIsShow: true,
     };
+    global.NOTIFICATION_SYSTEM.notify({
+      title: 'Ошибка',
+      message: error.error_text.message,
+      level: 'error',
+      dismissible: true,
+      position: 'tr',
+      autoDismiss: 0,
+    });
+
     throw error;
-  } else if (response.status === 422) {
+  }
+  if (response.status === 422) {
     const error = {
       error: body,
       error_text: new Error('Server responded with 422'),

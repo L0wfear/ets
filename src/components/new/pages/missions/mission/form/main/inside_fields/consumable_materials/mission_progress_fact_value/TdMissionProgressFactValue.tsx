@@ -5,6 +5,8 @@ import { PropsToTdReactComponent, TableMeta } from 'components/new/ui/table_inpu
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getSomeUniqState } from 'redux-main/reducers/selectors';
 
 type Props = PropsToTdReactComponent;
 
@@ -13,6 +15,9 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
+    const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
+    const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
+    const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -38,12 +43,6 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
       },
       [consumable_materials, props.indexRow],
     );
-    const consumable_material_measure_unit_name = React.useMemo(
-      () => {
-        return get(consumable_materials[props.indexRow], 'consumable_material_measure_unit_name');
-      },
-      [consumable_materials, props.indexRow],
-    );
 
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const error = React.useMemo(
@@ -64,7 +63,7 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
         error={error}
         onChange={handleChangeWrap}
         disabled={disabled || true}
-        addonRight={consumable_material_measure_unit_name}
+        addonRight={municipal_facility_measure_unit_name}
       />
     );
   },

@@ -11,7 +11,7 @@ export type ConsumableMaterial = {
     municipal_facility_id: number;
     municipal_facility_name: string;
     municipal_facility_measure_unit_id: number;
-    municipal_facility_measure_unit_name: number;
+    municipal_facility_measure_unit_name: string;
     season_id: number;
     season_name: string;
     is_without_norm: boolean;

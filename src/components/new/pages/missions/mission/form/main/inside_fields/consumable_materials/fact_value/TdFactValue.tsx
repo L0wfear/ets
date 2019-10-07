@@ -21,6 +21,9 @@ const TdFactValue: React.FC<Props> = React.memo(
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
     const isMissionFormDataIsNotCompleted = useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill(props.formDataKey);
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+    const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
+    const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
+    const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -53,12 +56,6 @@ const TdFactValue: React.FC<Props> = React.memo(
         return keyBy(consumableMateriaForMission, 'consumable_material_id');
       },
       [consumableMateriaForMission],
-    );
-    const consumable_material_measure_unit_name = React.useMemo(
-      () => {
-        return get(consumable_materials[props.indexRow], 'consumable_material_measure_unit_name');
-      },
-      [consumable_materials, props.indexRow],
     );
     const consumable_material_id = React.useMemo(
       () => {
@@ -153,7 +150,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           error={error}
           onChange={handleChangeWrap}
           disabled={disabled}
-          addonRight={consumable_material_measure_unit_name}
+          addonRight={municipal_facility_measure_unit_name}
           showRedBorder={value !== plan_value}
         />
         {

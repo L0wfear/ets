@@ -14,9 +14,9 @@ type Props = PropsToTdReactComponent;
 const TdNormValue: React.FC<Props> = React.memo(
   (props) => {
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
-    const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
+    const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
     const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
     const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
 

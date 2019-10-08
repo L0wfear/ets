@@ -15,6 +15,7 @@ import {
   getAutobaseState,
   getSomeUniqState,
   getSessionState,
+  getEmployeeState,
 } from 'redux-main/reducers/selectors';
 import {
   actionLoadRefillTypeAndSetInStore,
@@ -834,4 +835,5 @@ export default connect((state) => ({
   refillTypeList: getSomeUniqState(state).refillTypeList,
   carList: getAutobaseState(state).carList,
   carIndex: getAutobaseState(state).carIndex,
+  employeeIndex: getEmployeeState(state).employeeIndex,
 }))(WaybillFormWrap);

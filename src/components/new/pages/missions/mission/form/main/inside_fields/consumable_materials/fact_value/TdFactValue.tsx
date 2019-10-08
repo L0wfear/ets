@@ -7,7 +7,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FlexContainer } from 'global-styled/global-styled';
-import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, mergeConsumableMaterials } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, mergeConsumableMaterials, useMissionFormDataIsCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { isNumber } from 'util';
@@ -24,6 +24,7 @@ const TdFactValue: React.FC<Props> = React.memo(
     const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
     const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
     const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
+    const IS_COMPLETED = useMissionFormDataIsCompleted(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -137,7 +138,7 @@ const TdFactValue: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_fact_value_locked || !consumable_material_id;
+    const disabled = !isPermitted || is_fact_value_locked || !consumable_material_id || IS_COMPLETED;
     const can_edit = get(consumableMateriaForMissionIndex[consumable_material_id], 'is_fact_value_locked');
 
     return (

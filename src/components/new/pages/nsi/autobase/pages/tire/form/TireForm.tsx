@@ -12,7 +12,6 @@ import { connect } from 'react-redux';
 import {
   OwnTireProps,
   PropsTire,
-  StateTire,
   StatePropsTire,
   PropsTireWithForm,
 } from 'components/new/pages/nsi/autobase/pages/tire/form/@types/TireForm';
@@ -50,10 +49,7 @@ const defaultTireOnCarItem: TireOnCar = {
   isHighlighted: false,
   isSelected: false,
 };
-class TireForm extends React.PureComponent<PropsTire, StateTire> {
-  state = {
-    canSave: true,
-  };
+class TireForm extends React.PureComponent<PropsTire, {}> {
   componentDidMount() {
     this.props.dispatch(
       tireModelGetAndSetInStore(
@@ -89,11 +85,6 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     }
   };
 
-  handleTireToCarValidity = ({ isValidInput }) => {
-    this.setState({
-      canSave: isValidInput,
-    });
-  }
   handleChangeTireModel = (name, value, allOptionData) => {
     const {
       formState: { tire_model_id },
@@ -137,6 +128,7 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
       path,
       tireSizeList,
       tireModelList,
+      canSave,
     } = this.props;
 
     const IS_CREATING = !state.id;
@@ -151,10 +143,6 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
     const isPermitted = !IS_CREATING
       ? (this.props.isPermittedToUpdate && isGivenAway)
       : this.props.isPermittedToCreate;
-    const canSave = (
-      this.state.canSave
-      && this.props.canSave
-    );
 
     const tireSizeOptions = this.makeOptionFromTireSizeList(
       tireSizeList,
@@ -250,7 +238,6 @@ class TireForm extends React.PureComponent<PropsTire, StateTire> {
                 onChange={this.props.handleChange}
                 boundKeys="tire_to_car"
                 inputList={state.tire_to_car}
-                onValidation={this.handleTireToCarValidity}
                 outerValidate
                 errors={errors.tire_to_car}
                 disabled={!isPermitted}

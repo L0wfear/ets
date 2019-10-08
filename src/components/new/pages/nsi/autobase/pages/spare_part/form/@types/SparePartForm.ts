@@ -14,5 +14,4 @@ export type PropsSparePart = OutputWithFormProps<
 export type StateSparePart = {
   measureUnitOptions: DefaultSelectListMapper<MeasureUnit>;
   sparePartGroupOptions: DefaultSelectListMapper<SparePartGroup>;
-  canSave: boolean;
 };

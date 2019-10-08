@@ -22,32 +22,34 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
       this.validate(this.props.inputList);
     }
     validate(inputList) {
-      const outputListErrors = inputList.map((rowData, i) => {
-        const errors = this.state.outputListErrors[i] ? { ...this.state.outputListErrors[i] } : {};
+      if (this.props.onValidation) {
+        const outputListErrors = inputList.map((rowData, i) => {
+          const errors = this.state.outputListErrors[i] ? { ...this.state.outputListErrors[i] } : {};
 
-        each(this.props.validationSchema.properties, (prop) => {
-          errors[prop.key] = validateField(prop, rowData[prop.key], rowData, this.props.validationSchema);
+          each(this.props.validationSchema.properties, (prop) => {
+            errors[prop.key] = validateField(prop, rowData[prop.key], rowData, this.props.validationSchema);
+          });
+
+          return errors;
         });
 
-        return errors;
-      });
+        const isValidInput = !outputListErrors.map((errorItem) => {
+          return toArray(errorItem)
+            .map((v) => !!v)
+            .filter((ev) => ev === true)
+            .length;
+        }).some((value) => value > 0);
 
-      const isValidInput = !outputListErrors.map((errorItem) => {
-        return toArray(errorItem)
-          .map((v) => !!v)
-          .filter((ev) => ev === true)
-          .length;
-      }).some((value) => value > 0);
+        const validityOptions = {
+          outputListErrors,
+          isValidInput,
+          selectedIndex: this.state.selectedIndex,
+        };
 
-      const validityOptions = {
-        outputListErrors,
-        isValidInput,
-        selectedIndex: this.state.selectedIndex,
-      };
+        this.setState(validityOptions);
 
-      this.setState(validityOptions);
-
-      this.props.onValidation(validityOptions);
+        this.props.onValidation(validityOptions);
+      }
     }
     handleItemChange = (index: number, keyOrObj: string | object, value: any) => {
       index = index || this.state.selectedIndex || 0;

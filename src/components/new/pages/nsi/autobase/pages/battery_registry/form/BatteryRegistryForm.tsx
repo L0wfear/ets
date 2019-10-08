@@ -43,7 +43,6 @@ class BatteryRegistryForm extends React.PureComponent<
   StateBatteryRegistry
 > {
   state = {
-    canSave: true,
     batteryBrandOptions: [],
   };
 
@@ -97,8 +96,6 @@ class BatteryRegistryForm extends React.PureComponent<
     });
   };
 
-  handleBatteryToCarValidity = ({ isValidInput }) =>
-    this.setState({ canSave: isValidInput });
   render() {
     const { formState: state, formErrors: errors, page, path } = this.props;
     const { batteryBrandOptions } = this.state;
@@ -210,7 +207,6 @@ class BatteryRegistryForm extends React.PureComponent<
                     onChange={this.props.handleChange}
                     boundKeys="battery_to_car"
                     inputList={state.battery_to_car || []}
-                    onValidation={this.handleBatteryToCarValidity}
                     outerValidate
                     errors={errors.battery_to_car}
                     batteryId={state.id}

@@ -7,6 +7,8 @@ import { CustomTableWrapper } from './styled/styled';
 import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
+import { HrDelimiter } from 'global-styled/global-styled';
 
 type PreparePlanProps = {
   types_cars: InspectCarsCondition['data']['types_cars'];
@@ -121,10 +123,10 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
   return(
     <>
       {
-        <div>
-          <h3>
+        <BoxContainer>
+          <h2>
             План подготовки
-          </h3>
+          </h2>
           <CustomTableWrapper>
             <DataTableInput
               tableSchema={TypesCars.meta}
@@ -144,6 +146,7 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
               {...props}
             />
           </CustomTableWrapper>
+          <HrDelimiter />
           <CustomTableWrapper>
             <DataTableInput
               tableSchema={TypesHarvestingUnit.meta}
@@ -162,7 +165,7 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
               {...props}
             />
           </CustomTableWrapper>
-        </div>
+        </BoxContainer>
       }
     </>
   );

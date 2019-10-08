@@ -44,17 +44,17 @@ export type PreparingCarsCheck = {
 };
 
 export type TypesСar = {
-  allseason_use_cnt: string;
-  checks_period_use_cnt: string;
+  allseason_use_cnt: number;
+  checks_period_use_cnt: number;
   type: string;
-  will_checked_cnt: string;
+  will_checked_cnt: number;
 };
 export type TypesHarvestingUnit = {
-  not_ready_cnt: string;
-  ready_cnt: string;
+  not_ready_cnt: number;
+  ready_cnt: number;
   season: string;
   type: string;
-  will_checked_cnt: string;
+  will_checked_cnt: number;
 };
 
 export type InspectCarsCondition = {

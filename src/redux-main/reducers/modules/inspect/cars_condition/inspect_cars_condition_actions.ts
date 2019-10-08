@@ -20,6 +20,30 @@ import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/
 import { defaultCarsConditionCar } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/utils';
 import { get } from 'lodash';
 import { isNullOrUndefined } from 'util';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+
+const formatedData = (dataOwn: InspectCarsCondition['data']) => {
+  const data = cloneDeep(dataOwn);
+  data.types_cars = get(data, 'types_cars').map(
+    (rowData) => ({
+      ...rowData,
+      will_checked_cnt: getNumberValueFromSerch(rowData.will_checked_cnt),
+      allseason_use_cnt: getNumberValueFromSerch(rowData.allseason_use_cnt),
+      checks_period_use_cnt: getNumberValueFromSerch(rowData.checks_period_use_cnt),
+    }),
+  );
+
+  data.types_harvesting_unit = get(data, 'types_harvesting_unit').map(
+    (rowData) => ({
+      ...rowData,
+      will_checked_cnt: getNumberValueFromSerch(rowData.will_checked_cnt),
+      not_ready_cnt: getNumberValueFromSerch(rowData.not_ready_cnt),
+      ready_cnt: getNumberValueFromSerch(rowData.ready_cnt),
+    }),
+  );
+
+  return data;
+};
 
 export const actionSetInspectCarsCondition = (partailState: Partial<IStateInspectCarsCondition>): EtsAction<IStateInspectCarsCondition> => (dispatch, getState) => {
   const stateInspectCarsConditionOld = getInspectCarsCondition(getState());
@@ -87,7 +111,7 @@ export const actionCreateInspectCarsCondition = (payloadOwn: Parameters<typeof p
 export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: InspectCarsCondition, meta: LoadingMeta): EtsAction<ReturnType<typeof promiseCreateInspectionCarsCondition>> => async (dispatch) => {
   if (inspectCarsConditionOwn.status !== 'completed' && inspectCarsConditionOwn.status !== 'conducting') {
     const inspectCarsCondition = cloneDeep(inspectCarsConditionOwn);
-    const data = cloneDeep(inspectCarsCondition.data);
+    const data = formatedData(cloneDeep(inspectCarsCondition.data));
 
     delete inspectCarsCondition.data;
 
@@ -114,7 +138,7 @@ export const actionUpdateInspectCarsCondition = (inspectCarsConditionOwn: Inspec
     const inspectCarsCondition = makeInspectCarsConditionBack(inspectCarsConditionOwn);
 
     const payload = {
-      data: inspectCarsCondition.data,
+      data: formatedData(inspectCarsCondition.data),
       agents_from_gbu: inspectCarsCondition.agents_from_gbu,
       commission_members: inspectCarsCondition.commission_members,
       resolve_to: inspectCarsCondition.resolve_to,

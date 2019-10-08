@@ -64,9 +64,9 @@ export const promiseUpdateInspection = async (id: number, data: InspectAutobase[
 
   const response = await InspectRegistryService.path(id).put(
     {
+      ...newPayload,
       data,
       files,
-      ...newPayload,
     },
     false,
     'json',

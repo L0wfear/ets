@@ -43,15 +43,13 @@ const BlockCarsConditionSetInspectEmployee: React.FC<BlockCarsConditionSetInspec
     return (
       <BoxContainer>
         <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={6}>
-            <BlockInspectAutobaseDataFiles
-              files={props.files}
+          <BlockInspectAutobaseDataFiles
+            files={props.files}
 
-              isPermittedListPhotosOfSupportingDocuments={props.isPermittedListPhotosOfSupportingDocuments}
-              isPermittedListPhotosDefect={props.isPermittedListPhotosDefect}
-              onChange={props.handleChange}
-            />
-          </EtsBootstrap.Col>
+            isPermittedListPhotosOfSupportingDocuments={props.isPermittedListPhotosOfSupportingDocuments}
+            isPermittedListPhotosDefect={props.isPermittedListPhotosDefect}
+            onChange={props.handleChange}
+          />
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="date"

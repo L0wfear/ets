@@ -9,3 +9,7 @@ export const getRequiredFieldNumberMessage = (field = 'Название по у�
 export const getRequiredFieldNumberMoreThen = (field = 'Название по умолчанию', number: number) => {
   return `Поле "${field}" должно быть больше ${number}`;
 };
+
+export const getRequiredFieldNumberMoreThenZero = (field = 'Название по умолчанию') => {
+  return `Поле "${field}" должно быть неотрицательным числом`;
+};

@@ -13,6 +13,7 @@ type BlockInfoCardOwnProps = {
   callBackToLoadCars: () => Promise<void>;
   page: string;
   isHasPeriod: boolean;
+  isPermitted: boolean;
 
   types_cars: InspectCarsCondition['data']['types_cars'];
   types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];
@@ -92,6 +93,8 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
           types_harvesting_unit={props.types_harvesting_unit}
           canSavePreparePlanHandler={props.canSavePreparePlanHandler}
           handleChangeData={props.handleChangeData}
+          inspectType={props.type}
+          isPermitted={props.isPermitted}
 
           page={props.page}
         />

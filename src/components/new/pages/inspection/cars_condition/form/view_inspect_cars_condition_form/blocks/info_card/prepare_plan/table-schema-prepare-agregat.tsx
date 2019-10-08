@@ -10,6 +10,7 @@ import {
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { BatteryAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { getRequiredFieldNumberMoreThenZero } from 'components/@next/@utils/getErrorString/getErrorString';
 
 const seasonOptions = [
   { value: 'Лето', label: 'Лето' },
@@ -30,7 +31,6 @@ export const validationSchema: IValidationSchema = {
       key: 'will_checked_cnt',
       title: 'Всего подлежит подготовке',
       type: 'number',
-      integer: true,
       required: false,
     },
     {
@@ -54,6 +54,18 @@ export const validationSchema: IValidationSchema = {
       required: false,
     },
   ],
+  dependencies: {
+    will_checked_cnt: [
+      {
+        validator(value = null) {
+          if ( value <= 0 ) {
+            return getRequiredFieldNumberMoreThenZero('Всего подлежит подготовке');
+          }
+          return '';
+        },
+      },
+    ],
+  },
 };
 
 export const meta: IDataTableSchema = {

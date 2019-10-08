@@ -218,6 +218,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               types_harvesting_unit={state.data.types_harvesting_unit}
               canSavePreparePlanHandler={setPreparePlanCanSave}
               handleChangeData={handleChangeData}
+              isPermitted={isPermittedChangeListParams}
 
               page={props.page}
               type={props.type}

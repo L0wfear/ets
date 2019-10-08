@@ -8,22 +8,49 @@ import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_c
 import { autobaseGetSetCarFuncTypes } from 'redux-main/reducers/modules/autobase/car_func_types/actions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
-import { HrDelimiter } from 'global-styled/global-styled';
+import { HrDelimiter, FooterEnd } from 'global-styled/global-styled';
+import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 type PreparePlanProps = {
   types_cars: InspectCarsCondition['data']['types_cars'];
   types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit'];
   canSavePreparePlanHandler: (value: boolean) => any;
   handleChangeData: (ownObj: Partial<InspectCarsCondition['data']>) => any;
+  inspectType: keyof typeof INSPECT_TYPE_FORM;
+  isPermitted: boolean;
 
   page: string;
 };
 
-const PreparePlan: React.FC<PreparePlanProps> = (props) => {
+type Props = (
+  PreparePlanProps
+  & WithSearchProps
+);
+
+const PreparePlan: React.FC<Props> = (props) => {
   const [typesListOpt, setTypesListOpt] = React.useState([]);
   const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(true);
   const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(true);
 
+  const handleClose = React.useCallback(
+    () => {
+      props.setParams({
+        typeRightView: null,
+        selectedCarsConditionsCar: null,
+      });
+    },
+    [props.setParams, props.match.params],
+  );
+
+  const handleSave = React.useCallback(
+    () => {
+      alert('Хендлер сохранения в разработке!');
+      handleClose();
+    },
+    [],
+  );
   const dispatch = etsUseDispatch();
   // componentDidMount
   React.useEffect(() => {
@@ -144,10 +171,21 @@ const PreparePlan: React.FC<PreparePlanProps> = (props) => {
               {...props}
             />
           </CustomTableWrapper>
+          <FooterEnd>
+            {
+              props.isPermitted &&
+                <EtsBootstrap.Button disabled={ props.isPermitted && (!canSaveTypesCars || !canSaveTypesHarvestingUnit) } onClick={handleSave}>
+                  Сохранить
+                </EtsBootstrap.Button>
+            }
+            <EtsBootstrap.Button onClick={handleClose}>
+              Закрыть
+            </EtsBootstrap.Button>
+          </FooterEnd>
         </BoxContainer>
       }
     </>
   );
 };
 
-export default PreparePlan;
+export default withSearch<PreparePlanProps>(PreparePlan);

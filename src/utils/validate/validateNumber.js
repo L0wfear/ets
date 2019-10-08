@@ -31,10 +31,12 @@ const fixedValidators = [
         }
       }
       if (config.integer) {
+        const regexp = new RegExp('^\\d+$');
         error
           = error
-          || (typeof value !== 'number' && !/^\d+$/.test(value)
-            ? `Поле "${config.title || config.key}" должно быть целочисленным`
+          || (typeof value !== 'number' && !regexp.test(value)
+            ? `Поле "${config.title
+                || config.key}" должно быть целочисленным, неотрицательным`
             : undefined);
       }
       error

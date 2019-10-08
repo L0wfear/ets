@@ -50,10 +50,10 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
     );
 
     return (
-      <EtsBootstrap.Row>
+      <React.Fragment>
         {
           Boolean(isPermittedListPhotosOfSupportingDocuments || valuePhotosOfSupportingDocuments.length) && (
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <FileField
                 id="file"
                 label={"Фотографии подтверждающих\nдокументов"}
@@ -68,7 +68,7 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
         }
         {
           Boolean(isPermittedListPhotosDefect || valuePhotosDefect.length) && (
-            <EtsBootstrap.Col md={12}>
+            <EtsBootstrap.Col md={6}>
               <FileField
                 id="file"
                 label="Фотографии дефектов"
@@ -81,7 +81,7 @@ const BlockDataFiles: React.FC<BlockDataFilesProps> = React.memo(
             </EtsBootstrap.Col>
           )
         }
-      </EtsBootstrap.Row>
+      </React.Fragment>
       );
   },
 );

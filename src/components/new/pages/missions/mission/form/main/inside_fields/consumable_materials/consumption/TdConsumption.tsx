@@ -141,8 +141,8 @@ const TdConsumption: React.FC<Props> = React.memo(
           addonRight={consumable_material_measure_unit_name}
         />
         {
-          props.formDataKey !== 'duty_mission' && !disabled && can_edit && (
-            <EtsBootstrap.Button disabled={!isPermitted} onClick={handleChangeLock}>
+          !disabled && can_edit && (
+            <EtsBootstrap.Button onClick={handleChangeLock}>
               <EtsBootstrap.Glyphicon glyph={!is_consumption_locked ? "user" : "lock"} />
             </EtsBootstrap.Button>
           )

@@ -283,12 +283,12 @@ export const metaMission: ConfigFormData<Mission> = {
             memoizeOne(
               (consumable_materials, { status }) => consumable_materials.map((rowData): Partial<Record<keyof ValuesOf<Mission['consumable_materials']>, string>> => ({
                 consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
-                plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работ (план)'),
-                mission_progress_fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.mission_progress_fact_value, 'Объем работ (ГЛОНАСС)'),
+                plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работы (план)'),
+                mission_progress_fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.mission_progress_fact_value, 'Объем работы (ГЛОНАСС)'),
                 fact_value: (
                   !rowData.fact_value
-                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работ (факт)')
-                    : defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работ (факт)')
+                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)')
+                    : defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)')
                 ),
                 consumption: (
                   !rowData.consumption

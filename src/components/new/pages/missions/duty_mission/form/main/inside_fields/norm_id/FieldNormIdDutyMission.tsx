@@ -32,12 +32,14 @@ class FieldNormIdDutyMission extends React.PureComponent<
       route_type,
     } = this.props;
 
-    const triggerOnUpdate =
+    const triggerOnUpdate = (
       !disabled &&
       (datetime !== prevProps.datetime ||
         technical_operation_id !== prevProps.technical_operation_id ||
         municipal_facility_id !== prevProps.municipal_facility_id ||
-        route_type !== prevProps.route_type);
+        route_type !== prevProps.route_type
+      )
+    );
 
     if (triggerOnUpdate) {
       this.updateNormId();

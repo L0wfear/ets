@@ -35,8 +35,14 @@ const DutyMissionFormNew: React.FC<Props> = React.memo(
     );
 
     const defaultSubmit = React.useCallback(
-      () => {
-        return handleSubmitPromise(formState);
+      async () => {
+        try {
+          const result = await handleSubmitPromise(formState);
+          props.handleHide(true, result);
+          return result;
+        } catch {
+          //
+        }
       },
       [formState, props.handleHide, handleSubmitPromise],
     );

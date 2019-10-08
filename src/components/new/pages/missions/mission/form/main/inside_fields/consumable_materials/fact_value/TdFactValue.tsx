@@ -7,7 +7,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { FlexContainer } from 'global-styled/global-styled';
-import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, mergeConsumableMaterials } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
+import { useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill, mergeConsumableMaterials, useMissionFormDataIsCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { isNumber } from 'util';
@@ -21,6 +21,10 @@ const TdFactValue: React.FC<Props> = React.memo(
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
     const isMissionFormDataIsNotCompleted = useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill(props.formDataKey);
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+    const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
+    const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
+    const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
+    const IS_COMPLETED = useMissionFormDataIsCompleted(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -31,7 +35,7 @@ const TdFactValue: React.FC<Props> = React.memo(
               const fact_value_like_number = Number(fact_value);
               let consumption = null;
               if (isNumber(rowData.norm_value) && !isNaN(fact_value_like_number)) {
-                consumption = fact_value * rowData.norm_value;
+                consumption = Number((fact_value * rowData.norm_value).toFixed(3));
               }
 
               return {
@@ -53,12 +57,6 @@ const TdFactValue: React.FC<Props> = React.memo(
         return keyBy(consumableMateriaForMission, 'consumable_material_id');
       },
       [consumableMateriaForMission],
-    );
-    const consumable_material_measure_unit_name = React.useMemo(
-      () => {
-        return get(consumable_materials[props.indexRow], 'consumable_material_measure_unit_name');
-      },
-      [consumable_materials, props.indexRow],
     );
     const consumable_material_id = React.useMemo(
       () => {
@@ -83,7 +81,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           try {
             await global.confirmDialog({
               title: 'Внимание!',
-              body: 'Объем работ (факт) не будет заполняться автоматически данными по ГЛОНАСС.\nПродолжить?',
+              body: 'Объем работы (факт) не будет заполняться автоматически данными по ГЛОНАСС.\nПродолжить?',
             });
           } catch {
             return;
@@ -93,7 +91,7 @@ const TdFactValue: React.FC<Props> = React.memo(
             try {
               await global.confirmDialog({
                 title: 'Внимание!',
-                body: 'Объем работ (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работ(факт)" будут очищены.\n Продолжить?',
+                body: 'Объем работы (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работы(факт)" будут очищены.\n Продолжить?',
               });
             } catch {
               return;
@@ -140,7 +138,7 @@ const TdFactValue: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_fact_value_locked || !consumable_material_id;
+    const disabled = !isPermitted || is_fact_value_locked || !consumable_material_id || IS_COMPLETED;
     const can_edit = get(consumableMateriaForMissionIndex[consumable_material_id], 'is_fact_value_locked');
 
     return (
@@ -153,7 +151,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           error={error}
           onChange={handleChangeWrap}
           disabled={disabled}
-          addonRight={consumable_material_measure_unit_name}
+          addonRight={municipal_facility_measure_unit_name}
           showRedBorder={value !== plan_value}
         />
         {
@@ -170,7 +168,7 @@ const TdFactValue: React.FC<Props> = React.memo(
 
 export const metaFactValue: TableMeta<ValuesOf<Mission['consumable_materials']>> = {
   key: 'fact_value',
-  title: 'Объем работ (факт)',
+  title: 'Объем работы (факт)',
   format: 'string',
   width: 100,
 

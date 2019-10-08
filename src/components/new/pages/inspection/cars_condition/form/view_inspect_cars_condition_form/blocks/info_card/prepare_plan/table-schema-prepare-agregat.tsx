@@ -54,18 +54,6 @@ export const validationSchema: IValidationSchema = {
       required: false,
     },
   ],
-  dependencies: {
-    will_checked_cnt: [
-      {
-        validator(value = null) {
-          if ( value <= 0 ) {
-            return getRequiredFieldNumberMoreThenZero('Всего подлежит подготовке');
-          }
-          return '';
-        },
-      },
-    ],
-  },
 };
 
 export const meta: IDataTableSchema = {

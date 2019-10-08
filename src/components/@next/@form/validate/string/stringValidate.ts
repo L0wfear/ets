@@ -1,4 +1,4 @@
-import { isString } from 'util';
+import { isString, isNullOrUndefined } from 'util';
 import { StringField } from 'components/@next/@form/@types';
 
 export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField<F>, formState: F) => {
@@ -26,7 +26,7 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
     return `Поле "${title}" не должно начинаться и заканчиваться пробелом`;
   }
 
-  if (isString(value) || value === null) {
+  if (isString(value) || isNullOrUndefined(value) ) {
     return '';
   }
   return `Поле "${title}" должно быть строкой`;

@@ -33,7 +33,6 @@ export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'
     comments: {
       type: 'string',
       title: 'Замечания',
-      trimSpace: true,
     },
   },
 };

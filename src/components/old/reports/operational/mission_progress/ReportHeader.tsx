@@ -102,6 +102,7 @@ class MissionProgressReportHeader extends React.Component<IPropsMissionProgressR
             date_start_value={date_from}
             date_end_id="date_to"
             date_end_value={date_to}
+            makeGoodFormat={true}
 
             disabled={readOnly}
             onChange={this.props.handleChange}

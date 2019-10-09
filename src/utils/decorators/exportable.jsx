@@ -107,7 +107,7 @@ export default function exportable(options) {
               ...urlPayload,
             },
           );
-        // TODO blob
+        // TODO blob, <<< добавить обработчик 500х
         return fetch(URL, {
           method: 'post',
           body: JSON.stringify(bodyPayload),

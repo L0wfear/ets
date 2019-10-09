@@ -4,6 +4,7 @@ import { createValidDateTime, createValidDate } from 'components/@next/@utils/da
 import { DatePickerRangeContainer, DividerDatePickerRange } from './styled';
 import { isBoolean } from 'util';
 import EtsBootstrap from '../@bootstrap';
+import { get } from 'lodash';
 
 type DatePickerRangeProps = {
   date_start_id: string;
@@ -16,6 +17,7 @@ type DatePickerRangeProps = {
   date_end_value: any;
   date_end_error?: string | boolean;
   date_end_time?: boolean;
+  makeGoodFormat?: boolean;
 
   allWidth?: boolean;
 
@@ -31,6 +33,7 @@ type DatePickerRangeProps = {
 );
 
 export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
+  const makeGoodFormat = get(props, 'makeGoodFormat');
   const onChangeDateStart = React.useCallback(
     (valueRaw) => {
       let value = valueRaw;
@@ -86,6 +89,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           onChange={onChangeDateStart}
           error={props.date_start_error}
           disabled={props.disabled}
+          makeGoodFormat={makeGoodFormat}
         />
       </EtsBootstrap.Col>
       <DividerDatePickerRange label={Boolean(labelDatePickerStart || labelDatePickerEnd)} date_start_label={'date_start_label' in props && ''}>
@@ -101,6 +105,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           onChange={onChangeDateEnd}
           error={props.date_end_error}
           disabled={props.disabled}
+          makeGoodFormat={makeGoodFormat}
         />
       </EtsBootstrap.Col>
     </DatePickerRangeContainer>

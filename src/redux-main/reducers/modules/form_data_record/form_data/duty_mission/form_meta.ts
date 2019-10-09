@@ -190,12 +190,12 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'valueOfArray',
           required: true,
           dependencies: [
-            (value, { structure_id }, reduxState) => {
+            (foreman_id, { structure_id }, reduxState) => {
               const employeeIndex = getEmployeeState(reduxState).employeeIndex;
 
-              if (value && Object.keys(employeeIndex).length) {
+              if (foreman_id && Object.keys(employeeIndex).length) {
                 const isPermitted = isPermittedEmployeeForDutyMission(
-                  employeeIndex[value],
+                  employeeIndex[foreman_id],
                   structure_id,
                 );
 
@@ -250,11 +250,7 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
               (consumable_materials, { status }) => consumable_materials.map((rowData) => ({
                 consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
                 plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работы (план)'),
-                fact_value: (
-                  !rowData.fact_value
-                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)')
-                    : defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)')
-                ),
+                fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)'),
                 consumption: (
                   !rowData.consumption
                     ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')

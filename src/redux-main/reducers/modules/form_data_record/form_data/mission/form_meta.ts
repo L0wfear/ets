@@ -285,11 +285,7 @@ export const metaMission: ConfigFormData<Mission> = {
                 consumable_material_id: !rowData.consumable_material_id && getRequiredFieldMessage('Расходный материал'),
                 plan_value: defaultCheckConsumableMaterialsNumberValue(rowData.plan_value, 'Объем работы (план)'),
                 mission_progress_fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.mission_progress_fact_value, 'Объем работы (ГЛОНАСС)'),
-                fact_value: (
-                  !rowData.fact_value
-                    ? checkIsMissionComplete(status) && getRequiredFieldMessage('Объем работы (факт)')
-                    : defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)')
-                ),
+                fact_value: defaultCheckConsumableMaterialsNumberValue(rowData.fact_value, 'Объем работы (факт)'),
                 consumption: (
                   !rowData.consumption
                     ? checkIsMissionComplete(status) && getRequiredFieldMessage('Расход (итого)')

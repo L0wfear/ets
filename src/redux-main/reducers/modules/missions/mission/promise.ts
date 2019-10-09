@@ -13,6 +13,7 @@ import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { MissionArchiveService } from 'api/missions';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { isNullOrUndefined } from 'util';
 
 export const getMissionDataById = async (id: number) => {
   let responce = null;
@@ -178,9 +179,9 @@ export const promiseSubmitMission = async (missionOwn: Mission, assign_to_waybil
   try {
     mission.consumable_materials = mission.consumable_materials.map((rowData) => ({
       ...rowData,
-      plan_value: getNumberValueFromSerch(rowData.plan_value),
-      fact_value: getNumberValueFromSerch(rowData.fact_value),
-      consumption: getNumberValueFromSerch(rowData.consumption),
+      plan_value: isNullOrUndefined(rowData.plan_value) ? rowData.plan_value : getNumberValueFromSerch(rowData.plan_value),
+      fact_value: isNullOrUndefined(rowData.fact_value) ? rowData.fact_value : getNumberValueFromSerch(rowData.fact_value),
+      consumption: isNullOrUndefined(rowData.consumption) ? rowData.consumption : getNumberValueFromSerch(rowData.consumption),
     }));
   } catch {
     //

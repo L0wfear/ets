@@ -104,13 +104,18 @@ const AgentsFromGbu: React.FC<AgentsFromGbuProps> = React.memo(
             }
           </CommissionMembersDataContainer>
         )}
-        <AgentsFromGbuAddBtn
-          disabled={showGbu}
-          onClick={handleShowGbu}
-        >
-          <EtsBootstrap.Glyphicon glyph='plus' />
-          Добавить представителя ГБУ
-        </AgentsFromGbuAddBtn>
+        {
+          props.isPermittedChangeListParams &&
+            (
+              <AgentsFromGbuAddBtn
+                disabled={showGbu}
+                onClick={handleShowGbu}
+              >
+                <EtsBootstrap.Glyphicon glyph='plus' />
+                Добавить представителя ГБУ
+              </AgentsFromGbuAddBtn>
+            )
+        }
         {
           showGbu && (
             <RowAddRowAddAgentFromGbu

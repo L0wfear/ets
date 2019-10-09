@@ -106,13 +106,18 @@ const CommissionMembers: React.FC<CommissionMembersProps> = React.memo(
               ))
             }
           </CommissionMembersDataContainer>
-          <CommissionMembersAddBtn
-            disabled={showCommissionMembers}
-            onClick={handleShowCommissionMembers}
-          >
-            <EtsBootstrap.Glyphicon glyph='plus' />
-            Добавить проверяющего
-          </CommissionMembersAddBtn>
+          {
+            props.isPermittedChangeListParams &&
+              (
+                <CommissionMembersAddBtn
+                  disabled={showCommissionMembers}
+                  onClick={handleShowCommissionMembers}
+                >
+                  <EtsBootstrap.Glyphicon glyph='plus' />
+                  Добавить проверяющего
+                </CommissionMembersAddBtn>
+              )
+          }
           {
             props.isPermittedChangeListParams && showCommissionMembers && (
               <RowAddCommissionMembers

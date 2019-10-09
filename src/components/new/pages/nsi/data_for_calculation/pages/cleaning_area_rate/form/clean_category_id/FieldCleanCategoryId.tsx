@@ -27,6 +27,8 @@ const FieldCleanCategoryId: React.FC<Props> = React.memo(
         handleChange({
           clean_category_id: value || null,
           clean_category_name: get(option, 'label'),
+          clean_subcategory_id: null,
+          clean_subcategory_name: null,
         });
       },
       [handleChange],

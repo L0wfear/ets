@@ -28,7 +28,7 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
-    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(true);
+    const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
 
     const {
       formState: state,
@@ -54,6 +54,13 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
     const isActiveInspect = (
       props.type === INSPECT_TYPE_FORM.list
       || isPermittedChangeCloseParams
+    );
+
+    const canSavePreparePlanHandler = React.useCallback(
+      (preparePlanCanSaveNew: boolean) => {
+        setPreparePlanCanSave(preparePlanCanSaveNew);
+      },
+      [preparePlanCanSave, props.canSave, isHasPeriod],
     );
 
     const callBackToLoadCars = React.useCallback(
@@ -82,10 +89,10 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
     React.useEffect(
       () => {
         if (!isHasPeriod) {
-          setPreparePlanCanSave(true);
+          canSavePreparePlanHandler(true);
         }
       },
-      [isHasPeriod],
+      [isHasPeriod, preparePlanCanSave],
     );
 
     React.useEffect(
@@ -216,7 +223,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
 
               types_cars={state.data.types_cars}
               types_harvesting_unit={state.data.types_harvesting_unit}
-              canSavePreparePlanHandler={setPreparePlanCanSave}
+              canSavePreparePlanHandler={canSavePreparePlanHandler}
               handleChangeData={handleChangeData}
               isPermitted={isPermittedChangeListParams}
 

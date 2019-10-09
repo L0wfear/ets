@@ -72,7 +72,13 @@ const BlockCarSConditionPrepareCarToInspect: React.FC<BlockCarSConditionPrepareC
           <EtsBootstrap.Col md={12}>
             <SelectCarConditionTitleWrapper>
               <CarConditionTitle>Подготовка ТС к проверке</CarConditionTitle>
-              <EtsBootstrap.Button id="inspect_cars_conditions-prepare_plan" onClick={onClickMakePlan}>Внести план подготовки ТС</EtsBootstrap.Button>
+              <EtsBootstrap.Button id="inspect_cars_conditions-prepare_plan" onClick={onClickMakePlan}>
+                {
+                  isPermitted
+                    ? 'Внести план подготовки ТС'
+                    : 'Посмотреть план подготовки ТС'
+                }
+              </EtsBootstrap.Button>
             </SelectCarConditionTitleWrapper>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

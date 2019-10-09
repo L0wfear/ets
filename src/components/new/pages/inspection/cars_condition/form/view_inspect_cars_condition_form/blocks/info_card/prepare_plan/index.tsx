@@ -72,9 +72,6 @@ const PreparePlan: React.FC<Props> = (props) => {
         );
       },
     );
-    props.canSavePreparePlanHandler(
-      canSaveTypesCars && canSaveTypesHarvestingUnit,
-    );
   }, []);
 
   const handleChangeTypesCars = React.useCallback(
@@ -89,7 +86,7 @@ const PreparePlan: React.FC<Props> = (props) => {
         types_cars: newTypesCars,
       });
     },
-    [props.handleChangeData],
+    [props.handleChangeData, canSaveTypesCars, canSaveTypesHarvestingUnit],
   );
   const handleChangeTypesHarvestingUnit = React.useCallback(
     (types_harvesting_unit) => {
@@ -102,89 +99,84 @@ const PreparePlan: React.FC<Props> = (props) => {
         types_harvesting_unit: newTypesHarvestingUnit,
       });
     },
-    [props.handleChangeData],
+    [props.handleChangeData, canSaveTypesCars, canSaveTypesHarvestingUnit],
   );
 
   const handleValidityTypesCars = React.useCallback(
     ({ isValidInput: canSaveTypesCarsNew }) => {
       setCanSaveTypesCars(canSaveTypesCarsNew);
-
-      props.canSavePreparePlanHandler(
-        canSaveTypesCarsNew && canSaveTypesHarvestingUnit,
-      );
     },
-    [canSaveTypesHarvestingUnit],
+    [canSaveTypesHarvestingUnit, canSaveTypesCars],
   );
 
   const handleValidityTypesHarvestingUnit = React.useCallback(
     ({ isValidInput: canSaveTypesHarvestingUnitNew }) => {
       setCanSaveTypesHarvestingUnit(canSaveTypesHarvestingUnitNew);
-      props.canSavePreparePlanHandler(
-        canSaveTypesCars && canSaveTypesHarvestingUnitNew,
-      );
     },
-    [canSaveTypesCars],
+    [canSaveTypesCars, canSaveTypesHarvestingUnit],
+  );
+
+  React.useEffect(() => {
+      props.canSavePreparePlanHandler(canSaveTypesCars && canSaveTypesHarvestingUnit);
+    },
+    [canSaveTypesCars, canSaveTypesHarvestingUnit],
   );
 
   return(
-    <>
-      {
-        <BoxContainer>
-          <h2>
-            План подготовки
-          </h2>
-          <CustomTableWrapper>
-            <DataTableInput
-              tableSchema={TypesCars.meta}
-              renderers={TypesCars.renderers}
-              validationSchema={TypesCars.validationSchema}
-              addButtonLabel="Добавить тип"
-              removeButtonLable="Удалить тип"
-              stackOrder
-              onChange={handleChangeTypesCars}
-              inputList={props.types_cars}
-              path="cars_condition-prepare_plan"
-              isPermitted={Boolean(typesListOpt.length)}
-              onValidation={handleValidityTypesCars}
-              selectField="customId"
-              typesListOpt={typesListOpt}
-              tableTitle="План подготовки ТС"
-              {...props}
-            />
-          </CustomTableWrapper>
-          <HrDelimiter />
-          <CustomTableWrapper>
-            <DataTableInput
-              tableSchema={TypesHarvestingUnit.meta}
-              renderers={TypesHarvestingUnit.renderers}
-              validationSchema={TypesHarvestingUnit.validationSchema}
-              addButtonLabel="Добавить тип"
-              removeButtonLable="Удалить тип"
-              stackOrder
-              onChange={handleChangeTypesHarvestingUnit}
-              inputList={props.types_harvesting_unit}
-              path="cars_condition-prepare_plan"
-              isPermitted={true}
-              onValidation={handleValidityTypesHarvestingUnit}
-              selectField="customId"
-              tableTitle='План и проверка готовности к сезону прицепных, навесных и уборочных агрегатов'
-              {...props}
-            />
-          </CustomTableWrapper>
-          <FooterEnd>
-            {
-              props.isPermitted &&
-                <EtsBootstrap.Button disabled={ props.isPermitted && (!canSaveTypesCars || !canSaveTypesHarvestingUnit) } onClick={handleSave}>
-                  Сохранить
-                </EtsBootstrap.Button>
-            }
-            <EtsBootstrap.Button onClick={handleClose}>
-              Закрыть
+    <BoxContainer>
+      <h2>
+        План подготовки
+      </h2>
+      <CustomTableWrapper>
+        <DataTableInput
+          tableSchema={TypesCars.meta}
+          renderers={TypesCars.renderers}
+          validationSchema={TypesCars.validationSchema}
+          addButtonLabel="Добавить тип"
+          removeButtonLable="Удалить тип"
+          stackOrder
+          onChange={handleChangeTypesCars}
+          inputList={props.types_cars}
+          path="cars_condition-prepare_plan"
+          isPermitted={Boolean(typesListOpt.length)}
+          onValidation={handleValidityTypesCars}
+          selectField="customId"
+          typesListOpt={typesListOpt}
+          tableTitle="План подготовки ТС"
+          {...props}
+        />
+      </CustomTableWrapper>
+      <HrDelimiter />
+      <CustomTableWrapper>
+        <DataTableInput
+          tableSchema={TypesHarvestingUnit.meta}
+          renderers={TypesHarvestingUnit.renderers}
+          validationSchema={TypesHarvestingUnit.validationSchema}
+          addButtonLabel="Добавить тип"
+          removeButtonLable="Удалить тип"
+          stackOrder
+          onChange={handleChangeTypesHarvestingUnit}
+          inputList={props.types_harvesting_unit}
+          path="cars_condition-prepare_plan"
+          isPermitted={true}
+          onValidation={handleValidityTypesHarvestingUnit}
+          selectField="customId"
+          tableTitle='План и проверка готовности к сезону прицепных, навесных и уборочных агрегатов'
+          {...props}
+        />
+      </CustomTableWrapper>
+      <FooterEnd>
+        {
+          props.isPermitted &&
+            <EtsBootstrap.Button disabled={ props.isPermitted && (!canSaveTypesCars || !canSaveTypesHarvestingUnit) } onClick={handleSave}>
+              Сохранить
             </EtsBootstrap.Button>
-          </FooterEnd>
-        </BoxContainer>
-      }
-    </>
+        }
+        <EtsBootstrap.Button onClick={handleClose}>
+          Закрыть
+        </EtsBootstrap.Button>
+      </FooterEnd>
+    </BoxContainer>
   );
 };
 

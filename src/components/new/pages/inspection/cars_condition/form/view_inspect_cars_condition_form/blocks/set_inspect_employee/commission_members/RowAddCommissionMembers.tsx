@@ -48,7 +48,6 @@ const RowAddCommissionMembers: React.FC<RowAddCommissionMembersProps> = React.me
             !props.commission_members.find(
               ({ employee_id }) => option.value === employee_id,
             )
-            && option.rowData.active
           );
         },
       ),

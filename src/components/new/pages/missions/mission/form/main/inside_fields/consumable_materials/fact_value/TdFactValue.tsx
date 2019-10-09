@@ -123,12 +123,6 @@ const TdFactValue: React.FC<Props> = React.memo(
       },
       [consumable_materials, props.indexRow],
     );
-    const plan_value = React.useMemo(
-      () => {
-        return get(consumable_materials[props.indexRow], 'plan_value');
-      },
-      [consumable_materials, props.indexRow],
-    );
 
     const errors = useForm.useFormDataFormErrorsPickValue<Mission, Array<any>>(props.formDataKey, 'consumable_materials');
     const error = React.useMemo(
@@ -152,7 +146,6 @@ const TdFactValue: React.FC<Props> = React.memo(
           onChange={handleChangeWrap}
           disabled={disabled}
           addonRight={municipal_facility_measure_unit_name}
-          showRedBorder={value !== plan_value}
           value_string={value}
         />
         {

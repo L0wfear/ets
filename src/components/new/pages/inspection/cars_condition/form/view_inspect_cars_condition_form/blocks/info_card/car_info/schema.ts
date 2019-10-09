@@ -236,7 +236,6 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     given_at: {
       type: 'date',
       title: 'Дата регистрации',
-      required: true,
     },
     exploitation_date_start: {
       type: 'date',

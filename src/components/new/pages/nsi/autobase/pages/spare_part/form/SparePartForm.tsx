@@ -29,17 +29,11 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
   state = {
     measureUnitOptions: [],
     sparePartGroupOptions: [],
-    canSave: true,
   };
 
   componentDidMount() {
     this.loadMeasureUnit();
     this.loadSparePartGroup();
-  }
-  handleSpareToCarValidity = ({ isValidInput }) => {
-    this.setState({
-      canSave: isValidInput,
-    });
   }
   async loadMeasureUnit() {
     const { data } = await this.props.dispatch(
@@ -68,6 +62,7 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
       formErrors: errors,
       page,
       path,
+      canSave,
     } = this.props;
     const {
       measureUnitOptions,
@@ -78,10 +73,6 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
 
     const title = !IS_CREATING ? 'Изменение записи' : 'Создание записи';
     const isPermitted = !IS_CREATING ? this.props.isPermittedToUpdate : this.props.isPermittedToCreate;
-    const canSave = (
-      this.state.canSave
-      && this.props.canSave
-    );
 
     return (
       <EtsBootstrap.ModalContainer id="modal-spare-part" show onHide={this.props.hideWithoutChanges} bsSize="large">
@@ -168,7 +159,6 @@ class SparePartForm extends React.PureComponent<PropsSparePart, StateSparePart> 
                 onChange={this.props.handleChange}
                 boundKeys="spare_part_to_car"
                 inputList={state.spare_part_to_car}
-                onValidation={this.handleSpareToCarValidity}
                 outerValidate
                 errors={errors.spare_part_to_car}
                 disabled={!isPermitted}

@@ -29,7 +29,6 @@ const TdConsumption: React.FC<Props> = React.memo(
               return {
                 ...rowData,
                 consumption: get(event, 'target.value', event),
-                plan_value: rowData.plan_value || 0,
               };
             }
 

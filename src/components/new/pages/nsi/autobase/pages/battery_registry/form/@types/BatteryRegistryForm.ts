@@ -11,7 +11,6 @@ export type PropsBatteryRegistry = OutputWithFormProps<
   any
 >;
 export type StateBatteryRegistry = {
-  canSave: boolean;
   batteryBrandOptions: {
     value: BatteryBrand['id'];
     label: BatteryBrand['name'];

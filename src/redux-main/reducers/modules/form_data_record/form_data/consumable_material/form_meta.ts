@@ -1,7 +1,7 @@
 import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
 import consumableMaterialPermissions from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/_config-data/permissions';
 import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
-import { promiseSubmitConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
+import { promiseSubmitConsumableMaterial, promiseGetConsumableMaterialById } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
 import { ReduxState } from 'redux-main/@types/state';
@@ -33,22 +33,20 @@ const validateDateStart = (rowData: ValuesOf<ConsumableMaterial['norms']>, index
 };
 
 const validateDateEnd = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow: number, formState: ConsumableMaterial, reduxState: ReduxState) => {
-  if (!rowData.is_without_norm) {
-    if (rowData.date_start) {
-      if (!rowData.date_end) {
-        const isNotLastRow = formState.norms.find((rowDateNorm) => (
-          rowDateNorm.technical_operation_id === rowData.technical_operation_id
-          && rowDateNorm.municipal_facility_id === rowData.municipal_facility_id
-          && rowDateNorm.season_id === rowData.season_id
-          && diffDates(rowDateNorm.date_start, rowData.date_start) > 0
-        ));
-        if (isNotLastRow) {
-          return getRequiredFieldMessage('Дата по');
-        }
-      } else {
-        if (diffDates(rowData.date_start, rowData.date_end) >= 0) {
-          return '"Дата по" должно быть поже "Дата с"';
-        }
+  if (rowData.date_start) {
+    if (!rowData.date_end) {
+      const isNotLastRow = formState.norms.find((rowDateNorm) => (
+        rowDateNorm.technical_operation_id === rowData.technical_operation_id
+        && rowDateNorm.municipal_facility_id === rowData.municipal_facility_id
+        && rowDateNorm.season_id === rowData.season_id
+        && diffDates(rowDateNorm.date_start, rowData.date_start) > 0
+      ));
+      if (isNotLastRow) {
+        return getRequiredFieldMessage('Дата по');
+      }
+    } else {
+      if (diffDates(rowData.date_start, rowData.date_end) >= 0) {
+        return '"Дата по" должно быть поже "Дата с"';
       }
     }
   }
@@ -59,6 +57,7 @@ export const metaConsumableMaterial: ConfigFormData<ConsumableMaterial> = {
   bsSizeForm: 'large',
   permissions: consumableMaterialPermissions,
   handleSubmitPromise: promiseSubmitConsumableMaterial,
+  getOneRecordPromise: promiseGetConsumableMaterialById,
   schema: {
     header: {
       title: {

@@ -23,6 +23,3 @@ export type PropsTire = OutputWithFormProps<
   [ Tire ],
   any
 >;
-export type StateTire = {
-  canSave: boolean;
-};

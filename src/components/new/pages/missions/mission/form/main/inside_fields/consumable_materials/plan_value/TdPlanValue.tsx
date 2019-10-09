@@ -77,6 +77,7 @@ const TdPlanValue: React.FC<Props> = React.memo(
         onChange={handleChangeWrap}
         disabled={disabled}
         addonRight={municipal_facility_measure_unit_name}
+        value_string={value}
       />
     );
   },

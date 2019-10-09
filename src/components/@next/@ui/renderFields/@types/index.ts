@@ -14,7 +14,7 @@ export type ExtFieldCommon<V = any> = {
   modalKey?: string;
   hidden?: boolean;
   readOnly?: boolean;
-  value_string?: string;
+  value_string?: string | number;
 
   emptyValue?: any; // надо ли
 };
@@ -62,6 +62,7 @@ export type ExtFieldString<V = any> = ExtFieldCommon<V> & {
 
   maxLength?: number;
   placeholder?: string;
+  addonRight?: string;
 };
 
 export type ExtFieldNumber<V = any> = ExtFieldCommon<V> & {

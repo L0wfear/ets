@@ -431,6 +431,8 @@ class DutyMissionForm extends React.PureComponent<PropsDutyMissionForm, any> {
                 is_cleaning_norm={state.is_cleaning_norm}
                 object_type_name={state.object_type_name}
                 norm_id={state.norm_id}
+                route_id={state.route_id}
+                municipal_facility_id={state.municipal_facility_id}
 
                 DUTY_MISSION_IS_DISPLAY={DUTY_MISSION_IS_DISPLAY}
                 DUTY_MISSION_IS_CLOSED={DUTY_MISSION_IS_CLOSED}

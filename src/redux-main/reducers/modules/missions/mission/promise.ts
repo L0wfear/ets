@@ -133,7 +133,6 @@ export const promiseCreateMission = async (mission: Partial<Mission>, assign_to_
         missions: payload.car_ids.map((car_id, index) => {
           const newObj: Mission = {
             ...payload,
-            consumable_materials: null,
             assign_to_waybill: assign_to_waybill[index],
           };
 

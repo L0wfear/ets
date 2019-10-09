@@ -34,7 +34,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
     const norm_id = React.useMemo(
       () => {
         if (props.formDataKey === 'mission') {
-          return missiom_norm_ids.length > 1 ? null : missiom_norm_ids[0];
+          return missiom_norm_ids[0];
         }
 
       },

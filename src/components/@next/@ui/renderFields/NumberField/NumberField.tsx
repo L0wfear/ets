@@ -34,40 +34,23 @@ const NumberField: React.FC<ExtFieldNumber> = React.memo(
               <span>{props.label}</span>
             </FieldLabel>
           )}
-          {
-            addonRight
-              ? (
-              <EtsBootstrap.InputGroup>
-                <NumberFieldUi
-                  lang="en"
-                  type="number"
-                  className={inputClassName}
-                  {...mainProps}
-                  id={value_id}
-                  value={value}
-                />
-                {
-                  addonRight && (
-                    <EtsBootstrap.InputGroup.Addon>
-                      {addonRight}
-                    </EtsBootstrap.InputGroup.Addon>
-                  )
-                  }
-                </EtsBootstrap.InputGroup>
+          <EtsBootstrap.InputGroup.Group has_right_addon={Boolean(addonRight)}>
+            <NumberFieldUi
+              lang="en"
+              type="number"
+              className={inputClassName}
+              {...mainProps}
+              id={value_id}
+              value={value}
+            />
+            {
+              addonRight && (
+                <EtsBootstrap.InputGroup.Addon>
+                  {addonRight}
+                </EtsBootstrap.InputGroup.Addon>
               )
-              :
-              (
-                <NumberFieldUi
-                  lang="en"
-                  type="number"
-                  className={inputClassName}
-                  {...mainProps}
-                  id={value_id}
-                  value={value}
-                />
-              )
-          }
-
+            }
+          </EtsBootstrap.InputGroup.Group>
         </div>
         <ErrorsBlock
           hidden={!error}

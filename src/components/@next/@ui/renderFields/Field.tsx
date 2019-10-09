@@ -43,7 +43,7 @@ const Field: React.FC<ExtFieldType> = React.memo(
         <StringField
           {...props as any}
           type="string"
-          value={props.value_string}
+          value={props.value_string.toString()}
         />
       );
     }

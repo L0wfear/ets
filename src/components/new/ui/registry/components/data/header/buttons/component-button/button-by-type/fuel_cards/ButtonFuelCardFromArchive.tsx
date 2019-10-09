@@ -34,7 +34,7 @@ const ButtonFuelCardFromArchive: React.FC<Props> = React.memo(
 
         await dispatch(actionFuelCardFromArchive(selectedRow[uniqKey], { page: props.registryKey }));
 
-        global.NOTIFICATION_SYSTEM.notify('Выбранная топливная карта перенесенаи из архива');
+        global.NOTIFICATION_SYSTEM.notify('Выбранная топливная карта перенесена из архива');
 
         dispatch(actionUnselectSelectedRowToShow(props.registryKey, true));
         dispatch(registryLoadDataByKey(props.registryKey));

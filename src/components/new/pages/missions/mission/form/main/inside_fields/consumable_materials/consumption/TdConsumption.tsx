@@ -67,15 +67,13 @@ const TdConsumption: React.FC<Props> = React.memo(
             return;
           }
         } else {
-          if (changed_consumable_materials.mission_progress_fact_value !== changed_consumable_materials.fact_value) {
-            try {
-              await global.confirmDialog({
-                title: 'Внимание!',
-                body: 'Поле "Расход (итого)" станет недоступным для редактирования и будет пересчитываться автоматически.\n Продолжить?',
-              });
-            } catch {
-              return;
-            }
+          try {
+            await global.confirmDialog({
+              title: 'Внимание!',
+              body: 'Поле "Расход (итого)" станет недоступным для редактирования и будет пересчитываться автоматически.\n Продолжить?',
+            });
+          } catch {
+            return;
           }
 
           changed_consumable_materials = mergeConsumableMaterials(

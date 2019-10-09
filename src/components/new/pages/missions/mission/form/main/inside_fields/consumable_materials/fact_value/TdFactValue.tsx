@@ -153,6 +153,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           disabled={disabled}
           addonRight={municipal_facility_measure_unit_name}
           showRedBorder={value !== plan_value}
+          value_string={value}
         />
         {
           props.formDataKey !== 'duty_mission' && isMissionFormDataIsNotCompleted && can_edit && (

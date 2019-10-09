@@ -239,6 +239,10 @@ module.exports = {
         seed,
       ),
       seed: {
+        "permissions": [
+          "storage",
+          "*://localhost/*"
+        ],
         "short_name": `__ETS::${stand.toUpperCase()}__`,
         "name": `__ETS::${stand.toUpperCase()}__`,
         "start_url": "/",

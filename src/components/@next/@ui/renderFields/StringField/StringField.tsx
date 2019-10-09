@@ -8,6 +8,7 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { FieldLabel } from 'components/@next/@ui/renderFields/styled/index';
 import { StringFieldUi } from 'components/@next/@ui/renderFields/StringField/styled';
 import { ExtFieldString } from 'components/@next/@ui/renderFields/@types';
+import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 const StringField: React.FC<ExtFieldString> = React.memo(
   (props) => {
@@ -26,6 +27,7 @@ const StringField: React.FC<ExtFieldString> = React.memo(
       className = '',
       wrapStyle,
       hidden,
+      addonRight,
     } = props;
     let { value } = props;
 
@@ -66,14 +68,23 @@ const StringField: React.FC<ExtFieldString> = React.memo(
               <span>{label}</span>
             </FieldLabel>
           )}
-          <StringFieldUi
-            type="text"
-            disabled={disabled}
-            className={inputClassName}
-            {...mainProps}
-            id={value_id}
-            value={value}
-          />
+          <EtsBootstrap.InputGroup.Group has_right_addon={Boolean(addonRight)}>
+            <StringFieldUi
+              type="text"
+              disabled={disabled}
+              className={inputClassName}
+              {...mainProps}
+              id={value_id}
+              value={value}
+            />
+            {
+              addonRight && (
+                <EtsBootstrap.InputGroup.Addon>
+                  {addonRight}
+                </EtsBootstrap.InputGroup.Addon>
+              )
+            }
+          </EtsBootstrap.InputGroup.Group>
         </div>
         <ErrorsBlock
           showError={showError}

@@ -138,6 +138,7 @@ const TdConsumption: React.FC<Props> = React.memo(
           onChange={handleChangeWrap}
           disabled={disabled || is_consumption_locked}
           addonRight={consumable_material_measure_unit_name}
+          value_string={value}
         />
         {
           !disabled && can_edit && (

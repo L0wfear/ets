@@ -78,6 +78,7 @@ const TdNormValue: React.FC<Props> = React.memo(
         onChange={handleChangeWrap}
         disabled={disabled || true}
         addonRight={!is_without_norm ? getAddon(municipal_facility_measure_unit_name, consumable_material_measure_unit_name) : null}
+        value_string={value}
       />
     );
   },

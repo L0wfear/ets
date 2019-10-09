@@ -6,6 +6,9 @@ import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 export const SingleUiElementWrapperStyled = styled.div`
   margin-bottom: 10px;
   position: relative;
+  input[type=number], input[type=string] {
+    width: 100%;
+  }
   /* ${SelectFieldUi} {
     border-radius: 0px;
   } */

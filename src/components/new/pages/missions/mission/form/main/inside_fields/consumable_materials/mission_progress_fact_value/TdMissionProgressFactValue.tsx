@@ -56,7 +56,7 @@ const TdMissionProgressFactValue: React.FC<Props> = React.memo(
 
     return (
       <ExtField
-        type="number"
+        type="string"
         id={metaMissionProgressFactValue.key}
         label={false}
         value={value}

@@ -1,7 +1,7 @@
 import { ConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/@types/consumableMaterial';
 import consumableMaterialPermissions from 'components/new/pages/nsi/data_for_calculation/pages/consumable_material/_config-data/permissions';
 import { ConfigFormData } from 'redux-main/reducers/modules/form_data_record/@types/form_data_record';
-import { promiseSubmitConsumableMaterial } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
+import { promiseSubmitConsumableMaterial, promiseGetConsumableMaterialById } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
 import { getRequiredFieldMessage, getRequiredFieldNumberMoreThen } from 'components/@next/@utils/getErrorString/getErrorString';
 import { floatValidate } from 'components/@next/@form/validate/number/numberValidate';
 import { ReduxState } from 'redux-main/@types/state';
@@ -59,6 +59,7 @@ export const metaConsumableMaterial: ConfigFormData<ConsumableMaterial> = {
   bsSizeForm: 'large',
   permissions: consumableMaterialPermissions,
   handleSubmitPromise: promiseSubmitConsumableMaterial,
+  getOneRecordPromise: promiseGetConsumableMaterialById,
   schema: {
     header: {
       title: {

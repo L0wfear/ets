@@ -12,10 +12,20 @@ export const getToConfig = (): TypeConfigData<ConsumableMaterialWrap> => {
       getRegistryData: {
         entity: ConsumableMaterialService._path,
         format: 'consumable_material_wrap',
+        payload: {
+          is_actual: true,
+        },
       },
       removeOneData: {
         entity: ConsumableMaterialService._path,
         uniqKeyLikeQueryString: false,
+      },
+      getBlobData: {
+        entity: ConsumableMaterialService._path,
+        payload: {
+          format: 'xls',
+          is_actual: true,
+        },
       },
     },
     registryKey,

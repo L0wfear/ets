@@ -75,3 +75,10 @@ export const promiseUpdateConsumableMaterial = async (consumableMaterial: Consum
 
   return result;
 };
+
+export const promiseGetConsumableMaterialById = async (id: ConsumableMaterial['id']) => {
+  const response = await ConsumableMaterialService.path(id).get();
+  const consumable_material: ConsumableMaterial = get(response, 'result.rows.0', null);
+
+  return consumable_material;
+};

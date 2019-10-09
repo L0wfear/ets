@@ -190,12 +190,12 @@ export const metaDutyMission: ConfigFormData<DutyMission> = {
           type: 'valueOfArray',
           required: true,
           dependencies: [
-            (value, { structure_id }, reduxState) => {
+            (foreman_id, { structure_id }, reduxState) => {
               const employeeIndex = getEmployeeState(reduxState).employeeIndex;
 
-              if (value && Object.keys(employeeIndex).length) {
+              if (foreman_id && Object.keys(employeeIndex).length) {
                 const isPermitted = isPermittedEmployeeForDutyMission(
-                  employeeIndex[value],
+                  employeeIndex[foreman_id],
                   structure_id,
                 );
 

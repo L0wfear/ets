@@ -12,6 +12,7 @@ import { parseFilterObject } from 'redux-main/reducers/modules/missions/utils';
 import { DutyMissionArchiveService } from 'api/missions';
 import { DUTY_MISSION_STATUS_LABELS } from './constants';
 import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
+import { isNullOrUndefined } from 'util';
 
 export const getFrontDutyMission = (dutyMissionRaw: Omit<DutyMission, 'status_name' | 'brigade_employee_id_list_fio' | 'brigade_employee_id_list_id'>): DutyMission => {
   const brigade_employee_id_list = get(dutyMissionRaw, 'brigade_employee_id_list', []) || [];
@@ -122,12 +123,13 @@ export const promiseUpdateDutyMission = async (payloadOwn: Partial<DutyMission>)
 
 export const promiseSubmitDutyMission = async (missionOwn: DutyMission) => {
   const mission = cloneDeep(missionOwn);
+
   try {
     mission.consumable_materials = mission.consumable_materials.map((rowData) => ({
       ...rowData,
-      plan_value: getNumberValueFromSerch(rowData.plan_value),
-      fact_value: getNumberValueFromSerch(rowData.fact_value),
-      consumption: getNumberValueFromSerch(rowData.consumption),
+      plan_value: isNullOrUndefined(rowData.plan_value) ? rowData.plan_value : getNumberValueFromSerch(rowData.plan_value),
+      fact_value: isNullOrUndefined(rowData.fact_value) ? rowData.fact_value : getNumberValueFromSerch(rowData.fact_value),
+      consumption: isNullOrUndefined(rowData.consumption) ? rowData.consumption : getNumberValueFromSerch(rowData.consumption),
     }));
   } catch {
     //

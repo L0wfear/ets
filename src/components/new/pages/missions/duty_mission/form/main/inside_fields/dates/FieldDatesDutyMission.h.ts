@@ -36,7 +36,7 @@ export type OwnPropsFieldDatesDutyMission = {
   DUTY_MISSION_IS_ASSIGNED?: boolean;
   DUTY_MISSION_IS_COMPLETED?: boolean;
 
-  onChange: (obj: Partial<Pick<DutyMission, 'plan_date_start' | 'plan_date_end' | 'fact_date_start' | 'fact_date_end'>>) => void;
+  onChange: (obj: Partial<Pick<DutyMission, 'plan_date_start' | 'plan_date_end' | 'fact_date_start' | 'fact_date_end'>>) => Promise<any>;
 
   page: string;
   path: string;

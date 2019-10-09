@@ -168,7 +168,7 @@ export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormK
           ? formState.norm_ids[0]
           : formState.norm_id
       );
-      const date_start = formState.date_start || formState.plan_date_start;
+      const date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
 
       const passes_count_number = Number(formState.passes_count);
       const passes_count = (
@@ -206,16 +206,7 @@ export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormK
         dispatch(actionConsumableMaterialCountMissionGetAndSetInStore(payload, meta));
       }
     },
-    [
-      // formState.date_start,
-      // formState.plan_date_start,
-      // formState.norm_id,
-      // formState.passes_count,
-      // formState.municipal_facility_id,
-      // formState.route_id,
-      // formState.id,
-      // formState.order_operation_id,
-    ],
+    [],
   );
 };
 
@@ -264,8 +255,8 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
       );
 
       const prev_municipal_facility_id = formState.municipal_facility_id;
-      const date_start = newPartialFormState.date_start || newPartialFormState.plan_date_start;
-      const prev_date_start = formState.date_start || formState.plan_date_start;
+      const date_start = newPartialFormState.date_start || newPartialFormState.fact_date_start || newPartialFormState.plan_date_start;
+      const prev_date_start = formState.date_start || formState.fact_date_start || formState.plan_date_start;
       const prev_route_id = formState.route_id;
 
       const passes_count_number = Number(newPartialFormState.passes_count);

@@ -53,9 +53,10 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
     }
   }
 
-  handleChangeDateStart = async (field: string, date) => {
+  handleChangeDateStart = async (field: keyof Pick<PropsFieldDatesDutyMission, 'fact_date_start' | 'plan_date_start'>, date) => {
     if (this.props.formDataKey === 'duty_mission') {
       const {
+        fact_date_start,
         plan_date_start,
         norm_id,
         municipal_facility_id,
@@ -65,7 +66,7 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
         order_operation_id,
       } = this.props;
 
-      const date_start = date || plan_date_start;
+      const date_start = date || fact_date_start || plan_date_start;
 
       if (!date_start && consumable_materials[0]) {
         try {
@@ -76,15 +77,15 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
         } catch {
             // реакт виджет хранит своё состояние
             // если не менять пропсов, то он показывает старое время
-            const { plan_date_start: old } = this.props;
-            await this.props.onChange({ plan_date_start: createValidDateTime(addSecond(old, 60)) });
+            const { [field]: old } = this.props;
+            await this.props.onChange({ [field]: createValidDateTime(addSecond(old, 60)) });
 
-            setImmediate(() => this.props.onChange({ plan_date_start: old }));
+            setImmediate(() => this.props.onChange({ [field]: old }));
             return;
         }
       }
 
-      if (norm_id && municipal_facility_id && (date_start) && route_id && consumable_materials[0]) {
+      if (norm_id && municipal_facility_id && date_start && route_id && consumable_materials[0]) {
         const payload: Parameters<typeof actionLoadConsumableMaterialCountMission>[0] = {
           type: 'duty_mission',
           norm_id,
@@ -100,14 +101,13 @@ class FieldDatesDutyMission extends React.PureComponent<PropsFieldDatesDutyMissi
           payload.order_operation_id = order_operation_id;
         }
 
-        const { data: ConsumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, this.props));
-        const ConsumableMaterialCountMissionListIndex = keyBy(ConsumableMaterialCountMissionList, 'consumable_material_id');
+        const { data: consumableMaterialCountMissionList } = await this.props.dispatch(actionLoadConsumableMaterialCountMission(payload, this.props));
+        const consumableMaterialCountMissionListIndex = keyBy(consumableMaterialCountMissionList, 'consumable_material_id');
 
         const triggerOnAsk = (
-          ConsumableMaterialCountMissionList.length !== consumable_materials.length
-          || consumable_materials.some((rowData) => (
-            !ConsumableMaterialCountMissionListIndex[rowData.consumable_material_id]
-            || ConsumableMaterialCountMissionListIndex[rowData.consumable_material_id].consumable_material_norm_id !== rowData.consumable_material_norm_id
+          consumable_materials.some((rowData) => (
+            !consumableMaterialCountMissionListIndex[rowData.consumable_material_id]
+            || consumableMaterialCountMissionListIndex[rowData.consumable_material_id].consumable_material_norm_id !== rowData.consumable_material_norm_id
           ))
         );
 

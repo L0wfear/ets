@@ -8,6 +8,7 @@ import {
 import { checkInternalErrors } from 'utils/raven';
 import getNotifyCheckVersion from './notify_check_version/notifyCheckVersion';
 import RequestWarningError from 'utils/errors/RequestWarningError';
+import { isString } from 'util';
 
 let headers = {};
 
@@ -46,9 +47,18 @@ function checkResponse(url, response, body, method) {
   );
   const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
 
-  const warnings = get(body, 'warnings') || [];
-  const info = get(body, 'info') || [];
-  const errors = get(body, 'errors') || [];
+  let warnings = get(body, 'warnings') || [];
+  if (isString(warnings)) {
+    warnings = [warnings];
+  }
+  let info = get(body, 'info') || [];
+  if (isString(info)) {
+    info = [info];
+  }
+  let errors = get(body, 'errors') || [];
+  if (isString(errors)) {
+    errors = [errors];
+  }
 
   if (
     response.status === 403
@@ -107,9 +117,6 @@ function checkResponse(url, response, body, method) {
     throw error;
   } else {
     let errorThrow = null;
-    const warnings = get(body, 'warnings') || [];
-    const info = get(body, 'info') || [];
-    const errors = get(body, 'errors') || [];
 
     if (warnings.length) {
       warnings.forEach((w) => {

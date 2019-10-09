@@ -78,7 +78,6 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
     const handleChange = useForm.useFormDataHandleChange<Mission>(props.formDataKey);
     const consumable_materials = useForm.useFormDataFormStatePickValue<Mission, Mission['consumable_materials']>(props.formDataKey, 'consumable_materials');
     const status = useForm.useFormDataFormStatePickValue<Mission, Mission['status']>(props.formDataKey, 'status');
-    const for_column = useForm.useFormDataFormStatePickValue<Mission, Mission['for_column']>(props.formDataKey, 'for_column');
     const hasConsumableMateriaForMission = etsUseSelector((state) => Boolean(getSomeUniqState(state).consumableMaterialCountMissionList[0]));
     const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(props.formDataKey, 'is_mission_progress_countable');
     const IS_NOT_ASSIGN_OR_IS_ASSIGN_WITH_NOT_ACTIVE_WAYBILL = useMissionFormDataIsNotAssignOrIsAssignWithNotActiveWaybill(props.formDataKey);
@@ -155,7 +154,7 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
           formDataKey={props.formDataKey}
         />
         {
-          !for_column && !hasConsumableMateriaForMission && !consumable_materials[0] && (
+          !hasConsumableMateriaForMission && !consumable_materials[0] && (
             <ErrorsBlock error="Для указанных технологической операции и элемента не указаны расходные материалы" />
           )
         }

@@ -163,14 +163,10 @@ export const useMissionDataLoadConsumableMateriaForMission = (formDataKey: FormK
 
   React.useEffect(
     () => {
-      const norm_id = formDataKey === 'mission'
-      ? (
-        formState.norm_ids.length > 1
-          ? null
-          : formState.norm_ids[0]
-      )
-      : (
-        formState.norm_id
+      const norm_id = (
+        formDataKey === 'mission'
+          ? formState.norm_ids[0]
+          : formState.norm_id
       );
       const date_start = formState.date_start || formState.plan_date_start;
 
@@ -255,25 +251,17 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         ...partialObj,
       };
 
-      const prev_norm_id = formDataKey === 'mission'
-        ? (
-            formState.norm_ids.length > 1
-              ? null
-              : formState.norm_ids[0]
-        )
-        : (
-          formState.norm_id
-        );
+      const prev_norm_id = (
+        formDataKey === 'mission'
+          ? formState.norm_ids[0]
+          : formState.norm_id
+      );
 
-      const norm_id = formDataKey === 'mission'
-        ? (
-            newPartialFormState.norm_ids.length > 1
-              ? null
-              : newPartialFormState.norm_ids[0]
-        )
-        : (
-          newPartialFormState.norm_id
-        );
+      const norm_id = (
+        formDataKey === 'mission'
+          ? newPartialFormState.norm_ids[0]
+          : newPartialFormState.norm_id
+      );
 
       const prev_municipal_facility_id = formState.municipal_facility_id;
       const date_start = newPartialFormState.date_start || newPartialFormState.plan_date_start;

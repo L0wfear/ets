@@ -745,7 +745,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                   disabled={!props.isPermitted}
                 />
               </EtsBootstrap.Col>
-              <EtsBootstrap.Col md={6}>
+              <EtsBootstrap.Col md={6} mdOffset={6}>
                 <ExtField
                   id="on_base"
                   type="boolean"

@@ -76,6 +76,13 @@ const TdConsumption: React.FC<Props> = React.memo(
             return;
           }
 
+          const { consumable_material_id: consumable_material_id_index } = changed_consumable_materials;
+          if (consumable_material_id_index in consumableMateriaForMissionIndex) {
+            consumableMateriaForMissionIndex[consumable_material_id_index] = {
+              ...changed_consumable_materials,
+            };
+          }
+
           changed_consumable_materials = mergeConsumableMaterials(
             [changed_consumable_materials],
             consumableMateriaForMissionIndex,

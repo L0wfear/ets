@@ -24,6 +24,7 @@ import { WaybillClosedInfoDataType } from 'components/new/pages/dashboard/redux-
 import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
+import { get } from 'lodash';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -191,9 +192,18 @@ export const dashboardLoadCardData = (path: string, payload = {}) => ({
         result: defAns[path.split('/').join('_')],
       };
     })
-    .then(({ result }) => ({
-      [path.split('/').join('_')]: result,
-    }),
+    .then((res) => {
+      const result = get(res, 'result');
+      if (result) {
+        return ({
+          [path.split('/').join('_')]: result,
+        });
+      } else {
+        return {
+          result: defAns[path.split('/').join('_')],
+        };
+      }
+    },
   ),
 });
 

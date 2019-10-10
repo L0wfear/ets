@@ -79,22 +79,42 @@ const TdFactValue: React.FC<Props> = React.memo(
 
         if (!changed_consumable_materials.is_fact_value_locked) {
           try {
-            await global.confirmDialog({
-              title: 'Внимание!',
-              body: 'Объем работы (факт) не будет заполняться автоматически данными по ГЛОНАСС.\nПродолжить?',
-            });
+            if (props.formDataKey !== 'duty_mission') {
+              await global.confirmDialog({
+                title: 'Внимание!',
+                body: 'Объем работы (факт) не будет заполняться автоматически данными по ГЛОНАСС. Продолжить?',
+              });
+            } else {
+              await global.confirmDialog({
+                title: 'Внимание!',
+                body: 'Объем работ (факт) не будет заполняться автоматически данными из поля Объем работы (план). Продолжить?',
+              });
+            }
           } catch {
             return;
           }
         } else {
-          if (changed_consumable_materials.mission_progress_fact_value !== changed_consumable_materials.fact_value) {
-            try {
-              await global.confirmDialog({
-                title: 'Внимание!',
-                body: 'Объем работы (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работы(факт)" будут очищены.\n Продолжить?',
-              });
-            } catch {
-              return;
+          if (props.formDataKey !== 'duty_mission') {
+            if (changed_consumable_materials.mission_progress_fact_value !== changed_consumable_materials.fact_value) {
+              try {
+                await global.confirmDialog({
+                  title: 'Внимание!',
+                  body: 'Объем работы (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работы(факт)" будут очищены. Продолжить?',
+                });
+              } catch {
+                return;
+              }
+            }
+          } else {
+            if (changed_consumable_materials.plan_value !== changed_consumable_materials.fact_value) {
+              try {
+                await global.confirmDialog({
+                  title: 'Внимание!',
+                  body: 'Объем работ (факт) будет заполняться автоматически данными из поля Объем работы (план). Ранее введенные данные в поле Объем работ (факт) будут очищены. Продолжить?',
+                });
+              } catch {
+                return;
+              }
             }
           }
           const { consumable_material_id: consumable_material_id_index } = changed_consumable_materials;
@@ -140,7 +160,7 @@ const TdFactValue: React.FC<Props> = React.memo(
     );
 
     const disabled = !isPermitted || is_fact_value_locked || !consumable_material_id || IS_COMPLETED;
-    const can_edit = get(consumableMateriaForMissionIndex[consumable_material_id], 'is_fact_value_locked');
+    const can_edit = get(consumableMateriaForMissionIndex[consumable_material_id], 'is_fact_value_locked') || true;
 
     return (
       <FlexContainer alignItems="end">
@@ -156,7 +176,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           value_string={value}
         />
         {
-          props.formDataKey !== 'duty_mission' && isMissionFormDataIsNotCompleted && can_edit && (
+          isMissionFormDataIsNotCompleted && can_edit && (
             <EtsBootstrap.Button disabled={!isPermitted} onClick={handleChangeLock}>
               <EtsBootstrap.Glyphicon glyph={!is_fact_value_locked ? "user" : "lock"} />
             </EtsBootstrap.Button>

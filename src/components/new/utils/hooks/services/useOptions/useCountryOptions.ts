@@ -14,12 +14,12 @@ export const getCountryOptions = (listData: { list: Country[], isLoading?: boole
   };
 };
 
-const useCountryOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '') => {
+const useCountryOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '', keyValue?: string) => {
   const listData = useCountryList(page, path);
 
   const countryOptions = React.useMemo(
     () => {
-      return getCountryOptions(listData, 'id');
+      return getCountryOptions(listData, keyValue ? keyValue : 'id');
     },
     [listData],
   );

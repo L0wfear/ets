@@ -41,8 +41,8 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     const [additionalInfoMainShow, SetAdditionalInfoMainShow] = React.useState(false);
     const [defectShow, SetDefectShow] = React.useState(false);
     const [inspectionConfigOptions, setInspectionConfigOptions] = React.useState(null);
-    const countryOptionData = useCountryOptions();
-    const engineTypeOptionData = useAutobaseEngineTypeOptions();
+    const countryOptionData = useCountryOptions(props.page, props.path, 'short_name');
+    const engineTypeOptionData = useAutobaseEngineTypeOptions(props.page, props.path, 'name');
     const dispatch = etsUseDispatch();
     const inspectionConfig = etsUseSelector((reduxState) => get( getSomeUniqState(reduxState), `inspectionConfig`, null));
 

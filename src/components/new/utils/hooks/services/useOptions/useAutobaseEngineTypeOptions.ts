@@ -14,11 +14,11 @@ export const getAutobaseEngineTypeOptions = (listData: { list: EngineType[], isL
   };
 };
 
-const useAutobaseEngineTypeOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '') => {
+const useAutobaseEngineTypeOptions = (page: LoadingMeta['page'] = '', path: LoadingMeta['path'] = '', keyValue?: string ) => {
   const listData = useAutobaseEngineTypeList(page, path);
 
   const optionData = React.useMemo(
-    () => getAutobaseEngineTypeOptions(listData, 'id'),
+    () => getAutobaseEngineTypeOptions(listData, keyValue ? keyValue : 'id'),
     [listData],
   );
   return optionData;

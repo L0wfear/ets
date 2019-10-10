@@ -357,3 +357,47 @@ export const getOptionsConfigByObject = (optionsObj: InspectionConfig) => {
 
   return null;
 };
+
+type objectDifferReturn = {
+  type: string;
+  field: string;
+  whichOne: string;
+  values: Record<string, any>;
+}[];
+/**
+ * Выявление различий между двумя объектами с учётом вложенности
+ * @param obj1 объект 1
+ * @param obj2 объект 2
+ */
+export const objectDiffer = (obj1, obj2): objectDifferReturn => {
+  const diffs = [];
+  for (const prop in obj1) {
+      if (undefined === typeof obj2[prop]
+          || obj2[prop] !== obj1[prop]) {
+          diffs.push({
+              type: (obj2[prop] !== undefined ? "Not equal" : "Undefined"),
+              field: prop,
+              whichOne: "Object 2",
+              values: {
+                  object1: obj1[prop],
+                  object2: obj2[prop],
+              },
+          });
+      }
+  }
+  for (const prop in obj2) {
+      if (undefined === typeof obj1[prop]
+          || obj1[prop] !== obj2[prop]) {
+          diffs.push({
+              type: (obj1[prop] !== undefined ? "Not equal" : "Undefined"),
+              field: prop,
+              whichOne: "Object 1",
+              values: {
+                  object1: obj1[prop],
+                  object2: obj2[prop],
+              },
+          });
+      }
+  }
+  return diffs;
+};

@@ -34,8 +34,6 @@ const default_headcount: InspectCarsCondition['data']['headcount'] = {
   staff_mechanics: null,
   list_drivers: null,
   list_mechanics: null,
-  staffing_drivers: null,
-  staffing_mechanics: null,
 };
 
 const default_cars_use: InspectCarsCondition['data']['cars_use'] = {

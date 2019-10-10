@@ -22,6 +22,7 @@ import { metaCleaningRate } from 'redux-main/reducers/modules/form_data_record/f
 import { metaMission } from 'redux-main/reducers/modules/form_data_record/form_data/mission/form_meta';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { metaDutyMission } from 'redux-main/reducers/modules/form_data_record/form_data/duty_mission/form_meta';
+import { get } from 'lodash';
 
 export const removeEmptyString = <F extends Record<string, any>>(formState: F) => {
   Object.keys(formState).forEach((key: keyof F) => {
@@ -46,8 +47,8 @@ export const getFormatedValue = <F extends Record<string, any>>(fieldMetaData: S
   if (fieldMetaData) {
     switch (fieldMetaData.type) {
       case 'number':
-        if (strick) { // При сабмите преобразует в число, данная функция вызываается в handleChange
-          return value ? Number(value) : null;
+        if (strick || get(fieldMetaData, 'strick')) { // При сабмите преобразует в число, данная функция вызываается в handleChange
+          return (value || value === 0) ? Number(value) : null;
         }
         const valueNumberString = value;
 

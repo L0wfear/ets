@@ -24,6 +24,9 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
       isActiveInspect,
     } = props;
 
+    const [staffing_drivers, setStaffing_drivers] = React.useState();
+    const [staffing_mechanics, setStaffing_mechanics] = React.useState();
+
     const handleChange = React.useCallback(
       (key, event) => {
         props.onChange({
@@ -37,23 +40,16 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
     );
 
     React.useEffect( () => {
-      let {
-        staffing_drivers,
-        staffing_mechanics,
-      } = state;
-      staffing_drivers = state.staff_drivers
-        ? Number((state.list_drivers / state.staff_drivers * 100).toFixed())
-        : staffing_drivers;
-      staffing_mechanics = state.staff_mechanics
-        ? Number((state.list_mechanics / state.staff_mechanics * 100).toFixed())
-        : staffing_mechanics;
-      props.onChange({
-        headcount: {
-          ...props.headcount,
-          staffing_drivers,
-          staffing_mechanics,
-        },
-      });
+      setStaffing_drivers(
+        state.staff_drivers
+          ? Number((state.list_drivers / state.staff_drivers * 100).toFixed())
+          : staffing_drivers,
+      );
+      setStaffing_mechanics(
+        state.staff_mechanics
+          ? Number((state.list_mechanics / state.staff_mechanics * 100).toFixed())
+          : staffing_mechanics,
+      );
     }, [state.staff_drivers, state.list_drivers, state.staff_mechanics, state.list_mechanics ]);
 
     return (
@@ -126,10 +122,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               id="staffing_drivers"
               type="number"
               label="Водителей, %"
-              value={state.staffing_drivers}
-              onChange={handleChange}
+              value={staffing_drivers}
               boundKeys="staffing_drivers"
-              error={errors.staffing_drivers}
               disabled
             />
           </EtsBootstrap.Col>
@@ -138,10 +132,8 @@ const BlockCarsConditionHeadCountList: React.FC<BlockCarsConditionHeadCountListP
               id="staffing_mechanics"
               type="number"
               label="Механизаторов, %"
-              value={state.staffing_mechanics}
-              onChange={handleChange}
+              value={staffing_mechanics}
               boundKeys="staffing_mechanics"
-              error={errors.staffing_mechanics}
               disabled
             />
           </EtsBootstrap.Col>

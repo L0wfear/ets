@@ -149,7 +149,6 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           value={props.cars_cnt}
           readOnly
           inline
-          error="hello"
         />
         <ErrorsBlock
           error={props.error_checked_cars_cnt}

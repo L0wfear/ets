@@ -66,8 +66,6 @@ export const defaultInspectCarsCondition: InspectCarsCondition = {
       staff_mechanics: null,
       list_drivers: null,
       list_mechanics: null,
-      staffing_drivers: null,
-      staffing_mechanics: null,
     },
     cars_use: {
       waybill_issue_log_exists: '',

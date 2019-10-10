@@ -71,10 +71,12 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
             setCarsConditionCarsList(result);
             const checked_cars_cnt = result.reduce((summ, { was_resaved }) => summ + Number(was_resaved), 0);
             const cars_cnt = result.length - checked_cars_cnt;
-            props.handleChange({
-              cars_cnt,
-              checked_cars_cnt,
-            });
+            if (state.checked_cars_cnt !== checked_cars_cnt || state.cars_cnt !== cars_cnt) { // что бы небыло изменения в formState DITETS-7050
+              props.handleChange({
+                cars_cnt,
+                checked_cars_cnt,
+              });
+            }
           } catch (error) {
             console.error(error); //tslint:disable-line
           }

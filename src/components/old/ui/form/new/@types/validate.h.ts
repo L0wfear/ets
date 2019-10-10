@@ -59,6 +59,7 @@ export type StringPropertie<K, F, P> = CommonPropertie<K, F, P> & {
 
 export type NumberPropertie<K, F, P> = CommonPropertie<K, F, P> & {
   type: ExtFieldNumber<K>['type'];
+  strick?: boolean; // не преобразовывать в строку, при изменении(handleChange) в withForm
   minLength?: number;
   maxLength?: number;
   min?: number;

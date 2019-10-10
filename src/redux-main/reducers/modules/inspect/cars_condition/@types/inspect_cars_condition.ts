@@ -19,8 +19,6 @@ export type HeadcountList = {       // Штатная и списочная чи
   staff_mechanics: number;
   list_drivers: number;
   list_mechanics: number;
-  staffing_drivers: number;
-  staffing_mechanics: number;
 };
 
 export type CarsUse = {

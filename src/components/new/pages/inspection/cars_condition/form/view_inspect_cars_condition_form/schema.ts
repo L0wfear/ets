@@ -221,24 +221,6 @@ const headCountListSchema: SchemaType<InspectCarsCondition['data']['headcount'],
       min: 0,
       max: 9999,
     },
-    staffing_drivers: {
-      validateIf: {
-        type: 'has_data',
-        path: 'checks_period',
-        reverse: true,
-      },
-      type: 'number',
-      title: 'Водителей',
-    },
-    staffing_mechanics: {
-      validateIf: {
-        type: 'has_data',
-        path: 'checks_period',
-        reverse: true,
-      },
-      type: 'number',
-      title: 'Механизаторов',
-    },
   },
 };
 
@@ -276,6 +258,7 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
     cars_cnt: {
       type: 'number',
       title: 'Количество ТС',
+      strick: true,
     },
     commission_members: {
       type: 'multiValueOfArray',
@@ -310,6 +293,7 @@ export const inspectcarsConditionormSchema: SchemaType<InspectCarsCondition, Pro
     checked_cars_cnt: {
       type: 'number',
       title: 'Количество проверенных ТС',
+      strick: true,
       dependencies: [
         (_, { cars_cnt }, props) => {
           if (props.type === INSPECT_TYPE_FORM.list && process.env.STAND === 'prod') {

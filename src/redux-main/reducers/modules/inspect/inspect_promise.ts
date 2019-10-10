@@ -5,6 +5,7 @@ import {
 } from 'lodash';
 import { InspectAutobase } from './autobase/@types/inspect_autobase';
 import { TypeOfInspect } from './@types/inspect_reducer';
+import { InspectCarsCondition } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 
 type PromiseCreateInspectionParameterPayload = {
   base_id: number;
@@ -86,4 +87,22 @@ export const promiseGetBlobActInspection = async (inspection_id: number) => {
   }
 
   return response;
+};
+
+export const promiseUpdatePreparePlan = async (id: number, payload: {types_cars: InspectCarsCondition['data']['types_cars'], types_harvesting_unit: InspectCarsCondition['data']['types_harvesting_unit']}) => {
+  const newPayload = {
+    ...payload,
+  };
+
+  const response = await InspectRegistryService.path(`${id}/cars_preparation_plan`).put(
+    {
+      ...newPayload,
+    },
+    false,
+    'json',
+  );
+
+  const inspectAutobase = get(response, 'result.rows.0', null);
+
+  return inspectAutobase;
 };

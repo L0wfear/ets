@@ -12,6 +12,8 @@ import { HrDelimiter, FooterEnd } from 'global-styled/global-styled';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
+import { actionUpdatePreparePlan } from 'redux-main/reducers/modules/inspect/inspect_actions';
+import { getNumberValueFromSerch } from 'components/new/utils/hooks/useStateUtils';
 
 type PreparePlanProps = {
   types_cars: InspectCarsCondition['data']['types_cars'];
@@ -33,6 +35,9 @@ const PreparePlan: React.FC<Props> = (props) => {
   const [typesListOpt, setTypesListOpt] = React.useState([]);
   const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(true);
   const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(true);
+  const dispatch = etsUseDispatch();
+
+  const inspectId = getNumberValueFromSerch(props.match.params.id);
 
   const handleClose = React.useCallback(
     () => {
@@ -46,12 +51,26 @@ const PreparePlan: React.FC<Props> = (props) => {
 
   const handleSave = React.useCallback(
     () => {
-      alert('Хендлер сохранения в разработке!');
-      handleClose();
+      dispatch(
+        actionUpdatePreparePlan(
+          inspectId,
+          {
+            page: props.page,
+          },
+          {
+            types_cars: props.types_cars,
+            types_harvesting_unit: props.types_harvesting_unit,
+          },
+        ),
+      ).then(() => {
+        handleClose();
+      });
     },
-    [],
+    [
+      props.types_cars, props.page, inspectId, props.match.params,
+      props.match.url, props.location.search, props.setParams, props.types_harvesting_unit,
+    ],
   );
-  const dispatch = etsUseDispatch();
   // componentDidMount
   React.useEffect(() => {
     dispatch(

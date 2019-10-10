@@ -34,7 +34,7 @@ const TdFactValue: React.FC<Props> = React.memo(
               const fact_value = get(event, 'target.value', event);
               const fact_value_like_number = Number(fact_value);
               let consumption = null;
-              if (isNumber(rowData.norm_value) && !isNaN(fact_value_like_number)) {
+              if (rowData.is_consumption_locked && isNumber(rowData.norm_value) && !isNaN(fact_value_like_number)) {
                 consumption = Number((fact_value * rowData.norm_value).toFixed(3));
               }
 
@@ -96,6 +96,13 @@ const TdFactValue: React.FC<Props> = React.memo(
             } catch {
               return;
             }
+          }
+          const { consumable_material_id: consumable_material_id_index } = changed_consumable_materials;
+          if (consumable_material_id_index in consumableMateriaForMissionIndex) {
+            consumableMateriaForMissionIndex[consumable_material_id_index] = {
+              ...changed_consumable_materials,
+              fact_value: consumableMateriaForMissionIndex[consumable_material_id_index].fact_value,
+            };
           }
           // compare glonass/ fa
           changed_consumable_materials = mergeConsumableMaterials(

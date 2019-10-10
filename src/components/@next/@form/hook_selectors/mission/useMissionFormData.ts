@@ -35,7 +35,7 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
           }
         }
 
-        let consumption = null;
+        let consumption = rowData.consumption;
         if (rowDataInIndex.is_consumption_locked && isNumber(rowDataInIndex.norm_value) && isNumber(fact_value)) {
           consumption = Number((fact_value * rowDataInIndex.norm_value).toFixed(3));
         }

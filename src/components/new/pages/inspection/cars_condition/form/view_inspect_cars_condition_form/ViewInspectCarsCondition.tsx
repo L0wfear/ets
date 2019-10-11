@@ -29,6 +29,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
     const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
+    const [awaitCarsCnt, setAwaitCarsCnt] = React.useState(0);
 
     const {
       formState: state,
@@ -70,10 +71,9 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
             const result = await props.autobaseGetCarsConditionCars(state.id, { page, path });
             setCarsConditionCarsList(result);
             const checked_cars_cnt = result.reduce((summ, { was_resaved }) => summ + Number(was_resaved), 0);
-            const cars_cnt = result.length - checked_cars_cnt;
-            if (state.checked_cars_cnt !== checked_cars_cnt || state.cars_cnt !== cars_cnt) { // что бы небыло изменения в formState DITETS-7050
+            setAwaitCarsCnt(result.length - checked_cars_cnt);
+            if (state.checked_cars_cnt !== checked_cars_cnt) { // что бы небыло изменения в formState DITETS-7050
               props.handleChange({
-                cars_cnt,
                 checked_cars_cnt,
               });
             }
@@ -189,7 +189,7 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
               isPermitted={isPermittedChangeListParams}
               isActiveInspect={isActiveInspect}
               carsConditionCarsList={carsConditionCarsList}
-              cars_cnt={state.cars_cnt}
+              awaitCarsCnt={awaitCarsCnt}
               checked_cars_cnt={state.checked_cars_cnt}
               error_checked_cars_cnt={errors.checked_cars_cnt}
               loadingPage={props.loadingPage}

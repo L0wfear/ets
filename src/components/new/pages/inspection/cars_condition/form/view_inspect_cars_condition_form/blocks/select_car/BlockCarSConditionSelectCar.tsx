@@ -15,7 +15,7 @@ import { HrDelimiter } from 'global-styled/global-styled';
 
 type BlockCarsConditionSelectCarOwnProps = {
   monitoring_kind: InspectCarsCondition['monitoring_kind'];
-  cars_cnt: InspectCarsCondition['cars_cnt'];
+  awaitCarsCnt: number;
   checked_cars_cnt: InspectCarsCondition['checked_cars_cnt'];
   error_checked_cars_cnt: string;
   carsConditionCarsList: CarsConditionCars[];
@@ -146,7 +146,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
         <ExtField
           type="string"
           label="Ожидают проверки:"
-          value={props.cars_cnt}
+          value={props.awaitCarsCnt}
           readOnly
           inline
         />

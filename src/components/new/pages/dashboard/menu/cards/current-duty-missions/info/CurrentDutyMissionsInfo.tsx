@@ -18,11 +18,6 @@ import {
 import { LinkToOpenRouteInfoForm } from 'components/new/pages/routes_list/buttons/buttons';
 
 import {
-  DispatchPropsCurrentMissionInfo,
-  PropsCurrentMissionInfo,
-  StateCurrentMissionInfo,
-} from 'components/new/pages/dashboard/menu/cards/current-duty-missions/info/@types/CurrentDutyMissionsInfo.h';
-import {
   RightButtonBlockContainer,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
@@ -31,6 +26,28 @@ import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_config-data/permissions';
 
+import {
+  CurrentDutyMissionsInfoDataType,
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-duty-mission.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+
+type StateProps = {
+  infoData: CurrentDutyMissionsInfoDataType;
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {};
+type PropsCurrentMissionInfo = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+type StateCurrentMissionInfo = {
+  showRouteInfoForm: boolean,
+  showMissionRejectForm: boolean,
+};
+
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
     showRouteInfoForm: false,
@@ -38,7 +55,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   };
 
   refreshCard = () => (
-    this.props.loadData()
+    this.props.dispatch(dashboardLoadCurrentDutyMissions())
   )
   openRouteInfoForm = () => {
     this.setState({
@@ -51,8 +68,10 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
     });
   }
 
-  handleClose: React.MouseEventHandler<HTMLDivElement> = () => {
-    this.props.handleClose();
+  handleClose = () => {
+    this.props.dispatch(
+      dashboardLoadMissionDataForCurrentMission(null),
+    );
   }
 
   completeDutyMission = () => {
@@ -60,11 +79,12 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   rejectDutyMission = () => {
-    this.props.actionGetDutyMissionById(
-      this.props.infoData.duty_mission_data.duty_mission_id,
-      { page: 'dashboard' },
-    )
-      .then((duty_mission) => {
+    this.props.dispatch(
+      missionsActions.actionGetDutyMissionById(
+        this.props.infoData.duty_mission_data.duty_mission_id,
+        { page: 'dashboard' },
+      ),
+    ).then((duty_mission) => {
         // надо уйти от этого
         // react 16 Portal
         return global.confirmDialog({
@@ -105,26 +125,27 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
 
   updateDutyMission = (newProps) => (
     (
-      newProps.number ?
-      Promise.resolve(newProps)
-      :
-      this.props.actionGetDutyMissionById(
-        this.props.infoData.duty_mission_data.duty_mission_id,
-        { page: 'dashboard' },
-      )
-    )
-      .then((duty_mission) => {
-        if (duty_mission) {
-          this.props.actionUpdateDutyMission(
-            {
-              ...duty_mission,
-              ...newProps,
-            },
+      newProps.number
+        ? Promise.resolve(newProps)
+        : this.props.dispatch(
+          missionsActions.actionGetDutyMissionById(
+            this.props.infoData.duty_mission_data.duty_mission_id,
             { page: 'dashboard' },
-          )
-          .then(() => {
+          ),
+        )
+    ).then((duty_mission) => {
+        if (duty_mission) {
+          this.props.dispatch(
+            missionsActions.actionUpdateDutyMission(
+              {
+                ...duty_mission,
+                ...newProps,
+              },
+              { page: 'dashboard' },
+            ),
+          ).then(() => {
             this.refreshCard();
-            this.props.handleClose();
+            this.handleClose();
           });
         } else {
           // tslint:disable-next-line
@@ -183,31 +204,9 @@ export default compose<any, any>(
     path: ['dashboard', 'current_duty_missions', 'infoData'],
     type: 'none',
   }),
-  connect<any, DispatchPropsCurrentMissionInfo, any, ReduxState>(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({
       infoData: getDashboardState(state).current_duty_missions.infoData,
-    }),
-    (dispatch: any) => ({
-      handleClose: () => (
-        dispatch(
-          dashboardLoadMissionDataForCurrentMission(null),
-        )
-      ),
-      loadData: () => (
-        dispatch(
-          dashboardLoadCurrentDutyMissions(),
-        )
-      ),
-      actionGetDutyMissionById: (...arg) => (
-        dispatch(
-          missionsActions.actionGetDutyMissionById(...arg),
-        )
-      ),
-      actionUpdateDutyMission: (...arg) => (
-        dispatch(
-          missionsActions.actionUpdateDutyMission(...arg),
-        )
-      ),
     }),
   ),
 )(CurrentMissionInfo);

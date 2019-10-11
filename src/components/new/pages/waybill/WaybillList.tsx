@@ -15,10 +15,9 @@ type OwnProps = {};
 const WaybillList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryWaybillKey} />
+      <Registry registryKey={registryWaybillKey}>
         <WaybilFormlLazy registryKey={registryWaybillKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

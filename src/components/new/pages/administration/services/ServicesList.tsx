@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
@@ -16,10 +17,9 @@ type Props = OwnProps;
 const ServicesList: React.FC<Props> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <ServicesFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

@@ -1,20 +1,48 @@
 import * as R from 'ramda';
+import { get } from 'lodash';
+import { isArray, isNumber } from 'util';
+
 import { diffDates } from 'components/@next/@utils/dates/dates';
 
 import { checkErrorDate } from 'components/old/waybill/utils_react';
 
 import { isNotEqualAnd, hasMotohours } from 'utils/functions';
-import { isArray, isNumber } from 'util';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { actionLoadFuelRatesByCarModel, actionLoadEquipmentFuelRatesByCarModel } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
+import { EtsActionReturnType, EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { HandleThunkActionCreator } from 'react-redux';
+import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
 const VALID_VEHICLES_TYPES = {
   GENERATOR: 69,
   COMPRESSOR: 15,
-};
+} as const;
+
+export const getFuelCorrectionRate = (carIndex: Record<Car['asuods_id'], Car>, { car_id }) =>
+  Promise.resolve(
+    get(carIndex[car_id], 'fuel_correction_rate') || 1,
+  );
+
+export const getFuelRatesBySeason = (
+  promise: EtsActionReturnType<typeof actionLoadFuelRatesByCarModel | typeof actionLoadEquipmentFuelRatesByCarModel>,
+  currentSeason: 'winter' | 'summer',
+) => (
+  promise.then(({ fuelRatesList }) =>
+    fuelRatesList.filter(({ winter_rate, summer_rate }) =>
+      currentSeason === 'winter'
+        ? isNumber(winter_rate)
+        : isNumber(summer_rate),
+    ),
+  )
+);
+
+/** без типизации */
 
 // declarative functional approach
-const vehicleFilter = (structure_id: number, car_id: number | void) =>
+const vehicleFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
   R.filter<Car>(
     (c) =>
       c.asuods_id === car_id ||
@@ -24,29 +52,23 @@ const vehicleFilter = (structure_id: number, car_id: number | void) =>
         c.available_to_bind),
   );
 
-// todo вернуть интерфес
-//  R.filter<Car>((c) =>
-const carFilter: any = (structure_id, car_id) =>
+const carFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
   R.pipe(
     vehicleFilter(structure_id, car_id),
     R.filter<Car>(
-      (c) =>
-        !c.is_trailer ||
-        [
-          VALID_VEHICLES_TYPES.COMPRESSOR,
-          VALID_VEHICLES_TYPES.GENERATOR,
-        ].includes(c.type_id),
+      (c) => (
+        !c.is_trailer
+        || c.type_id === VALID_VEHICLES_TYPES.COMPRESSOR
+        || c.type_id === VALID_VEHICLES_TYPES.GENERATOR
+      ),
     ),
   );
-// todo вернуть интерфейс
-//  R.filter<Car>((c) => c.is_trailer),
-const trailerFilter: any = (structure_id, trailer_id) =>
+const trailerFilter: any = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) =>
   R.pipe(
     vehicleFilter(structure_id, trailer_id),
     R.filter<Car>((c) => c.is_trailer),
   );
 
-// <Car, any>
 export const vehicleMapper = R.map<any, any>((c) => {
   return ({
     value: c.asuods_id,
@@ -57,17 +79,18 @@ export const vehicleMapper = R.map<any, any>((c) => {
   });
 });
 
-export const getCars = (structure_id, car_id) =>
+export const getCars = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
   R.pipe(
     carFilter(structure_id, car_id),
     vehicleMapper,
   );
 
-export const getTrailers = (structure_id, trailer_id) =>
+export const getTrailers = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (
   R.pipe(
     trailerFilter(structure_id, trailer_id),
     vehicleMapper,
-  );
+  )
+);
 
 const isNotEmpty = (value) => isNotEqualAnd([undefined, null, ''], value);
 export const driverHasLicenseWithActiveDate = ({
@@ -86,7 +109,7 @@ export const driverHasSpecialLicenseWithActiveDate = ({
     diffDates(new Date(), special_license_date_end) < 0);
 
 const hasOdometr = (gov_number) => !hasMotohours(gov_number);
-export const getDrivers = (state, employeesIndex, driversList) => {
+export const getDrivers = (state, employeeIndex, driversList) => {
   const licenceSwitcher = R.cond([
     [hasOdometr, R.always(driverHasLicenseWithActiveDate)],
     [hasMotohours, R.always(driverHasSpecialLicenseWithActiveDate)],
@@ -97,7 +120,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
   const driverAfterCheckOnCarEmpl = driversList.filter(
     ({ id, employee_id }) => {
       const key = id || employee_id;
-      const driverData = employeesIndex[key];
+      const driverData = employeeIndex[key];
 
       if (!driverData) {
         return false;
@@ -131,7 +154,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
   return driverListTrue
     .filter(({ id, employee_id }) => {
       const key = id || employee_id;
-      const driverData = employeesIndex[key];
+      const driverData = employeeIndex[key];
 
       if (!driverData) {
         return false;
@@ -146,7 +169,7 @@ export const getDrivers = (state, employeesIndex, driversList) => {
     })
     .map(({ id, employee_id }) => {
       const key = id || employee_id;
-      const driverData = employeesIndex[key];
+      const driverData = employeeIndex[key];
 
       const personnel_number = driverData.personnel_number
         ? `[${driverData.personnel_number}] `
@@ -201,41 +224,6 @@ export const getDatesToByOrderOperationId = (order: Order, order_operation_id) =
     },
   };
 };
-
-export const getFuelCorrectionRate = (carsList, { car_id }) =>
-  Promise.resolve(
-    (
-      carsList.find(({ asuods_id }) => asuods_id === car_id) || {
-        fuel_correction_rate: 1,
-      }
-    ).fuel_correction_rate || 1,
-  );
-
-export const getFuelRatesByCarModel = (
-  action,
-  { car_id, date_create: datetime },
-  currentSeason,
-) =>
-  action({ car_id, datetime }).then(({ result: fuelRatesList }) =>
-    fuelRatesList.filter(({ winter_rate, summer_rate }) =>
-      currentSeason === 'winter'
-        ? isNumber(winter_rate)
-        : isNumber(summer_rate),
-    ),
-  );
-
-export const getEquipmentFuelRatesByCarModel = (
-  action,
-  { car_id, date_create: datetime },
-  currentSeason,
-) =>
-  action({ car_id, datetime }).then(({ result: equipmentFuelRatesList }) =>
-    equipmentFuelRatesList.filter(({ winter_rate, summer_rate }) =>
-      currentSeason === 'winter'
-        ? isNumber(winter_rate)
-        : isNumber(summer_rate),
-    ),
-  );
 
 export const checkMissionSelectBeforeClose = (
   formState,
@@ -350,14 +338,24 @@ export const checkMissionSelectBeforeClose = (
     )
     .then(checkErrorDate);
 
-export const getWaybillDrivers = (action, formState) => {
+export const getWaybillDrivers = (
+  dispatch: EtsDispatch,
+  action: HandleThunkActionCreator<typeof actionGetAndSetInStoreWaybillDriver>,
+  formState: Waybill,
+  meta: LoadingMeta,
+) => {
   const { status } = formState;
   if (!status || status === 'draft') {
-    return action({
-      company_id: formState.company_id,
-      date_from: formState.plan_departure_date,
-      date_to: formState.plan_arrival_date,
-    });
+    return dispatch(
+      action(
+        {
+          company_id: formState.company_id,
+          date_from: formState.plan_departure_date,
+          date_to: formState.plan_arrival_date,
+        },
+        meta,
+      ),
+    );
   }
 
   return Promise.resolve();

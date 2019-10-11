@@ -15,10 +15,9 @@ type OwnProps = {};
 const DutyMissionList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <DutyMissionListFormWrap registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

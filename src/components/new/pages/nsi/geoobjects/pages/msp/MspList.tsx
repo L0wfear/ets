@@ -15,10 +15,9 @@ type OwnProps = {};
 const MspList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-       <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <MspFormWrap registryKey={registryKey} />
-       </React.Fragment>
+      </Registry>
     );
   },
 );

@@ -6,7 +6,6 @@ import withForm from 'components/old/compositions/vokinda-hoc/formWrap/withForm'
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
 import { WaybillsReportForm, PropsWaybillIntervalPrintWithForm, PropsWaybillIntervalPrint, OwnWaybillIntervalPrintProps, StatePropsWaybillIntervalPrint } from './@types';
 import { getDefaultWaybillsReportFormElement } from './utils';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
@@ -17,6 +16,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import { saveData } from 'utils/functions';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { actionGetBlobWaybillReport } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillIntervalPrintForm: React.FC<PropsWaybillIntervalPrint> = React.memo(
   (props) => {
@@ -113,7 +113,7 @@ export default compose<PropsWaybillIntervalPrint, OwnWaybillIntervalPrintProps>(
   ),
   withForm<PropsWaybillIntervalPrintWithForm, WaybillsReportForm>({
     uniqField: false,
-    createAction: waybillActions.actionGetBlobWaybillReport,
+    createAction: actionGetBlobWaybillReport,
     mergeElement: (props) => {
       return getDefaultWaybillsReportFormElement(props.element);
     },

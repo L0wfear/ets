@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 
 import { ReduxState } from 'redux-main/@types/state';
 
-import someUniqActions from 'redux-main/reducers/modules/some_uniq/actions';
 import { getSomeUniqState, getMissionsState } from 'redux-main/reducers/selectors';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 
 type StateProps = {
   dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
@@ -96,7 +96,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
       const norms = (await Promise.all(
         type_ids.map((func_type_id) => (
           this.props.dispatch(
-            someUniqActions.actionLoadCleaningOneNorm(
+            actionLoadCleaningOneNorm(
               {
                 datetime: createValidDateTime(datetime),
                 technical_operation_id,

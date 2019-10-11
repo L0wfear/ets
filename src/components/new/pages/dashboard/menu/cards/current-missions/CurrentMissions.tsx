@@ -5,8 +5,6 @@ import withDefaultCard, { PropsToDefaultCard } from 'components/new/pages/dashbo
 import ListByTypeCurerntMission from 'components/new/pages/dashboard/menu/cards/current-missions/collapse-list/ListByTypeCurerntMission';
 import CurrentMissionInfo from 'components/new/pages/dashboard/menu/cards/current-missions/info/CurrentMissionInfo';
 
-import { CurrentMissionsLineDates } from 'components/new/pages/dashboard/menu/cards/current-missions/styled/styled';
-
 import {
   dashboardLoadCurrentMissions,
   dashboardLoadMissionDataForCurrentMission,
@@ -35,10 +33,10 @@ const CurrentMissions: React.FC<Props> = React.memo(
     );
 
     return (
-      <CurrentMissionsLineDates>
+      <div>
         <ListByTypeCurerntMission titleKey="title_centralized" itemsKey="items_centralized" handleClick={handleClick} />
         <ListByTypeCurerntMission titleKey="title_decentralized" itemsKey="items_decentralized" handleClick={handleClick} />
-      </CurrentMissionsLineDates>
+      </div>
     );
   },
 );

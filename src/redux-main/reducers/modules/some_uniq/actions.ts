@@ -3,7 +3,6 @@ import * as modelsList from 'redux-main/reducers/modules/some_uniq/modelList/act
 import technicalOperationRegistryActions from 'redux-main/reducers/modules/some_uniq/technical_operation_registry/actions';
 import municipalFacilityActions from 'redux-main/reducers/modules/some_uniq/municipal_facility/actions';
 import missionSourceActions from 'redux-main/reducers/modules/some_uniq/mission_source/actions';
-import cleaningOneNormActions from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 import carsTravelTimeListActions from 'redux-main/reducers/modules/some_uniq/cars_travel_time/actions';
 import TracksCachingActions from 'redux-main/reducers/modules/some_uniq/tracks_caching/actions';
 import * as mission_cancel_reasons from 'redux-main/reducers/modules/some_uniq/mission_cancel_reasons/actions';
@@ -18,7 +17,6 @@ const someUniqActions = {
   ...technicalOperationRegistryActions,
   ...municipalFacilityActions,
   ...missionSourceActions,
-  ...cleaningOneNormActions,
   ...mission_cancel_reasons,
   ...workKindActions,
   ...technicalOperationObjectsActions,

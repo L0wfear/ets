@@ -378,10 +378,10 @@ export const waybillSchema = {
         validator: (
           value,
           { structure_id, status },
-          { isPermittedByKey, carsList },
+          { isPermittedByKey, carList },
         ) => {
           const getTrailersByStructId = getTrailers(structure_id, null);
-          const TRAILERS = getTrailersByStructId(carsList);
+          const TRAILERS = getTrailersByStructId(carList);
           const correctTrailer = TRAILERS.find((elem) => elem.value === value);
           const fieldDisabled = get(isPermittedByKey, 'update', false);
           const IS_CREATING = status;

@@ -5,45 +5,34 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/medical_stats/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
-import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { createValidDateTime, getToday0am, getToday2359 } from 'components/@next/@utils/dates/dates';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 
-export type MedicalStatsListStateProps = {};
-export type MedicalStatsListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-  actionChangeGlobalPaylaodInServiceData: HandleThunkActionCreator<typeof actionChangeGlobalPaylaodInServiceData>;
-};
-export type MedicalStatsListOwnProps = {};
-export type MedicalStatsListMergedProps = (
-  MedicalStatsListStateProps
-  & MedicalStatsListDispatchProps
-  & MedicalStatsListOwnProps
-);
-export type MedicalStatsListProps = (
-  MedicalStatsListMergedProps
-) & WithSearchProps;
+type OwnProps = {};
+type Props = OwnProps & WithSearchProps;
 
-const MedicalStatsList: React.FC<MedicalStatsListProps> = (props) => {
+const MedicalStatsList: React.FC<Props> = (props) => {
   const date_from: string = props.searchState.date_from;
   const date_to: string = props.searchState.date_to;
+  const dispatch = etsUseDispatch();
 
   React.useEffect(
     () => {
-      props.registryAddInitialData(
-        getToConfig(
-          date_from || createValidDateTime(getToday0am()),
-          date_to || createValidDateTime(getToday2359()),
-        ),
+      dispatch(
+        registryAddInitialData(
+          getToConfig(
+              date_from || createValidDateTime(getToday0am()),
+              date_to || createValidDateTime(getToday2359()),
+            ),
+          ),
       );
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(
+          registryRemoveData(registryKey),
+        );
       };
     },
     [],
@@ -64,43 +53,17 @@ const MedicalStatsList: React.FC<MedicalStatsListProps> = (props) => {
           },
         };
 
-        props.actionChangeGlobalPaylaodInServiceData(registryKey, payload);
+        dispatch(
+          actionChangeGlobalPaylaodInServiceData(registryKey, payload),
+        );
       }
     },
     [date_from, date_to],
   );
 
   return (
-    <>
-      <Registry registryKey={registryKey} />
-    </>
+    <Registry registryKey={registryKey} />
   );
 };
 
-export default compose<MedicalStatsListProps, MedicalStatsListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<MedicalStatsListStateProps, MedicalStatsListDispatchProps, MedicalStatsListOwnProps, ReduxState>(
-    null,
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-      actionChangeGlobalPaylaodInServiceData: (...arg) => (
-        dispatch(
-          actionChangeGlobalPaylaodInServiceData(...arg),
-        )
-      ),
-    }),
-  ),
-  withSearch,
-)(MedicalStatsList);
+export default withSearch<OwnProps>(MedicalStatsList);

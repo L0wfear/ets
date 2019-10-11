@@ -1,10 +1,10 @@
 import * as React from 'react';
 import memoize from 'memoize-one';
-import * as PropTypes from 'prop-types';
-import connectToStores from 'flummox/connect';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
+import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
-import ModalBody from 'components/old/ui/Modal';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
 import Div from 'components/old/ui/Div';
@@ -24,14 +24,13 @@ import {
   getCars,
   getDatesToByOrderOperationId,
   getDrivers,
-  getEquipmentFuelRatesByCarModel,
   getFuelCorrectionRate,
-  getFuelRatesByCarModel,
   getTitleByStatus,
   getTrailers,
   getWaybillDrivers,
   validateTaxesControl,
   vehicleMapper,
+  getFuelRatesBySeason,
 } from 'components/old/waybill/utils';
 
 import { confirmDialogChangeDate } from 'components/old/waybill/utils_react';
@@ -49,14 +48,13 @@ import WaybillFooter from 'components/old/waybill/form/WaybillFooter';
 import BsnoStatus from 'components/old/waybill/form/BsnoStatus';
 
 import MissionField from 'components/old/waybill/form/MissionFiled';
-import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import {
   getSessionState,
   getAutobaseState,
   getSomeUniqState,
+  getEmployeeState,
 } from 'redux-main/reducers/selectors';
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
+
 import { BorderDash } from 'global-styled/global-styled';
 import { getDefaultBill } from 'stores/WaybillsStore';
 
@@ -68,6 +66,34 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { actionsWorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/actions';
 import { HrLine } from 'components/new/pages/login/styled/styled';
+import {
+  actionPostMissionReassignationParameters,
+  actionPutMissionReassignationParameters,
+} from 'redux-main/reducers/modules/missions/mission/actions';
+import {
+  carGetAndSetInStore,
+  autobaseResetSetCar,
+} from 'redux-main/reducers/modules/autobase/car/actions';
+import {
+  actionLoadFuelRatesByCarModel,
+  fuelRatesGet,
+  fuelOperationsGet,
+  actionLoadEquipmentFuelRatesByCarModel,
+} from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
+import { actionGetTrackInfo } from 'redux-main/reducers/modules/some_uniq/track/actions';
+import {
+  actionGetAndSetInStoreEmployeeBindedToCarService,
+  employeeGetAndSetInStore,
+} from 'redux-main/reducers/modules/employee/employee/actions';
+import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
+import {
+  actionGetLastClosedWaybill,
+  actionGetLatestWaybillDriver,
+  actionGetWaybillById,
+  actionGetMissionsByCarAndDates,
+} from 'redux-main/reducers/modules/waybill/waybill_actions';
+import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
+import missionsActions from 'redux-main/reducers/modules/missions/actions';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -252,7 +278,6 @@ class WaybillForm extends UNSAFE_Form {
       formState,
       formState: { status },
     } = this.props;
-    const { flux } = this.context;
 
     const IS_CREATING = !status;
     const IS_DRAFT = status === 'draft';
@@ -262,24 +287,25 @@ class WaybillForm extends UNSAFE_Form {
     this.getMissionsByCarAndDates(formState, formState.car_id, false);
 
     await Promise.all([
-      flux.getActions('objects').getCars(),
-      flux.getActions('employees').getEmployees(),
+      this.props.dispatch(carGetAndSetInStore({}, this.props)),
+      this.props.dispatch(employeeGetAndSetInStore({}, this.props)),
       this.props.dispatch(
         actionsWorkMode.getArrayAndSetInStore({}, this.props),
       ),
       getWaybillDrivers(
-        this.context.flux.getActions('employees').getWaybillDrivers,
+        this.props.dispatch,
+        actionGetAndSetInStoreWaybillDriver,
         this.props.formState,
+        this.props,
       ),
     ]);
 
     if (IS_CREATING || IS_DRAFT) {
-      flux
-        .getActions('fuelRates')
-        .getFuelRates()
-        .then(({ result: fuelRateAll }) =>
+      this.props
+        .dispatch(fuelRatesGet({}, this.props))
+        .then(({ fuelRatesList }) =>
           this.setState({
-            fuelRateAllList: fuelRateAll.map((d) => d.car_model_id),
+            fuelRateAllList: fuelRatesList.map((d) => d.car_model_id),
           }),
         )
         .catch((e) => {
@@ -291,10 +317,9 @@ class WaybillForm extends UNSAFE_Form {
     }
 
     if (!IS_CREATING) {
-      await flux
-        .getActions('waybills')
-        .getWaybill(formState.id)
-        .then(({ result: waybill }) => {
+      await this.props
+        .dispatch(actionGetWaybillById(formState.id, this.props))
+        .then((waybill) => {
           this.handleMultipleChange(waybill);
           this.setState({
             canEditIfClose: waybill.closed_editable
@@ -318,21 +343,28 @@ class WaybillForm extends UNSAFE_Form {
       const currentSeason = this.props.formState.season;
 
       Promise.all([
-        getFuelRatesByCarModel(
-          flux.getActions('fuelRates').getFuelRatesByCarModel,
-          formState,
+        getFuelRatesBySeason(
+          this.props.dispatch(
+            actionLoadFuelRatesByCarModel(
+              { car_id: formState.car_id, datetime: formState.date_create },
+              this.props,
+            ),
+          ),
           currentSeason,
         ),
-        flux
-          .getActions('fuelRates')
-          .getFuelOperations({ is_active: true })
-          .then(({ result: fuelOperationsList }) => fuelOperationsList),
-        getEquipmentFuelRatesByCarModel(
-          flux.getActions('fuelRates').getEquipmentFuelRatesByCarModel,
-          formState,
+        this.props
+          .dispatch(fuelOperationsGet({ is_active: true }, this.props))
+          .then(({ fuelRateOperations }) => fuelRateOperations),
+        getFuelRatesBySeason(
+          this.props.dispatch(
+            actionLoadEquipmentFuelRatesByCarModel(
+              { car_id: formState.car_id, datetime: formState.date_create },
+              this.props,
+            ),
+          ),
           currentSeason,
         ),
-        getFuelCorrectionRate(this.props.carsList, formState),
+        getFuelCorrectionRate(this.props.carIndex, formState),
       ])
         .then(
           ([
@@ -427,6 +459,10 @@ class WaybillForm extends UNSAFE_Form {
     }
   }
 
+  componentWillUnmount() {
+    this.props.dispatch(autobaseResetSetCar());
+  }
+
   handlePlanDepartureDates = (field, value) => {
     if (value === null) {
       return;
@@ -499,11 +535,13 @@ class WaybillForm extends UNSAFE_Form {
             }
 
             getWaybillDrivers(
-              this.context.flux.getActions('employees').getWaybillDrivers,
+              this.props.dispatch,
+              actionGetAndSetInStoreWaybillDriver,
               {
                 ...this.props.formState,
                 [field]: value,
               },
+              this.props,
             );
             this.handleChange(field, value);
           })
@@ -519,14 +557,19 @@ class WaybillForm extends UNSAFE_Form {
       return;
     }
 
-    this.context.flux
-      .getActions('missions')
-      .getMissionsByCarAndDates(
-        car_id,
-        formState.fact_departure_date || formState.plan_departure_date,
-        formState.fact_arrival_date || formState.plan_arrival_date,
-        status,
-        formState.id,
+    this.props
+      .dispatch(
+        actionGetMissionsByCarAndDates(
+          {
+            car_id,
+            date_from:
+              formState.fact_departure_date || formState.plan_departure_date,
+            date_to: formState.fact_arrival_date || formState.plan_arrival_date,
+            status,
+            waybill_id: formState.id,
+          },
+          this.props,
+        ),
       )
       .then(({ result: { rows: newMissionsList = [] } = {} }) => {
         const missionsList = uniqBy(newMissionsList, 'id');
@@ -594,10 +637,8 @@ class WaybillForm extends UNSAFE_Form {
       this.setState({ loadingFields, tooLongFactDates: false });
       return;
     }
-    const { gps_code = null }
-      = this.props.carsList.find(
-        ({ asuods_id }) => asuods_id === formState.car_id,
-      ) || {};
+    const gps_code
+      = get(this.props.carIndex[formState.car_id], 'gps_code') || null;
 
     const { fact_departure_date, fact_arrival_date } = formState;
 
@@ -611,9 +652,17 @@ class WaybillForm extends UNSAFE_Form {
       loadingFields.consumption = true;
       this.setState({ loadingFields });
 
-      this.context.flux
-        .getActions('cars')
-        .getInfoFromCar(gps_code, fact_departure_date, fact_arrival_date)
+      this.props
+        .dispatch(
+          actionGetTrackInfo(
+            {
+              gps_code,
+              from_dt: fact_departure_date,
+              to_dt: fact_arrival_date,
+            },
+            this.props,
+          ),
+        )
         .then(({ distance, consumption }) => {
           this.props.handleMultipleChange({
             car_id: formState.car_id,
@@ -653,16 +702,28 @@ class WaybillForm extends UNSAFE_Form {
 
   getLatestWaybillDriver = (formState) => {
     const { car_id } = formState;
-    this.context.flux.getActions('employees').getEmployeeBindedToCar(car_id);
-    this.context.flux
-      .getActions('waybills')
-      .getLatestWaybillDriver(car_id, formState.driver_id)
-      .then(({ result: { driver_id = null } }) => {
+    this.props.dispatch(
+      actionGetAndSetInStoreEmployeeBindedToCarService(
+        { asuods_id: car_id },
+        this.props,
+      ),
+    );
+    this.props
+      .dispatch(
+        actionGetLatestWaybillDriver(
+          {
+            car_id,
+            driver_id: formState.driver_id,
+          },
+          this.props,
+        ),
+      )
+      .then((driver_id) => {
         if (driver_id) {
           const DRIVERS = getDrivers(
             { ...formState, driver_id },
-            this.props.employeesIndex,
-            this.props.waybillDriversList,
+            this.props.employeeIndex,
+            this.props.waybillDriverList,
           );
 
           if (DRIVERS.some(({ value }) => value === driver_id)) {
@@ -713,10 +774,9 @@ class WaybillForm extends UNSAFE_Form {
             );
           }
           this.props.clearSomeData();
-          return this.context.flux
-            .getActions('waybills')
-            .getLastClosedWaybill(car_id)
-            .then(({ result: lastCarUsedWaybill }) =>
+          return this.props
+            .dispatch(actionGetLastClosedWaybill({ car_id }, this.props))
+            .then((lastCarUsedWaybill) =>
               res({
                 ...fieldsToChange,
                 ...this.getFieldsToChangeBasedOnLastWaybill(lastCarUsedWaybill),
@@ -740,7 +800,7 @@ class WaybillForm extends UNSAFE_Form {
     }, 0);
   };
 
-  getFieldsToChangeBasedOnLastWaybill = ([lastCarUsedWaybill]) => {
+  getFieldsToChangeBasedOnLastWaybill = (lastCarUsedWaybill) => {
     let fieldsToChange = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
@@ -761,7 +821,7 @@ class WaybillForm extends UNSAFE_Form {
           this.props.formState.structure_id,
           lastCarUsedWaybill.trailer_id,
         );
-        const TRAILERS = getTrailersByStructId(this.props.carsList);
+        const TRAILERS = getTrailersByStructId(this.props.carList);
 
         if (TRAILERS.find((c) => c.value === lastCarUsedWaybill.trailer_id)) {
           fieldsToChange.trailer_id = lastCarUsedWaybill.trailer_id;
@@ -787,11 +847,10 @@ class WaybillForm extends UNSAFE_Form {
    */
   refresh = async () => {
     const state = this.props.formState;
-    const { flux } = this.context;
 
-    const { result: lastCarUsedWaybill } = await flux
-      .getActions('waybills')
-      .getLastClosedWaybill(state.car_id);
+    const lastCarUsedWaybill = await this.props.dispatch(
+      actionGetLastClosedWaybill({ car_id: state.car_id }, this.props),
+    );
     const plan_departure_date
       = diffDates(new Date(), state.plan_departure_date) > 0
         ? new Date()
@@ -807,7 +866,7 @@ class WaybillForm extends UNSAFE_Form {
     const {
       formState: { driver_id, car_id },
     } = this.props;
-    const carData = this.props.carsIndex[car_id];
+    const carData = this.props.carIndex[car_id];
 
     const changeObj = { structure_id };
 
@@ -824,11 +883,11 @@ class WaybillForm extends UNSAFE_Form {
       changeObj.car_id = null;
       changeObj.driver_id = null;
     } else if (driver_id) {
-      const driver = this.props.employeesIndex[driver_id];
+      const driver = this.props.employeeIndex[driver_id];
       const DRIVERS = getDrivers(
         { ...this.props.formState, structure_id },
-        this.props.employeesIndex,
-        this.props.waybillDriversList,
+        this.props.employeeIndex,
+        this.props.waybillDriverList,
       );
 
       if (!driver || !DRIVERS.some(({ value }) => value === driver_id)) {
@@ -1072,11 +1131,9 @@ class WaybillForm extends UNSAFE_Form {
       formState: { car_id },
     } = this.props;
 
-    const {
-      result: [lastCarUsedWaybill],
-    } = await this.context.flux
-      .getActions('waybills')
-      .getLastClosedWaybill(car_id);
+    const lastCarUsedWaybill = await this.props.dispatch(
+      actionGetLastClosedWaybill({ car_id }, this.props),
+    );
 
     const closedEquipmentData = getClosedEquipmentData(lastCarUsedWaybill);
     closedEquipmentData.equipment_fuel = true;
@@ -1129,26 +1186,50 @@ class WaybillForm extends UNSAFE_Form {
     const acceptedRejectMissionsIdList = rejectMissionList.map(
       async (rejectMission) => {
         try {
-          const response = await this.context.flux
-            .getActions('missions')
-            [rejectMission.handlerName](rejectMission.payload);
-          if (rejectMission.handlerName === 'updateMission') {
-            const successEdcRequestIds = response.result
-              .filter((value) => value)
-              .filter(({ close_request }) => close_request)
-              .map(({ request_id, request_number }) => ({
-                request_id,
-                request_number,
-              }));
-            if (successEdcRequestIds.length) {
-              this.props.setEdcRequestIds(successEdcRequestIds);
+          let response = null;
+
+          if (
+            rejectMission.handlerName
+            === 'actionPostMissionReassignationParameters'
+          ) {
+            response = await this.props.dispatch(
+              actionPostMissionReassignationParameters(rejectMission.payload),
+            );
+          } else if (
+            rejectMission.handlerName
+            === 'actionPutMissionReassignationParameters'
+          ) {
+            response = await this.props.dispatch(
+              actionPutMissionReassignationParameters(rejectMission.payload),
+            );
+          } else if (rejectMission.handlerName === 'updateMission') {
+            response = await this.props.dispatch(
+              missionsActions.actionUpdateMission(
+                rejectMission.payload,
+                this.props,
+              ),
+            );
+
+            if (response) {
+              const { close_request, request_id, request_number } = response;
+
+              if (close_request) {
+                this.props.setEdcRequestIds([
+                  {
+                    request_id,
+                    request_number,
+                  },
+                ]);
+              }
             }
-            return get(response, 'result.0.id', null);
+            return get(response, 'id', null);
           }
         } catch (errorData) {
           console.warn('rejectMissionHandler:', errorData);
+
           rejectMissionSubmitError = true;
-          const missionId = get(rejectMission, 'id', '');
+          const missionId = get(rejectMission.payload, 'mission_id', '');
+
           if (!errorData.errorIsShow) {
             const errorText = get(
               errorData.error_text,
@@ -1284,14 +1365,14 @@ class WaybillForm extends UNSAFE_Form {
       formState: state,
       formErrors: errors,
       entity,
-      carsList = [],
-      carsIndex = {},
-      waybillDriversList = [],
-      employeesList = [],
-      uniqEmployeesBindedoOnCarList = [],
+      carList,
+      carIndex,
+      waybillDriverList,
+      employeeList = [],
+      uniqEmployeesBindedOnCarList,
       appConfig,
       workModeList,
-      employeesIndex = {},
+      employeeIndex,
       isPermittedByKey = {},
       userStructures,
       userStructureId,
@@ -1313,7 +1394,7 @@ class WaybillForm extends UNSAFE_Form {
       state.trailer_id,
     );
 
-    let CARS = getCarsByStructId(carsList);
+    let CARS = getCarsByStructId(carList);
 
     if (state.car_id && !CARS.find((c) => c.value === state.car_id)) {
       CARS = [
@@ -1331,7 +1412,7 @@ class WaybillForm extends UNSAFE_Form {
       ];
     }
 
-    let TRAILERS = getTrailersByStructId(carsList);
+    let TRAILERS = getTrailersByStructId(carList);
 
     if (
       state.trailer_id
@@ -1382,7 +1463,7 @@ class WaybillForm extends UNSAFE_Form {
       STRUCTURE_FIELD_DELETABLE = true;
     }
 
-    const EMPLOYEES = employeesList.map(({ id, full_name }) => ({
+    const EMPLOYEES = employeeList.map(({ id, full_name }) => ({
       value: id,
       label: full_name,
     }));
@@ -1392,7 +1473,7 @@ class WaybillForm extends UNSAFE_Form {
     const IS_DRAFT = state.status && state.status === 'draft';
     const IS_CLOSED = state.status && state.status === 'closed';
 
-    const IS_KAMAZ = (get(carsIndex, [state.car_id, 'model_name'], '') || '')
+    const IS_KAMAZ = (get(carIndex, `${state.car_id}.model_name`) || '')
       .toLowerCase()
       .includes('камаз');
     const CAR_HAS_ODOMETER = state.gov_number
@@ -1402,10 +1483,10 @@ class WaybillForm extends UNSAFE_Form {
       = IS_CREATING || IS_DRAFT
         ? getDrivers(
           state,
-          employeesIndex,
-          uniqEmployeesBindedoOnCarList.length
-            ? uniqEmployeesBindedoOnCarList
-            : waybillDriversList,
+          employeeIndex,
+          uniqEmployeesBindedOnCarList[0]
+            ? uniqEmployeesBindedOnCarList
+            : waybillDriverList,
         )
         : [];
 
@@ -1438,8 +1519,7 @@ class WaybillForm extends UNSAFE_Form {
         value: state.driver_id,
       });
     }
-    const { gps_code }
-      = carsList.find(({ asuods_id }) => asuods_id === state.car_id) || {};
+    const gps_code = get(carIndex[state.car_id], 'gps_code');
     let distanceOrTrackOrNodata = state.distance;
 
     if (isNullOrUndefined(distanceOrTrackOrNodata)) {
@@ -1463,7 +1543,10 @@ class WaybillForm extends UNSAFE_Form {
           </EtsBootstrap.ModalTitle>
         </EtsBootstrap.ModalHeader>
 
-        <ModalBody>
+        <ModalBodyPreloader
+          page={this.props.page}
+          path={this.props.path}
+          typePreloader="mainpage">
           <EtsBootstrap.Row>
             <Div>
               {IS_CLOSED || IS_ACTIVE ? (
@@ -1737,7 +1820,7 @@ class WaybillForm extends UNSAFE_Form {
                 readOnly
                 hidden={IS_CREATING || IS_DRAFT}
                 value={employeeFIOLabelFunction(
-                  employeesIndex,
+                  employeeIndex,
                   state.driver_id,
                   true,
                 )}
@@ -2080,7 +2163,7 @@ class WaybillForm extends UNSAFE_Form {
               </EtsBootstrap.Col>
             </EtsBootstrap.Row>
             {state.equipment_fuel && (
-              <>
+              <React.Fragment>
                 <EtsBootstrap.Row>
                   <EtsBootstrap.Col md={12}>
                     <h3>Спецоборудование</h3>
@@ -2308,13 +2391,13 @@ class WaybillForm extends UNSAFE_Form {
                     </BorderDash>
                   </EtsBootstrap.Col>
                 </EtsBootstrap.Row>
-              </>
+              </React.Fragment>
             )}
           </Div>
           <EtsBootstrap.Row>
             <EtsBootstrap.Col md={8}>
               <MissionField
-                carsList={this.props.carsList}
+                carList={this.props.carList}
                 state={state}
                 errors={errors}
                 missionsList={missionsList}
@@ -2327,6 +2410,8 @@ class WaybillForm extends UNSAFE_Form {
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
                 requestFormHide={this.requestFormHide}
+                page={this.props.page}
+                path={this.props.path}
               />
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={4}>
@@ -2456,7 +2541,7 @@ class WaybillForm extends UNSAFE_Form {
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
-        </ModalBody>
+        </ModalBodyPreloader>
         <EtsBootstrap.ModalFooter>
           <WaybillFooter
             isCreating={IS_CREATING}
@@ -2481,10 +2566,6 @@ class WaybillForm extends UNSAFE_Form {
   }
 }
 
-WaybillForm.contextTypes = {
-  flux: PropTypes.object,
-};
-
 export default compose(
   connect((state) => ({
     appConfig: getSessionState(state).appConfig,
@@ -2496,5 +2577,13 @@ export default compose(
     workModeList: getSomeUniqState(state).workModeList,
     order_mission_source_id: getSomeUniqState(state).missionSource
       .order_mission_source_id,
+    carList: getAutobaseState(state).carList,
+    carIndex: getAutobaseState(state).carIndex,
+    uniqEmployeesBindedOnCarList: getEmployeeState(state)
+      .uniqEmployeesBindedOnCarList,
+    employeeList: getEmployeeState(state).employeeList,
+    employeeIndex: getEmployeeState(state).employeeIndex,
+
+    waybillDriverList: getEmployeeState(state).waybillDriverList,
   })),
-)(connectToStores(WaybillForm, ['objects', 'employees', 'missions']));
+)(WaybillForm);

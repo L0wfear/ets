@@ -1,3 +1,6 @@
+import { EmployeeBindedToCar } from 'components/new/utils/context/loading/@types/by_service/employee_binded_to_car';
+import { WaybillDriver } from 'redux-main/reducers/modules/employee/driver/@types';
+
 export type Employee = {
   active: boolean;
   additional_companies: {
@@ -81,4 +84,8 @@ export type IStateEmployee = {
   driverIndex: Record<Driver['id'], Driver>;
   positionList: Position[];
   positionIndex: Record<Position['id'], Position>;
+  employeeBindedToCarList: EmployeeBindedToCar[];
+  uniqEmployeesBindedOnCarList: EmployeeBindedToCar[];
+
+  waybillDriverList: WaybillDriver[];
 };

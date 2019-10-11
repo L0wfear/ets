@@ -18,10 +18,6 @@ export default class NotificationsStore extends Store {
           contractor: 'Запись успешно добавлена',
         },
       },
-      {
-        actions: flux.getActions('waybills'),
-        actionNames: ['updateWaybill', 'createWaybill'],
-      },
     ];
 
     saveNotificationQueue.forEach((opts) =>

@@ -44,10 +44,10 @@ export const checkMissionsOnStructureIdCar: ICheckMissionsOnStructureIdCar = (mi
   return false;
 };
 
-export const checkStructureByTypeClick = (typeClick, { carsIndex = {}, employeesIndex = {} }, missions) => {
+export const checkStructureByTypeClick = (typeClick, { carsIndex = {}, employeeIndex = {} }, missions) => {
   switch (typeClick) {
     case typeTemplate.missionTemplate: return checkMissionsOnStructureIdCar(missions, carsIndex);
-    case typeTemplate.missionDutyTemplate: return checkMissionsOnStructureIdBrigade(missions, employeesIndex);
+    case typeTemplate.missionDutyTemplate: return checkMissionsOnStructureIdBrigade(missions, employeeIndex);
     default: return false;
   }
 };

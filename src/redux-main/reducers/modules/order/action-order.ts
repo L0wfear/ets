@@ -1,7 +1,7 @@
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
-import { promiseLoadOrderById, promiseLoadOrderHistory } from './order_promise';
+import { promiseLoadOrderById, promiseLoadOrderHistory, promiseGetMissionTemplatesCars } from './order_promise';
 import { Order } from 'redux-main/reducers/modules/order/@types';
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
@@ -22,6 +22,13 @@ export const actionLoadOrderHistory = (id: Order['id'], meta: LoadingMeta): EtsA
   etsLoadingCounter(
     dispatch,
     promiseLoadOrderHistory(id),
+    meta,
+  )
+);
+export const actionGetMissionTemplatesCars = (payload: Parameters<typeof promiseGetMissionTemplatesCars>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof promiseGetMissionTemplatesCars>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    promiseGetMissionTemplatesCars(payload),
     meta,
   )
 );

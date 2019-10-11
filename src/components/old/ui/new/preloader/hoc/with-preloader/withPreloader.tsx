@@ -24,6 +24,7 @@ const withPreloader = <OwnProps extends OwnPropsExtends>(configWithPreloader: Ty
         || get(configWithPreloader, 'meta.page')
         || get(props, 'page')
         || get(props, 'meta.page')
+        || get(props, 'registryKey')
       );
 
       const path = (

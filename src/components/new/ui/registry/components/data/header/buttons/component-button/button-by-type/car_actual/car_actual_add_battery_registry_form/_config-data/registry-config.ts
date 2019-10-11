@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { BatteryRegistry } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import batteryRegistryPermissions from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/car_actual/car_actual_add_battery_registry_form/_config-data/permissions';
+import { AutoBaseBatteryRegistryService } from 'api/Services';
 
 export const registryKey = 'batteryRegistryAddButton';
 
@@ -10,14 +11,14 @@ export const getToConfig = (is_current_structure: boolean, company_id: number, )
     noInitialLoad: true,
     Service: {
       getRegistryData: {
-        entity: 'autobase/battery_registry',
+        entity: AutoBaseBatteryRegistryService._path,
         payload: {
           is_current_structure,
           company_id,
         },
       },
       removeOneData: {
-        entity: 'autobase/battery_registry',
+        entity: AutoBaseBatteryRegistryService._path,
         uniqKeyLikeQueryString: false,
       },
     },

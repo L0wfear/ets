@@ -15,10 +15,9 @@ type OwnProps = {};
 const FuelCardsList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <FuelCardsFormLazy registryKey={registryKey} />
-      </>
+      </Registry>
     );
   },
 );

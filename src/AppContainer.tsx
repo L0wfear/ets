@@ -26,12 +26,8 @@ const AppConteiner = () => (
   <Provider store={store}>
     <EtsThemeProvider>
       <AppWithRoute />
-      <div id="notifications">
-        <NotificationSystem />
-      </div>
-      <div id="prompt">
-        <Prompt />
-      </div>
+      <NotificationSystem />
+      <Prompt />
     </EtsThemeProvider>
   </Provider>
 );

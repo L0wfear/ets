@@ -3,6 +3,8 @@ import {
   createFuelRate,
   updateFuelRate,
   getFuelOperations,
+  getFuelRatesByCarModel,
+  getEquipmentFuelRatesByCarModel,
 } from 'redux-main/reducers/modules/fuel_rates/promises/index';
 
 import {
@@ -23,7 +25,7 @@ export const fuelRatesSetNewData = (newStateData: Partial<{ fuelRatesList: FuelR
   payload: newStateData,
 });
 
-export const fuelRatesGet = (payload: object = {}, meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getFuelRates>> => async (dispatch) => (
+export const fuelRatesGet = (payload: Parameters<typeof getFuelRates>[0], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof getFuelRates>> => async (dispatch) => (
   etsLoadingCounter(
     dispatch,
     getFuelRates(payload),
@@ -92,4 +94,20 @@ export const fuelOperationsGetAndSetInStore = (payload: { is_active?: boolean },
   );
 
   return result;
+};
+
+export const actionLoadFuelRatesByCarModel = (payload: Parameters<typeof getFuelRatesByCarModel>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof getFuelRatesByCarModel>> => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    getFuelRatesByCarModel(payload),
+    meta,
+  );
+};
+
+export const actionLoadEquipmentFuelRatesByCarModel = (payload: Parameters<typeof getEquipmentFuelRatesByCarModel>[0], meta: LoadingMeta): EtsAction<ReturnType<typeof getEquipmentFuelRatesByCarModel>> => (dispatch) => {
+  return etsLoadingCounter(
+    dispatch,
+    getEquipmentFuelRatesByCarModel(payload),
+    meta,
+  );
 };

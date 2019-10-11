@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 import { Route } from 'react-router';
 
 import Registry from 'components/new/ui/registry/components/Registry';
@@ -12,7 +11,6 @@ import { getToConfig as getOrderToConfig } from 'components/new/pages/nsi/order/
 
 import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { createValidDateTime, getToday0am, getToday2359 } from 'components/@next/@utils/dates/dates';
 import OrderTechnicalOperationList from 'components/new/pages/nsi/order/order_technical_operation/OrderTechnicalOperationList';
@@ -21,8 +19,9 @@ import OrderHistoryList from 'components/new/pages/nsi/order/order_history/Order
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type Props = (
-  {}
+type OwnProps = {};
+type Props = (
+  OwnProps
 ) & WithSearchProps;
 
 const uniqFieldParams = getOrderToConfig(null, null).list.data.uniqKeyForParams;
@@ -87,20 +86,13 @@ const OrderList: React.FC<Props> = React.memo(
     );
 
     return (
-      <React.Fragment>
-        <Registry registryKey={orderRegistryKey} />
+      <Registry registryKey={orderRegistryKey}>
         <MissionByTemplateFormWrap />
         <Route path={`${props.match.path}/:${uniqFieldParams}?/:type_to?`} component={OrderTechnicalOperationList} />
         <OrderHistoryList />
-      </React.Fragment>
+      </Registry>
     );
   },
 );
 
-export default compose<Props, {}>(
-  withPreloader({
-    page: orderRegistryKey,
-    typePreloader: 'mainpage',
-  }),
-  withSearch,
-)(OrderList);
+export default withSearch<OwnProps>(OrderList);

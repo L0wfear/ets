@@ -9,7 +9,7 @@ const CITY_DASHBOARD_API_FACTORY = new ApiServiceFactory({
   apiUrl: config.tracksCaching,
 });
 
-export const InfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
+export const TrackInfoService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
   'info',
 ); // в payload нужно прокидывать version из localStorage
 export const TrackService = CITY_DASHBOARD_API_FACTORY.createApiServiceAdapter(
@@ -29,6 +29,13 @@ export const FilesService = ETS_API_FACTORY.createApiServiceAdapter('files');
 export const WaybillService = ETS_API_FACTORY.createApiServiceAdapter(
   'waybill',
 );
+export const WaybillClosedService = ETS_API_FACTORY.createApiServiceAdapter(
+  'waybill/closed',
+);
+export const WaybillAvailableMissionsService = ETS_API_FACTORY.createApiServiceAdapter(
+  'waybill/available_missions',
+);
+
 export const WaybillCarService = ETS_API_FACTORY.createApiServiceAdapter(
   'filters/waybill/cars',
 );
@@ -258,6 +265,9 @@ export const AutoBase = ETS_API_FACTORY.createApiServiceAdapter('autobase');
 export const CarDrivers = ETS_API_FACTORY.createApiServiceAdapter(
   'car_drivers',
 );
+export const AutoBaseBatteryRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'autobase/battery_registry',
+);
 export const CarRegistrationRegistryService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/car_registration_registry',
 );
@@ -410,4 +420,8 @@ export const CleaningAreaRateService = ETS_API_FACTORY.createApiServiceAdapter(
 );
 export const EngineTypeService = ETS_API_FACTORY.createApiServiceAdapter(
   'autobase/engine_type',
+);
+
+export const ReportServiceHistoryService = ETS_API_FACTORY.createApiServiceAdapter(
+  'report/service_history',
 );

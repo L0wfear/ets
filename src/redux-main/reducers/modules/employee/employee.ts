@@ -12,6 +12,11 @@ const initialState: IStateEmployee = {
   driverIndex: {},
   positionList: [],
   positionIndex: {},
+
+  employeeBindedToCarList: [],
+  uniqEmployeesBindedOnCarList: [],
+
+  waybillDriverList: [],
 };
 
 export default (state = initialState, { type, payload }) => {

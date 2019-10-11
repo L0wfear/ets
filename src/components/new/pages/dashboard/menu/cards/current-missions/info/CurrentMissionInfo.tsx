@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { connect } from 'react-redux';
+import { connect, HandleThunkActionCreator } from 'react-redux';
 import { get } from 'lodash';
 import { compose } from 'recompose';
 
@@ -21,11 +21,6 @@ import {
 import MissionInfoFormWrap from 'components/new/ui/mission_info_form/MissionInfoFormWrap';
 import { listData } from 'components/new/pages/dashboard/menu/cards/current-missions/info/listData';
 
-import {
-  PropsCurrentMissionInfo,
-  StateCurrentMissionInfo,
-  CurrentMissionInfoDispatchProps,
-} from 'components/new/pages/dashboard/menu/cards/current-missions/info/@types/CurrentMissionInfo.h';
 import { RightButtonBlockContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
@@ -37,11 +32,36 @@ import MissionRejectForm from 'components/new/ui/registry/components/data/header
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
+import {
+  CurrentMissionsInfoDataType,
+} from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/current-mission.h';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
+
+type CurrentMissionInfoDispatchProps = {
+  dispatch: EtsDispatch,
+  actionGetMissionById: HandleThunkActionCreator<typeof missionsActions.actionGetMissionById>;
+  actionUpdateMission: HandleThunkActionCreator<typeof missionsActions.actionUpdateMission>;
+} & Record<any, any>;
+
+type PropsCurrentMissionInfo = {
+  infoData: CurrentMissionsInfoDataType;
+  loadDataAfterCloseMission: () => Promise<any>;
+
+  handleClose: any;
+  loadData: any;
+} & CurrentMissionInfoDispatchProps;
+
+type StateCurrentMissionInfo = {
+  showMissionInfoForm: boolean;
+  missionRejectForm: Mission;
+  action_at: string | Date;
+};
 
 class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateCurrentMissionInfo> {
   state = {
     showMissionInfoForm: false,
-    showMissionRejectForm: false,
+    missionRejectForm: null,
     action_at: null,
   };
 
@@ -107,13 +127,26 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
       {
         page: 'dashboard',
       },
-    )).then((time) => {
+    )).then(async (time) => {
         const action_at = time.date;
 
-        this.setState({
-          showMissionRejectForm: true,
-          action_at,
-        });
+        let mission = null;
+        try {
+          mission = await this.props.actionGetMissionById(
+            this.props.infoData.mission_data.id,
+            {
+              page: 'dashboard',
+            },
+          );
+        } catch (error) {
+          console.error(error); // tslint:disable-line
+        }
+        if (mission) {
+          this.setState({
+            missionRejectForm: mission,
+            action_at,
+          });
+        }
       })
       .catch(({ errorIsShow }) => {
         if (!errorIsShow) {
@@ -123,7 +156,7 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
   }
 
   onReject = (refresh) => {
-    this.setState({ showMissionRejectForm: false });
+    this.setState({ missionRejectForm: null });
     if (refresh) {
       this.props.handleClose();
       this.refreshCard();
@@ -158,15 +191,11 @@ class CurrentMissionInfo extends React.Component<PropsCurrentMissionInfo, StateC
           <EtsBootstrap.Button onClick={this.rejectMission} permissions={missionPermissions.update}>Не выполнено</EtsBootstrap.Button>
         </RightButtonBlockContainer>
         {
-          this.state.showMissionRejectForm && (
+          Boolean(this.state.missionRejectForm) && (
             <MissionRejectForm
               show
               onReject={this.onReject}
-              mission={{
-                ...infoData.mission_data,
-                car_gov_number: infoData.car_data.gov_number,
-                waybill_number: infoData.waybill_data.number,
-              }}
+              mission={this.state.missionRejectForm}
               action_at={this.state.action_at}
             />
           )

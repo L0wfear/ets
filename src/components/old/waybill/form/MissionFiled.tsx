@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { get } from 'lodash';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
+import { components } from 'react-select';
+
 import { isEmpty } from 'utils/functions';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { components } from 'react-select';
 
 import { getWarningNotification } from 'utils/notifications';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
+
 import { ReduxState } from 'redux-main/@types/state';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -22,6 +24,8 @@ import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time
 
 type Props = {
   dispatch: EtsDispatch;
+  page: string;
+  path: string;
   [k: string]: any;
 };
 
@@ -102,16 +106,16 @@ class MissionField extends React.Component<Props, any> {
 
   createMission = () => {
     const {
-      carsList = [],
+      carList = [],
       state,
       state: { car_id },
     } = this.props;
 
-    const carData: Car = carsList.find(
+    const carData: Car = carList.find(
       ({ asuods_id }) => asuods_id === car_id,
     );
 
-    this.props.actionSetDependenceWaybillDataForMission(this.props.state);
+    this.props.dispatch(missionsActions.actionSetDependenceWaybillDataForMission(this.props.state));
 
     const selectedMission: Partial<Mission> = {
       car_gov_numbers: [get(carData, 'gov_number', null)],
@@ -134,13 +138,7 @@ class MissionField extends React.Component<Props, any> {
 
   rejectMission = (rejectedMission) => {
     this.props.dispatch(
-      actionLoadTimeMoscow(
-        {},
-        {
-          page: this.props.page,
-          path: this.props.path,
-        },
-      ),
+      actionLoadTimeMoscow({}, this.props),
     ).then((time) => {
         const action_at = time.date;
         this.setState({
@@ -287,7 +285,7 @@ class MissionField extends React.Component<Props, any> {
         {this.state.showMissionRejectForm && (
           <MissionRejectForm
             show={this.state.showMissionRejectForm}
-            onReject={this.onReject}
+            onRejectForWaybill={this.onReject}
             mission={rejectedMission}
             // missions={missionsList}
             action_at={this.state.action_at}
@@ -303,15 +301,7 @@ export default compose<any, any>(
   withRequirePermission({
     permissions: missionPermissions.read,
   }),
-  connect<null, { dispatch: EtsDispatch; actionSetDependenceWaybillDataForMission: HandleThunkActionCreator<typeof missionsActions.actionSetDependenceWaybillDataForMission>}, any, ReduxState>(
+  connect<null, { dispatch: EtsDispatch }, any, ReduxState>(
     null,
-    (dispatch: any) => ({
-      dispatch,
-      actionSetDependenceWaybillDataForMission: (...arg) => (
-        dispatch(
-          missionsActions.actionSetDependenceWaybillDataForMission(...arg),
-        )
-      ),
-    }),
   ),
 )(MissionField);

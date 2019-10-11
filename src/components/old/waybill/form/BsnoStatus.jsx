@@ -85,24 +85,14 @@ class BsnoStaus extends React.Component {
   }
 
   componentDidMount() {
-    this.props
-      .dispatch(
-        actionLoadTimeMoscow(
-          {},
-          {
-            page: this.props.page,
-            path: this.props.path,
-          },
-        ),
-      )
-      .then((time) => {
-        clearInterval(this.state.itervalId);
+    this.props.dispatch(actionLoadTimeMoscow({}, this.props)).then((time) => {
+      clearInterval(this.state.itervalId);
 
-        this.setState({
-          date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
-          itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
-        });
+      this.setState({
+        date: getDateWithMoscowTzByTimestamp(time.timestamp * 1000),
+        itervalId: setInterval(() => this.updateDateOnSecond(), 1000),
       });
+    });
   }
 
   componentWillUnmount() {

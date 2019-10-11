@@ -15,10 +15,9 @@ type OwnProps = {};
 const FountainsList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <FountainsFormWrap registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

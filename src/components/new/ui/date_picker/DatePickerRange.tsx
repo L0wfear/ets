@@ -92,7 +92,7 @@ export const DatePickerRange: React.FC<DatePickerRangeProps> = (props) => {
           makeGoodFormat={makeGoodFormat}
         />
       </EtsBootstrap.Col>
-      <DividerDatePickerRange label={Boolean(labelDatePickerStart || labelDatePickerEnd)} date_start_label={'date_start_label' in props && ''}>
+      <DividerDatePickerRange hasLabel={Boolean(labelDatePickerStart || labelDatePickerEnd)}>
         —
       </DividerDatePickerRange>
       <EtsBootstrap.Col md={6}>

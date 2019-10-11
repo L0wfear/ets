@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { get } from 'lodash';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 import TechMaintenanceFormLazy from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/form';
 
@@ -6,54 +8,33 @@ import {
   registryKey,
   getToConfig,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/local_registry/tech_maintenance/_config-data/registry-config';
-import { compose } from 'recompose';
-import { connect, HandleThunkActionCreator } from 'react-redux';
-import { ReduxState } from 'redux-main/@types/state';
 import { registryAddInitialData, registryRemoveData } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { get } from 'lodash';
 import { getRegistryState } from 'redux-main/reducers/selectors';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { OneRegistryData } from 'components/new/ui/registry/module/@types/registry';
 import { hasMotohours } from 'utils/functions';
 import { CarWrap } from '../../../@types/CarForm';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-export type TechMaintenanceListStateProps = {
-  objectExtra: OneRegistryData['list']['data']['objectExtra'];
-};
-export type TechMaintenanceListDispatchProps = {
-  registryAddInitialData: HandleThunkActionCreator<typeof registryAddInitialData>;
-  registryRemoveData: HandleThunkActionCreator<typeof registryRemoveData>;
-};
-export type TechMaintenanceListOwnProps = {
+type Props = {
   selectedCarData: CarWrap;
 };
-export type TechMaintenanceListMergedProps = (
-  TechMaintenanceListStateProps
-  & TechMaintenanceListDispatchProps
-  & TechMaintenanceListOwnProps
-);
-export type TechMaintenanceListProps = (
-  TechMaintenanceListMergedProps
-);
 
-const TechMaintenanceList: React.FC<TechMaintenanceListProps> = (props) => {
+const TechMaintenanceList: React.FC<Props> = (props) => {
   const {
-    objectExtra,
     selectedCarData,
   } = props;
-
+  const objectExtra = etsUseSelector((state) => getListData(getRegistryState(state), registryKey).data.objectExtra);
+  const dispatch = etsUseDispatch();
   const car_id = get(selectedCarData, 'asuods_id', null);
 
   React.useEffect(
     () => {
-      props.registryAddInitialData(getToConfig(car_id));
+      dispatch(registryAddInitialData(getToConfig(car_id)));
       return () => {
-        props.registryRemoveData(registryKey);
+        dispatch(registryRemoveData(registryKey));
       };
     },
     [car_id],
@@ -83,32 +64,11 @@ const TechMaintenanceList: React.FC<TechMaintenanceListProps> = (props) => {
           </EtsBootstrap.Col>
         </EtsBootstrap.Col>
       </EtsBootstrap.Row>
-      <Registry registryKey={registryKey} />
-      <TechMaintenanceFormLazy registryKey={registryKey} selectedCarData={selectedCarData} />
+      <Registry registryKey={registryKey}>
+        <TechMaintenanceFormLazy registryKey={registryKey} selectedCarData={selectedCarData} />
+      </Registry>
     </>
   );
 };
 
-export default compose<TechMaintenanceListProps, TechMaintenanceListOwnProps>(
-  withPreloader({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  connect<TechMaintenanceListStateProps, TechMaintenanceListDispatchProps, TechMaintenanceListOwnProps, ReduxState>(
-    (state) => ({
-      objectExtra: getListData(getRegistryState(state), registryKey).data.objectExtra,
-    }),
-    (dispatch: any) => ({
-      registryAddInitialData: (...any) => (
-        dispatch(
-          registryAddInitialData(...any),
-        )
-      ),
-      registryRemoveData: (registryKeyTemp: string) => (
-        dispatch(
-          registryRemoveData(registryKeyTemp),
-        )
-      ),
-    }),
-  ),
-)(TechMaintenanceList);
+export default TechMaintenanceList;

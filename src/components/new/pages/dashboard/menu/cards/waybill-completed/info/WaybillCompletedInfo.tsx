@@ -26,7 +26,7 @@ import { WaybillCompletedItemsSubItemsType } from 'components/new/pages/dashboar
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -57,7 +57,7 @@ class WaybillCompletedInfo extends React.PureComponent<PropsWaybillCompletedInfo
     },
   }) => {
     this.props.dispatch(
-      waybillActions.actionGetWaybillById(
+      actionGetWaybillById(
         Number.parseInt(path, 0),
         { page: 'dashboard' },
       ),

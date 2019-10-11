@@ -1,8 +1,8 @@
 import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
 
 // TODO обращений к сторам быть не должно, нужно получать данные из бека
-export const employeeFIOLabelFunction = (employeesIndex: Record<Employee['id'], Employee>, employeeId: Employee['id'], fullFlag = false) => {
-  const employee = employeesIndex[employeeId];
+export const employeeFIOLabelFunction = (employeeIndex: Record<Employee['id'], Employee>, employeeId: Employee['id'], fullFlag = false) => {
+  const employee = employeeIndex[employeeId];
   if (!employee) {
     return '';
   }

@@ -1,107 +1,10 @@
 import { Actions } from 'flummox';
-import { clone, cloneDeep } from 'lodash';
+import { clone } from 'lodash';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
-import { isEmpty, flattenObject } from 'utils/functions';
-import {
-  MissionService,
-  MissionReassignationService,
-  MissionTemplateCarService,
-  Cleaning,
-} from 'api/missions';
+import { isEmpty } from 'utils/functions';
+import { MissionService } from 'api/missions';
 
-import { WaybillService } from 'api/Services';
-
-export const parseFilterObject = (filter) =>
-  Object.entries(flattenObject(filter)).reduce(
-    (newFilter, [key, { value }]) => ({
-      ...newFilter,
-      [Array.isArray(value) ? `${key}__in` : key]: value,
-    }),
-    {},
-  );
-
-// возвращает статусы задания, которые мы будем искать, в зависимости от статуса ПЛ
-// если у ПЛ нет статуса, то нужны исключительно неназначенные задания!
-const getMissionFilterStatus = (waybillStatus) => {
-  return waybillStatus ? undefined : 'not_assigned';
-};
 export default class MissionsActions extends Actions {
-  /* ---------- MISSION ---------- */
-
-  getMissionReassignationParameters(payload) {
-    if (!payload.car_id) return Promise.reject(new Error('empty car_id'));
-    return MissionReassignationService.get(payload);
-  }
-
-  createMissionFromReassignation(payload) {
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.post(payload, false, 'json');
-  }
-
-  updateMissionFromReassignation(payload) {
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    return MissionReassignationService.put(payload, false, 'json');
-  }
-
-  getMissionsByCarAndDates(
-    car_id,
-    date_from,
-    date_to,
-    waybillStatus,
-    waybill_id,
-  ) {
-    const payload = {};
-
-    const status = getMissionFilterStatus(waybillStatus);
-
-    if (!isEmpty(car_id)) {
-      payload.car_id = car_id;
-    }
-
-    if (!isEmpty(date_from)) {
-      payload.date_from = createValidDateTime(date_from);
-    }
-
-    if (!isEmpty(date_to)) {
-      payload.date_to = createValidDateTime(date_to);
-    }
-
-    if (!isEmpty(status)) {
-      payload.status = status;
-    }
-
-    if (!!waybill_id && !isEmpty(waybill_id)) {
-      payload.waybill_id = waybill_id;
-    }
-
-    return WaybillService.path('available_missions').get(payload);
-  }
-
-  /**
-   * рак
-   * @todo missionsActions.actionUpdateMission
-   */
-  updateMission(mission) {
-    const payload = cloneDeep(mission);
-    payload.date_start = createValidDateTime(payload.date_start);
-    payload.date_end = createValidDateTime(payload.date_end);
-    delete payload.number;
-    delete payload.car_gov_number;
-    delete payload.technical_operation_name;
-    delete payload.route_name;
-    delete payload.mission_source_name;
-    delete payload.waybill_number;
-
-    return MissionService.put(payload, false, 'json');
-  }
-
-  /* ---------- MISSION TEMPLATES ---------- */
-  getMissionTemplatesCars(payload = {}) {
-    return MissionTemplateCarService.get(payload);
-  }
-
   createMissions(missionTemplates, missionsCreationTemplate) {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(
@@ -174,40 +77,5 @@ export default class MissionsActions extends Actions {
       return MissionService.post(payload, false, 'json');
     });
     return Promise.all(queries);
-  }
-
-  /* ---------- MISSION REPORTS ---------- */
-
-  getCleaningOneNorm(outerData) {
-    const payload = {
-      datetime: createValidDateTime(outerData.datetime || new Date()),
-      technical_operation_id: outerData.technical_operation_id,
-      municipal_facility_id: outerData.municipal_facility_id,
-      route_type: outerData.route_type,
-      func_type_id: outerData.func_type_id,
-      needs_brigade: outerData.needs_brigade,
-      kind_task_ids: outerData.kind_task_ids,
-    };
-
-    if (payload.needs_brigade) {
-      delete payload.func_type_id;
-    }
-    if (!payload.kind_task_ids) {
-      delete payload.kind_task_ids;
-    }
-
-    return Cleaning.path('one_norm')
-      .get(payload, false, 'json')
-      .then(
-        ({
-          result: {
-            rows: [normData],
-          },
-        }) => normData,
-      );
-  }
-
-  getCleaningByTypeInActiveMission({ type, norm_id, datetime }) {
-    return Cleaning.path(`${type}/${norm_id}`).get({ datetime }, false, 'json');
   }
 }

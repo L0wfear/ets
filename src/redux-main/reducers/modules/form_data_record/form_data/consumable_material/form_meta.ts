@@ -25,10 +25,8 @@ const validateValue = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow:
 };
 
 const validateDateStart = (rowData: ValuesOf<ConsumableMaterial['norms']>, indexRow: number, formState: ConsumableMaterial, reduxState: ReduxState) => {
-  if (!rowData.is_without_norm) {
-    if (!rowData.date_start) {
-      return getRequiredFieldMessage('Дата с');
-    }
+  if (!rowData.date_start) {
+    return getRequiredFieldMessage('Дата с');
   }
 };
 

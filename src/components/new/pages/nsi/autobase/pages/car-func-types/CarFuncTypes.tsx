@@ -15,10 +15,9 @@ type OwnProps = {};
 const CarFuncTypesList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-       <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <CarFuncTypesFormWrap registryKey={registryKey} />
-       </React.Fragment>
+      </Registry>
     );
   },
 );

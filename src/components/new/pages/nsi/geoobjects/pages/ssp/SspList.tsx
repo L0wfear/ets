@@ -15,10 +15,9 @@ type OwnProps = {};
 const SspList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <SspFormWrap registryKey={registryKey} />
-       </React.Fragment>
+      </Registry>
     );
   },
 );

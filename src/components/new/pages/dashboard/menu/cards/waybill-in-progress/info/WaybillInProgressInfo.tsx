@@ -11,8 +11,9 @@ import { makeDate } from 'components/@next/@utils/dates/dates';
 import WaybillFormWrapTSX from 'components/old/waybill/WaybillFormWrap';
 import { TitleWaybillInfoContainer } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-default-waybill/styled/styled';
 import { getDashboardState } from 'redux-main/reducers/selectors';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+
 import { etsUseDispatch, etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -31,7 +32,7 @@ const WaybillInProgressInfo: React.FC<Props> = React.memo(
         },
       }) => {
         dispatch(
-          waybillActions.actionGetWaybillById(
+          actionGetWaybillById(
             Number.parseInt(path, 0),
             { page: 'dashboard' },
           ),

@@ -2,13 +2,14 @@ import { TypeConfigData } from 'components/new/ui/registry/module/@types/registr
 import servicesPermissions from 'components/new/pages/administration/services/_config-data/permissions';
 import { ServiceHistroy } from 'redux-main/reducers/modules/services/@types/services';
 import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
+import { ReportServiceHistoryService } from 'api/Services';
 
 export const registryKey = 'service_history_registry';
 
 export const getConfig = (service_id: number, service_name, date_start: string, date_end: string): TypeConfigData<ServiceHistroy> => ({
   Service: {
     getRegistryData: {
-      entity: 'report/service_history',
+      entity: ReportServiceHistoryService._path,
       payload: {
         service_id,
         date_start,
@@ -16,7 +17,7 @@ export const getConfig = (service_id: number, service_name, date_start: string, 
       },
     },
     getBlobData: {
-      entity: 'report/service_history',
+      entity: ReportServiceHistoryService._path,
       payload: {
         format: 'xls',
         service_id,

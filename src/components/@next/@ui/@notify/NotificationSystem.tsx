@@ -39,7 +39,9 @@ class NotificationSystem extends React.Component {
 
   render() {
     return (
-      <NotificationSystemOrigin ref={this.node} />
+      <div id="notifications">
+        <NotificationSystemOrigin ref={this.node} />
+      </div>
     );
   }
 }

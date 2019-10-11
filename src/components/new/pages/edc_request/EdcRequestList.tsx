@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Registry from 'components/new/ui/registry/components/Registry';
 
 import {
@@ -14,10 +15,9 @@ type OwnProps = {};
 const EdcRequestList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <EdcRequestFormLazy registryKey={registryKey} />
-      </React.Fragment>
+      </Registry>
     );
   },
 );

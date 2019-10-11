@@ -19,8 +19,8 @@ import { CommonTypesForButton } from 'components/new/ui/registry/components/data
 
 type ButtonFailMissionStateProps = {
   uniqKey: OneRegistryData['list']['data']['uniqKey'];
-  selectedRow: OneRegistryData['list']['data']['selectedRow'];
-  checkedRows: OneRegistryData['list']['data']['checkedRows'];
+  selectedRow: OneRegistryData<Mission>['list']['data']['selectedRow'];
+  checkedRows: OneRegistryData<Mission>['list']['data']['checkedRows'];
 };
 type ButtonFailMissionDispatchProps = {
   registryLoadDataByKey: HandleThunkActionCreator<typeof registryLoadDataByKey>;

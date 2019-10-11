@@ -45,10 +45,11 @@ export const promiseGetTracksCaching = async (payload: PromiseGetTracksCachingPa
 
   try {
     response = await TrackService.get(payloadToTrack).then(
-      (ans) => {
+      async (ans) => {
+        const partialTrackCaching = await checkAndModifyTrack(ans, odh_mkad);
         return ({
           ...ans,
-          ...checkAndModifyTrack(ans, odh_mkad),
+          ...partialTrackCaching,
         });
       },
     );

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
-import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-missions/info/@types/listData.h';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const VALUE_FOR_FIXED = {
@@ -46,7 +45,7 @@ const getDataTraveledYet = (data) => {
   return !isNaN(parseInt(data, 10)) && parseInt(data, 10);
 };
 
-export const listData: ListDataType = [
+export const listData: any[] = [
   {
     path: ['mission_data', 'name'],
     title: 'Задание',

@@ -13,8 +13,11 @@ import {
   promiseRemoveMissions,
   promiseRemoveMission,
   getMissionDataById,
+  promiseGetMissionReassignationParameters,
+  promisePostMissionReassignationParameters,
+  promisePutMissionReassignationParameters,
 } from 'redux-main/reducers/modules/missions/mission/promise';
-import { Mission, MissionDataType } from 'redux-main/reducers/modules/missions/mission/@types';
+import { Mission, MissionDataType, MissionReassignation } from 'redux-main/reducers/modules/missions/mission/@types';
 import { getMissionsState } from 'redux-main/reducers/selectors';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 import { EtsAction, EtsActionReturnType } from 'components/@next/ets_hoc/etsUseDispatch';
@@ -26,12 +29,13 @@ import {
 } from 'redux-main/reducers/modules/order/@types';
 import { actionLoadOrderById } from 'redux-main/reducers/modules/order/action-order';
 import { autobaseGetSetCar } from 'redux-main/reducers/modules/autobase/car/actions';
-import waybillActions from 'redux-main/reducers/modules/waybill/waybill_actions';
+
 import edcRequestActions from '../../edc_request/edc_request_actions';
 import { MISSION_STATUS } from 'redux-main/reducers/modules/missions/mission/constants';
 
 import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { actionGetWaybillById } from 'redux-main/reducers/modules/waybill/waybill_actions';
 
 const actionSetMissionPartialData = (partialMissionData: Partial<IStateMissions['missionData']>): EtsAction<IStateMissions['missionData']> => (
   dispatch,
@@ -237,8 +241,8 @@ const loadEdcRequiedByIdForMission = (id: number, meta: LoadingMeta): EtsAction<
 const actionLoadWaybillDataByIdForMission = (
   waybill_id: number,
   meta: LoadingMeta,
-): EtsAction<EtsActionReturnType<typeof waybillActions.actionGetWaybillById>> => async (dispatch) => {
-  const waybillData = await dispatch(waybillActions.actionGetWaybillById(waybill_id, meta));
+): EtsAction<EtsActionReturnType<typeof actionGetWaybillById>> => async (dispatch) => {
+  const waybillData = await dispatch(actionGetWaybillById(waybill_id, meta));
 
   dispatch(
     actionSetDependenceWaybillDataForMission(
@@ -296,7 +300,7 @@ const actionChangeArchiveMissionStatus = (
   return payload;
 };
 
-const actionUpdateMission = (
+export const actionUpdateMission = (
   missionOld: Mission & { action_at?: string },
   meta: LoadingMeta,
 ): EtsAction<ReturnType<typeof promiseUpdateMission>> => async (dispatch) => {
@@ -451,6 +455,36 @@ const actionReseSetDependenceMissionDataForMissionForm = (): ActionReseSetDepend
     return missionData;
   }
 );
+
+export const actionGetMissionReassignationParameters = (payload: Parameters<typeof promiseGetMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promiseGetMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionPostMissionReassignationParameters = (payload: Parameters<typeof promisePostMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promisePostMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
+
+export const actionPutMissionReassignationParameters = (payload: Parameters<typeof promisePutMissionReassignationParameters>[0], meta: LoadingMeta): EtsAction<Promise<MissionReassignation>> => async (dispatch) => {
+  const response = await etsLoadingCounter(
+    dispatch,
+    promisePutMissionReassignationParameters(payload),
+    meta,
+  );
+
+  return response;
+};
 
 export default {
   actionSetMissionPartialData,

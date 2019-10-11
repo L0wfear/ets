@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { compose } from 'recompose';
 
 import Registry from 'components/new/ui/registry/components/Registry';
 
@@ -8,8 +7,6 @@ import {
   getConfig,
 } from 'components/new/pages/administration/services/form/service_history/_config-data/registry-config';
 import { registryAddInitialData, registryRemoveData, actionChangeGlobalPaylaodInServiceData } from 'components/new/ui/registry/module/actions-registy';
-
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 
 import { Service } from 'redux-main/reducers/modules/services/@types/services';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
@@ -80,10 +77,4 @@ const ServicesHistoryList: React.FC<Props> = (props) => {
   );
 };
 
-export default compose<Props, OwnProps>(
-  withPreloader<{}>({
-    page: registryKey,
-    typePreloader: 'mainpage',
-  }),
-  withSearch,
-)(ServicesHistoryList);
+export default withSearch<OwnProps>(ServicesHistoryList);

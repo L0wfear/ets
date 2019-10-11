@@ -1,1 +1,1 @@
-export type GetDriver = () => Promise<any>;
+export type WaybillDriver = {};

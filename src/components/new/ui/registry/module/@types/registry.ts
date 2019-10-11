@@ -205,7 +205,7 @@ export interface OneRegistryData<F = any> {
       uniqKey: Extract<keyof F, string>;
       uniqKeyForParams: string;
       selectedRow: F;
-      checkedRows: Record<keyof F, F>;
+      checkedRows: Record<Extract<keyof F, string>, F>;
       fixedWidth: boolean;
       proxyCheckData?: (
         'mission_template'

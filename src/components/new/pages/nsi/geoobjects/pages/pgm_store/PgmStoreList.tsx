@@ -15,10 +15,9 @@ type OwnProps = {};
 const PgmStoreList: React.FC<OwnProps> = React.memo(
   () => {
     return (
-      <React.Fragment>
-        <Registry registryKey={registryKey} />
+      <Registry registryKey={registryKey}>
         <PgmStoreFormWrap registryKey={registryKey} />
-       </React.Fragment>
+      </Registry>
     );
   },
 );

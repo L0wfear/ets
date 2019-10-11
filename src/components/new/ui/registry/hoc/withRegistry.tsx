@@ -1,10 +1,10 @@
 import * as React from 'react';
+
 import {
   registryAddInitialData,
   registryRemoveData,
 } from 'components/new/ui/registry/module/actions-registy';
 
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import {
   TypeConfigData,
 } from 'components/new/ui/registry/module/@types/registry';
@@ -30,10 +30,7 @@ const withRegistry = <F extends any, OwnProps extends any>(configData: TypeConfi
     },
   );
 
-  return withPreloader<OwnProps>({
-    page: configData.registryKey,
-    typePreloader: 'mainpage',
-  })(RegistryWrap);
+  return RegistryWrap;
 };
 
 export default withRegistry;

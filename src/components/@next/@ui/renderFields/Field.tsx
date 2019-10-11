@@ -20,7 +20,7 @@ const ComponentByType: { [K in keyof ExtFieldTypeByKey]: React.ComponentType<Ext
   boolean: CheckBoxField,
 };
 
-const Field: React.FC<ExtFieldType> = React.memo(
+const ExtField: React.FC<ExtFieldType> = React.memo(
   ({ boundKeys, ...props }) => {
     const Component = ComponentByType[props.type] || ComponentByType.string;
 
@@ -54,4 +54,4 @@ const Field: React.FC<ExtFieldType> = React.memo(
   },
 );
 
-export default Field;
+export default ExtField;

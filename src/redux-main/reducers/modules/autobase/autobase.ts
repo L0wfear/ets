@@ -16,6 +16,7 @@ export const autobaseInitialState: IStateAutobase = {
   insuranceTypeList: [],
   insurancePolicyList: [],
   carList: [],
+  carIndex: {},
   carFuncTypesList: [],
   repairList: [],
   repairCompanyList: [],

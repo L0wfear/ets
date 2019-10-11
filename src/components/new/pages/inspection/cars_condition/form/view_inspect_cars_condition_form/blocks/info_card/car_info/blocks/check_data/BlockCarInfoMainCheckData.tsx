@@ -3,7 +3,7 @@ import { BlockCarInfoProps } from '../../@types/BlockCarInfo';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 // import { stateExploitationOptions } from './options';
 import { get } from 'lodash';
-import { filedToCheckDefectDataDocs, filedToCheckDefectDataOtherSecond } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
+import { filedToCheckDefectDataOtherSecond } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import BlockCarsConditionCarSelectPhotoDefect from './photo_defect/BlockCarsConditionCarSelectPhotoDefect';
 import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
 
@@ -11,7 +11,7 @@ type BlockCarInfoMainCheckDataProps = (
   {
     isPermitted: boolean;
   }
-) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'formErrors' | 'handleChange'>;
+) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'formErrors' | 'handleChange'  | 'isCustomUserCard'>;
 
 const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = React.memo(
   (props) => {
@@ -54,14 +54,6 @@ const BlockCarInfoMainCheckData: React.FC<BlockCarInfoMainCheckDataProps> = Reac
 
     return (
       <React.Fragment>
-        <h4>Проверка документации</h4>
-        <IAVisibleWarningContainer
-          onChange={handleChangeDataForIA}
-          data={state.data}
-          errors={errors.data}
-          isPermitted={isPermitted}
-          filedToCheck={filedToCheckDefectDataDocs}
-        />
         <h5>Прочее:</h5>
         <IAVisibleWarningContainer
           onChange={handleChangeDataForIA}

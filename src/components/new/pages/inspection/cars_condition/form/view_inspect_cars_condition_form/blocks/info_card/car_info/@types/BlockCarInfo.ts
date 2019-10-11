@@ -7,6 +7,7 @@ export type BlockCarInfoOwnProps = {
   carsConditionCarsList: CarsConditionCars[];
   handleHide: (isSubmitted: boolean) => void;
   type: keyof typeof INSPECT_TYPE_FORM;
+  isCustomUserCard: boolean;
 
   page: string;
   path?: string;

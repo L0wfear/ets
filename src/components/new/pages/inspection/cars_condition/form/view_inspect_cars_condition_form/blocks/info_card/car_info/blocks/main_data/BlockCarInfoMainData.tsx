@@ -16,7 +16,7 @@ import useCountryOptions from 'components/new/utils/hooks/services/useOptions/us
 import { get } from 'lodash';
 import { stateExploitationOptions, factStatusOptions, statusAtCheckOptions } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/options';
 import IAVisibleWarningContainer from 'components/new/pages/inspection/container/filed_to_check/IAVisibleWarningContainer';
-import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
+import { filedToCheckDefectDataOuter, filedToCheckDefectDataFirstStart, filedToCheckDefectDataOtherFirst, filedToCheckDefectDataDocs, } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/filedToCheckCarInfoMainCheckData';
 import FieldCarsConditionsCarSelectFactStatus from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/car_info/blocks/check_data/fact_status_and_other/FieldCarsConditionsCarSelectFactStatus';
 import { HrDelimiter } from 'global-styled/global-styled';
 import { actionInspectionConfigGetAndSetInStore } from 'redux-main/reducers/modules/some_uniq/inspection_config/actions';
@@ -28,12 +28,13 @@ type BlockCarInfoMainDataProps = (
     isPermitted: boolean;
     handleChangeBoolean: FormWithHandleChangeBoolean<CarsConditionCars>;
   }
-) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'formErrors' | 'handleChange' | 'page' | 'path'>;
+) & Pick<BlockCarInfoProps, 'IS_CREATING' | 'formState' | 'formErrors' | 'handleChange' | 'page' | 'path' | 'isCustomUserCard'>;
 
 const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
   (props) => {
     const {
       IS_CREATING,
+      isCustomUserCard,
       formState: state,
       formErrors: errors,
     } = props;
@@ -131,13 +132,13 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
     return (
       <React.Fragment>
         <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={!IS_CREATING ? 6 : 12}>
+          <EtsBootstrap.Col md={!IS_CREATING && !isCustomUserCard ? 6 : 12}>
             <ExtField
               id="gov_number"
               type="string"
               label="Гос. номер:"
               value={state.gov_number}
-              readOnly={!IS_CREATING}
+              readOnly={!IS_CREATING && !isCustomUserCard}
               onChange={props.handleChange}
               error={errors.gov_number}
               boundKeys="gov_number"
@@ -145,9 +146,9 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               inline
             />
           </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={!IS_CREATING ? 6 : 12}>
+          <EtsBootstrap.Col md={!IS_CREATING && !isCustomUserCard ? 6 : 12}>
             {
-              !IS_CREATING
+              !IS_CREATING && !isCustomUserCard
                 ? (
                   <ExtField
                     type="string"
@@ -170,9 +171,9 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 )
             }
           </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={!IS_CREATING ? 6 : 12}>
+          <EtsBootstrap.Col md={!IS_CREATING && !isCustomUserCard ? 6 : 12}>
             {
-              !IS_CREATING
+              !IS_CREATING && !isCustomUserCard
                 ? (
                   <ExtField
                     type="string"
@@ -195,9 +196,9 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 )
             }
           </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={!IS_CREATING ? 6 : 12}>
+          <EtsBootstrap.Col md={!IS_CREATING && !isCustomUserCard ? 6 : 12}>
             {
-              !IS_CREATING
+              !IS_CREATING && !isCustomUserCard
                 ? (
                   <ExtField
                     type="string"
@@ -220,9 +221,9 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 )
             }
           </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={!IS_CREATING ? 6 : 12}>
+          <EtsBootstrap.Col md={!IS_CREATING && !isCustomUserCard ? 6 : 12}>
             {
-              !IS_CREATING
+              !IS_CREATING && !isCustomUserCard
                 ? (
                   <ExtField
                     type="string"
@@ -256,11 +257,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               error={errors.vin}
               boundKeys="vin"
               disabled={!props.isPermitted}
-              readOnly={!IS_CREATING}
+              readOnly={!IS_CREATING && !isCustomUserCard}
             />
           </EtsBootstrap.Col>
           {
-            !IS_CREATING &&
+            !IS_CREATING  && !isCustomUserCard &&
               <React.Fragment>
                 <EtsBootstrap.Col md={6}>
                   <ExtField
@@ -296,7 +297,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               error={errors.body_number}
               boundKeys="body_number"
               disabled={!props.isPermitted}
-              readOnly={!IS_CREATING}
+              readOnly={!IS_CREATING  && !isCustomUserCard}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
@@ -308,7 +309,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               error={errors.body_number_incorrect}
               boundKeys="body_number_incorrect"
               disabled={!props.isPermitted}
-              hidden={IS_CREATING}
+              hidden={IS_CREATING && isCustomUserCard}
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>
@@ -320,7 +321,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               error={errors.body_number_by_hand}
               boundKeys="body_number_by_hand"
               disabled={!props.isPermitted}
-              hidden={!state.body_number_incorrect || IS_CREATING}
+              hidden={!state.body_number_incorrect || (IS_CREATING && isCustomUserCard)}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -527,7 +528,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Техника относится к ГБУ Жилищник района:"
+              label="Техника относится к ГБУ Жилищник:"
               value={state.gby_district}
               onChange={props.handleChange}
               error={errors.gby_district}
@@ -538,7 +539,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           <EtsBootstrap.Col md={6}>
             <ExtField
               type="string"
-              label="Техника эксплуатируется жилищником района:"
+              label="Техника эксплуатируется жилищником:"
               value={state.gby_operation_district}
               onChange={props.handleChange}
               error={errors.gby_operation_district}
@@ -686,7 +687,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                     ? <EtsBootstrap.Glyphicon glyph="minus" />
                     : <EtsBootstrap.Glyphicon glyph="plus" />
                 }
-                Указать дефекты
+                {
+                  props.isPermitted
+                    ? 'Указать дефекты'
+                    : 'Посмотреть дефекты'
+                }
               </EtsBootstrap.Button>
               {
                 defectShow &&
@@ -710,6 +715,18 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                           errors={errors.data}
                           isPermitted={props.isPermitted}
                           filedToCheck={filedToCheckDefectDataFirstStart}
+                        />
+                      </EtsBootstrap.Col>
+                    </EtsBootstrap.Row>
+                    <EtsBootstrap.Row>
+                      <EtsBootstrap.Col md={6}>
+                        <h4>Проверка документации</h4>
+                        <IAVisibleWarningContainer
+                          onChange={handleChangeDataForIA}
+                          data={state.data}
+                          errors={errors.data}
+                          isPermitted={props.isPermitted}
+                          filedToCheck={filedToCheckDefectDataDocs}
                         />
                       </EtsBootstrap.Col>
                     </EtsBootstrap.Row>

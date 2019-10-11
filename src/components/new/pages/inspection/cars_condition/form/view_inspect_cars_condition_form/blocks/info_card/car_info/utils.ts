@@ -7,6 +7,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   fact_status_text: '',
   gov_number: '',
   id: null,
+  car_id: null,
   marka: '',
   model: '',
   type: '',

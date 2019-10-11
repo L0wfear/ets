@@ -45,14 +45,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       maxLength: 9,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow', null)) {
+          if (!get(formState, 'isNewRow') && get(formState, 'car_id', null)) {
             return true;
           }
         },
       ],
       dependencies: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null)) && !get(formState, 'gov_number', null)) {
+          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null) || !get(formState, 'car_id') ) && !get(formState, 'gov_number', null)) {
             return 'Поле "Гос. номер" должно быть заполнено';
           }
         },
@@ -63,14 +63,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Марка',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow')) {
+          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
             return true;
           }
         },
       ],
       dependencies: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null)) && !get(formState, 'marka', null)) {
+          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null) || !get(formState, 'car_id')) && !get(formState, 'marka', null)) {
             return 'Поле "Марка" должно быть заполнено';
           }
         },
@@ -81,14 +81,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Модель',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow')) {
+          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
             return true;
           }
         },
       ],
       dependencies: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null)) && !get(formState, 'model', null)) {
+          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null) || !get(formState, 'car_id')) && !get(formState, 'model', null)) {
             return 'Поле "Модель" должно быть заполнено';
           }
         },
@@ -100,14 +100,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: true,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow')) {
+          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
             return true;
           }
         },
       ],
       dependencies: [
         (value, formState) => {
-          if (!get(formState, 'type') && get(formState, 'isNewRow') && !value) {
+          if (!get(formState, 'type') && (get(formState, 'isNewRow') || !get(formState, 'car_id')) && !value) {
             return 'Поле "Тип ТС" должно быть заполнено';
           }
         },
@@ -159,12 +159,12 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
     },
     gby_district: {
       type: 'string',
-      title: 'Техника относится к ГБУ Жилищник района',
+      title: 'Техника относится к ГБУ Жилищник',
       required: true,
     },
     gby_operation_district: {
       type: 'string',
-      title: 'Техника эксплуатируется жилищником района',
+      title: 'Техника эксплуатируется жилищником',
       required: true,
     },
     vin_incorrect: {
@@ -336,14 +336,15 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Сезон',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow')) {
+          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
             return true;
           }
         },
       ],
       dependencies: [
         (value, formState) => {
-          if (!get(formState, 'type') && get(formState, 'isNewRow') && !value) {
+          // if (!get(formState, 'type') && (get(formState, 'isNewRow') || !get(formState, 'car_id')) && !value) {
+          if ((get(formState, 'isNewRow') || !get(formState, 'car_id')) && !value) {
             return 'Поле "Сезон" должно быть заполнено';
           }
         },

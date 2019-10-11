@@ -13,6 +13,7 @@ import { DivNone, FooterEnd, HrDelimiter } from 'global-styled/global-styled';
 import { actionCreateCarsConditionsCar, actionUpdateCarsConditionsCar, actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { BoxContainer } from 'components/new/pages/inspection/autobase/components/data/styled/InspectionAutobaseData';
+import { get } from 'lodash';
 
 const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
   (props) => {
@@ -28,12 +29,14 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
       && props.type === INSPECT_TYPE_FORM.list
     );
 
+    const isCustomUserCard = !Boolean(get(state, 'car_id'));
+
     return (
       <BoxContainer>
         {
           !IS_CREATING
-          ? <h2>Карточка выбранного ТС</h2>
-          : <h2>Создание карточки ТС</h2>
+            ? <h2>Карточка выбранного ТС</h2>
+            : <h2>Создание карточки ТС</h2>
         }
         <BlockCarInfoMainData
           IS_CREATING={IS_CREATING}
@@ -42,6 +45,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           handleChange={props.handleChange}
           handleChangeBoolean={props.handleChangeBoolean}
           isPermitted={isPermitted}
+          isCustomUserCard={isCustomUserCard}
 
           page={props.page}
           path={props.path}
@@ -53,6 +57,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           formErrors={errors}
           handleChange={props.handleChange}
           isPermitted={isPermitted}
+          isCustomUserCard={isCustomUserCard}
         />
         <FooterEnd>
           {

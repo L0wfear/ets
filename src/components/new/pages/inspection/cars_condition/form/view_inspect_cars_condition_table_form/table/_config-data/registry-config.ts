@@ -116,7 +116,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'gby_district',
-          title: 'Техника относится к ГБУ Жилищник района',
+          title: 'Техника относится к ГБУ Жилищник',
           width: 200,
           groupOpt: {
             key: 'district',
@@ -127,7 +127,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
         },
         {
           key: 'gby_operation_district',
-          title: 'Техника эксплуатируется жилищником района',
+          title: 'Техника эксплуатируется жилищником',
           width: 200,
           groupOpt: {
             key: 'district',

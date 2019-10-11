@@ -118,6 +118,7 @@ export type CarsConditionCars = {
   fact_status_text: string;
   gov_number: string;
   id: number;
+  car_id: number;
   marka: string;
   model: string;
   type: string;

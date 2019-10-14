@@ -79,6 +79,8 @@ const BlockInfoCard: React.FC<BlockInfoCardProps> = React.memo(
           handleHide={handleHideCarInfo}
           carsConditionCarsList={props.carsConditionCarsList}
           handleChangeData={props.handleChangeData}
+          isPermittedChangeListParams={props.isPermitted}
+
           type={props.type}
           page={props.page}
         />

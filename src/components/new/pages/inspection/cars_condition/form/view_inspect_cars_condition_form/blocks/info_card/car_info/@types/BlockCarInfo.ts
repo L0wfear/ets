@@ -8,6 +8,7 @@ export type BlockCarInfoOwnProps = {
   handleHide: (isSubmitted: boolean) => void;
   type: keyof typeof INSPECT_TYPE_FORM;
   isCustomUserCard: boolean;
+  isPermittedChangeListParams: boolean;
 
   page: string;
   path?: string;

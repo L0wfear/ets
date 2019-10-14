@@ -136,9 +136,12 @@ export const isPermittedUpdateCarContidion = (registryKey: string) => {
 
   const isPermittedToUpdateCloseUser = etsUseIsPermitted(registryPermissions.update_closed);
   const isPermittedToUpdateClose = isPermittedEditCarContidion(inspect_data, isPermittedToUpdateCloseUser);
+  const status = get(inspect_data, 'status');
+  const actionType = status === STATUS_INSPECT_COMPLETED && isPermittedToUpdateClose ? 'save_closed' : 'save'; // задаём action для сохранения проверки используетя в PUT
 
   return {
     isPermittedToUpdate,
     isPermittedToUpdateClose,
+    actionType,
   };
 };

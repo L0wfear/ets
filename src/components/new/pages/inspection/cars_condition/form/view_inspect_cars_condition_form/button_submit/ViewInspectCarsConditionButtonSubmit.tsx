@@ -53,6 +53,21 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
     [selectedInspectCarsCondition, canSave],
   );
 
+  const handleSubmitClosed = React.useCallback(
+    async () => {
+      if (canSave) {
+        try {
+          await props.handleSubmit('save_closed');
+        } catch (error) {
+          props.registryLoadDataByKey(props.loadingPage);
+          return;
+        }
+        props.handleHide(true);
+      }
+    },
+    [selectedInspectCarsCondition, canSave],
+  );
+
   const handleSaveGetAct = React.useCallback(
     async () => {
       if (canSave) {
@@ -106,7 +121,7 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
   return (
     <ViewInspectButtonSubmit
       handleSubmit={handleSubmit}
-      handleSubmitClosed={handleSubmit}
+      handleSubmitClosed={handleSubmitClosed}
       isPermittedToUpdateClose={props.isPermittedToUpdateClose}
       handleCloseAct={handleCloseCarsConditionAct}
       handleGetAct={handleGetCarsConditionAct}

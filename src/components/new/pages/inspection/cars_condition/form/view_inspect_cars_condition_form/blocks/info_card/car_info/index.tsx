@@ -12,6 +12,7 @@ type BlockCarInfoWrapOwnProps = {
   type: keyof typeof INSPECT_TYPE_FORM;
   handleChangeData: (ownObj: Partial<InspectCarsCondition['data']>) => any;
   page: string;
+  isPermittedChangeListParams: boolean;
 };
 type BlockCarInfoWrapProps = (
   BlockCarInfoWrapOwnProps
@@ -26,6 +27,7 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
 
     const {
       carsConditionCarsList,
+      isPermittedChangeListParams,
     } = props;
 
     React.useEffect(
@@ -66,6 +68,7 @@ const BlockCarInfoWrap: React.FC<BlockCarInfoWrapProps> = React.memo(
             handleHide={props.handleHide}
             type={props.type}
             handleChangeData={props.handleChangeData}
+            isPermittedChangeListParams={isPermittedChangeListParams}
 
             page={props.page}
             path="car_info-data"

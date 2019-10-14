@@ -13,7 +13,7 @@ import Td from 'components/new/ui/registry/components/data/table-data/table-cont
 import { makePayloadToParamsForRead } from 'components/new/ui/registry/components/data/header/buttons/component-button/button-by-type/utils';
 import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
-export const registryIsPermitedByKey: Record<string, (registryKey: string) => Record<'isPermittedToUpdate' | 'isPermittedToUpdateClose', boolean>> = {
+export const registryIsPermitedByKey: Record<string, (registryKey: string) => Record<'isPermittedToUpdate' | 'isPermittedToUpdateClose', boolean> & { actionType: string }> = {
   InspectCarsConditionsCarsExtendedRegistry: isPermittedUpdateCarContidion,
 };
 
@@ -85,7 +85,7 @@ const TrHead: React.FC<Props> = React.memo(
     );
 
     const registryIsPermitedFuction = get(registryIsPermitedByKey, props.registryKey);
-    let registryIsPermitedFuctionResult = null;
+    let registryIsPermitedFuctionResult: ReturnType<typeof registryIsPermitedFuction> = null;
     if (registryIsPermitedFuction) {
       registryIsPermitedFuctionResult = registryIsPermitedFuction(props.registryKey);
     }

@@ -46,6 +46,8 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
   const selectedRow = etsUseSelector((state) => getListData(state.registry, props.registryConfig.registryKey).data.selectedRow);
   const saveIsDisable = selectedRow ? false : true;
   const list = etsUseSelector((state) => getListData(state.registry, props.registryConfig.registryKey));
+  const isPermittedUpdateInsp = isPermittedUpdateCarContidion(props.registryConfig.registryKey);
+  const showSaveBtn = isPermittedUpdateInsp.isPermittedToUpdate && isPermittedUpdateInsp.isPermittedToUpdateClose;
 
   React.useEffect(() => {
     if ( !isPermitted ) {
@@ -88,6 +90,7 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
     },
     [showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams],
   );
+
   const saveSelectedRow = React.useCallback(
     () => {
       const list_new: OneRegistryData['list'] = {
@@ -106,13 +109,11 @@ const WithInspectFormWrapRegistry = (props: InspectionFormWrapMergedProps) => {
         props.registryConfig.registryKey,
         list_new,
         list.rendersFields,
+        isPermittedUpdateInsp,
       ));
     },
-    [selectedRow, props.registryConfig, showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams, list],
+    [selectedRow, props.registryConfig, showForm, props.searchState, props.match.params, props.setDataInSearch, props.setParams, list, isPermittedUpdateInsp],
   );
-
-  const isPermittedUpdateInsp = isPermittedUpdateCarContidion(props.registryConfig.registryKey);
-  const showSaveBtn = isPermittedUpdateInsp.isPermittedToUpdate && isPermittedUpdateInsp.isPermittedToUpdateClose;
 
   return isPermitted && createPortal(
     <WithformWrapRegistryWrapper z_index = {1001}>

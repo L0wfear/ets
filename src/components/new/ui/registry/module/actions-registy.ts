@@ -52,6 +52,7 @@ import { removeEmptyString } from 'redux-main/reducers/modules/form_data_record/
 import { makeInspectActScanFilesFront } from 'redux-main/reducers/modules/inspect/act_scan/inspect_act_scan_promise';
 import { makeConsumableMaterialFront } from 'redux-main/reducers/modules/consumable_material/promise_consumable_material';
 import { registryIsPermitedByKey } from 'components/new/ui/registry/components/data/table-data/table-container/@new/tbody/Tr';
+import { isPermittedUpdateCarContidion } from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/utils';
 
 const mapKeyMapArray: Record<OneRegistryData<any>['Service']['getRegistryData']['format'], (array: any[]) => any[]> = {
   dutyMissionTemplate: (array) => array.map(getFrontDutyMission),
@@ -940,6 +941,7 @@ export const registrySelectRow = <F extends Record<string, any>>(registryKey: st
           registryKey,
           list_new,
           prevRendersFields,
+          registryIsPermitedFuctionResult,
         ),
       );
     } else {
@@ -1123,7 +1125,7 @@ export const registryChangeObjectExtra = <F extends Record<string, any>>(registr
 };
 // Да простят меня боги v.2
 // отправка запроса на обновление строки в реестре при переключении строки в реестре, ответ из PUT записывается в реестр (обновляет строку)
-export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields']): EtsAction<any> => async (dispatch) => {
+export const registrySelectRowWithPutRequest = (registryKey: string, list_new: OneRegistryData['list'], prevRendersFields: OneRegistryData['list']['rendersFields'], permissionsProps: ReturnType<typeof isPermittedUpdateCarContidion> ): EtsAction<any> => async (dispatch) => {
   const meta = get(list_new, 'meta');
   const rowRequestActions = get(meta, 'rowRequestActions');
   const actionCreate = get(rowRequestActions, 'actionCreate');
@@ -1175,11 +1177,13 @@ export const registrySelectRowWithPutRequest = (registryKey: string, list_new: O
           ),
         );
       } else {
+        const actionType = get(permissionsProps, 'actionType', 'save'); // isPermittedUpdateCarContidion - задаётся тут
         response = await dispatch(
           rowRequestActionUpdate(
             {
               ...formatedRendersFieldsValues,
               ...rowRequestActionUpdatePayload,
+              actionType,
             },
             { page: '', path: '' },
           ),

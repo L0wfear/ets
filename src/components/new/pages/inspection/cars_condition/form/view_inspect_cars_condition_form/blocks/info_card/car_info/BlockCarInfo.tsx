@@ -7,7 +7,6 @@ import inspectCarsConditionPermissions from 'components/new/pages/inspection/car
 import { carsConditionCarFormSchema } from './schema';
 import BlockCarInfoMainData from './blocks/main_data/BlockCarInfoMainData';
 import BlockCarInfoMainCheckData from './blocks/check_data/BlockCarInfoMainCheckData';
-import { INSPECT_TYPE_FORM } from 'components/new/pages/inspection/autobase/global_constants';
 
 import { DivNone, FooterEnd, HrDelimiter } from 'global-styled/global-styled';
 import { actionCreateCarsConditionsCar, actionUpdateCarsConditionsCar, actionGetCarsConditionsCarById } from 'redux-main/reducers/modules/inspect/cars_condition/inspect_cars_condition_actions';
@@ -21,13 +20,8 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
       formState: state,
       formErrors: errors,
       IS_CREATING,
-      isPermitted: isPermittedOwn,
+      isPermittedChangeListParams,
     } = props;
-
-    const isPermitted = (
-      isPermittedOwn
-      && props.type === INSPECT_TYPE_FORM.list
-    );
 
     const isCustomUserCard = !Boolean(get(state, 'car_id'));
 
@@ -44,7 +38,7 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           formErrors={errors}
           handleChange={props.handleChange}
           handleChangeBoolean={props.handleChangeBoolean}
-          isPermitted={isPermitted}
+          isPermitted={isPermittedChangeListParams}
           isCustomUserCard={isCustomUserCard}
 
           page={props.page}
@@ -56,12 +50,12 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
           formState={state}
           formErrors={errors}
           handleChange={props.handleChange}
-          isPermitted={isPermitted}
+          isPermitted={isPermittedChangeListParams}
           isCustomUserCard={isCustomUserCard}
         />
         <FooterEnd>
           {
-            isPermitted
+            isPermittedChangeListParams
               ? (
                 <EtsBootstrap.Button disabled={props.canSave} onClick={props.defaultSubmit}>Сохранить для текущей проверки</EtsBootstrap.Button>
               )

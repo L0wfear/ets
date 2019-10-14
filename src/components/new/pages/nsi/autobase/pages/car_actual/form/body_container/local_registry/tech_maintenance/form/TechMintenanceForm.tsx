@@ -7,8 +7,6 @@ import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/Modal
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import {
-  MultiSelectField,
-  DataTimeField,
   FileField,
 } from 'components/old/ui/input/fields';
 
@@ -127,8 +125,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={12}>
-            <MultiSelectField
-              integer
+            <ExtField
+              type="select"
+              multi={true}
               label="Регламент ТО"
               options={TECH_MAINT_ORDERS}
               value={state.tech_maintenance_order_ids}
@@ -150,7 +149,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Плановая дата начала"
               date={state.plan_date_start}
@@ -161,7 +162,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Плановая дата окончания"
               date={state.plan_date_end}
@@ -172,7 +175,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Фактическая дата начала"
               date={state.fact_date_start}
@@ -183,7 +188,9 @@ const TechMaintenanceForm: React.FC<PropsTechMaintenance> = (props) => {
             />
           </EtsBootstrap.Col>
           <EtsBootstrap.Col md={6}>
-            <DataTimeField
+            <ExtField
+              type={'date'}
+              makeGoodFormat
               time={false}
               label="Фактическая дата окончания"
               date={state.fact_date_end}

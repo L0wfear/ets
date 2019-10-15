@@ -5,6 +5,7 @@ import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-
 import {
   DivNone,
 } from 'global-styled/global-styled';
+<<<<<<< HEAD
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const VALUE_FOR_FIXED = {
@@ -33,20 +34,15 @@ const checkFixed = (data, key) => {
 
   return clone;
 };
+=======
+import { checkFixed, getDataTraveledYet } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
+>>>>>>> release/0.30
 
 const getEstimatedFinishTime = (data) => {
   if (typeof data === 'string' && data.indexOf('2') === -1) {
     return data;
   }
   return getFormattedDateTime(data);
-};
-
-const getDataTraveledYet = (data) => {
-  if (Array.isArray(data)) {
-    return data.filter((d) => d === 0 || !d).join(' ');
-  }
-
-  return !isNaN(parseInt(data, 10)) && parseInt(data, 10);
 };
 
 export const listData: ListDataType = [
@@ -128,7 +124,6 @@ export const listData: ListDataType = [
     title: 'Пройдено в рабочем режиме',
     RenderComponent: ({ infoData: { report_data } }) => {
       const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
-
       return (
         <li>
           <b>Пройдено в рабочем режиме: </b>

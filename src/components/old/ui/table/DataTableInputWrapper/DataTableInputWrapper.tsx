@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { each, toArray } from 'lodash';
 
 import {
   TPropsDataTableInputWrapper,
@@ -8,8 +7,8 @@ import {
 } from 'components/old/ui/table/DataTableInputWrapper/DataTableInputWrapper.h';
 import { get } from 'lodash';
 
-import { validateField } from 'utils/validate/validateField';
 import { isString } from 'util';
+import { DataTableInputOutputListErrors, isValidDataTableInput } from 'components/old/ui/table/utils';
 
 const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableInputWrapper, TPropsDataTableInputWrapper> = (SourceComponent) =>
   class DataTableInputWrapperHOC extends React.Component<TPropsDataTableInputWrapper, IStateDataTableInputWrapper> {
@@ -23,22 +22,9 @@ const DataTableInputWrapper: ETSCore.Types.THOCFunction<TInjectedPropsDataTableI
     }
     validate(inputList) {
       if (this.props.onValidation) {
-        const outputListErrors = inputList.map((rowData, i) => {
-          const errors = this.state.outputListErrors[i] ? { ...this.state.outputListErrors[i] } : {};
 
-          each(this.props.validationSchema.properties, (prop) => {
-            errors[prop.key] = validateField(prop, rowData[prop.key], rowData, this.props.validationSchema);
-          });
-
-          return errors;
-        });
-
-        const isValidInput = !outputListErrors.map((errorItem) => {
-          return toArray(errorItem)
-            .map((v) => !!v)
-            .filter((ev) => ev === true)
-            .length;
-        }).some((value) => value > 0);
+        const outputListErrors = DataTableInputOutputListErrors(inputList, this.state.outputListErrors, this.props.validationSchema);
+        const isValidInput = isValidDataTableInput(outputListErrors);
 
         const validityOptions = {
           outputListErrors,

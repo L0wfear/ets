@@ -3,6 +3,9 @@
  */
 import { isString, isArray } from 'util';
 import { diffDates } from 'components/@next/@utils/dates/dates';
+import { validateField } from 'utils/validate/validateField';
+import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
+import { each, toArray } from 'lodash';
 
 export const getFilterTypeByKey = (key, tableMeta) => {
   const col = tableMeta.cols.find((c) => c.name === key);
@@ -172,3 +175,22 @@ export const makeData = (data, prevProps, nextProps) => {
 
   return returnData;
 };
+
+export const DataTableInputOutputListErrors = (inputList: any[], outputListErrors: any[], validationSchema: IValidationSchema, ) =>
+  inputList.map((rowData, i) => {
+    const errors = outputListErrors[i] ? { ...outputListErrors[i] } : {};
+
+    each(validationSchema.properties, (prop) => {
+      errors[prop.key] = validateField(prop, rowData[prop.key], rowData, validationSchema);
+    });
+
+    return errors;
+  });
+
+export const isValidDataTableInput = ( outputListErrors: any[]): boolean =>
+  !outputListErrors.map((errorItem) => {
+    return toArray(errorItem)
+      .map((v) => !!v)
+      .filter((ev) => ev === true)
+      .length;
+  }).some((value) => value > 0);

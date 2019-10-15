@@ -24,6 +24,10 @@ import { ColScroll } from './styled';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import BlockCarsConditionSetInspectEmployee from './blocks/set_inspect_employee/BlockCarsConditionSetInspectEmployee';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+import { get } from 'lodash';
+import { DataTableInputOutputListErrors, isValidDataTableInput } from 'components/old/ui/table/utils';
+import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
+import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
@@ -92,6 +96,17 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       () => {
         if (!isHasPeriod) {
           canSavePreparePlanHandler(true);
+        } else {
+          // т.к. компонент не рендерится, а валидация происходит в prepareCars
+          const types_cars = get(props, 'element.data.types_cars');
+          const types_harvesting_unit = get(props, 'element.data.types_harvesting_unit');
+
+          const outputListErrorsTypesCars = DataTableInputOutputListErrors(types_cars, [], TypesCars.validationSchema);
+          const isValidInputTypesCars = isValidDataTableInput(outputListErrorsTypesCars);
+          const outputListErrorsTypesHarvestingUnit = DataTableInputOutputListErrors(types_harvesting_unit, [], TypesHarvestingUnit.validationSchema);
+          const isValidInputTypesHarvestingUnit = isValidDataTableInput(outputListErrorsTypesHarvestingUnit);
+
+          canSavePreparePlanHandler(isValidInputTypesCars && isValidInputTypesHarvestingUnit);
         }
       },
       [isHasPeriod, preparePlanCanSave],

@@ -5,47 +5,13 @@ import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-
 import {
   DivNone,
 } from 'global-styled/global-styled';
-
-const VALUE_FOR_FIXED = {
-  TWO_F: {
-    val: 2,
-    list: [
-      'кв. м.',
-      'м.',
-    ],
-  },
-  THREE_F: {
-    val: 3,
-    list: [
-      'км',
-    ],
-  },
-  floatFixed: (data, val) => parseFloat(data).toFixed(val),
-};
-
-const checkFixed = (data, key) => {
-  const clone = [...data];
-
-  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
-    clone[0] = VALUE_FOR_FIXED.floatFixed(clone[0], VALUE_FOR_FIXED[key].val);
-  }
-
-  return clone;
-};
+import { checkFixed, getDataTraveledYet } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
 
 const getEstimatedFinishTime = (data) => {
   if (typeof data === 'string' && data.indexOf('2') === -1) {
     return data;
   }
   return getFormattedDateTime(data);
-};
-
-const getDataTraveledYet = (data) => {
-  if (Array.isArray(data)) {
-    return data.filter((d) => d === 0 || !d).join(' ');
-  }
-
-  return !isNaN(parseInt(data, 10)) && parseInt(data, 10);
 };
 
 export const listData: ListDataType = [
@@ -127,7 +93,6 @@ export const listData: ListDataType = [
     title: 'Пройдено в рабочем режиме',
     RenderComponent: ({ infoData: { report_data } }) => {
       const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
-
       return (
         <li>
           <b>Пройдено в рабочем режиме: </b>

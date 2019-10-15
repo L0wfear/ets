@@ -38,9 +38,9 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
         });
       },
       (dispatch) => ({
-        loadData: () => (
+        loadData: (payloadAction?: ConfigType['payloadAction']) => (
           dispatch(
-            config.loadData(),
+            config.loadData(payloadAction),
           )
         ),
       }),
@@ -88,12 +88,22 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
         clearInterval(this.state.timerId);
       }
 
-      loadData = () => {
+      loadData = (payloadAction?: ConfigType['payloadAction']) => {
         this.setState({ inLoadByLocalRefresh: true });
-        this.props.loadData()
+
+        this.props.loadData(payloadAction)
           .then(() => (
             this.setState({ inLoadByLocalRefresh: false })
           ));
+      }
+
+      refreshWidget = () => {
+        const payloadAction = {
+          payload: {
+            force: 1,
+          },
+        };
+        this.loadData(payloadAction);
       }
 
       render() {
@@ -105,7 +115,7 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
                 <CardTitleContainerWrap>
                   <div>{title}</div>
                   <div className="button_refresh">
-                    <EtsBootstrap.Button onClick={this.loadData} disabled={isLoading}>
+                    <EtsBootstrap.Button onClick={this.refreshWidget} disabled={isLoading}>
                       <GlyphiconWithNonAnimation
                         isLoading={isLoading}
                         glyph="refresh"

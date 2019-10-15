@@ -1,48 +1,15 @@
 import * as React from 'react';
 
 import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
+
+import { checkFixed, getDataTraveledYet } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
-
-const VALUE_FOR_FIXED = {
-  TWO_F: {
-    val: 2,
-    list: [
-      'кв. м.',
-      'м.',
-    ],
-  },
-  THREE_F: {
-    val: 3,
-    list: [
-      'км',
-    ],
-  },
-  floatFixed: (data, val) => parseFloat(data).toFixed(val),
-};
-
-const checkFixed = (data, key) => {
-  const clone = [...data];
-
-  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
-    clone[0] = VALUE_FOR_FIXED.floatFixed(clone[0], VALUE_FOR_FIXED[key].val);
-  }
-
-  return clone;
-};
 
 const getEstimatedFinishTime = (data) => {
   if (typeof data === 'string' && data.indexOf('2') === -1) {
     return data;
   }
   return getFormattedDateTime(data);
-};
-
-const getDataTraveledYet = (data) => {
-  if (Array.isArray(data)) {
-    return data.filter((d) => d === 0 || !d).join(' ');
-  }
-
-  return !isNaN(parseInt(data, 10)) && parseInt(data, 10);
 };
 
 export const listData: any[] = [
@@ -120,7 +87,6 @@ export const listData: any[] = [
     title: 'Пройдено в рабочем режиме',
     RenderComponent: ({ infoData: { report_data } }) => {
       const traveledAndCheck_unit = checkFixed([report_data.traveled, report_data.check_unit], 'TWO_F');
-
       return (
         <li>
           <b>Пройдено в рабочем режиме: </b>

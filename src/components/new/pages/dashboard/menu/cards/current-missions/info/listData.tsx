@@ -5,38 +5,8 @@ import { ListDataType } from 'components/new/pages/dashboard/menu/cards/current-
 import {
   DivNone,
 } from 'global-styled/global-styled';
-<<<<<<< HEAD
-import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
-
-const VALUE_FOR_FIXED = {
-  TWO_F: {
-    val: 2,
-    list: [
-      'кв. м.',
-      'м.',
-    ],
-  },
-  THREE_F: {
-    val: 3,
-    list: [
-      'км',
-    ],
-  },
-  floatFixed: (data, val) => parseFloat(data).toFixed(val),
-};
-
-const checkFixed = (data, key) => {
-  const clone = [...data];
-
-  if (VALUE_FOR_FIXED[key].list.includes(data[1])) {
-    clone[0] = VALUE_FOR_FIXED.floatFixed(clone[0], VALUE_FOR_FIXED[key].val);
-  }
-
-  return clone;
-};
-=======
 import { checkFixed, getDataTraveledYet } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
->>>>>>> release/0.30
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 const getEstimatedFinishTime = (data) => {
   if (typeof data === 'string' && data.indexOf('2') === -1) {

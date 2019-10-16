@@ -109,10 +109,10 @@ export const checkAndModifyTrack = (
 
     isCorssingMKAD = isCorssingMKAD || point.checkCoordsMsk.onMkad;
 
-    if (point.sensors && point.sensors.level) {
+    if (point.sensors && point.sensors.level && Object.values(front_cars_sensors_level).length) {
       const { sensors: { level = [] } = {} } = point;
       level.forEach((sensorData) => {
-        if (front_cars_sensors_level[sensorData.sensor_id]) {
+        try {
           front_cars_sensors_level[sensorData.sensor_id].data.push([
             point.timestamp,
             sensorData.val,
@@ -121,6 +121,9 @@ export const checkAndModifyTrack = (
             point.timestamp,
             sensorData.raw,
           ]);
+        } catch (e) {
+          // tslint:disable-next-line:no-console
+          console.error('sensors Error: ', e);
         }
       });
     }

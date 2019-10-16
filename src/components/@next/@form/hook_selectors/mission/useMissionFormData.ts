@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { get } from 'lodash';
-import { isObject, isNumber, isNullOrUndefined } from 'util';
+import { isObject, isNumber, isNullOrUndefined, isNull } from 'util';
 
 import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
@@ -19,7 +19,8 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
 
       if (rowDataInIndex) {
         const plan_value = rowDataInIndex.is_plan_value_locked ? rowDataInIndex.plan_value : rowData.plan_value;
-        let fact_value = Number(rowData.fact_value);
+        let fact_value = isNull(rowData.fact_value) ? rowData.fact_value : Number(rowData.fact_value);
+
         if (isNaN(fact_value)) {
           fact_value = null;
         }

@@ -228,7 +228,7 @@ const FieldWaybillCarRefill: React.FC<FieldWaybillCarRefillProps> = React.memo(
           selectedRowIndex={selectedRowIndex}
           setSelectedRowIndex={setSelectedRowIndex}
 
-          disabled={props.disabled || props.isPermittedWaybillRefill}
+          disabled={props.disabled || !props.isPermittedWaybillRefill}
         />
         <DisplayFlexAlignCenterFooterForm>
           {

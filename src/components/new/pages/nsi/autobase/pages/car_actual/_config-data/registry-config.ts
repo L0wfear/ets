@@ -43,12 +43,22 @@ export const config: TypeConfigData<Car> = {
       },
       {
         valueKey: 'company_name_customer',
-        title: 'Заказчик',
+        title: [
+          {
+            displayIf: displayIfContant.isOkrug,
+            title: 'Заказчик',
+          },
+        ],
         type: 'multiselect',
       },
       {
         valueKey: 'company_name_contractor',
-        title: 'Подрядчик',
+        title: [
+          {
+            displayIf: displayIfContant.isOkrug,
+            title: 'Подрядчик',
+          },
+        ],
         type: 'multiselect',
       },
       {

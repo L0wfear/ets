@@ -137,7 +137,7 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
             width: 200,
           },
           {
-            key: 'has_pgm',
+            key: 'has_pgm_text',
             title: 'Наличие ПГМ в емкостях',
             format: 'boolean',
             width: 200,

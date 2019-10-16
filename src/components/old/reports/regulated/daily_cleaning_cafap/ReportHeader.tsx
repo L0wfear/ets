@@ -11,7 +11,6 @@ import {
 
 import { getYesterday9am, getToday859am, createValidDateTime } from 'components/@next/@utils/dates/dates';
 
-import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
@@ -21,6 +20,8 @@ import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
 import ExtField from 'components/@next/@ui/renderFields/Field';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { actionSessionUpdateCurrentSeason } from 'redux-main/reducers/modules/session/action_get_config';
 
 type IPropsReportHeader = {
   date_start: string;
@@ -28,10 +29,15 @@ type IPropsReportHeader = {
   geozone_type: string;
   element_type: string;
   car_func_types_groups: any;
-  appConfig: InitialStateSession['appConfig'];
+  current_season: InitialStateSession['appConfig']['current_season'];
+  dispatch: EtsDispatch;
 } & IPropsReportHeaderCommon & IPropsReportHeaderWrapper;
 
 class ReportHeader extends React.Component<IPropsReportHeader, any> {
+  componentDidMount() {
+    this.props.dispatch(actionSessionUpdateCurrentSeason({ page: 'mainpage' }));
+  }
+
   getState() {
     const {
       date_start = getYesterday9am(),
@@ -98,7 +104,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
     this.props.onClick(requestBody);
   };
   render() {
-    const { readOnly } = this.props;
+    const { readOnly, current_season } = this.props;
     const {
       date_start,
       date_end,
@@ -107,8 +113,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const season = getCurrentSeason(this.props.appConfig.summer_start_date, this.props.appConfig.summer_end_date);
-    const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, season], {});
+    const carTypes = get(this.props.tableMeta.car_func_types, [geozone_type, current_season], {});
     const CAR_TYPES =  Object.keys(carTypes).reduce((newArr, t) => {
       if (element_type !== 'roadway' || t !== 'tu') {
         newArr.push({ value: `${t}`, label: carTypes[t] });
@@ -189,7 +194,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
 export default compose<any, any>(
   connect<any, any, any, ReduxState>(
     (state) => ({
-      appConfig: getSessionState(state).appConfig,
+      current_season: getSessionState(state).appConfig.current_season,
     }),
   ),
   ReportHeaderWrapper,

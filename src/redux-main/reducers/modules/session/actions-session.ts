@@ -194,7 +194,7 @@ export const checkToken: any = () => async (dispatch, getState) => {
   return null;
 };
 
-export const sessionResetData: any = () => (dispatch) => {
+export const sessionResetData = (): EtsAction<any> => (dispatch) => {
   // localStorage.removeItem(global.SESSION_KEY_ETS_TEST_BY_DEV);
   // localStorage.removeItem(global.SESSION_KEY);
   // localStorage.removeItem(global.API__KEY);

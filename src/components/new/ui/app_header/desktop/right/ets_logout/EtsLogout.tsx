@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { ReduxState } from 'redux-main/@types/state';
 
 import {
@@ -6,11 +7,24 @@ import {
   LinkFirstLvl,
   DefaultFirstLvlMenuLogout,
 } from 'components/new/ui/app_header/styled';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { sessionResetData } from 'redux-main/reducers/modules/session/actions-session';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-class EtsLogout extends React.Component<any, {}> {
+type StateProps = {};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  width?: number;
+  changeStaticWidth?: (width: number) => any;
+};
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class EtsLogout extends React.Component<Props, {}> {
   node = React.createRef<any>();
 
   getSnapshotBeforeUpdate(prevProps) {
@@ -41,7 +55,7 @@ class EtsLogout extends React.Component<any, {}> {
   }
 
   handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
-    this.props.sessionResetData();
+    this.props.dispatch(sessionResetData());
   };
 
   render() {
@@ -57,15 +71,6 @@ class EtsLogout extends React.Component<any, {}> {
   }
 }
 
-export default compose<any, any>(
-  connect<any, any, any, ReduxState>(
-    null,
-    (dispatch) => ({
-      sessionResetData: () => (
-        dispatch(
-          sessionResetData(),
-        )
-      ),
-    }),
-  ),
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  null,
 )(EtsLogout);

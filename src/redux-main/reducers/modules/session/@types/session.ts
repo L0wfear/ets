@@ -39,6 +39,10 @@ export type InitialStateSession = {
   };
   token: string | null;
   appConfig: {
+    // front
+    current_season: 'summer' | 'winter';
+
+    // back
     env: string;
     map_track_days: number;
     api_versions: Array<string>;

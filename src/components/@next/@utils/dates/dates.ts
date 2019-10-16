@@ -1,6 +1,5 @@
 import * as Moment from 'moment';
 
-import { isEqualOr } from 'utils/functions';
 import momentLocalizer from 'components/@next/@utils/dates/localizer';
 
 import { extendMoment } from 'moment-range';
@@ -295,10 +294,6 @@ export function secondsToTime(secs: number) {
 }
 
 export const getCurrentSeason = (summer_start_date: string = null, summer_end_date: string = null, input_date = null) => {
-  if (isEqualOr([summer_start_date, summer_end_date], null)) {
-    return '';
-  }
-
   const date = input_date || new Date();
 
   if (diffDates(date, summer_start_date) >= 0 && diffDates(summer_end_date, date) >= 0) {

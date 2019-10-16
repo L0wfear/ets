@@ -1,6 +1,6 @@
 {
     "name": "ets-frontend",
-    "version": "2.32.568",
+    "version": "2.32.569",
     "description": "",
     "main": "./src/index.tsx",
     "private": true,
@@ -110,7 +110,7 @@
         "openurl": "^1.1.1",
         "path-to-regexp": "^3.1.0",
         "polished": "^3.4.2",
-        "react-hot-loader": "^4.12.16",
+        "react-hot-loader": "=4.12.15",
         "reconnectingwebsocket": "^1.0.0",
         "redux-devtools-extension": "^2.13.8",
         "regenerator-runtime": "^0.13.3",

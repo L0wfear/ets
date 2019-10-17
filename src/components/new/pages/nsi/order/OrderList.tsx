@@ -16,8 +16,7 @@ import { createValidDateTime, getToday0am, getToday2359 } from 'components/@next
 import OrderTechnicalOperationList from 'components/new/pages/nsi/order/order_technical_operation/OrderTechnicalOperationList';
 import MissionByTemplateFormWrap from 'components/new/pages/nsi/order/form';
 import OrderHistoryList from 'components/new/pages/nsi/order/order_history/OrderHistoryList';
-import { getSessionState } from 'redux-main/reducers/selectors';
-import { etsUseSelector, etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 type OwnProps = {};
 type Props = (
@@ -28,8 +27,6 @@ const uniqFieldParams = getOrderToConfig(null, null).list.data.uniqKeyForParams;
 
 const OrderList: React.FC<Props> = React.memo(
   (props) => {
-    const configDateStart = etsUseSelector((state) => getSessionState(state).appConfig.shift.shift_start);
-    const configDateEnd = etsUseSelector((state) => getSessionState(state).appConfig.shift.shift_end);
 
     const date_start: string = props.searchState.date_from;
     const date_end: string = props.searchState.date_to;
@@ -68,18 +65,6 @@ const OrderList: React.FC<Props> = React.memo(
           dispatch(
             actionChangeGlobalPaylaodInServiceData(orderRegistryKey, payload),
           );
-        }
-      },
-      [date_start, date_end],
-    );
-
-    React.useEffect(
-      () => {
-        if (!date_start || !date_end) {
-          props.setDataInSearch({
-            date_from: createValidDateTime(date_start || configDateStart),
-            date_to: createValidDateTime(date_end || configDateEnd),
-          });
         }
       },
       [date_start, date_end],

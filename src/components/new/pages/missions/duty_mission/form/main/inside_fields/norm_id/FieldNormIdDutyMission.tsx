@@ -9,6 +9,7 @@ import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq
 
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
 
 type StateProps = {};
 
@@ -91,7 +92,7 @@ class FieldNormIdDutyMission extends React.PureComponent<Props, {}> {
       try {
         const oneNorm = await this.props.dispatch(
           actionLoadCleaningOneNorm(
-            payload,
+            getValidOneNormPayload(payload),
             this.props,
           ),
         );

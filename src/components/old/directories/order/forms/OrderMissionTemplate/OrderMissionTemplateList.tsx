@@ -47,6 +47,7 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { carGetAndSetInStore } from 'redux-main/reducers/modules/autobase/car/actions';
 import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
 
 type StateProps = {
   carList: Car[];
@@ -91,9 +92,10 @@ export const getNormByMissionAndCar = async (
     missionArr.map(async (missionData: any) => {
       const carIdNormIdArray = await Promise.all(
         missionData.car_ids.map(async (car_id, index) => {
+          const actionPayload = getValidOneNormPayload({ ...makePayloadFromState(missionData, missionData.car_type_ids[index]) });
           const normData = await dispatch(
             actionLoadCleaningOneNorm(
-              { ...makePayloadFromState(missionData, missionData.car_type_ids[index]) },
+              actionPayload,
               metaLoading,
             ),
           );

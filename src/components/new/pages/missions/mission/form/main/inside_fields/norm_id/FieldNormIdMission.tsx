@@ -10,6 +10,7 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { IStateMissions } from 'redux-main/reducers/modules/missions/@types/missions.h';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadCleaningOneNorm } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/actions';
+import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
 
 type StateProps = {
   dependeceTechnicalOperation: IStateMissions['missionData']['dependeceTechnicalOperation'];
@@ -97,7 +98,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
         type_ids.map((func_type_id) => (
           this.props.dispatch(
             actionLoadCleaningOneNorm(
-              {
+              getValidOneNormPayload({
                 datetime: createValidDateTime(datetime),
                 technical_operation_id,
                 municipal_facility_id,
@@ -105,7 +106,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
                 needs_brigade: false,
                 func_type_id,
                 kind_task_ids: 3,
-              },
+              }),
               {
                 page,
                 path,

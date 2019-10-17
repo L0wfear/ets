@@ -11,6 +11,7 @@ import {
   MissionTemplateCreating,
 } from '../../@types/MissionTemplateCreatingForm';
 import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { getValidOneNormPayload } from 'redux-main/reducers/modules/some_uniq/cleaning_one_norm/promise';
 
 type StateProps = {
 };
@@ -67,14 +68,14 @@ class FieldNormIdMissionTemplateCreating extends React.PureComponent<PropsFieldN
             missionData.car_type_ids.map((func_type_id) => {
               return this.props.dispatch(
                 actionLoadCleaningOneNorm(
-                  {
+                  getValidOneNormPayload({
                     datetime: createValidDateTime(date_start),
                     technical_operation_id: missionData.technical_operation_id,
                     municipal_facility_id: missionData.municipal_facility_id,
                     route_type: missionData.route_type,
                     needs_brigade: false,
                     func_type_id,
-                  },
+                  }),
                   this.props,
                 ),
               );

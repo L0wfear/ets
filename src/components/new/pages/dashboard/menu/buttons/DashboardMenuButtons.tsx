@@ -23,6 +23,7 @@ import dutyMissionPermissions from 'components/new/pages/missions/duty_mission/_
 import missionPermissions from 'components/new/pages/missions/mission/_config-data/permissions';
 import waybillPermissions from 'components/new/pages/waybill/_config-data/permissions';
 import { etsUseDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { payloadActionForce } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -43,7 +44,7 @@ const DashboardMenuButtons: React.FC<Props> = React.memo(
     const handleFormHideWaybillForm = React.useCallback(
       () => {
         dispatch(
-          dashboardLoadDependentDataByWaybillDraft(),
+          dashboardLoadDependentDataByWaybillDraft(payloadActionForce),
         );
         setShowWaybillForm(false);
       },
@@ -53,7 +54,7 @@ const DashboardMenuButtons: React.FC<Props> = React.memo(
       (isSubmitted) => {
         if (isSubmitted) {
           dispatch(
-            dashboardLoadDependentDataByNewMission(),
+            dashboardLoadDependentDataByNewMission(payloadActionForce),
           );
         }
         setShowMissionForm(false);
@@ -64,7 +65,7 @@ const DashboardMenuButtons: React.FC<Props> = React.memo(
       (isSubmitted) => {
         if (isSubmitted) {
           dispatch(
-            dashboardLoadDependentDataByNewDutyMission(),
+            dashboardLoadDependentDataByNewDutyMission(payloadActionForce),
           );
         }
         setShowDutyMissionForm(false);

@@ -15,8 +15,12 @@ import usePrevious from 'components/new/utils/hooks/usePrevious';
 
 export type ConfigType = {
   path: keyof InitialStateDashboard;
-  loadData: () => EtsAction<Promise<any>>;
+  loadData: (payloadAction?: ConfigType['payloadAction'] ) => EtsAction<Promise<any>>;
   InfoComponent?: React.ComponentType<any>;
+  payloadAction?: {
+    payload?: any; // payload для
+    payloadBody?: Record<string, any>; // параметры в хендлере ?params=1
+  };
 };
 
 export type PropsToDefaultCard = {
@@ -24,6 +28,12 @@ export type PropsToDefaultCard = {
   timeDelay: number;
   page?: string;
 } & WithRequirePermissionProps;
+
+export const payloadActionForce = { // DITETS19-895
+  payload: {
+    force: 1,
+  },
+};
 
 const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType) => (Component: React.ComponentType<OwnProps & WithRequirePermissionAddProps>) => {
   const defaultCard: React.FC<OwnProps & WithRequirePermissionAddProps> = React.memo(
@@ -37,12 +47,19 @@ const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType
       const dispatch = etsUseDispatch();
 
       const loadData = React.useCallback(
-        async () => {
+        async (payloadAction?: ConfigType['payloadAction']) => {
           dispatch(
-            config.loadData(),
+            config.loadData(payloadAction),
           );
         },
         [],
+      );
+
+      const refreshWidget = React.useCallback(
+        async (payloadAction?: ConfigType['payloadAction']) => {
+          loadData(payloadAction);
+        },
+        [loadData, loadData],
       );
 
       React.useEffect(
@@ -86,7 +103,7 @@ const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType
               <CardTitleContainerWrap>
                 <div>{title}</div>
                 <div className="button_refresh">
-                  <EtsBootstrap.Button onClick={loadData} disabled={isLoading}>
+                  <EtsBootstrap.Button onClick={refreshWidget} disabled={isLoading}>
                     <EtsBootstrap.Glyphicon
                       isLoading={isLoading}
                       glyph="refresh"

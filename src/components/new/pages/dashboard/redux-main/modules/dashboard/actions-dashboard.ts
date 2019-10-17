@@ -25,6 +25,7 @@ import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
 import { get } from 'lodash';
+import { ConfigType } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.tsx';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,
@@ -180,14 +181,18 @@ export const dashboardSetInfoDataInWaybillClosed = (infoData: WaybillClosedInfoD
   },
 });
 
-export const dashboardLoadCardData = (path: string, payload = {}) => ({
-  type: DASHBOARD_CHANGE_CART_DATA,
-  payload: (defAns.backEndKeys[path] || path).split('/').reduce((ApiService, pathPart) => ApiService.path(pathPart), DashboardService)
-    .get(payload)
+export const dashboardLoadCardData = (path: string, payloadAction: ConfigType['payloadAction']) => {
+  const dashboardServiceWithParams = (
+      defAns.backEndKeys[path] || path
+    )
+    .split('/')
+    .reduce((ApiService, pathPart) => ApiService.path(pathPart), DashboardService);
+
+  const payload = dashboardServiceWithParams
+    .get(get(payloadAction, 'payload', {}))
     .catch((e) => {
       // tslint:disable-next-line
       console.warn(e);
-
       return {
         result: defAns[path.split('/').join('_')],
       };
@@ -203,123 +208,129 @@ export const dashboardLoadCardData = (path: string, payload = {}) => ({
           result: defAns[path.split('/').join('_')],
         };
       }
-    },
-  ),
-});
+    });
 
-export const dashboardLoadCardDataByPath = (path, payload?) => (dispatch) => {
-  dispatch(dashboardSetIsLoadingForCardData(path.split('/').join('_')));
-  return dispatch(dashboardLoadCardData(path, payload));
+  return ({
+    type: DASHBOARD_CHANGE_CART_DATA,
+    payload,
+  });
 };
 
-export const dashboardLoadCurrentMissions: any = () => (
-  dashboardLoadCardDataByPath('current_missions')
+export const dashboardLoadCardDataByPath = (path, payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardSetIsLoadingForCardData(path.split('/').join('_')));
+  return dispatch(dashboardLoadCardData(path, payloadAction));
+};
+
+export const dashboardLoadCurrentMissions: any = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('current_missions', payloadAction)
 );
 
-export const dashboardLoadFutureMissions = () => (
-  dashboardLoadCardDataByPath('future_missions')
+export const dashboardLoadFutureMissions = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('future_missions', payloadAction)
 );
 
-export const dashboardLoadOdhNotCoveredByMissionsOfCurrentShift = () => (
-  dashboardLoadCardDataByPath('odh_not_covered_by_missions_of_current_shift')
+export const dashboardLoadOdhNotCoveredByMissionsOfCurrentShift = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('odh_not_covered_by_missions_of_current_shift', payloadAction)
 );
 
-export const dashboardLoadOdhNotCoveredByRoutes: any = () => (
-  dashboardLoadCardDataByPath('odh_not_covered_by_routes')
+export const dashboardLoadOdhNotCoveredByRoutes: any = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('odh_not_covered_by_routes', payloadAction)
 );
 
-export const dashboardLoadOdhCoveredByRoutes = () => (
-  dashboardLoadCardDataByPath('odh_covered_by_routes')
+export const dashboardLoadOdhCoveredByRoutes = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('odh_covered_by_routes', payloadAction)
 );
 
-export const dashboardLoadCarInWorkOverall = () => (
-  dashboardLoadCardDataByPath('car_in_work_overall')
+export const dashboardLoadCarInWorkOverall = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('car_in_work_overall', payloadAction)
 );
 
 export const dashboardLoadOrders = () => (
   dashboardLoadCardDataByPath(
     'faxogramms',
     {
-      status: 2,
+      payload: {
+        status: 2,
+      },
     },
   )
 );
 
-export const dashboardLoadCurrentDutyMissions: any = () => (
-  dashboardLoadCardDataByPath('current_duty_missions')
+export const dashboardLoadCurrentDutyMissions: any = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('current_duty_missions', payloadAction)
 );
 
-export const dashboardLoadWaybillDraft = () => (
-  dashboardLoadCardDataByPath('waybill/draft')
+export const dashboardLoadWaybillDraft = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('waybill/draft', payloadAction)
 );
-export const dashboardLoadWaybillInProgress = () => (
-  dashboardLoadCardDataByPath('waybill/in_progress')
+export const dashboardLoadWaybillInProgress = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('waybill/in_progress', payloadAction)
 );
-export const dashboardLoadWaybillCompleted = () => (
-  dashboardLoadCardDataByPath('waybill/completed')
+export const dashboardLoadWaybillCompleted = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('waybill/completed', payloadAction)
 );
-export const dashboardLoadWaybillClosed = () => (
-  dashboardLoadCardDataByPath('waybill/closed')
+export const dashboardLoadWaybillClosed = (payloadAction?: ConfigType['payloadAction']) => (
+  dashboardLoadCardDataByPath('waybill/closed', payloadAction)
 );
 
-export const dashboardLoadAllWaybill = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillDraft());
-  dispatch(dashboardLoadWaybillInProgress());
-  dispatch(dashboardLoadWaybillCompleted());
-  dispatch(dashboardLoadWaybillClosed());
+export const dashboardLoadAllWaybill = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillDraft(payloadAction));
+  dispatch(dashboardLoadWaybillInProgress(payloadAction));
+  dispatch(dashboardLoadWaybillCompleted(payloadAction));
+  dispatch(dashboardLoadWaybillClosed(payloadAction));
 };
 
-export const dashboardLoadDependentDataByWaybillDraft: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillDraft());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadWaybillInProgress());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByWaybillDraft: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillDraft(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadWaybillInProgress(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByWaybillInProgress: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillClosed());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByWaybillInProgress: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillClosed(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByWaybillCompleted: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillCompleted());
-  dispatch(dashboardLoadWaybillClosed());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByWaybillCompleted: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillCompleted(payloadAction));
+  dispatch(dashboardLoadWaybillClosed(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByNewMission: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillDraft());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByNewMission: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillDraft(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByNewDutyMission: any = () => (dispatch) => {
-  dispatch(dashboardLoadCurrentDutyMissions());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
+export const dashboardLoadDependentDataByNewDutyMission: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadCurrentDutyMissions(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
 };
 
-export const dashboardLoadDependentDataByCloseMission: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillInProgress());
-  dispatch(dashboardLoadWaybillCompleted());
+export const dashboardLoadDependentDataByCloseMission: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillInProgress(payloadAction));
+  dispatch(dashboardLoadWaybillCompleted(payloadAction));
 };

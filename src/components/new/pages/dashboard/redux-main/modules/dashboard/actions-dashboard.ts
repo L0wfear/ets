@@ -25,7 +25,7 @@ import routesActions from 'redux-main/reducers/modules/routes/actions';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 import { actionLoadMissionData } from 'redux-main/reducers/modules/missions/mission/actions';
 import { get } from 'lodash';
-import { ConfigType } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard.tsx';
+import { ConfigType } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 export const dashboardSetIsLoadingForCardData = (path) => ({
   type: DASHBOARD_CHANGE_IS_LOADING_IN_CART_DATA,

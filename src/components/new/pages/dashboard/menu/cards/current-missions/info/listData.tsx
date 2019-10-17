@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { getFormattedDateTimeSeconds, getFormattedDateTime } from 'components/@next/@utils/dates/dates';
-
 import { checkFixed, getDataTraveledYet } from 'components/new/ui/mission_info_form/form-components/info-table-data/utils/format';
 import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 

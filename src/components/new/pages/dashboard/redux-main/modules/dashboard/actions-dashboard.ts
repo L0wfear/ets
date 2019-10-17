@@ -264,64 +264,64 @@ export const dashboardLoadWaybillClosed = (payloadAction?: ConfigType['payloadAc
   dashboardLoadCardDataByPath('waybill/closed', payloadAction)
 );
 
-export const dashboardLoadAllWaybill = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillDraft());
-  dispatch(dashboardLoadWaybillInProgress());
-  dispatch(dashboardLoadWaybillCompleted());
-  dispatch(dashboardLoadWaybillClosed());
+export const dashboardLoadAllWaybill = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillDraft(payloadAction));
+  dispatch(dashboardLoadWaybillInProgress(payloadAction));
+  dispatch(dashboardLoadWaybillCompleted(payloadAction));
+  dispatch(dashboardLoadWaybillClosed(payloadAction));
 };
 
-export const dashboardLoadDependentDataByWaybillDraft: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillDraft());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadWaybillInProgress());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByWaybillDraft: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillDraft(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadWaybillInProgress(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByWaybillInProgress: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillClosed());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByWaybillInProgress: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillClosed(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByWaybillCompleted: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillCompleted());
-  dispatch(dashboardLoadWaybillClosed());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByWaybillCompleted: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillCompleted(payloadAction));
+  dispatch(dashboardLoadWaybillClosed(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByNewMission: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillDraft());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadCurrentMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
-  dispatch(dashboardLoadCarInWorkOverall());
+export const dashboardLoadDependentDataByNewMission: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillDraft(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadCurrentMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadCarInWorkOverall(payloadAction));
 };
 
-export const dashboardLoadDependentDataByNewDutyMission: any = () => (dispatch) => {
-  dispatch(dashboardLoadCurrentDutyMissions());
-  dispatch(dashboardLoadFutureMissions());
-  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift());
-  dispatch(dashboardLoadOdhNotCoveredByRoutes());
-  dispatch(dashboardLoadOdhCoveredByRoutes());
+export const dashboardLoadDependentDataByNewDutyMission: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadCurrentDutyMissions(payloadAction));
+  dispatch(dashboardLoadFutureMissions(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByMissionsOfCurrentShift(payloadAction));
+  dispatch(dashboardLoadOdhNotCoveredByRoutes(payloadAction));
+  dispatch(dashboardLoadOdhCoveredByRoutes(payloadAction));
 };
 
-export const dashboardLoadDependentDataByCloseMission: any = () => (dispatch) => {
-  dispatch(dashboardLoadWaybillInProgress());
-  dispatch(dashboardLoadWaybillCompleted());
+export const dashboardLoadDependentDataByCloseMission: any = (payloadAction?: ConfigType['payloadAction']) => (dispatch) => {
+  dispatch(dashboardLoadWaybillInProgress(payloadAction));
+  dispatch(dashboardLoadWaybillCompleted(payloadAction));
 };

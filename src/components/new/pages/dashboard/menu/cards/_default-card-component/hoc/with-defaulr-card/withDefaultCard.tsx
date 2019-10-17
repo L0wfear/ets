@@ -24,6 +24,12 @@ import { DivNone } from 'global-styled/global-styled';
 import { ReduxState } from 'redux-main/@types/state';
 import { getDashboardState } from 'redux-main/reducers/selectors';
 
+export const payloadActionForce = { // DITETS19-895
+  payload: {
+    force: 1,
+  },
+};
+
 const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: ConfigType) => (Component: React.ClassType<P, any, any>) => (
   compose<P, P>(
     withRequirePermissionsNew<P>({
@@ -73,7 +79,6 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
           if (!this.state.inLoadByLocalRefresh) {
             clearTimeout(this.state.timerId);
             clearInterval(this.state.timerId);
-
             this.setState({
               timerId: setInterval(() => (
                 this.loadData()
@@ -98,12 +103,7 @@ const withDefaultCard = <P extends {}>({ path, InfoComponent, ...config }: Confi
       }
 
       refreshWidget = () => {
-        const payloadAction = {
-          payload: {
-            force: 1,
-          },
-        };
-        this.loadData(payloadAction);
+        this.loadData(payloadActionForce);
       }
 
       render() {

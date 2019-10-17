@@ -23,6 +23,7 @@ import { ReduxState } from 'redux-main/@types/state';
 import DutyMissionFormLazy from 'components/new/pages/missions/duty_mission/form/main';
 import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
 import { ButtonCreateDutyMission } from 'components/new/pages/missions/duty_mission/buttons/buttons';
+import { payloadActionForce } from 'components/new/pages/dashboard/menu/cards/_default-card-component/hoc/with-defaulr-card/withDefaultCard';
 
 const WaybillFormWrap: any = WaybillFormWrapTSX;
 
@@ -52,7 +53,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
 
     const handleFormHideWaybillForm = React.useCallback(
       (isSubmitted) => {
-        props.dashboardLoadDependentDataByWaybillDraft();
+        props.dashboardLoadDependentDataByWaybillDraft(payloadActionForce);
         setShowWaybillForm(false);
       },
       [],
@@ -60,7 +61,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
     const handleFormHideMissionForm = React.useCallback(
       (isSubmitted) => {
         if (isSubmitted) {
-          props.dashboardLoadDependentDataByNewMission();
+          props.dashboardLoadDependentDataByNewMission(payloadActionForce);
         }
         setShowMissionForm(false);
       },
@@ -69,7 +70,7 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
     const handleFormHideDutyMissionForm = React.useCallback(
       (isSubmitted) => {
         if (isSubmitted) {
-          props.dashboardLoadDependentDataByNewDutyMission();
+          props.dashboardLoadDependentDataByNewDutyMission(payloadActionForce);
         }
         setShowDutyMissionForm(false);
       },
@@ -125,11 +126,11 @@ const DashboardMenuButtons: React.FC<PropsDashboardMenuButtons> = React.memo(
 export default connect<StatePropsDashboardMenuButtons, DispatchPropsDashboardMenuButtons, OwnerPropsDashboardMenuButtons, ReduxState>(
   null,
   (dispatch) => ({
-    dashboardLoadDependentDataByWaybillDraft: () =>
-      dispatch(dashboardLoadDependentDataByWaybillDraft()),
-    dashboardLoadDependentDataByNewMission: () =>
-      dispatch(dashboardLoadDependentDataByNewMission()),
-    dashboardLoadDependentDataByNewDutyMission: () =>
-      dispatch(dashboardLoadDependentDataByNewDutyMission()),
+    dashboardLoadDependentDataByWaybillDraft: (...args) =>
+      dispatch(dashboardLoadDependentDataByWaybillDraft(...args)),
+    dashboardLoadDependentDataByNewMission: (...args) =>
+      dispatch(dashboardLoadDependentDataByNewMission(...args)),
+    dashboardLoadDependentDataByNewDutyMission: (...args) =>
+      dispatch(dashboardLoadDependentDataByNewDutyMission(...args)),
   }),
 )(DashboardMenuButtons);

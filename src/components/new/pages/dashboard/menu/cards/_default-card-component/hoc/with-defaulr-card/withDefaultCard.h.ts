@@ -7,7 +7,7 @@ export type StatePropsDefaultCard = {
 };
 
 export type DispatchPropsDefaultCard = {
-  loadData: () => Promise<any>;
+  loadData: (payloadAction?: ConfigType['payloadAction'] ) => Promise<any>;
 };
 
 export type PropsToDefaultCard = {
@@ -31,4 +31,8 @@ export type ConfigType = {
   path: keyof InitialStateDashboard;
   loadData: any;
   InfoComponent?: React.ComponentClass<{}>;
+  payloadAction?: {
+    payload?: any; // payload для
+    payloadBody?: Record<string, any>; // параметры в хендлере ?params=1
+  };
 };

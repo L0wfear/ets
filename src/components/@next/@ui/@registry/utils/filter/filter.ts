@@ -19,7 +19,7 @@ const filterArrayByIn = <F extends any>(row_value: any, filter_value: any, field
       return filter_value.every((oneValue) => {
         if (!isNullOrUndefined(oneValue) && !row_value.includes(',')) {
           const rowSpaceBeginEndLessInUppercase = row_value.trim().toLowerCase().replace(/ё/g, 'е'); // удааляем пробелы в начале и в конце и преобразуем результат в upperCase
-          return rowSpaceBeginEndLessInUppercase !== oneValue.toString().toLowerCase().replace(/ё/g, 'е');
+          return rowSpaceBeginEndLessInUppercase !== oneValue.toString().trim().toLowerCase().replace(/ё/g, 'е');
         }
         return !row_value.includes(oneValue);
 

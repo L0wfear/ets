@@ -18,6 +18,9 @@ export const CustomTableWrapper = styled.div`
   }
   .date-table-input .griddle-body{
     height: auto;
+    table {
+      table-layout: fixed !important;
+    }
   }
   .data-table .griddle{
     min-height: 414px;

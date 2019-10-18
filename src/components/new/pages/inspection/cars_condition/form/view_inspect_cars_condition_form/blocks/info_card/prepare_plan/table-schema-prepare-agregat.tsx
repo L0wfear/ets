@@ -30,6 +30,7 @@ export const validationSchema: IValidationSchema = {
       key: 'will_checked_cnt',
       title: 'Всего подлежит подготовке',
       type: 'number',
+      integer: true,
       required: true,
     },
     {

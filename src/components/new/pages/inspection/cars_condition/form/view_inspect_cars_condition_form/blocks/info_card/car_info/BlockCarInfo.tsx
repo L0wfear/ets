@@ -24,14 +24,15 @@ const BlockCarInfo: React.FC<BlockCarInfoProps> = React.memo(
     } = props;
 
     const isCustomUserCard = !Boolean(get(state, 'car_id'));
+    const cardTitle = !IS_CREATING
+      ? isCustomUserCard
+        ? 'Карточка выбранного ТС (создана вручную)'
+        : 'Карточка выбранного ТС'
+      : 'Создание карточки ТС';
 
     return (
       <BoxContainer>
-        {
-          !IS_CREATING
-            ? <h2>Карточка выбранного ТС</h2>
-            : <h2>Создание карточки ТС</h2>
-        }
+        <h2>{cardTitle}</h2>
         <BlockCarInfoMainData
           IS_CREATING={IS_CREATING}
           formState={state}

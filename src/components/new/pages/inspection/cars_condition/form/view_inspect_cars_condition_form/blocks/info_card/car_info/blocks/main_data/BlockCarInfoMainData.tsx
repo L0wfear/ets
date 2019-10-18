@@ -248,70 +248,77 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
         <EtsBootstrap.Row>
-          <EtsBootstrap.Col md={6}>
+          {
+            !isCustomUserCard &&
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="string"
+                  label="VIN (из системы):"
+                  value={state.vin}
+                  onChange={props.handleChange}
+                  error={errors.vin}
+                  boundKeys="vin"
+                  disabled={!props.isPermitted}
+                  readOnly={!IS_CREATING && !isCustomUserCard}
+                />
+              </EtsBootstrap.Col>
+          }
+          {
+            !isCustomUserCard &&
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="boolean"
+                  label="Некорректный VIN:"
+                  value={state.vin_incorrect}
+                  onChange={props.handleChangeBoolean}
+                  error={errors.vin_incorrect}
+                  boundKeys="vin_incorrect"
+                  disabled={!props.isPermitted}
+                />
+              </EtsBootstrap.Col>
+          }
+          <EtsBootstrap.Col md={12}>
             <ExtField
               type="string"
-              label="VIN (из системы):"
-              value={state.vin}
+              label="VIN (ручной ввод):"
+              value={state.vin_by_hand}
               onChange={props.handleChange}
-              error={errors.vin}
-              boundKeys="vin"
+              error={errors.vin_by_hand}
+              boundKeys="vin_by_hand"
               disabled={!props.isPermitted}
-              readOnly={!IS_CREATING && !isCustomUserCard}
+              hidden={!state.vin_incorrect && !isCustomUserCard }
             />
           </EtsBootstrap.Col>
           {
-            !IS_CREATING  && !isCustomUserCard &&
-              <React.Fragment>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    type="boolean"
-                    label="Некорректный VIN:"
-                    value={state.vin_incorrect}
-                    onChange={props.handleChangeBoolean}
-                    error={errors.vin_incorrect}
-                    boundKeys="vin_incorrect"
-                    disabled={!props.isPermitted}
-                  />
-                </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={12}>
-                  <ExtField
-                    type="string"
-                    label="VIN (ручной ввод):"
-                    value={state.vin_by_hand}
-                    onChange={props.handleChange}
-                    error={errors.vin_by_hand}
-                    boundKeys="vin_by_hand"
-                    disabled={!props.isPermitted}
-                    hidden={!state.vin_incorrect}
-                  />
-                </EtsBootstrap.Col>
-              </React.Fragment>
+            !isCustomUserCard &&
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="string"
+                  label="Заводской номер (из системы):"
+                  value={state.body_number}
+                  onChange={props.handleChange}
+                  error={errors.body_number}
+                  boundKeys="body_number"
+                  disabled={!props.isPermitted}
+                  readOnly={!IS_CREATING && !isCustomUserCard}
+                />
+              </EtsBootstrap.Col>
           }
-          <EtsBootstrap.Col md={6}>
-            <ExtField
-              type="string"
-              label="Заводской номер (из системы):"
-              value={state.body_number}
-              onChange={props.handleChange}
-              error={errors.body_number}
-              boundKeys="body_number"
-              disabled={!props.isPermitted}
-              readOnly={!IS_CREATING  && !isCustomUserCard}
-            />
-          </EtsBootstrap.Col>
-          <EtsBootstrap.Col md={6}>
-            <ExtField
-              type="boolean"
-              label="Некорректный заводской номер:"
-              value={state.body_number_incorrect}
-              onChange={props.handleChangeBoolean}
-              error={errors.body_number_incorrect}
-              boundKeys="body_number_incorrect"
-              disabled={!props.isPermitted}
-              hidden={IS_CREATING && isCustomUserCard}
-            />
-          </EtsBootstrap.Col>
+          {
+            !isCustomUserCard &&
+              <EtsBootstrap.Col md={6}>
+                <ExtField
+                  type="boolean"
+                  label="Некорректный заводской номер:"
+                  value={state.body_number_incorrect}
+                  onChange={props.handleChangeBoolean}
+                  error={errors.body_number_incorrect}
+                  boundKeys="body_number_incorrect"
+                  disabled={!props.isPermitted}
+                  hidden={IS_CREATING && isCustomUserCard}
+                />
+              </EtsBootstrap.Col>
+          }
           <EtsBootstrap.Col md={12}>
             <ExtField
               type="string"
@@ -321,7 +328,7 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               error={errors.body_number_by_hand}
               boundKeys="body_number_by_hand"
               disabled={!props.isPermitted}
-              hidden={!state.body_number_incorrect || (IS_CREATING && isCustomUserCard)}
+              hidden={!state.body_number_incorrect && !isCustomUserCard}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

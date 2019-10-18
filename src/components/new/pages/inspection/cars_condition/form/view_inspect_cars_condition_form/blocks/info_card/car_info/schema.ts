@@ -3,6 +3,13 @@ import { BlockCarInfoProps } from './@types/BlockCarInfo';
 import { CarsConditionCars } from 'redux-main/reducers/modules/inspect/cars_condition/@types/inspect_cars_condition';
 import { get } from 'lodash';
 
+const isNewRow = (formState) => {
+  return Boolean(get(formState, 'isNewRow', null));
+};
+const isCustomUserCard = (formState) => {
+  return Boolean(get(formState, 'car_id', null));
+};
+
 export const carsConditionCarFormDataSchema: SchemaType<CarsConditionCars['data'], BlockCarInfoProps> = {
   properties: {
     tech_inspection_passed: {
@@ -45,14 +52,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       maxLength: 9,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow') && get(formState, 'car_id', null)) {
+          if (!isNewRow(formState) && isCustomUserCard(formState)) {
             return true;
           }
         },
       ],
       dependencies: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null) || !get(formState, 'car_id') ) && !get(formState, 'gov_number', null)) {
+          if ((isNewRow(formState) || !get(formState, 'id', null) || !isCustomUserCard(formState) ) && !get(formState, 'gov_number', null)) {
             return 'Поле "Гос. номер" должно быть заполнено';
           }
         },
@@ -63,14 +70,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Марка',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
+          if (!isNewRow(formState) && isCustomUserCard(formState)) {
             return true;
           }
         },
       ],
       dependencies: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null) || !get(formState, 'car_id')) && !get(formState, 'marka', null)) {
+          if ((isNewRow(formState) || !get(formState, 'id', null) || !isCustomUserCard(formState)) && !get(formState, 'marka', null)) {
             return 'Поле "Марка" должно быть заполнено';
           }
         },
@@ -81,14 +88,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Модель',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
+          if (!isNewRow(formState) && isCustomUserCard(formState)) {
             return true;
           }
         },
       ],
       dependencies: [
         (_, formState) => {
-          if ((get(formState, 'isNewRow', null) || !get(formState, 'id', null) || !get(formState, 'car_id')) && !get(formState, 'model', null)) {
+          if ((isNewRow(formState) || !get(formState, 'id', null) || !isCustomUserCard(formState)) && !get(formState, 'model', null)) {
             return 'Поле "Модель" должно быть заполнено';
           }
         },
@@ -100,14 +107,14 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       required: true,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
+          if (!isNewRow(formState) && isCustomUserCard(formState)) {
             return true;
           }
         },
       ],
       dependencies: [
         (value, formState) => {
-          if (!get(formState, 'type') && (get(formState, 'isNewRow') || !get(formState, 'car_id')) && !value) {
+          if (!get(formState, 'type') && (isNewRow(formState) || !isCustomUserCard(formState)) && !value) {
             return 'Поле "Тип ТС" должно быть заполнено';
           }
         },
@@ -151,7 +158,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       maxLength: 17,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow', null)) {
+          if (!isNewRow(formState)) {
             return true;
           }
         },
@@ -172,7 +179,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Некорректный VIN:',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow', null)) {
+          if (!isNewRow(formState) && !isCustomUserCard(formState)) {
             return true;
           }
         },
@@ -184,9 +191,10 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       maxLength: 17,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'vin_incorrect', null) || !get(formState, 'isNewRow', null)) {
+          if (!get(formState, 'vin_incorrect', null) && (!isNewRow(formState) && isCustomUserCard(formState)) ) {
             return true;
           }
+          return false;
         },
       ],
     },
@@ -195,8 +203,20 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Заводской номер (из системы)',
       maxLength: 128,
       dependenciesDisable: [
+        () => {
+          return true;
+          // if (!isNewRow(formState) && !isCustomUserCard(formState)) {
+          //   return true;
+          // }
+        },
+      ],
+    },
+    body_number_incorrect: {
+      type: 'string',
+      title: 'Некорректный заводской номер:',
+      dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow', null)) {
+          if (!isNewRow(formState) && !isCustomUserCard(formState)) {
             return true;
           }
         },
@@ -208,7 +228,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       maxLength: 128,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'body_number_incorrect', null)) {
+          if (!get(formState, 'body_number_incorrect', null) && (!isNewRow(formState) && isCustomUserCard(formState))) {
             return true;
           }
         },
@@ -336,15 +356,15 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       title: 'Сезон',
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'isNewRow') && get(formState, 'car_id')) {
+          if (!isNewRow(formState) && isCustomUserCard(formState)) {
             return true;
           }
         },
       ],
       dependencies: [
         (value, formState) => {
-          // if (!get(formState, 'type') && (get(formState, 'isNewRow') || !get(formState, 'car_id')) && !value) {
-          if ((get(formState, 'isNewRow') || !get(formState, 'car_id')) && !value) {
+          // if (!get(formState, 'type') && (isNewRow(formState) || !isCustomUserCard(formState)) && !value) {
+          if ((isNewRow(formState) || !isCustomUserCard(formState)) && !value) {
             return 'Поле "Сезон" должно быть заполнено';
           }
         },

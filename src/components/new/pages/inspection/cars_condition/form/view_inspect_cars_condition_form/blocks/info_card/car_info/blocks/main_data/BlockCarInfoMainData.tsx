@@ -562,12 +562,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="date"
               time={false}
               label="Дата регистрации:"
-              value={state.given_at}
+              value={state.registration_date}
               makeGoodFormat
               makeGoodFormatInitial
               onChange={props.handleChange}
-              error={errors.given_at}
-              boundKeys="given_at"
+              error={errors.registration_date}
+              boundKeys="registration_date"
               disabled={!props.isPermitted}
             />
           </EtsBootstrap.Col>

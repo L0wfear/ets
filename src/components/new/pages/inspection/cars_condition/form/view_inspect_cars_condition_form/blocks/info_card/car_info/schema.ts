@@ -233,7 +233,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
       minNotEqual: -1,
       required: true,
     },
-    given_at: {
+    registration_date: {
       type: 'date',
       title: 'Дата регистрации',
     },

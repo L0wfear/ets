@@ -30,7 +30,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   gby_operation_district: '',
   last_repair_company: '',
   last_tm_repair_company: '',
-  given_at: null,
+  registration_date: null,
   exploitation_date_start: null,
   last_repair: null,
   self_tm_repair: false,

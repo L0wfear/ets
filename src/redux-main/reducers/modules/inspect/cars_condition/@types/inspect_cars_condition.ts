@@ -138,7 +138,7 @@ export type CarsConditionCars = {
   engine_type: string;
   origin_country: string;
   kind: string;
-  given_at: string;
+  registration_date: string;
   exploitation_date_start: string;
   kind_purchase: string;
   gby_district: string;

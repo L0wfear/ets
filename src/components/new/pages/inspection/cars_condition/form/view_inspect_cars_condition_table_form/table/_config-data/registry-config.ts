@@ -407,7 +407,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
-          key: 'given_at',
+          key: 'registration_date',
           title: 'Дата регистрации',
           width: 200,
           format: 'date',

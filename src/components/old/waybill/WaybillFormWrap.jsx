@@ -325,8 +325,8 @@ class WaybillFormWrap extends React.Component {
       );
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
       return result;
-    } catch {
-      //
+    } catch (e) {
+      throw new Error(e);
     }
   };
   updateWaybill = async (waybill) => {
@@ -336,8 +336,8 @@ class WaybillFormWrap extends React.Component {
       );
       global.NOTIFICATION_SYSTEM.notify('Данные успешно сохранены', 'success');
       return result;
-    } catch {
-      //
+    } catch (e) {
+      throw new Error(e);
     }
   };
 
@@ -626,7 +626,7 @@ class WaybillFormWrap extends React.Component {
       try {
         await this.updateWaybill(formState);
       } catch ({ error_text }) {
-        console.log(error_text); // eslint-disable-line
+        console.error(error_text); // eslint-disable-line
         return;
       }
 
@@ -669,8 +669,8 @@ class WaybillFormWrap extends React.Component {
 
           await this.updateWaybill(formState);
           callback(id);
-        } catch ({ errorIsShow }) {
-          !errorIsShow
+        } catch (error) {
+          !error.errorIsShow
             && global.NOTIFICATION_SYSTEM.removeNotification(
               'waybilPrintCurrForm',
             );
@@ -681,7 +681,7 @@ class WaybillFormWrap extends React.Component {
               id,
             },
           });
-          return;
+          throw new Error(error);
         }
       } else {
         formState.status = 'draft';
@@ -746,13 +746,15 @@ class WaybillFormWrap extends React.Component {
       body: 'Вы уверены, что хотите закрыть окно?',
     })
       .then(async () => {
-        try {
-          formState.status = 'closed';
-          await this.updateWaybill(formState);
-          this.props.onCallback();
-        } catch (e) {
-          //
-        }
+        formState.status = 'closed';
+        await this.updateWaybill(formState)
+          .then(() => {
+            this.props.onCallback();
+          })
+          .catch((err) => {
+            console.error(err);
+            return;
+          });
       })
       .catch(() => {});
   };
@@ -771,8 +773,8 @@ class WaybillFormWrap extends React.Component {
         ),
       );
       printData(blob);
-    } catch {
-      //
+    } catch (e) {
+      throw new Error(e);
     }
   };
   setEdcRequestIds = (edcRequestIds) => {

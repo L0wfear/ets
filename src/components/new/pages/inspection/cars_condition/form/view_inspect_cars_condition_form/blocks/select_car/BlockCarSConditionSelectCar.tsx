@@ -109,7 +109,7 @@ const BlockCarsConditionSelectCar: React.FC<BlockCarsConditionSelectCarProps> = 
           />
         </ExtFieldContainer>
         {
-          monitoringKindSeasonReadiness.key !== monitoring_kind &&
+          monitoringKindSeasonReadiness.key !== monitoring_kind && showCreateBtn &&
           (
             <React.Fragment>
               <HrDelimiter />

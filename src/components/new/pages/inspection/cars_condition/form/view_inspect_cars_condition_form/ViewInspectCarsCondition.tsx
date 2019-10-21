@@ -28,13 +28,15 @@ import { get } from 'lodash';
 import { DataTableInputOutputListErrors, isValidDataTableInput } from 'components/old/ui/table/utils';
 import * as TypesCars from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-cars';
 import * as TypesHarvestingUnit from 'components/new/pages/inspection/cars_condition/form/view_inspect_cars_condition_form/blocks/info_card/prepare_plan/table-schema-prepare-agregat';
+import withSearch from 'components/new/utils/hooks/hoc/withSearch';
+import { isNullOrUndefined } from 'util';
 
 const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.memo(
   (props) => {
     const [carsConditionCarsList, setCarsConditionCarsList] = React.useState<CarsConditionCars[]>([]);
     const [preparePlanCanSave, setPreparePlanCanSave] = React.useState(false);
     const [awaitCarsCnt, setAwaitCarsCnt] = React.useState(0);
-
+    const [prevSearchState, setPrevSearchState] = React.useState(props.searchState);
     const {
       formState: state,
       formErrors: errors,
@@ -67,6 +69,14 @@ const ViewInspectCarsCondition: React.FC<ViewInspectCarsConditionProps> = React.
       },
       [preparePlanCanSave, props.canSave, isHasPeriod],
     );
+
+    // Вызов колбека при закрытии формы заполнения
+    React.useEffect(() => {
+      if (!isNullOrUndefined(prevSearchState.inspectId) && !get(props, 'searchState.inspectId')) {
+        callBackToLoadCars();
+      }
+      setPrevSearchState(props.searchState);
+    }, [props.searchState, props.match.params, props.setDataInSearch, props.setParams]);
 
     const callBackToLoadCars = React.useCallback(
       () => {
@@ -282,6 +292,7 @@ export default compose<ViewInspectCarsConditionProps, ViewInspectCarsConditionOw
       ),
     }),
   ),
+  withSearch,
   withForm<PropsViewInspectCarsConditionWithForm, InspectCarsCondition>({
     uniqField: 'id',
     updateAction: inspectionCarsConditionActions.actionUpdateInspectCarsCondition,

@@ -52,8 +52,13 @@ class DataTableInput extends React.Component<IPropsDataTableInput, IStateDataTab
           <EtsHeaderContainer alignItems={'center'}>
             <EtsHeaderTitle>{this.props.tableTitle ? this.props.tableTitle : ''}</EtsHeaderTitle>
             <EtsButtonsContainer marginContainerY={5}>
-              <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
-              <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
+              {
+                !this.props.hideButtons &&
+                  <React.Fragment>
+                    <EtsBootstrap.Button disabled={this.props.disabled || !this.props.isPermitted} onClick={this.handleAddVehicle}>{addButtonLabel}</EtsBootstrap.Button>
+                    <EtsBootstrap.Button disabled={this.state.selected === null || this.props.disabled || !this.props.isPermitted} onClick={this.handleRemoveVehicle}>{removeButtonLable}</EtsBootstrap.Button>
+                  </React.Fragment>
+              }
             </EtsButtonsContainer>
           </EtsHeaderContainer>
         </EtsHeaderContainerWrap>

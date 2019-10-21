@@ -17,6 +17,7 @@ export interface ISharedPropsDataTableInput {
   page: string;
   path: string;
   tableTitle?: string;
+  hideButtons?: boolean;
 }
 
 export interface IStateDataTableInput {

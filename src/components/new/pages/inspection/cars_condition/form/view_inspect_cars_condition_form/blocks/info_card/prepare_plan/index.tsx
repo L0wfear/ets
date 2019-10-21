@@ -35,18 +35,40 @@ const PreparePlan: React.FC<Props> = (props) => {
   const [typesListOpt, setTypesListOpt] = React.useState([]);
   const [canSaveTypesCars, setCanSaveTypesCars] = React.useState(true);
   const [canSaveTypesHarvestingUnit, setCanSaveTypesHarvestingUnit] = React.useState(true);
+  const [originTypesCars, setOriginTypesCars] = React.useState(null);
+  const [originTypesHarvestingUnit, setOriginTypesHarvestingUnit] = React.useState(null);
+
   const dispatch = etsUseDispatch();
 
   const inspectId = getNumberValueFromSerch(props.match.params.id);
 
   const handleClose = React.useCallback(
-    () => {
+    async () => {
+      if (originTypesCars !== props.types_cars || originTypesHarvestingUnit !== props.types_harvesting_unit ) {
+        try {
+          await global.confirmDialog({
+            title: 'Покинуть страницу?',
+            body: 'Возможно, внесенные изменения не сохранятся.',
+            okName: 'Закрыть',
+            cancelName: 'Остаться',
+          });
+        } catch {
+          return;
+        }
+      }
+
+      props.handleChangeData({
+        types_cars: originTypesCars,
+        types_harvesting_unit: originTypesHarvestingUnit,
+      });
+
       props.setParams({
         typeRightView: null,
         selectedCarsConditionsCar: null,
       });
     },
-    [props.setParams, props.match.params],
+    [props.setParams, props.match.params, originTypesCars,
+      originTypesHarvestingUnit, props.types_cars, props.types_harvesting_unit],
   );
 
   const handleSave = React.useCallback(
@@ -89,6 +111,8 @@ const PreparePlan: React.FC<Props> = (props) => {
             }),
           ),
         );
+        setOriginTypesCars(props.types_cars);
+        setOriginTypesHarvestingUnit(props.types_harvesting_unit);
       },
     );
   }, []);

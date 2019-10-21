@@ -225,7 +225,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
-          key: 'body_number',
+          key: 'factory_number',
           title: 'Заводской номер (из системы)',
           width: 200,
           groupOpt: {
@@ -236,7 +236,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
-          key: 'body_number_incorrect',
+          key: 'factory_number_incorrect',
           title: 'Некорректный заводской номер',
           width: 200,
           renderParams: {
@@ -248,7 +248,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
-          key: 'body_number_by_hand',
+          key: 'factory_number_by_hand',
           title: 'Заводской номер (ручной ввод)',
           width: 200,
           renderParams: {

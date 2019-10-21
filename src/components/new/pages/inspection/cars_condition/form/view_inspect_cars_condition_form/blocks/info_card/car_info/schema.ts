@@ -198,7 +198,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
         },
       ],
     },
-    body_number: {
+    factory_number: {
       type: 'string',
       title: 'Заводской номер (из системы)',
       maxLength: 128,
@@ -211,7 +211,7 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
         },
       ],
     },
-    body_number_incorrect: {
+    factory_number_incorrect: {
       type: 'string',
       title: 'Некорректный заводской номер:',
       dependenciesDisable: [
@@ -222,13 +222,13 @@ export const carsConditionCarFormSchema: SchemaType<CarsConditionCars, BlockCarI
         },
       ],
     },
-    body_number_by_hand: {
+    factory_number_by_hand: {
       type: 'string',
       title: 'Заводской номер (ручной ввод)',
       maxLength: 128,
       dependenciesDisable: [
         (_, formState) => {
-          if (!get(formState, 'body_number_incorrect', null) && (!isNewRow(formState) && isCustomUserCard(formState))) {
+          if (!get(formState, 'factory_number_incorrect', null) && (!isNewRow(formState) && isCustomUserCard(formState))) {
             return true;
           }
         },

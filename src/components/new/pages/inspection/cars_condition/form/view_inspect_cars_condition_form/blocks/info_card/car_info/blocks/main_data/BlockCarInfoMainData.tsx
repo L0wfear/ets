@@ -295,10 +295,10 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 <ExtField
                   type="string"
                   label="Заводской номер (из системы):"
-                  value={state.body_number}
+                  value={state.factory_number}
                   onChange={props.handleChange}
-                  error={errors.body_number}
-                  boundKeys="body_number"
+                  error={errors.factory_number}
+                  boundKeys="factory_number"
                   disabled={!props.isPermitted}
                   readOnly={!IS_CREATING && !isCustomUserCard}
                 />
@@ -310,10 +310,10 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
                 <ExtField
                   type="boolean"
                   label="Некорректный заводской номер:"
-                  value={state.body_number_incorrect}
+                  value={state.factory_number_incorrect}
                   onChange={props.handleChangeBoolean}
-                  error={errors.body_number_incorrect}
-                  boundKeys="body_number_incorrect"
+                  error={errors.factory_number_incorrect}
+                  boundKeys="factory_number_incorrect"
                   disabled={!props.isPermitted}
                   hidden={IS_CREATING && isCustomUserCard}
                 />
@@ -323,12 +323,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             <ExtField
               type="string"
               label="Заводской номер (ручной ввод):"
-              value={state.body_number_by_hand}
+              value={state.factory_number_by_hand}
               onChange={props.handleChange}
-              error={errors.body_number_by_hand}
-              boundKeys="body_number_by_hand"
+              error={errors.factory_number_by_hand}
+              boundKeys="factory_number_by_hand"
               disabled={!props.isPermitted}
-              hidden={!state.body_number_incorrect && !isCustomUserCard}
+              hidden={!state.factory_number_incorrect && !isCustomUserCard}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

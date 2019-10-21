@@ -128,11 +128,11 @@ export type CarsConditionCars = {
   vin_incorrect: boolean;
   self_tm_repair: boolean;
   last_repair: boolean;
-  body_number_incorrect: boolean;
+  factory_number_incorrect: boolean;
   vin_by_hand: string;
   last_repair_company: string;
-  body_number: string;
-  body_number_by_hand: string;
+  factory_number: string;
+  factory_number_by_hand: string;
   manufactured_at: string;
   environmental_class: string;
   engine_type: string;

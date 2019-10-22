@@ -50,8 +50,8 @@ class OrderList extends React.Component<any, any> {
 
     const {
       idOrder,
-      dateFrom: date_start = this.props.configDateStart,
-      dateTo: date_end = this.props.configDateEnd,
+      dateFrom: date_start,
+      dateTo: date_end,
     } = queryString.parse(search);
 
     let outerIdFax = null;

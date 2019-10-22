@@ -30,9 +30,11 @@ class FieldNormIdDutyMission extends React.PureComponent<
       technical_operation_id,
       municipal_facility_id,
       route_type,
+      DUTY_MISSION_IS_ORDER_SOURCE,
     } = this.props;
 
     const triggerOnUpdate =
+      !DUTY_MISSION_IS_ORDER_SOURCE &&
       !disabled &&
       (datetime !== prevProps.datetime ||
         technical_operation_id !== prevProps.technical_operation_id ||

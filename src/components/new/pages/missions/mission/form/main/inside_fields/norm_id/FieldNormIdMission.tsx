@@ -30,6 +30,7 @@ class FieldNormIdMission extends React.PureComponent<
     } = this.props;
 
     const triggerOnUpdate = (
+      !MISSION_IS_ORDER_SOURCE &&
       !disabled &&
       (
         datetime !== prevProps.datetime

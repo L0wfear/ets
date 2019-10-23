@@ -173,6 +173,7 @@ const ContainerBlock: React.FC<ContainerBlockProps> = (props) => {
         element={selectedContainer}
         onFormHide={handleFormHide}
         readOnly={props.inspectIsClosed}
+        isPermittedChangeListParams={props.isPermittedChangeListParams}
       />
     </React.Fragment>
   );

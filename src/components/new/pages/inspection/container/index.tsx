@@ -20,6 +20,7 @@ const ContainerFormLazy: React.FC<PropsInspectContainerFormLazy> = (props) => {
           element={props.element}
           handleHide={props.onFormHide}
           readOnly={props.readOnly}
+          isPermittedChangeListParams={props.isPermittedChangeListParams}
 
           page={page}
           path={path}

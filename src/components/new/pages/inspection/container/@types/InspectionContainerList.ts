@@ -8,7 +8,7 @@ export type PropsInspectContainerFormLazy = {
   loadingPageName?: string;
   page?: string;
   path?: string;
-
+  isPermittedChangeListParams: boolean;
 };
 
 export type OnFormHideType = (isSubmitted: boolean, result?: any) => void;
@@ -24,6 +24,7 @@ export type OwnInspectContainerProps = {
   readOnly?: boolean;
   page: string;
   path?: string;
+  isPermittedChangeListParams: boolean;
 };
 
 export type PropsInspectContainerWithForm = StatePropsInspectContainer &

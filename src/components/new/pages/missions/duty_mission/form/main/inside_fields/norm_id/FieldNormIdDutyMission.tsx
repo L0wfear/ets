@@ -30,11 +30,9 @@ class FieldNormIdDutyMission extends React.PureComponent<
       technical_operation_id,
       municipal_facility_id,
       route_type,
-      DUTY_MISSION_IS_ORDER_SOURCE,
     } = this.props;
 
     const triggerOnUpdate =
-      !DUTY_MISSION_IS_ORDER_SOURCE &&
       !disabled &&
       (datetime !== prevProps.datetime ||
         technical_operation_id !== prevProps.technical_operation_id ||
@@ -42,7 +40,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
         route_type !== prevProps.route_type);
 
     if (triggerOnUpdate) {
-      this.updateNormId();
+      this.updateNormId(); // в том числе, нужен в для определения is_cleaning_norm, используется в валидации
     }
   }
 
@@ -55,6 +53,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
       route_type,
       page,
       path,
+      DUTY_MISSION_IS_ORDER_SOURCE,
     } = this.props;
 
     const hasAllData = datetime && technical_operation_id && municipal_facility_id && route_type;
@@ -66,7 +65,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
         municipal_facility_id,
         route_type,
         needs_brigade: true,
-        kind_task_ids: 3,
+        kind_task_ids: DUTY_MISSION_IS_ORDER_SOURCE ? 1 : 3,
       };
 
       try {

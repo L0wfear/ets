@@ -33,7 +33,6 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   registration_date: null,
   exploitation_date_start: null,
   last_repair: null,
-  self_tm_repair: false,
   odometr_fact: null,
   motohours_fact: null,
   status_at_check: '',
@@ -50,7 +49,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   motohours: null,
   okrug_name: null,
   okrug_id: null,
-  last_repair_company_date: null,
+  last_repair_date: null,
   on_base: false,
   data: {
     defects_body: false,
@@ -94,6 +93,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     repair_reason: '',
     repair_from_date: null,
     not_maintenance_and_repair: false,
+    own_tech_maintenance: false,
   },
 
   files: [],

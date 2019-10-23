@@ -126,8 +126,7 @@ export type CarsConditionCars = {
   state_exploitation: string;
   vin: string;
   vin_incorrect: boolean;
-  self_tm_repair: boolean;
-  last_repair: boolean;
+  last_repair: string;
   factory_number_incorrect: boolean;
   vin_by_hand: string;
   last_repair_company: string;
@@ -160,7 +159,7 @@ export type CarsConditionCars = {
   season: string;
   okrug_name: string;
   okrug_id: string;
-  last_repair_company_date: string;
+  last_repair_date: string;
   on_base?: boolean;
   data: {
     defects_body: boolean;
@@ -204,6 +203,7 @@ export type CarsConditionCars = {
     repair_from_date: string;
     repair_reason: string;
     not_maintenance_and_repair?: boolean;
+    own_tech_maintenance?: boolean;
   };
   files: any[];
 };

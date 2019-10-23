@@ -667,7 +667,7 @@ export const getConfig = (inspection_id: number): TypeConfigData<CarsConditionCa
           },
         },
         {
-          key: 'last_repair',
+          key: 'last_repair_date',
           title: 'Дата проведения последнего ремонта',
           width: 200,
           format: 'date',

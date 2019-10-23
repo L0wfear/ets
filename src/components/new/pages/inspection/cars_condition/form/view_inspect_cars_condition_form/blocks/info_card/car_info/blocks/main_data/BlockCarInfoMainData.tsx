@@ -895,9 +895,9 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
             <ExtField
               type="boolean"
               label="ТО проведено собственными силами:"
-              value={state.self_tm_repair}
-              onChange={props.handleChangeBoolean}
-              boundKeys="self_tm_repair"
+              value={state.data.own_tech_maintenance}
+              onChange={handleChangeDataBoolean}
+              boundKeys="own_tech_maintenance"
               disabled={!props.isPermitted}
               className={'checkbox-input flex-reverse'}
             />
@@ -921,12 +921,12 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="date"
               time={false}
               label="Дата проведения последнего ремонта:"
-              value={state.last_repair}
+              value={state.last_repair_date}
               makeGoodFormat
               makeGoodFormatInitial
               onChange={props.handleChange}
-              error={errors.last_repair}
-              boundKeys="last_repair"
+              error={errors.last_repair_date}
+              boundKeys="last_repair_date"
               disabled={!props.isPermitted}
             />
           </EtsBootstrap.Col>

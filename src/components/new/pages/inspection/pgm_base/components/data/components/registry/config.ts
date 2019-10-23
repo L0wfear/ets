@@ -56,13 +56,15 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
         },
         {
           valueKey: 'capacity_cnt',
-          type: 'multiselect',
+          type: 'advanced-number',
           title: 'Количество емкостей',
+          step: 1,
         },
         {
           valueKey: 'volume_capacity_sum',
-          type: 'multiselect',
+          type: 'advanced-number',
           title: 'Суммарная вместимость',
+          step: 1,
         },
         {
           valueKey: 'has_pgm_text',

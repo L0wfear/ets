@@ -25,10 +25,8 @@ class AppHeader extends React.Component<{}, any> {
           event.preventDefault();
         }
         // . 190
-        // , 188
         if (event.keyCode === 190) {
-          // event.preventDefault();
-          // event.keyCode = 188;
+          event.preventDefault();
         }
 
       }

@@ -55,6 +55,11 @@ export const YES_NO_SELECT_OPTIONS_BOOL = [
   { label: 'Да', value: true },
   { label: 'Нет', value: false },
 ];
+export const YES_NO_DASH_SELECT_OPTIONS_STRING = [
+  { label: 'Да', value: 'Да' },
+  { label: 'Нет', value: 'Нет' },
+  { label: '-', value: '-' },
+];
 export const YES_NO_SELECT_OPTIONS_BOOL_STRING = [
   { value: 'TRUE', label: 'Нет' },
   { value: 'False', label: 'Да' },

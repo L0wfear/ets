@@ -2,7 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import permissions from 'components/new/pages/inspection/pgm_base/_config_data/permissions';
 import { InspectPgmBase } from 'redux-main/reducers/modules/inspect/pgm_base/@types/inspect_pgm_base';
-import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
+import { YES_NO_DASH_SELECT_OPTIONS_STRING } from 'constants/dictionary';
 
 export const registryKey = 'inspectionPgmBase';
 
@@ -65,9 +65,9 @@ export const getInspectionPgmBaseDataRegistryConfig = ({ pgmBaseId }: any): Type
           title: 'Суммарная вместимость',
         },
         {
-          valueKey: 'has_pgm',
+          valueKey: 'has_pgm_text',
           type: 'multiselect',
-          options: YES_NO_SELECT_OPTIONS_BOOL,
+          options: YES_NO_DASH_SELECT_OPTIONS_STRING,
           title: 'Наличие ПГМ в емкостях',
         },
         {

@@ -85,7 +85,10 @@ const PreparePlan: React.FC<Props> = (props) => {
           },
         ),
       ).then(() => {
-        handleClose();
+        props.setParams({
+          typeRightView: null,
+          selectedCarsConditionsCar: null,
+        });
       });
     },
     [

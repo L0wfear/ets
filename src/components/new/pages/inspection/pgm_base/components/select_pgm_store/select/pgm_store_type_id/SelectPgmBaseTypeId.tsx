@@ -42,7 +42,7 @@ const SelectPgmBaseTypeId: React.FC<SelectPgmBaseTypeIdProps> = (props) => {
 
       return get(current_base, 'pgm_stores_type_name');
     },
-    [pgmBaseId, props.match.params, props.setDataInSearch, props.searchState],
+    [pgmBaseId, props.match.params, props.setDataInSearch, props.searchState, props.pgmBaseList],
   );
 
   return (

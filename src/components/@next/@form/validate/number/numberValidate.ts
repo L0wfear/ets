@@ -57,7 +57,7 @@ export const validateNumber = <F extends Record<string, any>>(key: keyof F, fiel
     }
 
     if (fieldData.integer && Math.ceil(numberValue) !== numberValue) {
-      return `Поле "${title}" целым должно быть числом`;
+      return `Поле "${title}" должно быть целым числом`;
     }
 
     if (regExpVal && !regExpVal.test(value)) {

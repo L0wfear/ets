@@ -67,7 +67,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
     );
 
     if (triggerOnUpdate) {
-      this.updateNormId();
+      this.updateNormId(); // в том числе, нужен в для определения is_cleaning_norm, используется в валидации
     }
 
     if (MISSION_IS_ORDER_SOURCE && !disabled && type_ids !== prevProps.type_ids) {
@@ -105,7 +105,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
                 route_type,
                 needs_brigade: false,
                 func_type_id,
-                kind_task_ids: 3,
+                kind_task_ids: this.props.MISSION_IS_ORDER_SOURCE ? 1 : 3,
               }),
               {
                 page,

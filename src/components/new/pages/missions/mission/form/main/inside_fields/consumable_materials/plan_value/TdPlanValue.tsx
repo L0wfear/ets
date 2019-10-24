@@ -7,6 +7,7 @@ import useForm from 'components/@next/@form/hook_selectors/useForm';
 import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import { etsUseSelector } from 'components/@next/ets_hoc/etsUseDispatch';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { useMissionFormDataIsCompleted } from 'components/@next/@form/hook_selectors/mission/useMissionFormData';
 
 type Props = PropsToTdReactComponent;
 
@@ -18,6 +19,7 @@ const TdPlanValue: React.FC<Props> = React.memo(
     const municipal_facility_id = useForm.useFormDataFormStatePickValue<Mission, Mission['municipal_facility_id']>(props.formDataKey, 'municipal_facility_id');
     const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
     const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
+    const IS_COMPLETED = useMissionFormDataIsCompleted(props.formDataKey);
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -65,7 +67,7 @@ const TdPlanValue: React.FC<Props> = React.memo(
       [errors, props.indexRow],
     );
 
-    const disabled = !isPermitted || is_plan_value_locked || !consumable_material_id;
+    const disabled = !isPermitted || is_plan_value_locked || !consumable_material_id || IS_COMPLETED;
 
     return (
       <ExtField

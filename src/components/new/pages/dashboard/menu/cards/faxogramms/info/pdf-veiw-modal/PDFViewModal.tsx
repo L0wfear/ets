@@ -40,7 +40,10 @@ class PDFViewModal extends React.Component<
 
   render() {
     return (
-      <EtsBootstrap.ModalContainer id="pdf_view_modal" show onHide={this.props.onHide}>
+      <EtsBootstrap.ModalContainer id="pdf_view_modal" show onHide={this.props.onHide} noPadding={true}>
+        <EtsBootstrap.ModalHeader closeButton>
+          <EtsBootstrap.ModalTitle>{this.props.title}</EtsBootstrap.ModalTitle>
+        </EtsBootstrap.ModalHeader>
         <ModalBody bsClass="null">
           {!this.state.url ? (
             <PreloadNew typePreloader="mainpage" />

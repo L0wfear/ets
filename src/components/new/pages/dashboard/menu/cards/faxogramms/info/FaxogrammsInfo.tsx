@@ -128,6 +128,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
           show={this.state.showPDFViewModal}
           blob={this.state.blob}
           onHide={this.handleHidePDFViewModal}
+          title="Скан-копия факсограммы"
         />
       </InfoCard>
     );

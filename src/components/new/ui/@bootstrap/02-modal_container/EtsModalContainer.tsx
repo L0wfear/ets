@@ -6,6 +6,7 @@ import styled, { css } from 'styled-components';
 import ModalFormContainer from './styled/ModalFormContainer';
 import useEscapeEvent from 'components/new/utils/hooks/useEscapeEvent/useEscapeEvent';
 import themeModal from '../@themes/default/modal/themeModal';
+import { ModalBodyStyled } from 'components/new/ui/@bootstrap/08-modal_body/EtsModalBody';
 
 const timeAnimation = 0.3;
 
@@ -33,7 +34,7 @@ const bsSizeMediumCss = css`
   }
 `;
 
-export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' | 'medium' }>`
+export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 'small' | 'medium'; noPadding?: boolean; }>`
   width: 95%;
   position: relative;
   margin-bottom: 300px;
@@ -44,6 +45,10 @@ export const ModalFormStyled = styled.div<{ show: boolean; bsSize?: 'large' | 's
   pointer-events: ${({ show }) => !show ? 'none' : 'all'};
 
   opacity: ${({ show }) => !show ? 0 : 1};
+
+  ${ModalBodyStyled} {
+    padding: ${({ noPadding }) => noPadding ? '0' : '15px'};
+  }
   transform: ${({ show }) => `translate(0, ${!show ? '-100%' : '0'})`};
   transition: opacity ${timeAnimation}s, transform ${timeAnimation}s;
   will-change: transform, opacity;
@@ -68,6 +73,7 @@ export type EtsModalContainerProps = {
   onHide?: (...arg: any[]) => any;                   // ясно понятно
   bsSize?: 'large' | 'small' | 'medium';            // размер формы | small - дефолт
   themeName?: keyof typeof themeModal;
+  noPadding?: boolean;
 
   position?: 'center' | 'default';                  // положение формы
 };
@@ -97,7 +103,7 @@ const EtsModalContainerChild: React.FC<EtsModalContainerProps> = React.memo(
       createPortal(
         <div role="dialog" onDoubleClick={handleDoubleClick}>
           <ModalFormContainer id={props.id} position={props.position} show>
-            <ModalFormStyled show bsSize={props.bsSize}>
+            <ModalFormStyled show bsSize={props.bsSize} noPadding={props.noPadding}>
               {
                 React.useMemo(
                   () => (

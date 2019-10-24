@@ -51,8 +51,8 @@ const BlockCarsConditionCarsUse: React.FC<BlockCarsConditionCarsUseProps> = Reac
       () => {
         return carsConditionCarsList.reduce(
           (objCount, carData) => {
-            if (carData.fact_status) {
-              objCount[carData.fact_status] += 1;
+            if (carData.status_at_check) {
+              objCount[carData.status_at_check] += 1;
             }
 
             return objCount;

@@ -10,7 +10,27 @@ import {
   InfoCardWrapContainer,
   CardInfoContainer,
 } from 'components/new/pages/dashboard/menu/cards/_default-card-component/info-card/styled/styled';
+import styled from 'styled-components';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
+
+export const CardInfoCloseBtn = styled.div`
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.2;
+  cursor: pointer;
+
+  color: black;
+  transition: opacity 0.3s, color 0.3s;
+  will-change: opacity;
+
+  :hover {
+    color: ${UiConstants.colorError};
+  }
+`;
 
 type PropsInfoCard = {
   title: React.ReactNode;
@@ -25,7 +45,9 @@ const InfoCard: React.FC<PropsInfoCard> = React.memo(
         <CardTitleContainer>
           <CardTitleContainerWrap>
             <div>{props.title}</div>
-            <div className="pointer" onClick={props.handleClose}>X</div>
+            <CardInfoCloseBtn onClick={props.handleClose}>
+              ×
+            </CardInfoCloseBtn>
           </CardTitleContainerWrap>
         </CardTitleContainer>
         <CardBodyContainer>

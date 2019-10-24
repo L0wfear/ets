@@ -119,7 +119,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
               <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={this.seclectDownload}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
-          <EtsBootstrap.Button onClick={this.showPDFViewModal} permissions={orderPermissions.read} ><EtsBootstrap.Glyphicon glyph="info-sign" /></EtsBootstrap.Button>
+          <EtsBootstrap.Button onClick={this.showPDFViewModal} permissions={orderPermissions.read} style={{marginRight: '5px', }} ><EtsBootstrap.Glyphicon glyph="info-sign" /></EtsBootstrap.Button>
           <LinkToOrder to={`${path}/${infoData.data.id}`}>
             <EtsBootstrap.Button >Сформировать задания</EtsBootstrap.Button>
           </LinkToOrder>

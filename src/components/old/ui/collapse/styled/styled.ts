@@ -14,7 +14,6 @@ export const PanelCollapseWrap = styled(EtsBootstrap.PanelCollapse)`
 `;
 
 export const PanelBodyWrap = styled(EtsBootstrap.PanelBody)`
-  background-color: #eee!important;
   &&& {
     padding: 0px;
   }

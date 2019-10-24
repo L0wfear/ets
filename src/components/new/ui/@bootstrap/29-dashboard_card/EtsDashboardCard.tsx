@@ -11,6 +11,7 @@ export const EtsDashboardCardContainerWrap = styled.div<{ block?: boolean; theme
   )};
   padding: 10px;
   position: relative;
+  min-width: 320px;
 
   @media screen and (max-width: 990px) {
     min-width: 100%;
@@ -23,10 +24,15 @@ export const EtsDashboardCardContainer = styled.div<{ themeName?: keyof typeof t
 
   background-color: ${({ theme, themeName }) => theme.dashboard[themeName || 'default'].backgroundColor};
   color: ${({ theme, themeName }) => theme.dashboard[themeName || 'default'].color};
-  border-radius: 4px;
+  /* border-radius: 4px; */
 
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  padding: 0px;
+  /* margin-bottom: 10px; */
+
+  box-shadow: 0 1px 0 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.1);
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px 0px, rgba(0, 0, 0, 0.1) 0px 1px 15px 0px; */
+  background-color: #ffffff;
 
   ul {
     padding-left: 20px;

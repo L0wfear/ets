@@ -12,6 +12,7 @@ export const CardTitleContainer = styled.div`
   padding: 20px;
   padding-bottom: 5px;
   font-weight: bold;
+  text-align: center;
 
   &:after {
     display: block;
@@ -20,7 +21,7 @@ export const CardTitleContainer = styled.div`
     height: 1px;
     bottom: 1px;
     left: 20px;
-    background-color: #d6d6d6;
+    /* background-color: #d6d6d6; */
   }
 `;
 

@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { ButtonStyled } from 'components/new/ui/@bootstrap/00-button/EtsButton';
+import { UiConstants } from 'components/@next/@ui/renderFields/UiConstants';
 
 type PropsCardBodyContainer = {
   isLoading?: boolean;
@@ -16,7 +18,7 @@ export const CardTitleContainer = styled.div`
     height: 1px;
     bottom: 1px;
     left: 20px;
-    background-color: #d6d6d6;
+    /* background-color: #d6d6d6; */
   }
 `;
 
@@ -29,11 +31,20 @@ export const CardTitleContainerWrap = styled.div`
   &>*:nth-of-type(n + 2) {
     margin-left: 10px;
   }
+  ${ButtonStyled} {
+    background: transparent!important;
+    color: #4c4c4c!important;
+    padding-right: 0px!important;
+    padding-left: 0px!important;
+    &:hover {
+      color: ${UiConstants.colorError}!important;
+    }
+  }
 `;
 
 export const LineData = styled.div`
   padding: 15px 0;
-  border-bottom: 1px solid #d6d6d6;
+  /* border-bottom: 1px solid #d6d6d6; */
 `;
 
 export const CardBodyContainer = styled.div<PropsCardBodyContainer>`
@@ -44,10 +55,12 @@ export const CardBodyContainer = styled.div<PropsCardBodyContainer>`
 
   pointer-events: ${({ isLoading }) => isLoading ? 'none' : 'all'};
   opacity: ${({ isLoading }) => isLoading ? '0.5' : '1'};
+  max-height: 380px;
+  overflow: auto;
 
   .line_data {
     padding: 15px 0;
-    border-bottom: 1px solid #d6d6d6;
+    /* border-bottom: 1px solid #d6d6d6; */
 
     &.number {
       display: flex;

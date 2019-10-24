@@ -74,6 +74,7 @@ export type TypeFieldsWithoutDeep<F extends Record<string, any>, Title = string 
       | 'waybill_all_missions_status'
       | 'waybill_status_name'
       | 'inspectionSelect'
+      | 'metresToKilometeres'
     );
   } | {
     key: TypeFieldsAvalibaleKey<void>;

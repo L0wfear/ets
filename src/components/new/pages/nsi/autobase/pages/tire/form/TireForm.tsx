@@ -32,6 +32,7 @@ import { uniqKeyForParams } from 'components/new/pages/nsi/autobase/pages/car_ac
 import { tireSizeGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_size/actions';
 import { tireModelGetAndSetInStore } from 'redux-main/reducers/modules/autobase/actions_by_type/tire_model/actions';
 import { autobaseCreateTire, autobaseUpdateTire } from 'redux-main/reducers/modules/autobase/actions_by_type/tire/actions';
+import { metresToKilometeres } from 'utils/functions';
 
 const TireToVehicleBlock: any = onChangeWithKeys(TireToVehicleBlockComponent);
 
@@ -43,6 +44,7 @@ const defaultTireOnCarItem: TireOnCar = {
   motohours_diff: null,
   odometr_diff: null,
   uninstalled_at: null,
+  sum_track_length: null,
   // для таблички
   customId: null,
   isChecked: false,
@@ -151,6 +153,8 @@ class TireForm extends React.PureComponent<PropsTire, {}> {
       tireModelList,
     );
 
+    const sumTrackLength = metresToKilometeres(state.sum_track_length);
+
     return (
       <EtsBootstrap.ModalContainer id="modal-tire" show onHide={this.props.hideWithoutChanges} bsSize="large">
         <EtsBootstrap.ModalHeader closeButton>
@@ -227,6 +231,10 @@ class TireForm extends React.PureComponent<PropsTire, {}> {
                         <DiffValueElem>
                           <label htmlFor=" ">Наработка, мч:</label>
                           <InlineSpanValue>{state.motohours_diff}</InlineSpanValue>
+                        </DiffValueElem>
+                        <DiffValueElem>
+                          <label htmlFor=" ">Общий пробег по ГЛОНАСС, км:</label>
+                          <InlineSpanValue>{sumTrackLength}</InlineSpanValue>
                         </DiffValueElem>
                       </DiffValueWrapper>
                     </EtsBootstrap.Col>

@@ -10,6 +10,7 @@ import {
 } from 'components/old/ui/table/DataTableInput/DataTableInput.h';
 import { IValidationSchema } from 'components/old/ui/form/@types/validation.h';
 import { TireAvailableCar } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { metresToKilometeres } from 'utils/functions';
 
 export const validationSchema: IValidationSchema = {
   properties: [
@@ -51,6 +52,12 @@ export const meta: IDataTableSchema = {
     {
       name: 'odometr_diff',
       displayName: 'Пробег, км',
+      type: 'text',
+      cssClassName: 'width200',
+    },
+    {
+      name: 'sum_track_length',
+      displayName: 'Пробег по ГЛОНАСС, км',
       type: 'text',
       cssClassName: 'width200',
     },
@@ -184,6 +191,13 @@ export const renderers: TRendererFunction = (props, onListItemChange) => {
         value={rowMeta.data}
         index={rowMeta.rowData.rowNumber - 1}
       />
+    ),
+    sum_track_length: (rowMeta) => (
+      <React.Fragment>
+        {
+          metresToKilometeres(rowMeta.data)
+        }
+      </React.Fragment>
     ),
   };
 };

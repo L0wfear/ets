@@ -17,6 +17,7 @@ import TdContainer, { TdContainerProps } from 'components/new/ui/registry/compon
 import ExtFieldTd from 'components/new/ui/registry/components/data/table-data/table-container/t-body/tr-tbody/tr-td/ExtFieldTd';
 import { etsUseIsPermitted } from 'components/@next/ets_hoc/etsUseIsPermitted';
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
+import { metresToKilometeres } from 'utils/functions';
 
 const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: CommontTdTiteProps['fieldMeta'], payloadFormated) => {
   let value = rowData[fieldMeta.key];
@@ -106,6 +107,9 @@ const makeFormatedTitle = (rowData: CommontTdTiteProps['rowData'], fieldMeta: Co
         const optionVal = getInspectionOptionsByKeyList.find((elem) => elem.value.toString() === value);
         value = optionVal ? optionVal.label : value;
       }
+    }
+    if (format === 'metresToKilometeres') {
+      value = metresToKilometeres(value);
     }
   }
 

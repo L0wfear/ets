@@ -7,8 +7,9 @@ export const InlineSpanValue = styled.span`
 export const DiffValueWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 36px;
+  margin-top: 24px;
   justify-content: flex-end;
+  flex-wrap: wrap;
 `;
 
 export const DiffValueElem = styled.div`

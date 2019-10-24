@@ -293,6 +293,7 @@ export type TireOnCar =   {
   motohours_diff: number;
   odometr_diff: number;
   uninstalled_at: string;
+  sum_track_length: number;
   // для таблички
   customId?: number;
   isChecked?: boolean;
@@ -322,6 +323,7 @@ export type Tire = {
   uninstalled_at: string;
   status_text: string;
   status: string;
+  sum_track_length: number;
 };
 export type TireSize = {
   id: number;

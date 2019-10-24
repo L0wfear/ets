@@ -6,6 +6,7 @@
 import { isPlainObject, every, includes } from 'lodash';
 import html2canvas from 'html2canvas';
 import { InspectionConfig } from 'redux-main/reducers/modules/some_uniq/inspection_config/@types';
+import { isNumber } from 'util';
 
 /**
  * Example
@@ -401,3 +402,12 @@ export const objectDiffer = (obj1, obj2): objectDifferReturn => {
   }
   return diffs;
 };
+
+/**
+ * Перевод метры в километры с 3мя знаками после запятой
+ * @param metresVal значение в метрах
+ */
+export const metresToKilometeres = (metresVal: number) =>
+  isNumber(metresVal)
+    ? ( metresVal / 1000 ).toFixed(2)
+    : '0.00';

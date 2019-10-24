@@ -73,7 +73,6 @@ export const meta: IDataTableSchema = {
       name: 'season',
       displayName: 'Сезон',
       type: 'select',
-      cssClassName: 'width300',
     },
     {
       name: 'ready_cnt',

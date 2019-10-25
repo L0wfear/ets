@@ -40,15 +40,13 @@ export const ViewInspectAutobaseButtonSubmit: React.FC<ViewInspectAutobaseButton
 
   const handleSubmit = React.useCallback(
     async () => {
-      if (canSave) {
-        try {
-          await props.handleSubmit('save');
-        } catch (error) {
-          props.registryLoadDataByKey(props.loadingPage);
-        }
-
-        props.handleHide(true);
+      try {
+        await props.handleSubmit('save');
+      } catch (error) {
+        props.registryLoadDataByKey(props.loadingPage);
       }
+
+      props.handleHide(true);
     },
     [selectedInspectAutobase, canSave],
   );

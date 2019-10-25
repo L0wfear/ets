@@ -40,15 +40,13 @@ const ViewInspectCarsConditionButtonSubmit: React.FC<ViewInspectCarsConditionBut
 
   const handleSubmit = React.useCallback(
     async () => {
-      if (canSave) {
-        try {
-          await props.handleSubmit();
-        } catch (error) {
-          props.registryLoadDataByKey(props.loadingPage);
-          return;
-        }
-        props.handleHide(true);
+      try {
+        await props.handleSubmit();
+      } catch (error) {
+        props.registryLoadDataByKey(props.loadingPage);
+        return;
       }
+      props.handleHide(true);
     },
     [selectedInspectCarsCondition, canSave],
   );

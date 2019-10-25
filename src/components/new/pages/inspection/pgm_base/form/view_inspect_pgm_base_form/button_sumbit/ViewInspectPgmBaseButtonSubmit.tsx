@@ -43,14 +43,12 @@ export const ViewInspectPgmBaseButtonSubmit: React.FC<ViewInspectPgmBaseButtonSu
 
   const handleSubmit = React.useCallback(
     async () => {
-      if (canSave) {
-        try {
-          await props.handleSubmit();
-        } catch (error) {
-          props.registryLoadDataByKey(props.loadingPage);
-        }
-        props.handleHide(true);
+      try {
+        await props.handleSubmit();
+      } catch (error) {
+        props.registryLoadDataByKey(props.loadingPage);
       }
+      props.handleHide(true);
     },
     [props.handleSubmit, canSave],
   );

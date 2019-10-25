@@ -2,6 +2,7 @@ import buttonsTypes from 'components/new/ui/registry/contants/buttonsTypes';
 import { TypeConfigData } from 'components/new/ui/registry/module/@types/registry';
 import { TechInspection } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import techInspectionPermissions from './permissions';
+import { YES_NO_SELECT_OPTIONS_BOOL } from 'constants/dictionary';
 
 export const registryKey = 'techInspectionRegistry';
 
@@ -82,6 +83,12 @@ export const getToConfig = (car_id?: number): TypeConfigData<TechInspection> => 
           valueKey: 'note',
           title: 'Примечание',
           type: 'advanced-string-like',
+        },
+        {
+          valueKey: 'is_allowed',
+          title: 'Заключение о возможности/невозможности эксплуатации ТС',
+          type: 'multiselect',
+          options: YES_NO_SELECT_OPTIONS_BOOL,
         },
       ],
     },

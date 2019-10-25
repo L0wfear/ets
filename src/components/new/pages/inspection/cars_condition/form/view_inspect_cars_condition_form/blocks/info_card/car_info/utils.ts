@@ -50,6 +50,7 @@ export const defaultCarsConditionCar: CarsConditionCars = {
   okrug_name: null,
   okrug_id: null,
   last_repair_date: null,
+  repair_from_date: null,
   on_base: false,
   data: {
     defects_body: false,
@@ -91,7 +92,6 @@ export const defaultCarsConditionCar: CarsConditionCars = {
     logo: '',
     tech_condition: '',
     repair_reason: '',
-    repair_from_date: null,
     not_maintenance_and_repair: false,
     own_tech_maintenance: false,
   },

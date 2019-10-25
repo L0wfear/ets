@@ -965,11 +965,11 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
               type="date"
               time={false}
               label="В ремонте с даты:"
-              value={state.data.repair_from_date}
+              value={state.repair_from_date}
               makeGoodFormat
               makeGoodFormatInitial
-              onChange={handleChangeData}
-              error={errors.data.repair_from_date}
+              onChange={props.handleChange}
+              error={errors.repair_from_date}
               boundKeys="repair_from_date"
               disabled={!props.isPermitted}
             />

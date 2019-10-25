@@ -160,6 +160,7 @@ export type CarsConditionCars = {
   okrug_name: string;
   okrug_id: string;
   last_repair_date: string;
+  repair_from_date: string;
   on_base?: boolean;
   data: {
     defects_body: boolean;
@@ -200,7 +201,6 @@ export type CarsConditionCars = {
     glonass_registered: string;
     logo: string;
     tech_condition: string;
-    repair_from_date: string;
     repair_reason: string;
     not_maintenance_and_repair?: boolean;
     own_tech_maintenance?: boolean;

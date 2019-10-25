@@ -146,6 +146,7 @@ export default compose<any, any>(
       infoDataRaw: getDashboardState(state).waybill_draft.data.items[0],
     }),
     (dispatch) => ({
+      dispatch,
       handleClose: () => dispatch(dashboardSetInfoDataInWaybillDraft(null)),
       loadAllWaybillCard: () =>
         dispatch(dashboardLoadDependentDataByWaybillDraft()),

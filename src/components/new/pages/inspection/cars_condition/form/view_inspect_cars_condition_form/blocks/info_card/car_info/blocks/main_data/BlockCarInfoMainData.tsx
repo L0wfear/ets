@@ -105,17 +105,17 @@ const BlockCarInfoMainData: React.FC<BlockCarInfoMainDataProps> = React.memo(
       [state.data, props.handleChange, inspectionConfigOptions],
     );
 
-    const handleChangeData = React.useCallback(
-      (key, event) => {
-        props.handleChange({
-          data: {
-            ...state.data,
-            [key]: get(event, 'target.value', event),
-          },
-        });
-      },
-      [state.data, props.handleChange, inspectionConfigOptions],
-    );
+    // const handleChangeData = React.useCallback(
+    //   (key, event) => {
+    //     props.handleChange({
+    //       data: {
+    //         ...state.data,
+    //         [key]: get(event, 'target.value', event),
+    //       },
+    //     });
+    //   },
+    //   [state.data, props.handleChange, inspectionConfigOptions],
+    // );
 
     const handleChangeDataOptions = React.useCallback(
       (key, event) => {

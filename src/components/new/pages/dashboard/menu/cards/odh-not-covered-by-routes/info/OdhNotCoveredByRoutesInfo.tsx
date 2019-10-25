@@ -18,12 +18,6 @@ import { getDashboardState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 
 class OdhNotCoveredByRoutesInfo extends React.PureComponent<PropsOdhNotCoveredByRoutesInfo, {}> {
-  gotoRoute = () => {
-    this.props.history.pushState(
-      null,
-      `/routes-list/?technical_operation_id=${this.props.infoData.technical_operation_id}`,
-    );
-  }
   render() {
     const { infoData, ...props } = this.props;
 
@@ -40,7 +34,7 @@ class OdhNotCoveredByRoutesInfo extends React.PureComponent<PropsOdhNotCoveredBy
         </ul>
         <RightButtonBlockContainer>
           <LinkToRouteListPermitted to={`/routes-list/?technical_operation_id=${infoData.technical_operation_id}`}>
-            <EtsBootstrap.Button onClick={this.gotoRoute}>Перейти к маршрутам</EtsBootstrap.Button>
+            <EtsBootstrap.Button>Перейти к маршрутам</EtsBootstrap.Button>
           </LinkToRouteListPermitted>
         </RightButtonBlockContainer>
       </InfoCard>

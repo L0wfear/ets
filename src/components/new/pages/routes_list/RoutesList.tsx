@@ -176,10 +176,11 @@ class RoutesList extends React.PureComponent<PropsRoutesList, StateRoutesList> {
       const filterValues = {
         ...this.state.filterValues,
       };
+      const intValues = ['technical_operation_id'];
       Object.entries(searchObject).forEach(([key, value]) => {
         filterValues[key] = {
           type: 'multiselect',
-          value: [value],
+          value: intValues.includes(key) ? [parseInt(value as string, 10)] : [value],
         };
       });
 

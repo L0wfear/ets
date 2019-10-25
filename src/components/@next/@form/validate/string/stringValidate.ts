@@ -1,5 +1,6 @@
 import { isString, isNullOrUndefined } from 'util';
 import { StringField } from 'components/@next/@form/@types';
+import { getRequiredFieldNoTrim } from 'components/@next/@utils/getErrorString/getErrorString';
 
 export const validateString = <F extends Record<string, any>>(key: keyof F, fieldData: StringField<F>, formState: F) => {
   const {
@@ -23,7 +24,7 @@ export const validateString = <F extends Record<string, any>>(key: keyof F, fiel
   }
 
   if (value && isString(value) && value.length !== value.trim().length) {
-    return `Поле "${title}" не должно начинаться и заканчиваться пробелом`;
+    return getRequiredFieldNoTrim(title);
   }
 
   if (isString(value) || isNullOrUndefined(value) ) {

@@ -13,3 +13,7 @@ export const getRequiredFieldNumberMoreThen = (field = 'Название по у
 export const getRequiredFieldNumberMoreThenZero = (field = 'Название по умолчанию') => {
   return `Поле "${field}" должно быть неотрицательным числом`;
 };
+
+export const getRequiredFieldNoTrim = (field = 'Название по умолчанию') => {
+  return `Поле "${field}" не должно начинаться и заканчиваться пробелом`;
+};

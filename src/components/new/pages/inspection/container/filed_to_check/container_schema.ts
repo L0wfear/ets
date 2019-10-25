@@ -13,11 +13,15 @@ export const inspectContainerSchema: SchemaType<InspectContainer, PropsInspectCo
       title: 'Вместимость (куб. м)',
       type: 'number',
       required: true,
+      min: 0,
+      integer: true,
     },
     capacity_percent: {
       title: 'Коэффициент заполнения на день проверки',
       type: 'number',
       required: true,
+      min: 0,
+      integer: true,
     },
     pgm_marka: {
       title: 'Марка ПГМ в емкости',
@@ -25,9 +29,11 @@ export const inspectContainerSchema: SchemaType<InspectContainer, PropsInspectCo
       required: true,
     },
     pgm_volume: {
-      title: 'Объем ПГМ в емкости (тонн)',
+      title: 'Объем ПГМ в емкости (куб.м)',
       type: 'number',
       required: true,
+      min: 0,
+      integer: true,
     },
     last_checked_at: {
       title: 'Дата последней диагностики',

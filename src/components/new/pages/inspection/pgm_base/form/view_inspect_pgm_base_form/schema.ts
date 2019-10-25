@@ -141,6 +141,8 @@ const dataSchema: SchemaType<InspectPgmBase['data'], PropsViewInspectPgmBaseWith
     pgm_in_hangars: {
       title: 'Наличие ПГМ в ангарах на момент проверки (куб.м)',
       type: 'number',
+      min: 0,
+      integer: true,
     },
     insufficient_availability_of_wooden_pallets: {
       title: 'Недостаточное наличие деревянных паллет (h-10)',
@@ -153,6 +155,8 @@ const dataSchema: SchemaType<InspectPgmBase['data'], PropsViewInspectPgmBaseWith
     pgm_on_open_area: {
       title: 'Наличие ПГМ на открытой площадке на момент проверки (куб.м)',
       type: 'number',
+      min: 0,
+      integer: true,
     },
   },
 };

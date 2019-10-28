@@ -209,7 +209,6 @@ const PreparePlan: React.FC<Props> = (props) => {
           onValidation={handleValidityTypesHarvestingUnit}
           selectField="customId"
           tableTitle='План и проверка готовности к сезону прицепных, навесных и уборочных агрегатов'
-          hideButtons={true}
           {...props}
         />
       </CustomTableWrapper>

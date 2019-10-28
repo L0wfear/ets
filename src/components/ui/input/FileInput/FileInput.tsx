@@ -109,6 +109,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
         />,
       );
 
+    const disabledIfSingleFile = fileList.length && !multiple;
     const ID = this.props.id ? `${modalKey ? `${modalKey}-` : ''}${this.props.id}-list` : undefined;
 
     return (
@@ -118,7 +119,7 @@ class FileInput extends React.Component<IPropsFileInput, IStateFileInput> {
             !this.props.disabled
               ? (
                 <BootstrapButton
-                  disabled={this.props.disabled}
+                  disabled={this.props.disabled || disabledIfSingleFile}
                   onClick={this.handleFilePick}
                   id={button_id}
                 >{buttonName}</BootstrapButton>

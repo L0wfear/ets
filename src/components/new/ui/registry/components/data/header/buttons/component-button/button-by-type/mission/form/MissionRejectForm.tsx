@@ -435,6 +435,7 @@ class MissionRejectForm extends React.Component<Props, State> {
               options={CANCEL_REASON}
               onChange={this.handleChange}
               boundKeys="reason_id"
+              id="reason_id"
             />
             <ExtField
               type="select"
@@ -443,6 +444,7 @@ class MissionRejectForm extends React.Component<Props, State> {
               options={CARS}
               value={state.car_id}
               onChange={this.handleChangeCarId}
+              id="car_id"
               clearable
             />
             <ExtField
@@ -453,6 +455,7 @@ class MissionRejectForm extends React.Component<Props, State> {
               onChange={this.handleChange}
               placeholder="Поле ввода дополнительной информации"
               boundKeys="comment"
+              id="comment"
             />
             <br />
             {

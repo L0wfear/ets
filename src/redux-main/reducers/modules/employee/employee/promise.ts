@@ -64,7 +64,6 @@ export const createSetEmployee = (rawEmployee: Employee) => {
   payload.birthday = createValidDate(payload.birthday);
   payload.drivers_license_date_end = createValidDate(payload.drivers_license_date_end);
   payload.special_license_date_end = createValidDate(payload.special_license_date_end);
-  payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
   payload.assignment_date_start = createValidDate(payload.assignment_date_start);
   payload.assignment_date_end = createValidDate(payload.assignment_date_end);
 
@@ -77,7 +76,6 @@ export const updateSetEmployee = (oldEmployee: Employee) => {
   payload.birthday = createValidDate(payload.birthday);
   payload.drivers_license_date_end = createValidDate(payload.drivers_license_date_end);
   payload.special_license_date_end = createValidDate(payload.special_license_date_end);
-  payload.medical_certificate_date = createValidDate(payload.medical_certificate_date);
   payload.assignment_date_start = createValidDate(payload.assignment_date_start);
   payload.assignment_date_end = createValidDate(payload.assignment_date_end);
 

@@ -32,7 +32,6 @@ export type Employee = {
   is_driver?: boolean;
   last_name: string;
   medical_certificate: string;
-  medical_certificate_date: string;
   middle_name: string;
   personnel_number: string;
   phone: string;

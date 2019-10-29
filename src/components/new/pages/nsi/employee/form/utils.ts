@@ -30,7 +30,6 @@ export const defaultEmployee: Employee = {
   is_common: false,
   last_name: null,
   medical_certificate: null,
-  medical_certificate_date: null,
   medical_certificate_files: [],
   middle_name: null,
   personnel_number: null,

@@ -580,19 +580,6 @@ class EmployeeForm extends React.PureComponent<PropsEmployee, StateEmployee> {
                     clearable={false}
                   />
                 </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={6}>
-                  <ExtField
-                    id="medical_certificate_date"
-                    type="date"
-                    label="Срок действия медицинской справки"
-                    date={state.medical_certificate_date}
-                    time={false}
-                    error={errors.medical_certificate_date}
-                    disabled={!isPermitted}
-                    onChange={this.props.handleChange}
-                    boundKeys="medical_certificate_date"
-                  />
-                </EtsBootstrap.Col>
               </EtsBootstrap.Row>
             </EtsBootstrap.Col>
             <EtsBootstrap.Col md={12}>

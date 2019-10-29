@@ -114,11 +114,6 @@ export const config: TypeConfigData<Employee> = {
         type: 'multiselect',
       },
       {
-        valueKey: 'medical_certificate_date',
-        title: 'Срок действия мед. справки',
-        type: 'advanced-date',
-      },
-      {
         valueKey: 'is_common',
         title: 'Общее',
         type: 'multiselect',
@@ -254,12 +249,6 @@ export const config: TypeConfigData<Employee> = {
           key: 'medical_certificate',
           title: 'Медицинская справка',
           width: 200,
-        },
-        {
-          key: 'medical_certificate_date',
-          title: 'Срок действия мед. справки',
-          width: 300,
-          format: 'date',
         },
         {
           key: 'is_common',

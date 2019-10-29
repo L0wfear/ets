@@ -44,6 +44,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
 
     this.state.map.on('pointermove', this.mousePointerMove);
     this.state.map.on('singleclick', this.mouseSingleClick);
+    this.state.map.on('movestart', this.mouseMovestart);
     this.state.map.on('moveend', this.mouseMoveend);
     this.props.setMapToContext(this.props.mapKey, this.state.map);
     if (rotationAngle) {
@@ -82,7 +83,13 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
     );
   }
 
+  mouseMovestart = () => {
+    this.state.map.un('pointermove', this.mousePointerMove);
+  }
+
   mouseMoveend = (event) => {
+    this.state.map.on('pointermove', this.mousePointerMove);
+
     const zoom = event.map.getView().getZoom();
     const center = event.map.getView().getCenter();
 

@@ -85,6 +85,7 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
 
   mouseMovestart = () => {
     this.state.map.un('pointermove', this.mousePointerMove);
+    this.state.map.getViewport().classList.remove('pointer');
   }
 
   mouseMoveend = (event) => {

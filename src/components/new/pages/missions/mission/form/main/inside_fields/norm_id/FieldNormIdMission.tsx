@@ -105,7 +105,7 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
                 route_type,
                 needs_brigade: false,
                 func_type_id,
-                kind_task_ids: this.props.MISSION_IS_ORDER_SOURCE ? 1 : 3,
+                kind_task_ids: this.props.MISSION_IS_ORDER_SOURCE ? [1, 2] : 3,
               }),
               {
                 page,
@@ -116,11 +116,16 @@ class FieldNormIdMission extends React.PureComponent<Props, {}> {
         )),
       )).filter((d) => d);
 
-      this.props.onChange({
-        norm_ids: norms.map(({ norm_id }) => norm_id),
-        norm_text: norms.map(({ name }) => name).toString(),
-        is_cleaning_norm: norms.some(({ is_cleaning_norm }) => is_cleaning_norm),
-      });
+      const normObj = this.props.MISSION_IS_ORDER_SOURCE
+        ? {
+          is_cleaning_norm: norms.some(({ is_cleaning_norm }) => is_cleaning_norm),
+        } : {
+          norm_ids: norms.map(({ norm_id }) => norm_id),
+          norm_text: norms.map(({ name }) => name).toString(),
+          is_cleaning_norm: norms.some(({ is_cleaning_norm }) => is_cleaning_norm),
+        };
+
+      this.props.onChange(normObj);
     } else if (value.length) {
       this.props.onChange({
         norm_ids: [],

@@ -31,13 +31,13 @@ const DOC_URL = {
 
 const config = {
   develop: {
-    ws: `wss//ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
+    ws: `wss://ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
     images: 'https://ets.mos.ru/ets/data/images/',
     docs: DOC_URL.develop[process.env.STAND],
     admin: ADMIN_URL.develop[process.env.STAND],
   },
   origin: {
-    ws: `wss//ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
+    ws: `wss://ets${STAND !== 'prod' ? '-test' : ''}.mos.ru/services/stream`,
     images: `https://ets.mos.ru/ets/data/images/`,
     docs: DOC_URL.origin,
     admin: ADMIN_URL.origin,
@@ -52,7 +52,7 @@ const notification_config = {
     ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',
     prod: 'wss://ets.mos.ru/services/notification_ws',
   },
-  origin: `wss//${HOST}${PATHNAME}services/notification_ws`,
+  origin: `wss://${HOST}${PATHNAME}services/notification_ws`,
 };
 
 export const configApi = {

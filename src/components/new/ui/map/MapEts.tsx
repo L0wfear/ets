@@ -13,6 +13,8 @@ import {
   centerOn,
 } from 'components/new/ui/map/utils';
 
+const cacheTimeout = {};
+
 /**
  * @todo свои кнопки зума на styled-components чтобы убрать импорт css
  */
@@ -70,9 +72,24 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
   }
 
   mousePointerMove = (olEvent) => {
-    mousePointerMove(
-      olEvent,
-      this.state.enableInteractions && !this.props.disabledMouseSingleClick,
+    if (olEvent.dragging) {
+      return;
+    }
+
+    if (cacheTimeout[this.props.mapKey]) {
+      clearTimeout(cacheTimeout[this.props.mapKey]);
+      this.state.map.getViewport().classList.remove('pointer');
+    }
+
+    cacheTimeout[this.props.mapKey] = setTimeout(
+      () => {
+        mousePointerMove(
+          olEvent,
+          this.state.enableInteractions && !this.props.disabledMouseSingleClick,
+        );
+        clearTimeout(cacheTimeout[this.props.mapKey]);
+      },
+      200,
     );
   }
 
@@ -84,13 +101,10 @@ class MapEts extends React.PureComponent<PropsMapEts, StateMapEts> {
   }
 
   mouseMovestart = () => {
-    this.state.map.un('pointermove', this.mousePointerMove);
     this.state.map.getViewport().classList.remove('pointer');
   }
 
   mouseMoveend = (event) => {
-    this.state.map.on('pointermove', this.mousePointerMove);
-
     const zoom = event.map.getView().getZoom();
     const center = event.map.getView().getCenter();
 

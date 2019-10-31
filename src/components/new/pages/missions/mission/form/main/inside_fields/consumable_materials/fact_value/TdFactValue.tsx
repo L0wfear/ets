@@ -25,6 +25,7 @@ const TdFactValue: React.FC<Props> = React.memo(
     const municipalFacilityMeasureUnitList = etsUseSelector((state) => getSomeUniqState(state).municipalFacilityMeasureUnitList);
     const municipal_facility_measure_unit_name = get(municipalFacilityMeasureUnitList.find((rowData) => rowData.municipal_facility_id === municipal_facility_id), 'measure_unit_name');
     const IS_COMPLETED = useMissionFormDataIsCompleted(props.formDataKey);
+    const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(props.formDataKey, 'is_mission_progress_countable');
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -82,7 +83,9 @@ const TdFactValue: React.FC<Props> = React.memo(
             if (props.formDataKey !== 'duty_mission') {
               await global.confirmDialog({
                 title: 'Внимание!',
-                body: 'Объем работы (факт) не будет заполняться автоматически данными по ГЛОНАСС. Продолжить?',
+                body: is_mission_progress_countable
+                  ? 'Объем работы (факт) не будет заполняться автоматически данными по ГЛОНАСС. Продолжить?'
+                  : 'Объем работ (факт) не будет заполняться автоматически данными из поля Объем работы (план). Продолжить?',
               });
             } else {
               await global.confirmDialog({
@@ -99,7 +102,9 @@ const TdFactValue: React.FC<Props> = React.memo(
               try {
                 await global.confirmDialog({
                   title: 'Внимание!',
-                  body: 'Объем работы (факт) будет заполняться автоматически данными по ГЛОНАСС». Ранее введенные данные в "Объем работы(факт)" будут очищены. Продолжить?',
+                  body: is_mission_progress_countable
+                    ? 'Объем работы (факт) будет заполняться автоматически данными по ГЛОНАСС. Ранее введенные данные в "Объем работы(факт)" будут очищены. Продолжить?'
+                    : 'Объем работ (факт) будет заполняться автоматически данными из поля Объем работы (план). Ранее введенные данные в поле Объем работ (факт) будут очищены. Продолжить?',
                 });
               } catch {
                 return;
@@ -178,7 +183,7 @@ const TdFactValue: React.FC<Props> = React.memo(
         />
         {
           isMissionFormDataIsNotCompleted && can_edit && (
-            <EtsBootstrap.Button disabled={!isPermitted} onClick={handleChangeLock}>
+            <EtsBootstrap.Button disabled={!isPermitted} onClick={handleChangeLock} title={!is_fact_value_locked ? "открыт ручной ввод" : "закрыт ручной ввод"}>
               <EtsBootstrap.Glyphicon glyph={!is_fact_value_locked ? "user" : "lock"} />
             </EtsBootstrap.Button>
           )

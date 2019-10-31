@@ -61,7 +61,7 @@ const notification_config = {
     ets_hotfix: 'wss://ets-hotfix.mos.ru/services/notification_ws',
     prod: 'wss://ets.mos.ru/services/notification_ws',
   },
-  origin: `wss//${HOST}${PATHNAME}services/notification_ws`,
+  origin: `wss://${HOST}${PATHNAME}services/notification_ws`,
 };
 
 export const configApi = {

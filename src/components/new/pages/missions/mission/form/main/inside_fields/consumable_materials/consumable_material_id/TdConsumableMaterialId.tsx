@@ -51,6 +51,7 @@ const TdConsumableMaterialId: React.FC<Props> = React.memo(
     const IS_NOT_COMPLETED = useMissionFormDataIsNoCompleted(props.formDataKey);
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+    const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(props.formDataKey, 'is_mission_progress_countable');
 
     const consumableMateriaForMissionIndex = React.useMemo(
       () => {
@@ -69,7 +70,7 @@ const TdConsumableMaterialId: React.FC<Props> = React.memo(
                   get(option, 'rowData'),
                 ],
                 consumableMateriaForMissionIndex,
-                props.formDataKey,
+                is_mission_progress_countable,
               )[0];
             }
 

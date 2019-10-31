@@ -155,7 +155,7 @@ const FieldConsumableMaterials: React.FC<Props> = React.memo(
         />
         {
           !hasConsumableMateriaForMission && !consumable_materials[0] && (
-            <ErrorsBlock error="Для указанных технологической операции и элемента не указаны расходные материалы" />
+            <ErrorsBlock error="Для технологической операции и элемента не указаны расходные материалы" />
           )
         }
       </React.Fragment>

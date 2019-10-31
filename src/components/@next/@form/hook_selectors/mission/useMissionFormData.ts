@@ -12,9 +12,7 @@ import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
-export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>, formDataKey, ) => {
-
-  const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(formDataKey, 'is_mission_progress_countable');
+export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>, is_mission_progress_countable: Mission['is_mission_progress_countable'], ) => {
 
   return consumable_materials_old.reduce<ConsumableMaterialCountMission[]>(
     (newArr, rowData) => {
@@ -238,6 +236,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
   const formState = useForm.useFormDataFormState<Partial<Mission> & Partial<DutyMission>>(formDataKey);
   const dispatch = etsUseDispatch();
   const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+  const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(formDataKey, 'is_mission_progress_countable');
 
   return React.useCallback(
     async (partialObj: Partial<Mission> & Partial<DutyMission>) => {
@@ -349,7 +348,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         );
 
         if (triggerOnUpdateConsumableMaterials) {
-          newPartialFormState.consumable_materials = mergeConsumableMaterials(newPartialFormState.consumable_materials, dataIndex, formDataKey);
+          newPartialFormState.consumable_materials = mergeConsumableMaterials(newPartialFormState.consumable_materials, dataIndex, is_mission_progress_countable);
         }
       }
 

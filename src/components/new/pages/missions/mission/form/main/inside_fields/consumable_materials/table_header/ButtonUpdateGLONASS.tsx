@@ -31,6 +31,8 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
     const order_operation_id = useForm.useFormDataFormStatePickValue<Mission, Mission['order_operation_id']>(props.formDataKey, 'order_operation_id');
     const passes_count = useForm.useFormDataFormStatePickValue<Mission, Mission['passes_count']>(props.formDataKey, 'passes_count');
 
+    const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(props.formDataKey, 'is_mission_progress_countable');
+
     const norm_id = React.useMemo(
       () => {
         if (props.formDataKey === 'mission') {
@@ -86,7 +88,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
         );
 
         handleChange({
-          consumable_materials: mergeConsumableMaterials(consumable_materials, dataIndex, props.formDataKey, ),
+          consumable_materials: mergeConsumableMaterials(consumable_materials, dataIndex, is_mission_progress_countable, ),
         });
       },
       [consumable_materials, passes_count, consumableMateriaForMission, norm_id, municipal_facility_id, id, order_operation_id, date_start, route_id],

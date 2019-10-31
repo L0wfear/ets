@@ -20,6 +20,7 @@ const TdConsumption: React.FC<Props> = React.memo(
     const isPermitted = useForm.useFormDataIsPermitted<Mission>(props.formDataKey);
     const IS_NOT_ASSIGN_OR_IS_ASSIGN_WITH_ACTIVE_WAYBILL = useMissionFormDataIsNotAssignOrIsAssignWithActiveWaybill(props.formDataKey);
     const consumableMateriaForMission = etsUseSelector((state) => getSomeUniqState(state).consumableMaterialCountMissionList);
+    const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(props.formDataKey, 'is_mission_progress_countable');
 
     const handleChangeWrap = React.useCallback(
       (event) => {
@@ -86,7 +87,7 @@ const TdConsumption: React.FC<Props> = React.memo(
           changed_consumable_materials = mergeConsumableMaterials(
             [changed_consumable_materials],
             consumableMateriaForMissionIndex,
-            props.formDataKey,
+            is_mission_progress_countable,
           )[0];
         }
 

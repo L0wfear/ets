@@ -133,7 +133,7 @@ const TdFactValue: React.FC<Props> = React.memo(
           changed_consumable_materials = mergeConsumableMaterials(
             [changed_consumable_materials],
             consumableMateriaForMissionIndex,
-            props.formDataKey,
+            is_mission_progress_countable,
           )[0];
         }
 

@@ -37,6 +37,41 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
     const [inLoadingStatus, setInLoadingStatus] = React.useState(false);
     const [user, setUser] = React.useState({ login: '', password: '' });
 
+    const node = React.useRef<HTMLFormElement>();
+
+    React.useEffect(
+      () => {
+        const handleMouseMove = (event: MouseEvent) => {
+          try {
+            const {
+              clientX,
+              clientY,
+            } = event;
+
+            const {
+              clientWidth,
+              clientHeight,
+            } = document.body;
+
+            const x = clientX - clientWidth / 2;
+            const y = clientY - clientHeight / 2;
+
+            const normalX = Number(Number(x / clientWidth).toFixed(2)) * 5;
+            const normalY = Number(Number(y / clientHeight).toFixed(2)) * 5;
+
+            node.current.style.transform = `translate3d(${normalX}px, ${normalY}px, 0)`;
+          } catch {
+            //
+          }
+        };
+
+        document.body.addEventListener('mousemove', handleMouseMove);
+
+        return () => document.body.removeEventListener('mousemove', handleMouseMove);
+      },
+      [],
+    );
+
     const handleChange = React.useCallback(
       (objChange) => {
         setUser(
@@ -75,7 +110,7 @@ const LoginPage: React.FC<LoginPageProps> = React.memo(
     return (
       <LoginPageContainer>
         <LoginPageFormWrap>
-          <LoginPageForm id="form-login" onSubmit={onSigninClick}>
+          <LoginPageForm id="form-login" ref={node} onSubmit={onSigninClick}>
             <LoginPageFormHeader>ЕТС</LoginPageFormHeader>
             <LoginPageFormContent>
               <LoginPageFormContentLabel>

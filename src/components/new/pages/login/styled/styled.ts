@@ -29,6 +29,7 @@ export const LoginPageFormContentInput = styled.input`
   background: #fff;
   border: 0;
   box-shadow: none!important;
+  transition: transform 0.1s;
 `;
 
 export const LoginPageForm = styled.form`

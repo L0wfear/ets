@@ -48,9 +48,11 @@ const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType
 
       const loadData = React.useCallback(
         async (payloadAction?: ConfigType['payloadAction']) => {
-          dispatch(
-            config.loadData(payloadAction),
-          );
+          setTimeout(() => {
+            dispatch(
+              config.loadData(payloadAction),
+            );
+          }, props.timeDelay * 150);
         },
         [],
       );
@@ -69,7 +71,7 @@ const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType
               await loadData();
               setHasFirstLoad(true);
             },
-            props.timeDelay * 100 || 0,
+            props.timeDelay * 5000 || 0,
           );
 
           return () => clearTimeout(timer_id);

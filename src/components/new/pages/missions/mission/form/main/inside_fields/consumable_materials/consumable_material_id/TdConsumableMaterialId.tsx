@@ -69,6 +69,7 @@ const TdConsumableMaterialId: React.FC<Props> = React.memo(
                   get(option, 'rowData'),
                 ],
                 consumableMateriaForMissionIndex,
+                props.formDataKey,
               )[0];
             }
 

@@ -12,7 +12,10 @@ import { ConsumableMaterialCountMission } from 'redux-main/reducers/modules/some
 import { getSomeUniqState } from 'redux-main/reducers/selectors';
 import { DutyMission } from 'redux-main/reducers/modules/missions/duty_mission/@types';
 
-export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>) => {
+export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMaterialCountMission[], consumable_materials_new_index: Dictionary<ConsumableMaterialCountMission>, formDataKey, ) => {
+
+  const is_mission_progress_countable = useForm.useFormDataFormStatePickValue<Mission, Mission['is_mission_progress_countable']>(formDataKey, 'is_mission_progress_countable');
+
   return consumable_materials_old.reduce<ConsumableMaterialCountMission[]>(
     (newArr, rowData) => {
       const rowDataInIndex = consumable_materials_new_index[rowData.consumable_material_id];
@@ -30,7 +33,7 @@ export const mergeConsumableMaterials = (consumable_materials_old: ConsumableMat
           if (isNullOrUndefined(fact_value)) {
             if (isNumber(rowDataInIndex.mission_progress_fact_value)) {
               fact_value = rowDataInIndex.mission_progress_fact_value;
-            } else {
+            } else if (!is_mission_progress_countable) {
               fact_value = plan_value;
             }
           }
@@ -346,7 +349,7 @@ export const useMissionFormDataHandeToUpdateConsumableMaterials = <F extends Pic
         );
 
         if (triggerOnUpdateConsumableMaterials) {
-          newPartialFormState.consumable_materials = mergeConsumableMaterials(newPartialFormState.consumable_materials, dataIndex);
+          newPartialFormState.consumable_materials = mergeConsumableMaterials(newPartialFormState.consumable_materials, dataIndex, formDataKey);
         }
       }
 

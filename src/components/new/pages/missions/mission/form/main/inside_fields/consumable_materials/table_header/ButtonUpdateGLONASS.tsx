@@ -86,7 +86,7 @@ const ButtonUpdateGLONASS: React.FC<Props> = React.memo(
         );
 
         handleChange({
-          consumable_materials: mergeConsumableMaterials(consumable_materials, dataIndex),
+          consumable_materials: mergeConsumableMaterials(consumable_materials, dataIndex, props.formDataKey, ),
         });
       },
       [consumable_materials, passes_count, consumableMateriaForMission, norm_id, municipal_facility_id, id, order_operation_id, date_start, route_id],

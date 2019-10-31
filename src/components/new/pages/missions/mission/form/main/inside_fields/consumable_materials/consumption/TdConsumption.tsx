@@ -86,6 +86,7 @@ const TdConsumption: React.FC<Props> = React.memo(
           changed_consumable_materials = mergeConsumableMaterials(
             [changed_consumable_materials],
             consumableMateriaForMissionIndex,
+            props.formDataKey,
           )[0];
         }
 

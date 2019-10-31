@@ -11,7 +11,7 @@ export const EtsDashboardCardContainerWrap = styled.div<{ block?: boolean; theme
   )};
   padding: 10px;
   position: relative;
-  min-width: 320px;
+  min-width: 230px;
 
   @media screen and (max-width: 990px) {
     min-width: 100%;

@@ -49,11 +49,6 @@ export const getInspectionAutobaseDataRegistryConfig = ({ carpoolId }: any): Typ
           title: 'Дата окончания проверки',
         },
         {
-          valueKey: 'status_text',
-          type: 'multiselect',
-          title: 'Статус проверки',
-        },
-        {
           valueKey: 'open_employee_fio',
           title: 'Открыта',
           type: 'multiselect',

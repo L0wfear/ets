@@ -3,7 +3,7 @@ import { InspectContainer } from 'redux-main/reducers/modules/inspect/container/
 
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import ExtField from 'components/@next/@ui/renderFields/Field';
-import { diffDates, createValidDateDots } from 'components/@next/@utils/dates/dates';
+import { diffDates, createValidDate } from 'components/@next/@utils/dates/dates';
 import { get } from 'lodash';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { getRequiredFieldNoTrim } from 'components/@next/@utils/getErrorString/getErrorString';
@@ -57,8 +57,8 @@ const InspectContainerFormAddAction: React.FC<InspectContainerFormAddActionProps
       if (name && date_start && date_end) {
         props.addAction({
           name,
-          date_start: createValidDateDots(date_start),
-          date_end: createValidDateDots(date_end),
+          date_start: createValidDate(date_start),
+          date_end: createValidDate(date_end),
         });
       }
     },

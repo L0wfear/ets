@@ -48,24 +48,27 @@ const withDefaultCard = <OwnProps extends PropsToDefaultCard>(config: ConfigType
 
       const loadData = React.useCallback(
         async (payloadAction?: ConfigType['payloadAction']) => {
-          setTimeout(() => {
-            dispatch(
-              config.loadData(payloadAction),
-            );
-          }, props.timeDelay * 150);
+          dispatch(
+            config.loadData(payloadAction),
+          );
         },
         [],
       );
 
       const refreshWidget = React.useCallback(
-        async (payloadAction?: ConfigType['payloadAction']) => {
-          loadData(payloadAction);
+        async () => {
+          loadData(payloadActionForce);
         },
-        [loadData, loadData],
+        [loadData, ],
       );
 
       React.useEffect(
         () => {
+          setTimeout(() => {
+            dispatch(
+              config.loadData(),
+            );
+          }, props.timeDelay * 150  || 0);
           const timer_id = setTimeout(
             async () => {
               await loadData();

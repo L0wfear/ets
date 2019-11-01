@@ -114,7 +114,7 @@ class FaxogrammsInfo extends React.Component<PropsFaxogrammsInfo, StateFaxogramm
             id="save-faxogramm"
             toggleElement={<EtsBootstrap.Glyphicon glyph="download-alt" />}
           >
-            <EtsBootstrap.DropdownMenu pullRight>
+            <EtsBootstrap.DropdownMenu dropupRight>
               <EtsBootstrap.MenuItem eventKey={TypeDownload.old} onSelect={this.seclectDownload}>Скан-копия факсограммы</EtsBootstrap.MenuItem>
               <EtsBootstrap.MenuItem eventKey={TypeDownload.new} onSelect={this.seclectDownload}>Расшифровка централизованного задания</EtsBootstrap.MenuItem>
             </EtsBootstrap.DropdownMenu>

@@ -12,6 +12,8 @@ import { isString } from 'util';
 
 let headers = {};
 
+const hideNotificationForServicesList = ['dashboard'];
+
 try {
   document.execCommand('ClearAuthenticationCache', 'false');
 } catch (e) {
@@ -46,6 +48,10 @@ function checkResponse(url, response, body, method) {
     url.indexOf('?') > -1 ? url.indexOf('?') : url.length,
   );
   const serviceName = usedUrl.split('/')[usedUrl.split('/').length - 2];
+
+  if (hideNotificationForServicesList.includes(serviceName)) {
+    return;
+  }
 
   let warnings = get(body, 'warnings') || [];
   if (isString(warnings)) {

@@ -68,6 +68,7 @@ export const ButtonStyled = styled.button<EtsButtonPropsWrap>`
 
     ${GlyphiconStyled} {
       margin: 0 5px;
+      cursor: ${({ disabled }) => !disabled ? 'pointer' : 'not-allowed'};
     }
 
     background-color: ${({ theme, disabled, active, themeName }) => (

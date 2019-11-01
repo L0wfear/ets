@@ -65,7 +65,7 @@ class FieldNormIdDutyMission extends React.PureComponent<
         municipal_facility_id,
         route_type,
         needs_brigade: true,
-        kind_task_ids: DUTY_MISSION_IS_ORDER_SOURCE ? 1 : 3,
+        kind_task_ids: DUTY_MISSION_IS_ORDER_SOURCE ? [1, 2] : 3,
       };
 
       try {
@@ -74,11 +74,16 @@ class FieldNormIdDutyMission extends React.PureComponent<
           path,
         });
 
-        this.props.onChange({
-          norm_id: get(oneNorm, 'norm_id', null),
-          norm_text: get(oneNorm, 'name', null),
-          is_cleaning_norm: get(oneNorm, 'is_cleaning_norm', null),
-        });
+        const normObj = this.props.DUTY_MISSION_IS_ORDER_SOURCE
+          ? {
+            is_cleaning_norm: get(oneNorm, 'is_cleaning_norm', null),
+          } : {
+            norm_id: get(oneNorm, 'norm_id', null),
+            norm_text: get(oneNorm, 'name', null),
+            is_cleaning_norm: get(oneNorm, 'is_cleaning_norm', null),
+          };
+
+        this.props.onChange(normObj);
       } catch (error) {
         this.props.onChange({
           norm_id: null,

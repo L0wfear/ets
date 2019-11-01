@@ -148,8 +148,8 @@ const TdConsumption: React.FC<Props> = React.memo(
           value_string={value}
         />
         {
-          !disabled && can_edit && (
-            <EtsBootstrap.Button onClick={handleChangeLock} title={!is_consumption_locked ? "открыт ручной ввод" : "закрыт ручной ввод"}>
+          !disabled && (
+            <EtsBootstrap.Button disabled={!can_edit} onClick={handleChangeLock} title={!is_consumption_locked ? "открыт ручной ввод" : "закрыт ручной ввод"}>
               <EtsBootstrap.Glyphicon glyph={!is_consumption_locked ? "user" : "lock"} />
             </EtsBootstrap.Button>
           )

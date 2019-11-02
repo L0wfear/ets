@@ -1,7 +1,8 @@
 import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { get } from 'lodash';
-import * as R from 'ramda';
+import { compose } from 'recompose';
+import { connect } from 'react-redux';
 
 import {
   IPropsReportHeaderCommon,
@@ -14,8 +15,7 @@ import { getCurrentSeason } from 'components/@next/@utils/dates/dates';
 import { GEOZONE_OBJECTS, GEOZONE_ELEMENTS } from 'constants/dictionary';
 
 import ReportHeaderWrapper from 'components/old/reports/common/ReportHeaderWrapper';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
+
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
@@ -38,7 +38,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       date_end = getToday859am(),
       geozone_type = 'odh',
       element_type = 'roadway',
-      car_func_types_groups = 'pm,pu',
+      car_func_types_groups = ['pm', 'pu'],
     } = this.props;
 
     return {
@@ -80,22 +80,6 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       car_func_types_groups,
     } = this.getState();
 
-    const getRequestBody = R.cond([
-      [R.complement(R.propEq('carTypeGroups', '')),
-      ({ state, carTypeGroups }) => {
-        const carTypeStrings = carTypeGroups
-          .split(',')
-          .map((item) => `"${item}"`)
-          .join(',');
-
-        return {
-          ...state,
-          car_func_types_groups: `[${carTypeStrings}]`,
-        };
-      }],
-      [R.T, R.identity(R.prop('state'))],
-    ]);
-
     const initialState = {
       date_start: createValidDateTime(date_start),
       date_end: createValidDateTime(date_end),
@@ -103,10 +87,13 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
       element_type,
     };
 
-    const requestBody = getRequestBody({
-      state: initialState,
-      carTypeGroups: car_func_types_groups,
-    });
+    const requestBody: Record<string, any> = {
+      ...initialState,
+    };
+
+    requestBody.car_func_types_groups = `[${
+      car_func_types_groups.map((item) => `"${item}"`).join(',')
+    }]`;
 
     this.props.onClick(requestBody);
   }
@@ -191,7 +178,7 @@ class ReportHeader extends React.Component<IPropsReportHeader, any> {
               bsSize="small"
               onClick={this.handleSubmit}
               disabled={readOnly}
-            >Сформировать отчет</EtsBootstrap.Button>
+            >Сформировать отчетsss</EtsBootstrap.Button>
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
       </>

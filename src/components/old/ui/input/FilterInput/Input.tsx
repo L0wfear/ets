@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as R from 'ramda';
+import { get } from 'lodash';
 
 import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -22,21 +22,10 @@ interface IStateExtendedInput {
 }
 
 class ExtendedInput extends React.Component<IPropsExtendedInput, IStateExtendedInput> {
-  handleChange(index, e) {
+  handleChange(index, event) {
     const newValue = [...this.props.value];
 
-    const getValue = R.cond([
-      [
-        R.either(R.propEq('inputType', 'date'), R.propEq('inputType', 'datetime')),
-        R.pipe(R.prop('event'), R.identity),
-      ],
-      [R.T, R.pipe(R.prop('event'), R.path(['target', 'value']))],
-    ]);
-
-    const value = getValue({
-      inputType: this.props.type,
-      event: e,
-    });
+    const value = get(event, 'target.value', event);
 
     newValue[index] = value;
     this.props.onChange(newValue);

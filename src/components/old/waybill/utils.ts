@@ -1,4 +1,3 @@
-import * as R from 'ramda';
 import { get } from 'lodash';
 import { isArray, isNumber } from 'util';
 
@@ -42,8 +41,8 @@ export const getFuelRatesBySeason = (
 /** без типизации */
 
 // declarative functional approach
-const vehicleFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
-  R.filter<Car>(
+const vehicleFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Car[]) =>
+  array.filter(
     (c) =>
       c.asuods_id === car_id ||
       ((!structure_id ||
@@ -52,44 +51,34 @@ const vehicleFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['
         c.available_to_bind),
   );
 
-const carFilter: any = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
-  R.pipe(
-    vehicleFilter(structure_id, car_id),
-    R.filter<Car>(
-      (c) => (
-        !c.is_trailer
-        || c.type_id === VALID_VEHICLES_TYPES.COMPRESSOR
-        || c.type_id === VALID_VEHICLES_TYPES.GENERATOR
-      ),
+const carFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Car[]) =>
+  vehicleFilter(structure_id, car_id)(array).filter(
+    (c) => (
+      !c.is_trailer
+      || c.type_id === VALID_VEHICLES_TYPES.COMPRESSOR
+      || c.type_id === VALID_VEHICLES_TYPES.GENERATOR
     ),
   );
-const trailerFilter: any = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) =>
-  R.pipe(
-    vehicleFilter(structure_id, trailer_id),
-    R.filter<Car>((c) => c.is_trailer),
-  );
 
-export const vehicleMapper = R.map<any, any>((c) => {
-  return ({
-    value: c.asuods_id,
-    model_id: c.model_id,
-    gov_number: c.gov_number,
-    label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
-    rowData: {...c},
+const trailerFilter = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Car[]) =>
+    vehicleFilter(structure_id, trailer_id)(array).filter((c) => c.is_trailer);
+
+export const vehicleMapper = (array: Car[]) => array.map(
+  (c) => {
+    return ({
+      value: c.asuods_id,
+      model_id: c.model_id,
+      gov_number: c.gov_number,
+      label: `${c.gov_number} [${c.model_name || ''}${c.model_name ? '/' : ''}${c.special_model_name || ''}${c.type_name ? '/' : ''}${c.type_name || ''}]`,
+      rowData: {...c},
+    });
   });
-});
 
-export const getCars = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) =>
-  R.pipe(
-    carFilter(structure_id, car_id),
-    vehicleMapper,
-  );
+export const getCars = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id']) => (array: Car[]) =>
+  vehicleMapper(carFilter(structure_id, car_id)(array));
 
-export const getTrailers = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (
-  R.pipe(
-    trailerFilter(structure_id, trailer_id),
-    vehicleMapper,
-  )
+export const getTrailers = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Car[]) => (
+  vehicleMapper(trailerFilter(structure_id, trailer_id)(array))
 );
 
 const isNotEmpty = (value) => isNotEqualAnd([undefined, null, ''], value);
@@ -109,13 +98,19 @@ export const driverHasSpecialLicenseWithActiveDate = ({
     diffDates(new Date(), special_license_date_end) < 0);
 
 const hasOdometr = (gov_number) => !hasMotohours(gov_number);
-export const getDrivers = (state, employeeIndex, driversList) => {
-  const licenceSwitcher = R.cond([
-    [hasOdometr, R.always(driverHasLicenseWithActiveDate)],
-    [hasMotohours, R.always(driverHasSpecialLicenseWithActiveDate)],
-    [R.T, R.always(R.identity)],
-  ]);
 
+const licenceSwitcher = (gov_number) => {
+  if (hasOdometr(gov_number)) {
+    return driverHasLicenseWithActiveDate;
+  }
+  if (hasMotohours(gov_number)) {
+    return driverHasSpecialLicenseWithActiveDate;
+  }
+
+  return (d) => d;
+};
+
+export const getDrivers = (state, employeeIndex, driversList) => {
   const driverFilter = licenceSwitcher(state.gov_number);
   const driverAfterCheckOnCarEmpl = driversList.filter(
     ({ id, employee_id }) => {

@@ -2,8 +2,6 @@ import { PROJECTION, ArcGisLayer } from 'components/new/ui/map/config/MskAdapter
 import { MapUtils } from 'components/new/ui/map/MapEts.h';
 import View from 'ol/View';
 import Map from 'ol/Map';
-// Попробовать с большим количеством точек
-// import Map from 'ol/WebGLMap';
 
 /**
  * получние mapView
@@ -31,7 +29,6 @@ export const getMap: MapUtils.getMapFunc = (center, zoom) => (
     view: getMapView(center, zoom),
     controls: [],
     layers: [ArcGisLayer],
-    loadTilesWhileAnimating: true,
   })
 );
 

@@ -1705,7 +1705,7 @@ class WaybillForm extends UNSAFE_Form {
           <EtsBootstrap.Row>
             <EtsBootstrap.Row>
               <EtsBootstrap.Col md={12}>
-                <EtsBootstrap.Col md={4}>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="car-id"
                     type="select"
@@ -1734,7 +1734,7 @@ class WaybillForm extends UNSAFE_Form {
                     }${state.car_type_name || ''}]`}
                   />
                 </EtsBootstrap.Col>
-                <EtsBootstrap.Col md={4}>
+                <EtsBootstrap.Col md={6}>
                   <ExtField
                     id="trailer-id"
                     type="select"

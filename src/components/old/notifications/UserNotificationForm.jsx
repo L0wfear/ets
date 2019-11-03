@@ -72,10 +72,10 @@ const insurance_policy = withRequirePermission({
 const tech_inspection = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
-})(({ tech_inspection_reg_number, car_id, handleClick, isPermitted }) => {
+})(({ car_gov_number, car_id, handleClick, isPermitted }) => {
   return (
     <MainVehicleDesc
-      linkText={tech_inspection_reg_number}
+      linkText={car_gov_number}
       textInfo="о государственном техосмотре"
       handleClick={() =>
         handleClick(
@@ -165,7 +165,7 @@ class UserNotificationForm extends UNSAFE_Form {
     }
     if (TYPE_CODE.carT.includes(type)) {
       return {
-        tech_inspection_reg_number: state.data.tech_inspection_reg_number,
+        car_gov_number: state.data.car_gov_number,
         car_id: state.data.car_id,
       };
     }

@@ -56,8 +56,8 @@ class EtsPaginatorCheckSearch extends React.PureComponent<EtsPaginatorCheckSearc
     const newCurrentPageStore = this.props.currentPage;
     const prevCurrentPageStore = prevProp.currentPage;
 
-    if (!isNullOrUndefined(newCurrentPageSearch) && newCurrentPageSearch !== prevCurrentSearchPage) {   // применение текущей страницы из queryString
-      const currentPageSearchNumber = Math.ceil(getNumberValueFromSerch(newCurrentPageSearch));
+    if (newCurrentPageSearch !== prevCurrentSearchPage) {                                             // применение текущей страницы из queryString
+      const currentPageSearchNumber = Math.ceil(getNumberValueFromSerch(newCurrentPageSearch || 0));
       if (currentPageSearchNumber !== this.props.currentPage) {
         this.props.registryChangeDataPaginatorCurrentPage(
           this.props.registryKey,

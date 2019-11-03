@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import * as queryString from 'query-string';
+import { get } from 'lodash';
+import { bindActionCreators } from 'redux';
+
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
 import ModalBody from 'components/old/ui/Modal';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
-import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
 import carActualListConfig from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data';
@@ -23,6 +24,9 @@ import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_ac
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { makeDateFormated } from 'components/@next/@utils/dates/dates';
+import { getSessionCompanyIndex } from 'redux-main/reducers/modules/session/selectors';
+import { actionsGetCarByAsuodsId } from 'redux-main/reducers/modules/autobase/car/actions';
+import { getErrorNotification } from 'utils/notifications';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -36,13 +40,50 @@ const LinkA = ({ linkText, handleClick }) => (
   </a>
 );
 
-const MainVehicleDesc = ({ linkText, textInfo, handleClick }) => (
-  <div>
-    <b>Совет:</b> пройдите по ссылке ниже, чтобы посмотреть карточку ТС и
-    добавить информацию <span>{textInfo}</span> прямо сейчас
-    <LinkA linkText={linkText} handleClick={handleClick} />
-  </div>
-);
+const MainVehicleDesc = ({
+  linkText,
+  textInfo,
+  handleClick,
+  car_id,
+  companyIndex,
+  actionsGetCarByAsuodsId,
+}) => {
+  const handleLinkToCarFormWithPermittedByCompany = React.useCallback(async () => {
+    let isPermitted = false;
+
+    if (car_id) {
+      try {
+        const carData = await actionsGetCarByAsuodsId(car_id, {});
+        const company_id = get(carData, 'company_id');
+        if (company_id && company_id in companyIndex) {
+          isPermitted = true;
+        } else {
+          global.notify.NOTIFICATION_SYSTEM(
+            getErrorNotification(
+              'Операция запрещена. ТС перенесено в другую организацию',
+            ),
+          );
+        }
+      } catch {
+        //
+      }
+    }
+
+    if (isPermitted) {
+      handleClick();
+    }
+  }, [car_id, actionsGetCarByAsuodsId, companyIndex, handleClick]);
+  return (
+    <div>
+      <b>Совет:</b> пройдите по ссылке ниже, чтобы посмотреть карточку ТС и
+      добавить информацию <span>{textInfo}</span> прямо сейчас
+      <LinkA
+        linkText={linkText}
+        handleClick={handleLinkToCarFormWithPermittedByCompany}
+      />
+    </div>
+  );
+};
 
 const MainEmployeeDesc = ({ linkText, handleClick }) => (
   <div>
@@ -55,72 +96,120 @@ const MainEmployeeDesc = ({ linkText, handleClick }) => (
 const insurance_policy = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
-})(({ gov_number, car_id, handleClick, isPermitted }) => (
-  <MainVehicleDesc
-    linkText={gov_number}
-    textInfo="по страхованию"
-    handleClick={() =>
-      handleClick(
-        `${carActualListConfig.path}/${car_id}/${insurancePolicy.tabKey}`,
-        {},
-        isPermitted,
-      )
-    }
-  />
-));
-
-const tech_inspection = withRequirePermission({
-  withIsPermittedProps: true,
-  permissions: carActualPermissions.list,
-})(({ car_gov_number, car_id, handleClick, isPermitted }) => {
-  return (
+})(
+  ({
+    gov_number,
+    car_id,
+    handleClick,
+    companyIndex,
+    actionsGetCarByAsuodsId,
+    isPermitted,
+  }) => (
     <MainVehicleDesc
-      linkText={car_gov_number}
-      textInfo="о государственном техосмотре"
+      linkText={gov_number}
+      car_id={car_id}
+      companyIndex={companyIndex}
+      actionsGetCarByAsuodsId={actionsGetCarByAsuodsId}
+      textInfo="по страхованию"
       handleClick={() =>
         handleClick(
-          `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+          `${carActualListConfig.path}/${car_id}/${insurancePolicy.tabKey}`,
           {},
           isPermitted,
         )
       }
     />
-  );
-});
+  ),
+);
+
+const tech_inspection = withRequirePermission({
+  withIsPermittedProps: true,
+  permissions: carActualPermissions.list,
+})(
+  ({
+    car_gov_number,
+    car_id,
+    handleClick,
+    companyIndex,
+    actionsGetCarByAsuodsId,
+    isPermitted,
+  }) => {
+    return (
+      <MainVehicleDesc
+        linkText={car_gov_number}
+        car_id={car_id}
+        companyIndex={companyIndex}
+        actionsGetCarByAsuodsId={actionsGetCarByAsuodsId}
+        textInfo="о государственном техосмотре"
+        handleClick={() =>
+          handleClick(
+            `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+            {},
+            isPermitted,
+          )
+        }
+      />
+    );
+  },
+);
 
 const tech_maintenance = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
-})(({ gov_number, car_id, handleClick, isPermitted }) => (
-  <MainVehicleDesc
-    linkText={gov_number}
-    textInfo="о техническом обслуживании"
-    handleClick={() =>
-      handleClick(
-        `${carActualListConfig.path}/${car_id}/${techMaintenance.tabKey}`,
-        {},
-        isPermitted,
-      )
-    }
-  />
-));
+})(
+  ({
+    gov_number,
+    car_id,
+    handleClick,
+    companyIndex,
+    actionsGetCarByAsuodsId,
+    isPermitted,
+  }) => (
+    <MainVehicleDesc
+      linkText={gov_number}
+      car_id={car_id}
+      companyIndex={companyIndex}
+      actionsGetCarByAsuodsId={actionsGetCarByAsuodsId}
+      textInfo="о техническом обслуживании"
+      handleClick={() =>
+        handleClick(
+          `${carActualListConfig.path}/${car_id}/${techMaintenance.tabKey}`,
+          {},
+          isPermitted,
+        )
+      }
+    />
+  ),
+);
 
 const repair = withRequirePermission({
   withIsPermittedProps: true,
   permissions: carActualPermissions.list,
-})(({ gov_number, car_id, handleClick, isPermitted }) => (
-  <MainVehicleDesc
-    linkText={gov_number}
-    textInfo="о ремонте"
-    handleClick={() =>
-      handleClick(
-        `${carActualListConfig.path}/${car_id}/${repairTabData.tabKey}`,
-        {},
-        isPermitted,
-      )
-    }
-  />
-));
+})(
+  ({
+    gov_number,
+    car_id,
+    handleClick,
+    companyIndex,
+    actionsGetCarByAsuodsId,
+    isPermitted,
+  }) => (
+    <MainVehicleDesc
+      linkText={gov_number}
+      car_id={car_id}
+      companyIndex={companyIndex}
+      actionsGetCarByAsuodsId={actionsGetCarByAsuodsId}
+      textInfo="о ремонте"
+      handleClick={() =>
+        handleClick(
+          `${carActualListConfig.path}/${car_id}/${repairTabData.tabKey}`,
+          {},
+          isPermitted,
+        )
+      }
+    />
+  ),
+);
 
 const medical_certificate = withRequirePermission({
   withIsPermittedProps: true,
@@ -221,6 +310,8 @@ class UserNotificationForm extends UNSAFE_Form {
               <NotificationDesc
                 {...this.getDataForUserNotification(state.type_code, state)}
                 {...otherProps}
+                companyIndex={this.props.companyIndex}
+                actionsGetCarByAsuodsId={this.props.actionsGetCarByAsuodsId}
               />
             </EtsBootstrap.Col>
           </EtsBootstrap.Row>
@@ -231,4 +322,14 @@ class UserNotificationForm extends UNSAFE_Form {
   }
 }
 
-export default connect(getUserNotificationsState)(UserNotificationForm);
+export default connect(
+  (state) => ({
+    companyIndex: getSessionCompanyIndex(state),
+  }),
+  (dispatch) => ({
+    actionsGetCarByAsuodsId: bindActionCreators(
+      actionsGetCarByAsuodsId,
+      dispatch,
+    ),
+  }),
+)(UserNotificationForm);

@@ -1,4 +1,6 @@
 import { createSelector, Selector } from 'reselect';
+import { find, keyBy } from 'lodash';
+
 import { ReduxState } from 'redux-main/@types/state';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import {
@@ -6,7 +8,6 @@ import {
 } from './@types/session';
 import { DefaultSelectOption, DefaultSelectListMapper, defaultSelectListMapper } from 'components/old/ui/input/ReactSelect/utils';
 import { InitialStateSession, OneSessionStructure } from './@types/session';
-import { find } from 'lodash';
 
 export type fuelTypeStructure = {
   name: string;
@@ -19,6 +20,11 @@ export type GetSessionCompanyOptionsAns = (
 
 export const getSessionCompany: Selector<ReduxState, OneSessionCompany[]> = (state) => (
   getSessionState(state).userData.companies
+);
+
+export const getSessionCompanyIndex = createSelector(
+  getSessionCompany,
+  (companies) => keyBy(companies, 'asuods_id'),
 );
 
 export const getSessionCompanyOptions = createSelector<ReduxState, OneSessionCompany[], GetSessionCompanyOptionsAns>(

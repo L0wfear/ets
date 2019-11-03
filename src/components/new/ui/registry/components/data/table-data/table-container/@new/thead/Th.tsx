@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { get, isEmpty, } from 'lodash';
 
 import {
   registryTriggerOnChangeSelectedField,
@@ -9,7 +10,6 @@ import { OneRegistryData } from 'components/new/ui/registry/module/@types/regist
 import ThDefault from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThDefault';
 import ThCheckbox from 'components/new/ui/registry/components/data/table-data/table-container/@new/thead/th/ThCheckbox';
 import { getListData } from 'components/new/ui/registry/module/selectors-registry';
-import { get, isEmpty, } from 'lodash';
 
 type Props = {
   metaField: ValuesOf<ValuesOf<OneRegistryData['list']['meta']['fieldsInDeepArr']>>;

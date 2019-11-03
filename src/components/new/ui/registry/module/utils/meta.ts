@@ -1,4 +1,4 @@
-import { isObject } from 'util';
+import { isObject, isBoolean, isNumber } from 'util';
 import { get } from 'lodash';
 
 const widthByKey: Record<string, { width: number, sortable?: boolean; }> = {
@@ -137,12 +137,28 @@ export const makeFieldsInDeepArr = (treeFields, deep) => {
   return makeOneDeepLine(arr, treeFields, 0, deep);
 };
 
+const isSortableField = (fieldMeta) => {
+  return (
+    isBoolean(fieldMeta.sortable)
+      ? fieldMeta.sortable
+      : get(widthByKey, `${fieldMeta.key}.sortable`, !(fieldMeta.key in widthByKey))
+  );
+};
+
+const getFieldWidth = (fieldMeta) => {
+  return (
+    isNumber(fieldMeta.width)
+      ? fieldMeta.width
+      : get(widthByKey, `${fieldMeta.key}.width`, 150)
+  );
+};
+
 export const makerDataMetaField = (fieldsOwn) => {
   const fields = fieldsOwn.filter(({ hidden }) => !hidden).map(
     (fieldMeta) => ({
       ...fieldMeta,
-      width: fieldMeta.width || get(widthByKey, `${fieldMeta.key}.width`, 150),
-      sortable: fieldMeta.sortable || get(widthByKey, `${fieldMeta.key}.sortable`, !(fieldMeta.key in widthByKey)),
+      width: getFieldWidth(fieldMeta),
+      sortable: isSortableField(fieldMeta),
     }),
   );
   const { tree: treeFields, deep } = getColsWithRowAndColSpan(fields);

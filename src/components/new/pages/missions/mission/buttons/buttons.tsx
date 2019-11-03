@@ -1,10 +1,10 @@
 import * as React from 'react';
 
-import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
+import { withRequirePermission, WithRequirePermissionProps } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
 
-import MissionFormLazy from 'components/new/pages/missions/mission/form/main';
+import MissionFormLazy, { OwnMissionFormProps } from 'components/new/pages/missions/mission/form/main';
 
-export const PermittedMissionFormLazy = withRequirePermission<any>({
+export const PermittedMissionFormLazy = withRequirePermission<OwnMissionFormProps & WithRequirePermissionProps>({
   permissions: 'mission.read',
 })(MissionFormLazy as any);
 

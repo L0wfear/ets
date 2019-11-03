@@ -7,11 +7,11 @@ import { Mission } from 'redux-main/reducers/modules/missions/mission/@types';
 import withSearch, { WithSearchProps } from 'components/new/utils/hooks/hoc/withSearch';
 import { MissionFormReactLazy } from 'components/new/pages/missions/mission/form/main/MissionListFormWrap';
 
-type OwnProps = WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<Mission>> & {
+export type OwnMissionFormProps = WithFormRegistrySearchAddPropsWithoutWithSerach<Partial<Mission>> & {
   showForm: boolean;
   notChangeCar?: boolean;
 };
-type Props = OwnProps & WithSearchProps;
+type Props = OwnMissionFormProps & WithSearchProps;
 
 const MissionFormWithoutRegistry: React.FC<Props> = React.memo(
   ({ showForm, ...props }) => {
@@ -34,4 +34,4 @@ const MissionFormWithoutRegistry: React.FC<Props> = React.memo(
   },
 );
 
-export default withSearch<OwnProps>(MissionFormWithoutRegistry);
+export default withSearch<OwnMissionFormProps>(MissionFormWithoutRegistry);

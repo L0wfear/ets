@@ -15,7 +15,7 @@ type OwnProps = PropsToDefaultCard;
 type Props = OwnProps & WithRequirePermissionAddProps;
 
 const FutureMissions: React.FC<Props> = React.memo(
-  () => {
+  (props) => {
     const [mission, setMission] = React.useState(null);
     const dispatch = etsUseDispatch();
 
@@ -56,8 +56,12 @@ const FutureMissions: React.FC<Props> = React.memo(
           mission && (
             <PermittedMissionFormLazy
               showForm
-              onFormHide={handleFormHide}
+              handleHide={handleFormHide}
               element={mission}
+              registryKey="mainpage"
+              page={props.page}
+              path="mission"
+              type={null}
             />
           )
         }

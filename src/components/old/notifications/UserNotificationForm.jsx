@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import * as queryString from 'query-string';
 import { withRequirePermission } from 'components/@next/@common/hoc/require_permission/withRequirePermission';
@@ -6,7 +7,6 @@ import { withRequirePermission } from 'components/@next/@common/hoc/require_perm
 import ModalBody from 'components/old/ui/Modal';
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 
-import { connect } from 'react-redux';
 import { getUserNotificationsState } from 'redux-main/reducers/selectors';
 import employeePermissions from 'components/new/pages/nsi/employee/_config-data/permissions';
 
@@ -16,6 +16,8 @@ import employeeListConfig from 'components/new/pages/nsi/employee/_config-data';
 import {
   insurancePolicy,
   techInspection,
+  techMaintenance,
+  repair as repairTabData,
 } from 'components/new/pages/nsi/autobase/pages/car_actual/form/body_container/formConfig';
 import carActualPermissions from 'components/new/pages/nsi/autobase/pages/car_actual/_config-data/permissions';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -95,7 +97,7 @@ const tech_maintenance = withRequirePermission({
     textInfo="о техническом обслуживании"
     handleClick={() =>
       handleClick(
-        `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+        `${carActualListConfig.path}/${car_id}/${techMaintenance.tabKey}`,
         {},
         isPermitted,
       )
@@ -112,7 +114,7 @@ const repair = withRequirePermission({
     textInfo="о ремонте"
     handleClick={() =>
       handleClick(
-        `${carActualListConfig.path}/${car_id}/${techInspection.tabKey}`,
+        `${carActualListConfig.path}/${car_id}/${repairTabData.tabKey}`,
         {},
         isPermitted,
       )

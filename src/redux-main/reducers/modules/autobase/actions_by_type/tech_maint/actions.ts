@@ -61,7 +61,7 @@ export const autobaseUpdateTechMaintenance = (techMaintOld: TechMaintenance, met
     meta,
   );
 };
-export const autobaseRemoveTechMaintenance = (id: TechMaintenance['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetTechMaint>> => async (dispatch) => {
+export const autobaseRemoveTechMaintenance = (id: TechMaintenance['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteTechMaint>> => async (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     autobaseDeleteTechMaint(id),

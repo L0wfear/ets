@@ -67,7 +67,7 @@ const validate = (state, errors) => {
 
   return schema.properties.reduce((formErrors, prop) => {
     const { key } = prop;
-    formErrors[key] = validateField(prop, formState[key], formState, schema);
+    formErrors[key] = validateField(prop, formState[key], formState, schema, {});
     return formErrors;
   },
     { ...errors },

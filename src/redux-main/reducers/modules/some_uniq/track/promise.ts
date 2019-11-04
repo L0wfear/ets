@@ -28,7 +28,7 @@ export const promiseGetTrackInfo = async (payloadOwn: { gps_code: Car['gps_code'
     version,
   };
   try {
-    const response = await TrackInfoService.get(payload) as Promise<TrackInfo>;
+    const response = await TrackInfoService.get<TrackInfo>(payload);
     return response;
   } catch {
     global.NOTIFICATION_SYSTEM.notify(

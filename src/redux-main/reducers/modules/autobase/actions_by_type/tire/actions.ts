@@ -63,7 +63,7 @@ export const autobaseUpdateTire = (tireOld: Tire, meta: LoadingMeta): EtsAction<
     meta,
   );
 };
-export const autobaseRemoveTire = (id: Tire['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetTire>> => async (dispatch) => {
+export const autobaseRemoveTire = (id: Tire['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteTire>> => async (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     autobaseDeleteTire(id),

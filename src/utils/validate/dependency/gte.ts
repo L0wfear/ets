@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment';
 import { isEmpty } from 'utils/functions';
 
 const fixedValidators = [
@@ -22,7 +22,7 @@ const fixedValidators = [
 function validate(config, value, dependentFieldConfig, dependentFieldValue, formData, schema) {
   // console.warn(`VALIDATING ${config.key} with data = ${data}`);
   const error = fixedValidators
-    .map(({ validator }) => validator(config, value, dependentFieldConfig, dependentFieldValue, formData, schema))
+    .map(({ validator }) => validator(config, value, dependentFieldConfig, dependentFieldValue))
     .filter((d) => !!d)[0];
 
   return error;

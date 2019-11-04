@@ -1,7 +1,9 @@
 import { Store } from 'flummox';
+import { get } from 'lodash';
+
 import REPAIR from 'constants/repair';
 
-export default class RepairStore extends Store {
+export default class RepairStore extends (Store as any) {
   constructor(flux) {
     super();
 
@@ -46,7 +48,7 @@ export default class RepairStore extends Store {
 
   handleGetList(res) {
     const name = this.getNameList(res.type, res);
-    const dataRes = this.getDataForStore(res.type, res.data);
+    const dataRes = this.getDataForStore(res.data);
     const setStateObject = {
       [name]: dataRes.rows,
       ...this.makeExtra(dataRes.extra, name),
@@ -55,7 +57,7 @@ export default class RepairStore extends Store {
     this.setState({ ...setStateObject });
   }
 
-  getNameList(type, { name = false }) {
+  getNameList(type, { name }) {
     let nameList = type;
 
     if (name) {
@@ -64,21 +66,27 @@ export default class RepairStore extends Store {
     return `${nameList}List`;
   }
 
-  getDataForStore = (type, data = []) => this.defaultData(data);
+  getDataForStore = (data) => this.defaultData(data);
 
-  defaultData = ({ result = [] }) => {
-    const { rows = [], extra = false } = result;
+  defaultData = ({ result }) => {
+    const rows = get(result, 'rows', []);
+    const extra = get(result, 'extra', false);
+
     return { rows, extra };
   };
 
   makeExtra(extra, name) {
-    if (!Object.values(extra)[0]) return undefined;
+    if (!Object.values(extra)[0]) {
+      return undefined;
+    }
 
     return { [`${name}Extra`]: extra };
   }
 
   makeOption({ makeOptions = false, selectListMapper, type }, rows) {
-    if (!makeOptions) return undefined;
+    if (!makeOptions) {
+      return undefined;
+    }
 
     const RepairOptions = { ...this.state.RepairOptions };
 

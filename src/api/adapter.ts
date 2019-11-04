@@ -15,7 +15,7 @@ let headers = {};
 const hideNotificationForServicesList = ['dashboard'];
 
 try {
-  document.execCommand('ClearAuthenticationCache', 'false');
+  document.execCommand('ClearAuthenticationCache', false);
 } catch (e) {
   //
 }
@@ -144,10 +144,10 @@ function checkResponse(url, response, body, method) {
     }
     if (errors.length) {
       const error = `ERROR /${method} ${usedUrl}`;
-      console.error(error);
+      console.error(error);  // tslint:disable-line:no-console
 
       errors.forEach((er) => {
-        console.error(er);
+        console.error(er);  // tslint:disable-line:no-console
         global.NOTIFICATION_SYSTEM.notify(
           getServerErrorNotification(`/${method} ${serviceName}`),
         );
@@ -165,13 +165,13 @@ function checkResponse(url, response, body, method) {
   }
 }
 
-function httpMethod(
+function httpMethod<F = any>(
   urlOwn,
   dataOwn = {},
   method,
   type,
   params = {},
-  otherToken,
+  otherToken = false,
 ) {
   const token = JSON.parse(
     window.localStorage.getItem(
@@ -183,7 +183,7 @@ function httpMethod(
   let url = urlOwn;
   const data = cloneDeep(dataOwn);
 
-  const options = {
+  const options: RequestInit = {
     method,
     headers: {
       Accept: 'application/json',
@@ -219,7 +219,7 @@ function httpMethod(
       return Promise.reject({ error: r, error_text });
     }
     try {
-      const responseBody = await r.json();
+      const responseBody: F = await r.json();
       try {
         checkInternalErrors(responseBody);
         checkResponse(url, r, responseBody, method);
@@ -248,7 +248,7 @@ function httpMethod(
       } catch (error) {
         return Promise.reject(error);
       }
-      return Promise.resolve(responseBody, r);
+      return Promise.resolve(responseBody);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -257,28 +257,28 @@ function httpMethod(
   return promise;
 }
 
-export function getJSON(url, data = {}, otherToken) {
-  return httpMethod(url, data, 'GET', undefined, undefined, otherToken);
+export function getJSON<F = any>(url, data = {}, otherToken = false) {
+  return httpMethod<F>(url, data, 'GET', undefined, undefined, otherToken);
 }
 
-export function postJSON(
+export function postJSON<F = any>(
   url,
   data = {},
   type = 'form',
   params = {},
   otherToken,
 ) {
-  return httpMethod(url, data, 'POST', type, params, otherToken);
+  return httpMethod<F>(url, data, 'POST', type, params, otherToken);
 }
 
-export function putJSON(url, data, type = 'form') {
-  return httpMethod(url, data, 'PUT', type);
+export function putJSON<F = any>(url, data, type = 'form') {
+  return httpMethod<F>(url, data, 'PUT', type);
 }
 
-export function patchJSON(url, data, type = 'form') {
-  return httpMethod(url, data, 'PATCH', type);
+export function patchJSON<F = any>(url, data, type = 'form') {
+  return httpMethod<F>(url, data, 'PATCH', type);
 }
 
-export function deleteJSON(url, data, type = 'form') {
-  return httpMethod(url, data, 'DELETE', type);
+export function deleteJSON<F = any>(url, data, type = 'form') {
+  return httpMethod<F>(url, data, 'DELETE', type);
 }

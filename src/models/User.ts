@@ -5,6 +5,30 @@ import Model from './Model';
  * @extends Model
  */
 export default class User extends Model {
+  company_id: number;
+  company_name: string;
+  companies: string;
+  default_path: string;
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  login: string;
+  role: string;
+  user_id: number;
+  structure_id: number;
+  structure_name: string;
+  structures: string;
+  map_config: any;
+  fio: string;
+  permissions: string[];
+  permissionsSet: Set<string>;
+  okrug_id: number;
+  okrug_name: string;
+  stableRedirect: string;
+  isGlavControl: boolean;
+  isOkrug: boolean;
+  isKgh: boolean;
+
   static get schema() {
     return {
       company_id: 'integer',
@@ -33,7 +57,7 @@ export default class User extends Model {
     };
   }
 
-  constructor(user = {}) {
+  constructor(user: any = {}) {
     super();
 
     this.company_id = user.company_id;

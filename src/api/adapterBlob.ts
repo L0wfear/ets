@@ -12,7 +12,7 @@ function httpMethodBlob(urlOwn, dataOwn, method) {
   let url = urlOwn;
   const token = JSON.parse(window.localStorage.getItem(global.SESSION_KEY));
 
-  const options = {
+  const options: RequestInit = {
     method,
     headers: {
       'Authorization': `Token ${token}`,
@@ -56,7 +56,7 @@ export const getBlob = async (url, data) => {
   try {
     ans = await httpMethodBlob(url, data, 'get');
   } catch (error) {
-    console.warn('getBlob', error);
+    console.warn('getBlob', error);  // tslint:disable-line:no-console
   }
 
   return ans;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import moment from 'moment';
+import * as moment from 'moment';
 import _ from 'lodash';
 import cx from 'classnames';
 

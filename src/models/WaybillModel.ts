@@ -1,4 +1,4 @@
-import moment from 'moment';
+import * as moment from 'moment';
 
 import { isEmpty, hasMotohours } from 'utils/functions';
 import {
@@ -103,7 +103,7 @@ const checkTaxData = (tax_data) => {
         ? 'Поле "Операция" должно быть заполнено'
         : '',
       FACT_VALUE:
-        !rowData.FACT_VALUE || !rowData.FACT_VALUE === 0
+        !rowData.FACT_VALUE && rowData.FACT_VALUE !== 0
           ? 'Поле "Значение" должно быть заполнено'
           : '',
     };

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import config from 'config';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as ReconnectingWebSocket from 'reconnectingwebsocket';
 import * as Raven from 'raven-js';
 import { ReduxState } from 'redux-main/@types/state';
 import { connect } from 'react-redux';

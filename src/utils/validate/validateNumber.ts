@@ -51,8 +51,9 @@ const fixedValidators = [
     name: 'min',
     validator(config, value) {
       const parsedValue = Number(value);
-      if (typeof config.min === 'undefined' || isNaN(parsedValue))
+      if (typeof config.min === 'undefined' || isNaN(parsedValue)) {
         return undefined;
+      }
       return parsedValue < config.min
         ? config.alt_min && config.max
           ? `Поле "${config.title
@@ -69,8 +70,9 @@ const fixedValidators = [
     name: 'max',
     validator(config, value) {
       const parsedValue = parseInt(value, 10);
-      if (typeof config.max === 'undefined' || isNaN(parsedValue))
+      if (typeof config.max === 'undefined' || isNaN(parsedValue)) {
         return undefined;
+      }
       return parsedValue >= config.max
         ? config.alt_min && config.max
           ? `Поле "${config.title
@@ -86,7 +88,7 @@ const fixedValidators = [
   {
     name: 'maxLength',
     validator(config, value) {
-      if (typeof config.maxLength === 'undefined') return undefined;
+      if (typeof config.maxLength === 'undefined') { return undefined; }
       return String(value).length > config.maxLength
         ? `Поле "${config.title || config.key}" должно содержать не больше ${
           config.maxLength
@@ -97,7 +99,7 @@ const fixedValidators = [
   {
     name: 'minLength',
     validator(config, value) {
-      if (typeof config.maxLength === 'undefined') return undefined;
+      if (typeof config.maxLength === 'undefined') { return undefined; }
       return String(value).length < config.minLength
         ? `Поле "${config.title || config.key}" должно содержать не меньше ${
           config.minLength
@@ -108,7 +110,7 @@ const fixedValidators = [
   {
     name: 'equalLength',
     validator(config, value) {
-      if (typeof config.equalLength === 'undefined') return undefined;
+      if (typeof config.equalLength === 'undefined') { return undefined; }
       const stringPresent = String(value);
       return stringPresent.length < config.equalLength
         || stringPresent.length > config.equalLength
@@ -120,9 +122,8 @@ const fixedValidators = [
 ];
 
 export function validate(config, value, data) {
-  // console.warn(`VALIDATING ${config.key} with data = ${data}`);
   const error = fixedValidators
-    .map(({ validator }) => validator(config, value, data))
+    .map(({ validator }) => validator(config, value))
     .filter((d) => !!d)[0];
 
   return config.validation === false ? undefined : error;

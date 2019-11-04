@@ -23,7 +23,7 @@ const fixedValidators = [
   {
     name: 'min',
     validator(config, data) {
-      if (typeof config.min === 'undefined') return undefined;
+      if (typeof config.min === 'undefined') { return undefined; }
       return parseFloat(data) < config.min
         ? `Поле "${config.title || config.key}" должно быть не меньше ${
           config.min

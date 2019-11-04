@@ -9,7 +9,6 @@ import config from 'config';
 import { get } from 'lodash';
 import { getJSON, postJSON, deleteJSON, putJSON, patchJSON } from './adapter';
 import { getBlob, postBlob } from './adapterBlob';
-import { mocks } from './mocks';
 import { isFunction } from 'util';
 
 export const processResponse = (r) => {
@@ -120,15 +119,18 @@ export const processResponse = (r) => {
 };
 
 export default class APIService {
+  otherToken: boolean;
+  _apiUrl: string;
+  _path: string;
+  serviceName: string;
+  url: string;
+  addPath: string[];
   /**
    * Creates APIService handler for backend service via provided url
    * @param {string} url - url path
    * @param {object} options - options
-   * @param {boolean} options.useMock - use mock instead of backend service
    */
-  constructor(_apiUrl, path, options = {}) {
-    const { useMock = false } = options;
-    this.useMock = useMock;
+  constructor(_apiUrl: string, path: string, options: any = {}) {
     this.otherToken = options.otherToken;
 
     this._apiUrl = _apiUrl;
@@ -144,10 +146,9 @@ export default class APIService {
     this.addPath = [];
 
     this.get = this.get.bind(this);
-
-    this.logFunction = (method) =>
-      console.info(`API SERVICE ${method} ${this.getUrl()}`);
   }
+  logFunction = (method) =>
+      console.info(`API SERVICE ${method} ${this.getUrl()}`);  // tslint:disable-line:no-console
 
   getUrlData() {
     const apiVersions = localStorage.getItem(global.API__KEY) || '{}';
@@ -164,42 +165,35 @@ export default class APIService {
     }
   }
 
-  get(payload = {}) {
-    if (this.useMock && mocks[this.serviceName]) {
-      this.log('GET MOCK');
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(mocks[this.serviceName].get(payload));
-        }, 500);
-      });
-    }
+  get<F = any>(payload = {}) {
     this.log('GET');
 
     const url = this.getUrl();
     this.resetPath();
 
-    return getJSON(url, payload, this.otherToken);
+    return getJSON<F>(url, payload, this.otherToken);
   }
 
-  getBlob(payload = {}) {
+  getBlob<F = any>(payload = {}) {
     this.log('GET BLOB');
     const url = this.getUrl();
     this.resetPath();
     return getBlob(url, payload);
   }
 
-  postBlob(payload = {}) {
+  postBlob<F = any>(payload = {}) {
     this.log('GET (POST) BLOB');
     const url = this.getUrl();
     this.resetPath();
     return postBlob(url, payload);
   }
 
-  post(payload = {}, callback, type = 'form', params = {}) {
+  post<F = any>(payload = {}, callback, type = 'form', params = {}) {
     this.log('POST');
     const url = this.getUrl();
     this.resetPath();
-    return postJSON(url, payload, type, params, this.otherToken).then((r) => {
+
+    return postJSON<F>(url, payload, type, params, this.otherToken).then((r) => {
       if (isFunction(callback)) {
         callback();
       } else {
@@ -212,11 +206,11 @@ export default class APIService {
     });
   }
 
-  put(payload = {}, callback, type = 'form') {
+  put<F = any>(payload = {}, callback, type = 'form') {
     this.log('PUT');
     const url = this.getUrl();
     this.resetPath();
-    return putJSON(url, payload, type).then((r) => {
+    return putJSON<F>(url, payload, type).then((r) => {
       if (isFunction(callback)) {
         callback();
       } else {
@@ -229,11 +223,11 @@ export default class APIService {
     });
   }
 
-  patch(payload = {}, callback, type = 'form') {
+  patch<F = any>(payload = {}, callback, type = 'form') {
     this.log('PATCH');
     const url = this.getUrl();
     this.resetPath();
-    return patchJSON(url, payload, type).then((r) => {
+    return patchJSON<F>(url, payload, type).then((r) => {
       if (isFunction(callback)) {
         callback();
       } else {
@@ -246,11 +240,11 @@ export default class APIService {
     });
   }
 
-  delete(payload = {}, callback, type = 'form') {
+  delete<F = any>(payload = {}, callback, type = 'form') {
     this.log('DELETE');
     const url = this.getUrl();
     this.resetPath();
-    return deleteJSON(url, payload, type).then((r) => {
+    return deleteJSON<F>(url, payload, type).then((r) => {
       if (isFunction(callback)) {
         callback();
       } else {
@@ -277,19 +271,7 @@ export default class APIService {
     return this;
   }
 
-  log() {
+  log(method: string) {
     // this.logFunction(method);
-  }
-
-  connectToLoggerService(fn) {
-    if (typeof fn === 'function') {
-      this.logFunction = fn;
-    }
-  }
-
-  connectToNotificationService(fn) {
-    if (typeof fn === 'function') {
-      this.warningNotificationFunction = fn;
-    }
   }
 }

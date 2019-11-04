@@ -181,7 +181,7 @@ export const DataTableInputOutputListErrors = (inputList: any[], outputListError
     const errors = outputListErrors[i] ? { ...outputListErrors[i] } : {};
 
     each(validationSchema.properties, (prop) => {
-      errors[prop.key] = validateField(prop, rowData[prop.key], rowData, validationSchema);
+      errors[prop.key] = validateField(prop, rowData[prop.key], rowData, validationSchema, {});
     });
 
     return errors;

@@ -55,7 +55,7 @@ export const autobaseUpdateBatteryRegistry = (batteryRegistryOld: BatteryRegistr
     meta,
   );
 };
-export const autobaseRemoveBatteryRegistry = (id: BatteryRegistry['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof updateSetBatteryRegistry>> => async (dispatch) => {
+export const autobaseRemoveBatteryRegistry = (id: BatteryRegistry['id'], meta: LoadingMeta): EtsAction<EtsActionReturnType<typeof autobaseDeleteBatteryRegistry>> => async (dispatch) => {
   return etsLoadingCounter(
     dispatch,
     autobaseDeleteBatteryRegistry(id),

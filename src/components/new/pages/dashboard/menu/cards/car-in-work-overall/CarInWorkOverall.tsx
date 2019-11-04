@@ -20,7 +20,7 @@ import {
   getSessionState,
 } from 'redux-main/reducers/selectors';
 import { ReduxState } from 'redux-main/@types/state';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as ReconnectingWebSocket from 'reconnectingwebsocket';
 import { actionMonitorPageLoadCarActual } from 'components/old/monitor/redux-main/models/actions-monitor-page';
 import { InitialStateDashboard } from 'components/new/pages/dashboard/redux-main/modules/dashboard/@types/_dashboard.h';
 import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';

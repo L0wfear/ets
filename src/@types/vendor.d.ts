@@ -79,3 +79,5 @@
 
   export default WebpackWorker;
 }
+
+ declare const define: any;

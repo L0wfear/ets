@@ -53,9 +53,9 @@ export const defaultActions = <F extends any>(path: string, setStoreAction: (obj
         ),
       )
     ),
-    getArrayAndSetInStore: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows'): EtsAction<Promise<DefaultAns<F>>> => (dispatch) => (
+    getArrayAndSetInStore: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows'): EtsAction<Promise<DefaultAns<Array<F>>>> => (dispatch) => (
       dispatch(
-        defaultAction<DefaultAns<F>>(
+        defaultAction<DefaultAns<Array<F>>>(
           RootService.path(path).get(payload)
             .then((response) => {
               const data = (get(response, typeAns) as Array<Partial<F>>).map(mapFunction);
@@ -76,7 +76,7 @@ export const defaultActions = <F extends any>(path: string, setStoreAction: (obj
     post: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows'): EtsAction<Promise<DefaultAns<F>>> => (dispatch) => (
       dispatch(
         defaultAction<DefaultAns<F>>(
-          RootService.path(path).post(payload)
+          RootService.path(path).post(payload, null, 'json')
             .then((response) => {
               const data = mapFunction(get(response, `${typeAns}.0`));
 
@@ -92,7 +92,7 @@ export const defaultActions = <F extends any>(path: string, setStoreAction: (obj
     put: <Payload extends any>(payload: Payload, meta: LoadingMeta, typeAns: 'result' | 'result.rows' = 'result.rows'): EtsAction<Promise<DefaultAns<F>>> => (dispatch) => (
       dispatch(
         defaultAction<DefaultAns<F>>(
-          RootService.path(path).put(payload)
+          RootService.path(path).put(payload, null, 'json')
             .then((response) => {
               const data = mapFunction(get(response, `${typeAns}.0`));
 
@@ -108,7 +108,7 @@ export const defaultActions = <F extends any>(path: string, setStoreAction: (obj
     remove: <Payload extends any>(payload: Payload, meta: LoadingMeta): EtsAction<Promise<DefaultAns<F>>> => (dispatch) => (
       dispatch(
         defaultAction<DefaultAns<F>>(
-          RootService.path(path).delete(payload),
+          RootService.path(path).delete(payload, null, 'json'),
           meta,
         ),
       )

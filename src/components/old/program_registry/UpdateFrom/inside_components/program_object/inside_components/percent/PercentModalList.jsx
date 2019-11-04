@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
-import moment from 'moment';
+import * as moment from 'moment';
 import { isEmpty } from 'lodash';
 
 import { connectToStores, staticProps } from 'utils/decorators';

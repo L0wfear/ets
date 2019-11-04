@@ -19,6 +19,7 @@ import {
   mapAdmNotifyToSetReadByIdArr,
 } from 'redux-main/reducers/modules/user_notifications/utils';
 import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
 
 export const userAdmNotificationPut = (type: string | null, read_ids: number | number[], { page = 'notification-registry', path = null } = {}) => ({
   type,
@@ -94,15 +95,16 @@ export const getOrderNotRead = (): EtsAction<Promise<void>> => async (dispatch) 
   return;
 };
 
-export const userNotificationAdmGet = (type: string | null, payload: { is_read?: boolean }, { page = 'notification-registry', path = null } = {}) => ({
-  type,
-  payload: getNotifyAdm(payload),
-  meta: {
-    promise: true,
-    page,
-    path,
-  },
-});
+export const userNotificationAdmGet = (payload: { is_read?: boolean }, { page = 'notification-registry', path = null } = {}): EtsAction<Promise<any>> => (dispatch) => (
+  etsLoadingCounter(
+    dispatch,
+    getNotifyAdm(payload),
+    {
+      page,
+      path,
+    },
+  )
+);
 
 export const changeUserNotificationsState = (newSomeState) => ({
   type: SESSION_CHANGE_SOME_DATA,
@@ -264,7 +266,6 @@ export const getNotifications = (): EtsAction<Promise<void>> => async (dispatch,
 export const getAdmNotifications = () => async (dispatch, getState) => {
   const { payload: { notify } } = await dispatch(
     userNotificationAdmGet(
-      'none',
       {},
     ),
   );
@@ -366,7 +367,6 @@ export const markAsRead = (readData = []) => async (dispatch) => {
 export const getAdmNotReadNotifications = (): EtsAction<Promise<void>> => async (dispatch) => {
   const { payload: { notify } } = await dispatch(
     userNotificationAdmGet(
-      'none',
       {
         is_read: false,
       },

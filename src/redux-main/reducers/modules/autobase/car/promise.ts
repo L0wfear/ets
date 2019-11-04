@@ -121,7 +121,7 @@ export const promiseUpdateCarPassportData = async (passportData: CarPassporntDat
 };
 
 export const promiseLoadCarDrivers = (car_id: Car['asuods_id']): Promise<CarDriversData> => {
-  return CarDrivers.get({ car_id });
+  return CarDrivers.get<CarDriversData>({ car_id });
 };
 
 export const promiseLoadCarRegistration = async (car_id: Car['asuods_id']) => {

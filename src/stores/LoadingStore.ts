@@ -1,7 +1,8 @@
 import { Store } from 'flummox';
 
 let notTime = true;
-export default class LoadingStore extends Store {
+
+export default class LoadingStore extends (Store as any) {
   constructor(flux) {
     super();
 
@@ -66,11 +67,11 @@ export default class LoadingStore extends Store {
   isLoading() {
     if (__DEVELOPMENT__) {
       if (this.state.operationsCount > 0 && notTime) {
-        console.time('----> timeLoad'); // eslint-disable-line
+        console.time('----> timeLoad'); // tslint:disable-line:no-console
         notTime = false;
       }
       if (this.state.operationsCount === 0 && !notTime) {
-        console.timeEnd('----> timeLoad'); // eslint-disable-line
+        console.timeEnd('----> timeLoad'); // tslint:disable-line:no-console
         notTime = true;
       }
     }

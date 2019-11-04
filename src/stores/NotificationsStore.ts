@@ -1,8 +1,9 @@
 import { Store } from 'flummox';
-import get from 'lodash/get';
+import { get } from 'lodash';
+
 import { notifications } from 'utils/notifications';
 
-export default class NotificationsStore extends Store {
+export default class NotificationsStore extends (Store as any) {
   constructor(flux) {
     super();
 

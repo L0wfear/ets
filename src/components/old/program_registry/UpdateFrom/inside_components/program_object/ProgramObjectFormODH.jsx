@@ -2,7 +2,7 @@ import React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import connectToStores from 'flummox/connect';
-import moment from 'moment';
+import * as moment from 'moment';
 import { cloneDeep, keyBy, isEmpty } from 'lodash';
 
 import {

@@ -9,7 +9,7 @@ import {
 
 import Field from 'components/@next/@ui/renderFields/Field';
 
-import ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import ReconnectingWebSocket from 'reconnectingwebsocket';
 import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';

@@ -7,7 +7,7 @@ import { compose } from 'recompose';
 import { getStyleForStatusDirectionType } from 'components/new/ui/mission_info_form/form-components/map-contaienr/map/layers/car-markers/feature-style';
 import { connect } from 'react-redux';
 import * as Raven from 'raven-js';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as ReconnectingWebSocket from 'reconnectingwebsocket';
 
 import {
   PropsLayerCarMarker,

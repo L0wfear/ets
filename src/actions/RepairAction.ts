@@ -7,8 +7,7 @@ import {
 import { Repair, ObjectProperty } from 'api/Services';
 import REPAIR from 'constants/repair';
 
-const parsePutPath = (entity, method, formState, idKey = 'id') =>
-  `${entity}/${method === 'put' ? formState[idKey] : ''}`;
+const parsePutPath = (entity, method, formState) => `${entity}/${method === 'put' ? formState.id : ''}`;
 
 export default class RepairActions extends Actions {
   async getRepairListByType(type, data, other) {
@@ -53,7 +52,7 @@ export default class RepairActions extends Actions {
     const { objects } = REPAIR;
 
     return Repair.path(`${objects}/${id}/program_versions`)
-      .get({}, false, 'json')
+      .get({})
       .then(({ result: { rows } }) => rows);
   }
 
@@ -85,8 +84,6 @@ export default class RepairActions extends Actions {
 
     const response = await Repair.path(`${programVersion}`).get(
       payload,
-      false,
-      'json',
     );
 
     return response;
@@ -129,7 +126,7 @@ export default class RepairActions extends Actions {
     const ans = await Repair.path(path).post(payload, false, 'json');
     // Для обновления таблицы
     // Не в callback, потому что нужен новый id, а не весь список
-    this.getRepairListByType('programRegistry');
+    this.getRepairListByType('programRegistry', {}, {});
     return ans;
   }
 
@@ -199,7 +196,7 @@ export default class RepairActions extends Actions {
     return this.programVersionSendFor('close', formState);
   }
 
-  programVersionSendFor(type, formState, withForm) {
+  programVersionSendFor(type, formState, withForm = false) {
     const { programVersion } = REPAIR;
     const payload = {
       ...formState,

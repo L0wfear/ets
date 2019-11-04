@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReconnectingWebSocket from 'vendor/ReconnectingWebsocket';
+import * as ReconnectingWebSocket from 'reconnectingwebsocket';
 
 type OneWsPointData = {
   coords: number[] | [number | number];       // координаты

@@ -3,9 +3,10 @@ import { clone } from 'lodash';
 import { createValidDateTime } from 'components/@next/@utils/dates/dates';
 import { isEmpty } from 'utils/functions';
 import { MissionService } from 'api/missions';
+import { MissionTemplate } from 'redux-main/reducers/modules/missions/mission_template/@types/index.h';
 
 export default class MissionsActions extends Actions {
-  createMissions(missionTemplates, missionsCreationTemplate) {
+  createMissions(missionTemplates: MissionTemplate[], missionsCreationTemplate) {
     const missionsCreationTemplateCopy = clone(missionsCreationTemplate);
     const date_start = createValidDateTime(
       missionsCreationTemplateCopy.date_start,
@@ -43,7 +44,7 @@ export default class MissionsActions extends Actions {
         );
       }
 
-      const payload = clone(query);
+      const payload: any = clone(query);
 
       payload.date_start = date_start;
       payload.date_end = date_end;

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { compose } from 'recompose';
 
 import Div from 'components/old/ui/Div';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
@@ -8,9 +9,6 @@ import { oldReportGetAnalytics } from 'components/old/coverage_reports/redux-mai
 import companyActions from 'redux-main/reducers/modules/company/actions';
 
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
-import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import Field from 'components/@next/@ui/renderFields/Field';
 import {
@@ -22,28 +20,40 @@ import { saveData } from 'utils/functions';
 import { EtsPageWrap } from 'global-styled/global-styled';
 import { getCompanyState } from 'redux-main/reducers/selectors';
 import DatePickerRange from 'components/new/ui/date_picker/DatePickerRange';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { Company } from 'redux-main/reducers/modules/company/@types';
+import { ReduxState } from 'redux-main/@types/state';
 
 const page = 'analytics';
 
-class Analytics extends React.Component {
-  static propTypes = {
-    companyList: PropTypes.array.isRequired,
-    oldReportGetAnalytics: PropTypes.func.isRequired,
-    actionGetAndSetInStoreCompany: PropTypes.func.isRequired,
-  };
+type OwnProps = {
+};
+type StateProps = {
+  companyList: Company[];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+
+type Props = (
+  OwnProps
+  & StateProps
+  & DispatchProps
+);
+
+class Analytics extends React.Component<Props, any> {
+  reports = [
+    'Маршруты',
+    'Задания',
+    'Путевые листы',
+    'Транспортные средства',
+    'Работники',
+    'Расход топлива',
+    'Наряд - задания',
+  ];
 
   constructor(props) {
     super(props);
-
-    this.reports = [
-      'Маршруты',
-      'Задания',
-      'Путевые листы',
-      'Транспортные средства',
-      'Работники',
-      'Расход топлива',
-      'Наряд - задания',
-    ];
 
     this.state = {
       report_ids: [],
@@ -55,7 +65,9 @@ class Analytics extends React.Component {
   }
 
   componentDidMount() {
-    this.props.actionGetAndSetInStoreCompany({}, { page });
+    this.props.dispatch(
+      companyActions.actionGetAndSetInStoreCompany({}, { page }),
+    );
 
     const etsName = __DEVELOPMENT__
       ? `__ETS::${process.env.STAND.toUpperCase()}__`
@@ -82,7 +94,9 @@ class Analytics extends React.Component {
         this.state.companies_ids.length === 0 ? null : this.state.companies_ids,
     };
 
-    this.props.oldReportGetAnalytics(state).then(({ blob, fileName }) => {
+    this.props.dispatch(
+      oldReportGetAnalytics(state, { page }),
+    ).then(({ blob, fileName }) => {
       if (blob && fileName) {
         saveData(blob, fileName);
       }
@@ -104,7 +118,9 @@ class Analytics extends React.Component {
     } else if (field === 'companies_ids') {
       let { companies_ids, transcript } = this.state;
       companies_ids = value;
-      if (companies_ids.length > 1) transcript = false;
+      if (companies_ids.length > 1) {
+        transcript = false;
+      }
       this.setState({ companies_ids, transcript });
     } else {
       this.setState({ [field]: value });
@@ -200,20 +216,14 @@ class Analytics extends React.Component {
   }
 }
 
-export default compose(
-  withPreloader({
+export default compose<Props, OwnProps>(
+  withPreloader<OwnProps>({
     page,
     typePreloader: 'mainpage',
   }),
-  connect(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({
       companyList: getCompanyState(state).companyList,
-    }),
-    (dispatch) => ({
-      oldReportGetAnalytics: (data) =>
-        dispatch(oldReportGetAnalytics(data, { page })),
-      actionGetAndSetInStoreCompany: (...arg) =>
-        dispatch(companyActions.actionGetAndSetInStoreCompany(...arg)),
     }),
   ),
 )(Analytics);

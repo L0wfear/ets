@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
 import ProgramRemarkForm from 'components/old/program_registry/UpdateFrom/inside_components/program_remark/ProgramRemarkForm';

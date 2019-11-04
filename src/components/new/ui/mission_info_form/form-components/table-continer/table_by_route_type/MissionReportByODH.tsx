@@ -1,11 +1,13 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import Table from 'components/old/ui/table/DataTable';
 import { sortFunc } from 'components/old/reports/operational/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/old/reports/operational/mission/utils/main';
-import { compose } from 'recompose';
-import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { ReduxState } from 'redux-main/@types/state';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -105,7 +107,7 @@ const renderers = {
         'TEN_I',
       ).join(' ')}`}
       <br />
-      {`(${`${parseFloat(parseFloat(data) * 100).toFixed(0)}%`})`}
+      {`(${`${(data * 100).toFixed(0)}%`})`}
     </div>
   ),
   left_percentage: ({ data, rowData }) => (
@@ -155,12 +157,24 @@ const MissionReportByODHTable = (props) => {
 
 const emptyArr = [];
 
-class MissionReportByODH extends React.Component {
-  static get propTypes() {
-    return {
-      onElementChange: PropTypes.func,
-    };
-  }
+type StateProps = {
+  userData: InitialStateSession['userData'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  [k: string]: any;
+};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class MissionReportByODH extends React.Component<Props, any> {
+  selectField: string;
 
   constructor(props) {
     super(props);
@@ -171,8 +185,6 @@ class MissionReportByODH extends React.Component {
       selectedElement: null,
     };
   }
-
-  componentDidMount() {}
 
   selectElement = (el) => {
     const {
@@ -198,8 +210,8 @@ class MissionReportByODH extends React.Component {
   }
 }
 
-export default compose(
-  connect((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
     userData: getSessionState(state).userData,
-  })),
+  }),
 )(MissionReportByODH);

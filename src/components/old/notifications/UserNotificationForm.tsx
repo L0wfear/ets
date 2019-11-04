@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { connect } from 'react-redux';
 import * as queryString from 'query-string';
 import { get } from 'lodash';
@@ -25,8 +25,9 @@ import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { makeReactMessage } from 'utils/helpMessangeWarning';
 import { makeDateFormated } from 'components/@next/@utils/dates/dates';
 import { getSessionCompanyIndex } from 'redux-main/reducers/modules/session/selectors';
-import { actionsGetCarByAsuodsId } from 'redux-main/reducers/modules/autobase/car/actions';
+import { actionsGetCarByAsuodsId as actionsGetCarByAsuodsIdOr } from 'redux-main/reducers/modules/autobase/car/actions';
 import { getErrorNotification } from 'utils/notifications';
+import { ReduxState } from 'redux-main/@types/state';
 
 const TYPE_CODE = {
   carITR: ['insurance_policy', 'tech_maintenance', 'repair'],
@@ -58,7 +59,7 @@ const MainVehicleDesc = ({
         if (company_id && company_id in companyIndex) {
           isPermitted = true;
         } else {
-          global.notify.NOTIFICATION_SYSTEM(
+          global.NOTIFICATION_SYSTEM.notify(
             getErrorNotification(
               'Операция запрещена. ТС перенесено в другую организацию',
             ),
@@ -104,7 +105,7 @@ const insurance_policy = withRequirePermission({
     companyIndex,
     actionsGetCarByAsuodsId,
     isPermitted,
-  }) => (
+  }: any) => (
     <MainVehicleDesc
       linkText={gov_number}
       car_id={car_id}
@@ -133,7 +134,7 @@ const tech_inspection = withRequirePermission({
     companyIndex,
     actionsGetCarByAsuodsId,
     isPermitted,
-  }) => {
+  }: any) => {
     return (
       <MainVehicleDesc
         linkText={car_gov_number}
@@ -164,7 +165,7 @@ const tech_maintenance = withRequirePermission({
     companyIndex,
     actionsGetCarByAsuodsId,
     isPermitted,
-  }) => (
+  }: any) => (
     <MainVehicleDesc
       linkText={gov_number}
       car_id={car_id}
@@ -193,7 +194,7 @@ const repair = withRequirePermission({
     companyIndex,
     actionsGetCarByAsuodsId,
     isPermitted,
-  }) => (
+  }: any) => (
     <MainVehicleDesc
       linkText={gov_number}
       car_id={car_id}
@@ -214,7 +215,7 @@ const repair = withRequirePermission({
 const medical_certificate = withRequirePermission({
   withIsPermittedProps: true,
   permissions: employeePermissions.list,
-})(({ employee_fio, employee_id, handleClick, isPermitted }) => (
+})(({ employee_fio, employee_id, handleClick, isPermitted }: any) => (
   <MainEmployeeDesc
     linkText={employee_fio}
     handleClick={() =>
@@ -230,7 +231,7 @@ const notificationComponents = {
   repair,
   medical_certificate,
 };
-class UserNotificationForm extends UNSAFE_Form {
+class UserNotificationForm extends UNSAFE_Form<any, any> {
   handleClick = (pathComponent, query, isPermitted) => {
     if (isPermitted) {
       this.props.history.push(
@@ -275,20 +276,21 @@ class UserNotificationForm extends UNSAFE_Form {
       return {};
     }
 
-    console.warn('addTypeDate in userNotificationForm'); // eslint-disable-line
+    console.warn('addTypeDate in userNotificationForm'); // tslint:disable-line:no-console
     return {};
   }
 
   render() {
     const state = this.props.formState;
     const NotificationDesc = notificationComponents[state.type_code] || 'div';
-    const otherProps = {};
+    const otherProps: any = {};
     if (NotificationDesc !== 'div') {
       otherProps.handleClick = this.handleClick;
     }
 
     return (
       <EtsBootstrap.ModalContainer
+        id="user_notification_form"
         show={this.props.show}
         onHide={this.props.onHide}>
         <EtsBootstrap.ModalHeader closeButton>
@@ -322,13 +324,17 @@ class UserNotificationForm extends UNSAFE_Form {
   }
 }
 
-export default connect(
+type OwnProps = {
+  [k: string]: any;
+};
+
+export default connect<any, any, OwnProps, ReduxState>(
   (state) => ({
     companyIndex: getSessionCompanyIndex(state),
   }),
   (dispatch) => ({
     actionsGetCarByAsuodsId: bindActionCreators(
-      actionsGetCarByAsuodsId,
+      actionsGetCarByAsuodsIdOr,
       dispatch,
     ),
   }),

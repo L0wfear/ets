@@ -1,8 +1,16 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export default class IntervalPicker extends Component {
+type Props = {
+  interval?: boolean;
+  defDate?: boolean;
+  time?: boolean;
+
+  onChange: (arg: any) => any;
+};
+
+export default class IntervalPicker extends React.Component<Props, any> {
   constructor(props) {
     super(props);
   }
@@ -35,7 +43,6 @@ export default class IntervalPicker extends Component {
               time={this.props.time}
               date={interval[0]}
               onChange={this.handleChange.bind(this, 0)}
-              max={interval[1]}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>
@@ -50,7 +57,6 @@ export default class IntervalPicker extends Component {
               time={this.props.time}
               date={interval[1]}
               onChange={this.handleChange.bind(this, 1)}
-              min={interval[0]}
             />
           </EtsBootstrap.Col>
         </EtsBootstrap.Row>

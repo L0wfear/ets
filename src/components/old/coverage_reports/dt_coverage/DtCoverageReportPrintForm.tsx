@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
@@ -10,14 +9,17 @@ import {
 } from 'components/@next/@utils/dates/dates';
 import DatePicker from 'components/old/ui/input/date-picker/DatePicker';
 
-export default class OdhCoverageReportPrintForm extends React.Component {
-  static propTypes = {
-    showForm: PropTypes.bool.isRequired,
-    exportType: PropTypes.number.isRequired,
-    onFormHide: PropTypes.func.isRequired,
-    onExport: PropTypes.func.isRequired,
-  };
+type Props = {
+  onFormHide: any;
+  onExport: any;
 
+  exportType: number;
+
+  showForm: boolean
+};
+type State = any;
+
+export default class DtCoverageReportPrintForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -31,7 +33,6 @@ export default class OdhCoverageReportPrintForm extends React.Component {
 
   export = () => {
     const { date_start, date_end } = this.state;
-
     this.props.onFormHide();
     this.props.onExport(date_start, date_end);
   };
@@ -40,7 +41,7 @@ export default class OdhCoverageReportPrintForm extends React.Component {
     const { exportType } = this.props;
     return (
       <EtsBootstrap.ModalContainer
-        id="modal-odh-coverage-report-print"
+        id="modal-dt-coverage-report-print"
         show={this.props.showForm}>
         <EtsBootstrap.ModalHeader>
           <EtsBootstrap.ModalTitle>

@@ -1,12 +1,13 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { compose } from 'recompose';
 import { connect } from 'react-redux';
 
 import Table from 'components/old/ui/table/DataTable';
 import { sortFunc } from 'components/old/reports/operational/mission/utils/sortFunction';
 import { getDelForUnitRender } from 'components/old/reports/operational/mission/utils/main';
 import { getSessionState } from 'redux-main/reducers/selectors';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { ReduxState } from 'redux-main/@types/state';
 
 const VALUE_FOR_FIXED = {
   TWO_F: {
@@ -109,7 +110,7 @@ const MissionReportByDTTable = (props) => {
           'TEN_I',
         ).join(' ')}`}
         <br />
-        {`(${`${parseFloat(parseFloat(data.data) * 100).toFixed(0)}%`})`}
+        {`(${`${(data * 100).toFixed(0)}%`})`}
       </div>
     ),
     left_percentage: (data) => (
@@ -157,12 +158,24 @@ const MissionReportByDTTable = (props) => {
   );
 };
 
-class MissionReportByDT extends React.Component {
-  static get propTypes() {
-    return {
-      onElementChange: PropTypes.func,
-    };
-  }
+type StateProps = {
+  userData: InitialStateSession['userData'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  [k: string]: any;
+};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class MissionReportByDT extends React.Component<Props, any> {
+  selectField: string;
 
   constructor(props) {
     super(props);
@@ -198,8 +211,8 @@ class MissionReportByDT extends React.Component {
   }
 }
 
-export default compose(
-  connect((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
     userData: getSessionState(state).userData,
-  })),
+  }),
 )(MissionReportByDT);

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
 import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';

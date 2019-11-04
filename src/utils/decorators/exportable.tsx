@@ -3,11 +3,11 @@ import * as PropTypes from 'prop-types';
 import { saveData } from 'utils/functions';
 import { parseFilename } from 'utils/content-disposition';
 import config from 'config';
-import _, { get } from 'lodash';
+import { get, map } from 'lodash';
 
 // TODO поменять на urlencode и использовать для составления параметров
 export function toUrlWithParams(url, data) {
-  const params = _.map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join(
+  const params = map(data, (v, k) => `${k}=${encodeURIComponent(v)}`).join(
     '&',
   );
   return `${url}?${params}`;
@@ -15,7 +15,10 @@ export function toUrlWithParams(url, data) {
 
 export default function exportable(options) {
   return function decorateWithExportableFeatures(ComposedComponent) {
-    return class Exportable extends React.Component {
+    return class Exportable extends React.Component<any, any> {
+      entity: string;
+      path: string;
+
       static get propTypes() {
         return {
           routeParams: PropTypes.object,

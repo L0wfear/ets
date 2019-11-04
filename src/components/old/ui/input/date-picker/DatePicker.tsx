@@ -18,6 +18,8 @@ export interface DatePickerProps {
   makeGoodFormat?: boolean;
   makeGoodFormatInitial?: boolean;
   preventDateTime?: boolean;
+
+  style?: object;
 }
 
 const DatePicker: React.FC<DatePickerProps> = (props) => {

@@ -1,9 +1,9 @@
-import React from 'react';
+import * as React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
 import UserNotificationForm from 'components/old/notifications/UserNotificationForm';
 
-class UserNotificationFormWrap extends UNSAFE_FormWrap {
+class UserNotificationFormWrap extends UNSAFE_FormWrap<any, any> {
   render() {
     return this.props.showForm ? (
       <UserNotificationForm
@@ -11,7 +11,6 @@ class UserNotificationFormWrap extends UNSAFE_FormWrap {
         canSave={this.state.canSave}
         show={this.props.showForm}
         onHide={this.props.onFormHide}
-        markAllAsRead={this.handleMarkAllAsRead}
         history={this.props.history}
         handleFormChange={this.handleFormStateChange}
         onSubmit={this.handleFormSubmit}

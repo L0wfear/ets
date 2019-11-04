@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import * as moment from 'moment';
-import _ from 'lodash';
+import * as _ from 'lodash';
 import cx from 'classnames';
 
 import { diffDates } from 'components/@next/@utils/dates/dates';
@@ -26,7 +26,14 @@ import { DataTableHeadLineTitle, DataTableHeadLine } from './styled';
 import { setStickyThead } from 'utils/stickyTableHeader';
 import { isArray } from 'util';
 
-export default class DataTable extends React.Component {
+type Props = {
+  [k: string]: any;
+};
+type State = {
+  [k: string]: any;
+};
+
+export default class DataTable extends React.Component<Props, State> {
   /**
    * Свойства компонента
    * @type {Object}
@@ -89,10 +96,18 @@ export default class DataTable extends React.Component {
       className: '',
       title: '',
 
-      onAllRowsChecked: () => {},
-      onRowChecked: () => {},
-      onRowSelected: () => {},
-      onRefresh: () => {},
+      onAllRowsChecked: () => {
+        //
+      },
+      onRowChecked: () => {
+        //
+      },
+      onRowSelected: () => {
+        //
+      },
+      onRefresh: () => {
+        //
+      },
 
       selected: null,
       selectField: 'id',
@@ -145,7 +160,7 @@ export default class DataTable extends React.Component {
         firstUseExternalInitialSort,
       } = this.state;
 
-      const changesFields = {
+      const changesFields: any = {
         initialSort,
         initialSortAscending,
         firstUseExternalInitialSort,
@@ -212,7 +227,7 @@ export default class DataTable extends React.Component {
       data,
     } = preveState;
 
-    const changesFields = {
+    const changesFields: any = {
       initialSort,
       initialSortAscending,
       firstUseExternalInitialSort,
@@ -276,7 +291,7 @@ export default class DataTable extends React.Component {
 
   saveFilter = (filterValues) => {
     if (__DEVELOPMENT__) {
-      console.info('SAVE FILTER', filterValues);
+      console.info('SAVE FILTER', filterValues);  // tslint:disable-line:no-console
     } else {
       let filterAsString = '';
 
@@ -286,7 +301,7 @@ export default class DataTable extends React.Component {
         filterAsString = filterValues;
       }
 
-      console.info('SAVE FILTER', filterAsString);
+      console.info('SAVE FILTER', filterAsString);  // tslint:disable-line:no-console
     }
 
     if (this.props.externalFilter) {
@@ -309,7 +324,7 @@ export default class DataTable extends React.Component {
     const value = !this.props.checked[id];
     const clonedData = _.cloneDeep(this.props.checked);
     clonedData[id] = value;
-    if (value === false) delete clonedData[id];
+    if (value === false) { delete clonedData[id]; }
     this.props.onRowChecked(id, value);
     this.setState({
       globalCheckboxState:
@@ -333,7 +348,9 @@ export default class DataTable extends React.Component {
         this.forceUpdate();
       },
     );
-    event && event.stopPropagation();
+    if (event) {
+      event.stopPropagation();
+    }
   };
 
   defaultIinitializeMetadata(tableMetaCols = [], renderers = {}) {
@@ -342,7 +359,7 @@ export default class DataTable extends React.Component {
         return cur;
       }
 
-      const metaObject = {
+      const metaObject: any = {
         columnName: col.name,
         sortByName: col.sort_by || col.name,
         displayName: col.customHeaderComponent
@@ -371,7 +388,7 @@ export default class DataTable extends React.Component {
     }, []);
   }
 
-  initializeMetadata(tableMetaCols = [], renderers = {}) {
+  initializeMetadata(tableMetaCols = [], renderers: any = {}) {
     const {
       multiSelection,
       enumerated,
@@ -469,7 +486,7 @@ export default class DataTable extends React.Component {
       tableMeta: { cols = [] },
     } = this.props;
 
-    Object.entries(filterValues).forEach(([key, { value }]) => {
+    Object.entries(filterValues).forEach(([key, { value }]: any) => {
       if (key.includes('additionalFilter')) {
         try {
           const {
@@ -477,7 +494,7 @@ export default class DataTable extends React.Component {
           } = cols.find((d) => d.name === key);
           isValid = filterFunction(value, obj);
         } catch (e) {
-          console.warn(
+          console.warn(  // tslint:disable-line:no-console
             `Ошибка при поиске кастомной функции фильтрации ${key}`,
             e,
           );
@@ -660,7 +677,7 @@ export default class DataTable extends React.Component {
     if (highlight.length > 0) {
       highlight.forEach((obj) => {
         const field = Object.keys(obj)[0];
-        if (el[field] === obj[field]) el.isHighlighted = true;
+        if (el[field] === obj[field]) { el.isHighlighted = true; }
       });
     }
     return el;
@@ -714,7 +731,7 @@ export default class DataTable extends React.Component {
   }
 
   handleChangeSort = (sortingColumnName, ascendingSort) => {
-    const nextProps = {
+    const nextProps: any = {
       initialSort: sortingColumnName,
       initialSortAscending: ascendingSort,
     };
@@ -820,7 +837,6 @@ export default class DataTable extends React.Component {
             <div className="waybills-buttons">
               {!noFilter && (
                 <FilterButton
-                  show={this.state.filterModalIsOpen}
                   active={!!Object.keys(this.state.filterValues).length}
                   onClick={this.toggleFilter}
                 />

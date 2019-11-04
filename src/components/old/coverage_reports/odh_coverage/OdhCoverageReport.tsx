@@ -1,56 +1,69 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-
-import {
-  oldReportGetDtCoverageReport,
-  oldReportExportDtCoverageReport,
-} from 'components/old/coverage_reports/redux-main/modules/old-report/actions-old_report';
-import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
-
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+
 import {
-  getToday9am,
+  oldReportGetOdhCoverageReport,
+  oldReportExportOdhCoverageReport,
+} from 'components/old/coverage_reports/redux-main/modules/old-report/actions-old_report';
+import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
+
+import {
+  getYesterday9am,
   getFormattedDateTime,
 } from 'components/@next/@utils/dates/dates';
 import { saveData } from 'utils/functions';
 
 import { EtsPageWrap } from 'global-styled/global-styled';
 
-import DtCoverageReportTable from 'components/old/coverage_reports/dt_coverage/DtCoverageReportTable';
-import DtCoverageReportPrintForm from 'components/old/coverage_reports/dt_coverage/DtCoverageReportPrintForm';
+import OdhCoverageReportTable from 'components/old/coverage_reports/odh_coverage/OdhCoverageReportTable';
+import OdhCoverageReportPrintForm from 'components/old/coverage_reports/odh_coverage/OdhCoverageReportPrintForm';
+import { ReduxState } from 'redux-main/@types/state';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 
-const page = 'dt_coverage_report';
+const page = 'odh_coverage_report';
 
-class DtCoverageReport extends React.Component {
-  static propTypes = {
-    dtCoverageReport: PropTypes.array.isRequired,
-    oldReportGetDtCoverageReport: PropTypes.func.isRequired,
-    oldReportExportDtCoverageReport: PropTypes.func.isRequired,
-  };
+type OwnProps = {
+};
+type StateProps = {
+  odhCoverageReport: any[];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
 
-  state = {
-    date_start: getToday9am(),
-    date_end: new Date(),
-    isExporting: false,
-  };
+type Props = (
+  OwnProps
+  & StateProps
+  & DispatchProps
+);
+
+class OdhCoverageReport extends React.Component<Props, any> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      date_start: getYesterday9am(),
+      date_end: new Date(),
+      isExporting: false,
+    };
+  }
 
   componentDidMount() {
     this.getReport();
   }
 
-  componentWillUnmount() {
-    // clearInterval(this.refreshInterval);
-  }
-
   getReport = async () => {
-    const res = await this.props.oldReportGetDtCoverageReport(
-      this.state.date_start,
-      this.state.date_end,
+    const res = await this.props.dispatch(
+      oldReportGetOdhCoverageReport(
+        this.state.date_start,
+        this.state.date_end,
+        { page },
+      ),
     );
-    const dates = res.result.meta;
+    const dates = res.meta;
 
     if (dates.date_start) {
       this.setState({ date_start: dates.date_start, date_end: dates.date_end });
@@ -65,46 +78,51 @@ class DtCoverageReport extends React.Component {
     this.setState({ showForm: true, exportType });
   };
 
-  export = (date_start, date_end) => {
+  export = (
+    date_start = this.state.date_start,
+    date_end = this.state.date_end,
+  ) => {
     this.setState({ isExporting: true });
-    this.props
-      .oldReportExportDtCoverageReport(date_start, date_end)
-      .then(({ blob }) => {
-        if (blob) {
-          saveData(
-            blob,
-            `Отчет по посещению ДТ в период с ${getFormattedDateTime(
-              date_start,
-            )} по ${getFormattedDateTime(date_end)}.xls`,
-          );
-        }
-        this.setState({ isExporting: false });
-      });
+    this.props.dispatch(
+      oldReportExportOdhCoverageReport(date_start, date_end, { page }),
+    ).then(({ blob }) => {
+      if (blob) {
+        saveData(
+          blob,
+          `Отчет по посещению ОДХ в период с ${getFormattedDateTime(
+            date_start,
+          )} по ${getFormattedDateTime(date_end)}.xls`,
+        );
+      }
+      this.setState({ isExporting: false });
+    });
   };
 
   render() {
-    const { dtCoverageReport = [] } = this.props;
+    const { odhCoverageReport } = this.props;
     const { isExporting, date_start, date_end } = this.state;
     const exportGlyph = isExporting ? 'refresh' : 'download-alt';
 
     return (
       <EtsPageWrap>
-        <DtCoverageReportTable data={dtCoverageReport} selectField="company_id">
+        <OdhCoverageReportTable
+          data={odhCoverageReport}
+          selectField="company_id">
           <div className="daily-cleaning-report-period">
             Период формирования:
             <div className="form-group">
               <EtsBootstrap.FormControl
                 type="text"
-                value={getFormattedDateTime(date_start)}
                 readOnly
+                value={getFormattedDateTime(date_start)}
               />
             </div>
             <span> — </span>
             <div className="form-group">
               <EtsBootstrap.FormControl
                 type="text"
-                value={getFormattedDateTime(date_end)}
                 readOnly
+                value={getFormattedDateTime(date_end)}
               />
             </div>
           </div>
@@ -115,13 +133,18 @@ class DtCoverageReport extends React.Component {
             toggleElement={<EtsBootstrap.Glyphicon glyph={exportGlyph} />}
             toggleElementSize="small">
             <EtsBootstrap.DropdownMenu pullRight>
+              <EtsBootstrap.MenuItem
+                eventKey={1}
+                onSelect={() => this.export()}>
+                Ежедневный отчет
+              </EtsBootstrap.MenuItem>
               <EtsBootstrap.MenuItem eventKey={2} onSelect={this.showForm}>
                 Отчет за заданный период
               </EtsBootstrap.MenuItem>
             </EtsBootstrap.DropdownMenu>
           </EtsBootstrap.Dropdown>
-        </DtCoverageReportTable>
-        <DtCoverageReportPrintForm
+        </OdhCoverageReportTable>
+        <OdhCoverageReportPrintForm
           showForm={this.state.showForm}
           onFormHide={() => this.setState({ showForm: false })}
           exportType={this.state.exportType}
@@ -132,22 +155,14 @@ class DtCoverageReport extends React.Component {
   }
 }
 
-export default compose(
-  withPreloader({
+export default compose<Props, OwnProps>(
+  withPreloader<OwnProps>({
     page,
     typePreloader: 'mainpage',
   }),
-  connect(
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
     (state) => ({
-      dtCoverageReport: state.old_report.dtCoverageReport,
-    }),
-    (dispatch) => ({
-      oldReportGetDtCoverageReport: (date_start, date_end) =>
-        dispatch(oldReportGetDtCoverageReport(date_start, date_end, { page })),
-      oldReportExportDtCoverageReport: (date_start, date_end) =>
-        dispatch(
-          oldReportExportDtCoverageReport(date_start, date_end, { page }),
-        ),
+      odhCoverageReport: state.old_report.odhCoverageReport,
     }),
   ),
-)(DtCoverageReport);
+)(OdhCoverageReport);

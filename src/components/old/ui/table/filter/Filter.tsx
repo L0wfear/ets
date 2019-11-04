@@ -15,7 +15,14 @@ import {
   EtsFilterActionButtonConteiner,
 } from 'components/new/ui/registry/components/data/filters/buttons-line/styled/styled';
 
-export default class Filter extends React.Component {
+type Props = {
+  [k: string]: any;
+};
+type State = {
+  [k: string]: any;
+};
+
+export default class Filter extends React.Component<Props, State> {
   static get propTypes() {
     return {
       values: PropTypes.object,
@@ -176,16 +183,16 @@ export default class Filter extends React.Component {
           labelFunction={labelFunction}
           availableOptions={options}
           displayName={displayName}
-          onChange={(...args) =>
+          onChange={(e) =>
             this.handleFilterValueChange(
               this.getName(byKey || name, type),
-              ...args,
+              escape,
             )
           }
-          onMultiChange={(...args) =>
+          onMultiChange={(e) =>
             this.handleFilterMultipleValueChange(
               this.getName(byKey || name, type),
-              ...args,
+              e,
             )
           }
         />

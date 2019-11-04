@@ -8,7 +8,6 @@ import { createValidDateTime, createValidDate } from 'components/@next/@utils/da
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 interface IPropsFilterInput {
-  nativeDatetime: boolean;
   fieldName: string;
   filterValue: string | object;
   filterType?: string;
@@ -81,7 +80,7 @@ class FilterInput extends React.Component<IPropsFilterInput, IStateFilterInput> 
     this.props.onChange(filterValue);
   }
   filterValueMaker = (inputValue, inputType) => {
-    if (DateTypeSet.has(this.props.inputType) && !this.props.nativeDatetime) {
+    if (DateTypeSet.has(this.props.inputType)) {
       return datetimeFilterValueMaker(inputValue, inputType);
     }
 

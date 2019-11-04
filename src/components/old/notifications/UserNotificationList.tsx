@@ -21,6 +21,24 @@ import {
 } from 'redux-main/reducers/selectors';
 import withPreloader from 'components/old/ui/new/preloader/hoc/with-preloader/withPreloader';
 import { compose } from 'recompose';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ReduxState } from 'redux-main/@types/state';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+
+type StateProps = {
+  userData: InitialStateSession['userData'];
+} & ReduxState['userNotifications'];
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {};
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+type State = any;
 
 @staticProps({
   entity: 'userNotification',
@@ -30,7 +48,7 @@ import { compose } from 'recompose';
   formComponent: UserNotificationFormWrap,
   operations: ['LIST', 'READ', 'CHECK'],
 })
-class UserNotificationList extends UNSAFE_CheckableElementsList {
+class UserNotificationList extends UNSAFE_CheckableElementsList<Props, State> {
   async init() {
     const etsName = __DEVELOPMENT__
       ? `__ETS::${process.env.STAND.toUpperCase()}__`
@@ -41,8 +59,8 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
 
     try {
       await Promise.all([
-        this.props.getNotifications(),
-        this.props.getAdmNotifications(),
+        this.props.dispatch(getNotifications()),
+        this.props.dispatch(getAdmNotifications()),
       ]);
     } catch (e) {
       //
@@ -62,20 +80,22 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
   }
 
   updateCounterNotify() {
-    this.props.getUserNotificationInfo();
+    this.props.dispatch(getUserNotificationInfo());
   }
 
   handleMarkAllAsRead = () => {
-    confirmDialog({
+    global.confirmDialog({
       title: 'Внимание!',
       body: 'Вы уверены, что хотите отметить все уведомления как прочитанные?',
     })
-      .then(() => this.props.markAllAsRead())
+      .then(() => this.props.dispatch(markAllAsRead()))
       .then(() => this.updateCounterNotify())
-      .catch(() => {});
+      .catch(() => {
+        //
+      });
   };
   handleMarkAsRead = (checkedItems) => {
-    this.props.markAsRead(checkedItems).then(() => this.updateCounterNotify());
+    this.props.dispatch(markAsRead(checkedItems)).then(() => this.updateCounterNotify());
   };
   /**
    * @override
@@ -86,7 +106,7 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
 
     const baseButtons = super.getButtons();
     const checkedItems = Object.entries(checkedElements).reduce(
-      (obj, [key, el]) => {
+      (obj, [key, el]: any) => {
         if (!el.is_read) {
           obj.push({ id: parseInt(key, 10), front_type: el.front_type });
         }
@@ -127,11 +147,7 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
    */
   selectElement = ({ props }) => {
     const DOUBLECLICK_TIMEOUT = 300;
-    function onDoubleClick() {
-      return this.setState({
-        showForm: true,
-      });
-    }
+
     const {
       data: { ...data },
     } = props;
@@ -168,7 +184,9 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
             && id === this.state.selectedElement[this.selectField]
             && this.state.readPermission
           ) {
-            onDoubleClick.call(this);
+            this.setState({
+              showForm: true,
+            });
           }
         }
         this.clicks = 0;
@@ -178,17 +196,10 @@ class UserNotificationList extends UNSAFE_CheckableElementsList {
 }
 
 export default compose(
-  connect(
-    (state) => ({
+  connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+    (state: ReduxState) => ({
       ...getUserNotificationsState(state),
       userData: getSessionState(state).userData,
-    }),
-    (dispatch) => ({
-      getUserNotificationInfo: () => dispatch(getUserNotificationInfo()),
-      getNotifications: () => dispatch(getNotifications()),
-      getAdmNotifications: () => dispatch(getAdmNotifications()),
-      markAllAsRead: () => dispatch(markAllAsRead()),
-      markAsRead: (id) => dispatch(markAsRead(id)),
     }),
   ),
   withPreloader({

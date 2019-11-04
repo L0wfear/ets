@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import Table from 'components/old/ui/table/DataTable';
 import { floatFixed1Percentage } from 'utils/renderers/index';
 
@@ -89,7 +89,7 @@ const OdhCoverageReportTable = (props) => {
       results={props.data}
       renderers={renderers}
       enumerated={false}
-      tableMeta={getTableMeta(props)}
+      tableMeta={getTableMeta()}
       className="waybills-table"
       {...props}
     />

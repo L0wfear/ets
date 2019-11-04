@@ -10,6 +10,9 @@ import {
   exportDtCoverageReport,
   loadAnalytics,
 } from 'components/old/coverage_reports/redux-main/modules/old-report/promise';
+import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
+import etsLoadingCounter from 'redux-main/_middleware/ets-loading/etsLoadingCounter';
+import { EtsAction } from 'components/@next/ets_hoc/etsUseDispatch';
 
 export const oldReportChangeOdhCoverageReport = (odhCoverageReport) => ({
   type: OLD_REPORT_SET_ODH_COVERAGE_REPORT,
@@ -25,16 +28,12 @@ export const oldReportChangeDtCoverageReport = (dtCoverageReport) => ({
   },
 });
 
-export const oldReportGetOdhCoverageReport = (date_start, date_end, { page, path }) => async (dispatch) => {
-  const { payload: result } = await dispatch({
-    type: 'none',
-    payload: loadOdhCoverageReport(date_start, date_end),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const oldReportGetOdhCoverageReport = (date_start, date_end, meta: LoadingMeta): EtsAction<ReturnType<typeof loadOdhCoverageReport>> => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    loadOdhCoverageReport(date_start, date_end),
+    meta,
+  );
 
   dispatch(oldReportChangeOdhCoverageReport(result.odhCoverageReport));
   global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
@@ -42,16 +41,12 @@ export const oldReportGetOdhCoverageReport = (date_start, date_end, { page, path
   return result;
 };
 
-export const oldReportGetDtCoverageReport = (date_start, date_end, { page, path }) => async (dispatch) => {
-  const { payload: result }  = await dispatch({
-    type: 'none',
-    payload: loadDtCoverageReport(date_start, date_end),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const oldReportGetDtCoverageReport = (date_start, date_end, meta: LoadingMeta): EtsAction<ReturnType<typeof loadDtCoverageReport>> => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    loadDtCoverageReport(date_start, date_end),
+    meta,
+  );
 
   dispatch(oldReportChangeDtCoverageReport(result.dtCoverageReport));
   global.NOTIFICATION_SYSTEM.notify('Отчет обновлен', 'info');
@@ -67,44 +62,32 @@ export const oldReportResetDtCoverageReport = () => (dispatch) => (
   dispatch(oldReportChangeDtCoverageReport([]))
 );
 
-export const oldReportExportOdhCoverageReport = (date_start, date_end, { page, path }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: exportOdhCoverageReport(date_start, date_end),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const oldReportExportOdhCoverageReport = (date_start, date_end, meta: LoadingMeta): EtsAction<ReturnType<typeof exportOdhCoverageReport>> => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    exportOdhCoverageReport(date_start, date_end),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
 
-export const oldReportExportDtCoverageReport = (date_start, date_end, { page, path }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: exportDtCoverageReport(date_start, date_end),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const oldReportExportDtCoverageReport = (date_start, date_end, meta: LoadingMeta): EtsAction<ReturnType<typeof exportDtCoverageReport>> => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    exportDtCoverageReport(date_start, date_end),
+    meta,
+  );
 
-  return payload;
+  return result;
 };
 
-export const oldReportGetAnalytics = (data, { page, path }) => async (dispatch) => {
-  const { payload } = await dispatch({
-    type: 'none',
-    payload: loadAnalytics(data),
-    meta: {
-      promise: true,
-      page,
-      path,
-    },
-  });
+export const oldReportGetAnalytics = (data, meta: LoadingMeta): EtsAction<ReturnType<typeof loadAnalytics>> => async (dispatch) => {
+  const result = await etsLoadingCounter(
+    dispatch,
+    loadAnalytics(data),
+    meta,
+  );
 
-  return payload;
+  return result;
 };

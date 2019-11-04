@@ -1,9 +1,11 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import Table from 'components/old/ui/table/DataTable';
-import { compose } from 'recompose';
-import { getSessionState } from 'redux-main/reducers/selectors';
 import { connect } from 'react-redux';
+
+import Table from 'components/old/ui/table/DataTable';
+import { getSessionState } from 'redux-main/reducers/selectors';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ReduxState } from 'redux-main/@types/state';
 
 const tableMeta = {
   cols: [
@@ -49,15 +51,24 @@ const MissionReportByPointsTable = (props) => {
   );
 };
 
-class MissionReportByPoints extends React.Component {
-  static get propTypes() {
-    return {
-      renderOnly: PropTypes.bool,
-      onElementChange: PropTypes.func,
-      routeParams: PropTypes.object,
-      selectedReportDataPoints: PropTypes.array,
-    };
-  }
+type StateProps = {
+  userData: InitialStateSession['userData'];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  [k: string]: any;
+};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class MissionReportByPoints extends React.Component<Props, any> {
+  selectField: string;
 
   constructor(props) {
     super(props);
@@ -68,8 +79,6 @@ class MissionReportByPoints extends React.Component {
       selectedElement: null,
     };
   }
-
-  componentDidMount() {}
 
   selectElement = (el) => {
     const {
@@ -95,12 +104,8 @@ class MissionReportByPoints extends React.Component {
   }
 }
 
-MissionReportByPoints.contextTypes = {
-  flux: PropTypes.object,
-};
-
-export default compose(
-  connect((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
     userData: getSessionState(state).userData,
-  })),
+  }),
 )(MissionReportByPoints);

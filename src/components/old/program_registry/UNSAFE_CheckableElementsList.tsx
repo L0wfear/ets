@@ -1,5 +1,4 @@
-import React from 'react';
-import * as PropTypes from 'prop-types';
+import * as React from 'react';
 
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 import { cloneDeep, find } from 'lodash';
@@ -14,15 +13,7 @@ import {
  * ElementsList с возможностью обрабатывать таблицы с выбором элементов
  * @extends React.Component
  */
-class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
-  static get propTypes() {
-    return {
-      onListStateChange: PropTypes.func,
-      exportable: PropTypes.bool,
-      userData: PropTypes.any,
-    };
-  }
-
+class CheckableElementsList<P extends any, S extends any> extends UNSAFE_ElementsList<P, S> {
   constructor(props) {
     super(props);
 
@@ -63,8 +54,8 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
     // TODO отображение чекбокса в зависимости от прав
     const tableProps = super.getTableProps();
     const operations = ['delete'];
-    const check = this.constructor.operations.includes('CHECK');
-    const { entity } = this.constructor;
+    const check = (this.constructor as any).operations.includes('CHECK');
+    const entity = (this.constructor as any).entity;
 
     const noPermission
       = !check
@@ -81,9 +72,9 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
   /**
    * @override
    */
-  getButtons(propsButton = {}) {
+  getButtons(propsButton: any = {}) {
     // Операции, заданные в статической переменной operations класса-наследника
-    const operations = this.constructor.operations || [];
+    const operations = (this.constructor as any).operations || [];
     const buttons = [];
 
     const {
@@ -163,7 +154,7 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
 
     if (Object.keys(this.state.checkedElements).length !== 0) {
       try {
-        await confirmDialog({
+        await global.confirmDialog({
           title: 'Внимание!',
           body: 'Вы уверены, что хотите удалить выбранные элементы?',
         });
@@ -176,12 +167,14 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
           Object.values(this.state.checkedElements).map((element) => {
             return this.removeElementAction(
               element[this.selectField],
-              () => {},
+              () => {
+                //
+              },
             );
           }),
         );
       } catch (error) {
-        console.error(error);
+        console.error(error); // tslint:disable-line:no-console
       }
       if (this.removeElementCallback) {
         this.removeElementCallback();
@@ -242,4 +235,4 @@ class UNSAFE_CheckableElementsList extends UNSAFE_ElementsList {
   };
 }
 
-export default UNSAFE_CheckableElementsList;
+export default CheckableElementsList;

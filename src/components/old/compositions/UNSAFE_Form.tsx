@@ -8,7 +8,7 @@ import { FluxContext } from 'utils/decorators';
  * @abstract
  */
 @FluxContext
-class UNSAFE_Form extends React.Component {
+class Form<P extends any, S extends any> extends React.Component<P, S> {
   static get propTypes() {
     return {
       handleFormChange: PropTypes.func.isRequired,
@@ -29,7 +29,7 @@ class UNSAFE_Form extends React.Component {
 
     this.state = {
       /* inital state */
-    };
+    } as any;
   }
 
   handleChange = (field, e) => this.props.handleFormChange(field, e);
@@ -43,4 +43,4 @@ class UNSAFE_Form extends React.Component {
   }
 }
 
-export default UNSAFE_Form;
+export default Form;

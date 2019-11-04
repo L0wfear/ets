@@ -9,7 +9,11 @@ import Div from 'components/old/ui/Div';
 import { ColFilter } from 'components/old/ui/tableNew/filter/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export default class FilterRow extends React.Component {
+type Props = {
+  [k: string]: any;
+};
+
+export default class FilterRow extends React.Component<Props, {}> {
   static get propTypes() {
     return {
       value: PropTypes.any,
@@ -98,8 +102,9 @@ export default class FilterRow extends React.Component {
             />
           );
         } else if (type === 'multiselect' || type === 'multiselect-boolean') {
-          if (value && !!value.length)
+          if (value && !!value.length) {
             value = value.filter((v) => _.find(options, (o) => o.value === v));
+          }
           input = (
             <Div className="filter-multiselect-container">
               <ReactSelect

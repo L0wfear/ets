@@ -1,14 +1,12 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import EtsBootstrap from 'components/new/ui/@bootstrap';
-
 import * as queryString from 'query-string';
 
+import EtsBootstrap from 'components/new/ui/@bootstrap';
+
 import PreloadNew from 'components/old/ui/new/preloader/PreloadNew';
+import { EtsPageWrap } from 'global-styled/global-styled';
 
 import { FluxContext } from 'utils/decorators';
-
-import { EtsPageWrap } from 'global-styled/global-styled';
 
 import {
   ButtonCreateNew,
@@ -23,15 +21,21 @@ import {
  */
 
 @FluxContext
-class ElementsList extends React.Component {
-  static get propTypes() {
-    return {
-      location: PropTypes.object,
-      exportable: PropTypes.bool,
-      export: PropTypes.func,
-      userData: PropTypes.any,
-    };
-  }
+class ElementsList<P extends any, S extends any = any> extends React.Component<P, S> {
+  clicks: number;
+  selectField: string;
+  node: HTMLDivElement;
+  mainListName: string;
+  entity: string;
+  tableMeta: any;
+  preventUrlFilters: any;
+  permissions: any;
+  keyPressDisabled: boolean;
+  removeElementAction: any;
+  removeElementCallback: any;
+  export: any;
+  exportPayload: any;
+  exportUseRouteParams: any;
 
   /**
    * Создает компонент
@@ -39,12 +43,12 @@ class ElementsList extends React.Component {
   constructor(props) {
     super(props);
 
-    this.selectField = this.constructor.selectField || 'id';
-    this.mainListName = this.constructor.listName || undefined;
-    this.entity = this.constructor.entity;
-    this.tableMeta = this.constructor.tableMeta || {};
+    this.selectField = (this.constructor as any).selectField || 'id';
+    this.mainListName = (this.constructor as any).listName || undefined;
+    this.entity = (this.constructor as any).entity;
+    this.tableMeta = (this.constructor as any).tableMeta || {};
     this.preventUrlFilters = false;
-    this.permissions = this.constructor.permissions || {};
+    this.permissions = (this.constructor as any).permissions || {};
     this.clicks = 0;
 
     this.state = {
@@ -54,7 +58,7 @@ class ElementsList extends React.Component {
       selectedElement: null,
       readPermission: false,
       exportFetching: false,
-    };
+    } as any;
   }
 
   // Удалить
@@ -66,7 +70,7 @@ class ElementsList extends React.Component {
 
   componentDidMount() {
     if (!this.keyPressDisabled) {
-      this.node.setAttribute('tabindex', 1);
+      this.node.setAttribute('tabindex', '1');
       this.node.onkeydown = this.onKeyPress.bind(this);
     }
 
@@ -81,7 +85,9 @@ class ElementsList extends React.Component {
    * Дополнительная инициализация после componentDidMount
    * может быть переопределена в дочерних классах
    */
-  init() {}
+  init() {
+    //
+  }
 
   /**
    * Выбирает элемент
@@ -146,7 +152,7 @@ class ElementsList extends React.Component {
   /**
    * Закрывает форму и обнуляет выбранный элемент
    */
-  onFormHide = () => {
+  onFormHide = (...arg: any[]) => {
     this.setState({
       showForm: false,
       selectedElement: null,
@@ -171,9 +177,15 @@ class ElementsList extends React.Component {
       return Promise.reject();
     }
 
-    const removeCallback = this.removeElementCallback || (() => {});
+    const removeCallback = (
+      this.removeElementCallback
+      || (
+        () => {
+          //
+        })
+    );
 
-    confirmDialog({
+    global.confirmDialog({
       title: 'Внимание!',
       body: 'Вы уверены, что хотите удалить выбранный элемент?',
     })
@@ -186,7 +198,9 @@ class ElementsList extends React.Component {
         this.setState({ selectedElement: null });
         return query;
       })
-      .catch(() => {});
+      .catch(() => {
+        //
+      });
   };
 
   onKeyPress(e) {
@@ -226,9 +240,9 @@ class ElementsList extends React.Component {
    * Определяет и возвращает массив кнопок для CRUD операций
    * @return {Component[]} Buttons - массив кнопок
    */
-  getButtons(propsButton = {}) {
+  getButtons(propsButton: any = {}) {
     // Операции, заданные в статической переменной operations класса-наследника
-    const operations = this.constructor.operations || [];
+    const operations = (this.constructor as any).operations || [];
     const buttons = [];
 
     const {
@@ -327,8 +341,8 @@ class ElementsList extends React.Component {
    * @return {object} basicProps - свойства, передающиеся в таблицу всегда
    */
   getBasicProps() {
-    const listName = this.constructor.listName;
-    let basicProps = {
+    const listName = (this.constructor as any).listName;
+    let basicProps: any = {
       data: this.props[listName],
       entity: this.entity,
     };
@@ -371,7 +385,7 @@ class ElementsList extends React.Component {
    * @return {Component} TableComponent - компонент таблицы
    */
   getTable() {
-    const TableComponent = this.constructor.tableComponent;
+    const TableComponent = (this.constructor as any).tableComponent;
 
     if (!TableComponent) {
       return <div />;
@@ -397,7 +411,7 @@ class ElementsList extends React.Component {
    * @return {Component} FormComponent - компонент формы
    */
   getForms() {
-    const FormComponent = this.constructor.formComponent;
+    const FormComponent = (this.constructor as any).formComponent;
     const forms = [];
 
     if (!FormComponent) {
@@ -414,8 +428,8 @@ class ElementsList extends React.Component {
         entity={this.entity}
         selectField={this.selectField}
         onCallback={this.formCallback}
-        meta={this.constructor.formMeta}
-        renderers={this.constructor.formRenderers}
+        meta={(this.constructor as any).formMeta}
+        renderers={(this.constructor as any).formRenderers}
         permissions={[`${this.entity}.read`]}
         flux={this.context.flux}
         {...this.getAdditionalFormProps()}

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 
 import { cloneDeep, omit } from 'lodash';
 
@@ -19,14 +18,13 @@ const SAVE_BUTTON_LABEL_DEFAULT = 'Сохранить';
  * @render дефолтный, обязательно переопределяется
  */
 @FluxContext
-class UNSAFE_FormWrap extends React.Component {
-  static get propTypes() {
-    return {
-      showForm: PropTypes.bool.isRequired,
-      // element: PropTypes.object.isRequired,
-      onFormHide: PropTypes.func.isRequired,
-    };
-  }
+class FormWrap<P extends any, S extends any> extends React.Component<P, S> {
+  defaultElement: any;
+  schema: any;
+  uniqueField: string;
+  createAction: any;
+  updateAction: any;
+  preventDefaultNotification: any;
 
   constructor(props) {
     super(props);
@@ -38,7 +36,7 @@ class UNSAFE_FormWrap extends React.Component {
       canPrint: false,
       saveButtonLabel: 'Сохранить',
       saveButtonEnability: true,
-    };
+    } as any;
   }
 
   // prettier-ignore
@@ -66,7 +64,9 @@ class UNSAFE_FormWrap extends React.Component {
   }
 
   validate = (state, errors) => {
-    if (typeof this.schema === 'undefined') return errors;
+    if (typeof this.schema === 'undefined') {
+      return errors;
+    }
 
     const schema = this.schema;
     const formState = { ...state };
@@ -92,9 +92,9 @@ class UNSAFE_FormWrap extends React.Component {
       = e !== undefined && e !== null && !!e.target ? e.target.value : e;
     let { formErrors } = this.state;
     const { formState } = this.state;
-    const newState = {};
+    const newState: any = {};
 
-    console.info('Form changed', field, value);
+    console.info('Form changed', field, value);  // tslint:disable-line:no-console
     formState[field] = value;
 
     formErrors = this.validate(formState, formErrors);
@@ -128,7 +128,9 @@ class UNSAFE_FormWrap extends React.Component {
         return null;
       default:
         if (typeof value === 'string') {
-          if (isNaN(+value)) return '';
+          if (isNaN(+value)) {
+            return '';
+          }
           return null;
         }
         if (Array.isArray(value)) {
@@ -195,7 +197,7 @@ class UNSAFE_FormWrap extends React.Component {
             saveButtonEnability: true,
             canSave: true,
           });
-          console.warn(errorData.error_text);
+          console.warn(errorData.error_text);  // tslint:disable-line:no-console
           return;
         }
       } else {
@@ -221,15 +223,16 @@ class UNSAFE_FormWrap extends React.Component {
             saveButtonEnability: true,
             canSave: true,
           });
-          console.warn(error_text);
+          console.warn(error_text);  // tslint:disable-line:no-console
           return;
         }
       } else {
         throw new Error('Update action called but not specified');
       }
       // в случае успешного обновления выдаем всплывающее окно
-      if (!this.preventDefaultNotification)
+      if (!this.preventDefaultNotification) {
         global.NOTIFICATION_SYSTEM.notify(saveDataSuccessNotification);
+      }
     }
     // закрываем форму только в случае отсутствия исключительных ситуаций
     if (typeof this.props.onFormHide === 'function' && result !== 'isError') {
@@ -247,4 +250,4 @@ class UNSAFE_FormWrap extends React.Component {
   }
 }
 
-export default UNSAFE_FormWrap;
+export default FormWrap;

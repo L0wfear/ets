@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import UNSAFE_FormWrap from 'components/old/compositions/UNSAFE_FormWrap';
 import { validateField } from 'utils/validate/validateField';

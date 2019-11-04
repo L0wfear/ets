@@ -44,6 +44,8 @@ export type ExtFieldDate<V = any> = ExtFieldCommon<V> & {
   time?: boolean;
   minHeightLabel?: number;
 
+  min?: any; // Работает????
+
   makeGoodFormat?: boolean; // валидный формат даты при изменении
   preventDateTime?: boolean; // всегда datetime
 } & Partial<DatePickerProps>;

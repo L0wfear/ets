@@ -1,12 +1,13 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { get } from 'lodash';
+
 import Table from 'components/old/waybill/Table';
 
 import ReactSelect from 'components/old/ui/input/ReactSelect/ReactSelect';
 
 import Div from 'components/old/ui/Div';
 import { isEmpty } from 'utils/functions';
-import _, { get } from 'lodash';
 import { EtsHeaderTitle } from 'components/new/ui/registry/components/data/header/title/styled/styled';
 import {
   EtsHeaderContainer,
@@ -22,7 +23,7 @@ import ErrorsBlock from 'components/@next/@ui/renderFields/ErrorsBlock/ErrorsBlo
  * Компонент таксировки ТС
  * @extends React.Component
  */
-export default class EquipmentTaxes extends React.Component {
+export default class Taxes extends React.Component<any, any> {
   static get propTypes() {
     return {
       type: PropTypes.string.isRequired,
@@ -38,19 +39,22 @@ export default class EquipmentTaxes extends React.Component {
     };
   }
 
-  static getResult({ FACT_VALUE, FUEL_RATE }) {
-    if (isEmpty(FACT_VALUE) || isEmpty(FUEL_RATE)) {
-      return 0;
+  static getResult({ FACT_VALUE, fuel_correction_rate, FUEL_RATE }) {
+    if (
+      isEmpty(FACT_VALUE)
+      || isEmpty(fuel_correction_rate)
+      || isEmpty(FUEL_RATE)
+    ) {
+      return '0';
     }
-    return parseFloat(FUEL_RATE * FACT_VALUE).toFixed(3);
+    return parseFloat((FUEL_RATE * fuel_correction_rate * FACT_VALUE).toString()).toFixed(3);
   }
 
   static calculateFinalResult(data) {
     if (!data || (data && !data.length)) {
-      return 0;
+      return '0';
     }
-    const result = _.reduce(
-      data,
+    const result = data.reduce(
       (res, cur) => {
         if (typeof cur.RESULT !== 'undefined') {
           res += parseFloat(cur.RESULT); // eslint-disable-line
@@ -66,8 +70,7 @@ export default class EquipmentTaxes extends React.Component {
     if (!data || (data && !data.length)) {
       return 0;
     }
-    const result = _.reduce(
-      data,
+    const result = data.reduce(
       (res, cur) => {
         if (!isEmpty(cur.FACT_VALUE) && !cur.is_excluding_mileage) {
           res += parseFloat(cur.FACT_VALUE); // eslint-disable-line
@@ -78,6 +81,10 @@ export default class EquipmentTaxes extends React.Component {
     );
     return parseFloat(result).toFixed(3);
   }
+
+  tableCaptions: any[];
+  tableCols: string[];
+  tableCellRenderers: Record<string, any>;
 
   constructor(props) {
     super(props);
@@ -98,6 +105,10 @@ export default class EquipmentTaxes extends React.Component {
         width: 75,
       },
       {
+        value: 'Поправочный коэффициент',
+        width: 125,
+      },
+      {
         value: `Значение (${
           type === 'odometr' ? 'км | м/ч | раз | час' : 'м/ч | раз | час'
         })`,
@@ -113,6 +124,7 @@ export default class EquipmentTaxes extends React.Component {
       'OPERATION',
       'measure_unit_name',
       'FUEL_RATE',
+      'fuel_correction_rate',
       'FACT_VALUE',
       'RESULT',
     ];
@@ -131,7 +143,7 @@ export default class EquipmentTaxes extends React.Component {
           return op;
         });
 
-        const errors = get(this.state, 'errorsAll.equipment_tax_data_rows', []);
+        const errors = get(this.state, 'errorsAll.tax_data_rows', []);
         const errorsMsg = errors.length
           ? get(errors, `${index}.OPERATION`)
           : '';
@@ -142,7 +154,7 @@ export default class EquipmentTaxes extends React.Component {
               clearable={false}
               modalKey={this.props.modalKey}
               id={`norm_operation_id_${index}`}
-              disabled={props.readOnly}
+              disabled={this.props.readOnly}
               options={options}
               value={row.uniqKey}
               onChange={this.handleOperationChange.bind(this, index)}
@@ -153,6 +165,8 @@ export default class EquipmentTaxes extends React.Component {
       },
       measure_unit_name: (measure_unit_name) => measure_unit_name || '-',
       RESULT: (RESULT) => `${RESULT ? `${RESULT} л` : ''}`,
+      fuel_correction_rate: (fuel_correction_rate) =>
+        fuel_correction_rate ? parseFloat(fuel_correction_rate).toFixed(3) : 1,
       FACT_VALUE: (FACT_VALUE, { OPERATION, FUEL_RATE }, index) => {
         const factValueProps = {
           type: 'number',
@@ -163,7 +177,8 @@ export default class EquipmentTaxes extends React.Component {
             || typeof OPERATION === 'undefined'
             || this.props.readOnly,
         };
-        const errors = get(this.state, 'errorsAll.equipment_tax_data_rows', []);
+
+        const errors = get(this.state, 'errorsAll.tax_data_rows', []);
         const errorsMsg = errors.length
           ? get(errors, `${index}.FACT_VALUE`)
           : '';
@@ -190,7 +205,6 @@ export default class EquipmentTaxes extends React.Component {
       selectedOperation: null,
       operations: [],
       fuelRates: [],
-      errorsAll: {},
     };
   }
 
@@ -225,7 +239,7 @@ export default class EquipmentTaxes extends React.Component {
       }
     });
 
-    taxes.map((tax) => ({ ...tax, RESULT: EquipmentTaxes.getResult(tax) }));
+    taxes.map((tax) => ({ ...tax, RESULT: Taxes.getResult(tax) }));
 
     return { operations, fuelRates, tableData: taxes, errorsAll };
   }
@@ -253,7 +267,7 @@ export default class EquipmentTaxes extends React.Component {
       current.iem_FACT_VALUE = current.FACT_VALUE;
     }
 
-    current.RESULT = EquipmentTaxes.getResult(current);
+    current.RESULT = Taxes.getResult(current);
     this.setState({ tableData });
     this.props.onChange(tableData);
   };
@@ -288,7 +302,7 @@ export default class EquipmentTaxes extends React.Component {
         tableData[index].FACT_VALUE
           = tableData[index].iem_FACT_VALUE || tableData[index].FACT_VALUE;
       }
-      tableData[index].RESULT = EquipmentTaxes.getResult(tableData[index]);
+      tableData[index].RESULT = Taxes.getResult(tableData[index]);
       tableData[index].measure_unit_name = measure_unit_name;
 
       this.setState({ tableData });
@@ -298,16 +312,14 @@ export default class EquipmentTaxes extends React.Component {
 
   addOperation = () => {
     const { tableData } = this.state;
-    const { baseFactValue, errorsAll } = this.props;
-    const overallValue = EquipmentTaxes.calculateFinalFactValue(
-      this.state.tableData,
-    );
+    const { correctionRate, baseFactValue, errorsAll } = this.props;
+    const overallValue = +Taxes.calculateFinalFactValue(this.state.tableData);
 
     const value
       = baseFactValue || baseFactValue === 0
         ? (baseFactValue - overallValue).toFixed(3)
         : null;
-    tableData.push({ FACT_VALUE: value });
+    tableData.push({ fuel_correction_rate: correctionRate, FACT_VALUE: value });
     this.setState({ tableData, errorsAll });
     this.props.onChange(tableData);
   };
@@ -333,11 +345,11 @@ export default class EquipmentTaxes extends React.Component {
       baseFactValue,
     } = this.props;
     const hasTaxes = taxes.length > 0;
-    const finalResult = EquipmentTaxes.calculateFinalResult(taxes);
-    const finalFactValue = EquipmentTaxes.calculateFinalFactValue(taxes);
+    const finalResult = Taxes.calculateFinalResult(taxes);
+    const finalFactValue = Taxes.calculateFinalFactValue(taxes);
     const finalFactValueEqualsBaseValue
       = parseFloat(baseFactValue).toFixed(3)
-      === parseFloat(finalFactValue).toFixed(3);
+      === parseFloat(finalFactValue.toString()).toFixed(3);
 
     return (
       <Div className="taxi-calc-block" hidden={hidden}>

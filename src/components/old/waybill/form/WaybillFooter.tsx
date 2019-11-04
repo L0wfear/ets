@@ -27,7 +27,6 @@ interface IPropsWaybillFooter {
   handlePrintFromMiniButton(): void;
   handleClose(taxes: any): void;
   handlePrint(is: boolean): void;
-  message: string;
   isPermittedByKey: {
     update: boolean;
     departure_and_arrival_values: boolean;

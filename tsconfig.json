@@ -9,6 +9,7 @@
     "isolatedModules": false,
     "experimentalDecorators": true,
     "moduleResolution": "node",
+    "downlevelIteration": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitThis": true,

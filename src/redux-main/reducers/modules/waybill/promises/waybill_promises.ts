@@ -337,7 +337,7 @@ export const promiseGetLastClosedWaybill = async (payloadOwn: { car_id: Car['asu
 };
 
 type PromisePrintWaybillPayload = {
-  type: '',
+  type: 'plate_special',
   waybill_id: Waybill['id'],
 };
 export const promisePrintWaybill = (payload: PromisePrintWaybillPayload) => {

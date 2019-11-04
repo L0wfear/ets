@@ -11,7 +11,6 @@ import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
 import { actionLoadFuelRatesByCarModel, actionLoadEquipmentFuelRatesByCarModel } from 'redux-main/reducers/modules/fuel_rates/actions-fuelRates';
 import { EtsActionReturnType, EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
 import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
-import { HandleThunkActionCreator } from 'react-redux';
 import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
 import { LoadingMeta } from 'redux-main/_middleware/@types/ets_loading.h';
 
@@ -63,7 +62,7 @@ const carFilter = (structure_id: Waybill['structure_id'], car_id: Car['asuods_id
 const trailerFilter = (structure_id: Waybill['structure_id'], trailer_id: Car['asuods_id']) => (array: Car[]) =>
     vehicleFilter(structure_id, trailer_id)(array).filter((c) => c.is_trailer);
 
-export const vehicleMapper = (array: Car[]) => array.map(
+export const vehicleMapper = (array: (Pick<Car, 'asuods_id' | 'model_id' | 'model_name' | 'gov_number' | 'special_model_name' | 'type_name'> & Partial<Car>)[]) => array.map(
   (c) => {
     return ({
       value: c.asuods_id,
@@ -335,14 +334,13 @@ export const checkMissionSelectBeforeClose = (
 
 export const getWaybillDrivers = (
   dispatch: EtsDispatch,
-  action: HandleThunkActionCreator<typeof actionGetAndSetInStoreWaybillDriver>,
   formState: Waybill,
   meta: LoadingMeta,
 ) => {
   const { status } = formState;
   if (!status || status === 'draft') {
     return dispatch(
-      action(
+      actionGetAndSetInStoreWaybillDriver(
         {
           company_id: formState.company_id,
           date_from: formState.plan_departure_date,
@@ -353,7 +351,7 @@ export const getWaybillDrivers = (
     );
   }
 
-  return Promise.resolve();
+  return Promise.resolve(null);
 };
 
 export const getTitleByStatus = ({ status }) => {

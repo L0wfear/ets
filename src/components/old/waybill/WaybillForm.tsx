@@ -3,7 +3,6 @@ import memoize from 'memoize-one';
 import { isEqual, find, keyBy, map, uniqBy, groupBy, get } from 'lodash';
 import { isNullOrUndefined, isNumber, isBoolean, isArray } from 'util';
 import { connect } from 'react-redux';
-import { compose } from 'recompose';
 
 import ExtField from 'components/@next/@ui/renderFields/Field';
 
@@ -40,7 +39,6 @@ import {
   defaultSelectListMapper,
 } from 'components/old/ui/input/ReactSelect/utils';
 
-import UNSAFE_Form from 'components/old/compositions/UNSAFE_Form';
 import Taxes from 'components/old/waybill/Taxes';
 import EquipmentTaxes from 'components/old/waybill/EquipmentTaxes';
 
@@ -85,7 +83,6 @@ import {
   actionGetAndSetInStoreEmployeeBindedToCarService,
   employeeGetAndSetInStore,
 } from 'redux-main/reducers/modules/employee/employee/actions';
-import { actionGetAndSetInStoreWaybillDriver } from 'redux-main/reducers/modules/employee/driver/actions';
 import {
   actionGetLastClosedWaybill,
   actionGetLatestWaybillDriver,
@@ -94,6 +91,17 @@ import {
 } from 'redux-main/reducers/modules/waybill/waybill_actions';
 import ModalBodyPreloader from 'components/old/ui/new/preloader/modal-body/ModalBodyPreloader';
 import missionsActions from 'redux-main/reducers/modules/missions/actions';
+import { Waybill } from 'redux-main/reducers/modules/waybill/@types';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { ReduxState } from 'redux-main/@types/state';
+import { WorkMode } from 'redux-main/reducers/modules/some_uniq/work_mode/@types';
+import { IStateSomeUniq } from 'redux-main/reducers/modules/some_uniq/@types/some_uniq.h';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { FuelCard } from 'redux-main/reducers/modules/autobase/fuel_cards/@types/fuelcards.h';
+import { Car } from 'redux-main/reducers/modules/autobase/@types/autobase.h';
+import { EmployeeBindedToCar } from 'components/new/utils/context/loading/@types/by_service/employee_binded_to_car';
+import { Employee } from 'redux-main/reducers/modules/employee/@types/employee.h';
+import { WaybillDriver } from 'redux-main/reducers/modules/employee/driver/@types';
 
 // const MISSIONS_RESTRICTION_STATUS_LIST = ['active', 'draft'];
 
@@ -131,7 +139,7 @@ const fieldToCheckHasData = {
 };
 
 const getClosedEquipmentData = (lastCarUsedWaybill) => {
-  const fieldsToChange = {};
+  const fieldsToChange: Partial<Waybill> = {};
   if (lastCarUsedWaybill) {
     if (lastCarUsedWaybill.equipment_fact_fuel_end) {
       fieldsToChange.equipment_fuel_start
@@ -167,9 +175,8 @@ const getClosedEquipmentData = (lastCarUsedWaybill) => {
 };
 
 const hasWaybillEquipmentData = (waybill, shema) => {
-  let has = false;
   if (waybill) {
-    return Object.entries(shema).some(([fieldKey, { type }]) => {
+    return Object.entries(shema).some(([fieldKey, { type }]: any) => {
       switch (type) {
         case 'field':
           return !isNullOrUndefined(waybill[fieldKey]);
@@ -182,11 +189,11 @@ const hasWaybillEquipmentData = (waybill, shema) => {
       }
     });
   }
-  return has;
+  return false;
 };
 
 const setEmptyFieldByKey = (shema) => {
-  return Object.entries(shema).reduce((newObj, [fieldKey, { type }]) => {
+  return Object.entries(shema).reduce((newObj, [fieldKey, { type }]: any) => {
     if (type === 'field') {
       newObj[fieldKey] = null;
     }
@@ -200,7 +207,82 @@ const setEmptyFieldByKey = (shema) => {
 
 const modalKey = 'waybill';
 
-class WaybillForm extends UNSAFE_Form {
+type StateProps = {
+  appConfig: InitialStateSession['appConfig'],
+  userStructureId: InitialStateSession['userData']['structure_id'];
+  userCompanyId: InitialStateSession['userData']['company_id'];
+  userStructures: InitialStateSession['userData']['structures'];
+  userPermissionsSet: InitialStateSession['userData']['permissionsSet'];
+  fuelCardsList: FuelCard[];
+  workModeList: WorkMode[];
+  order_mission_source_id: IStateSomeUniq['missionSource']['order_mission_source_id'];
+  carList: Car[],
+  carIndex: Record<Car['asuods_id'], Car>;
+  uniqEmployeesBindedOnCarList: EmployeeBindedToCar[];
+  employeeList: Employee[];
+  employeeIndex: Record<Employee['id'], Employee>;
+  waybillDriverList: WaybillDriver[];
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  formState: any;
+  handleFormChange: (field: string, e: any) => any;
+  handleMultipleChange: (object: Record<string, any>) => any;
+  onSubmitActiveWaybill: (closeForm?: boolean, state?: Props['formState']) => any;
+  onSubmit: (...arg: any[]) => any;
+  clearSomeData: () => any;
+
+  handleClose: (...arg: any) => any;
+
+  handlePrint: (...arg: any[]) => any;
+  handlePrintFromMiniButton: (...arg: any[]) => any;
+
+  setEdcRequestIds?: (arg: Array<{ request_id: number; request_number: string; }>) => any;
+
+  formErrors: Record<string, any>,
+  entity: string;
+  isPermittedByKey: {
+    update: boolean;
+    departure_and_arrival_values: boolean;
+  };
+  canClose: boolean;
+  canSave: boolean;
+
+  page: string;
+  path?: string;
+
+  show: boolean
+  onHide: any;
+};
+
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+type State = {
+  operations: any[],
+  equipmentOperations: any[],
+  fuelRates: any[],
+  equipmentFuelRates: any[],
+  fuel_correction_rate: number,
+  canEditIfClose: boolean,
+  loadingFields: Record<string, any>,
+  fuelRateAllList: any[],
+  tooLongFactDates: boolean,
+  missionsList: any[];
+  origMissionsList: any[];
+
+  notAvailableMissions: any[];
+  rejectMissionList: any[];
+
+  origFormState: Props['formState'];
+};
+
+class WaybillForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -214,8 +296,11 @@ class WaybillForm extends UNSAFE_Form {
       loadingFields: {},
       fuelRateAllList: [],
       tooLongFactDates: false,
+      missionsList: [],
+      origMissionsList: [],
       notAvailableMissions: [],
-      rejectMissionList: [], // Массив с заданиями, которые надо будет отменить, формируется в missionField
+      rejectMissionList: [],        // Массив с заданиями, которые надо будет отменить, формируется в missionField
+      origFormState: {},
     };
   }
 
@@ -273,6 +358,10 @@ class WaybillForm extends UNSAFE_Form {
     }
   }
 
+  handleChange = (field, e) => this.props.handleFormChange(field, e);
+
+  handleMultipleChange = (fields) => this.props.handleMultipleChange(fields);
+
   async componentDidMount() {
     const {
       formState,
@@ -294,7 +383,6 @@ class WaybillForm extends UNSAFE_Form {
       ),
       getWaybillDrivers(
         this.props.dispatch,
-        actionGetAndSetInStoreWaybillDriver,
         this.props.formState,
         this.props,
       ),
@@ -309,7 +397,7 @@ class WaybillForm extends UNSAFE_Form {
           }),
         )
         .catch((e) => {
-          console.error(e);
+          console.error(e);  // tslint:disable-line:no-console
           this.setState({
             fuelRateAllList: [],
           });
@@ -329,7 +417,7 @@ class WaybillForm extends UNSAFE_Form {
           });
         })
         .catch((e) => {
-          console.error(e);
+          console.error(e);  // tslint:disable-line:no-console
           this.setState({
             canEditIfClose: false,
             origFormState: formState,
@@ -446,7 +534,7 @@ class WaybillForm extends UNSAFE_Form {
           },
         )
         .catch((e) => {
-          console.error(e);
+          console.error(e);  // tslint:disable-line:no-console
 
           this.setState({
             fuelRates: [],
@@ -536,7 +624,6 @@ class WaybillForm extends UNSAFE_Form {
 
             getWaybillDrivers(
               this.props.dispatch,
-              actionGetAndSetInStoreWaybillDriver,
               {
                 ...this.props.formState,
                 [field]: value,
@@ -545,7 +632,9 @@ class WaybillForm extends UNSAFE_Form {
             );
             this.handleChange(field, value);
           })
-          .catch(() => {}),
+          .catch(() => {
+            //
+          }),
       );
   };
 
@@ -573,7 +662,7 @@ class WaybillForm extends UNSAFE_Form {
       )
       .then(({ result: { rows: newMissionsList = [] } = {} }) => {
         const missionsList = uniqBy(newMissionsList, 'id');
-        const availableMissions = missionsList.map((el) => el.id);
+        const availableMissions = missionsList.map((el: any) => el.id);
         let { notAvailableMissions = [] } = this.state;
 
         let newMissionIdList = formState.mission_id_list;
@@ -739,7 +828,7 @@ class WaybillForm extends UNSAFE_Form {
       });
   };
 
-  onCarChange = (car_id, selectedCar = {}) => {
+  onCarChange = (car_id, selectedCar: any = {}) => {
     // https://gost-jira.atlassian.net/browse/DITETS-6607
     setTimeout(() => {
       new Promise((res) => {
@@ -801,7 +890,7 @@ class WaybillForm extends UNSAFE_Form {
   };
 
   getFieldsToChangeBasedOnLastWaybill = (lastCarUsedWaybill) => {
-    let fieldsToChange = {};
+    let fieldsToChange: any = {};
     if (isNotNull(lastCarUsedWaybill)) {
       if (isNotNull(lastCarUsedWaybill.fact_fuel_end)) {
         fieldsToChange.fuel_start = lastCarUsedWaybill.fact_fuel_end;
@@ -868,7 +957,7 @@ class WaybillForm extends UNSAFE_Form {
     } = this.props;
     const carData = this.props.carIndex[car_id];
 
-    const changeObj = { structure_id };
+    const changeObj: any = { structure_id };
 
     if (changeObj.structure_id) {
       changeObj.car_refill = [];
@@ -913,7 +1002,6 @@ class WaybillForm extends UNSAFE_Form {
       global.NOTIFICATION_SYSTEM.notify(
         getWarningNotification(
           'Необходимо указать, установлено ли на ТС спецоборудование',
-          'tr',
         ),
       );
       return false;
@@ -984,17 +1072,19 @@ class WaybillForm extends UNSAFE_Form {
             this.props.handleClose(taxesControl);
           }
         })
-        .catch(() => {});
+        .catch(() => {
+          //
+        });
     }
 
     return Promise.resolve(true);
   };
-  handlePrint = (...arg) => {
+  handlePrint = (...arg: Parameters<Props['handlePrint']>) => {
     if (this.checkOnValidHasEquipment()) {
       this.props.handlePrint(...arg);
     }
   };
-  handlePrintFromMiniButton = (...arg) => {
+  handlePrintFromMiniButton = (...arg: Parameters<Props['handlePrintFromMiniButton']>) => {
     if (this.checkOnValidHasEquipment()) {
       this.props.handlePrintFromMiniButton(...arg);
     }
@@ -1015,12 +1105,12 @@ class WaybillForm extends UNSAFE_Form {
   // очистка данных по топливу спецоборудования
   // возвращает true/false, да/нет в диалоговом окне
   clearFuelEquipmentData = async (
-    changedFieldsData, // поля, которые ещё необходимо изменить
-    withConfirmDialog, // показывать окно подтверждения очистки
-    dialogBody, // текст сообщения
-    changeSelectorKey, // ключ поля, из-за которого тригерится всплывашка
+    changedFieldsData,                  // поля, которые ещё необходимо изменить
+    withConfirmDialog,                  // показывать окно подтверждения очистки
+    dialogBody?,                        // текст сообщения
+    changeSelectorKey?,                 // ключ поля, из-за которого тригерится всплывашка
   ) => {
-    //is_one_fuel_tank, equipment_fuel
+    // is_one_fuel_tank, equipment_fuel
     const fuelEquipmentChangeObj = {
       equipment_refill: [],
       equipment_fuel_given: null,
@@ -1081,7 +1171,7 @@ class WaybillForm extends UNSAFE_Form {
 
     if (withConfirmDialog && formWillChange) {
       try {
-        await confirmDialog({
+        await global.confirmDialog({
           title: 'Внимание',
           body: dialogBody || 'Очистить введенные данные по спецоборудованию?',
           okName: 'Да',
@@ -1090,7 +1180,7 @@ class WaybillForm extends UNSAFE_Form {
         this.handleMultipleChange(changeObj);
         return true;
       } catch (e) {
-        console.error(e);
+        console.error(e);  // tslint:disable-line:no-console
         return false;
       }
     } else {
@@ -1193,14 +1283,14 @@ class WaybillForm extends UNSAFE_Form {
             === 'actionPostMissionReassignationParameters'
           ) {
             response = await this.props.dispatch(
-              actionPostMissionReassignationParameters(rejectMission.payload),
+              actionPostMissionReassignationParameters(rejectMission.payload, this.props),
             );
           } else if (
             rejectMission.handlerName
             === 'actionPutMissionReassignationParameters'
           ) {
             response = await this.props.dispatch(
-              actionPutMissionReassignationParameters(rejectMission.payload),
+              actionPutMissionReassignationParameters(rejectMission.payload, this.props),
             );
           } else if (rejectMission.handlerName === 'updateMission') {
             response = await this.props.dispatch(
@@ -1225,7 +1315,7 @@ class WaybillForm extends UNSAFE_Form {
             return get(response, 'id', null);
           }
         } catch (errorData) {
-          console.warn('rejectMissionHandler:', errorData);
+          console.warn('rejectMissionHandler:', errorData);  // tslint:disable-line:no-console
 
           rejectMissionSubmitError = true;
           const missionId = get(rejectMission.payload, 'mission_id', '');
@@ -1238,7 +1328,7 @@ class WaybillForm extends UNSAFE_Form {
             );
             global.NOTIFICATION_SYSTEM.notify(
               getServerErrorNotification(
-                `${this.props.serviceUrl}: ${errorText}`,
+                `${errorText}`,
               ),
             );
           }
@@ -1373,7 +1463,7 @@ class WaybillForm extends UNSAFE_Form {
       appConfig,
       workModeList,
       employeeIndex,
-      isPermittedByKey = {},
+      isPermittedByKey,
       userStructures,
       userStructureId,
     } = this.props;
@@ -1509,7 +1599,7 @@ class WaybillForm extends UNSAFE_Form {
 
     if (state.driver_id && !DRIVERS.some((d) => d.value === state.driver_id)) {
       const personnel_number = get(
-        this.props.employeesIndex,
+        this.props.employeeIndex,
         `${state.driver_id}.personnel_number`,
       );
       DRIVERS.push({
@@ -1524,7 +1614,7 @@ class WaybillForm extends UNSAFE_Form {
 
     if (isNullOrUndefined(distanceOrTrackOrNodata)) {
       distanceOrTrackOrNodata = isNumber(parseInt(state.track_length, 10))
-        ? parseFloat(state.track_length / 1000).toFixed(3)
+        ? parseFloat((state.track_length / 1000).toString()).toFixed(3)
         : 'Нет данных';
     } else {
       distanceOrTrackOrNodata /= 1000;
@@ -1996,8 +2086,6 @@ class WaybillForm extends UNSAFE_Form {
                               error={errors.fuel_type}
                               disabled={IS_CLOSED || !isPermittedByKey.update}
                               options={FUEL_TYPES}
-                              keyRefill="car_refill"
-                              refill={state.car_refill}
                               handleChange={this.props.handleMultipleChange}
                             />
                           </EtsBootstrap.Col>
@@ -2235,8 +2323,6 @@ class WaybillForm extends UNSAFE_Form {
                                       IS_CLOSED || !isPermittedByKey.update
                                     }
                                     options={FUEL_TYPES}
-                                    keyRefill="equipment_refill"
-                                    refill={state.equipment_refill}
                                     handleChange={
                                       this.props.handleMultipleChange
                                     }
@@ -2409,7 +2495,6 @@ class WaybillForm extends UNSAFE_Form {
                 getMissionsByCarAndDates={this.getMissionsByCarAndDates}
                 rejectMissionList={this.state.rejectMissionList}
                 setRejectMissionList={this.setRejectMissionList}
-                requestFormHide={this.requestFormHide}
                 page={this.props.page}
                 path={this.props.path}
               />
@@ -2566,8 +2651,8 @@ class WaybillForm extends UNSAFE_Form {
   }
 }
 
-export default compose(
-  connect((state) => ({
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
     appConfig: getSessionState(state).appConfig,
     userStructureId: getSessionState(state).userData.structure_id,
     userCompanyId: getSessionState(state).userData.company_id,
@@ -2585,5 +2670,5 @@ export default compose(
     employeeIndex: getEmployeeState(state).employeeIndex,
 
     waybillDriverList: getEmployeeState(state).waybillDriverList,
-  })),
+  }),
 )(WaybillForm);

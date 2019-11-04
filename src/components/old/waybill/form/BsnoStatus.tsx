@@ -1,6 +1,8 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import Raven from 'raven-js';
+import * as Raven from 'raven-js';
+import ReconnectingWebSocket from 'reconnectingwebsocket';
+import { connect } from 'react-redux';
+
 import {
   diffDates,
   getDateWithMoscowTzByTimestamp,
@@ -9,21 +11,35 @@ import {
 
 import Field from 'components/@next/@ui/renderFields/Field';
 
-import ReconnectingWebSocket from 'reconnectingwebsocket';
-import { connect } from 'react-redux';
 import { getSessionState } from 'redux-main/reducers/selectors';
 import { actionLoadTimeMoscow } from 'redux-main/reducers/modules/some_uniq/time_moscow/actions';
+import { EtsDispatch } from 'components/@next/ets_hoc/etsUseDispatch';
+import { InitialStateSession } from 'redux-main/reducers/modules/session/@types/session';
+import { ReduxState } from 'redux-main/@types/state';
 
-class BsnoStaus extends React.Component {
-  static get propTypes() {
-    return {
-      okStatus: PropTypes.bool,
-      gps_code: PropTypes.string,
-      is_bnso_broken: PropTypes.bool,
-      handleChange: PropTypes.func,
-    };
-  }
+type StateProps = {
+  token: InitialStateSession['token'],
+  points_ws: InitialStateSession['appConfig']['points_ws'],
+};
+type DispatchProps = {
+  dispatch: EtsDispatch;
+};
+type OwnProps = {
+  okStatus: boolean,
+  gps_code: string;
+  is_bnso_broken: boolean
+  handleChange: (...arg: any) => any;
 
+  page: string;
+  path?: string;
+};
+type Props = (
+  StateProps
+  & DispatchProps
+  & OwnProps
+);
+
+class BsnoStaus extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     const { okStatus = false } = props;
@@ -138,7 +154,7 @@ class BsnoStaus extends React.Component {
     const carsTrackState = {
       ...this.state.carsTrackState,
       ...Object.values(data).reduce(
-        (newObj, value) =>
+        (newObj, value: { id: number; timestamp: number }) =>
           Object.assign(newObj, { [value.id]: value.timestamp }),
         {},
       ),
@@ -197,7 +213,9 @@ class BsnoStaus extends React.Component {
   }
 }
 
-export default connect((state) => ({
-  token: getSessionState(state).token,
-  points_ws: getSessionState(state).appConfig.points_ws,
-}))(BsnoStaus);
+export default connect<StateProps, DispatchProps, OwnProps, ReduxState>(
+  (state) => ({
+    token: getSessionState(state).token,
+    points_ws: getSessionState(state).appConfig.points_ws,
+  }),
+)(BsnoStaus);

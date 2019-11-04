@@ -1,12 +1,12 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 import { EtsTableWrapNoScroll } from 'components/new/ui/registry/components/data/table-data/table-container/styled/styled';
 import { EtsTableDataContainer } from 'components/new/ui/registry/components/data/table-data/styled/styled';
 import EtsBootstrap from 'components/new/ui/@bootstrap';
 
-export default class Table extends React.Component {
+export default class Table extends React.Component<any, any> {
   static get propTypes() {
     return {
       headerRenderers: PropTypes.any,
@@ -57,11 +57,11 @@ export default class Table extends React.Component {
       currentPage: this.state.currentPage,
       data: this.props.data.slice(start, end),
       numPages: this.getNumPages(),
-      handleClick: this.setPage.bind(this),
+      handleClick: this.setPage,
     };
   }
 
-  setPage(num) {
+  setPage = (num) => {
     this.setState({
       currentPage: num,
     });
@@ -158,11 +158,20 @@ const TrRow = (props) => {
     });
   }
 
+  const handleClick = React.useCallback(
+    () => {
+      props.handleClick(props.cells.ID || props.index);
+    },
+    [props.cells.ID || props.index],
+  );
+
   return (
     <EtsBootstrap.Grid.GridBootstrapTbody.Tr
       enable
       isSelected={props.selected}
-      onClick={props.handleClick.bind(this, props.cells.ID || props.index)}>
+      onClick={handleClick}
+      registryKey={'any'}
+    >
       {cells}
     </EtsBootstrap.Grid.GridBootstrapTbody.Tr>
   );

@@ -29,7 +29,7 @@ function httpMethodBlob(urlOwn, dataOwn, method) {
 
   return fetch(url, options).then(async (r) => {
     const contentDisposition = r.headers.get('Content-Disposition');
-    const defaultResult = {
+    const defaultResult: { blob: Blob | null; fileName: string | null } = {
       blob: null,
       fileName: null,
     };
@@ -51,15 +51,14 @@ function httpMethodBlob(urlOwn, dataOwn, method) {
 }
 
 export const getBlob = async (url, data) => {
-  let ans = null;
-
   try {
-    ans = await httpMethodBlob(url, data, 'get');
+    const ans = await httpMethodBlob(url, data, 'get');
+    return ans;
   } catch (error) {
     console.warn('getBlob', error);  // tslint:disable-line:no-console
   }
 
-  return ans;
+  return null;
 };
 
 export function postBlob(url, data) {

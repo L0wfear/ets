@@ -144,10 +144,10 @@ function checkResponse(url, response, body, method) {
     }
     if (errors.length) {
       const error = `ERROR /${method} ${usedUrl}`;
-      console.error(error);  // eslint-disable-line
+      console.error(error);
 
       errors.forEach((er) => {
-        console.error(er);  // eslint-disable-line
+        console.error(er);
         global.NOTIFICATION_SYSTEM.notify(
           getServerErrorNotification(`/${method} ${serviceName}`),
         );
